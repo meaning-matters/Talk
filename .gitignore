@@ -7,6 +7,47 @@ External/OpenSSL-for-iPhone/*.gz
 External/OpenSSL-for-iPhone/src
 
 # PJSIP
+External/pjproject-2.0.1/pjlib-util/build/.pjlib-util-test-arm-apple-darwin9.depend
+External/pjproject-2.0.1/pjlib-util/lib/libpjlib-util-arm-apple-darwin9.a
+External/pjproject-2.0.1/pjlib/lib/libpj-arm-apple-darwin9.a
+External/pjproject-2.0.1/pjmedia/build/.pjmedia-arm-apple-darwin9.depend
+External/pjproject-2.0.1/pjmedia/build/.pjmedia-codec-arm-apple-darwin9.depend
+External/pjproject-2.0.1/pjmedia/build/.pjmedia-test-arm-apple-darwin9.depend
+External/pjproject-2.0.1/pjmedia/lib/libpjmedia-arm-apple-darwin9.a
+External/pjproject-2.0.1/pjmedia/lib/libpjmedia-audiodev-arm-apple-darwin9.a
+External/pjproject-2.0.1/pjmedia/lib/libpjmedia-codec-arm-apple-darwin9.a
+External/pjproject-2.0.1/pjmedia/lib/libpjmedia-videodev-arm-apple-darwin9.a
+External/pjproject-2.0.1/pjmedia/lib/libpjsdp-arm-apple-darwin9.a
+External/pjproject-2.0.1/pjnath/lib/libpjnath-arm-apple-darwin9.a
+External/pjproject-2.0.1/pjsip-apps/bin/pjsystest-arm-apple-darwin9
+External/pjproject-2.0.1/pjsip-apps/build/.pjsua-arm-apple-darwin9.depend
+External/pjproject-2.0.1/pjsip-apps/build/.pjsystest-arm-apple-darwin9.depend
+External/pjproject-2.0.1/pjsip/lib/libpjsip-arm-apple-darwin9.a
+External/pjproject-2.0.1/pjsip/lib/libpjsip-simple-arm-apple-darwin9.a
+External/pjproject-2.0.1/pjsip/lib/libpjsip-ua-arm-apple-darwin9.a
+External/pjproject-2.0.1/pjsip/lib/libpjsua-arm-apple-darwin9.a
+External/pjproject-2.0.1/third_party/lib/libg7221codec-arm-apple-darwin9.a
+External/pjproject-2.0.1/third_party/lib/libgsmcodec-arm-apple-darwin9.a
+External/pjproject-2.0.1/third_party/lib/libilbccodec-arm-apple-darwin9.a
+External/pjproject-2.0.1/third_party/lib/libmilenage-arm-apple-darwin9.a
+External/pjproject-2.0.1/third_party/lib/libresample-arm-apple-darwin9.a
+External/pjproject-2.0.1/third_party/lib/libspeex-arm-apple-darwin9.a
+External/pjproject-2.0.1/third_party/lib/libsrtp-arm-apple-darwin9.a
+External/pjproject-2.0.1/install/
+External/pjproject-2.0.1/pjlib-util/build/output/
+External/pjproject-2.0.1/pjlib/build/output/
+External/pjproject-2.0.1/pjmedia/build/output/
+External/pjproject-2.0.1/pjnath/build/output/
+External/pjproject-2.0.1/pjsip-apps/bin/samples/
+External/pjproject-2.0.1/pjsip-apps/build/output/
+External/pjproject-2.0.1/pjsip/build/output/
+External/pjproject-2.0.1/third_party/build/g7221/output/
+External/pjproject-2.0.1/third_party/build/gsm/output/
+External/pjproject-2.0.1/third_party/build/ilbc/output/
+External/pjproject-2.0.1/third_party/build/milenage/output/
+External/pjproject-2.0.1/third_party/build/resample/output/
+External/pjproject-2.0.1/third_party/build/speex/output/
+External/pjproject-2.0.1/third_party/build/srtp/output/
 
 # System and Xcode stuff
 .svn
