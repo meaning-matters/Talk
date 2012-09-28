@@ -1,5 +1,13 @@
 
 
+# OpenSSL
+External/OpenSSL-for-iPhone/bin
+External/OpenSSL-for-iPhone/lib
+External/OpenSSL-for-iPhone/*.gz
+External/OpenSSL-for-iPhone/src
+
+# PJSIP
+
 # System and Xcode stuff
 .svn
 .DS_Store
