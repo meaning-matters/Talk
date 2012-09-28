@@ -1,0 +1,18 @@
+
+
+# System and Xcode stuff
+.svn
+.DS_Store
+profile
+xcuserdata
+build/*
+*~.nib
+*.swp
+*.mode1
+*.mode1v3
+*.mode2v3
+*.perspective
+*.perspectivev3
+*.pbxuser
+*.xcworkspace
+xcuserdata
