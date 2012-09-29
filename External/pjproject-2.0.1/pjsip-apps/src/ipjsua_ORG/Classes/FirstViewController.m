@@ -27,18 +27,40 @@
 @synthesize text;
 @synthesize hasInput;
 
-
 - (BOOL)textFieldShouldReturn:(UITextField *)theTextField {
     // When the user presses return, take focus away from the text field so that the keyboard is dismissed.
-    if (theTextField == textField)
-    {
-	//[self.textField resignFirstResponder];
+    if (theTextField == textField) {
+	[self.textField resignFirstResponder];
 	self.hasInput = true;
         self.text = [textField.text stringByAppendingString:@"\n"];
 	textField.text = @"";
     }
     return YES;
 }
+
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    // Dismiss the keyboard when the view outside the text field is touched.
+    [textField resignFirstResponder];
+    [super touchesBegan:touches withEvent:event];
+}
+
+/*
+// The designated initializer. Override to perform setup that is required before the view is loaded.
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+        // Custom initialization
+    }
+    return self;
+}
+*/
+
+/*
+// Implement loadView to create a view hierarchy programmatically, without using a nib.
+- (void)loadView {
+}
+*/
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
@@ -50,7 +72,7 @@
     appd.mainView = self;
     textField.delegate = self;
     [self.textView setFont:[UIFont fontWithName:@"Courier New" size:15.5]];
-    [self.textField setEnabled: YES];
+    [self.textField setEnabled: false];
     [button1 addTarget:self action:@selector(button1Pressed:) forControlEvents:(UIControlEvents)UIControlEventTouchDown];
 }
 

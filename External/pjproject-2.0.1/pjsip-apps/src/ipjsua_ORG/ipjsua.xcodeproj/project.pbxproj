@@ -40,6 +40,8 @@
 		3AE90A7E1158C6B400FAEAA5 /* libpjsua-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AE90A7D1158C6B400FAEAA5 /* libpjsua-arm-apple-darwin9.a */; };
 		3AE90A801158C6B400FAEAA5 /* libresample-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AE90A7F1158C6B400FAEAA5 /* libresample-arm-apple-darwin9.a */; };
 		3AE90AC01158F0C400FAEAA5 /* config.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 3AE90ABF1158F0C400FAEAA5 /* config.cfg */; };
+		3AE90C51115A35BB00FAEAA5 /* TabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AE90C50115A35BB00FAEAA5 /* TabBarController.m */; };
+		3AE90DAD115BB1CF00FAEAA5 /* ConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AE90DAC115BB1CF00FAEAA5 /* ConfigViewController.m */; };
 		3AE90EB7115F7BCE00FAEAA5 /* libg7221codec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AE90EB1115F7BCE00FAEAA5 /* libg7221codec-arm-apple-darwin9.a */; };
 		3AE90EB8115F7BCE00FAEAA5 /* libilbccodec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AE90EB2115F7BCE00FAEAA5 /* libilbccodec-arm-apple-darwin9.a */; };
 		3AE90EB9115F7BCE00FAEAA5 /* libmilenage-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AE90EB3115F7BCE00FAEAA5 /* libmilenage-arm-apple-darwin9.a */; };
@@ -89,6 +91,10 @@
 		3AE90A7F1158C6B400FAEAA5 /* libresample-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libresample-arm-apple-darwin9.a"; path = "../../../third_party/lib/libresample-arm-apple-darwin9.a"; sourceTree = SOURCE_ROOT; };
 		3AE90ABF1158F0C400FAEAA5 /* config.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = config.cfg; sourceTree = "<group>"; };
 		3AE90B131159D38400FAEAA5 /* gui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gui.h; path = ../pjsua/gui.h; sourceTree = SOURCE_ROOT; };
+		3AE90C4F115A35BB00FAEAA5 /* TabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarController.h; sourceTree = "<group>"; };
+		3AE90C50115A35BB00FAEAA5 /* TabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarController.m; sourceTree = "<group>"; };
+		3AE90DAB115BB1CF00FAEAA5 /* ConfigViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigViewController.h; sourceTree = "<group>"; };
+		3AE90DAC115BB1CF00FAEAA5 /* ConfigViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigViewController.m; sourceTree = "<group>"; };
 		3AE90EB1115F7BCE00FAEAA5 /* libg7221codec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libg7221codec-arm-apple-darwin9.a"; path = "../../../third_party/lib/libg7221codec-arm-apple-darwin9.a"; sourceTree = SOURCE_ROOT; };
 		3AE90EB2115F7BCE00FAEAA5 /* libilbccodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libilbccodec-arm-apple-darwin9.a"; path = "../../../third_party/lib/libilbccodec-arm-apple-darwin9.a"; sourceTree = SOURCE_ROOT; };
 		3AE90EB3115F7BCE00FAEAA5 /* libmilenage-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libmilenage-arm-apple-darwin9.a"; path = "../../../third_party/lib/libmilenage-arm-apple-darwin9.a"; sourceTree = SOURCE_ROOT; };
@@ -143,8 +149,12 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				3AE90DAB115BB1CF00FAEAA5 /* ConfigViewController.h */,
+				3AE90DAC115BB1CF00FAEAA5 /* ConfigViewController.m */,
 				28216C950DB411BC00E5133A /* FirstViewController.h */,
 				28216C960DB411BC00E5133A /* FirstViewController.m */,
+				3AE90C4F115A35BB00FAEAA5 /* TabBarController.h */,
+				3AE90C50115A35BB00FAEAA5 /* TabBarController.m */,
 				1D3623240D0F684500981E51 /* ipjsuaAppDelegate.h */,
 				1D3623250D0F684500981E51 /* ipjsuaAppDelegate.m */,
 			);
@@ -320,6 +330,8 @@
 				1D3623260D0F684500981E51 /* ipjsuaAppDelegate.m in Sources */,
 				28216C970DB411BC00E5133A /* FirstViewController.m in Sources */,
 				3AE90A2D1158B52500FAEAA5 /* pjsua_app.c in Sources */,
+				3AE90C51115A35BB00FAEAA5 /* TabBarController.m in Sources */,
+				3AE90DAD115BB1CF00FAEAA5 /* ConfigViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

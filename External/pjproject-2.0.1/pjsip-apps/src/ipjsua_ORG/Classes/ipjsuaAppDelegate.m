@@ -26,6 +26,7 @@ extern pj_log_func *log_cb;
 @synthesize window;
 @synthesize tabBarController;
 @synthesize mainView;
+@synthesize cfgView;
 
 /* Sleep interval duration */
 #define SLEEP_INTERVAL	    0.5
@@ -80,7 +81,7 @@ char * getInput(char *s, int n, FILE *stream)
     }
     
     app.mainView.hasInput = false;
-    //[app.mainView.textField setEnabled: true];
+    [app.mainView.textField setEnabled: true];
     [app performSelectorOnMainThread:@selector(displayMsg:) withObject:mstr waitUntilDone:YES];
     [mstr setString:@""];
     
@@ -96,7 +97,7 @@ char * getInput(char *s, int n, FILE *stream)
     }
     
     [app.mainView.text getCString:s maxLength:n encoding:NSASCIIStringEncoding];
-    //[app.mainView.textField setEnabled: false];
+    [app.mainView.textField setEnabled: false];
     [app performSelectorOnMainThread:@selector(displayMsg:) withObject:app.mainView.text waitUntilDone:NO];
     
     return s;

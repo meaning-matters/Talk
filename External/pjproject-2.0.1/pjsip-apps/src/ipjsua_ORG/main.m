@@ -1,4 +1,4 @@
-/* $Id: ipjsuaAppDelegate.h 3550 2011-05-05 05:33:27Z nanang $ */
+/* $Id: main.m 3550 2011-05-05 05:33:27Z nanang $ */
 /* 
  * Copyright (C) 2010-2011 Teluu Inc. (http://www.teluu.com)
  *
@@ -17,13 +17,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 #import <UIKit/UIKit.h>
-#import "FirstViewController.h"
 
-@interface ipjsuaAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate>
+int main(int argc, char *argv[]) {
+    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+    int retVal = UIApplicationMain(argc, argv, nil, nil);
+    [pool release];
+    return retVal;
+}
 
-@property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
-@property (nonatomic, retain) FirstViewController *mainView;
-
-
-@end
