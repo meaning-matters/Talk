@@ -17,12 +17,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 #import <UIKit/UIKit.h>
+#import "ConfigViewController.h"
 #import "FirstViewController.h"
+#import "TabBarController.h"
 
-@interface ipjsuaAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate>
+@interface ipjsuaAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate> {
+    UIWindow		 *window;
+    ConfigViewController *cfgView;
+    FirstViewController  *mainView;
+    TabBarController	 *tabBarController;
+}
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
+@property (nonatomic, retain) IBOutlet TabBarController *tabBarController;
+@property (nonatomic, retain) IBOutlet ConfigViewController *cfgView;
 @property (nonatomic, retain) FirstViewController *mainView;
 
 

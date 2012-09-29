@@ -1,4 +1,4 @@
-/* $Id: ipjsuaAppDelegate.h 3550 2011-05-05 05:33:27Z nanang $ */
+/* $Id: FirstViewController.h 3550 2011-05-05 05:33:27Z nanang $ */
 /* 
  * Copyright (C) 2010-2011 Teluu Inc. (http://www.teluu.com)
  *
@@ -17,13 +17,21 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 #import <UIKit/UIKit.h>
-#import "FirstViewController.h"
 
-@interface ipjsuaAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate>
 
-@property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
-@property (nonatomic, retain) FirstViewController *mainView;
+@interface FirstViewController : UIViewController<UITextFieldDelegate> {
+    IBOutlet UITextField *textField;
+    IBOutlet UITextView  *textView;
+    IBOutlet UIButton	 *button1;
 
+    NSString		 *text;
+    bool		 hasInput;
+}
+
+@property (nonatomic, retain) IBOutlet UITextField *textField;
+@property (nonatomic, retain) IBOutlet UITextView *textView;
+@property (nonatomic, retain) IBOutlet UIButton *button1;
+@property (nonatomic, retain) NSString *text;
+@property (nonatomic) bool hasInput;
 
 @end
