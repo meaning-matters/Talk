@@ -116,6 +116,7 @@
 		48338F67161628690033F4C1 /* libsrtp-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsrtp-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libsrtp-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48338F8C161628BA0033F4C1 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "External/OpenSSL-for-iPhone/lib/libcrypto.a"; sourceTree = "<group>"; };
 		48338F8D161628BA0033F4C1 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "External/OpenSSL-for-iPhone/lib/libssl.a"; sourceTree = "<group>"; };
+		48338F92161700550033F4C1 /* AppledocSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AppledocSettings.plist; sourceTree = "<group>"; };
 		48884A701615CE920005AA79 /* Talk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Talk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48884A741615CE920005AA79 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		48884A761615CE920005AA79 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -307,6 +308,7 @@
 				48884A861615CE920005AA79 /* Default.png */,
 				48884A881615CE920005AA79 /* Default@2x.png */,
 				48884A8A1615CE920005AA79 /* Default-568h@2x.png */,
+				48338F92161700550033F4C1 /* AppledocSettings.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -437,7 +439,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/Applications/appledoc $SOURCE_ROOT/$PROJECT_NAME";
+			shellScript = "/Applications/appledoc --verbose xcode $SOURCE_ROOT/$PROJECT_NAME";
 		};
 		48884AA31615CE920005AA79 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -557,6 +559,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -578,6 +581,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
