@@ -1649,6 +1649,12 @@ static void on_call_state(pjsua_call_id call_id, pjsip_event *e)
 	    PJ_LOG(5, (THIS_FILE, "Call %d disconnected, dumping media stats..", call_id));
 	    log_call_dump(call_id);
 	}
+        
+        /* Reset current call */
+        if (current_call == call_id)
+        {
+            current_call = PJSUA_INVALID_ID;
+        }
     }
     else
     {
@@ -1703,7 +1709,7 @@ static void on_call_state(pjsua_call_id call_id, pjsip_event *e)
 	    PJ_LOG(3,(THIS_FILE, "Call %d state changed to %s", call_id, call_info.state_text.ptr));
 	}
         
-	if (current_call==PJSUA_INVALID_ID)
+	if (call_info.state != PJSIP_INV_STATE_NULL && current_call == PJSUA_INVALID_ID)
         {
 	    current_call = call_id;
         }

@@ -2516,11 +2516,11 @@ static void on_call_state(pjsua_call_id call_id, pjsip_event *e)
     pjsua_call_info call_info;
 
     PJ_UNUSED_ARG(e);
-
+    
     pjsua_call_get_info(call_id, &call_info);
-
-    if (call_info.state == PJSIP_INV_STATE_DISCONNECTED) {
-
+    
+    if (call_info.state == PJSIP_INV_STATE_DISCONNECTED)
+    {
 	/* Stop all ringback for this call */
 	ring_stop(call_id);
 
@@ -2556,10 +2556,14 @@ static void on_call_state(pjsua_call_id call_id, pjsip_event *e)
 		      call_id));
 	    log_call_dump(call_id);
 	}
-
+        
+        if (current_call == call_id)
+        {
+            current_call = PJSUA_INVALID_ID;
+        }
     } else {
 
-	if (app_config.duration!=NO_LIMIT && 
+	if (app_config.duration != NO_LIMIT && 
 	    call_info.state == PJSIP_INV_STATE_CONFIRMED) 
 	{
 	    /* Schedule timer to hangup call after the specified duration */
@@ -2607,7 +2611,7 @@ static void on_call_state(pjsua_call_id call_id, pjsip_event *e)
 		      call_info.state_text.ptr));
 	}
 
-	if (current_call==PJSUA_INVALID_ID)
+	if (call_info.state != PJSIP_INV_STATE_NULL && current_call == PJSUA_INVALID_ID)
 	    current_call = call_id;
 
     }
@@ -4627,9 +4631,7 @@ void console_app_main(const pj_str_t *uri_to_call)
 
 	    break;
 
-
 	case 'h':
-
 	    if (current_call == -1) {
 		puts("No current call");
 		fflush(stdout);
