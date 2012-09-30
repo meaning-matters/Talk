@@ -7,12 +7,10 @@
 //
 
 #import "SipInterface.h"
+#import <pjsua-lib/pjsua.h>
+#import "Common.h"
 
-
-#include <pjsua-lib/pjsua.h>
-
-
-#define THIS_FILE	"pjsua_app.c"
+#define THIS_FILE	"SipInterface"
 #define NO_LIMIT	(int)0x7FFFFFFF
 
 /* Ringtones		    US	       UK  */
@@ -133,10 +131,6 @@ static struct app_config
 
 #define current_acc	pjsua_acc_get_default()
 static pjsua_call_id	current_call = PJSUA_INVALID_ID;
-static pj_bool_t	cmd_echo;
-static int		stdout_refresh = -1;
-static const char      *stdout_refresh_text = "STDOUT_REFRESH";
-static pj_bool_t	stdout_refresh_quit = PJ_FALSE;
 
 #if defined(PJMEDIA_HAS_RTCP_XR) && (PJMEDIA_HAS_RTCP_XR != 0)
 #   define SOME_BUF_SIZE	(1024 * 10)
@@ -192,7 +186,8 @@ void printInfo()
 
 
 /* Set default config. */
-static void default_config(struct app_config *cfg)
+static void default_config(
+    struct app_config*  cfg)
 {
     char        tmp[80];
     unsigned    i;
@@ -266,7 +261,6 @@ static int read_config_file(
     if ((file = fopen(filename, "rt")) == NULL)
     {
 	PJ_LOG(1, (THIS_FILE, "Unable to open config file %s", filename));
-	fflush(stdout);
         
 	return -1;
     }
@@ -372,7 +366,6 @@ static int read_config_file(
     if (argc == MAX_ARGS && (i != *app_argc || !feof(file)))
     {
 	PJ_LOG(1, (THIS_FILE, "Too many arguments specified in cmd line/config file"));
-	fflush(stdout);
 	fclose(file);
         
 	return -1;
@@ -383,32 +376,8 @@ static int read_config_file(
     /* Assign the new command line back to the original command line. */
     *app_argc = argc;
     *app_argv = argv;
+    
     return 0;
-}
-
-    
-static int my_atoi(
-    const char*     cs)
-{
-    pj_str_t s;
-    
-    pj_cstr(&s, cs);
-    if (cs[0] == '-')
-    {
-	s.ptr++;
-        s.slen--;
-	return 0 - (int)pj_strtoul(&s);
-    }
-    else if (cs[0] == '+')
-    {
-	s.ptr++;
-        s.slen--;
-	return pj_strtoul(&s);
-    }
-    else
-    {
-	return pj_strtoul(&s);
-    }
 }
 
 
@@ -422,33 +391,32 @@ static pj_status_t parse_args(
     
     enum
     {
-        OPT_LOG_FILE = 128,     OPT_LOG_LEVEL,          OPT_APP_LOG_LEVEL,      OPT_NULL_AUDIO,
-        OPT_LOG_APPEND,         OPT_COLOR,              OPT_NO_COLOR,           OPT_LIGHT_BG,
-        OPT_SND_AUTO_CLOSE,     OPT_LOCAL_PORT,         OPT_IP_ADDR,            OPT_PROXY,
-        OPT_OUTBOUND_PROXY,     OPT_REGISTRAR,          OPT_REG_TIMEOUT,        OPT_PUBLISH,
-        OPT_ID, OPT_CONTACT,    OPT_BOUND_ADDR,         OPT_CONTACT_PARAMS,     OPT_CONTACT_URI_PARAMS,
-        OPT_100REL,             OPT_USE_IMS,            OPT_REALM,              OPT_USERNAME,
-        OPT_PASSWORD,           OPT_REG_RETRY_INTERVAL, OPT_REG_USE_PROXY,      OPT_MWI,
-        OPT_NAMESERVER,         OPT_STUN_SRV,           OPT_OUTB_RID,           OPT_ADD_BUDDY,
-        OPT_OFFER_X_MS_MSG,     OPT_NO_PRESENCE,        OPT_AUTO_ANSWER,        OPT_AUTO_PLAY,
-        OPT_AUTO_PLAY_HANGUP,   OPT_AUTO_LOOP,          OPT_AUTO_CONF,          OPT_CLOCK_RATE,
-        OPT_USE_SRTP,           OPT_SRTP_SECURE,        OPT_USE_TURN,           OPT_ICE_MAX_HOSTS,
-        OPT_ICE_NO_RTCP,        OPT_TURN_SRV,           OPT_TURN_TCP,           OPT_TURN_USER,
-        OPT_TURN_PASSWD,        OPT_PLAY_FILE,          OPT_PLAY_TONE,          OPT_RTP_PORT,
-        OPT_ADD_CODEC,          OPT_ILBC_MODE,          OPT_REC_FILE,           OPT_AUTO_REC,
+        OPT_LOG_FILE = 128,     OPT_LOG_LEVEL,          OPT_APP_LOG_LEVEL,      OPT_LOG_APPEND,
+        OPT_CLOCK_RATE,         OPT_SND_CLOCK_RATE,     OPT_NULL_AUDIO,         OPT_LOCAL_PORT,
+        OPT_IP_ADDR,            OPT_BOUND_ADDR,         OPT_NO_TCP,             OPT_NO_UDP,
+        OPT_NOREFERSUB,         OPT_PROXY,              OPT_OUTBOUND_PROXY,     OPT_REGISTRAR,
+        OPT_REG_TIMEOUT,        OPT_PUBLISH,            OPT_MWI,                OPT_100REL,
+        OPT_USE_IMS,            OPT_ID,                 OPT_CONTACT,            OPT_CONTACT_PARAMS,
+        OPT_CONTACT_URI_PARAMS, OPT_AUTO_UPDATE_NAT,    OPT_USE_COMPACT_FORM,   OPT_ACCEPT_REDIRECT,
+        OPT_NO_FORCE_LR,        OPT_REALM,              OPT_USERNAME,           OPT_PASSWORD,
+        OPT_REG_RETRY_INTERVAL, OPT_REG_USE_PROXY,      OPT_NAMESERVER,         OPT_STUN_SRV,
+        OPT_ADD_BUDDY,          OPT_OFFER_X_MS_MSG,     OPT_NO_PRESENCE,        OPT_AUTO_ANSWER,
+        OPT_AUTO_PLAY,          OPT_AUTO_PLAY_HANGUP,   OPT_AUTO_REC,           OPT_AUTO_LOOP,
+        OPT_AUTO_CONF,          OPT_PLAY_FILE,          OPT_PLAY_TONE,          OPT_REC_FILE,
+        OPT_RTP_PORT,           OPT_USE_SRTP,           OPT_SRTP_SECURE,        OPT_USE_TURN,
+        OPT_ICE_MAX_HOSTS,      OPT_ICE_NO_RTCP,        OPT_TURN_SRV,           OPT_TURN_TCP,
+        OPT_TURN_USER,          OPT_TURN_PASSWD,        OPT_ADD_CODEC,          OPT_ILBC_MODE,
         OPT_COMPLEXITY,         OPT_QUALITY,            OPT_PTIME,              OPT_NO_VAD,
         OPT_RX_DROP_PCT,        OPT_TX_DROP_PCT,        OPT_EC_TAIL,            OPT_EC_OPT,
         OPT_NEXT_ACCOUNT,       OPT_NEXT_CRED,          OPT_MAX_CALLS,          OPT_DURATION,
-        OPT_NO_TCP,             OPT_NO_UDP,             OPT_THREAD_CNT,         OPT_NOREFERSUB,
-        OPT_ACCEPT_REDIRECT,    OPT_USE_TLS,            OPT_TLS_CA_FILE,        OPT_TLS_CERT_FILE,
+        OPT_THREAD_CNT,         OPT_USE_TLS,            OPT_TLS_CA_FILE,        OPT_TLS_CERT_FILE,
         OPT_TLS_PRIV_FILE,      OPT_TLS_PASSWORD,       OPT_TLS_VERIFY_SERVER,  OPT_TLS_VERIFY_CLIENT,
         OPT_TLS_NEG_TIMEOUT,    OPT_TLS_CIPHER,         OPT_CAPTURE_DEV,        OPT_PLAYBACK_DEV,
-        OPT_CAPTURE_LAT,        OPT_PLAYBACK_LAT,       OPT_NO_TONES,           OPT_JB_MAX_SIZE,
-        OPT_STDOUT_REFRESH,     OPT_STDOUT_REFRESH_TEXT,OPT_IPV6,               OPT_QOS,
-        OPT_AUTO_UPDATE_NAT,    OPT_USE_COMPACT_FORM,   OPT_DIS_CODEC,          OPT_NO_FORCE_LR,
-        OPT_TIMER,              OPT_TIMER_SE,           OPT_TIMER_MIN_SE,       OPT_VIDEO,
-        OPT_EXTRA_AUDIO,        OPT_VCAPTURE_DEV,       OPT_VRENDER_DEV,        OPT_PLAY_AVI,
-        OPT_AUTO_PLAY_AVI,      OPT_SND_CLOCK_RATE,     OPT_USE_ICE,            OPT_ICE_REGULAR,
+        OPT_CAPTURE_LAT,        OPT_PLAYBACK_LAT,       OPT_SND_AUTO_CLOSE,     OPT_NO_TONES,
+        OPT_JB_MAX_SIZE,        OPT_IPV6,               OPT_QOS,                OPT_DIS_CODEC,
+        OPT_TIMER,              OPT_TIMER_SE,           OPT_TIMER_MIN_SE,       OPT_OUTB_RID,
+        OPT_VIDEO,              OPT_EXTRA_AUDIO,        OPT_VCAPTURE_DEV,       OPT_VRENDER_DEV,
+        OPT_PLAY_AVI,           OPT_AUTO_PLAY_AVI,      OPT_USE_ICE,            OPT_ICE_REGULAR,
     };
     
     struct pj_getopt_option long_options[] =
@@ -457,9 +425,6 @@ static pj_status_t parse_args(
 	{ "log-level",          1, 0, OPT_LOG_LEVEL},
 	{ "app-log-level",      1, 0, OPT_APP_LOG_LEVEL},
 	{ "log-append",         0, 0, OPT_LOG_APPEND},
-	{ "color",              0, 0, OPT_COLOR},
-	{ "no-color",           0, 0, OPT_NO_COLOR},
-	{ "light-bg",		0, 0, OPT_LIGHT_BG},
 	{ "clock-rate",         1, 0, OPT_CLOCK_RATE},
 	{ "snd-clock-rate",	1, 0, OPT_SND_CLOCK_RATE},
 	{ "null-audio",         0, 0, OPT_NULL_AUDIO},
@@ -551,8 +516,6 @@ static pj_status_t parse_args(
 	{ "playback-dev",       1, 0, OPT_PLAYBACK_DEV},
 	{ "capture-lat",        1, 0, OPT_CAPTURE_LAT},
 	{ "playback-lat",       1, 0, OPT_PLAYBACK_LAT},
-	{ "stdout-refresh",     1, 0, OPT_STDOUT_REFRESH},
-	{ "stdout-refresh-text",1, 0, OPT_STDOUT_REFRESH_TEXT},
 	{ "snd-auto-close",     1, 0, OPT_SND_AUTO_CLOSE},
 	{ "no-tones",           0, 0, OPT_NO_TONES},
 	{ "jb-max-size",        1, 0, OPT_JB_MAX_SIZE},
@@ -576,8 +539,6 @@ static pj_status_t parse_args(
     pjsua_acc_config*   cur_acc;
     unsigned            i;
     
-    pj_optind = 0;
-
     cfg->acc_cnt = 0;
     cur_acc = &cfg->acc_cfg[0];
     
@@ -585,7 +546,7 @@ static pj_status_t parse_args(
      * read from config file.
      */
     pj_optind = 0;
-    while((c = pj_getopt_long(argc,argv, "", long_options,&option_index)) != -1)
+    while ((c = pj_getopt_long(argc,argv, "", long_options,&option_index)) != -1)
     {
 	pj_str_t    tmp;
 	long        lval;
@@ -594,7 +555,10 @@ static pj_status_t parse_args(
 	switch (c)
         {
             case OPT_LOG_FILE:
-                cfg->log_cfg.log_filename = pj_str(pj_optarg);
+                {
+                    NSString* path = [Common documentFilePath:[NSString stringWithUTF8String:pj_optarg]];
+                    cfg->log_cfg.log_filename = pj_str((char*)[path cStringUsingEncoding:NSASCIIStringEncoding]);
+                }
                 break;
                 
             case OPT_LOG_LEVEL:
@@ -607,7 +571,7 @@ static pj_status_t parse_args(
                 }
                 
                 cfg->log_cfg.level = c;
-                pj_log_set_level( c );
+                pj_log_set_level(c);
                 break;
                 
             case OPT_APP_LOG_LEVEL:
@@ -618,28 +582,12 @@ static pj_status_t parse_args(
                     
                     return PJ_EINVAL;
                 }
+                
                 cfg->log_cfg.console_level = lval;
                 break;
                 
             case OPT_LOG_APPEND:
                 cfg->log_cfg.log_file_flags |= PJ_O_APPEND;
-                break;
-                
-            case OPT_COLOR:
-                cfg->log_cfg.decor |= PJ_LOG_HAS_COLOR;
-                break;
-                
-            case OPT_NO_COLOR:
-                cfg->log_cfg.decor &= ~PJ_LOG_HAS_COLOR;
-                break;
-                
-            case OPT_LIGHT_BG:
-                pj_log_set_color(1, PJ_TERM_COLOR_R);
-                pj_log_set_color(2, PJ_TERM_COLOR_R | PJ_TERM_COLOR_G);
-                pj_log_set_color(3, PJ_TERM_COLOR_B | PJ_TERM_COLOR_G);
-                pj_log_set_color(4, 0);
-                pj_log_set_color(5, 0);
-                pj_log_set_color(77, 0);
                 break;
                 
             case OPT_NULL_AUDIO:
@@ -670,7 +618,7 @@ static pj_status_t parse_args(
                 cfg->media_cfg.snd_clock_rate = lval;
                 break;
                 
-            case OPT_LOCAL_PORT:   /* local-port */
+            case OPT_LOCAL_PORT:
                 lval = pj_strtoul(pj_cstr(&tmp, pj_optarg));
                 if (lval < 0 || lval > 65535)
                 {
@@ -682,17 +630,17 @@ static pj_status_t parse_args(
                 cfg->udp_cfg.port = (pj_uint16_t)lval;
                 break;
                 
-            case OPT_IP_ADDR: /* ip-addr */
+            case OPT_IP_ADDR:
                 cfg->udp_cfg.public_addr = pj_str(pj_optarg);
                 cfg->rtp_cfg.public_addr = pj_str(pj_optarg);
                 break;
                 
-            case OPT_BOUND_ADDR: /* bound-addr */
+            case OPT_BOUND_ADDR:
                 cfg->udp_cfg.bound_addr = pj_str(pj_optarg);
                 cfg->rtp_cfg.bound_addr = pj_str(pj_optarg);
                 break;
                 
-            case OPT_NO_UDP: /* no-udp */
+            case OPT_NO_UDP:
                 if (cfg->no_tcp)
                 {
                     PJ_LOG(1, (THIS_FILE,"Error: can not disable both TCP and UDP"));
@@ -703,11 +651,11 @@ static pj_status_t parse_args(
                 cfg->no_udp = PJ_TRUE;
                 break;
                 
-            case OPT_NOREFERSUB: /* norefersub */
+            case OPT_NOREFERSUB:
                 cfg->no_refersub = PJ_TRUE;
                 break;
                 
-            case OPT_NO_TCP: /* no-tcp */
+            case OPT_NO_TCP:
                 if (cfg->no_udp)
                 {
                     PJ_LOG(1, (THIS_FILE,"Error: can not disable both TCP and UDP"));
@@ -717,7 +665,7 @@ static pj_status_t parse_args(
                 cfg->no_tcp = PJ_TRUE;
                 break;
                 
-            case OPT_PROXY:   /* proxy */
+            case OPT_PROXY: 
                 if (pjsua_verify_sip_url(pj_optarg) != 0)
                 {
                     PJ_LOG(1, (THIS_FILE, "Error: invalid SIP URL '%s' in proxy argument", pj_optarg));
@@ -728,7 +676,7 @@ static pj_status_t parse_args(
                 cur_acc->proxy[cur_acc->proxy_cnt++] = pj_str(pj_optarg);
                 break;
                 
-            case OPT_OUTBOUND_PROXY:   /* outbound proxy */
+            case OPT_OUTBOUND_PROXY:
                 if (pjsua_verify_sip_url(pj_optarg) != 0)
                 {
                     PJ_LOG(1, (THIS_FILE, "Error: invalid SIP URL '%s' in outbound proxy argument", pj_optarg));
@@ -739,7 +687,7 @@ static pj_status_t parse_args(
                 cfg->cfg.outbound_proxy[cfg->cfg.outbound_proxy_cnt++] = pj_str(pj_optarg);
                 break;
                 
-            case OPT_REGISTRAR:   /* registrar */
+            case OPT_REGISTRAR:
                 if (pjsua_verify_sip_url(pj_optarg) != 0)
                 {
                     PJ_LOG(1, (THIS_FILE, "Error: invalid SIP URL '%s' in registrar argument", pj_optarg));
@@ -750,7 +698,7 @@ static pj_status_t parse_args(
                 cur_acc->reg_uri = pj_str(pj_optarg);
                 break;
                 
-            case OPT_REG_TIMEOUT:   /* reg-timeout */
+            case OPT_REG_TIMEOUT:
                 cur_acc->reg_timeout = pj_strtoul(pj_cstr(&tmp,pj_optarg));
                 if (cur_acc->reg_timeout < 1 || cur_acc->reg_timeout > 3600)
                 {
@@ -760,20 +708,20 @@ static pj_status_t parse_args(
                 }
                 break;
                 
-            case OPT_PUBLISH:   /* publish */
+            case OPT_PUBLISH:
                 cur_acc->publish_enabled = PJ_TRUE;
                 break;
                 
-            case OPT_MWI:	/* mwi */
+            case OPT_MWI:
                 cur_acc->mwi_enabled = PJ_TRUE;
                 break;
                 
-            case OPT_100REL: /** 100rel */
+            case OPT_100REL:
                 cur_acc->require_100rel = PJSUA_100REL_MANDATORY;
                 cfg->cfg.require_100rel = PJSUA_100REL_MANDATORY;
                 break;
                 
-            case OPT_TIMER: /** session timer */
+            case OPT_TIMER:
                 lval = pj_strtoul(pj_cstr(&tmp, pj_optarg));
                 if (lval < 0 || lval > 3)
                 {
@@ -786,7 +734,7 @@ static pj_status_t parse_args(
                 cfg->cfg.use_timer = lval;
                 break;
                 
-            case OPT_TIMER_SE: /** session timer session expiration */
+            case OPT_TIMER_SE:
                 cur_acc->timer_setting.sess_expires = pj_strtoul(pj_cstr(&tmp, pj_optarg));
                 if (cur_acc->timer_setting.sess_expires < 90)
                 {
@@ -798,7 +746,7 @@ static pj_status_t parse_args(
                 cfg->cfg.timer_setting.sess_expires = cur_acc->timer_setting.sess_expires;
                 break;
                 
-            case OPT_TIMER_MIN_SE: /** session timer minimum session expiration */
+            case OPT_TIMER_MIN_SE:
                 cur_acc->timer_setting.min_se = pj_strtoul(pj_cstr(&tmp, pj_optarg));
                 if (cur_acc->timer_setting.min_se < 90)
                 {
@@ -810,15 +758,15 @@ static pj_status_t parse_args(
                 cfg->cfg.timer_setting.min_se = cur_acc->timer_setting.min_se;
                 break;
                 
-            case OPT_OUTB_RID: /* Outbound reg-id */
+            case OPT_OUTB_RID:
                 cur_acc->rfc5626_reg_id = pj_str(pj_optarg);
                 break;
                 
-            case OPT_USE_IMS: /* Activate IMS settings */
+            case OPT_USE_IMS:
                 cur_acc->auth_pref.initial_auth = PJ_TRUE;
                 break;
                 
-            case OPT_ID:   /* id */
+            case OPT_ID:
                 if (pjsua_verify_url(pj_optarg) != 0)
                 {
                     PJ_LOG(1, (THIS_FILE, "Error: invalid SIP URL '%s' in local id argument", pj_optarg));
@@ -829,7 +777,7 @@ static pj_status_t parse_args(
                 cur_acc->id = pj_str(pj_optarg);
                 break;
                 
-            case OPT_CONTACT:   /* contact */
+            case OPT_CONTACT:
                 if (pjsua_verify_sip_url(pj_optarg) != 0)
                 {
                     PJ_LOG(1, (THIS_FILE, "Error: invalid SIP URL '%s' in contact argument", pj_optarg));
@@ -868,7 +816,7 @@ static pj_status_t parse_args(
                 break;
                 
             case OPT_ACCEPT_REDIRECT:
-                ival = my_atoi(pj_optarg);
+                ival = atoi(pj_optarg);
                 if (ival < 0 || ival > PJSIP_REDIRECT_STOP)
                 {
                     PJ_LOG(1, (THIS_FILE, "Error: accept-redirect value '%s' ", pj_optarg));
@@ -888,16 +836,16 @@ static pj_status_t parse_args(
                 cur_acc = &cfg->acc_cfg[cfg->acc_cnt];
                 break;
                 
-            case OPT_USERNAME:   /* Default authentication user */
+            case OPT_USERNAME:
                 cur_acc->cred_info[cur_acc->cred_count].username = pj_str(pj_optarg);
                 cur_acc->cred_info[cur_acc->cred_count].scheme   = pj_str("Digest");
                 break;
                 
-            case OPT_REALM:	    /* Default authentication realm. */
+            case OPT_REALM:
                 cur_acc->cred_info[cur_acc->cred_count].realm = pj_str(pj_optarg);
                 break;
                 
-            case OPT_PASSWORD:   /* authentication password */
+            case OPT_PASSWORD:
                 cur_acc->cred_info[cur_acc->cred_count].data_type = PJSIP_CRED_DATA_PLAIN_PASSWD;
                 cur_acc->cred_info[cur_acc->cred_count].data = pj_str(pj_optarg);
 #if PJSIP_HAS_DIGEST_AKA_AUTH
@@ -921,11 +869,11 @@ static pj_status_t parse_args(
                 }
                 break;
                 
-            case OPT_NEXT_CRED: /* next credential */
+            case OPT_NEXT_CRED:
                 cur_acc->cred_count++;
                 break;
                 
-            case OPT_NAMESERVER: /* nameserver */
+            case OPT_NAMESERVER:
                 cfg->cfg.nameserver[cfg->cfg.nameserver_count++] = pj_str(pj_optarg);
                 if (cfg->cfg.nameserver_count > PJ_ARRAY_SIZE(cfg->cfg.nameserver))
                 {
@@ -935,7 +883,7 @@ static pj_status_t parse_args(
                 }
                 break;
                 
-            case OPT_STUN_SRV:   /* STUN server */
+            case OPT_STUN_SRV:
                 cfg->cfg.stun_host = pj_str(pj_optarg);
                 if (cfg->cfg.stun_srv_cnt==PJ_ARRAY_SIZE(cfg->cfg.stun_srv))
                 {
@@ -946,7 +894,7 @@ static pj_status_t parse_args(
                 cfg->cfg.stun_srv[cfg->cfg.stun_srv_cnt++] = pj_str(pj_optarg);
                 break;
                 
-            case OPT_ADD_BUDDY: /* Add to buddy list. */
+            case OPT_ADD_BUDDY:
                 if (pjsua_verify_url(pj_optarg) != 0)
                 {
                     PJ_LOG(1, (THIS_FILE, "Error: invalid URL '%s' in --add-buddy option", pj_optarg));
@@ -1027,7 +975,7 @@ static pj_status_t parse_args(
                 break;
                 
             case OPT_ICE_MAX_HOSTS:
-                cfg->media_cfg.ice_max_host_cands = my_atoi(pj_optarg);
+                cfg->media_cfg.ice_max_host_cands = atoi(pj_optarg);
                 break;
                 
             case OPT_ICE_NO_RTCP:
@@ -1055,7 +1003,7 @@ static pj_status_t parse_args(
                 
 #if defined(PJMEDIA_HAS_SRTP) && (PJMEDIA_HAS_SRTP != 0)
             case OPT_USE_SRTP:
-                app_config.cfg.use_srtp = my_atoi(pj_optarg);
+                app_config.cfg.use_srtp = atoi(pj_optarg);
                 if (!pj_isdigit(*pj_optarg) || app_config.cfg.use_srtp > 3)
                 {
                     PJ_LOG(1, (THIS_FILE, "Invalid value for --use-srtp option"));
@@ -1075,7 +1023,7 @@ static pj_status_t parse_args(
                 break;
                 
             case OPT_SRTP_SECURE:
-                app_config.cfg.srtp_secure_signaling = my_atoi(pj_optarg);
+                app_config.cfg.srtp_secure_signaling = atoi(pj_optarg);
                 if (!pj_isdigit(*pj_optarg) || app_config.cfg.srtp_secure_signaling > 2)
                 {
                     PJ_LOG(1, (THIS_FILE, "Invalid value for --srtp-secure option"));
@@ -1088,7 +1036,7 @@ static pj_status_t parse_args(
 #endif
                 
             case OPT_RTP_PORT:
-                cfg->rtp_cfg.port = my_atoi(pj_optarg);
+                cfg->rtp_cfg.port = atoi(pj_optarg);
                 if (cfg->rtp_cfg.port == 0)
                 {
                     enum
@@ -1118,11 +1066,11 @@ static pj_status_t parse_args(
                 break;
                 
             case OPT_DURATION:
-                cfg->duration = my_atoi(pj_optarg);
+                cfg->duration = atoi(pj_optarg);
                 break;
                 
             case OPT_THREAD_CNT:
-                cfg->cfg.thread_cnt = my_atoi(pj_optarg);
+                cfg->cfg.thread_cnt = atoi(pj_optarg);
                 if (cfg->cfg.thread_cnt > 128)
                 {
                     PJ_LOG(1, (THIS_FILE, "Error: invalid --thread-cnt option"));
@@ -1132,7 +1080,7 @@ static pj_status_t parse_args(
                 break;
                 
             case OPT_PTIME:
-                cfg->media_cfg.ptime = my_atoi(pj_optarg);
+                cfg->media_cfg.ptime = atoi(pj_optarg);
                 if (cfg->media_cfg.ptime < 10 || cfg->media_cfg.ptime > 1000)
                 {
                     PJ_LOG(1, (THIS_FILE, "Error: invalid --ptime option"));
@@ -1146,7 +1094,7 @@ static pj_status_t parse_args(
                 break;
                 
             case OPT_EC_TAIL:
-                cfg->media_cfg.ec_tail_len = my_atoi(pj_optarg);
+                cfg->media_cfg.ec_tail_len = atoi(pj_optarg);
                 if (cfg->media_cfg.ec_tail_len > 1000)
                 {
                     PJ_LOG(1, (THIS_FILE, "I think the ec-tail length setting is too big"));
@@ -1156,21 +1104,21 @@ static pj_status_t parse_args(
                 break;
                 
             case OPT_EC_OPT:
-                cfg->media_cfg.ec_options = my_atoi(pj_optarg);
+                cfg->media_cfg.ec_options = atoi(pj_optarg);
                 break;
                 
             case OPT_QUALITY:
-                if (my_atoi(pj_optarg) < 0 || my_atoi(pj_optarg) > 10)
+                if (atoi(pj_optarg) < 0 || atoi(pj_optarg) > 10)
                 {
                     PJ_LOG(1, (THIS_FILE, "Error: invalid --quality (expecting 0-10"));
                     
                     return -1;
                 }
-                cfg->media_cfg.quality = my_atoi(pj_optarg);
+                cfg->media_cfg.quality = atoi(pj_optarg);
                 break;
                 
             case OPT_ILBC_MODE:
-                cfg->media_cfg.ilbc_mode = my_atoi(pj_optarg);
+                cfg->media_cfg.ilbc_mode = atoi(pj_optarg);
                 if (cfg->media_cfg.ilbc_mode != 20 && cfg->media_cfg.ilbc_mode != 30)
                 {
                     PJ_LOG(1, (THIS_FILE, "Error: invalid --ilbc-mode (expecting 20 or 30"));
@@ -1180,7 +1128,7 @@ static pj_status_t parse_args(
                 break;
                 
             case OPT_RX_DROP_PCT:
-                cfg->media_cfg.rx_drop_pct = my_atoi(pj_optarg);
+                cfg->media_cfg.rx_drop_pct = atoi(pj_optarg);
                 if (cfg->media_cfg.rx_drop_pct > 100)
                 {
                     PJ_LOG(1, (THIS_FILE, "Error: invalid --rx-drop-pct (expecting <= 100"));
@@ -1190,7 +1138,7 @@ static pj_status_t parse_args(
                 break;
                 
             case OPT_TX_DROP_PCT:
-                cfg->media_cfg.tx_drop_pct = my_atoi(pj_optarg);
+                cfg->media_cfg.tx_drop_pct = atoi(pj_optarg);
                 if (cfg->media_cfg.tx_drop_pct > 100)
                 {
                     PJ_LOG(1, (THIS_FILE, "Error: invalid --tx-drop-pct (expecting <= 100"));
@@ -1200,7 +1148,7 @@ static pj_status_t parse_args(
                 break;
                 
             case OPT_AUTO_ANSWER:
-                cfg->auto_answer = my_atoi(pj_optarg);
+                cfg->auto_answer = atoi(pj_optarg);
                 if (cfg->auto_answer < 100 || cfg->auto_answer > 699)
                 {
                     PJ_LOG(1, (THIS_FILE, "Error: invalid code in --auto-answer (expecting 100-699"));
@@ -1210,7 +1158,7 @@ static pj_status_t parse_args(
                 break;
                 
             case OPT_MAX_CALLS:
-                cfg->cfg.max_calls = my_atoi(pj_optarg);
+                cfg->cfg.max_calls = atoi(pj_optarg);
                 if (cfg->cfg.max_calls < 1 || cfg->cfg.max_calls > PJSUA_MAX_CALLS)
                 {
                     PJ_LOG(1, (THIS_FILE,"Error: maximum call setting exceeds compile time limit (PJSUA_MAX_CALLS=%d)", PJSUA_MAX_CALLS));
@@ -1304,14 +1252,6 @@ static pj_status_t parse_args(
                 cfg->playback_dev = atoi(pj_optarg);
                 break;
                 
-            case OPT_STDOUT_REFRESH:
-                stdout_refresh = atoi(pj_optarg);
-                break;
-                
-            case OPT_STDOUT_REFRESH_TEXT:
-                stdout_refresh_text = pj_optarg;
-                break;
-                                
             case OPT_CAPTURE_LAT:
                 cfg->capture_lat = atoi(pj_optarg);
                 break;
@@ -2636,18 +2576,22 @@ static pj_bool_t simple_input(const char *title, char *buf, pj_size_t len)
 {
     char *p;
     
-    printf("%s (empty to cancel): ", title); fflush(stdout);
     if (fgets(buf, len, stdin) == NULL)
+    {
 	return PJ_FALSE;
+    }
     
     /* Remove trailing newlines. */
-    for (p=buf; ; ++p) {
+    for (p=buf; ; ++p)
+    {
 	if (*p=='\r' || *p=='\n') *p='\0';
 	else if (!*p) break;
     }
     
     if (!*buf)
+    {
 	return PJ_FALSE;
+    }
     
     return PJ_TRUE;
 }
@@ -2712,7 +2656,6 @@ static void print_acc_status(
     if (!info.has_registration)
     {
 	pj_ansi_snprintf(buf, sizeof(buf), "%.*s", (int)info.status_text.slen, info.status_text.ptr);
-        
     }
     else
     {
@@ -2747,9 +2690,11 @@ static void ui_input_url(const char *title, char *buf, int len,
 	   , pjsua_get_buddy_count(), pjsua_get_buddy_count());
     printf("%s: ", title);
     
-    fflush(stdout);
     if (fgets(buf, len, stdin) == NULL)
+    {
 	return;
+    }
+    
     len = strlen(buf);
     
     /* Left trim */
@@ -2793,7 +2738,7 @@ static void ui_input_url(const char *title, char *buf, int len,
 	    }
 	}
         
-	result->nb_result = my_atoi(buf);
+	result->nb_result = atoi(buf);
         
 	if (result->nb_result >= 0 && result->nb_result <= (int)pjsua_get_buddy_count())
 	{
@@ -3451,9 +3396,6 @@ void console_app_main()
         
     for (;;)
     {
-	printf(">>> ");
-	fflush(stdout);
-        
 	if (fgets(menuin, sizeof(menuin), stdin) == NULL)
         {
 	    /*
@@ -3461,16 +3403,10 @@ void console_app_main()
 	     * program, when file ends, resume with kbd.
 	     * If exit is desired end script with q for quit
 	     */
- 	    /* Reopen stdin/stdout/stderr to /dev/console */
 
             puts("Cannot switch back to console from file redirection");
             menuin[0] = 'q';
             menuin[1] = '\0';
-            
-            if (cmd_echo)
-            {
-                printf("%s", menuin);
-            }
             
             /* Update call setting */
             pjsua_call_setting_default(&call_opt);
@@ -3481,42 +3417,46 @@ void console_app_main()
             {
                 case 'm':
                     /* Make call! : */
-                    printf("(You currently have %d calls)\n",
-                           pjsua_call_get_count());
+                    printf("(You currently have %d calls)\n", pjsua_call_get_count());
                     
                     uri = NULL;
                     ui_input_url("Make call", buf, sizeof(buf), &result);
-                    if (result.nb_result != NO_NB) {
-                        
-                        if (result.nb_result == -1 || result.nb_result == 0) {
+                    if (result.nb_result != NO_NB)
+                    {
+                        if (result.nb_result == -1 || result.nb_result == 0)
+                        {
                             puts("You can't do that with make call!");
                             continue;
-                        } else {
+                        }
+                        else
+                        {
                             pjsua_buddy_info binfo;
                             pjsua_buddy_get_info(result.nb_result-1, &binfo);
                             tmp.ptr = buf;
                             pj_strncpy(&tmp, &binfo.uri, sizeof(buf));
                         }
-                        
-                    } else if (result.uri_result) {
+                    }
+                    else if (result.uri_result)
+                    {
                         tmp = pj_str(result.uri_result);
-                    } else {
+                    }
+                    else
+                    {
                         tmp.slen = 0;
                     }
                     
                     pjsua_msg_data_init(&msg_data);
-                    pjsua_call_make_call( current_acc, &tmp, &call_opt, NULL, &msg_data, NULL);
+                    pjsua_call_make_call(current_acc, &tmp, &call_opt, NULL, &msg_data, NULL);
                     break;
                     
                 case 'M':
                     /* Make multiple calls! : */
-                    printf("(You currently have %d calls)\n",
-                           pjsua_call_get_count());
+                    printf("(You currently have %d calls)\n", pjsua_call_get_count());
                     
                     if (!simple_input("Number of calls", menuin, sizeof(menuin)))
                         continue;
                     
-                    count = my_atoi(menuin);
+                    count = atoi(menuin);
                     if (count < 1)
                         continue;
                     
@@ -3534,11 +3474,11 @@ void console_app_main()
                         tmp = pj_str(result.uri_result);
                     }
                     
-                    for (i = 0; i < my_atoi(menuin); ++i) {
+                    for (i = 0; i < atoi(menuin); ++i)
+                    {
                         pj_status_t status;
                         
-                        status = pjsua_call_make_call(current_acc, &tmp, &call_opt, NULL,
-                                                      NULL, NULL);
+                        status = pjsua_call_make_call(current_acc, &tmp, &call_opt, NULL, NULL, NULL);
                         if (status != PJ_SUCCESS)
                             break;
                     }
@@ -3634,20 +3574,23 @@ void console_app_main()
                         call_info.state >= PJSIP_INV_STATE_CONNECTING)
                     {
                         puts("No pending incoming call");
-                        fflush(stdout);
                         continue;
                         
-                    } else {
-                        int st_code;
-                        char contact[120];
-                        pj_str_t hname = { "Contact", 7 };
-                        pj_str_t hvalue;
-                        pjsip_generic_string_hdr hcontact;
+                    }
+                    else
+                    {
+                        int                         st_code;
+                        char                        contact[120];
+                        pj_str_t                    hname = { "Contact", 7 };
+                        pj_str_t                    hvalue;
+                        pjsip_generic_string_hdr    hcontact;
                         
                         if (!simple_input("Answer with code (100-699)", buf, sizeof(buf)))
+                        {
                             continue;
+                        }
                         
-                        st_code = my_atoi(buf);
+                        st_code = atoi(buf);
                         if (st_code < 100)
                             continue;
                         
@@ -3668,27 +3611,25 @@ void console_app_main()
                          * Call may have been disconnected while we're waiting for
                          * keyboard input.
                          */
-                        if (current_call == -1) {
+                        if (current_call == -1)
+                        {
                             puts("Call has been disconnected");
-                            fflush(stdout);
                             continue;
                         }
                         
                         pjsua_call_answer2(current_call, &call_opt, st_code, NULL, &msg_data);
                     }
-                    
                     break;
-                    
                     
                 case 'h':
                     
-                    if (current_call == -1) {
+                    if (current_call == -1)
+                    {
                         puts("No current call");
-                        fflush(stdout);
                         continue;
-                        
-                    } else if (menuin[1] == 'a') {
-                        
+                    }
+                    else if (menuin[1] == 'a')
+                    {
                         /* Hangup all calls */
                         pjsua_call_hangup_all();
                         
@@ -3729,7 +3670,7 @@ void console_app_main()
                     if (!simple_input("Enter account ID to select", buf, sizeof(buf)))
                         break;
                     
-                    i = my_atoi(buf);
+                    i = atoi(buf);
                     if (pjsua_acc_is_valid(i)) {
                         pjsua_acc_set_default(i);
                         PJ_LOG(3,(THIS_FILE, "Current account changed to %d", i));
@@ -3810,7 +3751,7 @@ void console_app_main()
                         if (!simple_input("Enter buddy ID to delete",buf,sizeof(buf)))
                             break;
                         
-                        i = my_atoi(buf) - 1;
+                        i = atoi(buf) - 1;
                         
                         if (!pjsua_buddy_is_valid(i)) {
                             printf("Invalid buddy id %d\n", i);
@@ -3824,7 +3765,7 @@ void console_app_main()
                         if (!simple_input("Enter account ID to delete",buf,sizeof(buf)))
                             break;
                         
-                        i = my_atoi(buf);
+                        i = atoi(buf);
                         
                         if (!pjsua_acc_is_valid(i)) {
                             printf("Invalid account id %d\n", i);
@@ -3993,7 +3934,7 @@ void console_app_main()
                                           buf, sizeof(buf)))
                             continue;
                         
-                        dst_call = my_atoi(buf);
+                        dst_call = atoi(buf);
                         
                         /* Check if call is still there. */
                         
@@ -4183,8 +4124,6 @@ void console_app_main()
                             puts("Usage: echo [0|1]");
                             break;
                         }
-                        
-                        cmd_echo = *tmp.ptr != '0' || tmp.slen!=1;
                     }
                     break;
                     
@@ -4296,11 +4235,11 @@ void console_app_main()
                             }
                             
                             if (menuin[1]=='c') {
-                                status = pjsua_conf_connect(my_atoi(src_port), 
-                                                            my_atoi(dst_port));
+                                status = pjsua_conf_connect(atoi(src_port), 
+                                                            atoi(dst_port));
                             } else {
-                                status = pjsua_conf_disconnect(my_atoi(src_port), 
-                                                               my_atoi(dst_port));
+                                status = pjsua_conf_disconnect(atoi(src_port), 
+                                                               atoi(dst_port));
                             }
                             if (status == PJ_SUCCESS) {
                                 puts("Success");
@@ -5075,54 +5014,18 @@ on_error:
 }
 
 
-static int stdout_refresh_proc(
-    void*   arg)
-{
-    PJ_UNUSED_ARG(arg);
-    
-    /* Set thread to lowest priority so that it doesn't clobber
-     * stdout output
-     */
-    pj_thread_set_prio(pj_thread_this(), pj_thread_get_prio_min(pj_thread_this()));
-    
-    while (!stdout_refresh_quit)
-    {
-        pj_thread_sleep(stdout_refresh * 1000);
-        puts(stdout_refresh_text);
-        fflush(stdout);
-    }
-    
-    return 0;
-}
-
-
 pj_status_t app_main(void)
 {
-    pj_thread_t*    stdout_refresh_thread = NULL;
     pj_status_t     status;
     
-    /* Start pjsua */
     status = pjsua_start();
     if (status != PJ_SUCCESS)
     {
         app_destroy();
         return status;
     }
-    
-    /* Start console refresh thread */
-    if (stdout_refresh > 0)
-    {
-        pj_thread_create(app_config.pool, "stdout", &stdout_refresh_proc, NULL, 0, 0, &stdout_refresh_thread);
-    }
-    
+        
     console_app_main();
-    
-    if (stdout_refresh_thread)
-    {
-        stdout_refresh_quit = PJ_TRUE;
-        pj_thread_join(stdout_refresh_thread);
-        pj_thread_destroy(stdout_refresh_thread);
-    }
     
     return PJ_SUCCESS;
 }

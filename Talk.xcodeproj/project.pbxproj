@@ -92,6 +92,8 @@
 		48FD99D9161855EF0061191B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D8161855EF0061191B /* AVFoundation.framework */; };
 		48FD99DB161856070061191B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99DA161856070061191B /* AudioToolbox.framework */; };
 		48FD99DD161856120061191B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99DC161856120061191B /* CFNetwork.framework */; };
+		48FD99E71618CC370061191B /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FD99E61618CC370061191B /* Common.m */; };
+		48FD99E81618CC370061191B /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FD99E61618CC370061191B /* Common.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -163,6 +165,8 @@
 		48FD99D8161855EF0061191B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		48FD99DA161856070061191B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		48FD99DC161856120061191B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		48FD99E51618CC370061191B /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		48FD99E61618CC370061191B /* Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Common.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -273,6 +277,8 @@
 			children = (
 				48338F9F16170CA80033F4C1 /* AppDelegate.h */,
 				48338FA016170CA80033F4C1 /* AppDelegate.m */,
+				48FD99E51618CC370061191B /* Common.h */,
+				48FD99E61618CC370061191B /* Common.m */,
 				48338FA116170CA80033F4C1 /* FirstViewController.h */,
 				48338FA216170CA80033F4C1 /* FirstViewController.m */,
 				48338FA316170CA80033F4C1 /* SecondViewController.h */,
@@ -538,6 +544,7 @@
 				48338FA616170CA80033F4C1 /* FirstViewController.m in Sources */,
 				48338FA716170CA80033F4C1 /* SecondViewController.m in Sources */,
 				48338FD116181B750033F4C1 /* SipInterface.m in Sources */,
+				48FD99E71618CC370061191B /* Common.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -547,6 +554,7 @@
 			files = (
 				48884AB41615CE920005AA79 /* TalkTests.m in Sources */,
 				48338FD216181B750033F4C1 /* SipInterface.m in Sources */,
+				48FD99E81618CC370061191B /* Common.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
