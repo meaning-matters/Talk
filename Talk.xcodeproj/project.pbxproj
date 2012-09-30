@@ -87,6 +87,11 @@
 		48884AB41615CE920005AA79 /* TalkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48884AB31615CE920005AA79 /* TalkTests.m */; };
 		48FD99D216182B6B0061191B /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48FD99D116182B6B0061191B /* SipConfig.cfg */; };
 		48FD99D316182B6B0061191B /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48FD99D116182B6B0061191B /* SipConfig.cfg */; };
+		48FD99D5161855D30061191B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D4161855D30061191B /* CoreMedia.framework */; };
+		48FD99D7161855E10061191B /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D6161855E10061191B /* CoreVideo.framework */; };
+		48FD99D9161855EF0061191B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D8161855EF0061191B /* AVFoundation.framework */; };
+		48FD99DB161856070061191B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99DA161856070061191B /* AudioToolbox.framework */; };
+		48FD99DD161856120061191B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99DC161856120061191B /* CFNetwork.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -153,6 +158,11 @@
 		48884AB21615CE920005AA79 /* TalkTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TalkTests.h; sourceTree = "<group>"; };
 		48884AB31615CE920005AA79 /* TalkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TalkTests.m; sourceTree = "<group>"; };
 		48FD99D116182B6B0061191B /* SipConfig.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SipConfig.cfg; sourceTree = "<group>"; };
+		48FD99D4161855D30061191B /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		48FD99D6161855E10061191B /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		48FD99D8161855EF0061191B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		48FD99DA161856070061191B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		48FD99DC161856120061191B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +170,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48FD99DD161856120061191B /* CFNetwork.framework in Frameworks */,
+				48FD99DB161856070061191B /* AudioToolbox.framework in Frameworks */,
+				48FD99D9161855EF0061191B /* AVFoundation.framework in Frameworks */,
+				48FD99D7161855E10061191B /* CoreVideo.framework in Frameworks */,
+				48FD99D5161855D30061191B /* CoreMedia.framework in Frameworks */,
 				48884A751615CE920005AA79 /* UIKit.framework in Frameworks */,
 				48884A771615CE920005AA79 /* Foundation.framework in Frameworks */,
 				48884A791615CE920005AA79 /* CoreGraphics.framework in Frameworks */,
@@ -335,6 +350,11 @@
 				48884A761615CE920005AA79 /* Foundation.framework */,
 				48884A781615CE920005AA79 /* CoreGraphics.framework */,
 				48884AA61615CE920005AA79 /* SenTestingKit.framework */,
+				48FD99DC161856120061191B /* CFNetwork.framework */,
+				48FD99DA161856070061191B /* AudioToolbox.framework */,
+				48FD99D8161855EF0061191B /* AVFoundation.framework */,
+				48FD99D6161855E10061191B /* CoreVideo.framework */,
+				48FD99D4161855D30061191B /* CoreMedia.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -739,7 +759,7 @@
 				48338F001615E3560033F4C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		48884A6A1615CE920005AA79 /* Build configuration list for PBXProject "Talk" */ = {
 			isa = XCConfigurationList;
@@ -748,7 +768,7 @@
 				48884AB61615CE920005AA79 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		48884AB71615CE920005AA79 /* Build configuration list for PBXNativeTarget "Talk" */ = {
 			isa = XCConfigurationList;
@@ -757,7 +777,7 @@
 				48884AB91615CE920005AA79 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		48884ABA1615CE920005AA79 /* Build configuration list for PBXNativeTarget "TalkTests" */ = {
 			isa = XCConfigurationList;
@@ -766,7 +786,7 @@
 				48884ABC1615CE920005AA79 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
