@@ -72,6 +72,8 @@
 		48338FB716170D8C0033F4C1 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48338FB416170D8C0033F4C1 /* Default-568h@2x.png */; };
 		48338FB816170D8C0033F4C1 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 48338FB516170D8C0033F4C1 /* Default.png */; };
 		48338FB916170D8C0033F4C1 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48338FB616170D8C0033F4C1 /* Default@2x.png */; };
+		48338FD116181B750033F4C1 /* SipInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 48338FD016181B750033F4C1 /* SipInterface.m */; };
+		48338FD216181B750033F4C1 /* SipInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 48338FD016181B750033F4C1 /* SipInterface.m */; };
 		48884A751615CE920005AA79 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A741615CE920005AA79 /* UIKit.framework */; };
 		48884A771615CE920005AA79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A761615CE920005AA79 /* Foundation.framework */; };
 		48884A791615CE920005AA79 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A781615CE920005AA79 /* CoreGraphics.framework */; };
@@ -83,6 +85,8 @@
 		48884AA91615CE920005AA79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A761615CE920005AA79 /* Foundation.framework */; };
 		48884AB11615CE920005AA79 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48884AAF1615CE920005AA79 /* InfoPlist.strings */; };
 		48884AB41615CE920005AA79 /* TalkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48884AB31615CE920005AA79 /* TalkTests.m */; };
+		48FD99D216182B6B0061191B /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48FD99D116182B6B0061191B /* SipConfig.cfg */; };
+		48FD99D316182B6B0061191B /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48FD99D116182B6B0061191B /* SipConfig.cfg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -131,6 +135,8 @@
 		48338FB416170D8C0033F4C1 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		48338FB516170D8C0033F4C1 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		48338FB616170D8C0033F4C1 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		48338FCF16181B750033F4C1 /* SipInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SipInterface.h; sourceTree = "<group>"; };
+		48338FD016181B750033F4C1 /* SipInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SipInterface.m; sourceTree = "<group>"; };
 		48884A701615CE920005AA79 /* Talk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Talk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48884A741615CE920005AA79 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		48884A761615CE920005AA79 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -146,6 +152,7 @@
 		48884AB01615CE920005AA79 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		48884AB21615CE920005AA79 /* TalkTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TalkTests.h; sourceTree = "<group>"; };
 		48884AB31615CE920005AA79 /* TalkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TalkTests.m; sourceTree = "<group>"; };
+		48FD99D116182B6B0061191B /* SipConfig.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SipConfig.cfg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -255,6 +262,8 @@
 				48338FA216170CA80033F4C1 /* FirstViewController.m */,
 				48338FA316170CA80033F4C1 /* SecondViewController.h */,
 				48338FA416170CA80033F4C1 /* SecondViewController.m */,
+				48338FCF16181B750033F4C1 /* SipInterface.h */,
+				48338FD016181B750033F4C1 /* SipInterface.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -349,6 +358,7 @@
 				48884A821615CE920005AA79 /* Talk-Prefix.pch */,
 				48338F9A16170C6C0033F4C1 /* main.m */,
 				48338F92161700550033F4C1 /* AppledocSettings.plist */,
+				48FD99D116182B6B0061191B /* SipConfig.cfg */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -454,6 +464,7 @@
 				48338FB716170D8C0033F4C1 /* Default-568h@2x.png in Resources */,
 				48338FB816170D8C0033F4C1 /* Default.png in Resources */,
 				48338FB916170D8C0033F4C1 /* Default@2x.png in Resources */,
+				48FD99D216182B6B0061191B /* SipConfig.cfg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -462,6 +473,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				48884AB11615CE920005AA79 /* InfoPlist.strings in Resources */,
+				48FD99D316182B6B0061191B /* SipConfig.cfg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,6 +517,7 @@
 				48338FA516170CA80033F4C1 /* AppDelegate.m in Sources */,
 				48338FA616170CA80033F4C1 /* FirstViewController.m in Sources */,
 				48338FA716170CA80033F4C1 /* SecondViewController.m in Sources */,
+				48338FD116181B750033F4C1 /* SipInterface.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,6 +526,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				48884AB41615CE920005AA79 /* TalkTests.m in Sources */,
+				48338FD216181B750033F4C1 /* SipInterface.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -591,6 +605,8 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"PJ_IOS=1",
+					"PJ_AUTOCONF=1",
 					"DEBUG=1",
 					"$(inherited)",
 				);
@@ -598,6 +614,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "External/pjproject-2.0.1/install/include/";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -617,9 +634,14 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"PJ_IOS=1",
+					"PJ_AUTOCONF=1",
+				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "External/pjproject-2.0.1/install/include/";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -632,6 +654,7 @@
 		48884AB81615CE920005AA79 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Cornelis van der Bent (VJFBHX834U)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
@@ -641,6 +664,7 @@
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "564ACB9C-5FD3-435D-96CF-4548A8AC9F21";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
