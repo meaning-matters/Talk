@@ -242,11 +242,14 @@ static void default_config(struct app_config *cfg)
 /*
  * Read command arguments from config file.
  */
-static int read_config_file(pj_pool_t *pool, const char *filename,
-			    int *app_argc, char ***app_argv)
+static int read_config_file(
+    pj_pool_t*  pool,
+    const char* filename,
+    int*        app_argc,
+    char***     app_argv)
 {
     int     i;
-    FILE*   fhnd;
+    FILE*   file;
     char    line[200];
     int     argc = 0;
     char**  argv;
@@ -256,42 +259,43 @@ static int read_config_file(pj_pool_t *pool, const char *filename,
     };
     
     /* Allocate MAX_ARGS+1 (argv needs to be terminated with NULL argument) */
-    argv = pj_pool_calloc(pool, MAX_ARGS+1, sizeof(char*));
-    argv[argc++] = *app_argv[0];
+    argv = pj_pool_calloc(pool, MAX_ARGS + 1, sizeof(char*));
+    argv[argc++] = "";
     
     /* Open config file. */
-    fhnd = fopen(filename, "rt");
-    if (!fhnd)
+    if ((file = fopen(filename, "rt")) == NULL)
     {
 	PJ_LOG(1, (THIS_FILE, "Unable to open config file %s", filename));
 	fflush(stdout);
+        
 	return -1;
     }
     
     /* Scan tokens in the file. */
-    while (argc < MAX_ARGS && !feof(fhnd))
+    while (argc < MAX_ARGS && !feof(file))
     {
-	char  *token;
-	char  *p;
-	const char *whitespace = " \t\r\n";
-	char  cDelimiter;
-	int   len, token_len;
+	char*   token;
+	char*   p;
+	const   char *whitespace = " \t\r\n";
+	char    cDelimiter;
+	int     len;
+        int     token_len;
 	
-	if (fgets(line, sizeof(line), fhnd) == NULL) break;
+	if (fgets(line, sizeof(line), file) == NULL) break;
 	
 	// Trim ending newlines
 	len = strlen(line);
-	if (line[len-1]=='\n')
+	if (line[len-1] == '\n')
         {
 	    line[--len] = '\0';
         }
         
-	if (line[len-1]=='\r')
+	if (line[len-1] == '\r')
         {
 	    line[--len] = '\0';
         }
         
-	if (len==0)
+	if (len == 0)
         {
             continue;
         }
@@ -326,7 +330,6 @@ static int read_config_file(pj_pool_t *pool, const char *filename,
                 {
 		    cDelimiter = '\0';	// but,didn't find a matching quote
                 }
-                
 	    }
             else
             {
@@ -342,7 +345,7 @@ static int read_config_file(pj_pool_t *pool, const char *filename,
 	    }
 	    
 	    *p = '\0';
-	    token_len = p-token;
+	    token_len = p - token;
 	    
 	    if (token_len > 0)
             {
@@ -361,20 +364,21 @@ static int read_config_file(pj_pool_t *pool, const char *filename,
     }
     
     /* Copy arguments from command line */
-    for (i=1; i<*app_argc && argc < MAX_ARGS; ++i)
+    for (i = 1; i < *app_argc && argc < MAX_ARGS; ++i)
     {
 	argv[argc++] = (*app_argv)[i];
     }
     
-    if (argc == MAX_ARGS && (i!=*app_argc || !feof(fhnd)))
+    if (argc == MAX_ARGS && (i != *app_argc || !feof(file)))
     {
 	PJ_LOG(1, (THIS_FILE, "Too many arguments specified in cmd line/config file"));
 	fflush(stdout);
-	fclose(fhnd);
+	fclose(file);
+        
 	return -1;
     }
     
-    fclose(fhnd);
+    fclose(file);
     
     /* Assign the new command line back to the original command line. */
     *app_argc = argc;
@@ -418,9 +422,8 @@ static pj_status_t parse_args(
     
     enum
     {
-        OPT_CONFIG_FILE = 127,  OPT_LOG_FILE,           OPT_LOG_LEVEL,          OPT_APP_LOG_LEVEL,
+        OPT_LOG_FILE = 128,     OPT_LOG_LEVEL,          OPT_APP_LOG_LEVEL,      OPT_NULL_AUDIO,
         OPT_LOG_APPEND,         OPT_COLOR,              OPT_NO_COLOR,           OPT_LIGHT_BG,
-                                        OPT_NULL_AUDIO,
         OPT_SND_AUTO_CLOSE,     OPT_LOCAL_PORT,         OPT_IP_ADDR,            OPT_PROXY,
         OPT_OUTBOUND_PROXY,     OPT_REGISTRAR,          OPT_REG_TIMEOUT,        OPT_PUBLISH,
         OPT_ID, OPT_CONTACT,    OPT_BOUND_ADDR,         OPT_CONTACT_PARAMS,     OPT_CONTACT_URI_PARAMS,
@@ -429,7 +432,6 @@ static pj_status_t parse_args(
         OPT_NAMESERVER,         OPT_STUN_SRV,           OPT_OUTB_RID,           OPT_ADD_BUDDY,
         OPT_OFFER_X_MS_MSG,     OPT_NO_PRESENCE,        OPT_AUTO_ANSWER,        OPT_AUTO_PLAY,
         OPT_AUTO_PLAY_HANGUP,   OPT_AUTO_LOOP,          OPT_AUTO_CONF,          OPT_CLOCK_RATE,
-        OPT_SND_CLOCK_RATE,                  OPT_USE_ICE,            OPT_ICE_REGULAR,
         OPT_USE_SRTP,           OPT_SRTP_SECURE,        OPT_USE_TURN,           OPT_ICE_MAX_HOSTS,
         OPT_ICE_NO_RTCP,        OPT_TURN_SRV,           OPT_TURN_TCP,           OPT_TURN_USER,
         OPT_TURN_PASSWD,        OPT_PLAY_FILE,          OPT_PLAY_TONE,          OPT_RTP_PORT,
@@ -446,12 +448,11 @@ static pj_status_t parse_args(
         OPT_AUTO_UPDATE_NAT,    OPT_USE_COMPACT_FORM,   OPT_DIS_CODEC,          OPT_NO_FORCE_LR,
         OPT_TIMER,              OPT_TIMER_SE,           OPT_TIMER_MIN_SE,       OPT_VIDEO,
         OPT_EXTRA_AUDIO,        OPT_VCAPTURE_DEV,       OPT_VRENDER_DEV,        OPT_PLAY_AVI,
-        OPT_AUTO_PLAY_AVI,
+        OPT_AUTO_PLAY_AVI,      OPT_SND_CLOCK_RATE,     OPT_USE_ICE,            OPT_ICE_REGULAR,
     };
     
     struct pj_getopt_option long_options[] =
     {
-	{ "config-file",        1, 0, OPT_CONFIG_FILE},
 	{ "log-file",           1, 0, OPT_LOG_FILE},
 	{ "log-level",          1, 0, OPT_LOG_LEVEL},
 	{ "app-log-level",      1, 0, OPT_APP_LOG_LEVEL},
@@ -572,37 +573,11 @@ static pj_status_t parse_args(
 	{ NULL,                 0, 0, 0}
     };
     
-    pj_status_t         status;
     pjsua_acc_config*   cur_acc;
-    char*               config_file = NULL;
     unsigned            i;
     
-    /* Run pj_getopt once to see if user specifies config file to read. */
     pj_optind = 0;
-    while ((c = pj_getopt_long(argc, argv, "", long_options, &option_index)) != -1)
-    {
-	switch (c)
-        {
-            case OPT_CONFIG_FILE:
-                config_file = pj_optarg;
-                break;
-	}
-        
-	if (config_file)
-        {
-	    break;
-        }
-    }
-    
-    if (config_file)
-    {
-	status = read_config_file(app_config.pool, config_file, &argc, &argv);
-	if (status != 0)
-        {
-	    return status;
-        }
-    }
-    
+
     cfg->acc_cnt = 0;
     cur_acc = &cfg->acc_cfg[0];
     
@@ -614,13 +589,10 @@ static pj_status_t parse_args(
     {
 	pj_str_t    tmp;
 	long        lval;
+        int         ival;
         
 	switch (c)
         {
-            case OPT_CONFIG_FILE:
-                /* Ignore as this has been processed before */
-                break;
-                
             case OPT_LOG_FILE:
                 cfg->log_cfg.log_filename = pj_str(pj_optarg);
                 break;
@@ -639,13 +611,14 @@ static pj_status_t parse_args(
                 break;
                 
             case OPT_APP_LOG_LEVEL:
-                if (pj_strtoul(pj_cstr(&tmp, pj_optarg)) < 0 || pj_strtoul(pj_cstr(&tmp, pj_optarg)) > 6)
+                lval = pj_strtoul(pj_cstr(&tmp, pj_optarg));
+                if (lval < 0 || lval > 6)
                 {
                     PJ_LOG(1, (THIS_FILE, "Error: expecting integer value 0-6 for --app-log-level"));
                     
                     return PJ_EINVAL;
                 }
-                cfg->log_cfg.console_level = pj_strtoul(pj_cstr(&tmp, pj_optarg));
+                cfg->log_cfg.console_level = lval;
                 break;
                 
             case OPT_LOG_APPEND:
@@ -846,22 +819,24 @@ static pj_status_t parse_args(
                 break;
                 
             case OPT_ID:   /* id */
-                if (pjsua_verify_url(pj_optarg) != 0) {
-                    PJ_LOG(1, (THIS_FILE,
-                              "Error: invalid SIP URL '%s' "
-                              "in local id argument", pj_optarg));
+                if (pjsua_verify_url(pj_optarg) != 0)
+                {
+                    PJ_LOG(1, (THIS_FILE, "Error: invalid SIP URL '%s' in local id argument", pj_optarg));
+                    
                     return PJ_EINVAL;
                 }
+                
                 cur_acc->id = pj_str(pj_optarg);
                 break;
                 
             case OPT_CONTACT:   /* contact */
-                if (pjsua_verify_sip_url(pj_optarg) != 0) {
-                    PJ_LOG(1, (THIS_FILE,
-                              "Error: invalid SIP URL '%s' "
-                              "in contact argument", pj_optarg));
+                if (pjsua_verify_sip_url(pj_optarg) != 0)
+                {
+                    PJ_LOG(1, (THIS_FILE, "Error: invalid SIP URL '%s' in contact argument", pj_optarg));
+                    
                     return PJ_EINVAL;
                 }
+                
                 cur_acc->force_contact = pj_str(pj_optarg);
                 break;
                 
@@ -893,13 +868,15 @@ static pj_status_t parse_args(
                 break;
                 
             case OPT_ACCEPT_REDIRECT:
-                cfg->redir_op = my_atoi(pj_optarg);
-                if (cfg->redir_op<0 || cfg->redir_op>PJSIP_REDIRECT_STOP)
+                ival = my_atoi(pj_optarg);
+                if (ival < 0 || ival > PJSIP_REDIRECT_STOP)
                 {
                     PJ_LOG(1, (THIS_FILE, "Error: accept-redirect value '%s' ", pj_optarg));
                     
                     return PJ_EINVAL;
                 }
+                
+                cfg->redir_op = ival;
                 break;
                 
             case OPT_NO_FORCE_LR:
@@ -4514,19 +4491,22 @@ static pjsip_module mod_default_handler =
  * Public API
  */
 
-pj_status_t app_init(int argc, char *argv[])
+pj_status_t configure(const char* configPath)
 {
-    pjsua_transport_id transport_id = -1;
-    pjsua_transport_config tcp_cfg;
-    unsigned i;
-    pj_status_t status;
+    int                     argc;
+    char**                  argv;
+    pjsua_transport_id      transport_id = -1;
+    pjsua_transport_config  tcp_cfg;
+    unsigned                i;
+    pj_status_t             status;
     
     app_restart = PJ_FALSE;
     
     /* Create pjsua */
-    status = pjsua_create();
-    if (status != PJ_SUCCESS)
+    if ((status = pjsua_create()) != PJ_SUCCESS)
+    {
         return status;
+    }
     
     /* Create pool for application */
     app_config.pool = pjsua_pool_create("pjsua-app", 1000, 1000);
@@ -4534,54 +4514,67 @@ pj_status_t app_init(int argc, char *argv[])
     /* Initialize default config */
     default_config(&app_config);
     
-    /* Parse the arguments */
-    status = parse_args(argc, argv, &app_config);
-    if (status != PJ_SUCCESS)
+    /* Read & Parse the arguments */
+    if ((status = read_config_file(app_config.pool, configPath, &argc, &argv)) != 0)
+    {
         return status;
+    }
+    
+    if ((status = parse_args(argc, argv, &app_config)) != PJ_SUCCESS)
+    {
+        return status;
+    }
     
     /* Initialize application callbacks */
-    app_config.cfg.cb.on_call_state = &on_call_state;
-    app_config.cfg.cb.on_call_media_state = &on_call_media_state;
-    app_config.cfg.cb.on_incoming_call = &on_incoming_call;
-    app_config.cfg.cb.on_call_tsx_state = &on_call_tsx_state;
-    app_config.cfg.cb.on_dtmf_digit = &call_on_dtmf_callback;
-    app_config.cfg.cb.on_call_redirected = &call_on_redirected;
-    app_config.cfg.cb.on_reg_state = &on_reg_state;
-    app_config.cfg.cb.on_incoming_subscribe = &on_incoming_subscribe;
-    app_config.cfg.cb.on_buddy_state = &on_buddy_state;
-    app_config.cfg.cb.on_buddy_evsub_state = &on_buddy_evsub_state;
-    app_config.cfg.cb.on_pager = &on_pager;
-    app_config.cfg.cb.on_typing = &on_typing;
+    app_config.cfg.cb.on_call_state           = &on_call_state;
+    app_config.cfg.cb.on_call_media_state     = &on_call_media_state;
+    app_config.cfg.cb.on_incoming_call        = &on_incoming_call;
+    app_config.cfg.cb.on_call_tsx_state       = &on_call_tsx_state;
+    app_config.cfg.cb.on_dtmf_digit           = &call_on_dtmf_callback;
+    app_config.cfg.cb.on_call_redirected      = &call_on_redirected;
+    app_config.cfg.cb.on_reg_state            = &on_reg_state;
+    app_config.cfg.cb.on_incoming_subscribe   = &on_incoming_subscribe;
+    app_config.cfg.cb.on_buddy_state          = &on_buddy_state;
+    app_config.cfg.cb.on_buddy_evsub_state    = &on_buddy_evsub_state;
+    app_config.cfg.cb.on_pager                = &on_pager;
+    app_config.cfg.cb.on_typing               = &on_typing;
     app_config.cfg.cb.on_call_transfer_status = &on_call_transfer_status;
-    app_config.cfg.cb.on_call_replaced = &on_call_replaced;
-    app_config.cfg.cb.on_nat_detect = &on_nat_detect;
-    app_config.cfg.cb.on_mwi_info = &on_mwi_info;
-    app_config.cfg.cb.on_transport_state = &on_transport_state;
-    app_config.cfg.cb.on_ice_transport_error = &on_ice_transport_error;
-    app_config.cfg.cb.on_snd_dev_operation = &on_snd_dev_operation;
-    app_config.cfg.cb.on_call_media_event = &on_call_media_event;
-    app_config.log_cfg.cb = log_cb;
+    app_config.cfg.cb.on_call_replaced        = &on_call_replaced;
+    app_config.cfg.cb.on_nat_detect           = &on_nat_detect;
+    app_config.cfg.cb.on_mwi_info             = &on_mwi_info;
+    app_config.cfg.cb.on_transport_state      = &on_transport_state;
+    app_config.cfg.cb.on_ice_transport_error  = &on_ice_transport_error;
+    app_config.cfg.cb.on_snd_dev_operation    = &on_snd_dev_operation;
+    app_config.cfg.cb.on_call_media_event     = &on_call_media_event;
+    app_config.log_cfg.cb                     = log_cb;
     
     /* Set sound device latency */
     if (app_config.capture_lat > 0)
+    {
         app_config.media_cfg.snd_rec_latency = app_config.capture_lat;
+    }
+    
     if (app_config.playback_lat)
+    {
         app_config.media_cfg.snd_play_latency = app_config.playback_lat;
+    }
     
     /* Initialize pjsua */
-    status = pjsua_init(&app_config.cfg, &app_config.log_cfg,
-                        &app_config.media_cfg);
-    if (status != PJ_SUCCESS)
+    if ((status = pjsua_init(&app_config.cfg, &app_config.log_cfg, &app_config.media_cfg)) != PJ_SUCCESS)
+    {
         return status;
+    }
     
     /* Initialize our module to handle otherwise unhandled request */
-    status = pjsip_endpt_register_module(pjsua_get_pjsip_endpt(),
-                                         &mod_default_handler);
+    status = pjsip_endpt_register_module(pjsua_get_pjsip_endpt(), &mod_default_handler);
     if (status != PJ_SUCCESS)
+    {
         return status;
+    }
     
     /* Initialize calls data */
-    for (i=0; i<PJ_ARRAY_SIZE(app_config.call_data); ++i) {
+    for (i=0; i<PJ_ARRAY_SIZE(app_config.call_data); ++i)
+    {
         app_config.call_data[i].timer.id = PJSUA_INVALID_ID;
         app_config.call_data[i].timer.cb = &call_timeout_callback;
     }
@@ -5196,13 +5189,22 @@ static pj_status_t create_ipv6_media_transports(void)
 }
 
 
+void showLog(int level, const char *data, int len)
+{
+    NSLog(@"%s", data);
+}
+
+
 @implementation SipInterface
 
 - (id)initWithConfigPath:(NSString*)configPath
 {
     if (self = [super init])
     {
+        pj_log_set_log_func(&showLog);
+        log_cb = &showLog;
         
+        configure([configPath cStringUsingEncoding:NSASCIIStringEncoding]);
     }
     
     return self;
