@@ -1,3 +1,4 @@
+
 //
 //  AppDelegate.m
 //  Talk
@@ -8,6 +9,7 @@
 
 #import "AppDelegate.h"
 #import "SipInterface.h"
+#import "PhoneNumber.h"
 
 @implementation AppDelegate
 
@@ -18,7 +20,9 @@
 {
     NSString*   sipConfigPath = [[NSBundle mainBundle] pathForResource:@"SipConfig" ofType:@"cfg"];
 
-    self.sipInterface = [[SipInterface alloc] initWithConfigPath:sipConfigPath];
+ //   self.sipInterface = [[SipInterface alloc] initWithConfigPath:sipConfigPath];
+    
+    PhoneNumber*    phoneNumber = [[PhoneNumber alloc] initWithNumber:@"0499298238"];
     
     return YES;
 }
