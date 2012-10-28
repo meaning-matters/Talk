@@ -72,43 +72,43 @@ didStartElement:(NSString*)elementName
  qualifiedName:(NSString*)qualifiedName
     attributes:(NSDictionary*)attributeDict
 {
-    // Get the dictionary for the current level in the stack
+    // Get the dictionary for the current level in the stack.
     NSMutableDictionary*    parentDictionary = [dictionaryStack lastObject];
     
-    // Create the child dictionary for the new element, and initilaize it with the attributes
+    // Create the child dictionary for the new element, and initilaize it with the attributes.
     NSMutableDictionary*    childDictionary = [NSMutableDictionary dictionary];
     [childDictionary addEntriesFromDictionary:attributeDict];
     
-    // If there's already an item for this key, it means we need to create an array
+    // If there's already an item for this key, it means we need to create an array.
     id existingValue = [parentDictionary objectForKey:elementName];
     if (existingValue)
     {
         NSMutableArray *array = nil;
         if ([existingValue isKindOfClass:[NSMutableArray class]])
         {
-            // The array exists, so use it
+            // The array exists, so use it.
             array = (NSMutableArray *) existingValue;
         }
         else
         {
-            // Create an array if it doesn't exist
+            // Create an array if it doesn't exist.
             array = [NSMutableArray array];
             [array addObject:existingValue];
             
-            // Replace the child dictionary with an array of children dictionaries
+            // Replace the child dictionary with an array of child dictionaries.
             [parentDictionary setObject:array forKey:elementName];
         }
         
-        // Add the new child dictionary to the array
+        // Add the new child dictionary to the array.
         [array addObject:childDictionary];
     }
     else
     {
-        // No existing value, so update the dictionary
+        // No existing value, so update the dictionary.
         [parentDictionary setObject:childDictionary forKey:elementName];
     }
     
-    // Update the stack
+    // Update the stack.
     [dictionaryStack addObject:childDictionary];
 }
 
@@ -118,13 +118,13 @@ didStartElement:(NSString*)elementName
   namespaceURI:(NSString*)namespaceURI
  qualifiedName:(NSString*)qName
 {
-    // Update the parent dict with text info
     NSMutableDictionary*    dictionaryInProgress = [dictionaryStack lastObject];
     NSMutableDictionary*    parentDictionary = [dictionaryStack objectAtIndex:[dictionaryStack count] - 2];
     
-    // Set the text property
+    // Save the text as object in parent.
     if ([textInProgress length] > 0)
     {
+        // Look up the key in parent to which the text belongs.
         for (NSString* key in [parentDictionary allKeys])
         {
             if ([parentDictionary objectForKey:key] == dictionaryInProgress)
@@ -134,11 +134,10 @@ didStartElement:(NSString*)elementName
             }
         }
 
-        // Reset the text
         textInProgress = [[NSMutableString alloc] init];
     }
     
-    // Pop the current dict
+    // Pop the current dictionary.
     [dictionaryStack removeLastObject];
 }
 
