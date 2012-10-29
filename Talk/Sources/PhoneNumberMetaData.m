@@ -49,7 +49,7 @@ static PhoneNumberMetaData* sharedInstance;
 
         if (_metaData == nil)
         {            
-            NSData*         data = [Common dataForResource:@"PhoneNumberMetaData" ofType:@"xml"];
+            NSData*         data = [Common dataForResource:@"TestMetaData" ofType:@"xml"];
             NSXMLParser*    parser = [[NSXMLParser alloc] initWithData:data];
             
             dictionaryStack = [[NSMutableArray alloc] init];
@@ -59,7 +59,7 @@ static PhoneNumberMetaData* sharedInstance;
             parser.delegate = self;
             if ([parser parse] == YES)
             {
-                _metaData = [dictionaryStack objectAtIndex:0];
+                _metaData = [[[dictionaryStack objectAtIndex:0] objectForKey:@"phoneNumberMetadata"] objectForKey:@"territories"];
                 [_metaData writeToFile:[Common documentFilePath:dataFileName] atomically:YES];
             }
             else
