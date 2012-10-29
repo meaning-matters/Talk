@@ -7,11 +7,12 @@
 //
 
 #import "PhoneNumber.h"
-#import "PhoneNumberMetaData.h"
+#import "Common.h"
 
 @interface PhoneNumber ()
 {
-    PhoneNumberMetaData*    metaData;
+    NSDictionary*   metaData;
+    NSDictionary*   countryCodeMap;
 }
 
 @end
@@ -22,8 +23,9 @@
 - (id)initWithNumber:(NSString*)number
 {
     if (self = [super init])
-    {
-        metaData = [PhoneNumberMetaData sharedInstance];
+    {        
+        metaData       = [Common objectWithJsonData:[Common dataForResource:@"PhoneNumberMetaData" ofType:@"json"]];
+        countryCodeMap = [Common objectWithJsonData:[Common dataForResource:@"CountryCodeMap"      ofType:@"json"]];
     }
     
     return self;

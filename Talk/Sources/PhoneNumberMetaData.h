@@ -11,7 +11,6 @@
 @interface PhoneNumberMetaData : NSObject <NSXMLParserDelegate>
 
 @property (nonatomic, readonly) NSDictionary*   metaData;
-@property (nonatomic, readonly) NSDictionary*   countryCodeMap;
 
 + (PhoneNumberMetaData*)sharedInstance;
 

@@ -24,6 +24,7 @@
 		4827D8B4163F0F5700005131 /* Countries.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B1163F0F5700005131 /* Countries.json */; };
 		4827D8B5163F0F5700005131 /* CountryCodeMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B2163F0F5700005131 /* CountryCodeMap.json */; };
 		4827D8B6163F0F5700005131 /* MCC.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B3163F0F5700005131 /* MCC.json */; };
+		4827D8BE163F38EE00005131 /* PhoneNumberMetaData.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8BC163F38E000005131 /* PhoneNumberMetaData.json */; };
 		48338F68161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */; };
 		48338F69161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */; };
 		48338F6A161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F57161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a */; };
@@ -586,10 +587,7 @@
 		48884AA91615CE920005AA79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A761615CE920005AA79 /* Foundation.framework */; };
 		48884AB11615CE920005AA79 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48884AAF1615CE920005AA79 /* InfoPlist.strings */; };
 		48884AB41615CE920005AA79 /* TalkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48884AB31615CE920005AA79 /* TalkTests.m */; };
-		48CB0772163D764100B07199 /* PhoneNumberMetaData.xml in Resources */ = {isa = PBXBuildFile; fileRef = 48CB0771163D764100B07199 /* PhoneNumberMetaData.xml */; };
 		48CB0775163D76C300B07199 /* PhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CB0774163D76C300B07199 /* PhoneNumber.m */; };
-		48CB0778163D7B3500B07199 /* PhoneNumberMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CB0777163D7B3500B07199 /* PhoneNumberMetaData.m */; };
-		48CB077A163D9A0D00B07199 /* TestMetaData.xml in Resources */ = {isa = PBXBuildFile; fileRef = 48CB0779163D9A0D00B07199 /* TestMetaData.xml */; };
 		48FD99D216182B6B0061191B /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48FD99D116182B6B0061191B /* SipConfig.cfg */; };
 		48FD99D316182B6B0061191B /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48FD99D116182B6B0061191B /* SipConfig.cfg */; };
 		48FD99D5161855D30061191B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D4161855D30061191B /* CoreMedia.framework */; };
@@ -615,6 +613,7 @@
 		4827D8B1163F0F5700005131 /* Countries.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Countries.json; path = Resources/Countries.json; sourceTree = "<group>"; };
 		4827D8B2163F0F5700005131 /* CountryCodeMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryCodeMap.json; path = Resources/CountryCodeMap.json; sourceTree = "<group>"; };
 		4827D8B3163F0F5700005131 /* MCC.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = MCC.json; path = Resources/MCC.json; sourceTree = "<group>"; };
+		4827D8BC163F38E000005131 /* PhoneNumberMetaData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = PhoneNumberMetaData.json; path = Resources/PhoneNumberMetaData.json; sourceTree = "<group>"; };
 		48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libg7221codec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libg7221codec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48338F57161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgsmcodec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libgsmcodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48338F58161628690033F4C1 /* libilbccodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libilbccodec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libilbccodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
@@ -1168,8 +1167,8 @@
 		48CB0771163D764100B07199 /* PhoneNumberMetaData.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = PhoneNumberMetaData.xml; path = Resources/PhoneNumberMetaData.xml; sourceTree = "<group>"; };
 		48CB0773163D76C300B07199 /* PhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumber.h; sourceTree = "<group>"; };
 		48CB0774163D76C300B07199 /* PhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneNumber.m; sourceTree = "<group>"; };
-		48CB0776163D7B3500B07199 /* PhoneNumberMetaData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumberMetaData.h; sourceTree = "<group>"; };
-		48CB0777163D7B3500B07199 /* PhoneNumberMetaData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneNumberMetaData.m; sourceTree = "<group>"; };
+		48CB0776163D7B3500B07199 /* PhoneNumberMetaData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhoneNumberMetaData.h; path = Sources/PhoneNumberMetaData.h; sourceTree = "<group>"; };
+		48CB0777163D7B3500B07199 /* PhoneNumberMetaData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhoneNumberMetaData.m; path = Sources/PhoneNumberMetaData.m; sourceTree = "<group>"; };
 		48CB0779163D9A0D00B07199 /* TestMetaData.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = TestMetaData.xml; path = Resources/TestMetaData.xml; sourceTree = "<group>"; };
 		48FD99D116182B6B0061191B /* SipConfig.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SipConfig.cfg; sourceTree = "<group>"; };
 		48FD99D4161855D30061191B /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -1250,6 +1249,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4827D8BF163F3A2100005131 /* GenerateMetaData */ = {
+			isa = PBXGroup;
+			children = (
+				48CB0776163D7B3500B07199 /* PhoneNumberMetaData.h */,
+				48CB0777163D7B3500B07199 /* PhoneNumberMetaData.m */,
+				48CB0771163D764100B07199 /* PhoneNumberMetaData.xml */,
+				48CB0779163D9A0D00B07199 /* TestMetaData.xml */,
+			);
+			name = GenerateMetaData;
+			sourceTree = "<group>";
+		};
 		48338F54161628310033F4C1 /* pjsip */ = {
 			isa = PBXGroup;
 			children = (
@@ -1299,8 +1309,6 @@
 				48338FD016181B750033F4C1 /* SipInterface.m */,
 				48CB0773163D76C300B07199 /* PhoneNumber.h */,
 				48CB0774163D76C300B07199 /* PhoneNumber.m */,
-				48CB0776163D7B3500B07199 /* PhoneNumberMetaData.h */,
-				48CB0777163D7B3500B07199 /* PhoneNumberMetaData.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -1937,8 +1945,8 @@
 				4827D8B1163F0F5700005131 /* Countries.json */,
 				4827D8B2163F0F5700005131 /* CountryCodeMap.json */,
 				4827D8B3163F0F5700005131 /* MCC.json */,
-				48CB0779163D9A0D00B07199 /* TestMetaData.xml */,
-				48CB0771163D764100B07199 /* PhoneNumberMetaData.xml */,
+				4827D8BC163F38E000005131 /* PhoneNumberMetaData.json */,
+				4827D8BF163F3A2100005131 /* GenerateMetaData */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2524,11 +2532,10 @@
 				485F6C281637270100D61365 /* ZM@2x.png in Resources */,
 				485F6C291637270100D61365 /* ZW.png in Resources */,
 				485F6C2A1637270100D61365 /* ZW@2x.png in Resources */,
-				48CB0772163D764100B07199 /* PhoneNumberMetaData.xml in Resources */,
-				48CB077A163D9A0D00B07199 /* TestMetaData.xml in Resources */,
 				4827D8B4163F0F5700005131 /* Countries.json in Resources */,
 				4827D8B5163F0F5700005131 /* CountryCodeMap.json in Resources */,
 				4827D8B6163F0F5700005131 /* MCC.json in Resources */,
+				4827D8BE163F38EE00005131 /* PhoneNumberMetaData.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2584,7 +2591,6 @@
 				48338FD116181B750033F4C1 /* SipInterface.m in Sources */,
 				48FD99E71618CC370061191B /* Common.m in Sources */,
 				48CB0775163D76C300B07199 /* PhoneNumber.m in Sources */,
-				48CB0778163D7B3500B07199 /* PhoneNumberMetaData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

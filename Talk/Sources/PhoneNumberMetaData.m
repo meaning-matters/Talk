@@ -6,6 +6,11 @@
 //  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
 //
 //  Thanks to: https://github.com/bcaccinolo/XML-to-NSDictionary
+//
+//  This class is only used temporarily to generate a new version of the JSON resource.
+//  To make a run, add PhoneNumberMetaData.xml and this module to the target, and reference
+//  sharedInstance somewhere.
+//  
 
 #import "PhoneNumberMetaData.h"
 #import "Common.h"
@@ -23,7 +28,6 @@
 @implementation PhoneNumberMetaData
 
 @synthesize metaData       = _metaData;
-@synthesize countryCodeMap = _countryCodeMap;
 
 
 static PhoneNumberMetaData* sharedInstance;
@@ -44,31 +48,26 @@ static PhoneNumberMetaData* sharedInstance;
 {
     if (self = [super init])
     {
-        NSString*   dataFileName = [@"PhoneNumberMetaData-" stringByAppendingString:[Common bundleVersion]];
-        _metaData = [NSDictionary dictionaryWithContentsOfFile:[Common documentFilePath:dataFileName]];
-
-        if (_metaData == nil)
-        {            
-            NSData*         data = [Common dataForResource:@"TestMetaData" ofType:@"xml"];
-            NSXMLParser*    parser = [[NSXMLParser alloc] initWithData:data];
-            
-            dictionaryStack = [[NSMutableArray alloc] init];
-            textInProgress = [[NSMutableString alloc] init];
-            
-            [dictionaryStack addObject:[NSMutableDictionary dictionary]];
-            parser.delegate = self;
-            if ([parser parse] == YES)
-            {
-                _metaData = [[[dictionaryStack objectAtIndex:0] objectForKey:@"phoneNumberMetadata"] objectForKey:@"territories"];
-                [_metaData writeToFile:[Common documentFilePath:dataFileName] atomically:YES];
-            }
-            else
-            {
-                _metaData = nil;
-            }
+        NSData*         data = [Common dataForResource:@"PhoneNumberMetaData" ofType:@"xml"];
+        NSXMLParser*    parser = [[NSXMLParser alloc] initWithData:data];
+        
+        dictionaryStack = [[NSMutableArray alloc] init];
+        textInProgress = [[NSMutableString alloc] init];
+        
+        [dictionaryStack addObject:[NSMutableDictionary dictionary]];
+        parser.delegate = self;
+        if ([parser parse] == YES)
+        {
+            _metaData = [[[dictionaryStack objectAtIndex:0] objectForKey:@"phoneNumberMetadata"] objectForKey:@"territories"];
+        }
+        else
+        {
+            _metaData = nil;
         }
         
-        _countryCodeMap = [Common objectWithJsonData:[Common dataForResource:@"CountryCodeMap" ofType:@"json"]];
+        //### Here's where the generated JSON is printed.
+        NSString* json = [Common jsonStringWithObject:_metaData];
+        NSLog(@"%@", json);
     }
 
     return self;

@@ -36,10 +36,17 @@
 
 + (NSData*)jsonDataWithObject:(id)object
 {
-    NSError*    error = nil;
-    NSData*     data;
+    NSError*                error = nil;
+    NSData*                 data;
+    NSJSONWritingOptions    options;
     
-    data = [NSJSONSerialization dataWithJSONObject:object options:0 error:&error];
+#ifdef  DEBUG
+    options = NSJSONWritingPrettyPrinted;
+#else
+    options = 0;
+#endif
+    
+    data = [NSJSONSerialization dataWithJSONObject:object options:options error:&error];
     
     if (error != nil)
     {
