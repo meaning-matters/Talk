@@ -22,7 +22,8 @@
 
 @implementation PhoneNumberMetaData
 
-@synthesize dictionary = _dictionary;
+@synthesize metaData       = _metaData;
+@synthesize countryCodeMap = _countryCodeMap;
 
 
 static PhoneNumberMetaData* sharedInstance;
@@ -44,12 +45,11 @@ static PhoneNumberMetaData* sharedInstance;
     if (self = [super init])
     {
         NSString*   dataFileName = [@"PhoneNumberMetaData-" stringByAppendingString:[Common bundleVersion]];
-        _dictionary = [NSDictionary dictionaryWithContentsOfFile:[Common documentFilePath:dataFileName]];
+        _metaData = [NSDictionary dictionaryWithContentsOfFile:[Common documentFilePath:dataFileName]];
 
-        if (_dictionary == nil)
-        {
-            NSString*       path = [[NSBundle mainBundle] pathForResource:@"PhoneNumberMetaData" ofType:@"xml"];
-            NSData*         data = [NSData dataWithContentsOfFile:path];
+        if (_metaData == nil)
+        {            
+            NSData*         data = [Common dataForResource:@"PhoneNumberMetaData" ofType:@"xml"];
             NSXMLParser*    parser = [[NSXMLParser alloc] initWithData:data];
             
             dictionaryStack = [[NSMutableArray alloc] init];
@@ -59,14 +59,16 @@ static PhoneNumberMetaData* sharedInstance;
             parser.delegate = self;
             if ([parser parse] == YES)
             {
-                _dictionary = [dictionaryStack objectAtIndex:0];
-                [_dictionary writeToFile:[Common documentFilePath:dataFileName] atomically:YES];
+                _metaData = [dictionaryStack objectAtIndex:0];
+                [_metaData writeToFile:[Common documentFilePath:dataFileName] atomically:YES];
             }
             else
             {
-                _dictionary = nil;
+                _metaData = nil;
             }
         }
+        
+        _countryCodeMap = [Common objectWithJsonData:[Common dataForResource:@"CountryCodeMap" ofType:@"json"]];
     }
 
     return self;

@@ -21,6 +21,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		4827D8B4163F0F5700005131 /* Countries.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B1163F0F5700005131 /* Countries.json */; };
+		4827D8B5163F0F5700005131 /* CountryCodeMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B2163F0F5700005131 /* CountryCodeMap.json */; };
+		4827D8B6163F0F5700005131 /* MCC.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B3163F0F5700005131 /* MCC.json */; };
 		48338F68161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */; };
 		48338F69161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */; };
 		48338F6A161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F57161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a */; };
@@ -609,6 +612,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4827D8B1163F0F5700005131 /* Countries.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Countries.json; path = Resources/Countries.json; sourceTree = "<group>"; };
+		4827D8B2163F0F5700005131 /* CountryCodeMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryCodeMap.json; path = Resources/CountryCodeMap.json; sourceTree = "<group>"; };
+		4827D8B3163F0F5700005131 /* MCC.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = MCC.json; path = Resources/MCC.json; sourceTree = "<group>"; };
 		48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libg7221codec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libg7221codec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48338F57161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgsmcodec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libgsmcodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48338F58161628690033F4C1 /* libilbccodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libilbccodec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libilbccodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
@@ -1928,6 +1934,9 @@
 		48CB076F163D5E3500B07199 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4827D8B1163F0F5700005131 /* Countries.json */,
+				4827D8B2163F0F5700005131 /* CountryCodeMap.json */,
+				4827D8B3163F0F5700005131 /* MCC.json */,
 				48CB0779163D9A0D00B07199 /* TestMetaData.xml */,
 				48CB0771163D764100B07199 /* PhoneNumberMetaData.xml */,
 			);
@@ -2517,6 +2526,9 @@
 				485F6C2A1637270100D61365 /* ZW@2x.png in Resources */,
 				48CB0772163D764100B07199 /* PhoneNumberMetaData.xml in Resources */,
 				48CB077A163D9A0D00B07199 /* TestMetaData.xml in Resources */,
+				4827D8B4163F0F5700005131 /* Countries.json in Resources */,
+				4827D8B5163F0F5700005131 /* CountryCodeMap.json in Resources */,
+				4827D8B6163F0F5700005131 /* MCC.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,6 +12,16 @@
 
 + (NSString*)documentFilePath:(NSString*)fileName;
 
++ (NSData*)dataForResource:(NSString*)resourse ofType:(NSString*)type;
+
 + (NSString*)bundleVersion;
+
++ (NSData*)jsonDataWithObject:(id)object;
+
++ (NSString*)jsonStringWithObject:(id)object;
+
++ (id)objectWithJsonData:(NSData*)data;
+
++ (id)objectWithJsonString:(NSString*)string;
 
 @end
