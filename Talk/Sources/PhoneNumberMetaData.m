@@ -8,6 +8,8 @@
 //  Thanks to: https://github.com/bcaccinolo/XML-to-NSDictionary
 
 #import "PhoneNumberMetaData.h"
+#import "Common.h"
+
 
 @interface PhoneNumberMetaData ()
 {
@@ -41,25 +43,32 @@ static PhoneNumberMetaData* sharedInstance;
 {
     if (self = [super init])
     {
-        NSString*       path = [[NSBundle mainBundle] pathForResource:@"TestMetaData" ofType:@"xml"];
-        NSData*         data = [NSData dataWithContentsOfFile:path];
-        NSXMLParser*    parser = [[NSXMLParser alloc] initWithData:data];
-        
-        dictionaryStack = [[NSMutableArray alloc] init];
-        textInProgress = [[NSMutableString alloc] init];
-        
-        [dictionaryStack addObject:[NSMutableDictionary dictionary]];
-        parser.delegate = self;
-        if ([parser parse] == YES)
+        NSString*   dataFileName = [@"PhoneNumberMetaData-" stringByAppendingString:[Common bundleVersion]];
+        _dictionary = [NSDictionary dictionaryWithContentsOfFile:[Common documentFilePath:dataFileName]];
+
+        if (_dictionary == nil)
         {
-            _dictionary = [dictionaryStack objectAtIndex:0];
-        }
-        else
-        {
-            _dictionary = nil;
+            NSString*       path = [[NSBundle mainBundle] pathForResource:@"PhoneNumberMetaData" ofType:@"xml"];
+            NSData*         data = [NSData dataWithContentsOfFile:path];
+            NSXMLParser*    parser = [[NSXMLParser alloc] initWithData:data];
+            
+            dictionaryStack = [[NSMutableArray alloc] init];
+            textInProgress = [[NSMutableString alloc] init];
+            
+            [dictionaryStack addObject:[NSMutableDictionary dictionary]];
+            parser.delegate = self;
+            if ([parser parse] == YES)
+            {
+                _dictionary = [dictionaryStack objectAtIndex:0];
+                [_dictionary writeToFile:[Common documentFilePath:dataFileName] atomically:YES];
+            }
+            else
+            {
+                _dictionary = nil;
+            }
         }
     }
-    
+
     return self;
 }
 
@@ -70,24 +79,29 @@ static PhoneNumberMetaData* sharedInstance;
 didStartElement:(NSString*)elementName
   namespaceURI:(NSString*)namespaceURI
  qualifiedName:(NSString*)qualifiedName
-    attributes:(NSDictionary*)attributeDict
-{
+    attributes:(NSDictionary*)attributeDictionary
+{    
+    if ([elementName isEqualToString:@"territory"])
+    {
+        elementName = [attributeDictionary objectForKey:@"id"];
+    }
+    
     // Get the dictionary for the current level in the stack.
     NSMutableDictionary*    parentDictionary = [dictionaryStack lastObject];
     
     // Create the child dictionary for the new element, and initilaize it with the attributes.
     NSMutableDictionary*    childDictionary = [NSMutableDictionary dictionary];
-    [childDictionary addEntriesFromDictionary:attributeDict];
+    [childDictionary addEntriesFromDictionary:attributeDictionary];
     
     // If there's already an item for this key, it means we need to create an array.
     id existingValue = [parentDictionary objectForKey:elementName];
     if (existingValue)
     {
-        NSMutableArray *array = nil;
+        NSMutableArray* array = nil;
         if ([existingValue isKindOfClass:[NSMutableArray class]])
         {
             // The array exists, so use it.
-            array = (NSMutableArray *) existingValue;
+            array = (NSMutableArray*)existingValue;
         }
         else
         {
@@ -116,20 +130,32 @@ didStartElement:(NSString*)elementName
 - (void)parser:(NSXMLParser*)parser
  didEndElement:(NSString*)elementName
   namespaceURI:(NSString*)namespaceURI
- qualifiedName:(NSString*)qName
+ qualifiedName:(NSString*)qualifiedName
 {
     NSMutableDictionary*    dictionaryInProgress = [dictionaryStack lastObject];
     NSMutableDictionary*    parentDictionary = [dictionaryStack objectAtIndex:[dictionaryStack count] - 2];
+    
+    if ([elementName isEqualToString:@"territory"])
+    {
+        elementName = [dictionaryInProgress objectForKey:@"id"];
+    }
     
     // Save the text as object in parent.
     if ([textInProgress length] > 0)
     {
         // Look up the key in parent to which the text belongs.
-        for (NSString* key in [parentDictionary allKeys])
+        for (id key in parentDictionary)
         {
             if ([parentDictionary objectForKey:key] == dictionaryInProgress)
             {
-                [parentDictionary setObject:textInProgress forKey:key];
+                if ([key isEqualToString:@"exampleNumber"])
+                {
+                    [parentDictionary removeObjectForKey:key];
+                }
+                else
+                {
+                    [parentDictionary setObject:textInProgress forKey:key];
+                }
                 break;
             }
         }

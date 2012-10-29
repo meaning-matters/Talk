@@ -19,4 +19,10 @@
     return [documentsDirectory stringByAppendingPathComponent:fileName];
 }
 
+
++ (NSString*)bundleVersion
+{
+    return [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
+}
+
 @end
