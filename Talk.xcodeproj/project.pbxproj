@@ -2720,7 +2720,7 @@
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "564ACB9C-5FD3-435D-96CF-4548A8AC9F21";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "AB1B819F-987E-4A86-832F-D190D04339B0";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;

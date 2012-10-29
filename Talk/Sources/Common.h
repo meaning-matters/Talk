@@ -12,4 +12,6 @@
 
 + (NSString*)documentFilePath:(NSString*)fileName;
 
++ (NSString*)bundleVersion;
+
 @end
