@@ -403,7 +403,14 @@
     <!-- Ascension Island -->
     <!-- www.itu.int/oth/T02020000AF -->
     <territory id="AC" countryCode="247" internationalPrefix="00">
-      <!-- Formatted as a block. -->
+        <!-- Formatted as a block. -->
+        <!-- Format added by Kees who things its stupid to make an exception in this file -->
+        <availableFormats>
+            <numberFormat pattern="(\d{4})">
+                <leadingDigits>[2-467]</leadingDigits>
+                <format>$1</format>
+            </numberFormat>
+        </availableFormats>
       <generalDesc>
         <nationalNumberPattern>[2-467]\d{3}</nationalNumberPattern>
         <possibleNumberPattern>\d{4}</possibleNumberPattern>

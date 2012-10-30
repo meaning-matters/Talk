@@ -27,6 +27,8 @@
 
 @implementation PhoneNumberMetaData
 
+static NSDictionary*    countryCodesMap;
+
 @synthesize metaData       = _metaData;
 
 
@@ -34,6 +36,7 @@ static PhoneNumberMetaData* sharedInstance;
 
 + (void)initialize
 {
+    countryCodesMap = [Common objectWithJsonData:[Common dataForResource:@"CountryCodesMap" ofType:@"json"]];
     sharedInstance = [[PhoneNumberMetaData alloc] init];
 }
 
@@ -186,9 +189,31 @@ didStartElement:(NSString*)elementName
     
     if ([elementName isEqualToString:@"territory"])
     {
+        // Use ISO country code as key.
         elementName = [itemInProgress objectForKey:@"id"];
+
+        // When no availableFormats, look up where formats can be found. Formats of certain countries are shared.
+        if ([itemInProgress objectForKey:@"availableFormats"] == nil)
+        {
+            NSArray* codes = [countryCodesMap objectForKey:[itemInProgress objectForKey:@"countryCode"]];
+            if ([codes count] > 1)
+            {
+                // Add reference to where formats can be found.
+                [itemInProgress setObject:[codes objectAtIndex:0] forKey:@"availableFormatsReference"];
+            }
+            else
+            {
+                NSLog(@"NO AVAILABLE FORMATS FOUND %@", [itemInProgress objectForKey:@"countryCode"]);
+            }
+        }
     }
-    
+
+    if ([elementName isEqualToString:@"availableFormats"])
+    {
+        // All availableFormats dictionary contains is a single numberFormat array.  Remove redundant level.
+        [parentDictionary setObject:[itemInProgress objectForKey:@"numberFormat"] forKey:@"availableFormats"];
+    }
+
     // Save the text as object in parent.
     if ([textInProgress length] > 0)
     {
