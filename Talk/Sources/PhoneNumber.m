@@ -11,8 +11,6 @@
 
 @interface PhoneNumber ()
 {
-    NSDictionary*   metaData;
-    NSDictionary*   countryCodeMap;
 }
 
 @end
@@ -20,15 +18,30 @@
 
 @implementation PhoneNumber
 
+static NSDictionary*    numberMetaData;
+static NSDictionary*    countryCodesMap;
+static NSString*        baseIsoCountryCode;
+
++ (void)initialize
+{
+    numberMetaData  = [Common objectWithJsonData:[Common dataForResource:@"NumberMetaData"  ofType:@"json"]];
+    countryCodesMap = [Common objectWithJsonData:[Common dataForResource:@"CountryCodesMap" ofType:@"json"]];
+}
+
+
 - (id)initWithNumber:(NSString*)number
 {
     if (self = [super init])
-    {        
-        metaData       = [Common objectWithJsonData:[Common dataForResource:@"PhoneNumberMetaData" ofType:@"json"]];
-        countryCodeMap = [Common objectWithJsonData:[Common dataForResource:@"CountryCodeMap"      ofType:@"json"]];
+    {
     }
     
     return self;
+}
+
+
++ (void)setBaseIsoCountryCode:(NSString*)isoCountryCode
+{
+    
 }
 
 @end
