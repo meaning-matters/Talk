@@ -21,10 +21,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		4827D8B4163F0F5700005131 /* Countries.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B1163F0F5700005131 /* Countries.json */; };
-		4827D8B5163F0F5700005131 /* CountryCodeMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B2163F0F5700005131 /* CountryCodeMap.json */; };
-		4827D8B6163F0F5700005131 /* MCC.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B3163F0F5700005131 /* MCC.json */; };
-		4827D8BE163F38EE00005131 /* PhoneNumberMetaData.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8BC163F38E000005131 /* PhoneNumberMetaData.json */; };
+		4827D8B4163F0F5700005131 /* CountryNames.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B1163F0F5700005131 /* CountryNames.json */; };
+		4827D8B5163F0F5700005131 /* CountryCodesMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B2163F0F5700005131 /* CountryCodesMap.json */; };
+		4827D8B6163F0F5700005131 /* MobileCountryCodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B3163F0F5700005131 /* MobileCountryCodes.json */; };
+		4827D8BE163F38EE00005131 /* NumberMetaData.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8BC163F38E000005131 /* NumberMetaData.json */; };
 		48338F68161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */; };
 		48338F69161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */; };
 		48338F6A161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F57161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a */; };
@@ -610,10 +610,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4827D8B1163F0F5700005131 /* Countries.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Countries.json; path = Resources/Countries.json; sourceTree = "<group>"; };
-		4827D8B2163F0F5700005131 /* CountryCodeMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryCodeMap.json; path = Resources/CountryCodeMap.json; sourceTree = "<group>"; };
-		4827D8B3163F0F5700005131 /* MCC.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = MCC.json; path = Resources/MCC.json; sourceTree = "<group>"; };
-		4827D8BC163F38E000005131 /* PhoneNumberMetaData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = PhoneNumberMetaData.json; path = Resources/PhoneNumberMetaData.json; sourceTree = "<group>"; };
+		4827D8B1163F0F5700005131 /* CountryNames.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryNames.json; path = Resources/CountryNames.json; sourceTree = "<group>"; };
+		4827D8B2163F0F5700005131 /* CountryCodesMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryCodesMap.json; path = Resources/CountryCodesMap.json; sourceTree = "<group>"; };
+		4827D8B3163F0F5700005131 /* MobileCountryCodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = MobileCountryCodes.json; path = Resources/MobileCountryCodes.json; sourceTree = "<group>"; };
+		4827D8BC163F38E000005131 /* NumberMetaData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = NumberMetaData.json; path = Resources/NumberMetaData.json; sourceTree = "<group>"; };
 		48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libg7221codec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libg7221codec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48338F57161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgsmcodec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libgsmcodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48338F58161628690033F4C1 /* libilbccodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libilbccodec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libilbccodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
@@ -1942,10 +1942,10 @@
 		48CB076F163D5E3500B07199 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4827D8B1163F0F5700005131 /* Countries.json */,
-				4827D8B2163F0F5700005131 /* CountryCodeMap.json */,
-				4827D8B3163F0F5700005131 /* MCC.json */,
-				4827D8BC163F38E000005131 /* PhoneNumberMetaData.json */,
+				4827D8B1163F0F5700005131 /* CountryNames.json */,
+				4827D8B2163F0F5700005131 /* CountryCodesMap.json */,
+				4827D8B3163F0F5700005131 /* MobileCountryCodes.json */,
+				4827D8BC163F38E000005131 /* NumberMetaData.json */,
 				4827D8BF163F3A2100005131 /* GenerateMetaData */,
 			);
 			name = Resources;
@@ -2532,10 +2532,10 @@
 				485F6C281637270100D61365 /* ZM@2x.png in Resources */,
 				485F6C291637270100D61365 /* ZW.png in Resources */,
 				485F6C2A1637270100D61365 /* ZW@2x.png in Resources */,
-				4827D8B4163F0F5700005131 /* Countries.json in Resources */,
-				4827D8B5163F0F5700005131 /* CountryCodeMap.json in Resources */,
-				4827D8B6163F0F5700005131 /* MCC.json in Resources */,
-				4827D8BE163F38EE00005131 /* PhoneNumberMetaData.json in Resources */,
+				4827D8B4163F0F5700005131 /* CountryNames.json in Resources */,
+				4827D8B5163F0F5700005131 /* CountryCodesMap.json in Resources */,
+				4827D8B6163F0F5700005131 /* MobileCountryCodes.json in Resources */,
+				4827D8BE163F38EE00005131 /* NumberMetaData.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

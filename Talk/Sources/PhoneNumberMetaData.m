@@ -65,7 +65,7 @@ static PhoneNumberMetaData* sharedInstance;
             _metaData = nil;
         }
         
-        //### Here's where the generated JSON is printed.
+        //### Here's where the generated JSON is printed.  Copy-paste it to NumberMetaData.json.
         NSString* json = [Common jsonStringWithObject:_metaData];
         NSLog(@"%@", json);
     }
@@ -85,6 +85,12 @@ didStartElement:(NSString*)elementName
     if ([elementName isEqualToString:@"territory"])
     {
         elementName = [attributeDictionary objectForKey:@"id"];
+        
+        // Remove "id", because it's redundant.
+        NSMutableDictionary*    dictionary = [NSMutableDictionary dictionary];
+        [dictionary addEntriesFromDictionary:attributeDictionary];
+        [dictionary removeObjectForKey:@"id"];
+        attributeDictionary = dictionary;
     }
     
     // Get the dictionary for the current level in the stack.
