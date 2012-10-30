@@ -11,7 +11,7 @@
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
-@property (strong, nonatomic) UIWindow*     window;
-@property (strong, nonatomic) SipInterface* sipInterface;
+@property (nonatomic, strong) UIWindow*     window;
+@property (nonatomic, strong) SipInterface* sipInterface;
 
 @end

@@ -93,6 +93,313 @@
 
 <phoneNumberMetadata>
   <territories>
+      <territory id="PK" countryCode="92" internationalPrefix="00"
+          nationalPrefix="0" nationalPrefixFormattingRule="($NP$FG)">
+          <availableFormats>
+              <!-- Universal Access Numbers (UAN) number format patterns first, so that these numbers are
+               formatted nicely by the AYTF. -->
+              <numberFormat pattern="(\d{2})(111)(\d{3})(\d{3})">
+                  <leadingDigits>
+                      (?:
+                      2[125]|
+                      4[0-246-9]|
+                      5[1-35-7]|
+                      6[1-8]|
+                      7[14]|
+                      8[16]|
+                      91
+                      )1
+                  </leadingDigits>
+                  <leadingDigits>
+                      (?:
+                      2[125]|
+                      4[0-246-9]|
+                      5[1-35-7]|
+                      6[1-8]|
+                      7[14]|
+                      8[16]|
+                      91
+                      )11
+                  </leadingDigits>
+                  <leadingDigits>
+                      (?:
+                      2[125]|
+                      4[0-246-9]|
+                      5[1-35-7]|
+                      6[1-8]|
+                      7[14]|
+                      8[16]|
+                      91
+                      )111
+                  </leadingDigits>
+                  <format>$1 $2 $3 $4</format>
+              </numberFormat>
+              <numberFormat pattern="(\d{3})(111)(\d{3})(\d{3})">
+                  <leadingDigits>
+                      2[349]|
+                      45|
+                      54|
+                      60|
+                      72|
+                      8[2-5]|
+                      9[2-9]
+                  </leadingDigits>
+                  <leadingDigits>
+                      (?:
+                      2[349]|
+                      45|
+                      54|
+                      60|
+                      72|
+                      8[2-5]|
+                      9[2-9]
+                      )\d1
+                  </leadingDigits>
+                  <leadingDigits>
+                      (?:
+                      2[349]|
+                      45|
+                      54|
+                      60|
+                      72|
+                      8[2-5]|
+                      9[2-9]
+                      )\d11
+                  </leadingDigits>
+                  <leadingDigits>
+                      (?:
+                      2[349]|
+                      45|
+                      54|
+                      60|
+                      72|
+                      8[2-5]|
+                      9[2-9]
+                      )\d111
+                  </leadingDigits>
+                  <format>$1 $2 $3 $4</format>
+              </numberFormat>
+              <numberFormat pattern="(\d{2})(\d{7,8})">
+                  <leadingDigits>
+                      (?:
+                      2[125]|
+                      4[0-246-9]|
+                      5[1-35-7]|
+                      6[1-8]|
+                      7[14]|
+                      8[16]|
+                      91
+                      )[2-9]
+                  </leadingDigits>
+                  <format>$1 $2</format>
+              </numberFormat>
+              <numberFormat pattern="(\d{3})(\d{6,7})">
+                  <leadingDigits>
+                      2[349]|
+                      45|
+                      54|
+                      60|
+                      72|
+                      8[2-5]|
+                      9[2-9]
+                  </leadingDigits>
+                  <leadingDigits>
+                      (?:
+                      2[349]|
+                      45|
+                      54|
+                      60|
+                      72|
+                      8[2-5]|
+                      9[2-9]
+                      )\d[2-9]
+                  </leadingDigits>
+                  <format>$1 $2</format>
+              </numberFormat>
+              <numberFormat pattern="(3\d{2})(\d{7})" nationalPrefixFormattingRule="$NP$FG">
+                  <leadingDigits>3</leadingDigits>
+                  <format>$1 $2</format>
+              </numberFormat>
+              <numberFormat pattern="([15]\d{3})(\d{5,6})">
+                  <leadingDigits>
+                      58[12]|
+                      1
+                  </leadingDigits>
+                  <format>$1 $2</format>
+              </numberFormat>
+              <!-- This is from online examples. -->
+              <numberFormat pattern="(586\d{2})(\d{5})">
+                  <leadingDigits>586</leadingDigits>
+                  <format>$1 $2</format>
+              </numberFormat>
+              <numberFormat pattern="([89]00)(\d{3})(\d{2})" nationalPrefixFormattingRule="$NP$FG">
+                  <leadingDigits>[89]00</leadingDigits>
+                  <format>$1 $2 $3</format>
+              </numberFormat>
+          </availableFormats>
+          <generalDesc>
+              <!-- This is horribly complex because the country code is 92, and several area codes start
+               with 92, and the number length is widely variable. -->
+              <nationalNumberPattern>
+                  1\d{8}|
+                  [2-8]\d{5,11}|
+                  9(?:
+                  [013-9]\d{4,9}|
+                  2\d(?:
+                  111\d{6}|
+                  \d{3,7}
+                  )
+                  )
+              </nationalNumberPattern>
+              <possibleNumberPattern>\d{6,12}</possibleNumberPattern>
+          </generalDesc>
+          <fixedLine>
+              <!-- The subscriber number length is not well defined for some area codes. From online
+               examples, we have come up with a heuristic that for 3-digit area codes, the subscriber
+               number will be 6 or 7 digits - for 2-digit area codes it will be 7, with the exceptions
+               of Karachi and Lahore (both 8). -->
+              <nationalNumberPattern>
+                  (?:
+                  21|
+                  42
+                  )[2-9]\d{7}|
+                  (?:
+                  2[25]|
+                  4[0146-9]|
+                  5[1-35-7]|
+                  6[1-8]|
+                  7[14]|
+                  8[16]|
+                  91
+                  )[2-9]\d{6}|
+                  (?:
+                  2(?:
+                  3[2358]|
+                  4[2-4]|
+                  9[2-8]
+                  )|
+                  45[3479]|
+                  54[2-467]|
+                  60[468]|
+                  72[236]|
+                  8(?:
+                  2[2-689]|
+                  3[23578]|
+                  4[3478]|
+                  5[2356]
+                  )|
+                  9(?:
+                  1|
+                  2[2-8]|
+                  3[27-9]|
+                  4[2-6]|
+                  6[3569]|
+                  9[25-8]
+                  )
+                  )[2-9]\d{5,6}|
+                  58[126]\d{7}
+              </nationalNumberPattern>
+              <possibleNumberPattern>\d{6,10}</possibleNumberPattern>
+              <exampleNumber>2123456789</exampleNumber>
+          </fixedLine>
+          <mobile>
+              <!-- Adding 311 & 325 as SMSs have been successfully sent to these numbers and numbers can
+               be found online with these prefixes. -->
+              <nationalNumberPattern>
+                  3(?:
+                  0\d|
+                  [12][1-5]|
+                  3[1-6]|
+                  4[1-7]|
+                  55|
+                  64
+                  )\d{7}
+              </nationalNumberPattern>
+              <possibleNumberPattern>\d{10}</possibleNumberPattern>
+              <exampleNumber>3012345678</exampleNumber>
+          </mobile>
+          <tollFree>
+              <nationalNumberPattern>800\d{5}</nationalNumberPattern>
+              <possibleNumberPattern>\d{8}</possibleNumberPattern>
+              <exampleNumber>80012345</exampleNumber>
+          </tollFree>
+          <premiumRate>
+              <nationalNumberPattern>900\d{5}</nationalNumberPattern>
+              <possibleNumberPattern>\d{8}</possibleNumberPattern>
+              <exampleNumber>90012345</exampleNumber>
+          </premiumRate>
+          <!-- These are referred to as UPT numbers in the plan. -->
+          <personalNumber>
+              <nationalNumberPattern>122\d{6}</nationalNumberPattern>
+              <possibleNumberPattern>\d{9}</possibleNumberPattern>
+              <!-- The example number here is the test number from the plan. -->
+              <exampleNumber>122044444</exampleNumber>
+          </personalNumber>
+          <uan>
+              <!-- Data on what a UAN is is hard to come by. http://www.ptcl.com.pk has information under
+               http://www.ptcl.com.pk/contentb.php?NID=143#uan - which defines their format - but not
+               what type of number they are.  We exclude Azad Jammu, Kashmir and Northern Areas here
+               since no online example UANs can be found, and they have an "access code" at the start,
+               making it difficult to guess what a UAN in these areas would look like. -->
+              <nationalNumberPattern>
+                  (?:
+                  2(?:
+                  [125]|
+                  3[2358]|
+                  4[2-4]|
+                  9[2-8]
+                  )|
+                  4(?:
+                  [0-246-9]|
+                  5[3479]
+                  )|
+                  5(?:
+                  [1-35-7]|
+                  4[2-467]
+                  )|
+                  6(?:
+                  [1-8]|
+                  0[468]
+                  )|
+                  7(?:
+                  [14]|
+                  2[236]
+                  )|
+                  8(?:
+                  [16]|
+                  2[2-689]|
+                  3[23578]|
+                  4[3478]|
+                  5[2356]
+                  )|
+                  9(?:
+                  1|
+                  22|
+                  3[27-9]|
+                  4[2-6]|
+                  6[3569]|
+                  9[2-7]
+                  )
+                  )111\d{6}
+              </nationalNumberPattern>
+              <possibleNumberPattern>\d{11,12}</possibleNumberPattern>
+              <exampleNumber>21111825888</exampleNumber>
+          </uan>
+          <emergency>
+              <nationalNumberPattern>
+                  1(?:
+                  1(?:
+                  22?|
+                  5
+                  )|
+                  [56]
+                  )
+              </nationalNumberPattern>
+              <possibleNumberPattern>\d{2,4}</possibleNumberPattern>
+              <exampleNumber>112</exampleNumber>
+          </emergency>
+      </territory>
+
     <!-- Ascension Island -->
     <!-- www.itu.int/oth/T02020000AF -->
     <territory id="AC" countryCode="247" internationalPrefix="00">
