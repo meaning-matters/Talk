@@ -24,7 +24,6 @@
 		4827D8B4163F0F5700005131 /* CountryNames.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B1163F0F5700005131 /* CountryNames.json */; };
 		4827D8B5163F0F5700005131 /* CountryCodesMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B2163F0F5700005131 /* CountryCodesMap.json */; };
 		4827D8B6163F0F5700005131 /* MobileCountryCodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B3163F0F5700005131 /* MobileCountryCodes.json */; };
-		4827D8BE163F38EE00005131 /* NumberMetaData.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8BC163F38E000005131 /* NumberMetaData.json */; };
 		48338F68161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */; };
 		48338F69161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */; };
 		48338F6A161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F57161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a */; };
@@ -613,7 +612,6 @@
 		4827D8B1163F0F5700005131 /* CountryNames.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryNames.json; path = Resources/CountryNames.json; sourceTree = "<group>"; };
 		4827D8B2163F0F5700005131 /* CountryCodesMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryCodesMap.json; path = Resources/CountryCodesMap.json; sourceTree = "<group>"; };
 		4827D8B3163F0F5700005131 /* MobileCountryCodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = MobileCountryCodes.json; path = Resources/MobileCountryCodes.json; sourceTree = "<group>"; };
-		4827D8BC163F38E000005131 /* NumberMetaData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = NumberMetaData.json; path = Resources/NumberMetaData.json; sourceTree = "<group>"; };
 		48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libg7221codec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libg7221codec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48338F57161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgsmcodec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libgsmcodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48338F58161628690033F4C1 /* libilbccodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libilbccodec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libilbccodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
@@ -1164,12 +1162,8 @@
 		48884AB01615CE920005AA79 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		48884AB21615CE920005AA79 /* TalkTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TalkTests.h; sourceTree = "<group>"; };
 		48884AB31615CE920005AA79 /* TalkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TalkTests.m; sourceTree = "<group>"; };
-		48CB0771163D764100B07199 /* PhoneNumberMetaData.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = PhoneNumberMetaData.xml; path = Resources/PhoneNumberMetaData.xml; sourceTree = "<group>"; };
 		48CB0773163D76C300B07199 /* PhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumber.h; sourceTree = "<group>"; };
 		48CB0774163D76C300B07199 /* PhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneNumber.m; sourceTree = "<group>"; };
-		48CB0776163D7B3500B07199 /* PhoneNumberMetaData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhoneNumberMetaData.h; path = Sources/PhoneNumberMetaData.h; sourceTree = "<group>"; };
-		48CB0777163D7B3500B07199 /* PhoneNumberMetaData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhoneNumberMetaData.m; path = Sources/PhoneNumberMetaData.m; sourceTree = "<group>"; };
-		48CB0779163D9A0D00B07199 /* TestMetaData.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = TestMetaData.xml; path = Resources/TestMetaData.xml; sourceTree = "<group>"; };
 		48FD99D116182B6B0061191B /* SipConfig.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SipConfig.cfg; sourceTree = "<group>"; };
 		48FD99D4161855D30061191B /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		48FD99D6161855E10061191B /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -1249,17 +1243,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4827D8BF163F3A2100005131 /* GenerateMetaData */ = {
-			isa = PBXGroup;
-			children = (
-				48CB0776163D7B3500B07199 /* PhoneNumberMetaData.h */,
-				48CB0777163D7B3500B07199 /* PhoneNumberMetaData.m */,
-				48CB0771163D764100B07199 /* PhoneNumberMetaData.xml */,
-				48CB0779163D9A0D00B07199 /* TestMetaData.xml */,
-			);
-			name = GenerateMetaData;
-			sourceTree = "<group>";
-		};
 		48338F54161628310033F4C1 /* pjsip */ = {
 			isa = PBXGroup;
 			children = (
@@ -1945,8 +1928,6 @@
 				4827D8B1163F0F5700005131 /* CountryNames.json */,
 				4827D8B2163F0F5700005131 /* CountryCodesMap.json */,
 				4827D8B3163F0F5700005131 /* MobileCountryCodes.json */,
-				4827D8BC163F38E000005131 /* NumberMetaData.json */,
-				4827D8BF163F3A2100005131 /* GenerateMetaData */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2535,7 +2516,6 @@
 				4827D8B4163F0F5700005131 /* CountryNames.json in Resources */,
 				4827D8B5163F0F5700005131 /* CountryCodesMap.json in Resources */,
 				4827D8B6163F0F5700005131 /* MobileCountryCodes.json in Resources */,
-				4827D8BE163F38EE00005131 /* NumberMetaData.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
