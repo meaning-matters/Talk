@@ -1,1 +1,1 @@
-closure-library/closure/bin/build/closurebuilder.py --root=closure-library/ --root=i18n/phonenumbers/ --root=phonenumber/ --namespace="sphone.phonenumber" --compiler_jar=compiler.jar --output_mode=compiled --compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" > compiled.js
+closure-library/closure/bin/build/closurebuilder.py --root=closure-library/ --root=i18n/phonenumbers/ --root=wrapper/ --namespace="dummy" --compiler_jar=compiler.jar --output_mode=compiled --compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" > LibPhoneNumber.js
