@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		4812727316487E2D00534450 /* LibPhoneNumber.js in Resources */ = {isa = PBXBuildFile; fileRef = 4812727216487E2D00534450 /* LibPhoneNumber.js */; };
+		4812727416487E2D00534450 /* LibPhoneNumber.js in Sources */ = {isa = PBXBuildFile; fileRef = 4812727216487E2D00534450 /* LibPhoneNumber.js */; };
 		4827D8B4163F0F5700005131 /* CountryNames.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B1163F0F5700005131 /* CountryNames.json */; };
 		4827D8B5163F0F5700005131 /* CountryCodesMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B2163F0F5700005131 /* CountryCodesMap.json */; };
 		4827D8B6163F0F5700005131 /* MobileCountryCodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B3163F0F5700005131 /* MobileCountryCodes.json */; };
@@ -609,6 +611,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4812727216487E2D00534450 /* LibPhoneNumber.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = LibPhoneNumber.js; path = External/LibPhoneNumber/LibPhoneNumber.js; sourceTree = SOURCE_ROOT; };
 		4827D8B1163F0F5700005131 /* CountryNames.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryNames.json; path = Resources/CountryNames.json; sourceTree = "<group>"; };
 		4827D8B2163F0F5700005131 /* CountryCodesMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryCodesMap.json; path = Resources/CountryCodesMap.json; sourceTree = "<group>"; };
 		4827D8B3163F0F5700005131 /* MobileCountryCodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = MobileCountryCodes.json; path = Resources/MobileCountryCodes.json; sourceTree = "<group>"; };
@@ -1928,6 +1931,7 @@
 				4827D8B1163F0F5700005131 /* CountryNames.json */,
 				4827D8B2163F0F5700005131 /* CountryCodesMap.json */,
 				4827D8B3163F0F5700005131 /* MobileCountryCodes.json */,
+				4812727216487E2D00534450 /* LibPhoneNumber.js */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2005,6 +2009,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				48884A7F1615CE920005AA79 /* InfoPlist.strings in Resources */,
+				4812727316487E2D00534450 /* LibPhoneNumber.js in Resources */,
 				48884A8E1615CE920005AA79 /* MainStoryboard_iPhone.storyboard in Resources */,
 				48884A911615CE920005AA79 /* MainStoryboard_iPad.storyboard in Resources */,
 				48338FAE16170CBA0033F4C1 /* first.png in Resources */,
@@ -2581,6 +2586,7 @@
 				48884AB41615CE920005AA79 /* TalkTests.m in Sources */,
 				48338FD216181B750033F4C1 /* SipInterface.m in Sources */,
 				48FD99E81618CC370061191B /* Common.m in Sources */,
+				4812727416487E2D00534450 /* LibPhoneNumber.js in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
