@@ -24,4 +24,7 @@
 
 + (id)objectWithJsonString:(NSString*)string;
 
+//#### Addd: http://stackoverflow.com/questions/1108859/detect-the-specific-iphone-ipod-touch-model
+//+ (NSString*)deviceModel;
+
 @end
