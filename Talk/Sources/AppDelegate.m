@@ -8,6 +8,7 @@
 //
 
 #import "AppDelegate.h"
+#import "Settings.h"
 #import "PhoneNumber.h"
 
 @interface AppDelegate ()
@@ -31,7 +32,7 @@
 @synthesize numbersViewController     = _numbersViewController;
 @synthesize recentsViewController     = _recentsViewController;
 @synthesize shareViewController       = _shareViewController;
-@synthesize settingsVierController    = _settingsVierController;
+@synthesize settingsViewController    = _settingsViewController;
 
 
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
@@ -39,29 +40,7 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.tabBarController = [[UITabBarController alloc] init];
     self.tabBarController.delegate = self;
-
-    self.aboutViewController       = [[AboutViewController       alloc] init];
-    self.creditViewController      = [[CreditViewController      alloc] init];
-    self.dialerViewController      = [[DialerViewController      alloc] init];
-    self.forwardingsViewController = [[ForwardingsViewController alloc] init];
-    self.groupsViewController      = [[GroupsViewController      alloc] init];
-    self.helpViewController        = [[HelpViewController        alloc] init];
-    self.numbersViewController     = [[NumbersViewController     alloc] init];
-    self.recentsViewController     = [[RecentsViewController     alloc] init];
-    self.shareViewController       = [[ShareViewController       alloc] init];
-    self.settingsVierController    = [[SettingsViewController    alloc] init];
-
-    self.tabBarController.viewControllers = @[self.numbersViewController,
-                                              self.recentsViewController,
-                                              self.groupsViewController,
-                                              self.dialerViewController,
-                                              self.forwardingsViewController,
-                                              self.creditViewController,
-                                              self.helpViewController,
-                                              self.aboutViewController,
-                                              self.settingsVierController,
-                                              self.shareViewController];
-    defaultTabBarViewControllers = [NSArray arrayWithArray:self.tabBarController.viewControllers];
+    [self addViewControllersToTabBar];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
 
@@ -108,7 +87,55 @@
 }
 
 
-#pragma mark - TabBar Delegate
+#pragma mark - TabBar Delegate & General
+
+- (void)addViewControllersToTabBar
+{
+    NSArray* viewControllerClasses = @[NSStringFromClass([NumbersViewController     class]),
+                                       NSStringFromClass([RecentsViewController     class]),
+                                       NSStringFromClass([GroupsViewController      class]),
+                                       NSStringFromClass([DialerViewController      class]),
+                                       NSStringFromClass([ForwardingsViewController class]),
+                                       NSStringFromClass([CreditViewController      class]),
+                                       NSStringFromClass([HelpViewController        class]),
+                                       NSStringFromClass([AboutViewController       class]),
+                                       NSStringFromClass([SettingsViewController    class]),
+                                       NSStringFromClass([ShareViewController       class])];
+    NSSet*  preferredSet = [NSSet setWithArray:[Settings sharedSettings].tabBarViewControllerClasses];
+    NSSet*  defaultSet   = [NSSet setWithArray:viewControllerClasses];
+
+    if ([preferredSet isEqualToSet:defaultSet])
+    {
+        // No view controllers were added/deleted/renamed.  Safe to use preferred set.
+        viewControllerClasses = [Settings sharedSettings].tabBarViewControllerClasses;
+    }
+    else
+    {
+        // First time, or view controllers were added/deleted/renamed.  Reset preferred set.
+        [Settings sharedSettings].tabBarViewControllerClasses = viewControllerClasses;
+    }
+
+    NSMutableArray* viewControllers = [NSMutableArray array];
+    for (NSString* class in viewControllerClasses)
+    {
+        [viewControllers addObject:[[NSClassFromString(class) alloc] init]];
+        SEL selector = NSSelectorFromString([@"set" stringByAppendingFormat:@"%@:", [class description]]);
+        [self performSelector:selector withObject:[viewControllers lastObject]];
+    }
+
+    self.tabBarController.viewControllers = viewControllers;
+
+    defaultTabBarViewControllers = @[self.numbersViewController,
+                                     self.recentsViewController,
+                                     self.groupsViewController,
+                                     self.dialerViewController,
+                                     self.forwardingsViewController,
+                                     self.creditViewController,
+                                     self.helpViewController,
+                                     self.aboutViewController,
+                                     self.settingsViewController,
+                                     self.shareViewController];
+}
 
 
 - (void)setDefaultTabBarViewControllers
@@ -147,6 +174,16 @@
 
 - (void)tabBarController:(UITabBarController*)tabBarController willEndCustomizingViewControllers:(NSArray*)viewControllers changed:(BOOL)changed
 {
+    if (changed)
+    {
+        NSMutableArray* viewControllerClasses = [NSMutableArray array];
+        for (id viewController in self.tabBarController.viewControllers)
+        {
+            [viewControllerClasses addObject:NSStringFromClass([viewController class])];
+        }
+
+        [Settings sharedSettings].tabBarViewControllerClasses = viewControllerClasses;
+    }
 }
 
 

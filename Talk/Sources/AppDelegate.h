@@ -33,7 +33,7 @@
 @property (nonatomic, strong) NumbersViewController*        numbersViewController;
 @property (nonatomic, strong) RecentsViewController*        recentsViewController;
 @property (nonatomic, strong) ShareViewController*          shareViewController;
-@property (nonatomic, strong) SettingsViewController*       settingsVierController;
+@property (nonatomic, strong) SettingsViewController*       settingsViewController;
 
 @property (nonatomic, strong) SipInterface*                 sipInterface;
 
