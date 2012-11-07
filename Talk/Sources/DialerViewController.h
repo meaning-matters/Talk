@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ViewController.h"
 
-@interface DialerViewController : UIViewController
+@interface DialerViewController : ViewController
 
 @end

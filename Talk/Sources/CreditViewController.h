@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ViewController.h"
 
-@interface CreditViewController : UIViewController
+@interface CreditViewController : ViewController
 
 @end

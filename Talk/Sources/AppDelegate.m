@@ -8,12 +8,13 @@
 //
 
 #import "AppDelegate.h"
+#import "Skinning.h"
 #import "Settings.h"
 #import "PhoneNumber.h"
 
 @interface AppDelegate ()
 {
-    NSArray*    defaultTabBarViewControllers;
+    NSMutableArray* defaultTabBarViewControllers;
 }
 
 @end
@@ -37,9 +38,17 @@
 
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
+    // Trigger skinning.
+    [Skinning sharedSkinning];
+
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.tabBarController = [[UITabBarController alloc] init];
     self.tabBarController.delegate = self;
+
+    // Must be placed here, just before tabs are added.  Otherwise navigation bar
+    // will overlap with status bar.
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
+
     [self addViewControllersToTabBar];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
@@ -77,7 +86,6 @@
 - (void)applicationDidBecomeActive:(UIApplication*)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
 }
 
 
@@ -118,7 +126,11 @@
     NSMutableArray* viewControllers = [NSMutableArray array];
     for (NSString* class in viewControllerClasses)
     {
-        [viewControllers addObject:[[NSClassFromString(class) alloc] init]];
+        // All view controllers are embedded in a navigation controller.
+        UIViewController*   viewController = [[NSClassFromString(class) alloc] init];
+        [viewControllers addObject:viewController.navigationController];
+
+        // Set appropriate AppDelegate property.
         SEL selector = NSSelectorFromString([@"set" stringByAppendingFormat:@"%@:", [class description]]);
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
@@ -126,19 +138,8 @@
 #pragma clang diagnostic pop
     }
 
+    defaultTabBarViewControllers = viewControllers;
     self.tabBarController.viewControllers = viewControllers;
-
-    // Save the 
-    defaultTabBarViewControllers = @[self.numbersViewController,
-                                     self.recentsViewController,
-                                     self.groupsViewController,
-                                     self.dialerViewController,
-                                     self.forwardingsViewController,
-                                     self.creditViewController,
-                                     self.helpViewController,
-                                     self.aboutViewController,
-                                     self.settingsViewController,
-                                     self.shareViewController];
 }
 
 
@@ -161,7 +162,6 @@
         UINavigationBar*    navigationBar = (UINavigationBar*)[[customizeView subviews] objectAtIndex:0];
         if ([navigationBar isKindOfClass:[UINavigationBar class]])
         {
-            navigationBar.barStyle = UIBarStyleBlackOpaque;
             navigationBar.topItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemUndo
                                                                                                     target:self
                                                                                                     action:@selector(setDefaultTabBarViewControllers)];
@@ -175,12 +175,14 @@
     if (changed)
     {
         NSMutableArray* viewControllerClasses = [NSMutableArray array];
-        for (id viewController in self.tabBarController.viewControllers)
+        for (UINavigationController* navigationController in self.tabBarController.viewControllers)
         {
-            [viewControllerClasses addObject:NSStringFromClass([viewController class])];
+            Class   class = [navigationController.topViewController class];
+            [viewControllerClasses addObject:NSStringFromClass(class)];
         }
 
         [Settings sharedSettings].tabBarViewControllerClasses = viewControllerClasses;
+        defaultTabBarViewControllers = [NSMutableArray arrayWithArray:viewControllers];
     }
 }
 
