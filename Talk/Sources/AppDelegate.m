@@ -120,11 +120,15 @@
     {
         [viewControllers addObject:[[NSClassFromString(class) alloc] init]];
         SEL selector = NSSelectorFromString([@"set" stringByAppendingFormat:@"%@:", [class description]]);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
         [self performSelector:selector withObject:[viewControllers lastObject]];
+#pragma clang diagnostic pop
     }
 
     self.tabBarController.viewControllers = viewControllers;
 
+    // Save the 
     defaultTabBarViewControllers = @[self.numbersViewController,
                                      self.recentsViewController,
                                      self.groupsViewController,
