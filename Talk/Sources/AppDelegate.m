@@ -144,12 +144,6 @@
 }
 
 
-- (BOOL)tabBarController:(UITabBarController*)tabBarController shouldSelectViewController:(UIViewController*)viewController
-{
-    return YES;
-}
-
-
 - (void)tabBarController:(UITabBarController*)tabBarController didSelectViewController:(UIViewController*)viewController
 {
 }
@@ -184,11 +178,6 @@
 
         [Settings sharedSettings].tabBarViewControllerClasses = viewControllerClasses;
     }
-}
-
-
-- (void)tabBarController:(UITabBarController*)tabBarController didEndCustomizingViewControllers:(NSArray*)viewControllers changed:(BOOL)changed
-{
 }
 
 @end
