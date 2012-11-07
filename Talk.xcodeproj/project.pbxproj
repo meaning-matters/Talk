@@ -68,12 +68,6 @@
 		48338F91161628BA0033F4C1 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F8D161628BA0033F4C1 /* libssl.a */; };
 		48338F9B16170C6C0033F4C1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 48338F9A16170C6C0033F4C1 /* main.m */; };
 		48338FA516170CA80033F4C1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 48338FA016170CA80033F4C1 /* AppDelegate.m */; };
-		48338FA616170CA80033F4C1 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48338FA216170CA80033F4C1 /* FirstViewController.m */; };
-		48338FA716170CA80033F4C1 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48338FA416170CA80033F4C1 /* SecondViewController.m */; };
-		48338FAE16170CBA0033F4C1 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = 48338FAA16170CBA0033F4C1 /* first.png */; };
-		48338FAF16170CBA0033F4C1 /* first@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48338FAB16170CBA0033F4C1 /* first@2x.png */; };
-		48338FB016170CBA0033F4C1 /* second.png in Resources */ = {isa = PBXBuildFile; fileRef = 48338FAC16170CBA0033F4C1 /* second.png */; };
-		48338FB116170CBA0033F4C1 /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48338FAD16170CBA0033F4C1 /* second@2x.png */; };
 		48338FB716170D8C0033F4C1 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48338FB416170D8C0033F4C1 /* Default-568h@2x.png */; };
 		48338FB816170D8C0033F4C1 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 48338FB516170D8C0033F4C1 /* Default.png */; };
 		48338FB916170D8C0033F4C1 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48338FB616170D8C0033F4C1 /* Default@2x.png */; };
@@ -581,13 +575,91 @@
 		48884A771615CE920005AA79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A761615CE920005AA79 /* Foundation.framework */; };
 		48884A791615CE920005AA79 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A781615CE920005AA79 /* CoreGraphics.framework */; };
 		48884A7F1615CE920005AA79 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48884A7D1615CE920005AA79 /* InfoPlist.strings */; };
-		48884A8E1615CE920005AA79 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48884A8C1615CE920005AA79 /* MainStoryboard_iPhone.storyboard */; };
-		48884A911615CE920005AA79 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48884A8F1615CE920005AA79 /* MainStoryboard_iPad.storyboard */; };
 		48884AA71615CE920005AA79 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884AA61615CE920005AA79 /* SenTestingKit.framework */; };
 		48884AA81615CE920005AA79 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A741615CE920005AA79 /* UIKit.framework */; };
 		48884AA91615CE920005AA79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A761615CE920005AA79 /* Foundation.framework */; };
 		48884AB11615CE920005AA79 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48884AAF1615CE920005AA79 /* InfoPlist.strings */; };
 		48884AB41615CE920005AA79 /* TalkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48884AB31615CE920005AA79 /* TalkTests.m */; };
+		48AF44EA1649479100DFE3D8 /* NumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44E91649479100DFE3D8 /* NumbersViewController.m */; };
+		48AF44EB1649479100DFE3D8 /* NumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44E91649479100DFE3D8 /* NumbersViewController.m */; };
+		48AF44EE164947B300DFE3D8 /* CreditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44ED164947B300DFE3D8 /* CreditViewController.m */; };
+		48AF44EF164947B300DFE3D8 /* CreditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44ED164947B300DFE3D8 /* CreditViewController.m */; };
+		48AF44F2164947CE00DFE3D8 /* DialerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F1164947CE00DFE3D8 /* DialerViewController.m */; };
+		48AF44F3164947CE00DFE3D8 /* DialerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F1164947CE00DFE3D8 /* DialerViewController.m */; };
+		48AF44F6164947E600DFE3D8 /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F5164947E600DFE3D8 /* GroupsViewController.m */; };
+		48AF44F7164947E600DFE3D8 /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F5164947E600DFE3D8 /* GroupsViewController.m */; };
+		48AF44FA164947FA00DFE3D8 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F9164947FA00DFE3D8 /* SettingsViewController.m */; };
+		48AF44FB164947FA00DFE3D8 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F9164947FA00DFE3D8 /* SettingsViewController.m */; };
+		48AF44FE1649483600DFE3D8 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44FD1649483600DFE3D8 /* HelpViewController.m */; };
+		48AF44FF1649483600DFE3D8 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44FD1649483600DFE3D8 /* HelpViewController.m */; };
+		48AF45021649484600DFE3D8 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF45011649484600DFE3D8 /* AboutViewController.m */; };
+		48AF45031649484600DFE3D8 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF45011649484600DFE3D8 /* AboutViewController.m */; };
+		48AF4505164948A300DFE3D8 /* NumbersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF4504164948A300DFE3D8 /* NumbersView.xib */; };
+		48AF4506164948A300DFE3D8 /* NumbersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF4504164948A300DFE3D8 /* NumbersView.xib */; };
+		48AF4508164948B800DFE3D8 /* CreditView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF4507164948B800DFE3D8 /* CreditView.xib */; };
+		48AF4509164948B800DFE3D8 /* CreditView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF4507164948B800DFE3D8 /* CreditView.xib */; };
+		48AF450B164948CD00DFE3D8 /* DialerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450A164948CD00DFE3D8 /* DialerView.xib */; };
+		48AF450C164948CD00DFE3D8 /* DialerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450A164948CD00DFE3D8 /* DialerView.xib */; };
+		48AF450E164948DC00DFE3D8 /* GroupsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450D164948DC00DFE3D8 /* GroupsView.xib */; };
+		48AF450F164948DC00DFE3D8 /* GroupsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450D164948DC00DFE3D8 /* GroupsView.xib */; };
+		48AF4511164948F000DFE3D8 /* SettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF4510164948F000DFE3D8 /* SettingsView.xib */; };
+		48AF4512164948F000DFE3D8 /* SettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF4510164948F000DFE3D8 /* SettingsView.xib */; };
+		48AF45141649490100DFE3D8 /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45131649490100DFE3D8 /* HelpView.xib */; };
+		48AF45151649490100DFE3D8 /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45131649490100DFE3D8 /* HelpView.xib */; };
+		48AF45171649494400DFE3D8 /* AboutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45161649494400DFE3D8 /* AboutView.xib */; };
+		48AF45181649494400DFE3D8 /* AboutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45161649494400DFE3D8 /* AboutView.xib */; };
+		48AF452D1649788A00DFE3D8 /* AboutTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45191649788A00DFE3D8 /* AboutTab.png */; };
+		48AF452E1649788A00DFE3D8 /* AboutTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45191649788A00DFE3D8 /* AboutTab.png */; };
+		48AF452F1649788A00DFE3D8 /* AboutTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */; };
+		48AF45301649788A00DFE3D8 /* AboutTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */; };
+		48AF45311649788A00DFE3D8 /* CreditTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451B1649788A00DFE3D8 /* CreditTab.png */; };
+		48AF45321649788A00DFE3D8 /* CreditTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451B1649788A00DFE3D8 /* CreditTab.png */; };
+		48AF45331649788A00DFE3D8 /* CreditTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451C1649788A00DFE3D8 /* CreditTab@2x.png */; };
+		48AF45341649788A00DFE3D8 /* CreditTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451C1649788A00DFE3D8 /* CreditTab@2x.png */; };
+		48AF45351649788A00DFE3D8 /* DialerTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451D1649788A00DFE3D8 /* DialerTab.png */; };
+		48AF45361649788A00DFE3D8 /* DialerTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451D1649788A00DFE3D8 /* DialerTab.png */; };
+		48AF45371649788A00DFE3D8 /* DialerTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451E1649788A00DFE3D8 /* DialerTab@2x.png */; };
+		48AF45381649788A00DFE3D8 /* DialerTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451E1649788A00DFE3D8 /* DialerTab@2x.png */; };
+		48AF45391649788A00DFE3D8 /* ForwardingsTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451F1649788A00DFE3D8 /* ForwardingsTab.png */; };
+		48AF453A1649788A00DFE3D8 /* ForwardingsTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451F1649788A00DFE3D8 /* ForwardingsTab.png */; };
+		48AF453B1649788A00DFE3D8 /* ForwardingsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45201649788A00DFE3D8 /* ForwardingsTab@2x.png */; };
+		48AF453C1649788A00DFE3D8 /* ForwardingsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45201649788A00DFE3D8 /* ForwardingsTab@2x.png */; };
+		48AF453D1649788A00DFE3D8 /* GroupsTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45211649788A00DFE3D8 /* GroupsTab.png */; };
+		48AF453E1649788A00DFE3D8 /* GroupsTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45211649788A00DFE3D8 /* GroupsTab.png */; };
+		48AF453F1649788A00DFE3D8 /* GroupsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45221649788A00DFE3D8 /* GroupsTab@2x.png */; };
+		48AF45401649788A00DFE3D8 /* GroupsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45221649788A00DFE3D8 /* GroupsTab@2x.png */; };
+		48AF45411649788A00DFE3D8 /* HelpTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45231649788A00DFE3D8 /* HelpTab.png */; };
+		48AF45421649788A00DFE3D8 /* HelpTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45231649788A00DFE3D8 /* HelpTab.png */; };
+		48AF45431649788A00DFE3D8 /* HelpTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45241649788A00DFE3D8 /* HelpTab@2x.png */; };
+		48AF45441649788A00DFE3D8 /* HelpTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45241649788A00DFE3D8 /* HelpTab@2x.png */; };
+		48AF45451649788A00DFE3D8 /* NumbersTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45251649788A00DFE3D8 /* NumbersTab.png */; };
+		48AF45461649788A00DFE3D8 /* NumbersTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45251649788A00DFE3D8 /* NumbersTab.png */; };
+		48AF45471649788A00DFE3D8 /* NumbersTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45261649788A00DFE3D8 /* NumbersTab@2x.png */; };
+		48AF45481649788A00DFE3D8 /* NumbersTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45261649788A00DFE3D8 /* NumbersTab@2x.png */; };
+		48AF45491649788A00DFE3D8 /* RecentsTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45271649788A00DFE3D8 /* RecentsTab.png */; };
+		48AF454A1649788A00DFE3D8 /* RecentsTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45271649788A00DFE3D8 /* RecentsTab.png */; };
+		48AF454B1649788A00DFE3D8 /* RecentsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45281649788A00DFE3D8 /* RecentsTab@2x.png */; };
+		48AF454C1649788A00DFE3D8 /* RecentsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45281649788A00DFE3D8 /* RecentsTab@2x.png */; };
+		48AF454D1649788A00DFE3D8 /* SettingsTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45291649788A00DFE3D8 /* SettingsTab.png */; };
+		48AF454E1649788A00DFE3D8 /* SettingsTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45291649788A00DFE3D8 /* SettingsTab.png */; };
+		48AF454F1649788A00DFE3D8 /* SettingsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF452A1649788A00DFE3D8 /* SettingsTab@2x.png */; };
+		48AF45501649788A00DFE3D8 /* SettingsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF452A1649788A00DFE3D8 /* SettingsTab@2x.png */; };
+		48AF45511649788A00DFE3D8 /* ShareTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF452B1649788A00DFE3D8 /* ShareTab.png */; };
+		48AF45521649788A00DFE3D8 /* ShareTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF452B1649788A00DFE3D8 /* ShareTab.png */; };
+		48AF45531649788A00DFE3D8 /* ShareTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF452C1649788A00DFE3D8 /* ShareTab@2x.png */; };
+		48AF45541649788A00DFE3D8 /* ShareTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF452C1649788A00DFE3D8 /* ShareTab@2x.png */; };
+		48AF4557164978BF00DFE3D8 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4556164978BE00DFE3D8 /* ShareViewController.m */; };
+		48AF4558164978BF00DFE3D8 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4556164978BE00DFE3D8 /* ShareViewController.m */; };
+		48AF455B1649794B00DFE3D8 /* ShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF455A1649794B00DFE3D8 /* ShareView.xib */; };
+		48AF455C1649794B00DFE3D8 /* ShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF455A1649794B00DFE3D8 /* ShareView.xib */; };
+		48AF455E1649799F00DFE3D8 /* ForwardingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF455D1649799F00DFE3D8 /* ForwardingsView.xib */; };
+		48AF455F1649799F00DFE3D8 /* ForwardingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF455D1649799F00DFE3D8 /* ForwardingsView.xib */; };
+		48AF4561164979CE00DFE3D8 /* RecentsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF4560164979CE00DFE3D8 /* RecentsView.xib */; };
+		48AF4562164979CE00DFE3D8 /* RecentsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF4560164979CE00DFE3D8 /* RecentsView.xib */; };
+		48AF4565164979F400DFE3D8 /* ForwardingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4564164979F400DFE3D8 /* ForwardingsViewController.m */; };
+		48AF4566164979F400DFE3D8 /* ForwardingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4564164979F400DFE3D8 /* ForwardingsViewController.m */; };
+		48AF456916497A1B00DFE3D8 /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF456816497A1B00DFE3D8 /* RecentsViewController.m */; };
+		48AF456A16497A1B00DFE3D8 /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF456816497A1B00DFE3D8 /* RecentsViewController.m */; };
 		48CB0775163D76C300B07199 /* PhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CB0774163D76C300B07199 /* PhoneNumber.m */; };
 		48FD99D216182B6B0061191B /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48FD99D116182B6B0061191B /* SipConfig.cfg */; };
 		48FD99D316182B6B0061191B /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48FD99D116182B6B0061191B /* SipConfig.cfg */; };
@@ -639,14 +711,6 @@
 		48338F9A16170C6C0033F4C1 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		48338F9F16170CA80033F4C1 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		48338FA016170CA80033F4C1 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		48338FA116170CA80033F4C1 /* FirstViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
-		48338FA216170CA80033F4C1 /* FirstViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
-		48338FA316170CA80033F4C1 /* SecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
-		48338FA416170CA80033F4C1 /* SecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
-		48338FAA16170CBA0033F4C1 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first.png; sourceTree = "<group>"; };
-		48338FAB16170CBA0033F4C1 /* first@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "first@2x.png"; sourceTree = "<group>"; };
-		48338FAC16170CBA0033F4C1 /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = second.png; sourceTree = "<group>"; };
-		48338FAD16170CBA0033F4C1 /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
 		48338FB416170D8C0033F4C1 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		48338FB516170D8C0033F4C1 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		48338FB616170D8C0033F4C1 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
@@ -1157,14 +1221,62 @@
 		48884A7C1615CE920005AA79 /* Talk-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Talk-Info.plist"; sourceTree = "<group>"; };
 		48884A7E1615CE920005AA79 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		48884A821615CE920005AA79 /* Talk-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Talk-Prefix.pch"; sourceTree = "<group>"; };
-		48884A8D1615CE920005AA79 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
-		48884A901615CE920005AA79 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		48884AA51615CE920005AA79 /* TalkTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TalkTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		48884AA61615CE920005AA79 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		48884AAE1615CE920005AA79 /* TalkTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TalkTests-Info.plist"; sourceTree = "<group>"; };
 		48884AB01615CE920005AA79 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		48884AB21615CE920005AA79 /* TalkTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TalkTests.h; sourceTree = "<group>"; };
 		48884AB31615CE920005AA79 /* TalkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TalkTests.m; sourceTree = "<group>"; };
+		48AF44E81649479100DFE3D8 /* NumbersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumbersViewController.h; sourceTree = "<group>"; };
+		48AF44E91649479100DFE3D8 /* NumbersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumbersViewController.m; sourceTree = "<group>"; };
+		48AF44EC164947B300DFE3D8 /* CreditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditViewController.h; sourceTree = "<group>"; };
+		48AF44ED164947B300DFE3D8 /* CreditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditViewController.m; sourceTree = "<group>"; };
+		48AF44F0164947CD00DFE3D8 /* DialerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialerViewController.h; sourceTree = "<group>"; };
+		48AF44F1164947CE00DFE3D8 /* DialerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DialerViewController.m; sourceTree = "<group>"; };
+		48AF44F4164947E600DFE3D8 /* GroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupsViewController.h; sourceTree = "<group>"; };
+		48AF44F5164947E600DFE3D8 /* GroupsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupsViewController.m; sourceTree = "<group>"; };
+		48AF44F8164947FA00DFE3D8 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		48AF44F9164947FA00DFE3D8 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		48AF44FC1649483600DFE3D8 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
+		48AF44FD1649483600DFE3D8 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
+		48AF45001649484600DFE3D8 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		48AF45011649484600DFE3D8 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		48AF4504164948A300DFE3D8 /* NumbersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumbersView.xib; sourceTree = "<group>"; };
+		48AF4507164948B800DFE3D8 /* CreditView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreditView.xib; sourceTree = "<group>"; };
+		48AF450A164948CD00DFE3D8 /* DialerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DialerView.xib; sourceTree = "<group>"; };
+		48AF450D164948DC00DFE3D8 /* GroupsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupsView.xib; sourceTree = "<group>"; };
+		48AF4510164948F000DFE3D8 /* SettingsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsView.xib; sourceTree = "<group>"; };
+		48AF45131649490100DFE3D8 /* HelpView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HelpView.xib; sourceTree = "<group>"; };
+		48AF45161649494400DFE3D8 /* AboutView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutView.xib; sourceTree = "<group>"; };
+		48AF45191649788A00DFE3D8 /* AboutTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AboutTab.png; sourceTree = "<group>"; };
+		48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AboutTab@2x.png"; sourceTree = "<group>"; };
+		48AF451B1649788A00DFE3D8 /* CreditTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CreditTab.png; sourceTree = "<group>"; };
+		48AF451C1649788A00DFE3D8 /* CreditTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CreditTab@2x.png"; sourceTree = "<group>"; };
+		48AF451D1649788A00DFE3D8 /* DialerTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DialerTab.png; sourceTree = "<group>"; };
+		48AF451E1649788A00DFE3D8 /* DialerTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DialerTab@2x.png"; sourceTree = "<group>"; };
+		48AF451F1649788A00DFE3D8 /* ForwardingsTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ForwardingsTab.png; sourceTree = "<group>"; };
+		48AF45201649788A00DFE3D8 /* ForwardingsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ForwardingsTab@2x.png"; sourceTree = "<group>"; };
+		48AF45211649788A00DFE3D8 /* GroupsTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GroupsTab.png; sourceTree = "<group>"; };
+		48AF45221649788A00DFE3D8 /* GroupsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GroupsTab@2x.png"; sourceTree = "<group>"; };
+		48AF45231649788A00DFE3D8 /* HelpTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HelpTab.png; sourceTree = "<group>"; };
+		48AF45241649788A00DFE3D8 /* HelpTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HelpTab@2x.png"; sourceTree = "<group>"; };
+		48AF45251649788A00DFE3D8 /* NumbersTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumbersTab.png; sourceTree = "<group>"; };
+		48AF45261649788A00DFE3D8 /* NumbersTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NumbersTab@2x.png"; sourceTree = "<group>"; };
+		48AF45271649788A00DFE3D8 /* RecentsTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RecentsTab.png; sourceTree = "<group>"; };
+		48AF45281649788A00DFE3D8 /* RecentsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RecentsTab@2x.png"; sourceTree = "<group>"; };
+		48AF45291649788A00DFE3D8 /* SettingsTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsTab.png; sourceTree = "<group>"; };
+		48AF452A1649788A00DFE3D8 /* SettingsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingsTab@2x.png"; sourceTree = "<group>"; };
+		48AF452B1649788A00DFE3D8 /* ShareTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ShareTab.png; sourceTree = "<group>"; };
+		48AF452C1649788A00DFE3D8 /* ShareTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShareTab@2x.png"; sourceTree = "<group>"; };
+		48AF4555164978BE00DFE3D8 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
+		48AF4556164978BE00DFE3D8 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
+		48AF455A1649794B00DFE3D8 /* ShareView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareView.xib; sourceTree = "<group>"; };
+		48AF455D1649799F00DFE3D8 /* ForwardingsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForwardingsView.xib; sourceTree = "<group>"; };
+		48AF4560164979CE00DFE3D8 /* RecentsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecentsView.xib; sourceTree = "<group>"; };
+		48AF4563164979F300DFE3D8 /* ForwardingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForwardingsViewController.h; sourceTree = "<group>"; };
+		48AF4564164979F400DFE3D8 /* ForwardingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForwardingsViewController.m; sourceTree = "<group>"; };
+		48AF456716497A1B00DFE3D8 /* RecentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentsViewController.h; sourceTree = "<group>"; };
+		48AF456816497A1B00DFE3D8 /* RecentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentsViewController.m; sourceTree = "<group>"; };
 		48CB0773163D76C300B07199 /* PhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumber.h; sourceTree = "<group>"; };
 		48CB0774163D76C300B07199 /* PhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneNumber.m; sourceTree = "<group>"; };
 		48FD99D116182B6B0061191B /* SipConfig.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SipConfig.cfg; sourceTree = "<group>"; };
@@ -1287,14 +1399,11 @@
 				48338FA016170CA80033F4C1 /* AppDelegate.m */,
 				48FD99E51618CC370061191B /* Common.h */,
 				48FD99E61618CC370061191B /* Common.m */,
-				48338FA116170CA80033F4C1 /* FirstViewController.h */,
-				48338FA216170CA80033F4C1 /* FirstViewController.m */,
-				48338FA316170CA80033F4C1 /* SecondViewController.h */,
-				48338FA416170CA80033F4C1 /* SecondViewController.m */,
 				48338FCF16181B750033F4C1 /* SipInterface.h */,
 				48338FD016181B750033F4C1 /* SipInterface.m */,
 				48CB0773163D76C300B07199 /* PhoneNumber.h */,
 				48CB0774163D76C300B07199 /* PhoneNumber.m */,
+				48AF45591649790900DFE3D8 /* ViewControllers */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -1312,21 +1421,28 @@
 		48338FA916170CBA0033F4C1 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
-				48338FAA16170CBA0033F4C1 /* first.png */,
-				48338FAB16170CBA0033F4C1 /* first@2x.png */,
-				48338FAC16170CBA0033F4C1 /* second.png */,
-				48338FAD16170CBA0033F4C1 /* second@2x.png */,
+				48AF45191649788A00DFE3D8 /* AboutTab.png */,
+				48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */,
+				48AF451B1649788A00DFE3D8 /* CreditTab.png */,
+				48AF451C1649788A00DFE3D8 /* CreditTab@2x.png */,
+				48AF451D1649788A00DFE3D8 /* DialerTab.png */,
+				48AF451E1649788A00DFE3D8 /* DialerTab@2x.png */,
+				48AF451F1649788A00DFE3D8 /* ForwardingsTab.png */,
+				48AF45201649788A00DFE3D8 /* ForwardingsTab@2x.png */,
+				48AF45211649788A00DFE3D8 /* GroupsTab.png */,
+				48AF45221649788A00DFE3D8 /* GroupsTab@2x.png */,
+				48AF45231649788A00DFE3D8 /* HelpTab.png */,
+				48AF45241649788A00DFE3D8 /* HelpTab@2x.png */,
+				48AF45251649788A00DFE3D8 /* NumbersTab.png */,
+				48AF45261649788A00DFE3D8 /* NumbersTab@2x.png */,
+				48AF45271649788A00DFE3D8 /* RecentsTab.png */,
+				48AF45281649788A00DFE3D8 /* RecentsTab@2x.png */,
+				48AF45291649788A00DFE3D8 /* SettingsTab.png */,
+				48AF452A1649788A00DFE3D8 /* SettingsTab@2x.png */,
+				48AF452B1649788A00DFE3D8 /* ShareTab.png */,
+				48AF452C1649788A00DFE3D8 /* ShareTab@2x.png */,
 			);
 			path = Tabs;
-			sourceTree = "<group>";
-		};
-		48338FB216170CEC0033F4C1 /* StoryBoards */ = {
-			isa = PBXGroup;
-			children = (
-				48884A8C1615CE920005AA79 /* MainStoryboard_iPhone.storyboard */,
-				48884A8F1615CE920005AA79 /* MainStoryboard_iPad.storyboard */,
-			);
-			name = StoryBoards;
 			sourceTree = "<group>";
 		};
 		48338FB316170D8C0033F4C1 /* App */ = {
@@ -1885,7 +2001,7 @@
 			isa = PBXGroup;
 			children = (
 				48338F9E16170CA80033F4C1 /* Sources */,
-				48338FB216170CEC0033F4C1 /* StoryBoards */,
+				48AF44E116490FF200DFE3D8 /* XIBs */,
 				48338FA816170CBA0033F4C1 /* Images */,
 				48CB076F163D5E3500B07199 /* Resources */,
 				48884A7B1615CE920005AA79 /* Supporting Files */,
@@ -1923,6 +2039,50 @@
 				48884AAF1615CE920005AA79 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		48AF44E116490FF200DFE3D8 /* XIBs */ = {
+			isa = PBXGroup;
+			children = (
+				48AF45161649494400DFE3D8 /* AboutView.xib */,
+				48AF4507164948B800DFE3D8 /* CreditView.xib */,
+				48AF450A164948CD00DFE3D8 /* DialerView.xib */,
+				48AF455D1649799F00DFE3D8 /* ForwardingsView.xib */,
+				48AF450D164948DC00DFE3D8 /* GroupsView.xib */,
+				48AF45131649490100DFE3D8 /* HelpView.xib */,
+				48AF4504164948A300DFE3D8 /* NumbersView.xib */,
+				48AF4560164979CE00DFE3D8 /* RecentsView.xib */,
+				48AF4510164948F000DFE3D8 /* SettingsView.xib */,
+				48AF455A1649794B00DFE3D8 /* ShareView.xib */,
+			);
+			path = XIBs;
+			sourceTree = "<group>";
+		};
+		48AF45591649790900DFE3D8 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				48AF45001649484600DFE3D8 /* AboutViewController.h */,
+				48AF45011649484600DFE3D8 /* AboutViewController.m */,
+				48AF44EC164947B300DFE3D8 /* CreditViewController.h */,
+				48AF44ED164947B300DFE3D8 /* CreditViewController.m */,
+				48AF44F0164947CD00DFE3D8 /* DialerViewController.h */,
+				48AF44F1164947CE00DFE3D8 /* DialerViewController.m */,
+				48AF4563164979F300DFE3D8 /* ForwardingsViewController.h */,
+				48AF4564164979F400DFE3D8 /* ForwardingsViewController.m */,
+				48AF44F4164947E600DFE3D8 /* GroupsViewController.h */,
+				48AF44F5164947E600DFE3D8 /* GroupsViewController.m */,
+				48AF44FC1649483600DFE3D8 /* HelpViewController.h */,
+				48AF44FD1649483600DFE3D8 /* HelpViewController.m */,
+				48AF44E81649479100DFE3D8 /* NumbersViewController.h */,
+				48AF44E91649479100DFE3D8 /* NumbersViewController.m */,
+				48AF456716497A1B00DFE3D8 /* RecentsViewController.h */,
+				48AF456816497A1B00DFE3D8 /* RecentsViewController.m */,
+				48AF4555164978BE00DFE3D8 /* ShareViewController.h */,
+				48AF4556164978BE00DFE3D8 /* ShareViewController.m */,
+				48AF44F8164947FA00DFE3D8 /* SettingsViewController.h */,
+				48AF44F9164947FA00DFE3D8 /* SettingsViewController.m */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 		48CB076F163D5E3500B07199 /* Resources */ = {
@@ -2010,12 +2170,6 @@
 			files = (
 				48884A7F1615CE920005AA79 /* InfoPlist.strings in Resources */,
 				4812727316487E2D00534450 /* LibPhoneNumber.js in Resources */,
-				48884A8E1615CE920005AA79 /* MainStoryboard_iPhone.storyboard in Resources */,
-				48884A911615CE920005AA79 /* MainStoryboard_iPad.storyboard in Resources */,
-				48338FAE16170CBA0033F4C1 /* first.png in Resources */,
-				48338FAF16170CBA0033F4C1 /* first@2x.png in Resources */,
-				48338FB016170CBA0033F4C1 /* second.png in Resources */,
-				48338FB116170CBA0033F4C1 /* second@2x.png in Resources */,
 				48338FB716170D8C0033F4C1 /* Default-568h@2x.png in Resources */,
 				48338FB816170D8C0033F4C1 /* Default.png in Resources */,
 				48338FB916170D8C0033F4C1 /* Default@2x.png in Resources */,
@@ -2521,6 +2675,36 @@
 				4827D8B4163F0F5700005131 /* CountryNames.json in Resources */,
 				4827D8B5163F0F5700005131 /* CountryCodesMap.json in Resources */,
 				4827D8B6163F0F5700005131 /* MobileCountryCodes.json in Resources */,
+				48AF4505164948A300DFE3D8 /* NumbersView.xib in Resources */,
+				48AF4508164948B800DFE3D8 /* CreditView.xib in Resources */,
+				48AF450B164948CD00DFE3D8 /* DialerView.xib in Resources */,
+				48AF450E164948DC00DFE3D8 /* GroupsView.xib in Resources */,
+				48AF4511164948F000DFE3D8 /* SettingsView.xib in Resources */,
+				48AF45141649490100DFE3D8 /* HelpView.xib in Resources */,
+				48AF45171649494400DFE3D8 /* AboutView.xib in Resources */,
+				48AF452D1649788A00DFE3D8 /* AboutTab.png in Resources */,
+				48AF452F1649788A00DFE3D8 /* AboutTab@2x.png in Resources */,
+				48AF45311649788A00DFE3D8 /* CreditTab.png in Resources */,
+				48AF45331649788A00DFE3D8 /* CreditTab@2x.png in Resources */,
+				48AF45351649788A00DFE3D8 /* DialerTab.png in Resources */,
+				48AF45371649788A00DFE3D8 /* DialerTab@2x.png in Resources */,
+				48AF45391649788A00DFE3D8 /* ForwardingsTab.png in Resources */,
+				48AF453B1649788A00DFE3D8 /* ForwardingsTab@2x.png in Resources */,
+				48AF453D1649788A00DFE3D8 /* GroupsTab.png in Resources */,
+				48AF453F1649788A00DFE3D8 /* GroupsTab@2x.png in Resources */,
+				48AF45411649788A00DFE3D8 /* HelpTab.png in Resources */,
+				48AF45431649788A00DFE3D8 /* HelpTab@2x.png in Resources */,
+				48AF45451649788A00DFE3D8 /* NumbersTab.png in Resources */,
+				48AF45471649788A00DFE3D8 /* NumbersTab@2x.png in Resources */,
+				48AF45491649788A00DFE3D8 /* RecentsTab.png in Resources */,
+				48AF454B1649788A00DFE3D8 /* RecentsTab@2x.png in Resources */,
+				48AF454D1649788A00DFE3D8 /* SettingsTab.png in Resources */,
+				48AF454F1649788A00DFE3D8 /* SettingsTab@2x.png in Resources */,
+				48AF45511649788A00DFE3D8 /* ShareTab.png in Resources */,
+				48AF45531649788A00DFE3D8 /* ShareTab@2x.png in Resources */,
+				48AF455B1649794B00DFE3D8 /* ShareView.xib in Resources */,
+				48AF455E1649799F00DFE3D8 /* ForwardingsView.xib in Resources */,
+				48AF4561164979CE00DFE3D8 /* RecentsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2530,6 +2714,36 @@
 			files = (
 				48884AB11615CE920005AA79 /* InfoPlist.strings in Resources */,
 				48FD99D316182B6B0061191B /* SipConfig.cfg in Resources */,
+				48AF4506164948A300DFE3D8 /* NumbersView.xib in Resources */,
+				48AF4509164948B800DFE3D8 /* CreditView.xib in Resources */,
+				48AF450C164948CD00DFE3D8 /* DialerView.xib in Resources */,
+				48AF450F164948DC00DFE3D8 /* GroupsView.xib in Resources */,
+				48AF4512164948F000DFE3D8 /* SettingsView.xib in Resources */,
+				48AF45151649490100DFE3D8 /* HelpView.xib in Resources */,
+				48AF45181649494400DFE3D8 /* AboutView.xib in Resources */,
+				48AF452E1649788A00DFE3D8 /* AboutTab.png in Resources */,
+				48AF45301649788A00DFE3D8 /* AboutTab@2x.png in Resources */,
+				48AF45321649788A00DFE3D8 /* CreditTab.png in Resources */,
+				48AF45341649788A00DFE3D8 /* CreditTab@2x.png in Resources */,
+				48AF45361649788A00DFE3D8 /* DialerTab.png in Resources */,
+				48AF45381649788A00DFE3D8 /* DialerTab@2x.png in Resources */,
+				48AF453A1649788A00DFE3D8 /* ForwardingsTab.png in Resources */,
+				48AF453C1649788A00DFE3D8 /* ForwardingsTab@2x.png in Resources */,
+				48AF453E1649788A00DFE3D8 /* GroupsTab.png in Resources */,
+				48AF45401649788A00DFE3D8 /* GroupsTab@2x.png in Resources */,
+				48AF45421649788A00DFE3D8 /* HelpTab.png in Resources */,
+				48AF45441649788A00DFE3D8 /* HelpTab@2x.png in Resources */,
+				48AF45461649788A00DFE3D8 /* NumbersTab.png in Resources */,
+				48AF45481649788A00DFE3D8 /* NumbersTab@2x.png in Resources */,
+				48AF454A1649788A00DFE3D8 /* RecentsTab.png in Resources */,
+				48AF454C1649788A00DFE3D8 /* RecentsTab@2x.png in Resources */,
+				48AF454E1649788A00DFE3D8 /* SettingsTab.png in Resources */,
+				48AF45501649788A00DFE3D8 /* SettingsTab@2x.png in Resources */,
+				48AF45521649788A00DFE3D8 /* ShareTab.png in Resources */,
+				48AF45541649788A00DFE3D8 /* ShareTab@2x.png in Resources */,
+				48AF455C1649794B00DFE3D8 /* ShareView.xib in Resources */,
+				48AF455F1649799F00DFE3D8 /* ForwardingsView.xib in Resources */,
+				48AF4562164979CE00DFE3D8 /* RecentsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2571,11 +2785,19 @@
 			files = (
 				48338F9B16170C6C0033F4C1 /* main.m in Sources */,
 				48338FA516170CA80033F4C1 /* AppDelegate.m in Sources */,
-				48338FA616170CA80033F4C1 /* FirstViewController.m in Sources */,
-				48338FA716170CA80033F4C1 /* SecondViewController.m in Sources */,
 				48338FD116181B750033F4C1 /* SipInterface.m in Sources */,
 				48FD99E71618CC370061191B /* Common.m in Sources */,
 				48CB0775163D76C300B07199 /* PhoneNumber.m in Sources */,
+				48AF44EA1649479100DFE3D8 /* NumbersViewController.m in Sources */,
+				48AF44EE164947B300DFE3D8 /* CreditViewController.m in Sources */,
+				48AF44F2164947CE00DFE3D8 /* DialerViewController.m in Sources */,
+				48AF44F6164947E600DFE3D8 /* GroupsViewController.m in Sources */,
+				48AF44FA164947FA00DFE3D8 /* SettingsViewController.m in Sources */,
+				48AF44FE1649483600DFE3D8 /* HelpViewController.m in Sources */,
+				48AF45021649484600DFE3D8 /* AboutViewController.m in Sources */,
+				48AF4557164978BF00DFE3D8 /* ShareViewController.m in Sources */,
+				48AF4565164979F400DFE3D8 /* ForwardingsViewController.m in Sources */,
+				48AF456916497A1B00DFE3D8 /* RecentsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2587,6 +2809,16 @@
 				48338FD216181B750033F4C1 /* SipInterface.m in Sources */,
 				48FD99E81618CC370061191B /* Common.m in Sources */,
 				4812727416487E2D00534450 /* LibPhoneNumber.js in Sources */,
+				48AF44EB1649479100DFE3D8 /* NumbersViewController.m in Sources */,
+				48AF44EF164947B300DFE3D8 /* CreditViewController.m in Sources */,
+				48AF44F3164947CE00DFE3D8 /* DialerViewController.m in Sources */,
+				48AF44F7164947E600DFE3D8 /* GroupsViewController.m in Sources */,
+				48AF44FB164947FA00DFE3D8 /* SettingsViewController.m in Sources */,
+				48AF44FF1649483600DFE3D8 /* HelpViewController.m in Sources */,
+				48AF45031649484600DFE3D8 /* AboutViewController.m in Sources */,
+				48AF4558164978BF00DFE3D8 /* ShareViewController.m in Sources */,
+				48AF4566164979F400DFE3D8 /* ForwardingsViewController.m in Sources */,
+				48AF456A16497A1B00DFE3D8 /* RecentsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2607,22 +2839,6 @@
 				48884A7E1615CE920005AA79 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		48884A8C1615CE920005AA79 /* MainStoryboard_iPhone.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				48884A8D1615CE920005AA79 /* en */,
-			);
-			name = MainStoryboard_iPhone.storyboard;
-			sourceTree = "<group>";
-		};
-		48884A8F1615CE920005AA79 /* MainStoryboard_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				48884A901615CE920005AA79 /* en */,
-			);
-			name = MainStoryboard_iPad.storyboard;
 			sourceTree = "<group>";
 		};
 		48884AAF1615CE920005AA79 /* InfoPlist.strings */ = {
@@ -2725,6 +2941,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "AB1B819F-987E-4A86-832F-D190D04339B0";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2741,6 +2958,7 @@
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
