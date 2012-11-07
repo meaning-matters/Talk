@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ViewController.h"
 
-@interface ForwardingsViewController : UIViewController
+@interface ForwardingsViewController : ViewController
 
 @end

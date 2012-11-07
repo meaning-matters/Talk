@@ -580,6 +580,10 @@
 		48884AA91615CE920005AA79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A761615CE920005AA79 /* Foundation.framework */; };
 		48884AB11615CE920005AA79 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48884AAF1615CE920005AA79 /* InfoPlist.strings */; };
 		48884AB41615CE920005AA79 /* TalkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48884AB31615CE920005AA79 /* TalkTests.m */; };
+		48AD95DA164AC4FE006178E6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95D9164AC4FE006178E6 /* ViewController.m */; };
+		48AD95DB164AC4FE006178E6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95D9164AC4FE006178E6 /* ViewController.m */; };
+		48AD95DF164AE582006178E6 /* Skinning.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95DE164AE582006178E6 /* Skinning.m */; };
+		48AD95E0164AE582006178E6 /* Skinning.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95DE164AE582006178E6 /* Skinning.m */; };
 		48AF44EA1649479100DFE3D8 /* NumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44E91649479100DFE3D8 /* NumbersViewController.m */; };
 		48AF44EB1649479100DFE3D8 /* NumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44E91649479100DFE3D8 /* NumbersViewController.m */; };
 		48AF44EE164947B300DFE3D8 /* CreditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44ED164947B300DFE3D8 /* CreditViewController.m */; };
@@ -1229,6 +1233,10 @@
 		48884AB01615CE920005AA79 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		48884AB21615CE920005AA79 /* TalkTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TalkTests.h; sourceTree = "<group>"; };
 		48884AB31615CE920005AA79 /* TalkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TalkTests.m; sourceTree = "<group>"; };
+		48AD95D8164AC4FE006178E6 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		48AD95D9164AC4FE006178E6 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		48AD95DD164AE581006178E6 /* Skinning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skinning.h; sourceTree = "<group>"; };
+		48AD95DE164AE582006178E6 /* Skinning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Skinning.m; sourceTree = "<group>"; };
 		48AF44E81649479100DFE3D8 /* NumbersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumbersViewController.h; sourceTree = "<group>"; };
 		48AF44E91649479100DFE3D8 /* NumbersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumbersViewController.m; sourceTree = "<group>"; };
 		48AF44EC164947B300DFE3D8 /* CreditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditViewController.h; sourceTree = "<group>"; };
@@ -1409,6 +1417,8 @@
 				48CB0774163D76C300B07199 /* PhoneNumber.m */,
 				48AF457F164A45A000DFE3D8 /* Settings.h */,
 				48AF4580164A45A100DFE3D8 /* Settings.m */,
+				48AD95DD164AE581006178E6 /* Skinning.h */,
+				48AD95DE164AE582006178E6 /* Skinning.m */,
 				48AF45591649790900DFE3D8 /* ViewControllers */,
 			);
 			path = Sources;
@@ -2087,6 +2097,8 @@
 				48AF4556164978BE00DFE3D8 /* ShareViewController.m */,
 				48AF44F8164947FA00DFE3D8 /* SettingsViewController.h */,
 				48AF44F9164947FA00DFE3D8 /* SettingsViewController.m */,
+				48AD95D8164AC4FE006178E6 /* ViewController.h */,
+				48AD95D9164AC4FE006178E6 /* ViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -2805,6 +2817,8 @@
 				48AF4565164979F400DFE3D8 /* ForwardingsViewController.m in Sources */,
 				48AF456916497A1B00DFE3D8 /* RecentsViewController.m in Sources */,
 				48AF4581164A45A100DFE3D8 /* Settings.m in Sources */,
+				48AD95DA164AC4FE006178E6 /* ViewController.m in Sources */,
+				48AD95DF164AE582006178E6 /* Skinning.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2827,6 +2841,8 @@
 				48AF4566164979F400DFE3D8 /* ForwardingsViewController.m in Sources */,
 				48AF456A16497A1B00DFE3D8 /* RecentsViewController.m in Sources */,
 				48AF4582164A45A100DFE3D8 /* Settings.m in Sources */,
+				48AD95DB164AC4FE006178E6 /* ViewController.m in Sources */,
+				48AD95E0164AE582006178E6 /* Skinning.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
