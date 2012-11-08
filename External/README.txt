@@ -14,3 +14,6 @@ LibPhoneNumber
 This above remark is a common theme for all Externals: No need let things 
 build in Xcode.  Keeping things outside Xcode ensures that the project
 remains simple.
+
+Reachability
+* I copied the module into Sources and cleaned it up.

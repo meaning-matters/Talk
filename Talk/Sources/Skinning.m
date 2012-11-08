@@ -20,7 +20,7 @@ static Skinning*    sharedSkinning;
     if ([Skinning class] == self)
     {
         sharedSkinning = [self new];
-        [sharedSkinning setUp];
+        [Skinning setUp];
     }
 }
 
@@ -42,9 +42,9 @@ static Skinning*    sharedSkinning;
 }
 
 
-- (void)setUp
++ (void)setUp
 {
-    // Place app-wide skinning commands here.
+    // Place app-wide skinning/appearance commands here.
     [[UINavigationBar appearance] setBarStyle:UIBarStyleBlackOpaque];
 }
 

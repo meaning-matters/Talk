@@ -8,9 +8,11 @@
 //
 
 #import "AppDelegate.h"
-#import "Skinning.h"
 #import "Settings.h"
 #import "PhoneNumber.h"
+#import "Skinning.h"
+#import "NetworkStatus.h"
+
 
 @interface AppDelegate ()
 {
@@ -38,8 +40,9 @@
 
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
-    // Trigger skinning.
+    // Trigger singletons.
     [Skinning sharedSkinning];
+    [NetworkStatus sharedStatus];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.tabBarController = [[UITabBarController alloc] init];

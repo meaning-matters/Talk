@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define CFReleaseSafe(x)    { if ((x) != NULL) CFRelease(x); }
+
 @interface Common : NSObject
 
 + (NSString*)documentFilePath:(NSString*)fileName;
@@ -15,6 +17,8 @@
 + (NSData*)dataForResource:(NSString*)resourse ofType:(NSString*)type;
 
 + (NSString*)bundleVersion;
+
++ (NSString*)bundleName;
 
 + (NSData*)jsonDataWithObject:(id)object;
 
@@ -26,5 +30,9 @@
 
 //#### Addd: http://stackoverflow.com/questions/1108859/detect-the-specific-iphone-ipod-touch-model
 //+ (NSString*)deviceModel;
+
++ (void)postNotificationName:(NSString*)name object:(id)object;
+
++ (void)postNotificationName:(NSString *)name userInfo:(NSDictionary*)userInfo object:(id)object;
 
 @end

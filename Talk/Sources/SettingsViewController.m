@@ -15,6 +15,11 @@
 
 @implementation SettingsViewController
 
+@synthesize tableView = _tableView;
+
+
+#pragma mark - Basic Stuff
+
 - (id)init
 {
     if (self = [super initWithNibName:@"SettingsView" bundle:nil])
@@ -36,6 +41,26 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+
+#pragma mark - Table View Delegates
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
+{
+    return 1;
+}
+
+
+- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return @"";
+}
+
+
+- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
 }
 
 @end
