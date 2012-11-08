@@ -19,6 +19,7 @@
 #import "SettingsViewController.h"
 #import "SipInterface.h"
 
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
 
 @property (nonatomic, strong) UIWindow*                     window;

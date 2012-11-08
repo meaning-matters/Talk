@@ -73,6 +73,8 @@
 		48338FB916170D8C0033F4C1 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48338FB616170D8C0033F4C1 /* Default@2x.png */; };
 		48338FD116181B750033F4C1 /* SipInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 48338FD016181B750033F4C1 /* SipInterface.m */; };
 		48338FD216181B750033F4C1 /* SipInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 48338FD016181B750033F4C1 /* SipInterface.m */; };
+		484F7C3B164C15770059A5A6 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3A164C15770059A5A6 /* CoreTelephony.framework */; };
+		484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */; };
 		485F6A391637270100D61365 /* AD.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F68471637270100D61365 /* AD.png */; };
 		485F6A3A1637270100D61365 /* AD@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F68481637270100D61365 /* AD@2x.png */; };
 		485F6A3B1637270100D61365 /* AE.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F68491637270100D61365 /* AE.png */; };
@@ -571,6 +573,10 @@
 		485F6C281637270100D61365 /* ZM@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F6A361637270100D61365 /* ZM@2x.png */; };
 		485F6C291637270100D61365 /* ZW.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F6A371637270100D61365 /* ZW.png */; };
 		485F6C2A1637270100D61365 /* ZW@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F6A381637270100D61365 /* ZW@2x.png */; };
+		488268D9164BCF8600EA58AE /* NetworkStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 488268D8164BCF8600EA58AE /* NetworkStatus.m */; };
+		488268DA164BCF8600EA58AE /* NetworkStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 488268D8164BCF8600EA58AE /* NetworkStatus.m */; };
+		48826909164BDC3400EA58AE /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 48826908164BDC3400EA58AE /* Reachability.m */; };
+		4882690A164BDC3400EA58AE /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 48826908164BDC3400EA58AE /* Reachability.m */; };
 		48884A751615CE920005AA79 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A741615CE920005AA79 /* UIKit.framework */; };
 		48884A771615CE920005AA79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A761615CE920005AA79 /* Foundation.framework */; };
 		48884A791615CE920005AA79 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A781615CE920005AA79 /* CoreGraphics.framework */; };
@@ -722,6 +728,8 @@
 		48338FB616170D8C0033F4C1 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		48338FCF16181B750033F4C1 /* SipInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SipInterface.h; sourceTree = "<group>"; };
 		48338FD016181B750033F4C1 /* SipInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SipInterface.m; sourceTree = "<group>"; };
+		484F7C3A164C15770059A5A6 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		485F68471637270100D61365 /* AD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AD.png; sourceTree = "<group>"; };
 		485F68481637270100D61365 /* AD@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AD@2x.png"; sourceTree = "<group>"; };
 		485F68491637270100D61365 /* AE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AE.png; sourceTree = "<group>"; };
@@ -1220,6 +1228,10 @@
 		485F6A361637270100D61365 /* ZM@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ZM@2x.png"; sourceTree = "<group>"; };
 		485F6A371637270100D61365 /* ZW.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ZW.png; sourceTree = "<group>"; };
 		485F6A381637270100D61365 /* ZW@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ZW@2x.png"; sourceTree = "<group>"; };
+		488268D7164BCF8600EA58AE /* NetworkStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkStatus.h; sourceTree = "<group>"; };
+		488268D8164BCF8600EA58AE /* NetworkStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkStatus.m; sourceTree = "<group>"; };
+		48826907164BDC3400EA58AE /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		48826908164BDC3400EA58AE /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		48884A701615CE920005AA79 /* Talk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Talk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48884A741615CE920005AA79 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		48884A761615CE920005AA79 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1306,6 +1318,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */,
+				484F7C3B164C15770059A5A6 /* CoreTelephony.framework in Frameworks */,
 				48FD99DD161856120061191B /* CFNetwork.framework in Frameworks */,
 				48FD99DB161856070061191B /* AudioToolbox.framework in Frameworks */,
 				48FD99D9161855EF0061191B /* AVFoundation.framework in Frameworks */,
@@ -1419,6 +1433,7 @@
 				48AF4580164A45A100DFE3D8 /* Settings.m */,
 				48AD95DD164AE581006178E6 /* Skinning.h */,
 				48AD95DE164AE582006178E6 /* Skinning.m */,
+				488268D1164BCF6300EA58AE /* Networking */,
 				48AF45591649790900DFE3D8 /* ViewControllers */,
 			);
 			path = Sources;
@@ -1976,10 +1991,29 @@
 			path = Flags;
 			sourceTree = "<group>";
 		};
+		488268D1164BCF6300EA58AE /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				488268D7164BCF8600EA58AE /* NetworkStatus.h */,
+				488268D8164BCF8600EA58AE /* NetworkStatus.m */,
+				48826907164BDC3400EA58AE /* Reachability.h */,
+				48826908164BDC3400EA58AE /* Reachability.m */,
+			);
+			name = Networking;
+			sourceTree = "<group>";
+		};
+		488268DB164BD31B00EA58AE /* External */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = External;
+			sourceTree = "<group>";
+		};
 		48884A651615CE920005AA79 = {
 			isa = PBXGroup;
 			children = (
 				48884A7A1615CE920005AA79 /* Talk */,
+				488268DB164BD31B00EA58AE /* External */,
 				48884AAC1615CE920005AA79 /* TalkTests */,
 				48884A731615CE920005AA79 /* Frameworks */,
 				48884A711615CE920005AA79 /* Products */,
@@ -2007,7 +2041,9 @@
 				48FD99DC161856120061191B /* CFNetwork.framework */,
 				48FD99DA161856070061191B /* AudioToolbox.framework */,
 				48FD99D8161855EF0061191B /* AVFoundation.framework */,
+				484F7C3A164C15770059A5A6 /* CoreTelephony.framework */,
 				48FD99D6161855E10061191B /* CoreVideo.framework */,
+				484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */,
 				48FD99D4161855D30061191B /* CoreMedia.framework */,
 			);
 			name = Frameworks;
@@ -2819,6 +2855,8 @@
 				48AF4581164A45A100DFE3D8 /* Settings.m in Sources */,
 				48AD95DA164AC4FE006178E6 /* ViewController.m in Sources */,
 				48AD95DF164AE582006178E6 /* Skinning.m in Sources */,
+				488268D9164BCF8600EA58AE /* NetworkStatus.m in Sources */,
+				48826909164BDC3400EA58AE /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2843,6 +2881,8 @@
 				48AF4582164A45A100DFE3D8 /* Settings.m in Sources */,
 				48AD95DB164AC4FE006178E6 /* ViewController.m in Sources */,
 				48AD95E0164AE582006178E6 /* Skinning.m in Sources */,
+				488268DA164BCF8600EA58AE /* NetworkStatus.m in Sources */,
+				4882690A164BDC3400EA58AE /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

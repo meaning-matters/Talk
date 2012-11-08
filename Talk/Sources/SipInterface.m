@@ -10,6 +10,10 @@
 #import <pjsua-lib/pjsua.h>
 #import "Common.h"
 
+//### Added for Talk's NetworkStatus; needs to be notified to still.
+NSString* const kSipInterfaceCallStateChangedNotification = @"kSipInterfaceCallStateChangedNotification";
+
+
 #define THIS_FILE	"SipInterface"
 #define NO_LIMIT	(int)0x7FFFFFFF
 

@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "ViewController.h"
 
-@interface SettingsViewController : ViewController
+@interface SettingsViewController : ViewController <UITableViewDataSource, UITabBarDelegate>
+
+@property (nonatomic, strong) IBOutlet UITableView* tableView;
 
 @end

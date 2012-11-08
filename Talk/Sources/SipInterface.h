@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString* const  kSipInterfaceCallStateChangedNotification;
+
+
 @interface SipInterface : NSObject
 
 - (id)initWithConfigPath:(NSString*)configPath;
