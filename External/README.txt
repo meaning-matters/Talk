@@ -4,6 +4,15 @@ OpenSSL
 
 PJSIP
 * Modified Makefile to install into install/.
+* To build for armv7s:
+  - Move install/lib/* to install/lib/armv7/
+  - $ make clean
+  - $ export ARCH='-arch armv7s' 
+  - $ ./configure-iphone
+  - $ make del
+  - $ make
+  - Move install/lib/* to install/lib/armv7s/
+  - $ install/lib/combine
 
 LibPhoneNumber
 * Building (using Google's Closure Builder) the single JavaScript file for
