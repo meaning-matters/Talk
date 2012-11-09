@@ -2,7 +2,6 @@
 
 # OpenSSL
 External/OpenSSL-for-iPhone/bin
-External/OpenSSL-for-iPhone/lib
 External/OpenSSL-for-iPhone/*.gz
 External/OpenSSL-for-iPhone/src
 
@@ -33,7 +32,6 @@ External/pjproject-2.0.1/third_party/lib/libmilenage-arm-apple-darwin9.a
 External/pjproject-2.0.1/third_party/lib/libresample-arm-apple-darwin9.a
 External/pjproject-2.0.1/third_party/lib/libspeex-arm-apple-darwin9.a
 External/pjproject-2.0.1/third_party/lib/libsrtp-arm-apple-darwin9.a
-External/pjproject-2.0.1/install/
 External/pjproject-2.0.1/pjlib-util/build/output/
 External/pjproject-2.0.1/pjlib/build/output/
 External/pjproject-2.0.1/pjmedia/build/output/
