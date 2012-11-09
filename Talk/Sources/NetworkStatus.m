@@ -17,6 +17,10 @@
 #import "Common.h"
 #import "Reachability.h"
 
+#define REACHABILITY_HOSTNAME   @"www.google.com"
+#define LOAD_URL_TEST_URL       @"http://www.google.com"
+#define LOAD_URL_TEST_INTERVAL  12
+#define LOAD_URL_TEST_TIMEOUT   10
 
 NSString* const kNetworkStatusSimCardChangedNotification         = @"kNetworkStatusSimCardChangedNotification";
 NSString* const kNetworkStatusMobileCallStateChangedNotification = @"kNetworkStatusMobileCallStateChangedNotification";
@@ -31,6 +35,7 @@ static Reachability*            internetReach;
 static Reachability*            wifiReach;
 static CTTelephonyNetworkInfo*  networkInfo;
 static CTCallCenter*            callCenter;
+static NSTimer*                 loadUrlTestTimer;
 
 @synthesize carrierAllowsVoIP;
 @synthesize carrierName;
@@ -76,7 +81,7 @@ static CTCallCenter*            callCenter;
 
 + (void)setUp
 {
-    hostReach = [Reachability reachabilityWithHostname:@"www.google.com"];
+    hostReach = [Reachability reachabilityWithHostname:REACHABILITY_HOSTNAME];
     [hostReach startNotifier];
 
     internetReach = [Reachability reachabilityForInternetConnection];
@@ -84,6 +89,28 @@ static CTCallCenter*            callCenter;
 
     wifiReach = [Reachability reachabilityForLocalWiFi];
     [wifiReach startNotifier];
+
+    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidBecomeActiveNotification
+                                                      object:nil
+                                                       queue:[NSOperationQueue mainQueue]
+                                                  usingBlock:^(NSNotification* note)
+     {
+         [sharedStatus loadUrlTest];
+         loadUrlTestTimer = [NSTimer scheduledTimerWithTimeInterval:LOAD_URL_TEST_INTERVAL
+                                                             target:sharedStatus
+                                                           selector:@selector(loadUrlTest)
+                                                           userInfo:nil
+                                                            repeats:YES];
+     }];
+
+    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification
+                                                      object:nil
+                                                       queue:[NSOperationQueue mainQueue]
+                                                  usingBlock:^(NSNotification* note)
+     {
+         [loadUrlTestTimer invalidate];
+         loadUrlTestTimer = nil;
+     }];
 
     networkInfo = [[CTTelephonyNetworkInfo alloc] init];
     networkInfo.subscriberCellularProviderDidUpdateNotifier = ^(CTCarrier* carrier)
@@ -151,10 +178,10 @@ static CTCallCenter*            callCenter;
 
 - (void)loadUrlTest
 {
-    NSURL*          url = [NSURL URLWithString: @"www.google.com"];
+    NSURL*          url = [NSURL URLWithString:LOAD_URL_TEST_URL];
     NSURLRequest*   request = [NSURLRequest requestWithURL:url
                                                cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                           timeoutInterval:20.0];
+                                           timeoutInterval:LOAD_URL_TEST_TIMEOUT];
     [NSURLConnection sendAsynchronousRequest:request
                                        queue:[[NSOperationQueue alloc] init]
                            completionHandler:^(NSURLResponse* response, NSData* data, NSError* error)
@@ -162,14 +189,17 @@ static CTCallCenter*            callCenter;
         if ([data length] > 0 && error == nil)
         {
             // Connected
+            NSLog(@"CONNECTED");
         }
         else if ([data length] == 0 && error == nil)
         {
             // Empty reply
+            NSLog(@"NOT CONNECTED");
         }
         else if (error != nil)
         {
             // Error
+            NSLog(@"NOT CONNECTED");
         }
     }];
 }
