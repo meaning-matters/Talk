@@ -38,15 +38,12 @@ typedef void (^NetworkUnreachable)(Reachability* reachability);
 
 @property (nonatomic, copy) NetworkReachable    reachableBlock;
 @property (nonatomic, copy) NetworkUnreachable  unreachableBlock;
-@property (nonatomic, assign) BOOL              reachableOnWWAN;
 
 
 + (Reachability*)reachabilityWithHostname:(NSString*)hostname;
 + (Reachability*)reachabilityForInternetConnection;
 + (Reachability*)reachabilityWithAddress:(const struct sockaddr_in*)hostAddress;
 + (Reachability*)reachabilityForLocalWiFi;
-
-- (Reachability*)initWithReachabilityRef:(SCNetworkReachabilityRef)ref;
 
 - (BOOL)startNotifier;
 - (void)stopNotifier;
@@ -56,8 +53,8 @@ typedef void (^NetworkUnreachable)(Reachability* reachability);
 - (BOOL)isReachableViaWiFi;
 
 // WWAN may be available, but not active until a connection has been established.
-// Wi-Fi may require a connection for VPN on Demand.  Identical DDG variant.
-- (BOOL)isConnectionRequired; //
+// Wi-Fi may require a connection for VPN on Demand.
+- (BOOL)isConnectionRequired;
 
 // Dynamic, on demand connection?
 - (BOOL)isConnectionOnDemand;

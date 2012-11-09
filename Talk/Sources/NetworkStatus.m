@@ -18,8 +18,8 @@
 #import "Reachability.h"
 
 #define REACHABILITY_HOSTNAME   @"www.google.com"
-#define LOAD_URL_TEST_URL       @"http://www.google.com"
-#define LOAD_URL_TEST_INTERVAL  12
+#define LOAD_URL_TEST_URL       @"http://www.apple.com/library/test/success.html"
+#define LOAD_URL_TEST_INTERVAL  5
 #define LOAD_URL_TEST_TIMEOUT   10
 
 NSString* const kNetworkStatusSimCardChangedNotification         = @"kNetworkStatusSimCardChangedNotification";
@@ -33,6 +33,7 @@ static NetworkStatus*           sharedStatus;
 static Reachability*            hostReach;
 static Reachability*            internetReach;
 static Reachability*            wifiReach;
+static ReachableStatus          previousHostReachableStatus = NotReachable;
 static CTTelephonyNetworkInfo*  networkInfo;
 static CTCallCenter*            callCenter;
 static NSTimer*                 loadUrlTestTimer;
@@ -57,7 +58,8 @@ static NSTimer*                 loadUrlTestTimer;
     if ([NetworkStatus class] == self)
     {
         sharedStatus = [self new];
-        [NetworkStatus setUp];
+        [sharedStatus setUpReachability];
+        [sharedStatus setUpCoreTelephony];
     }
 }
 
@@ -79,28 +81,76 @@ static NSTimer*                 loadUrlTestTimer;
 }
 
 
-+ (void)setUp
+- (void)setUpReachability
 {
-    hostReach = [Reachability reachabilityWithHostname:REACHABILITY_HOSTNAME];
-    [hostReach startNotifier];
+    [[NSNotificationCenter defaultCenter] addObserverForName:kReachabilityChangedNotification
+                                                      object:nil
+                                                       queue:[NSOperationQueue mainQueue]
+                                                  usingBlock:^(NSNotification* note)
+     {
+         if (note.object == hostReach)
+         {
+             ReachableStatus    reachableStatus = [hostReach currentReachabilityStatus];
 
+             NSLog(@"    HOST: %@", [hostReach currentReachabilityFlags]);
+
+             if (reachableStatus != previousHostReachableStatus)
+             {
+                 if (reachableStatus == NotReachable)
+                 {
+                     NSLog(@"SEND NOTIFICATION change: %d", reachableStatus);
+                     previousHostReachableStatus = reachableStatus;
+                     [Common postNotificationName:kNetworkStatusInternetConnectionNotification
+                                         userInfo:@{ @"status" : @(reachableStatus) }
+                                           object:self];
+                 }
+                 else
+                 {
+                     // Switch between Wi-Fi and Cellular.  Let's check the connection.
+                     [self loadUrlTest:nil];
+                 }
+             }
+         }
+
+         if (note.object == internetReach)
+         {
+             // Not interesting for app to know - do nothing.
+         }
+
+         if (note.object == wifiReach)
+         {
+             // Not interesting for app to know - do nothing.
+         }
+     }];
+
+    hostReach     = [Reachability reachabilityWithHostname:REACHABILITY_HOSTNAME];
     internetReach = [Reachability reachabilityForInternetConnection];
-    [internetReach startNotifier];
-
-    wifiReach = [Reachability reachabilityForLocalWiFi];
-    [wifiReach startNotifier];
+    wifiReach     = [Reachability reachabilityForLocalWiFi];
 
     [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidBecomeActiveNotification
                                                       object:nil
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification* note)
      {
-         [sharedStatus loadUrlTest];
-         loadUrlTestTimer = [NSTimer scheduledTimerWithTimeInterval:LOAD_URL_TEST_INTERVAL
-                                                             target:sharedStatus
-                                                           selector:@selector(loadUrlTest)
-                                                           userInfo:nil
-                                                            repeats:YES];
+         // The UIApplicationDidBecomeActiveNotification can be received a second
+         // time (e.g. after "Turn Off Airplane More or Use Wi-Fi to Access Data").
+         // Use loadUrlTestTimer as flag to make sure we set up only once.
+         //
+         // (BTW, UIApplicationWillEnterForegroundNotification is not received
+         //  the first time, when the app starts.  So that would not have helped.)
+         if (loadUrlTestTimer == nil)
+         {
+             [sharedStatus  loadUrlTest:nil];
+             [hostReach     startNotifier];
+             [internetReach startNotifier];
+             [wifiReach     startNotifier];
+
+             loadUrlTestTimer = [NSTimer scheduledTimerWithTimeInterval:LOAD_URL_TEST_INTERVAL
+                                                                 target:self
+                                                               selector:@selector(loadUrlTest:)
+                                                               userInfo:nil
+                                                                repeats:YES];
+         }
      }];
 
     [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification
@@ -108,14 +158,36 @@ static NSTimer*                 loadUrlTestTimer;
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification* note)
      {
+         [hostReach     stopNotifier];
+         [internetReach stopNotifier];
+         [wifiReach     stopNotifier];
+
          [loadUrlTestTimer invalidate];
          loadUrlTestTimer = nil;
      }];
+}
 
+
+- (void)setUpCoreTelephony
+{
     networkInfo = [[CTTelephonyNetworkInfo alloc] init];
-    networkInfo.subscriberCellularProviderDidUpdateNotifier = ^(CTCarrier* carrier)
+    networkInfo.subscriberCellularProviderDidUpdateNotifier = ^(CTCarrier*carrier)
     {
-        [Common postNotificationName:kNetworkStatusSimCardChangedNotification object:self];
+        NSDictionary*   info;
+
+        if ([self isoCountryCode])
+        {
+            info = @{ @"status"         : @(NetworkStatusSimCardAvailable),
+                      @"isoCountryCode" : [self isoCountryCode] };
+        }
+        else
+        {
+            info = @{ @"status"         : @(NetworkStatusSimCardNotAvailable) };
+        }
+        
+        [Common postNotificationName:kNetworkStatusSimCardChangedNotification
+                            userInfo:info
+                              object:self];
     };
 
     callCenter  = [[CTCallCenter alloc] init];
@@ -124,84 +196,65 @@ static NSTimer*                 loadUrlTestTimer;
         if (call.callState == CTCallStateDialing)
         {
             [Common postNotificationName:kNetworkStatusMobileCallStateChangedNotification
-                                userInfo:@{ @"state" : CTCallStateDialing }
+                                userInfo:@{ @"status" : @(NetworkStatusMobileCallDialing) }
                                   object:self];
         }
         else if (call.callState == CTCallStateIncoming)
         {
             [Common postNotificationName:kNetworkStatusMobileCallStateChangedNotification
-                                userInfo:@{ @"state" : CTCallStateIncoming }
+                                userInfo:@{ @"status" : @(NetworkStatusMobileCallIncoming) }
                                   object:self];
         }
         else if (call.callState == CTCallStateConnected)
         {
             [Common postNotificationName:kNetworkStatusMobileCallStateChangedNotification
-                                userInfo:@{ @"state" : CTCallStateConnected }
+                                userInfo:@{ @"status" : @(NetworkStatusMobileCallConnected) }
                                   object:self];
         }
         else if (call.callState == CTCallStateDisconnected)
         {
             [Common postNotificationName:kNetworkStatusMobileCallStateChangedNotification
-                                userInfo:@{ @"state" : CTCallStateDisconnected }
+                                userInfo:@{ @"status" : @(NetworkStatusMobileCallDisconnected) }
                                   object:self];
         }
     };
-
-    [[NSNotificationCenter defaultCenter] addObserverForName:kReachabilityChangedNotification
-                                                      object:nil
-                                                       queue:[NSOperationQueue mainQueue]
-                                                  usingBlock:^(NSNotification* note)
-    {
-        if (note.object == hostReach)
-        {
-            //[Common postNotificationName:<#(NSString *)#> object:<#(id)#>]
-        }
-
-        if (note.object == internetReach)
-        {
-        }
-
-        if (note.object == wifiReach)
-        {
-        }
-
-
-
-        NSLog(@"    HOST: %@", [hostReach currentReachabilityFlags]);
-        NSLog(@"INTERNET: %@", [internetReach currentReachabilityFlags]);
-        NSLog(@"    WIFI: %@", [wifiReach currentReachabilityFlags]);
-
-        
-    }];
 }
 
 
-- (void)loadUrlTest
+- (void)loadUrlTest:(NSTimer*)timer
 {
-    NSURL*          url = [NSURL URLWithString:LOAD_URL_TEST_URL];
-    NSURLRequest*   request = [NSURLRequest requestWithURL:url
-                                               cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                           timeoutInterval:LOAD_URL_TEST_TIMEOUT];
-    [NSURLConnection sendAsynchronousRequest:request
-                                       queue:[[NSOperationQueue alloc] init]
-                           completionHandler:^(NSURLResponse* response, NSData* data, NSError* error)
+    if (timer == nil || [hostReach isReachable])
     {
-        if ([data length] > 0 && error == nil)
-        {
-            // Connected
-            NSLog(@"CONNECTED");
-        }
-        else if ([data length] == 0 && error == nil)
-        {
-            // Empty reply
-            NSLog(@"NOT CONNECTED");
-        }
-        else if (error != nil)
-        {
-            // Error
-            NSLog(@"NOT CONNECTED");
-        }
-    }];
+        NSURL*          url = [NSURL URLWithString:LOAD_URL_TEST_URL];
+        NSURLRequest*   request = [NSURLRequest requestWithURL:url
+                                                   cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                               timeoutInterval:LOAD_URL_TEST_TIMEOUT];
+        [NSURLConnection sendAsynchronousRequest:request
+                                           queue:[[NSOperationQueue alloc] init]
+                               completionHandler:^(NSURLResponse* response, NSData* data, NSError* error)
+         {
+             ReachableStatus reachableStatus;
+             if ([data length] > 0 && error == nil)
+             {
+                 reachableStatus = [hostReach currentReachabilityStatus];
+             }
+             else
+             {
+                 reachableStatus = NotReachable;
+             }
+
+             if (reachableStatus != previousHostReachableStatus)
+             {
+                 NSLog(@"SEND NOTIFICATION test: %d", reachableStatus);
+                 previousHostReachableStatus = reachableStatus;
+                 // IMPORTANT: We assume here that the values of ReachableStatus
+                 //            match those of NetworkStatusInternetConnection.
+                 [Common postNotificationName:kNetworkStatusInternetConnectionNotification
+                                     userInfo:@{ @"status" : @(reachableStatus) }
+                                       object:self];
+             }
+         }];
+    }
 }
 
 
@@ -219,7 +272,7 @@ static NSTimer*                 loadUrlTestTimer;
 
 - (NSString*)isoCountryCode
 {
-    return [networkInfo subscriberCellularProvider].isoCountryCode;
+    return [[networkInfo subscriberCellularProvider].isoCountryCode uppercaseString];
 }
 
 
@@ -304,7 +357,7 @@ static NSTimer*                 loadUrlTestTimer;
             {
                 // Check if interface is en0 which is the wifi connection on the iPhone
                 if([[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"en0"] ||      // Wi-Fi
-                   [[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"pdp_ip0"])    // 3G
+                   [[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"pdp_ip0"])    // 3G/Edge, ...?
                 {
                     // Get NSString from C String
                     address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
