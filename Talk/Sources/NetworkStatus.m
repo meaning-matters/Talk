@@ -19,12 +19,13 @@
 
 #define REACHABILITY_HOSTNAME   @"www.google.com"
 #define LOAD_URL_TEST_URL       @"http://www.apple.com/library/test/success.html"
+#define LOAD_URL_TEST_STRING    @"<TITLE>Success</TITLE>"   // Part of received HTML
 #define LOAD_URL_TEST_INTERVAL  5
 #define LOAD_URL_TEST_TIMEOUT   10
 
 NSString* const kNetworkStatusSimCardChangedNotification         = @"kNetworkStatusSimCardChangedNotification";
 NSString* const kNetworkStatusMobileCallStateChangedNotification = @"kNetworkStatusMobileCallStateChangedNotification";
-NSString* const kNetworkStatusInternetConnectionNotification     = @"kNetworkStatusInternetConnectionNotification";
+NSString* const kNetworkStatusReachableNotification              = @"kNetworkStatusReachableNotification";
 
 
 @implementation NetworkStatus
@@ -33,22 +34,18 @@ static NetworkStatus*           sharedStatus;
 static Reachability*            hostReach;
 static Reachability*            internetReach;
 static Reachability*            wifiReach;
-static ReachableStatus          previousHostReachableStatus = NotReachable;
+static NetworkStatusReachable   previousNetworkStatusReachable;
 static CTTelephonyNetworkInfo*  networkInfo;
 static CTCallCenter*            callCenter;
 static NSTimer*                 loadUrlTestTimer;
 
-@synthesize carrierAllowsVoIP;
-@synthesize carrierName;
-@synthesize isoCountryCode;
-@synthesize mobileCountryCode;
-@synthesize mobileNetworkCode;
+@synthesize simAvailable;
+@synthesize simAllowsVoIP;
+@synthesize simCarrierName;
+@synthesize simIsoCountryCode;
+@synthesize simMobileCountryCode;
+@synthesize simMobileNetworkCode;
 @synthesize mobileCallActive;
-@synthesize wifiReachable;
-@synthesize wifiAccessNeedsConnection;
-@synthesize internetReachable;
-@synthesize hostReachable;
-@synthesize hostAccessNeedsConnection;
 
 
 #pragma mark - Singleton Stuff
@@ -90,23 +87,25 @@ static NSTimer*                 loadUrlTestTimer;
      {
          if (note.object == hostReach)
          {
-             ReachableStatus    reachableStatus = [hostReach currentReachabilityStatus];
+             NetworkStatusReachable networkStatusReachable = [hostReach currentReachabilityStatus];
 
              NSLog(@"    HOST: %@", [hostReach currentReachabilityFlags]);
 
-             if (reachableStatus != previousHostReachableStatus)
+             if (networkStatusReachable != previousNetworkStatusReachable)
              {
-                 if (reachableStatus == NotReachable)
+                 // We always get here when previous is NetworkStatusReachableCaptivePortal.
+                 if (networkStatusReachable == NetworkStatusReachableDisconnected)
                  {
-                     NSLog(@"SEND NOTIFICATION change: %d", reachableStatus);
-                     previousHostReachableStatus = reachableStatus;
-                     [Common postNotificationName:kNetworkStatusInternetConnectionNotification
-                                         userInfo:@{ @"status" : @(reachableStatus) }
+                     NSLog(@"SEND NOTIFICATION change: %d", networkStatusReachable);
+                     previousNetworkStatusReachable = networkStatusReachable;
+                     [Common postNotificationName:kNetworkStatusReachableNotification
+                                         userInfo:@{ @"status" : @(networkStatusReachable) }
                                            object:self];
                  }
                  else
                  {
-                     // Switch between Wi-Fi and Cellular.  Let's check the connection.
+                     // Switch between Wi-Fi and Cellular, or still at captice portal.
+                     // Let's check the connection.
                      [self loadUrlTest:nil];
                  }
              }
@@ -175,14 +174,13 @@ static NSTimer*                 loadUrlTestTimer;
     {
         NSDictionary*   info;
 
-        if ([self isoCountryCode])
+        if (self.simCarrierName != nil)
         {
-            info = @{ @"status"         : @(NetworkStatusSimCardAvailable),
-                      @"isoCountryCode" : [self isoCountryCode] };
+            info = @{ @"status" : @(NetworkStatusSimCardAvailable) };
         }
         else
         {
-            info = @{ @"status"         : @(NetworkStatusSimCardNotAvailable) };
+            info = @{ @"status" : @(NetworkStatusSimCardNotAvailable) };
         }
         
         [Common postNotificationName:kNetworkStatusSimCardChangedNotification
@@ -233,24 +231,40 @@ static NSTimer*                 loadUrlTestTimer;
                                            queue:[[NSOperationQueue alloc] init]
                                completionHandler:^(NSURLResponse* response, NSData* data, NSError* error)
          {
-             ReachableStatus reachableStatus;
-             if ([data length] > 0 && error == nil)
+             NetworkStatusReachable networkStatusReachable;
+
+             NSString*  html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+             if ([html rangeOfString:LOAD_URL_TEST_STRING].location != NSNotFound && error == nil)
              {
-                 reachableStatus = [hostReach currentReachabilityStatus];
+                 networkStatusReachable = [hostReach currentReachabilityStatus];
+             }
+             else if (error == nil)
+             {
+                 // Received data, but not the expected.  Check for captive portal.
+                 if ([html rangeOfString:@"WISPAccessGatewayParam"].location != NSNotFound)
+                 {
+                     // WISPr portal reply found.
+                     networkStatusReachable = NetworkStatusReachableCaptivePortal;
+                 }
+                 else
+                 {
+                     // No, or unknown captive portal.
+                     //### Could be extended with WiFi & Internet status, and looking at SSID.
+                     networkStatusReachable = NetworkStatusReachableDisconnected;
+                 }
              }
              else
              {
-                 reachableStatus = NotReachable;
+                 // Error.
+                 networkStatusReachable = NetworkStatusReachableDisconnected;
              }
 
-             if (reachableStatus != previousHostReachableStatus)
+             if (networkStatusReachable != previousNetworkStatusReachable)
              {
-                 NSLog(@"SEND NOTIFICATION test: %d", reachableStatus);
-                 previousHostReachableStatus = reachableStatus;
-                 // IMPORTANT: We assume here that the values of ReachableStatus
-                 //            match those of NetworkStatusInternetConnection.
-                 [Common postNotificationName:kNetworkStatusInternetConnectionNotification
-                                     userInfo:@{ @"status" : @(reachableStatus) }
+                 NSLog(@"SEND NOTIFICATION test: %d", networkStatusReachable);
+                 previousNetworkStatusReachable = networkStatusReachable;
+                 [Common postNotificationName:kNetworkStatusReachableNotification
+                                     userInfo:@{ @"status" : @(networkStatusReachable) }
                                        object:self];
              }
          }];
@@ -258,31 +272,39 @@ static NSTimer*                 loadUrlTestTimer;
 }
 
 
-- (BOOL)carrierAllowsVoIP
+#pragma mark - Public API Methods
+
+- (BOOL)simAvailable
+{
+    return self.simCarrierName != nil;
+}
+
+
+- (BOOL)simAllowsVoIP
 {
     return [networkInfo subscriberCellularProvider].allowsVOIP;
 }
 
 
-- (NSString*)carrierName
+- (NSString*)simCarrierName
 {
     return [networkInfo subscriberCellularProvider].carrierName;    
 }
 
 
-- (NSString*)isoCountryCode
+- (NSString*)simIsoCountryCode
 {
     return [[networkInfo subscriberCellularProvider].isoCountryCode uppercaseString];
 }
 
 
-- (NSString*)mobileCountryCode
+- (NSString*)simMobileCountryCode
 {
     return [networkInfo subscriberCellularProvider].mobileCountryCode;  
 }
 
 
-- (NSString*)mobileNetworkCode
+- (NSString*)simMobileNetworkCode
 {
     return [networkInfo subscriberCellularProvider].mobileNetworkCode;     
 }
@@ -293,6 +315,79 @@ static NSTimer*                 loadUrlTestTimer;
     return callCenter.currentCalls.count > 0;
 }
 
+
+- (NetworkStatusReachable)reachableStatus
+{
+    return previousNetworkStatusReachable;
+}
+
+
+- (NSString*)internalIPAddress
+{
+    NSString*       address = @"unknown";
+    struct ifaddrs* interfaces = NULL;
+    struct ifaddrs* temp_addr = NULL;
+    int             success = 0;
+
+    // retrieve the current interfaces - returns 0 on success
+    success = getifaddrs(&interfaces);
+    if (success == 0)
+    {
+        // Loop through linked list of interfaces
+        temp_addr = interfaces;
+        while(temp_addr != NULL)
+        {
+            if(temp_addr->ifa_addr->sa_family == AF_INET)
+            {
+                // Check if interface is en0 which is the wifi connection on the iPhone
+                if([[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"en0"] ||      // Wi-Fi
+                   [[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"pdp_ip0"])    // 3G/Edge, ...?
+                {
+                    // Get NSString from C String
+                    address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
+                }
+            }
+
+            temp_addr = temp_addr->ifa_next;
+        }
+    }
+
+    // Free memory
+    freeifaddrs(interfaces);
+
+    return address;
+}
+
+
+- (NSString*)getSsid
+{
+    CFArrayRef      interfaces = CNCopySupportedInterfaces();   // "en0"
+    CFStringRef     anInterface;
+    NSString*       ssid = nil;
+
+    for (int index = 0; index < CFArrayGetCount(interfaces); index++)
+    {
+        anInterface = CFArrayGetValueAtIndex(interfaces, index);
+
+        CFDictionaryRef   dictionary = CNCopyCurrentNetworkInfo(anInterface);
+
+        if (dictionary != NULL)
+        {
+            // Connected to Wi-Fi hotspot; but unknown if connected to internet.
+            ssid = [NSString stringWithFormat:@"%@", (NSString*)CFDictionaryGetValue(dictionary,
+                                                                                     kCNNetworkInfoKeySSID)];
+        }
+
+        CFReleaseSafe(dictionary);
+    }
+
+    CFReleaseSafe(interfaces);
+    
+    return ssid;
+}
+
+
+#pragma mark - Depricated Public API Methods
 
 - (ReachableStatus)wifiReachable
 {
@@ -337,69 +432,5 @@ static NSTimer*                 loadUrlTestTimer;
     }
 }
 
-
-- (NSString*)internalIPAddress
-{
-    NSString*       address = @"unknown";
-    struct ifaddrs* interfaces = NULL;
-    struct ifaddrs* temp_addr = NULL;
-    int             success = 0;
-    
-    // retrieve the current interfaces - returns 0 on success
-    success = getifaddrs(&interfaces);
-    if (success == 0)
-    {
-        // Loop through linked list of interfaces
-        temp_addr = interfaces;
-        while(temp_addr != NULL)
-        {
-            if(temp_addr->ifa_addr->sa_family == AF_INET)
-            {
-                // Check if interface is en0 which is the wifi connection on the iPhone
-                if([[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"en0"] ||      // Wi-Fi
-                   [[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"pdp_ip0"])    // 3G/Edge, ...?
-                {
-                    // Get NSString from C String
-                    address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
-                }
-            }
-            
-            temp_addr = temp_addr->ifa_next;
-        }
-    }
-
-    // Free memory
-    freeifaddrs(interfaces);
-    
-    return address;
-}
-
-
-- (NSString*)getSsid
-{
-    CFArrayRef      interfaces = CNCopySupportedInterfaces();   // "en0"
-    CFStringRef     anInterface;
-    NSString*       ssid = nil;
-
-    for (int index = 0; index < CFArrayGetCount(interfaces); index++)
-    {
-        anInterface = CFArrayGetValueAtIndex(interfaces, index);
-
-        CFDictionaryRef   dictionary = CNCopyCurrentNetworkInfo(anInterface);
-
-        if (dictionary != NULL)
-        {
-            // Connected to Wi-Fi hotspot; but unknown if connected to internet.
-            ssid = [NSString stringWithFormat:@"%@", (NSString*)CFDictionaryGetValue(dictionary,
-                                                                                     kCNNetworkInfoKeySSID)];
-        }
-
-        CFReleaseSafe(dictionary);
-    }
-
-    CFReleaseSafe(interfaces);
-
-    return ssid;
-}
 
 @end

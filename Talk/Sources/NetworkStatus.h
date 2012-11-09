@@ -12,7 +12,7 @@
 
 extern NSString* const  kNetworkStatusSimCardChangedNotification;
 extern NSString* const  kNetworkStatusMobileCallStateChangedNotification;
-extern NSString* const  kNetworkStatusInternetConnectionNotification;
+extern NSString* const  kNetworkStatusReachableNotification;
 
 typedef enum
 {
@@ -28,54 +28,46 @@ typedef enum
     NetworkStatusMobileCallDisconnected,
 } NetworkStatusMobileCall;
 
+// IMPORTANT: We assume that the values of ReachableStatus match these here!
 typedef enum
 {
-    NetworkStatusInternetConnectionDisconnected,
-    NetworkStatusInternetConnectionCellular,
-    NetworkStatusInternetConnectionWifi,
-} NetworkStatusInternetConnection;
+    NetworkStatusReachableDisconnected,
+    NetworkStatusReachableCellular,
+    NetworkStatusReachableWifi,
+    NetworkStatusReachableCaptivePortal,    // Extra compared to ReachableStatus.
+} NetworkStatusReachable;
 
 
 @class CTCallCenter;
 
 @interface NetworkStatus : NSObject
 
+// Must be called once early at app startup.
++ (NetworkStatus*)sharedStatus;
+
+//  Tells if there is a SIM card.  Is redundant, because is same as one of
+//  below simXyz methods returning non-nil.
+@property (nonatomic, readonly) BOOL                    simAvailable;
 
 //  Indicates if the carrier allows VoIP calls to be made on its network.
-@property (nonatomic, readonly) BOOL            carrierAllowsVoIP;
+@property (nonatomic, readonly) BOOL                    simAllowsVoIP;
 
 //  The name of the user’s home cellular service provider, or nil.
-@property (nonatomic, readonly) NSString*       carrierName;
+@property (nonatomic, readonly) NSString*               simCarrierName;
 
 //  The ISO country code for the user’s cellular service provider, or nil.
-@property (nonatomic, readonly) NSString*       isoCountryCode;
+@property (nonatomic, readonly) NSString*               simIsoCountryCode;
 
 //  The mobile country code (MCC) for the user’s cellular service provider, or nil.
-@property (nonatomic, readonly) NSString*       mobileCountryCode;
+@property (nonatomic, readonly) NSString*               simMobileCountryCode;
 
 //  The mobile network code (MNC) for the user’s cellular service provider, or nil.
-@property (nonatomic, readonly) NSString*       mobileNetworkCode;
+@property (nonatomic, readonly) NSString*               simMobileNetworkCode;
 
 //  Indicates if (at least) one mobile call is active.
-@property (nonatomic, readonly) BOOL            mobileCallActive;
+@property (nonatomic, readonly) BOOL                    mobileCallActive;
 
-//  Indicates if the local WiFi point can be reached.  Does not guarantee internet connection.
-@property (nonatomic, readonly) ReachableStatus wifiReachable;
-
-//  Indicates if Wi-Fi needs a connection; e.g. for VPN on demand.
-@property (nonatomic, readonly) BOOL            wifiAccessNeedsConnection;
-
-//  Indicates via which way (Wi-Fi or WWAN) default TCP/IP routing is reachable.
-@property (nonatomic, readonly) ReachableStatus internetReachable;
-
-//  Indicates via which way (Wi-Fi or WWAN) we're connect to outside internet.
-@property (nonatomic, readonly) ReachableStatus hostReachable;
-
-//  WWAN may be available, but not active until a connection has been established.
-@property (nonatomic, readonly) BOOL            hostAccessNeedsConnection;
-
-
-+ (NetworkStatus*)sharedStatus;
+@property (nonatomic, readonly) NetworkStatusReachable  reachableStatus;
 
 - (NSString*)internalIPAddress;
 
