@@ -42,7 +42,8 @@
 {
     // Trigger singletons.
     [Skinning sharedSkinning];
-    [NetworkStatus sharedStatus];
+    [NetworkStatus sharedStatus];   // Must be called this early, because it needs
+                                    // UIApplicationDidBecomeActiveNotification.
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.tabBarController = [[UITabBarController alloc] init];

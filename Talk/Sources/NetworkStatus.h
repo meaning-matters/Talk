@@ -14,6 +14,27 @@ extern NSString* const  kNetworkStatusSimCardChangedNotification;
 extern NSString* const  kNetworkStatusMobileCallStateChangedNotification;
 extern NSString* const  kNetworkStatusInternetConnectionNotification;
 
+typedef enum
+{
+    NetworkStatusSimCardAvailable,
+    NetworkStatusSimCardNotAvailable,
+} NetworkStatusSimCard;
+
+typedef enum
+{
+    NetworkStatusMobileCallDialing,
+    NetworkStatusMobileCallIncoming,
+    NetworkStatusMobileCallConnected,
+    NetworkStatusMobileCallDisconnected,
+} NetworkStatusMobileCall;
+
+typedef enum
+{
+    NetworkStatusInternetConnectionDisconnected,
+    NetworkStatusInternetConnectionCellular,
+    NetworkStatusInternetConnectionWifi,
+} NetworkStatusInternetConnection;
+
 
 @class CTCallCenter;
 
