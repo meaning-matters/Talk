@@ -10,9 +10,12 @@
 
 @interface Settings : NSObject
 
++ (Settings*)sharedSettings;
+
 @property (nonatomic, strong) NSArray*  tabBarViewControllerClasses;
 
+@property (nonatomic, strong) NSString* homeCountry;
+@property (nonatomic, assign) BOOL      homeCountryFromSim;
 
-+ (Settings*)sharedSettings;
 
 @end
