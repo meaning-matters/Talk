@@ -16,6 +16,8 @@
 #import "NetworkStatus.h"
 #import "Common.h"
 #import "Reachability.h"
+#import "MobileCountryCodes.h"
+
 
 #define REACHABILITY_HOSTNAME   @"www.google.com"
 #define LOAD_URL_TEST_URL       @"http://www.apple.com/library/test/success.html"
@@ -184,22 +186,31 @@ static NSTimer*                 loadUrlTestTimer;
 
 - (NetworkStatusMobileCall)convertCallState:(NSString* const)callState
 {
+    NetworkStatusMobileCall status;
+
     if (callState == CTCallStateDialing)
     {
-        return NetworkStatusMobileCallDialing;
+        status = NetworkStatusMobileCallDialing;
     }
     else if (callState == CTCallStateIncoming)
     {
-        return NetworkStatusMobileCallIncoming;
+        status = NetworkStatusMobileCallIncoming;
     }
     else if (callState == CTCallStateConnected)
     {
-        return NetworkStatusMobileCallConnected;
+        status = NetworkStatusMobileCallConnected;
     }
     else if (callState == CTCallStateDisconnected)
     {
-        return NetworkStatusMobileCallDisconnected;
+        status = NetworkStatusMobileCallDisconnected;
     }
+    else
+    {
+        // We get here when iOS got more/different CTCallState's.
+        status = NetworkStatusMobileCallDialing;    // Clear stack shit - random choice.
+    }
+
+    return status;
 }
 
 
@@ -260,7 +271,10 @@ static NSTimer*                 loadUrlTestTimer;
 
 - (BOOL)simAvailable
 {
-    return self.simCarrierName != nil;
+    // Most important for app are IsoCountryCode and MobileCoutryCode, so we check these.
+    // Only one is needed to look up the other using a resource file (see code below).
+    return ([networkInfo subscriberCellularProvider].isoCountryCode    != nil ||
+            [networkInfo subscriberCellularProvider].mobileCountryCode != nil);
 }
 
 
@@ -278,19 +292,41 @@ static NSTimer*                 loadUrlTestTimer;
 
 - (NSString*)simIsoCountryCode
 {
-    return [[networkInfo subscriberCellularProvider].isoCountryCode uppercaseString];
+    if ([networkInfo subscriberCellularProvider].isoCountryCode != nil)
+    {
+        return [[networkInfo subscriberCellularProvider].isoCountryCode uppercaseString];
+    }
+    else if ([networkInfo subscriberCellularProvider].mobileCountryCode != nil)
+    {
+        return [[MobileCountryCodes sharedCodes] iccForMcc:[networkInfo subscriberCellularProvider].mobileCountryCode];
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 
 - (NSString*)simMobileCountryCode
 {
-    return [networkInfo subscriberCellularProvider].mobileCountryCode;  
+    if ([networkInfo subscriberCellularProvider].mobileCountryCode != nil)
+    {
+        return [networkInfo subscriberCellularProvider].mobileCountryCode;
+    }
+    else if ([networkInfo subscriberCellularProvider].isoCountryCode != nil)
+    {
+        return [[MobileCountryCodes sharedCodes] mccForIcc:[networkInfo subscriberCellularProvider].isoCountryCode];
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 
 - (NSString*)simMobileNetworkCode
 {
-    return [networkInfo subscriberCellularProvider].mobileNetworkCode;     
+    return [networkInfo subscriberCellularProvider].mobileNetworkCode;
 }
 
 

@@ -7,16 +7,21 @@
 //
 
 #import "Settings.h"
+#import "NetworkStatus.h"
+
+NSString* const TabBarViewControllerClassesKey = @"TabBarViewControllerClasses";
+NSString* const HomeCountryKey                 = @"HomeCountryKey";
+NSString* const HomeCountryFromSimKey          = @"HomeCountryFromSim";
+
 
 @implementation Settings
 
 static Settings*        sharedSettings;
 static NSUserDefaults*  userDefaults;
 
-NSString* const TabBarViewControllerClassesKey = @"TabBarViewControllerClasses";
-
-
 @synthesize tabBarViewControllerClasses = _tabBarViewControllerClasses;
+@synthesize homeCountry                 = _homeCountry;
+@synthesize homeCountryFromSim          = _homeCountryFromSim;
 
 
 #pragma mark - Singleton Stuff
@@ -53,11 +58,15 @@ NSString* const TabBarViewControllerClassesKey = @"TabBarViewControllerClasses";
 
 - (void)registerDefaults
 {
-    NSDictionary*   defaults = [NSDictionary dictionary];
+    NSMutableDictionary*    defaults = [NSMutableDictionary dictionary];
 
     // Default for tabBarViewControllerClasses is handled in AppDelegate.
 
-    //...
+    if ([NetworkStatus sharedStatus].simAvailable)
+    {
+        [defaults setObject:[NetworkStatus sharedStatus].simIsoCountryCode forKey:HomeCountryKey];
+        [defaults setObject:[NSNumber numberWithBool:YES]                  forKey:HomeCountryFromSimKey];
+    }
 
     [userDefaults registerDefaults:defaults];
 }
@@ -66,6 +75,8 @@ NSString* const TabBarViewControllerClassesKey = @"TabBarViewControllerClasses";
 - (void)getInitialValues
 {
     _tabBarViewControllerClasses = [userDefaults objectForKey:TabBarViewControllerClassesKey];
+    _homeCountry                 = [userDefaults objectForKey:HomeCountryKey];
+    _homeCountryFromSim          = [userDefaults boolForKey:HomeCountryFromSimKey];
 }
 
 
@@ -74,6 +85,21 @@ NSString* const TabBarViewControllerClassesKey = @"TabBarViewControllerClasses";
 - (void)setTabBarViewControllerClasses:(NSArray*)tabBarViewControllerClasses
 {
     [userDefaults setObject:tabBarViewControllerClasses forKey:TabBarViewControllerClassesKey];
+    _tabBarViewControllerClasses = [userDefaults objectForKey:TabBarViewControllerClassesKey];
+}
+
+
+- (void)setHomeCountry:(NSString*)homeCountry
+{
+    [userDefaults setObject:homeCountry forKey:HomeCountryKey];
+    _homeCountry = [userDefaults objectForKey:HomeCountryKey];
+}
+
+
+- (void)setHomeCountryFromSim:(BOOL)homeCountryFromSim
+{
+    [userDefaults setBool:homeCountryFromSim forKey:HomeCountryFromSimKey];
+    _homeCountryFromSim = [userDefaults boolForKey:HomeCountryFromSimKey];
 }
 
 @end
