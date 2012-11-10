@@ -10,15 +10,15 @@
 #import "Reachability.h"
 
 
-extern NSString* const  kNetworkStatusSimCardChangedNotification;
-extern NSString* const  kNetworkStatusMobileCallStateChangedNotification;
-extern NSString* const  kNetworkStatusReachableNotification;
+extern NSString* const  NetworkStatusSimChangedNotification;
+extern NSString* const  NetworkStatusMobileCallStateChangedNotification;
+extern NSString* const  NetworkStatusReachableNotification;
 
 typedef enum
 {
-    NetworkStatusSimCardAvailable,
-    NetworkStatusSimCardNotAvailable,
-} NetworkStatusSimCard;
+    NetworkStatusSimAvailable,
+    NetworkStatusSimNotAvailable,
+} NetworkStatusSim;
 
 typedef enum
 {
