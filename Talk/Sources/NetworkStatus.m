@@ -32,8 +32,6 @@ NSString* const kNetworkStatusReachableNotification              = @"kNetworkSta
 
 static NetworkStatus*           sharedStatus;
 static Reachability*            hostReach;
-static Reachability*            internetReach;
-static Reachability*            wifiReach;
 static NetworkStatusReachable   previousNetworkStatusReachable;
 static CTTelephonyNetworkInfo*  networkInfo;
 static CTCallCenter*            callCenter;
@@ -110,21 +108,9 @@ static NSTimer*                 loadUrlTestTimer;
                  }
              }
          }
-
-         if (note.object == internetReach)
-         {
-             // Not interesting for app to know - do nothing.
-         }
-
-         if (note.object == wifiReach)
-         {
-             // Not interesting for app to know - do nothing.
-         }
      }];
 
     hostReach     = [Reachability reachabilityWithHostname:REACHABILITY_HOSTNAME];
-    internetReach = [Reachability reachabilityForInternetConnection];
-    wifiReach     = [Reachability reachabilityForLocalWiFi];
 
     [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidBecomeActiveNotification
                                                       object:nil
@@ -141,8 +127,6 @@ static NSTimer*                 loadUrlTestTimer;
          {
              [sharedStatus  loadUrlTest:nil];
              [hostReach     startNotifier];
-             [internetReach startNotifier];
-             [wifiReach     startNotifier];
 
              loadUrlTestTimer = [NSTimer scheduledTimerWithTimeInterval:LOAD_URL_TEST_INTERVAL
                                                                  target:self
@@ -157,9 +141,7 @@ static NSTimer*                 loadUrlTestTimer;
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification* note)
      {
-         [hostReach     stopNotifier];
-         [internetReach stopNotifier];
-         [wifiReach     stopNotifier];
+         [hostReach stopNotifier];
 
          [loadUrlTestTimer invalidate];
          loadUrlTestTimer = nil;
@@ -385,52 +367,5 @@ static NSTimer*                 loadUrlTestTimer;
     
     return ssid;
 }
-
-
-#pragma mark - Depricated Public API Methods
-
-- (ReachableStatus)wifiReachable
-{
-    return [wifiReach currentReachabilityStatus];
-}
-
-
-- (BOOL)wifiAccessNeedsConnection
-{
-    if ([wifiReach currentReachabilityStatus] == NotReachable)
-    {
-        return NO;
-    }
-    else
-    {
-        return [wifiReach isConnectionRequired];
-    }
-}
-
-
-- (ReachableStatus)internetReachable
-{
-    return [internetReach currentReachabilityStatus];
-}
-
-
-- (ReachableStatus)hostReachable
-{
-    return [hostReach currentReachabilityStatus];
-}
-
-
-- (BOOL)hostAccessNeedsConnection
-{
-    if ([hostReach currentReachabilityStatus] == NotReachable)
-    {
-        return NO;
-    }
-    else
-    {
-        return [hostReach isConnectionRequired];
-    }
-}
-
 
 @end
