@@ -43,7 +43,7 @@ static NSTimer*                 loadUrlTestTimer;
 @synthesize simIsoCountryCode;
 @synthesize simMobileCountryCode;
 @synthesize simMobileNetworkCode;
-@synthesize mobileCallActive;
+@synthesize activeMobileCalls;
 
 
 #pragma mark - Singleton Stuff
@@ -75,6 +75,8 @@ static NSTimer*                 loadUrlTestTimer;
     return sharedStatus;
 }
 
+
+#pragma mark - Helper Methods
 
 - (void)setUpReachability
 {
@@ -173,31 +175,31 @@ static NSTimer*                 loadUrlTestTimer;
     callCenter  = [[CTCallCenter alloc] init];
     callCenter.callEventHandler=^(CTCall* call)
     {
-        if (call.callState == CTCallStateDialing)
-        {
-            [Common postNotificationName:kNetworkStatusMobileCallStateChangedNotification
-                                userInfo:@{ @"status" : @(NetworkStatusMobileCallDialing) }
-                                  object:self];
-        }
-        else if (call.callState == CTCallStateIncoming)
-        {
-            [Common postNotificationName:kNetworkStatusMobileCallStateChangedNotification
-                                userInfo:@{ @"status" : @(NetworkStatusMobileCallIncoming) }
-                                  object:self];
-        }
-        else if (call.callState == CTCallStateConnected)
-        {
-            [Common postNotificationName:kNetworkStatusMobileCallStateChangedNotification
-                                userInfo:@{ @"status" : @(NetworkStatusMobileCallConnected) }
-                                  object:self];
-        }
-        else if (call.callState == CTCallStateDisconnected)
-        {
-            [Common postNotificationName:kNetworkStatusMobileCallStateChangedNotification
-                                userInfo:@{ @"status" : @(NetworkStatusMobileCallDisconnected) }
-                                  object:self];
-        }
+        [Common postNotificationName:kNetworkStatusMobileCallStateChangedNotification
+                            userInfo:@{ @"status" : @([self convertCallState:call.callState]) }
+                              object:self];
     };
+}
+
+
+- (NetworkStatusMobileCall)convertCallState:(NSString* const)callState
+{
+    if (callState == CTCallStateDialing)
+    {
+        return NetworkStatusMobileCallDialing;
+    }
+    else if (callState == CTCallStateIncoming)
+    {
+        return NetworkStatusMobileCallIncoming;
+    }
+    else if (callState == CTCallStateConnected)
+    {
+        return NetworkStatusMobileCallConnected;
+    }
+    else if (callState == CTCallStateDisconnected)
+    {
+        return NetworkStatusMobileCallDisconnected;
+    }
 }
 
 
@@ -292,9 +294,25 @@ static NSTimer*                 loadUrlTestTimer;
 }
 
 
-- (BOOL)mobileCallActive
+- (NSArray*)activeMobileCalls
 {
-    return callCenter.currentCalls.count > 0;
+    NSMutableArray* calls;
+
+    if (callCenter.currentCalls != nil)
+    {
+        calls = [NSMutableArray array];
+        for (CTCall* call in callCenter.currentCalls)
+        {
+            [calls addObject:@{ @"id"    : call.callID,
+                                @"state" : @([self convertCallState:call.callState]) }];
+        }
+    }
+    else
+    {
+        calls = nil;
+    }
+
+    return calls;
 }
 
 

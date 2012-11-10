@@ -64,9 +64,12 @@ typedef enum
 //  The mobile network code (MNC) for the user’s cellular service provider, or nil.
 @property (nonatomic, readonly) NSString*               simMobileNetworkCode;
 
-//  Indicates if (at least) one mobile call is active.
-@property (nonatomic, readonly) BOOL                    mobileCallActive;
+//  Returns an array of dictionaries.  A dictionary contains a string "id",
+//  plus the boxed (in NSNumber) NetworkStatusMobileCall "state".  Nil is
+//  returned when there are no calls.
+@property (nonatomic, readonly) NSArray*                activeMobileCalls;
 
+//  Give the most recent internet connection status.
 @property (nonatomic, readonly) NetworkStatusReachable  reachableStatus;
 
 - (NSString*)internalIPAddress;
