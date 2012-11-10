@@ -23,9 +23,9 @@
 #define LOAD_URL_TEST_INTERVAL  5
 #define LOAD_URL_TEST_TIMEOUT   10
 
-NSString* const kNetworkStatusSimCardChangedNotification         = @"kNetworkStatusSimCardChangedNotification";
-NSString* const kNetworkStatusMobileCallStateChangedNotification = @"kNetworkStatusMobileCallStateChangedNotification";
-NSString* const kNetworkStatusReachableNotification              = @"kNetworkStatusReachableNotification";
+NSString* const NetworkStatusSimChangedNotification         = @"NetworkStatusSimChangedNotification";
+NSString* const NetworkStatusMobileCallStateChangedNotification = @"NetworkStatusMobileCallStateChangedNotification";
+NSString* const NetworkStatusReachableNotification              = @"NetworkStatusReachableNotification";
 
 
 @implementation NetworkStatus
@@ -98,7 +98,7 @@ static NSTimer*                 loadUrlTestTimer;
                  {
                      NSLog(@"SEND NOTIFICATION change: %d", networkStatusReachable);
                      previousNetworkStatusReachable = networkStatusReachable;
-                     [Common postNotificationName:kNetworkStatusReachableNotification
+                     [Common postNotificationName:NetworkStatusReachableNotification
                                          userInfo:@{ @"status" : @(networkStatusReachable) }
                                            object:self];
                  }
@@ -160,14 +160,14 @@ static NSTimer*                 loadUrlTestTimer;
 
         if (self.simCarrierName != nil)
         {
-            info = @{ @"status" : @(NetworkStatusSimCardAvailable) };
+            info = @{ @"status" : @(NetworkStatusSimAvailable) };
         }
         else
         {
-            info = @{ @"status" : @(NetworkStatusSimCardNotAvailable) };
+            info = @{ @"status" : @(NetworkStatusSimNotAvailable) };
         }
         
-        [Common postNotificationName:kNetworkStatusSimCardChangedNotification
+        [Common postNotificationName:NetworkStatusSimChangedNotification
                             userInfo:info
                               object:self];
     };
@@ -175,7 +175,7 @@ static NSTimer*                 loadUrlTestTimer;
     callCenter  = [[CTCallCenter alloc] init];
     callCenter.callEventHandler=^(CTCall* call)
     {
-        [Common postNotificationName:kNetworkStatusMobileCallStateChangedNotification
+        [Common postNotificationName:NetworkStatusMobileCallStateChangedNotification
                             userInfo:@{ @"status" : @([self convertCallState:call.callState]) }
                               object:self];
     };
@@ -247,7 +247,7 @@ static NSTimer*                 loadUrlTestTimer;
              {
                  NSLog(@"SEND NOTIFICATION test: %d", networkStatusReachable);
                  previousNetworkStatusReachable = networkStatusReachable;
-                 [Common postNotificationName:kNetworkStatusReachableNotification
+                 [Common postNotificationName:NetworkStatusReachableNotification
                                      userInfo:@{ @"status" : @(networkStatusReachable) }
                                        object:self];
              }

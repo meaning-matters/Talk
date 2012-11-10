@@ -7,6 +7,7 @@
 //
 
 #import "SettingsViewController.h"
+#import "NetworkStatus.h"
 
 @interface SettingsViewController ()
 
@@ -35,6 +36,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusSimChangedNotification
+                                                      object:nil
+                                                       queue:[NSOperationQueue mainQueue]
+                                                  usingBlock:^(NSNotification* note)
+     {
+         
+     }];
 }
 
 
