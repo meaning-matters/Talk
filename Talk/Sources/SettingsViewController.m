@@ -110,6 +110,12 @@ typedef enum
 }
 
 
+- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell;
@@ -133,46 +139,63 @@ typedef enum
     UITableViewCell*    cell;
     UISwitch*           switchView;
 
-    if ([NetworkStatus sharedStatus].simAvailable)
+    if ([NetworkStatus sharedStatus].simAvailable == YES && indexPath.row == 0)
     {
-        if (indexPath.row == 0)
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
+        if (cell == nil)
         {
-            cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
-            if (cell == nil)
-            {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
-                switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-                cell.accessoryView = switchView;
-            }
-            else
-            {
-                switchView = (UISwitch*)cell.accessoryView;
-            }
-
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:ReadFromSim CellText", nil,
-                                                                    [NSBundle mainBundle], @"Read From SIM",
-                                                                    @"Title of switch if home country must be read from SIM card.");
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            switchView.on = [Settings sharedSettings].homeCountryFromSim;
-            [switchView addTarget:self action:@selector(readFromSimSwitchAction:)
-                 forControlEvents:UIControlEventValueChanged];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
+            switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+            cell.accessoryView = switchView;
         }
         else
         {
-            cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
-            if (cell == nil)
-            {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
-            }
+            switchView = (UISwitch*)cell.accessoryView;
+        }
 
+        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:ReadFromSim CellText", nil,
+                                                                [NSBundle mainBundle], @"Read From SIM",
+                                                                @"Title of switch if home country must be read from SIM card\n"
+                                                                @"[2/3 line - abbreviated: 'From SIM'].");
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        switchView.on = [Settings sharedSettings].homeCountryFromSim;
+        [switchView addTarget:self action:@selector(readFromSimSwitchAction:)
+             forControlEvents:UIControlEventValueChanged];
+    }
+
+    if (([NetworkStatus sharedStatus].simAvailable == YES && indexPath.row == 1) ||
+        [NetworkStatus sharedStatus].simAvailable == NO)
+    {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
+        if (cell == nil)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
+        }
+
+        if ([Settings sharedSettings].homeCountry != nil)
+        {
             cell.imageView.image = [UIImage imageNamed:[Settings sharedSettings].homeCountry];
             cell.textLabel.text = [[CountryNames sharedNames] nameForIcc:[Settings sharedSettings].homeCountry];
+        }
+        else
+        {
+            cell.imageView.image = nil;
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:NoCountryName CellText", nil,
+                                                                    [NSBundle mainBundle], @"No Country Selected",
+                                                                    @"Table cell text, when user not selected home country yet\n"
+                                                                    @"[1 line - abbreviated: 'Not Selected'");
+        }
+        
+        if ([NetworkStatus sharedStatus].simAvailable == YES && [Settings sharedSettings].homeCountryFromSim)
+        {
+            cell.accessoryType = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-    }
-    else
-    {
-
+        else
+        {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        }
     }
 
     return cell;
