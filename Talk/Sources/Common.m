@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "Common.h"
 
 @implementation Common
@@ -131,6 +132,13 @@
                                                                            object:object
                                                                          userInfo:userInfo];
                    });
+}
+
+
++ (void)setCornerRadius:(CGFloat)radius ofView:(UIView*)view
+{
+    view.layer.cornerRadius = radius;
+    view.layer.masksToBounds = YES;
 }
 
 @end

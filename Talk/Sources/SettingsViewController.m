@@ -9,6 +9,7 @@
 #import "SettingsViewController.h"
 #import "Settings.h"
 #import "NetworkStatus.h"
+#import "CountryNames.h"
 
 
 typedef enum
@@ -112,36 +113,11 @@ typedef enum
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell;
-    NSString*           cellIdentifier;
 
     switch (indexPath.section)
     {
         case TableSectionHomeCountry:
-            if ([NetworkStatus sharedStatus].simAvailable)
-            {
-             //   if (indexPath.row == 0)
-                {
-                    cell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
-                    if (cell == nil)
-                    {
-                        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
-                    }
-
-                    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:ReadFromSim CellText", nil,
-                                                                            [NSBundle mainBundle], @"Read From SIM",
-                                                                            @"Title of switch if home country must be read from SIM card.");
-                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    UISwitch*   switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-                    switchView.on = [Settings sharedSettings].homeCountryFromSim;
-                    cell.accessoryView = switchView;
-                    [switchView addTarget:self action:@selector(readFromSimSwitchAction:)
-                         forControlEvents:UIControlEventValueChanged];
-                }
-            }
-            else
-            {
-
-            }
+            cell = [self homeCountryCellForRowAtIndexPath:indexPath];
             break;
 
         default:
@@ -152,11 +128,60 @@ typedef enum
 }
 
 
+- (UITableViewCell*)homeCountryCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell*    cell;
+    UISwitch*           switchView;
+
+    if ([NetworkStatus sharedStatus].simAvailable)
+    {
+        if (indexPath.row == 0)
+        {
+            cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
+            if (cell == nil)
+            {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
+                switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+                cell.accessoryView = switchView;
+            }
+            else
+            {
+                switchView = (UISwitch*)cell.accessoryView;
+            }
+
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:ReadFromSim CellText", nil,
+                                                                    [NSBundle mainBundle], @"Read From SIM",
+                                                                    @"Title of switch if home country must be read from SIM card.");
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            switchView.on = [Settings sharedSettings].homeCountryFromSim;
+            [switchView addTarget:self action:@selector(readFromSimSwitchAction:)
+                 forControlEvents:UIControlEventValueChanged];
+        }
+        else
+        {
+            cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
+            if (cell == nil)
+            {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
+            }
+
+            cell.imageView.image = [UIImage imageNamed:[Settings sharedSettings].homeCountry];
+            cell.textLabel.text = [[CountryNames sharedNames] nameForIcc:[Settings sharedSettings].homeCountry];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+    }
+    else
+    {
+
+    }
+
+    return cell;
+}
+
 #pragma mark - UI Actions
 
 - (void)readFromSimSwitchAction:(id)sender
 {
-    NSLog(@"%d", ((UISwitch*)sender).on);
     [Settings sharedSettings].homeCountryFromSim = ((UISwitch*)sender).on;
     [self.tableView reloadData];
 }
