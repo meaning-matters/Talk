@@ -25,7 +25,7 @@
 #define LOAD_URL_TEST_INTERVAL  5
 #define LOAD_URL_TEST_TIMEOUT   10
 
-NSString* const NetworkStatusSimChangedNotification         = @"NetworkStatusSimChangedNotification";
+NSString* const NetworkStatusSimChangedNotification             = @"NetworkStatusSimChangedNotification";
 NSString* const NetworkStatusMobileCallStateChangedNotification = @"NetworkStatusMobileCallStateChangedNotification";
 NSString* const NetworkStatusReachableNotification              = @"NetworkStatusReachableNotification";
 
@@ -156,11 +156,21 @@ static NSTimer*                 loadUrlTestTimer;
 - (void)setUpCoreTelephony
 {
     networkInfo = [[CTTelephonyNetworkInfo alloc] init];
+
+    // The below block is only executed when a different SIM is installed.  Nothing
+    // happens when a SIM is removed, or when the same SIM is installed again.
+    //
+    // To get more trigger observe @"kCTSIMSupportSIMStatusChangeNotification",
+    // but this is a private iOS API so may cause trouble with Apple.  And, getting
+    // these triggers does not help, because CTTelephonyNetworkInfo is not wiped
+    // when a SIM is removed.  Only after restarting the device without SIM:
+    // ISOCountryCode is @"", MCC is @"", and MNC is @"00"; HasVoIP remains 1m and
+    // even CarrierName remained unchanged (@"Mobistar" e.g.).
     networkInfo.subscriberCellularProviderDidUpdateNotifier = ^(CTCarrier*carrier)
     {
         NSDictionary*   info;
 
-        if (self.simCarrierName != nil)
+        if ([self simAvailable])
         {
             info = @{ @"status" : @(NetworkStatusSimAvailable) };
         }
@@ -271,10 +281,12 @@ static NSTimer*                 loadUrlTestTimer;
 
 - (BOOL)simAvailable
 {
+    NSLog(@"VOIP:%d NAME:%@ ISO:%@ MCC:%@ MNC:%@", [self simAllowsVoIP], [self simCarrierName], [self simIsoCountryCode], [self simMobileCountryCode], [self simMobileNetworkCode]);
+
     // Most important for app are IsoCountryCode and MobileCoutryCode, so we check these.
     // Only one is needed to look up the other using a resource file (see code below).
-    return ([networkInfo subscriberCellularProvider].isoCountryCode    != nil ||
-            [networkInfo subscriberCellularProvider].mobileCountryCode != nil);
+    return ([[networkInfo subscriberCellularProvider].isoCountryCode length] == 2 ||
+            [[networkInfo subscriberCellularProvider].mobileCountryCode length] == 3);
 }
 
 
@@ -292,11 +304,11 @@ static NSTimer*                 loadUrlTestTimer;
 
 - (NSString*)simIsoCountryCode
 {
-    if ([networkInfo subscriberCellularProvider].isoCountryCode != nil)
+    if ([[networkInfo subscriberCellularProvider].isoCountryCode length] == 2)
     {
         return [[networkInfo subscriberCellularProvider].isoCountryCode uppercaseString];
     }
-    else if ([networkInfo subscriberCellularProvider].mobileCountryCode != nil)
+    else if ([[networkInfo subscriberCellularProvider].mobileCountryCode length] == 3)
     {
         return [[MobileCountryCodes sharedCodes] iccForMcc:[networkInfo subscriberCellularProvider].mobileCountryCode];
     }
@@ -309,11 +321,11 @@ static NSTimer*                 loadUrlTestTimer;
 
 - (NSString*)simMobileCountryCode
 {
-    if ([networkInfo subscriberCellularProvider].mobileCountryCode != nil)
+    if ([[networkInfo subscriberCellularProvider].mobileCountryCode length] == 3)
     {
         return [networkInfo subscriberCellularProvider].mobileCountryCode;
     }
-    else if ([networkInfo subscriberCellularProvider].isoCountryCode != nil)
+    else if ([[networkInfo subscriberCellularProvider].isoCountryCode length] == 2)
     {
         return [[MobileCountryCodes sharedCodes] mccForIcc:[networkInfo subscriberCellularProvider].isoCountryCode];
     }
