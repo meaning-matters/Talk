@@ -81,6 +81,10 @@
 		485ECBCD1651642D00364F08 /* CountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBCB1651642D00364F08 /* CountriesView.xib */; };
 		485ECBD01651646700364F08 /* CountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485ECBCF1651646700364F08 /* CountriesViewController.m */; };
 		485ECBD11651646700364F08 /* CountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485ECBCF1651646700364F08 /* CountriesViewController.m */; };
+		485ECBD81651C3B700364F08 /* BQ.png in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBD61651C3B700364F08 /* BQ.png */; };
+		485ECBD91651C3B700364F08 /* BQ.png in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBD61651C3B700364F08 /* BQ.png */; };
+		485ECBDA1651C3B700364F08 /* BQ@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBD71651C3B700364F08 /* BQ@2x.png */; };
+		485ECBDB1651C3B700364F08 /* BQ@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBD71651C3B700364F08 /* BQ@2x.png */; };
 		485F6A391637270100D61365 /* AD.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F68471637270100D61365 /* AD.png */; };
 		485F6A3A1637270100D61365 /* AD@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F68481637270100D61365 /* AD@2x.png */; };
 		485F6A3B1637270100D61365 /* AE.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F68491637270100D61365 /* AE.png */; };
@@ -744,6 +748,8 @@
 		485ECBCB1651642D00364F08 /* CountriesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CountriesView.xib; sourceTree = "<group>"; };
 		485ECBCE1651646700364F08 /* CountriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountriesViewController.h; sourceTree = "<group>"; };
 		485ECBCF1651646700364F08 /* CountriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountriesViewController.m; sourceTree = "<group>"; };
+		485ECBD61651C3B700364F08 /* BQ.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BQ.png; sourceTree = "<group>"; };
+		485ECBD71651C3B700364F08 /* BQ@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BQ@2x.png"; sourceTree = "<group>"; };
 		485F68471637270100D61365 /* AD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AD.png; sourceTree = "<group>"; };
 		485F68481637270100D61365 /* AD@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AD@2x.png"; sourceTree = "<group>"; };
 		485F68491637270100D61365 /* AE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AE.png; sourceTree = "<group>"; };
@@ -1568,6 +1574,8 @@
 				485F68801637270100D61365 /* BN@2x.png */,
 				485F68811637270100D61365 /* BO.png */,
 				485F68821637270100D61365 /* BO@2x.png */,
+				485ECBD61651C3B700364F08 /* BQ.png */,
+				485ECBD71651C3B700364F08 /* BQ@2x.png */,
 				485F68831637270100D61365 /* BR.png */,
 				485F68841637270100D61365 /* BR@2x.png */,
 				485F68851637270100D61365 /* BS.png */,
@@ -2794,6 +2802,8 @@
 				48AF4561164979CE00DFE3D8 /* RecentsView.xib in Resources */,
 				485ECBC71651636600364F08 /* CountryNames.json in Resources */,
 				485ECBCC1651642D00364F08 /* CountriesView.xib in Resources */,
+				485ECBD81651C3B700364F08 /* BQ.png in Resources */,
+				485ECBDA1651C3B700364F08 /* BQ@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2836,6 +2846,8 @@
 				485ECBC81651636600364F08 /* CountryNames.json in Resources */,
 				485ECBCA1651638600364F08 /* CountryCodesMap.json in Resources */,
 				485ECBCD1651642D00364F08 /* CountriesView.xib in Resources */,
+				485ECBD91651C3B700364F08 /* BQ.png in Resources */,
+				485ECBDB1651C3B700364F08 /* BQ@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
