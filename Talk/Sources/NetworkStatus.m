@@ -16,7 +16,7 @@
 #import "NetworkStatus.h"
 #import "Common.h"
 #import "Reachability.h"
-#import "MobileCountryCodes.h"
+#import "CountryCodes.h"
 
 
 #define REACHABILITY_HOSTNAME   @"www.google.com"
@@ -91,14 +91,11 @@ static NSTimer*                 loadUrlTestTimer;
          {
              NetworkStatusReachable networkStatusReachable = [hostReach currentReachabilityStatus];
 
-             NSLog(@"    HOST: %@", [hostReach currentReachabilityFlags]);
-
              if (networkStatusReachable != previousNetworkStatusReachable)
              {
                  // We always get here when previous is NetworkStatusReachableCaptivePortal.
                  if (networkStatusReachable == NetworkStatusReachableDisconnected)
                  {
-                     NSLog(@"SEND NOTIFICATION change: %d", networkStatusReachable);
                      previousNetworkStatusReachable = networkStatusReachable;
                      [Common postNotificationName:NetworkStatusReachableNotification
                                          userInfo:@{ @"status" : @(networkStatusReachable) }
@@ -266,7 +263,6 @@ static NSTimer*                 loadUrlTestTimer;
 
              if (networkStatusReachable != previousNetworkStatusReachable)
              {
-                 NSLog(@"SEND NOTIFICATION test: %d", networkStatusReachable);
                  previousNetworkStatusReachable = networkStatusReachable;
                  [Common postNotificationName:NetworkStatusReachableNotification
                                      userInfo:@{ @"status" : @(networkStatusReachable) }
@@ -281,8 +277,6 @@ static NSTimer*                 loadUrlTestTimer;
 
 - (BOOL)simAvailable
 {
-    NSLog(@"VOIP:%d NAME:%@ ISO:%@ MCC:%@ MNC:%@", [self simAllowsVoIP], [self simCarrierName], [self simIsoCountryCode], [self simMobileCountryCode], [self simMobileNetworkCode]);
-
     // Most important for app are IsoCountryCode and MobileCoutryCode, so we check these.
     // Only one is needed to look up the other using a resource file (see code below).
     return ([[networkInfo subscriberCellularProvider].isoCountryCode length] == 2 ||
@@ -310,7 +304,7 @@ static NSTimer*                 loadUrlTestTimer;
     }
     else if ([[networkInfo subscriberCellularProvider].mobileCountryCode length] == 3)
     {
-        return [[MobileCountryCodes sharedCodes] iccForMcc:[networkInfo subscriberCellularProvider].mobileCountryCode];
+        return [[CountryCodes sharedCodes] iccForMcc:[networkInfo subscriberCellularProvider].mobileCountryCode];
     }
     else
     {
@@ -327,7 +321,7 @@ static NSTimer*                 loadUrlTestTimer;
     }
     else if ([[networkInfo subscriberCellularProvider].isoCountryCode length] == 2)
     {
-        return [[MobileCountryCodes sharedCodes] mccForIcc:[networkInfo subscriberCellularProvider].isoCountryCode];
+        return [[CountryCodes sharedCodes] mccForIcc:[networkInfo subscriberCellularProvider].isoCountryCode];
     }
     else
     {

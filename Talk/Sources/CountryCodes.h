@@ -1,5 +1,5 @@
 //
-//  MobileCountryCodes.h
+//  CountryCodes.h
 //  Talk
 //
 //  Created by Cornelis van der Bent on 10/11/12.
@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MobileCountryCodes : NSObject
+@interface CountryCodes : NSObject
 
-+ (MobileCountryCodes*)sharedCodes;
++ (CountryCodes*)sharedCodes;
 
 - (NSString*)mccForIcc:(NSString*)isoCountryCode;
 

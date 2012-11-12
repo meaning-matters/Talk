@@ -65,7 +65,11 @@ static NSUserDefaults*  userDefaults;
     if ([NetworkStatus sharedStatus].simAvailable)
     {
         [defaults setObject:[NetworkStatus sharedStatus].simIsoCountryCode forKey:HomeCountryKey];
-        [defaults setObject:[NSNumber numberWithBool:YES]                  forKey:HomeCountryFromSimKey];
+        [defaults setObject:[NSNumber numberWithBool:YES] forKey:HomeCountryFromSimKey];
+    }
+    else
+    {
+        [defaults setObject:[NSNumber numberWithBool:NO] forKey:HomeCountryFromSimKey];
     }
 
     [userDefaults registerDefaults:defaults];

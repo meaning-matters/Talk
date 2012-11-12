@@ -23,7 +23,6 @@
 /* Begin PBXBuildFile section */
 		4812727316487E2D00534450 /* LibPhoneNumber.js in Resources */ = {isa = PBXBuildFile; fileRef = 4812727216487E2D00534450 /* LibPhoneNumber.js */; };
 		4812727416487E2D00534450 /* LibPhoneNumber.js in Sources */ = {isa = PBXBuildFile; fileRef = 4812727216487E2D00534450 /* LibPhoneNumber.js */; };
-		4827D8B4163F0F5700005131 /* CountryNames.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B1163F0F5700005131 /* CountryNames.json */; };
 		4827D8B5163F0F5700005131 /* CountryCodesMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B2163F0F5700005131 /* CountryCodesMap.json */; };
 		4827D8B6163F0F5700005131 /* MobileCountryCodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B3163F0F5700005131 /* MobileCountryCodes.json */; };
 		48338F68161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */; };
@@ -75,6 +74,13 @@
 		48338FD216181B750033F4C1 /* SipInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 48338FD016181B750033F4C1 /* SipInterface.m */; };
 		484F7C3B164C15770059A5A6 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3A164C15770059A5A6 /* CoreTelephony.framework */; };
 		484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */; };
+		485ECBC71651636600364F08 /* CountryNames.json in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBC51651636600364F08 /* CountryNames.json */; };
+		485ECBC81651636600364F08 /* CountryNames.json in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBC51651636600364F08 /* CountryNames.json */; };
+		485ECBCA1651638600364F08 /* CountryCodesMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B2163F0F5700005131 /* CountryCodesMap.json */; };
+		485ECBCC1651642D00364F08 /* CountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBCB1651642D00364F08 /* CountriesView.xib */; };
+		485ECBCD1651642D00364F08 /* CountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBCB1651642D00364F08 /* CountriesView.xib */; };
+		485ECBD01651646700364F08 /* CountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485ECBCF1651646700364F08 /* CountriesViewController.m */; };
+		485ECBD11651646700364F08 /* CountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485ECBCF1651646700364F08 /* CountriesViewController.m */; };
 		485F6A391637270100D61365 /* AD.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F68471637270100D61365 /* AD.png */; };
 		485F6A3A1637270100D61365 /* AD@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F68481637270100D61365 /* AD@2x.png */; };
 		485F6A3B1637270100D61365 /* AE.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F68491637270100D61365 /* AE.png */; };
@@ -673,8 +679,8 @@
 		48AF4581164A45A100DFE3D8 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4580164A45A100DFE3D8 /* Settings.m */; };
 		48AF4582164A45A100DFE3D8 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4580164A45A100DFE3D8 /* Settings.m */; };
 		48CB0775163D76C300B07199 /* PhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CB0774163D76C300B07199 /* PhoneNumber.m */; };
-		48D3F018164EBE1F002041A9 /* MobileCountryCodes.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F017164EBE1F002041A9 /* MobileCountryCodes.m */; };
-		48D3F019164EBE1F002041A9 /* MobileCountryCodes.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F017164EBE1F002041A9 /* MobileCountryCodes.m */; };
+		48D3F018164EBE1F002041A9 /* CountryCodes.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F017164EBE1F002041A9 /* CountryCodes.m */; };
+		48D3F019164EBE1F002041A9 /* CountryCodes.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F017164EBE1F002041A9 /* CountryCodes.m */; };
 		48D3F01E164F9284002041A9 /* CountryNames.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F01D164F9284002041A9 /* CountryNames.m */; };
 		48D3F01F164F9284002041A9 /* CountryNames.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F01D164F9284002041A9 /* CountryNames.m */; };
 		48FD99D216182B6B0061191B /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48FD99D116182B6B0061191B /* SipConfig.cfg */; };
@@ -700,7 +706,6 @@
 
 /* Begin PBXFileReference section */
 		4812727216487E2D00534450 /* LibPhoneNumber.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = LibPhoneNumber.js; path = External/LibPhoneNumber/LibPhoneNumber.js; sourceTree = SOURCE_ROOT; };
-		4827D8B1163F0F5700005131 /* CountryNames.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryNames.json; path = Resources/CountryNames.json; sourceTree = "<group>"; };
 		4827D8B2163F0F5700005131 /* CountryCodesMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryCodesMap.json; path = Resources/CountryCodesMap.json; sourceTree = "<group>"; };
 		4827D8B3163F0F5700005131 /* MobileCountryCodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = MobileCountryCodes.json; path = Resources/MobileCountryCodes.json; sourceTree = "<group>"; };
 		48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libg7221codec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libg7221codec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
@@ -734,6 +739,11 @@
 		48338FD016181B750033F4C1 /* SipInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SipInterface.m; sourceTree = "<group>"; };
 		484F7C3A164C15770059A5A6 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		485ECBC61651636600364F08 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = en; path = Resources/en.lproj/CountryNames.json; sourceTree = "<group>"; };
+		485ECBC91651638600364F08 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = nl; path = Resources/nl.lproj/CountryNames.json; sourceTree = "<group>"; };
+		485ECBCB1651642D00364F08 /* CountriesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CountriesView.xib; sourceTree = "<group>"; };
+		485ECBCE1651646700364F08 /* CountriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountriesViewController.h; sourceTree = "<group>"; };
+		485ECBCF1651646700364F08 /* CountriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountriesViewController.m; sourceTree = "<group>"; };
 		485F68471637270100D61365 /* AD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AD.png; sourceTree = "<group>"; };
 		485F68481637270100D61365 /* AD@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AD@2x.png"; sourceTree = "<group>"; };
 		485F68491637270100D61365 /* AE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AE.png; sourceTree = "<group>"; };
@@ -1307,8 +1317,8 @@
 		48AF4580164A45A100DFE3D8 /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
 		48CB0773163D76C300B07199 /* PhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumber.h; sourceTree = "<group>"; };
 		48CB0774163D76C300B07199 /* PhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneNumber.m; sourceTree = "<group>"; };
-		48D3F016164EBE1F002041A9 /* MobileCountryCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobileCountryCodes.h; sourceTree = "<group>"; };
-		48D3F017164EBE1F002041A9 /* MobileCountryCodes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MobileCountryCodes.m; sourceTree = "<group>"; };
+		48D3F016164EBE1F002041A9 /* CountryCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryCodes.h; sourceTree = "<group>"; };
+		48D3F017164EBE1F002041A9 /* CountryCodes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryCodes.m; sourceTree = "<group>"; };
 		48D3F01C164F9284002041A9 /* CountryNames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryNames.h; sourceTree = "<group>"; };
 		48D3F01D164F9284002041A9 /* CountryNames.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryNames.m; sourceTree = "<group>"; };
 		48FD99D116182B6B0061191B /* SipConfig.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SipConfig.cfg; sourceTree = "<group>"; };
@@ -2106,6 +2116,7 @@
 			isa = PBXGroup;
 			children = (
 				48AF45161649494400DFE3D8 /* AboutView.xib */,
+				485ECBCB1651642D00364F08 /* CountriesView.xib */,
 				48AF4507164948B800DFE3D8 /* CreditView.xib */,
 				48AF450A164948CD00DFE3D8 /* DialerView.xib */,
 				48AF455D1649799F00DFE3D8 /* ForwardingsView.xib */,
@@ -2124,6 +2135,8 @@
 			children = (
 				48AF45001649484600DFE3D8 /* AboutViewController.h */,
 				48AF45011649484600DFE3D8 /* AboutViewController.m */,
+				485ECBCE1651646700364F08 /* CountriesViewController.h */,
+				485ECBCF1651646700364F08 /* CountriesViewController.m */,
 				48AF44EC164947B300DFE3D8 /* CreditViewController.h */,
 				48AF44ED164947B300DFE3D8 /* CreditViewController.m */,
 				48AF44F0164947CD00DFE3D8 /* DialerViewController.h */,
@@ -2151,7 +2164,7 @@
 		48CB076F163D5E3500B07199 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4827D8B1163F0F5700005131 /* CountryNames.json */,
+				485ECBC51651636600364F08 /* CountryNames.json */,
 				4827D8B2163F0F5700005131 /* CountryCodesMap.json */,
 				4827D8B3163F0F5700005131 /* MobileCountryCodes.json */,
 				4812727216487E2D00534450 /* LibPhoneNumber.js */,
@@ -2164,8 +2177,8 @@
 			children = (
 				48D3F01C164F9284002041A9 /* CountryNames.h */,
 				48D3F01D164F9284002041A9 /* CountryNames.m */,
-				48D3F016164EBE1F002041A9 /* MobileCountryCodes.h */,
-				48D3F017164EBE1F002041A9 /* MobileCountryCodes.m */,
+				48D3F016164EBE1F002041A9 /* CountryCodes.h */,
+				48D3F017164EBE1F002041A9 /* CountryCodes.m */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2224,6 +2237,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				nl,
 			);
 			mainGroup = 48884A651615CE920005AA79;
 			productRefGroup = 48884A711615CE920005AA79 /* Products */;
@@ -2746,7 +2760,6 @@
 				485F6C281637270100D61365 /* ZM@2x.png in Resources */,
 				485F6C291637270100D61365 /* ZW.png in Resources */,
 				485F6C2A1637270100D61365 /* ZW@2x.png in Resources */,
-				4827D8B4163F0F5700005131 /* CountryNames.json in Resources */,
 				4827D8B5163F0F5700005131 /* CountryCodesMap.json in Resources */,
 				4827D8B6163F0F5700005131 /* MobileCountryCodes.json in Resources */,
 				48AF4505164948A300DFE3D8 /* NumbersView.xib in Resources */,
@@ -2779,6 +2792,8 @@
 				48AF455B1649794B00DFE3D8 /* ShareView.xib in Resources */,
 				48AF455E1649799F00DFE3D8 /* ForwardingsView.xib in Resources */,
 				48AF4561164979CE00DFE3D8 /* RecentsView.xib in Resources */,
+				485ECBC71651636600364F08 /* CountryNames.json in Resources */,
+				485ECBCC1651642D00364F08 /* CountriesView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2818,6 +2833,9 @@
 				48AF455C1649794B00DFE3D8 /* ShareView.xib in Resources */,
 				48AF455F1649799F00DFE3D8 /* ForwardingsView.xib in Resources */,
 				48AF4562164979CE00DFE3D8 /* RecentsView.xib in Resources */,
+				485ECBC81651636600364F08 /* CountryNames.json in Resources */,
+				485ECBCA1651638600364F08 /* CountryCodesMap.json in Resources */,
+				485ECBCD1651642D00364F08 /* CountriesView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2877,8 +2895,9 @@
 				48AD95DF164AE582006178E6 /* Skinning.m in Sources */,
 				488268D9164BCF8600EA58AE /* NetworkStatus.m in Sources */,
 				48826909164BDC3400EA58AE /* Reachability.m in Sources */,
-				48D3F018164EBE1F002041A9 /* MobileCountryCodes.m in Sources */,
+				48D3F018164EBE1F002041A9 /* CountryCodes.m in Sources */,
 				48D3F01E164F9284002041A9 /* CountryNames.m in Sources */,
+				485ECBD01651646700364F08 /* CountriesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2905,8 +2924,9 @@
 				48AD95E0164AE582006178E6 /* Skinning.m in Sources */,
 				488268DA164BCF8600EA58AE /* NetworkStatus.m in Sources */,
 				4882690A164BDC3400EA58AE /* Reachability.m in Sources */,
-				48D3F019164EBE1F002041A9 /* MobileCountryCodes.m in Sources */,
+				48D3F019164EBE1F002041A9 /* CountryCodes.m in Sources */,
 				48D3F01F164F9284002041A9 /* CountryNames.m in Sources */,
+				485ECBD11651646700364F08 /* CountriesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2921,6 +2941,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		485ECBC51651636600364F08 /* CountryNames.json */ = {
+			isa = PBXVariantGroup;
+			children = (
+				485ECBC61651636600364F08 /* en */,
+				485ECBC91651638600364F08 /* nl */,
+			);
+			name = CountryNames.json;
+			sourceTree = "<group>";
+		};
 		48884A7D1615CE920005AA79 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

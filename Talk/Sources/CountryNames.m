@@ -13,10 +13,12 @@
 @implementation CountryNames
 
 static CountryNames*    sharedNames;
-static NSDictionary*    namesDictionary;
 
 
 #pragma mark - Singleton Stuff
+
+@synthesize namesDictionary = _namesDictionary;
+
 
 + (void)initialize
 {
@@ -24,7 +26,7 @@ static NSDictionary*    namesDictionary;
     {
         sharedNames = [self new];
         NSData* data = [Common dataForResource:@"CountryNames" ofType:@"json"];
-        namesDictionary = [Common objectWithJsonData:data];
+        sharedNames.namesDictionary = [Common objectWithJsonData:data];
     }
 }
 
@@ -50,7 +52,13 @@ static NSDictionary*    namesDictionary;
 
 - (NSString*)nameForIcc:(NSString*)isoCountryCode
 {
-    return [namesDictionary objectForKey:[isoCountryCode uppercaseString]];
+    return [self.namesDictionary objectForKey:[isoCountryCode uppercaseString]];
+}
+
+
+- (NSString*)iccForName:(NSString*)name
+{
+    return [[self.namesDictionary allKeysForObject:name] objectAtIndex:0];
 }
 
 @end

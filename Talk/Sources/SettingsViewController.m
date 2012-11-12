@@ -7,6 +7,7 @@
 //
 
 #import "SettingsViewController.h"
+#import "CountriesViewController.h"
 #import "Settings.h"
 #import "NetworkStatus.h"
 #import "CountryNames.h"
@@ -20,6 +21,9 @@ typedef enum
 
 
 @interface SettingsViewController ()
+{
+    NSIndexPath*    selectedIndexPath;
+}
 
 @end
 
@@ -53,6 +57,30 @@ typedef enum
      {
          [self.tableView reloadData];
      }];
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.tableView reloadData];
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
+    selectedIndexPath = nil;
+
+    // When there's no longer a SIM, reset the homeCountryFromSim settings.
+    if ([NetworkStatus sharedStatus].simAvailable == NO &&
+        [Settings sharedSettings].homeCountryFromSim == YES)
+    {
+        [Settings sharedSettings].homeCountryFromSim = NO;
+        [self.tableView reloadData];
+    }
 }
 
 
@@ -112,7 +140,21 @@ typedef enum
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if ([self.tableView cellForRowAtIndexPath:indexPath].selectionStyle == UITableViewCellSelectionStyleNone)
+    {
+        return;
+    }
+
+    switch (indexPath.section)
+    {
+        case TableSectionHomeCountry:
+            selectedIndexPath = indexPath;
+            [self.navigationController pushViewController:[[CountriesViewController alloc] init] animated:YES];
+            break;
+
+        default:
+            break;
+    }
 }
 
 
@@ -201,11 +243,17 @@ typedef enum
     return cell;
 }
 
+
 #pragma mark - UI Actions
 
 - (void)readFromSimSwitchAction:(id)sender
 {
     [Settings sharedSettings].homeCountryFromSim = ((UISwitch*)sender).on;
+    if ([Settings sharedSettings].homeCountryFromSim)
+    {
+        [Settings sharedSettings].homeCountry = [NetworkStatus sharedStatus].simIsoCountryCode;
+    }
+    
     [self.tableView reloadData];
 }
 
