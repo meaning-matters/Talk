@@ -19,7 +19,10 @@
 {
     if (self = [super initWithNibName:@"AboutView" bundle:nil])
     {
-        self.title = NSLocalizedString(@"About", @"About tab title");
+        self.title = NSLocalizedStringWithDefaultValue(@"About:AppInfo ScreenTitle", nil,
+                                                       [NSBundle mainBundle], @"About",
+                                                       @"Title of app screen with general info\n"
+                                                       @"[1 line larger font].");
         self.tabBarItem.image = [UIImage imageNamed:@"AboutTab.png"];
     }
     

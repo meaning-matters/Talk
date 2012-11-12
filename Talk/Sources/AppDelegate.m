@@ -62,7 +62,7 @@
  //   self.sipInterface = [[SipInterface alloc] initWithConfigPath:sipConfigPath];
     
     PhoneNumber*    phoneNumber = [[PhoneNumber alloc] initWithNumber:@"0499298238"];
-    
+
     return YES;
 }
 

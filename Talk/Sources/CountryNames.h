@@ -10,8 +10,12 @@
 
 @interface CountryNames : NSObject
 
+@property (nonatomic, strong) NSDictionary* namesDictionary;
+
 + (CountryNames*)sharedNames;
 
 - (NSString*)nameForIcc:(NSString*)isoCountryCode;
+
+- (NSString*)iccForName:(NSString*)name;
 
 @end

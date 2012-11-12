@@ -1,29 +1,29 @@
 //
-//  MobileCountryCodes.m
+//  CountryCodes.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 10/11/12.
 //  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
 //
 
-#import "MobileCountryCodes.h"
+#import "CountryCodes.h"
 #import "Common.h"
 
 
-@implementation MobileCountryCodes
+@implementation CountryCodes
 
-static MobileCountryCodes*  sharedCodes;
-static NSDictionary*        codesDictionary;    // Maps MCC to ISO Country Code.
+static CountryCodes*    sharedCodes;
+static NSDictionary*    codesDictionary;    // Maps MCC to ISO Country Code.
 
 
 #pragma mark - Singleton Stuff
 
 + (void)initialize
 {
-    if ([MobileCountryCodes class] == self)
+    if ([CountryCodes class] == self)
     {
         sharedCodes = [self new];
-        NSData* data = [Common dataForResource:@"MobileCountryCodes" ofType:@"json"];
+        NSData* data = [Common dataForResource:@"CountryCodes" ofType:@"json"];
         codesDictionary = [Common objectWithJsonData:data];
     }
 }
@@ -31,16 +31,16 @@ static NSDictionary*        codesDictionary;    // Maps MCC to ISO Country Code.
 
 + (id)allocWithZone:(NSZone*)zone
 {
-    if (sharedCodes && [MobileCountryCodes class] == self)
+    if (sharedCodes && [CountryCodes class] == self)
     {
-        [NSException raise:NSGenericException format:@"Duplicate MobileCountryCodes singleton creation"];
+        [NSException raise:NSGenericException format:@"Duplicate CountryCodes singleton creation"];
     }
 
     return [super allocWithZone:zone];
 }
 
 
-+ (MobileCountryCodes*)sharedCodes;
++ (CountryCodes*)sharedCodes;
 {
     return sharedCodes;
 }
