@@ -12,8 +12,8 @@
 
 + (CountryCodes*)sharedCodes;
 
-- (NSString*)mccForIcc:(NSString*)isoCountryCode;
+- (NSString*)mobileForIsoCountryCode:(NSString*)isoCountryCode;
 
-- (NSString*)iccForMcc:(NSString*)mobileCountryCode;
+- (NSString*)isoForMobileCountryCode:(NSString*)mobileCountryCode;
 
 @end

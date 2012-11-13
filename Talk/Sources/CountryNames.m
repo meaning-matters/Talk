@@ -50,13 +50,13 @@ static CountryNames*    sharedNames;
 
 #pragma mark - Public API Methods
 
-- (NSString*)nameForIcc:(NSString*)isoCountryCode
+- (NSString*)nameForIsoCountryCode:(NSString*)isoCountryCode
 {
     return [self.namesDictionary objectForKey:[isoCountryCode uppercaseString]];
 }
 
 
-- (NSString*)iccForName:(NSString*)name
+- (NSString*)isoCountryCodeForName:(NSString*)name
 {
     return [[self.namesDictionary allKeysForObject:name] objectAtIndex:0];
 }

@@ -108,7 +108,7 @@
     NSString*           name = [nameIndexDictionary objectForKey:nameIndexArray[indexPath.section]][indexPath.row];
     UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:indexPath];
 
-    [Settings sharedSettings].homeCountry = [[CountryNames sharedNames] iccForName:name];
+    [Settings sharedSettings].homeCountry = [[CountryNames sharedNames] isoCountryCodeForName:name];
 
     selectedCell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -131,7 +131,7 @@
     }
 
     NSString*   name = [nameIndexDictionary objectForKey:nameIndexArray[indexPath.section]][indexPath.row];
-    NSString*   isoCountryCode = [[CountryNames sharedNames] iccForName:name];
+    NSString*   isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
 
     cell.imageView.image = [UIImage imageNamed:isoCountryCode];
     cell.textLabel.text = name;
