@@ -227,7 +227,7 @@ typedef enum
         if ([Settings sharedSettings].homeCountry != nil)
         {
             cell.imageView.image = [UIImage imageNamed:[Settings sharedSettings].homeCountry];
-            cell.textLabel.text = [[CountryNames sharedNames] nameForIcc:[Settings sharedSettings].homeCountry];
+            cell.textLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:[Settings sharedSettings].homeCountry];
         }
         else
         {

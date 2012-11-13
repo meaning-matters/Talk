@@ -48,13 +48,13 @@ static NSDictionary*    codesDictionary;    // Maps MCC to ISO Country Code.
 
 #pragma mark - Public API Methods
 
-- (NSString*)mccForIcc:(NSString*)isoCountryCode
+- (NSString*)mobileForIsoCountryCode:(NSString*)isoCountryCode
 {
     return [[codesDictionary allKeysForObject:[isoCountryCode uppercaseString]] objectAtIndex:0];
 }
 
 
-- (NSString*)iccForMcc:(NSString*)mobileCountryCode
+- (NSString*)isoForMobileCountryCode:(NSString*)mobileCountryCode
 {
     return [codesDictionary objectForKey:mobileCountryCode];
 }

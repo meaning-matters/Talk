@@ -304,7 +304,7 @@ static NSTimer*                 loadUrlTestTimer;
     }
     else if ([[networkInfo subscriberCellularProvider].mobileCountryCode length] == 3)
     {
-        return [[CountryCodes sharedCodes] iccForMcc:[networkInfo subscriberCellularProvider].mobileCountryCode];
+        return [[CountryCodes sharedCodes] isoForMobileCountryCode:[networkInfo subscriberCellularProvider].mobileCountryCode];
     }
     else
     {
@@ -321,7 +321,7 @@ static NSTimer*                 loadUrlTestTimer;
     }
     else if ([[networkInfo subscriberCellularProvider].isoCountryCode length] == 2)
     {
-        return [[CountryCodes sharedCodes] mccForIcc:[networkInfo subscriberCellularProvider].isoCountryCode];
+        return [[CountryCodes sharedCodes] mobileForIsoCountryCode:[networkInfo subscriberCellularProvider].isoCountryCode];
     }
     else
     {

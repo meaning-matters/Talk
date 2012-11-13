@@ -14,8 +14,8 @@
 
 + (CountryNames*)sharedNames;
 
-- (NSString*)nameForIcc:(NSString*)isoCountryCode;
+- (NSString*)nameForIsoCountryCode:(NSString*)isoCountryCode;
 
-- (NSString*)iccForName:(NSString*)name;
+- (NSString*)isoCountryCodeForName:(NSString*)name;
 
 @end
