@@ -119,6 +119,16 @@ typedef enum
 }
 
 
+- (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    return NSLocalizedStringWithDefaultValue(@"Settings:HomeCountryInfo SectionFooter", nil,
+                                             [NSBundle mainBundle],
+                                             @"The home country determines how phone numbers without country code are interpreted.",
+                                             @"Explanation what the Home Country setting is doing\n"
+                                             @"[* lines");
+}
+
+
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger   numberOfRows;
