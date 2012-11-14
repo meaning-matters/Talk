@@ -15,6 +15,6 @@
 @property (nonatomic, strong) NSArray*  tabBarViewControllerClasses;
 
 @property (nonatomic, strong) NSString* homeCountry;        // ISO Country Code.
-@property (nonatomic, assign) BOOL      homeCountryFromSim;
+@property (nonatomic, assign) BOOL      homeCountryFromSim; // ISO Country Code.
 
 @end

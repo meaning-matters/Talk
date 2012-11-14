@@ -1,0 +1,5 @@
+* Check what happens when user switches SIM (e.g. BE -> NL).  Both when ReadFromSIM is on
+  and off.  Integrate this behaviour with alerts given to user when he calls first local
+  number.  Also find better place for code in viewWillAppear of SettingsViewController.
+
+* Fix country names (e.g. Venezuela, Vietnam, ...).

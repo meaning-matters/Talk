@@ -85,6 +85,12 @@
 		485ECBD91651C3B700364F08 /* BQ.png in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBD61651C3B700364F08 /* BQ.png */; };
 		485ECBDA1651C3B700364F08 /* BQ@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBD71651C3B700364F08 /* BQ@2x.png */; };
 		485ECBDB1651C3B700364F08 /* BQ@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBD71651C3B700364F08 /* BQ@2x.png */; };
+		485ECBDD16525CC400364F08 /* KeypadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBDC16525CC400364F08 /* KeypadView.xib */; };
+		485ECBDE16525CC400364F08 /* KeypadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBDC16525CC400364F08 /* KeypadView.xib */; };
+		485ECBE216525D3600364F08 /* KeypadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 485ECBE116525D3600364F08 /* KeypadView.m */; };
+		485ECBE316525D3600364F08 /* KeypadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 485ECBE116525D3600364F08 /* KeypadView.m */; };
+		485ECBE61652B9BE00364F08 /* KeypadButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 485ECBE51652B9BE00364F08 /* KeypadButton.m */; };
+		485ECBE71652B9BE00364F08 /* KeypadButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 485ECBE51652B9BE00364F08 /* KeypadButton.m */; };
 		485F6A391637270100D61365 /* AD.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F68471637270100D61365 /* AD.png */; };
 		485F6A3A1637270100D61365 /* AD@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F68481637270100D61365 /* AD@2x.png */; };
 		485F6A3B1637270100D61365 /* AE.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F68491637270100D61365 /* AE.png */; };
@@ -750,6 +756,11 @@
 		485ECBCF1651646700364F08 /* CountriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountriesViewController.m; sourceTree = "<group>"; };
 		485ECBD61651C3B700364F08 /* BQ.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BQ.png; sourceTree = "<group>"; };
 		485ECBD71651C3B700364F08 /* BQ@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BQ@2x.png"; sourceTree = "<group>"; };
+		485ECBDC16525CC400364F08 /* KeypadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KeypadView.xib; sourceTree = "<group>"; };
+		485ECBE016525D3600364F08 /* KeypadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeypadView.h; sourceTree = "<group>"; };
+		485ECBE116525D3600364F08 /* KeypadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeypadView.m; sourceTree = "<group>"; };
+		485ECBE41652B9BD00364F08 /* KeypadButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeypadButton.h; sourceTree = "<group>"; };
+		485ECBE51652B9BE00364F08 /* KeypadButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeypadButton.m; sourceTree = "<group>"; };
 		485F68471637270100D61365 /* AD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AD.png; sourceTree = "<group>"; };
 		485F68481637270100D61365 /* AD@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AD@2x.png"; sourceTree = "<group>"; };
 		485F68491637270100D61365 /* AE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AE.png; sourceTree = "<group>"; };
@@ -1459,6 +1470,7 @@
 				48AD95DE164AE582006178E6 /* Skinning.m */,
 				488268D1164BCF6300EA58AE /* Networking */,
 				48D3F01B164F925D002041A9 /* Resources */,
+				485ECBDF16525D1600364F08 /* Views */,
 				48AF45591649790900DFE3D8 /* ViewControllers */,
 			);
 			path = Sources;
@@ -1509,6 +1521,17 @@
 				48338FB616170D8C0033F4C1 /* Default@2x.png */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		485ECBDF16525D1600364F08 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				485ECBE016525D3600364F08 /* KeypadView.h */,
+				485ECBE116525D3600364F08 /* KeypadView.m */,
+				485ECBE41652B9BD00364F08 /* KeypadButton.h */,
+				485ECBE51652B9BE00364F08 /* KeypadButton.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		485F68461637270100D61365 /* Flags */ = {
@@ -2130,6 +2153,7 @@
 				48AF455D1649799F00DFE3D8 /* ForwardingsView.xib */,
 				48AF450D164948DC00DFE3D8 /* GroupsView.xib */,
 				48AF45131649490100DFE3D8 /* HelpView.xib */,
+				485ECBDC16525CC400364F08 /* KeypadView.xib */,
 				48AF4504164948A300DFE3D8 /* NumbersView.xib */,
 				48AF4560164979CE00DFE3D8 /* RecentsView.xib */,
 				48AF4510164948F000DFE3D8 /* SettingsView.xib */,
@@ -2804,6 +2828,7 @@
 				485ECBCC1651642D00364F08 /* CountriesView.xib in Resources */,
 				485ECBD81651C3B700364F08 /* BQ.png in Resources */,
 				485ECBDA1651C3B700364F08 /* BQ@2x.png in Resources */,
+				485ECBDD16525CC400364F08 /* KeypadView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2848,6 +2873,7 @@
 				485ECBCD1651642D00364F08 /* CountriesView.xib in Resources */,
 				485ECBD91651C3B700364F08 /* BQ.png in Resources */,
 				485ECBDB1651C3B700364F08 /* BQ@2x.png in Resources */,
+				485ECBDE16525CC400364F08 /* KeypadView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2910,6 +2936,8 @@
 				48D3F018164EBE1F002041A9 /* CountryCodes.m in Sources */,
 				48D3F01E164F9284002041A9 /* CountryNames.m in Sources */,
 				485ECBD01651646700364F08 /* CountriesViewController.m in Sources */,
+				485ECBE216525D3600364F08 /* KeypadView.m in Sources */,
+				485ECBE61652B9BE00364F08 /* KeypadButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2939,6 +2967,8 @@
 				48D3F019164EBE1F002041A9 /* CountryCodes.m in Sources */,
 				48D3F01F164F9284002041A9 /* CountryNames.m in Sources */,
 				485ECBD11651646700364F08 /* CountriesViewController.m in Sources */,
+				485ECBE316525D3600364F08 /* KeypadView.m in Sources */,
+				485ECBE71652B9BE00364F08 /* KeypadButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
