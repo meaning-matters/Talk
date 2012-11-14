@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "ViewController.h"
+#import "KeypadView.h"
 
-@interface DialerViewController : ViewController
+@interface DialerViewController : ViewController <KeypadViewDelegate>
+
+@property (nonatomic, readonly) IBOutlet KeypadView*    keypadView;
 
 @end
