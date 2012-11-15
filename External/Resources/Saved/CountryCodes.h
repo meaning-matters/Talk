@@ -14,6 +14,7 @@
 
 - (NSString*)mobileForIsoCountryCode:(NSString*)isoCountryCode;
 
-- (NSString*)isoForMobileCountryCode:(NSString*)mobileCountryCode;
+- (NSString*)isoForMobileCountryCode:(NSString*)mobileCountryCode
+                   mobileNetworkCode:(NSString*)mobileNetworkCode;
 
 @end

@@ -62,7 +62,7 @@ static NSUserDefaults*  userDefaults;
 
     // Default for tabBarViewControllerClasses is handled in AppDelegate.
 
-    if ([NetworkStatus sharedStatus].simAvailable)
+    if ([NetworkStatus sharedStatus].simIsoCountryCode != nil)
     {
         [defaults setObject:[NetworkStatus sharedStatus].simIsoCountryCode forKey:HomeCountryKey];
         [defaults setObject:[NSNumber numberWithBool:YES] forKey:HomeCountryFromSimKey];
