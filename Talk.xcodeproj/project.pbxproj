@@ -65,7 +65,6 @@
 		48338F8F161628BA0033F4C1 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F8C161628BA0033F4C1 /* libcrypto.a */; };
 		48338F90161628BA0033F4C1 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F8D161628BA0033F4C1 /* libssl.a */; };
 		48338F91161628BA0033F4C1 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F8D161628BA0033F4C1 /* libssl.a */; };
-		48338F9B16170C6C0033F4C1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 48338F9A16170C6C0033F4C1 /* main.m */; };
 		48338FA516170CA80033F4C1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 48338FA016170CA80033F4C1 /* AppDelegate.m */; };
 		48338FB716170D8C0033F4C1 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48338FB416170D8C0033F4C1 /* Default-568h@2x.png */; };
 		48338FB816170D8C0033F4C1 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 48338FB516170D8C0033F4C1 /* Default.png */; };
@@ -74,8 +73,6 @@
 		48338FD216181B750033F4C1 /* SipInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 48338FD016181B750033F4C1 /* SipInterface.m */; };
 		484F7C3B164C15770059A5A6 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3A164C15770059A5A6 /* CoreTelephony.framework */; };
 		484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */; };
-		485ECBC71651636600364F08 /* CountryNames.json in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBC51651636600364F08 /* CountryNames.json */; };
-		485ECBC81651636600364F08 /* CountryNames.json in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBC51651636600364F08 /* CountryNames.json */; };
 		485ECBCA1651638600364F08 /* CountryCodesMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 4827D8B2163F0F5700005131 /* CountryCodesMap.json */; };
 		485ECBCC1651642D00364F08 /* CountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBCB1651642D00364F08 /* CountriesView.xib */; };
 		485ECBCD1651642D00364F08 /* CountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBCB1651642D00364F08 /* CountriesView.xib */; };
@@ -579,7 +576,6 @@
 		48884A751615CE920005AA79 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A741615CE920005AA79 /* UIKit.framework */; };
 		48884A771615CE920005AA79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A761615CE920005AA79 /* Foundation.framework */; };
 		48884A791615CE920005AA79 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A781615CE920005AA79 /* CoreGraphics.framework */; };
-		48884A7F1615CE920005AA79 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48884A7D1615CE920005AA79 /* InfoPlist.strings */; };
 		48884AA71615CE920005AA79 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884AA61615CE920005AA79 /* SenTestingKit.framework */; };
 		48884AA81615CE920005AA79 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A741615CE920005AA79 /* UIKit.framework */; };
 		48884AA91615CE920005AA79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A761615CE920005AA79 /* Foundation.framework */; };
@@ -672,6 +668,14 @@
 		48AF4581164A45A100DFE3D8 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4580164A45A100DFE3D8 /* Settings.m */; };
 		48AF4582164A45A100DFE3D8 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4580164A45A100DFE3D8 /* Settings.m */; };
 		48CB0775163D76C300B07199 /* PhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CB0774163D76C300B07199 /* PhoneNumber.m */; };
+		48D0A6E61654D65200FA2D98 /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E51654D65200FA2D98 /* SipConfig.cfg */; };
+		48D0A6E71654D65200FA2D98 /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E51654D65200FA2D98 /* SipConfig.cfg */; };
+		48D0A6EA1654D66200FA2D98 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E81654D66200FA2D98 /* InfoPlist.strings */; };
+		48D0A6EB1654D66200FA2D98 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E81654D66200FA2D98 /* InfoPlist.strings */; };
+		48D0A6EE1654D66E00FA2D98 /* CountryNames.json in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6EC1654D66E00FA2D98 /* CountryNames.json */; };
+		48D0A6EF1654D66E00FA2D98 /* CountryNames.json in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6EC1654D66E00FA2D98 /* CountryNames.json */; };
+		48D0A6F41654D6D700FA2D98 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D0A6F31654D6D700FA2D98 /* main.m */; };
+		48D0A6F51654D6D700FA2D98 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D0A6F31654D6D700FA2D98 /* main.m */; };
 		48D3F018164EBE1F002041A9 /* CountryCodes.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F017164EBE1F002041A9 /* CountryCodes.m */; };
 		48D3F019164EBE1F002041A9 /* CountryCodes.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F017164EBE1F002041A9 /* CountryCodes.m */; };
 		48D3F01E164F9284002041A9 /* CountryNames.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F01D164F9284002041A9 /* CountryNames.m */; };
@@ -680,8 +684,6 @@
 		48EC6DBF16545B1F00394A4B /* AC.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EC6DBC16545B1F00394A4B /* AC.png */; };
 		48EC6DC016545B1F00394A4B /* AC@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EC6DBD16545B1F00394A4B /* AC@2x.png */; };
 		48EC6DC116545B1F00394A4B /* AC@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EC6DBD16545B1F00394A4B /* AC@2x.png */; };
-		48FD99D216182B6B0061191B /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48FD99D116182B6B0061191B /* SipConfig.cfg */; };
-		48FD99D316182B6B0061191B /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48FD99D116182B6B0061191B /* SipConfig.cfg */; };
 		48FD99D5161855D30061191B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D4161855D30061191B /* CoreMedia.framework */; };
 		48FD99D7161855E10061191B /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D6161855E10061191B /* CoreVideo.framework */; };
 		48FD99D9161855EF0061191B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D8161855EF0061191B /* AVFoundation.framework */; };
@@ -726,7 +728,6 @@
 		48338F8C161628BA0033F4C1 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "External/OpenSSL-for-iPhone/lib/libcrypto.a"; sourceTree = "<group>"; };
 		48338F8D161628BA0033F4C1 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "External/OpenSSL-for-iPhone/lib/libssl.a"; sourceTree = "<group>"; };
 		48338F92161700550033F4C1 /* AppledocSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AppledocSettings.plist; sourceTree = "<group>"; };
-		48338F9A16170C6C0033F4C1 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		48338F9F16170CA80033F4C1 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		48338FA016170CA80033F4C1 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		48338FB416170D8C0033F4C1 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -736,8 +737,6 @@
 		48338FD016181B750033F4C1 /* SipInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SipInterface.m; sourceTree = "<group>"; };
 		484F7C3A164C15770059A5A6 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		485ECBC61651636600364F08 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = en; path = Resources/en.lproj/CountryNames.json; sourceTree = "<group>"; };
-		485ECBC91651638600364F08 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = nl; path = Resources/nl.lproj/CountryNames.json; sourceTree = "<group>"; };
 		485ECBCB1651642D00364F08 /* CountriesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CountriesView.xib; sourceTree = "<group>"; };
 		485ECBCE1651646700364F08 /* CountriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountriesViewController.h; sourceTree = "<group>"; };
 		485ECBCF1651646700364F08 /* CountriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountriesViewController.m; sourceTree = "<group>"; };
@@ -1238,7 +1237,6 @@
 		48884A761615CE920005AA79 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		48884A781615CE920005AA79 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		48884A7C1615CE920005AA79 /* Talk-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Talk-Info.plist"; sourceTree = "<group>"; };
-		48884A7E1615CE920005AA79 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		48884A821615CE920005AA79 /* Talk-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Talk-Prefix.pch"; sourceTree = "<group>"; };
 		48884AA51615CE920005AA79 /* TalkTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TalkTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		48884AA61615CE920005AA79 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -1304,13 +1302,16 @@
 		48AF4580164A45A100DFE3D8 /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
 		48CB0773163D76C300B07199 /* PhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumber.h; sourceTree = "<group>"; };
 		48CB0774163D76C300B07199 /* PhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneNumber.m; sourceTree = "<group>"; };
+		48D0A6E51654D65200FA2D98 /* SipConfig.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SipConfig.cfg; path = Resources/SipConfig.cfg; sourceTree = "<group>"; };
+		48D0A6E91654D66200FA2D98 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		48D0A6ED1654D66E00FA2D98 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = en; path = Resources/en.lproj/CountryNames.json; sourceTree = "<group>"; };
+		48D0A6F31654D6D700FA2D98 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		48D3F016164EBE1F002041A9 /* CountryCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryCodes.h; sourceTree = "<group>"; };
 		48D3F017164EBE1F002041A9 /* CountryCodes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryCodes.m; sourceTree = "<group>"; };
 		48D3F01C164F9284002041A9 /* CountryNames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryNames.h; sourceTree = "<group>"; };
 		48D3F01D164F9284002041A9 /* CountryNames.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryNames.m; sourceTree = "<group>"; };
 		48EC6DBC16545B1F00394A4B /* AC.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AC.png; sourceTree = "<group>"; };
 		48EC6DBD16545B1F00394A4B /* AC@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AC@2x.png"; sourceTree = "<group>"; };
-		48FD99D116182B6B0061191B /* SipConfig.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SipConfig.cfg; sourceTree = "<group>"; };
 		48FD99D4161855D30061191B /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		48FD99D6161855E10061191B /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		48FD99D8161855EF0061191B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -1428,6 +1429,7 @@
 		48338F9E16170CA80033F4C1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				48D0A6F31654D6D700FA2D98 /* main.m */,
 				48338F9F16170CA80033F4C1 /* AppDelegate.h */,
 				48338FA016170CA80033F4C1 /* AppDelegate.m */,
 				48FD99E51618CC370061191B /* Common.h */,
@@ -2072,11 +2074,8 @@
 			isa = PBXGroup;
 			children = (
 				48884A7C1615CE920005AA79 /* Talk-Info.plist */,
-				48884A7D1615CE920005AA79 /* InfoPlist.strings */,
 				48884A821615CE920005AA79 /* Talk-Prefix.pch */,
-				48338F9A16170C6C0033F4C1 /* main.m */,
 				48338F92161700550033F4C1 /* AppledocSettings.plist */,
-				48FD99D116182B6B0061191B /* SipConfig.cfg */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2153,10 +2152,12 @@
 		48CB076F163D5E3500B07199 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				485ECBC51651636600364F08 /* CountryNames.json */,
 				4827D8B2163F0F5700005131 /* CountryCodesMap.json */,
+				48D0A6EC1654D66E00FA2D98 /* CountryNames.json */,
+				48D0A6E81654D66200FA2D98 /* InfoPlist.strings */,
 				4827D8B3163F0F5700005131 /* MobileCountryCodes.json */,
 				4812727216487E2D00534450 /* LibPhoneNumber.js */,
+				48D0A6E51654D65200FA2D98 /* SipConfig.cfg */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2245,12 +2246,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48884A7F1615CE920005AA79 /* InfoPlist.strings in Resources */,
 				4812727316487E2D00534450 /* LibPhoneNumber.js in Resources */,
 				48338FB716170D8C0033F4C1 /* Default-568h@2x.png in Resources */,
 				48338FB816170D8C0033F4C1 /* Default.png in Resources */,
 				48338FB916170D8C0033F4C1 /* Default@2x.png in Resources */,
-				48FD99D216182B6B0061191B /* SipConfig.cfg in Resources */,
 				485F6A391637270100D61365 /* AD.png in Resources */,
 				485F6A3A1637270100D61365 /* AD@2x.png in Resources */,
 				485F6A3B1637270100D61365 /* AE.png in Resources */,
@@ -2764,13 +2763,15 @@
 				48AF455B1649794B00DFE3D8 /* ShareView.xib in Resources */,
 				48AF455E1649799F00DFE3D8 /* ForwardingsView.xib in Resources */,
 				48AF4561164979CE00DFE3D8 /* RecentsView.xib in Resources */,
-				485ECBC71651636600364F08 /* CountryNames.json in Resources */,
 				485ECBCC1651642D00364F08 /* CountriesView.xib in Resources */,
 				485ECBD81651C3B700364F08 /* BQ.png in Resources */,
 				485ECBDA1651C3B700364F08 /* BQ@2x.png in Resources */,
 				485ECBDD16525CC400364F08 /* KeypadView.xib in Resources */,
 				48EC6DBE16545B1F00394A4B /* AC.png in Resources */,
 				48EC6DC016545B1F00394A4B /* AC@2x.png in Resources */,
+				48D0A6E61654D65200FA2D98 /* SipConfig.cfg in Resources */,
+				48D0A6EA1654D66200FA2D98 /* InfoPlist.strings in Resources */,
+				48D0A6EE1654D66E00FA2D98 /* CountryNames.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2779,7 +2780,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				48884AB11615CE920005AA79 /* InfoPlist.strings in Resources */,
-				48FD99D316182B6B0061191B /* SipConfig.cfg in Resources */,
 				48AF4506164948A300DFE3D8 /* NumbersView.xib in Resources */,
 				48AF4509164948B800DFE3D8 /* CreditView.xib in Resources */,
 				48AF450C164948CD00DFE3D8 /* DialerView.xib in Resources */,
@@ -2810,7 +2810,6 @@
 				48AF455C1649794B00DFE3D8 /* ShareView.xib in Resources */,
 				48AF455F1649799F00DFE3D8 /* ForwardingsView.xib in Resources */,
 				48AF4562164979CE00DFE3D8 /* RecentsView.xib in Resources */,
-				485ECBC81651636600364F08 /* CountryNames.json in Resources */,
 				485ECBCA1651638600364F08 /* CountryCodesMap.json in Resources */,
 				485ECBCD1651642D00364F08 /* CountriesView.xib in Resources */,
 				485ECBD91651C3B700364F08 /* BQ.png in Resources */,
@@ -2818,6 +2817,9 @@
 				485ECBDE16525CC400364F08 /* KeypadView.xib in Resources */,
 				48EC6DBF16545B1F00394A4B /* AC.png in Resources */,
 				48EC6DC116545B1F00394A4B /* AC@2x.png in Resources */,
+				48D0A6E71654D65200FA2D98 /* SipConfig.cfg in Resources */,
+				48D0A6EB1654D66200FA2D98 /* InfoPlist.strings in Resources */,
+				48D0A6EF1654D66E00FA2D98 /* CountryNames.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2857,7 +2859,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48338F9B16170C6C0033F4C1 /* main.m in Sources */,
 				48338FA516170CA80033F4C1 /* AppDelegate.m in Sources */,
 				48338FD116181B750033F4C1 /* SipInterface.m in Sources */,
 				48FD99E71618CC370061191B /* Common.m in Sources */,
@@ -2882,6 +2883,7 @@
 				485ECBD01651646700364F08 /* CountriesViewController.m in Sources */,
 				485ECBE216525D3600364F08 /* KeypadView.m in Sources */,
 				485ECBE61652B9BE00364F08 /* KeypadButton.m in Sources */,
+				48D0A6F41654D6D700FA2D98 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2913,6 +2915,7 @@
 				485ECBD11651646700364F08 /* CountriesViewController.m in Sources */,
 				485ECBE316525D3600364F08 /* KeypadView.m in Sources */,
 				485ECBE71652B9BE00364F08 /* KeypadButton.m in Sources */,
+				48D0A6F51654D6D700FA2D98 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2927,29 +2930,28 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		485ECBC51651636600364F08 /* CountryNames.json */ = {
-			isa = PBXVariantGroup;
-			children = (
-				485ECBC61651636600364F08 /* en */,
-				485ECBC91651638600364F08 /* nl */,
-			);
-			name = CountryNames.json;
-			sourceTree = "<group>";
-		};
-		48884A7D1615CE920005AA79 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				48884A7E1615CE920005AA79 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		48884AAF1615CE920005AA79 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				48884AB01615CE920005AA79 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		48D0A6E81654D66200FA2D98 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				48D0A6E91654D66200FA2D98 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		48D0A6EC1654D66E00FA2D98 /* CountryNames.json */ = {
+			isa = PBXVariantGroup;
+			children = (
+				48D0A6ED1654D66E00FA2D98 /* en */,
+			);
+			name = CountryNames.json;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
