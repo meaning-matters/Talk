@@ -2,4 +2,6 @@
   and off.  Integrate this behaviour with alerts given to user when he calls first local
   number.  Also find better place for code in viewWillAppear of SettingsViewController.
 
-* Fix country names (e.g. Venezuela, Vietnam, ...).
+* Remove countries from Settings -> Home Country list, that are not known as MCC.
+
+* MobileCountryCodes.json has duplicate keys (e.g. 340), so can't be stored in NSDictionary!  App needs to display choice for ISO country, when MCC has more than one.

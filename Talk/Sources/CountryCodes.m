@@ -23,7 +23,7 @@ static NSDictionary*    codesDictionary;    // Maps MCC to ISO Country Code.
     if ([CountryCodes class] == self)
     {
         sharedCodes = [self new];
-        NSData* data = [Common dataForResource:@"CountryCodes" ofType:@"json"];
+        NSData* data = [Common dataForResource:@"MobileCountryCodes" ofType:@"json"];
         codesDictionary = [Common objectWithJsonData:data];
     }
 }

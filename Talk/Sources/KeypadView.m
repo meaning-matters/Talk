@@ -55,13 +55,13 @@
 
 
 - (void)setUp
-{
+{    
     [[NSBundle mainBundle] loadNibNamed:@"KeypadView" owner:self options:nil];
+    CGRect frame = self.frame;
+    self.view.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
     [self addSubview:self.view];
 
     [self setBackgroundColor:[UIColor clearColor]];
-
-    [self setTranslatesAutoresizingMaskIntoConstraints:NO];
 }
 
 
