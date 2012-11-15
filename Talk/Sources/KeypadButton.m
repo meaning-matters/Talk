@@ -20,17 +20,26 @@
 }
 
 
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+
+    // Trigger drawRect.
+    [self setNeedsDisplay];
+}
+
+
 - (void)drawRect:(CGRect)rect
 {
     [super drawRect:rect];
 
-    if (self.highlighted)
+    if (self.state == UIControlStateHighlighted)
     {
         //// General Declarations
         CGContextRef context = UIGraphicsGetCurrentContext();
 
         //// Color Declarations
-        UIColor* selectedTextBackgroundColor = [UIColor colorWithRed: 0.71 green: 0.835 blue: 1 alpha: 1];
+        UIColor* selectedTextBackgroundColor = [UIColor colorWithRed:0.90 green:0.90 blue:0.90 alpha:1];
 
         //// Shadow Declarations
         UIColor* shadow = [UIColor blackColor];
@@ -38,7 +47,7 @@
         CGFloat shadowBlurRadius = 9.5;
 
         //// Rounded Rectangle Drawing
-        UIBezierPath* roundedRectanglePath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(0.5, 0.5, 43, 24) cornerRadius: 9];
+        UIBezierPath* roundedRectanglePath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(0.5, 0.5, rect.size.width - 1, rect.size.height - 1) cornerRadius: 9];
         [selectedTextBackgroundColor setFill];
         [roundedRectanglePath fill];
 
@@ -74,7 +83,51 @@
     }
     else
     {
-        
+        //// General Declarations
+        CGContextRef context = UIGraphicsGetCurrentContext();
+
+        //// Color Declarations
+        UIColor* selectedTextBackgroundColor = [UIColor colorWithRed:0.71 green:0.835 blue: 1 alpha: 1];
+
+        //// Shadow Declarations
+        UIColor* shadow = [UIColor blackColor];
+        CGSize shadowOffset = CGSizeMake(0.1, -0.1);
+        CGFloat shadowBlurRadius = 9.5;
+
+        //// Rounded Rectangle Drawing
+        UIBezierPath* roundedRectanglePath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(0.5, 0.5, rect.size.width - 1, rect.size.height - 1) cornerRadius: 9];
+        [selectedTextBackgroundColor setFill];
+        [roundedRectanglePath fill];
+
+        ////// Rounded Rectangle Inner Shadow
+        CGRect roundedRectangleBorderRect = CGRectInset([roundedRectanglePath bounds], -shadowBlurRadius, -shadowBlurRadius);
+        roundedRectangleBorderRect = CGRectOffset(roundedRectangleBorderRect, -shadowOffset.width, -shadowOffset.height);
+        roundedRectangleBorderRect = CGRectInset(CGRectUnion(roundedRectangleBorderRect, [roundedRectanglePath bounds]), -1, -1);
+
+        UIBezierPath* roundedRectangleNegativePath = [UIBezierPath bezierPathWithRect: roundedRectangleBorderRect];
+        [roundedRectangleNegativePath appendPath: roundedRectanglePath];
+        roundedRectangleNegativePath.usesEvenOddFillRule = YES;
+
+        CGContextSaveGState(context);
+        {
+            CGFloat xOffset = shadowOffset.width + round(roundedRectangleBorderRect.size.width);
+            CGFloat yOffset = shadowOffset.height;
+            CGContextSetShadowWithColor(context,
+                                        CGSizeMake(xOffset + copysign(0.1, xOffset), yOffset + copysign(0.1, yOffset)),
+                                        shadowBlurRadius,
+                                        shadow.CGColor);
+
+            [roundedRectanglePath addClip];
+            CGAffineTransform transform = CGAffineTransformMakeTranslation(-round(roundedRectangleBorderRect.size.width), 0);
+            [roundedRectangleNegativePath applyTransform: transform];
+            [[UIColor grayColor] setFill];
+            [roundedRectangleNegativePath fill];
+        }
+        CGContextRestoreGState(context);
+
+        [[UIColor blackColor] setStroke];
+        roundedRectanglePath.lineWidth = 1;
+        [roundedRectanglePath stroke];
     }
 }
 

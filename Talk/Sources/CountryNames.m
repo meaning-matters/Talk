@@ -5,6 +5,9 @@
 //  Created by Cornelis van der Bent on 11/11/12.
 //  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
 //
+//  The following countries were deleted (including their flags) because there's
+//  no country calling code available in LibPhoneNumber: PN TF UM AQ EH BV HM GS.
+
 
 #import "CountryNames.h"
 #import "Common.h"

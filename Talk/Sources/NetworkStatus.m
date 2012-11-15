@@ -57,6 +57,9 @@ static NSTimer*                 loadUrlTestTimer;
         sharedStatus = [self new];
         [sharedStatus setUpReachability];
         [sharedStatus setUpCoreTelephony];
+
+
+        [CountryCodes sharedCodes];//temp
     }
 }
 
