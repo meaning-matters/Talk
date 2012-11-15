@@ -16,7 +16,6 @@
 #import "NetworkStatus.h"
 #import "Common.h"
 #import "Reachability.h"
-#import "CountryCodes.h"
 
 
 #define REACHABILITY_HOSTNAME   @"www.google.com"
@@ -57,9 +56,6 @@ static NSTimer*                 loadUrlTestTimer;
         sharedStatus = [self new];
         [sharedStatus setUpReachability];
         [sharedStatus setUpCoreTelephony];
-
-
-        [CountryCodes sharedCodes];//temp
     }
 }
 
@@ -280,8 +276,6 @@ static NSTimer*                 loadUrlTestTimer;
 
 - (BOOL)simAvailable
 {
-    // Most important for app are IsoCountryCode and MobileCoutryCode, so we check these.
-    // Only one is needed to look up the other using a resource file (see code below).
     return ([[networkInfo subscriberCellularProvider].isoCountryCode length] == 2 ||
             [[networkInfo subscriberCellularProvider].mobileCountryCode length] == 3);
 }
@@ -305,10 +299,6 @@ static NSTimer*                 loadUrlTestTimer;
     {
         return [[networkInfo subscriberCellularProvider].isoCountryCode uppercaseString];
     }
-    else if ([[networkInfo subscriberCellularProvider].mobileCountryCode length] == 3)
-    {
-        return [[CountryCodes sharedCodes] isoForMobileCountryCode:[networkInfo subscriberCellularProvider].mobileCountryCode];
-    }
     else
     {
         return nil;
@@ -321,10 +311,6 @@ static NSTimer*                 loadUrlTestTimer;
     if ([[networkInfo subscriberCellularProvider].mobileCountryCode length] == 3)
     {
         return [networkInfo subscriberCellularProvider].mobileCountryCode;
-    }
-    else if ([[networkInfo subscriberCellularProvider].isoCountryCode length] == 2)
-    {
-        return [[CountryCodes sharedCodes] mobileForIsoCountryCode:[networkInfo subscriberCellularProvider].isoCountryCode];
     }
     else
     {

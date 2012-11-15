@@ -74,8 +74,8 @@ typedef enum
     [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
     selectedIndexPath = nil;
 
-    // When there's no longer a SIM, reset the homeCountryFromSim settings.
-    if ([NetworkStatus sharedStatus].simAvailable == NO &&
+    // When there's no longer a SIM supplying country, reset the homeCountryFromSim settings.
+    if ([NetworkStatus sharedStatus].simIsoCountryCode == nil &&
         [Settings sharedSettings].homeCountryFromSim == YES)
     {
         [Settings sharedSettings].homeCountryFromSim = NO;
@@ -136,7 +136,7 @@ typedef enum
     switch (section)
     {
         case TableSectionHomeCountry:
-            numberOfRows = [NetworkStatus sharedStatus].simAvailable ? 2 : 1;
+            numberOfRows = ([NetworkStatus sharedStatus].simIsoCountryCode != nil) ? 2 : 1;
             break;
 
         default:
@@ -191,7 +191,7 @@ typedef enum
     UITableViewCell*    cell;
     UISwitch*           switchView;
 
-    if ([NetworkStatus sharedStatus].simAvailable == YES && indexPath.row == 0)
+    if ([NetworkStatus sharedStatus].simIsoCountryCode != nil && indexPath.row == 0)
     {
         cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
         if (cell == nil)
@@ -215,8 +215,8 @@ typedef enum
              forControlEvents:UIControlEventValueChanged];
     }
 
-    if (([NetworkStatus sharedStatus].simAvailable == YES && indexPath.row == 1) ||
-        [NetworkStatus sharedStatus].simAvailable == NO)
+    if (([NetworkStatus sharedStatus].simIsoCountryCode != nil && indexPath.row == 1) ||
+        [NetworkStatus sharedStatus].simIsoCountryCode == nil)
     {
         cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
         if (cell == nil)
@@ -238,7 +238,7 @@ typedef enum
                                                                     @"[1 line - abbreviated: 'Not Selected'");
         }
         
-        if ([NetworkStatus sharedStatus].simAvailable == YES && [Settings sharedSettings].homeCountryFromSim)
+        if ([NetworkStatus sharedStatus].simIsoCountryCode != nil && [Settings sharedSettings].homeCountryFromSim)
         {
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
