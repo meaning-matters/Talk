@@ -22,10 +22,13 @@
 
 - (void)setHighlighted:(BOOL)highlighted
 {
-    [super setHighlighted:highlighted];
+    if (self.isHighlighted != highlighted)
+    {
+        [super setHighlighted:highlighted];
 
-    // Trigger drawRect.
-    [self setNeedsDisplay];
+        // Trigger drawRect.
+        [self setNeedsDisplay];
+    }
 }
 
 
