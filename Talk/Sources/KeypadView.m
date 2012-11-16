@@ -36,6 +36,9 @@
 @synthesize keyEraseButton  = _keyEraseButton;
 @synthesize delegate        = _delegate;
 
+
+#pragma mark - Initialization
+
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame])
@@ -65,21 +68,30 @@
 }
 
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+- (void)setUpLayout
 {
-    // Drawing code
+    NSMutableArray*     constraints = [NSMutableArray array];
+    UIButton*           buttonA;
+    UIButton*           buttonB;
+    NSLayoutConstraint* constraint;
+
+    // Top to superview.
+    for (int tag = 1; tag <= 3; tag++)
+    {
+        buttonA = (UIButton*)[[self view] viewWithTag:tag];
+     //   constraint = [NSLayoutConstraint constraintWithItem:buttonA
+       //                                           attribute:NSLayoutAttributeTop relatedBy:<#(NSLayoutRelation)#> toItem:<#(id)#> attribute:<#(NSLayoutAttribute)#> multiplier:<#(CGFloat)#> constant:<#(CGFloat)#>]
+    }
+
+    //NSLayoutConstraint* constraint;
 }
-*/
 
 
 #pragma mark - UI Actions
 
 - (IBAction)digitKeyPressAction:(id)sender
 {
-    KeypadKey   key = -1;
+    KeypadKey   key = 0;
 
     key = (sender == self.key1Button)    ? KeypadKey1    : key;
     key = (sender == self.key2Button)    ? KeypadKey2    : key;
@@ -99,7 +111,7 @@
     {        
         if (tag != [sender tag])
         {
-            ((UIButton*)[[self view] viewWithTag:tag]).enabled = NO;
+            ((UIButton*)[self.view viewWithTag:tag]).userInteractionEnabled = NO;
         }
     }
 
@@ -111,7 +123,7 @@
 {
     for (int tag = 1; tag <= 12; tag++)
     {
-        ((UIButton*)[[self view] viewWithTag:tag]).enabled = YES;
+        ((UIButton*)[self.view viewWithTag:tag]).userInteractionEnabled = YES;
     }
 }
 
