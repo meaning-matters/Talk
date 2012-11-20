@@ -22,13 +22,11 @@
 @synthesize baseIsoCountryCode   = _baseIsoCountryCode;
 @synthesize numberIsoCountryCode = _numberIsoCountryCode;
 
-static NSDictionary*    countryCodesMap;
 static NSString*        defaultBaseIsoCountryCode;
 
 
 + (void)initialize
 {
-    countryCodesMap = [Common objectWithJsonData:[Common dataForResource:@"CountryCodesMap" ofType:@"json"]];
 }
 
 

@@ -11,4 +11,6 @@
 
 @interface GroupsViewController : ViewController
 
+@property (nonatomic, strong) IBOutlet UITextField* textField;
+
 @end
