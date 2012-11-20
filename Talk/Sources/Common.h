@@ -37,4 +37,10 @@
 
 + (void)setCornerRadius:(CGFloat)radius ofView:(UIView*)view;
 
++ (void)setY:(CGFloat)y ofView:(UIView*)view;
+
++ (void)setHeight:(CGFloat)height ofView:(UIView*)view;
+
++ (UIFont*)phoneFontOfSize:(CGFloat)size;
+
 @end

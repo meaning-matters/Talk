@@ -7,6 +7,8 @@
 //
 
 #import "KeypadView.h"
+#import "KeypadButton.h"
+#import "Common.h"
 
 @interface KeypadView ()
 {
@@ -64,26 +66,108 @@
     self.view.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
     [self addSubview:self.view];
 
-    [self setBackgroundColor:[UIColor clearColor]];
+    self.backgroundColor = [UIColor clearColor];
+
+    for (int tag = 1; tag <= 15; tag++)
+    {
+        KeypadButton*   button = (KeypadButton*)[self.view viewWithTag:tag];
+
+        button.backgroundColor = [UIColor clearColor];
+        button.titleLabel.text = nil;
+
+        button.backgroundColor = [UIColor clearColor];
+        [button setTitle:@"" forState:UIControlStateNormal];
+
+        switch (tag)
+        {
+            case 1:
+                button.title = @"1";
+                break;
+
+            case 2:
+                button.title = @"2";
+                button.subtitle = @"ABC";
+                break;
+
+            case 3:
+                button.title = @"3";
+                button.subtitle = @"DEF";
+                break;
+
+            case 4:
+                button.title = @"4";
+                button.subtitle = @"GHI";
+                break;
+
+            case 5:
+                button.title = @"5";
+                button.subtitle = @"JKL";
+                break;
+
+            case 6:
+                button.title = @"6";
+                button.subtitle = @"MNO";
+                break;
+
+            case 7:
+                button.title = @"7";
+                button.subtitle = @"PQRS";
+                break;
+
+            case 8:
+                button.title = @"8";
+                button.subtitle = @"TUV";
+                break;
+
+            case 9:
+                button.title = @"9";
+                button.subtitle = @"WXYZ";
+                break;
+
+            case 10:
+                button.title = @"*";
+                break;
+
+            case 11:
+                button.title = @"0";
+                button.subtitle = @"+";
+                break;
+
+            case 12:
+                button.title = @"#";
+                break;
+
+            case 13:
+                button.title = @"&";
+                break;
+
+            case 14:
+                button.title = @"C";
+                break;
+
+            case 15:
+                break;
+        }
+    }
 }
 
 
-- (void)setUpLayout
+- (void)layoutSubviews
 {
-    NSMutableArray*     constraints = [NSMutableArray array];
-    UIButton*           buttonA;
-    UIButton*           buttonB;
-    NSLayoutConstraint* constraint;
+    [super layoutSubviews];
 
-    // Top to superview.
-    for (int tag = 1; tag <= 3; tag++)
+    // Check requirement that height is fivefold.
+    assert((int)self.frame.size.height % 5 == 0);
+
+    CGFloat keyHeight = self.frame.size.height / 5;
+
+    for (int tag = 1; tag <= 15; tag++)
     {
-        buttonA = (UIButton*)[[self view] viewWithTag:tag];
-     //   constraint = [NSLayoutConstraint constraintWithItem:buttonA
-       //                                           attribute:NSLayoutAttributeTop relatedBy:<#(NSLayoutRelation)#> toItem:<#(id)#> attribute:<#(NSLayoutAttribute)#> multiplier:<#(CGFloat)#> constant:<#(CGFloat)#>]
-    }
+        UIView* view = [self.view viewWithTag:tag];
 
-    //NSLayoutConstraint* constraint;
+        [Common setHeight:keyHeight              ofView:view];
+        [Common setY:((tag - 1) / 3) * keyHeight ofView:view];
+    }
 }
 
 

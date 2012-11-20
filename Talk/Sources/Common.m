@@ -20,6 +20,7 @@
     return [documentsDirectory stringByAppendingPathComponent:fileName];
 }
 
+
 + (NSData*)dataForResource:(NSString*)resourse ofType:(NSString*)type
 {
     NSString*   path = [[NSBundle mainBundle] pathForResource:resourse ofType:type];
@@ -139,6 +140,34 @@
 {
     view.layer.cornerRadius = radius;
     view.layer.masksToBounds = YES;
+}
+
+
++ (void)setY:(CGFloat)y ofView:(UIView*)view
+{
+    CGRect  frame;
+
+    frame = view.frame;
+    frame.origin.y = y;
+    view.frame = frame;
+}
+
+
++ (void)setHeight:(CGFloat)height ofView:(UIView*)view
+{
+    CGRect  frame;
+
+    frame = view.frame;
+    frame.size.height = height;
+    view.frame = frame;
+}
+
+
++ (UIFont*)phoneFontOfSize:(CGFloat)size
+{
+    // Returns hidden iOS font with nice * # +.
+    // List of fonts: http://www.prepressure.com/fonts/basics/ios-4-fonts
+    return [UIFont fontWithName:@".PhonepadTwo" size:size];
 }
 
 @end
