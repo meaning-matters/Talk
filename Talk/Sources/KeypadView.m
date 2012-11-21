@@ -75,79 +75,9 @@
         button.backgroundColor = [UIColor clearColor];
         button.titleLabel.text = nil;
 
+        // Clear XIB title and color; were only there to easy design.
         button.backgroundColor = [UIColor clearColor];
         [button setTitle:@"" forState:UIControlStateNormal];
-
-        switch (tag)
-        {
-            case 1:
-                button.title = @"1";
-                break;
-
-            case 2:
-                button.title = @"2";
-                button.subtitle = @"ABC";
-                break;
-
-            case 3:
-                button.title = @"3";
-                button.subtitle = @"DEF";
-                break;
-
-            case 4:
-                button.title = @"4";
-                button.subtitle = @"GHI";
-                break;
-
-            case 5:
-                button.title = @"5";
-                button.subtitle = @"JKL";
-                break;
-
-            case 6:
-                button.title = @"6";
-                button.subtitle = @"MNO";
-                break;
-
-            case 7:
-                button.title = @"7";
-                button.subtitle = @"PQRS";
-                break;
-
-            case 8:
-                button.title = @"8";
-                button.subtitle = @"TUV";
-                break;
-
-            case 9:
-                button.title = @"9";
-                button.subtitle = @"WXYZ";
-                break;
-
-            case 10:
-                button.title = @"*";
-                break;
-
-            case 11:
-                button.title = @"0";
-                button.subtitle = @"+";
-                break;
-
-            case 12:
-                button.title = @"#";
-                break;
-
-            case 13:
-                button.title = @"&";
-                break;
-
-            case 14:
-                button.title = @"C";
-                break;
-
-            case 15:
-                break;
-        }
     }
 }
 

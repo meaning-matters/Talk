@@ -83,10 +83,10 @@
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<string key="IBUIText">04+ggg82 38</string>
+						<string key="IBUIText">00 32 499 29 82 38</string>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4yNzg3MTE3MDE5IDAuNjUyNTI4MzI4MiAxAA</bytes>
+							<bytes key="NSRGB">MC4zMzE5ODA5NDM3IDAuNTE4MzE2MDkwMSAwLjk5ODU5NjcyNzgAA</bytes>
 						</object>
 						<int key="IBUITextAlignment">1</int>
 						<bool key="IBUIAdjustsFontSizeToFit">YES</bool>

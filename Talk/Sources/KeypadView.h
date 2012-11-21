@@ -23,6 +23,9 @@ typedef enum
     KeypadKey0      = '0',
     KeypadKeyPlus   = '+',
     KeypadKeyHash   = '#',
+    KeypadKeyOption = '?',  // Not used.
+    KeypadKeyCall   = 'c',  // Not used.
+    KeypadKeyErase  = '<',  // Not used.
 } KeypadKey;
 
 
