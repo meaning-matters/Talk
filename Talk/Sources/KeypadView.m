@@ -150,6 +150,7 @@
 
 - (IBAction)key0LongPressAction:(id)sender
 {
+    NSLog(@"LONG PRESS");
     switch ([sender state])
     {
         case UIGestureRecognizerStateBegan:

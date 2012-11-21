@@ -8,14 +8,21 @@
 
 #import "DialerViewController.h"
 #import "Common.h"
+#import "PhoneNumber.h"
+#import "Settings.h"
+
 
 @interface DialerViewController ()
+{
+    PhoneNumber*    phoneNumber;    // Holds the current number on screen.
+}
 
 @end
 
 
 @implementation DialerViewController
 
+@synthesize delegate    = _delegate;
 @synthesize keypadView  = _keypadView;
 @synthesize infoLabel   = _infoLabel;
 @synthesize numberField = _numberField;
@@ -32,6 +39,19 @@
         // We don't want navigation bar when dialer is on main tabs.  (It will
         // always get a navigation bar, when moved to more tab.)
         navigationController.navigationBar.hidden = YES;
+
+        phoneNumber = [[PhoneNumber alloc] init];
+        [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
+                                                          object:nil
+                                                           queue:[NSOperationQueue mainQueue]
+                                                      usingBlock:^(NSNotification* note)
+         {
+             if ([phoneNumber.baseIsoCountryCode isEqualToString:[Settings sharedSettings].homeCountry] == NO)
+             {
+                 phoneNumber = [[PhoneNumber alloc] initWithNumber:phoneNumber.number];
+                 self.numberField.text = phoneNumber.asYouTypeFormat;
+             }
+         }];
     }
     
     return self;
@@ -45,6 +65,15 @@
     [self.numberField setFont:[Common phoneFontOfSize:38]];
 
     self.keypadView.delegate = self;
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    // This will clear the field when coming back from call.
+    self.numberField.text = phoneNumber.asYouTypeFormat;
 }
 
 
@@ -101,7 +130,8 @@
 
 - (void)keypadView:(KeypadView*)keypadView pressedDigitKey:(KeypadKey)key
 {
-    NSLog(@"DIGIT: %c", key);
+    phoneNumber.number = [NSString stringWithFormat:@"%@%c", phoneNumber.number, key];
+    self.numberField.text = phoneNumber.asYouTypeFormat;
 }
 
 
@@ -113,14 +143,27 @@
 
 - (void)keypadViewPressedCallKey:(KeypadView*)keypadView
 {
-    NSLog(@"CALL");
-
+    if ([self.numberField.text length] == 0)
+    {
+        phoneNumber.number = [Settings sharedSettings].lastDialedNumber;
+        self.numberField.text = phoneNumber.asYouTypeFormat;
+    }
+    else
+    {
+        [Settings sharedSettings].lastDialedNumber = phoneNumber.number;
+        [self.delegate dialerViewController:self callPhoneNumber:phoneNumber];
+        phoneNumber = [[PhoneNumber alloc] init];
+    }
 }
 
 
 - (void)keypadViewPressedEraseKey:(KeypadView*)keypadView
 {
-    NSLog(@"ERASE");
+    if ([phoneNumber.number length] > 0)
+    {
+        phoneNumber.number = [phoneNumber.number substringToIndex:[phoneNumber.number length] - 1];
+        self.numberField.text = phoneNumber.asYouTypeFormat;
+    }
 }
 
 @end

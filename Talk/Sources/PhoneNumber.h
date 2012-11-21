@@ -10,25 +10,27 @@
 
 typedef enum
 {
-    PhoneNumberTypeUnknown        =  0,
-    PhoneNumberTypeEmergency      =  1,
-    PhoneNumberTypeFixedLine      =  2,
-    PhoneNumberTypeMobile         =  3,
-    PhoneNumberTypePager          =  4,
-    PhoneNumberTypePersonalNumber =  5,
-    PhoneNumberTypePremiumRate    =  6,
-    PhoneNumberTypeSharedCost     =  7,
-    PhoneNumberTypeShortCode      =  8,
-    PhoneNumberTypeTollFree       =  9,
-    PhoneNumberTypeUan            = 10, // Universal Access Number
-    PhoneNumberTypeVoiceMail      = 11,
-    PhoneNumberTypeVoip           = 12,
+    PhoneNumberTypeUnknown           =  0,
+    PhoneNumberTypeEmergency         =  1,
+    PhoneNumberTypeFixedLine         =  2,
+    PhoneNumberTypeMobile            =  3,
+    PhoneNumberTypeFixedLineOrMobile =  4,
+    PhoneNumberTypePager             =  5,
+    PhoneNumberTypePersonalNumber    =  6,
+    PhoneNumberTypePremiumRate       =  7,
+    PhoneNumberTypeSharedCost        =  8,
+    PhoneNumberTypeShortCode         =  9,
+    PhoneNumberTypeTollFree          = 10,
+    PhoneNumberTypeUan               = 11, // Universal Access Number
+    PhoneNumberTypeVoiceMail         = 12,
+    PhoneNumberTypeVoip              = 13,
 } PhoneNumberType;
 
 @interface PhoneNumber : NSObject
 
 @property (nonatomic, readonly) NSString*   baseIsoCountryCode;
 @property (nonatomic, readonly) NSString*   numberIsoCountryCode;
+@property (nonatomic, strong) NSString*     number;                 // As entered (no formatting).
 
 
 + (void)setDefaultBaseIsoCountryCode:(NSString*)isoCountryCode;
@@ -40,5 +42,29 @@ typedef enum
 - (id)initWithNumber:(NSString*)number;
 
 - (id)initWithNumber:(NSString*)number baseIsoCountryCode:(NSString*)isoCountryCode;
+
+- (NSString*)callCountryCode;
+
+- (NSString*)isoCountryCode;
+
+- (BOOL)isValid;
+
+- (BOOL)isValidForBaseIsoCountryCode;
+
+- (BOOL)isPossible;
+
+- (PhoneNumberType)type;
+
+- (NSString*)originalFormat;
+
+- (NSString*)e164Format;
+
+- (NSString*)internationalFormat;
+
+- (NSString*)nationalFormat;
+
+- (NSString*)outOfCountryFormatFromIsoCountryCode:(NSString*)isoCountryCode;
+
+- (NSString*)asYouTypeFormat;
 
 @end

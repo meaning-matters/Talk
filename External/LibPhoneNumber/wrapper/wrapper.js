@@ -27,6 +27,15 @@ getCountryCode = function(phoneNumber, regionCode)
 };
 
 
+getRegionCodeForNumber = function(phoneNumber, regionCode)
+{
+    var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
+    var number = phoneUtil.parseAndKeepRawInput(phoneNumber, regionCode);
+
+    return phoneUtil.getRegionCodeForNumber(number);
+};
+
+
 isValidNumber = function(phoneNumber, regionCode)
 {
     var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
@@ -42,15 +51,6 @@ isValidNumberForRegion = function(phoneNumber, regionCode)
     var number = phoneUtil.parseAndKeepRawInput(phoneNumber, regionCode);
     
     return phoneUtil.isValidNumberForRegion(number, regionCode);
-};
-
-
-getRegionCodeForNumber = function(phoneNumber, regionCode)
-{
-    var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
-    var number = phoneUtil.parseAndKeepRawInput(phoneNumber, regionCode);
-    
-    return phoneUtil.getRegionCodeForNumber(number);
 };
 
 

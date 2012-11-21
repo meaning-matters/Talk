@@ -12,6 +12,7 @@
 NSString* const TabBarViewControllerClassesKey = @"TabBarViewControllerClasses";
 NSString* const HomeCountryKey                 = @"HomeCountryKey";
 NSString* const HomeCountryFromSimKey          = @"HomeCountryFromSim";
+NSString* const LastDialedNumberKey            = @"LastDialedNumber";
 
 
 @implementation Settings
@@ -22,6 +23,7 @@ static NSUserDefaults*  userDefaults;
 @synthesize tabBarViewControllerClasses = _tabBarViewControllerClasses;
 @synthesize homeCountry                 = _homeCountry;
 @synthesize homeCountryFromSim          = _homeCountryFromSim;
+@synthesize lastDialedNumber            = _lastDialedNumber;
 
 
 #pragma mark - Singleton Stuff
@@ -81,6 +83,7 @@ static NSUserDefaults*  userDefaults;
     _tabBarViewControllerClasses = [userDefaults objectForKey:TabBarViewControllerClassesKey];
     _homeCountry                 = [userDefaults objectForKey:HomeCountryKey];
     _homeCountryFromSim          = [userDefaults boolForKey:HomeCountryFromSimKey];
+    _lastDialedNumber            = [userDefaults objectForKey:LastDialedNumberKey];
 }
 
 
@@ -88,22 +91,29 @@ static NSUserDefaults*  userDefaults;
 
 - (void)setTabBarViewControllerClasses:(NSArray*)tabBarViewControllerClasses
 {
+    _tabBarViewControllerClasses = tabBarViewControllerClasses;
     [userDefaults setObject:tabBarViewControllerClasses forKey:TabBarViewControllerClassesKey];
-    _tabBarViewControllerClasses = [userDefaults objectForKey:TabBarViewControllerClassesKey];
 }
 
 
 - (void)setHomeCountry:(NSString*)homeCountry
 {
+    _homeCountry = homeCountry;
     [userDefaults setObject:homeCountry forKey:HomeCountryKey];
-    _homeCountry = [userDefaults objectForKey:HomeCountryKey];
 }
 
 
 - (void)setHomeCountryFromSim:(BOOL)homeCountryFromSim
 {
+    _homeCountryFromSim = homeCountryFromSim;
     [userDefaults setBool:homeCountryFromSim forKey:HomeCountryFromSimKey];
-    _homeCountryFromSim = [userDefaults boolForKey:HomeCountryFromSimKey];
+}
+
+
+- (void)setLastDialedNumber:(NSString *)lastDialedNumber
+{
+    _lastDialedNumber = lastDialedNumber;
+    [userDefaults setObject:lastDialedNumber forKey:LastDialedNumberKey];
 }
 
 @end
