@@ -226,6 +226,9 @@ typedef enum
 
         if ([Settings sharedSettings].homeCountry != nil)
         {
+            // Note: This is also done in CountriesViewController (to update the
+            //       selected cell before animation).  So pay a visit there when
+            //       changing this.
             cell.imageView.image = [UIImage imageNamed:[Settings sharedSettings].homeCountry];
             cell.textLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:[Settings sharedSettings].homeCountry];
         }

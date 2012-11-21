@@ -8,6 +8,7 @@
 
 #import "PhoneNumber.h"
 #import "Common.h"
+#import "LibPhoneNumber.h"
 
 
 @interface PhoneNumber ()
@@ -21,6 +22,8 @@
 
 @synthesize baseIsoCountryCode   = _baseIsoCountryCode;
 @synthesize numberIsoCountryCode = _numberIsoCountryCode;
+@synthesize number               = _number;
+
 
 static NSString*        defaultBaseIsoCountryCode;
 
@@ -42,11 +45,14 @@ static NSString*        defaultBaseIsoCountryCode;
 }
 
 
+#pragma mark - Creation
+
 - (id)init
 {
     if (self = [super init])
     {
         _baseIsoCountryCode = defaultBaseIsoCountryCode;
+        _number = @"";
     }
     
     return self;
@@ -58,6 +64,7 @@ static NSString*        defaultBaseIsoCountryCode;
     if (self = [super init])
     {
         _baseIsoCountryCode = defaultBaseIsoCountryCode;
+        _number = number;
     }
     
     return self;
@@ -69,73 +76,85 @@ static NSString*        defaultBaseIsoCountryCode;
     if (self = [super init])
     {
         _baseIsoCountryCode = isoCountryCode;
+        _number = number;
     }
     
     return self;
 }
 
 
+#pragma mark - Utility Methods
+
+- (NSString*)callCountryCode
+{
+    return [[LibPhoneNumber sharedInstance] callCountryCodeOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
+}
+
+
+- (NSString*)isoCountryCode
+{
+    return [[LibPhoneNumber sharedInstance] isoCountryCodeOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
+}
+
+
 - (BOOL)isValid
 {
-    BOOL    valid = NO;
-    
-    return valid;
+    return [[LibPhoneNumber sharedInstance] isValidNumber:self.number isoCountryCode:self.baseIsoCountryCode];
 }
 
 
 - (BOOL)isValidForBaseIsoCountryCode
 {
-    return [self.numberIsoCountryCode isEqualToString:self.baseIsoCountryCode];
+    return [[LibPhoneNumber sharedInstance] isValidNumber:self.number forBaseIsoCountryCode:self.baseIsoCountryCode];
 }
 
 
 - (BOOL)isPossible
 {
-    BOOL    possible = NO;
-    
-    return possible;
+    return [[LibPhoneNumber sharedInstance] isPossibleNumber:self.number isoCountryCode:self.baseIsoCountryCode];
 }
 
 
 - (PhoneNumberType)type
 {
-    return PhoneNumberTypeUnknown;
-}
-
-
-- (NSString*)e164Format
-{
-    
+    return [[LibPhoneNumber sharedInstance] typeOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
 }
 
 
 - (NSString*)originalFormat
 {
-    
+    return [[LibPhoneNumber sharedInstance] originalFormatOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
+}
+
+
+- (NSString*)e164Format
+{
+    return [[LibPhoneNumber sharedInstance] e164FormatOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
 }
 
 
 - (NSString*)internationalFormat
 {
-    
+    return [[LibPhoneNumber sharedInstance] internationalFormatOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
 }
 
 
 - (NSString*)nationalFormat
 {
-    
+    return [[LibPhoneNumber sharedInstance] nationalFormatOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
 }
 
 
 - (NSString*)outOfCountryFormatFromIsoCountryCode:(NSString*)isoCountryCode
 {
-    
+    return [[LibPhoneNumber sharedInstance] outOfCountryFormatOfNumber:self.number isoCountryCode:self.baseIsoCountryCode
+                                                   outOfIsoCountryCode:isoCountryCode];
 }
 
 
-- (NSString*)asYouTypeFormat:(NSString*)partialNumber
+- (NSString*)asYouTypeFormat
 {
-    
+    return [[LibPhoneNumber sharedInstance] asYouTypeFormatOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
 }
 
 @end

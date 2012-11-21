@@ -17,4 +17,6 @@
 @property (nonatomic, strong) NSString* homeCountry;        // ISO Country Code.
 @property (nonatomic, assign) BOOL      homeCountryFromSim; // ISO Country Code.
 
+@property (nonatomic, strong) NSString* lastDialedNumber;
+
 @end

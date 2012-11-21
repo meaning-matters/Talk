@@ -12,6 +12,7 @@
 #import "PhoneNumber.h"
 #import "Skinning.h"
 #import "NetworkStatus.h"
+#import "LibPhoneNumber.h"
 
 
 @interface AppDelegate ()
@@ -57,11 +58,20 @@
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
 
+    // Initialize SIP stuff.
     NSString*   sipConfigPath = [[NSBundle mainBundle] pathForResource:@"SipConfig" ofType:@"cfg"];
-
  //   self.sipInterface = [[SipInterface alloc] initWithConfigPath:sipConfigPath];
-    
-    PhoneNumber*    phoneNumber = [[PhoneNumber alloc] initWithNumber:@"0499298238"];
+
+    // Initialize phone number stuff.
+    [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
+    [LibPhoneNumber sharedInstance];    // This loads the JavaScript library.
+    [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
+                                                      object:nil
+                                                       queue:[NSOperationQueue mainQueue]
+                                                  usingBlock:^(NSNotification* note)
+     {
+         [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
+     }];
 
     return YES;
 }
