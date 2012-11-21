@@ -46,24 +46,27 @@ typedef enum
 
 @interface KeypadView : UIView
 
-@property (nonatomic, strong) IBOutlet UIView*      view;
-@property (nonatomic, strong) IBOutlet UIButton*    key1Button;
-@property (nonatomic, strong) IBOutlet UIButton*    key2Button;
-@property (nonatomic, strong) IBOutlet UIButton*    key3Button;
-@property (nonatomic, strong) IBOutlet UIButton*    key4Button;
-@property (nonatomic, strong) IBOutlet UIButton*    key5Button;
-@property (nonatomic, strong) IBOutlet UIButton*    key6Button;
-@property (nonatomic, strong) IBOutlet UIButton*    key7Button;
-@property (nonatomic, strong) IBOutlet UIButton*    key8Button;
-@property (nonatomic, strong) IBOutlet UIButton*    key9Button;
-@property (nonatomic, strong) IBOutlet UIButton*    keyStarButton;
-@property (nonatomic, strong) IBOutlet UIButton*    key0Button;         // '0' or '+'
-@property (nonatomic, strong) IBOutlet UIButton*    keyHashButton;
-@property (nonatomic, strong) IBOutlet UIButton*    keyOptionButton;
-@property (nonatomic, strong) IBOutlet UIButton*    keyCallButton;
-@property (nonatomic, strong) IBOutlet UIButton*    keyEraseButton;
+@property (nonatomic, strong) IBOutlet UIView*              view;
+@property (nonatomic, strong) IBOutlet UIButton*            key1Button;
+@property (nonatomic, strong) IBOutlet UIButton*            key2Button;
+@property (nonatomic, strong) IBOutlet UIButton*            key3Button;
+@property (nonatomic, strong) IBOutlet UIButton*            key4Button;
+@property (nonatomic, strong) IBOutlet UIButton*            key5Button;
+@property (nonatomic, strong) IBOutlet UIButton*            key6Button;
+@property (nonatomic, strong) IBOutlet UIButton*            key7Button;
+@property (nonatomic, strong) IBOutlet UIButton*            key8Button;
+@property (nonatomic, strong) IBOutlet UIButton*            key9Button;
+@property (nonatomic, strong) IBOutlet UIButton*            keyStarButton;
+@property (nonatomic, strong) IBOutlet UIButton*            key0Button;         // '0' or '+'
+@property (nonatomic, strong) IBOutlet UIButton*            keyHashButton;
+@property (nonatomic, strong) IBOutlet UIButton*            keyOptionButton;
+@property (nonatomic, strong) IBOutlet UIButton*            keyCallButton;
+@property (nonatomic, strong) IBOutlet UIButton*            keyEraseButton;
 
-@property (nonatomic, assign) id<KeypadViewDelegate> delegate;
+@property (nonatomic, strong) IBOutlet UIGestureRecognizer* longPress0Recognizer;
+@property (nonatomic, strong) IBOutlet UIGestureRecognizer* longPressEraseRecognizer;
+
+@property (nonatomic, assign) id<KeypadViewDelegate>        delegate;
 
 - (IBAction)digitKeyPressAction:(id)sender;
 

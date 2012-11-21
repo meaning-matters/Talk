@@ -12,6 +12,7 @@
 @implementation KeypadButton
 
 
+
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame])
@@ -174,7 +175,6 @@
     [[UIColor grayColor] setStroke];
     keyPath.lineWidth = 1;
     [keyPath stroke];
-
 
     if (1 <= self.tag && self.tag <= 12)
     {

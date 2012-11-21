@@ -20,23 +20,25 @@
 
 @implementation KeypadView
 
-@synthesize view            = _view;
-@synthesize key1Button      = _key1Button;
-@synthesize key2Button      = _key2Button;
-@synthesize key3Button      = _key3Button;
-@synthesize key4Button      = _key4Button;
-@synthesize key5Button      = _key5Button;
-@synthesize key6Button      = _key6Button;
-@synthesize key7Button      = _key7Button;
-@synthesize key8Button      = _key8Button;
-@synthesize key9Button      = _key9Button;
-@synthesize keyStarButton   = _keyStarButton;
-@synthesize key0Button      = _key0Button;
-@synthesize keyHashButton   = _keyHashButton;
-@synthesize keyOptionButton = _keyOptionButton;
-@synthesize keyCallButton   = _keyCallButton;
-@synthesize keyEraseButton  = _keyEraseButton;
-@synthesize delegate        = _delegate;
+@synthesize view                     = _view;
+@synthesize key1Button               = _key1Button;
+@synthesize key2Button               = _key2Button;
+@synthesize key3Button               = _key3Button;
+@synthesize key4Button               = _key4Button;
+@synthesize key5Button               = _key5Button;
+@synthesize key6Button               = _key6Button;
+@synthesize key7Button               = _key7Button;
+@synthesize key8Button               = _key8Button;
+@synthesize key9Button               = _key9Button;
+@synthesize keyStarButton            = _keyStarButton;
+@synthesize key0Button               = _key0Button;
+@synthesize keyHashButton            = _keyHashButton;
+@synthesize keyOptionButton          = _keyOptionButton;
+@synthesize keyCallButton            = _keyCallButton;
+@synthesize keyEraseButton           = _keyEraseButton;
+@synthesize longPress0Recognizer     = _longPress0Recognizer;
+@synthesize longPressEraseRecognizer = _longPressEraseRecognizer;
+@synthesize delegate                 = _delegate;
 
 
 #pragma mark - Initialization
@@ -78,6 +80,10 @@
         // Clear XIB title and color; were only there to easy design.
         button.backgroundColor = [UIColor clearColor];
         [button setTitle:@"" forState:UIControlStateNormal];
+
+        // Prevents that buttons get un-highlighted.
+        self.longPress0Recognizer.cancelsTouchesInView = NO;
+        self.longPressEraseRecognizer.cancelsTouchesInView = NO;
     }
 }
 
