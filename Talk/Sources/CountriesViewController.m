@@ -116,6 +116,14 @@
 
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
+    // Set the parent cell to prevent quick update right after animations.
+    NSArray*                viewControllers = self.navigationController.viewControllers;
+    SettingsViewController* parent = (SettingsViewController*)[viewControllers objectAtIndex:[viewControllers count] - 2];
+    NSIndexPath*            parentIndexPath = parent.tableView.indexPathForSelectedRow;
+    UITableViewCell*        parentCell = [parent.tableView cellForRowAtIndexPath:parentIndexPath];
+    parentCell.imageView.image = [UIImage imageNamed:[Settings sharedSettings].homeCountry];
+    parentCell.textLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:[Settings sharedSettings].homeCountry];
+
     [self.navigationController popViewControllerAnimated:YES];
 }
 
