@@ -80,10 +80,6 @@
         // Clear XIB title and color; were only there to easy design.
         button.backgroundColor = [UIColor clearColor];
         [button setTitle:@"" forState:UIControlStateNormal];
-
-        // Prevents that buttons get un-highlighted.
-        self.longPress0Recognizer.cancelsTouchesInView = NO;
-        self.longPressEraseRecognizer.cancelsTouchesInView = NO;
     }
 }
 
@@ -150,7 +146,6 @@
 
 - (IBAction)key0LongPressAction:(id)sender
 {
-    NSLog(@"LONG PRESS");
     switch ([sender state])
     {
         case UIGestureRecognizerStateBegan:
