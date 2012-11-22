@@ -70,7 +70,10 @@
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification* note)
      {
-         [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
+         if ([[PhoneNumber defaultBaseIsoCountryCode] isEqualToString:[Settings sharedSettings].homeCountry] == NO)
+         {
+             [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
+         }
      }];
 
     return YES;
