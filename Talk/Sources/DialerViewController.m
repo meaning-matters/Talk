@@ -151,9 +151,15 @@
     }
     else
     {
-        [Settings sharedSettings].lastDialedNumber = phoneNumber.number;
-        [self.delegate dialerViewController:self callPhoneNumber:phoneNumber];
-        phoneNumber = [[PhoneNumber alloc] init];
+        if ([self.delegate dialerViewController:self callPhoneNumber:phoneNumber] == YES)
+        {
+            // Delegate will show call screen.
+            [Settings sharedSettings].lastDialedNumber = phoneNumber.number;
+            phoneNumber = [[PhoneNumber alloc] init];
+
+            // We don't clear numberField.text as this would be disruptive
+            // during the animation to call screen.  Cleared in viewDidAppear.
+        }
     }
 }
 

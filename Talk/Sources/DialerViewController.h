@@ -15,7 +15,7 @@
 
 @protocol DialerViewControllerDelegate <NSObject>
 
-- (void)dialerViewController:(DialerViewController*)dialerViewController
+- (BOOL)dialerViewController:(DialerViewController*)dialerViewController
              callPhoneNumber:(PhoneNumber*)phoneNumber;
 
 @end

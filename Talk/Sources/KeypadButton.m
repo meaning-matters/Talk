@@ -99,10 +99,14 @@
     UIColor* digitGradientTop = [UIColor colorWithRed: 0.9 green: 0.9 blue: 0.9 alpha: 1];
     UIColor* highlightGradientTop = [UIColor colorWithRed: 0.208 green: 0.497 blue: 1 alpha: 1];
     UIColor* hightlightGradientBottom = [UIColor colorWithRed: 0.551 green: 0.713 blue: 0.997 alpha: 1];
-    UIColor* callGradientTop = [UIColor colorWithRed: 0.177 green: 0.596 blue: 0.315 alpha: 1];
-    UIColor* callGradientBottom = [UIColor colorWithRed: 0.511 green: 0.985 blue: 0.673 alpha: 1];
+    UIColor* callGradientTop = [UIColor colorWithRed: 0.279 green: 0.7 blue: 0.42 alpha: 1];
+    UIColor* callGradientBottom = [UIColor colorWithRed: 0.406 green: 0.983 blue: 0.604 alpha: 1];
+    UIColor* callHightlightGradientBottom = [UIColor colorWithRed: 0.321 green: 0.802 blue: 0.481 alpha: 1];
+    UIColor* callHightlightGradientTop = [UIColor colorWithRed: 0.199 green: 0.5 blue: 0.299 alpha: 1];
     UIColor* optionEraseGradientTop = [UIColor colorWithRed: 0.80 green: 0.80 blue: 0.80 alpha: 1];
     UIColor* optionEraseGradientBottom = [UIColor colorWithRed: 0.98 green: 0.98 blue: 0.98 alpha: 1];
+    UIColor* optionEraseHightlightGradientTop = [UIColor colorWithRed: 0.476 green: 0.476 blue: 0.476 alpha: 1];
+    UIColor* optionEraseHightlightGradientBottom = [UIColor colorWithRed: 0.919 green: 0.919 blue: 0.919 alpha: 1];
 
     //// Gradient Declarations
     NSArray* digitGradientColors = [NSArray arrayWithObjects:
@@ -121,10 +125,16 @@
 
     NSArray* callGradientColors = [NSArray arrayWithObjects:
                                    (id)callGradientBottom.CGColor,
-                                   (id)[UIColor colorWithRed: 0.357 green: 0.798 blue: 0.504 alpha: 1].CGColor,
+                                   (id)[UIColor colorWithRed: 0.344 green: 0.845 blue: 0.515 alpha: 1].CGColor,
                                    (id)callGradientTop.CGColor, nil];
     CGFloat callGradientLocations[] = {0, 0.5, 1};
     CGGradientRef callGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)callGradientColors, callGradientLocations);
+
+    NSArray* callHightlightGradientColors = [NSArray arrayWithObjects:
+                                             (id)callHightlightGradientBottom.CGColor,
+                                             (id)callHightlightGradientTop.CGColor, nil];
+    CGFloat callHightlightGradientLocations[] = {0.01, 1};
+    CGGradientRef callHightlightGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)callHightlightGradientColors, callHightlightGradientLocations);
 
     NSArray* optionEraseGradientColors = [NSArray arrayWithObjects:
                                           (id)optionEraseGradientBottom.CGColor,
@@ -132,22 +142,24 @@
     CGFloat optionEraseGradientLocations[] = {0, 1};
     CGGradientRef optionEraseGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)optionEraseGradientColors, optionEraseGradientLocations);
 
+    NSArray* optionEraseHightlightGradientColors = [NSArray arrayWithObjects:
+                                                    (id)optionEraseHightlightGradientBottom.CGColor,
+                                                    (id)optionEraseHightlightGradientTop.CGColor, nil];
+    CGFloat optionEraseHightlightGradientLocations[] = {0, 1};
+    CGGradientRef optionEraseHightlightGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)optionEraseHightlightGradientColors, optionEraseHightlightGradientLocations);
+
     CGGradientRef   gradient;
-    if (self.state == UIControlStateHighlighted)
+    if (1 <= self.tag && self.tag <= 12)
     {
-        gradient = highlightGradient;
+        gradient = (self.state == UIControlStateHighlighted) ? highlightGradient : digitGradient;
     }
     else if (self.tag == 13 || self.tag == 15)
     {
-        gradient = optionEraseGradient;
+        gradient = (self.state == UIControlStateHighlighted) ? optionEraseHightlightGradient : optionEraseGradient;
     }
     else if (self.tag == 14)
     {
-        gradient = callGradient;
-    }
-    else
-    {
-        gradient = digitGradient;
+        gradient = (self.state == UIControlStateHighlighted) ? callHightlightGradient : callGradient;
     }
 
     //// Frames
