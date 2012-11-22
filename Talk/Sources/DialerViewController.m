@@ -48,6 +48,7 @@
          {
              if ([phoneNumber.baseIsoCountryCode isEqualToString:[Settings sharedSettings].homeCountry] == NO)
              {
+                 [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
                  phoneNumber = [[PhoneNumber alloc] initWithNumber:phoneNumber.number];
                  self.numberField.text = phoneNumber.asYouTypeFormat;
              }
