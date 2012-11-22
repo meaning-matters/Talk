@@ -28,11 +28,6 @@
 static NSString*        defaultBaseIsoCountryCode;
 
 
-+ (void)initialize
-{
-}
-
-
 + (void)setDefaultBaseIsoCountryCode:(NSString*)isoCountryCode
 {
     defaultBaseIsoCountryCode = isoCountryCode;
@@ -83,7 +78,7 @@ static NSString*        defaultBaseIsoCountryCode;
 }
 
 
-#pragma mark - Utility Methods
+#pragma mark - Public API
 
 - (NSString*)callCountryCode
 {

@@ -64,9 +64,10 @@ static LibPhoneNumber*  sharedInstance;
 }
 
 
+#pragma mark - UIwebView Delegate
+
 - (void)webViewDidFinishLoad:(UIWebView*)aWebView
 {
-    NSLog(@"LibPhoneNumber LOADED");
 }
 
 
@@ -75,6 +76,8 @@ static LibPhoneNumber*  sharedInstance;
     NSLog(@"LibPhoneNumber ERROR: %@", error);
 }
 
+
+#pragma mark - Public API
 
 - (NSString*)callCountryCodeOfNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode
 {

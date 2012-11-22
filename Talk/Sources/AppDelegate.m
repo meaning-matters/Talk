@@ -65,16 +65,6 @@
     // Initialize phone number stuff.
     [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
     [LibPhoneNumber sharedInstance];    // This loads the JavaScript library.
-    [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
-                                                      object:nil
-                                                       queue:[NSOperationQueue mainQueue]
-                                                  usingBlock:^(NSNotification* note)
-     {
-         if ([[PhoneNumber defaultBaseIsoCountryCode] isEqualToString:[Settings sharedSettings].homeCountry] == NO)
-         {
-             [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
-         }
-     }];
 
     return YES;
 }
