@@ -67,7 +67,7 @@
     [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
     [LibPhoneNumber sharedInstance];    // This loads the JavaScript library.
 
-    // Connect.
+    // Connect Dialer and CallManager via AppDelegate.
     self.dialerViewController.delegate = self;
 
     return YES;

@@ -51,7 +51,7 @@
              {
                  [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
                  phoneNumber = [[PhoneNumber alloc] initWithNumber:phoneNumber.number];
-                 self.numberField.text = phoneNumber.asYouTypeFormat;
+                 [self update];
              }
          }];
     }
@@ -75,7 +75,7 @@
     [super viewWillAppear:animated];
 
     // This will clear the field when coming back from call.
-    self.numberField.text = phoneNumber.asYouTypeFormat;
+    [self update];
 }
 
 
