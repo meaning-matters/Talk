@@ -27,6 +27,8 @@
 		482A6398165F903900325B3F /* CommonStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A6396165F903900325B3F /* CommonStrings.m */; };
 		482A639D165FA94400325B3F /* CallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A639C165FA94400325B3F /* CallManager.m */; };
 		482A639E165FA94400325B3F /* CallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A639C165FA94400325B3F /* CallManager.m */; };
+		482A63A1165FF73400325B3F /* NumberLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A63A0165FF73400325B3F /* NumberLabel.m */; };
+		482A63A2165FF73400325B3F /* NumberLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A63A0165FF73400325B3F /* NumberLabel.m */; };
 		48338F68161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */; };
 		48338F69161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */; };
 		48338F6A161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F57161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a */; };
@@ -712,6 +714,8 @@
 		482A6396165F903900325B3F /* CommonStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonStrings.m; sourceTree = "<group>"; };
 		482A639B165FA94400325B3F /* CallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallManager.h; sourceTree = "<group>"; };
 		482A639C165FA94400325B3F /* CallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallManager.m; sourceTree = "<group>"; };
+		482A639F165FF73400325B3F /* NumberLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberLabel.h; sourceTree = "<group>"; };
+		482A63A0165FF73400325B3F /* NumberLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberLabel.m; sourceTree = "<group>"; };
 		48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libg7221codec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libg7221codec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48338F57161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgsmcodec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libgsmcodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48338F58161628690033F4C1 /* libilbccodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libilbccodec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libilbccodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
@@ -1408,6 +1412,8 @@
 				48FD99E61618CC370061191B /* Common.m */,
 				482A6395165F903900325B3F /* CommonStrings.h */,
 				482A6396165F903900325B3F /* CommonStrings.m */,
+				482A639F165FF73400325B3F /* NumberLabel.h */,
+				482A63A0165FF73400325B3F /* NumberLabel.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -2895,6 +2901,7 @@
 				4837BB66165F726400E46C36 /* BlockAlertView.m in Sources */,
 				482A6397165F903900325B3F /* CommonStrings.m in Sources */,
 				482A639D165FA94400325B3F /* CallManager.m in Sources */,
+				482A63A1165FF73400325B3F /* NumberLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2930,6 +2937,7 @@
 				4837BB67165F726400E46C36 /* BlockAlertView.m in Sources */,
 				482A6398165F903900325B3F /* CommonStrings.m in Sources */,
 				482A639E165FA94400325B3F /* CallManager.m in Sources */,
+				482A63A2165FF73400325B3F /* NumberLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

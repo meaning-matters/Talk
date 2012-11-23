@@ -26,7 +26,7 @@
 @synthesize delegate    = _delegate;
 @synthesize keypadView  = _keypadView;
 @synthesize infoLabel   = _infoLabel;
-@synthesize numberField = _numberField;
+@synthesize numberLabel = _numberLabel;
 @synthesize nameLabel   = _nameLabel;
 
 
@@ -64,7 +64,8 @@
 {
     [super viewDidLoad];
 
-    [self.numberField setFont:[Common phoneFontOfSize:38]];
+    [self.numberLabel setFont:[Common phoneFontOfSize:38]];
+    self.numberLabel.delegate = self;
 
     self.keypadView.delegate = self;
 }
@@ -89,7 +90,7 @@
     {
         case 367:   // 320x480 screen, More tab.
             [Common setY:2        ofView:self.infoLabel];
-            [Common setY:24       ofView:self.numberField];
+            [Common setY:24       ofView:self.numberLabel];
             [Common setY:64       ofView:self.nameLabel];
             [Common setY:91       ofView:self.keypadView];
             [Common setHeight:275 ofView:self.keypadView];
@@ -97,7 +98,7 @@
 
         case 411:   // 320x480 screen, regular tab.
             [Common setY:2        ofView:self.infoLabel];
-            [Common setY:24       ofView:self.numberField];
+            [Common setY:24       ofView:self.numberLabel];
             [Common setY:64       ofView:self.nameLabel];
             [Common setY:91       ofView:self.keypadView];
             [Common setHeight:320 ofView:self.keypadView];
@@ -105,7 +106,7 @@
 
         case 455:   // 320x568 screen, regular tab.
             [Common setY:7        ofView:self.infoLabel];
-            [Common setY:33       ofView:self.numberField];
+            [Common setY:33       ofView:self.numberLabel];
             [Common setY:77       ofView:self.nameLabel];
             [Common setY:110      ofView:self.keypadView];
             [Common setHeight:345 ofView:self.keypadView];
@@ -113,7 +114,7 @@
 
         case 499:   // 320x568 screen, regular tab.
             [Common setY:6        ofView:self.infoLabel];
-            [Common setY:32       ofView:self.numberField];
+            [Common setY:32       ofView:self.numberLabel];
             [Common setY:76       ofView:self.nameLabel];
             [Common setY:108      ofView:self.keypadView];
             [Common setHeight:390 ofView:self.keypadView];
@@ -132,7 +133,7 @@
 
 - (void)update
 {
-    self.numberField.text = phoneNumber.asYouTypeFormat;
+    self.numberLabel.text = phoneNumber.asYouTypeFormat;
     if (phoneNumber.isValid)
     {
         NSString*   impossible;
@@ -179,7 +180,7 @@
 
 - (void)keypadViewPressedCallKey:(KeypadView*)keypadView
 {
-    if ([self.numberField.text length] == 0)
+    if ([self.numberLabel.text length] == 0)
     {
         phoneNumber.number = [Settings sharedSettings].lastDialedNumber;
         [self update];
@@ -192,7 +193,7 @@
             [Settings sharedSettings].lastDialedNumber = phoneNumber.number;
             phoneNumber = [[PhoneNumber alloc] init];
 
-            // We don't clear numberField.text as this would be disruptive
+            // We don't clear numberLabel.text as this would be disruptive
             // during the animation to call screen.  Cleared in viewDidAppear.
         }
     }
@@ -206,6 +207,15 @@
         phoneNumber.number = [phoneNumber.number substringToIndex:[phoneNumber.number length] - 1];
         [self update];
     }
+}
+
+
+#pragma mark - NumberLabel Delegate
+
+- (void)numberLabelChanged:(NumberLabel*)numberLabel
+{
+    phoneNumber.number = numberLabel.text;
+    [self update];
 }
 
 @end
