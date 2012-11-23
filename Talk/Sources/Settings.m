@@ -74,6 +74,8 @@ static NSUserDefaults*  userDefaults;
         [defaults setObject:[NSNumber numberWithBool:NO] forKey:HomeCountryFromSimKey];
     }
 
+    [defaults setObject:@"" forKey:LastDialedNumberKey];
+
     [userDefaults registerDefaults:defaults];
 }
 
