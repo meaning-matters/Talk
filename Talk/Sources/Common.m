@@ -170,4 +170,10 @@
     return [UIFont fontWithName:@".PhonepadTwo" size:size];
 }
 
+
++ (AppDelegate*)appDelegate
+{
+    return (AppDelegate*)[UIApplication sharedApplication].delegate;
+}
+
 @end

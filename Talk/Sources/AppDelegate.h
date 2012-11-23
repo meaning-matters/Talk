@@ -20,7 +20,8 @@
 #import "SipInterface.h"
 
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate,
+                                      DialerViewControllerDelegate>
 
 @property (nonatomic, strong) UIWindow*                     window;
 @property (nonatomic, strong) UITabBarController*           tabBarController;

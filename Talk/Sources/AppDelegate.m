@@ -13,6 +13,7 @@
 #import "Skinning.h"
 #import "NetworkStatus.h"
 #import "LibPhoneNumber.h"
+#import "CallManager.h"
 
 
 @interface AppDelegate ()
@@ -43,8 +44,8 @@
 {
     // Trigger singletons.
     [Skinning sharedSkinning];
-    [NetworkStatus sharedStatus];   // Must be called this early, because it needs
-                                    // UIApplicationDidBecomeActiveNotification.
+    [NetworkStatus sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.
+    [CallManager sharedManager];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.tabBarController = [[UITabBarController alloc] init];
@@ -66,14 +67,21 @@
     [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
     [LibPhoneNumber sharedInstance];    // This loads the JavaScript library.
 
+    // Connect.
+    self.dialerViewController.delegate = self;
+
     return YES;
 }
 
 
 - (void)applicationWillResignActive:(UIApplication*)application
 {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    // Sent when the application is about to move from active to inactive state. This can occur for
+    // certain types of temporary interruptions (such as an incoming phone call or SMS message) or
+    // when the user quits the application and it begins the transition to the background state.
+    //
+    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates.
+    // Games should use this method to pause the game.
 }
 
 
@@ -141,7 +149,7 @@
         SEL selector = NSSelectorFromString([@"set" stringByAppendingFormat:@"%@:", [class description]]);
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        [self performSelector:selector withObject:[viewControllers lastObject]];
+        [self performSelector:selector withObject:[[viewControllers lastObject] topViewController]];
 #pragma clang diagnostic pop
     }
 
@@ -191,6 +199,15 @@
         [Settings sharedSettings].tabBarViewControllerClasses = viewControllerClasses;
         defaultTabBarViewControllers = [NSMutableArray arrayWithArray:viewControllers];
     }
+}
+
+
+#pragma mark - Dialer Delegate
+
+- (BOOL)dialerViewController:(DialerViewController*)dialerViewController
+             callPhoneNumber:(PhoneNumber*)phoneNumber
+{
+    return [[CallManager sharedManager] callPhoneNumber:phoneNumber];
 }
 
 @end

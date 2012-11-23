@@ -10,6 +10,7 @@
 #import "Common.h"
 #import "PhoneNumber.h"
 #import "Settings.h"
+#import "CountryNames.h"
 
 
 @interface DialerViewController ()
@@ -127,12 +128,46 @@
 }
 
 
+#pragma mark - Utility Methods
+
+- (void)update
+{
+    self.numberField.text = phoneNumber.asYouTypeFormat;
+    if (phoneNumber.isValid)
+    {
+        NSString*   impossible;
+
+        if (phoneNumber.isPossible == NO)
+        {
+            impossible = NSLocalizedStringWithDefaultValue(@"General:Number Impossible", nil,
+                                                           [NSBundle mainBundle], @"impossible",
+                                                           @"Indicates that the phone number is impossible (i.e. can't exist)\n"
+                                                           @"[0.5 line small font].");
+            
+            self.infoLabel.text = [NSString stringWithFormat:@"%@ (%@)", [phoneNumber typeString], impossible];
+        }
+        else
+        {
+            self.infoLabel.text = [NSString stringWithFormat:@"%@", [phoneNumber typeString]];
+        }
+    }
+    else
+    {
+        self.infoLabel.text = @"";
+    }
+
+    //### lookup number in Contacts...
+    //### when found show name, else:
+    self.nameLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:[phoneNumber isoCountryCode]];
+}
+
+
 #pragma mark - KeypadView Delegate
 
 - (void)keypadView:(KeypadView*)keypadView pressedDigitKey:(KeypadKey)key
 {
     phoneNumber.number = [NSString stringWithFormat:@"%@%c", phoneNumber.number, key];
-    self.numberField.text = phoneNumber.asYouTypeFormat;
+    [self update];
 }
 
 
@@ -147,7 +182,7 @@
     if ([self.numberField.text length] == 0)
     {
         phoneNumber.number = [Settings sharedSettings].lastDialedNumber;
-        self.numberField.text = phoneNumber.asYouTypeFormat;
+        [self update];
     }
     else
     {
@@ -169,7 +204,7 @@
     if ([phoneNumber.number length] > 0)
     {
         phoneNumber.number = [phoneNumber.number substringToIndex:[phoneNumber.number length] - 1];
-        self.numberField.text = phoneNumber.asYouTypeFormat;
+        [self update];
     }
 }
 

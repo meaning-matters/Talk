@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AppDelegate.h"
 
 #define CFReleaseSafe(x)    { if ((x) != NULL) CFRelease(x); }
 
@@ -42,5 +43,7 @@
 + (void)setHeight:(CGFloat)height ofView:(UIView*)view;
 
 + (UIFont*)phoneFontOfSize:(CGFloat)size;
+
++ (AppDelegate*)appDelegate;
 
 @end
