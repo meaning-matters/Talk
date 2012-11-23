@@ -7,6 +7,9 @@
 //
 //  The following countries were deleted (including their flags) because there's
 //  no country calling code available in LibPhoneNumber: PN TF UM AQ EH BV HM GS.
+//
+//  For localization look here: http://en.wikipedia.org/wiki/List_of_country_names_in_various_languages
+//  and/or here: http://cldr.unicode.org
 
 
 #import "CountryNames.h"

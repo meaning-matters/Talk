@@ -11,5 +11,6 @@
 @interface CountriesViewController : UIViewController //<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UITableView* tableView;
+@property (nonatomic, assign) BOOL                  isModal;    // Set when shown as modal, and not from Settings.
 
 @end

@@ -125,7 +125,7 @@ typedef enum
                                              [NSBundle mainBundle],
                                              @"The home country determines how phone numbers without country code are interpreted.",
                                              @"Explanation what the Home Country setting is doing\n"
-                                             @"[* lines");
+                                             @"[* lines]");
 }
 
 

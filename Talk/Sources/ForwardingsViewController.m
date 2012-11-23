@@ -19,7 +19,7 @@
 {
     if (self = [super initWithNibName:@"ForwardingsView" bundle:nil])
     {
-        self.title = NSLocalizedString(@"Fowardings", @"Forwardings tab title");
+        self.title = NSLocalizedString(@"Forwardings", @"Forwardings tab title");
         self.tabBarItem.image = [UIImage imageNamed:@"ForwardingsTab.png"];
     }
     
