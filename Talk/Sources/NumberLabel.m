@@ -93,8 +93,12 @@
 - (void)paste:(id)sender
 {
     UIPasteboard*   pasteboard = [UIPasteboard generalPasteboard];
+    NSCharacterSet* stripSet   = [NSCharacterSet characterSetWithCharactersInString:@"()- "];
+    NSString*       strippedText;
 
-    self.text = pasteboard.string;
+    strippedText = [[pasteboard.string componentsSeparatedByCharactersInSet:stripSet] componentsJoinedByString:@""];
+    
+    self.text = strippedText;
 
     [self resignFirstResponder];
     [self.delegate numberLabelChanged:self];
