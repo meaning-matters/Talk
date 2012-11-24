@@ -6,24 +6,24 @@
 //  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
 //
 
-#import <AudioToolbox/AudioToolbox.h>
+#import <AVFoundation/AVAudioPlayer.h>
 #import "DtmfPlayer.h"
 
-static NSMutableDictionary* soundIds;
+static NSMutableDictionary* audioDataObjects;
 
 
 @implementation DtmfPlayer
 
+
 + (BOOL)initializeSound:(char)character name:(NSString*)name
 {
-    NSString*       path = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/dtmf-%@.caf", name];
-    NSURL*          url  = [NSURL fileURLWithPath:path isDirectory:NO];
-    SystemSoundID   soundId;
-    OSStatus        status = AudioServicesCreateSystemSoundID((__bridge CFURLRef)url, &soundId);
+    NSError*    error = nil;
+    NSString*   path = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/dtmf-%@.caf", name];
+    NSData*     data = [NSData dataWithContentsOfFile:path options:NSDataReadingMapped error:&error] ;
 
-    if (url != nil || status == kAudioServicesNoError)
+    if (error == nil && data != nil)
     {
-        [soundIds setObject:[NSNumber numberWithInt:soundId] forKey:[NSString stringWithFormat:@"%c", character]];
+        [audioDataObjects setObject:data forKey:[NSString stringWithFormat:@"%c", character]];
 
         return YES;
     }
@@ -36,13 +36,13 @@ static NSMutableDictionary* soundIds;
 
 + (void)initialize
 {
-    soundIds = [NSMutableDictionary dictionary];
+    audioDataObjects = [NSMutableDictionary dictionary];
 
     for (char character = '0'; character <= '9'; character++)
     {
         if ([DtmfPlayer initializeSound:character name:[NSString stringWithFormat:@"%c", character]] == NO)
         {
-            NSLog(@"Error creating DTMF sound.");
+            NSLog(@"Error loading DTMF sound.");
             break;
         }
     }
@@ -50,16 +50,23 @@ static NSMutableDictionary* soundIds;
     if ([DtmfPlayer initializeSound:'*' name:@"star"] == NO ||
         [DtmfPlayer initializeSound:'#' name:@"pound"]== NO)
     {
-        NSLog(@"Error creating DTMF sound.");
+        NSLog(@"Error loading DTMF sound.");
     }
 }
 
 
 + (void)playForCharacter:(char)character
 {
-    SystemSoundID soundId = [[soundIds objectForKey:[NSString stringWithFormat:@"%c", character]] intValue];
+    static AVAudioPlayer*   audioPlayer;    // Needs to be static, otherwise ARC releases it immediately.
+    NSData*                 data;
+    NSError*                error = nil;
 
-    AudioServicesPlaySystemSound(soundId);
+    data = [audioDataObjects objectForKey:[NSString stringWithFormat:@"%c", character]];
+    audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:&error];
+    audioPlayer.volume= 0.02f;
+    [audioPlayer prepareToPlay];
+
+    [audioPlayer play];
 }
 
 @end
