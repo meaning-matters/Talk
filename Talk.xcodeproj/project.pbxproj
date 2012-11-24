@@ -578,6 +578,8 @@
 		488268DA164BCF8600EA58AE /* NetworkStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 488268D8164BCF8600EA58AE /* NetworkStatus.m */; };
 		48826909164BDC3400EA58AE /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 48826908164BDC3400EA58AE /* Reachability.m */; };
 		4882690A164BDC3400EA58AE /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 48826908164BDC3400EA58AE /* Reachability.m */; };
+		4882748E1660E20D00B41EA1 /* DtmfPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4882748D1660E20C00B41EA1 /* DtmfPlayer.m */; };
+		4882748F1660E20D00B41EA1 /* DtmfPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4882748D1660E20C00B41EA1 /* DtmfPlayer.m */; };
 		48884A751615CE920005AA79 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A741615CE920005AA79 /* UIKit.framework */; };
 		48884A771615CE920005AA79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A761615CE920005AA79 /* Foundation.framework */; };
 		48884A791615CE920005AA79 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A781615CE920005AA79 /* CoreGraphics.framework */; };
@@ -1244,6 +1246,8 @@
 		488268D8164BCF8600EA58AE /* NetworkStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkStatus.m; sourceTree = "<group>"; };
 		48826907164BDC3400EA58AE /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		48826908164BDC3400EA58AE /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		4882748C1660E20C00B41EA1 /* DtmfPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DtmfPlayer.h; sourceTree = "<group>"; };
+		4882748D1660E20C00B41EA1 /* DtmfPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DtmfPlayer.m; sourceTree = "<group>"; };
 		48884A701615CE920005AA79 /* Talk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Talk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48884A741615CE920005AA79 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		48884A761615CE920005AA79 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1462,6 +1466,8 @@
 				482A639C165FA94400325B3F /* CallManager.m */,
 				48D3F01C164F9284002041A9 /* CountryNames.h */,
 				48D3F01D164F9284002041A9 /* CountryNames.m */,
+				4882748C1660E20C00B41EA1 /* DtmfPlayer.h */,
+				4882748D1660E20C00B41EA1 /* DtmfPlayer.m */,
 				4837BB3A165D701F00E46C36 /* LibPhoneNumber.h */,
 				4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */,
 				48338FCF16181B750033F4C1 /* SipInterface.h */,
@@ -2902,6 +2908,7 @@
 				482A6397165F903900325B3F /* CommonStrings.m in Sources */,
 				482A639D165FA94400325B3F /* CallManager.m in Sources */,
 				482A63A1165FF73400325B3F /* NumberLabel.m in Sources */,
+				4882748E1660E20D00B41EA1 /* DtmfPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2938,6 +2945,7 @@
 				482A6398165F903900325B3F /* CommonStrings.m in Sources */,
 				482A639E165FA94400325B3F /* CallManager.m in Sources */,
 				482A63A2165FF73400325B3F /* NumberLabel.m in Sources */,
+				4882748F1660E20D00B41EA1 /* DtmfPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

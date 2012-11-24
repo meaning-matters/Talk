@@ -11,6 +11,7 @@
 #import "PhoneNumber.h"
 #import "Settings.h"
 #import "CountryNames.h"
+#import "DtmfPlayer.h"
 
 
 @interface DialerViewController ()
@@ -169,6 +170,8 @@
 {
     phoneNumber.number = [NSString stringWithFormat:@"%@%c", phoneNumber.number, key];
     [self update];
+
+    [DtmfPlayer playForCharacter:key];
 }
 
 
