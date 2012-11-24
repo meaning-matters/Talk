@@ -148,7 +148,7 @@
     CGFloat optionEraseHightlightGradientLocations[] = {0, 1};
     CGGradientRef optionEraseHightlightGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)optionEraseHightlightGradientColors, optionEraseHightlightGradientLocations);
 
-    CGGradientRef   gradient;
+    CGGradientRef   gradient = nil;
     if (1 <= self.tag && self.tag <= 12)
     {
         gradient = (self.state == UIControlStateHighlighted) ? highlightGradient : digitGradient;
@@ -275,6 +275,11 @@
 
     //// Cleanup
     CGGradientRelease(digitGradient);
+    CGGradientRelease(highlightGradient);
+    CGGradientRelease(callGradient);
+    CGGradientRelease(callHightlightGradient);
+    CGGradientRelease(optionEraseGradient);
+    CGGradientRelease(optionEraseHightlightGradient);
     CGColorSpaceRelease(colorSpace);    
 }
 
