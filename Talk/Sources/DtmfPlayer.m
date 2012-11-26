@@ -100,6 +100,7 @@ static DtmfPlayer*  sharedPlayer;
                                                         selector:@selector(playKeepAlive)
                                                         userInfo:nil
                                                          repeats:YES];
+        [self playKeepAlive];
     }
 }
 
@@ -121,7 +122,6 @@ static DtmfPlayer*  sharedPlayer;
         data = [audioDataObjects objectForKey:[NSString stringWithFormat:@"%c", '0']];
         audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:&error];
         audioPlayer.volume= 0.00001f;
-        [audioPlayer prepareToPlay];
 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
                        {
@@ -139,7 +139,6 @@ static DtmfPlayer*  sharedPlayer;
     data = [audioDataObjects objectForKey:[NSString stringWithFormat:@"%c", character]];
     audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:&error];
     audioPlayer.volume= 0.02f;
-    [audioPlayer prepareToPlay];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
                    {
