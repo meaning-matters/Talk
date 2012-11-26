@@ -13,13 +13,42 @@
 @synthesize delegate = _delegate;
 
 
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super initWithCoder:aDecoder])
+    {
+        [self setUp];
+    }
+
+    return self;
+}
+
+
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame])
     {
+        [self setUp];
     }
 
     return self;
+}
+
+
+- (void)setUp
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didHideEditMenu)
+                                                 name:UIMenuControllerDidHideMenuNotification
+                                               object:nil];
+}
+
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIMenuControllerDidHideMenuNotification
+                                                  object:nil];
 }
 
 
@@ -41,6 +70,7 @@
         {
             NSCharacterSet *stringSet = [NSCharacterSet characterSetWithCharactersInString:pasteboard.string];
             NSCharacterSet *allowedSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789+#*()- "];
+            
             return [allowedSet isSupersetOfSet:stringSet];
         }
     }
@@ -121,6 +151,13 @@
         [menu setTargetRect:self.bounds inView:self];
         [menu setMenuVisible:YES animated:YES];
     }
+}
+
+
+- (void)didHideEditMenu
+{
+    self.highlighted = NO;
+    [self resignFirstResponder];
 }
 
 @end
