@@ -78,6 +78,16 @@
 
     // This will clear the field when coming back from call.
     [self update];
+
+    [[DtmfPlayer sharedPlayer] startKeepAlive]; // See DtmfPlayer.m why this is needed.
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    [[DtmfPlayer sharedPlayer] stopKeepAlive];  // See DtmfPlayer.m why this is needed.
 }
 
 
@@ -171,7 +181,7 @@
     phoneNumber.number = [NSString stringWithFormat:@"%@%c", phoneNumber.number, key];
     [self update];
 
-    [DtmfPlayer playForCharacter:key];
+    [[DtmfPlayer sharedPlayer] playForCharacter:key];
 }
 
 

@@ -10,6 +10,12 @@
 
 @interface DtmfPlayer : NSObject
 
-+ (void)playForCharacter:(char)character;
++ (DtmfPlayer*)sharedPlayer;
+
+- (void)playForCharacter:(char)character;
+
+- (void)startKeepAlive;
+
+- (void)stopKeepAlive;
 
 @end
