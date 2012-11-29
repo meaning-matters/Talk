@@ -2,7 +2,7 @@ OpenSSL
 * Was cloned from x2on.de's github. 
 * Simply following the instructions resulted in lib/.
 
-PJSIP
+pjproject-2.0.1
 * Modified Makefile to install into install/.
 * To build for armv7s:
   - Move install/lib/* to install/lib/armv7/
@@ -26,3 +26,11 @@ remains simple.
 
 Reachability
 * I copied the module into Sources and cleaned it up.
+
+PaintCode
+* Contains UI graphics design files in PaintCode format.
+* Generated code from these 'sources' is used in the app (by copy-paste).
+
+Designs
+* Number of image, PSD and AI files used as source for images in the app.
+* Used in the app are modified/exported versions of these files.
