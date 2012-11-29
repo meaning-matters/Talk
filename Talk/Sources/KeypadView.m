@@ -72,10 +72,7 @@
 
     for (int tag = 1; tag <= 15; tag++)
     {
-        KeypadButton*   button = (KeypadButton*)[self.view viewWithTag:tag];
-
-        button.backgroundColor = [UIColor clearColor];
-        button.titleLabel.text = nil;
+        UIButton*   button = (UIButton*)[self.view viewWithTag:tag];
 
         // Clear XIB title and color; were only there to easy design.
         button.backgroundColor = [UIColor clearColor];

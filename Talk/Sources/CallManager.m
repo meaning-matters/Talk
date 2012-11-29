@@ -13,6 +13,7 @@
 #import "Settings.h"
 #import "PhoneNumber.h"
 #import "CountriesViewController.h"
+#import "CallViewController.h"
 
 
 @implementation CallManager
@@ -52,6 +53,13 @@ static CallManager* sharedManager;
 {
     if ([self checkPhoneNumber:phoneNumber] == YES)
     {
+        CallViewController* callViewController = [[CallViewController alloc] init];
+        callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+
+        UITabBarController* tabBarController = [Common appDelegate].tabBarController;
+        [tabBarController.selectedViewController presentViewController:callViewController
+                                                              animated:YES
+                                                            completion:nil];
         return YES;
     }
     else

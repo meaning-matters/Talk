@@ -7,26 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-typedef enum
-{
-    KeypadKey1      = '1',
-    KeypadKey2      = '2',
-    KeypadKey3      = '3',
-    KeypadKey4      = '4',
-    KeypadKey5      = '5',
-    KeypadKey6      = '6',
-    KeypadKey7      = '7',
-    KeypadKey8      = '8',
-    KeypadKey9      = '9',
-    KeypadKeyStar   = '*',
-    KeypadKey0      = '0',
-    KeypadKeyPlus   = '+',
-    KeypadKeyHash   = '#',
-    KeypadKeyOption = '?',  // Not used.
-    KeypadKeyCall   = 'c',  // Not used.
-    KeypadKeyErase  = '<',  // Not used.
-} KeypadKey;
+#import "KeypadKey.h"
 
 
 @class KeypadView;
@@ -67,6 +48,7 @@ typedef enum
 @property (nonatomic, strong) IBOutlet UIGestureRecognizer* longPressEraseRecognizer;
 
 @property (nonatomic, assign) id<KeypadViewDelegate>        delegate;
+
 
 - (IBAction)digitKeyPressAction:(id)sender;
 
