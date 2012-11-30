@@ -191,19 +191,19 @@
         //// Title Drawing
         CGRect titleRect = CGRectMake(CGRectGetMinX(innerFrame) + 1, CGRectGetMinY(innerFrame) + 2, 41, 46);
         (self.state == UIControlStateHighlighted) ? [[UIColor whiteColor] setFill] : [[UIColor blackColor] setFill];
-        [titleContent drawInRect: titleRect withFont: [Common phoneFontOfSize: 34] lineBreakMode: NSLineBreakByWordWrapping alignment: NSTextAlignmentCenter];
+        [titleContent drawInRect: titleRect withFont: [Common phoneFontOfSize: 34] lineBreakMode: 0 alignment: NSTextAlignmentCenter];
 
         //// Subtitle Drawing
         CGRect subtitleRect = CGRectMake(CGRectGetMinX(innerFrame) - 5, CGRectGetMinY(innerFrame) + 33, 53, 15);
         (self.state == UIControlStateHighlighted) ? [[UIColor whiteColor] setFill] : [[UIColor darkGrayColor] setFill];
-        [subtitleContent drawInRect: subtitleRect withFont: [Common phoneFontOfSize: [UIFont systemFontSize]] lineBreakMode: NSLineBreakByWordWrapping alignment: NSTextAlignmentCenter];
+        [subtitleContent drawInRect: subtitleRect withFont: [Common phoneFontOfSize: [UIFont systemFontSize]] lineBreakMode: 0 alignment: NSTextAlignmentCenter];
     }
     else if (self.tag == 13)
     {
         //// Option Drawing
         CGRect optionRect = CGRectMake(CGRectGetMinX(innerFrame) + 0.5, CGRectGetMinY(innerFrame) - 2.5, 28, 51);
         (self.state == UIControlStateHighlighted) ? [[UIColor whiteColor] setFill] : [[UIColor blackColor] setFill];
-        [optionContent drawInRect: optionRect withFont: [UIFont fontWithName: @"Helvetica" size: 44] lineBreakMode: NSLineBreakByWordWrapping alignment: NSTextAlignmentCenter];
+        [optionContent drawInRect: optionRect withFont: [UIFont fontWithName: @"Helvetica" size: 44] lineBreakMode: 0 alignment: NSTextAlignmentCenter];
     }
     else if (self.tag == 14)
     {

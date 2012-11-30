@@ -7,6 +7,7 @@
 //
 
 #import "CallKeypadView.h"
+#import "Common.h"
 
 @implementation CallKeypadView
 
@@ -77,128 +78,124 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
 
     //// Color Declarations
-    UIColor* borderColor = [UIColor colorWithRed: 0.318 green: 0.318 blue: 0.318 alpha: 0.5];
-    UIColor* girdLine = [UIColor colorWithRed: 0.5 green: 0.5 blue: 0.5 alpha: 0.5];
-    UIColor* gradient2Color = [UIColor colorWithRed: 0.901 green: 0.901 blue: 0.901 alpha: 0.5];
-    UIColor* gradient2Color2 = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 0.75];
+    UIColor* borderColor = [UIColor colorWithRed: 0.5 green: 0.5 blue: 0.5 alpha: 0.8];
+    UIColor* gridLineColor = [UIColor colorWithRed: 0.246 green: 0.246 blue: 0.246 alpha: 0.8];
+    UIColor* keyNormalGradientTop = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.8];
+    UIColor* keyNormalGradientBottom = [UIColor colorWithRed: 0.103 green: 0.103 blue: 0.102 alpha: 0.8];
+    UIColor* keyHighlightGradientColor = [UIColor colorWithRed: 0 green: 0.373 blue: 1 alpha: 0.8];
+    UIColor* keyHighlightGradientColor2 = [UIColor colorWithRed: 0.203 green: 0.497 blue: 1 alpha: 0.8];
+    UIColor* borderShadowColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.5];
 
     //// Gradient Declarations
-    NSArray* gradient2Colors = [NSArray arrayWithObjects:
-                                (id)gradient2Color.CGColor,
-                                (id)gradient2Color2.CGColor, nil];
-    CGFloat gradient2Locations[] = {0, 1};
-    CGGradientRef gradient2 = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)gradient2Colors, gradient2Locations);
+    NSArray* keyNormalGradientColors = [NSArray arrayWithObjects:
+                                        (id)keyNormalGradientTop.CGColor,
+                                        (id)keyNormalGradientBottom.CGColor, nil];
+    CGFloat keyNormalGradientLocations[] = {0, 0.98};
+    CGGradientRef keyNormalGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)keyNormalGradientColors, keyNormalGradientLocations);
+    NSArray* keyHighlightGradientColors = [NSArray arrayWithObjects:
+                                           (id)keyHighlightGradientColor.CGColor,
+                                           (id)keyHighlightGradientColor2.CGColor, nil];
+    CGFloat keyHighlightGradientLocations[] = {0, 1};
+    CGGradientRef keyHighlightGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)keyHighlightGradientColors, keyHighlightGradientLocations);
 
     //// Shadow Declarations
-    UIColor* shadow = [UIColor blackColor];
-    CGSize shadowOffset = CGSizeMake(0.1, -0.1);
-    CGFloat shadowBlurRadius = 6;
-
+    UIColor* borderShadow = borderShadowColor;
+    CGSize borderShadowOffset = CGSizeMake(0.1, 2.1);
+    CGFloat borderShadowBlurRadius = 4;
+    
     //// Frames
     CGRect frame = self.bounds;
 
-    //// Background Drawing
-    UIBezierPath* backgroundPath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(CGRectGetMinX(frame) + 9, CGRectGetMinY(frame) + 9, 275, 223) cornerRadius: 10];
-
     //// Border Drawing
-    UIBezierPath* borderPath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(CGRectGetMinX(frame) + 7, CGRectGetMinY(frame) + 7, 279, 227) cornerRadius: 12];
+    UIBezierPath* borderPath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(CGRectGetMinX(frame) + 10, CGRectGetMinY(frame) + 6, 276, 227) cornerRadius: 12];
     CGContextSaveGState(context);
-    CGContextSetShadowWithColor(context, shadowOffset, shadowBlurRadius, shadow.CGColor);
+    CGContextSetShadowWithColor(context, borderShadowOffset, borderShadowBlurRadius, borderShadow.CGColor);
     [borderColor setStroke];
     borderPath.lineWidth = 4;
     [borderPath stroke];
     CGContextRestoreGState(context);
-    
-    //// Bezier Drawing
+
+    //// Grid Drawing
     UIBezierPath* bezierPath = [UIBezierPath bezierPath];
-    [bezierPath moveToPoint: CGPointMake(CGRectGetMinX(frame) + 100.5, CGRectGetMinY(frame) + 9)];
-    [bezierPath addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 100.5, CGRectGetMinY(frame) + 64)];
-    [girdLine setStroke];
+    [bezierPath moveToPoint: CGPointMake(CGRectGetMinX(frame) + 102.5, CGRectGetMinY(frame) + 8)];
+    [bezierPath addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 102.5, CGRectGetMinY(frame) + 63)];
+    [gridLineColor setStroke];
     bezierPath.lineWidth = 1;
     [bezierPath stroke];
 
-    //// Bezier 2 Drawing
     UIBezierPath* bezier2Path = [UIBezierPath bezierPath];
-    [bezier2Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 9, CGRectGetMinY(frame) + 120.5)];
-    [bezier2Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 284, CGRectGetMinY(frame) + 120.5)];
-    [girdLine setStroke];
+    [bezier2Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 12, CGRectGetMinY(frame) + 119.5)];
+    [bezier2Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 284, CGRectGetMinY(frame) + 119.5)];
+    [gridLineColor setStroke];
     bezier2Path.lineWidth = 1;
     [bezier2Path stroke];
 
-    //// Bezier 4 Drawing
     UIBezierPath* bezier4Path = [UIBezierPath bezierPath];
-    [bezier4Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 100.5, CGRectGetMinY(frame) + 121)];
-    [bezier4Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 100.5, CGRectGetMinY(frame) + 176)];
-    [girdLine setStroke];
+    [bezier4Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 102.5, CGRectGetMinY(frame) + 120)];
+    [bezier4Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 102.5, CGRectGetMinY(frame) + 175)];
+    [gridLineColor setStroke];
     bezier4Path.lineWidth = 1;
     [bezier4Path stroke];
 
-    //// Bezier 5 Drawing
     UIBezierPath* bezier5Path = [UIBezierPath bezierPath];
-    [bezier5Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 192.5, CGRectGetMinY(frame) + 121)];
-    [bezier5Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 192.5, CGRectGetMinY(frame) + 176)];
-    [girdLine setStroke];
+    [bezier5Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 193.5, CGRectGetMinY(frame) + 120)];
+    [bezier5Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 193.5, CGRectGetMinY(frame) + 175)];
+    [gridLineColor setStroke];
     bezier5Path.lineWidth = 1;
     [bezier5Path stroke];
 
-    //// Bezier 3 Drawing
     UIBezierPath* bezier3Path = [UIBezierPath bezierPath];
-    [bezier3Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 192.5, CGRectGetMinY(frame) + 9)];
-    [bezier3Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 192.5, CGRectGetMinY(frame) + 64)];
-    [girdLine setStroke];
+    [bezier3Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 193.5, CGRectGetMinY(frame) + 8)];
+    [bezier3Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 193.5, CGRectGetMinY(frame) + 63)];
+    [gridLineColor setStroke];
     bezier3Path.lineWidth = 1;
     [bezier3Path stroke];
 
-    //// Bezier 6 Drawing
     UIBezierPath* bezier6Path = [UIBezierPath bezierPath];
-    [bezier6Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 9, CGRectGetMinY(frame) + 64.5)];
-    [bezier6Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 284, CGRectGetMinY(frame) + 64.5)];
-    [girdLine setStroke];
+    [bezier6Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 12, CGRectGetMinY(frame) + 63.5)];
+    [bezier6Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 284, CGRectGetMinY(frame) + 63.5)];
+    [gridLineColor setStroke];
     bezier6Path.lineWidth = 1;
     [bezier6Path stroke];
 
-    //// Bezier 7 Drawing
     UIBezierPath* bezier7Path = [UIBezierPath bezierPath];
-    [bezier7Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 100.5, CGRectGetMinY(frame) + 65)];
-    [bezier7Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 100.5, CGRectGetMinY(frame) + 120)];
-    [girdLine setStroke];
+    [bezier7Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 102.5, CGRectGetMinY(frame) + 64)];
+    [bezier7Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 102.5, CGRectGetMinY(frame) + 119)];
+    [gridLineColor setStroke];
     bezier7Path.lineWidth = 1;
     [bezier7Path stroke];
-
-    //// Bezier 8 Drawing
+    
     UIBezierPath* bezier8Path = [UIBezierPath bezierPath];
-    [bezier8Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 100.5, CGRectGetMinY(frame) + 177)];
-    [bezier8Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 100.5, CGRectGetMinY(frame) + 232)];
-    [girdLine setStroke];
+    [bezier8Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 102.5, CGRectGetMinY(frame) + 176)];
+    [bezier8Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 102.5, CGRectGetMinY(frame) + 231)];
+    [gridLineColor setStroke];
     bezier8Path.lineWidth = 1;
     [bezier8Path stroke];
-
-    //// Bezier 9 Drawing
+    
     UIBezierPath* bezier9Path = [UIBezierPath bezierPath];
-    [bezier9Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 192.5, CGRectGetMinY(frame) + 177)];
-    [bezier9Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 192.5, CGRectGetMinY(frame) + 232)];
-    [girdLine setStroke];
+    [bezier9Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 193.5, CGRectGetMinY(frame) + 176)];
+    [bezier9Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 193.5, CGRectGetMinY(frame) + 231)];
+    [gridLineColor setStroke];
     bezier9Path.lineWidth = 1;
     [bezier9Path stroke];
     
-    //// Bezier 10 Drawing
     UIBezierPath* bezier10Path = [UIBezierPath bezierPath];
-    [bezier10Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 192.5, CGRectGetMinY(frame) + 65)];
-    [bezier10Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 192.5, CGRectGetMinY(frame) + 120)];
-    [girdLine setStroke];
+    [bezier10Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 193.5, CGRectGetMinY(frame) + 64)];
+    [bezier10Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 193.5, CGRectGetMinY(frame) + 119)];
+    [gridLineColor setStroke];
     bezier10Path.lineWidth = 1;
     [bezier10Path stroke];
     
-    //// Bezier 11 Drawing
     UIBezierPath* bezier11Path = [UIBezierPath bezierPath];
-    [bezier11Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 9, CGRectGetMinY(frame) + 176.5)];
-    [bezier11Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 284, CGRectGetMinY(frame) + 176.5)];
-    [girdLine setStroke];
+    [bezier11Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 12, CGRectGetMinY(frame) + 175.5)];
+    [bezier11Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 287, CGRectGetMinY(frame) + 175.5)];
+    [gridLineColor setStroke];
     bezier11Path.lineWidth = 1;
     [bezier11Path stroke];
     
     //// Cleanup
-    CGGradientRelease(gradient2);
+    CGGradientRelease(keyNormalGradient);
+    CGGradientRelease(keyHighlightGradient);
     CGColorSpaceRelease(colorSpace);
 }
 

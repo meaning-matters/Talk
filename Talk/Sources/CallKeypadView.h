@@ -23,7 +23,7 @@
 @interface CallKeypadView : UIView
 
 @property (nonatomic, strong) IBOutlet UIView*              view;
-@property (nonatomic, strong) IBOutlet CallKeypadButton*   key1Button;
+@property (nonatomic, strong) IBOutlet CallKeypadButton*    key1Button;
 @property (nonatomic, strong) IBOutlet CallKeypadButton*    key2Button;
 @property (nonatomic, strong) IBOutlet CallKeypadButton*    key3Button;
 @property (nonatomic, strong) IBOutlet CallKeypadButton*    key4Button;

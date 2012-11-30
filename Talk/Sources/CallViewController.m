@@ -38,11 +38,11 @@
 {
     [super viewDidLoad];
 
-    callOptionsView = [[CallOptionsView alloc] initWithFrame:self.callRootView.frame];
-    callKeypadView  = [[CallKeypadView alloc] initWithFrame:self.callRootView.frame];
+    CGRect  frame = CGRectMake(0, 0, self.callRootView.frame.size.width, self.callRootView.frame.size.height);
+    callOptionsView = [[CallOptionsView alloc] initWithFrame:frame];
+    callKeypadView  = [[CallKeypadView alloc] initWithFrame:frame];
 
-    [self.callRootView addSubview:callKeypadView];
-    [callKeypadView setNeedsDisplay];
+    [self.callRootView addSubview:callOptionsView];
 }
 
 

@@ -7,6 +7,8 @@
 //
 
 #import "CallKeypadButton.h"
+#import "Common.h"
+
 
 @implementation CallKeypadButton
 
@@ -61,16 +63,17 @@
     CGContextRef    context = UIGraphicsGetCurrentContext();
 
     //// Color Declarations
-    UIColor* keyNormalGradientTop = [UIColor colorWithRed: 0.248 green: 0.248 blue: 0.248 alpha: 0.75];
-    UIColor* keyNormalGradientBottom = [UIColor colorWithRed: 0.399 green: 0.399 blue: 0.399 alpha: 0.75];
-    UIColor* keyHighlightGradientColor = [UIColor colorWithRed: 0 green: 0.457 blue: 0.901 alpha: 0.75];
-    UIColor* keyHighlightGradientColor2 = [UIColor colorWithRed: 0.002 green: 0.456 blue: 0.897 alpha: 0.75];
+    UIColor* keyNormalGradientTop = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.8];
+    UIColor* keyNormalGradientBottom = [UIColor colorWithRed: 0.103 green: 0.103 blue: 0.102 alpha: 0.8];
+    UIColor* keyHighlightGradientColor = [UIColor colorWithRed: 0 green: 0.373 blue: 1 alpha: 0.8];
+    UIColor* keyHighlightGradientColor2 = [UIColor colorWithRed: 0.203 green: 0.497 blue: 1 alpha: 0.8];
+    UIColor* textShadowColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.5];
 
     //// Gradient Declarations
     NSArray* keyNormalGradientColors = [NSArray arrayWithObjects:
                                         (id)keyNormalGradientTop.CGColor,
                                         (id)keyNormalGradientBottom.CGColor, nil];
-    CGFloat keyNormalGradientLocations[] = {0, 1};
+    CGFloat keyNormalGradientLocations[] = {0, 0.98};
     CGGradientRef keyNormalGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)keyNormalGradientColors, keyNormalGradientLocations);
     NSArray* keyHighlightGradientColors = [NSArray arrayWithObjects:
                                            (id)keyHighlightGradientColor.CGColor,
@@ -79,6 +82,11 @@
     CGGradientRef keyHighlightGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)keyHighlightGradientColors, keyHighlightGradientLocations);
 
     CGGradientRef gradient = (self.state == UIControlStateHighlighted) ? keyHighlightGradient : keyNormalGradient;
+
+    //// Shadow Declarations
+    UIColor* textShadow = textShadowColor;
+    CGSize textShadowOffset = CGSizeMake(0.1, 1.1);
+    CGFloat textShadowBlurRadius = 1;
 
     //// Drawing
     UIRectCorner corners;
@@ -100,6 +108,14 @@
                                 CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMinY(self.bounds)),
                                 CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMaxY(self.bounds)),
                                 0);
+    CGContextRestoreGState(context);
+
+    //// Text Drawing
+    CGRect textRect = CGRectMake(CGRectGetMinX(self.bounds) + 21, CGRectGetMinY(self.bounds) + 14, 48, 38);
+    CGContextSaveGState(context);
+    CGContextSetShadowWithColor(context, textShadowOffset, textShadowBlurRadius, textShadow.CGColor);
+    [[UIColor whiteColor] setFill];
+    [[self keyTitle] drawInRect: textRect withFont: [Common phoneFontOfSize:34] lineBreakMode: 0 alignment: NSTextAlignmentCenter];
     CGContextRestoreGState(context);
 
     //// Cleanup
