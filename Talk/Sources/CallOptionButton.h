@@ -10,4 +10,6 @@
 
 @interface CallOptionButton : UIButton
 
+@property (nonatomic, assign) BOOL  on;
+
 @end
