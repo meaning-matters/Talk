@@ -69,7 +69,7 @@
 }
 
 
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+- (void)alertView:(UIAlertView*)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     self.completion(buttonIndex == self.cancelButtonIndex, buttonIndex);
 }

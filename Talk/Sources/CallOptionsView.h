@@ -13,6 +13,11 @@
 
 @class CallOptionsView;
 
+// The delegate is expected to asynchronously set mute, speaker and hold, after
+// having been informed by the corresponding delegate method.  In the mean time
+// CallOptionsView will flash the corresponding button, while waiting for the
+// delegate to set the final state.  During this wait interval no new call to the
+// delegate method will be made.
 @protocol CallOptionsViewDelegate <NSObject>
 
 - (void)callOptionsViewPressedMuteKey:(CallOptionsView*)optionsView;

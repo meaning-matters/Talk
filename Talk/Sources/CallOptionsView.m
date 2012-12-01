@@ -7,17 +7,21 @@
 //
 
 #import "CallOptionsView.h"
+#import "NSTimer+Blocks.h"
 
 
-@interface CallOptionButton ()
+@interface CallOptionsView ()
 {
     NSTimer*    muteTimer;
     NSTimer*    holdTimer;
     NSTimer*    speakerTimer;
+
+    int         muteTimerCount;
+    int         holdTimerCount;
+    int         speakerTimerCount;
 }
 
 @end
-
 
 
 @implementation CallOptionsView
@@ -136,7 +140,7 @@
     [gridLineColor setStroke];
     bezier5Path.lineWidth = 1;
     [bezier5Path stroke];
-    
+
     UIBezierPath* bezier3Path = [UIBezierPath bezierPath];
     [bezier3Path moveToPoint: CGPointMake(CGRectGetMinX(frame) + 193.5, CGRectGetMinY(frame) + 8)];
     [bezier3Path addLineToPoint: CGPointMake(CGRectGetMinX(frame) + 193.5, CGRectGetMinY(frame) + 119)];
@@ -151,7 +155,30 @@
 
 - (IBAction)muteAction:(id)sender
 {
-    [self.delegate callOptionsViewPressedMuteKey:self];
+    if (muteTimer == nil)
+    {
+        BOOL    on = self.muteButton.on;
+
+        [self.delegate callOptionsViewPressedMuteKey:self];
+
+        if (self.muteButton.on == on)
+        {
+            // On was not changed by delegate (yet), so start timer.
+            muteTimerCount = 0;
+            self.muteButton.on = !self.muteButton.on;
+            muteTimer = [NSTimer scheduledTimerWithTimeInterval:0.25
+                                                          block:^
+                                                                {
+                                                                    self.muteButton.on = !self.muteButton.on;
+                                                                    if (muteTimerCount++ == 12)
+                                                                    {
+                                                                        [muteTimer invalidate];
+                                                                        muteTimer = nil;
+                                                                    }
+                                                                }
+                                                        repeats:YES];
+        }
+    }
 }
 
 
@@ -163,7 +190,30 @@
 
 - (IBAction)speakerAction:(id)sender
 {
-    [self.delegate callOptionsViewPressedSpeakerKey:self];
+    if (speakerTimer == nil)
+    {
+        BOOL    on = self.speakerButton.on;
+
+        [self.delegate callOptionsViewPressedSpeakerKey:self];
+
+        if (self.speakerButton.on == on)
+        {
+            // On was not changed by delegate (yet), so start timer.
+            speakerTimerCount = 0;
+            self.speakerButton.on = !self.speakerButton.on;
+            speakerTimer = [NSTimer scheduledTimerWithTimeInterval:0.25
+                                                             block:^
+                                                                   {
+                                                                       self.speakerButton.on = !self.speakerButton.on;
+                                                                       if (speakerTimerCount++ == 12)
+                                                                       {
+                                                                           [speakerTimer invalidate];
+                                                                           speakerTimer = nil;
+                                                                       }
+                                                                   }
+                                                           repeats:YES];
+        }
+    }
 }
 
 
@@ -175,7 +225,30 @@
 
 - (IBAction)holdAction:(id)sender
 {
-    [self.delegate callOptionsViewPressedHoldKey:self];
+    if (holdTimer == nil)
+    {
+        BOOL    on = self.holdButton.on;
+
+        [self.delegate callOptionsViewPressedHoldKey:self];
+
+        if (self.holdButton.on == on)
+        {
+            // On was not changed by delegate (yet), so start timer.
+            holdTimerCount = 0;
+            self.holdButton.on = !self.holdButton.on;
+            holdTimer = [NSTimer scheduledTimerWithTimeInterval:0.25
+                                                          block:^
+                                                                {
+                                                                    self.holdButton.on = !self.holdButton.on;
+                                                                    if (holdTimerCount++ == 12)
+                                                                    {
+                                                                        [holdTimer invalidate];
+                                                                        holdTimer = nil;
+                                                                    }
+                                                                }
+                                                        repeats:YES];
+        }
+    }
 }
 
 
@@ -187,22 +260,43 @@
 
 - (void)setOnMute:(BOOL)onMute
 {
-    _onMute = onMute;
-    self.muteButton.on = onMute;
+    // Run on main thread to prevent race condition with muteAction.
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        [muteTimer invalidate];
+        muteTimer = nil;
+        
+        _onMute = onMute;
+        self.muteButton.on = onMute;
+    });
 }
 
 
 - (void)setOnHold:(BOOL)onHold
 {
-    _onHold = onHold;
-    self.holdButton.on = onHold;
+    // Run on main thread to prevent race condition with holdAction.
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        [holdTimer invalidate];
+        holdTimer = nil;
+
+        _onHold = onHold;
+        self.holdButton.on = onHold;
+    });
 }
 
 
 - (void)setOnSpeaker:(BOOL)onSpeaker
 {
-    _onSpeaker = onSpeaker;
-    self.onSpeaker = onSpeaker;
+    // Run on main thread to prevent race condition with speakerAction.
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        [speakerTimer invalidate];
+        speakerTimer = 0;
+
+        _onSpeaker = onSpeaker;
+        self.speakerButton.on = onSpeaker;
+    });
 }
 
 @end
