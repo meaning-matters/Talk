@@ -137,7 +137,7 @@
 }
 
 
--(void)drawBottomImage
+- (void)drawBottomImage
 {
     //// Start Image
     UIGraphicsBeginImageContext(self.topImageView.frame.size);
