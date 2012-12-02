@@ -7,7 +7,10 @@
 //
 
 #import <QuartzCore/QuartzCore.h>
+#import <objc/runtime.h>
+#import <objc/message.h>
 #import "Common.h"
+
 
 @implementation Common
 
@@ -163,10 +166,10 @@
 }
 
 
+// Returns hidden iOS font with nice * # +.
+// List of fonts: http://www.prepressure.com/fonts/basics/ios-4-fonts
 + (UIFont*)phoneFontOfSize:(CGFloat)size
 {
-    // Returns hidden iOS font with nice * # +.
-    // List of fonts: http://www.prepressure.com/fonts/basics/ios-4-fonts
     return [UIFont fontWithName:@".PhonepadTwo" size:size];
 }
 

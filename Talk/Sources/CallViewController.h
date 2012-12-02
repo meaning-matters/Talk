@@ -13,6 +13,12 @@
 
 @interface CallViewController : UIViewController <CallKeypadViewDelegate>
 
-@property (nonatomic, strong) IBOutlet UIView*          callRootView;
+@property (nonatomic, strong) IBOutlet UIImageView* backgroundImageView;
+@property (nonatomic, strong) IBOutlet UIView*      topView;
+@property (nonatomic, strong) IBOutlet UIView*      centerRootView;
+@property (nonatomic, strong) IBOutlet UIView*      bottomView;
+
+@property (nonatomic, strong) IBOutlet UIImageView* topImageView;
+@property (nonatomic, strong) IBOutlet UIImageView* bottomImageView;
 
 @end
