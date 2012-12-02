@@ -38,7 +38,7 @@
 					<object class="IBUIButton" id="721403804">
 						<reference key="NSNextResponder" ref="276810534"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{12, 8}, {90, 111}}</string>
+						<string key="NSFrame">{{12, 12}, {90, 111}}</string>
 						<reference key="NSSuperview" ref="276810534"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="255725443"/>
@@ -64,11 +64,11 @@
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC41AA</bytes>
 						</object>
-						<object class="NSCustomResource" key="IBUIHighlightedImage" id="283489130">
+						<object class="NSCustomResource" key="IBUIHighlightedImage" id="606246979">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">MuteCall.png</string>
 						</object>
-						<reference key="IBUINormalImage" ref="283489130"/>
+						<reference key="IBUINormalImage" ref="606246979"/>
 						<object class="IBUIFontDescription" key="IBUIFontDescription" id="631140081">
 							<int key="type">2</int>
 							<double key="pointSize">15</double>
@@ -82,7 +82,7 @@
 					<object class="IBUIButton" id="255725443">
 						<reference key="NSNextResponder" ref="276810534"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{103, 8}, {90, 111}}</string>
+						<string key="NSFrame">{{103, 12}, {90, 111}}</string>
 						<reference key="NSSuperview" ref="276810534"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="16893984"/>
@@ -102,18 +102,18 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="12580889"/>
-						<object class="NSCustomResource" key="IBUIHighlightedImage" id="625725940">
+						<object class="NSCustomResource" key="IBUIHighlightedImage" id="406199693">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">KeypadCall.png</string>
 						</object>
-						<reference key="IBUINormalImage" ref="625725940"/>
+						<reference key="IBUINormalImage" ref="406199693"/>
 						<reference key="IBUIFontDescription" ref="631140081"/>
 						<reference key="IBUIFont" ref="685347567"/>
 					</object>
 					<object class="IBUIButton" id="16893984">
 						<reference key="NSNextResponder" ref="276810534"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{194, 8}, {90, 111}}</string>
+						<string key="NSFrame">{{194, 12}, {90, 111}}</string>
 						<reference key="NSSuperview" ref="276810534"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="835677616"/>
@@ -133,18 +133,18 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="12580889"/>
-						<object class="NSCustomResource" key="IBUIHighlightedImage" id="302826001">
+						<object class="NSCustomResource" key="IBUIHighlightedImage" id="836531840">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">SpeakerCall.png</string>
 						</object>
-						<reference key="IBUINormalImage" ref="302826001"/>
+						<reference key="IBUINormalImage" ref="836531840"/>
 						<reference key="IBUIFontDescription" ref="631140081"/>
 						<reference key="IBUIFont" ref="685347567"/>
 					</object>
 					<object class="IBUIButton" id="835677616">
 						<reference key="NSNextResponder" ref="276810534"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{12, 120}, {90, 111}}</string>
+						<string key="NSFrame">{{12, 124}, {90, 111}}</string>
 						<reference key="NSSuperview" ref="276810534"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="786681756"/>
@@ -164,18 +164,18 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="12580889"/>
-						<object class="NSCustomResource" key="IBUIHighlightedImage" id="673104232">
+						<object class="NSCustomResource" key="IBUIHighlightedImage" id="271398847">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">AddCall.png</string>
 						</object>
-						<reference key="IBUINormalImage" ref="673104232"/>
+						<reference key="IBUINormalImage" ref="271398847"/>
 						<reference key="IBUIFontDescription" ref="631140081"/>
 						<reference key="IBUIFont" ref="685347567"/>
 					</object>
 					<object class="IBUIButton" id="786681756">
 						<reference key="NSNextResponder" ref="276810534"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{103, 120}, {90, 111}}</string>
+						<string key="NSFrame">{{103, 124}, {90, 111}}</string>
 						<reference key="NSSuperview" ref="276810534"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="37281994"/>
@@ -195,21 +195,20 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="12580889"/>
-						<object class="NSCustomResource" key="IBUIHighlightedImage" id="321283785">
+						<object class="NSCustomResource" key="IBUIHighlightedImage" id="263133878">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">HoldCall.png</string>
 						</object>
-						<reference key="IBUINormalImage" ref="321283785"/>
+						<reference key="IBUINormalImage" ref="263133878"/>
 						<reference key="IBUIFontDescription" ref="631140081"/>
 						<reference key="IBUIFont" ref="685347567"/>
 					</object>
 					<object class="IBUIButton" id="37281994">
 						<reference key="NSNextResponder" ref="276810534"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{194, 120}, {90, 111}}</string>
+						<string key="NSFrame">{{194, 124}, {90, 111}}</string>
 						<reference key="NSSuperview" ref="276810534"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -226,11 +225,11 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="12580889"/>
-						<object class="NSCustomResource" key="IBUIHighlightedImage" id="619036510">
+						<object class="NSCustomResource" key="IBUIHighlightedImage" id="419538967">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">GroupsCall.png</string>
 						</object>
-						<reference key="IBUINormalImage" ref="619036510"/>
+						<reference key="IBUINormalImage" ref="419538967"/>
 						<reference key="IBUIFontDescription" ref="631140081"/>
 						<reference key="IBUIFont" ref="685347567"/>
 					</object>
