@@ -25,9 +25,14 @@
 @synthesize topView             = _topView;
 @synthesize centerRootView      = _centerRootView;
 @synthesize bottomView          = _bottomView;
-
 @synthesize topImageView        = _topImageView;
 @synthesize bottomImageView     = _bottomImageView;
+@synthesize infoLabel           = _infoLabel;
+@synthesize calleeLabel         = _calleeLabel;
+@synthesize dtmfLabel           = _dtmfLabel;
+@synthesize statusLabel         = _statusLabel;
+@synthesize endButton           = _endButton;
+@synthesize hideButton          = _hideButton;
 
 
 - (id)init
@@ -54,10 +59,16 @@
     callOptionsView = [[CallOptionsView alloc] initWithFrame:frame];
     callKeypadView  = [[CallKeypadView alloc] initWithFrame:frame];
 
-    [self.centerRootView addSubview:callOptionsView];
+    callOptionsView.delegate = self;
+    callKeypadView.delegate  = self;
 
     [self drawTopImage];
+    [self.centerRootView addSubview:callOptionsView];
     [self drawBottomImage];
+
+    [self drawEndButton];
+    [self drawHideButton];
+    self.hideButton.hidden = YES;
 }
 
 
@@ -91,7 +102,7 @@
 - (void)drawTopImage
 {
     //// Start Image
-    UIGraphicsBeginImageContext(self.topImageView.frame.size);
+    UIGraphicsBeginImageContextWithOptions(self.topImageView.frame.size, NO, 0.0);
 
     //// General Declarations
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -140,7 +151,7 @@
 - (void)drawBottomImage
 {
     //// Start Image
-    UIGraphicsBeginImageContext(self.topImageView.frame.size);
+    UIGraphicsBeginImageContextWithOptions(self.bottomImageView.frame.size, NO, 0.0);
 
     //// General Declarations
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -186,11 +197,228 @@
 }
 
 
+- (void)drawEndButton
+{
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+
+    UIColor* normalGradientBottom = [UIColor colorWithRed: 0.802 green: 0.109 blue: 0 alpha: 1];
+    UIColor* normalGradientTop = [UIColor colorWithRed: 0.799 green: 0.397 blue: 0.397 alpha: 1];
+    UIColor* highlightGradientTop = [UIColor colorWithRed: 0.503 green: 0.503 blue: 0.503 alpha: 1];
+    UIColor* highlightGradientBottom = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 1];
+
+    //// Gradient Declarations
+    NSArray* normalGradientColors = [NSArray arrayWithObjects:
+                                     (id)normalGradientTop.CGColor,
+                                     (id)normalGradientBottom.CGColor, nil];
+    CGFloat normalGradientLocations[] = {0, 1};
+    CGGradientRef normalGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)normalGradientColors, normalGradientLocations);
+    NSArray* darkGradientColors = [NSArray arrayWithObjects:
+                                   (id)highlightGradientTop.CGColor,
+                                   (id)highlightGradientBottom.CGColor, nil];
+    CGFloat darkGradientLocations[] = {0, 1};
+    CGGradientRef highlightGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)darkGradientColors, darkGradientLocations);
+
+    UIImage* normalImage = [self drawButtonImageWithGradient:normalGradient size:self.endButton.frame.size];
+    UIImage* highlightImage = [self drawButtonImageWithGradient:highlightGradient size:self.endButton.frame.size];
+
+    [self.endButton setImage:normalImage forState:UIControlStateNormal];
+    [self.endButton setImage:highlightImage forState:UIControlStateHighlighted];
+    [self.endButton setNeedsDisplay];
+
+    //// Cleanup
+    CGGradientRelease(normalGradient);
+    CGGradientRelease(highlightGradient);
+    CGColorSpaceRelease(colorSpace);
+}
+
+
+- (void)drawHideButton
+{
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+
+    UIColor* normalGradientTop = [UIColor colorWithRed: 0.503 green: 0.503 blue: 0.503 alpha: 1];
+    UIColor* normalGradientBottom = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 1];
+    UIColor* highlightGradientBottom = [UIColor colorWithRed: 0 green: 0.373 blue: 1 alpha: 0.8];
+    UIColor* highlightGradientTop = [UIColor colorWithRed: 0.203 green: 0.497 blue: 1 alpha: 0.8];
+ //   UIColor* keyHighlightGradientColor = [UIColor colorWithRed: 0 green: 0.373 blue: 1 alpha: 0.8];
+  //  UIColor* keyHighlightGradientColor2 = [UIColor colorWithRed: 0.203 green: 0.497 blue: 1 alpha: 0.8];
+
+    //// Gradient Declarations
+    NSArray* normalGradientColors = [NSArray arrayWithObjects:
+                                     (id)normalGradientTop.CGColor,
+                                     (id)normalGradientBottom.CGColor, nil];
+    CGFloat normalGradientLocations[] = {0, 1};
+    CGGradientRef normalGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)normalGradientColors, normalGradientLocations);
+    NSArray* darkGradientColors = [NSArray arrayWithObjects:
+                                   (id)highlightGradientTop.CGColor,
+                                   (id)highlightGradientBottom.CGColor, nil];
+    CGFloat darkGradientLocations[] = {0, 1};
+    CGGradientRef highlightGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)darkGradientColors, darkGradientLocations);
+
+    UIImage* normalImage = [self drawButtonImageWithGradient:normalGradient size:self.hideButton.frame.size];
+    UIImage* highlightImage = [self drawButtonImageWithGradient:highlightGradient size:self.hideButton.frame.size];
+
+    [self.hideButton setImage:normalImage forState:UIControlStateNormal];
+    [self.hideButton setImage:highlightImage forState:UIControlStateHighlighted];
+    [self.hideButton setNeedsDisplay];
+
+    //// Cleanup
+    CGGradientRelease(normalGradient);
+    CGGradientRelease(highlightGradient);
+    CGColorSpaceRelease(colorSpace);
+}
+
+
+- (UIImage*)drawButtonImageWithGradient:(CGGradientRef)gradient size:(CGSize)size
+{
+    //// Start Image
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
+
+    //// General Declarations
+    CGContextRef context = UIGraphicsGetCurrentContext();
+
+    //// Color Declarations
+    UIColor* strokeColor = [UIColor colorWithRed: 0.297 green: 0.297 blue: 0.297 alpha: 1];
+    UIColor* shadowColor2 = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 1];
+
+    //// Shadow Declarations
+    UIColor* innerShadow = shadowColor2;
+    CGSize innerShadowOffset = CGSizeMake(0.1, 2.1);
+    CGFloat innerShadowBlurRadius = 4;
+
+    //// Abstracted Attributes
+    CGRect roundedRectangleRect = CGRectMake(2, 2, size.width - 4.0f, 48);
+
+    //// Rounded Rectangle Drawing
+    UIBezierPath* roundedRectanglePath = [UIBezierPath bezierPathWithRoundedRect: roundedRectangleRect cornerRadius: 12];
+    CGContextSaveGState(context);
+    [roundedRectanglePath addClip];
+    CGContextDrawLinearGradient(context, gradient, CGPointMake(65, 2), CGPointMake(65, 50), 0);
+    CGContextRestoreGState(context);
+
+    ////// Rounded Rectangle Inner Shadow
+    CGRect roundedRectangleBorderRect = CGRectInset([roundedRectanglePath bounds], -innerShadowBlurRadius, -innerShadowBlurRadius);
+    roundedRectangleBorderRect = CGRectOffset(roundedRectangleBorderRect, -innerShadowOffset.width, -innerShadowOffset.height);
+    roundedRectangleBorderRect = CGRectInset(CGRectUnion(roundedRectangleBorderRect, [roundedRectanglePath bounds]), -1, -1);
+
+    UIBezierPath* roundedRectangleNegativePath = [UIBezierPath bezierPathWithRect: roundedRectangleBorderRect];
+    [roundedRectangleNegativePath appendPath: roundedRectanglePath];
+    roundedRectangleNegativePath.usesEvenOddFillRule = YES;
+
+    CGContextSaveGState(context);
+    {
+        CGFloat xOffset = innerShadowOffset.width + round(roundedRectangleBorderRect.size.width);
+        CGFloat yOffset = innerShadowOffset.height;
+        CGContextSetShadowWithColor(context,
+                                    CGSizeMake(xOffset + copysign(0.1, xOffset), yOffset + copysign(0.1, yOffset)),
+                                    innerShadowBlurRadius,
+                                    innerShadow.CGColor);
+
+        [roundedRectanglePath addClip];
+        CGAffineTransform transform = CGAffineTransformMakeTranslation(-round(roundedRectangleBorderRect.size.width), 0);
+        [roundedRectangleNegativePath applyTransform: transform];
+        [[UIColor grayColor] setFill];
+        [roundedRectangleNegativePath fill];
+    }
+    CGContextRestoreGState(context);
+
+    [strokeColor setStroke];
+    roundedRectanglePath.lineWidth = 4;
+    [roundedRectanglePath stroke];
+
+    //// End Image
+    UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return image;
+}
+
+
+#pragma mark - Options Delegate
+
+- (void)callOptionsViewPressedMuteKey:(CallOptionsView*)optionsView
+{
+
+}
+
+
+- (void)callOptionsViewPressedKeypadKey:(CallOptionsView*)optionsView
+{
+    [UIView transitionFromView:callOptionsView
+                        toView:callKeypadView
+                      duration:0.5
+                       options:UIViewAnimationOptionTransitionFlipFromRight
+                    completion:^(BOOL finished)
+     {
+         [Common setWidth:130 ofView:self.endButton];
+         [self drawEndButton];
+         
+         self.hideButton.hidden = NO;
+         self.infoLabel.hidden = YES;
+         self.calleeLabel.hidden = YES;
+         self.statusLabel.hidden = YES;
+         self.dtmfLabel.hidden = NO;
+     }];
+}
+
+
+- (void)callOptionsViewPressedSpeakerKey:(CallOptionsView*)optionsView
+{
+
+}
+
+
+- (void)callOptionsViewPressedAddKey:(CallOptionsView*)optionsView
+{
+    
+}
+
+
+- (void)callOptionsViewPressedHoldKey:(CallOptionsView*)optionsView
+{
+
+}
+
+
+- (void)callOptionsViewPressedGroupsKey:(CallOptionsView*)optionsView
+{
+
+}
+
+
 #pragma mark - Keypad Delegate
 
 - (void)callKeypadView:(CallKeypadView*)keypadView pressedDigitKey:(KeypadKey)key
 {
+}
+
+
+#pragma mark - Button Actions
+
+- (IBAction)endAction:(id)sender
+{
+    self.endButton.highlighted = YES;
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (IBAction)hideAction:(id)sender
+{
+    [UIView transitionFromView:callKeypadView
+                        toView:callOptionsView
+                      duration:0.5
+                       options:UIViewAnimationOptionTransitionFlipFromLeft
+                    completion:^(BOOL finished)
+     {
+         [Common setWidth:280 ofView:self.endButton];
+         [self drawEndButton];
+         self.hideButton.hidden = YES;
+         self.infoLabel.hidden = NO;
+         self.calleeLabel.hidden = NO;
+         self.statusLabel.hidden = NO;
+         self.dtmfLabel.hidden = YES;
+     }];
+
 }
 
 @end

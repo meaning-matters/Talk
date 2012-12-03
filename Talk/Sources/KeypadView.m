@@ -86,7 +86,7 @@
     [super layoutSubviews];
 
     // Check requirement that height is fivefold.
-    assert((int)self.frame.size.height % 5 == 0);
+   //### Occurs when GSM call is active and has green flashin iOS bar at top assert((int)self.frame.size.height % 5 == 0);
 
     CGFloat keyHeight = self.frame.size.height / 5;
 
