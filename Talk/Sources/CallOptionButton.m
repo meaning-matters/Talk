@@ -133,7 +133,7 @@
     CGRect textRect = CGRectMake(CGRectGetMinX(self.bounds) + 3, CGRectGetMinY(self.bounds) + 83, 84, 20);
     CGContextSaveGState(context);
     CGContextSetShadowWithColor(context, textShadowOffset, textShadowBlurRadius, textShadow.CGColor);
-    [[UIColor whiteColor] setFill];
+    [[UIColor grayColor] setFill];
     [[self keyTitle] drawInRect: textRect withFont: [Common phoneFontOfSize:13] lineBreakMode: 0 alignment: NSTextAlignmentCenter];
     CGContextRestoreGState(context);
 

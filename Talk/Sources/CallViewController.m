@@ -221,8 +221,8 @@
     UIImage* normalImage = [self drawButtonImageWithGradient:normalGradient size:self.endButton.frame.size];
     UIImage* highlightImage = [self drawButtonImageWithGradient:highlightGradient size:self.endButton.frame.size];
 
-    [self.endButton setImage:normalImage forState:UIControlStateNormal];
-    [self.endButton setImage:highlightImage forState:UIControlStateHighlighted];
+    [self.endButton setBackgroundImage:normalImage forState:UIControlStateNormal];
+    [self.endButton setBackgroundImage:highlightImage forState:UIControlStateHighlighted];
     [self.endButton setNeedsDisplay];
 
     //// Cleanup
@@ -240,8 +240,6 @@
     UIColor* normalGradientBottom = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 1];
     UIColor* highlightGradientBottom = [UIColor colorWithRed: 0 green: 0.373 blue: 1 alpha: 0.8];
     UIColor* highlightGradientTop = [UIColor colorWithRed: 0.203 green: 0.497 blue: 1 alpha: 0.8];
- //   UIColor* keyHighlightGradientColor = [UIColor colorWithRed: 0 green: 0.373 blue: 1 alpha: 0.8];
-  //  UIColor* keyHighlightGradientColor2 = [UIColor colorWithRed: 0.203 green: 0.497 blue: 1 alpha: 0.8];
 
     //// Gradient Declarations
     NSArray* normalGradientColors = [NSArray arrayWithObjects:
@@ -258,8 +256,8 @@
     UIImage* normalImage = [self drawButtonImageWithGradient:normalGradient size:self.hideButton.frame.size];
     UIImage* highlightImage = [self drawButtonImageWithGradient:highlightGradient size:self.hideButton.frame.size];
 
-    [self.hideButton setImage:normalImage forState:UIControlStateNormal];
-    [self.hideButton setImage:highlightImage forState:UIControlStateHighlighted];
+    [self.hideButton setBackgroundImage:normalImage forState:UIControlStateNormal];
+    [self.hideButton setBackgroundImage:highlightImage forState:UIControlStateHighlighted];
     [self.hideButton setNeedsDisplay];
 
     //// Cleanup
@@ -358,6 +356,9 @@
          self.calleeLabel.hidden = YES;
          self.statusLabel.hidden = YES;
          self.dtmfLabel.hidden = NO;
+
+         [self.endButton setImage:[UIImage imageNamed:@"HangupPhoneSmall"] forState:UIControlStateNormal];
+         [self.endButton setImage:[UIImage imageNamed:@"HangupPhoneSmall"] forState:UIControlStateHighlighted];
      }];
 }
 
@@ -417,6 +418,9 @@
          self.calleeLabel.hidden = NO;
          self.statusLabel.hidden = NO;
          self.dtmfLabel.hidden = YES;
+
+         [self.endButton setImage:[UIImage imageNamed:@"HangupPhone"] forState:UIControlStateNormal];
+         [self.endButton setImage:[UIImage imageNamed:@"HangupPhone"] forState:UIControlStateHighlighted];
      }];
 
 }
