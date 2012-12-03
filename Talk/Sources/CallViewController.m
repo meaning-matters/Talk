@@ -83,9 +83,19 @@
             [Common setY:367 ofView:self.bottomView];
             break;
 
+        case 420:   // 320x480 screen with in-call iOS flasher at top.
+            [Common setY:96 ofView:self.centerRootView];
+            [Common setY:357 ofView:self.bottomView];
+            break;
+
         case 548:   // 320x568 screen.
             [Common setY:150 ofView:self.centerRootView];
             [Common setY:455 ofView:self.bottomView];
+            break;
+
+        case 528:   // 320x568 screen with in-call iOS flasher at top.
+            [Common setY:140 ofView:self.centerRootView];
+            [Common setY:435 ofView:self.bottomView];
             break;
     }
 }
@@ -351,6 +361,7 @@
          [Common setWidth:130 ofView:self.endButton];
          [self drawEndButton];
          
+         self.endButton.hidden = NO;
          self.hideButton.hidden = NO;
          self.infoLabel.hidden = YES;
          self.calleeLabel.hidden = YES;
@@ -360,6 +371,13 @@
          [self.endButton setImage:[UIImage imageNamed:@"HangupPhoneSmall"] forState:UIControlStateNormal];
          [self.endButton setImage:[UIImage imageNamed:@"HangupPhoneSmall"] forState:UIControlStateHighlighted];
      }];
+
+    self.endButton.hidden = YES;
+    self.hideButton.hidden = YES;
+    self.infoLabel.hidden = YES;
+    self.calleeLabel.hidden = YES;
+    self.statusLabel.hidden = YES;
+    self.dtmfLabel.hidden = YES;
 }
 
 
@@ -413,6 +431,7 @@
      {
          [Common setWidth:280 ofView:self.endButton];
          [self drawEndButton];
+         self.endButton.hidden = NO;
          self.hideButton.hidden = YES;
          self.infoLabel.hidden = NO;
          self.calleeLabel.hidden = NO;
@@ -423,6 +442,12 @@
          [self.endButton setImage:[UIImage imageNamed:@"HangupPhone"] forState:UIControlStateHighlighted];
      }];
 
+    self.endButton.hidden = YES;
+    self.hideButton.hidden = YES;
+    self.infoLabel.hidden = YES;
+    self.calleeLabel.hidden = YES;
+    self.statusLabel.hidden = YES;
+    self.dtmfLabel.hidden = YES;
 }
 
 @end
