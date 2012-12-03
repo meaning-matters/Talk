@@ -38,7 +38,11 @@
 
 + (void)setCornerRadius:(CGFloat)radius ofView:(UIView*)view;
 
++ (void)setX:(CGFloat)x ofView:(UIView*)view;
+
 + (void)setY:(CGFloat)y ofView:(UIView*)view;
+
++ (void)setWidth:(CGFloat)width ofView:(UIView*)view;
 
 + (void)setHeight:(CGFloat)height ofView:(UIView*)view;
 

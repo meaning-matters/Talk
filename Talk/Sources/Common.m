@@ -146,12 +146,32 @@
 }
 
 
++ (void)setX:(CGFloat)x ofView:(UIView*)view
+{
+    CGRect  frame;
+
+    frame = view.frame;
+    frame.origin.x = x;
+    view.frame = frame;
+}
+
+
 + (void)setY:(CGFloat)y ofView:(UIView*)view
 {
     CGRect  frame;
 
     frame = view.frame;
     frame.origin.y = y;
+    view.frame = frame;
+}
+
+
++ (void)setWidth:(CGFloat)width ofView:(UIView*)view;
+{
+    CGRect  frame;
+
+    frame = view.frame;
+    frame.size.width = width;
     view.frame = frame;
 }
 

@@ -51,7 +51,7 @@
              if ([phoneNumber.baseIsoCountryCode isEqualToString:[Settings sharedSettings].homeCountry] == NO)
              {
                  [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
-                 phoneNumber = [[PhoneNumber alloc] initWithNumber:phoneNumber.number];
+                 phoneNumber = [[PhoneNumber alloc] initWithNumber:phoneNumber.number]; //### Can this give memory problems???
                  [self update];
              }
          }];
