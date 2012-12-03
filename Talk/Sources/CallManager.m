@@ -57,9 +57,9 @@ static CallManager* sharedManager;
         callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 
         UITabBarController* tabBarController = [Common appDelegate].tabBarController;
-        [tabBarController.selectedViewController presentViewController:callViewController
-                                                              animated:YES
-                                                            completion:nil];
+        [tabBarController presentViewController:callViewController
+                                       animated:YES
+                                     completion:nil];
         return YES;
     }
     else
