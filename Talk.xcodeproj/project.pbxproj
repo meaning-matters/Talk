@@ -590,6 +590,18 @@
 		48884AA91615CE920005AA79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A761615CE920005AA79 /* Foundation.framework */; };
 		48884AB11615CE920005AA79 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48884AAF1615CE920005AA79 /* InfoPlist.strings */; };
 		48884AB41615CE920005AA79 /* TalkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48884AB31615CE920005AA79 /* TalkTests.m */; };
+		4888D51A166D1AEE00572566 /* Flip.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D516166D1AEE00572566 /* Flip.png */; };
+		4888D51B166D1AEE00572566 /* Flip.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D516166D1AEE00572566 /* Flip.png */; };
+		4888D51C166D1AEE00572566 /* Flip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D517166D1AEE00572566 /* Flip@2x.png */; };
+		4888D51D166D1AEE00572566 /* Flip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D517166D1AEE00572566 /* Flip@2x.png */; };
+		4888D51E166D1AEE00572566 /* HangupPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D518166D1AEE00572566 /* HangupPhone.png */; };
+		4888D51F166D1AEE00572566 /* HangupPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D518166D1AEE00572566 /* HangupPhone.png */; };
+		4888D520166D1AEE00572566 /* HangupPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D519166D1AEE00572566 /* HangupPhone@2x.png */; };
+		4888D521166D1AEE00572566 /* HangupPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D519166D1AEE00572566 /* HangupPhone@2x.png */; };
+		4888D525166D200E00572566 /* HangupPhoneSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D523166D200E00572566 /* HangupPhoneSmall.png */; };
+		4888D526166D200E00572566 /* HangupPhoneSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D523166D200E00572566 /* HangupPhoneSmall.png */; };
+		4888D527166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D524166D200E00572566 /* HangupPhoneSmall@2x.png */; };
+		4888D528166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D524166D200E00572566 /* HangupPhoneSmall@2x.png */; };
 		48AD95DA164AC4FE006178E6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95D9164AC4FE006178E6 /* ViewController.m */; };
 		48AD95DB164AC4FE006178E6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95D9164AC4FE006178E6 /* ViewController.m */; };
 		48AD95DF164AE582006178E6 /* Skinning.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95DE164AE582006178E6 /* Skinning.m */; };
@@ -1305,6 +1317,12 @@
 		48884AB01615CE920005AA79 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		48884AB21615CE920005AA79 /* TalkTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TalkTests.h; sourceTree = "<group>"; };
 		48884AB31615CE920005AA79 /* TalkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TalkTests.m; sourceTree = "<group>"; };
+		4888D516166D1AEE00572566 /* Flip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flip.png; sourceTree = "<group>"; };
+		4888D517166D1AEE00572566 /* Flip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Flip@2x.png"; sourceTree = "<group>"; };
+		4888D518166D1AEE00572566 /* HangupPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HangupPhone.png; sourceTree = "<group>"; };
+		4888D519166D1AEE00572566 /* HangupPhone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HangupPhone@2x.png"; sourceTree = "<group>"; };
+		4888D523166D200E00572566 /* HangupPhoneSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HangupPhoneSmall.png; sourceTree = "<group>"; };
+		4888D524166D200E00572566 /* HangupPhoneSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HangupPhoneSmall@2x.png"; sourceTree = "<group>"; };
 		48AD95D8164AC4FE006178E6 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		48AD95D9164AC4FE006178E6 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		48AD95DD164AE581006178E6 /* Skinning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skinning.h; sourceTree = "<group>"; };
@@ -2290,8 +2308,14 @@
 			children = (
 				48EDD1FD1667652A007B89DA /* AddCall.png */,
 				48EDD1FE1667652A007B89DA /* AddCall@2x.png */,
+				4888D516166D1AEE00572566 /* Flip.png */,
+				4888D517166D1AEE00572566 /* Flip@2x.png */,
 				48EDD2011667652A007B89DA /* GroupsCall.png */,
 				48EDD2021667652A007B89DA /* GroupsCall@2x.png */,
+				4888D518166D1AEE00572566 /* HangupPhone.png */,
+				4888D519166D1AEE00572566 /* HangupPhone@2x.png */,
+				4888D523166D200E00572566 /* HangupPhoneSmall.png */,
+				4888D524166D200E00572566 /* HangupPhoneSmall@2x.png */,
 				48EDD2031667652A007B89DA /* HoldCall.png */,
 				48EDD2041667652A007B89DA /* HoldCall@2x.png */,
 				48EDD2051667652A007B89DA /* KeypadCall.png */,
@@ -2926,6 +2950,12 @@
 				48EDD2231667652A007B89DA /* SpeakerCall@2x.png in Resources */,
 				48EDD227166770B8007B89DA /* CallOptionsView.xib in Resources */,
 				48EDD22A166771B8007B89DA /* CallKeypadView.xib in Resources */,
+				4888D51A166D1AEE00572566 /* Flip.png in Resources */,
+				4888D51C166D1AEE00572566 /* Flip@2x.png in Resources */,
+				4888D51E166D1AEE00572566 /* HangupPhone.png in Resources */,
+				4888D520166D1AEE00572566 /* HangupPhone@2x.png in Resources */,
+				4888D525166D200E00572566 /* HangupPhoneSmall.png in Resources */,
+				4888D527166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2988,6 +3018,12 @@
 				48EDD2241667652A007B89DA /* SpeakerCall@2x.png in Resources */,
 				48EDD228166770B8007B89DA /* CallOptionsView.xib in Resources */,
 				48EDD22B166771B8007B89DA /* CallKeypadView.xib in Resources */,
+				4888D51B166D1AEE00572566 /* Flip.png in Resources */,
+				4888D51D166D1AEE00572566 /* Flip@2x.png in Resources */,
+				4888D51F166D1AEE00572566 /* HangupPhone.png in Resources */,
+				4888D521166D1AEE00572566 /* HangupPhone@2x.png in Resources */,
+				4888D526166D200E00572566 /* HangupPhoneSmall.png in Resources */,
+				4888D528166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

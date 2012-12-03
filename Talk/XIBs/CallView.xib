@@ -251,6 +251,11 @@
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC41AA</bytes>
 								</object>
+								<object class="NSCustomResource" key="IBUIHighlightedImage" id="920430491">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">HangupPhone.png</string>
+								</object>
+								<reference key="IBUINormalImage" ref="920430491"/>
 								<object class="IBUIFontDescription" key="IBUIFontDescription" id="465128471">
 									<int key="type">2</int>
 									<double key="pointSize">15</double>
@@ -279,6 +284,11 @@
 									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 								</object>
 								<reference key="IBUINormalTitleShadowColor" ref="663800902"/>
+								<object class="NSCustomResource" key="IBUIHighlightedImage" id="923990167">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">Flip.png</string>
+								</object>
+								<reference key="IBUINormalImage" ref="923990167"/>
 								<reference key="IBUIFontDescription" ref="465128471"/>
 								<reference key="IBUIFont" ref="559256618"/>
 							</object>
@@ -587,7 +597,9 @@
 					</object>
 				</object>
 				<string key="46.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="0.0" key="46.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="47.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="1" key="47.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<object class="NSMutableAttributedString" key="6.notes">
 					<object class="NSMutableString" key="NSString">
@@ -696,10 +708,11 @@
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">ColorCurves.png</string>
-			<string key="NS.object.0">{640, 1096}</string>
-		</object>
+		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="ColorCurves.png">{640, 1096}</string>
+			<string key="Flip.png">{30, 30}</string>
+			<string key="HangupPhone.png">{70, 30}</string>
+		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">1930</string>
 	</data>
 </archive>
