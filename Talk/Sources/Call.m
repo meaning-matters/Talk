@@ -1,0 +1,145 @@
+//
+//  Call.m
+//  Talk
+//
+//  Created by Cornelis van der Bent on 04/12/12.
+//  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
+//
+
+#import "Call.h"
+
+@implementation Call
+
+@synthesize externalDelegate = _externalDelegate;
+@synthesize internalDelegate = _internalDelegate;
+@synthesize phoneNumber      = _phoneNumber;
+@synthesize abRecordId       = _abRecordId;
+@synthesize beginDate        = _beginDate;
+@synthesize connectDate      = _connectDate;
+@synthesize endDate          = _endDate;
+@synthesize state            = _state;
+@synthesize direction        = _direction;
+
+
+- (id)initWithPhoneNumber:(PhoneNumber*)phoneNumber direction:(CallDirection)direction
+{
+    if (self = [super init])
+    {
+        _phoneNumber = phoneNumber;
+        _beginDate   = [NSDate date];
+        _state       = CallStateBeginning;
+        _direction   = direction;
+    }
+
+    return self;
+}
+
+
+- (void)end
+{
+    if (self.state == CallStateConnected)
+    {
+        //### send hangup to SIP
+        _state = CallStateHungup;
+    }
+    else
+    {
+        //###
+    }
+
+    _endDate = [NSDate date];
+}
+
+
+- (NSString*)stateString
+{
+    NSString*   string;
+
+    switch (self.state)
+    {
+        case CallStateBeginning:
+            string = NSLocalizedStringWithDefaultValue(@"Call:Status Beginning", nil,
+                                                       [NSBundle mainBundle], @"calling...",
+                                                       @"In-call status that calling a number will started; Apple standard\n"
+                                                       @"[1 line small font].");
+            break;
+
+        case CallStateCalling:
+            string = NSLocalizedStringWithDefaultValue(@"Call:Status Calling", nil,
+                                                       [NSBundle mainBundle], @"calling...",
+                                                       @"In-call status that calling a number ha started; Apple standard\n"
+                                                       @"[1 line small font].");
+            break;
+
+        case CallStateDeclined:
+            string = NSLocalizedStringWithDefaultValue(@"Call:Status Declined", nil,
+                                                       [NSBundle mainBundle], @"declined",
+                                                       @"In-call status that called party has declined; Apple standard\n"
+                                                       @"[1 line small font].");
+            break;
+
+        case CallStateBusy:
+            string = NSLocalizedStringWithDefaultValue(@"Call:Status Busy", nil,
+                                                       [NSBundle mainBundle], @"busy",
+                                                       @"In-call status that called party is already on the phone; Apple standard\n"
+                                                       @"[1 line small font].");
+            break;
+
+        case CallStateRinging:
+            string = NSLocalizedStringWithDefaultValue(@"Call:Status Ringing", nil,
+                                                       [NSBundle mainBundle], @"ringing...",
+                                                       @"In-call status that called party hears ring tone; Apple standard\n"
+                                                       @"[1 line small font].");
+            break;
+
+        case CallStateConnected:
+            string = NSLocalizedStringWithDefaultValue(@"Call:Status Connected", nil,
+                                                       [NSBundle mainBundle], @"connected",
+                                                       @"In-call status that called party has picked up; Apple standard\n"
+                                                       @"[1 line small font].");
+            break;
+
+        case CallStateEnding:
+            string = NSLocalizedStringWithDefaultValue(@"Call:Status Ending", nil,
+                                                       [NSBundle mainBundle], @"ending...",
+                                                       @"In-call status that call is being ended; Apple standard\n"
+                                                       @"[1 line small font].");
+            break;
+
+        case CallStateCanceled:
+            string = NSLocalizedStringWithDefaultValue(@"Call:Status Canceled", nil,
+                                                       [NSBundle mainBundle], @"canceled",
+                                                       @"In-call status that user has canceled not yet connected call; Apple standard\n"
+                                                       @"[1 line small font].");
+            break;
+
+        case CallStateHungup:
+            string = NSLocalizedStringWithDefaultValue(@"Call:Status Hungup", nil,
+                                                       [NSBundle mainBundle], @"ended",
+                                                       @"In-call status that call has been hungup; Apple standard\n"
+                                                       @"[1 line small font].");
+            break;
+
+        case CallStateFailed:
+            string = NSLocalizedStringWithDefaultValue(@"Call:Status Failed", nil,
+                                                       [NSBundle mainBundle], @"failed",
+                                                       @"In-call status that calling a number failed; Apple standard\n"
+                                                       @"[1 line small font].");
+            break;
+    }
+
+
+    return string;
+}
+
+
+- (NSString*)failedString
+{
+    NSString*   string;
+
+    string = @"failed";//###
+
+    return string;
+}
+
+@end

@@ -42,32 +42,32 @@
     {
         case  1: return NSLocalizedStringWithDefaultValue(@"Call:Options MuteTitle", nil,
                                                           [NSBundle mainBundle], @"mute",
-                                                          @"In-call mute button title; must be same as what Apple uses\n"
+                                                          @"In-call mute button title; Apple standard\n"
                                                           @"[0.2 line small font].");
 
         case  2: return NSLocalizedStringWithDefaultValue(@"Call:Options KeypadTitle", nil,
                                                           [NSBundle mainBundle], @"keypad",
-                                                          @"In-call keypad button title; must be same as what Apple uses\n"
+                                                          @"In-call keypad button title; Apple standard\n"
                                                           @"[0.2 line small font].");
 
         case  3: return NSLocalizedStringWithDefaultValue(@"Call:Options SpeakerTitle", nil,
                                                           [NSBundle mainBundle], @"speaker",
-                                                          @"In-call speaker button title; must be same as what Apple uses\n"
+                                                          @"In-call speaker button title; Apple standard\n"
                                                           @"[0.2 line small font].");
 
         case  4: return NSLocalizedStringWithDefaultValue(@"Call:Options AddTitle", nil,
                                                           [NSBundle mainBundle], @"add",
-                                                          @"In-call add-call button title; must be same as what Apple uses\n"
+                                                          @"In-call add-call button title; Apple standard\n"
                                                           @"[0.2 line small font].");
 
         case  5: return NSLocalizedStringWithDefaultValue(@"Call:Options HoldTitle", nil,
                                                           [NSBundle mainBundle], @"hold",
-                                                          @"In-call hold button title; must be same as what Apple uses\n"
+                                                          @"In-call hold button title; Apple standard\n"
                                                           @"[0.2 line small font].");
 
         case  6: return NSLocalizedStringWithDefaultValue(@"Call:Options GroupsTitle", nil,
                                                           [NSBundle mainBundle], @"groups",
-                                                          @"In-call groups (wrt contacts) button title; must be same as what Apple uses\n"
+                                                          @"In-call groups (wrt contacts) button title; Apple standard\n"
                                                           @"[0.2 line small font].");
 
         default: return @"";

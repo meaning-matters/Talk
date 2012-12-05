@@ -14,6 +14,7 @@
 #import "NetworkStatus.h"
 #import "LibPhoneNumber.h"
 #import "CallManager.h"
+#import "CallViewController.h"
 
 
 @interface AppDelegate ()
@@ -207,7 +208,17 @@
 - (BOOL)dialerViewController:(DialerViewController*)dialerViewController
              callPhoneNumber:(PhoneNumber*)phoneNumber
 {
-    return [[CallManager sharedManager] callPhoneNumber:phoneNumber];
+    CallViewController* callViewController = [[CallViewController alloc] init];
+    Call*               call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOut];
+    [callViewController addCall:call];
+    [[CallManager sharedManager] makeCall:call];
+    
+    callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self.tabBarController presentViewController:callViewController
+                                        animated:YES
+                                      completion:nil];
+
+    return YES;
 }
 
 @end

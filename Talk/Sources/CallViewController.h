@@ -9,29 +9,53 @@
 #import <UIKit/UIKit.h>
 #import "CallOptionsView.h"
 #import "CallKeypadView.h"
+#import "Call.h"
 
 
-@interface CallViewController : UIViewController <CallOptionsViewDelegate, CallKeypadViewDelegate>
+@class CallViewController;
 
-@property (nonatomic, strong) IBOutlet UIImageView* backgroundImageView;
-@property (nonatomic, strong) IBOutlet UIView*      topView;
-@property (nonatomic, strong) IBOutlet UIView*      centerRootView;
-@property (nonatomic, strong) IBOutlet UIView*      bottomView;
+@protocol CallViewControllerDelegate <NSObject>
 
-@property (nonatomic, strong) IBOutlet UIImageView* topImageView;
-@property (nonatomic, strong) IBOutlet UIImageView* bottomImageView;
+- (void)callViewController:(CallViewController*)callViewController setOnMute:(BOOL)onMute;
 
-@property (nonatomic, strong) IBOutlet UILabel*     infoLabel;
-@property (nonatomic, strong) IBOutlet UILabel*     calleeLabel;
-@property (nonatomic, strong) IBOutlet UILabel*     dtmfLabel;
-@property (nonatomic, strong) IBOutlet UILabel*     statusLabel;
+- (void)callViewController:(CallViewController*)callViewController setOnSpeaker:(BOOL)onSpeaker;
 
-@property (nonatomic, strong) IBOutlet UIButton*    endButton;
-@property (nonatomic, strong) IBOutlet UIButton*    hideButton;
+- (void)callViewController:(CallViewController*)callViewController setOnHold:(BOOL)onHold;
+
+- (void)callViewController:(CallViewController*)callViewController sendDtmfKey:(KeypadKey)key;
+
+- (void)callViewControllerEndCall:(CallViewController*)callViewController;
+
+@end
+
+
+@interface CallViewController : UIViewController <CallOptionsViewDelegate, CallKeypadViewDelegate, CallExternalDelegate>
+
+@property (nonatomic, strong) NSMutableArray*               calls;
+
+@property (nonatomic, strong) IBOutlet UIImageView*         backgroundImageView;
+@property (nonatomic, strong) IBOutlet UIView*              topView;
+@property (nonatomic, strong) IBOutlet UIView*              centerRootView;
+@property (nonatomic, strong) IBOutlet UIView*              bottomView;
+
+@property (nonatomic, strong) IBOutlet UIImageView*         topImageView;
+@property (nonatomic, strong) IBOutlet UIImageView*         bottomImageView;
+
+@property (nonatomic, strong) IBOutlet UILabel*             infoLabel;
+@property (nonatomic, strong) IBOutlet UILabel*             calleeLabel;
+@property (nonatomic, strong) IBOutlet UILabel*             dtmfLabel;
+@property (nonatomic, strong) IBOutlet UILabel*             statusLabel;
+
+@property (nonatomic, strong) IBOutlet UIButton*            endButton;
+@property (nonatomic, strong) IBOutlet UIButton*            hideButton;
 
 
 - (IBAction)endAction:(id)sender;
 
 - (IBAction)hideAction:(id)sender;
+
+- (void)addCall:(Call*)call;
+
+- (void)endCall:(Call*)call;
 
 @end
