@@ -13,7 +13,6 @@
 #import "Settings.h"
 #import "PhoneNumber.h"
 #import "CountriesViewController.h"
-#import "CallViewController.h"
 
 
 @implementation CallManager
@@ -36,7 +35,7 @@ static CallManager* sharedManager;
 {
     if (sharedManager && [CallManager class] == self)
     {
-        [NSException raise:NSGenericException format:@"Duplicate Settings singleton creation"];
+        [NSException raise:NSGenericException format:@"Duplicate CallManager singleton creation"];
     }
 
     return [super allocWithZone:zone];
@@ -49,22 +48,13 @@ static CallManager* sharedManager;
 }
 
 
-- (BOOL)callPhoneNumber:(PhoneNumber*)phoneNumber
+- (void)makeCall:(Call*)call
 {
-    if ([self checkPhoneNumber:phoneNumber] == YES)
+    if ([self checkPhoneNumber:call.phoneNumber] == YES)
     {
-        CallViewController* callViewController = [[CallViewController alloc] init];
-        callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-
-        UITabBarController* tabBarController = [Common appDelegate].tabBarController;
-        [tabBarController presentViewController:callViewController
-                                       animated:YES
-                                     completion:nil];
-        return YES;
     }
     else
     {
-        return NO;
     }
 }
 

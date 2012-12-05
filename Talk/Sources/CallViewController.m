@@ -21,6 +21,7 @@
 
 @implementation CallViewController
 
+@synthesize calls               = _calls;
 @synthesize backgroundImageView = _backgroundImageView;
 @synthesize topView             = _topView;
 @synthesize centerRootView      = _centerRootView;
@@ -39,6 +40,9 @@
 {
     if (self = [super initWithNibName:@"CallView" bundle:nil])
     {
+        _calls = [NSMutableArray array];
+
+        callOptionsView.delegate = self;
         callKeypadView.delegate = self;
     }
 
@@ -55,9 +59,18 @@
     self.centerRootView.backgroundColor = [UIColor clearColor];
     self.bottomView.backgroundColor     = [UIColor clearColor];
 
+    Call*   call = [self.calls lastObject];
+    self.infoLabel.text   = [call.phoneNumber typeString];
+    self.calleeLabel.text = [call.phoneNumber asYouTypeFormat];
+    self.statusLabel.text = [call stateString];
+    self.dtmfLabel.text   = @"";
+
+    [self.calleeLabel setFont:[Common phoneFontOfSize:38]];
+    [self.dtmfLabel   setFont:[Common phoneFontOfSize:38]];
+
     CGRect  frame = CGRectMake(0, 0, self.centerRootView.frame.size.width, self.centerRootView.frame.size.height);
     callOptionsView = [[CallOptionsView alloc] initWithFrame:frame];
-    callKeypadView  = [[CallKeypadView alloc] initWithFrame:frame];
+    callKeypadView  = [[CallKeypadView  alloc] initWithFrame:frame];
 
     callOptionsView.delegate = self;
     callKeypadView.delegate  = self;
@@ -84,7 +97,7 @@
             break;
 
         case 420:   // 320x480 screen with in-call iOS flasher at top.
-            [Common setY:96 ofView:self.centerRootView];
+            [Common setY:96  ofView:self.centerRootView];
             [Common setY:357 ofView:self.bottomView];
             break;
 
@@ -211,10 +224,12 @@
 {
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
 
-    UIColor* normalGradientBottom = [UIColor colorWithRed: 0.802 green: 0.109 blue: 0 alpha: 1];
-    UIColor* normalGradientTop = [UIColor colorWithRed: 0.799 green: 0.397 blue: 0.397 alpha: 1];
-    UIColor* highlightGradientTop = [UIColor colorWithRed: 0.503 green: 0.503 blue: 0.503 alpha: 1];
-    UIColor* highlightGradientBottom = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 1];
+    UIColor* normalGradientBottom = [UIColor colorWithRed: 0.802 green: 0.109 blue: 0 alpha: 0.8];
+    UIColor* normalGradientTop = [UIColor colorWithRed: 0.799 green: 0.397 blue: 0.397 alpha: 0.8];
+    UIColor* highlightGradientTop = [UIColor colorWithRed: 0.502 green: 0.253 blue: 0.257 alpha: 1];
+    UIColor* highlightGradientBottom = [UIColor colorWithRed: 0.5 green: 0.051 blue: 0 alpha: 1];
+    UIColor* disableGradientTop = [UIColor colorWithRed: 0.4 green: 0.4 blue: 0.4 alpha: 0.8];
+    UIColor* disableGradientBottom = [UIColor colorWithRed: 0.1 green: 0.1 blue: 0.1 alpha: 0.8];
 
     //// Gradient Declarations
     NSArray* normalGradientColors = [NSArray arrayWithObjects:
@@ -222,17 +237,24 @@
                                      (id)normalGradientBottom.CGColor, nil];
     CGFloat normalGradientLocations[] = {0, 1};
     CGGradientRef normalGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)normalGradientColors, normalGradientLocations);
-    NSArray* darkGradientColors = [NSArray arrayWithObjects:
+    NSArray* highlightGradientColors = [NSArray arrayWithObjects:
                                    (id)highlightGradientTop.CGColor,
                                    (id)highlightGradientBottom.CGColor, nil];
-    CGFloat darkGradientLocations[] = {0, 1};
-    CGGradientRef highlightGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)darkGradientColors, darkGradientLocations);
+    CGFloat highlightGradientLocations[] = {0, 1};
+    CGGradientRef highlightGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)highlightGradientColors, highlightGradientLocations);
+    NSArray* disableGradientColors = [NSArray arrayWithObjects:
+                                   (id)disableGradientTop.CGColor,
+                                   (id)disableGradientBottom.CGColor, nil];
+    CGFloat disableGradientLocations[] = {0, 1};
+    CGGradientRef disableGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)disableGradientColors, disableGradientLocations);
 
     UIImage* normalImage = [self drawButtonImageWithGradient:normalGradient size:self.endButton.frame.size];
     UIImage* highlightImage = [self drawButtonImageWithGradient:highlightGradient size:self.endButton.frame.size];
+    UIImage* disableImage = [self drawButtonImageWithGradient:disableGradient size:self.endButton.frame.size];
 
     [self.endButton setBackgroundImage:normalImage forState:UIControlStateNormal];
     [self.endButton setBackgroundImage:highlightImage forState:UIControlStateHighlighted];
+    [self.endButton setBackgroundImage:disableImage forState:UIControlStateDisabled];
     [self.endButton setNeedsDisplay];
 
     //// Cleanup
@@ -246,8 +268,8 @@
 {
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
 
-    UIColor* normalGradientTop = [UIColor colorWithRed: 0.503 green: 0.503 blue: 0.503 alpha: 1];
-    UIColor* normalGradientBottom = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 1];
+    UIColor* normalGradientTop = [UIColor colorWithRed: 0.4 green: 0.4 blue: 0.4 alpha: 0.8];
+    UIColor* normalGradientBottom = [UIColor colorWithRed: 0.1 green: 0.1 blue: 0.1 alpha: 0.8];
     UIColor* highlightGradientBottom = [UIColor colorWithRed: 0 green: 0.373 blue: 1 alpha: 0.8];
     UIColor* highlightGradientTop = [UIColor colorWithRed: 0.203 green: 0.497 blue: 1 alpha: 0.8];
 
@@ -257,11 +279,11 @@
                                      (id)normalGradientBottom.CGColor, nil];
     CGFloat normalGradientLocations[] = {0, 1};
     CGGradientRef normalGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)normalGradientColors, normalGradientLocations);
-    NSArray* darkGradientColors = [NSArray arrayWithObjects:
+    NSArray* highlightGradientColors = [NSArray arrayWithObjects:
                                    (id)highlightGradientTop.CGColor,
                                    (id)highlightGradientBottom.CGColor, nil];
-    CGFloat darkGradientLocations[] = {0, 1};
-    CGGradientRef highlightGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)darkGradientColors, darkGradientLocations);
+    CGFloat highlightGradientLocations[] = {0, 1};
+    CGGradientRef highlightGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)highlightGradientColors, highlightGradientLocations);
 
     UIImage* normalImage = [self drawButtonImageWithGradient:normalGradient size:self.hideButton.frame.size];
     UIImage* highlightImage = [self drawButtonImageWithGradient:highlightGradient size:self.hideButton.frame.size];
@@ -286,8 +308,8 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
 
     //// Color Declarations
-    UIColor* strokeColor = [UIColor colorWithRed: 0.297 green: 0.297 blue: 0.297 alpha: 1];
-    UIColor* shadowColor2 = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 1];
+    UIColor* strokeColor = [UIColor colorWithRed: 0.297 green: 0.297 blue: 0.297 alpha: 0.8];
+    UIColor* shadowColor2 = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.8];
 
     //// Shadow Declarations
     UIColor* innerShadow = shadowColor2;
@@ -346,7 +368,6 @@
 
 - (void)callOptionsViewPressedMuteKey:(CallOptionsView*)optionsView
 {
-
 }
 
 
@@ -361,23 +382,23 @@
          [Common setWidth:130 ofView:self.endButton];
          [self drawEndButton];
          
-         self.endButton.hidden = NO;
-         self.hideButton.hidden = NO;
-         self.infoLabel.hidden = YES;
+         self.endButton.hidden   = NO;
+         self.hideButton.hidden  = NO;
+         self.infoLabel.hidden   = YES;
          self.calleeLabel.hidden = YES;
          self.statusLabel.hidden = YES;
-         self.dtmfLabel.hidden = NO;
+         self.dtmfLabel.hidden   = NO;
 
          [self.endButton setImage:[UIImage imageNamed:@"HangupPhoneSmall"] forState:UIControlStateNormal];
          [self.endButton setImage:[UIImage imageNamed:@"HangupPhoneSmall"] forState:UIControlStateHighlighted];
      }];
 
-    self.endButton.hidden = YES;
-    self.hideButton.hidden = YES;
-    self.infoLabel.hidden = YES;
+    self.endButton.hidden   = YES;
+    self.hideButton.hidden  = YES;
+    self.infoLabel.hidden   = YES;
     self.calleeLabel.hidden = YES;
     self.statusLabel.hidden = YES;
-    self.dtmfLabel.hidden = YES;
+    self.dtmfLabel.hidden   = YES;
 }
 
 
@@ -409,6 +430,15 @@
 
 - (void)callKeypadView:(CallKeypadView*)keypadView pressedDigitKey:(KeypadKey)key
 {
+    self.dtmfLabel.text = [NSString stringWithFormat:@"%@%c", self.dtmfLabel.text, key];
+}
+
+
+#pragma mark - Call Delegate
+
+- (void)call:(Call*)call didUpdateState:(CallState)state
+{
+    self.statusLabel.text = [call stateString];
 }
 
 
@@ -416,7 +446,6 @@
 
 - (IBAction)endAction:(id)sender
 {
-    self.endButton.highlighted = YES;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -431,23 +460,40 @@
      {
          [Common setWidth:280 ofView:self.endButton];
          [self drawEndButton];
-         self.endButton.hidden = NO;
-         self.hideButton.hidden = YES;
-         self.infoLabel.hidden = NO;
+         self.endButton.hidden   = NO;
+         self.hideButton.hidden  = YES;
+         self.infoLabel.hidden   = NO;
          self.calleeLabel.hidden = NO;
          self.statusLabel.hidden = NO;
-         self.dtmfLabel.hidden = YES;
+         self.dtmfLabel.hidden   = YES;
 
          [self.endButton setImage:[UIImage imageNamed:@"HangupPhone"] forState:UIControlStateNormal];
          [self.endButton setImage:[UIImage imageNamed:@"HangupPhone"] forState:UIControlStateHighlighted];
      }];
 
-    self.endButton.hidden = YES;
-    self.hideButton.hidden = YES;
-    self.infoLabel.hidden = YES;
+    self.endButton.hidden   = YES;
+    self.hideButton.hidden  = YES;
+    self.infoLabel.hidden   = YES;
     self.calleeLabel.hidden = YES;
     self.statusLabel.hidden = YES;
-    self.dtmfLabel.hidden = YES;
+    self.dtmfLabel.hidden   = YES;
+}
+
+
+#pragma mark - Public API
+
+- (void)addCall:(Call*)call
+{
+    call.externalDelegate = self;
+    [self.calls addObject:call];
+}
+
+
+- (void)endCall:(Call*)call
+{
+    //###
+
+    [self.calls removeObject:call];
 }
 
 @end

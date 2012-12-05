@@ -590,6 +590,8 @@
 		48884AA91615CE920005AA79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A761615CE920005AA79 /* Foundation.framework */; };
 		48884AB11615CE920005AA79 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48884AAF1615CE920005AA79 /* InfoPlist.strings */; };
 		48884AB41615CE920005AA79 /* TalkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48884AB31615CE920005AA79 /* TalkTests.m */; };
+		4888D1FA166E865400B55B22 /* Call.m in Sources */ = {isa = PBXBuildFile; fileRef = 4888D1F9166E865400B55B22 /* Call.m */; };
+		4888D1FB166E865400B55B22 /* Call.m in Sources */ = {isa = PBXBuildFile; fileRef = 4888D1F9166E865400B55B22 /* Call.m */; };
 		4888D51A166D1AEE00572566 /* Flip.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D516166D1AEE00572566 /* Flip.png */; };
 		4888D51B166D1AEE00572566 /* Flip.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D516166D1AEE00572566 /* Flip.png */; };
 		4888D51C166D1AEE00572566 /* Flip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D517166D1AEE00572566 /* Flip@2x.png */; };
@@ -1317,6 +1319,8 @@
 		48884AB01615CE920005AA79 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		48884AB21615CE920005AA79 /* TalkTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TalkTests.h; sourceTree = "<group>"; };
 		48884AB31615CE920005AA79 /* TalkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TalkTests.m; sourceTree = "<group>"; };
+		4888D1F8166E865400B55B22 /* Call.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Call.h; sourceTree = "<group>"; };
+		4888D1F9166E865400B55B22 /* Call.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Call.m; sourceTree = "<group>"; };
 		4888D516166D1AEE00572566 /* Flip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flip.png; sourceTree = "<group>"; };
 		4888D517166D1AEE00572566 /* Flip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Flip@2x.png"; sourceTree = "<group>"; };
 		4888D518166D1AEE00572566 /* HangupPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HangupPhone.png; sourceTree = "<group>"; };
@@ -1555,6 +1559,8 @@
 				48D0A6F31654D6D700FA2D98 /* main.m */,
 				48338F9F16170CA80033F4C1 /* AppDelegate.h */,
 				48338FA016170CA80033F4C1 /* AppDelegate.m */,
+				4888D1F8166E865400B55B22 /* Call.h */,
+				4888D1F9166E865400B55B22 /* Call.m */,
 				482A639B165FA94400325B3F /* CallManager.h */,
 				482A639C165FA94400325B3F /* CallManager.m */,
 				48D3F01C164F9284002041A9 /* CountryNames.h */,
@@ -3099,6 +3105,7 @@
 				48EDD23A1667A0A6007B89DA /* CallKeypadButton.m in Sources */,
 				48EDD23E1667A0B6007B89DA /* CallOptionButton.m in Sources */,
 				482608EE166A4707007F0844 /* NSTimer+Blocks.m in Sources */,
+				4888D1FA166E865400B55B22 /* Call.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3142,6 +3149,7 @@
 				48EDD23B1667A0A6007B89DA /* CallKeypadButton.m in Sources */,
 				48EDD23F1667A0B6007B89DA /* CallOptionButton.m in Sources */,
 				482608EF166A4707007F0844 /* NSTimer+Blocks.m in Sources */,
+				4888D1FB166E865400B55B22 /* Call.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

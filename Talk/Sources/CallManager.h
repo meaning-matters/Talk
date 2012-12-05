@@ -8,11 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import "PhoneNumber.h"
+#import "Call.h"
+
 
 @interface CallManager : NSObject
 
 + (CallManager*)sharedManager;
 
-- (BOOL)callPhoneNumber:(PhoneNumber*)phoneNumber;
+- (void)makeCall:(Call*)call;
 
 @end
