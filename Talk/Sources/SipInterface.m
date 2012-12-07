@@ -311,18 +311,12 @@ static int read_config_file(
 		pj_memcpy(argv[argc], token, token_len + 1);
 		++argc;
 	    }
-	    
+
 	    *p = cDelimiter;
 	}
     }
-    
-    /* Copy arguments from command line */
-    for (i = 1; i < *app_argc && argc < MAX_ARGS; ++i)
-    {
-	argv[argc++] = (*app_argv)[i];
-    }
-    
-    if (argc == MAX_ARGS && (i != *app_argc || !feof(file)))
+
+    if (argc == MAX_ARGS && !feof(file))
     {
 	PJ_LOG(1, (THIS_FILE, "Too many arguments specified in cmd line/config file"));
 	fclose(file);
@@ -4315,11 +4309,11 @@ pj_status_t app_main(void)
     if (status != PJ_SUCCESS)
     {
         app_destroy();
+        NSLog(@"//### pjsua_start() failed: %d.", status);
+        
         return status;
     }
-        
-    console_app_main();
-    
+
     return PJ_SUCCESS;
 }
 
@@ -4517,6 +4511,8 @@ void showLog(
          {
              [self keepAlive];
          }];
+
+        app_main();
     }
     
     return self;
