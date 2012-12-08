@@ -13,11 +13,13 @@
 #import "Settings.h"
 #import "PhoneNumber.h"
 #import "CountriesViewController.h"
+#import "SipInterface.h"
 
 
 @implementation CallManager
 
-static CallManager* sharedManager;
+static CallManager*     sharedManager;
+static SipInterface*    sipInterface;
 
 
 #pragma mark - Singleton Stuff
@@ -27,6 +29,45 @@ static CallManager* sharedManager;
     if ([CallManager class] == self)
     {
         sharedManager = [self new];
+
+        if ([self initializeSipInterface] == NO)
+        {
+            // Wait until account is available.
+            __block id  observer;
+            observer  =[[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
+                                                                         object:nil
+                                                                          queue:[NSOperationQueue mainQueue]
+                                                                     usingBlock:^(NSNotification* note)
+             {
+                 if ([self initializeSipInterface] == YES)
+                 {
+                     [[NSNotificationCenter defaultCenter] removeObserver:observer];
+                 }
+             }];
+        }
+    }
+}
+
+
++ (BOOL)initializeSipInterface
+{
+    if ([Settings sharedSettings].sipRealm    != nil &&
+        [Settings sharedSettings].sipUsername != nil &&
+        [Settings sharedSettings].sipPassword != nil)
+    {
+        // Initialize SIP stuff.
+        NSString*   sipConfigPath = [[NSBundle mainBundle] pathForResource:@"SipConfig" ofType:@"cfg"];
+        sipInterface = [[SipInterface alloc] initWithConfigPath:sipConfigPath
+                                                         server:[Settings sharedSettings].sipServer
+                                                          realm:[Settings sharedSettings].sipRealm
+                                                       username:[Settings sharedSettings].sipUsername
+                                                       password:[Settings sharedSettings].sipPassword];
+
+        return YES;
+    }
+    else
+    {
+        return NO;
     }
 }
 
@@ -47,6 +88,8 @@ static CallManager* sharedManager;
     return sharedManager;
 }
 
+
+#pragma mark - Public API
 
 - (void)makeCall:(Call*)call
 {

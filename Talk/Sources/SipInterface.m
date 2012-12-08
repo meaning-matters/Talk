@@ -202,7 +202,6 @@ static int read_config_file(
     int*        app_argc,
     char***     app_argv)
 {
-    int     i;
     FILE*   file;
     char    line[200];
     int     argc = 0;
@@ -320,9 +319,26 @@ static int read_config_file(
     {
 	PJ_LOG(1, (THIS_FILE, "Too many arguments specified in cmd line/config file"));
 	fclose(file);
-        
+
 	return -1;
     }
+
+#if 0 //### TOTDO
+    /* Copy arguments from command line */
+    int i;
+    for (i = 1; i < *app_argc && argc < MAX_ARGS; ++i)
+    {
+	argv[argc++] = (*app_argv)[i];
+    }
+
+    if (argc == MAX_ARGS && (i != *app_argc || !feof(file)))
+    {
+	PJ_LOG(1, (THIS_FILE, "Too many arguments specified in cmd line/config file"));
+	fflush(stdout);
+	fclose(file);
+	return -1;
+    }
+#endif
     
     fclose(file);
     
@@ -493,7 +509,7 @@ static pj_status_t parse_args(
      * read from config file.
      */
     pj_optind = 0;
-    while ((c = pj_getopt_long(argc,argv, "", long_options,&option_index)) != -1)
+    while ((c = pj_getopt_long(argc, argv, "", long_options, &option_index)) != -1)
     {
 	pj_str_t    tmp;
 	long        lval;
@@ -4484,6 +4500,10 @@ void showLog(
 @implementation SipInterface
 
 - (id)initWithConfigPath:(NSString*)configPath
+                  server:(NSString*)server
+                   realm:(NSString*)realm
+                username:(NSString*)username
+                password:(NSString*)password
 {
     if (self = [super init])
     {
