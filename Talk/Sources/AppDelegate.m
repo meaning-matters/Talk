@@ -27,7 +27,6 @@
 
 @implementation AppDelegate
 
-@synthesize sipInterface              = _sipInterface;
 @synthesize tabBarController          = _tabBarController;
 @synthesize aboutViewController       = _aboutViewController;
 @synthesize creditViewController      = _creditViewController;
@@ -43,10 +42,19 @@
 
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
+[Settings sharedSettings].sipRealm = nil;
+
     // Trigger singletons.
-    [Skinning sharedSkinning];
+    [Skinning      sharedSkinning];
     [NetworkStatus sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.
-    [CallManager sharedManager];
+    [CallManager   sharedManager];
+    [Settings      sharedSettings];
+
+    //### Set current fixed SIP credentials.
+    [Settings sharedSettings].sipServer   = @"178.63.93.9";
+    [Settings sharedSettings].sipRealm    = @"*";
+    [Settings sharedSettings].sipUsername = @"1000";
+    [Settings sharedSettings].sipPassword = @"1234azertytettn";
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.tabBarController = [[UITabBarController alloc] init];
@@ -59,10 +67,6 @@
     [self addViewControllersToTabBar];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
-
-    // Initialize SIP stuff.
-    NSString*   sipConfigPath = [[NSBundle mainBundle] pathForResource:@"SipConfig" ofType:@"cfg"];
-    self.sipInterface = [[SipInterface alloc] initWithConfigPath:sipConfigPath];
 
     // Initialize phone number stuff.
     [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];

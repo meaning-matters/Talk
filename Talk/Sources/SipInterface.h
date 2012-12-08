@@ -13,6 +13,10 @@ extern NSString* const  kSipInterfaceCallStateChangedNotification;
 
 @interface SipInterface : NSObject
 
-- (id)initWithConfigPath:(NSString*)configPath;
+- (id)initWithConfigPath:(NSString*)configPath
+                  server:(NSString*)server
+                   realm:(NSString*)realm
+                username:(NSString*)username
+                password:(NSString*)password;
 
 @end

@@ -18,10 +18,12 @@ NSString* const TabBarViewControllerClassesKey = @"TabBarViewControllerClasses";
 NSString* const HomeCountryKey                 = @"HomeCountryKey";
 NSString* const HomeCountryFromSimKey          = @"HomeCountryFromSim";
 NSString* const LastDialedNumberKey            = @"LastDialedNumber";
+NSString* const SipServerKey                   = @"SipServer";
+NSString* const SipRealmKey                    = @"SipRealm";               // Used as keychain 'username'.
 NSString* const SipUsernameKey                 = @"SipUsername";            // Used as keychain 'username'.
 NSString* const SipPasswordKey                 = @"SipPassword";            // Used as keychain 'username'.
 NSString* const SipServiveKey                  = @"SipAccount";             // Used as keychain service.
-NSString* const RunBefore                      = @"RunBefore";
+NSString* const RunBeforeKey                   = @"RunBefore";
 
 
 @implementation Settings
@@ -33,6 +35,8 @@ static NSUserDefaults*  userDefaults;
 @synthesize homeCountry                 = _homeCountry;
 @synthesize homeCountryFromSim          = _homeCountryFromSim;
 @synthesize lastDialedNumber            = _lastDialedNumber;
+@synthesize sipServer                   = _sipServer;
+@synthesize sipRealm                    = _sipRealm;
 @synthesize sipUsername                 = _sipUsername;
 @synthesize sipPassword                 = _sipPassword;
 
@@ -49,12 +53,12 @@ static NSUserDefaults*  userDefaults;
         [sharedSettings registerDefaults];
         [sharedSettings getInitialValues];
 
-        if ([userDefaults boolForKey:RunBefore] == NO)
+        if ([userDefaults boolForKey:RunBeforeKey] == NO)
         {
             [KeychainUtility deleteItemForUsername:SipUsernameKey andServiceName:SipServiveKey error:nil];
             [KeychainUtility deleteItemForUsername:SipPasswordKey andServiceName:SipServiveKey error:nil];
             
-            [userDefaults setBool:YES forKey:RunBefore];
+            [userDefaults setBool:YES forKey:RunBeforeKey];
             [userDefaults synchronize];
         }
     }
@@ -100,12 +104,42 @@ static NSUserDefaults*  userDefaults;
 }
 
 
+- (NSString*)getKeychainValueForKey:(NSString*)key
+{
+    NSError*    error = nil;
+    NSString*   value;
+
+    value = [KeychainUtility getPasswordForUsername:key andServiceName:SipServiveKey error:&error];
+    if (value == nil && error != nil)
+    {
+        NSLog(@"//### Error getting value from keychain: %@", [error localizedDescription]);
+    }
+
+    return value;
+}
+
+
+- (void)storeKeychainValue:(NSString*)value forKey:(NSString*)key
+{
+    NSError*    error = nil;
+
+    if ([KeychainUtility storeUsername:key andPassword:value forServiceName:SipServiveKey updateExisting:YES error:&error] == NO)
+    {
+        NSLog(@"//### Error storing value in keychain: %@", [error localizedDescription]);
+    }
+}
+
+
 - (void)getInitialValues
 {
     _tabBarViewControllerClasses = [userDefaults objectForKey:TabBarViewControllerClassesKey];
     _homeCountry                 = [userDefaults objectForKey:HomeCountryKey];
     _homeCountryFromSim          = [userDefaults boolForKey:HomeCountryFromSimKey];
     _lastDialedNumber            = [userDefaults objectForKey:LastDialedNumberKey];
+    _sipServer                   = [userDefaults objectForKey:SipServerKey];
+    _sipRealm                    = [self getKeychainValueForKey:SipRealmKey];
+    _sipUsername                 = [self getKeychainValueForKey:SipUsernameKey];
+    _sipPassword                 = [self getKeychainValueForKey:SipPasswordKey];
 }
 
 
@@ -132,10 +166,38 @@ static NSUserDefaults*  userDefaults;
 }
 
 
-- (void)setLastDialedNumber:(NSString *)lastDialedNumber
+- (void)setLastDialedNumber:(NSString*)lastDialedNumber
 {
     _lastDialedNumber = lastDialedNumber;
     [userDefaults setObject:lastDialedNumber forKey:LastDialedNumberKey];
+}
+
+
+- (void)setSipServer:(NSString *)sipServer
+{
+    _sipServer = sipServer;
+    [userDefaults setObject:sipServer forKey:SipServerKey];
+}
+
+
+- (void)setSipRealm:(NSString*)sipRealm
+{
+    _sipRealm = sipRealm;
+    [self storeKeychainValue:sipRealm forKey:SipRealmKey];
+}
+
+
+- (void)setSipUsername:(NSString*)sipUsername
+{
+    _sipUsername = sipUsername;
+    [self storeKeychainValue:sipUsername forKey:SipUsernameKey];
+}
+
+
+- (void)setSipPassword:(NSString*)sipPassword
+{
+    _sipPassword = sipPassword;
+    [self storeKeychainValue:sipPassword forKey:SipPasswordKey];
 }
 
 @end
