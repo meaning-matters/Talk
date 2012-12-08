@@ -5,14 +5,23 @@
 //  Created by Cornelis van der Bent on 07/11/12.
 //  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
 //
+//  In Talk we want to save both the SIP username and SIP password in keychain.
+//  So we store both these strings as 'password' under names/keys "SipUsername"
+//  and "SipPassword" respectively.  So these two are not saved in UserDefaults.
+//
 
 #import "Settings.h"
 #import "NetworkStatus.h"
+#import "KeychainUtility.h"
 
 NSString* const TabBarViewControllerClassesKey = @"TabBarViewControllerClasses";
 NSString* const HomeCountryKey                 = @"HomeCountryKey";
 NSString* const HomeCountryFromSimKey          = @"HomeCountryFromSim";
 NSString* const LastDialedNumberKey            = @"LastDialedNumber";
+NSString* const SipUsernameKey                 = @"SipUsername";            // Used as keychain 'username'.
+NSString* const SipPasswordKey                 = @"SipPassword";            // Used as keychain 'username'.
+NSString* const SipServiveKey                  = @"SipAccount";             // Used as keychain service.
+NSString* const RunBefore                      = @"RunBefore";
 
 
 @implementation Settings
@@ -24,6 +33,8 @@ static NSUserDefaults*  userDefaults;
 @synthesize homeCountry                 = _homeCountry;
 @synthesize homeCountryFromSim          = _homeCountryFromSim;
 @synthesize lastDialedNumber            = _lastDialedNumber;
+@synthesize sipUsername                 = _sipUsername;
+@synthesize sipPassword                 = _sipPassword;
 
 
 #pragma mark - Singleton Stuff
@@ -37,6 +48,15 @@ static NSUserDefaults*  userDefaults;
 
         [sharedSettings registerDefaults];
         [sharedSettings getInitialValues];
+
+        if ([userDefaults boolForKey:RunBefore] == NO)
+        {
+            [KeychainUtility deleteItemForUsername:SipUsernameKey andServiceName:SipServiveKey error:nil];
+            [KeychainUtility deleteItemForUsername:SipPasswordKey andServiceName:SipServiveKey error:nil];
+            
+            [userDefaults setBool:YES forKey:RunBefore];
+            [userDefaults synchronize];
+        }
     }
 }
 
