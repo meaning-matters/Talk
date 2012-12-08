@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
 //
 //  Found here:http://stackoverflow.com/questions/7941986/ios-5-0-keychain-access
+//
 
 #import <Security/Security.h>
 #import "KeychainUtility.h"
@@ -19,7 +20,7 @@ static NSString*    KeychainUtilityErrorDomain = @"KeychainUtilityErrorDomain";
                      andServiceName:(NSString*)serviceName
                               error:(NSError**)error
 {
-    if (!username || !serviceName)
+    if (username == nil || serviceName == nil)
     {
         if (error != nil)
         {
@@ -70,7 +71,7 @@ static NSString*    KeychainUtilityErrorDomain = @"KeychainUtilityErrorDomain";
 
     // We have an existing item, now query for the password data associated with it.
 
-    NSMutableDictionary *passwordQuery = [query mutableCopy];
+    NSMutableDictionary* passwordQuery = [query mutableCopy];
     [passwordQuery setObject:(id) kCFBooleanTrue forKey:(__bridge_transfer id) kSecReturnData];
     CFTypeRef resData = NULL;
     status = SecItemCopyMatching((__bridge_retained CFDictionaryRef) passwordQuery, (CFTypeRef*)&resData);
@@ -127,21 +128,22 @@ static NSString*    KeychainUtilityErrorDomain = @"KeychainUtilityErrorDomain";
 + (BOOL)storeUsername:(NSString*)username
           andPassword:(NSString*)password
        forServiceName:(NSString*)serviceName
-       updateExisting:(BOOL) updateExisting
-                error:(NSError **)error
+       updateExisting:(BOOL)updateExisting
+                error:(NSError**)error
 {
-    if (!username || !password || !serviceName)
+    if (username == nil || password == nil || serviceName == nil)
     {
         if (error != nil)
         {
             *error = [NSError errorWithDomain:KeychainUtilityErrorDomain code:-2000 userInfo:nil];
         }
+        
         return NO;
     }
 
     // See if we already have a password entered for these credentials.
-    NSError *getError = nil;
-    NSString *existingPassword = [KeychainUtility getPasswordForUsername:username andServiceName:serviceName error:&getError];
+    NSError*  getError = nil;
+    NSString* existingPassword = [KeychainUtility getPasswordForUsername:username andServiceName:serviceName error:&getError];
 
     if ([getError code] == -1999)
     {
@@ -182,12 +184,10 @@ static NSString*    KeychainUtilityErrorDomain = @"KeychainUtilityErrorDomain";
     if (existingPassword)
     {
         // We have an existing, properly entered item with a password.
-        // Update the existing item.
+        // Update the existing item, if we're allowed to update existing.  If not, simply do nothing.
 
         if (![existingPassword isEqualToString:password] && updateExisting)
         {
-            //Only update if we're allowed to update existing.  If not, simply do nothing.
-
             NSArray *keys = [[NSArray alloc] initWithObjects:(__bridge_transfer NSString*)kSecClass,
                              kSecAttrService,
                              kSecAttrLabel,
@@ -241,14 +241,15 @@ static NSString*    KeychainUtilityErrorDomain = @"KeychainUtilityErrorDomain";
 }
 
 
-+ (BOOL) deleteItemForUsername:(NSString*)username andServiceName:(NSString*)serviceName error:(NSError **)error
++ (BOOL)deleteItemForUsername:(NSString*)username andServiceName:(NSString*)serviceName error:(NSError **)error
 {
-    if (!username || !serviceName)
+    if (username == nil || serviceName == nil)
     {
         if (error != nil)
         {
             *error = [NSError errorWithDomain:KeychainUtilityErrorDomain code:-2000 userInfo:nil];
         }
+        
         return NO;
     }
 

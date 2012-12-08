@@ -19,4 +19,7 @@
 
 @property (nonatomic, strong) NSString* lastDialedNumber;
 
+@property (nonatomic, strong) NSString* sipUsername;
+@property (nonatomic, strong) NSString* sipPassword;
+
 @end
