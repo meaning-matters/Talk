@@ -42,8 +42,6 @@
 
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
-[Settings sharedSettings].sipRealm = nil;
-
     // Trigger singletons.
     [Skinning      sharedSkinning];
     [NetworkStatus sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.

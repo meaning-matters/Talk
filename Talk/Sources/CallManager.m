@@ -51,17 +51,24 @@ static SipInterface*    sipInterface;
 
 + (BOOL)initializeSipInterface
 {
-    if ([Settings sharedSettings].sipRealm    != nil &&
+    if ([Settings sharedSettings].sipServer   != nil &&
+        [Settings sharedSettings].sipRealm    != nil &&
         [Settings sharedSettings].sipUsername != nil &&
         [Settings sharedSettings].sipPassword != nil)
     {
         // Initialize SIP stuff.
-        NSString*   sipConfigPath = [[NSBundle mainBundle] pathForResource:@"SipConfig" ofType:@"cfg"];
-        sipInterface = [[SipInterface alloc] initWithConfigPath:sipConfigPath
-                                                         server:[Settings sharedSettings].sipServer
-                                                          realm:[Settings sharedSettings].sipRealm
-                                                       username:[Settings sharedSettings].sipUsername
-                                                       password:[Settings sharedSettings].sipPassword];
+        NSString*   path     = [[NSBundle mainBundle] pathForResource:@"SipConfig" ofType:@"cfg"];
+        NSString*   config   = [NSString stringWithContentsOfFile:path encoding:NSASCIIStringEncoding error:nil];
+        Settings*   settings = [Settings sharedSettings];
+
+        config = [config stringByAppendingString:@"\n"];
+        config = [config stringByAppendingFormat:@"--realm     %@\n",        settings.sipRealm];
+        config = [config stringByAppendingFormat:@"--registrar sip:%@\n",    settings.sipServer];
+        config = [config stringByAppendingFormat:@"--id        sip:%@@%@\n", settings.sipUsername, settings.sipServer];
+        config = [config stringByAppendingFormat:@"--username  %@\n",        settings.sipUsername];
+        config = [config stringByAppendingFormat:@"--password  %@\n",        settings.sipPassword];
+
+        sipInterface = [[SipInterface alloc] initWithConfig:config];
 
         return YES;
     }

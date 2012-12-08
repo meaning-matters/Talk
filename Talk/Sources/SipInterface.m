@@ -196,62 +196,34 @@ static void default_config(
 /*
  * Read command arguments from config file.
  */
-static int read_config_file(
+static int read_config(
     pj_pool_t*  pool,
-    const char* filename,
+    const char* config,
     int*        app_argc,
     char***     app_argv)
 {
-    FILE*   file;
-    char    line[200];
-    int     argc = 0;
-    char**  argv;
-    enum
-    {
-        MAX_ARGS = 128
-    };
+    char*       line;
+    char*       p;              // Current position on line.
+    int         argc = 0;
+    char**      argv;
+    const int   MAX_ARGS = 128;
     
     /* Allocate MAX_ARGS+1 (argv needs to be terminated with NULL argument) */
     argv = pj_pool_calloc(pool, MAX_ARGS + 1, sizeof(char*));
     argv[argc++] = "";
-    
-    /* Open config file. */
-    if ((file = fopen(filename, "rt")) == NULL)
-    {
-	PJ_LOG(1, (THIS_FILE, "Unable to open config file %s", filename));
-        
-	return -1;
-    }
-    
+
+    /* Copy config to line. */
+    line = pj_pool_alloc(pool, strlen(config) + 1);
+    strcpy(line, config);
+
     /* Scan tokens in the file. */
-    while (argc < MAX_ARGS && !feof(file))
+    while (argc < MAX_ARGS && *p != '\0')
     {
 	char*   token;
-	char*   p;
 	const   char *whitespace = " \t\r\n";
 	char    cDelimiter;
-	int     len;
         int     token_len;
-	
-	if (fgets(line, sizeof(line), file) == NULL) break;
-	
-	// Trim ending newlines
-	len = strlen(line);
-	if (line[len-1] == '\n')
-        {
-	    line[--len] = '\0';
-        }
-        
-	if (line[len-1] == '\r')
-        {
-	    line[--len] = '\0';
-        }
-        
-	if (len == 0)
-        {
-            continue;
-        }
-        
+
 	for (p = line; *p != '\0' && argc < MAX_ARGS; p++)
         {
 	    // first, scan whitespaces
@@ -315,33 +287,13 @@ static int read_config_file(
 	}
     }
 
-    if (argc == MAX_ARGS && !feof(file))
+    if (argc == MAX_ARGS /*&& !feof(file)*/)
     {
 	PJ_LOG(1, (THIS_FILE, "Too many arguments specified in cmd line/config file"));
-	fclose(file);
 
 	return -1;
     }
 
-#if 0 //### TOTDO
-    /* Copy arguments from command line */
-    int i;
-    for (i = 1; i < *app_argc && argc < MAX_ARGS; ++i)
-    {
-	argv[argc++] = (*app_argv)[i];
-    }
-
-    if (argc == MAX_ARGS && (i != *app_argc || !feof(file)))
-    {
-	PJ_LOG(1, (THIS_FILE, "Too many arguments specified in cmd line/config file"));
-	fflush(stdout);
-	fclose(file);
-	return -1;
-    }
-#endif
-    
-    fclose(file);
-    
     /* Assign the new command line back to the original command line. */
     *app_argc = argc;
     *app_argv = argv;
@@ -3893,7 +3845,7 @@ static pjsip_module mod_default_handler =
  */
 
 pj_status_t configure(
-    const char* configPath)
+    const char* config)
 {
     int                     argc;
     char**                  argv;
@@ -3917,7 +3869,7 @@ pj_status_t configure(
     default_config(&app_config);
     
     /* Read & Parse the arguments */
-    if ((status = read_config_file(app_config.pool, configPath, &argc, &argv)) != 0)
+    if ((status = read_config(app_config.pool, config, &argc, &argv)) != 0)
     {
         return status;
     }
@@ -4499,18 +4451,14 @@ void showLog(
 
 @implementation SipInterface
 
-- (id)initWithConfigPath:(NSString*)configPath
-                  server:(NSString*)server
-                   realm:(NSString*)realm
-                username:(NSString*)username
-                password:(NSString*)password
+- (id)initWithConfig:(NSString*)config
 {
     if (self = [super init])
     {
         pj_log_set_log_func(&showLog);
         log_cb = &showLog;
         
-        configure([configPath cStringUsingEncoding:NSASCIIStringEncoding]);
+        configure([config cStringUsingEncoding:NSASCIIStringEncoding]);
 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
                        {
