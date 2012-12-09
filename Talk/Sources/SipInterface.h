@@ -13,6 +13,10 @@ extern NSString* const  kSipInterfaceCallStateChangedNotification;
 
 @interface SipInterface : NSObject
 
+@property (nonatomic, readonly) NSString*   config;
+
 - (id)initWithConfig:(NSString*)config;
+
+- (void)restart;
 
 @end
