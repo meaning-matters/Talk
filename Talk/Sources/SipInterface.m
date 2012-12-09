@@ -123,14 +123,14 @@ static pjsua_call_id	current_call = PJSUA_INVALID_ID;
 #   define SOME_BUF_SIZE	(1024 * 3)
 #endif
 
-static char some_buf[SOME_BUF_SIZE];
+static char     some_buf[SOME_BUF_SIZE];
 
 static pj_status_t create_ipv6_media_transports(void);
-pj_status_t app_destroy(void);
+pj_status_t     app_destroy(void);
 
-static void ringback_start(pjsua_call_id call_id);
-static void ring_start(pjsua_call_id call_id);
-static void ring_stop(pjsua_call_id call_id);
+static void     ringback_start(pjsua_call_id call_id);
+static void     ring_start(pjsua_call_id call_id);
+static void     ring_stop(pjsua_call_id call_id);
 
 pj_bool_t 	app_restart;
 pj_log_func*    log_cb = NULL;
@@ -217,6 +217,7 @@ static int read_config(
     strcpy(line, config);
 
     /* Scan tokens in the file. */
+    p = line;
     while (argc < MAX_ARGS && *p != '\0')
     {
 	char*   token;
@@ -3838,13 +3839,7 @@ static pjsip_module mod_default_handler =
 };
 
 
-
-
-/*****************************************************************************
- * Public API
- */
-
-pj_status_t configure(
+pj_status_t app_init(
     const char* config)
 {
     int                     argc;
@@ -4271,18 +4266,16 @@ on_error:
 
 pj_status_t app_main(void)
 {
-    pj_status_t     status;
+    pj_status_t status;
     
-    status = pjsua_start();
-    if (status != PJ_SUCCESS)
+    if ((status = pjsua_start()) != PJ_SUCCESS)
     {
-        app_destroy();
         NSLog(@"//### pjsua_start() failed: %d.", status);
-        
-        return status;
+
+        app_destroy();
     }
 
-    return PJ_SUCCESS;
+    return status;
 }
 
 
@@ -4451,19 +4444,19 @@ void showLog(
 
 @implementation SipInterface
 
+@synthesize config = _config;
+
+
 - (id)initWithConfig:(NSString*)config
 {
     if (self = [super init])
     {
+        _config = config;
+
         pj_log_set_log_func(&showLog);
         log_cb = &showLog;
-        
-        configure([config cStringUsingEncoding:NSASCIIStringEncoding]);
 
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
-                       {
-                           //start_app();
-                       });
+        [self restart];
 
         [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 
@@ -4472,17 +4465,15 @@ void showLog(
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification* note)
          {
-             // Keep alive when the app closes, to make sure interval is never longer than KEEP_ALIVE_INTERVAL.
+             // Keep alive once when the app closes; makes sure interval is never longer than KEEP_ALIVE_INTERVAL.
              [self keepAlive];
          }];
         [[UIApplication sharedApplication] setKeepAliveTimeout:KEEP_ALIVE_INTERVAL handler:^
          {
              [self keepAlive];
          }];
-
-        app_main();
     }
-    
+
     return self;
 }
 
@@ -4518,6 +4509,25 @@ void showLog(
 
         pj_thread_register(name, calloc(1, sizeof(pj_thread_desc)), &thread);
     }
+}
+
+
+- (void)restart
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+                   {
+                       app_destroy();
+                       app_destroy();  // On purpose.
+
+                       if (app_init([self.config cStringUsingEncoding:NSASCIIStringEncoding]) == PJ_SUCCESS)
+                       {
+                           app_main();
+                       }
+                       else
+                       {
+                           NSLog(@"//### Failed to initialize PJSUA.");
+                       }
+                   });
 }
 
 
