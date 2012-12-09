@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <pjsua-lib/pjsua.h>
+
 
 extern NSString* const  kSipInterfaceCallStateChangedNotification;
 
@@ -18,5 +20,10 @@ extern NSString* const  kSipInterfaceCallStateChangedNotification;
 - (id)initWithConfig:(NSString*)config;
 
 - (void)restart;
+
+// A pointer to Call object should passed as userData;
+- (pjsua_call_id)callNumber:(NSString*)calledNumber
+             identityNumber:(NSString*)identityNumber
+                   userData:(void*)userData;
 
 @end

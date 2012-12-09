@@ -102,6 +102,7 @@ static SipInterface*    sipInterface;
 {
     if ([self checkPhoneNumber:call.phoneNumber] == YES)
     {
+        [sipInterface callNumber:[call.phoneNumber number] identityNumber:@"hello" userData:(__bridge void *)call];
     }
     else
     {
