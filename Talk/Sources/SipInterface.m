@@ -4283,7 +4283,7 @@ pj_status_t app_destroy(void)
 {
     pj_status_t status;
     unsigned    i;
-    
+
     /* Close ringback port */
     if (app_config.ringback_port && app_config.ringback_slot != PJSUA_INVALID_ID)
     {
@@ -4710,37 +4710,44 @@ static unsigned dump_media_stat(const char *indent,
 
 
 /* Dump media session */
-static void dump_media_session(const char *indent,
-			       char *buf, unsigned maxlen,
-			       pjsua_call *call)
+static void dump_media_session(const char*  indent,
+			       char*        buf,
+                               unsigned     maxlen,
+			       pjsua_call*  call)
 {
-    unsigned i;
-    char *p = buf, *end = buf+maxlen;
-    int len;
+    unsigned    i;
+    char*       p = buf;
+    char*       end = buf + maxlen;
+    int         len;
     
-    for (i=0; i<call->med_cnt; ++i) {
-	pjsua_call_media *call_med = &call->media[i];
-	pjmedia_rtcp_stat stat;
-	pj_bool_t has_stat;
-	pjmedia_transport_info tp_info;
-	char rem_addr_buf[80];
-	char codec_info[32] = {'0'};
-	char rx_info[80] = {'\0'};
-	char tx_info[80] = {'\0'};
-	const char *rem_addr;
-	const char *dir_str;
-	const char *media_type_str;
+    for (i = 0; i < call->med_cnt; ++i)
+    {
+	pjsua_call_media*       call_med = &call->media[i];
+	pjmedia_rtcp_stat       stat;
+	pj_bool_t               has_stat;
+	pjmedia_transport_info  tp_info;
+	char                    rem_addr_buf[80];
+	char                    codec_info[32] = {'0'};
+	char                    rx_info[80] = {'\0'};
+	char                    tx_info[80] = {'\0'};
+	const char*             rem_addr;
+	const char*             dir_str;
+	const char*             media_type_str;
         
-	switch (call_med->type) {
+	switch (call_med->type)
+        {
             case PJMEDIA_TYPE_AUDIO:
                 media_type_str = "audio";
                 break;
+                
             case PJMEDIA_TYPE_VIDEO:
                 media_type_str = "video";
                 break;
+                
             case PJMEDIA_TYPE_APPLICATION:
                 media_type_str = "application";
                 break;
+                
             default:
                 media_type_str = "unknown";
                 break;
@@ -4753,7 +4760,8 @@ static void dump_media_session(const char *indent,
 	    len = pj_ansi_snprintf(p, end-p,
                                    "%s  #%d %s deactivated\n",
                                    indent, i, media_type_str);
-	    if (len < 1 || len > end-p) {
+	    if (len < 1 || len > end-p)
+            {
 		*p = '\0';
 		return;
 	    }
@@ -4770,29 +4778,43 @@ static void dump_media_session(const char *indent,
 	// Please note that we are assuming only one stream per call.
 	//rem_addr = pj_sockaddr_print(&info.stream_info[i].rem_addr,
 	//			     rem_addr_buf, sizeof(rem_addr_buf), 3);
-	if (pj_sockaddr_has_addr(&tp_info.src_rtp_name)) {
+	if (pj_sockaddr_has_addr(&tp_info.src_rtp_name))
+        {
 	    rem_addr = pj_sockaddr_print(&tp_info.src_rtp_name, rem_addr_buf,
 					 sizeof(rem_addr_buf), 3);
-	} else {
+	}
+        else
+        {
 	    pj_ansi_snprintf(rem_addr_buf, sizeof(rem_addr_buf), "-");
 	    rem_addr = rem_addr_buf;
 	}
         
-	if (call_med->dir == PJMEDIA_DIR_NONE) {
+	if (call_med->dir == PJMEDIA_DIR_NONE)
+        {
 	    /* To handle when the stream that is currently being paused
 	     * (http://trac.pjsip.org/repos/ticket/1079)
 	     */
 	    dir_str = "inactive";
-	} else if (call_med->dir == PJMEDIA_DIR_ENCODING)
+	}
+        else if (call_med->dir == PJMEDIA_DIR_ENCODING)
+        {
 	    dir_str = "sendonly";
+        }
 	else if (call_med->dir == PJMEDIA_DIR_DECODING)
+        {
 	    dir_str = "recvonly";
+        }
 	else if (call_med->dir == PJMEDIA_DIR_ENCODING_DECODING)
+        {
 	    dir_str = "sendrecv";
+        }
 	else
+        {
 	    dir_str = "inactive";
+        }
         
-	if (call_med->type == PJMEDIA_TYPE_AUDIO) {
+	if (call_med->type == PJMEDIA_TYPE_AUDIO)
+        {
 	    pjmedia_stream *stream = call_med->strm.a.stream;
 	    pjmedia_stream_info info;
             
@@ -4810,7 +4832,9 @@ static void dump_media_session(const char *indent,
 			     info.tx_pt,
 			     info.param->setting.frm_per_pkt*
 			     info.param->info.frm_ptime);
-	} else {
+	}
+        else
+        {
 	    has_stat = PJ_FALSE;
 	}
         
@@ -4822,21 +4846,26 @@ static void dump_media_session(const char *indent,
                                codec_info,
                                dir_str,
                                rem_addr);
-	if (len < 1 || len > end-p) {
+	if (len < 1 || len > end-p)
+        {
 	    *p = '\0';
 	    return;
 	}
+        
 	p += len;
         
 	/* Get and ICE SRTP status */
-	if (call_med->tp) {
+	if (call_med->tp)
+        {
 	    pjmedia_transport_info tp_info;
             
 	    pjmedia_transport_info_init(&tp_info);
 	    pjmedia_transport_get_info(call_med->tp, &tp_info);
-	    if (tp_info.specific_info_cnt > 0) {
+	    if (tp_info.specific_info_cnt > 0)
+            {
 		unsigned j;
-		for (j = 0; j < tp_info.specific_info_cnt; ++j) {
+		for (j = 0; j < tp_info.specific_info_cnt; ++j)
+                {
 		    if (tp_info.spc_info[j].type == PJMEDIA_TRANSPORT_TYPE_SRTP)
 		    {
 			pjmedia_srtp_info *srtp_info =
@@ -4847,12 +4876,15 @@ static void dump_media_session(const char *indent,
 					       indent,
 					       (srtp_info->active?"Active":"Not active"),
 					       srtp_info->tx_policy.name.ptr);
-			if (len > 0 && len < end-p) {
+			if (len > 0 && len < end-p)
+                        {
 			    p += len;
 			    *p++ = '\n';
 			    *p = '\0';
 			}
-		    } else if (tp_info.spc_info[j].type==PJMEDIA_TRANSPORT_TYPE_ICE) {
+		    }
+                    else if (tp_info.spc_info[j].type==PJMEDIA_TRANSPORT_TYPE_ICE)
+                    {
 			const pjmedia_ice_transport_info *ii;
 			unsigned jj;
                         
@@ -4865,32 +4897,45 @@ static void dump_media_session(const char *indent,
 					       pj_ice_sess_role_name(ii->role),
 					       pj_ice_strans_state_name(ii->sess_state),
 					       ii->comp_cnt);
-			if (len > 0 && len < end-p) {
+			if (len > 0 && len < end-p)
+                        {
 			    p += len;
 			    *p++ = '\n';
 			    *p = '\0';
 			}
                         
-			for (jj=0; ii->sess_state==PJ_ICE_STRANS_STATE_RUNNING && jj<2; ++jj) {
+			for (jj = 0; ii->sess_state == PJ_ICE_STRANS_STATE_RUNNING && jj < 2; ++jj)
+                        {
 			    const char *type1 = pj_ice_get_cand_type_name(ii->comp[jj].lcand_type);
 			    const char *type2 = pj_ice_get_cand_type_name(ii->comp[jj].rcand_type);
 			    char addr1[PJ_INET6_ADDRSTRLEN+10];
 			    char addr2[PJ_INET6_ADDRSTRLEN+10];
                             
 			    if (pj_sockaddr_has_addr(&ii->comp[jj].lcand_addr))
+                            {
 				pj_sockaddr_print(&ii->comp[jj].lcand_addr, addr1, sizeof(addr1), 3);
+                            }
 			    else
+                            {
 				strcpy(addr1, "0.0.0.0:0");
+                            }
+                            
 			    if (pj_sockaddr_has_addr(&ii->comp[jj].rcand_addr))
+                            {
 				pj_sockaddr_print(&ii->comp[jj].rcand_addr, addr2, sizeof(addr2), 3);
+                            }
 			    else
+                            {
 				strcpy(addr2, "0.0.0.0:0");
+                            }
+                            
 			    len = pj_ansi_snprintf(p, end-p,
 			                           "   %s     [%d]: L:%s (%c) --> R:%s (%c)\n",
 			                           indent, jj,
 			                           addr1, type1[0],
 			                           addr2, type2[0]);
-			    if (len > 0 && len < end-p) {
+			    if (len > 0 && len < end-p)
+                            {
 				p += len;
 				*p = '\0';
 			    }
@@ -4900,10 +4945,9 @@ static void dump_media_session(const char *indent,
 	    }
 	}
         
-        
-	if (has_stat) {
-	    len = dump_media_stat(indent, p, end-p, &stat,
-				  rx_info, tx_info);
+	if (has_stat)
+        {
+	    len = dump_media_stat(indent, p, end-p, &stat, rx_info, tx_info);
 	    p += len;
 	}
         
@@ -4929,27 +4973,26 @@ if (len < 1 || len > end-p) { *p = '\0'; return; } \
 p += len; *p++ = '\n'; *p = '\0'
         
         
-	if (call_med->type == PJMEDIA_TYPE_AUDIO) {
-	    pjmedia_stream_info info;
-	    char last_update[64];
-	    char loss[16], dup[16];
-	    char jitter[80];
-	    char toh[80];
-	    char plc[16], jba[16], jbr[16];
-	    char signal_lvl[16], noise_lvl[16], rerl[16];
-	    char r_factor[16], ext_r_factor[16], mos_lq[16], mos_cq[16];
+	if (call_med->type == PJMEDIA_TYPE_AUDIO)
+        {
+	    pjmedia_stream_info  info;
+	    char                 last_update[64];
+	    char                 loss[16], dup[16];
+	    char                 jitter[80];
+	    char                 toh[80];
+	    char                 plc[16], jba[16], jbr[16];
+	    char                 signal_lvl[16], noise_lvl[16], rerl[16];
+	    char                 r_factor[16], ext_r_factor[16], mos_lq[16], mos_cq[16];
 	    pjmedia_rtcp_xr_stat xr_stat;
-	    unsigned clock_rate;
-	    pj_time_val now;
+	    unsigned             clock_rate;
+	    pj_time_val          now;
             
-	    if (pjmedia_stream_get_stat_xr(call_med->strm.a.stream,
-	                                   &xr_stat) != PJ_SUCCESS)
+	    if (pjmedia_stream_get_stat_xr(call_med->strm.a.stream, &xr_stat) != PJ_SUCCESS)
 	    {
 		continue;
 	    }
             
-	    if (pjmedia_stream_get_info(call_med->strm.a.stream, &info)
-                != PJ_SUCCESS)
+	    if (pjmedia_stream_get_info(call_med->strm.a.stream, &info) != PJ_SUCCESS)
 	    {
 		continue;
 	    }
@@ -4965,44 +5008,58 @@ p += len; *p++ = '\n'; *p = '\0'
 	    VALIDATE_PRINT_BUF();
             
 	    if (xr_stat.rx.stat_sum.l)
+            {
 		sprintf(loss, "%d", xr_stat.rx.stat_sum.lost);
+            }
 	    else
+            {
 		sprintf(loss, "(na)");
+            }
             
 	    if (xr_stat.rx.stat_sum.d)
+            {
 		sprintf(dup, "%d", xr_stat.rx.stat_sum.dup);
+            }
 	    else
+            {
 		sprintf(dup, "(na)");
+            }
             
-	    if (xr_stat.rx.stat_sum.j) {
+	    if (xr_stat.rx.stat_sum.j)
+            {
 		unsigned jmin, jmax, jmean, jdev;
                 
-		SAMPLES_TO_USEC(jmin, xr_stat.rx.stat_sum.jitter.min,
-				clock_rate);
-		SAMPLES_TO_USEC(jmax, xr_stat.rx.stat_sum.jitter.max,
-				clock_rate);
-		SAMPLES_TO_USEC(jmean, xr_stat.rx.stat_sum.jitter.mean,
-				clock_rate);
-		SAMPLES_TO_USEC(jdev,
-                                pj_math_stat_get_stddev(&xr_stat.rx.stat_sum.jitter),
-                                clock_rate);
+		SAMPLES_TO_USEC(jmin, xr_stat.rx.stat_sum.jitter.min, clock_rate);
+		SAMPLES_TO_USEC(jmax, xr_stat.rx.stat_sum.jitter.max, clock_rate);
+		SAMPLES_TO_USEC(jmean, xr_stat.rx.stat_sum.jitter.mean, clock_rate);
+		SAMPLES_TO_USEC(jdev, pj_math_stat_get_stddev(&xr_stat.rx.stat_sum.jitter), clock_rate);
 		sprintf(jitter, "%7.3f %7.3f %7.3f %7.3f",
 			jmin/1000.0, jmean/1000.0, jmax/1000.0, jdev/1000.0);
-	    } else
+	    }
+            else
+            {
 		sprintf(jitter, "(report not available)");
+            }
             
-	    if (xr_stat.rx.stat_sum.t) {
+	    if (xr_stat.rx.stat_sum.t)
+            {
 		sprintf(toh, "%11d %11d %11d %11d",
 			xr_stat.rx.stat_sum.toh.min,
 			xr_stat.rx.stat_sum.toh.mean,
 			xr_stat.rx.stat_sum.toh.max,
 			pj_math_stat_get_stddev(&xr_stat.rx.stat_sum.toh));
-	    } else
+	    }
+            else
+            {
 		sprintf(toh, "(report not available)");
+            }
             
 	    if (xr_stat.rx.stat_sum.update.sec == 0)
+            {
 		strcpy(last_update, "never");
-	    else {
+            }
+	    else
+            {
 		pj_gettimeofday(&now);
 		PJ_TIME_VAL_SUB(now, xr_stat.rx.stat_sum.update);
 		sprintf(last_update, "%02ldh:%02ldm:%02ld.%03lds ago",
@@ -5030,44 +5087,58 @@ p += len; *p++ = '\n'; *p = '\0'
 	    VALIDATE_PRINT_BUF();
             
 	    if (xr_stat.tx.stat_sum.l)
+            {
 		sprintf(loss, "%d", xr_stat.tx.stat_sum.lost);
+            }
 	    else
+            {
 		sprintf(loss, "(na)");
+            }
             
 	    if (xr_stat.tx.stat_sum.d)
+            {
 		sprintf(dup, "%d", xr_stat.tx.stat_sum.dup);
+            }
 	    else
+            {
 		sprintf(dup, "(na)");
+            }
             
-	    if (xr_stat.tx.stat_sum.j) {
+	    if (xr_stat.tx.stat_sum.j)
+            {
 		unsigned jmin, jmax, jmean, jdev;
                 
-		SAMPLES_TO_USEC(jmin, xr_stat.tx.stat_sum.jitter.min,
-				clock_rate);
-		SAMPLES_TO_USEC(jmax, xr_stat.tx.stat_sum.jitter.max,
-				clock_rate);
-		SAMPLES_TO_USEC(jmean, xr_stat.tx.stat_sum.jitter.mean,
-				clock_rate);
-		SAMPLES_TO_USEC(jdev,
-                                pj_math_stat_get_stddev(&xr_stat.tx.stat_sum.jitter),
-                                clock_rate);
+		SAMPLES_TO_USEC(jmin, xr_stat.tx.stat_sum.jitter.min, clock_rate);
+		SAMPLES_TO_USEC(jmax, xr_stat.tx.stat_sum.jitter.max, clock_rate);
+		SAMPLES_TO_USEC(jmean, xr_stat.tx.stat_sum.jitter.mean, clock_rate);
+		SAMPLES_TO_USEC(jdev, pj_math_stat_get_stddev(&xr_stat.tx.stat_sum.jitter), clock_rate);
 		sprintf(jitter, "%7.3f %7.3f %7.3f %7.3f",
-			jmin/1000.0, jmean/1000.0, jmax/1000.0, jdev/1000.0);
-	    } else
+                        jmin / 1000.0, jmean / 1000.0, jmax / 1000.0, jdev / 1000.0);
+	    }
+            else
+            {
 		sprintf(jitter, "(report not available)");
+            }
             
-	    if (xr_stat.tx.stat_sum.t) {
+	    if (xr_stat.tx.stat_sum.t)
+            {
 		sprintf(toh, "%11d %11d %11d %11d",
 			xr_stat.tx.stat_sum.toh.min,
 			xr_stat.tx.stat_sum.toh.mean,
 			xr_stat.tx.stat_sum.toh.max,
 			pj_math_stat_get_stddev(&xr_stat.rx.stat_sum.toh));
-	    } else
+	    }
+            else
+            {
 		sprintf(toh,    "(report not available)");
+            }
             
 	    if (xr_stat.tx.stat_sum.update.sec == 0)
+            {
 		strcpy(last_update, "never");
-	    else {
+            }
+	    else
+            {
 		pj_gettimeofday(&now);
 		PJ_TIME_VAL_SUB(now, xr_stat.tx.stat_sum.update);
 		sprintf(last_update, "%02ldh:%02ldm:%02ld.%03lds ago",
@@ -5107,29 +5178,36 @@ p += len; *p++ = '\n'; *p = '\0'
 	    PRINT_VOIP_MTC_VAL(mos_lq, xr_stat.rx.voip_mtc.mos_lq);
 	    PRINT_VOIP_MTC_VAL(mos_cq, xr_stat.rx.voip_mtc.mos_cq);
             
-	    switch ((xr_stat.rx.voip_mtc.rx_config>>6) & 3) {
+	    switch ((xr_stat.rx.voip_mtc.rx_config>>6) & 3)
+            {
 		case PJMEDIA_RTCP_XR_PLC_DIS:
 		    sprintf(plc, "DISABLED");
 		    break;
+                    
 		case PJMEDIA_RTCP_XR_PLC_ENH:
 		    sprintf(plc, "ENHANCED");
 		    break;
+                    
 		case PJMEDIA_RTCP_XR_PLC_STD:
 		    sprintf(plc, "STANDARD");
 		    break;
+                    
 		case PJMEDIA_RTCP_XR_PLC_UNK:
 		default:
 		    sprintf(plc, "UNKNOWN");
 		    break;
 	    }
             
-	    switch ((xr_stat.rx.voip_mtc.rx_config>>4) & 3) {
+	    switch ((xr_stat.rx.voip_mtc.rx_config>>4) & 3)
+            {
 		case PJMEDIA_RTCP_XR_JB_FIXED:
 		    sprintf(jba, "FIXED");
 		    break;
+                    
 		case PJMEDIA_RTCP_XR_JB_ADAPTIVE:
 		    sprintf(jba, "ADAPTIVE");
 		    break;
+                    
 		default:
 		    sprintf(jba, "UNKNOWN");
 		    break;
@@ -5138,8 +5216,11 @@ p += len; *p++ = '\n'; *p = '\0'
 	    sprintf(jbr, "%d", xr_stat.rx.voip_mtc.rx_config & 0x0F);
             
 	    if (xr_stat.rx.voip_mtc.update.sec == 0)
+            {
 		strcpy(last_update, "never");
-	    else {
+            }
+	    else
+            {
 		pj_gettimeofday(&now);
 		PJ_TIME_VAL_SUB(now, xr_stat.rx.voip_mtc.update);
 		sprintf(last_update, "%02ldh:%02ldm:%02ld.%03lds ago",
@@ -5207,29 +5288,36 @@ p += len; *p++ = '\n'; *p = '\0'
 	    PRINT_VOIP_MTC_VAL(mos_lq, xr_stat.tx.voip_mtc.mos_lq);
 	    PRINT_VOIP_MTC_VAL(mos_cq, xr_stat.tx.voip_mtc.mos_cq);
             
-	    switch ((xr_stat.tx.voip_mtc.rx_config>>6) & 3) {
+	    switch ((xr_stat.tx.voip_mtc.rx_config>>6) & 3)
+            {
 		case PJMEDIA_RTCP_XR_PLC_DIS:
 		    sprintf(plc, "DISABLED");
 		    break;
+                    
 		case PJMEDIA_RTCP_XR_PLC_ENH:
 		    sprintf(plc, "ENHANCED");
 		    break;
+                    
 		case PJMEDIA_RTCP_XR_PLC_STD:
 		    sprintf(plc, "STANDARD");
 		    break;
+                    
 		case PJMEDIA_RTCP_XR_PLC_UNK:
 		default:
 		    sprintf(plc, "unknown");
 		    break;
 	    }
             
-	    switch ((xr_stat.tx.voip_mtc.rx_config>>4) & 3) {
+	    switch ((xr_stat.tx.voip_mtc.rx_config>>4) & 3)
+            {
 		case PJMEDIA_RTCP_XR_JB_FIXED:
 		    sprintf(jba, "FIXED");
 		    break;
+                    
 		case PJMEDIA_RTCP_XR_JB_ADAPTIVE:
 		    sprintf(jba, "ADAPTIVE");
 		    break;
+                    
 		default:
 		    sprintf(jba, "unknown");
 		    break;
@@ -5238,8 +5326,11 @@ p += len; *p++ = '\n'; *p = '\0'
 	    sprintf(jbr, "%d", xr_stat.tx.voip_mtc.rx_config & 0x0F);
             
 	    if (xr_stat.tx.voip_mtc.update.sec == 0)
+            {
 		strcpy(last_update, "never");
-	    else {
+            }
+	    else
+            {
 		pj_gettimeofday(&now);
 		PJ_TIME_VAL_SUB(now, xr_stat.tx.voip_mtc.update);
 		sprintf(last_update, "%02ldh:%02ldm:%02ld.%03lds ago",
@@ -5325,26 +5416,28 @@ p += len; *p++ = '\n'; *p = '\0'
 /*
  * Dump call and media statistics to string.
  */
-PJ_DEF(pj_status_t) pjsua_call_dump( pjsua_call_id call_id,
-                                    pj_bool_t with_media,
-                                    char *buffer,
-                                    unsigned maxlen,
-                                    const char *indent)
+PJ_DEF(pj_status_t) pjsua_call_dump(pjsua_call_id   call_id,
+                                    pj_bool_t       with_media,
+                                    char*           buffer,
+                                    unsigned        maxlen,
+                                    const char*     indent)
 {
-    pjsua_call *call;
-    pjsip_dialog *dlg;
-    pj_time_val duration, res_delay, con_delay;
-    char tmp[128];
-    char *p, *end;
-    pj_status_t status;
-    int len;
+    pjsua_call*     call;
+    pjsip_dialog*   dlg;
+    pj_time_val     duration, res_delay, con_delay;
+    char            tmp[128];
+    char*           p;
+    char*           end;
+    pj_status_t     status;
+    int             len;
     
-    PJ_ASSERT_RETURN(call_id>=0 && call_id<(int)pjsua_var.ua_cfg.max_calls,
-		     PJ_EINVAL);
+    PJ_ASSERT_RETURN(call_id >= 0 && call_id < (int)pjsua_var.ua_cfg.max_calls, PJ_EINVAL);
     
     status = acquire_call("pjsua_call_dump()", call_id, &call, &dlg);
     if (status != PJ_SUCCESS)
+    {
 	return status;
+    }
     
     *buffer = '\0';
     p = buffer;
@@ -5361,21 +5454,27 @@ PJ_DEF(pj_status_t) pjsua_call_dump( pjsua_call_id call_id,
     *p++ = '\n';
     
     /* Calculate call duration */
-    if (call->conn_time.sec != 0) {
+    if (call->conn_time.sec != 0)
+    {
 	pj_gettimeofday(&duration);
 	PJ_TIME_VAL_SUB(duration, call->conn_time);
 	con_delay = call->conn_time;
 	PJ_TIME_VAL_SUB(con_delay, call->start_time);
-    } else {
+    }
+    else
+    {
 	duration.sec = duration.msec = 0;
 	con_delay.sec = con_delay.msec = 0;
     }
     
     /* Calculate first response delay */
-    if (call->res_time.sec != 0) {
+    if (call->res_time.sec != 0)
+    {
 	res_delay = call->res_time;
 	PJ_TIME_VAL_SUB(res_delay, call->start_time);
-    } else {
+    }
+    else
+    {
 	res_delay.sec = res_delay.msec = 0;
     }
     
@@ -5390,7 +5489,8 @@ PJ_DEF(pj_status_t) pjsua_call_dump( pjsua_call_id call_id,
 		           (int)PJ_TIME_VAL_MSEC(res_delay),
 		           (int)PJ_TIME_VAL_MSEC(con_delay));
     
-    if (len > 0 && len < end-p) {
+    if (len > 0 && len < end-p)
+    {
 	p += len;
 	*p++ = '\n';
 	*p = '\0';
@@ -5398,13 +5498,14 @@ PJ_DEF(pj_status_t) pjsua_call_dump( pjsua_call_id call_id,
     
     /* Dump session statistics */
     if (with_media)
+    {
 	dump_media_session(indent, p, end-p, call);
+    }
     
     pjsip_dlg_dec_lock(dlg);
     
     return PJ_SUCCESS;
 }
-
 
 @end
 
