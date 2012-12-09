@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
 //
 
+#import <pthread.h>
 #import "SipInterface.h"
 #import "Common.h"
 #import "Settings.h"
@@ -1545,8 +1546,7 @@ static void on_call_state(pjsua_call_id call_id, pjsip_event *e)
     }
     else
     {
-	if (app_config.duration!=NO_LIMIT &&
-	    call_info.state == PJSIP_INV_STATE_CONFIRMED)
+	if (app_config.duration != NO_LIMIT && call_info.state == PJSIP_INV_STATE_CONFIRMED)
 	{
 	    /* Schedule timer to hangup call after the specified duration */
 	    struct call_data*   cd = &app_config.call_data[call_id];
@@ -2211,7 +2211,7 @@ static void on_transport_state(
             break;
     }
     
-#if defined(PJSIP_HAS_TLS_TRANSPORT) && PJSIP_HAS_TLS_TRANSPORT!=0
+#if defined(PJSIP_HAS_TLS_TRANSPORT) && PJSIP_HAS_TLS_TRANSPORT != 0
     if (!pj_ansi_stricmp(tp->type_name, "tls") && info->ext_info &&
 	(state == PJSIP_TP_STATE_CONNECTED ||
 	 ((pjsip_tls_state_info*)info->ext_info)->ssl_sock_info->verify_status != PJ_SUCCESS))
@@ -4497,15 +4497,13 @@ void showLog(
 
 
 - (void)registerThread
-{
-    static int  threadId;
-    
+{    
     if (!pj_thread_is_registered())
     {
         pj_thread_t*    thread;             // We're not interested in this.
         char*           name = malloc(20);
 
-        sprintf(name, "T-%d", threadId++);
+        sprintf(name, "T-%d", pthread_mach_thread_np(pthread_self()));
 
         pj_thread_register(name, calloc(1, sizeof(pj_thread_desc)), &thread);
     }
