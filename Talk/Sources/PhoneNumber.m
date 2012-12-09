@@ -233,7 +233,16 @@ static NSString*        defaultBaseIsoCountryCode;
 
 - (NSString*)e164Format
 {
-    return [[LibPhoneNumber sharedInstance] e164FormatOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
+    NSString*   format;
+
+    format = [[LibPhoneNumber sharedInstance] e164FormatOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
+
+    if ([format isEqualToString:@"invalid"])
+    {
+        format = nil;
+    }
+
+    return format;
 }
 
 
