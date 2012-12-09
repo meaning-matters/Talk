@@ -7,8 +7,8 @@
 //
 
 #import "SipInterface.h"
-#import <pjsua-lib/pjsua.h>
 #import "Common.h"
+#import "Settings.h"
 
 //### Added for Talk's NetworkStatus; still needs to be notified to.
 NSString* const kSipInterfaceCallStateChangedNotification = @"kSipInterfaceCallStateChangedNotification";
@@ -4531,6 +4531,63 @@ void showLog(
 }
 
 
+- (pjsua_call_id)callNumber:(NSString*)calledNumber
+             identityNumber:(NSString*)identityNumber
+                   userData:(void*)userData
+{
+    if (pjsua_call_get_count() == PJSUA_MAX_CALLS)
+    {
+        NSLog(@"//### Can't make call, maximum calls (%d) reached.", PJSUA_MAX_CALLS);
+
+        return PJSUA_INVALID_ID;
+    }
+    else if ([calledNumber length] == 0 || [identityNumber length] == 0)
+    {
+        NSLog(@"//### Missing argument(s).");
+
+        return PJSUA_INVALID_ID;
+    }
+    else
+    {
+        __block pjsua_call_id   call_id = PJSUA_INVALID_ID;
+
+        dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+                      {
+                          NSString*                 uriString;
+                          pj_str_t                  uri;
+                          pjsua_call_setting        call_opt;
+                          pjsua_msg_data            msg_data;
+                          pj_str_t                  header_name;
+                          pj_str_t                  header_value;
+                          pjsip_generic_string_hdr  header;
+                          pj_status_t               status;
+
+                          [self registerThread];
+
+                          uriString = [NSString stringWithFormat:@"sip:%@@%@", calledNumber, [Settings sharedSettings].sipServer];
+                          uri = pj_str((char*)[uriString cStringUsingEncoding:NSASCIIStringEncoding]);
+                          pjsua_call_setting_default(&call_opt);
+                          call_opt.aud_cnt = app_config.aud_cnt;
+
+                          // Create optional header containing number/identity from which this call is made.
+                          pjsua_msg_data_init(&msg_data);
+                          header_name = pj_str("identity");
+                          header_value = pj_str((char*)[identityNumber cStringUsingEncoding:NSASCIIStringEncoding]);
+                          pjsua_msg_data_init(&msg_data);
+                          pjsip_generic_string_hdr_init2(&header, &header_name, &header_value);
+                          pj_list_push_back(&msg_data.hdr_list, &header);
+                          
+                          status = pjsua_call_make_call(current_acc, &uri, &call_opt, userData, &msg_data, &call_id);
+                          if (status != PJ_SUCCESS)
+                          {
+                              NSLog(@"//### Failed to make call: %d.", status);
+                          }
+                      });
+
+        return call_id;
+    }
+}
+
 #include <pjsua-lib/pjsua.h>
 #include <pjsua-lib/pjsua_internal.h>
 
@@ -5112,8 +5169,7 @@ p += len; *p++ = '\n'; *p = '\0'
 		SAMPLES_TO_USEC(jmax, xr_stat.tx.stat_sum.jitter.max, clock_rate);
 		SAMPLES_TO_USEC(jmean, xr_stat.tx.stat_sum.jitter.mean, clock_rate);
 		SAMPLES_TO_USEC(jdev, pj_math_stat_get_stddev(&xr_stat.tx.stat_sum.jitter), clock_rate);
-		sprintf(jitter, "%7.3f %7.3f %7.3f %7.3f",
-                        jmin / 1000.0, jmean / 1000.0, jmax / 1000.0, jdev / 1000.0);
+		sprintf(jitter, "%7.3f %7.3f %7.3f %7.3f", jmin / 1000.0, jmean / 1000.0, jmax / 1000.0, jdev / 1000.0);
 	    }
             else
             {
