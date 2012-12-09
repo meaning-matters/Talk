@@ -102,7 +102,17 @@ static SipInterface*    sipInterface;
 {
     if ([self checkPhoneNumber:call.phoneNumber] == YES)
     {
-        [sipInterface callNumber:[call.phoneNumber number] identityNumber:@"hello" userData:(__bridge void *)call];
+        NSString*   number;
+        if ([call.phoneNumber isInternational])
+        {
+            number = [call.phoneNumber e164Format];
+        }
+        else
+        {
+            number = [call.phoneNumber originalFormat];
+        }
+
+        [sipInterface callNumber:number identityNumber:call.identityNumber userData:(__bridge void *)call];
     }
     else
     {

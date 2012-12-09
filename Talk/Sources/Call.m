@@ -13,6 +13,7 @@
 @synthesize externalDelegate = _externalDelegate;
 @synthesize internalDelegate = _internalDelegate;
 @synthesize phoneNumber      = _phoneNumber;
+@synthesize identityNumber   = _identityNumber;
 @synthesize abRecordId       = _abRecordId;
 @synthesize beginDate        = _beginDate;
 @synthesize connectDate      = _connectDate;

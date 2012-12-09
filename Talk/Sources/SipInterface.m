@@ -4571,7 +4571,7 @@ void showLog(
 
                           // Create optional header containing number/identity from which this call is made.
                           pjsua_msg_data_init(&msg_data);
-                          header_name = pj_str("identity");
+                          header_name = pj_str("Identity");
                           header_value = pj_str((char*)[identityNumber cStringUsingEncoding:NSASCIIStringEncoding]);
                           pjsua_msg_data_init(&msg_data);
                           pjsip_generic_string_hdr_init2(&header, &header_name, &header_value);

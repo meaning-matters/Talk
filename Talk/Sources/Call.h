@@ -52,6 +52,7 @@ typedef enum
 @property (nonatomic, assign) id<CallExternalDelegate>  externalDelegate;   // UI related.
 @property (nonatomic, assign) id<CallInternalDelegate>  internalDelegate;   // SIP related.
 @property (nonatomic, readonly) PhoneNumber*            phoneNumber;
+@property (nonatomic, strong) NSString*                 identityNumber;     // Number form which call is made.
 @property (nonatomic, assign) ABRecordID                abRecordId;
 @property (nonatomic, readonly) NSDate*                 beginDate;
 @property (nonatomic, readonly) NSDate*                 connectDate;

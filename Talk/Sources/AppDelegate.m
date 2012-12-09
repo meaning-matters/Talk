@@ -223,6 +223,10 @@
 {
     CallViewController* callViewController = [[CallViewController alloc] init];
     Call*               call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOut];
+
+    //### Select identity number.
+    call.identityNumber = @"+32499298238";
+    
     [callViewController addCall:call];
     [[CallManager sharedManager] makeCall:call];
     
