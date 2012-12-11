@@ -37,3 +37,8 @@ PaintCode
 Designs
 * Number of image, PSD and AI files used as source for images in the app.
 * Used in the app are modified/exported versions of these files.
+
+WebRTC
+* Used to have ISAC codec.
+* Build the project creates WebRTC/libWebRTC.a.  This files is linked in Talk
+  Xcode project, so can't be [re]moved.
