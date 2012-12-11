@@ -23,7 +23,7 @@ export TEST_OBJS +=	main.o
 #
 # Additional LDFLAGS for pjlib-test
 #
-export TEST_LDFLAGS += -O2 -arch armv7s -isysroot /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk -framework AudioToolbox -framework Foundation -lpthread  -framework CoreAudio -framework CoreFoundation -framework AudioToolbox -framework CFNetwork -framework UIKit -framework UIKit -framework AVFoundation -framework CoreGraphics -framework QuartzCore -framework CoreVideo -framework CoreMedia
+export TEST_LDFLAGS += -O2 -arch armv7s -isysroot /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk -framework AudioToolbox -framework Foundation -lm -lpthread  -framework CoreAudio -framework CoreFoundation -framework AudioToolbox -framework CFNetwork -framework UIKit -framework UIKit -framework AVFoundation -framework CoreGraphics -framework QuartzCore -framework CoreVideo -framework CoreMedia
 
 #
 # TARGETS are make targets in the Makefile, to be executed for this given

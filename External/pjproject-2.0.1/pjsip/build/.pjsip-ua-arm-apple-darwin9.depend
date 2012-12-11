@@ -460,4 +460,5 @@ output/pjsip-ua-arm-apple-darwin9/sip_timer.o: ../src/pjsip-ua/sip_timer.c ../in
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/types.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/_types.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool.h

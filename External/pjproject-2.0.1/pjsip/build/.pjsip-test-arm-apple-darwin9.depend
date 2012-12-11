@@ -215,6 +215,7 @@ output/pjsip-test-arm-apple-darwin9/dns_test.o: ../src/test/dns_test.c ../src/te
   ../../pjlib/include/pj/ip_helper.h ../../pjlib/include/pj/lock.h \
   ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool_buf.h \
   ../../pjlib/include/pj/rand.h ../../pjlib/include/pj/rbtree.h \
   ../../pjlib/include/pj/sock_select.h ../../pjlib/include/pj/unicode.h \
@@ -323,6 +324,7 @@ output/pjsip-test-arm-apple-darwin9/msg_err_test.o: ../src/test/msg_err_test.c .
   ../../pjlib/include/pj/ip_helper.h ../../pjlib/include/pj/lock.h \
   ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool_buf.h \
   ../../pjlib/include/pj/rand.h ../../pjlib/include/pj/rbtree.h \
   ../../pjlib/include/pj/sock_select.h ../../pjlib/include/pj/unicode.h
@@ -416,6 +418,7 @@ output/pjsip-test-arm-apple-darwin9/msg_logger.o: ../src/test/msg_logger.c ../sr
   ../../pjlib/include/pj/ip_helper.h ../../pjlib/include/pj/lock.h \
   ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool_buf.h \
   ../../pjlib/include/pj/rand.h ../../pjlib/include/pj/rbtree.h \
   ../../pjlib/include/pj/sock_select.h ../../pjlib/include/pj/unicode.h
@@ -509,6 +512,7 @@ output/pjsip-test-arm-apple-darwin9/msg_test.o: ../src/test/msg_test.c ../src/te
   ../../pjlib/include/pj/ip_helper.h ../../pjlib/include/pj/lock.h \
   ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool_buf.h \
   ../../pjlib/include/pj/rand.h ../../pjlib/include/pj/rbtree.h \
   ../../pjlib/include/pj/sock_select.h ../../pjlib/include/pj/unicode.h
@@ -602,6 +606,7 @@ output/pjsip-test-arm-apple-darwin9/multipart_test.o: ../src/test/multipart_test
   ../../pjlib/include/pj/ip_helper.h ../../pjlib/include/pj/lock.h \
   ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool_buf.h \
   ../../pjlib/include/pj/rand.h ../../pjlib/include/pj/rbtree.h \
   ../../pjlib/include/pj/sock_select.h ../../pjlib/include/pj/unicode.h
@@ -706,6 +711,7 @@ output/pjsip-test-arm-apple-darwin9/regc_test.o: ../src/test/regc_test.c ../src/
   ../../pjlib/include/pj/ip_helper.h ../../pjlib/include/pj/lock.h \
   ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool_buf.h \
   ../../pjlib/include/pj/rand.h ../../pjlib/include/pj/rbtree.h \
   ../../pjlib/include/pj/sock_select.h ../../pjlib/include/pj/unicode.h
@@ -778,6 +784,7 @@ output/pjsip-test-arm-apple-darwin9/test.o: ../src/test/test.c ../src/test/test.
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/types.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/_types.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool.h \
   ../../pjlib/include/pj/pool_buf.h ../../pjlib/include/pj/rand.h \
   ../../pjlib/include/pj/rbtree.h ../../pjlib/include/pj/sock_qos.h \
@@ -907,6 +914,7 @@ output/pjsip-test-arm-apple-darwin9/transport_loop_test.o: ../src/test/transport
   ../../pjlib/include/pj/ip_helper.h ../../pjlib/include/pj/lock.h \
   ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool_buf.h \
   ../../pjlib/include/pj/rand.h ../../pjlib/include/pj/rbtree.h \
   ../../pjlib/include/pj/sock_select.h ../../pjlib/include/pj/unicode.h
@@ -1000,6 +1008,7 @@ output/pjsip-test-arm-apple-darwin9/transport_tcp_test.o: ../src/test/transport_
   ../../pjlib/include/pj/ip_helper.h ../../pjlib/include/pj/lock.h \
   ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool_buf.h \
   ../../pjlib/include/pj/rand.h ../../pjlib/include/pj/rbtree.h \
   ../../pjlib/include/pj/sock_select.h ../../pjlib/include/pj/unicode.h
@@ -1093,6 +1102,7 @@ output/pjsip-test-arm-apple-darwin9/transport_test.o: ../src/test/transport_test
   ../../pjlib/include/pj/ip_helper.h ../../pjlib/include/pj/lock.h \
   ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool_buf.h \
   ../../pjlib/include/pj/rand.h ../../pjlib/include/pj/rbtree.h \
   ../../pjlib/include/pj/sock_select.h ../../pjlib/include/pj/unicode.h
@@ -1186,6 +1196,7 @@ output/pjsip-test-arm-apple-darwin9/transport_udp_test.o: ../src/test/transport_
   ../../pjlib/include/pj/ip_helper.h ../../pjlib/include/pj/lock.h \
   ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool_buf.h \
   ../../pjlib/include/pj/rand.h ../../pjlib/include/pj/rbtree.h \
   ../../pjlib/include/pj/sock_select.h ../../pjlib/include/pj/unicode.h
@@ -1279,6 +1290,7 @@ output/pjsip-test-arm-apple-darwin9/tsx_basic_test.o: ../src/test/tsx_basic_test
   ../../pjlib/include/pj/ip_helper.h ../../pjlib/include/pj/lock.h \
   ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool_buf.h \
   ../../pjlib/include/pj/rand.h ../../pjlib/include/pj/rbtree.h \
   ../../pjlib/include/pj/sock_select.h ../../pjlib/include/pj/unicode.h
@@ -1372,6 +1384,7 @@ output/pjsip-test-arm-apple-darwin9/tsx_bench.o: ../src/test/tsx_bench.c ../src/
   ../../pjlib/include/pj/ip_helper.h ../../pjlib/include/pj/lock.h \
   ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool_buf.h \
   ../../pjlib/include/pj/rand.h ../../pjlib/include/pj/rbtree.h \
   ../../pjlib/include/pj/sock_select.h ../../pjlib/include/pj/unicode.h
@@ -1465,6 +1478,7 @@ output/pjsip-test-arm-apple-darwin9/tsx_uac_test.o: ../src/test/tsx_uac_test.c .
   ../../pjlib/include/pj/ip_helper.h ../../pjlib/include/pj/lock.h \
   ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool_buf.h \
   ../../pjlib/include/pj/rand.h ../../pjlib/include/pj/rbtree.h \
   ../../pjlib/include/pj/sock_select.h ../../pjlib/include/pj/unicode.h
@@ -1558,6 +1572,7 @@ output/pjsip-test-arm-apple-darwin9/tsx_uas_test.o: ../src/test/tsx_uas_test.c .
   ../../pjlib/include/pj/ip_helper.h ../../pjlib/include/pj/lock.h \
   ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool_buf.h \
   ../../pjlib/include/pj/rand.h ../../pjlib/include/pj/rbtree.h \
   ../../pjlib/include/pj/sock_select.h ../../pjlib/include/pj/unicode.h
@@ -1651,6 +1666,7 @@ output/pjsip-test-arm-apple-darwin9/txdata_test.o: ../src/test/txdata_test.c ../
   ../../pjlib/include/pj/ip_helper.h ../../pjlib/include/pj/lock.h \
   ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool_buf.h \
   ../../pjlib/include/pj/rand.h ../../pjlib/include/pj/rbtree.h \
   ../../pjlib/include/pj/sock_select.h ../../pjlib/include/pj/unicode.h
@@ -1744,6 +1760,7 @@ output/pjsip-test-arm-apple-darwin9/uri_test.o: ../src/test/uri_test.c ../src/te
   ../../pjlib/include/pj/ip_helper.h ../../pjlib/include/pj/lock.h \
   ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool_buf.h \
   ../../pjlib/include/pj/rand.h ../../pjlib/include/pj/rbtree.h \
   ../../pjlib/include/pj/sock_select.h ../../pjlib/include/pj/unicode.h
@@ -1848,6 +1865,7 @@ output/pjsip-test-arm-apple-darwin9/inv_offer_answer_test.o: ../src/test/inv_off
   ../../pjlib/include/pj/ip_helper.h ../../pjlib/include/pj/lock.h \
   ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool_buf.h \
   ../../pjlib/include/pj/rand.h ../../pjlib/include/pj/rbtree.h \
   ../../pjlib/include/pj/sock_select.h ../../pjlib/include/pj/unicode.h

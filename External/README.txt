@@ -9,10 +9,13 @@ pjproject-2.0.1
   - $ make clean
   - $ export ARCH='-arch armv7s' 
   - $ ./configure-iphone
-  - $ make del
+  - $ make dep
   - $ make
   - Move install/lib/* to install/lib/armv7s/
-  - $ install/lib/combine
+  - $ cd install/lib
+  - $ combine
+* When $ make install did not work, I renamed the old install -> install__ to
+  for it.
 
 LibPhoneNumber
 * Building (using Google's Closure Builder) the single JavaScript file for
