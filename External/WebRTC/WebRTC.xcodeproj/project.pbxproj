@@ -1035,7 +1035,6 @@
 		48303B9B1676F2560027EA3A /* rtp_dump_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rtp_dump_impl.cc; sourceTree = "<group>"; };
 		48303B9C1676F2560027EA3A /* rtp_dump_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtp_dump_impl.h; sourceTree = "<group>"; };
 		48303B9E1676F2560027EA3A /* PATENTS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PATENTS; sourceTree = "<group>"; };
-		48303B9F1676F2560027EA3A /* README.chromium */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.chromium; sourceTree = "<group>"; };
 		48303BA21676F2560027EA3A /* aligned_malloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aligned_malloc.h; sourceTree = "<group>"; };
 		48303BA31676F2560027EA3A /* atomic32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = atomic32.h; sourceTree = "<group>"; };
 		48303BA41676F2560027EA3A /* compile_assert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = compile_assert.h; sourceTree = "<group>"; };
@@ -1221,7 +1220,6 @@
 				483038BA1676F2560027EA3A /* LICENSE_THIRD_PARTY */,
 				483038BB1676F2560027EA3A /* modules */,
 				48303B9E1676F2560027EA3A /* PATENTS */,
-				48303B9F1676F2560027EA3A /* README.chromium */,
 				48303BA01676F2560027EA3A /* system_wrappers */,
 				48303C061676F2560027EA3A /* typedefs.h */,
 				48303C071676F2560027EA3A /* voice_engine */,
@@ -2756,6 +2754,7 @@
 				48F1CF7D167674B8005B9875 /* Sources */,
 				48F1CF7E167674B8005B9875 /* Frameworks */,
 				48F1CF7F167674B8005B9875 /* CopyFiles */,
+				48EE399516777D2700823E09 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2790,6 +2789,22 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		48EE399516777D2700823E09 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "strip -S libWebRTC.a";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		48F1CF7D167674B8005B9875 /* Sources */ = {
@@ -3173,49 +3188,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		48115D83167671B500B6FE19 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = Debug;
-		};
 		48115D84167671B500B6FE19 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 			};
 			name = Release;
-		};
-		48F1CF8E167674B8005B9875 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DSTROOT = /tmp/WebRTC.dst;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "/Users/case/Projects/Talk/Talk/External/WebRTC/webrtc/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				ONLY_ACTIVE_ARCH = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
 		};
 		48F1CF8F167674B8005B9875 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -3225,19 +3203,27 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CONFIGURATION_BUILD_DIR = "";
 				COPY_PHASE_STRIP = YES;
 				DSTROOT = /tmp/WebRTC.dst;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_UNROLL_LOOPS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "/Users/case/Projects/Talk/Talk/External/WebRTC/webrtc/**";
+				HEADER_SEARCH_PATHS = "./**";
+				INSTALL_PATH = lib;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+				SEPARATE_STRIP = NO;
+				SKIP_INSTALL = NO;
+				STRIP_INSTALLED_PRODUCT = YES;
+				STRIP_STYLE = debugging;
+				SYMROOT = .;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -3248,7 +3234,6 @@
 		48115D81167671B500B6FE19 /* Build configuration list for PBXProject "WebRTC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				48115D83167671B500B6FE19 /* Debug */,
 				48115D84167671B500B6FE19 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -3257,7 +3242,6 @@
 		48F1CF8D167674B8005B9875 /* Build configuration list for PBXNativeTarget "WebRTC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				48F1CF8E167674B8005B9875 /* Debug */,
 				48F1CF8F167674B8005B9875 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
