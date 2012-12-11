@@ -111,6 +111,7 @@ output/pjsua-lib-arm-apple-darwin9/pjsua_acc.o: ../src/pjsua-lib/pjsua_acc.c ../
   ../../pjmedia/include/pjmedia/rtcp.h \
   ../../pjmedia/include/pjmedia/rtcp_xr.h ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjmedia/include/pjmedia/rtp.h \
   ../../pjmedia/include/pjmedia/sdp_neg.h \
   ../../pjmedia/include/pjmedia/silencedet.h \
@@ -320,6 +321,7 @@ output/pjsua-lib-arm-apple-darwin9/pjsua_call.o: ../src/pjsua-lib/pjsua_call.c .
   ../../pjmedia/include/pjmedia/rtcp.h \
   ../../pjmedia/include/pjmedia/rtcp_xr.h ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjmedia/include/pjmedia/rtp.h \
   ../../pjmedia/include/pjmedia/sdp_neg.h \
   ../../pjmedia/include/pjmedia/silencedet.h \
@@ -529,6 +531,7 @@ output/pjsua-lib-arm-apple-darwin9/pjsua_core.o: ../src/pjsua-lib/pjsua_core.c .
   ../../pjmedia/include/pjmedia/rtcp.h \
   ../../pjmedia/include/pjmedia/rtcp_xr.h ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjmedia/include/pjmedia/rtp.h \
   ../../pjmedia/include/pjmedia/sdp_neg.h \
   ../../pjmedia/include/pjmedia/silencedet.h \
@@ -738,6 +741,7 @@ output/pjsua-lib-arm-apple-darwin9/pjsua_im.o: ../src/pjsua-lib/pjsua_im.c ../in
   ../../pjmedia/include/pjmedia/rtcp.h \
   ../../pjmedia/include/pjmedia/rtcp_xr.h ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjmedia/include/pjmedia/rtp.h \
   ../../pjmedia/include/pjmedia/sdp_neg.h \
   ../../pjmedia/include/pjmedia/silencedet.h \
@@ -948,6 +952,7 @@ output/pjsua-lib-arm-apple-darwin9/pjsua_media.o: ../src/pjsua-lib/pjsua_media.c
   ../../pjmedia/include/pjmedia/rtcp.h \
   ../../pjmedia/include/pjmedia/rtcp_xr.h ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjmedia/include/pjmedia/rtp.h \
   ../../pjmedia/include/pjmedia/sdp_neg.h \
   ../../pjmedia/include/pjmedia/silencedet.h \
@@ -1157,6 +1162,7 @@ output/pjsua-lib-arm-apple-darwin9/pjsua_pres.o: ../src/pjsua-lib/pjsua_pres.c .
   ../../pjmedia/include/pjmedia/rtcp.h \
   ../../pjmedia/include/pjmedia/rtcp_xr.h ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjmedia/include/pjmedia/rtp.h \
   ../../pjmedia/include/pjmedia/sdp_neg.h \
   ../../pjmedia/include/pjmedia/silencedet.h \
@@ -1366,6 +1372,7 @@ output/pjsua-lib-arm-apple-darwin9/pjsua_dump.o: ../src/pjsua-lib/pjsua_dump.c .
   ../../pjmedia/include/pjmedia/rtcp.h \
   ../../pjmedia/include/pjmedia/rtcp_xr.h ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjmedia/include/pjmedia/rtp.h \
   ../../pjmedia/include/pjmedia/sdp_neg.h \
   ../../pjmedia/include/pjmedia/silencedet.h \
@@ -1575,6 +1582,7 @@ output/pjsua-lib-arm-apple-darwin9/pjsua_aud.o: ../src/pjsua-lib/pjsua_aud.c ../
   ../../pjmedia/include/pjmedia/rtcp.h \
   ../../pjmedia/include/pjmedia/rtcp_xr.h ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjmedia/include/pjmedia/rtp.h \
   ../../pjmedia/include/pjmedia/sdp_neg.h \
   ../../pjmedia/include/pjmedia/silencedet.h \
@@ -1784,6 +1792,7 @@ output/pjsua-lib-arm-apple-darwin9/pjsua_vid.o: ../src/pjsua-lib/pjsua_vid.c ../
   ../../pjmedia/include/pjmedia/rtcp.h \
   ../../pjmedia/include/pjmedia/rtcp_xr.h ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjmedia/include/pjmedia/rtp.h \
   ../../pjmedia/include/pjmedia/sdp_neg.h \
   ../../pjmedia/include/pjmedia/silencedet.h \

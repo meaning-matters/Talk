@@ -65,6 +65,7 @@ output/pjturn-srv-arm-apple-darwin9/allocation.o: ../src/pjturn-srv/allocation.c
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/types.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/_types.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool.h \
   ../../pjlib/include/pj/pool_buf.h ../../pjlib/include/pj/rand.h \
   ../../pjlib/include/pj/rbtree.h ../../pjlib/include/pj/sock_qos.h \
@@ -163,6 +164,7 @@ output/pjturn-srv-arm-apple-darwin9/auth.o: ../src/pjturn-srv/auth.c ../src/pjtu
   ../../pjlib/include/pj/ip_helper.h ../../pjlib/include/pj/lock.h \
   ../../pjlib/include/pj/math.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool.h \
   ../../pjlib/include/pj/pool_buf.h ../../pjlib/include/pj/rand.h \
   ../../pjlib/include/pj/rbtree.h ../../pjlib/include/pj/sock_select.h \
@@ -234,6 +236,7 @@ output/pjturn-srv-arm-apple-darwin9/listener_udp.o: ../src/pjturn-srv/listener_u
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/types.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/_types.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool.h \
   ../../pjlib/include/pj/pool_buf.h ../../pjlib/include/pj/rand.h \
   ../../pjlib/include/pj/rbtree.h ../../pjlib/include/pj/sock_qos.h \
@@ -347,6 +350,7 @@ output/pjturn-srv-arm-apple-darwin9/listener_tcp.o: ../src/pjturn-srv/listener_t
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/types.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/_types.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool.h \
   ../../pjlib/include/pj/pool_buf.h ../../pjlib/include/pj/rand.h \
   ../../pjlib/include/pj/rbtree.h ../../pjlib/include/pj/sock_qos.h \
@@ -460,6 +464,7 @@ output/pjturn-srv-arm-apple-darwin9/server.o: ../src/pjturn-srv/server.c ../src/
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/types.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/_types.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool.h \
   ../../pjlib/include/pj/pool_buf.h ../../pjlib/include/pj/rand.h \
   ../../pjlib/include/pj/rbtree.h ../../pjlib/include/pj/sock_qos.h \
@@ -544,6 +549,7 @@ output/pjturn-srv-arm-apple-darwin9/main.o: ../src/pjturn-srv/main.c ../src/pjtu
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/types.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/_types.h \
   ../../pjlib/include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../pjlib/include/pj/os.h ../../pjlib/include/pj/pool.h \
   ../../pjlib/include/pj/pool_buf.h ../../pjlib/include/pj/rand.h \
   ../../pjlib/include/pj/rbtree.h ../../pjlib/include/pj/sock_qos.h \

@@ -303,7 +303,7 @@
      */
 
     /* Disable floating point support */
-    #define PJ_HAS_FLOATING_POINT		0
+    #define PJ_HAS_FLOATING_POINT		1
 
     /*
      * PJMEDIA settings

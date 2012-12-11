@@ -52,7 +52,7 @@
 
 
 /* Specify if floating point is present/desired */
-#define PJ_HAS_FLOATING_POINT 0
+#define PJ_HAS_FLOATING_POINT 1
 
 /* Deprecated */
 #define PJ_HAS_PENTIUM		0

@@ -32,7 +32,7 @@ output/libspeex-arm-apple-darwin9/bits.o: ../../speex/libspeex/bits.c config.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/stdint.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
-  ../../speex/libspeex/fixed_generic.h ../../speex/libspeex/os_support.h \
+  ../../speex/libspeex/os_support.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/string.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/_types.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/Availability.h \
@@ -85,9 +85,9 @@ output/libspeex-arm-apple-darwin9/cb_search.o: ../../speex/libspeex/cb_search.c 
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/stdint.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
-  ../../speex/libspeex/fixed_generic.h ../../speex/libspeex/filters.h \
-  ../../speex/libspeex/stack_alloc.h ../../speex/libspeex/vq.h \
-  ../../speex/libspeex/math_approx.h ../../speex/libspeex/os_support.h \
+  ../../speex/libspeex/filters.h ../../speex/libspeex/stack_alloc.h \
+  ../../speex/libspeex/vq.h ../../speex/libspeex/math_approx.h \
+  ../../speex/libspeex/os_support.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/string.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/_types.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/Availability.h \
@@ -145,7 +145,7 @@ output/libspeex-arm-apple-darwin9/fftwrap.o: ../../speex/libspeex/fftwrap.c conf
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/stdint.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
-  ../../speex/libspeex/fixed_generic.h ../../speex/libspeex/os_support.h \
+  ../../speex/libspeex/os_support.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/string.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/_types.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/Availability.h \
@@ -164,7 +164,7 @@ output/libspeex-arm-apple-darwin9/fftwrap.o: ../../speex/libspeex/fftwrap.c conf
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/mach/arm/_structs.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/resource.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/alloca.h \
-  ../../speex/libspeex/kiss_fftr.h ../../speex/libspeex/kiss_fft.h \
+  ../../speex/libspeex/smallft.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h
 output/libspeex-arm-apple-darwin9/filterbank.o: ../../speex/libspeex/filterbank.c config.h \
   ../../../pjlib/include/pj/types.h ../../../pjlib/include/pj/config.h \
@@ -200,7 +200,6 @@ output/libspeex-arm-apple-darwin9/filterbank.o: ../../speex/libspeex/filterbank.
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/stdint.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
-  ../../speex/libspeex/fixed_generic.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/Availability.h \
   ../../speex/libspeex/math_approx.h ../../speex/libspeex/os_support.h \
@@ -255,9 +254,8 @@ output/libspeex-arm-apple-darwin9/filters.o: ../../speex/libspeex/filters.c conf
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/stdint.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
-  ../../speex/libspeex/fixed_generic.h ../../speex/libspeex/stack_alloc.h \
-  ../../speex/libspeex/math_approx.h ../../speex/libspeex/ltp.h \
-  ../../speex/include/speex/speex_bits.h \
+  ../../speex/libspeex/stack_alloc.h ../../speex/libspeex/math_approx.h \
+  ../../speex/libspeex/ltp.h ../../speex/include/speex/speex_bits.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/Availability.h
 output/libspeex-arm-apple-darwin9/gain_table.o: ../../speex/libspeex/gain_table.c
@@ -313,8 +311,7 @@ output/libspeex-arm-apple-darwin9/kiss_fft.o: ../../speex/libspeex/kiss_fft.c co
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../speex/libspeex/arch.h ../../speex/include/speex/speex_types.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/types.h \
-  ../../speex/libspeex/fixed_generic.h ../../speex/libspeex/math_approx.h \
-  ../../speex/libspeex/os_support.h \
+  ../../speex/libspeex/math_approx.h ../../speex/libspeex/os_support.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/string.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/strings.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/secure/_string.h \
@@ -376,7 +373,6 @@ output/libspeex-arm-apple-darwin9/kiss_fftr.o: ../../speex/libspeex/kiss_fftr.c 
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   ../../speex/libspeex/arch.h ../../speex/include/speex/speex_types.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/types.h \
-  ../../speex/libspeex/fixed_generic.h \
   ../../speex/libspeex/_kiss_fft_guts.h \
   ../../speex/libspeex/math_approx.h
 output/libspeex-arm-apple-darwin9/lpc.o: ../../speex/libspeex/lpc.c config.h \
@@ -412,8 +408,7 @@ output/libspeex-arm-apple-darwin9/lpc.o: ../../speex/libspeex/lpc.c config.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/libkern/arm/OSByteOrder.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/stdint.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
-  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
-  ../../speex/libspeex/fixed_generic.h
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h
 output/libspeex-arm-apple-darwin9/lsp.o: ../../speex/libspeex/lsp.c config.h \
   ../../../pjlib/include/pj/types.h ../../../pjlib/include/pj/config.h \
   ../../../pjlib/include/pj/compat/cc_gcc.h \
@@ -450,8 +445,7 @@ output/libspeex-arm-apple-darwin9/lsp.o: ../../speex/libspeex/lsp.c config.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/stdint.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
-  ../../speex/libspeex/fixed_generic.h ../../speex/libspeex/stack_alloc.h \
-  ../../speex/libspeex/math_approx.h
+  ../../speex/libspeex/stack_alloc.h ../../speex/libspeex/math_approx.h
 output/libspeex-arm-apple-darwin9/lsp_tables_nb.o: ../../speex/libspeex/lsp_tables_nb.c
 output/libspeex-arm-apple-darwin9/ltp.o: ../../speex/libspeex/ltp.c config.h \
   ../../../pjlib/include/pj/types.h ../../../pjlib/include/pj/config.h \
@@ -489,9 +483,8 @@ output/libspeex-arm-apple-darwin9/ltp.o: ../../speex/libspeex/ltp.c config.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/stdint.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
-  ../../speex/libspeex/fixed_generic.h ../../speex/libspeex/stack_alloc.h \
-  ../../speex/libspeex/filters.h ../../speex/libspeex/math_approx.h \
-  ../../speex/libspeex/os_support.h \
+  ../../speex/libspeex/stack_alloc.h ../../speex/libspeex/filters.h \
+  ../../speex/libspeex/math_approx.h ../../speex/libspeex/os_support.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/string.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/_types.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/strings.h \
@@ -542,7 +535,6 @@ output/libspeex-arm-apple-darwin9/mdf.o: ../../speex/libspeex/mdf.c config.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/stdint.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
-  ../../speex/libspeex/fixed_generic.h \
   ../../speex/include/speex/speex_echo.h \
   ../../speex/include/speex/speex_types.h ../../speex/libspeex/fftwrap.h \
   ../../speex/libspeex/pseudofloat.h ../../speex/libspeex/os_support.h \
@@ -602,8 +594,7 @@ output/libspeex-arm-apple-darwin9/modes.o: ../../speex/libspeex/modes.c config.h
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
   ../../speex/include/speex/speex_bits.h ../../speex/libspeex/arch.h \
-  ../../speex/include/speex/speex_types.h \
-  ../../speex/libspeex/fixed_generic.h ../../speex/libspeex/ltp.h \
+  ../../speex/include/speex/speex_types.h ../../speex/libspeex/ltp.h \
   ../../speex/libspeex/quant_lsp.h ../../speex/libspeex/cb_search.h \
   ../../speex/libspeex/sb_celp.h ../../speex/libspeex/nb_celp.h \
   ../../speex/include/speex/speex_callbacks.h \
@@ -647,8 +638,7 @@ output/libspeex-arm-apple-darwin9/modes_wb.o: ../../speex/libspeex/modes_wb.c co
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
   ../../speex/include/speex/speex_bits.h ../../speex/libspeex/arch.h \
-  ../../speex/include/speex/speex_types.h \
-  ../../speex/libspeex/fixed_generic.h ../../speex/libspeex/ltp.h \
+  ../../speex/include/speex/speex_types.h ../../speex/libspeex/ltp.h \
   ../../speex/libspeex/quant_lsp.h ../../speex/libspeex/cb_search.h \
   ../../speex/libspeex/sb_celp.h ../../speex/libspeex/nb_celp.h \
   ../../speex/include/speex/speex_callbacks.h \
@@ -714,7 +704,6 @@ output/libspeex-arm-apple-darwin9/nb_celp.o: ../../speex/libspeex/nb_celp.c conf
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
   ../../speex/include/speex/speex_bits.h ../../speex/libspeex/arch.h \
   ../../speex/include/speex/speex_types.h \
-  ../../speex/libspeex/fixed_generic.h \
   ../../speex/include/speex/speex_callbacks.h \
   ../../speex/include/speex/speex.h ../../speex/libspeex/vbr.h \
   ../../speex/libspeex/filters.h ../../speex/libspeex/lpc.h \
@@ -776,8 +765,7 @@ output/libspeex-arm-apple-darwin9/preprocess.o: ../../speex/libspeex/preprocess.
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
   ../../speex/include/speex/speex_echo.h ../../speex/libspeex/arch.h \
-  ../../speex/include/speex/speex_types.h \
-  ../../speex/libspeex/fixed_generic.h ../../speex/libspeex/fftwrap.h \
+  ../../speex/include/speex/speex_types.h ../../speex/libspeex/fftwrap.h \
   ../../speex/libspeex/filterbank.h ../../speex/libspeex/math_approx.h \
   ../../speex/libspeex/os_support.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/string.h \
@@ -831,7 +819,7 @@ output/libspeex-arm-apple-darwin9/quant_lsp.o: ../../speex/libspeex/quant_lsp.c 
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/stdint.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
-  ../../speex/libspeex/fixed_generic.h ../../speex/libspeex/os_support.h \
+  ../../speex/libspeex/os_support.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/string.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/_types.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/Availability.h \
@@ -886,7 +874,7 @@ output/libspeex-arm-apple-darwin9/resample.o: ../../speex/libspeex/resample.c co
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
   ../../speex/libspeex/arch.h ../../speex/include/speex/speex_types.h \
-  ../../speex/libspeex/fixed_generic.h ../../speex/libspeex/os_support.h \
+  ../../speex/libspeex/os_support.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/string.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/_types.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/Availability.h \
@@ -946,8 +934,7 @@ output/libspeex-arm-apple-darwin9/sb_celp.o: ../../speex/libspeex/sb_celp.c conf
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
   ../../speex/include/speex/speex_bits.h ../../speex/libspeex/arch.h \
-  ../../speex/include/speex/speex_types.h \
-  ../../speex/libspeex/fixed_generic.h ../../speex/libspeex/nb_celp.h \
+  ../../speex/include/speex/speex_types.h ../../speex/libspeex/nb_celp.h \
   ../../speex/include/speex/speex_callbacks.h \
   ../../speex/include/speex/speex.h ../../speex/libspeex/vbr.h \
   ../../speex/libspeex/filters.h ../../speex/libspeex/lpc.h \
@@ -1008,7 +995,7 @@ output/libspeex-arm-apple-darwin9/smallft.o: ../../speex/libspeex/smallft.c conf
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/stdint.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
-  ../../speex/libspeex/fixed_generic.h ../../speex/libspeex/os_support.h \
+  ../../speex/libspeex/os_support.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/string.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/_types.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/strings.h \
@@ -1063,7 +1050,6 @@ output/libspeex-arm-apple-darwin9/speex.o: ../../speex/libspeex/speex.c config.h
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
   ../../speex/include/speex/speex_bits.h ../../speex/libspeex/arch.h \
   ../../speex/include/speex/speex_types.h \
-  ../../speex/libspeex/fixed_generic.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/Availability.h \
   ../../speex/libspeex/os_support.h \
@@ -1121,7 +1107,7 @@ output/libspeex-arm-apple-darwin9/speex_callbacks.o: ../../speex/libspeex/speex_
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
   ../../speex/libspeex/arch.h ../../speex/include/speex/speex_types.h \
-  ../../speex/libspeex/fixed_generic.h ../../speex/libspeex/os_support.h \
+  ../../speex/libspeex/os_support.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/string.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/_types.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/Availability.h \
@@ -1173,7 +1159,6 @@ output/libspeex-arm-apple-darwin9/speex_header.o: ../../speex/libspeex/speex_hea
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/stdint.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
-  ../../speex/libspeex/fixed_generic.h \
   ../../speex/include/speex/speex_header.h \
   ../../speex/include/speex/speex_types.h \
   ../../speex/include/speex/speex.h \
@@ -1235,7 +1220,7 @@ output/libspeex-arm-apple-darwin9/stereo.o: ../../speex/libspeex/stereo.c config
   ../../speex/include/speex/speex_callbacks.h \
   ../../speex/include/speex/speex.h ../../speex/libspeex/math_approx.h \
   ../../speex/libspeex/arch.h ../../speex/include/speex/speex_types.h \
-  ../../speex/libspeex/fixed_generic.h ../../speex/libspeex/vq.h \
+  ../../speex/libspeex/vq.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/Availability.h \
   ../../speex/libspeex/os_support.h \
@@ -1290,7 +1275,6 @@ output/libspeex-arm-apple-darwin9/vbr.o: ../../speex/libspeex/vbr.c config.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/stdint.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
-  ../../speex/libspeex/fixed_generic.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/Availability.h
 output/libspeex-arm-apple-darwin9/vq.o: ../../speex/libspeex/vq.c config.h \
@@ -1327,7 +1311,7 @@ output/libspeex-arm-apple-darwin9/vq.o: ../../speex/libspeex/vq.c config.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/stdint.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
-  ../../speex/libspeex/fixed_generic.h ../../speex/libspeex/stack_alloc.h
+  ../../speex/libspeex/stack_alloc.h
 output/libspeex-arm-apple-darwin9/window.o: ../../speex/libspeex/window.c config.h \
   ../../../pjlib/include/pj/types.h ../../../pjlib/include/pj/config.h \
   ../../../pjlib/include/pj/compat/cc_gcc.h \
@@ -1360,5 +1344,4 @@ output/libspeex-arm-apple-darwin9/window.o: ../../speex/libspeex/window.c config
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/libkern/arm/OSByteOrder.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/stdint.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/arm/arch.h \
-  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h \
-  ../../speex/libspeex/fixed_generic.h
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_structs.h

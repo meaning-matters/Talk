@@ -984,7 +984,12 @@ output/pjlib-arm-apple-darwin9/os_timestamp_common.o: ../src/pj/os_timestamp_com
   ../include/pj/compat/m_auto.h ../include/pj/compat/size_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/llvm-gcc-4.2/bin/../lib/gcc/arm-apple-darwin10/4.2.1/include/stddef.h \
   ../include/pj/config_site.h ../include/pj/config_site_sample.h \
-  ../include/pj/compat/high_precision.h
+  ../include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/cdefs.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_symbol_aliasing.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/_posix_availability.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/Availability.h
 output/pjlib-arm-apple-darwin9/pool_policy_malloc.o: ../src/pj/pool_policy_malloc.c ../include/pj/pool.h \
   ../include/pj/list.h ../include/pj/types.h ../include/pj/config.h \
   ../include/pj/compat/cc_gcc.h ../include/pj/compat/os_auto.h \
@@ -2449,8 +2454,9 @@ output/pjlib-arm-apple-darwin9/ssl_sock_ossl.o: ../src/pj/ssl_sock_ossl.c ../inc
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/mach/arm/_structs.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/sys/resource.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/alloca.h \
-  ../include/pj/compat/high_precision.h ../include/pj/os.h \
-  ../include/pj/pool.h ../include/pj/timer.h
+  ../include/pj/compat/high_precision.h \
+  /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
+  ../include/pj/os.h ../include/pj/pool.h ../include/pj/timer.h
 output/pjlib-arm-apple-darwin9/ssl_sock_dump.o: ../src/pj/ssl_sock_dump.c ../include/pj/ssl_sock.h \
   ../include/pj/ioqueue.h ../include/pj/types.h ../include/pj/config.h \
   ../include/pj/compat/cc_gcc.h ../include/pj/compat/os_auto.h \
