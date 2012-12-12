@@ -39,10 +39,15 @@ Designs
 * Used in the app are modified/exported versions of these files.
 
 WebRTC
-* Used to have ISAC codec.
+* Added to have ISAC codec.
 * Build the project creates WebRTC/libWebRTC.a.  This files is linked in Talk
   Xcode project, so can't be [re]moved.
 * Includes more modules than necessary for ISAC, but iOS app linking will sort
   this out and won't include the unused (I assume).  Could be sorted out some
   time later, but is a waste of time probably.
-
+* The webrtc.[h|cpp] module is glue-logic from another source.  When updating
+  WebRTC, leave these there.
+* Added destroy to codec callback struct: https://trac.pjsip.org/repos/ticket/1294
+  to GlueLogic/webrtc.c: pjmedia_codec_webrtc_deinit, line 90.
+* Had to rename Talk's main.m to main.mm to linker-pull-in C++ libraries needed
+  for libWebRTC.a.
