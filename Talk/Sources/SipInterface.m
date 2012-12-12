@@ -10,6 +10,7 @@
 #import "SipInterface.h"
 #import "Common.h"
 #import "Settings.h"
+#import "webrtc.h"      // Glue-logic with libWebRTC.a.
 
 //### Added for Talk's NetworkStatus; still needs to be notified to.
 NSString* const kSipInterfaceCallStateChangedNotification = @"kSipInterfaceCallStateChangedNotification";
@@ -3906,20 +3907,30 @@ pj_status_t app_init(
     {
         app_config.media_cfg.snd_play_latency = app_config.playback_lat;
     }
-    
+
     /* Initialize pjsua */
     if ((status = pjsua_init(&app_config.cfg, &app_config.log_cfg, &app_config.media_cfg)) != PJ_SUCCESS)
     {
         return status;
     }
-    
+
+    /* Register WebRTC codec */
+    pjmedia_endpt *endpt = pjsua_get_pjmedia_endpt();
+    status = pjmedia_codec_webrtc_init(endpt);
+    if (status != PJ_SUCCESS)
+    {
+        return status;
+    }
+
+#warning ### Check if https://trac.pjsip.org/repos/ticket/1294 things can be left out here now wrt codecs!!!
+
     /* Initialize our module to handle otherwise unhandled request */
     status = pjsip_endpt_register_module(pjsua_get_pjsip_endpt(), &mod_default_handler);
     if (status != PJ_SUCCESS)
     {
         return status;
     }
-    
+
     /* Initialize calls data */
     for (i = 0; i < PJ_ARRAY_SIZE(app_config.call_data); ++i)
     {
@@ -4202,7 +4213,7 @@ pj_status_t app_init(
         {
             goto on_error;
         }
-        
+
         pjsua_acc_set_online_status(current_acc, PJ_TRUE);
     }
 
@@ -4445,15 +4456,6 @@ void showLog(
 @implementation SipInterface
 
 @synthesize config = _config;
-
-#if 0 // http://osdir.com/ml/voip.pjsip/2007-06/msg00205.html
-#if PJMEDIA_HAS_WEBRTC_CODEC
-/* Register WebRTC codec */
-status = pjmedia_codec_webrtc_init(endpt);
-if (status != PJ_SUCCESS)
-return status;
-#endif  /* PJMEDIA_HAS_WEBRTC_CODEC */
-#endif
 
 - (id)initWithConfig:(NSString*)config
 {
