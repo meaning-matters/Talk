@@ -42,3 +42,7 @@ WebRTC
 * Used to have ISAC codec.
 * Build the project creates WebRTC/libWebRTC.a.  This files is linked in Talk
   Xcode project, so can't be [re]moved.
+* Includes more modules than necessary for ISAC, but iOS app linking will sort
+  this out and won't include the unused (I assume).  Could be sorted out some
+  time later, but is a waste of time probably.
+
