@@ -4446,6 +4446,14 @@ void showLog(
 
 @synthesize config = _config;
 
+#if 0 // http://osdir.com/ml/voip.pjsip/2007-06/msg00205.html
+#if PJMEDIA_HAS_WEBRTC_CODEC
+/* Register WebRTC codec */
+status = pjmedia_codec_webrtc_init(endpt);
+if (status != PJ_SUCCESS)
+return status;
+#endif  /* PJMEDIA_HAS_WEBRTC_CODEC */
+#endif
 
 - (id)initWithConfig:(NSString*)config
 {
