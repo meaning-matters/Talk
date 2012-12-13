@@ -107,6 +107,7 @@ pjsua-test:
 
 prefix = $(ac_prefix)
 
+.PHONY: install
 install:
 	mkdir -p ./install/lib
 	cp -f $(APP_LIB_FILES) ./install/lib/

@@ -2456,7 +2456,49 @@ output/pjlib-arm-apple-darwin9/ssl_sock_ossl.o: ../src/pj/ssl_sock_ossl.c ../inc
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/alloca.h \
   ../include/pj/compat/high_precision.h \
   /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/include/math.h \
-  ../include/pj/os.h ../include/pj/pool.h ../include/pj/timer.h
+  ../include/pj/os.h ../include/pj/pool.h ../include/pj/timer.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/bio.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/e_os2.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/opensslconf.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/crypto.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/stack.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/safestack.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/opensslv.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/ossl_typ.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/symhacks.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/ssl.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/comp.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/x509.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/buffer.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/evp.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/objects.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/obj_mac.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/asn1.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/bn.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/ec.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/ecdsa.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/ecdh.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/rsa.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/dsa.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/dh.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/sha.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/x509_vfy.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/lhash.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/pkcs7.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/pem.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/pem2.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/hmac.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/kssl.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/ssl2.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/ssl3.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/tls1.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/dtls1.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/pqueue.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/ssl23.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/srtp.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/err.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/x509v3.h \
+  /Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/openssl/conf.h
 output/pjlib-arm-apple-darwin9/ssl_sock_dump.o: ../src/pj/ssl_sock_dump.c ../include/pj/ssl_sock.h \
   ../include/pj/ioqueue.h ../include/pj/types.h ../include/pj/config.h \
   ../include/pj/compat/cc_gcc.h ../include/pj/compat/os_auto.h \

@@ -14,8 +14,12 @@ pjproject-2.0.1
   - Move install/lib/* to install/lib/armv7s/
   - $ cd install/lib
   - $ combine
-* When $ make install did not work, I renamed the old install -> install__ to
-  for it.
+* Added .PHONY : install target to Makefile.  This forces install to always
+  run.  (It did not run because install is also a directory name, which is
+  of course always up to date.)
+* Created rebuild script, that does all the steps above and more.  Note: for
+  some reason the configure scripts did not see OpenSSL, so I had to add
+  -lcrypto -lssl to the LDFLAGS.
 
 LibPhoneNumber
 * Building (using Google's Closure Builder) the single JavaScript file for
