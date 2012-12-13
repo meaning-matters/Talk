@@ -356,6 +356,9 @@
     #define PJSUA_MAX_CONF_PORTS		(PJSUA_MAX_CALLS+2*PJSUA_MAX_PLAYERS)
     #define PJSUA_MAX_BUDDIES			32
 
+    /* Enable TLS */
+    #define PJ_HAS_SSL_SOCK                     1
+
 #endif
 
 /*
