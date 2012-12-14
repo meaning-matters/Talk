@@ -14,6 +14,8 @@
 
 @class CallViewController;
 
+//### Probably better when CallView calls CallManager, so this delegate can be removed.
+//### Otherwise the CallManager becomes dependent on UI stuff; otherway arround is better.
 @protocol CallViewControllerDelegate <NSObject>
 
 - (void)callViewController:(CallViewController*)callViewController setOnMute:(BOOL)onMute;

@@ -43,6 +43,8 @@ Designs
 * Used in the app are modified/exported versions of these files.
 
 WebRTC
+* Download using svn checkout http://webrtc.googlecode.com/svn/trunk/ webrtc-trunk.
+  Then 'move' only the webrtc-trunk/webrtc directory to WebRTC/.  Changes 
 * Added to have ISAC codec.
 * Build the project creates WebRTC/libWebRTC.a.  This files is linked in Talk
   Xcode project, so can't be [re]moved.

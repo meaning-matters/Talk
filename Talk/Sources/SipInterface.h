@@ -26,4 +26,6 @@ extern NSString* const  kSipInterfaceCallStateChangedNotification;
              identityNumber:(NSString*)identityNumber
                    userData:(void*)userData;
 
+- (void)hangupAllCalls;
+
 @end

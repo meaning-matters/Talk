@@ -120,6 +120,12 @@ static SipInterface*    sipInterface;
 }
 
 
+- (void)endCall:(Call*)call
+{
+    [sipInterface hangupAllCalls];
+}
+
+
 - (BOOL)checkPhoneNumber:(PhoneNumber*)phoneNumber
 {
     BOOL    result;
