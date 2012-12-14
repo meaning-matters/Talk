@@ -45,6 +45,9 @@
 
         callOptionsView.delegate = self;
         callKeypadView.delegate = self;
+
+        [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+        [UIApplication sharedApplication].idleTimerDisabled = YES;
     }
 
     return self;
@@ -447,6 +450,9 @@
 
 - (IBAction)endAction:(id)sender
 {
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
+
     [self dismissViewControllerAnimated:YES completion:nil];
     
     //### Quick hack.
