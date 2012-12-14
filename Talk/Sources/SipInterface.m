@@ -1237,6 +1237,12 @@ static pj_status_t parse_args(
 	if (acfg->cred_info[acfg->cred_count].username.slen)
 	{
 	    acfg->cred_count++;
+
+            //### Attempt to force all over TLS: https://trac.pjsip.org/repos/wiki/Using_SIP_TCP
+            //### Seems to fix bug that hangup_all did not work often, resulting in multiple BYE
+            //### being sent.  But it did work sometimes as well; may have to do with Wi-Fi quality.
+            //### Was done in Newcastle with bad network in hotel and Starbucks.
+            acfg->proxy[acfg->proxy_cnt++] = pj_str("sip:178.63.93.9;transport=tls");
 	}
         
 	/* When IMS mode is enabled for the account, verify that settings
@@ -4572,7 +4578,7 @@ void showLog(
 
                           [self registerThread];
 
-                          uriString = [NSString stringWithFormat:@"sip:%@@%@", calledNumber, [Settings sharedSettings].sipServer];
+                          uriString = [NSString stringWithFormat:@"sip:%@@%@;transport=tls", calledNumber, [Settings sharedSettings].sipServer];
                           uri = pj_str((char*)[uriString cStringUsingEncoding:NSASCIIStringEncoding]);
                           pjsua_call_setting_default(&call_opt);
                           call_opt.aud_cnt = app_config.aud_cnt;
@@ -4595,6 +4601,13 @@ void showLog(
         return call_id;
     }
 }
+
+
+- (void)hangupAllCalls
+{
+    pjsua_call_hangup_all();
+}
+
 
 #include <pjsua-lib/pjsua.h>
 #include <pjsua-lib/pjsua_internal.h>

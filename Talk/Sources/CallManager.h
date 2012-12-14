@@ -17,4 +17,6 @@
 
 - (void)makeCall:(Call*)call;
 
+- (void)endCall:(Call*)call;
+
 @end

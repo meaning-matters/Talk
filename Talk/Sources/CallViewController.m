@@ -8,6 +8,7 @@
 
 #import "CallViewController.h"
 #import "Common.h"
+#import "CallManager.h"
 
 
 @interface CallViewController ()
@@ -447,6 +448,9 @@
 - (IBAction)endAction:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+    
+    //### Quick hack.
+    [[CallManager sharedManager] endCall:nil];
 }
 
 
