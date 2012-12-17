@@ -177,10 +177,14 @@
 - (void)update
 {
     self.numberLabel.text = phoneNumber.asYouTypeFormat;
-    if (phoneNumber.isValid)
+    if (phoneNumber.isEmergency)
+    {
+        self.infoLabel.text = [NSString stringWithFormat:@"%@", [phoneNumber typeString]];
+    }
+    else if (phoneNumber.isValid)
     {
         NSString*   impossible;
-
+        
         if (phoneNumber.isPossible == NO)
         {
             impossible = NSLocalizedStringWithDefaultValue(@"General:Number Impossible", nil,
@@ -232,7 +236,12 @@
     }
     else
     {
-        if ([self.delegate dialerViewController:self callPhoneNumber:phoneNumber] == YES)
+        if (phoneNumber.isEmergency)
+        {
+            //### Move this to CallManager.
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", phoneNumber.number]]];
+        }
+        else if ([self.delegate dialerViewController:self callPhoneNumber:phoneNumber] == YES)
         {
             // Delegate will show call screen.
             [Settings sharedSettings].lastDialedNumber = phoneNumber.number;

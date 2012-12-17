@@ -110,6 +110,40 @@ static NSString*        defaultBaseIsoCountryCode;
 }
 
 
+// Used when no ISO country code --which LibPhoneNumber requires-- has been set.
+// It checks if the number has a calling country code.
+- (BOOL)isInternational
+{
+    BOOL            international;
+    PhoneNumber*    nlPhoneNumber = [[PhoneNumber alloc] initWithNumber:self.number baseIsoCountryCode:@"NL"];
+    PhoneNumber*    bePhoneNumber = [[PhoneNumber alloc] initWithNumber:self.number baseIsoCountryCode:@"BE"];
+
+    if ([nlPhoneNumber isValid] && [bePhoneNumber isValid])
+    {
+        if ([[nlPhoneNumber callCountryCode] isEqualToString:[bePhoneNumber callCountryCode]])
+        {
+            international = YES;
+        }
+        else
+        {
+            international = NO;
+        }
+    }
+    else
+    {
+        international = NO;
+    }
+
+    return international;
+}
+
+
+- (BOOL)isEmergency
+{
+    return [[LibPhoneNumber sharedInstance] isEmergencyNumber:self.number isoCountryCode:self.baseIsoCountryCode];
+}
+
+
 - (PhoneNumberType)type
 {
     return [[LibPhoneNumber sharedInstance] typeOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
@@ -268,34 +302,6 @@ static NSString*        defaultBaseIsoCountryCode;
 - (NSString*)asYouTypeFormat
 {
     return [[LibPhoneNumber sharedInstance] asYouTypeFormatOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
-}
-
-
-// Used when no ISO country code --which LibPhoneNumber requires-- has been set.
-// It checks if the number has a calling country code.
-- (BOOL)isInternational
-{
-    BOOL            international;
-    PhoneNumber*    nlPhoneNumber = [[PhoneNumber alloc] initWithNumber:self.number baseIsoCountryCode:@"NL"];
-    PhoneNumber*    bePhoneNumber = [[PhoneNumber alloc] initWithNumber:self.number baseIsoCountryCode:@"BE"];
-
-    if ([nlPhoneNumber isValid] && [bePhoneNumber isValid])
-    {
-        if ([[nlPhoneNumber callCountryCode] isEqualToString:[bePhoneNumber callCountryCode]])
-        {
-            international = YES;
-        }
-        else
-        {
-            international = NO;
-        }
-    }
-    else
-    {
-        international = NO;
-    }
-
-    return international;
 }
 
 @end

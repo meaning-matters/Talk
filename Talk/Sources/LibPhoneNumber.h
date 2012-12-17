@@ -24,6 +24,8 @@
 
 - (BOOL)isPossibleNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode;
 
+- (BOOL)isEmergencyNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode;
+
 - (PhoneNumberType)typeOfNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode;
 
 - (NSString*)originalFormatOfNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode;

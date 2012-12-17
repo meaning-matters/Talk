@@ -16,6 +16,8 @@ goog.require('i18n.phonenumbers.NumberFormat');
 goog.require('i18n.phonenumbers.PhoneNumber');
 goog.require('i18n.phonenumbers.PhoneNumberUtil');
 goog.require('i18n.phonenumbers.AsYouTypeFormatter');
+goog.require('i18n.phonenumbers.PhoneMetadata');
+goog.require('i18n.phonenumbers.PhoneNumberDesc');
 
 
 getCountryCode = function(phoneNumber, regionCode)
@@ -60,6 +62,27 @@ isPossibleNumber = function(phoneNumber, regionCode)
     var number = phoneUtil.parseAndKeepRawInput(phoneNumber, regionCode);
     
     return phoneUtil.isPossibleNumber(number);
+};
+
+
+isEmergencyNumber = function(phoneNumber, regionCode)
+{
+    var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
+    var metadata  = phoneUtil.getMetadataForRegion(regionCode);
+    var phonenumberDesc = metadata.getEmergencyOrDefault();
+    var regex = new RegExp(phonenumberDesc.getNationalNumberPattern());
+
+    var matchedGroups = (typeof regex == 'string') ? phoneNumber.match('^(?:' + regex + ')$')
+                                                   : phoneNumber.match(regex);
+
+    if (matchedGroups && matchedGroups[0].length == phoneNumber.length)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 };
 
 
@@ -186,6 +209,8 @@ getAsYouTypeFormat = function(phoneNumber, regionCode)
 goog.exportSymbol('getCountryCode',               dummy.dummy);
 goog.exportSymbol('isValidNumber',                dummy.dummy);
 goog.exportSymbol('isValidNumberForRegion',       dummy.dummy);
+goog.exportSymbol('isPossibleNumber',             dummy.dummy);
+good.exportSymbol('isEmergencyNumber',            dummy.dummy);
 goog.exportSymbol('getRegionCodeForNumber',       dummy.dummy);
 goog.exportSymbol('getNumberType',                dummy.dummy);
 goog.exportSymbol('getOriginalFormat',            dummy.dummy);
@@ -194,9 +219,3 @@ goog.exportSymbol('getInternationalFormat',       dummy.dummy);
 goog.exportSymbol('getNationalFormat',            dummy.dummy);
 goog.exportSymbol('getOutOfCountryCallingFormat', dummy.dummy);
 goog.exportSymbol('getAsYouTypeFormat',           dummy.dummy);
-
-
-
-
-
-
