@@ -140,8 +140,7 @@ static DtmfPlayer*  sharedPlayer;
 
                        data = [audioDataObjects objectForKey:[NSString stringWithFormat:@"%c", character]];
                        audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:&error];
-                       audioPlayer.volume= 0.02f;
-
+                       audioPlayer.volume = 0.02f;
                        [audioPlayer play];
                    });
 }

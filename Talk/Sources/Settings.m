@@ -132,14 +132,17 @@ static NSUserDefaults*  userDefaults;
 
 - (void)getInitialValues
 {
-    _tabBarViewControllerClasses = [userDefaults objectForKey:TabBarViewControllerClassesKey];
-    _homeCountry                 = [userDefaults objectForKey:HomeCountryKey];
-    _homeCountryFromSim          = [userDefaults boolForKey:HomeCountryFromSimKey];
-    _lastDialedNumber            = [userDefaults objectForKey:LastDialedNumberKey];
-    _sipServer                   = [userDefaults objectForKey:SipServerKey];
-    _sipRealm                    = [self getKeychainValueForKey:SipRealmKey];
-    _sipUsername                 = [self getKeychainValueForKey:SipUsernameKey];
-    _sipPassword                 = [self getKeychainValueForKey:SipPasswordKey];
+    // We assign to property (with self.xyz, instread of to _xyz) so that a value that
+    // was added as default (in registerDefaults) is saved as normal setting.
+    
+    self.tabBarViewControllerClasses = [userDefaults objectForKey:TabBarViewControllerClassesKey];
+    self.homeCountry                 = [userDefaults objectForKey:HomeCountryKey];
+    self.homeCountryFromSim          = [userDefaults boolForKey:HomeCountryFromSimKey];
+    self.lastDialedNumber            = [userDefaults objectForKey:LastDialedNumberKey];
+    self.sipServer                   = [userDefaults objectForKey:SipServerKey];
+    self.sipRealm                    = [self getKeychainValueForKey:SipRealmKey];
+    self.sipUsername                 = [self getKeychainValueForKey:SipUsernameKey];
+    self.sipPassword                 = [self getKeychainValueForKey:SipPasswordKey];
 }
 
 

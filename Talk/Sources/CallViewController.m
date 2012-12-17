@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
 //
 
+#import <AVFoundation/AVFoundation.h>   //### For SoloAmbient
 #import "CallViewController.h"
 #import "Common.h"
 #import "CallManager.h"
@@ -457,6 +458,7 @@
     
     //### Quick hack.
     [[CallManager sharedManager] endCall:nil];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
 }
 
 

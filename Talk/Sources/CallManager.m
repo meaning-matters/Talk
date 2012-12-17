@@ -112,7 +112,7 @@ static SipInterface*    sipInterface;
             number = [call.phoneNumber originalFormat];
         }
 
-        [sipInterface callNumber:number identityNumber:call.identityNumber userData:(__bridge void *)call];
+        [sipInterface callNumber:number identityNumber:call.identityNumber userData:(__bridge void*)call];
     }
     else
     {
@@ -166,9 +166,9 @@ static SipInterface*    sipInterface;
                  modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 
                  tabBarController = [Common appDelegate].tabBarController;
-                 [tabBarController.selectedViewController presentViewController:modalViewController
-                                                                       animated:YES
-                                                                     completion:nil];
+                 [tabBarController presentViewController:modalViewController
+                                                animated:YES
+                                              completion:nil];
              }
          }
                              cancelButtonTitle:[CommonStrings cancelString]
