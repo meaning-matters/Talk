@@ -123,12 +123,25 @@ static LibPhoneNumber*  sharedInstance;
 }
 
 
+- (BOOL)isEmergencyNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode
+{
+    NSString*   function = [[NSString alloc] initWithFormat: @"isEmergencyNumber('%@','%@')", number, isoCountryCode];
+    BOOL        result = [[webView stringByEvaluatingJavaScriptFromString:function] boolValue];
+
+    return result;
+}
+
+
 - (PhoneNumberType)typeOfNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode
 {
     NSString*   function = [[NSString alloc] initWithFormat: @"getNumberType('%@','%@')", number, isoCountryCode];
     NSString*   result = [webView stringByEvaluatingJavaScriptFromString:function];
 
-    if ([result isEqualToString:@"fixed-line"])
+    if ([self isEmergencyNumber:number isoCountryCode:isoCountryCode])
+    {
+        return PhoneNumberTypeEmergency;
+    }
+    else if ([result isEqualToString:@"fixed-line"])
     {
         return PhoneNumberTypeFixedLine;
     }

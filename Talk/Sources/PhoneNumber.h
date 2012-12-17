@@ -53,6 +53,10 @@ typedef enum
 
 - (BOOL)isPossible;
 
+- (BOOL)isInternational;
+
+- (BOOL)isEmergency;
+
 - (PhoneNumberType)type;
 
 - (NSString*)typeString;
@@ -68,7 +72,5 @@ typedef enum
 - (NSString*)outOfCountryFormatFromIsoCountryCode:(NSString*)isoCountryCode;
 
 - (NSString*)asYouTypeFormat;
-
-- (BOOL)isInternational;
 
 @end
