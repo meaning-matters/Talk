@@ -20,6 +20,7 @@
 @synthesize endDate          = _endDate;
 @synthesize state            = _state;
 @synthesize direction        = _direction;
+@synthesize network          = _network;
 
 
 - (id)initWithPhoneNumber:(PhoneNumber*)phoneNumber direction:(CallDirection)direction
@@ -30,6 +31,7 @@
         _beginDate   = [NSDate date];
         _state       = CallStateBeginning;
         _direction   = direction;
+        _network     = CallNetworkInternet; // Default.
     }
 
     return self;

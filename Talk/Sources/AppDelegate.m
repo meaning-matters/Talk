@@ -70,9 +70,6 @@
     [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
     [LibPhoneNumber sharedInstance];    // This loads the JavaScript library.
 
-    // Connect Dialer and CallManager via AppDelegate.
-    self.dialerViewController.delegate = self;
-
     return YES;
 }
 
@@ -213,29 +210,6 @@
         [Settings sharedSettings].tabBarViewControllerClasses = viewControllerClasses;
         defaultTabBarViewControllers = [NSMutableArray arrayWithArray:viewControllers];
     }
-}
-
-
-#pragma mark - Dialer Delegate
-
-- (BOOL)dialerViewController:(DialerViewController*)dialerViewController
-             callPhoneNumber:(PhoneNumber*)phoneNumber
-{
-    CallViewController* callViewController = [[CallViewController alloc] init];
-    Call*               call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOut];
-
-    //### Select identity number.
-    call.identityNumber = @"+32499298238";
-    
-    [callViewController addCall:call];
-    [[CallManager sharedManager] makeCall:call];
-    
-    callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self.tabBarController presentViewController:callViewController
-                                        animated:YES
-                                      completion:nil];
-
-    return YES;
 }
 
 @end

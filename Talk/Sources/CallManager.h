@@ -13,9 +13,11 @@
 
 @interface CallManager : NSObject
 
+@property (nonatomic, strong) NSMutableArray*   activeCalls;
+
 + (CallManager*)sharedManager;
 
-- (void)makeCall:(Call*)call;
+- (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity;
 
 - (void)endCall:(Call*)call;
 
