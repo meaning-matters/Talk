@@ -181,7 +181,7 @@ static SipInterface*    sipInterface;
             call.network = CallNetworkMobile;
         }
     }
-    else if ([self checkPhoneNumber:call.phoneNumber] == YES)
+    else if ([self checkPhoneNumber:phoneNumber] == YES)
     {
         NSString*   number;
         if ([phoneNumber isInternational])
@@ -204,7 +204,7 @@ static SipInterface*    sipInterface;
                                                           animated:YES
                                                         completion:nil];
 
-        [sipInterface callNumber:number identityNumber:call.identityNumber userData:(__bridge void*)call];
+        [sipInterface callNumber:number identityNumber:identity userData:(__bridge void*)call];
     }
 
     return call;

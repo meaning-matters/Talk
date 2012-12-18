@@ -22,7 +22,7 @@
 + (NSString*)closeString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Close", nil,
-                                             [NSBundle mainBundle], @"Cancel",
+                                             [NSBundle mainBundle], @"Close",
                                              @"Standard string seen on [alert] buttons to close something\n"
                                              @"[iOS standard size].");
 }

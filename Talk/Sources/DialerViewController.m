@@ -55,6 +55,15 @@
                  [self update];
              }
          }];
+
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification
+                                                          object:nil
+                                                           queue:[NSOperationQueue mainQueue]
+                                                      usingBlock:^(NSNotification* note)
+        {
+            // This will clear the field when coming back from mobile call.
+            [self update];
+        }];
     }
     
     return self;
