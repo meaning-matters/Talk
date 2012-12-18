@@ -33,6 +33,13 @@ typedef enum
 } CallDirection;
 
 
+typedef enum
+{
+    CallNetworkInternet,
+    CallNetworkMobile,
+} CallNetwork;
+
+
 @class Call;
 
 @protocol CallExternalDelegate <NSObject>
@@ -59,6 +66,7 @@ typedef enum
 @property (nonatomic, readonly) NSDate*                 endDate;
 @property (nonatomic, readonly) CallState               state;
 @property (nonatomic, assign) CallDirection             direction;
+@property (nonatomic, assign) CallNetwork               network;
 
 
 - (id)initWithPhoneNumber:(PhoneNumber*)phoneNumber direction:(CallDirection)direction;

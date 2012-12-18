@@ -11,9 +11,19 @@
 #import "CommonStrings.h"
 #import "BlockAlertView.h"
 #import "Settings.h"
+#import "NetworkStatus.h"
 #import "PhoneNumber.h"
 #import "CountriesViewController.h"
+#import "CallViewController.h"
 #import "SipInterface.h"
+
+
+@interface CallManager ()
+{
+    CallViewController* callViewController;
+}
+
+@end
 
 
 @implementation CallManager
@@ -96,35 +106,7 @@ static SipInterface*    sipInterface;
 }
 
 
-#pragma mark - Public API
-
-- (void)makeCall:(Call*)call
-{
-    if ([self checkPhoneNumber:call.phoneNumber] == YES)
-    {
-        NSString*   number;
-        if ([call.phoneNumber isInternational])
-        {
-            number = [call.phoneNumber e164Format];
-        }
-        else
-        {
-            number = [call.phoneNumber originalFormat];
-        }
-
-        [sipInterface callNumber:number identityNumber:call.identityNumber userData:(__bridge void*)call];
-    }
-    else
-    {
-    }
-}
-
-
-- (void)endCall:(Call*)call
-{
-    [sipInterface hangupAllCalls];
-}
-
+#pragma mark Utility Methods
 
 - (BOOL)checkPhoneNumber:(PhoneNumber*)phoneNumber
 {
@@ -180,8 +162,112 @@ static SipInterface*    sipInterface;
     {
         result = YES;
     }
-
+    
     return result;
+}
+
+
+#pragma mark - Public API
+
+- (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity
+{
+    Call*   call = nil;
+
+    if (phoneNumber.isEmergency)
+    {
+        if ([self callMobileNumber:phoneNumber.number] == YES)
+        {
+            call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOut];
+            call.network = CallNetworkMobile;
+        }
+    }
+    else if ([self checkPhoneNumber:call.phoneNumber] == YES)
+    {
+        NSString*   number;
+        if ([phoneNumber isInternational])
+        {
+            number = [phoneNumber e164Format];
+        }
+        else
+        {
+            number = [phoneNumber originalFormat];
+        }
+
+        call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOut];
+        call.identityNumber = identity;
+
+        callViewController = [[CallViewController alloc] init];
+        [callViewController addCall:call];
+
+        callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [Common.appDelegate.tabBarController presentViewController:callViewController
+                                                          animated:YES
+                                                        completion:nil];
+
+        [sipInterface callNumber:number identityNumber:call.identityNumber userData:(__bridge void*)call];
+    }
+
+    return call;
+}
+
+
+- (void)endCall:(Call*)call
+{
+    [sipInterface hangupAllCalls];
+}
+
+
+- (BOOL)callMobileNumber:(NSString*)number
+{
+    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tel:+11111"]])
+    {
+        if ([[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", number]]] == NO)
+        {
+            NSString*   title = NSLocalizedStringWithDefaultValue(@"Call:Mobile CallFailedTitle", nil,
+                                                                  [NSBundle mainBundle], @"Mobile Call Failed",
+                                                                  @"Alert title informing about mobile call that failed\n"
+                                                                  @"[iOS alert title size - abbreviated: 'Call Failed'].");
+
+            NSString*   message = NSLocalizedStringWithDefaultValue(@"Call:Mobile CallFailedMessage", nil,
+                                                                    [NSBundle mainBundle],
+                                                                    @"An attempt was made to make a mobile call, but it failed.",
+                                                                    @"Alert message informing about mobile call that failed\n"
+                                                                    @"[iOS alert message size]");
+
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:nil
+                                 cancelButtonTitle:[CommonStrings closeString]
+                                 otherButtonTitles:nil];
+
+            return NO;
+        }
+        else
+        {
+            return YES;
+        }
+    }
+    else
+    {
+        NSString*   title = NSLocalizedStringWithDefaultValue(@"Call:Mobile CallImpossibleTitle", nil,
+                                                              [NSBundle mainBundle], @"No Mobile Calls",
+                                                              @"Alert title informing that mobile calls are not supported\n"
+                                                              @"[iOS alert title size].");
+
+        NSString*   message = NSLocalizedStringWithDefaultValue(@"Call:Mobile CallImpossibleMessage", nil,
+                                                                [NSBundle mainBundle],
+                                                                @"Your device does not allow making mobile calls.",
+                                                                @"Alert message informing that mobile calls are not supported\n"
+                                                                @"[iOS alert message size]");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[CommonStrings closeString]
+                             otherButtonTitles:nil];
+
+        return NO;
+    }
 }
 
 @end

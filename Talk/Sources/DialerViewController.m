@@ -12,6 +12,7 @@
 #import "Settings.h"
 #import "CountryNames.h"
 #import "DtmfPlayer.h"
+#import "CallManager.h"
 
 
 @interface DialerViewController ()
@@ -24,7 +25,6 @@
 
 @implementation DialerViewController
 
-@synthesize delegate    = _delegate;
 @synthesize keypadView  = _keypadView;
 @synthesize infoLabel   = _infoLabel;
 @synthesize numberLabel = _numberLabel;
@@ -236,20 +236,18 @@
     }
     else
     {
-        if (phoneNumber.isEmergency)
+        //### Select identity.
+        Call*   call = [[CallManager sharedManager] callPhoneNumber:phoneNumber fromIdentity:@"+32499298238"];
+
+        if (call != nil)
         {
-            //### Move this to CallManager.
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", phoneNumber.number]]];
-        }
-        else if ([self.delegate dialerViewController:self callPhoneNumber:phoneNumber] == YES)
-        {
-            // Delegate will show call screen.
+            // CallView will be shown.
             [Settings sharedSettings].lastDialedNumber = phoneNumber.number;
             phoneNumber = [[PhoneNumber alloc] init];
 
             // We don't clear numberLabel.text as this would be disruptive
-            // during the animation to call screen.  Cleared in viewDidAppear.
-        }
+            // during the animation to call screen.  Cleared in viewWillAppear.
+        }        
     }
 }
 
