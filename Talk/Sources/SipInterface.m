@@ -1976,9 +1976,10 @@ static pjsip_redirect_op call_on_redirected(
 /*
  * Handler registration status has changed.
  */
-static void on_reg_state(pjsua_acc_id acc_id)
+static void on_reg_state(pjsua_acc_id acc_id,  pjsua_reg_info *info)
 {
     PJ_UNUSED_ARG(acc_id);
+    PJ_UNUSED_ARG(info);
     
     // Log already written.
 }
@@ -3888,7 +3889,7 @@ pj_status_t app_init(
     app_config.cfg.cb.on_call_tsx_state       = &on_call_tsx_state;
     app_config.cfg.cb.on_dtmf_digit           = &call_on_dtmf_callback;
     app_config.cfg.cb.on_call_redirected      = &call_on_redirected;
-    app_config.cfg.cb.on_reg_state            = &on_reg_state;
+    app_config.cfg.cb.on_reg_state2           = &on_reg_state;
     app_config.cfg.cb.on_incoming_subscribe   = &on_incoming_subscribe;
     app_config.cfg.cb.on_buddy_state          = &on_buddy_state;
     app_config.cfg.cb.on_buddy_evsub_state    = &on_buddy_evsub_state;

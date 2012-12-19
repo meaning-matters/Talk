@@ -11,7 +11,6 @@
 
 @implementation KeypadButton
 
-
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame])
@@ -150,15 +149,22 @@
     CGGradientRef   gradient = nil;
     if (1 <= self.tag && self.tag <= 12)
     {
-        gradient = (self.state == UIControlStateHighlighted) ? highlightGradient : digitGradient;
+        gradient = (self.highlighted) ? highlightGradient : digitGradient;
     }
     else if (self.tag == 13 || self.tag == 15)
     {
-        gradient = (self.state == UIControlStateHighlighted) ? optionEraseHightlightGradient : optionEraseGradient;
+        gradient = (self.highlighted) ? optionEraseHightlightGradient : optionEraseGradient;
     }
     else if (self.tag == 14)
     {
-        gradient = (self.state == UIControlStateHighlighted) ? callHightlightGradient : callGradient;
+        if (self.selected)
+        {
+            gradient = (self.highlighted) ? callHightlightGradient : callGradient;
+        }
+        else
+        {
+            gradient = (self.highlighted) ? optionEraseHightlightGradient : optionEraseGradient;
+        }
     }
 
     //// Frames
@@ -190,19 +196,19 @@
     {
         //// Title Drawing
         CGRect titleRect = CGRectMake(CGRectGetMinX(innerFrame) + 1, CGRectGetMinY(innerFrame) + 2, 41, 46);
-        (self.state == UIControlStateHighlighted) ? [[UIColor whiteColor] setFill] : [[UIColor blackColor] setFill];
+        (self.highlighted) ? [[UIColor whiteColor] setFill] : [[UIColor blackColor] setFill];
         [titleContent drawInRect: titleRect withFont: [Common phoneFontOfSize: 34] lineBreakMode: 0 alignment: NSTextAlignmentCenter];
 
         //// Subtitle Drawing
         CGRect subtitleRect = CGRectMake(CGRectGetMinX(innerFrame) - 5, CGRectGetMinY(innerFrame) + 33, 53, 15);
-        (self.state == UIControlStateHighlighted) ? [[UIColor whiteColor] setFill] : [[UIColor darkGrayColor] setFill];
+        (self.highlighted) ? [[UIColor whiteColor] setFill] : [[UIColor darkGrayColor] setFill];
         [subtitleContent drawInRect: subtitleRect withFont: [Common phoneFontOfSize: [UIFont systemFontSize]] lineBreakMode: 0 alignment: NSTextAlignmentCenter];
     }
     else if (self.tag == 13)
     {
         //// Option Drawing
         CGRect optionRect = CGRectMake(CGRectGetMinX(innerFrame) + 0.5, CGRectGetMinY(innerFrame) - 2.5, 28, 51);
-        (self.state == UIControlStateHighlighted) ? [[UIColor whiteColor] setFill] : [[UIColor blackColor] setFill];
+        (self.highlighted) ? [[UIColor whiteColor] setFill] : [[UIColor blackColor] setFill];
         [optionContent drawInRect: optionRect withFont: [UIFont fontWithName: @"Helvetica" size: 44] lineBreakMode: 0 alignment: NSTextAlignmentCenter];
     }
     else if (self.tag == 14)
@@ -268,7 +274,7 @@
         [erasePath addLineToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 27, CGRectGetMinY(innerFrame) + 13)];
         [erasePath addCurveToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 31, CGRectGetMinY(innerFrame) + 17) controlPoint1: CGPointMake(CGRectGetMinX(innerFrame) + 29.21, CGRectGetMinY(innerFrame) + 13) controlPoint2: CGPointMake(CGRectGetMinX(innerFrame) + 31, CGRectGetMinY(innerFrame) + 14.79)];
         [erasePath closePath];
-        (self.state == UIControlStateHighlighted) ? [[UIColor whiteColor] setFill] : [[UIColor blackColor] setFill];
+        (self.highlighted) ? [[UIColor whiteColor] setFill] : [[UIColor blackColor] setFill];
         [erasePath fill];
     }
 

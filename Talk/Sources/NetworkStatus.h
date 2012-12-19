@@ -34,7 +34,7 @@ typedef enum
     NetworkStatusReachableDisconnected,
     NetworkStatusReachableCellular,
     NetworkStatusReachableWifi,
-    NetworkStatusReachableCaptivePortal,    // Extra compared to ReachableStatus.
+    NetworkStatusReachableCaptivePortal,    // Means blocked behind captive portal (i.e. not logged in yet).                                            
 } NetworkStatusReachable;
 
 
@@ -68,6 +68,8 @@ typedef enum
 //  plus the boxed (in NSNumber) NetworkStatusMobileCall "state".  Nil is
 //  returned when there are no calls.
 @property (nonatomic, readonly) NSArray*                activeMobileCalls;
+
+@property (nonatomic, readonly) BOOL                    allowsMobileCalls;
 
 //  Give the most recent internet connection status.
 @property (nonatomic, readonly) NetworkStatusReachable  reachableStatus;

@@ -11,11 +11,14 @@
 #import "Settings.h"
 #import "NetworkStatus.h"
 #import "CountryNames.h"
+#import "CommonStrings.h"
+#import "BlockAlertView.h"
 
 
 typedef enum
 {
     TableSectionHomeCountry,
+    TableSectionCallOptions,
     TableSectionNumber          // Number of table sections.
 } TableSections;
 
@@ -100,7 +103,7 @@ typedef enum
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString*   title;
+    NSString*   title = nil;
 
     switch (section)
     {
@@ -110,8 +113,13 @@ typedef enum
                                                       @"Country where user lives (used to interpret dialed phone numbers).");
             break;
 
-        default:
-            title = nil;
+        case TableSectionCallOptions:
+            if ([NetworkStatus sharedStatus].simAvailable)
+            {
+                title = NSLocalizedStringWithDefaultValue(@"Settings:CallOptions SectionHeader", nil,
+                                                          [NSBundle mainBundle], @"Call Options",
+                                                          @"Various options related to making calls.");
+            }
             break;
     }
 
@@ -119,19 +127,31 @@ typedef enum
 }
 
 
-- (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+- (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
-    return NSLocalizedStringWithDefaultValue(@"Settings:HomeCountryInfo SectionFooter", nil,
-                                             [NSBundle mainBundle],
-                                             @"The home country determines how phone numbers without country code are interpreted.",
-                                             @"Explanation what the Home Country setting is doing\n"
-                                             @"[* lines]");
+    NSString*   title = nil;
+
+    switch (section)
+    {
+        case TableSectionHomeCountry:
+            title = NSLocalizedStringWithDefaultValue(@"Settings:HomeCountryInfo SectionFooter", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"Determines how phone numbers without country code are interpreted.",
+                                                      @"Explanation what the Home Country setting is doing\n"
+                                                      @"[* lines]");
+            break;
+
+        case TableSectionCallOptions:
+            title = nil;
+    }
+
+    return title;
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger   numberOfRows;
+    NSInteger   numberOfRows = 0;
 
     switch (section)
     {
@@ -139,8 +159,11 @@ typedef enum
             numberOfRows = ([NetworkStatus sharedStatus].simIsoCountryCode != nil) ? 2 : 1;
             break;
 
-        default:
-            numberOfRows = 0;
+        case TableSectionCallOptions:
+            if ([NetworkStatus sharedStatus].simAvailable)
+            {
+                numberOfRows = 1;
+            }
             break;
     }
 
@@ -178,6 +201,10 @@ typedef enum
             cell = [self homeCountryCellForRowAtIndexPath:indexPath];
             break;
 
+        case TableSectionCallOptions:
+            cell = [self callOptionsCellForRowAtIndexPath:indexPath];
+            break;
+            
         default:
             break;
     }
@@ -257,6 +284,36 @@ typedef enum
 }
 
 
+- (UITableViewCell*)callOptionsCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell*    cell;
+    UISwitch*           switchView;
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
+        switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+        cell.accessoryView = switchView;
+    }
+    else
+    {
+        switchView = (UISwitch*)cell.accessoryView;
+    }
+
+    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:AllowDataCalls CellText", nil,
+                                                            [NSBundle mainBundle], @"Cellular Data Calls",
+                                                            @"Title of switch if calls over cellular data (3G/EDGE/...) are allowed\n"
+                                                            @"[2/3 line - abbreviated: 'Data Calls'].");
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    switchView.on = [Settings sharedSettings].allowCellularDataCalls;
+    [switchView addTarget:self action:@selector(allowDataCallsSwitchAction:)
+         forControlEvents:UIControlEventValueChanged];
+
+    return cell;
+}
+
+
 #pragma mark - UI Actions
 
 - (void)readFromSimSwitchAction:(id)sender
@@ -268,6 +325,48 @@ typedef enum
     }
     
     [self.tableView reloadData];
+}
+
+
+- (void)allowDataCallsSwitchAction:(id)sender
+{
+    UISwitch*   allowDataCallsSwitch = sender;
+
+    if (allowDataCallsSwitch.on == YES && [Settings sharedSettings].allowCellularDataCalls == NO)
+    {
+        NSString*   title = NSLocalizedStringWithDefaultValue(@"Settings:AllowDataCalls AllowWarningTitle", nil,
+                                                              [NSBundle mainBundle], @"Cellular Data Calls",
+                                                              @"Alert title informing about allowing cellular data calls\n"
+                                                              @"[iOS alert title size].");
+
+        NSString*   message = NSLocalizedStringWithDefaultValue(@"Settings:AllowDataCalls AllowWaningMessage", nil,
+                                                                [NSBundle mainBundle],
+                                                                @"Depending on your mobile plan, cellular data calls "
+                                                                @"may add a cost from your operator.",
+                                                                @"Alert message informing about allowing cellular "
+                                                                @"data calls\n"
+                                                                @"[iOS alert message size]");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+         {
+             if (buttonIndex == 1)
+             {
+                 [Settings sharedSettings].allowCellularDataCalls = YES;
+             }
+             else
+             {
+                 [allowDataCallsSwitch setOn:NO animated:YES];
+             }
+         }
+                             cancelButtonTitle:[CommonStrings cancelString]
+                             otherButtonTitles:[CommonStrings okString], nil];
+    }
+    else
+    {
+        [Settings sharedSettings].allowCellularDataCalls = NO;
+    }
 }
 
 @end

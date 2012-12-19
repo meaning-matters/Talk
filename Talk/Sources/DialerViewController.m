@@ -10,6 +10,7 @@
 #import "Common.h"
 #import "PhoneNumber.h"
 #import "Settings.h"
+#import "NetworkStatus.h"
 #import "CountryNames.h"
 #import "DtmfPlayer.h"
 #import "CallManager.h"
@@ -64,6 +65,14 @@
             // This will clear the field when coming back from mobile call.
             [self update];
         }];
+
+        [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusReachableNotification
+                                                          object:nil
+                                                           queue:[NSOperationQueue mainQueue]
+                                                      usingBlock:^(NSNotification* note)
+         {
+             [self updateReachable];
+         }];
     }
     
     return self;
@@ -183,12 +192,40 @@
 
 #pragma mark - Utility Methods
 
+- (void)updateReachable
+{
+    switch ([NetworkStatus sharedStatus].reachableStatus)
+    {
+        case NetworkStatusReachableDisconnected:
+            self.keypadView.keyCallButton.selected = NO;
+            break;
+
+        case NetworkStatusReachableCellular:
+            self.keypadView.keyCallButton.selected = [Settings sharedSettings].allowCellularDataCalls;
+            break;
+
+        case NetworkStatusReachableWifi:
+            self.keypadView.keyCallButton.selected = YES;
+            break;
+
+        case NetworkStatusReachableCaptivePortal:
+            self.keypadView.keyCallButton.selected = NO;
+            break;
+    }
+}
+
+
 - (void)update
 {
+    [self updateReachable];
+
     self.numberLabel.text = phoneNumber.asYouTypeFormat;
+    
     if (phoneNumber.isEmergency)
     {
         self.infoLabel.text = [NSString stringWithFormat:@"%@", [phoneNumber typeString]];
+
+        self.keypadView.keyCallButton.selected = [NetworkStatus sharedStatus].allowsMobileCalls;
     }
     else if (phoneNumber.isValid)
     {
@@ -245,12 +282,12 @@
     }
     else
     {
-        //### Select identity.
-        Call*   call = [[CallManager sharedManager] callPhoneNumber:phoneNumber fromIdentity:@"+32499298238"];
+        NSString*   identity = @"+32499298238"; //### Select identity.
+        Call*       call = [[CallManager sharedManager] callPhoneNumber:phoneNumber fromIdentity:identity];
 
         if (call != nil)
         {
-            // CallView will be shown.
+            // CallView will be shown, or mobile call is made.
             [Settings sharedSettings].lastDialedNumber = phoneNumber.number;
             phoneNumber = [[PhoneNumber alloc] init];
 
