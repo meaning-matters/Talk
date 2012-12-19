@@ -14,6 +14,7 @@
 #import "NetworkStatus.h"
 #import "KeychainUtility.h"
 
+NSString* const RunBeforeKey                   = @"RunBefore";
 NSString* const TabBarViewControllerClassesKey = @"TabBarViewControllerClasses";
 NSString* const HomeCountryKey                 = @"HomeCountryKey";
 NSString* const HomeCountryFromSimKey          = @"HomeCountryFromSim";
@@ -23,7 +24,7 @@ NSString* const SipRealmKey                    = @"SipRealm";               // U
 NSString* const SipUsernameKey                 = @"SipUsername";            // Used as keychain 'username'.
 NSString* const SipPasswordKey                 = @"SipPassword";            // Used as keychain 'username'.
 NSString* const SipServiveKey                  = @"SipAccount";             // Used as keychain service.
-NSString* const RunBeforeKey                   = @"RunBefore";
+NSString* const AllowCellularDataCallsKey      = @"AllowCellularDataCalls";
 
 
 @implementation Settings
@@ -39,6 +40,7 @@ static NSUserDefaults*  userDefaults;
 @synthesize sipRealm                    = _sipRealm;
 @synthesize sipUsername                 = _sipUsername;
 @synthesize sipPassword                 = _sipPassword;
+@synthesize allowCellularDataCalls      = _allowCellularDataCalls;
 
 
 #pragma mark - Singleton Stuff
@@ -98,7 +100,8 @@ static NSUserDefaults*  userDefaults;
         [defaults setObject:[NSNumber numberWithBool:NO] forKey:HomeCountryFromSimKey];
     }
 
-    [defaults setObject:@"" forKey:LastDialedNumberKey];
+    [defaults setObject:@""                          forKey:LastDialedNumberKey];
+    [defaults setObject:[NSNumber numberWithBool:NO] forKey:AllowCellularDataCallsKey];
 
     [userDefaults registerDefaults:defaults];
 }
@@ -143,6 +146,7 @@ static NSUserDefaults*  userDefaults;
     self.sipRealm                    = [self getKeychainValueForKey:SipRealmKey];
     self.sipUsername                 = [self getKeychainValueForKey:SipUsernameKey];
     self.sipPassword                 = [self getKeychainValueForKey:SipPasswordKey];
+    self.allowCellularDataCalls      = [userDefaults boolForKey:AllowCellularDataCallsKey];
 }
 
 
@@ -201,6 +205,13 @@ static NSUserDefaults*  userDefaults;
 {
     _sipPassword = sipPassword;
     [self storeKeychainValue:sipPassword forKey:SipPasswordKey];
+}
+
+
+- (void)setAllowCellularDataCalls:(BOOL)allowCellularDataCalls
+{
+    _allowCellularDataCalls = allowCellularDataCalls;
+    [userDefaults setBool:allowCellularDataCalls forKey:AllowCellularDataCallsKey];
 }
 
 @end

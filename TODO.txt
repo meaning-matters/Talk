@@ -7,3 +7,8 @@
 * MobileCountryCodes.json has duplicate keys (e.g. 340), so can't be stored in NSDictionary!  App needs to display choice for ISO country, when MCC has more than one.
 
 # NOTE: The SIP info (username, password, ...) saved in keychain, can only be read back when app is build with same Apple provisioning profile!!!
+
+* NetworkStatus only recognises WISPr captive portals when checked host does not return
+  the expected data.  Also support other types, or make more general and assume captive
+  portal when host does not return expected data (latter is tricky because bad connection
+  may also have unexpected data).

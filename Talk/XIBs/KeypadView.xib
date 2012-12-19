@@ -416,6 +416,7 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<int key="IBUITag">14</int>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<bool key="IBUISelected">YES</bool>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<string key="IBUINormalTitle">call</string>

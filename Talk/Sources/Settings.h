@@ -24,4 +24,6 @@
 @property (nonatomic, strong) NSString* sipUsername;
 @property (nonatomic, strong) NSString* sipPassword;
 
+@property (nonatomic, assign) BOOL      allowCellularDataCalls;
+
 @end

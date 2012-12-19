@@ -38,14 +38,6 @@ static CTTelephonyNetworkInfo*  networkInfo;
 static CTCallCenter*            callCenter;
 static NSTimer*                 loadUrlTestTimer;
 
-@synthesize simAvailable;
-@synthesize simAllowsVoIP;
-@synthesize simCarrierName;
-@synthesize simIsoCountryCode;
-@synthesize simMobileCountryCode;
-@synthesize simMobileNetworkCode;
-@synthesize activeMobileCalls;
-
 
 #pragma mark - Singleton Stuff
 
@@ -344,6 +336,12 @@ static NSTimer*                 loadUrlTestTimer;
     }
 
     return calls;
+}
+
+
+- (BOOL)allowsMobileCalls
+{
+    return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tel:+11111"]];
 }
 
 
