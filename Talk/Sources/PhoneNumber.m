@@ -236,7 +236,7 @@ static NSString*        defaultBaseIsoCountryCode;
         case PhoneNumberTypeUan: // Universal Access Number
             string = NSLocalizedStringWithDefaultValue(@"General:NumberType UniversalAccessNumber", nil,
                                                        [NSBundle mainBundle], @"universal access",
-                                                       @"Indicates that this is an universal access phone number\n"
+                                                       @"Indicates that this is a universal access phone number\n"
                                                        @"[0.5 line small font - abbreviated: 'access'].");
             break;
 

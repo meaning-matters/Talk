@@ -216,7 +216,7 @@ static SipInterface*    sipInterface;
         NSString*   message = NSLocalizedStringWithDefaultValue(@"Call:Voip CaptivePortalMessage", nil,
                                                                 [NSBundle mainBundle],
                                                                 @"You can't make this call because Wi-Fi is connected "
-                                                                @"to an captive portal (%@), which requires you to log in.",
+                                                                @"to a captive portal (%@), which requires you to log in.",
                                                                 @"Alert message informing about not being able to make a "
                                                                 @"call because behind a Wi-Fi captive portal\n"
                                                                 @"[iOS alert message size]");

@@ -2450,7 +2450,7 @@ static void ui_input_url(const char *title, char *buf, int len,
 	   "   0         For current dialog.\n"
 	   "  -1         All %d buddies in buddy list\n"
 	   "  [1 -%2d]    Select from buddy list\n"
-	   "  URL        An URL\n"
+	   "  URL        A URL\n"
 	   "  <Enter>    Empty input (or 'q') to cancel\n"
 	   , pjsua_get_buddy_count(), pjsua_get_buddy_count());
     printf("%s: ", title);
