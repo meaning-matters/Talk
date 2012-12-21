@@ -1,0 +1,1181 @@
+
+ 4.1. Albania
+ Code: al
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.2. Algeria
+ Code: dz
+ Frequency: 25 Hz
+ - 1.5 seconds on
+ - 3.5 seconds off
+
+ 4.3. Angola
+ Code: ao
+ Frequency: 25 Hz
+ - 1 second on
+ - 5 seconds off
+
+ 4.4. Anguilla
+ Code: ai
+ Frequency: 440 Hz + 480 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.4. Saint Martin (copy AI)
+ Code: mf
+ Frequency: 440 Hz + 480 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.5. Antigua And Barbuda
+ Code: ag
+ Frequency: 440 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.6. Argentina
+ Code: ar
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.7. Aruba
+ Code: aw
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.8. Ascension
+ Code: ac
+ Frequency: 440 Hz
+ - 1 second on
+ - 3 seconds off
+
+ 4.9. Australia
+ Code: au
+ Frequency: 400 Hz modulated with 17 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.10. Austria
+ Code: at
+ Frequency: 420 Hz
+ - 1 second on
+ - 5 seconds off
+
+ 4.10. Liechtenstein (from ITU)
+ Code: li
+ Frequency: 420 Hz
+ - 1 second on
+ - 5 seconds off
+
+ 4.11. Bahamas
+ Code: bs
+ Frequency: 400 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.12. Bahrain
+ Code: bh
+ Frequency: 440 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.13. Barbados
+ Code: bb
+ Frequency: 440 Hz + 480 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.14. Belarus
+ Code: by
+ Frequency: 425 Hz
+ - 0.8 seconds on
+ - 3.2 seconds off
+
+ 4.15. Belgium
+ Code: be
+ Frequency: 425 Hz
+ - 1 second on
+ - 3 seconds off
+
+ 4.16. Benin
+ Code: bj
+ Frequency: 440 Hz
+ - 1.5 seconds on
+ - 3.5 seconds off
+
+ 4.17. Bermuda
+ Code: bm
+ Frequency: 440 Hz + 480 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.18. Bhutan
+ Code: bt
+ Frequency: 400 Hz + 25 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2.6 seconds off
+
+ 4.19. Botswana
+ Code: bw
+ Frequency: 400 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.20. Brazil
+ Code: br
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.21. British Indian Ocean Territory
+ Code: io
+ Frequency: 440 Hz
+ - 1 second on
+ - 3 seconds off
+
+ 4.22. British Virgin Islands
+ Code: vg
+ Frequency: 440 Hz + 480 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.23. Brunei Darussalam
+ Code: bn
+ Frequency: 400 Hz + 450 Hz
+ - 0.4 seconds on
+ - 0.3 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.24. Bulgaria
+ Code: bg
+ Frequency: 425 Hz
+ - 1 second on
+ - 9 seconds off
+
+ 4.25. Burkina Faso
+ Code: bf
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.26. Burundi
+ Code: bi
+ Frequency: 425 Hz
+ - 1.7 seconds on
+ - 3.3 seconds off
+
+ 4.27. Cameroon
+ Code: cm
+ Frequency: 440 Hz
+ - 1.7 seconds on
+ - 3.3 seconds off
+
+ 4.28. Canada
+ Code: ca
+ Frequency: 440 Hz + 480 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.29. Cayman Islands
+ Code: ky
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.30. Central African Rep.
+ Code: cf
+ Frequency: 425 Hz
+ - 1.7 seconds on
+ - 3.3 seconds off
+
+ 4.31. Channel Islands: Jersey
+ Code: je
+ Frequency: 400 Hz + 450 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.32. Chile
+ Code: cl
+ Frequency: 400 Hz
+ - 1 second on
+ - 3 seconds off
+
+ 4.33. China
+ Code: cn
+ Frequency: 450 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.34. Comoros
+ Code: km
+ Frequency: 425 Hz
+ - 1.71 seconds on
+ - 3.31 seconds off
+
+ 4.35. Costa Rica
+ Code: cr
+ Frequency: 425 Hz
+ - 1.2 seconds on
+ - 4.6 seconds off
+
+ 4.36. Cote D'Ivoire
+ Code: ci
+ Frequency: 50 Hz
+ - 1.66 seconds on
+ - 3.33 seconds off
+
+ 4.37. Croatia
+ Code: hr
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.38. Cuba
+ Code: cu
+ Frequency: 440 Hz + 480 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.39. Cyprus
+ Code: cy
+ Frequency: 425 Hz
+ - 1.5 seconds on
+ - 3 seconds off
+
+ 4.40. Czech Rep.
+ Code: cz
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.41. Denmark
+ Code: dk
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.42. Djibouti
+ Code: dj
+ Frequency: 425 Hz
+ - 1.5 seconds on
+ - 3.5 seconds off
+
+ 4.43. Dominica
+ Code: dm
+ Frequency: 440 Hz + 480 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.44. Dominican Rep.
+ Code: do
+ Frequency: 400 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2.2 seconds off
+
+ 4.44. Haiti (copy of DO)
+ Code: ht
+ Frequency: 400 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2.2 seconds off
+
+ 4.45. Ecuador
+ Code: ec
+ Frequency: 425 Hz
+ - 1.2 seconds on
+ - 4.65 seconds off
+
+ 4.46. Egypt
+ Code: eg
+ Frequency: 425 Hz modulated with 50 Hz
+ - 2 seconds on
+ - 1 second off
+
+ 4.47. El Salvador
+ Code: sv
+ Frequency: 425 Hz
+ - 1.2 seconds on
+ - 5 seconds off
+
+ 4.48. Estonia
+ Code: ee
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.49. Ethiopia
+ Code: et
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.50. Falkland Islands
+ Code: fk
+ Frequency: 400 Hz + 450 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+
+ 4.51. Faroe Islands
+ Code: fo
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.52. Fiji
+ Code: fj
+ Frequency: 133 Hz modulated with 16 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.53. Finland
+ Code: fi
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.54. France
+ Code: fr
+ Frequency: 440 Hz
+ - 1.5 seconds on
+ - 3.5 seconds off
+
+ 4.55. French Polynesia
+ Code: pf
+ Frequency: 440 Hz
+ - 1.5 seconds on
+ - 3.5 seconds off
+
+ 4.56. Gabon
+ Code: ga
+ Frequency: 440 Hz
+ - 1.5 seconds on
+ - 3 seconds off
+
+ 4.57. Gambia
+ Code: gm
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.58. Germany
+ code: de
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.59. Ghana
+ Code: gh
+ Frequency: 400 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.60. Gibraltar
+ Code: gi
+ Frequency: 400 Hz + 450 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.61. Greece
+ Code: gr
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.62. Greenland
+ Code: gl
+ Frequency: 445 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.63. Grenada
+ Code: gd
+ Frequency: 440 Hz + 480 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.64. Guadeloupe
+ Code: gp
+ Frequency: 440 Hz
+ - 1.5 seconds on
+ - 3.5 seconds off
+
+ 4.65. Guiana
+ Code: gf
+ Frequency: 440 Hz
+ - 1.5 seconds on
+ - 3.5 seconds off
+
+ 4.66. Guinea
+ Code: gn
+ Frequency: 450 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+
+ 4.66. Guinea-Bissau (copy of GN)
+ Code: gw
+ Frequency: 450 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+
+ 4.67. Guyana
+ Code: gy
+ Frequency: 425 Hz
+ - 1.75 seconds on
+ - 3.25 seconds off
+
+ 4.68. Honduras
+ Code: hn
+ Frequency: 440 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.69. Hongkong
+ Code: hk
+ Frequency: 440 Hz + 480 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 3 seconds off
+
+ 4.70. Hungary
+ Code: hu
+ Frequency: 425 Hz
+ - 1.2 seconds on
+ - 3.7 seconds off
+
+ 4.71. Iceland
+ Code: is
+ Frequency: 425 Hz
+ - 1.2 seconds on
+ - 4.7 seconds off
+
+ 4.72. India
+ Code: in
+ Frequency: 400 Hz modulated with 25 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2.6 seconds off
+
+ 4.73. Indonesia
+ Code: id
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.1. Marshall Islands (copy ID)
+ Code: mh
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.1. Norfolk Island (copy ID)
+ Code: nf
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.1. Macedonia (from ITU)
+ Code: mk
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.1. Myanmar (from ITU)
+ Code: mm
+ Frequency: 400 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.74. Iran
+ Code: ir
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.75. Iraq
+ Code: iq
+ Frequency: 400 Hz
+ - CONTINUOUS
+
+ 4.76. Ireland
+ Code: ie
+ Frequency: 400 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.77. Israel
+ Code: il
+ Frequency: 400 Hz
+ - 1 second on
+ - 3 seconds off
+
+ 4.78. Italy
+ Code: it
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.79. Jamaica
+ Code: jm
+ Frequency: 440 Hz modulated with 480 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.80. Japan
+ Code: jp
+ Frequency: 400 Hz modulated with 16 Hz
+ - 1 second on
+ - 2 seconds off
+
+ 4.81. Jordan
+ Code: jo
+ Frequency: 420 Hz modulated with 40 Hz
+ - 1.2 seconds on
+ - 4.8 seconds off
+
+ 4.82. Kenya
+ Code: ke
+ Frequency: 425 Hz
+ - 1 second on
+ - 2 seconds off
+ - 1 second on
+ - 2 seconds off
+ - 1 second on
+ - 5 seconds off
+
+ 4.83. Kiribati
+ Code: ki
+ Frequency: 425 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.84. Korea (Democratic Peoples Republic of)
+ Code: kp
+ Frequency: 440 Hz + 480 Hz
+ - 1 second on
+ - 2 seconds off
+
+ 4.85. Korea (Republic of)
+ Code: kr
+ Frequency: 440 Hz + 480 Hz
+ - 1 second on
+ - 2 seconds off
+
+ 4.86. Kuwait
+ Code: kw
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.87. Kyrgyzstan
+ Code: kg
+ Frequency: 425 Hz
+ - 0.8 seconds on
+ - 3.2 seconds off
+
+ 4.88. Lao
+ Code: la
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.89. Lebanon
+ Code: lb
+ Frequency: 435 Hz
+ - 1.2 seconds on
+ - 4.4 seconds off
+
+ 4.90. Liberia
+ Code: lr
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.91. Lithuania
+ Code: it
+ Frequency: 425 Hz
+ - 0.8 seconds on
+ - 3.2 seconds off
+
+ 4.92. Luxembourg
+ Code: lu
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.93. Macau
+ Code: mo
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.94. Madagascar
+ Code: mg
+ Frequency: 25 Hz
+ - 1.66 seconds on
+ - 3.33 seconds off
+
+ 4.95. Malawi
+ Code: mw
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.96. Malaysia
+ Code: my
+ Frequency: 425 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.97. Maldives
+ Code: mv
+ Frequency: 400 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.98. Mali
+ Code: ml
+ Frequency: 425 Hz
+ - 1.7 seconds on
+ - 3.3 seconds off
+
+ 4.99. Malta
+ Code: mt
+ Frequency: 400 Hz + 450 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.100. Martinique
+ Code: mq
+ Frequency: 440 Hz
+ - 1.5 seconds on
+ - 3.5 seconds off
+
+ 4.101. Mauritania
+ Code: mr
+ Frequency: 425 Hz
+ - 1.5 seconds on
+ - 3.5 seconds off
+
+ 4.102. Mauritius
+ Code: mu
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.103. Mayotte
+ Code: yt
+ Frequency: 440 Hz
+ - 1.5 seconds on
+ - 3.5 seconds off
+
+ 4.104. Mexico
+ Code: mx
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.105. Moldova
+ Code: md
+ Frequency: 425 Hz
+ - 0.8 seconds on
+ - 3.2 seconds off
+
+ 4.106. Montserrat
+ Code: ms
+ Frequency: 440 Hz + 480 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.107. Morocco
+ Code: mc
+ Frequency: 425 Hz
+ - 1.66 seconds on
+ - 3.33 seconds off
+
+ 4.108. Mozambique
+ Code: mz
+ Frequency: 400 Hz
+ - 1 second on
+ - 5 seconds off
+
+ 4.109. Namibia
+ Code: na
+ Frequency: 400 Hz modulated with 33 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.110. Nauru
+ Code: nr
+ Frequency: 400 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.111. Nepal
+ Code: np
+ Frequency: 425 Hz
+ - 1.1 seconds on
+ - 3.1 seconds off
+
+ 4.112. Netherlands
+ Code: nl
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.113. New Caledonia
+ Code: nc
+ Frequency: 440 Hz
+ - 1.5 seconds on
+ - 3.5 seconds off
+
+ 4.114. New Zealand
+ Code: nz
+ Frequency: 400 Hz + 450 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.115. Niger
+ Code: ne
+ Frequency: 440 Hz
+ - 1.7 seconds on
+ - 3.3 seconds off
+
+ 4.116. Nigeria
+ Code: ng
+ Frequency: 400 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.117. Norway
+ Code: no
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.118. Oman
+ Code: om
+ Frequency: 425 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.119. Pakistan
+ Code: pk
+ Frequency: 450 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.120. Panama
+ Code: pa
+ Frequency: 425 Hz
+ - 1.2 seconds on
+ - 4.65 seconds off
+
+ 4.121. Papua New Guinea
+ Code: pg
+ Frequency: 425 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.122. Paraguay
+ Code: py
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.123. Philippines
+ Code: ph
+ Frequency: 450 Hz
+ - 1 second on
+ - 10 seconds off
+
+ 4.124. Poland
+ Code: pl
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.125. Portugal
+ Code: pt
+ Frequency: 400 Hz
+ - 1 second on
+ - 5 seconds off
+
+ 4.126. Qatar
+ Code: qa
+ Frequency: 400 Hz + 450 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2.2 seconds off
+
+ 4.127. Reunion
+ Code: re
+ Frequency: 440 Hz
+ - 1.5 seconds on
+ - 3.5 seconds off
+
+ 4.128. Romania
+ Code: ro
+ Frequency: 400 Hz modulated with 16 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.129. Russia
+ Code: ru
+ Frequency: 425 Hz
+ - 0.8 seconds on
+ - 3.2 seconds off
+
+ 4.130. Rwanda
+ Code: rw
+ Frequency: 440 Hz
+ - 1.7 seconds on
+ - 3.3 seconds off
+
+ 4.131. St Helena
+ Code: sh
+ Frequency: 400 Hz + 450 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+
+ 4.132. St Kitts And Nevis
+ Code: kn
+ Frequency: 440 Hz + 480 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.133. St Lucia
+ Code: lc
+ Frequency: 425 Hz
+ - 0.375 seconds on
+ - 0.25 seconds off
+ - 0.375 seconds on
+ - 2 seconds off
+
+ 4.134. St Pierre And Miquelon
+ Code: pm
+ Frequency: 440 Hz
+ - 1.5 seconds on
+ - 3.5 seconds off
+
+ 4.135. St Vincent And The Grenadines
+ Code: vc
+ Frequency: 400 Hz + 450 Hz
+ - 0.2 seconds on
+ - 0.4 seconds off
+
+ 4.136. San Marino
+ Code: sm
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.137. Sao Tome And Principe
+ Code: st
+ Frequency: 425 Hz
+ - 1 second on
+ - 5 seconds off
+
+ 4.138. Saudi Arabia
+ Code: sa
+ Frequency: 425 Hz
+ - 1.2 seconds on
+ - 4.6 seconds off
+
+ 4.139. Senegal
+ Code: sn
+ Frequency: 400 Hz
+ - 1.7 seconds on
+ - 3.3 seconds off
+
+ 4.140. Seychelles
+ Code: sc
+ Frequency: 425 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.141. Sierra Leone
+ Code: sl
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.142. Singapore
+ Code: sg
+ Frequency: 425 Hz modulated with 24 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.143. Slovakia
+ Code: sk
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.144. Slovenia
+ Code: si
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.145. Solomon
+ Code: sb
+ Frequency: 400 Hz + 450 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+
+ 4.146. South Africa
+ Code: za
+ Frequency: 400 Hz modulated with 33 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.147. Spain
+ Code: es
+ Frequency: 425 Hz
+ - 1.5 seconds on
+ - 3 seconds off
+
+ 4.148. Sri Lanka
+ Code: lk
+ Frequency: 425 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+
+ 4.149. Suriname
+ Code: sr
+ Frequency: 425 Hz
+ - 15 seconds on
+ - 0.5 seconds off
+
+ 4.150. Swaziland
+ Code: sz
+ Frequency: 400 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 4 seconds off
+
+ 4.151. Sweden
+ Code: se
+ Frequency: 425 Hz
+ - 1 second on
+ - 5 seconds off
+
+ 4.152. Switzerland
+ Code: ch
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.153. Syria
+ Code: sy
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.154. Tajikistan
+ Code: tj
+ Frequency: 425 Hz
+ - 0.8 seconds on
+ - 3.2 seconds off
+
+ 4.155. Tanzania
+ Code: tz
+ Frequency: 400 Hz
+ - CONTINUOUS
+
+ 4.156. Thailand
+ Code: th
+ Frequency: 400 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.157. Trinidad And Tobago
+ Code: tt
+ Frequency: 440 Hz + 480 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.158. Tunisia
+ Code: tn
+ Frequency: 425 Hz
+ - 1.2 seconds on
+ - 4.6 seconds off
+
+ 4.159. Turkey
+ Code: tr
+ Frequency: 450 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.160. Turkmenistan
+ Code: tm
+ Frequency: 25 Hz
+ - 0.4 seconds on
+ - 4 seconds off
+
+ 4.161. Turks And Caicos Islands
+ Code: tc
+ Frequency: 440 Hz + 480 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.162. Uganda
+ Code: ug
+ Frequency: 133 Hz + 17 Hz
+ - 0.25 seconds on
+ - 0.5 seconds off
+ - 0.25 seconds on
+ - 2 seconds off
+
+ 4.163. United Arab Emirates
+ Code: ae
+ Frequency: 400 Hz + 450 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.164. United Kingdom
+ Code: gb
+ Frequency: 400 Hz + 450 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.164. Isle of Man (copy of GB)
+ Code: im
+ Frequency: 400 Hz + 450 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.165. United States
+ Code: us
+ Frequency: 440 Hz + 480 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.166. United States Virgin Islands
+ Code: vi
+ Frequency: 440 Hz + 480 Hz
+ - 2 seconds on
+ - 4 seconds off
+
+ 4.167. Uruguay
+ Code: uy
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.168. Vanuatu
+ Code: vu
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.169. Wallis And Futuna
+ Code: wf
+ Frequency: 440 Hz
+ - 1.5 seconds on
+ - 3.5 seconds off
+
+ 4.170. Western Samoa
+ Code: ws
+ Frequency: 425 Hz modulated with 25 Hz
+ - 0.375 seconds on
+ - 0.25 seconds off
+ - 0.375 seconds on
+ - 2 seconds off
+
+ 4.171. Yugoslavia
+ Code: yu
+ Frequency: 450 Hz modulated with 25 Hz
+ - 1 second on
+ - 9 seconds off
+
+ 4.171. Montenegro (copy of YU)
+ Code: me
+ Frequency: 450 Hz modulated with 25 Hz
+ - 1 second on
+ - 9 seconds off
+
+ 4.172. Zambia
+ Code: zm
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.172. Zambia
+ Code: zm
+ Frequency: 425 Hz
+ - 1 second on
+ - 4 seconds off
+
+ 4.173. Morocco (from ITU)
+ Code: ma
+ Frequency: 400 Hz modulated with 450 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+
+ 4.177. Cambodia (from ITU)
+ Code: kh
+ Frequency: 425 Hz
+ - 0.4 seconds on
+ - 0.2 seconds off
+ - 0.4 seconds on
+ - 2 seconds off
+

@@ -9,13 +9,21 @@
 #import <Foundation/Foundation.h>
 #import <pjsua-lib/pjsua.h>
 
-
 extern NSString* const  kSipInterfaceCallStateChangedNotification;
+
+
+typedef enum
+{
+    SipInterfaceRegisteredNo,
+    SipInterfaceRegisteredYes,
+    SipInterfaceRegisteredFailed
+} SipInterfaceRegistered;
 
 
 @interface SipInterface : NSObject
 
-@property (nonatomic, readonly) NSString*   config;
+@property (nonatomic, readonly) NSString*               config;
+@property (nonatomic, readonly) SipInterfaceRegistered  registered;
 
 - (id)initWithConfig:(NSString*)config;
 
