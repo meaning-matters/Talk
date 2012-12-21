@@ -18,15 +18,16 @@ NSString* const kSipInterfaceCallStateChangedNotification = @"kSipInterfaceCallS
 
 #define THIS_FILE	"SipInterface"
 #define NO_LIMIT	(int)0x7FFFFFFF
-#define KEEP_ALIVE_INTERVAL 600     // Minimum iOS allows.
+#define KEEP_ALIVE_INTERVAL 600     // Shortest iOS allows.
+
 
 /* Ringtones		    US	       UK  */
-#define RINGBACK_FREQ1	    440	    /* 400 */
-#define RINGBACK_FREQ2	    480	    /* 450 */
-#define RINGBACK_ON	    2000    /* 400 */
-#define RINGBACK_OFF	    4000    /* 200 */
+#define RINGBACK_FREQ1	    425//440	    /* 400 */
+#define RINGBACK_FREQ2	    0//480	    /* 450 */
+#define RINGBACK_ON	    1000//2000    /* 400 */
+#define RINGBACK_OFF	    3000//4000    /* 200 */
 #define RINGBACK_CNT	    1	    /* 2   */
-#define RINGBACK_INTERVAL   4000    /* 2000 */
+#define RINGBACK_INTERVAL   3000//4000    /* 2000 */
 
 #define RING_FREQ1	    800
 #define RING_FREQ2	    640
@@ -137,7 +138,7 @@ static void     ring_stop(pjsua_call_id call_id);
 pj_bool_t 	app_restart;
 pj_log_func*    log_cb = NULL;
 
-
+static SipInterfaceRegistered   _registered;
 
 //### usable?
 void printInfo()
@@ -1355,7 +1356,7 @@ static void ring_stop(pjsua_call_id call_id)
         
 	pj_assert(app_config.ringback_cnt > 0);
         
-	if (--app_config.ringback_cnt == 0 && app_config.ringback_slot!=PJSUA_INVALID_ID)
+	if (--app_config.ringback_cnt == 0 && app_config.ringback_slot != PJSUA_INVALID_ID)
 	{
 	    pjsua_conf_disconnect(app_config.ringback_slot, 0);
 	    pjmedia_tonegen_rewind(app_config.ringback_port);
@@ -1978,9 +1979,28 @@ static pjsip_redirect_op call_on_redirected(
  */
 static void on_reg_state(pjsua_acc_id acc_id,  pjsua_reg_info *info)
 {
-    PJ_UNUSED_ARG(acc_id);
-    PJ_UNUSED_ARG(info);
-    
+    if (info == NULL || info->cbparam == NULL)
+    {
+        _registered = SipInterfaceRegisteredFailed;
+    }
+    else
+    {
+        struct pjsip_regc_cbparam*  cbparam = info->cbparam;
+
+        if (acc_id != current_acc)
+        {
+            _registered = SipInterfaceRegisteredFailed;
+        }
+        else if (cbparam->code / 100 == 2 && cbparam->expiration > 0 && cbparam->contact_cnt > 0)
+        {
+            _registered = SipInterfaceRegisteredYes;
+        }
+        else
+        {
+            _registered = SipInterfaceRegisteredFailed;
+        }
+    }
+
     // Log already written.
 }
 
@@ -4462,13 +4482,14 @@ void showLog(
 
 @implementation SipInterface
 
-@synthesize config = _config;
+@synthesize config            = _config;
 
 - (id)initWithConfig:(NSString*)config
 {
     if (self = [super init])
     {
-        _config = config;
+        _config     = config;
+        _registered = SipInterfaceRegisteredNo;
 
         pj_log_set_log_func(&showLog);
         log_cb = &showLog;
@@ -4611,6 +4632,12 @@ void showLog(
     [self registerThread];
 
     pjsua_call_hangup_all();
+}
+
+
+- (SipInterfaceRegistered)registered
+{
+    return _registered;
 }
 
 

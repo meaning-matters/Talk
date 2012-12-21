@@ -57,3 +57,8 @@ WebRTC
   to GlueLogic/webrtc.c: pjmedia_codec_webrtc_deinit, line 90.
 * Had to rename Talk's main.m to main.mm to linker-pull-in C++ libraries needed
   for libWebRTC.a.
+
+Tones
+* Contains resource file from which JSON tone resource file is generated using rb.c.
+  Resource file was taken from internet and extended with info from other source in
+  order to get a complete set (i.e. a RBT for each country the app knows).
