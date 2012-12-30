@@ -1,0 +1,32 @@
+{
+    "BE" :
+    {
+        "ringing" :
+        [
+            {
+                "frequency1" : 425,
+                "frequency2" : 0,
+                "on" : 1000,
+                "off" : 4000,
+            }
+        ],
+        "busy" :
+        [
+            {
+                "frequency1" : 425,
+                "frequency2" : 0,
+                "on" : 1000,
+                "off" : 1000,
+            }
+        ],
+        "congestion" :
+        [
+            {
+                "frequency1" : 425,
+                "frequency2" : 0,
+                "on" : 500,
+                "off" : 500,
+            }
+        ]
+    }
+}

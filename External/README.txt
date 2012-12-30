@@ -58,7 +58,13 @@ WebRTC
 * Had to rename Talk's main.m to main.mm to linker-pull-in C++ libraries needed
   for libWebRTC.a.
 
-Tones
+Resources/Tones
 * Contains resource file from which JSON tone resource file is generated using rb.c.
   Resource file was taken from internet and extended with info from other source in
   order to get a complete set (i.e. a RBT for each country the app knows).
+* ITU.txt is a tab-delimited file of many tones taken from a 2010 ITU (www.itu.int)
+  document.
+
+Resources/Time
+* Generation of JSON resource file for determination of local time of dialled number.
+* Data is from http://www.itu.int/pub/T-SP-E.164C-2011

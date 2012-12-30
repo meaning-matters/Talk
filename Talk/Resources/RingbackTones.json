@@ -39,6 +39,16 @@
         "count" : 1,
         "interval" : 4000
     },
+    "MF" :
+    {
+        "name" : "Saint Martin (copy AI)",
+        "frequency1" : 440,
+        "frequency1" : 480,
+        "on" : 2000,
+        "off" : 4000,
+        "count" : 1,
+        "interval" : 4000
+    },
     "AG" :
     {
         "name" : "Antigua And Barbuda",
@@ -92,6 +102,16 @@
     "AT" :
     {
         "name" : "Austria",
+        "frequency1" : 420,
+        "frequency1" : 0,
+        "on" : 1000,
+        "off" : 5000,
+        "count" : 1,
+        "interval" : 5000
+    },
+    "LI" :
+    {
+        "name" : "Liechtenstein (from ITU)",
         "frequency1" : 420,
         "frequency1" : 0,
         "on" : 1000,
@@ -439,6 +459,16 @@
         "count" : 2,
         "interval" : 2200
     },
+    "HT" :
+    {
+        "name" : "Haiti (copy of DO)",
+        "frequency1" : 400,
+        "frequency1" : 0,
+        "on" : 400,
+        "off" : 200,
+        "count" : 2,
+        "interval" : 2200
+    },
     "EC" :
     {
         "name" : "Ecuador",
@@ -659,6 +689,16 @@
         "count" : 1,
         "interval" : 200
     },
+    "GW" :
+    {
+        "name" : "Guinea-Bissau (copy of GN)",
+        "frequency1" : 450,
+        "frequency1" : 0,
+        "on" : 400,
+        "off" : 200,
+        "count" : 1,
+        "interval" : 200
+    },
     "GY" :
     {
         "name" : "Guyana",
@@ -723,6 +763,46 @@
     {
         "name" : "Indonesia",
         "frequency1" : 425,
+        "frequency1" : 0,
+        "on" : 1000,
+        "off" : 4000,
+        "count" : 1,
+        "interval" : 4000
+    },
+    "MH" :
+    {
+        "name" : "Marshall Islands (copy ID)",
+        "frequency1" : 425,
+        "frequency1" : 0,
+        "on" : 1000,
+        "off" : 4000,
+        "count" : 1,
+        "interval" : 4000
+    },
+    "NF" :
+    {
+        "name" : "Norfolk Island (copy ID)",
+        "frequency1" : 425,
+        "frequency1" : 0,
+        "on" : 1000,
+        "off" : 4000,
+        "count" : 1,
+        "interval" : 4000
+    },
+    "MK" :
+    {
+        "name" : "Macedonia (from ITU)",
+        "frequency1" : 425,
+        "frequency1" : 0,
+        "on" : 1000,
+        "off" : 4000,
+        "count" : 1,
+        "interval" : 4000
+    },
+    "MM" :
+    {
+        "name" : "Myanmar (from ITU)",
+        "frequency1" : 400,
         "frequency1" : 0,
         "on" : 1000,
         "off" : 4000,
@@ -1639,6 +1719,16 @@
         "count" : 2,
         "interval" : 2000
     },
+    "IM" :
+    {
+        "name" : "Isle of Man (copy of GB)",
+        "frequency1" : 400,
+        "frequency1" : 450,
+        "on" : 400,
+        "off" : 200,
+        "count" : 2,
+        "interval" : 2000
+    },
     "US" :
     {
         "name" : "United States",
@@ -1709,6 +1799,16 @@
         "count" : 1,
         "interval" : 9000
     },
+    "ME" :
+    {
+        "name" : "Montenegro (copy of YU)",
+        "frequency1" : 450,
+        "frequency1" : 0,
+        "on" : 1000,
+        "off" : 9000,
+        "count" : 1,
+        "interval" : 9000
+    },
     "ZM" :
     {
         "name" : "Zambia",
@@ -1719,10 +1819,30 @@
         "count" : 1,
         "interval" : 4000
     },
-    "ZW" :
+    "ZM" :
     {
-        "name" : "Zimbabwe",
+        "name" : "Zambia",
+        "frequency1" : 425,
+        "frequency1" : 0,
+        "on" : 1000,
+        "off" : 4000,
+        "count" : 1,
+        "interval" : 4000
+    },
+    "MA" :
+    {
+        "name" : "Morocco (from ITU)",
         "frequency1" : 400,
+        "frequency1" : 0,
+        "on" : 400,
+        "off" : 200,
+        "count" : 2,
+        "interval" : 2000
+    },
+    "KH" :
+    {
+        "name" : "Cambodia (from ITU)",
+        "frequency1" : 425,
         "frequency1" : 0,
         "on" : 400,
         "off" : 200,

@@ -22,16 +22,10 @@ typedef enum
 
 @interface SipInterface : NSObject
 
-@property (nonatomic, strong) NSString*                 realm;
-@property (nonatomic, strong) NSString*                 server;
-@property (nonatomic, strong) NSString*                 username;
-@property (nonatomic, strong) NSString*                 password;
 @property (nonatomic, readonly) NSString*               config;
 @property (nonatomic, readonly) SipInterfaceRegistered  registered;
 
 - (id)initWithConfig:(NSString*)config;
-
-- (id)initWithRealm:(NSString*)realm server:(NSString*)server username:(NSString*)username password:(NSString*)password;
 
 - (void)restart;
 

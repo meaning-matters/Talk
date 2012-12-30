@@ -16,6 +16,7 @@
 #import "CountriesViewController.h"
 #import "CallViewController.h"
 #import "SipInterface.h"
+#import "Tones.h"
 
 
 @interface CallManager ()
@@ -67,9 +68,11 @@ static SipInterface*    sipInterface;
         [Settings sharedSettings].sipPassword != nil)
     {
         // Initialize SIP stuff.
+        Settings*   settings = [Settings sharedSettings];
+
+#if SipInterface_m   //###
         NSString*   path     = [[NSBundle mainBundle] pathForResource:@"SipConfig" ofType:@"cfg"];
         NSString*   config   = [NSString stringWithContentsOfFile:path encoding:NSASCIIStringEncoding error:nil];
-        Settings*   settings = [Settings sharedSettings];
 
         config = [config stringByAppendingString:@"\n"];
         config = [config stringByAppendingFormat:@"--realm     %@\n",        settings.sipRealm];
@@ -77,8 +80,13 @@ static SipInterface*    sipInterface;
         config = [config stringByAppendingFormat:@"--id        sip:%@@%@\n", settings.sipUsername, settings.sipServer];
         config = [config stringByAppendingFormat:@"--username  %@\n",        settings.sipUsername];
         config = [config stringByAppendingFormat:@"--password  %@\n",        settings.sipPassword];
-
         sipInterface = [[SipInterface alloc] initWithConfig:config];
+#else
+        sipInterface = [[SipInterface alloc] initWithRealm:settings.sipRealm
+                                                    server:settings.sipServer
+                                                  username:settings.sipUsername
+                                                  password:settings.sipPassword];
+#endif
 
         return YES;
     }
@@ -274,7 +282,8 @@ static SipInterface*    sipInterface;
                                                           animated:YES
                                                         completion:nil];
 
-        [sipInterface callNumber:number identityNumber:identity userData:(__bridge void*)call];
+        NSDictionary*   tones = [[Tones sharedTones] tonesForIsoCountryCode:[phoneNumber isoCountryCode]];
+        [sipInterface callNumber:number identityNumber:identity userData:(__bridge void*)call tones:tones];
     }
 
     return call;
