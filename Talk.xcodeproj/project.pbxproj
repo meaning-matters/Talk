@@ -25,6 +25,10 @@
 		4812727416487E2D00534450 /* LibPhoneNumber.js in Sources */ = {isa = PBXBuildFile; fileRef = 4812727216487E2D00534450 /* LibPhoneNumber.js */; };
 		48206EF41684B0700040B04E /* RingbackTones.m in Sources */ = {isa = PBXBuildFile; fileRef = 48206EF31684B0700040B04E /* RingbackTones.m */; };
 		48206EF51684B0700040B04E /* RingbackTones.m in Sources */ = {isa = PBXBuildFile; fileRef = 48206EF31684B0700040B04E /* RingbackTones.m */; };
+		48206EF8168DD8180040B04E /* Tones.json in Resources */ = {isa = PBXBuildFile; fileRef = 48206EF7168DD8180040B04E /* Tones.json */; };
+		48206EF9168DD8180040B04E /* Tones.json in Resources */ = {isa = PBXBuildFile; fileRef = 48206EF7168DD8180040B04E /* Tones.json */; };
+		48206EFC168DD8D30040B04E /* Tones.m in Sources */ = {isa = PBXBuildFile; fileRef = 48206EFB168DD8D30040B04E /* Tones.m */; };
+		48206EFD168DD8D30040B04E /* Tones.m in Sources */ = {isa = PBXBuildFile; fileRef = 48206EFB168DD8D30040B04E /* Tones.m */; };
 		482608EE166A4707007F0844 /* NSTimer+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 482608ED166A4706007F0844 /* NSTimer+Blocks.m */; };
 		482608EF166A4707007F0844 /* NSTimer+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 482608ED166A4706007F0844 /* NSTimer+Blocks.m */; };
 		482A6397165F903900325B3F /* CommonStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A6396165F903900325B3F /* CommonStrings.m */; };
@@ -780,6 +784,9 @@
 		4812727216487E2D00534450 /* LibPhoneNumber.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = LibPhoneNumber.js; path = External/LibPhoneNumber/LibPhoneNumber.js; sourceTree = SOURCE_ROOT; };
 		48206EF21684B0700040B04E /* RingbackTones.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingbackTones.h; sourceTree = "<group>"; };
 		48206EF31684B0700040B04E /* RingbackTones.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RingbackTones.m; sourceTree = "<group>"; };
+		48206EF7168DD8180040B04E /* Tones.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Tones.json; path = Resources/Tones.json; sourceTree = "<group>"; };
+		48206EFA168DD8D30040B04E /* Tones.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tones.h; sourceTree = "<group>"; };
+		48206EFB168DD8D30040B04E /* Tones.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tones.m; sourceTree = "<group>"; };
 		482608EC166A4706007F0844 /* NSTimer+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Blocks.h"; sourceTree = "<group>"; };
 		482608ED166A4706007F0844 /* NSTimer+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Blocks.m"; sourceTree = "<group>"; };
 		482A6395165F903900325B3F /* CommonStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonStrings.h; sourceTree = "<group>"; };
@@ -1600,6 +1607,8 @@
 				48338FD016181B750033F4C1 /* SipInterface.m */,
 				48AD95DD164AE581006178E6 /* Skinning.h */,
 				48AD95DE164AE582006178E6 /* Skinning.m */,
+				48206EFA168DD8D30040B04E /* Tones.h */,
+				48206EFB168DD8D30040B04E /* Tones.m */,
 				482A639A165F922E00325B3F /* Common */,
 				488268D1164BCF6300EA58AE /* Networking */,
 				485ECBDF16525D1600364F08 /* Views */,
@@ -2322,6 +2331,7 @@
 				48D0A6E81654D66200FA2D98 /* InfoPlist.strings */,
 				4812727216487E2D00534450 /* LibPhoneNumber.js */,
 				48A2CDFB16834FC100506A7C /* RingbackTones.json */,
+				48206EF7168DD8180040B04E /* Tones.json */,
 				48D0A6E51654D65200FA2D98 /* SipConfig.cfg */,
 			);
 			name = Resources;
@@ -2989,6 +2999,7 @@
 				4888D525166D200E00572566 /* HangupPhoneSmall.png in Resources */,
 				4888D527166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */,
 				48A2CDFC16834FC100506A7C /* RingbackTones.json in Resources */,
+				48206EF8168DD8180040B04E /* Tones.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3058,6 +3069,7 @@
 				4888D526166D200E00572566 /* HangupPhoneSmall.png in Resources */,
 				4888D528166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */,
 				48A2CDFD16834FC100506A7C /* RingbackTones.json in Resources */,
+				48206EF9168DD8180040B04E /* Tones.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3136,6 +3148,7 @@
 				4888D1FA166E865400B55B22 /* Call.m in Sources */,
 				4888D292167250AB00B55B22 /* KeychainUtility.m in Sources */,
 				48206EF41684B0700040B04E /* RingbackTones.m in Sources */,
+				48206EFC168DD8D30040B04E /* Tones.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3182,6 +3195,7 @@
 				4888D1FB166E865400B55B22 /* Call.m in Sources */,
 				4888D293167250AB00B55B22 /* KeychainUtility.m in Sources */,
 				48206EF51684B0700040B04E /* RingbackTones.m in Sources */,
+				48206EFD168DD8D30040B04E /* Tones.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

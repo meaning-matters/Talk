@@ -53,7 +53,20 @@ static RingbackTones*   sharedTones;
 
 - (NSDictionary*)toneForIsoCountryCode:(NSString*)isoCountryCode
 {
-    return [self.tonesDictionary objectForKey:[isoCountryCode uppercaseString]];
+    NSDictionary*   tone = [self.tonesDictionary objectForKey:[isoCountryCode uppercaseString]];
+
+    if (tone == nil)
+    {
+        tone = @{ @"name"       : @"Default",
+                  @"frequency1" :  @425,
+                  @"frequency1" :    @0,
+                  @"on"         : @1000,
+                  @"off"        : @4000,
+                  @"count"      :    @1,
+                  @"interval"   : @4000 };
+    }
+
+    return tone;
 }
 
 
