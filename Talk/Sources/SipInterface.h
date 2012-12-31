@@ -26,7 +26,10 @@ typedef enum
 @property (nonatomic, strong) NSString*                 server;
 @property (nonatomic, strong) NSString*                 username;
 @property (nonatomic, strong) NSString*                 password;
-@property (nonatomic, readonly) NSString*               config;
+
+@property (nonatomic, assign) float                     microphoneLevel;
+@property (nonatomic, assign) float                     speakerLevel;
+
 @property (nonatomic, readonly) SipInterfaceRegistered  registered;
 
 - (id)initWithConfig:(NSString*)config;

@@ -35,8 +35,6 @@ NSString* const kSipInterfaceCallStateChangedNotification = @"kSipInterfaceCallS
 #define RING_CNT	    3
 #define RING_INTERVAL	    3000
 
-#define MAX_AVI             4
-
 /* Call specific data */
 struct call_data
 {
@@ -51,34 +49,17 @@ static struct app_config
     pjsua_config	    cfg;
     pjsua_logging_config    log_cfg;
     pjsua_media_config	    media_cfg;
-    pj_bool_t		    no_refersub;
-    pj_bool_t		    ipv6;
-    pj_bool_t		    enable_qos;
-    pj_bool_t		    no_tcp;
-    pj_bool_t		    no_udp;
-    pj_bool_t		    use_tls;
     pjsua_transport_config  udp_cfg;
     pjsua_transport_config  rtp_cfg;
     pjsip_redirect_op	    redir_op;
 
-    unsigned		    acc_cnt;
-    pjsua_acc_config	    acc_cfg[PJSUA_MAX_ACC];
-
-    unsigned		    buddy_cnt;
-    pjsua_buddy_config	    buddy_cfg[PJSUA_MAX_BUDDIES];
+    pjsua_acc_config	    account;
 
     struct call_data	    call_data[PJSUA_MAX_CALLS];
 
     pj_pool_t*              pool;
     /* Compatibility with older pjsua */
 
-    unsigned		    codec_cnt;
-    pj_str_t		    codec_arg[32];
-    unsigned		    codec_dis_cnt;
-    pj_str_t                codec_dis[32];
-    pj_bool_t		    null_audio;
-    unsigned		    wav_count;
-    pj_str_t		    wav_files[32];
     unsigned		    tone_count;
     pjmedia_tone_desc	    tones[32];
     pjsua_conf_port_id	    tone_slots[32];
@@ -86,13 +67,6 @@ static struct app_config
     pjsua_conf_port_id	    wav_port;
     pj_bool_t		    auto_play;
     pj_bool_t		    auto_play_hangup;
-    pj_timer_entry	    auto_hangup_timer;
-    pj_bool_t		    auto_loop;
-    pj_bool_t		    auto_conf;
-    pj_str_t		    rec_file;
-    pj_bool_t		    auto_rec;
-    pjsua_recorder_id	    rec_id;
-    pjsua_conf_port_id	    rec_port;
     unsigned		    auto_answer;
     unsigned		    duration;
 
@@ -107,12 +81,9 @@ static struct app_config
     pjmedia_port*           congestion_port;
     int			    ring_slot;
     pjmedia_port*           ring_port;
-
-    unsigned		    aud_cnt;
 } app_config;
 
 
-#define current_acc	pjsua_acc_get_default()
 static pjsua_call_id	current_call = PJSUA_INVALID_ID;
 
 #if defined(PJMEDIA_HAS_RTCP_XR) && (PJMEDIA_HAS_RTCP_XR != 0)
@@ -121,7 +92,6 @@ static pjsua_call_id	current_call = PJSUA_INVALID_ID;
 #   define SOME_BUF_SIZE	(1024 * 3)
 #endif
 
-static pj_status_t create_ipv6_media_transports(void);
 pj_status_t     app_destroy(void);
 
 static void     ringback_start(pjsua_call_id call_id);
@@ -148,8 +118,7 @@ static void default_config(
     struct app_config*  cfg)
 {
     char        tmp[80];
-    unsigned    i;
-    
+
     pjsua_config_default(&cfg->cfg);
     pj_ansi_sprintf(tmp, "PJSUA v%s %s", pj_get_version(), pj_get_sys_info()->info.ptr);
     pj_strdup2_with_null(app_config.pool, &cfg->cfg.user_agent, tmp);
@@ -164,136 +133,15 @@ static void default_config(
     cfg->redir_op        = PJSIP_REDIRECT_ACCEPT;
     cfg->duration        = NO_LIMIT;
     cfg->wav_id          = PJSUA_INVALID_ID;
-    cfg->rec_id          = PJSUA_INVALID_ID;
     cfg->wav_port        = PJSUA_INVALID_ID;
-    cfg->rec_port        = PJSUA_INVALID_ID;
-    cfg->mic_level       = cfg->speaker_level = 1.0;
+    cfg->mic_level       = 1.2;    //### Get from Settings (indirectly).
+    cfg->speaker_level   = 2.4;    //### Get from Settings (indirectly). 4.0 as loud?
     cfg->ringback_slot   = PJSUA_INVALID_ID;
     cfg->busy_slot       = PJSUA_INVALID_ID;
     cfg->congestion_slot = PJSUA_INVALID_ID;
     cfg->ring_slot       = PJSUA_INVALID_ID;
     
-    for (i = 0; i < PJ_ARRAY_SIZE(cfg->acc_cfg); ++i)
-    {
-	pjsua_acc_config_default(&cfg->acc_cfg[i]);
-    }
-    
-    for (i = 0; i < PJ_ARRAY_SIZE(cfg->buddy_cfg); ++i)
-    {
-	pjsua_buddy_config_default(&cfg->buddy_cfg[i]);
-    }
-
-    cfg->aud_cnt          = 1;
-}
-
-
-/*
- * Read command arguments from config file.
- */
-static int read_config(
-    pj_pool_t*  pool,
-    const char* config,
-    int*        app_argc,
-    char***     app_argv)
-{
-    char*       line;
-    char*       p;              // Current position on line.
-    int         argc = 0;
-    char**      argv;
-    const int   MAX_ARGS = 128;
-    
-    /* Allocate MAX_ARGS+1 (argv needs to be terminated with NULL argument) */
-    argv = pj_pool_calloc(pool, MAX_ARGS + 1, sizeof(char*));
-    argv[argc++] = "";
-
-    /* Copy config to line. */
-    line = pj_pool_alloc(pool, strlen(config) + 1);
-    strcpy(line, config);
-
-    /* Scan tokens in the file. */
-    p = line;
-    while (argc < MAX_ARGS && *p != '\0')
-    {
-	char*   token;
-	const   char *whitespace = " \t\r\n";
-	char    cDelimiter;
-        int     token_len;
-
-	for (p = line; *p != '\0' && argc < MAX_ARGS; p++)
-        {
-	    // first, scan whitespaces
-	    while (*p != '\0' && strchr(whitespace, *p) != NULL)
-            {
-                p++;
-            }
-            
-            // are we done yet?
-	    if (*p == '\0')		    
-            {
-		break;
-	    }
-            
-            // is token a quoted string
-	    if (*p == '"' || *p == '\'')
-            {
-		cDelimiter = *p++;	    // save quote delimiter
-		token = p;
-		
-		while (*p != '\0' && *p != cDelimiter)
-                {
-                    p++;
-                }
-		
-                // found end of the line,
-		if (*p == '\0')
-                {
-		    cDelimiter = '\0';	// but,didn't find a matching quote
-                }
-	    }
-            else
-            {
-                // token's not a quoted string
-		token = p;
-		
-		while (*p != '\0' && strchr(whitespace, *p) == NULL)
-                {
-                    p++;
-                }
-		
-		cDelimiter = *p;
-	    }
-	    
-	    *p = '\0';
-	    token_len = p - token;
-	    
-	    if (token_len > 0)
-            {
-		if (*token == '#')
-                {
-		    break;  // ignore remainder of line
-                }
-		
-		argv[argc] = pj_pool_alloc(pool, token_len + 1);
-		pj_memcpy(argv[argc], token, token_len + 1);
-		++argc;
-	    }
-
-	    *p = cDelimiter;
-	}
-    }
-
-    if (argc == MAX_ARGS /*&& !feof(file)*/)
-    {
-	PJ_LOG(1, (THIS_FILE, "Too many arguments specified in cmd line/config file"));
-
-	return -1;
-    }
-
-    /* Assign the new command line back to the original command line. */
-    *app_argc = argc;
-    *app_argv = argv;
-    
-    return 0;
+    pjsua_acc_config_default(&cfg->account);
 }
 
 
@@ -774,65 +622,7 @@ static void on_call_audio_state(
 	pjsua_conf_port_id call_conf_slot;
         
 	call_conf_slot = ci->media[mi].stream.aud.conf_slot;
-        
-	/* Loopback sound, if desired */
-	if (app_config.auto_loop)
-        {
-	    pjsua_conf_connect(call_conf_slot, call_conf_slot);
-	    connect_sound = PJ_FALSE;
-	}
-        
-	/* Automatically record conversation, if desired */
-	if (app_config.auto_rec && app_config.rec_port != PJSUA_INVALID_ID)
-        {
-	    pjsua_conf_connect(call_conf_slot, app_config.rec_port);
-	}
-        
-	/* Stream a file, if desired */
-	if ((app_config.auto_play || app_config.auto_play_hangup) && app_config.wav_port != PJSUA_INVALID_ID)
-	{
-	    pjsua_conf_connect(app_config.wav_port, call_conf_slot);
-	    connect_sound = PJ_FALSE;
-	}
-                
-	/* Put call in conference with other calls, if desired */
-	if (app_config.auto_conf)
-        {
-	    pjsua_call_id   call_ids[PJSUA_MAX_CALLS];
-	    unsigned        call_cnt = PJ_ARRAY_SIZE(call_ids);
-	    unsigned        i;
-            
-	    /* Get all calls, and establish media connection between
-	     * this call and other calls.
-	     */
-	    pjsua_enum_calls(call_ids, &call_cnt);
-            
-	    for (i = 0; i < call_cnt; ++i)
-            {
-		if (call_ids[i] == ci->id)
-                {
-		    continue;
-                }
-		
-		if (!pjsua_call_has_media(call_ids[i]))
-                {
-		    continue;
-                }
-                
-		pjsua_conf_connect(call_conf_slot, pjsua_call_get_conf_port(call_ids[i]));
-		pjsua_conf_connect(pjsua_call_get_conf_port(call_ids[i]), call_conf_slot);
-                
-		/* Automatically record conversation, if desired */
-		if (app_config.auto_rec && app_config.rec_port != PJSUA_INVALID_ID)
-                {
-		    pjsua_conf_connect(pjsua_call_get_conf_port(call_ids[i]), app_config.rec_port);
-		}
-	    }
-            
-	    /* Also connect call to local sound device */
-	    connect_sound = PJ_TRUE;
-	}
-        
+      
 	/* Otherwise connect to sound device */
 	if (connect_sound)
         {
@@ -840,14 +630,10 @@ static void on_call_audio_state(
 	    if (!disconnect_mic)
             {
 		pjsua_conf_connect(0, call_conf_slot);
+
+                pjsua_conf_adjust_rx_level(0, app_config.mic_level);
+                pjsua_conf_adjust_tx_level(0, app_config.speaker_level);
             }
-            
-	    /* Automatically record conversation, if desired */
-	    if (app_config.auto_rec && app_config.rec_port != PJSUA_INVALID_ID)
-            {
-		pjsua_conf_connect(call_conf_slot, app_config.rec_port);
-		pjsua_conf_connect(0, app_config.rec_port);
-	    }
 	}
     }
 }
@@ -945,7 +731,7 @@ static void on_reg_state(pjsua_acc_id acc_id,  pjsua_reg_info *info)
     {
         struct pjsip_regc_cbparam*  cbparam = info->cbparam;
 
-        if (acc_id != current_acc)
+        if (acc_id != pjsua_acc_get_default())
         {
             _registered = SipInterfaceRegisteredFailed;
         }
@@ -1221,7 +1007,6 @@ static void simple_registrar(pjsip_rx_data *rdata)
 }
 
 
-
 /*****************************************************************************
  * A simple module to handle otherwise unhandled request. We will register
  * this with the lowest priority.
@@ -1389,12 +1174,12 @@ void showLog(
 
 @implementation SipInterface
 
-@synthesize realm      = _realm;
-@synthesize server     = _server;
-@synthesize username   = _username;
-@synthesize password   = _password;
-@synthesize registered = _registered;
-@synthesize config     = _config;
+@synthesize realm           = _realm;
+@synthesize server          = _server;
+@synthesize username        = _username;
+@synthesize password        = _password;
+@synthesize microphoneLevel = _microphoneLevel;
+@synthesize registered      = _registered;
 
 
 - (id)initWithRealm:(NSString*)realm server:(NSString*)server username:(NSString*)username password:(NSString*)password;
@@ -1594,7 +1379,7 @@ void showLog(
         pjsua_acc_add_local(transport_id, PJ_TRUE, &aid);
 
         //pjsua_acc_set_transport(aid, transport_id);
-        pjsua_acc_set_online_status(current_acc, PJ_TRUE);
+        pjsua_acc_set_online_status(pjsua_acc_get_default(), PJ_TRUE);
 
         if (app_config.udp_cfg.port == 0)
         {
@@ -1619,7 +1404,7 @@ void showLog(
 
         /* Add local account */
         pjsua_acc_add_local(transport_id, PJ_TRUE, &aid);
-        pjsua_acc_set_online_status(current_acc, PJ_TRUE);
+        pjsua_acc_set_online_status(pjsua_acc_get_default(), PJ_TRUE);
     }
 
     //###
@@ -1656,21 +1441,18 @@ void showLog(
         goto on_error;
     }
 
-    /* Add accounts */
-    for (i = 0; i < app_config.acc_cnt; ++i)
+    /* Add account */
+    app_config.account.rtp_cfg                  = app_config.rtp_cfg;
+    app_config.account.reg_retry_interval       = 300;
+    app_config.account.reg_first_retry_interval = 60;
+
+    if ((status = pjsua_acc_add(&app_config.account, PJ_TRUE, NULL)) != PJ_SUCCESS)
     {
-        app_config.acc_cfg[i].rtp_cfg                  = app_config.rtp_cfg;
-        app_config.acc_cfg[i].reg_retry_interval       = 300;
-        app_config.acc_cfg[i].reg_first_retry_interval = 60;
-
-        if ((status = pjsua_acc_add(&app_config.acc_cfg[i], PJ_TRUE, NULL)) != PJ_SUCCESS)
-        {
-            goto on_error;
-        }
-
-        pjsua_acc_set_online_status(current_acc, PJ_TRUE);
+        goto on_error;
     }
-    
+
+    pjsua_acc_set_online_status(pjsua_acc_get_default(), PJ_TRUE);
+
     return PJ_SUCCESS;
     
 on_error:
@@ -1682,52 +1464,36 @@ on_error:
 
 - (pj_status_t)parse_args
 {
-    pjsua_acc_config*   cur_acc;
-    unsigned            i;
+    app_config.account.reg_uri = pj_str((char*)[[NSString stringWithFormat:@"sip:%@", self.server] UTF8String]);
 
-    app_config.acc_cnt = 0;
-    cur_acc = &app_config.acc_cfg[0];
+    app_config.account.id = pj_str((char*)[[NSString stringWithFormat:@"sip:%@@%@", self.username, self.server] UTF8String]);
 
-    cur_acc->reg_uri = pj_str((char*)[[NSString stringWithFormat:@"sip:%@", self.server] UTF8String]);
+    app_config.account.cred_info[0].username = pj_str((char*)[self.username UTF8String]);
+    app_config.account.cred_info[0].scheme   = pj_str("Digest");
 
-    cur_acc->id = pj_str((char*)[[NSString stringWithFormat:@"sip:%@@%@", self.username, self.server] UTF8String]);
+    app_config.account.cred_info[0].realm = pj_str((char*)[self.realm UTF8String]);
 
-    cur_acc->cred_info[cur_acc->cred_count].username = pj_str((char*)[self.username UTF8String]);
-    cur_acc->cred_info[cur_acc->cred_count].scheme   = pj_str("Digest");
-
-    cur_acc->cred_info[cur_acc->cred_count].realm = pj_str((char*)[self.realm UTF8String]);
-
-    cur_acc->cred_info[cur_acc->cred_count].data_type = PJSIP_CRED_DATA_PLAIN_PASSWD;
-    cur_acc->cred_info[cur_acc->cred_count].data = pj_str((char*)[self.password UTF8String]);
+    app_config.account.cred_info[0].data_type = PJSIP_CRED_DATA_PLAIN_PASSWD;
+    app_config.account.cred_info[0].data = pj_str((char*)[self.password UTF8String]);
 
 #if !defined(PJMEDIA_HAS_SRTP) && (PJMEDIA_HAS_SRTP == 0)
 #error Requires SRTP
 #endif
     app_config.cfg.use_srtp = 2;
-    cur_acc->use_srtp = app_config.cfg.use_srtp;
+    app_config.account.use_srtp = app_config.cfg.use_srtp;
 
     // No VAD
     app_config.media_cfg.no_vad = PJ_TRUE;
 
-    if (app_config.acc_cfg[app_config.acc_cnt].id.slen)
+    if (app_config.account.cred_info[0].username.slen)
     {
-	app_config.acc_cnt++;
-    }
+        app_config.account.cred_count++;
 
-    for (i = 0; i < app_config.acc_cnt; ++i)
-    {
-	pjsua_acc_config*   acfg = &app_config.acc_cfg[i];
-
-	if (acfg->cred_info[acfg->cred_count].username.slen)
-	{
-	    acfg->cred_count++;
-
-            //### Attempt to force all over TLS: https://trac.pjsip.org/repos/wiki/Using_SIP_TCP
-            //### Seems to fix bug that hangup_all did not work often, resulting in multiple BYE
-            //### being sent.  But it did work sometimes as well; may have to do with Wi-Fi quality.
-            //### Was done in Newcastle with bad network in hotel and Starbucks.
-            acfg->proxy[acfg->proxy_cnt++] = pj_str("sip:178.63.93.9;transport=tls");
-	}
+        //### Attempt to force all over TLS: https://trac.pjsip.org/repos/wiki/Using_SIP_TCP
+        //### Seems to fix bug that hangup_all did not work often, resulting in multiple BYE
+        //### being sent.  But it did work sometimes as well; may have to do with Wi-Fi quality.
+        //### Was done in Newcastle with bad network in hotel and Starbucks.
+        app_config.account.proxy[app_config.account.proxy_cnt++] = pj_str("sip:178.63.93.9;transport=tls");
     }
 
     return PJ_SUCCESS;
@@ -1738,7 +1504,6 @@ on_error:
 {
     if (self = [super init])
     {
-        _config     = config;
         _registered = SipInterfaceRegisteredNo;
 
         pj_log_set_log_func(&showLog);
@@ -1770,15 +1535,15 @@ on_error:
 {
     [self registerThread];
 
-    pjsua_acc_id    account;
+    pjsua_acc_id    accountId;
 
     // We assume there is only one external account.  (There may be a few local accounts too.)
-    if (pjsua_acc_is_valid(account = pjsua_acc_get_default()))
+    if (pjsua_acc_is_valid(accountId = pjsua_acc_get_default()))
     {
-        app_config.acc_cfg[account].reg_timeout = KEEP_ALIVE_INTERVAL;
-        if (pjsua_acc_set_registration(account, PJ_TRUE) != PJ_SUCCESS)
+        app_config.account.reg_timeout = KEEP_ALIVE_INTERVAL;
+        if (pjsua_acc_set_registration(accountId, PJ_TRUE) != PJ_SUCCESS)
         {
-            NSLog(@"//### Failed to set SIP registration for account %d.", account);
+            NSLog(@"//### Failed to set SIP registration for account %d.", accountId);
         }
     }
 }
@@ -1933,7 +1698,6 @@ on_error:
                           uriString = [NSString stringWithFormat:@"sip:%@@%@;transport=tls", calledNumber, self.server];
                           uri = pj_str((char*)[uriString cStringUsingEncoding:NSASCIIStringEncoding]);
                           pjsua_call_setting_default(&call_opt);
-                          call_opt.aud_cnt = app_config.aud_cnt;
 
                           // Create optional header containing number/identity from which this call is made.
                           pjsua_msg_data_init(&msg_data);
@@ -1943,7 +1707,7 @@ on_error:
                           pjsip_generic_string_hdr_init2(&header, &header_name, &header_value);
                           pj_list_push_back(&msg_data.hdr_list, &header);
                           
-                          status = pjsua_call_make_call(current_acc, &uri, &call_opt, userData, &msg_data, &call_id);
+                          status = pjsua_call_make_call(pjsua_acc_get_default(), &uri, &call_opt, userData, &msg_data, &call_id);
                           if (status != PJ_SUCCESS)
                           {
                               NSLog(@"//### Failed to make call: %d.", status);
