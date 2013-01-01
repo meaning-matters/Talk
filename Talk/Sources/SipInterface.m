@@ -85,14 +85,28 @@ static struct
 
 static pjsua_call_id	current_call = PJSUA_INVALID_ID;
 
-static void     ringback_start(pjsua_call_id call_id);
-static void     ring_start(pjsua_call_id call_id);
-static void     ring_stop(pjsua_call_id call_id);
+static void ringback_start(pjsua_call_id call_id);
+static void ring_start(pjsua_call_id call_id);
+static void ring_stop(pjsua_call_id call_id);
 
+static void on_call_state(pjsua_call_id call_id, pjsip_event *e);
+static void on_incoming_call(pjsua_acc_id acc_id, pjsua_call_id  call_id, pjsip_rx_data* rdata);
+static void on_call_tsx_state(pjsua_call_id call_id, pjsip_transaction* tsx, pjsip_event* e);
+static void on_call_generic_media_state(pjsua_call_info* ci, unsigned mi, pj_bool_t* has_error);
+static void on_call_audio_state(pjsua_call_info* ci, unsigned mi, pj_bool_t* has_error);
+static void on_call_media_state(pjsua_call_id call_id);
+static void call_on_dtmf_callback(pjsua_call_id call_id, int dtmf);
+static pjsip_redirect_op call_on_redirected(pjsua_call_id call_id, const pjsip_uri* target, const pjsip_event* e);
+static void on_reg_state(pjsua_acc_id acc_id, pjsua_reg_info *info);
+static void on_call_transfer_status(pjsua_call_id call_id, int status_code, const pj_str_t* status_text, pj_bool_t final, pj_bool_t* p_cont);
+static void on_call_replaced(pjsua_call_id old_call_id, pjsua_call_id new_call_id);
+static void on_nat_detect(const pj_stun_nat_detect_result* res);
+static void on_mwi_info(pjsua_acc_id acc_id, pjsua_mwi_info* mwi_info);
+static void on_transport_state(pjsip_transport* tp, pjsip_transport_state state, const pjsip_transport_state_info* stateInfo);
+static void on_ice_transport_error(int index, pj_ice_strans_op op, pj_status_t status, void* param);
+static pj_status_t on_snd_dev_operation(int operation);
 
-pj_bool_t 	app_restart;
-
-static SipInterfaceRegistered   _registered;
+static SipInterface*            sipInterface;
 
 
 static void ringback_start(pjsua_call_id call_id)
@@ -253,641 +267,6 @@ static void call_timeout_callback(
     entry->id = PJSUA_INVALID_ID;
     
     pjsua_call_hangup(call_id, 200, NULL, &msg_data);
-}
-
-
-/*
- * Handler when invite state has changed.
- */
-static void on_call_state(pjsua_call_id call_id, pjsip_event *e)
-{
-    pjsua_call_info call_info;
-    
-    PJ_UNUSED_ARG(e);
-    
-    pjsua_call_get_info(call_id, &call_info);
-    
-    if (call_info.state == PJSIP_INV_STATE_DISCONNECTED)
-    {
-	/* Stop all ringback for this call */
-	ring_stop(call_id);
-        
-	/* Cancel duration timer, if any */
-	if (info.call_data[call_id].timer.id != PJSUA_INVALID_ID)
-        {
-	    struct call_data *cd = &info.call_data[call_id];
-	    pjsip_endpoint *endpt = pjsua_get_pjsip_endpt();
-            
-	    cd->timer.id = PJSUA_INVALID_ID;
-	    pjsip_endpt_cancel_timer(endpt, &cd->timer);
-	}
-        
-	/* Rewind play file when hangup automatically,
-	 * since file is not looped
-	 */
-	if (info.auto_play_hangup)
-        {
-	    pjsua_player_set_pos(info.wav_id, 0);
-        }
-        
-	PJ_LOG(3, (THIS_FILE, "Call %d is DISCONNECTED [reason=%d (%s)]",
-                   call_id, call_info.last_status, call_info.last_status_text.ptr));
-        
-	if (call_id == current_call)
-        {
-	    find_next_call();
-	}
-        
-        /* Reset current call */
-        if (current_call == call_id)
-        {
-            current_call = PJSUA_INVALID_ID;
-        }
-    }
-    else
-    {
-	if (info.duration != NO_LIMIT && call_info.state == PJSIP_INV_STATE_CONFIRMED)
-	{
-	    /* Schedule timer to hangup call after the specified duration */
-	    struct call_data*   cd = &info.call_data[call_id];
-	    pjsip_endpoint*     endpt = pjsua_get_pjsip_endpt();
-	    pj_time_val         delay;
-            
-	    cd->timer.id = call_id;
-	    delay.sec    = info.duration;
-	    delay.msec   = 0;
-	    pjsip_endpt_schedule_timer(endpt, &cd->timer, &delay);
-	}
-        
-	if (call_info.state == PJSIP_INV_STATE_EARLY)
-        {
-	    int         code;
-	    pj_str_t    reason;
-	    pjsip_msg*  msg;
-            
-	    /* This can only occur because of TX or RX message */
-	    pj_assert(e->type == PJSIP_EVENT_TSX_STATE);
-            
-	    if (e->body.tsx_state.type == PJSIP_EVENT_RX_MSG)
-            {
-		msg = e->body.tsx_state.src.rdata->msg_info.msg;
-	    }
-            else
-            {
-		msg = e->body.tsx_state.src.tdata->msg;
-	    }
-            
-	    code   = msg->line.status.code;
-	    reason = msg->line.status.reason;
-            
-	    /* Start ringback for 180 for UAC unless there's SDP in 180 */
-	    if (call_info.role==PJSIP_ROLE_UAC && code==180 &&
-		msg->body == NULL &&
-		call_info.media_status==PJSUA_CALL_MEDIA_NONE)
-	    {
-		ringback_start(call_id);
-	    }
-            
-	    PJ_LOG(3, (THIS_FILE, "Call %d state changed to %s (%d %.*s)",
-                       call_id, call_info.state_text.ptr, code, (int)reason.slen, reason.ptr));
-	}
-        else
-        {
-	    PJ_LOG(3,(THIS_FILE, "Call %d state changed to %s", call_id, call_info.state_text.ptr));
-	}
-        
-	if (call_info.state != PJSIP_INV_STATE_NULL && current_call == PJSUA_INVALID_ID)
-        {
-	    current_call = call_id;
-        }
-    }
-}
-
-
-/**
- * Handler when there is incoming call.
- */
-static void on_incoming_call(pjsua_acc_id   acc_id,
-                             pjsua_call_id  call_id,
-			     pjsip_rx_data* rdata)
-{
-    pjsua_call_info call_info;
-    
-    PJ_UNUSED_ARG(acc_id);
-    PJ_UNUSED_ARG(rdata);
-    
-    pjsua_call_get_info(call_id, &call_info);
-    
-    if (current_call == PJSUA_INVALID_ID)
-    {
-	current_call = call_id;
-    }
-
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive)
-    {
-        /* Start ringback */
-        ring_start(call_id);
-
-        if (info.auto_answer > 0)
-        {
-            pjsua_call_setting call_opt;
-
-            pjsua_call_setting_default(&call_opt);
-            pjsua_call_answer2(call_id, &call_opt, info.auto_answer, NULL, NULL);
-        }
-
-        if (info.auto_answer < 200)
-        {
-            char notif_st[80] = {0};
-
-            PJ_LOG(3, (THIS_FILE, "Incoming call for account %d!\nMedia count: %d audio\n%sFrom: %s\n"
-                       "To: %s\nPress a to answer or h to reject call",
-                       acc_id, call_info.rem_aud_cnt, notif_st, call_info.remote_info.ptr,
-                       call_info.local_info.ptr));
-        }
-    }
-    else
-    {
-        UILocalNotification*    alert = [[UILocalNotification alloc] init];
-
-        alert.repeatInterval = 0;
-        alert.alertBody      = @"Incoming call received...";
-        alert.alertAction    = @"Answer";
-
-        [[UIApplication sharedApplication] presentLocalNotificationNow:alert];
-    }
-}
-
-
-/*
- * Handler when a transaction within a call has changed state.
- */
-static void on_call_tsx_state(
-    pjsua_call_id       call_id,
-    pjsip_transaction*  tsx,
-    pjsip_event*        e)
-{
-    const pjsip_method info_method =
-    {
-	PJSIP_OTHER_METHOD,
-	{
-            "INFO",
-            4
-        }
-    };
-    
-    if (pjsip_method_cmp(&tsx->method, &info_method) == 0)
-    {
-	/*
-	 * Handle INFO method.
-	 */
-	const pj_str_t STR_APPLICATION = { "application", 11};
-	const pj_str_t STR_DTMF_RELAY  = { "dtmf-relay", 10 };
-	pjsip_msg_body* body = NULL;
-	pj_bool_t       dtmf_info = PJ_FALSE;
-	
-	if (tsx->role == PJSIP_ROLE_UAC)
-        {
-	    if (e->body.tsx_state.type == PJSIP_EVENT_TX_MSG)
-            {
-		body = e->body.tsx_state.src.tdata->msg->body;
-            }
-	    else
-            {
-		body = e->body.tsx_state.tsx->last_tx->msg->body;
-            }
-	}
-        else
-        {
-	    if (e->body.tsx_state.type == PJSIP_EVENT_RX_MSG)
-            {
-		body = e->body.tsx_state.src.rdata->msg_info.msg->body;
-            }
-	}
-	
-	/* Check DTMF content in the INFO message */
-	if (body && body->len &&
-	    pj_stricmp(&body->content_type.type, &STR_APPLICATION) == 0 &&
-	    pj_stricmp(&body->content_type.subtype, &STR_DTMF_RELAY) == 0)
-	{
-	    dtmf_info = PJ_TRUE;
-	}
-        
-	if (dtmf_info && tsx->role == PJSIP_ROLE_UAC &&
-	    (tsx->state == PJSIP_TSX_STATE_COMPLETED ||
-             (tsx->state == PJSIP_TSX_STATE_TERMINATED &&
-              e->body.tsx_state.prev_state != PJSIP_TSX_STATE_COMPLETED)))
-	{
-	    /* Status of outgoing INFO request */
-	    if (tsx->status_code >= 200 && tsx->status_code < 300)
-            {
-		PJ_LOG(4, (THIS_FILE, "Call %d: DTMF sent successfully with INFO", call_id));
-	    }
-            else if (tsx->status_code >= 300)
-            {
-		PJ_LOG(4, (THIS_FILE, "Call %d: Failed to send DTMF with INFO: %d/%.*s",
-                           call_id, tsx->status_code, (int)tsx->status_text.slen, tsx->status_text.ptr));
-	    }
-	}
-        else if (dtmf_info && tsx->role == PJSIP_ROLE_UAS && tsx->state == PJSIP_TSX_STATE_TRYING)
-	{
-	    /* Answer incoming INFO with 200/OK */
-	    pjsip_rx_data*  rdata;
-	    pjsip_tx_data*  tdata;
-	    pj_status_t     status;
-            
-	    rdata = e->body.tsx_state.src.rdata;
-            
-	    if (rdata->msg_info.msg->body)
-            {
-		status = pjsip_endpt_create_response(tsx->endpt, rdata, 200, NULL, &tdata);
-		if (status == PJ_SUCCESS)
-                {
-		    status = pjsip_tsx_send_msg(tsx, tdata);
-                }
-                
-		PJ_LOG(3, (THIS_FILE, "Call %d: incoming INFO:\n%.*s",
-                           call_id, (int)rdata->msg_info.msg->body->len, rdata->msg_info.msg->body->data));
-	    }
-            else
-            {
-		status = pjsip_endpt_create_response(tsx->endpt, rdata, 400, NULL, &tdata);
-		if (status == PJ_SUCCESS)
-                {
-		    status = pjsip_tsx_send_msg(tsx, tdata);
-                }
-	    }
-	}
-    }
-}
-
-
-/* General processing for media state. "mi" is the media index */
-static void on_call_generic_media_state(
-    pjsua_call_info*    ci,
-    unsigned            mi,
-    pj_bool_t*          has_error)
-{
-    const char *status_name[] =
-    {
-        "None",
-        "Active",
-        "Local hold",
-        "Remote hold",
-        "Error"
-    };
-    
-    PJ_UNUSED_ARG(has_error);
-    
-    pj_assert(ci->media[mi].status <= PJ_ARRAY_SIZE(status_name));
-    pj_assert(PJSUA_CALL_MEDIA_ERROR == 4);
-    
-    PJ_LOG(4, (THIS_FILE, "Call %d media %d [type=%s], status is %s",
-	       ci->id, mi, pjmedia_type_name(ci->media[mi].type), status_name[ci->media[mi].status]));
-}
-
-
-/* Process audio media state. "mi" is the media index. */
-static void on_call_audio_state(
-    pjsua_call_info*    ci,
-    unsigned            mi,
-    pj_bool_t*          has_error)
-{
-    PJ_UNUSED_ARG(has_error);
-    
-    /* Stop ringback */
-    ring_stop(ci->id);
-    
-    /* Connect ports appropriately when media status is ACTIVE or REMOTE HOLD,
-     * otherwise we should NOT connect the ports.
-     */
-    if (ci->media[mi].status == PJSUA_CALL_MEDIA_ACTIVE || ci->media[mi].status == PJSUA_CALL_MEDIA_REMOTE_HOLD)
-    {
-	pj_bool_t connect_sound = PJ_TRUE;
-	pj_bool_t disconnect_mic = PJ_FALSE;
-	pjsua_conf_port_id call_conf_slot;
-        
-	call_conf_slot = ci->media[mi].stream.aud.conf_slot;
-      
-	/* Otherwise connect to sound device */
-	if (connect_sound)
-        {
-	    pjsua_conf_connect(call_conf_slot, 0);
-	    if (!disconnect_mic)
-            {
-		pjsua_conf_connect(0, call_conf_slot);
-
-                pjsua_conf_adjust_rx_level(0, info.mic_level);
-                pjsua_conf_adjust_tx_level(0, info.speaker_level);
-            }
-	}
-    }
-}
-
-
-/*
- * Callback on media state changed event.
- * The action may connect the call to sound device, to file, or
- * to loop the call.
- */
-static void on_call_media_state(
-    pjsua_call_id       call_id)
-{
-    pjsua_call_info call_info;
-    unsigned        mi;
-    pj_bool_t       has_error = PJ_FALSE;
-    
-    pjsua_call_get_info(call_id, &call_info);
-    
-    for (mi = 0; mi < call_info.media_cnt; ++mi)
-    {
-	on_call_generic_media_state(&call_info, mi, &has_error);
-        
-	switch (call_info.media[mi].type)
-        {
-            case PJMEDIA_TYPE_AUDIO:
-                on_call_audio_state(&call_info, mi, &has_error);
-                break;
-                
-            default:
-                /* Make gcc happy about enum not handled by switch/case */
-                break;
-	}
-    }
-    
-    if (has_error)
-    {
-	pj_str_t reason = pj_str("Media failed");
-	pjsua_call_hangup(call_id, 500, &reason, NULL);
-    }
-}
-
-
-/*
- * DTMF callback.
- */
-static void call_on_dtmf_callback(
-    pjsua_call_id   call_id,
-    int             dtmf)
-{
-    PJ_LOG(3,(THIS_FILE, "Incoming DTMF on call %d: %c", call_id, dtmf));
-}
-
-
-/*
- * Redirection handler.
- */
-static pjsip_redirect_op call_on_redirected(
-    pjsua_call_id       call_id,
-    const pjsip_uri*    target,
-    const pjsip_event*  e)
-{
-    PJ_UNUSED_ARG(e);
-    
-    if (info.redir_op == PJSIP_REDIRECT_PENDING)
-    {
-	char    uristr[PJSIP_MAX_URL_SIZE];
-	int     len;
-        
-	len = pjsip_uri_print(PJSIP_URI_IN_FROMTO_HDR, target, uristr, sizeof(uristr));
-	if (len < 1)
-        {
-	    pj_ansi_strcpy(uristr, "--URI too long--");
-	}
-        
-	PJ_LOG(3, (THIS_FILE, "Call %d is being redirected to %.*s. Press 'Ra' to accept, 'Rr' to reject, or 'Rd' to "
-		              "disconnect.",
-                   call_id, len, uristr));
-    }
-    
-    return info.redir_op;
-}
-
-
-/*
- * Handler registration status has changed.
- */
-static void on_reg_state(pjsua_acc_id acc_id,  pjsua_reg_info *info)
-{
-    if (info == NULL || info->cbparam == NULL)
-    {
-        _registered = SipInterfaceRegisteredFailed;
-    }
-    else
-    {
-        struct pjsip_regc_cbparam*  cbparam = info->cbparam;
-
-        if (acc_id != pjsua_acc_get_default())
-        {
-            _registered = SipInterfaceRegisteredFailed;
-        }
-        else if (cbparam->code / 100 == 2 && cbparam->expiration > 0 && cbparam->contact_cnt > 0)
-        {
-            _registered = SipInterfaceRegisteredYes;
-        }
-        else
-        {
-            _registered = SipInterfaceRegisteredFailed;
-        }
-    }
-
-    // Log already written.
-}
-
-
-/**
- * Call transfer request status.
- */
-static void on_call_transfer_status(
-    pjsua_call_id   call_id,
-    int             status_code,
-    const pj_str_t* status_text,
-    pj_bool_t       final,
-    pj_bool_t*      p_cont)
-{
-    PJ_LOG(3,(THIS_FILE, "Call %d: transfer status=%d (%.*s) %s",
-	      call_id, status_code, (int)status_text->slen, status_text->ptr, (final ? "[final]" : "")));
-    
-    if (status_code/100 == 2)
-    {
-	PJ_LOG(3, (THIS_FILE, "Call %d: call transfered successfully, disconnecting call", call_id));
-        
-	pjsua_call_hangup(call_id, PJSIP_SC_GONE, NULL, NULL);
-	*p_cont = PJ_FALSE;
-    }
-}
-
-
-/*
- * Notification that call is being replaced.
- */
-static void on_call_replaced(
-    pjsua_call_id   old_call_id,
-    pjsua_call_id   new_call_id)
-{
-    pjsua_call_info old_ci;
-    pjsua_call_info new_ci;
-    
-    pjsua_call_get_info(old_call_id, &old_ci);
-    pjsua_call_get_info(new_call_id, &new_ci);
-    
-    PJ_LOG(3,(THIS_FILE, "Call %d with %.*s is being replaced by call %d with %.*s",
-              old_call_id, (int)old_ci.remote_info.slen, old_ci.remote_info.ptr,
-              new_call_id, (int)new_ci.remote_info.slen, new_ci.remote_info.ptr));
-}
-
-
-/*
- * NAT type detection callback.
- */
-static void on_nat_detect(
-    const pj_stun_nat_detect_result*    res)
-{
-    if (res->status != PJ_SUCCESS)
-    {
-	pjsua_perror(THIS_FILE, "NAT detection failed", res->status);
-    }
-    else
-    {
-	PJ_LOG(3, (THIS_FILE, "NAT detected as %s", res->nat_type_name));
-    }
-}
-
-
-/*
- * MWI indication
- */
-static void on_mwi_info(
-    pjsua_acc_id    acc_id,
-    pjsua_mwi_info* mwi_info)
-{
-    pj_str_t    body;
-    
-    PJ_LOG(3,(THIS_FILE, "Received MWI for acc %d:", acc_id));
-    
-    if (mwi_info->rdata->msg_info.ctype)
-    {
-	const pjsip_ctype_hdr *ctype = mwi_info->rdata->msg_info.ctype;
-        
-	PJ_LOG(3, (THIS_FILE, " Content-Type: %.*s/%.*s",
-	          (int)ctype->media.type.slen, ctype->media.type.ptr,
-                  (int)ctype->media.subtype.slen, ctype->media.subtype.ptr));
-    }
-    
-    if (!mwi_info->rdata->msg_info.msg->body)
-    {
-	PJ_LOG(3,(THIS_FILE, "  no message body"));
-	return;
-    }
-    
-    body.ptr  = mwi_info->rdata->msg_info.msg->body->data;
-    body.slen = mwi_info->rdata->msg_info.msg->body->len;
-    
-    PJ_LOG(3,(THIS_FILE, " Body:\n%.*s", (int)body.slen, body.ptr));
-}
-
-
-/*
- * Transport status notification
- */
-static void on_transport_state(
-    pjsip_transport*                    tp,
-    pjsip_transport_state               state,
-    const pjsip_transport_state_info*   stateInfo)
-{
-    char host_port[128];
-    
-    pj_ansi_snprintf(host_port, sizeof(host_port), "[%.*s:%d]",
-		     (int)tp->remote_name.host.slen, tp->remote_name.host.ptr, tp->remote_name.port);
-    
-    switch (state)
-    {
-        case PJSIP_TP_STATE_CONNECTED:
-            {
-                PJ_LOG(3, (THIS_FILE, "SIP %s transport is connected to %s", tp->type_name, host_port));
-            }
-            break;
-            
-        case PJSIP_TP_STATE_DISCONNECTED:
-            {
-                char buf[100];
-                
-                snprintf(buf, sizeof(buf), "SIP %s transport is disconnected from %s", tp->type_name, host_port);
-                pjsua_perror(THIS_FILE, buf, stateInfo->status);
-            }
-            break;
-            
-        default:
-            break;
-    }
-    
-#if defined(PJSIP_HAS_TLS_TRANSPORT) && PJSIP_HAS_TLS_TRANSPORT != 0
-    if (!pj_ansi_stricmp(tp->type_name, "tls") && stateInfo->ext_info &&
-	(state == PJSIP_TP_STATE_CONNECTED ||
-	 ((pjsip_tls_state_info*)stateInfo->ext_info)->ssl_sock_info->verify_status != PJ_SUCCESS))
-    {
-	char        buf[2048];
-	const char* verif_msgs[32];
-	unsigned    verif_msg_cnt;
-
-	pjsip_tls_state_info *tls_info  = (pjsip_tls_state_info*)stateInfo->ext_info;
-	pj_ssl_sock_info *ssl_sock_info = tls_info->ssl_sock_info;
-        
-	/* Dump server TLS cipher */
-	PJ_LOG(4, (THIS_FILE, "TLS cipher used: 0x%06X/%s",
-                   ssl_sock_info->cipher, pj_ssl_cipher_name(ssl_sock_info->cipher)));
-        
-	/* Dump server TLS certificate */
-	pj_ssl_cert_info_dump(ssl_sock_info->remote_cert_info, "  ", buf, sizeof(buf));
-	PJ_LOG(4, (THIS_FILE, "TLS cert info of %s:\n%s", host_port, buf));
-        
-	/* Dump server TLS certificate verification result */
-	verif_msg_cnt = PJ_ARRAY_SIZE(verif_msgs);
-	pj_ssl_cert_get_verify_status_strings(ssl_sock_info->verify_status, verif_msgs, &verif_msg_cnt);
-	PJ_LOG(3, (THIS_FILE, "TLS cert verification result of %s : %s",
-                   host_port, (verif_msg_cnt == 1? verif_msgs[0]:"")));
-        
-	if (verif_msg_cnt > 1)
-        {
-	    for (unsigned i = 0; i < verif_msg_cnt; ++i)
-            {
-		PJ_LOG(3,(THIS_FILE, "- %s", verif_msgs[i]));
-            }
-	}
-        
-	if (ssl_sock_info->verify_status && !info.udp_cfg.tls_setting.verify_server)
-	{
-	    PJ_LOG(3, (THIS_FILE, "PJSUA is configured to ignore TLS cert verification errors"));
-	}
-    }
-#endif
-}
-
-
-/*
- * Notification on ICE error.
- */
-static void on_ice_transport_error(
-    int                 index,
-    pj_ice_strans_op    op,
-    pj_status_t         status,
-    void*               param)
-{
-    PJ_UNUSED_ARG(op);
-    PJ_UNUSED_ARG(param);
-    PJ_PERROR(1, (THIS_FILE, status, "ICE keep alive failure for transport %d", index));
-}
-
-
-/*
- * Notification on sound device operation.
- */
-static pj_status_t on_snd_dev_operation(
-    int operation)
-{
-    PJ_LOG(3,(THIS_FILE, "Turning sound device %s", (operation? "ON":"OFF")));
-    
-    return PJ_SUCCESS;
 }
 
 
@@ -1099,7 +478,9 @@ void showLog(
              [self keepAlive];
          }];
     }
-    
+
+    sipInterface = self;
+
     return self;
 }
 
@@ -1108,8 +489,6 @@ void showLog(
 {
     unsigned                i;
     pj_status_t             status;
-
-    app_restart = PJ_FALSE;
 
     if ((status = pjsua_create()) != PJ_SUCCESS)
     {
@@ -1690,5 +1069,774 @@ void showLog(
     return _registered;
 }
 
+
+#pragma mark - Callbacks
+
+- (void)onCallState:(pjsua_call_id)call_id event:(pjsip_event*)e
+{
+    pjsua_call_info call_info;
+
+    PJ_UNUSED_ARG(e);
+
+    pjsua_call_get_info(call_id, &call_info);
+
+    if (call_info.state == PJSIP_INV_STATE_DISCONNECTED)
+    {
+	/* Stop all ringback for this call */
+	ring_stop(call_id);
+
+	/* Cancel duration timer, if any */
+	if (info.call_data[call_id].timer.id != PJSUA_INVALID_ID)
+        {
+	    struct call_data *cd = &info.call_data[call_id];
+	    pjsip_endpoint *endpt = pjsua_get_pjsip_endpt();
+
+	    cd->timer.id = PJSUA_INVALID_ID;
+	    pjsip_endpt_cancel_timer(endpt, &cd->timer);
+	}
+
+	/* Rewind play file when hangup automatically,
+	 * since file is not looped
+	 */
+	if (info.auto_play_hangup)
+        {
+	    pjsua_player_set_pos(info.wav_id, 0);
+        }
+
+	PJ_LOG(3, (THIS_FILE, "Call %d is DISCONNECTED [reason=%d (%s)]",
+                   call_id, call_info.last_status, call_info.last_status_text.ptr));
+
+	if (call_id == current_call)
+        {
+	    find_next_call();
+	}
+
+        /* Reset current call */
+        if (current_call == call_id)
+        {
+            current_call = PJSUA_INVALID_ID;
+        }
+    }
+    else
+    {
+	if (info.duration != NO_LIMIT && call_info.state == PJSIP_INV_STATE_CONFIRMED)
+	{
+	    /* Schedule timer to hangup call after the specified duration */
+	    struct call_data*   cd = &info.call_data[call_id];
+	    pjsip_endpoint*     endpt = pjsua_get_pjsip_endpt();
+	    pj_time_val         delay;
+
+	    cd->timer.id = call_id;
+	    delay.sec    = info.duration;
+	    delay.msec   = 0;
+	    pjsip_endpt_schedule_timer(endpt, &cd->timer, &delay);
+	}
+
+	if (call_info.state == PJSIP_INV_STATE_EARLY)
+        {
+	    int         code;
+	    pj_str_t    reason;
+	    pjsip_msg*  msg;
+
+	    /* This can only occur because of TX or RX message */
+	    pj_assert(e->type == PJSIP_EVENT_TSX_STATE);
+
+	    if (e->body.tsx_state.type == PJSIP_EVENT_RX_MSG)
+            {
+		msg = e->body.tsx_state.src.rdata->msg_info.msg;
+	    }
+            else
+            {
+		msg = e->body.tsx_state.src.tdata->msg;
+	    }
+
+	    code   = msg->line.status.code;
+	    reason = msg->line.status.reason;
+
+	    /* Start ringback for 180 for UAC unless there's SDP in 180 */
+	    if (call_info.role==PJSIP_ROLE_UAC && code==180 &&
+		msg->body == NULL &&
+		call_info.media_status==PJSUA_CALL_MEDIA_NONE)
+	    {
+		ringback_start(call_id);
+	    }
+
+	    PJ_LOG(3, (THIS_FILE, "Call %d state changed to %s (%d %.*s)",
+                       call_id, call_info.state_text.ptr, code, (int)reason.slen, reason.ptr));
+	}
+        else
+        {
+	    PJ_LOG(3,(THIS_FILE, "Call %d state changed to %s", call_id, call_info.state_text.ptr));
+	}
+
+	if (call_info.state != PJSIP_INV_STATE_NULL && current_call == PJSUA_INVALID_ID)
+        {
+	    current_call = call_id;
+        }
+    }
+}
+
+
+- (void)onIncomingCall:(pjsua_acc_id)acc_id callId:(pjsua_call_id)call_id data:(pjsip_rx_data*)rdata
+{
+    pjsua_call_info call_info;
+
+    PJ_UNUSED_ARG(acc_id);
+    PJ_UNUSED_ARG(rdata);
+
+    pjsua_call_get_info(call_id, &call_info);
+
+    if (current_call == PJSUA_INVALID_ID)
+    {
+	current_call = call_id;
+    }
+
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive)
+    {
+        /* Start ringback */
+        ring_start(call_id);
+
+        if (info.auto_answer > 0)
+        {
+            pjsua_call_setting call_opt;
+
+            pjsua_call_setting_default(&call_opt);
+            pjsua_call_answer2(call_id, &call_opt, info.auto_answer, NULL, NULL);
+        }
+
+        if (info.auto_answer < 200)
+        {
+            char notif_st[80] = {0};
+
+            PJ_LOG(3, (THIS_FILE, "Incoming call for account %d!\nMedia count: %d audio\n%sFrom: %s\n"
+                       "To: %s\nPress a to answer or h to reject call",
+                       acc_id, call_info.rem_aud_cnt, notif_st, call_info.remote_info.ptr,
+                       call_info.local_info.ptr));
+        }
+    }
+    else
+    {
+        UILocalNotification*    alert = [[UILocalNotification alloc] init];
+
+        alert.repeatInterval = 0;
+        alert.alertBody      = @"Incoming call received...";
+        alert.alertAction    = @"Answer";
+
+        [[UIApplication sharedApplication] presentLocalNotificationNow:alert];
+    }
+}
+
+
+/*
+ * Handler when a transaction within a call has changed state.
+ */
+- (void)onCallTransactionState:(pjsua_call_id)call_id transaction:(pjsip_transaction*)tsx event:(pjsip_event*)e
+{
+    const pjsip_method info_method =
+    {
+	PJSIP_OTHER_METHOD,
+	{
+            "INFO",
+            4
+        }
+    };
+
+    if (pjsip_method_cmp(&tsx->method, &info_method) == 0)
+    {
+	/*
+	 * Handle INFO method.
+	 */
+	const pj_str_t STR_APPLICATION = { "application", 11};
+	const pj_str_t STR_DTMF_RELAY  = { "dtmf-relay", 10 };
+	pjsip_msg_body* body = NULL;
+	pj_bool_t       dtmf_info = PJ_FALSE;
+
+	if (tsx->role == PJSIP_ROLE_UAC)
+        {
+	    if (e->body.tsx_state.type == PJSIP_EVENT_TX_MSG)
+            {
+		body = e->body.tsx_state.src.tdata->msg->body;
+            }
+	    else
+            {
+		body = e->body.tsx_state.tsx->last_tx->msg->body;
+            }
+	}
+        else
+        {
+	    if (e->body.tsx_state.type == PJSIP_EVENT_RX_MSG)
+            {
+		body = e->body.tsx_state.src.rdata->msg_info.msg->body;
+            }
+	}
+
+	/* Check DTMF content in the INFO message */
+	if (body && body->len &&
+	    pj_stricmp(&body->content_type.type, &STR_APPLICATION) == 0 &&
+	    pj_stricmp(&body->content_type.subtype, &STR_DTMF_RELAY) == 0)
+	{
+	    dtmf_info = PJ_TRUE;
+	}
+
+	if (dtmf_info && tsx->role == PJSIP_ROLE_UAC &&
+	    (tsx->state == PJSIP_TSX_STATE_COMPLETED ||
+             (tsx->state == PJSIP_TSX_STATE_TERMINATED &&
+              e->body.tsx_state.prev_state != PJSIP_TSX_STATE_COMPLETED)))
+	{
+	    /* Status of outgoing INFO request */
+	    if (tsx->status_code >= 200 && tsx->status_code < 300)
+            {
+		PJ_LOG(4, (THIS_FILE, "Call %d: DTMF sent successfully with INFO", call_id));
+	    }
+            else if (tsx->status_code >= 300)
+            {
+		PJ_LOG(4, (THIS_FILE, "Call %d: Failed to send DTMF with INFO: %d/%.*s",
+                           call_id, tsx->status_code, (int)tsx->status_text.slen, tsx->status_text.ptr));
+	    }
+	}
+        else if (dtmf_info && tsx->role == PJSIP_ROLE_UAS && tsx->state == PJSIP_TSX_STATE_TRYING)
+	{
+	    /* Answer incoming INFO with 200/OK */
+	    pjsip_rx_data*  rdata;
+	    pjsip_tx_data*  tdata;
+	    pj_status_t     status;
+
+	    rdata = e->body.tsx_state.src.rdata;
+
+	    if (rdata->msg_info.msg->body)
+            {
+		status = pjsip_endpt_create_response(tsx->endpt, rdata, 200, NULL, &tdata);
+		if (status == PJ_SUCCESS)
+                {
+		    status = pjsip_tsx_send_msg(tsx, tdata);
+                }
+
+		PJ_LOG(3, (THIS_FILE, "Call %d: incoming INFO:\n%.*s",
+                           call_id, (int)rdata->msg_info.msg->body->len, rdata->msg_info.msg->body->data));
+	    }
+            else
+            {
+		status = pjsip_endpt_create_response(tsx->endpt, rdata, 400, NULL, &tdata);
+		if (status == PJ_SUCCESS)
+                {
+		    status = pjsip_tsx_send_msg(tsx, tdata);
+                }
+	    }
+	}
+    }
+}
+
+
+/* General processing for media state. "mi" is the media index */
+- (void)onCallGenericMediaState:(pjsua_call_info*)ci state:(unsigned)mi hasError:(pj_bool_t*)has_error
+{
+    const char *status_name[] =
+    {
+        "None",
+        "Active",
+        "Local hold",
+        "Remote hold",
+        "Error"
+    };
+
+    PJ_UNUSED_ARG(has_error);
+
+    pj_assert(ci->media[mi].status <= PJ_ARRAY_SIZE(status_name));
+    pj_assert(PJSUA_CALL_MEDIA_ERROR == 4);
+
+    PJ_LOG(4, (THIS_FILE, "Call %d media %d [type=%s], status is %s",
+	       ci->id, mi, pjmedia_type_name(ci->media[mi].type), status_name[ci->media[mi].status]));
+}
+
+
+/* Process audio media state. "mi" is the media index. */
+- (void)onCallAudioState:(pjsua_call_info*)ci state:(unsigned)mi hasError:(pj_bool_t*)has_error
+{
+    PJ_UNUSED_ARG(has_error);
+
+    /* Stop ringback */
+    ring_stop(ci->id);
+
+    /* Connect ports appropriately when media status is ACTIVE or REMOTE HOLD,
+     * otherwise we should NOT connect the ports.
+     */
+    if (ci->media[mi].status == PJSUA_CALL_MEDIA_ACTIVE || ci->media[mi].status == PJSUA_CALL_MEDIA_REMOTE_HOLD)
+    {
+	pj_bool_t connect_sound = PJ_TRUE;
+	pj_bool_t disconnect_mic = PJ_FALSE;
+	pjsua_conf_port_id call_conf_slot;
+
+	call_conf_slot = ci->media[mi].stream.aud.conf_slot;
+
+	/* Otherwise connect to sound device */
+	if (connect_sound)
+        {
+	    pjsua_conf_connect(call_conf_slot, 0);
+	    if (!disconnect_mic)
+            {
+		pjsua_conf_connect(0, call_conf_slot);
+
+                pjsua_conf_adjust_rx_level(0, info.mic_level);
+                pjsua_conf_adjust_tx_level(0, info.speaker_level);
+            }
+	}
+    }
+}
+
+
+/*
+ * Callback on media state changed event.
+ * The action may connect the call to sound device, to file, or
+ * to loop the call.
+ */
+- (void)onCallMediaState:(pjsua_call_id)call_id
+{
+    pjsua_call_info call_info;
+    unsigned        mi;
+    pj_bool_t       has_error = PJ_FALSE;
+
+    pjsua_call_get_info(call_id, &call_info);
+
+    for (mi = 0; mi < call_info.media_cnt; ++mi)
+    {
+	on_call_generic_media_state(&call_info, mi, &has_error);
+
+	switch (call_info.media[mi].type)
+        {
+            case PJMEDIA_TYPE_AUDIO:
+                on_call_audio_state(&call_info, mi, &has_error);
+                break;
+
+            default:
+                /* Make gcc happy about enum not handled by switch/case */
+                break;
+	}
+    }
+
+    if (has_error)
+    {
+	pj_str_t reason = pj_str("Media failed");
+	pjsua_call_hangup(call_id, 500, &reason, NULL);
+    }
+}
+
+
+/*
+ * DTMF callback.
+ */
+- (void)callOnDtmfCallback:(pjsua_call_id)call_id dtmf:(int)dtmf
+{
+    PJ_LOG(3,(THIS_FILE, "Incoming DTMF on call %d: %c", call_id, dtmf));
+}
+
+
+/*
+ * Redirection handler.
+ */
+- (pjsip_redirect_op)callOnRedirected:(pjsua_call_id)call_id target:(const pjsip_uri*)target event:(const pjsip_event*)e
+{
+    PJ_UNUSED_ARG(e);
+
+    if (info.redir_op == PJSIP_REDIRECT_PENDING)
+    {
+	char    uristr[PJSIP_MAX_URL_SIZE];
+	int     len;
+
+	len = pjsip_uri_print(PJSIP_URI_IN_FROMTO_HDR, target, uristr, sizeof(uristr));
+	if (len < 1)
+        {
+	    pj_ansi_strcpy(uristr, "--URI too long--");
+	}
+
+	PJ_LOG(3, (THIS_FILE, "Call %d is being redirected to %.*s. Press 'Ra' to accept, 'Rr' to reject, or 'Rd' to "
+                   "disconnect.",
+                   call_id, len, uristr));
+    }
+
+    return info.redir_op;
+}
+
+
+/*
+ * Handler registration status has changed.
+ */
+- (void)onRegistrationState:(pjsua_acc_id)acc_id info:(pjsua_reg_info*)info
+{
+    if (info == NULL || info->cbparam == NULL)
+    {
+        _registered = SipInterfaceRegisteredFailed;
+    }
+    else
+    {
+        struct pjsip_regc_cbparam*  cbparam = info->cbparam;
+
+        if (acc_id != pjsua_acc_get_default())
+        {
+            _registered = SipInterfaceRegisteredFailed;
+        }
+        else if (cbparam->code / 100 == 2 && cbparam->expiration > 0 && cbparam->contact_cnt > 0)
+        {
+            _registered = SipInterfaceRegisteredYes;
+        }
+        else
+        {
+            _registered = SipInterfaceRegisteredFailed;
+        }
+    }
+
+    // Log already written.
+}
+
+
+/**
+ * Call transfer request status.
+ */
+- (void)onCallTransferStatus:(pjsua_call_id)call_id
+                        code:(int)status_code
+                        text:(const pj_str_t*)status_text
+                       final:(pj_bool_t)final
+                    continue:(pj_bool_t*)p_cont
+{
+    PJ_LOG(3,(THIS_FILE, "Call %d: transfer status=%d (%.*s) %s",
+	      call_id, status_code, (int)status_text->slen, status_text->ptr, (final ? "[final]" : "")));
+
+    if (status_code/100 == 2)
+    {
+	PJ_LOG(3, (THIS_FILE, "Call %d: call transfered successfully, disconnecting call", call_id));
+
+	pjsua_call_hangup(call_id, PJSIP_SC_GONE, NULL, NULL);
+	*p_cont = PJ_FALSE;
+    }
+}
+
+
+/*
+ * Notification that call is being replaced.
+ */
+- (void)onCallReplaced:(pjsua_call_id)old_call_id newCallId:(pjsua_call_id)new_call_id
+{
+    pjsua_call_info old_ci;
+    pjsua_call_info new_ci;
+
+    pjsua_call_get_info(old_call_id, &old_ci);
+    pjsua_call_get_info(new_call_id, &new_ci);
+
+    PJ_LOG(3,(THIS_FILE, "Call %d with %.*s is being replaced by call %d with %.*s",
+              old_call_id, (int)old_ci.remote_info.slen, old_ci.remote_info.ptr,
+              new_call_id, (int)new_ci.remote_info.slen, new_ci.remote_info.ptr));
+}
+
+
+/*
+ * NAT type detection callback.
+ */
+- (void)onNatDetect:(const pj_stun_nat_detect_result*)res
+{
+    if (res->status != PJ_SUCCESS)
+    {
+	pjsua_perror(THIS_FILE, "NAT detection failed", res->status);
+    }
+    else
+    {
+	PJ_LOG(3, (THIS_FILE, "NAT detected as %s", res->nat_type_name));
+    }
+}
+
+
+/*
+ * MWI indication
+ */
+- (void)onMwiInfo:(pjsua_acc_id)acc_id info:(pjsua_mwi_info*)mwi_info
+{
+    pj_str_t    body;
+
+    PJ_LOG(3,(THIS_FILE, "Received MWI for acc %d:", acc_id));
+
+    if (mwi_info->rdata->msg_info.ctype)
+    {
+	const pjsip_ctype_hdr *ctype = mwi_info->rdata->msg_info.ctype;
+
+	PJ_LOG(3, (THIS_FILE, " Content-Type: %.*s/%.*s",
+                   (int)ctype->media.type.slen, ctype->media.type.ptr,
+                   (int)ctype->media.subtype.slen, ctype->media.subtype.ptr));
+    }
+
+    if (!mwi_info->rdata->msg_info.msg->body)
+    {
+	PJ_LOG(3,(THIS_FILE, "  no message body"));
+	return;
+    }
+
+    body.ptr  = mwi_info->rdata->msg_info.msg->body->data;
+    body.slen = mwi_info->rdata->msg_info.msg->body->len;
+
+    PJ_LOG(3,(THIS_FILE, " Body:\n%.*s", (int)body.slen, body.ptr));
+}
+
+
+/*
+ * Transport status notification
+ */
+- (void)onTransportState:(pjsip_transport*)tp
+                   state:(pjsip_transport_state)state
+                    info:(const pjsip_transport_state_info*)stateInfo
+{
+    char host_port[128];
+
+    pj_ansi_snprintf(host_port, sizeof(host_port), "[%.*s:%d]",
+		     (int)tp->remote_name.host.slen, tp->remote_name.host.ptr, tp->remote_name.port);
+
+    switch (state)
+    {
+        case PJSIP_TP_STATE_CONNECTED:
+        {
+            PJ_LOG(3, (THIS_FILE, "SIP %s transport is connected to %s", tp->type_name, host_port));
+        }
+            break;
+
+        case PJSIP_TP_STATE_DISCONNECTED:
+        {
+            char buf[100];
+
+            snprintf(buf, sizeof(buf), "SIP %s transport is disconnected from %s", tp->type_name, host_port);
+            pjsua_perror(THIS_FILE, buf, stateInfo->status);
+        }
+            break;
+
+        default:
+            break;
+    }
+
+#if defined(PJSIP_HAS_TLS_TRANSPORT) && PJSIP_HAS_TLS_TRANSPORT != 0
+    if (!pj_ansi_stricmp(tp->type_name, "tls") && stateInfo->ext_info &&
+	(state == PJSIP_TP_STATE_CONNECTED ||
+	 ((pjsip_tls_state_info*)stateInfo->ext_info)->ssl_sock_info->verify_status != PJ_SUCCESS))
+    {
+	char        buf[2048];
+	const char* verif_msgs[32];
+	unsigned    verif_msg_cnt;
+
+	pjsip_tls_state_info *tls_info  = (pjsip_tls_state_info*)stateInfo->ext_info;
+	pj_ssl_sock_info *ssl_sock_info = tls_info->ssl_sock_info;
+
+	/* Dump server TLS cipher */
+	PJ_LOG(4, (THIS_FILE, "TLS cipher used: 0x%06X/%s",
+                   ssl_sock_info->cipher, pj_ssl_cipher_name(ssl_sock_info->cipher)));
+
+	/* Dump server TLS certificate */
+	pj_ssl_cert_info_dump(ssl_sock_info->remote_cert_info, "  ", buf, sizeof(buf));
+	PJ_LOG(4, (THIS_FILE, "TLS cert info of %s:\n%s", host_port, buf));
+
+	/* Dump server TLS certificate verification result */
+	verif_msg_cnt = PJ_ARRAY_SIZE(verif_msgs);
+	pj_ssl_cert_get_verify_status_strings(ssl_sock_info->verify_status, verif_msgs, &verif_msg_cnt);
+	PJ_LOG(3, (THIS_FILE, "TLS cert verification result of %s : %s",
+                   host_port, (verif_msg_cnt == 1? verif_msgs[0]:"")));
+
+	if (verif_msg_cnt > 1)
+        {
+	    for (unsigned i = 0; i < verif_msg_cnt; ++i)
+            {
+		PJ_LOG(3,(THIS_FILE, "- %s", verif_msgs[i]));
+            }
+	}
+        
+	if (ssl_sock_info->verify_status && !info.udp_cfg.tls_setting.verify_server)
+	{
+	    PJ_LOG(3, (THIS_FILE, "PJSUA is configured to ignore TLS cert verification errors"));
+	}
+    }
+#endif
+}
+
+
+/*
+ * Notification on ICE error.
+ */
+- (void)onIceTransportError:(int)index
+                     operation:(pj_ice_strans_op)op
+                        status:(pj_status_t)status
+                     parameter:(void*)param
+{
+    PJ_UNUSED_ARG(op);
+    PJ_UNUSED_ARG(param);
+    PJ_PERROR(1, (THIS_FILE, status, "ICE keep alive failure for transport %d", index));
+}
+
+
+/*
+ * Notification on sound device operation.
+ */
+- (pj_status_t)onSoundDeviceOperation:(int)operation
+{
+    PJ_LOG(3,(THIS_FILE, "Turning sound device %s", (operation? "ON":"OFF")));
+    
+    return PJ_SUCCESS;
+}
+
+
 @end
+
+
+static void on_call_state(pjsua_call_id call_id, pjsip_event *e)
+{
+    [sipInterface onCallState:call_id event:e];
+}
+
+
+/**
+ * Handler when there is incoming call.
+ */
+static void on_incoming_call(pjsua_acc_id   acc_id,
+                             pjsua_call_id  call_id,
+			     pjsip_rx_data* rdata)
+{
+    [sipInterface onIncomingCall:acc_id callId:call_id data:rdata];
+}
+
+
+/*
+ * Handler when a transaction within a call has changed state.
+ */
+static void on_call_tsx_state(pjsua_call_id       call_id,
+                              pjsip_transaction*  tsx,
+                              pjsip_event*        e)
+{
+    [sipInterface onCallTransactionState:call_id transaction:tsx event:e];
+}
+
+
+/* General processing for media state. "mi" is the media index */
+static void on_call_generic_media_state(pjsua_call_info*    ci,
+                                        unsigned            mi,
+                                        pj_bool_t*          has_error)
+{
+    [sipInterface onCallGenericMediaState:ci state:mi hasError:has_error];
+}
+
+
+/* Process audio media state. "mi" is the media index. */
+static void on_call_audio_state(pjsua_call_info*    ci,
+                                unsigned            mi,
+                                pj_bool_t*          has_error)
+{
+    [sipInterface onCallAudioState:ci state:mi hasError:has_error];
+}
+
+
+/*
+ * Callback on media state changed event.
+ * The action may connect the call to sound device, to file, or
+ * to loop the call.
+ */
+static void on_call_media_state(pjsua_call_id       call_id)
+{
+    [sipInterface onCallMediaState:call_id];
+}
+
+
+/*
+ * DTMF callback.
+ */
+static void call_on_dtmf_callback(pjsua_call_id   call_id,
+                                  int             dtmf)
+{
+    [sipInterface callOnDtmfCallback:call_id dtmf:dtmf];
+}
+
+
+/*
+ * Redirection handler.
+ */
+static pjsip_redirect_op call_on_redirected(pjsua_call_id       call_id,
+                                            const pjsip_uri*    target,
+                                            const pjsip_event*  e)
+{
+    return [sipInterface callOnRedirected:call_id target:target event:e];
+}
+
+
+/*
+ * Handler registration status has changed.
+ */
+static void on_reg_state(pjsua_acc_id acc_id,  pjsua_reg_info *info)
+{
+    [sipInterface onRegistrationState:acc_id info:info];
+}
+
+
+/**
+ * Call transfer request status.
+ */
+static void on_call_transfer_status(pjsua_call_id   call_id,
+                                    int             status_code,
+                                    const pj_str_t* status_text,
+                                    pj_bool_t       final,
+                                    pj_bool_t*      p_cont)
+{
+    [sipInterface onCallTransferStatus:call_id code:status_code text:status_text final:final continue:p_cont];
+}
+
+
+/*
+ * Notification that call is being replaced.
+ */
+static void on_call_replaced(pjsua_call_id   old_call_id,
+                             pjsua_call_id   new_call_id)
+{
+    [sipInterface onCallReplaced:old_call_id newCallId:new_call_id];
+}
+
+
+/*
+ * NAT type detection callback.
+ */
+static void on_nat_detect(const pj_stun_nat_detect_result*    res)
+{
+    [sipInterface onNatDetect:res];
+}
+
+
+/*
+ * MWI indication
+ */
+static void on_mwi_info(pjsua_acc_id    acc_id,
+                        pjsua_mwi_info* mwi_info)
+{
+    [sipInterface onMwiInfo:acc_id info:mwi_info];
+}
+
+
+/*
+ * Transport status notification
+ */
+static void on_transport_state(pjsip_transport*                    tp,
+                               pjsip_transport_state               state,
+                               const pjsip_transport_state_info*   stateInfo)
+{
+    [sipInterface onTransportState:tp state:state info:stateInfo];
+}
+
+
+/*
+ * Notification on ICE error.
+ */
+static void on_ice_transport_error(int                 index,
+                                   pj_ice_strans_op    op,
+                                   pj_status_t         status,
+                                   void*               param)
+{
+    [sipInterface onIceTransportError:index operation:op status:status parameter:param];
+}
+
+
+/*
+ * Notification on sound device operation.
+ */
+static pj_status_t on_snd_dev_operation(int operation)
+{
+    return [sipInterface onSoundDeviceOperation:operation];
+}
+
+
 
