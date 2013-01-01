@@ -57,7 +57,6 @@ static struct
     struct call_data	    call_data[PJSUA_MAX_CALLS];
 
     pj_pool_t*              pool;
-    /* Compatibility with older pjsua */
 
     unsigned		    tone_count;
     pjmedia_tone_desc	    tones[32];
@@ -1650,9 +1649,6 @@ void showLog(
 }
 
 
-/*
- * Notification on ICE error.
- */
 - (void)onIceTransportError:(int)index
                      operation:(pj_ice_strans_op)op
                         status:(pj_status_t)status
@@ -1664,9 +1660,6 @@ void showLog(
 }
 
 
-/*
- * Notification on sound device operation.
- */
 - (pj_status_t)onSoundDeviceOperation:(int)operation
 {
     PJ_LOG(3,(THIS_FILE, "Turning sound device %s", (operation? "ON":"OFF")));
@@ -1684,155 +1677,90 @@ static void on_call_state(pjsua_call_id call_id, pjsip_event *e)
 }
 
 
-/**
- * Handler when there is incoming call.
- */
-static void on_incoming_call(pjsua_acc_id   acc_id,
-                             pjsua_call_id  call_id,
-			     pjsip_rx_data* rdata)
+static void on_incoming_call(pjsua_acc_id acc_id, pjsua_call_id  call_id, pjsip_rx_data* rdata)
 {
     [sipInterface onIncomingCall:acc_id callId:call_id data:rdata];
 }
 
 
-/*
- * Handler when a transaction within a call has changed state.
- */
-static void on_call_tsx_state(pjsua_call_id       call_id,
-                              pjsip_transaction*  tsx,
-                              pjsip_event*        e)
+static void on_call_tsx_state(pjsua_call_id call_id, pjsip_transaction* tsx, pjsip_event* e)
 {
     [sipInterface onCallTransactionState:call_id transaction:tsx event:e];
 }
 
 
-/* General processing for media state. "mi" is the media index */
-static void on_call_generic_media_state(pjsua_call_info*    ci,
-                                        unsigned            mi,
-                                        pj_bool_t*          has_error)
+static void on_call_generic_media_state(pjsua_call_info* ci, unsigned mi, pj_bool_t* has_error)
 {
     [sipInterface onCallGenericMediaState:ci state:mi hasError:has_error];
 }
 
 
-/* Process audio media state. "mi" is the media index. */
-static void on_call_audio_state(pjsua_call_info*    ci,
-                                unsigned            mi,
-                                pj_bool_t*          has_error)
+static void on_call_audio_state(pjsua_call_info* ci, unsigned mi, pj_bool_t* has_error)
 {
     [sipInterface onCallAudioState:ci state:mi hasError:has_error];
 }
 
 
-/*
- * Callback on media state changed event.
- * The action may connect the call to sound device, to file, or
- * to loop the call.
- */
-static void on_call_media_state(pjsua_call_id       call_id)
+static void on_call_media_state(pjsua_call_id call_id)
 {
     [sipInterface onCallMediaState:call_id];
 }
 
 
-/*
- * DTMF callback.
- */
-static void call_on_dtmf_callback(pjsua_call_id   call_id,
-                                  int             dtmf)
+static void call_on_dtmf_callback(pjsua_call_id call_id, int dtmf)
 {
     [sipInterface callOnDtmfCallback:call_id dtmf:dtmf];
 }
 
 
-/*
- * Redirection handler.
- */
-static pjsip_redirect_op call_on_redirected(pjsua_call_id       call_id,
-                                            const pjsip_uri*    target,
-                                            const pjsip_event*  e)
+static pjsip_redirect_op call_on_redirected(pjsua_call_id call_id, const pjsip_uri* target, const pjsip_event* e)
 {
     return [sipInterface callOnRedirected:call_id target:target event:e];
 }
 
 
-/*
- * Handler registration status has changed.
- */
 static void on_reg_state(pjsua_acc_id acc_id,  pjsua_reg_info *info)
 {
     [sipInterface onRegistrationState:acc_id info:info];
 }
 
 
-/**
- * Call transfer request status.
- */
-static void on_call_transfer_status(pjsua_call_id   call_id,
-                                    int             status_code,
-                                    const pj_str_t* status_text,
-                                    pj_bool_t       final,
-                                    pj_bool_t*      p_cont)
+static void on_call_transfer_status(pjsua_call_id call_id, int status_code, const pj_str_t* status_text, pj_bool_t final, pj_bool_t* p_cont)
 {
     [sipInterface onCallTransferStatus:call_id code:status_code text:status_text final:final continue:p_cont];
 }
 
 
-/*
- * Notification that call is being replaced.
- */
-static void on_call_replaced(pjsua_call_id   old_call_id,
-                             pjsua_call_id   new_call_id)
+static void on_call_replaced(pjsua_call_id old_call_id, pjsua_call_id new_call_id)
 {
     [sipInterface onCallReplaced:old_call_id newCallId:new_call_id];
 }
 
 
-/*
- * NAT type detection callback.
- */
-static void on_nat_detect(const pj_stun_nat_detect_result*    res)
+static void on_nat_detect(const pj_stun_nat_detect_result* res)
 {
     [sipInterface onNatDetect:res];
 }
 
 
-/*
- * MWI indication
- */
-static void on_mwi_info(pjsua_acc_id    acc_id,
-                        pjsua_mwi_info* mwi_info)
+static void on_mwi_info(pjsua_acc_id acc_id, pjsua_mwi_info* mwi_info)
 {
     [sipInterface onMwiInfo:acc_id info:mwi_info];
 }
 
 
-/*
- * Transport status notification
- */
-static void on_transport_state(pjsip_transport*                    tp,
-                               pjsip_transport_state               state,
-                               const pjsip_transport_state_info*   stateInfo)
+static void on_transport_state(pjsip_transport* tp, pjsip_transport_state state, const pjsip_transport_state_info* stateInfo)
 {
     [sipInterface onTransportState:tp state:state info:stateInfo];
 }
 
 
-/*
- * Notification on ICE error.
- */
-static void on_ice_transport_error(int                 index,
-                                   pj_ice_strans_op    op,
-                                   pj_status_t         status,
-                                   void*               param)
+static void on_ice_transport_error(int index, pj_ice_strans_op op, pj_status_t status, void* param)
 {
     [sipInterface onIceTransportError:index operation:op status:status parameter:param];
 }
 
 
-/*
- * Notification on sound device operation.
- */
 static pj_status_t on_snd_dev_operation(int operation)
 {
     return [sipInterface onSoundDeviceOperation:operation];
