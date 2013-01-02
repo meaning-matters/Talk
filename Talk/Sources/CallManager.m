@@ -270,6 +270,7 @@ static SipInterface*    sipInterface;
                                                         completion:nil];
 
         NSDictionary*   tones = [[Tones sharedTones] tonesForIsoCountryCode:[phoneNumber isoCountryCode]];
+        sipInterface.louderVolume = [Settings sharedSettings].louderVolume;
         [sipInterface callNumber:number identityNumber:identity userData:(__bridge void*)call tones:tones];
     }
 

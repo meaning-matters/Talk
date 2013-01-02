@@ -114,12 +114,9 @@ typedef enum
             break;
 
         case TableSectionCallOptions:
-            if ([NetworkStatus sharedStatus].simAvailable)
-            {
-                title = NSLocalizedStringWithDefaultValue(@"Settings:CallOptions SectionHeader", nil,
-                                                          [NSBundle mainBundle], @"Call Options",
-                                                          @"Various options related to making calls.");
-            }
+            title = NSLocalizedStringWithDefaultValue(@"Settings:CallOptions SectionHeader", nil,
+                                                      [NSBundle mainBundle], @"Call Options",
+                                                      @"Various options related to making calls.");
             break;
     }
 
@@ -160,10 +157,7 @@ typedef enum
             break;
 
         case TableSectionCallOptions:
-            if ([NetworkStatus sharedStatus].simAvailable)
-            {
-                numberOfRows = 1;
-            }
+            numberOfRows = [NetworkStatus sharedStatus].simAvailable ? 2 : 1;
             break;
     }
 
@@ -289,26 +283,54 @@ typedef enum
     UITableViewCell*    cell;
     UISwitch*           switchView;
 
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
-    if (cell == nil)
+    if ([NetworkStatus sharedStatus].simAvailable == YES && indexPath.row == 0)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
-        switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-        cell.accessoryView = switchView;
-    }
-    else
-    {
-        switchView = (UISwitch*)cell.accessoryView;
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
+        if (cell == nil)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
+            switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+            cell.accessoryView = switchView;
+        }
+        else
+        {
+            switchView = (UISwitch*)cell.accessoryView;
+        }
+
+        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:AllowDataCalls CellText", nil,
+                                                                [NSBundle mainBundle], @"Cellular Data Calls",
+                                                                @"Title of switch if calls over cellular data (3G/EDGE/...) are allowed\n"
+                                                                @"[2/3 line - abbreviated: 'Data Calls'].");
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        switchView.on = [Settings sharedSettings].allowCellularDataCalls;
+        [switchView addTarget:self action:@selector(allowDataCallsSwitchAction:)
+             forControlEvents:UIControlEventValueChanged];
     }
 
-    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:AllowDataCalls CellText", nil,
-                                                            [NSBundle mainBundle], @"Cellular Data Calls",
-                                                            @"Title of switch if calls over cellular data (3G/EDGE/...) are allowed\n"
-                                                            @"[2/3 line - abbreviated: 'Data Calls'].");
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    switchView.on = [Settings sharedSettings].allowCellularDataCalls;
-    [switchView addTarget:self action:@selector(allowDataCallsSwitchAction:)
-         forControlEvents:UIControlEventValueChanged];
+    if (([NetworkStatus sharedStatus].simAvailable == YES && indexPath.row == 1) ||
+        [NetworkStatus sharedStatus].simAvailable == NO)
+    {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
+        if (cell == nil)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
+            switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+            cell.accessoryView = switchView;
+        }
+        else
+        {
+            switchView = (UISwitch*)cell.accessoryView;
+        }
+
+        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:LouderVolume CellText", nil,
+                                                                [NSBundle mainBundle], @"Louder Volume",
+                                                                @"Title of switch if volume during call must be set a bit louder\n"
+                                                                @"[2/3 line - abbreviated: 'Louder'].");
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        switchView.on = [Settings sharedSettings].louderVolume;
+        [switchView addTarget:self action:@selector(louderVolumeSwitchAction:)
+             forControlEvents:UIControlEventValueChanged];
+    }
 
     return cell;
 }
@@ -367,6 +389,14 @@ typedef enum
     {
         [Settings sharedSettings].allowCellularDataCalls = NO;
     }
+}
+
+
+- (void)louderVolumeSwitchAction:(id)sender
+{
+    UISwitch*   louderVolumeSwitch = sender;
+
+    [Settings sharedSettings].louderVolume = louderVolumeSwitch.on;
 }
 
 @end
