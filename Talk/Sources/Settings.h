@@ -26,4 +26,6 @@
 
 @property (nonatomic, assign) BOOL      allowCellularDataCalls;
 
+@property (nonatomic, assign) BOOL      louderVolume;
+
 @end

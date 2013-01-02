@@ -25,6 +25,7 @@ NSString* const SipUsernameKey                 = @"SipUsername";            // U
 NSString* const SipPasswordKey                 = @"SipPassword";            // Used as keychain 'username'.
 NSString* const SipServiveKey                  = @"SipAccount";             // Used as keychain service.
 NSString* const AllowCellularDataCallsKey      = @"AllowCellularDataCalls";
+NSString* const LouderVolumeKey                = @"LouderVolume";
 
 
 @implementation Settings
@@ -41,6 +42,7 @@ static NSUserDefaults*  userDefaults;
 @synthesize sipUsername                 = _sipUsername;
 @synthesize sipPassword                 = _sipPassword;
 @synthesize allowCellularDataCalls      = _allowCellularDataCalls;
+@synthesize louderVolume                = _louderVolume;
 
 
 #pragma mark - Singleton Stuff
@@ -102,6 +104,7 @@ static NSUserDefaults*  userDefaults;
 
     [defaults setObject:@""                          forKey:LastDialedNumberKey];
     [defaults setObject:[NSNumber numberWithBool:NO] forKey:AllowCellularDataCallsKey];
+    [defaults setObject:[NSNumber numberWithBool:NO] forKey:LouderVolumeKey];
 
     [userDefaults registerDefaults:defaults];
 }
@@ -147,6 +150,7 @@ static NSUserDefaults*  userDefaults;
     self.sipUsername                 = [self getKeychainValueForKey:SipUsernameKey];
     self.sipPassword                 = [self getKeychainValueForKey:SipPasswordKey];
     self.allowCellularDataCalls      = [userDefaults boolForKey:AllowCellularDataCallsKey];
+    self.louderVolume                = [userDefaults boolForKey:LouderVolumeKey];
 }
 
 
@@ -212,6 +216,13 @@ static NSUserDefaults*  userDefaults;
 {
     _allowCellularDataCalls = allowCellularDataCalls;
     [userDefaults setBool:allowCellularDataCalls forKey:AllowCellularDataCallsKey];
+}
+
+
+- (void)setLouderVolume:(BOOL)louderVolume
+{
+    _louderVolume = louderVolume;
+    [userDefaults setBool:louderVolume forKey:LouderVolumeKey];
 }
 
 @end
