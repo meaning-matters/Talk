@@ -27,10 +27,10 @@ typedef enum
 @property (nonatomic, strong) NSString*                 username;
 @property (nonatomic, strong) NSString*                 password;
 
-@property (nonatomic, assign) float                     microphoneLevel;
-@property (nonatomic, assign) float                     speakerLevel;
+@property (nonatomic, assign) BOOL                      louderVolume;
 
 @property (nonatomic, readonly) SipInterfaceRegistered  registered;
+
 
 - (id)initWithRealm:(NSString*)realm server:(NSString*)server username:(NSString*)username password:(NSString*)password;
 
