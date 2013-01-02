@@ -84,9 +84,8 @@ static struct
 
 static pjsua_call_id	current_call = PJSUA_INVALID_ID;
 
-static void ringback_start(pjsua_call_id call_id);
-static void ring_start(pjsua_call_id call_id);
-static void ring_stop(pjsua_call_id call_id);
+static void call_timeout_callback(pj_timer_heap_t* timer_heap, struct pj_timer_entry* entry);
+static pj_bool_t default_mod_on_rx_request(pjsip_rx_data* rdata);
 
 static void on_call_state(pjsua_call_id call_id, pjsip_event *e);
 static void on_incoming_call(pjsua_acc_id acc_id, pjsua_call_id  call_id, pjsip_rx_data* rdata);
@@ -108,308 +107,10 @@ static pj_status_t on_snd_dev_operation(int operation);
 static SipInterface*            sipInterface;
 
 
-static void ringback_start(pjsua_call_id call_id)
-{
-    if (info.call_data[call_id].ringback_on)
-    {
-	return;
-    }
-    
-    info.call_data[call_id].ringback_on = PJ_TRUE;
-    
-    if (info.ringback_slot!=PJSUA_INVALID_ID)
-    {
-	pjsua_conf_connect(info.ringback_slot, 0);
-    }
-}
-
-
-static void ring_stop(pjsua_call_id call_id)
-{
-    if (info.call_data[call_id].ringback_on)
-    {
-	info.call_data[call_id].ringback_on = PJ_FALSE;
-                
-	if (info.ringback_slot != PJSUA_INVALID_ID)
-	{
-	    pjsua_conf_disconnect(info.ringback_slot, 0);
-	    pjmedia_tonegen_rewind(info.ringback_port);
-	}
-    }
-    
-    if (info.call_data[call_id].ring_on)
-    {
-	info.call_data[call_id].ring_on = PJ_FALSE;
-        
-	if (info.ring_slot!=PJSUA_INVALID_ID)
-	{
-	    pjsua_conf_disconnect(info.ring_slot, 0);
-	    pjmedia_tonegen_rewind(info.ring_port);
-	}
-    }
-}
-
-
-static void ring_start(pjsua_call_id call_id)
-{
-    if (info.call_data[call_id].ring_on)
-    {
-	return;
-    }
-    
-    info.call_data[call_id].ring_on = PJ_TRUE;
-    
-    if (info.ring_slot!=PJSUA_INVALID_ID)
-    {
-	pjsua_conf_connect(info.ring_slot, 0);
-    }
-}
-
-
-/*
- * Find next call when current call is disconnected or when user
- * press ']'
- */
-static pj_bool_t find_next_call(void)
-{
-    int i;
-    int max = pjsua_call_get_max_count();
-    
-    for (i = current_call + 1; i < max; ++i)
-    {
-	if (pjsua_call_is_active(i))
-        {
-	    current_call = i;
-            
-	    return PJ_TRUE;
-	}
-    }
-    
-    for (i = 0; i < current_call; ++i)
-    {
-	if (pjsua_call_is_active(i))
-        {
-	    current_call = i;
-	
-            return PJ_TRUE;
-	}
-    }
-    
-    current_call = PJSUA_INVALID_ID;
-    
-    return PJ_FALSE;
-}
-
-
-/*
- * Find previous call when user press '['
- */
-static pj_bool_t find_prev_call(void)
-{
-    int i;
-    int max = pjsua_call_get_max_count();
-    
-    for (i = current_call - 1; i >= 0; --i)
-    {
-	if (pjsua_call_is_active(i))
-        {
-	    current_call = i;
-            
-	    return PJ_TRUE;
-	}
-    }
-    
-    for (i = max - 1; i > current_call; --i)
-    {
-	if (pjsua_call_is_active(i))
-        {
-	    current_call = i;
-	    return PJ_TRUE;
-	}
-    }
-    
-    current_call = PJSUA_INVALID_ID;
-    
-    return PJ_FALSE;
-}
-
-
-/* Callback from timer when the maximum call duration has been
- * exceeded.
- */
-static void call_timeout_callback(
-    pj_timer_heap_t*        timer_heap,
-    struct pj_timer_entry*  entry)
-{
-    pjsua_call_id               call_id = entry->id;
-    pjsua_msg_data              msg_data;
-    pjsip_generic_string_hdr    warn;
-    pj_str_t                    hname = pj_str("Warning");
-    pj_str_t                    hvalue = pj_str("399 pjsua \"Call duration exceeded\"");
-    
-    PJ_UNUSED_ARG(timer_heap);
-    
-    if (call_id == PJSUA_INVALID_ID)
-    {
-	PJ_LOG(1, (THIS_FILE, "Invalid call ID in timer callback"));
-	return;
-    }
-    
-    /* Add warning header */
-    pjsua_msg_data_init(&msg_data);
-    pjsip_generic_string_hdr_init2(&warn, &hname, &hvalue);
-    pj_list_push_back(&msg_data.hdr_list, &warn);
-    
-    /* Call duration has been exceeded; disconnect the call */
-    PJ_LOG(3,(THIS_FILE, "Duration (%d seconds) has been exceeded for call %d, disconnecting the call",
-              info.duration, call_id));
-    entry->id = PJSUA_INVALID_ID;
-    
-    pjsua_call_hangup(call_id, 200, NULL, &msg_data);
-}
-
-
-/*
- * A simple registrar, invoked by default_mod_on_rx_request()
- */
-static void simple_registrar(pjsip_rx_data *rdata)
-{
-    pjsip_tx_data*              tdata;
-    const pjsip_expires_hdr*    exp;
-    const pjsip_hdr*            h;
-    unsigned                    cnt = 0;
-    pjsip_generic_string_hdr*   srv;
-    pj_status_t                 status;
-    
-    ;
-    if ((status = pjsip_endpt_create_response(pjsua_get_pjsip_endpt(), rdata, 200, NULL, &tdata)) != PJ_SUCCESS)
-    {
-        return;
-    }
-    
-    exp = pjsip_msg_find_hdr(rdata->msg_info.msg, PJSIP_H_EXPIRES, NULL);
-    
-    h = rdata->msg_info.msg->hdr.next;
-    while (h != &rdata->msg_info.msg->hdr)
-    {
-        if (h->type == PJSIP_H_CONTACT)
-        {
-            const pjsip_contact_hdr*    c = (const pjsip_contact_hdr*)h;
-            int                         e = c->expires;
-            
-            if (e < 0)
-            {
-                if (exp)
-                {
-                    e = exp->ivalue;
-                }
-                else
-                {
-                    e = 3600;
-                }
-            }
-            
-            if (e > 0)
-            {
-                pjsip_contact_hdr*  nc = pjsip_hdr_clone(tdata->pool, h);
-                
-                nc->expires = e;
-                pjsip_msg_add_hdr(tdata->msg, (pjsip_hdr*)nc);
-                ++cnt;
-            }
-        }
-        
-        h = h->next;
-    }
-    
-    srv = pjsip_generic_string_hdr_create(tdata->pool, NULL, NULL);
-    srv->name = pj_str("Server");
-    srv->hvalue = pj_str("pjsua simple registrar");
-    pjsip_msg_add_hdr(tdata->msg, (pjsip_hdr*)srv);
-    
-    pjsip_endpt_send_response2(pjsua_get_pjsip_endpt(), rdata, tdata, NULL, NULL);
-}
-
-
 /*****************************************************************************
  * A simple module to handle otherwise unhandled request. We will register
- * this with the lowest priority.
+ * this (in initialize) with the lowest priority.
  */
-
-/* Notification on incoming request */
-static pj_bool_t default_mod_on_rx_request(
-    pjsip_rx_data*      rdata)
-{
-    pjsip_tx_data*      tdata;
-    pjsip_status_code   status_code;
-    pj_status_t         status;
-
-    /* Don't respond to ACK! */
-    if (pjsip_method_cmp(&rdata->msg_info.msg->line.req.method, &pjsip_ack_method) == 0)
-    {
-        return PJ_TRUE;
-    }
-    
-    /* Simple registrar */
-    if (pjsip_method_cmp(&rdata->msg_info.msg->line.req.method, &pjsip_register_method) == 0)
-    {
-        simple_registrar(rdata);
-        
-        return PJ_TRUE;
-    }
-    
-    /* Create basic response. */
-    if (pjsip_method_cmp(&rdata->msg_info.msg->line.req.method, &pjsip_notify_method) == 0)
-    {
-        /* Unsolicited NOTIFY's, send with Bad Request */
-        status_code = PJSIP_SC_BAD_REQUEST;
-    }
-    else
-    {
-        /* Probably unknown method */
-        status_code = PJSIP_SC_METHOD_NOT_ALLOWED;
-    }
-    
-    status = pjsip_endpt_create_response(pjsua_get_pjsip_endpt(), rdata, status_code, NULL, &tdata);
-    if (status != PJ_SUCCESS)
-    {
-        pjsua_perror(THIS_FILE, "Unable to create response", status);
-    
-        return PJ_TRUE;
-    }
-    
-    /* Add Allow if we're responding with 405 */
-    if (status_code == PJSIP_SC_METHOD_NOT_ALLOWED)
-    {
-        const pjsip_hdr*    cap_hdr = pjsip_endpt_get_capability(pjsua_get_pjsip_endpt(), PJSIP_H_ALLOW, NULL);
-        
-        if (cap_hdr)
-        {
-            pjsip_msg_add_hdr(tdata->msg, pjsip_hdr_clone(tdata->pool, cap_hdr));
-        }
-    }
-    
-    /* Add User-Agent header */
-    {
-        pj_str_t        user_agent;
-        char            tmp[80];
-        const pj_str_t  USER_AGENT = { "User-Agent", 10};
-        pjsip_hdr*      h;
-        
-        pj_ansi_snprintf(tmp, sizeof(tmp), "PJSUA v%s/%s", pj_get_version(), PJ_OS_NAME);
-        pj_strdup2_with_null(tdata->pool, &user_agent, tmp);
-        
-        h = (pjsip_hdr*) pjsip_generic_string_hdr_create(tdata->pool, &USER_AGENT, &user_agent);
-        pjsip_msg_add_hdr(tdata->msg, h);
-    }
-    
-    pjsip_endpt_send_response2(pjsua_get_pjsip_endpt(), rdata, tdata, NULL, NULL);
-    
-    return PJ_TRUE;
-}
-
-
-/* The module instance. */
 static pjsip_module mod_default_handler =
 {
     NULL, NULL,                             /* prev, next.      */
@@ -428,10 +129,7 @@ static pjsip_module mod_default_handler =
 };
 
 
-void showLog(
-    int         level,
-    const char* data,
-    int         len)
+void showLog(int level, const char* data, int len)
 {
     NSLog(@"%s", data);
 }
@@ -961,7 +659,6 @@ void showLog(
         NSLog(@"//### Failed to create tone.");
         return;
     }
-
 }
 
 
@@ -1069,6 +766,301 @@ void showLog(
 }
 
 
+#pragma mark - Utility Methods
+
+- (void)ringback_start:(pjsua_call_id)call_id
+{
+    if (info.call_data[call_id].ringback_on)
+    {
+	return;
+    }
+
+    info.call_data[call_id].ringback_on = PJ_TRUE;
+
+    if (info.ringback_slot!=PJSUA_INVALID_ID)
+    {
+	pjsua_conf_connect(info.ringback_slot, 0);
+    }
+}
+
+
+- (void)ring_stop:(pjsua_call_id)call_id
+{
+    if (info.call_data[call_id].ringback_on)
+    {
+	info.call_data[call_id].ringback_on = PJ_FALSE;
+
+	if (info.ringback_slot != PJSUA_INVALID_ID)
+	{
+	    pjsua_conf_disconnect(info.ringback_slot, 0);
+	    pjmedia_tonegen_rewind(info.ringback_port);
+	}
+    }
+
+    if (info.call_data[call_id].ring_on)
+    {
+	info.call_data[call_id].ring_on = PJ_FALSE;
+
+	if (info.ring_slot!=PJSUA_INVALID_ID)
+	{
+	    pjsua_conf_disconnect(info.ring_slot, 0);
+	    pjmedia_tonegen_rewind(info.ring_port);
+	}
+    }
+}
+
+
+- (void)ring_start:(pjsua_call_id)call_id
+{
+    if (info.call_data[call_id].ring_on)
+    {
+	return;
+    }
+
+    info.call_data[call_id].ring_on = PJ_TRUE;
+
+    if (info.ring_slot!=PJSUA_INVALID_ID)
+    {
+	pjsua_conf_connect(info.ring_slot, 0);
+    }
+}
+
+
+/*
+ * Find next call when current call is disconnected or when user
+ * press ']'
+ */
+- (pj_bool_t)find_next_call
+{
+    int i;
+    int max = pjsua_call_get_max_count();
+
+    for (i = current_call + 1; i < max; ++i)
+    {
+	if (pjsua_call_is_active(i))
+        {
+	    current_call = i;
+
+	    return PJ_TRUE;
+	}
+    }
+
+    for (i = 0; i < current_call; ++i)
+    {
+	if (pjsua_call_is_active(i))
+        {
+	    current_call = i;
+
+            return PJ_TRUE;
+	}
+    }
+
+    current_call = PJSUA_INVALID_ID;
+
+    return PJ_FALSE;
+}
+
+
+/*
+ * Find previous call when user press '['
+ */
+- (pj_bool_t)find_prev_call
+{
+    int i;
+    int max = pjsua_call_get_max_count();
+
+    for (i = current_call - 1; i >= 0; --i)
+    {
+	if (pjsua_call_is_active(i))
+        {
+	    current_call = i;
+
+	    return PJ_TRUE;
+	}
+    }
+
+    for (i = max - 1; i > current_call; --i)
+    {
+	if (pjsua_call_is_active(i))
+        {
+	    current_call = i;
+	    return PJ_TRUE;
+	}
+    }
+
+    current_call = PJSUA_INVALID_ID;
+
+    return PJ_FALSE;
+}
+
+
+/* Callback from timer when the maximum call duration has been
+ * exceeded.
+ */
+- (void)callTimeoutCallback:(pj_timer_heap_t*)timer_heap entry:(struct pj_timer_entry*)entry
+{
+    pjsua_call_id               call_id = entry->id;
+    pjsua_msg_data              msg_data;
+    pjsip_generic_string_hdr    warn;
+    pj_str_t                    hname = pj_str("Warning");
+    pj_str_t                    hvalue = pj_str("399 pjsua \"Call duration exceeded\"");
+
+    PJ_UNUSED_ARG(timer_heap);
+
+    if (call_id == PJSUA_INVALID_ID)
+    {
+	PJ_LOG(1, (THIS_FILE, "Invalid call ID in timer callback"));
+	return;
+    }
+
+    /* Add warning header */
+    pjsua_msg_data_init(&msg_data);
+    pjsip_generic_string_hdr_init2(&warn, &hname, &hvalue);
+    pj_list_push_back(&msg_data.hdr_list, &warn);
+
+    /* Call duration has been exceeded; disconnect the call */
+    PJ_LOG(3,(THIS_FILE, "Duration (%d seconds) has been exceeded for call %d, disconnecting the call",
+              info.duration, call_id));
+    entry->id = PJSUA_INVALID_ID;
+
+    pjsua_call_hangup(call_id, 200, NULL, &msg_data);
+}
+
+
+/* Handle incoming requests. */
+- (pj_bool_t)default_mod_on_rx_request:(pjsip_rx_data*)rdata
+{
+    pjsip_tx_data*      tdata;
+    pjsip_status_code   status_code;
+    pj_status_t         status;
+
+    /* Don't respond to ACK! */
+    if (pjsip_method_cmp(&rdata->msg_info.msg->line.req.method, &pjsip_ack_method) == 0)
+    {
+        return PJ_TRUE;
+    }
+
+    /* Simple registrar */
+    if (pjsip_method_cmp(&rdata->msg_info.msg->line.req.method, &pjsip_register_method) == 0)
+    {
+        [self simpleRegistrar:rdata];
+
+        return PJ_TRUE;
+    }
+
+    /* Create basic response. */
+    if (pjsip_method_cmp(&rdata->msg_info.msg->line.req.method, &pjsip_notify_method) == 0)
+    {
+        /* Unsolicited NOTIFY's, send with Bad Request */
+        status_code = PJSIP_SC_BAD_REQUEST;
+    }
+    else
+    {
+        /* Probably unknown method */
+        status_code = PJSIP_SC_METHOD_NOT_ALLOWED;
+    }
+
+    status = pjsip_endpt_create_response(pjsua_get_pjsip_endpt(), rdata, status_code, NULL, &tdata);
+    if (status != PJ_SUCCESS)
+    {
+        pjsua_perror(THIS_FILE, "Unable to create response", status);
+
+        return PJ_TRUE;
+    }
+
+    /* Add Allow if we're responding with 405 */
+    if (status_code == PJSIP_SC_METHOD_NOT_ALLOWED)
+    {
+        const pjsip_hdr*    cap_hdr = pjsip_endpt_get_capability(pjsua_get_pjsip_endpt(), PJSIP_H_ALLOW, NULL);
+
+        if (cap_hdr)
+        {
+            pjsip_msg_add_hdr(tdata->msg, pjsip_hdr_clone(tdata->pool, cap_hdr));
+        }
+    }
+
+    /* Add User-Agent header */
+    {
+        pj_str_t        user_agent;
+        char            tmp[80];
+        const pj_str_t  USER_AGENT = { "User-Agent", 10};
+        pjsip_hdr*      h;
+
+        pj_ansi_snprintf(tmp, sizeof(tmp), "PJSUA v%s/%s", pj_get_version(), PJ_OS_NAME);
+        pj_strdup2_with_null(tdata->pool, &user_agent, tmp);
+
+        h = (pjsip_hdr*) pjsip_generic_string_hdr_create(tdata->pool, &USER_AGENT, &user_agent);
+        pjsip_msg_add_hdr(tdata->msg, h);
+    }
+
+    pjsip_endpt_send_response2(pjsua_get_pjsip_endpt(), rdata, tdata, NULL, NULL);
+    
+    return PJ_TRUE;
+}
+
+
+/*
+ * A simple registrar, invoked by default_mod_on_rx_request()
+ */
+- (void)simpleRegistrar:(pjsip_rx_data*)rdata
+{
+    pjsip_tx_data*              tdata;
+    const pjsip_expires_hdr*    exp;
+    const pjsip_hdr*            h;
+    unsigned                    cnt = 0;
+    pjsip_generic_string_hdr*   srv;
+    pj_status_t                 status;
+
+    ;
+    if ((status = pjsip_endpt_create_response(pjsua_get_pjsip_endpt(), rdata, 200, NULL, &tdata)) != PJ_SUCCESS)
+    {
+        return;
+    }
+
+    exp = pjsip_msg_find_hdr(rdata->msg_info.msg, PJSIP_H_EXPIRES, NULL);
+
+    h = rdata->msg_info.msg->hdr.next;
+    while (h != &rdata->msg_info.msg->hdr)
+    {
+        if (h->type == PJSIP_H_CONTACT)
+        {
+            const pjsip_contact_hdr*    c = (const pjsip_contact_hdr*)h;
+            int                         e = c->expires;
+
+            if (e < 0)
+            {
+                if (exp)
+                {
+                    e = exp->ivalue;
+                }
+                else
+                {
+                    e = 3600;
+                }
+            }
+
+            if (e > 0)
+            {
+                pjsip_contact_hdr*  nc = pjsip_hdr_clone(tdata->pool, h);
+
+                nc->expires = e;
+                pjsip_msg_add_hdr(tdata->msg, (pjsip_hdr*)nc);
+                ++cnt;
+            }
+        }
+
+        h = h->next;
+    }
+
+    srv = pjsip_generic_string_hdr_create(tdata->pool, NULL, NULL);
+    srv->name = pj_str("Server");
+    srv->hvalue = pj_str("pjsua simple registrar");
+    pjsip_msg_add_hdr(tdata->msg, (pjsip_hdr*)srv);
+
+    pjsip_endpt_send_response2(pjsua_get_pjsip_endpt(), rdata, tdata, NULL, NULL);
+}
+
+
 #pragma mark - Callbacks
 
 - (void)onCallState:(pjsua_call_id)call_id event:(pjsip_event*)e
@@ -1082,7 +1074,7 @@ void showLog(
     if (call_info.state == PJSIP_INV_STATE_DISCONNECTED)
     {
 	/* Stop all ringback for this call */
-	ring_stop(call_id);
+	[self ring_stop:call_id];
 
 	/* Cancel duration timer, if any */
 	if (info.call_data[call_id].timer.id != PJSUA_INVALID_ID)
@@ -1107,7 +1099,7 @@ void showLog(
 
 	if (call_id == current_call)
         {
-	    find_next_call();
+	    [self find_next_call];
 	}
 
         /* Reset current call */
@@ -1157,7 +1149,7 @@ void showLog(
 		msg->body == NULL &&
 		call_info.media_status==PJSUA_CALL_MEDIA_NONE)
 	    {
-		ringback_start(call_id);
+		[self ringback_start:call_id];
 	    }
 
 	    PJ_LOG(3, (THIS_FILE, "Call %d state changed to %s (%d %.*s)",
@@ -1193,7 +1185,7 @@ void showLog(
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive)
     {
         /* Start ringback */
-        ring_start(call_id);
+        [self ring_start:call_id];
 
         if (info.auto_answer > 0)
         {
@@ -1354,7 +1346,7 @@ void showLog(
     PJ_UNUSED_ARG(has_error);
 
     /* Stop ringback */
-    ring_stop(ci->id);
+    [self ring_stop:ci->id];
 
     /* Connect ports appropriately when media status is ACTIVE or REMOTE HOLD,
      * otherwise we should NOT connect the ports.
@@ -1669,6 +1661,20 @@ void showLog(
 
 
 @end
+
+
+#pragma mark - From C to SipInterface Methods.
+
+static void call_timeout_callback(pj_timer_heap_t* timer_heap, struct pj_timer_entry* entry)
+{
+    [sipInterface callTimeoutCallback:timer_heap entry:entry];
+}
+
+
+static pj_bool_t default_mod_on_rx_request(pjsip_rx_data* rdata)
+{
+    return [sipInterface default_mod_on_rx_request:rdata];
+}
 
 
 static void on_call_state(pjsua_call_id call_id, pjsip_event *e)
