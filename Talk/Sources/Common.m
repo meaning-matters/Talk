@@ -199,4 +199,15 @@
     return (AppDelegate*)[UIApplication sharedApplication].delegate;
 }
 
+
++ (NSString*)stringWithOsStatus:(OSStatus)status
+{
+    char    error[sizeof(OSStatus) + 1];
+
+    *(OSStatus*)error = status;
+    error[sizeof(OSStatus)] = '\0';
+
+    return [NSString stringWithFormat:@"%s", error];
+}
+
 @end

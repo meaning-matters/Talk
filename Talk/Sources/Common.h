@@ -50,4 +50,6 @@
 
 + (AppDelegate*)appDelegate;
 
++ (NSString*)stringWithOsStatus:(OSStatus)status;
+
 @end

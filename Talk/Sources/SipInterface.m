@@ -271,12 +271,7 @@ void showLog(int level, const char* data, int len)
                                                       (__bridge void*)self);
     if (result != 0)
     {
-        char    error[5];
-
-        *(int*)error = result;
-        error[4] = '\0';
-
-        
+        NSLog(@"//### Failed to set AudioRouteChange listener: %@", [Common stringWithOsStatus:result]);
     }
 
     return PJ_SUCCESS;
@@ -819,8 +814,13 @@ void showLog(int level, const char* data, int len)
 {
     UInt32      routeSize = sizeof(CFStringRef);
     CFStringRef routeRef;
-    OSStatus    error = AudioSessionGetProperty(kAudioSessionProperty_AudioRoute, &routeSize, &routeRef);
+    OSStatus    status = AudioSessionGetProperty(kAudioSessionProperty_AudioRoute, &routeSize, &routeRef);
     NSString*   route = (__bridge NSString*)routeRef;
+
+    if (status != 0)
+    {
+        NSLog(@"//### Failed to get AudioRoute: %@", [Common stringWithOsStatus:status]);
+    }
 
     NSLog(@"//### Audio Route: %@", route);
 
