@@ -782,6 +782,9 @@ void showLog(int level, const char* data, int len)
 {
     [self registerThread];
 
+    self.microphoneLevel = 0.0f;
+    self.speakerLevel = 0.0f;
+
     pjsua_call_hangup_all();
 }
 
@@ -826,47 +829,47 @@ void showLog(int level, const char* data, int len)
 
     if ([route isEqualToString:@"Headset"])
     {
-        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
     else if ([route isEqualToString:@"Headphone"])
     {
-        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
     else if ([route isEqualToString:@"Speaker"])
     {
-        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
     else if ([route isEqualToString:@"SpeakerAndMicrophone"])
     {
-        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
     else if ([route isEqualToString:@"HeadphonesAndMicrophone"])
     {
-        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
     else if ([route isEqualToString:@"HeadsetInOut"])
     {
-        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
     else if ([route isEqualToString:@"ReceiverAndMicrophone"])
     {
-        self.speakerLevel = SPEAKER_LEVEL_RECEIVER * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_RECEIVER : 1.0f;
+        self.speakerLevel = SPEAKER_LEVEL_RECEIVER * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_RECEIVER : 1.0f);
     }
     else if ([route isEqualToString:@"LineOut"])
     {
-        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
     else if ([route isEqualToString:@"LineInOut"])
     {
-        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
     else if ([route isEqualToString:@"HeadsetBT"])
     {
-        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
     else
     {
-        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
         NSLog(@"//### Unknown Audio Route: %@", route);
     }
 }

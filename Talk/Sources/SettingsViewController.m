@@ -139,7 +139,11 @@ typedef enum
             break;
 
         case TableSectionCallOptions:
-            title = nil;
+            title = NSLocalizedStringWithDefaultValue(@"Settings:CallOptionInfo SectionFooter", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"Louder Volume extends the maximum volume; handy in noisy environments.",
+                                                      @"Explanation what the Louder Volume setting is doing\n"
+                                                      @"[* lines]");
     }
 
     return title;
