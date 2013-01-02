@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
 //
 
+#import <AVFoundation/AVFoundation.h>
+#import <AudioToolbox/AudioToolbox.h>
 #import <pthread.h>
 #import "SipInterface.h"
 #import "Common.h"
@@ -14,13 +16,18 @@
 //### Added for Talk's NetworkStatus; still needs to be notified to.
 NSString* const kSipInterfaceCallStateChangedNotification = @"kSipInterfaceCallStateChangedNotification";
 
-
 #define THIS_FILE	"SipInterface"
 #define NO_LIMIT	(int)0x7FFFFFFF
-#define KEEP_ALIVE_INTERVAL 600     // Shortest iOS allows.
+#define KEEP_ALIVE_INTERVAL 600     // The shortest that iOS allows.
 
+// Volume Levels.  Note that these are linear values, so 2.0 is only a bit louder.
+#define SPEAKER_LEVEL_NORMAL            1.0f
+#define SPEAKER_LEVEL_RECEIVER          2.0f
+#define SPEAKER_LOUDER_FACTOR_NORMAL    1.5f
+#define SPEAKER_LOUDER_FACTOR_RECEIVER  2.0f
+#define MICROPHONE_LEVEL_NORMAL         1.0f
 
-/* Ringtones		    US	       UK  */
+// Ringtones		    US	       UK
 #define RINGBACK_FREQ1	    425//440	    /* 400 */
 #define RINGBACK_FREQ2	    0//480	    /* 450 */
 #define RINGBACK_ON	    1000//2000    /* 400 */
@@ -34,6 +41,7 @@ NSString* const kSipInterfaceCallStateChangedNotification = @"kSipInterfaceCallS
 #define RING_OFF	    100
 #define RING_CNT	    3
 #define RING_INTERVAL	    3000
+
 
 struct call_data
 {
@@ -68,9 +76,6 @@ static struct
     unsigned		    auto_answer;
     unsigned		    duration;
 
-    float		    mic_level;
-    float                   speaker_level;
-
     int			    ringback_slot;
     pjmedia_port*           ringback_port;
     int			    busy_slot;
@@ -104,6 +109,8 @@ static void on_transport_state(pjsip_transport* tp, pjsip_transport_state state,
 static void on_ice_transport_error(int index, pj_ice_strans_op op, pj_status_t status, void* param);
 static pj_status_t on_snd_dev_operation(int operation);
 
+void audioRouteChangeListener(void* userData, AudioSessionPropertyID propertyID, UInt32 propertyValueSize, const void* propertyValue);
+
 static SipInterface*            sipInterface;
 
 
@@ -135,15 +142,25 @@ void showLog(int level, const char* data, int len)
 }
 
 
+@interface SipInterface ()
+
+@property (nonatomic, assign) float speakerLevel;
+@property (nonatomic, assign) float microphoneLevel;
+
+@end
+
+
 @implementation SipInterface
 
 @synthesize realm           = _realm;
 @synthesize server          = _server;
 @synthesize username        = _username;
 @synthesize password        = _password;
+@synthesize louderVolume    = _louderVolume;
+@synthesize registered      = _registered;
+
 @synthesize microphoneLevel = _microphoneLevel;
 @synthesize speakerLevel    = _speakerLevel;
-@synthesize registered      = _registered;
 
 
 - (id)initWithRealm:(NSString*)realm server:(NSString*)server username:(NSString*)username password:(NSString*)password;
@@ -155,6 +172,9 @@ void showLog(int level, const char* data, int len)
         _username   = username;
         _password   = password;
         _registered = SipInterfaceRegisteredNo;
+
+        _microphoneLevel = MICROPHONE_LEVEL_NORMAL;
+        _speakerLevel    = SPEAKER_LEVEL_NORMAL;
 
         pj_log_set_log_func(&showLog);
 
@@ -246,6 +266,19 @@ void showLog(int level, const char* data, int len)
 
     pjsua_acc_set_online_status(pjsua_acc_get_default(), PJ_TRUE);
 
+    OSStatus result = AudioSessionAddPropertyListener(kAudioSessionProperty_AudioRouteChange,
+                                                      audioRouteChangeListener,
+                                                      (__bridge void*)self);
+    if (result != 0)
+    {
+        char    error[5];
+
+        *(int*)error = result;
+        error[4] = '\0';
+
+        
+    }
+
     return PJ_SUCCESS;
 }
 
@@ -266,8 +299,6 @@ void showLog(int level, const char* data, int len)
     info.duration        = NO_LIMIT;
     info.wav_id          = PJSUA_INVALID_ID;
     info.wav_port        = PJSUA_INVALID_ID;
-    info.mic_level       = 1.0;    //### Get from Settings (indirectly).
-    info.speaker_level   = 2.0;    //### Get from Settings (indirectly). 4.0 as loud?
     info.ringback_slot   = PJSUA_INVALID_ID;
     info.busy_slot       = PJSUA_INVALID_ID;
     info.congestion_slot = PJSUA_INVALID_ID;
@@ -760,13 +791,86 @@ void showLog(int level, const char* data, int len)
 }
 
 
+#pragma mark - Property Overrides
+
 - (SipInterfaceRegistered)registered
 {
     return _registered;
 }
 
 
+- (void)setMicrophoneLevel:(float)microphoneLevel
+{
+    _microphoneLevel = microphoneLevel;
+    pjsua_conf_adjust_rx_level(0, self.microphoneLevel);
+}
+
+
+- (void)setSpeakerLevel:(float)speakerLevel
+{
+    _speakerLevel = speakerLevel;
+    pjsua_conf_adjust_tx_level(0, self.speakerLevel);
+}
+
+
 #pragma mark - Utility Methods
+
+- (void)setAudioVolumes
+{
+    UInt32      routeSize = sizeof(CFStringRef);
+    CFStringRef routeRef;
+    OSStatus    error = AudioSessionGetProperty(kAudioSessionProperty_AudioRoute, &routeSize, &routeRef);
+    NSString*   route = (__bridge NSString*)routeRef;
+
+    NSLog(@"//### Audio Route: %@", route);
+
+    if ([route isEqualToString:@"Headset"])
+    {
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+    }
+    else if ([route isEqualToString:@"Headphone"])
+    {
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+    }
+    else if ([route isEqualToString:@"Speaker"])
+    {
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+    }
+    else if ([route isEqualToString:@"SpeakerAndMicrophone"])
+    {
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+    }
+    else if ([route isEqualToString:@"HeadphonesAndMicrophone"])
+    {
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+    }
+    else if ([route isEqualToString:@"HeadsetInOut"])
+    {
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+    }
+    else if ([route isEqualToString:@"ReceiverAndMicrophone"])
+    {
+        self.speakerLevel = SPEAKER_LEVEL_RECEIVER * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_RECEIVER : 1.0f;
+    }
+    else if ([route isEqualToString:@"LineOut"])
+    {
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+    }
+    else if ([route isEqualToString:@"LineInOut"])
+    {
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+    }
+    else if ([route isEqualToString:@"HeadsetBT"])
+    {
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+    }
+    else
+    {
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume) ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f;
+        NSLog(@"//### Unknown Audio Route: %@", route);
+    }
+}
+
 
 - (void)ringback_start:(pjsua_call_id)call_id
 {
@@ -1353,24 +1457,14 @@ void showLog(int level, const char* data, int len)
      */
     if (ci->media[mi].status == PJSUA_CALL_MEDIA_ACTIVE || ci->media[mi].status == PJSUA_CALL_MEDIA_REMOTE_HOLD)
     {
-	pj_bool_t connect_sound = PJ_TRUE;
-	pj_bool_t disconnect_mic = PJ_FALSE;
 	pjsua_conf_port_id call_conf_slot;
 
 	call_conf_slot = ci->media[mi].stream.aud.conf_slot;
 
-	/* Otherwise connect to sound device */
-	if (connect_sound)
-        {
-	    pjsua_conf_connect(call_conf_slot, 0);
-	    if (!disconnect_mic)
-            {
-		pjsua_conf_connect(0, call_conf_slot);
+        pjsua_conf_connect(call_conf_slot, 0);
+        pjsua_conf_connect(0, call_conf_slot);
 
-                pjsua_conf_adjust_rx_level(0, info.mic_level);
-                pjsua_conf_adjust_tx_level(0, info.speaker_level);
-            }
-	}
+        [self setAudioVolumes];
     }
 }
 
@@ -1770,6 +1864,18 @@ static void on_ice_transport_error(int index, pj_ice_strans_op op, pj_status_t s
 static pj_status_t on_snd_dev_operation(int operation)
 {
     return [sipInterface onSoundDeviceOperation:operation];
+}
+
+
+void audioRouteChangeListener(void*                     userData,
+                              AudioSessionPropertyID    propertyID,
+                              UInt32                    propertyValueSize,
+                              const void*               propertyValue)
+{
+    if (propertyID == kAudioSessionProperty_AudioRouteChange)
+    {
+        [sipInterface setAudioVolumes];
+    }
 }
 
 
