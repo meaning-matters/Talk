@@ -256,6 +256,7 @@ void showLog(int level, const char* data, int len)
     info.account_config.rtp_cfg                  = info.rtp_cfg;
     info.account_config.reg_retry_interval       = 300;
     info.account_config.reg_first_retry_interval = 60;
+    info.account_config.reg_timeout              = KEEP_ALIVE_INTERVAL;
 
     if ((status = pjsua_acc_add(&info.account_config, PJ_TRUE, NULL)) != PJ_SUCCESS)
     {
@@ -587,7 +588,6 @@ void showLog(int level, const char* data, int len)
     // We assume there is only one external account.  (There may be a few local accounts too.)
     if (pjsua_acc_is_valid(accountId = pjsua_acc_get_default()))
     {
-        info.account_config.reg_timeout = KEEP_ALIVE_INTERVAL;
         if (pjsua_acc_set_registration(accountId, PJ_TRUE) != PJ_SUCCESS)
         {
             //### Sometimes results in:
@@ -799,6 +799,8 @@ void showLog(int level, const char* data, int len)
 
 - (void)setMicrophoneLevel:(float)microphoneLevel
 {
+    [self registerThread];
+
     _microphoneLevel = microphoneLevel;
     pjsua_conf_adjust_rx_level(0, self.microphoneLevel);
 }
@@ -806,6 +808,8 @@ void showLog(int level, const char* data, int len)
 
 - (void)setSpeakerLevel:(float)speakerLevel
 {
+    [self registerThread];
+    
     _speakerLevel = speakerLevel;
     pjsua_conf_adjust_tx_level(0, self.speakerLevel);
 }
@@ -839,19 +843,19 @@ void showLog(int level, const char* data, int len)
     {
         self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
-    else if ([route isEqualToString:@"SpeakerAndMicrophone"])
+    else if ([route isEqualToString:@"SpeakerAndMicrophone"])       // In call: plain iPod Touch & iPad.
     {
         self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
-    else if ([route isEqualToString:@"HeadphonesAndMicrophone"])
+    else if ([route isEqualToString:@"HeadphonesAndMicrophone"])    // In call: All device with headphones (i.e. without microphone).
+    {                                                               // And very briefly after plugging in headset.
+        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
+    }
+    else if ([route isEqualToString:@"HeadsetInOut"])               // In call: All devices when using headset (i.e. with microphone).
     {
         self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
-    else if ([route isEqualToString:@"HeadsetInOut"])
-    {
-        self.speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
-    }
-    else if ([route isEqualToString:@"ReceiverAndMicrophone"])
+    else if ([route isEqualToString:@"ReceiverAndMicrophone"])      // In call: plain iPhone.
     {
         self.speakerLevel = SPEAKER_LEVEL_RECEIVER * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_RECEIVER : 1.0f);
     }
