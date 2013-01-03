@@ -69,10 +69,6 @@ static struct
     unsigned		    tone_count;
     pjmedia_tone_desc	    tones[32];
     pjsua_conf_port_id	    tone_slots[32];
-    pjsua_player_id	    wav_id;
-    pjsua_conf_port_id	    wav_port;
-    pj_bool_t		    auto_play;
-    pj_bool_t		    auto_play_hangup;
     unsigned		    auto_answer;
     unsigned		    duration;
 
@@ -293,15 +289,13 @@ void showLog(int level, const char* data, int len)
 
     info.redir_op        = PJSIP_REDIRECT_ACCEPT;
     info.duration        = NO_LIMIT;
-    info.wav_id          = PJSUA_INVALID_ID;
-    info.wav_port        = PJSUA_INVALID_ID;
     info.ringback_slot   = PJSUA_INVALID_ID;
     info.busy_slot       = PJSUA_INVALID_ID;
     info.congestion_slot = PJSUA_INVALID_ID;
     info.ring_slot       = PJSUA_INVALID_ID;
 
-#if !defined(PJMEDIA_HAS_SRTP) && (PJMEDIA_HAS_SRTP == 0)
-#error Requires SRTP
+#if !defined(PJMEDIA_HAS_SRTP) || PJMEDIA_HAS_SRTP == 0
+#error SRTP is required.
 #endif
     info.config.use_srtp = PJMEDIA_SRTP_MANDATORY;
 
@@ -1197,14 +1191,6 @@ void showLog(int level, const char* data, int len)
 	    pjsip_endpt_cancel_timer(endpt, &cd->timer);
 	}
 
-	/* Rewind play file when hangup automatically,
-	 * since file is not looped
-	 */
-	if (info.auto_play_hangup)
-        {
-	    pjsua_player_set_pos(info.wav_id, 0);
-        }
-
 	PJ_LOG(3, (THIS_FILE, "Call %d is DISCONNECTED [reason=%d (%s)]",
                    call_id, call_info.last_status, call_info.last_status_text.ptr));
 
@@ -1673,7 +1659,9 @@ void showLog(int level, const char* data, int len)
                    state:(pjsip_transport_state)state
                     info:(const pjsip_transport_state_info*)stateInfo
 {
-    char host_port[128];
+    char    host_port[128];
+    char    buf[2048];      // Large enough to be used in both cases.
+
 
     pj_ansi_snprintf(host_port, sizeof(host_port), "[%.*s:%d]",
 		     (int)tp->remote_name.host.slen, tp->remote_name.host.ptr, tp->remote_name.port);
@@ -1681,30 +1669,25 @@ void showLog(int level, const char* data, int len)
     switch (state)
     {
         case PJSIP_TP_STATE_CONNECTED:
-        {
             PJ_LOG(3, (THIS_FILE, "SIP %s transport is connected to %s", tp->type_name, host_port));
-        }
             break;
 
         case PJSIP_TP_STATE_DISCONNECTED:
-        {
-            char buf[100];
-
             snprintf(buf, sizeof(buf), "SIP %s transport is disconnected from %s", tp->type_name, host_port);
             pjsua_perror(THIS_FILE, buf, stateInfo->status);
-        }
             break;
 
         default:
             break;
     }
 
-#if defined(PJSIP_HAS_TLS_TRANSPORT) && PJSIP_HAS_TLS_TRANSPORT != 0
+#if !defined(PJSIP_HAS_TLS_TRANSPORT) || PJSIP_HAS_TLS_TRANSPORT == 0
+#error TLS is required.
+#endif
     if (!pj_ansi_stricmp(tp->type_name, "tls") && stateInfo->ext_info &&
-	(state == PJSIP_TP_STATE_CONNECTED ||
+        (state == PJSIP_TP_STATE_CONNECTED ||
 	 ((pjsip_tls_state_info*)stateInfo->ext_info)->ssl_sock_info->verify_status != PJ_SUCCESS))
     {
-	char        buf[2048];
 	const char* verif_msgs[32];
 	unsigned    verif_msg_cnt;
 
@@ -1712,8 +1695,7 @@ void showLog(int level, const char* data, int len)
 	pj_ssl_sock_info *ssl_sock_info = tls_info->ssl_sock_info;
 
 	/* Dump server TLS cipher */
-	PJ_LOG(4, (THIS_FILE, "TLS cipher used: 0x%06X/%s",
-                   ssl_sock_info->cipher, pj_ssl_cipher_name(ssl_sock_info->cipher)));
+	PJ_LOG(4, (THIS_FILE, "TLS cipher: 0x%06X/%s", ssl_sock_info->cipher, pj_ssl_cipher_name(ssl_sock_info->cipher)));
 
 	/* Dump server TLS certificate */
 	pj_ssl_cert_info_dump(ssl_sock_info->remote_cert_info, "  ", buf, sizeof(buf));
@@ -1723,7 +1705,7 @@ void showLog(int level, const char* data, int len)
 	verif_msg_cnt = PJ_ARRAY_SIZE(verif_msgs);
 	pj_ssl_cert_get_verify_status_strings(ssl_sock_info->verify_status, verif_msgs, &verif_msg_cnt);
 	PJ_LOG(3, (THIS_FILE, "TLS cert verification result of %s : %s",
-                   host_port, (verif_msg_cnt == 1? verif_msgs[0]:"")));
+                   host_port, (verif_msg_cnt == 1 ? verif_msgs[0] : "")));
 
 	if (verif_msg_cnt > 1)
         {
@@ -1738,7 +1720,6 @@ void showLog(int level, const char* data, int len)
 	    PJ_LOG(3, (THIS_FILE, "PJSUA is configured to ignore TLS cert verification errors"));
 	}
     }
-#endif
 }
 
 
@@ -1874,10 +1855,7 @@ static pj_status_t on_snd_dev_operation(int operation)
 }
 
 
-void audioRouteChangeListener(void*                     userData,
-                              AudioSessionPropertyID    propertyID,
-                              UInt32                    propertyValueSize,
-                              const void*               propertyValue)
+void audioRouteChangeListener(void* userData, AudioSessionPropertyID propertyID, UInt32 propertyValueSize, const void* propertyValue)
 {
     if (propertyID == kAudioSessionProperty_AudioRouteChange)
     {
