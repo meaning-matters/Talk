@@ -15,7 +15,6 @@
 #import "PhoneNumber.h"
 #import "CountriesViewController.h"
 #import "CallViewController.h"
-#import "SipInterface.h"
 #import "Tones.h"
 
 
@@ -74,6 +73,7 @@ static SipInterface*    sipInterface;
                                                     server:settings.sipServer
                                                   username:settings.sipUsername
                                                   password:settings.sipPassword];
+        sipInterface.delegate = sharedManager;
 
         return YES;
     }
@@ -238,6 +238,8 @@ static SipInterface*    sipInterface;
 {
     Call*   call = nil;
 
+    //### Check that number and identity are non empty!
+
     if (phoneNumber.isEmergency)
     {
         if ([self callMobilePhoneNumber:phoneNumber] == YES)
@@ -280,7 +282,7 @@ static SipInterface*    sipInterface;
 
 - (void)endCall:(Call*)call
 {
-    [sipInterface hangupAllCalls];
+    [sipInterface hangupCall:(__bridge void*)call reason:nil];
 }
 
 
@@ -357,6 +359,123 @@ static SipInterface*    sipInterface;
 
         return NO;
     }
+}
+
+
+#pragma mark SipInterface Delegate
+
+- (void)sipInterfaceCallCalling:(SipInterface*)interface userData:(void*)userData
+{
+    Call*   call = (__bridge Call*)userData;
+    call.state = CallStateCalling;
+
+    [callViewController changedStateOfCall:call];
+}
+
+
+- (void)sipInterfaceCallRinging:(SipInterface*)interface userData:(void*)userData
+{
+    //### Had a BAD_ACCESS crash here, when making/closing calls quickly.
+    Call*   call = (__bridge Call*)userData;
+    call.state = CallStateRinging;
+
+    [callViewController changedStateOfCall:call];
+}
+
+
+- (void)sipInterfaceCallConnecting:(SipInterface*)interface userData:(void*)userData
+{
+    Call*   call = (__bridge Call*)userData;
+    call.state = CallStateConnecting;
+
+    [callViewController changedStateOfCall:call];
+}
+
+
+- (void)sipInterfaceCallConnected:(SipInterface*)interface userData:(void*)userData
+{
+    Call*   call = (__bridge Call*)userData;
+    call.state = CallStateConnected;
+
+    [callViewController changedStateOfCall:call];
+}
+
+
+- (void)sipInterfaceCallEnding:(SipInterface*)interface userData:(void*)userData
+{
+    Call*   call = (__bridge Call*)userData;
+    call.state = CallStateEnding;
+
+    [callViewController changedStateOfCall:call];
+}
+
+
+- (void)sipInterfaceCallEnded:(SipInterface*)interface userData:(void*)userData
+{
+    Call*   call = (__bridge Call*)userData;
+    call.state = CallStateEnded;
+
+    [callViewController changedStateOfCall:call];
+}
+
+
+- (void)sipInterfaceCallBusy:(SipInterface*)interface userData:(void*)userData
+{
+
+}
+
+
+- (void)sipInterfaceCallDeclined:(SipInterface*)interface userData:(void*)userData
+{
+
+}
+
+
+- (void)sipInterfaceCallNotAllowed:(SipInterface*)interface userData:(void*)userData reason:(SipInterfaceCallNotAllowed)reason
+{
+
+}
+
+
+- (void)sipInterfaceCallFailed:(SipInterface*)interface userData:(void*)userData reason:(SipInterfaceCallFailed)reason
+{
+
+}
+
+
+- (void)sipInterfaceCallIncoming:(SipInterface*)interface number:(NSString*)number callId:(int)callId
+{
+
+}
+
+
+- (void)sipInterfaceCallIncomingCanceled:(SipInterface*)interface number:(NSString*)number
+{
+
+}
+
+
+- (void)sipInterfaceCallOnHold:(SipInterface*)interface userData:(void*)userData
+{
+
+}
+
+
+- (void)sipInterfaceCallOnMute:(SipInterface*)interface userData:(void*)userData
+{
+
+}
+
+
+- (void)sipInterfaceOnSpeaker:(SipInterface*)interface
+{
+
+}
+
+
+- (void)sipInterfaceError:(SipInterface*)interface reason:(SipInterfaceError)error
+{
+
 }
 
 @end

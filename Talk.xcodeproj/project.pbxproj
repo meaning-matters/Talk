@@ -582,6 +582,7 @@
 		485F6C281637270100D61365 /* ZM@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F6A361637270100D61365 /* ZM@2x.png */; };
 		485F6C291637270100D61365 /* ZW.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F6A371637270100D61365 /* ZW.png */; };
 		485F6C2A1637270100D61365 /* ZW@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F6A381637270100D61365 /* ZW@2x.png */; };
+		487A7C9A16978DBE007693EE /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 487A7C9916978DBE007693EE /* MediaPlayer.framework */; };
 		488268D9164BCF8600EA58AE /* NetworkStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 488268D8164BCF8600EA58AE /* NetworkStatus.m */; };
 		488268DA164BCF8600EA58AE /* NetworkStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 488268D8164BCF8600EA58AE /* NetworkStatus.m */; };
 		48826909164BDC3400EA58AE /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 48826908164BDC3400EA58AE /* Reachability.m */; };
@@ -1319,6 +1320,7 @@
 		485F6A361637270100D61365 /* ZM@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ZM@2x.png"; sourceTree = "<group>"; };
 		485F6A371637270100D61365 /* ZW.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ZW.png; sourceTree = "<group>"; };
 		485F6A381637270100D61365 /* ZW@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ZW@2x.png"; sourceTree = "<group>"; };
+		487A7C9916978DBE007693EE /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		488268D7164BCF8600EA58AE /* NetworkStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkStatus.h; sourceTree = "<group>"; };
 		488268D8164BCF8600EA58AE /* NetworkStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkStatus.m; sourceTree = "<group>"; };
 		48826907164BDC3400EA58AE /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
@@ -1458,6 +1460,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				487A7C9A16978DBE007693EE /* MediaPlayer.framework in Frameworks */,
 				4888D28F16724FCD00B55B22 /* Security.framework in Frameworks */,
 				484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */,
 				484F7C3B164C15770059A5A6 /* CoreTelephony.framework in Frameworks */,
@@ -2212,6 +2215,7 @@
 				48EE399616777EBB00823E09 /* WebRTC */,
 				48338F55161628410033F4C1 /* OpenSSL */,
 				48338F54161628310033F4C1 /* pjsip */,
+				487A7C9916978DBE007693EE /* MediaPlayer.framework */,
 				4888D28E16724FCD00B55B22 /* Security.framework */,
 				48884A741615CE920005AA79 /* UIKit.framework */,
 				48884A761615CE920005AA79 /* Foundation.framework */,

@@ -13,12 +13,10 @@
 #import "Common.h"
 #import "webrtc.h"      // Glue-logic with libWebRTC.a.
 
-//### Added for Talk's NetworkStatus; still needs to be notified to.
-NSString* const kSipInterfaceCallStateChangedNotification = @"kSipInterfaceCallStateChangedNotification";
 
 #define THIS_FILE	"SipInterface"
-#define NO_LIMIT	(int)0x7FFFFFFF
-#define KEEP_ALIVE_INTERVAL 600     // The shortest that iOS allows.
+#define KEEP_ALIVE_INTERVAL             600     // The shortest that iOS allows.
+#define FORCE_HANGUP_TIMEOUT            4.0f    // Seconds after which PJSIP is restarted if no disconnect received.
 
 // Volume Levels.  Note that these are linear values, so 2.0 is only a bit louder.
 #define SPEAKER_LEVEL_NORMAL            1.0f
@@ -28,12 +26,12 @@ NSString* const kSipInterfaceCallStateChangedNotification = @"kSipInterfaceCallS
 #define MICROPHONE_LEVEL_NORMAL         1.0f
 
 // Ringtones		    US	       UK
-#define RINGBACK_FREQ1	    425//440	    /* 400 */
-#define RINGBACK_FREQ2	    0//480	    /* 450 */
-#define RINGBACK_ON	    1000//2000    /* 400 */
-#define RINGBACK_OFF	    3000//4000    /* 200 */
+#define RINGBACK_FREQ1	    440	    /* 400 */
+#define RINGBACK_FREQ2	    480	    /* 450 */
+#define RINGBACK_ON	    2000    /* 400 */
+#define RINGBACK_OFF	    4000    /* 200 */
 #define RINGBACK_CNT	    1	    /* 2   */
-#define RINGBACK_INTERVAL   3000//4000    /* 2000 */
+#define RINGBACK_INTERVAL   4000    /* 2000 */
 
 #define RING_FREQ1	    800
 #define RING_FREQ2	    640
@@ -45,9 +43,13 @@ NSString* const kSipInterfaceCallStateChangedNotification = @"kSipInterfaceCallS
 
 struct call_data
 {
-    pj_timer_entry	    timer;
-    pj_bool_t		    ringback_on;
-    pj_bool_t		    ring_on;
+    void*                   user_data;
+    pj_bool_t		    ringback_on;    // Ringback tone.
+    pj_bool_t               busy_on;        // Busy tone.
+    pj_bool_t               congestion_on;  // Congestion/Error tone.
+    pj_bool_t		    ring_on;        // Ring tone.
+    pj_bool_t               mute_on;        // When on TX volume of conference slot is 0.
+    pj_bool_t               ending;
 };
 
 
@@ -63,6 +65,9 @@ static struct
     pjsip_redirect_op	    redir_op;
 
     struct call_data	    call_data[PJSUA_MAX_CALLS];
+    pjsua_call_id           current_call;
+
+    pj_bool_t               speaker_on;      // Speaker button on UI.
 
     pj_pool_t*              pool;
 
@@ -83,7 +88,6 @@ static struct
 } info;
 
 
-static pjsua_call_id	current_call = PJSUA_INVALID_ID;
 
 static void call_timeout_callback(pj_timer_heap_t* timer_heap, struct pj_timer_entry* entry);
 static pj_bool_t default_mod_on_rx_request(pjsip_rx_data* rdata);
@@ -94,7 +98,6 @@ static void on_call_tsx_state(pjsua_call_id call_id, pjsip_transaction* tsx, pjs
 static void on_call_generic_media_state(pjsua_call_info* ci, unsigned mi, pj_bool_t* has_error);
 static void on_call_audio_state(pjsua_call_info* ci, unsigned mi, pj_bool_t* has_error);
 static void on_call_media_state(pjsua_call_id call_id);
-static void call_on_dtmf_callback(pjsua_call_id call_id, int dtmf);
 static pjsip_redirect_op call_on_redirected(pjsua_call_id call_id, const pjsip_uri* target, const pjsip_event* e);
 static void on_reg_state(pjsua_acc_id acc_id, pjsua_reg_info *info);
 static void on_call_transfer_status(pjsua_call_id call_id, int status_code, const pj_str_t* status_text, pj_bool_t final, pj_bool_t* p_cont);
@@ -107,7 +110,8 @@ static pj_status_t on_snd_dev_operation(int operation);
 
 void audioRouteChangeListener(void* userData, AudioSessionPropertyID propertyID, UInt32 propertyValueSize, const void* propertyValue);
 
-static SipInterface*            sipInterface;
+static SipInterface*    sipInterface;
+static NSTimer*         hangupTimer;
 
 
 /*****************************************************************************
@@ -148,6 +152,7 @@ void showLog(int level, const char* data, int len)
 
 @implementation SipInterface
 
+@synthesize delegate        = _delegate;
 @synthesize realm           = _realm;
 @synthesize server          = _server;
 @synthesize username        = _username;
@@ -200,7 +205,6 @@ void showLog(int level, const char* data, int len)
 
 - (pj_status_t)initialize
 {
-    unsigned                i;
     pj_status_t             status;
 
     if ((status = pjsua_create()) != PJ_SUCCESS)
@@ -209,6 +213,7 @@ void showLog(int level, const char* data, int len)
     }
 
     info.pool = pjsua_pool_create("pjsua-app", 1000, 1000);
+    info.current_call = PJSUA_INVALID_ID;
 
     [self initializeConfigs];
     [self initializeCallbacks];
@@ -229,13 +234,6 @@ void showLog(int level, const char* data, int len)
     if ((status = pjsip_endpt_register_module(pjsua_get_pjsip_endpt(), &mod_default_handler)) != PJ_SUCCESS)
     {
         return status;
-    }
-
-    /* Initialize calls data */
-    for (i = 0; i < PJ_ARRAY_SIZE(info.call_data); ++i)
-    {
-        info.call_data[i].timer.id = PJSUA_INVALID_ID;
-        info.call_data[i].timer.cb = &call_timeout_callback;
     }
 
     if ((status = [self initializeTones]) != PJ_SUCCESS)
@@ -288,7 +286,6 @@ void showLog(int level, const char* data, int len)
     pjsua_acc_config_default(&info.account_config);
 
     info.redir_op        = PJSIP_REDIRECT_ACCEPT;
-    info.duration        = NO_LIMIT;
     info.ringback_slot   = PJSUA_INVALID_ID;
     info.busy_slot       = PJSUA_INVALID_ID;
     info.congestion_slot = PJSUA_INVALID_ID;
@@ -326,7 +323,6 @@ void showLog(int level, const char* data, int len)
     info.config.cb.on_call_media_state     = &on_call_media_state;
     info.config.cb.on_incoming_call        = &on_incoming_call;
     info.config.cb.on_call_tsx_state       = &on_call_tsx_state;
-    info.config.cb.on_dtmf_digit           = &call_on_dtmf_callback;
     info.config.cb.on_call_redirected      = &call_on_redirected;
     info.config.cb.on_reg_state2           = &on_reg_state;
     info.config.cb.on_call_transfer_status = &on_call_transfer_status;
@@ -508,6 +504,7 @@ void showLog(int level, const char* data, int len)
         pjsua_acc_set_online_status(acc_id, PJ_TRUE);
     }
 
+    //### Is this needed (perhaps old stuff of ipjsua)?
     if (transport_id == -1)
     {
         PJ_LOG(1, (THIS_FILE, "Error: no transport is configured"));
@@ -610,29 +607,29 @@ void showLog(int level, const char* data, int len)
 
 - (void)restart
 {
-    [self registerThread];
-
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
-                   {
-                       [self destroy];
-                       [self destroy];  // On purpose.
+    {
+        [self registerThread];
+                       
+        [self destroy];
+        [self destroy];  // On purpose.
 
-                       if ([self initialize] == PJ_SUCCESS)
-                       {
-                           pj_status_t status;
+        if ([self initialize] == PJ_SUCCESS)
+        {
+            pj_status_t status;
 
-                           if ((status = pjsua_start()) != PJ_SUCCESS)
-                           {
-                               NSLog(@"//### pjsua_start() failed: %d.", status);
+            if ((status = pjsua_start()) != PJ_SUCCESS)
+            {
+                NSLog(@"//### pjsua_start() failed: %d.", status);
                                
-                               [self destroy];
-                           }                           
-                       }
-                       else
-                       {
-                           NSLog(@"//### Failed to initialize PJSUA.");
-                       }
-                   });
+                [self destroy];
+            }
+        }
+        else
+        {
+            NSLog(@"//### Failed to initialize PJSUA.");
+        }
+    });
 }
 
 
@@ -719,15 +716,15 @@ void showLog(int level, const char* data, int len)
 {
     [self registerThread];
 
+    pj_assert([calledNumber length] != 0 && [identityNumber length] != 0);
+
     if (pjsua_call_get_count() == PJSUA_MAX_CALLS)
     {
         NSLog(@"//### Can't make call, maximum calls (%d) reached.", PJSUA_MAX_CALLS);
-
-        return PJSUA_INVALID_ID;
-    }
-    else if ([calledNumber length] == 0 || [identityNumber length] == 0)
-    {
-        NSLog(@"//### Missing argument(s).");
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            [self.delegate sipInterfaceCallFailed:self userData:userData reason:SipInterfaceCallFailedTooManyCalls];
+        });
 
         return PJSUA_INVALID_ID;
     }
@@ -736,39 +733,67 @@ void showLog(int level, const char* data, int len)
         __block pjsua_call_id   call_id = PJSUA_INVALID_ID;
 
         dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
-                      {
-                          NSString*                 uriString;
-                          pj_str_t                  uri;
-                          pjsua_call_setting        call_opt;
-                          pjsua_msg_data            msg_data;
-                          pj_str_t                  header_name;
-                          pj_str_t                  header_value;
-                          pjsip_generic_string_hdr  header;
-                          pj_status_t               status;
+        {
+            NSString*                 uriString;
+            pj_str_t                  uri;
+            pjsua_call_setting        call_opt;
+            pjsua_msg_data            msg_data;
+            pj_str_t                  header_name;
+            pj_str_t                  header_value;
+            pjsip_generic_string_hdr  header;
+            pj_status_t               status;
 
-                          [self registerThread];
+            [self registerThread];
 
-                          uriString = [NSString stringWithFormat:@"sip:%@@%@;transport=tls", calledNumber, self.server];
-                          uri = pj_str((char*)[uriString cStringUsingEncoding:NSASCIIStringEncoding]);
-                          pjsua_call_setting_default(&call_opt);
+            uriString = [NSString stringWithFormat:@"sip:%@@%@;transport=tls", calledNumber, self.server];
+            uri = pj_str((char*)[uriString cStringUsingEncoding:NSASCIIStringEncoding]);
+            pjsua_call_setting_default(&call_opt);
 
-                          // Create optional header containing number/identity from which this call is made.
-                          pjsua_msg_data_init(&msg_data);
-                          header_name = pj_str("Identity");
-                          header_value = pj_str((char*)[identityNumber cStringUsingEncoding:NSASCIIStringEncoding]);
-                          pjsua_msg_data_init(&msg_data);
-                          pjsip_generic_string_hdr_init2(&header, &header_name, &header_value);
-                          pj_list_push_back(&msg_data.hdr_list, &header);
-                          
-                          status = pjsua_call_make_call(pjsua_acc_get_default(), &uri, &call_opt, userData, &msg_data, &call_id);
-                          if (status != PJ_SUCCESS)
-                          {
-                              NSLog(@"//### Failed to make call: %d.", status);
-                          }
-                      });
+            // Create optional header containing number/identity from which this call is made.
+            header_name = pj_str("Identity");
+            header_value = pj_str((char*)[identityNumber cStringUsingEncoding:NSASCIIStringEncoding]);
+            pjsip_generic_string_hdr_init2(&header, &header_name, &header_value);
+            pjsua_msg_data_init(&msg_data);
+            pj_list_push_back(&msg_data.hdr_list, &header);
+          
+            status = pjsua_call_make_call(pjsua_acc_get_default(), &uri, &call_opt, userData, &msg_data, &call_id);
+            if (status != PJ_SUCCESS)
+            {
+                NSLog(@"//### Failed to make call: %d.", status);
+                dispatch_async(dispatch_get_main_queue(), ^
+                {
+                    //### Determine which PJSIP errors can occor here; then created SipInterfaceCallFailedXyz's.
+                    [self.delegate sipInterfaceCallFailed:self userData:userData reason:SipInterfaceCallFailedInternal];
+                });
+            }
+            else
+            {
+                bzero(&info.call_data[call_id], sizeof(struct call_data));
+                info.call_data[call_id].user_data = userData;
+                info.call_data[call_id].ending = NO;
+            }
+        });
 
         return call_id;
     }
+}
+
+
+#warning Also make force restart for calling: When no calling received in certain time ....
+- (void)forceHangup
+{
+    @synchronized(self)
+    {
+        hangupTimer = nil;
+    }
+
+    [self restart];
+
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        //### Must invoked for all calls.  Right now we assume there's only one: current_call.
+        [self.delegate sipInterfaceCallEnded:self userData:info.call_data[info.current_call].user_data];
+    });
 }
 
 
@@ -780,6 +805,94 @@ void showLog(int level, const char* data, int len)
     self.speakerLevel = 0.0f;
 
     pjsua_call_hangup_all();
+
+    @synchronized(self)
+    {
+        if (hangupTimer == nil)
+        {
+            hangupTimer = [NSTimer scheduledTimerWithTimeInterval:FORCE_HANGUP_TIMEOUT
+                                                            target:self
+                                                          selector:@selector(forceHangup)
+                                                          userInfo:nil
+                                                           repeats:NO];
+        }
+    }
+
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        //### Must invoked for all calls.  Right now we assume there's only one: current_call.
+        [self.delegate sipInterfaceCallEnding:self userData:info.call_data[info.current_call].user_data];
+    });
+}
+
+
+- (void)hangupCall:(void*)userData reason:(NSString*)reason
+{
+    [self registerThread];
+
+    pjsua_msg_data            msg_data;
+    pj_str_t                  header_name;
+    pj_str_t                  header_value;
+    pjsip_generic_string_hdr  header;
+    pj_status_t               status;
+
+    pjsua_call_id   call_id = PJSUA_INVALID_ID;
+    for (int i = 0; i < PJSUA_MAX_CALLS; i++)
+    {
+        if (info.call_data[i].user_data == userData)
+        {
+            call_id = i;
+
+            if (userData == nil)
+            {
+                NSLog(@"//### USERDATA == nil)");
+            }
+            break;
+        }
+    }
+
+    if (info.call_data[call_id].ending)
+    {
+        NSLog(@"//### Multiple hangup for call %d.", call_id);
+        
+        return;
+    }
+
+    info.call_data[call_id].ending = YES;
+
+    if (reason != nil)
+    {
+        reason = @"No reason specified.";
+    }
+
+    header_name = pj_str("Reason");
+    header_value = pj_str((char*)[reason cStringUsingEncoding:NSASCIIStringEncoding]);
+    pjsip_generic_string_hdr_init2(&header, &header_name, &header_value);
+    pjsua_msg_data_init(&msg_data);
+    pj_list_push_back(&msg_data.hdr_list, &header);
+
+    if ((status = pjsua_call_hangup(call_id, 200, NULL, &msg_data)) != PJ_SUCCESS)
+    {
+        NSLog(@"//### Hangup failed: %d", status);
+        //### Inform delegate?
+    }
+
+    @synchronized(self)
+    {
+        if (hangupTimer == nil)
+        {
+            hangupTimer = [NSTimer scheduledTimerWithTimeInterval:FORCE_HANGUP_TIMEOUT
+                                                           target:self
+                                                         selector:@selector(forceHangup)
+                                                         userInfo:nil
+                                                          repeats:NO];
+        }
+    }
+
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        [self.delegate sipInterfaceCallEnding:self userData:userData];
+    });
 }
 
 
@@ -796,7 +909,7 @@ void showLog(int level, const char* data, int len)
     [self registerThread];
 
     _microphoneLevel = microphoneLevel;
-    pjsua_conf_adjust_rx_level(0, self.microphoneLevel);
+    pjsua_conf_adjust_rx_level(0, self.microphoneLevel);    //### Must be for conf slot for current call!  0 is when only one call.
 }
 
 
@@ -940,27 +1053,27 @@ void showLog(int level, const char* data, int len)
     int i;
     int max = pjsua_call_get_max_count();
 
-    for (i = current_call + 1; i < max; ++i)
+    for (i = info.current_call + 1; i < max; ++i)
     {
 	if (pjsua_call_is_active(i))
         {
-	    current_call = i;
+	    info.current_call = i;
 
 	    return PJ_TRUE;
 	}
     }
 
-    for (i = 0; i < current_call; ++i)
+    for (i = 0; i < info.current_call; ++i)
     {
 	if (pjsua_call_is_active(i))
         {
-	    current_call = i;
+	    info.current_call = i;
 
             return PJ_TRUE;
 	}
     }
 
-    current_call = PJSUA_INVALID_ID;
+    info.current_call = PJSUA_INVALID_ID;
 
     return PJ_FALSE;
 }
@@ -974,61 +1087,28 @@ void showLog(int level, const char* data, int len)
     int i;
     int max = pjsua_call_get_max_count();
 
-    for (i = current_call - 1; i >= 0; --i)
+    for (i = info.current_call - 1; i >= 0; --i)
     {
 	if (pjsua_call_is_active(i))
         {
-	    current_call = i;
+	    info.current_call = i;
 
 	    return PJ_TRUE;
 	}
     }
 
-    for (i = max - 1; i > current_call; --i)
+    for (i = max - 1; i > info.current_call; --i)
     {
 	if (pjsua_call_is_active(i))
         {
-	    current_call = i;
+	    info.current_call = i;
 	    return PJ_TRUE;
 	}
     }
 
-    current_call = PJSUA_INVALID_ID;
+    info.current_call = PJSUA_INVALID_ID;
 
     return PJ_FALSE;
-}
-
-
-/* Callback from timer when the maximum call duration has been
- * exceeded.
- */
-- (void)callTimeoutCallback:(pj_timer_heap_t*)timer_heap entry:(struct pj_timer_entry*)entry
-{
-    pjsua_call_id               call_id = entry->id;
-    pjsua_msg_data              msg_data;
-    pjsip_generic_string_hdr    warn;
-    pj_str_t                    hname = pj_str("Warning");
-    pj_str_t                    hvalue = pj_str("399 pjsua \"Call duration exceeded\"");
-
-    PJ_UNUSED_ARG(timer_heap);
-
-    if (call_id == PJSUA_INVALID_ID)
-    {
-	PJ_LOG(1, (THIS_FILE, "Invalid call ID in timer callback"));
-	return;
-    }
-
-    /* Add warning header */
-    pjsua_msg_data_init(&msg_data);
-    pjsip_generic_string_hdr_init2(&warn, &hname, &hvalue);
-    pj_list_push_back(&msg_data.hdr_list, &warn);
-
-    /* Call duration has been exceeded; disconnect the call */
-    PJ_LOG(3,(THIS_FILE, "Duration (%d seconds) has been exceeded for call %d, disconnecting the call",
-              info.duration, call_id));
-    entry->id = PJSUA_INVALID_ID;
-
-    pjsua_call_hangup(call_id, 200, NULL, &msg_data);
 }
 
 
@@ -1170,59 +1250,31 @@ void showLog(int level, const char* data, int len)
 
 - (void)onCallState:(pjsua_call_id)call_id event:(pjsip_event*)e
 {
-    pjsua_call_info call_info;
-
-    PJ_UNUSED_ARG(e);
-
+    pjsua_call_info call_info;    
     pjsua_call_get_info(call_id, &call_info);
 
-    if (call_info.state == PJSIP_INV_STATE_DISCONNECTED)
+    NSLog(@"----------------------------------------- Call:%d %d %s", call_id, call_info.last_status, call_info.state_text.ptr);
+
+    switch (call_info.state)
     {
-	/* Stop all ringback for this call */
-	[self ring_stop:call_id];
+        case PJSIP_INV_STATE_NULL:          // Before INVITE is sent or received.
+            break;
 
-	/* Cancel duration timer, if any */
-	if (info.call_data[call_id].timer.id != PJSUA_INVALID_ID)
+        case PJSIP_INV_STATE_CALLING:       // After INVITE is sent.
         {
-	    struct call_data *cd = &info.call_data[call_id];
-	    pjsip_endpoint *endpt = pjsua_get_pjsip_endpt();
-
-	    cd->timer.id = PJSUA_INVALID_ID;
-	    pjsip_endpt_cancel_timer(endpt, &cd->timer);
-	}
-
-	PJ_LOG(3, (THIS_FILE, "Call %d is DISCONNECTED [reason=%d (%s)]",
-                   call_id, call_info.last_status, call_info.last_status_text.ptr));
-
-	if (call_id == current_call)
-        {
-	    [self find_next_call];
-	}
-
-        /* Reset current call */
-        if (current_call == call_id)
-        {
-            current_call = PJSUA_INVALID_ID;
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                [self.delegate sipInterfaceCallCalling:self userData:info.call_data[call_id].user_data];
+            });
+            break;
         }
-    }
-    else
-    {
-	if (info.duration != NO_LIMIT && call_info.state == PJSIP_INV_STATE_CONFIRMED)
-	{
-	    /* Schedule timer to hangup call after the specified duration */
-	    struct call_data*   cd = &info.call_data[call_id];
-	    pjsip_endpoint*     endpt = pjsua_get_pjsip_endpt();
-	    pj_time_val         delay;
+            
+        case PJSIP_INV_STATE_INCOMING:      // After INVITE is received.
+            break;
 
-	    cd->timer.id = call_id;
-	    delay.sec    = info.duration;
-	    delay.msec   = 0;
-	    pjsip_endpt_schedule_timer(endpt, &cd->timer, &delay);
-	}
-
-	if (call_info.state == PJSIP_INV_STATE_EARLY)
+        case PJSIP_INV_STATE_EARLY:         // After response with To tag.
         {
-	    int         code;
+            int         code;
 	    pj_str_t    reason;
 	    pjsip_msg*  msg;
 
@@ -1242,25 +1294,85 @@ void showLog(int level, const char* data, int len)
 	    reason = msg->line.status.reason;
 
 	    /* Start ringback for 180 for UAC unless there's SDP in 180 */
-	    if (call_info.role==PJSIP_ROLE_UAC && code==180 &&
-		msg->body == NULL &&
-		call_info.media_status==PJSUA_CALL_MEDIA_NONE)
+	    if (call_info.role == PJSIP_ROLE_UAC && code == 180 && msg->body == NULL && call_info.media_status == PJSUA_CALL_MEDIA_NONE)
 	    {
 		[self ringback_start:call_id];
+
+                dispatch_async(dispatch_get_main_queue(), ^
+                {
+                    [self.delegate sipInterfaceCallRinging:self userData:info.call_data[call_id].user_data];
+                });
 	    }
+            else
+            {
+                dispatch_async(dispatch_get_main_queue(), ^
+                {
+                    [self.delegate sipInterfaceCallRinging:self userData:info.call_data[call_id].user_data];
+                });
+            }
 
 	    PJ_LOG(3, (THIS_FILE, "Call %d state changed to %s (%d %.*s)",
                        call_id, call_info.state_text.ptr, code, (int)reason.slen, reason.ptr));
-	}
-        else
-        {
-	    PJ_LOG(3,(THIS_FILE, "Call %d state changed to %s", call_id, call_info.state_text.ptr));
-	}
-
-	if (call_info.state != PJSIP_INV_STATE_NULL && current_call == PJSUA_INVALID_ID)
-        {
-	    current_call = call_id;
+            break;
         }
+
+        case PJSIP_INV_STATE_CONNECTING:    // After 2xx is sent/received.
+        {
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                [self.delegate sipInterfaceCallConnecting:self userData:info.call_data[call_id].user_data];
+            });
+            break;
+        }
+
+        case PJSIP_INV_STATE_CONFIRMED:     // After ACK is sent/received.
+        {
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                [self.delegate sipInterfaceCallConnected:self userData:info.call_data[call_id].user_data];
+            });
+            break;
+        }
+
+        case PJSIP_INV_STATE_DISCONNECTED:  // Session is terminated.
+        {
+            @synchronized(self)
+            {
+                [hangupTimer invalidate];
+                hangupTimer = nil;
+            }
+
+            /* Stop all ringback for this call */
+            [self ring_stop:call_id];
+
+            PJ_LOG(3, (THIS_FILE, "Call %d is DISCONNECTED [reason=%d (%s)]",
+                       call_id, call_info.last_status, call_info.last_status_text.ptr));
+
+            __block void*   user_data = (info.current_call != PJSUA_INVALID_ID) ? info.call_data[call_id].user_data : nil;
+
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                [self.delegate sipInterfaceCallEnded:self userData:user_data];
+            });
+
+            if (call_id == info.current_call)
+            {
+                [self find_next_call];
+            }
+
+            /* Reset current call */
+            if (info.current_call == call_id)
+            {
+                info.current_call = PJSUA_INVALID_ID;
+            }
+            break;
+        }
+    }
+
+    if (call_info.state != PJSIP_INV_STATE_NULL && call_info.state != PJSIP_INV_STATE_DISCONNECTED &&
+        info.current_call == PJSUA_INVALID_ID)
+    {
+        info.current_call = call_id;
     }
 }
 
@@ -1274,9 +1386,9 @@ void showLog(int level, const char* data, int len)
 
     pjsua_call_get_info(call_id, &call_info);
 
-    if (current_call == PJSUA_INVALID_ID)
+    if (info.current_call == PJSUA_INVALID_ID)
     {
-	current_call = call_id;
+	info.current_call = call_id;
     }
 
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive)
@@ -1284,6 +1396,7 @@ void showLog(int level, const char* data, int len)
         /* Start ringback */
         [self ring_start:call_id];
 
+        //### auto_answer not needed, but left in to remember how to answer.
         if (info.auto_answer > 0)
         {
             pjsua_call_setting call_opt;
@@ -1496,15 +1609,6 @@ void showLog(int level, const char* data, int len)
 	pj_str_t reason = pj_str("Media failed");
 	pjsua_call_hangup(call_id, 500, &reason, NULL);
     }
-}
-
-
-/*
- * DTMF callback.
- */
-- (void)callOnDtmfCallback:(pjsua_call_id)call_id dtmf:(int)dtmf
-{
-    PJ_LOG(3,(THIS_FILE, "Incoming DTMF on call %d: %c", call_id, dtmf));
 }
 
 
@@ -1747,12 +1851,6 @@ void showLog(int level, const char* data, int len)
 
 #pragma mark - From C to SipInterface Methods.
 
-static void call_timeout_callback(pj_timer_heap_t* timer_heap, struct pj_timer_entry* entry)
-{
-    [sipInterface callTimeoutCallback:timer_heap entry:entry];
-}
-
-
 static pj_bool_t default_mod_on_rx_request(pjsip_rx_data* rdata)
 {
     return [sipInterface default_mod_on_rx_request:rdata];
@@ -1792,12 +1890,6 @@ static void on_call_audio_state(pjsua_call_info* ci, unsigned mi, pj_bool_t* has
 static void on_call_media_state(pjsua_call_id call_id)
 {
     [sipInterface onCallMediaState:call_id];
-}
-
-
-static void call_on_dtmf_callback(pjsua_call_id call_id, int dtmf)
-{
-    [sipInterface callOnDtmfCallback:call_id dtmf:dtmf];
 }
 
 

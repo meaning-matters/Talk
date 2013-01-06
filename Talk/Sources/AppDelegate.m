@@ -7,6 +7,8 @@
 //  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
 //
 
+#import <AVFoundation/AVFoundation.h>
+#import <MediaPlayer/MediaPlayer.h>
 #import "AppDelegate.h"
 #import "Settings.h"
 #import "PhoneNumber.h"
@@ -70,6 +72,12 @@
     [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
     [LibPhoneNumber sharedInstance];    // This loads the JavaScript library.
 
+    [[AVAudioSession sharedInstance] setActive:YES error:NULL]; // Make sure there's an audio session.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keepVolumeAboveZero:)
+                                                 name:@"AVSystemController_SystemVolumeDidChangeNotification"
+                                               object:nil];
+
     return YES;
 }
 
@@ -118,6 +126,20 @@
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
+}
+
+
+#pragma mark - Helper Methods
+
+- (void)keepVolumeAboveZero:(NSNotification*)notification
+{
+    if ([MPMusicPlayerController applicationMusicPlayer].volume < 0.1)
+    {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.05f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
+        {
+            [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.1];
+        });
+    }
 }
 
 

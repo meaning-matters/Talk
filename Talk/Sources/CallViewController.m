@@ -451,14 +451,7 @@
 
 - (IBAction)endAction:(id)sender
 {
-    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
-    [UIApplication sharedApplication].idleTimerDisabled = NO;
-
-    [self dismissViewControllerAnimated:YES completion:nil];
-    
-    //### Quick hack.
-    [[CallManager sharedManager] endCall:nil];
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
+    [[CallManager sharedManager] endCall:[self.calls lastObject]];  //### Should be active call.
 }
 
 
@@ -501,9 +494,33 @@
 }
 
 
+- (void)changedStateOfCall:(Call*)call
+{
+    if (call.state == CallStateEnded)
+    {
+        [self endCall:call];
+        NSLog(@"++++++++++++++++ CallStateEnded");
+    }
+    else
+    {
+        self.statusLabel.text = [call stateString];
+        NSLog(@"++++++++++++++++ %@", [call stateString]);
+        if (call == nil)
+        {
+            NSLog(@"Call is nil");
+        }
+    }
+}
+
+
 - (void)endCall:(Call*)call
 {
-    //###
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
+
+    [self dismissViewControllerAnimated:YES completion:nil];
+
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
 
     [self.calls removeObject:call];
 }

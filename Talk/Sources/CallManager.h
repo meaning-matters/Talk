@@ -9,9 +9,17 @@
 #import <Foundation/Foundation.h>
 #import "PhoneNumber.h"
 #import "Call.h"
+#import "SipInterface.h"
 
 
-@interface CallManager : NSObject
+@protocol CallManagerDelegate <NSObject>
+
+//### Place methods in here that are now part of CallViewController.  like addCall, changedStateOfCall, ...
+
+@end
+
+
+@interface CallManager : NSObject <SipInterfaceDelegate>
 
 @property (nonatomic, strong) NSMutableArray*   activeCalls;
 

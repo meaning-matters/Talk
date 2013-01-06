@@ -13,15 +13,17 @@
 
 typedef enum
 {
-    CallStateBeginning,
+    CallStateNone,
     CallStateCalling,
-    CallStateDeclined,
-    CallStateBusy,
     CallStateRinging,
+    CallStateConnecting,
     CallStateConnected,
     CallStateEnding,
+    CallStateEnded,
     CallStateCanceled,
-    CallStateHungup,
+    CallStateBusy,
+    CallStateDeclined,
+    CallStateNotAllowed,
     CallStateFailed,
 } CallState;
 
@@ -64,7 +66,7 @@ typedef enum
 @property (nonatomic, readonly) NSDate*                 beginDate;
 @property (nonatomic, readonly) NSDate*                 connectDate;
 @property (nonatomic, readonly) NSDate*                 endDate;
-@property (nonatomic, readonly) CallState               state;
+@property (nonatomic, assign) CallState                 state;
 @property (nonatomic, assign) CallDirection             direction;
 @property (nonatomic, assign) CallNetwork               network;
 

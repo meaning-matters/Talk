@@ -29,7 +29,7 @@
     {
         _phoneNumber = phoneNumber;
         _beginDate   = [NSDate date];
-        _state       = CallStateBeginning;
+        _state       = CallStateNone;
         _direction   = direction;
         _network     = CallNetworkInternet; // Default.
     }
@@ -43,7 +43,7 @@
     if (self.state == CallStateConnected)
     {
         //### send hangup to SIP
-        _state = CallStateHungup;
+        _state = CallStateEnded;
     }
     else
     {
@@ -60,31 +60,14 @@
 
     switch (self.state)
     {
-        case CallStateBeginning:
-            string = NSLocalizedStringWithDefaultValue(@"Call:Status Beginning", nil,
-                                                       [NSBundle mainBundle], @"calling...",
-                                                       @"In-call status that calling a number will started; Apple standard\n"
-                                                       @"[1 line small font].");
+        case CallStateNone:
+            string = @"";
             break;
 
         case CallStateCalling:
             string = NSLocalizedStringWithDefaultValue(@"Call:Status Calling", nil,
                                                        [NSBundle mainBundle], @"calling...",
                                                        @"In-call status that calling a number ha started; Apple standard\n"
-                                                       @"[1 line small font].");
-            break;
-
-        case CallStateDeclined:
-            string = NSLocalizedStringWithDefaultValue(@"Call:Status Declined", nil,
-                                                       [NSBundle mainBundle], @"declined",
-                                                       @"In-call status that called party has declined; Apple standard\n"
-                                                       @"[1 line small font].");
-            break;
-
-        case CallStateBusy:
-            string = NSLocalizedStringWithDefaultValue(@"Call:Status Busy", nil,
-                                                       [NSBundle mainBundle], @"busy",
-                                                       @"In-call status that called party is already on the phone; Apple standard\n"
                                                        @"[1 line small font].");
             break;
 
@@ -95,10 +78,17 @@
                                                        @"[1 line small font].");
             break;
 
+        case CallStateConnecting:
+            string = NSLocalizedStringWithDefaultValue(@"Call:Status Connected", nil,
+                                                       [NSBundle mainBundle], @"connecting...",
+                                                       @"In-call status that call is almost connected; Apple standard\n"
+                                                       @"[1 line small font].");
+            break;
+
         case CallStateConnected:
             string = NSLocalizedStringWithDefaultValue(@"Call:Status Connected", nil,
                                                        [NSBundle mainBundle], @"connected",
-                                                       @"In-call status that called party has picked up; Apple standard\n"
+                                                       @"In-call status that call is connected; Apple standard\n"
                                                        @"[1 line small font].");
             break;
 
@@ -109,17 +99,37 @@
                                                        @"[1 line small font].");
             break;
 
+        case CallStateEnded:
+            string = NSLocalizedStringWithDefaultValue(@"Call:Status Ended", nil,
+                                                       [NSBundle mainBundle], @"ended",
+                                                       @"In-call status that call was ended; Apple standard\n"
+                                                       @"[1 line small font].");
+            break;
+
         case CallStateCanceled:
             string = NSLocalizedStringWithDefaultValue(@"Call:Status Canceled", nil,
                                                        [NSBundle mainBundle], @"canceled",
                                                        @"In-call status that user has canceled not yet connected call; Apple standard\n"
                                                        @"[1 line small font].");
             break;
+        case CallStateBusy:
+            string = NSLocalizedStringWithDefaultValue(@"Call:Status Busy", nil,
+                                                       [NSBundle mainBundle], @"busy",
+                                                       @"In-call status that called party is already on the phone; Apple standard\n"
+                                                       @"[1 line small font].");
+            break;
 
-        case CallStateHungup:
-            string = NSLocalizedStringWithDefaultValue(@"Call:Status Hungup", nil,
-                                                       [NSBundle mainBundle], @"ended",
-                                                       @"In-call status that call has been hungup; Apple standard\n"
+        case CallStateDeclined:
+            string = NSLocalizedStringWithDefaultValue(@"Call:Status Declined", nil,
+                                                       [NSBundle mainBundle], @"declined",
+                                                       @"In-call status that called party has declined; Apple standard\n"
+                                                       @"[1 line small font].");
+            break;
+
+        case CallStateNotAllowed:
+            string = NSLocalizedStringWithDefaultValue(@"Call:Status NotAllowed", nil,
+                                                       [NSBundle mainBundle], @"not allowed",
+                                                       @"In-call status that calls to a number are nog allowed; Apple standard\n"
                                                        @"[1 line small font].");
             break;
 
@@ -130,7 +140,6 @@
                                                        @"[1 line small font].");
             break;
     }
-
 
     return string;
 }
