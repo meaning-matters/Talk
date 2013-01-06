@@ -58,6 +58,8 @@
 
 - (void)addCall:(Call*)call;
 
+- (void)changedStateOfCall:(Call*)call;
+
 - (void)endCall:(Call*)call;
 
 @end

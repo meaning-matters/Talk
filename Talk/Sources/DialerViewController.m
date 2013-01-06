@@ -275,6 +275,8 @@
 
 - (void)keypadViewPressedCallKey:(KeypadView*)keypadView
 {
+    NSLog(@"UI:%@  CODE:%@", self.numberLabel.text, phoneNumber.number);
+
     if ([self.numberLabel.text length] == 0)
     {
         phoneNumber.number = [Settings sharedSettings].lastDialedNumber;
@@ -291,9 +293,13 @@
             [Settings sharedSettings].lastDialedNumber = phoneNumber.number;
             phoneNumber = [[PhoneNumber alloc] init];
 
-            // We don't clear numberLabel.text as this would be disruptive
-            // during the animation to call screen.  Cleared in viewWillAppear.
-        }        
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
+            {
+                // Clears UI fields.  This is done after a delay to make sure that
+                // a call related view is on screen; keeping it out of sight.
+                [self update];
+            });
+        }
     }
 }
 

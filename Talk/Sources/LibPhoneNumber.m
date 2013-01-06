@@ -198,7 +198,15 @@ static LibPhoneNumber*  sharedInstance;
     NSString*   function = [[NSString alloc] initWithFormat: @"getOriginalFormat('%@','%@')", number, isoCountryCode];
     NSString*   result = [webView stringByEvaluatingJavaScriptFromString:function];
 
-    return result;
+    if ([result length] != 0)
+    {
+        return result;
+    }
+    else
+    {
+        // Parsing failed; return original.
+        return number;
+    }
 }
 
 
