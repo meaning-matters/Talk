@@ -355,12 +355,6 @@ static SipInterface*    sipInterface;
 }
 
 
-- (void)setOnSpeaker:(BOOL)onSpeaker
-{
-    [sipInterface setOnSpeaker:onSpeaker];
-}
-
-
 - (void)setCall:(Call*)call onMute:(BOOL)onMute
 {
     [sipInterface setCall:call onMute:onMute];
@@ -370,6 +364,12 @@ static SipInterface*    sipInterface;
 - (void)setCall:(Call*)call onHold:(BOOL)onHold
 {
     [sipInterface setCall:call onHold:onHold];
+}
+
+
+- (void)setOnSpeaker:(BOOL)onSpeaker
+{
+    [sipInterface setOnSpeaker:onSpeaker];
 }
 
 
@@ -447,20 +447,21 @@ static SipInterface*    sipInterface;
 }
 
 
-- (void)sipInterface:(SipInterface*)interface callOnHold:(Call*)call
+- (void)sipInterface:(SipInterface*)interface call:(Call*)call onMute:(BOOL)onMute
 {
-
+    [callViewController setCall:call onMute:onMute];
 }
 
 
-- (void)sipInterface:(SipInterface*)interface callOnMute:(Call*)call
+- (void)sipInterface:(SipInterface*)interface call:(Call*)call onHold:(BOOL)onHold
 {
-
+    [callViewController setCall:call onHold:onHold];
 }
 
 
-- (void)sipInterfaceOnSpeaker:(SipInterface*)interface
+- (void)sipInterface:(SipInterface*)interface onSpeaker:(BOOL)onSpeaker
 {
+    [callViewController setOnSpeaker:onSpeaker];
 }
 
 

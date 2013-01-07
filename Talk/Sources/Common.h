@@ -32,6 +32,8 @@
 //#### Addd: http://stackoverflow.com/questions/1108859/detect-the-specific-iphone-ipod-touch-model
 //+ (NSString*)deviceModel;
 
++ (BOOL)deviceHasReceiver;
+
 + (void)postNotificationName:(NSString*)name object:(id)object;
 
 + (void)postNotificationName:(NSString *)name userInfo:(NSDictionary*)userInfo object:(id)object;

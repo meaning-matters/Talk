@@ -68,11 +68,11 @@ typedef enum
 
 - (void)sipInterface:(SipInterface*)interface callIncomingCanceled:(Call*)call;
 
-- (void)sipInterface:(SipInterface*)interface callOnHold:(Call*)call;   // Response method of requesting on-hold.
+- (void)sipInterface:(SipInterface*)interface call:(Call*)call onMute:(BOOL)onMute;     // Response method of requesting on-mute.
 
-- (void)sipInterface:(SipInterface*)interface callOnMute:(Call*)call;   // Response method ... .
+- (void)sipInterface:(SipInterface*)interface call:(Call*)call onHold:(BOOL)onHold;     // Response method ... .
 
-- (void)sipInterfaceOnSpeaker:(SipInterface*)interface;                             // Response method ... .
+- (void)sipInterface:(SipInterface*)interface onSpeaker:(BOOL)onSpeaker;                // Response method ... .
 
 - (void)sipInterfaceError:(SipInterface*)interface reason:(SipInterfaceError)error;
 

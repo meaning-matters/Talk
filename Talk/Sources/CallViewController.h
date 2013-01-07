@@ -13,25 +13,6 @@
 #import "SipInterface.h"
 
 
-@class CallViewController;
-
-//### Probably better when CallView calls CallManager, so this delegate can be removed.
-//### Otherwise the CallManager becomes dependent on UI stuff; otherway arround is better.
-@protocol CallViewControllerDelegate <NSObject>
-
-- (void)callViewController:(CallViewController*)callViewController setOnMute:(BOOL)onMute;
-
-- (void)callViewController:(CallViewController*)callViewController setOnSpeaker:(BOOL)onSpeaker;
-
-- (void)callViewController:(CallViewController*)callViewController setOnHold:(BOOL)onHold;
-
-- (void)callViewController:(CallViewController*)callViewController sendDtmfKey:(KeypadKey)key;
-
-- (void)callViewControllerEndCall:(CallViewController*)callViewController;
-
-@end
-
-
 @interface CallViewController : UIViewController <CallOptionsViewDelegate, CallKeypadViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray*               calls;
@@ -80,5 +61,13 @@
 - (void)updateCallNotAllowed:(Call*)call reason:(SipInterfaceCallNotAllowed)reason;
 
 - (void)updateCallFailed:(Call*)call reason:(SipInterfaceCallFailed)reason;
+
+- (void)setCall:(Call*)call onMute:(BOOL)onMute;
+
+- (void)setCall:(Call*)call onHold:(BOOL)onHold;
+
+- (void)setOnSpeaker:(BOOL)onSpeaker;
+
+- (void)handleChangedAudioRoute:(NSString*)route;
 
 @end

@@ -23,6 +23,7 @@
 
 @property (nonatomic, strong) NSMutableArray*   activeCalls;
 
+
 + (CallManager*)sharedManager;
 
 - (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity;
