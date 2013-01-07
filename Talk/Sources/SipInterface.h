@@ -104,4 +104,8 @@ typedef enum
 
 - (void)hangupCall:(void*)userData reason:(NSString*)reason;
 
+- (void)setCall:(void*)userData onHold:(BOOL)onHold;
+
+- (void)setOnSpeaker:(BOOL)onSpeaker;
+
 @end
