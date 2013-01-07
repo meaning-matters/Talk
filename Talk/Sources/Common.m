@@ -118,24 +118,27 @@
 }
 
 
++ (BOOL)deviceHasReceiver
+{
+    return [[UIDevice currentDevice].model isEqualToString:@"iPhone"];
+}
+
+
 + (void)postNotificationName:(NSString*)name object:(id)object
 {
     dispatch_async(dispatch_get_main_queue(), ^
-                   {
-                       [[NSNotificationCenter defaultCenter] postNotificationName:name
-                                                                           object:object];
-                   });
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:name object:object];
+    });
 }
 
 
 + (void)postNotificationName:(NSString *)name userInfo:(NSDictionary*)userInfo object:(id)object
 {
     dispatch_async(dispatch_get_main_queue(), ^
-                   {
-                       [[NSNotificationCenter defaultCenter] postNotificationName:name
-                                                                           object:object
-                                                                         userInfo:userInfo];
-                   });
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:name object:object userInfo:userInfo];
+    });
 }
 
 

@@ -431,8 +431,7 @@ static void TMReachabilityCallback(SCNetworkReachabilityRef   target,
 
     dispatch_async(dispatch_get_main_queue(), ^
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kReachabilityChangedNotification
-                                                            object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kReachabilityChangedNotification object:self];
     });
 }
 

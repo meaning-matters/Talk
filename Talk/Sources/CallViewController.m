@@ -91,6 +91,11 @@
     callOptionsView.muteButton.enabled    = NO;
     callOptionsView.addButton.enabled     = NO;
     callOptionsView.holdButton.enabled    = NO;
+
+    if ([Common deviceHasReceiver] == NO)
+    {
+        callOptionsView.speakerButton.enabled = NO;
+    }
 }
 
 
@@ -377,8 +382,7 @@
 
 - (void)callOptionsViewPressedMuteKey:(CallOptionsView*)optionsView
 {
-    [[CallManager sharedManager] setCall:[self.calls lastObject] onMute:!optionsView.onMute];
-    optionsView.onMute = !optionsView.onMute;
+    [[CallManager sharedManager] setCall:[self.calls lastObject] onMute:!optionsView.onMute];   //### Should be active call.
 }
 
 
@@ -416,7 +420,6 @@
 - (void)callOptionsViewPressedSpeakerKey:(CallOptionsView*)optionsView
 {
     [[CallManager sharedManager] setOnSpeaker:!optionsView.onSpeaker];
-    optionsView.onSpeaker = !optionsView.onSpeaker;
 }
 
 
@@ -427,11 +430,8 @@
 
 
 - (void)callOptionsViewPressedHoldKey:(CallOptionsView*)optionsView
-{
+{    
     [[CallManager sharedManager] setCall:[self.calls lastObject] onHold:!optionsView.onHold];  //### Should be active call.
-
-#warning Need proper loopback.  Quick hack for now.
-    optionsView.onHold = !optionsView.onHold;
 }
 
 
@@ -576,6 +576,26 @@
 - (void)updateCallFailed:(Call*)call reason:(SipInterfaceCallFailed)reason
 {
     self.statusLabel.text = [call stateString];
+}
+
+
+- (void)setCall:(Call*)call onMute:(BOOL)onMute
+{
+#warning Only update when current call.
+    callOptionsView.onMute = onMute;
+}
+
+
+- (void)setCall:(Call*)call onHold:(BOOL)onHold
+{
+#warning Only update when current call.
+#warning Set Call onHold variable -  also for others.
+    callOptionsView.onHold = onHold;
+}
+
+- (void)setOnSpeaker:(BOOL)onSpeaker
+{
+    callOptionsView.onSpeaker = onSpeaker;
 }
 
 @end

@@ -117,16 +117,16 @@ static DtmfPlayer*  sharedPlayer;
     if ([audioPlayer isPlaying] == NO)
     {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
-                       {
-                           NSData*                 data;
-                           NSError*                error = nil;
+        {
+            NSData*                 data;
+            NSError*                error = nil;
 
-                           data = [audioDataObjects objectForKey:[NSString stringWithFormat:@"%c", '0']];
-                           audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:&error];
-                           audioPlayer.volume= 0.00001f;
+            data = [audioDataObjects objectForKey:[NSString stringWithFormat:@"%c", '0']];
+            audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:&error];
+            audioPlayer.volume= 0.00001f;
 
-                           [audioPlayer play];
-                       });
+            [audioPlayer play];
+        });
     }
 }
 
@@ -134,15 +134,15 @@ static DtmfPlayer*  sharedPlayer;
 - (void)playForCharacter:(char)character
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
-                   {
-                       NSData*                 data;
-                       NSError*                error = nil;
+    {
+        NSData*                 data;
+        NSError*                error = nil;
 
-                       data = [audioDataObjects objectForKey:[NSString stringWithFormat:@"%c", character]];
-                       audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:&error];
-                       audioPlayer.volume = 0.02f;
-                       [audioPlayer play];
-                   });
+        data = [audioDataObjects objectForKey:[NSString stringWithFormat:@"%c", character]];
+        audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:&error];
+        audioPlayer.volume = 0.02f;
+        [audioPlayer play];
+    });
 }
 
 @end
