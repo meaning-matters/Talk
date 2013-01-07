@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <pjsua-lib/pjsua.h>
+#import "Call.h"
 
 
 typedef enum
@@ -43,33 +44,33 @@ typedef enum
 
 @protocol SipInterfaceDelegate <NSObject>   // All these methods will be invoked on main thread.
 
-- (void)sipInterfaceCallCalling:(SipInterface*)interface userData:(void*)userData;
+- (void)sipInterface:(SipInterface*)interface callCalling:(Call*)call;
 
-- (void)sipInterfaceCallRinging:(SipInterface*)interface userData:(void*)userData;
+- (void)sipInterface:(SipInterface*)interface callRinging:(Call*)call;
 
-- (void)sipInterfaceCallConnecting:(SipInterface*)interface userData:(void*)userData;
+- (void)sipInterface:(SipInterface*)interface callConnecting:(Call*)call;
 
-- (void)sipInterfaceCallConnected:(SipInterface*)interface userData:(void*)userData;
+- (void)sipInterface:(SipInterface*)interface callConnected:(Call*)call;
 
-- (void)sipInterfaceCallEnding:(SipInterface*)interface userData:(void*)userData;
+- (void)sipInterface:(SipInterface*)interface callEnding:(Call*)call;
 
-- (void)sipInterfaceCallEnded:(SipInterface*)interface userData:(void*)userData;
+- (void)sipInterface:(SipInterface*)interface callEnded:(Call*)call;
 
-- (void)sipInterfaceCallBusy:(SipInterface*)interface userData:(void*)userData;
+- (void)sipInterface:(SipInterface*)interface callBusy:(Call*)call;
 
-- (void)sipInterfaceCallDeclined:(SipInterface*)interface userData:(void*)userData;
+- (void)sipInterface:(SipInterface*)interface callDeclined:(Call*)call;
 
-- (void)sipInterfaceCallNotAllowed:(SipInterface*)interface userData:(void*)userData reason:(SipInterfaceCallNotAllowed)reason;
+- (void)sipInterface:(SipInterface*)interface callNotAllowed:(Call*)call reason:(SipInterfaceCallNotAllowed)reason;
 
-- (void)sipInterfaceCallFailed:(SipInterface*)interface userData:(void*)userData reason:(SipInterfaceCallFailed)reason;
+- (void)sipInterface:(SipInterface*)interface callFailed:(Call*)call reason:(SipInterfaceCallFailed)reason;
 
-- (void)sipInterfaceCallIncoming:(SipInterface*)interface number:(NSString*)number callId:(int)callId;  // callId must be passed back.
+- (void)sipInterface:(SipInterface*)interface callIncoming:(Call*)call;
 
-- (void)sipInterfaceCallIncomingCanceled:(SipInterface*)interface number:(NSString*)number;
+- (void)sipInterface:(SipInterface*)interface callIncomingCanceled:(Call*)call;
 
-- (void)sipInterfaceCallOnHold:(SipInterface*)interface userData:(void*)userData;   // Response method of requesting on-hold.
+- (void)sipInterface:(SipInterface*)interface callOnHold:(Call*)call;   // Response method of requesting on-hold.
 
-- (void)sipInterfaceCallOnMute:(SipInterface*)interface userData:(void*)userData;   // Response method ... .
+- (void)sipInterface:(SipInterface*)interface callOnMute:(Call*)call;   // Response method ... .
 
 - (void)sipInterfaceOnSpeaker:(SipInterface*)interface;                             // Response method ... .
 
@@ -96,15 +97,13 @@ typedef enum
 
 - (void)restart;
 
-// A pointer to Call object should passed as userData;
-- (pjsua_call_id)callNumber:(NSString*)calledNumber
-             identityNumber:(NSString*)identityNumber
-                   userData:(void*)userData
-                      tones:(NSDictionary*)tones;
+- (BOOL)makeCall:(Call*)call tones:(NSDictionary*)tones;
 
-- (void)hangupCall:(void*)userData reason:(NSString*)reason;
+- (void)hangupCall:(Call*)call reason:(NSString*)reason;
 
-- (void)setCall:(void*)userData onHold:(BOOL)onHold;
+- (void)setCall:(Call*)call onMute:(BOOL)onMute;
+
+- (void)setCall:(Call*)call onHold:(BOOL)onHold;
 
 - (void)setOnSpeaker:(BOOL)onSpeaker;
 

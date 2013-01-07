@@ -13,6 +13,7 @@
 @synthesize externalDelegate = _externalDelegate;
 @synthesize internalDelegate = _internalDelegate;
 @synthesize phoneNumber      = _phoneNumber;
+@synthesize calledNumber     = _calledNumber;
 @synthesize identityNumber   = _identityNumber;
 @synthesize abRecordId       = _abRecordId;
 @synthesize beginDate        = _beginDate;
@@ -21,17 +22,23 @@
 @synthesize state            = _state;
 @synthesize direction        = _direction;
 @synthesize network          = _network;
+@synthesize callId           = _callId;
+@synthesize ringbackToneOn   = _ringbackToneOn;
+@synthesize busyToneOn       = _busyToneOn;
+@synthesize congestionToneOn = _congestionToneOn;
+@synthesize ringToneOn       = _ringToneOn;
 
 
 - (id)initWithPhoneNumber:(PhoneNumber*)phoneNumber direction:(CallDirection)direction
 {
     if (self = [super init])
     {
-        _phoneNumber = phoneNumber;
-        _beginDate   = [NSDate date];
-        _state       = CallStateNone;
-        _direction   = direction;
-        _network     = CallNetworkInternet; // Default.
+        _phoneNumber  = phoneNumber;
+        _calledNumber = [phoneNumber isInternational] ? [phoneNumber e164Format] : [phoneNumber originalFormat];        
+        _beginDate    = [NSDate date];
+        _state        = CallStateNone;
+        _direction    = direction;
+        _network      = CallNetworkInternet; // Default.
     }
 
     return self;

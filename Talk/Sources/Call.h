@@ -61,7 +61,8 @@ typedef enum
 @property (nonatomic, assign) id<CallExternalDelegate>  externalDelegate;   // UI related.
 @property (nonatomic, assign) id<CallInternalDelegate>  internalDelegate;   // SIP related.
 @property (nonatomic, readonly) PhoneNumber*            phoneNumber;
-@property (nonatomic, strong) NSString*                 identityNumber;     // Number form which call is made.
+@property (nonatomic, readonly) NSString*               calledNumber;
+@property (nonatomic, strong) NSString*                 identityNumber;     // Number form/on which call is made/received.
 @property (nonatomic, assign) ABRecordID                abRecordId;
 @property (nonatomic, readonly) NSDate*                 beginDate;
 @property (nonatomic, readonly) NSDate*                 connectDate;
@@ -69,6 +70,13 @@ typedef enum
 @property (nonatomic, assign) CallState                 state;
 @property (nonatomic, assign) CallDirection             direction;
 @property (nonatomic, assign) CallNetwork               network;
+
+// SipInterface specifics.
+@property (nonatomic, assign) int                       callId;
+@property (nonatomic, assign) BOOL                      ringbackToneOn;
+@property (nonatomic, assign) BOOL                      busyToneOn;
+@property (nonatomic, assign) BOOL                      congestionToneOn;
+@property (nonatomic, assign) BOOL                      ringToneOn;
 
 
 - (id)initWithPhoneNumber:(PhoneNumber*)phoneNumber direction:(CallDirection)direction;

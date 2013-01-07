@@ -41,20 +41,11 @@
 #define RING_INTERVAL	    3000
 
 
-struct call_data
+@interface SipInterface ()
 {
-    void*                   user_data;
-    pj_bool_t		    ringback_on;    // Ringback tone.
-    pj_bool_t               busy_on;        // Busy tone.
-    pj_bool_t               congestion_on;  // Congestion/Error tone.
-    pj_bool_t		    ring_on;        // Ring tone.
-    pj_bool_t               mute_on;        // When on TX volume of conference slot is 0.
-    pj_bool_t               ending;
-};
+    NSMutableArray*         calls;
+    Call*                   currentCall;
 
-
-static struct
-{
     pjsua_config	    config;
     pjsua_logging_config    log_cfg;
     pjsua_media_config	    media_cfg;
@@ -63,9 +54,6 @@ static struct
     pjsua_transport_config  rtp_cfg;
 
     pjsip_redirect_op	    redir_op;
-
-    struct call_data	    call_data[PJSUA_MAX_CALLS];
-    pjsua_call_id           current_call;
 
     pj_bool_t               speaker_on;      // Speaker button on UI.
 
@@ -85,8 +73,9 @@ static struct
     pjmedia_port*           congestion_port;
     int			    ring_slot;
     pjmedia_port*           ring_port;
-} info;
+}
 
+@end
 
 
 static void call_timeout_callback(pj_timer_heap_t* timer_heap, struct pj_timer_entry* entry);
@@ -165,6 +154,8 @@ void showLog(int level, const char* data, int len)
 
         pj_log_set_log_func(&showLog);
 
+        calls = [NSMutableArray array];
+
         [self restart];
 
         [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
@@ -198,13 +189,12 @@ void showLog(int level, const char* data, int len)
         return status;
     }
 
-    info.pool = pjsua_pool_create("pjsua-app", 1000, 1000);
-    info.current_call = PJSUA_INVALID_ID;
+    pool = pjsua_pool_create("pjsua-app", 1000, 1000);
 
     [self initializeConfigs];
     [self initializeCallbacks];
 
-    if ((status = pjsua_init(&info.config, &info.log_cfg, &info.media_cfg)) != PJ_SUCCESS)
+    if ((status = pjsua_init(&config, &log_cfg, &media_cfg)) != PJ_SUCCESS)
     {
         return status;
     }
@@ -233,12 +223,12 @@ void showLog(int level, const char* data, int len)
     }
 
     /* Add account */
-    info.account_config.rtp_cfg                  = info.rtp_cfg;
-    info.account_config.reg_retry_interval       = 300;
-    info.account_config.reg_first_retry_interval = 60;
-    info.account_config.reg_timeout              = KEEP_ALIVE_INTERVAL;
+    account_config.rtp_cfg                  = rtp_cfg;
+    account_config.reg_retry_interval       = 300;
+    account_config.reg_first_retry_interval = 60;
+    account_config.reg_timeout              = KEEP_ALIVE_INTERVAL;
 
-    if ((status = pjsua_acc_add(&info.account_config, PJ_TRUE, NULL)) != PJ_SUCCESS)
+    if ((status = pjsua_acc_add(&account_config, PJ_TRUE, NULL)) != PJ_SUCCESS)
     {
         [self destroy];
 
@@ -263,41 +253,41 @@ void showLog(int level, const char* data, int len)
 {
     char        tmp[80];
 
-    pjsua_config_default(&info.config);
+    pjsua_config_default(&config);
     pj_ansi_sprintf(tmp, "PJSUA v%s %s", pj_get_version(), pj_get_sys_info()->info.ptr);
-    pj_strdup2_with_null(info.pool, &info.config.user_agent, tmp);
+    pj_strdup2_with_null(pool, &config.user_agent, tmp);
 
-    pjsua_logging_config_default(&info.log_cfg);
-    pjsua_media_config_default(&info.media_cfg);
-    pjsua_acc_config_default(&info.account_config);
+    pjsua_logging_config_default(&log_cfg);
+    pjsua_media_config_default(&media_cfg);
+    pjsua_acc_config_default(&account_config);
 
-    info.redir_op        = PJSIP_REDIRECT_ACCEPT;
-    info.ringback_slot   = PJSUA_INVALID_ID;
-    info.busy_slot       = PJSUA_INVALID_ID;
-    info.congestion_slot = PJSUA_INVALID_ID;
-    info.ring_slot       = PJSUA_INVALID_ID;
+    redir_op        = PJSIP_REDIRECT_ACCEPT;
+    ringback_slot   = PJSUA_INVALID_ID;
+    busy_slot       = PJSUA_INVALID_ID;
+    congestion_slot = PJSUA_INVALID_ID;
+    ring_slot       = PJSUA_INVALID_ID;
 
 #if !defined(PJMEDIA_HAS_SRTP) || PJMEDIA_HAS_SRTP == 0
 #error SRTP is required.
 #endif
-    info.config.use_srtp = PJMEDIA_SRTP_MANDATORY;
+    config.use_srtp = PJMEDIA_SRTP_MANDATORY;
 
-    info.media_cfg.no_vad = PJ_TRUE;
+    media_cfg.no_vad = PJ_TRUE;
 
-    info.account_config.reg_uri = pj_str((char*)[[NSString stringWithFormat:@"sip:%@", self.server] UTF8String]);
-    info.account_config.id = pj_str((char*)[[NSString stringWithFormat:@"sip:%@@%@", self.username, self.server] UTF8String]);
-    info.account_config.cred_info[0].username = pj_str((char*)[self.username UTF8String]);
-    info.account_config.cred_info[0].scheme   = pj_str("Digest");
-    info.account_config.cred_info[0].realm = pj_str((char*)[self.realm UTF8String]);
-    info.account_config.cred_info[0].data_type = PJSIP_CRED_DATA_PLAIN_PASSWD;
-    info.account_config.cred_info[0].data = pj_str((char*)[self.password UTF8String]);
-    info.account_config.cred_count++;
-    info.account_config.use_srtp = info.config.use_srtp;
+    account_config.reg_uri = pj_str((char*)[[NSString stringWithFormat:@"sip:%@", self.server] UTF8String]);
+    account_config.id = pj_str((char*)[[NSString stringWithFormat:@"sip:%@@%@", self.username, self.server] UTF8String]);
+    account_config.cred_info[0].username = pj_str((char*)[self.username UTF8String]);
+    account_config.cred_info[0].scheme   = pj_str("Digest");
+    account_config.cred_info[0].realm = pj_str((char*)[self.realm UTF8String]);
+    account_config.cred_info[0].data_type = PJSIP_CRED_DATA_PLAIN_PASSWD;
+    account_config.cred_info[0].data = pj_str((char*)[self.password UTF8String]);
+    account_config.cred_count++;
+    account_config.use_srtp = config.use_srtp;
     //### Attempt to force all over TLS: https://trac.pjsip.org/repos/wiki/Using_SIP_TCP
     //### Seems to fix bug that hangup_all did not work often, resulting in multiple BYE
     //### being sent.  But it did work sometimes as well; may have to do with Wi-Fi quality.
     //### Was done in Newcastle with bad network in hotel and Starbucks.
-    info.account_config.proxy[info.account_config.proxy_cnt++] = pj_str((char*)[[NSString stringWithFormat:@"sip:%@;transport=tls",
+    account_config.proxy[account_config.proxy_cnt++] = pj_str((char*)[[NSString stringWithFormat:@"sip:%@;transport=tls",
                                                                                  self.server] UTF8String]);
 }
 
@@ -305,20 +295,20 @@ void showLog(int level, const char* data, int len)
 - (void)initializeCallbacks
 {
     /* Initialize application callbacks */
-    info.config.cb.on_call_state           = &on_call_state;
-    info.config.cb.on_call_media_state     = &on_call_media_state;
-    info.config.cb.on_incoming_call        = &on_incoming_call;
-    info.config.cb.on_call_tsx_state       = &on_call_tsx_state;
-    info.config.cb.on_call_redirected      = &call_on_redirected;
-    info.config.cb.on_reg_state2           = &on_reg_state;
-    info.config.cb.on_call_transfer_status = &on_call_transfer_status;
-    info.config.cb.on_call_replaced        = &on_call_replaced;
-    info.config.cb.on_nat_detect           = &on_nat_detect;
-    info.config.cb.on_mwi_info             = &on_mwi_info;
-    info.config.cb.on_transport_state      = &on_transport_state;
-    info.config.cb.on_ice_transport_error  = &on_ice_transport_error;
-    info.config.cb.on_snd_dev_operation    = &on_snd_dev_operation;
-    info.log_cfg.cb                        = &showLog;
+    config.cb.on_call_state           = &on_call_state;
+    config.cb.on_call_media_state     = &on_call_media_state;
+    config.cb.on_incoming_call        = &on_incoming_call;
+    config.cb.on_call_tsx_state       = &on_call_tsx_state;
+    config.cb.on_call_redirected      = &call_on_redirected;
+    config.cb.on_reg_state2           = &on_reg_state;
+    config.cb.on_call_transfer_status = &on_call_transfer_status;
+    config.cb.on_call_replaced        = &on_call_replaced;
+    config.cb.on_nat_detect           = &on_nat_detect;
+    config.cb.on_mwi_info             = &on_mwi_info;
+    config.cb.on_transport_state      = &on_transport_state;
+    config.cb.on_ice_transport_error  = &on_ice_transport_error;
+    config.cb.on_snd_dev_operation    = &on_snd_dev_operation;
+    log_cfg.cb                        = &showLog;
 }
 
 
@@ -330,16 +320,16 @@ void showLog(int level, const char* data, int len)
     pjmedia_tone_desc   tone[RING_CNT+RINGBACK_CNT];
     pj_str_t            name;
 
-    samples_per_frame = info.media_cfg.audio_frame_ptime *
-    info.media_cfg.clock_rate *
-    info.media_cfg.channel_count / 1000;
+    samples_per_frame = media_cfg.audio_frame_ptime *
+    media_cfg.clock_rate *
+    media_cfg.channel_count / 1000;
 
     /* Ringback tone (call is ringing) */
     name = pj_str("ringback");
-    status = pjmedia_tonegen_create2(info.pool, &name,
-                                     info.media_cfg.clock_rate,
-                                     info.media_cfg.channel_count,
-                                     samples_per_frame, 16, PJMEDIA_TONEGEN_LOOP, &info.ringback_port);
+    status = pjmedia_tonegen_create2(pool, &name,
+                                     media_cfg.clock_rate,
+                                     media_cfg.channel_count,
+                                     samples_per_frame, 16, PJMEDIA_TONEGEN_LOOP, &ringback_port);
     if (status != PJ_SUCCESS)
     {
         [self destroy];
@@ -358,9 +348,9 @@ void showLog(int level, const char* data, int len)
 
     tone[RINGBACK_CNT - 1].off_msec = RINGBACK_INTERVAL;
 
-    pjmedia_tonegen_play(info.ringback_port, RINGBACK_CNT, tone, PJMEDIA_TONEGEN_LOOP);
+    pjmedia_tonegen_play(ringback_port, RINGBACK_CNT, tone, PJMEDIA_TONEGEN_LOOP);
 
-    status = pjsua_conf_add_port(info.pool, info.ringback_port, &info.ringback_slot);
+    status = pjsua_conf_add_port(pool, ringback_port, &ringback_slot);
     if (status != PJ_SUCCESS)
     {
         [self destroy];
@@ -370,10 +360,10 @@ void showLog(int level, const char* data, int len)
 
     /* Ring (to alert incoming call) */
     name = pj_str("ring");
-    status = pjmedia_tonegen_create2(info.pool, &name,
-                                     info.media_cfg.clock_rate,
-                                     info.media_cfg.channel_count,
-                                     samples_per_frame, 16, PJMEDIA_TONEGEN_LOOP, &info.ring_port);
+    status = pjmedia_tonegen_create2(pool, &name,
+                                     media_cfg.clock_rate,
+                                     media_cfg.channel_count,
+                                     samples_per_frame, 16, PJMEDIA_TONEGEN_LOOP, &ring_port);
     if (status != PJ_SUCCESS)
     {
         [self destroy];
@@ -391,9 +381,9 @@ void showLog(int level, const char* data, int len)
 
     tone[RING_CNT - 1].off_msec = RING_INTERVAL;
 
-    pjmedia_tonegen_play(info.ring_port, RING_CNT, tone, PJMEDIA_TONEGEN_LOOP);
+    pjmedia_tonegen_play(ring_port, RING_CNT, tone, PJMEDIA_TONEGEN_LOOP);
 
-    status = pjsua_conf_add_port(info.pool, info.ring_port, &info.ring_slot);
+    status = pjsua_conf_add_port(pool, ring_port, &ring_slot);
     if (status != PJ_SUCCESS)
     {
         [self destroy];
@@ -411,18 +401,18 @@ void showLog(int level, const char* data, int len)
     pjsua_transport_id      transport_id = -1;
     pjsua_transport_config  tcp_cfg;
 
-    pjsua_transport_config_default(&info.udp_cfg);
-    pjsua_transport_config_default(&info.rtp_cfg);
-    info.udp_cfg.port    = 5060;
-    info.rtp_cfg.port    = 4000;
-    pj_memcpy(&tcp_cfg, &info.udp_cfg, sizeof(tcp_cfg));
+    pjsua_transport_config_default(&udp_cfg);
+    pjsua_transport_config_default(&rtp_cfg);
+    udp_cfg.port    = 5060;
+    rtp_cfg.port    = 4000;
+    pj_memcpy(&tcp_cfg, &udp_cfg, sizeof(tcp_cfg));
 
     /* Add UDP transport */
     {
         pjsua_acc_id            aid;
         pjsip_transport_type_e  type = PJSIP_TRANSPORT_UDP;
 
-        if ((status = pjsua_transport_create(type, &info.udp_cfg, &transport_id)) != PJ_SUCCESS)
+        if ((status = pjsua_transport_create(type, &udp_cfg, &transport_id)) != PJ_SUCCESS)
         {
             [self destroy];
 
@@ -435,7 +425,7 @@ void showLog(int level, const char* data, int len)
         //pjsua_acc_set_transport(aid, transport_id);
         pjsua_acc_set_online_status(pjsua_acc_get_default(), PJ_TRUE);
 
-        if (info.udp_cfg.port == 0)
+        if (udp_cfg.port == 0)
         {
             pjsua_transport_info    ti;
             pj_sockaddr_in*         a;
@@ -519,38 +509,49 @@ void showLog(int level, const char* data, int len)
     unsigned    i;
 
     /* Close ringback port */
-    if (info.ringback_port && info.ringback_slot != PJSUA_INVALID_ID)
+    if (ringback_port && ringback_slot != PJSUA_INVALID_ID)
     {
-        pjsua_conf_remove_port(info.ringback_slot);
-        info.ringback_slot = PJSUA_INVALID_ID;
-        pjmedia_port_destroy(info.ringback_port);
-        info.ringback_port = NULL;
+        pjsua_conf_remove_port(ringback_slot);
+        ringback_slot = PJSUA_INVALID_ID;
+        pjmedia_port_destroy(ringback_port);
+        ringback_port = NULL;
     }
 
     /* Close ring port */
-    if (info.ring_port && info.ring_slot != PJSUA_INVALID_ID)
+    if (ring_port && ring_slot != PJSUA_INVALID_ID)
     {
-        pjsua_conf_remove_port(info.ring_slot);
-        info.ring_slot = PJSUA_INVALID_ID;
-        pjmedia_port_destroy(info.ring_port);
-        info.ring_port = NULL;
+        pjsua_conf_remove_port(ring_slot);
+        ring_slot = PJSUA_INVALID_ID;
+        pjmedia_port_destroy(ring_port);
+        ring_port = NULL;
     }
 
     /* Close tone generators */
-    for (i = 0; i < info.tone_count; ++i)
+    for (i = 0; i < tone_count; ++i)
     {
-        pjsua_conf_remove_port(info.tone_slots[i]);
+        pjsua_conf_remove_port(tone_slots[i]);
     }
 
-    if (info.pool)
+    if (pool)
     {
-        pj_pool_release(info.pool);
-        info.pool = NULL;
+        pj_pool_release(pool);
+        pool = NULL;
     }
 
     status = pjsua_destroy();
 
-    pj_bzero(&info, sizeof(info));
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        for (Call* call in calls)
+        {
+            if (call.state != CallStateEnded)
+            {
+                call.state = CallStateEnded;
+                [self.delegate sipInterface:self callEnded:call];
+                [calls removeObject:call];
+            }
+        }
+    });
 
     return status;
 }
@@ -627,16 +628,16 @@ void showLog(int level, const char* data, int len)
     pj_str_t            nameString;
     pj_status_t         status;
 
-    samplesPerFrame = info.media_cfg.audio_frame_ptime *
-                      info.media_cfg.clock_rate *
-                      info.media_cfg.channel_count / 1000;
+    samplesPerFrame = media_cfg.audio_frame_ptime *
+                      media_cfg.clock_rate *
+                      media_cfg.channel_count / 1000;
 
     /* Ringback tone (call is ringing) */
     nameString = pj_str(name);
-    status = pjmedia_tonegen_create2(info.pool, &nameString,
-                                     info.media_cfg.clock_rate,
-                                     info.media_cfg.channel_count,
-                                     samplesPerFrame, 16, PJMEDIA_TONEGEN_LOOP, &info.ringback_port);
+    status = pjmedia_tonegen_create2(pool, &nameString,
+                                     media_cfg.clock_rate,
+                                     media_cfg.channel_count,
+                                     samplesPerFrame, 16, PJMEDIA_TONEGEN_LOOP, &ringback_port);
     if (status != PJ_SUCCESS)
     {
         NSLog(@"//### Failed to create tone.");
@@ -654,9 +655,9 @@ void showLog(int level, const char* data, int len)
 
     tone[RINGBACK_CNT - 1].off_msec = RINGBACK_INTERVAL;
 
-    pjmedia_tonegen_play(info.ringback_port, RINGBACK_CNT, tone, PJMEDIA_TONEGEN_LOOP);
+    pjmedia_tonegen_play(ringback_port, RINGBACK_CNT, tone, PJMEDIA_TONEGEN_LOOP);
 
-    status = pjsua_conf_add_port(info.pool, info.ringback_port, &info.ringback_slot);
+    status = pjsua_conf_add_port(pool, ringback_port, &ringback_slot);
     if (status != PJ_SUCCESS)
     {
         NSLog(@"//### Failed to create tone.");
@@ -670,49 +671,46 @@ void showLog(int level, const char* data, int len)
     unsigned    i;
 
     /* Close ringback port */
-    if (info.ringback_port && info.ringback_slot != PJSUA_INVALID_ID)
+    if (ringback_port && ringback_slot != PJSUA_INVALID_ID)
     {
-        pjsua_conf_remove_port(info.ringback_slot);
-        info.ringback_slot = PJSUA_INVALID_ID;
-        pjmedia_port_destroy(info.ringback_port);
-        info.ringback_port = NULL;
+        pjsua_conf_remove_port(ringback_slot);
+        ringback_slot = PJSUA_INVALID_ID;
+        pjmedia_port_destroy(ringback_port);
+        ringback_port = NULL;
     }
 
     /* Close ring port */
-    if (info.ring_port && info.ring_slot != PJSUA_INVALID_ID)
+    if (ring_port && ring_slot != PJSUA_INVALID_ID)
     {
-        pjsua_conf_remove_port(info.ring_slot);
-        info.ring_slot = PJSUA_INVALID_ID;
-        pjmedia_port_destroy(info.ring_port);
-        info.ring_port = NULL;
+        pjsua_conf_remove_port(ring_slot);
+        ring_slot = PJSUA_INVALID_ID;
+        pjmedia_port_destroy(ring_port);
+        ring_port = NULL;
     }
 
     /* Close tone generators */
-    for (i = 0; i < info.tone_count; ++i)
+    for (i = 0; i < tone_count; ++i)
     {
-        pjsua_conf_remove_port(info.tone_slots[i]);
+        pjsua_conf_remove_port(tone_slots[i]);
     }
 }
 
 
-- (pjsua_call_id)callNumber:(NSString*)calledNumber
-             identityNumber:(NSString*)identityNumber
-                   userData:(void*)userData
-                      tones:(NSDictionary*)tones
+- (BOOL)makeCall:(Call*)call tones:(NSDictionary*)tones
 {
     [self registerThread];
 
-    pj_assert([calledNumber length] != 0 && [identityNumber length] != 0);
+    pj_assert([call.calledNumber length] != 0 && [call.identityNumber length] != 0);    //### Remove?
 
     if (pjsua_call_get_count() == PJSUA_MAX_CALLS)
     {
         NSLog(@"//### Can't make call, maximum calls (%d) reached.", PJSUA_MAX_CALLS);
         dispatch_async(dispatch_get_main_queue(), ^
         {
-            [self.delegate sipInterfaceCallFailed:self userData:userData reason:SipInterfaceCallFailedTooManyCalls];
+            [self.delegate sipInterface:self callFailed:call reason:SipInterfaceCallFailedTooManyCalls];
         });
 
-        return PJSUA_INVALID_ID;
+        return NO;
     }
     else
     {
@@ -731,36 +729,37 @@ void showLog(int level, const char* data, int len)
 
             [self registerThread];
 
-            uriString = [NSString stringWithFormat:@"sip:%@@%@;transport=tls", calledNumber, self.server];
+            uriString = [NSString stringWithFormat:@"sip:%@@%@;transport=tls", call.calledNumber, self.server];
             uri = pj_str((char*)[uriString cStringUsingEncoding:NSASCIIStringEncoding]);
             pjsua_call_setting_default(&call_opt);
 
             // Create optional header containing number/identity from which this call is made.
             header_name = pj_str("Identity");
-            header_value = pj_str((char*)[identityNumber cStringUsingEncoding:NSASCIIStringEncoding]);
+            header_value = pj_str((char*)[call.identityNumber cStringUsingEncoding:NSASCIIStringEncoding]);
             pjsip_generic_string_hdr_init2(&header, &header_name, &header_value);
             pjsua_msg_data_init(&msg_data);
             pj_list_push_back(&msg_data.hdr_list, &header);
           
-            status = pjsua_call_make_call(pjsua_acc_get_default(), &uri, &call_opt, userData, &msg_data, &call_id);
-            if (status != PJ_SUCCESS)
+            status = pjsua_call_make_call(pjsua_acc_get_default(), &uri, &call_opt, (__bridge void*)call, &msg_data, &call_id);
+            if (status == PJ_SUCCESS)
+            {
+                call.state = CallStateNone;
+                call.callId = call_id;
+                [calls addObject:call];
+            }
+            else
             {
                 NSLog(@"//### Failed to make call: %d.", status);
                 dispatch_async(dispatch_get_main_queue(), ^
                 {
+                    call.state = CallStateFailed;
                     //### Determine which PJSIP errors can occor here; then created SipInterfaceCallFailedXyz's.
-                    [self.delegate sipInterfaceCallFailed:self userData:userData reason:SipInterfaceCallFailedInternal];
+                    [self.delegate sipInterface:self callFailed:call reason:SipInterfaceCallFailedInternal];
                 });
-            }
-            else
-            {
-                bzero(&info.call_data[call_id], sizeof(struct call_data));
-                info.call_data[call_id].user_data = userData;
-                info.call_data[call_id].ending = NO;
             }
         });
 
-        return call_id;
+        return YES;
     }
 }
 
@@ -777,8 +776,12 @@ void showLog(int level, const char* data, int len)
 
     dispatch_async(dispatch_get_main_queue(), ^
     {
-        //### Must invoked for all calls.  Right now we assume there's only one: current_call.
-        [self.delegate sipInterfaceCallEnded:self userData:info.call_data[info.current_call].user_data];
+        for (Call* call in calls)
+        {
+            call.state = CallStateEnded;
+            [self.delegate sipInterface:self callEnded:call];
+            [calls removeObject:call];
+        }
     });
 }
 
@@ -788,6 +791,15 @@ void showLog(int level, const char* data, int len)
     [self registerThread];
 
     pjsua_call_hangup_all();
+
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        for (Call* call in calls)
+        {
+            call.state = CallStateEnding;
+            [self.delegate sipInterface:self callEnding:call];
+        }
+    });
 
     @synchronized(self)
     {
@@ -800,16 +812,10 @@ void showLog(int level, const char* data, int len)
                                                            repeats:NO];
         }
     }
-
-    dispatch_async(dispatch_get_main_queue(), ^
-    {
-        //### Must invoked for all calls.  Right now we assume there's only one: current_call.
-        [self.delegate sipInterfaceCallEnding:self userData:info.call_data[info.current_call].user_data];
-    });
 }
 
 
-- (void)hangupCall:(void*)userData reason:(NSString*)reason
+- (void)hangupCall:(Call*)call reason:(NSString*)reason
 {
     [self registerThread];
 
@@ -819,24 +825,9 @@ void showLog(int level, const char* data, int len)
     pjsip_generic_string_hdr  header;
     pj_status_t               status;
 
-    pjsua_call_id   call_id = PJSUA_INVALID_ID;
-    for (int i = 0; i < PJSUA_MAX_CALLS; i++)
+    if (call.state == CallStateEnding)
     {
-        if (info.call_data[i].user_data == userData)
-        {
-            call_id = i;
-
-            if (userData == nil)
-            {
-                NSLog(@"//### USERDATA == nil)");
-            }
-            break;
-        }
-    }
-
-    if (info.call_data[call_id].ending)
-    {
-        NSLog(@"//### Multiple hangup for call %d.", call_id);
+        NSLog(@"//### Multiple hangup for call %d.", call.callId);
         
         return;
     }
@@ -852,13 +843,8 @@ void showLog(int level, const char* data, int len)
     pjsua_msg_data_init(&msg_data);
     pj_list_push_back(&msg_data.hdr_list, &header);
 
-    if ((status = pjsua_call_hangup(call_id, 200, NULL, &msg_data)) == PJ_SUCCESS)
-    {
-        info.call_data[call_id].ending = YES;
-    }
-    {
-        info.call_data[call_id].ending = NO;
-        
+    if ((status = pjsua_call_hangup(call.callId, 200, NULL, &msg_data)) != PJ_SUCCESS)
+    {        
         NSLog(@"//### Hangup failed: %d", status);
         //### Inform delegate?
     }
@@ -877,8 +863,42 @@ void showLog(int level, const char* data, int len)
 
     dispatch_async(dispatch_get_main_queue(), ^
     {
-        [self.delegate sipInterfaceCallEnding:self userData:userData];
+        call.state = CallStateEnding;
+        [self.delegate sipInterface:self callEnding:call];
     });
+}
+
+
+- (void)setCall:(Call*)call onMute:(BOOL)onMute
+{
+    if (onMute)
+    {
+        [self setMicrophoneLevel:0.0f callId:call.callId];
+    }
+    else
+    {
+        [self setMicrophoneLevel:MICROPHONE_LEVEL_NORMAL callId:call.callId];
+    }
+}
+
+
+- (void)setCall:(Call*)call onHold:(BOOL)onHold
+{
+    if (onHold)
+    {
+        pjsua_call_set_hold(call.callId, NULL);
+    }
+    else
+    {
+        pjsua_call_setting  setting;
+        pjsua_call_info     info;
+
+        pjsua_call_get_info(call.callId, &info);
+        setting = info.setting;
+
+        setting.flag |= PJSUA_CALL_UNHOLD;
+        pjsua_call_reinvite2(call.callId, &setting, NULL);
+    }
 }
 
 
@@ -900,44 +920,6 @@ void showLog(int level, const char* data, int len)
 }
 
 
-- (void)setCall:(void*)userData onHold:(BOOL)onHold
-{
-    pjsua_call_id   call_id = PJSUA_INVALID_ID;
-    for (int i = 0; i < PJSUA_MAX_CALLS; i++)
-    {
-        if (info.call_data[i].user_data == userData)
-        {
-            call_id = i;
-
-            if (userData == nil)
-            {
-                NSLog(@"//### USERDATA == nil)");
-            }
-            break;
-        }
-    }
-
-    if (call_id != PJSUA_INVALID_ID)
-    {
-        if (onHold)
-        {
-            pjsua_call_set_hold(info.current_call, NULL);
-        }
-        else
-        {
-            pjsua_call_setting  setting;
-            pjsua_call_info     info;
-
-            pjsua_call_get_info(call_id, &info);
-            setting = info.setting;
-
-            setting.flag |= PJSUA_CALL_UNHOLD;
-            pjsua_call_reinvite2(call_id, &setting, NULL);
-        }
-    }
-}
-
-
 #pragma mark - Property Overrides
 
 - (SipInterfaceRegistered)registered
@@ -954,8 +936,7 @@ void showLog(int level, const char* data, int len)
 
     if (conf_port != PJSUA_INVALID_ID)
     {
-#warning //### Does not work with conf_port, only with 0.  I asked TELUU
-        pjsua_conf_adjust_rx_level(0, /*conf_port*/ microphoneLevel);
+        pjsua_conf_adjust_tx_level(conf_port, microphoneLevel);
     }
     else
     {
@@ -972,8 +953,7 @@ void showLog(int level, const char* data, int len)
 
     if (conf_port != PJSUA_INVALID_ID)
     {
-#warning //### Does not work with conf_port, only with 0.  I asked TELUU
-        pjsua_conf_adjust_tx_level(0, /*###conf_port*/ speakerLevel);
+        pjsua_conf_adjust_rx_level(conf_port, speakerLevel);
     }
     else
     {
@@ -983,6 +963,20 @@ void showLog(int level, const char* data, int len)
 
 
 #pragma mark - Utility Methods
+
+- (Call*)findCallForCallId:(pjsua_call_id)callId
+{
+    for (Call* call in calls)
+    {
+        if (call.callId == callId)
+        {
+            return call;
+        }
+    }
+
+    return nil;
+}
+
 
 - (void)setAudioVolume
 {
@@ -1055,129 +1049,67 @@ void showLog(int level, const char* data, int len)
 }
 
 
-- (void)ringback_start:(pjsua_call_id)call_id
+- (void)startRingbackTone:(pjsua_call_id)call_id
 {
-    if (info.call_data[call_id].ringback_on)
+    Call*   call = [self findCallForCallId:call_id];
+
+    if (call.ringbackToneOn)
     {
 	return;
     }
 
-    info.call_data[call_id].ringback_on = PJ_TRUE;
+    call.ringbackToneOn = YES;
 
-    if (info.ringback_slot!=PJSUA_INVALID_ID)
+    if (ringback_slot != PJSUA_INVALID_ID)
     {
-	pjsua_conf_connect(info.ringback_slot, 0);
+	pjsua_conf_connect(ringback_slot, 0);
     }
 }
 
 
-- (void)ring_stop:(pjsua_call_id)call_id
+- (void)startRingTone:(pjsua_call_id)call_id
 {
-    if (info.call_data[call_id].ringback_on)
-    {
-	info.call_data[call_id].ringback_on = PJ_FALSE;
+    Call*   call = [self findCallForCallId:call_id];
 
-	if (info.ringback_slot != PJSUA_INVALID_ID)
-	{
-	    pjsua_conf_disconnect(info.ringback_slot, 0);
-	    pjmedia_tonegen_rewind(info.ringback_port);
-	}
-    }
-
-    if (info.call_data[call_id].ring_on)
-    {
-	info.call_data[call_id].ring_on = PJ_FALSE;
-
-	if (info.ring_slot!=PJSUA_INVALID_ID)
-	{
-	    pjsua_conf_disconnect(info.ring_slot, 0);
-	    pjmedia_tonegen_rewind(info.ring_port);
-	}
-    }
-}
-
-
-- (void)ring_start:(pjsua_call_id)call_id
-{
-    if (info.call_data[call_id].ring_on)
+    if (call.ringToneOn)
     {
 	return;
     }
 
-    info.call_data[call_id].ring_on = PJ_TRUE;
+    call.ringToneOn = YES;
 
-    if (info.ring_slot!=PJSUA_INVALID_ID)
+    if (ring_slot != PJSUA_INVALID_ID)
     {
-	pjsua_conf_connect(info.ring_slot, 0);
+	pjsua_conf_connect(ring_slot, 0);
     }
 }
 
 
-/*
- * Find next call when current call is disconnected or when user
- * press ']'
- */
-- (pj_bool_t)find_next_call
+- (void)stopTones:(pjsua_call_id)call_id
 {
-    int i;
-    int max = pjsua_call_get_max_count();
+    Call*   call = [self findCallForCallId:call_id];
 
-    for (i = info.current_call + 1; i < max; ++i)
+    if (call.ringbackToneOn)
     {
-	if (pjsua_call_is_active(i))
-        {
-	    info.current_call = i;
+	call.ringbackToneOn = NO;
 
-	    return PJ_TRUE;
+	if (ringback_slot != PJSUA_INVALID_ID)
+	{
+	    pjsua_conf_disconnect(ringback_slot, 0);
+	    pjmedia_tonegen_rewind(ringback_port);
 	}
     }
 
-    for (i = 0; i < info.current_call; ++i)
+    if (call.ringToneOn)
     {
-	if (pjsua_call_is_active(i))
-        {
-	    info.current_call = i;
+	call.ringToneOn = NO;
 
-            return PJ_TRUE;
+	if (ring_slot != PJSUA_INVALID_ID)
+	{
+	    pjsua_conf_disconnect(ring_slot, 0);
+	    pjmedia_tonegen_rewind(ring_port);
 	}
     }
-
-    info.current_call = PJSUA_INVALID_ID;
-
-    return PJ_FALSE;
-}
-
-
-/*
- * Find previous call when user press '['
- */
-- (pj_bool_t)find_prev_call
-{
-    int i;
-    int max = pjsua_call_get_max_count();
-
-    for (i = info.current_call - 1; i >= 0; --i)
-    {
-	if (pjsua_call_is_active(i))
-        {
-	    info.current_call = i;
-
-	    return PJ_TRUE;
-	}
-    }
-
-    for (i = max - 1; i > info.current_call; --i)
-    {
-	if (pjsua_call_is_active(i))
-        {
-	    info.current_call = i;
-	    return PJ_TRUE;
-	}
-    }
-
-    info.current_call = PJSUA_INVALID_ID;
-
-    return PJ_FALSE;
 }
 
 
@@ -1319,10 +1251,18 @@ void showLog(int level, const char* data, int len)
 
 - (void)onCallState:(pjsua_call_id)call_id event:(pjsip_event*)e
 {
-    pjsua_call_info call_info;    
+    Call*           call = [self findCallForCallId:call_id];
+    pjsua_call_info call_info;
+    
     pjsua_call_get_info(call_id, &call_info);
 
     NSLog(@"----------------------------------------- Call:%d %d %s", call_id, call_info.last_status, call_info.state_text.ptr);
+
+    if (call == nil)
+    {
+        NSLog(@"onCallState ################################## Call is NIL!");
+        return;
+    }
 
     switch (call_info.state)
     {
@@ -1333,7 +1273,8 @@ void showLog(int level, const char* data, int len)
         {
             dispatch_async(dispatch_get_main_queue(), ^
             {
-                [self.delegate sipInterfaceCallCalling:self userData:info.call_data[call_id].user_data];
+                call.state = CallStateCalling;
+                [self.delegate sipInterface:self callCalling:call];
             });
             break;
         }
@@ -1365,18 +1306,20 @@ void showLog(int level, const char* data, int len)
 	    /* Start ringback for 180 for UAC unless there's SDP in 180 */
 	    if (call_info.role == PJSIP_ROLE_UAC && code == 180 && msg->body == NULL && call_info.media_status == PJSUA_CALL_MEDIA_NONE)
 	    {
-		[self ringback_start:call_id];
+		[self startRingbackTone:call_id];
 
                 dispatch_async(dispatch_get_main_queue(), ^
                 {
-                    [self.delegate sipInterfaceCallRinging:self userData:info.call_data[call_id].user_data];
+                    call.state = CallStateRinging;
+                    [self.delegate sipInterface:self callRinging:call];
                 });
 	    }
             else
             {
                 dispatch_async(dispatch_get_main_queue(), ^
                 {
-                    [self.delegate sipInterfaceCallRinging:self userData:info.call_data[call_id].user_data];
+                    call.state = CallStateRinging;
+                    [self.delegate sipInterface:self callRinging:call];
                 });
             }
 
@@ -1389,7 +1332,8 @@ void showLog(int level, const char* data, int len)
         {
             dispatch_async(dispatch_get_main_queue(), ^
             {
-                [self.delegate sipInterfaceCallConnecting:self userData:info.call_data[call_id].user_data];
+                call.state = CallStateConnecting;
+                [self.delegate sipInterface:self callConnecting:call];
             });
             break;
         }
@@ -1398,7 +1342,8 @@ void showLog(int level, const char* data, int len)
         {
             dispatch_async(dispatch_get_main_queue(), ^
             {
-                [self.delegate sipInterfaceCallConnected:self userData:info.call_data[call_id].user_data];
+                call.state = CallStateConnected;
+                [self.delegate sipInterface:self callConnected:call];
             });
             break;
         }
@@ -1412,36 +1357,19 @@ void showLog(int level, const char* data, int len)
             }
 
             /* Stop all ringback for this call */
-            [self ring_stop:call_id];
+            [self stopTones:call_id];
 
             PJ_LOG(3, (THIS_FILE, "Call %d is DISCONNECTED [reason=%d (%s)]",
                        call_id, call_info.last_status, call_info.last_status_text.ptr));
 
-            __block void*   user_data = (info.current_call != PJSUA_INVALID_ID) ? info.call_data[call_id].user_data : nil;
-
             dispatch_async(dispatch_get_main_queue(), ^
             {
-                [self.delegate sipInterfaceCallEnded:self userData:user_data];
+                call.state = CallStateEnded;
+                [self.delegate sipInterface:self callEnded:call];
+                [calls removeObject:call];
             });
-
-            if (call_id == info.current_call)
-            {
-                [self find_next_call];
-            }
-
-            /* Reset current call */
-            if (info.current_call == call_id)
-            {
-                info.current_call = PJSUA_INVALID_ID;
-            }
             break;
         }
-    }
-
-    if (call_info.state != PJSIP_INV_STATE_NULL && call_info.state != PJSIP_INV_STATE_DISCONNECTED &&
-        info.current_call == PJSUA_INVALID_ID)
-    {
-        info.current_call = call_id;
     }
 }
 
@@ -1455,26 +1383,21 @@ void showLog(int level, const char* data, int len)
 
     pjsua_call_get_info(call_id, &call_info);
 
-    if (info.current_call == PJSUA_INVALID_ID)
-    {
-	info.current_call = call_id;
-    }
-
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive)
     {
         /* Start ringback */
-        [self ring_start:call_id];
+        [self startRingTone:call_id];
 
         //### auto_answer not needed, but left in to remember how to answer.
-        if (info.auto_answer > 0)
+        if (auto_answer > 0)
         {
             pjsua_call_setting call_opt;
 
             pjsua_call_setting_default(&call_opt);
-            pjsua_call_answer2(call_id, &call_opt, info.auto_answer, NULL, NULL);
+            pjsua_call_answer2(call_id, &call_opt, auto_answer, NULL, NULL);
         }
 
-        if (info.auto_answer < 200)
+        if (auto_answer < 200)
         {
             char notif_st[80] = {0};
 
@@ -1625,7 +1548,7 @@ void showLog(int level, const char* data, int len)
     PJ_UNUSED_ARG(has_error);
 
     /* Stop ringback */
-    [self ring_stop:ci->id];
+    [self stopTones:ci->id];
 
     /* Connect ports appropriately when media status is ACTIVE or REMOTE HOLD,
      * otherwise we should NOT connect the ports.
@@ -1688,7 +1611,7 @@ void showLog(int level, const char* data, int len)
 {
     PJ_UNUSED_ARG(e);
 
-    if (info.redir_op == PJSIP_REDIRECT_PENDING)
+    if (redir_op == PJSIP_REDIRECT_PENDING)
     {
 	char    uristr[PJSIP_MAX_URL_SIZE];
 	int     len;
@@ -1704,7 +1627,7 @@ void showLog(int level, const char* data, int len)
                    call_id, len, uristr));
     }
 
-    return info.redir_op;
+    return redir_op;
 }
 
 
@@ -1888,7 +1811,7 @@ void showLog(int level, const char* data, int len)
             }
 	}
         
-	if (ssl_sock_info->verify_status && !info.udp_cfg.tls_setting.verify_server)
+	if (ssl_sock_info->verify_status && !udp_cfg.tls_setting.verify_server)
 	{
 	    PJ_LOG(3, (THIS_FILE, "PJSUA is configured to ignore TLS cert verification errors"));
 	}

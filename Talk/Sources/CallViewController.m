@@ -373,6 +373,8 @@
 
 - (void)callOptionsViewPressedMuteKey:(CallOptionsView*)optionsView
 {
+    [[CallManager sharedManager] setCall:[self.calls lastObject] onMute:!optionsView.onMute];
+    optionsView.onMute = !optionsView.onMute;
 }
 
 
