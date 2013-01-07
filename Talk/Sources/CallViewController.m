@@ -409,7 +409,8 @@
 
 - (void)callOptionsViewPressedSpeakerKey:(CallOptionsView*)optionsView
 {
-
+    [[CallManager sharedManager] setOnSpeaker:!optionsView.onSpeaker];
+    optionsView.onSpeaker = !optionsView.onSpeaker;
 }
 
 
@@ -421,7 +422,10 @@
 
 - (void)callOptionsViewPressedHoldKey:(CallOptionsView*)optionsView
 {
+    [[CallManager sharedManager] setCall:[self.calls lastObject] onHold:!optionsView.onHold];  //### Should be active call.
 
+#warning Need proper loopback.  Quick hack for now.
+    optionsView.onHold = !optionsView.onHold;
 }
 
 

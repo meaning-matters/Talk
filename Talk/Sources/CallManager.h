@@ -29,4 +29,10 @@
 
 - (void)endCall:(Call*)call;
 
+- (BOOL)callMobilePhoneNumber:(PhoneNumber*)phoneNumber;
+
+- (void)setOnSpeaker:(BOOL)onSpeaker;
+
+- (void)setCall:(Call*)call onHold:(BOOL)onHold;
+
 @end

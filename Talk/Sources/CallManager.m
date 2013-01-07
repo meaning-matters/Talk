@@ -362,6 +362,18 @@ static SipInterface*    sipInterface;
 }
 
 
+- (void)setOnSpeaker:(BOOL)onSpeaker
+{
+    [sipInterface setOnSpeaker:onSpeaker];
+}
+
+
+- (void)setCall:(Call*)call onHold:(BOOL)onHold
+{
+    [sipInterface setCall:(__bridge void*)call onHold:onHold];
+}
+
+
 #pragma mark SipInterface Delegate
 
 - (void)sipInterfaceCallCalling:(SipInterface*)interface userData:(void*)userData
@@ -469,7 +481,6 @@ static SipInterface*    sipInterface;
 
 - (void)sipInterfaceOnSpeaker:(SipInterface*)interface
 {
-
 }
 
 
