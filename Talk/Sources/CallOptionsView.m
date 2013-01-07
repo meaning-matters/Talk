@@ -12,7 +12,6 @@
 
 @implementation CallOptionsView
 
-
 @synthesize view          = _view;
 @synthesize muteButton    = _muteButton;
 @synthesize keypadButton  = _keypadButton;

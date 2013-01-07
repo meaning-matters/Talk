@@ -10,8 +10,6 @@
 
 @implementation Call
 
-@synthesize externalDelegate = _externalDelegate;
-@synthesize internalDelegate = _internalDelegate;
 @synthesize phoneNumber      = _phoneNumber;
 @synthesize calledNumber     = _calledNumber;
 @synthesize identityNumber   = _identityNumber;

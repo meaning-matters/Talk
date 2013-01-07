@@ -10,6 +10,7 @@
 #import "CallOptionsView.h"
 #import "CallKeypadView.h"
 #import "Call.h"
+#import "SipInterface.h"
 
 
 @class CallViewController;
@@ -31,7 +32,7 @@
 @end
 
 
-@interface CallViewController : UIViewController <CallOptionsViewDelegate, CallKeypadViewDelegate, CallExternalDelegate>
+@interface CallViewController : UIViewController <CallOptionsViewDelegate, CallKeypadViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray*               calls;
 
@@ -58,8 +59,26 @@
 
 - (void)addCall:(Call*)call;
 
-- (void)changedStateOfCall:(Call*)call;
-
 - (void)endCall:(Call*)call;
+
+- (void)updateCallCalling:(Call*)call;
+
+- (void)updateCallRinging:(Call*)call;
+
+- (void)updateCallConnecting:(Call*)call;
+
+- (void)updateCallConnected:(Call*)call;
+
+- (void)updateCallEnding:(Call*)call;
+
+- (void)updateCallEnded:(Call*)call;
+
+- (void)updateCallBusy:(Call*)call;
+
+- (void)updateCallDeclined:(Call*)call;
+
+- (void)updateCallNotAllowed:(Call*)call reason:(SipInterfaceCallNotAllowed)reason;
+
+- (void)updateCallFailed:(Call*)call reason:(SipInterfaceCallFailed)reason;
 
 @end

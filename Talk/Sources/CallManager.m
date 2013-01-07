@@ -377,61 +377,61 @@ static SipInterface*    sipInterface;
 
 - (void)sipInterface:(SipInterface*)interface callCalling:(Call*)call
 {
-    [callViewController changedStateOfCall:call];
+    [callViewController updateCallCalling:call];
 }
 
 
 - (void)sipInterface:(SipInterface*)interface callRinging:(Call*)call
 {
-    [callViewController changedStateOfCall:call];
+    [callViewController updateCallRinging:call];
 }
 
 
 - (void)sipInterface:(SipInterface*)interface callConnecting:(Call*)call
 {
-    [callViewController changedStateOfCall:call];
+    [callViewController updateCallConnecting:call];
 }
 
 
 - (void)sipInterface:(SipInterface*)interface callConnected:(Call*)call
 {
-    [callViewController changedStateOfCall:call];
+    [callViewController updateCallConnected:call];
 }
 
 
 - (void)sipInterface:(SipInterface*)interface callEnding:(Call*)call
 {
-    [callViewController changedStateOfCall:call];
+    [callViewController updateCallEnding:call];
 }
 
 
 - (void)sipInterface:(SipInterface*)interface callEnded:(Call*)call
 {
-    [callViewController changedStateOfCall:call];
+    [callViewController updateCallEnded:call];
 }
 
 
 - (void)sipInterface:(SipInterface*)interface callBusy:(Call*)call
 {
-
+    [callViewController updateCallBusy:call];
 }
 
 
 - (void)sipInterface:(SipInterface*)interface callDeclined:(Call*)call
 {
-
+    [callViewController updateCallDeclined:call];
 }
 
 
 - (void)sipInterface:(SipInterface*)interface callNotAllowed:(Call*)call reason:(SipInterfaceCallNotAllowed)reason
 {
-
+    [callViewController updateCallNotAllowed:call reason:reason];
 }
 
 
 - (void)sipInterface:(SipInterface*)interface callFailed:(Call*)call reason:(SipInterfaceCallFailed)reason
 {
-
+    [callViewController updateCallFailed:call reason:reason];
 }
 
 

@@ -42,24 +42,8 @@ typedef enum
 } CallNetwork;
 
 
-@class Call;
-
-@protocol CallExternalDelegate <NSObject>
-
-- (void)call:(Call*)call didUpdateState:(CallState)state;
-
-@end
-
-
-@protocol CallInternalDelegate <NSObject>
-
-@end
-
-
 @interface Call : NSObject
 
-@property (nonatomic, assign) id<CallExternalDelegate>  externalDelegate;   // UI related.
-@property (nonatomic, assign) id<CallInternalDelegate>  internalDelegate;   // SIP related.
 @property (nonatomic, readonly) PhoneNumber*            phoneNumber;
 @property (nonatomic, readonly) NSString*               calledNumber;
 @property (nonatomic, strong) NSString*                 identityNumber;     // Number form/on which call is made/received.

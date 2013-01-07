@@ -87,6 +87,10 @@
     [self drawEndButton];
     [self drawHideButton];
     self.hideButton.hidden = YES;
+
+    callOptionsView.muteButton.enabled    = NO;
+    callOptionsView.addButton.enabled     = NO;
+    callOptionsView.holdButton.enabled    = NO;
 }
 
 
@@ -495,27 +499,7 @@
 
 - (void)addCall:(Call*)call
 {
-    call.externalDelegate = self;
     [self.calls addObject:call];
-}
-
-
-- (void)changedStateOfCall:(Call*)call
-{
-    if (call.state == CallStateEnded)
-    {
-        [self endCall:call];
-        NSLog(@"++++++++++++++++ CallStateEnded");
-    }
-    else
-    {
-        self.statusLabel.text = [call stateString];
-        NSLog(@"++++++++++++++++ %@", [call stateString]);
-        if (call == nil)
-        {
-            NSLog(@"Call is nil");
-        }
-    }
 }
 
 
@@ -529,6 +513,69 @@
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
 
     [self.calls removeObject:call];
+}
+
+
+- (void)updateCallCalling:(Call*)call
+{
+}
+
+
+- (void)updateCallRinging:(Call*)call
+{
+    self.statusLabel.text = [call stateString];
+}
+
+
+- (void)updateCallConnecting:(Call*)call
+{
+    self.statusLabel.text = [call stateString];
+}
+
+
+- (void)updateCallConnected:(Call*)call
+{
+    self.statusLabel.text = [call stateString];
+
+    callOptionsView.muteButton.enabled = YES;
+    callOptionsView.addButton.enabled  = YES;
+    callOptionsView.holdButton.enabled = YES;
+}
+
+
+- (void)updateCallEnding:(Call*)call
+{
+    self.statusLabel.text = [call stateString];
+}
+
+
+- (void)updateCallEnded:(Call*)call
+{
+    [self endCall:call];
+}
+
+
+- (void)updateCallBusy:(Call*)call
+{
+    self.statusLabel.text = [call stateString];
+}
+
+
+- (void)updateCallDeclined:(Call*)call
+{
+    self.statusLabel.text = [call stateString];
+}
+
+
+- (void)updateCallNotAllowed:(Call*)call reason:(SipInterfaceCallNotAllowed)reason
+{
+    self.statusLabel.text = [call stateString];
+}
+
+
+- (void)updateCallFailed:(Call*)call reason:(SipInterfaceCallFailed)reason
+{
+    self.statusLabel.text = [call stateString];
 }
 
 @end
