@@ -31,8 +31,10 @@
 
 - (BOOL)callMobilePhoneNumber:(PhoneNumber*)phoneNumber;
 
-- (void)setOnSpeaker:(BOOL)onSpeaker;
+- (void)setCall:(Call*)call onMute:(BOOL)onMute;
 
 - (void)setCall:(Call*)call onHold:(BOOL)onHold;
+
+- (void)setOnSpeaker:(BOOL)onSpeaker;
 
 @end
