@@ -596,6 +596,7 @@
 - (void)setOnSpeaker:(BOOL)onSpeaker
 {
     callOptionsView.onSpeaker = onSpeaker;
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:!onSpeaker];
 }
 
 @end
