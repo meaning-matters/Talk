@@ -763,7 +763,7 @@ void showLog(int level, const char* data, int len)
             status = pjsua_call_make_call(pjsua_acc_get_default(), &uri, &call_opt, (__bridge void*)call, &msg_data, &call_id);
             if (status == PJ_SUCCESS)
             {
-                call.state = CallStateNone;
+#warning onCallState is called (at least once) before call is added to calls. This causes 'error' in onCallState.
                 call.callId = call_id;
                 [calls addObject:call];
             }
@@ -868,6 +868,7 @@ void showLog(int level, const char* data, int len)
     {        
         NSLog(@"//### Hangup failed: %d", status);
         //### Inform delegate?
+        //### gave 171140 PJSIP_ESESSIONTERMINATED session already terminated.
     }
 
     @synchronized(self)
@@ -940,12 +941,9 @@ void showLog(int level, const char* data, int len)
     route = onSpeaker ? PJMEDIA_AUD_DEV_ROUTE_LOUDSPEAKER : PJMEDIA_AUD_DEV_ROUTE_EARPIECE;
 
     status = pjsua_snd_set_setting(PJMEDIA_AUD_DEV_CAP_OUTPUT_ROUTE, &route, PJ_TRUE);
-    if (status == PJ_SUCCESS)
+    if (status != PJ_SUCCESS)
     {
-        dispatch_async(dispatch_get_main_queue(), ^
-        {
-            [self.delegate sipInterface:self onSpeaker:onSpeaker];
-        });
+        NSLog(@"Setting audio route failed: %d.", status);
     }
 }
 
@@ -1014,6 +1012,7 @@ void showLog(int level, const char* data, int len)
         }
     }
 
+    NSLog(@"//########################### No call found.");
     return nil;
 }
 
@@ -1032,8 +1031,6 @@ void showLog(int level, const char* data, int len)
         
         return;
     }
-
-    NSLog(@"//### Audio Route: %@", route);
 
     if ([route isEqualToString:@"Headset"])
     {
@@ -1635,7 +1632,10 @@ void showLog(int level, const char* data, int len)
         pjsua_conf_connect(call_conf_slot, 0);
         pjsua_conf_connect(0, call_conf_slot);
 
-        [self processAudioRouteChange];
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            [self processAudioRouteChange];
+        });
     }
 }
 

@@ -275,8 +275,6 @@
 
 - (void)keypadViewPressedCallKey:(KeypadView*)keypadView
 {
-    NSLog(@"UI:%@  CODE:%@", self.numberLabel.text, phoneNumber.number);
-
     if ([self.numberLabel.text length] == 0)
     {
         phoneNumber.number = [Settings sharedSettings].lastDialedNumber;

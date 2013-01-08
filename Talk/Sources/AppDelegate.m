@@ -50,6 +50,10 @@
     [CallManager   sharedManager];
     [Settings      sharedSettings];
 
+    // Initialize phone number stuff.
+    [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
+    [LibPhoneNumber sharedInstance];    // This loads the JavaScript library.
+
     //### Set current fixed SIP credentials.
     [Settings sharedSettings].sipServer   = @"178.63.93.9";
     [Settings sharedSettings].sipRealm    = @"*";
@@ -67,10 +71,6 @@
     [self addViewControllersToTabBar];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
-
-    // Initialize phone number stuff.
-    [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
-    [LibPhoneNumber sharedInstance];    // This loads the JavaScript library.
 
     [[AVAudioSession sharedInstance] setActive:YES error:NULL]; // Make sure there's an audio session.
     [[NSNotificationCenter defaultCenter] addObserver:self
