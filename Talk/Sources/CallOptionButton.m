@@ -100,7 +100,7 @@
     CGFloat keyHighlightGradientLocations[] = {0, 1};
     CGGradientRef keyHighlightGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)keyHighlightGradientColors, keyHighlightGradientLocations);
 
-    CGGradientRef gradient = (self.highlighted || self.on) ? keyHighlightGradient : keyNormalGradient;
+    CGGradientRef gradient = (self.highlighted ^ self.on) ? keyHighlightGradient : keyNormalGradient;
 
     //// Shadow Declarations
     UIColor* textShadow = textShadowColor;
