@@ -10,6 +10,24 @@
 #import "NSTimer+Blocks.h"
 
 
+// These delays are used to limit the frequency at which mute, speaker and hold can be changed.
+// During both timeouts, user taps are discarded (i.e. not fed to delegate).  The first timeout
+// is the maximum time the app is given for roundtrip: user-tap to setOn...() reponse.  When the
+// roundtrip response is received within the first timeout, a short second timeout blocks user
+// input.
+#define FIRST_TIMEOUT   2.0
+#define SECOND_TIMEOUT  0.5
+
+@interface CallOptionsView ()
+{
+    NSTimer*    muteTimer;
+    NSTimer*    speakerTimer;
+    NSTimer*    holdTimer;
+}
+
+@end
+
+
 @implementation CallOptionsView
 
 @synthesize view          = _view;
@@ -145,7 +163,19 @@
 
 - (IBAction)muteAction:(id)sender
 {
-    [self.delegate callOptionsViewPressedMuteKey:self];
+    if (muteTimer == nil)
+    {
+        muteTimer = [NSTimer scheduledTimerWithTimeInterval:FIRST_TIMEOUT block:^
+                    {
+                        muteTimer = nil;
+                    }
+                                                    repeats:NO];
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
+        {
+            [self.delegate callOptionsViewPressedMuteKey:self];
+        });
+    }
 }
 
 
@@ -157,7 +187,21 @@
 
 - (IBAction)speakerAction:(id)sender
 {
-    [self.delegate callOptionsViewPressedSpeakerKey:self];
+    if (speakerTimer == nil)
+    {
+        speakerTimer = [NSTimer scheduledTimerWithTimeInterval:FIRST_TIMEOUT block:^
+                       {
+                           speakerTimer = nil;
+                       }
+                                                    repeats:NO];
+
+        // Add short delay to allow redraw of button (also on main thread).  This was only
+        // required for speaker button but was, for symmetry, also added for mute and hold.
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
+        {
+            [self.delegate callOptionsViewPressedSpeakerKey:self];
+        });
+    }
 }
 
 
@@ -169,7 +213,19 @@
 
 - (IBAction)holdAction:(id)sender
 {
-    [self.delegate callOptionsViewPressedHoldKey:self];
+    if (holdTimer == nil)
+    {
+        holdTimer = [NSTimer scheduledTimerWithTimeInterval:FIRST_TIMEOUT block:^
+                    {
+                        holdTimer = nil;
+                    }
+                                                    repeats:NO];
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
+        {
+            [self.delegate callOptionsViewPressedHoldKey:self];
+        });
+    }
 }
 
 
@@ -181,34 +237,52 @@
 
 - (void)setOnMute:(BOOL)onMute
 {
-    // Run on main thread to prevent race condition with muteAction.
-    dispatch_async(dispatch_get_main_queue(), ^
+    if (muteTimer != nil)
     {
-        _onMute = onMute;
-        self.muteButton.on = onMute;
-    });
-}
+        [muteTimer invalidate];
+        muteTimer = [NSTimer scheduledTimerWithTimeInterval:SECOND_TIMEOUT block:^
+                    {
+                        muteTimer = nil;
+                    }
+                                                    repeats:NO];
+    }
 
-
-- (void)setOnHold:(BOOL)onHold
-{
-    // Run on main thread to prevent race condition with holdAction.
-    dispatch_async(dispatch_get_main_queue(), ^
-    {
-        _onHold = onHold;
-        self.holdButton.on = onHold;
-    });
+    _onMute = onMute;
+    self.muteButton.on = onMute;
 }
 
 
 - (void)setOnSpeaker:(BOOL)onSpeaker
 {
-    // Run on main thread to prevent race condition with speakerAction.
-    dispatch_async(dispatch_get_main_queue(), ^
+    if (speakerTimer != nil)
     {
-        _onSpeaker = onSpeaker;
-        self.speakerButton.on = onSpeaker;
-    });
+        [speakerTimer invalidate];
+        speakerTimer = [NSTimer scheduledTimerWithTimeInterval:SECOND_TIMEOUT block:^
+                       {
+                           speakerTimer = nil;
+                       }
+                                                       repeats:NO];
+    }
+
+    _onSpeaker = onSpeaker;
+    self.speakerButton.on = onSpeaker;
+}
+
+
+- (void)setOnHold:(BOOL)onHold
+{
+    if (holdTimer != nil)
+    {
+        [holdTimer invalidate];
+        holdTimer = [NSTimer scheduledTimerWithTimeInterval:SECOND_TIMEOUT block:^
+                    {
+                        holdTimer = nil;
+                    }
+                                                    repeats:NO];
+    }
+
+    _onHold = onHold;
+    self.holdButton.on = onHold;
 }
 
 @end
