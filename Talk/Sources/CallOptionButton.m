@@ -100,6 +100,10 @@
     CGFloat keyHighlightGradientLocations[] = {0, 1};
     CGGradientRef keyHighlightGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)keyHighlightGradientColors, keyHighlightGradientLocations);
 
+    // Using the XOR of highlighted and on, has the effect that pressing the button
+    // always shows the reverse.  This is done to see button turn to its final state
+    // in case there's a delay between requesting a state, and getting it; like with
+    // HOLD.
     CGGradientRef gradient = (self.highlighted ^ self.on) ? keyHighlightGradient : keyNormalGradient;
 
     //// Shadow Declarations
