@@ -74,6 +74,7 @@
 
     [[AVAudioSession sharedInstance] setActive:YES error:NULL]; // Make sure there's an audio session.
     [[NSNotificationCenter defaultCenter] addObserver:self
+#warning Do with block, instead of method.
                                              selector:@selector(keepVolumeAboveZero:)
                                                  name:@"AVSystemController_SystemVolumeDidChangeNotification"
                                                object:nil];

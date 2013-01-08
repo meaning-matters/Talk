@@ -68,6 +68,6 @@
 
 - (void)setOnSpeaker:(BOOL)onSpeaker;
 
-- (void)handleChangedAudioRoute:(NSString*)route;
+- (void)setSpeakerEnable:(BOOL)enable;
 
 @end

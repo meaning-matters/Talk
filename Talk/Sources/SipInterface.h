@@ -74,6 +74,8 @@ typedef enum
 
 - (void)sipInterface:(SipInterface*)interface onSpeaker:(BOOL)onSpeaker;                // Response method ... .
 
+- (void)sipInterface:(SipInterface*)interface speakerEnable:(BOOL)enable;
+
 - (void)sipInterfaceError:(SipInterface*)interface reason:(SipInterfaceError)error;
 
 @end

@@ -31,8 +31,7 @@
 {
     if (self = [super init])
     {
-        _phoneNumber  = phoneNumber;
-        _calledNumber = [phoneNumber isInternational] ? [phoneNumber e164Format] : [phoneNumber originalFormat];        
+        _phoneNumber  = phoneNumber;        
         _beginDate    = [NSDate date];
         _state        = CallStateNone;
         _direction    = direction;
