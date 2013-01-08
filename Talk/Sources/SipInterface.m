@@ -913,20 +913,27 @@ void showLog(int level, const char* data, int len)
 
 - (void)setCall:(Call*)call onHold:(BOOL)onHold
 {
-    if (onHold)
+    if ([self isCallOnHold:call] != onHold)
     {
-        pjsua_call_set_hold(call.callId, NULL);
+        if (onHold)
+        {
+            pjsua_call_set_hold(call.callId, NULL);
+        }
+        else
+        {
+            pjsua_call_setting  setting;
+            pjsua_call_info     info;
+
+            pjsua_call_get_info(call.callId, &info);
+            setting = info.setting;
+
+            setting.flag |= PJSUA_CALL_UNHOLD;
+            pjsua_call_reinvite2(call.callId, &setting, NULL);
+        }
     }
     else
     {
-        pjsua_call_setting  setting;
-        pjsua_call_info     info;
-
-        pjsua_call_get_info(call.callId, &info);
-        setting = info.setting;
-
-        setting.flag |= PJSUA_CALL_UNHOLD;
-        pjsua_call_reinvite2(call.callId, &setting, NULL);
+        NSLog(@"//### Duplicate HOLD for call %d.", call.callId);
     }
 }
 
@@ -1001,6 +1008,33 @@ void showLog(int level, const char* data, int len)
 
 
 #pragma mark - Utility Methods
+
+
+- (BOOL)isCallOnHold:(Call*)call
+{
+    pjsua_call_info info;
+    BOOL            onHold;
+
+    pjsua_call_get_info(call.callId, &info);
+
+    for (unsigned mi = 0; mi < info.media_cnt; ++mi)
+    {
+	if (info.media[mi].type == PJMEDIA_TYPE_AUDIO)
+        {
+            if (info.media[mi].status == PJSUA_CALL_MEDIA_LOCAL_HOLD)
+            {
+                onHold = YES;
+            }
+            else
+            {
+                onHold = NO;
+            }
+        }
+    }
+
+    return onHold;
+}
+
 
 - (Call*)findCallForCallId:(pjsua_call_id)callId
 {
@@ -1661,15 +1695,9 @@ void showLog(int level, const char* data, int len)
     {
 	on_call_generic_media_state(&call_info, mi, &has_error);
 
-	switch (call_info.media[mi].type)
+	if (call_info.media[mi].type == PJMEDIA_TYPE_AUDIO)
         {
-            case PJMEDIA_TYPE_AUDIO:
-                on_call_audio_state(&call_info, mi, &has_error);
-                break;
-
-            default:
-                /* Make gcc happy about enum not handled by switch/case */
-                break;
+            on_call_audio_state(&call_info, mi, &has_error);
 	}
     }
 
@@ -1751,7 +1779,7 @@ void showLog(int level, const char* data, int len)
     PJ_LOG(3,(THIS_FILE, "Call %d: transfer status=%d (%.*s) %s",
 	      call_id, status_code, (int)status_text->slen, status_text->ptr, (final ? "[final]" : "")));
 
-    if (status_code/100 == 2)
+    if (status_code / 100 == 2)
     {
 	PJ_LOG(3, (THIS_FILE, "Call %d: call transfered successfully, disconnecting call", call_id));
 
