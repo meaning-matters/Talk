@@ -1012,6 +1012,11 @@ void showLog(int level, const char* data, int len)
         }
     }
 
+    if ([calls count] > 1)
+    {
+        NSLog(@"//########################## More than one (%d) calls.", [calls count]);
+    }
+
     NSLog(@"//########################### No call found.");
     return nil;
 }
@@ -1316,7 +1321,6 @@ void showLog(int level, const char* data, int len)
 
     if (call == nil)
     {
-        NSLog(@"onCallState ################################## Call is NIL!");
         return;
     }
 
