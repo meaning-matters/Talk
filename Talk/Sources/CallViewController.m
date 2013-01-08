@@ -88,14 +88,9 @@
     [self drawHideButton];
     self.hideButton.hidden = YES;
 
-    callOptionsView.muteButton.enabled    = NO;
-    callOptionsView.addButton.enabled     = NO;
-    callOptionsView.holdButton.enabled    = NO;
-
-    if ([Common deviceHasReceiver] == NO)
-    {
-        callOptionsView.speakerButton.enabled = NO;
-    }
+    callOptionsView.muteButton.enabled = NO;
+    callOptionsView.addButton.enabled  = NO;
+    callOptionsView.holdButton.enabled = NO;
 }
 
 
@@ -593,10 +588,17 @@
     callOptionsView.onHold = onHold;
 }
 
+
 - (void)setOnSpeaker:(BOOL)onSpeaker
 {
     callOptionsView.onSpeaker = onSpeaker;
     [[UIDevice currentDevice] setProximityMonitoringEnabled:!onSpeaker];
+}
+
+
+- (void)setSpeakerEnable:(BOOL)enable
+{
+    callOptionsView.speakerButton.enabled = enable;
 }
 
 @end

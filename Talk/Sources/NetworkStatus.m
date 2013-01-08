@@ -205,7 +205,7 @@ static NSTimer*                 loadUrlTestTimer;
     else
     {
         // We get here when iOS got more/different CTCallState's.
-        status = NetworkStatusMobileCallDialing;    // Clear stack shit - random choice.
+        status = NetworkStatusMobileCallDialing;    //### Clear stack shit - random choice.
     }
 
     return status;

@@ -198,15 +198,7 @@ static LibPhoneNumber*  sharedInstance;
     NSString*   function = [[NSString alloc] initWithFormat: @"getOriginalFormat('%@','%@')", number, isoCountryCode];
     NSString*   result = [webView stringByEvaluatingJavaScriptFromString:function];
 
-    if ([result length] != 0)
-    {
-        return result;
-    }
-    else
-    {
-        // Parsing failed; return original.
-        return number;
-    }
+    return ([result length] > 0) ? result : nil;
 }
 
 
@@ -215,7 +207,7 @@ static LibPhoneNumber*  sharedInstance;
     NSString*   function = [[NSString alloc] initWithFormat: @"getE164Format('%@','%@')", number, isoCountryCode];
     NSString*   result = [webView stringByEvaluatingJavaScriptFromString:function];
 
-    return result;
+    return ([result length] > 0) ? result : nil;
 }
 
 
@@ -224,7 +216,7 @@ static LibPhoneNumber*  sharedInstance;
     NSString*   function = [[NSString alloc] initWithFormat: @"getInternationalFormat('%@','%@')", number, isoCountryCode];
     NSString*   result = [webView stringByEvaluatingJavaScriptFromString:function];
 
-    return result;
+    return ([result length] > 0) ? result : nil;
 }
 
 
@@ -233,7 +225,7 @@ static LibPhoneNumber*  sharedInstance;
     NSString*   function = [[NSString alloc] initWithFormat: @"getNationalFormat('%@','%@')", number, isoCountryCode];
     NSString*   result = [webView stringByEvaluatingJavaScriptFromString:function];
 
-    return result;
+    return ([result length] > 0) ? result : nil;
 }
 
 
@@ -245,7 +237,7 @@ static LibPhoneNumber*  sharedInstance;
                                                              number, isoCountryCode, outOfIsoCountryCode];
     NSString*   result = [webView stringByEvaluatingJavaScriptFromString:function];
 
-    return result;
+    return ([result length] > 0) ? result : nil;
 }
 
 
@@ -254,7 +246,7 @@ static LibPhoneNumber*  sharedInstance;
     NSString*   function = [[NSString alloc] initWithFormat: @"getAsYouTypeFormat('%@','%@')", number, isoCountryCode];
     NSString*   result = [webView stringByEvaluatingJavaScriptFromString:function];
 
-    return result;
+    return ([result length] > 0) ? result : nil;
 }
 
 @end

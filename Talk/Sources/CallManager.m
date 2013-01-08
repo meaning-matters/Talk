@@ -44,7 +44,7 @@ static SipInterface*    sipInterface;
         {
             // Wait until SIP account is available.
             __block id  observer;
-            observer  =[[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
+            observer = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
                                                                          object:nil
                                                                           queue:[NSOperationQueue mainQueue]
                                                                      usingBlock:^(NSNotification* note)
@@ -259,7 +259,13 @@ static SipInterface*    sipInterface;
         callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [Common.appDelegate.tabBarController presentViewController:callViewController
                                                           animated:YES
-                                                        completion:nil];
+                                                        completion:^
+        {
+            if ([Common deviceHasReceiver] == NO)
+            {
+                [callViewController setSpeakerEnable:NO];
+            }
+        }];
 
         NSDictionary*   tones = [[Tones sharedTones] tonesForIsoCountryCode:[phoneNumber isoCountryCode]];
         sipInterface.louderVolume = [Settings sharedSettings].louderVolume;
@@ -462,6 +468,15 @@ static SipInterface*    sipInterface;
 - (void)sipInterface:(SipInterface*)interface onSpeaker:(BOOL)onSpeaker
 {
     [callViewController setOnSpeaker:onSpeaker];
+}
+
+
+- (void)sipInterface:(SipInterface*)interface speakerEnable:(BOOL)enable
+{
+    if ([Common deviceHasReceiver] == YES)
+    {
+        [callViewController setSpeakerEnable:enable];
+    }
 }
 
 

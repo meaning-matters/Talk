@@ -11,6 +11,7 @@
 #import <pthread.h>
 #import "SipInterface.h"
 #import "Common.h"
+#import "NetworkStatus.h"
 #import "webrtc.h"      // Glue-logic with libWebRTC.a.
 
 
@@ -172,6 +173,23 @@ void showLog(int level, const char* data, int len)
          {
              [self keepAlive];
          }];
+
+
+        [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusMobileCallStateChangedNotification
+                                                          object:nil
+                                                           queue:[NSOperationQueue mainQueue]
+                                                      usingBlock:^(NSNotification* note)
+        {
+            NetworkStatusMobileCall status = [[note.userInfo objectForKey:@"status"] intValue];
+            if (status == NetworkStatusMobileCallIncoming)
+            {
+                // Set all calls on hold.
+                for (Call* call in calls)
+                {
+                    [self setCall:call onHold:YES];
+                }
+            }
+        }];
     }
 
     sipInterface = self;
@@ -700,6 +718,8 @@ void showLog(int level, const char* data, int len)
 {
     [self registerThread];
 
+    call.calledNumber = [call.phoneNumber e164Format] ? [call.phoneNumber e164Format] : call.phoneNumber.number;
+
     pj_assert([call.calledNumber length] != 0 && [call.identityNumber length] != 0);    //### Remove?
 
     if (pjsua_call_get_count() == PJSUA_MAX_CALLS)
@@ -754,6 +774,7 @@ void showLog(int level, const char* data, int len)
                 {
                     call.state = CallStateFailed;
                     //### Determine which PJSIP errors can occor here; then created SipInterfaceCallFailedXyz's.
+                    //PJSIP_EINVALIDREQURI when dialing 015 66 66 66
                     [self.delegate sipInterface:self callFailed:call reason:SipInterfaceCallFailedInternal];
                 });
             }
@@ -772,8 +793,6 @@ void showLog(int level, const char* data, int len)
         hangupTimer = nil;
     }
 
-    [self restart];
-
     dispatch_async(dispatch_get_main_queue(), ^
     {
         for (Call* call in calls)
@@ -783,6 +802,8 @@ void showLog(int level, const char* data, int len)
             [calls removeObject:call];
         }
     });
+
+    [self restart];
 }
 
 
@@ -1017,51 +1038,61 @@ void showLog(int level, const char* data, int len)
     if ([route isEqualToString:@"Headset"])
     {
         [self.delegate sipInterface:self onSpeaker:NO];
+        [self.delegate sipInterface:self speakerEnable:NO];
         speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
     else if ([route isEqualToString:@"Headphone"])
     {
         [self.delegate sipInterface:self onSpeaker:NO];
+        [self.delegate sipInterface:self speakerEnable:NO];
         speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
     else if ([route isEqualToString:@"Speaker"])
     {
         [self.delegate sipInterface:self onSpeaker:YES];
+        [self.delegate sipInterface:self speakerEnable:YES];
         speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
     else if ([route isEqualToString:@"SpeakerAndMicrophone"])       // In call: plain iPod Touch & iPad.
     {
         [self.delegate sipInterface:self onSpeaker:YES];
+        [self.delegate sipInterface:self speakerEnable:YES];
         speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
     else if ([route isEqualToString:@"HeadphonesAndMicrophone"])    // In call: All device with headphones (i.e. without microphone).
     {                                                               // And very briefly after plugging in headset.
         [self.delegate sipInterface:self onSpeaker:NO];
+        [self.delegate sipInterface:self speakerEnable:NO];
         speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
     else if ([route isEqualToString:@"HeadsetInOut"])               // In call: All devices when using headset (i.e. with microphone).
     {
         [self.delegate sipInterface:self onSpeaker:NO];
+        [self.delegate sipInterface:self speakerEnable:NO];
         speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
     else if ([route isEqualToString:@"ReceiverAndMicrophone"])      // In call: plain iPhone.
     {
         [self.delegate sipInterface:self onSpeaker:NO];
+        [self.delegate sipInterface:self speakerEnable:YES];
         speakerLevel = SPEAKER_LEVEL_RECEIVER * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_RECEIVER : 1.0f);
     }
     else if ([route isEqualToString:@"LineOut"])
     {
         [self.delegate sipInterface:self onSpeaker:NO];
+        [self.delegate sipInterface:self speakerEnable:NO];
         speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
     else if ([route isEqualToString:@"LineInOut"])
     {
         [self.delegate sipInterface:self onSpeaker:NO];
+        [self.delegate sipInterface:self speakerEnable:NO];
         speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
     else if ([route isEqualToString:@"HeadsetBT"])
     {
         [self.delegate sipInterface:self onSpeaker:NO];
+        [self.delegate sipInterface:self speakerEnable:NO];
         speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
     }
     else
