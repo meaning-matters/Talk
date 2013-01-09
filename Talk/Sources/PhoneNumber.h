@@ -26,11 +26,12 @@ typedef enum
     PhoneNumberTypeVoip              = 13,
 } PhoneNumberType;
 
+
 @interface PhoneNumber : NSObject
 
-@property (nonatomic, readonly) NSString*   baseIsoCountryCode;
-@property (nonatomic, readonly) NSString*   numberIsoCountryCode;
-@property (nonatomic, strong) NSString*     number;                 // As entered (no formatting).
+@property (nonatomic, strong, readonly) NSString*   baseIsoCountryCode;
+@property (nonatomic, strong, readonly) NSString*   numberIsoCountryCode;
+@property (nonatomic, strong) NSString*             number;                 // As entered (no formatting).
 
 
 + (void)setDefaultBaseIsoCountryCode:(NSString*)isoCountryCode;

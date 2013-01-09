@@ -44,16 +44,16 @@ typedef enum
 
 @interface Call : NSObject
 
-@property (nonatomic, readonly) PhoneNumber*    phoneNumber;
-@property (nonatomic, strong) NSString*         calledNumber;
-@property (nonatomic, strong) NSString*         identityNumber;     // Number form/on which call is made/received.
-@property (nonatomic, assign) ABRecordID        abRecordId;
-@property (nonatomic, readonly) NSDate*         beginDate;
-@property (nonatomic, readonly) NSDate*         connectDate;
-@property (nonatomic, readonly) NSDate*         endDate;
-@property (nonatomic, assign) CallState         state;
-@property (nonatomic, assign) CallDirection     direction;
-@property (nonatomic, assign) CallNetwork       network;
+@property (nonatomic, strong, readonly) PhoneNumber*    phoneNumber;
+@property (nonatomic, strong) NSString*                 calledNumber;
+@property (nonatomic, strong) NSString*                 identityNumber;     // Number form/on which call is made/received.
+@property (nonatomic, assign) ABRecordID                abRecordId;
+@property (nonatomic, strong, readonly) NSDate*         beginDate;
+@property (nonatomic, strong, readonly) NSDate*         connectDate;
+@property (nonatomic, strong, readonly) NSDate*         endDate;
+@property (nonatomic, assign) CallState                 state;
+@property (nonatomic, assign) CallDirection             direction;
+@property (nonatomic, assign) CallNetwork               network;
 
 // SipInterface specifics.
 @property (nonatomic, assign) int               callId;

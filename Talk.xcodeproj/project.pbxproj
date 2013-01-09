@@ -718,6 +718,9 @@
 		48D0A6FB1655E2C600FA2D98 /* KeypadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6F91655E2C600FA2D98 /* KeypadView.xib */; };
 		48D3F01E164F9284002041A9 /* CountryNames.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F01D164F9284002041A9 /* CountryNames.m */; };
 		48D3F01F164F9284002041A9 /* CountryNames.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F01D164F9284002041A9 /* CountryNames.m */; };
+		48DD727D169CCF1C00CD7080 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DD727C169CCF1C00CD7080 /* CoreData.framework */; };
+		48DD7281169CD4A200CD7080 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 48DD727F169CD4A200CD7080 /* DataModel.xcdatamodeld */; };
+		48DD7282169CD4A200CD7080 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 48DD727F169CD4A200CD7080 /* DataModel.xcdatamodeld */; };
 		48EC6DBE16545B1F00394A4B /* AC.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EC6DBC16545B1F00394A4B /* AC.png */; };
 		48EC6DBF16545B1F00394A4B /* AC.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EC6DBC16545B1F00394A4B /* AC.png */; };
 		48EC6DC016545B1F00394A4B /* AC@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EC6DBD16545B1F00394A4B /* AC@2x.png */; };
@@ -1419,6 +1422,8 @@
 		48D0A6F91655E2C600FA2D98 /* KeypadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KeypadView.xib; sourceTree = "<group>"; };
 		48D3F01C164F9284002041A9 /* CountryNames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryNames.h; sourceTree = "<group>"; };
 		48D3F01D164F9284002041A9 /* CountryNames.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryNames.m; sourceTree = "<group>"; };
+		48DD727C169CCF1C00CD7080 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		48DD7280169CD4A200CD7080 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		48EC6DBC16545B1F00394A4B /* AC.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AC.png; sourceTree = "<group>"; };
 		48EC6DBD16545B1F00394A4B /* AC@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AC@2x.png"; sourceTree = "<group>"; };
 		48EDD1FD1667652A007B89DA /* AddCall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AddCall.png; sourceTree = "<group>"; };
@@ -1460,6 +1465,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48DD727D169CCF1C00CD7080 /* CoreData.framework in Frameworks */,
 				487A7C9A16978DBE007693EE /* MediaPlayer.framework in Frameworks */,
 				4888D28F16724FCD00B55B22 /* Security.framework in Frameworks */,
 				484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */,
@@ -2215,6 +2221,7 @@
 				48EE399616777EBB00823E09 /* WebRTC */,
 				48338F55161628410033F4C1 /* OpenSSL */,
 				48338F54161628310033F4C1 /* pjsip */,
+				48DD727C169CCF1C00CD7080 /* CoreData.framework */,
 				487A7C9916978DBE007693EE /* MediaPlayer.framework */,
 				4888D28E16724FCD00B55B22 /* Security.framework */,
 				48884A741615CE920005AA79 /* UIKit.framework */,
@@ -2337,6 +2344,7 @@
 				48A2CDFB16834FC100506A7C /* RingbackTones.json */,
 				48206EF7168DD8180040B04E /* Tones.json */,
 				48D0A6E51654D65200FA2D98 /* SipConfig.cfg */,
+				48DD727F169CD4A200CD7080 /* DataModel.xcdatamodeld */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -3153,6 +3161,7 @@
 				4888D292167250AB00B55B22 /* KeychainUtility.m in Sources */,
 				48206EF41684B0700040B04E /* RingbackTones.m in Sources */,
 				48206EFC168DD8D30040B04E /* Tones.m in Sources */,
+				48DD7281169CD4A200CD7080 /* DataModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3200,6 +3209,7 @@
 				4888D293167250AB00B55B22 /* KeychainUtility.m in Sources */,
 				48206EF51684B0700040B04E /* RingbackTones.m in Sources */,
 				48206EFD168DD8D30040B04E /* Tones.m in Sources */,
+				48DD7282169CD4A200CD7080 /* DataModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3450,6 +3460,20 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		48DD727F169CD4A200CD7080 /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				48DD7280169CD4A200CD7080 /* DataModel.xcdatamodel */,
+			);
+			currentVersion = 48DD7280169CD4A200CD7080 /* DataModel.xcdatamodel */;
+			name = DataModel.xcdatamodeld;
+			path = Resources/DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 48884A671615CE920005AA79 /* Project object */;
 }
