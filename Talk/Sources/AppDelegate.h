@@ -24,15 +24,22 @@
 @property (nonatomic, strong) UIWindow*                     window;
 @property (nonatomic, strong) UITabBarController*           tabBarController;
 
-@property (nonatomic, strong) AboutViewController*          aboutViewController;
-@property (nonatomic, strong) CreditViewController*         creditViewController;
-@property (nonatomic, strong) DialerViewController*         dialerViewController;
-@property (nonatomic, strong) ForwardingsViewController*    forwardingsViewController;
-@property (nonatomic, strong) GroupsViewController*         groupsViewController;
-@property (nonatomic, strong) HelpViewController*           helpViewController;
-@property (nonatomic, strong) NumbersViewController*        numbersViewController;
-@property (nonatomic, strong) RecentsViewController*        recentsViewController;
-@property (nonatomic, strong) ShareViewController*          shareViewController;
-@property (nonatomic, strong) SettingsViewController*       settingsViewController;
+@property (nonatomic, strong) AboutViewController*                      aboutViewController;
+@property (nonatomic, strong) CreditViewController*                     creditViewController;
+@property (nonatomic, strong) DialerViewController*                     dialerViewController;
+@property (nonatomic, strong) ForwardingsViewController*                forwardingsViewController;
+@property (nonatomic, strong) GroupsViewController*                     groupsViewController;
+@property (nonatomic, strong) HelpViewController*                       helpViewController;
+@property (nonatomic, strong) NumbersViewController*                    numbersViewController;
+@property (nonatomic, strong) RecentsViewController*                    recentsViewController;
+@property (nonatomic, strong) ShareViewController*                      shareViewController;
+@property (nonatomic, strong) SettingsViewController*                   settingsViewController;
+
+@property (nonatomic, strong, readonly) NSManagedObjectContext*         managedObjectContext;
+@property (nonatomic, strong, readonly) NSManagedObjectModel*           managedObjectModel;
+@property (nonatomic, strong, readonly) NSPersistentStoreCoordinator*   persistentStoreCoordinator;
+
+- (void)saveContext;
+- (NSURL*)applicationDocumentsDirectory;
 
 @end
