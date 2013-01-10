@@ -68,3 +68,9 @@ Resources/Tones
 Resources/Time
 * Generation of JSON resource file for determination of local time of dialled number.
 * Data is from http://www.itu.int/pub/T-SP-E.164C-2011
+
+AFNetworking
+* Added AFNetworking/AFNetworking source directory to project.
+* SystemConfiguration/SystemConfiguration.h & MobileCoreServices/MobileCoreServices.h
+  added to Talk-Prefix.pch.
+* Added SystemConfiguration & MobileCoreServices iOS frameworks to project.
