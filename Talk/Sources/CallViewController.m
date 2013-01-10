@@ -55,6 +55,17 @@
 }
 
 
+- (id)initWithCall:(Call*)call
+{
+    if ([self init])
+    {
+        [self addCall:call];
+    }
+
+    return self;
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -503,12 +514,11 @@
     [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
     [UIApplication sharedApplication].idleTimerDisabled = NO;
 
-    [self dismissViewControllerAnimated:YES completion:nil];
-
+#warning Move this to SipInterface, and do when last call in array has been ended.
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
     {
-        // Delay this because it switches to speaker.  This prevents click when switching off
-        // audio volume by PJSIP/SipInterface, and prevents Speaker option button to light up
+        // Delay this (which route backs to speaker) to prevent 'noisy click' during brief moment
+        // that PISIP has not shutdown audio yet.  Also prevents Speaker option button to light up
         // on CallView just before it disappears.
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
     });
@@ -563,12 +573,6 @@
 
 
 - (void)updateCallDeclined:(Call*)call
-{
-    self.statusLabel.text = [call stateString];
-}
-
-
-- (void)updateCallNotAllowed:(Call*)call reason:(SipInterfaceCallNotAllowed)reason
 {
     self.statusLabel.text = [call stateString];
 }

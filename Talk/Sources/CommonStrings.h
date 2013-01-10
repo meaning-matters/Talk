@@ -16,4 +16,6 @@
 
 + (NSString*)okString;
 
++ (NSString*)buyString;
+
 @end

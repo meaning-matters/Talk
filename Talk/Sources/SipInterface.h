@@ -18,25 +18,26 @@ typedef enum
     SipInterfaceRegisteredFailed
 } SipInterfaceRegistered;
 
-
 typedef enum
 {
-    SipInterfaceCallNotAllowedCountry,  // Unsupported country.
-    SipInterfaceCallNotAllowedNumber,   // For premium number for example.
-    SipInterfaceCallNotAllowedNoCredit, // No credit on server.
-} SipInterfaceCallNotAllowed;
-
-
-typedef enum
-{
-    SipInterfaceCallFailedNoServer,
-    SipInterfaceCallFailedTooManyCalls,
-    SipInterfaceCallFailedInternal,
+    SipInterfaceCallFailedNotAllowedCountry,    // Unsupported country (custom SIP state).
+    SipInterfaceCallFailedNotAllowedNumber,     // For premium number for example (custom SIP state).
+    SipInterfaceCallFailedNoCredit,             // No credit on server (custom SIP state).
+    SipInterfaceCallFailedCalleeNotOnline,      // Callee not online (custom SIP state).
+    SipInterfaceCallFailedTooManyCalls,         // PJSUA_MAX_CALLS reached.
+    SipInterfaceCallFailedTechnical,            // Internal/Unknown error.
+    SipInterfaceCallFailedInvalidNumber,        // Malformed URL, ...?
+    SipInterfaceCallFailedBadRequest,
+    SipInterfaceCallFailedNotFound,
+    SipInterfaceCallFailedTemporarilyUnavailable,
+    SipInterfaceCallFailedPstnTerminationFail,
+    SipInterfaceCallFailedCallRoutingError,
+    SipInterfaceCallFailedOtherSipError,
 } SipInterfaceCallFailed;
 
 typedef enum
 {
-    SipInterfaceErrorInternal,      //### Think of more usefull ones.
+    SipInterfaceErrorInternal,                  //### Think of more usefull ones.
 } SipInterfaceError;
 
 
@@ -59,8 +60,6 @@ typedef enum
 - (void)sipInterface:(SipInterface*)interface callBusy:(Call*)call;
 
 - (void)sipInterface:(SipInterface*)interface callDeclined:(Call*)call;
-
-- (void)sipInterface:(SipInterface*)interface callNotAllowed:(Call*)call reason:(SipInterfaceCallNotAllowed)reason;
 
 - (void)sipInterface:(SipInterface*)interface callFailed:(Call*)call reason:(SipInterfaceCallFailed)reason;
 

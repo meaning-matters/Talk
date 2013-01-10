@@ -34,6 +34,8 @@
 @property (nonatomic, strong) IBOutlet UIButton*            hideButton;
 
 
+- (id)initWithCall:(Call*)call;
+
 - (IBAction)endAction:(id)sender;
 
 - (IBAction)hideAction:(id)sender;
@@ -57,8 +59,6 @@
 - (void)updateCallBusy:(Call*)call;
 
 - (void)updateCallDeclined:(Call*)call;
-
-- (void)updateCallNotAllowed:(Call*)call reason:(SipInterfaceCallNotAllowed)reason;
 
 - (void)updateCallFailed:(Call*)call reason:(SipInterfaceCallFailed)reason;
 

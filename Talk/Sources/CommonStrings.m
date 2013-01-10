@@ -36,4 +36,13 @@
                                              @"[iOS standard size].");
 }
 
+
++ (NSString*)buyString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Buy", nil,
+                                             [NSBundle mainBundle], @"Buy",
+                                             @"Standard string seen on [alert] buttons to confirm buying action\n"
+                                             @"[iOS standard size].");
+}
+
 @end

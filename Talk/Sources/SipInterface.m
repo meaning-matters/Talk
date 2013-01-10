@@ -26,21 +26,27 @@
 #define SPEAKER_LOUDER_FACTOR_RECEIVER  2.0f
 #define MICROPHONE_LEVEL_NORMAL         1.0f
 
-// Ringtones		    US	       UK
-#define RINGBACK_FREQ1	    440	    /* 400 */
-#define RINGBACK_FREQ2	    480	    /* 450 */
-#define RINGBACK_ON	    2000    /* 400 */
-#define RINGBACK_OFF	    4000    /* 200 */
-#define RINGBACK_CNT	    1	    /* 2   */
-#define RINGBACK_INTERVAL   4000    /* 2000 */
+// Ringtones                            US          UK
+#define RINGBACK_FREQ1                  440     /* 400 */
+#define RINGBACK_FREQ2                  480     /* 450 */
+#define RINGBACK_ON                     2000    /* 400 */
+#define RINGBACK_OFF                    4000    /* 200 */
+#define RINGBACK_CNT                    1       /* 2   */
+#define RINGBACK_INTERVAL               4000    /* 2000 */
 
-#define RING_FREQ1	    800
-#define RING_FREQ2	    640
-#define RING_ON		    200
-#define RING_OFF	    100
-#define RING_CNT	    3
-#define RING_INTERVAL	    3000
+#define RING_FREQ1                      800
+#define RING_FREQ2                      640
+#define RING_ON                         200
+#define RING_OFF                        100
+#define RING_CNT                        3
+#define RING_INTERVAL                   3000
 
+#define CUSTOM_SC_NOT_ALLOWED_COUNTRY   451
+#define CUSTOM_SC_NOT_ALLOWED_NUMBER    452
+#define CUSTOM_SC_NO_CREDIT             453
+#define CUSTOM_SC_CALLEE_NOT_ONLINE     454
+#define CUSTOM_SC_PSTN_TERMINATION_FAIL 514
+#define CUSTOM_SC_CALL_ROUTING_ERROR    515
 
 @interface SipInterface ()
 {
@@ -142,6 +148,8 @@ void showLog(int level, const char* data, int len)
 @synthesize louderVolume    = _louderVolume;
 @synthesize registered      = _registered;
 
+
+#pragma mark - Initialization
 
 - (id)initWithRealm:(NSString*)realm server:(NSString*)server username:(NSString*)username password:(NSString*)password;
 {
@@ -513,11 +521,31 @@ void showLog(int level, const char* data, int len)
 }
 
 
-- (void)printInfo
+- (void)restart
 {
-    int detail = 1;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+    {
+        [self registerThread];
 
-    pjsua_dump(detail); // Includes same output pj_dump_config() would print.
+        [self destroy];
+        [self destroy];  // On purpose (copied from PJSUA).
+
+        if ([self initialize] == PJ_SUCCESS)
+        {
+            pj_status_t status;
+
+            if ((status = pjsua_start()) != PJ_SUCCESS)
+            {
+                NSLog(@"//### pjsua_start() failed: %d.", status);
+                               
+                [self destroy];
+            }
+        }
+        else
+        {
+            NSLog(@"//### Failed to initialize PJSUA.");
+        }
+    });
 }
 
 
@@ -575,68 +603,7 @@ void showLog(int level, const char* data, int len)
 }
 
 
-- (void)keepAlive
-{
-    [self registerThread];
-
-    pjsua_acc_id    accountId;
-
-    // We assume there is only one external account.  (There may be a few local accounts too.)
-    if (pjsua_acc_is_valid(accountId = pjsua_acc_get_default()))
-    {
-        if (pjsua_acc_set_registration(accountId, PJ_TRUE) != PJ_SUCCESS)
-        {
-            //### Sometimes results in:
-            //### pjsua_acc.c  !Acc 3: setting registration..
-            //###   sip_reg.c  .Unable to send request, regc has another transaction pending
-            //### pjsua_acc.c  .Unable to create/send REGISTER: Object is busy (PJSIP_EBUSY) [status=171001]
-            NSLog(@"//### Failed to set SIP registration for account %d.", accountId);
-        }
-    }
-}
-
-
-- (void)registerThread
-{    
-    if (!pj_thread_is_registered())
-    {
-        pj_thread_t*    thread;             // We're not interested in this.
-        char*           name = malloc(20);
-
-        sprintf(name, "T-%d", pthread_mach_thread_np(pthread_self()));
-
-        pj_thread_register(name, calloc(1, sizeof(pj_thread_desc)), &thread);
-    }
-}
-
-
-- (void)restart
-{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
-    {
-        [self registerThread];
-                       
-        [self destroy];
-        [self destroy];  // On purpose.
-
-        if ([self initialize] == PJ_SUCCESS)
-        {
-            pj_status_t status;
-
-            if ((status = pjsua_start()) != PJ_SUCCESS)
-            {
-                NSLog(@"//### pjsua_start() failed: %d.", status);
-                               
-                [self destroy];
-            }
-        }
-        else
-        {
-            NSLog(@"//### Failed to initialize PJSUA.");
-        }
-    });
-}
-
+#pragma mark - Tones Support
 
 - (void)createTone:(NSArray*)toneArray name:(char*)name
 {
@@ -714,6 +681,8 @@ void showLog(int level, const char* data, int len)
 }
 
 
+#pragma mark - Making & Breaking Calls
+
 - (BOOL)makeCall:(Call*)call tones:(NSDictionary*)tones
 {
     [self registerThread];
@@ -774,10 +743,22 @@ void showLog(int level, const char* data, int len)
                 NSLog(@"//### Failed to make call: %d.", status);
                 dispatch_sync(dispatch_get_main_queue(), ^
                 {
+                    SipInterfaceCallFailed  reason;
+
+                    switch (status)
+                    {
+                        case PJSIP_EINVALIDREQURI:  // Occurred when due to bug called to "sip:015 66 66 66@....".
+                            reason = SipInterfaceCallFailedInvalidNumber;
+                            break;
+                            
+                        //### Determine which other PJSIP errors can occor here; then created SipInterfaceCallFailedXyz's.
+                        default:
+                            reason = SipInterfaceCallFailedTechnical;
+                            break;
+                    }
+                    
                     call.state = CallStateFailed;
-                    //### Determine which PJSIP errors can occor here; then created SipInterfaceCallFailedXyz's.
-                    //PJSIP_EINVALIDREQURI when dialing 015 66 66 66
-                    [self.delegate sipInterface:self callFailed:call reason:SipInterfaceCallFailedInternal];
+                    [self.delegate sipInterface:self callFailed:call reason:reason];
                 });
 
                 result = NO;
@@ -896,6 +877,8 @@ void showLog(int level, const char* data, int len)
 }
 
 
+#pragma mark - Mute/Hold/Speaker Public API
+
 - (void)setCall:(Call*)call onMute:(BOOL)onMute
 {
     __block pj_status_t status;
@@ -960,11 +943,54 @@ void showLog(int level, const char* data, int len)
 }
 
 
-#pragma mark - Property Overrides
-
 - (SipInterfaceRegistered)registered
 {
     return _registered;
+}
+
+
+#pragma mark - Utility Methods
+
+- (void)printInfo
+{
+    int detail = 1;
+
+    pjsua_dump(detail); // Includes same output pj_dump_config() would print.
+}
+
+
+- (void)registerThread
+{
+    if (!pj_thread_is_registered())
+    {
+        pj_thread_t*    thread;             // We're not interested in this.
+        char*           name = malloc(20);
+
+        sprintf(name, "T-%d", pthread_mach_thread_np(pthread_self()));
+
+        pj_thread_register(name, calloc(1, sizeof(pj_thread_desc)), &thread);
+    }
+}
+
+
+- (void)keepAlive
+{
+    [self registerThread];
+
+    pjsua_acc_id    accountId;
+
+    // We assume there is only one external account.  (There may be a few local accounts too.)
+    if (pjsua_acc_is_valid(accountId = pjsua_acc_get_default()))
+    {
+        if (pjsua_acc_set_registration(accountId, PJ_TRUE) != PJ_SUCCESS)
+        {
+            //### Sometimes results in:
+            //### pjsua_acc.c  !Acc 3: setting registration..
+            //###   sip_reg.c  .Unable to send request, regc has another transaction pending
+            //### pjsua_acc.c  .Unable to create/send REGISTER: Object is busy (PJSIP_EBUSY) [status=171001]
+            NSLog(@"//### Failed to set SIP registration for account %d.", accountId);
+        }
+    }
 }
 
 
@@ -1007,12 +1033,9 @@ void showLog(int level, const char* data, int len)
         status = PJ_ENOTFOUND;
         NSLog(@"//### No conference port.");
     }
-
+    
     return status;
 }
-
-
-#pragma mark - Utility Methods
 
 
 - (BOOL)isCallOnHold:(Call*)call
@@ -1163,6 +1186,24 @@ void showLog(int level, const char* data, int len)
     if (ringback_slot != PJSUA_INVALID_ID)
     {
 	pjsua_conf_connect(ringback_slot, 0);
+    }
+}
+
+
+- (void)startBusyTone:(pjsua_call_id)call_id
+{
+    Call*   call = [self findCallForCallId:call_id];
+
+    if (call.ringbackToneOn)
+    {
+	return;
+    }
+
+    call.busyToneOn = YES;
+
+    if (busy_slot != PJSUA_INVALID_ID)
+    {
+	pjsua_conf_connect(busy_slot, 0);
     }
 }
 
@@ -1469,6 +1510,104 @@ void showLog(int level, const char* data, int len)
             });
             break;
         }
+    }
+
+    [self checkCallStatus:call_info.last_status callId:call_id];
+}
+
+
+- (void)checkCallStatus:(pjsip_status_code)status callId:(pjsua_call_id)callId
+{
+    SipInterfaceCallFailed  failed = -1;
+    Call*                   call = [self findCallForCallId:callId];
+    
+    switch ((int)status)    // Cast to avoid compile warning about values not in pjsip_status_code enum.
+    {
+        //### Is stopTones call needed below?
+        case PJSIP_SC_CALL_BEING_FORWARDED:         // 181
+        case PJSIP_SC_QUEUED:                       // 182
+            [self stopTones:callId];
+            break;
+
+        case PJSIP_SC_BAD_REQUEST:                  // 400
+            [self stopTones:callId];
+            //### Might be caused by certain WiFi routers fucking up when on standard port 5060.
+            break;
+
+        case PJSIP_SC_NOT_FOUND:                    // 404
+            [self stopTones:callId];
+            failed = SipInterfaceCallFailedNotFound;
+            break;
+
+        case CUSTOM_SC_NOT_ALLOWED_COUNTRY:         // 451
+            [self stopTones:callId];
+            failed = SipInterfaceCallFailedNotAllowedCountry;
+            break;
+
+        case CUSTOM_SC_NOT_ALLOWED_NUMBER:          // 452
+            [self stopTones:callId];
+            failed = SipInterfaceCallFailedNotAllowedNumber;
+            break;
+
+        case CUSTOM_SC_NO_CREDIT:                   // 453
+            [self stopTones:callId];
+            failed = SipInterfaceCallFailedNoCredit;
+            break;
+
+        case CUSTOM_SC_CALLEE_NOT_ONLINE:           // 454
+            [self stopTones:callId];
+            failed = SipInterfaceCallFailedCalleeNotOnline;
+            break;
+
+        case PJSIP_SC_TEMPORARILY_UNAVAILABLE:      // 480
+            [self stopTones:callId];
+            failed = SipInterfaceCallFailedTemporarilyUnavailable;
+            break;
+
+        case PJSIP_SC_BUSY_HERE:                    // 486
+        {
+            [self startBusyTone:callId];
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                [self.delegate sipInterface:self callBusy:call];
+            });
+            break;
+        }
+
+        case CUSTOM_SC_PSTN_TERMINATION_FAIL:       // 514
+            [self stopTones:callId];
+            failed = SipInterfaceCallFailedPstnTerminationFail;
+            break;
+
+        case CUSTOM_SC_CALL_ROUTING_ERROR:          // 515
+            [self stopTones:callId];
+            failed = SipInterfaceCallFailedCallRoutingError;
+            break;
+            
+        case PJSIP_SC_DECLINE:                      // 603
+        {
+            [self stopTones:callId];
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                [self.delegate sipInterface:self callDeclined:call];
+            });
+            break;
+        }
+
+        default:
+            [self stopTones:callId];
+            failed = SipInterfaceCallFailedOtherSipError;
+            NSLog(@"//### Other SP error: %d.", status);
+            //### Store last error code in Settings, to be printed with Easter Egg dial code.
+            break;
+    }
+
+    if (failed != -1)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            [self.delegate sipInterface:self callFailed:call reason:failed];
+        });
     }
 }
 
