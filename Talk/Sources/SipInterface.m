@@ -735,6 +735,7 @@ void showLog(int level, const char* data, int len)
     else
     {
         __block pjsua_call_id   call_id = PJSUA_INVALID_ID;
+        __block BOOL            result;
 
         dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
         {
@@ -763,24 +764,27 @@ void showLog(int level, const char* data, int len)
             status = pjsua_call_make_call(pjsua_acc_get_default(), &uri, &call_opt, (__bridge void*)call, &msg_data, &call_id);
             if (status == PJ_SUCCESS)
             {
-#warning onCallState is called (at least once) before call is added to calls. This causes 'error' in onCallState.
+#warning //### onCallState is called (at least once) before call is added to calls. This causes 'error' in onCallState.
                 call.callId = call_id;
                 [calls addObject:call];
+                result = YES;
             }
             else
             {
                 NSLog(@"//### Failed to make call: %d.", status);
-                dispatch_async(dispatch_get_main_queue(), ^
+                dispatch_sync(dispatch_get_main_queue(), ^
                 {
                     call.state = CallStateFailed;
                     //### Determine which PJSIP errors can occor here; then created SipInterfaceCallFailedXyz's.
                     //PJSIP_EINVALIDREQURI when dialing 015 66 66 66
                     [self.delegate sipInterface:self callFailed:call reason:SipInterfaceCallFailedInternal];
                 });
+
+                result = NO;
             }
         });
 
-        return YES;
+        return result;
     }
 }
 
@@ -868,7 +872,8 @@ void showLog(int level, const char* data, int len)
     {        
         NSLog(@"//### Hangup failed: %d", status);
         //### Inform delegate?
-        //### gave 171140 PJSIP_ESESSIONTERMINATED session already terminated.
+        //### gave 171140 PJSIP_ESESSIONTERMINATED session already terminated, when there are
+        //### no calls to hangup.
     }
 
     @synchronized(self)

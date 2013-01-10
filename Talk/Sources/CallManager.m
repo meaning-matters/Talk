@@ -256,21 +256,24 @@ static SipInterface*    sipInterface;
         callViewController = [[CallViewController alloc] init];
         [callViewController addCall:call];
 
-        callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [Common.appDelegate.tabBarController presentViewController:callViewController
-                                                          animated:YES
-                                                        completion:^
-        {
-            if ([Common deviceHasReceiver] == NO)
-            {
-                [callViewController setSpeakerEnable:NO];
-            }
-        }];
-
         NSDictionary*   tones = [[Tones sharedTones] tonesForIsoCountryCode:[phoneNumber isoCountryCode]];
         sipInterface.louderVolume = [Settings sharedSettings].louderVolume;
-        if ([sipInterface makeCall:call tones:tones] == NO)
+        if ([sipInterface makeCall:call tones:tones] == YES)
         {
+            callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [Common.appDelegate.tabBarController presentViewController:callViewController
+                                                              animated:YES
+                                                            completion:^
+             {
+                 if ([Common deviceHasReceiver] == NO)
+                 {
+                     [callViewController setSpeakerEnable:NO];
+                 }
+             }];
+        }
+        else
+        {
+            callViewController = nil;
             NSLog(@"//### Call failed.");
         }
     }
