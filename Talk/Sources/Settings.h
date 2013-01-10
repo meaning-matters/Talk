@@ -19,6 +19,8 @@
 
 @property (nonatomic, strong) NSString* lastDialedNumber;
 
+@property (nonatomic, strong) NSString* webApiBaseUrl;         // Base URL of web API.
+
 @property (nonatomic, strong) NSString* sipServer;
 @property (nonatomic, strong) NSString* sipRealm;
 @property (nonatomic, strong) NSString* sipUsername;

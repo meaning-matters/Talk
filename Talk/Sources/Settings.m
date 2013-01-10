@@ -19,6 +19,7 @@ NSString* const TabBarViewControllerClassesKey = @"TabBarViewControllerClasses";
 NSString* const HomeCountryKey                 = @"HomeCountryKey";
 NSString* const HomeCountryFromSimKey          = @"HomeCountryFromSim";
 NSString* const LastDialedNumberKey            = @"LastDialedNumber";
+NSString* const WebApiBaseUrlKey               = @"WebApiBaseUrl";
 NSString* const SipServerKey                   = @"SipServer";
 NSString* const SipRealmKey                    = @"SipRealm";               // Used as keychain 'username'.
 NSString* const SipUsernameKey                 = @"SipUsername";            // Used as keychain 'username'.
@@ -37,6 +38,7 @@ static NSUserDefaults*  userDefaults;
 @synthesize homeCountry                 = _homeCountry;
 @synthesize homeCountryFromSim          = _homeCountryFromSim;
 @synthesize lastDialedNumber            = _lastDialedNumber;
+@synthesize webApiBaseUrl               = _webApiBaseUrl;
 @synthesize sipServer                   = _sipServer;
 @synthesize sipRealm                    = _sipRealm;
 @synthesize sipUsername                 = _sipUsername;
@@ -102,6 +104,7 @@ static NSUserDefaults*  userDefaults;
         [defaults setObject:[NSNumber numberWithBool:NO] forKey:HomeCountryFromSimKey];
     }
 
+    [defaults setObject:@"http://5.39.84.168:9090/"  forKey:WebApiBaseUrlKey];
     [defaults setObject:@""                          forKey:LastDialedNumberKey];
     [defaults setObject:[NSNumber numberWithBool:NO] forKey:AllowCellularDataCallsKey];
     [defaults setObject:[NSNumber numberWithBool:NO] forKey:LouderVolumeKey];
@@ -145,6 +148,7 @@ static NSUserDefaults*  userDefaults;
     self.homeCountry                 = [userDefaults objectForKey:HomeCountryKey];
     self.homeCountryFromSim          = [userDefaults boolForKey:HomeCountryFromSimKey];
     self.lastDialedNumber            = [userDefaults objectForKey:LastDialedNumberKey];
+    self.webApiBaseUrl               = [userDefaults objectForKey:WebApiBaseUrlKey];
     self.sipServer                   = [userDefaults objectForKey:SipServerKey];
     self.sipRealm                    = [self getKeychainValueForKey:SipRealmKey];
     self.sipUsername                 = [self getKeychainValueForKey:SipUsernameKey];
@@ -181,6 +185,13 @@ static NSUserDefaults*  userDefaults;
 {
     _lastDialedNumber = lastDialedNumber;
     [userDefaults setObject:lastDialedNumber forKey:LastDialedNumberKey];
+}
+
+
+- (void)setWebApiBaseUrl:(NSString *)webApiBaseUrl
+{
+    _webApiBaseUrl = webApiBaseUrl;
+    [userDefaults setObject:webApiBaseUrl forKey:WebApiBaseUrlKey];
 }
 
 
