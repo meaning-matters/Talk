@@ -22,6 +22,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import <Availability.h>
+
 /**
  `AFHTTPClient` captures the common patterns of communicating with an web application over HTTP. It encapsulates information like base URL, authorization credentials, and HTTP headers, and uses them to construct and manage the execution of HTTP request operations.
  
@@ -43,7 +45,6 @@
  
  By default, `AFHTTPClient` sets the following HTTP headers:
  
- - `Accept-Encoding: gzip`
  - `Accept-Language: (comma-delimited preferred languages), en-us;q=0.8`
  - `User-Agent: (generated user agent)`
  
@@ -79,11 +80,15 @@ typedef enum {
     AFNetworkReachabilityStatusReachableViaWiFi = 2,
 } AFNetworkReachabilityStatus;
 #else
-#warning "SystemConfiguration framework not found in project, or not included in precompiled header. Network reachability functionality will not be available."
+    #warning SystemConfiguration framework not found in project, or not included in precompiled header. Network reachability functionality will not be available.
 #endif
 
 #ifndef __UTTYPE__
-#warning "CoreServices framework not found in project, or not included in precompiled header. Automatic MIME type detection when uploading files in multipart requests will not be available."
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED
+        #warning MobileCoreServices framework not found in project, or not included in precompiled header. Automatic MIME type detection when uploading files in multipart requests will not be available.
+    #else
+        #warning CoreServices framework not found in project, or not included in precompiled header. Automatic MIME type detection when uploading files in multipart requests will not be available.
+    #endif
 #endif
 
 typedef enum {
@@ -104,7 +109,7 @@ typedef enum {
 /**
  The url used as the base for paths specified in methods such as `getPath:parameters:success:failure`
  */
-@property (readonly, nonatomic) NSURL *baseURL;
+@property (readonly, nonatomic, strong) NSURL *baseURL;
 
 /**
  The string encoding used in constructing url requests. This is `NSUTF8StringEncoding` by default.
@@ -113,13 +118,15 @@ typedef enum {
 
 /**
  The `AFHTTPClientParameterEncoding` value corresponding to how parameters are encoded into a request body. This is `AFFormURLParameterEncoding` by default.
+ 
+ @warning Some nested parameter structures, such as a keyed array of hashes containing inconsistent keys (i.e. `@{@"": @[@{@"a" : @(1)}, @{@"b" : @(2)}]}`), cannot be unambiguously represented in query strings. It is strongly recommended that an unambiguous encoding, such as `AFJSONParameterEncoding`, is used when posting complicated or nondeterministic parameter structures.
  */
 @property (nonatomic, assign) AFHTTPClientParameterEncoding parameterEncoding;
 
 /**
  The operation queue which manages operations enqueued by the HTTP client.
  */
-@property (readonly, nonatomic) NSOperationQueue *operationQueue;
+@property (readonly, nonatomic, strong) NSOperationQueue *operationQueue;
 
 /**
  The reachability status from the device to the current `baseURL` of the `AFHTTPClient`.
@@ -141,7 +148,7 @@ typedef enum {
   
  @return The newly-initialized HTTP client
  */
-+ (AFHTTPClient *)clientWithBaseURL:(NSURL *)url;
++ (instancetype)clientWithBaseURL:(NSURL *)url;
 
 /**
  Initializes an `AFHTTPClient` object with the specified base URL.
@@ -210,7 +217,8 @@ typedef enum {
  @param header The HTTP header to set a default value for
  @param value The value set as default for the specified header, or `nil
  */
-- (void)setDefaultHeader:(NSString *)header value:(NSString *)value;
+- (void)setDefaultHeader:(NSString *)header
+                   value:(NSString *)value;
 
 /**
  Sets the "Authorization" HTTP header set in request objects made by the HTTP client to a basic authentication value with Base64-encoded username and password. This overwrites any existing value for this header.
@@ -218,7 +226,8 @@ typedef enum {
  @param username The HTTP basic auth username
  @param password The HTTP basic auth password
  */
-- (void)setAuthorizationHeaderWithUsername:(NSString *)username password:(NSString *)password;
+- (void)setAuthorizationHeaderWithUsername:(NSString *)username
+                                  password:(NSString *)password;
 
 /**
  Sets the "Authorization" HTTP header set in request objects made by the HTTP client to a token-based authentication value, such as an OAuth access token. This overwrites any existing value for this header.
@@ -227,10 +236,22 @@ typedef enum {
  */
 - (void)setAuthorizationHeaderWithToken:(NSString *)token;
 
+
 /**
  Clears any existing value for the "Authorization" HTTP header.
  */
 - (void)clearAuthorizationHeader;
+
+///-------------------------------
+/// @name Managing URL Credentials
+///-------------------------------
+
+/**
+ Set the default URL credential to be set for request operations.
+ 
+ @param credential The URL credential
+ */
+- (void)setDefaultCredential:(NSURLCredential *)credential;
 
 ///-------------------------------
 /// @name Creating Request Objects
@@ -239,10 +260,10 @@ typedef enum {
 /**
  Creates an `NSMutableURLRequest` object with the specified HTTP method and path.
  
- If the HTTP method is `GET`, the parameters will be used to construct a url-encoded query string that is appended to the request's URL. Otherwise, the parameters will be encoded according to the value of the `parameterEncoding` property, and set as the request body.
+ If the HTTP method is `GET`, `HEAD`, or `DELETE`, the parameters will be used to construct a url-encoded query string that is appended to the request's URL. Otherwise, the parameters will be encoded according to the value of the `parameterEncoding` property, and set as the request body.
  
- @param method The HTTP method for the request, such as `GET`, `POST`, `PUT`, or `DELETE`.
- @param path The path to be appended to the HTTP client's base URL and used as the request URL.
+ @param method The HTTP method for the request, such as `GET`, `POST`, `PUT`, or `DELETE`. This parameter must not be `nil`.
+ @param path The path to be appended to the HTTP client's base URL and used as the request URL. If `nil`, no path will be appended to the base URL.
  @param parameters The parameters to be either set as a query string for `GET` requests, or the request HTTP body.
   
  @return An `NSMutableURLRequest` object 
@@ -254,15 +275,13 @@ typedef enum {
 /**
  Creates an `NSMutableURLRequest` object with the specified HTTP method and path, and constructs a `multipart/form-data` HTTP body, using the specified parameters and multipart form data block. See http://www.w3.org/TR/html4/interact/forms.html#h-17.13.4.2
  
- @param method The HTTP method for the request. Must be either `POST`, `PUT`, or `DELETE`.
+ @param method The HTTP method for the request. This parameter must not be `GET` or `HEAD`, or `nil`.
  @param path The path to be appended to the HTTP client's base URL and used as the request URL.
  @param parameters The parameters to be encoded and set in the request HTTP body.
  @param block A block that takes a single argument and appends data to the HTTP body. The block argument is an object adopting the `AFMultipartFormData` protocol. This can be used to upload files, encode HTTP body as JSON or XML, or specify multiple values for the same parameter, as one might for array values.
   
  @discussion Multipart form requests are automatically streamed, reading files directly from disk along with in-memory data in a single HTTP body. The resulting `NSMutableURLRequest` object has an `HTTPBodyStream` property, so refrain from setting `HTTPBodyStream` or `HTTPBody` on this request object, as it will clear out the multipart form body stream.
- 
- @warning An exception will be raised if the specified method is not `POST`, `PUT` or `DELETE`.
- 
+  
  @return An `NSMutableURLRequest` object
  */
 - (NSMutableURLRequest *)multipartFormRequestWithMethod:(NSString *)method
@@ -279,11 +298,11 @@ typedef enum {
  
  In order to determine what kind of operation is created, each registered subclass conforming to the `AFHTTPClient` protocol is consulted (in reverse order of when they were specified) to see if it can handle the specific request. The first class to return `YES` when sent a `canProcessRequest:` message is used to generate an operation using `HTTPRequestOperationWithRequest:success:failure:`.
  
- @param request The request object to be loaded asynchronously during execution of the operation.
+ @param urlRequest The request object to be loaded asynchronously during execution of the operation.
  @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes two arguments: the created request operation and the object created from the response data of request.
  @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes two arguments:, the created request operation and the `NSError` object describing the network or parsing error that occurred.
  */
-- (AFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)request 
+- (AFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)urlRequest
                                                     success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
                                                     failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 
@@ -302,7 +321,9 @@ typedef enum {
  Cancels all operations in the HTTP client's operation queue whose URLs match the specified HTTP method and path.
  
  @param method The HTTP method to match for the cancelled requests, such as `GET`, `POST`, `PUT`, or `DELETE`. If `nil`, all request operations with URLs matching the path will be cancelled. 
- @param path The path to match for the cancelled requests.
+ @param path The path appended to the HTTP client base URL to match against the cancelled requests. If `nil`, no path will be appended to the base URL.
+ 
+ @discussion This method only cancels `AFHTTPRequestOperations` whose request URL matches the HTTP client base URL with the path appended. For complete control over the lifecycle of enqueued operations, you can access the `operationQueue` property directly, which allows you to, for instance, cancel operations filtered by a predicate, or simply use `-cancelAllRequests`. Note that the operation queue may include non-HTTP operations, so be sure to check the type before attempting to directly introspect an operation's `request` property.
  */
 - (void)cancelAllHTTPOperationsWithMethod:(NSString *)method path:(NSString *)path;
 
@@ -313,13 +334,13 @@ typedef enum {
 /**
  Creates and enqueues an `AFHTTPRequestOperation` to the HTTP client's operation queue for each specified request object into a batch. When each request operation finishes, the specified progress block is executed, until all of the request operations have finished, at which point the completion block also executes.
  
- @param requests The `NSURLRequest` objects used to create and enqueue operations.
+ @param urlRequests The `NSURLRequest` objects used to create and enqueue operations.
  @param progressBlock A block object to be executed upon the completion of each request operation in the batch. This block has no return value and takes two arguments: the number of operations that have already finished execution, and the total number of operations.
  @param completionBlock A block object to be executed upon the completion of all of the request operations in the batch. This block has no return value and takes a single argument: the batched request operations. 
  
  @discussion Operations are created by passing the specified `NSURLRequest` objects in `requests`, using `-HTTPRequestOperationWithRequest:success:failure:`, with `nil` for both the `success` and `failure` parameters.
  */
-- (void)enqueueBatchOfHTTPRequestOperationsWithRequests:(NSArray *)requests 
+- (void)enqueueBatchOfHTTPRequestOperationsWithRequests:(NSArray *)urlRequests
                                           progressBlock:(void (^)(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations))progressBlock 
                                         completionBlock:(void (^)(NSArray *operations))completionBlock;
 
@@ -461,7 +482,7 @@ typedef enum {
  }
  
  `AFFormURLParameterEncoding`
-    Parameters are encoded into field/key pairs in the URL query string for `GET` `HEAD` and `DELETE` requests, and in the message body otherwise.
+    Parameters are encoded into field/key pairs in the URL query string for `GET` `HEAD` and `DELETE` requests, and in the message body otherwise. Dictionary keys are sorted with the `caseInsensitiveCompare:` selector of their description, in order to mitigate the possibility of ambiguous query strings being generated non-deterministically. See the warning for the `parameterEncoding` property for additional information.
  
  `AFJSONParameterEncoding`
     Parameters are encoded into JSON in the message body.
