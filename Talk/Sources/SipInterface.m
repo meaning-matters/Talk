@@ -1595,10 +1595,13 @@ void showLog(int level, const char* data, int len)
         }
 
         default:
-            [self stopTones:callId];
-            failed = SipInterfaceCallFailedOtherSipError;
-            NSLog(@"//### Other SP error: %d.", status);
-            //### Store last error code in Settings, to be printed with Easter Egg dial code.
+            if (status >= 300)
+            {
+                [self stopTones:callId];
+                failed = SipInterfaceCallFailedOtherSipError;
+                NSLog(@"//### Other SP error: %d.", status);
+                //### Store last error code in Settings, to be printed with Easter Egg dial code.
+            }
             break;
     }
 
