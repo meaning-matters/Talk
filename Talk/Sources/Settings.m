@@ -8,18 +8,23 @@
 //  In Talk we want to save both the SIP username and SIP password in keychain.
 //  So we store both these strings as 'password' under names/keys "SipUsername"
 //  and "SipPassword" respectively.  So these two are not saved in UserDefaults.
+//  Same applies to web API username and password.
 //
 
 #import "Settings.h"
 #import "NetworkStatus.h"
 #import "KeychainUtility.h"
 
+
 NSString* const RunBeforeKey                   = @"RunBefore";
 NSString* const TabBarViewControllerClassesKey = @"TabBarViewControllerClasses";
 NSString* const HomeCountryKey                 = @"HomeCountryKey";
 NSString* const HomeCountryFromSimKey          = @"HomeCountryFromSim";
 NSString* const LastDialedNumberKey            = @"LastDialedNumber";
-NSString* const WebApiBaseUrlKey               = @"WebApiBaseUrl";
+NSString* const WebBaseUrlKey                  = @"WebBaseUrl";
+NSString* const WebUsernameKey                 = @"WebUsername";            // Used as keychain 'username'.
+NSString* const WebPasswordKey                 = @"WebPassword";            // Used as keychain 'username'.
+NSString* const WebServiceKey                  = @"WebAccount";             // Used as keychain service.
 NSString* const SipServerKey                   = @"SipServer";
 NSString* const SipRealmKey                    = @"SipRealm";               // Used as keychain 'username'.
 NSString* const SipUsernameKey                 = @"SipUsername";            // Used as keychain 'username'.
@@ -38,7 +43,9 @@ static NSUserDefaults*  userDefaults;
 @synthesize homeCountry                 = _homeCountry;
 @synthesize homeCountryFromSim          = _homeCountryFromSim;
 @synthesize lastDialedNumber            = _lastDialedNumber;
-@synthesize webApiBaseUrl               = _webApiBaseUrl;
+@synthesize webBaseUrl                  = _webBaseUrl;
+@synthesize webUsername                 = _webUsername;
+@synthesize webPassword                 = _webPassword;
 @synthesize sipServer                   = _sipServer;
 @synthesize sipRealm                    = _sipRealm;
 @synthesize sipUsername                 = _sipUsername;
@@ -61,6 +68,8 @@ static NSUserDefaults*  userDefaults;
 
         if ([userDefaults boolForKey:RunBeforeKey] == NO)
         {
+            [KeychainUtility deleteItemForUsername:WebUsernameKey andServiceName:WebServiceKey error:nil];
+            [KeychainUtility deleteItemForUsername:WebPasswordKey andServiceName:WebServiceKey error:nil];
             [KeychainUtility deleteItemForUsername:SipUsernameKey andServiceName:SipServiveKey error:nil];
             [KeychainUtility deleteItemForUsername:SipPasswordKey andServiceName:SipServiveKey error:nil];
             
@@ -88,6 +97,8 @@ static NSUserDefaults*  userDefaults;
 }
 
 
+#pragma mark - Helper Methods
+
 - (void)registerDefaults
 {
     NSMutableDictionary*    defaults = [NSMutableDictionary dictionary];
@@ -104,7 +115,7 @@ static NSUserDefaults*  userDefaults;
         [defaults setObject:[NSNumber numberWithBool:NO] forKey:HomeCountryFromSimKey];
     }
 
-    [defaults setObject:@"http://5.39.84.168:9090/"  forKey:WebApiBaseUrlKey];
+    [defaults setObject:@"http://5.39.84.168:9090/"  forKey:WebBaseUrlKey];
     [defaults setObject:@""                          forKey:LastDialedNumberKey];
     [defaults setObject:[NSNumber numberWithBool:NO] forKey:AllowCellularDataCallsKey];
     [defaults setObject:[NSNumber numberWithBool:NO] forKey:LouderVolumeKey];
@@ -148,7 +159,9 @@ static NSUserDefaults*  userDefaults;
     self.homeCountry                 = [userDefaults objectForKey:HomeCountryKey];
     self.homeCountryFromSim          = [userDefaults boolForKey:HomeCountryFromSimKey];
     self.lastDialedNumber            = [userDefaults objectForKey:LastDialedNumberKey];
-    self.webApiBaseUrl               = [userDefaults objectForKey:WebApiBaseUrlKey];
+    self.webBaseUrl                  = [userDefaults objectForKey:WebBaseUrlKey];
+    self.webUsername                 = [self getKeychainValueForKey:WebUsernameKey];
+    self.webPassword                 = [self getKeychainValueForKey:WebPasswordKey];
     self.sipServer                   = [userDefaults objectForKey:SipServerKey];
     self.sipRealm                    = [self getKeychainValueForKey:SipRealmKey];
     self.sipUsername                 = [self getKeychainValueForKey:SipUsernameKey];
@@ -188,10 +201,24 @@ static NSUserDefaults*  userDefaults;
 }
 
 
-- (void)setWebApiBaseUrl:(NSString *)webApiBaseUrl
+- (void)setWebBaseUrl:(NSString *)webBaseUrl
 {
-    _webApiBaseUrl = webApiBaseUrl;
-    [userDefaults setObject:webApiBaseUrl forKey:WebApiBaseUrlKey];
+    _webBaseUrl = webBaseUrl;
+    [userDefaults setObject:webBaseUrl forKey:WebBaseUrlKey];
+}
+
+
+- (void)setWebUsername:(NSString*)webUsername
+{
+    _webUsername = webUsername;
+    [self storeKeychainValue:webUsername forKey:WebUsernameKey];
+}
+
+
+- (void)setWebPassword:(NSString*)webPassword
+{
+    _webPassword = webPassword;
+    [self storeKeychainValue:webPassword forKey:WebPasswordKey];
 }
 
 
