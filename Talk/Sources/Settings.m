@@ -18,7 +18,8 @@
 
 NSString* const RunBeforeKey                   = @"RunBefore";
 NSString* const TabBarViewControllerClassesKey = @"TabBarViewControllerClasses";
-NSString* const HomeCountryKey                 = @"HomeCountryKey";
+NSString* const ErrorDomainKey                 = @"ErrorDomain";
+NSString* const HomeCountryKey                 = @"HomeCountry";
 NSString* const HomeCountryFromSimKey          = @"HomeCountryFromSim";
 NSString* const LastDialedNumberKey            = @"LastDialedNumber";
 NSString* const WebBaseUrlKey                  = @"WebBaseUrl";
@@ -40,6 +41,7 @@ static Settings*        sharedSettings;
 static NSUserDefaults*  userDefaults;
 
 @synthesize tabBarViewControllerClasses = _tabBarViewControllerClasses;
+@synthesize errorDomain                 = _errorDomain;
 @synthesize homeCountry                 = _homeCountry;
 @synthesize homeCountryFromSim          = _homeCountryFromSim;
 @synthesize lastDialedNumber            = _lastDialedNumber;
@@ -105,14 +107,16 @@ static NSUserDefaults*  userDefaults;
 
     // Default for tabBarViewControllerClasses is handled in AppDelegate.
 
+    [defaults setObject:@"com.numberbay.app"         forKey:ErrorDomainKey];
+
     if ([[NetworkStatus sharedStatus].simIsoCountryCode length] > 0)
     {
         [defaults setObject:[NetworkStatus sharedStatus].simIsoCountryCode forKey:HomeCountryKey];
-        [defaults setObject:[NSNumber numberWithBool:YES] forKey:HomeCountryFromSimKey];
+        [defaults setObject:[NSNumber numberWithBool:YES]                  forKey:HomeCountryFromSimKey];
     }
     else
     {
-        [defaults setObject:[NSNumber numberWithBool:NO] forKey:HomeCountryFromSimKey];
+        [defaults setObject:[NSNumber numberWithBool:NO]                   forKey:HomeCountryFromSimKey];
     }
 
     [defaults setObject:@"http://5.39.84.168:9090/"  forKey:WebBaseUrlKey];
@@ -156,6 +160,7 @@ static NSUserDefaults*  userDefaults;
     // was added as default (in registerDefaults) is saved as normal setting.
     
     self.tabBarViewControllerClasses = [userDefaults objectForKey:TabBarViewControllerClassesKey];
+    self.errorDomain                 = [userDefaults objectForKey:ErrorDomainKey];
     self.homeCountry                 = [userDefaults objectForKey:HomeCountryKey];
     self.homeCountryFromSim          = [userDefaults boolForKey:HomeCountryFromSimKey];
     self.lastDialedNumber            = [userDefaults objectForKey:LastDialedNumberKey];
@@ -177,6 +182,13 @@ static NSUserDefaults*  userDefaults;
 {
     _tabBarViewControllerClasses = tabBarViewControllerClasses;
     [userDefaults setObject:tabBarViewControllerClasses forKey:TabBarViewControllerClassesKey];
+}
+
+
+- (void)setErrorDomain:(NSString *)errorDomain
+{
+    _errorDomain = errorDomain;
+    [userDefaults setObject:errorDomain forKey:ErrorDomainKey];
 }
 
 

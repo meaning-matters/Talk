@@ -157,10 +157,7 @@ static NSString*        defaultBaseIsoCountryCode;
     switch ([self type])
     {
         case PhoneNumberTypeUnknown:
-            string = NSLocalizedStringWithDefaultValue(@"General:NumberType Unknown", nil,
-                                                       [NSBundle mainBundle], @"unknown",
-                                                       @"Indicates that the type of the phone number is unknown\n"
-                                                       @"[0.5 line small font].");
+            // Useless for user to see 'unknown'.
             break;
 
         case PhoneNumberTypeEmergency:
@@ -172,9 +169,9 @@ static NSString*        defaultBaseIsoCountryCode;
 
         case PhoneNumberTypeFixedLine:
             string = NSLocalizedStringWithDefaultValue(@"General:NumberType FixedLine", nil,
-                                                       [NSBundle mainBundle], @"fixed-line",
+                                                       [NSBundle mainBundle], @"fixed",
                                                        @"Indicates that this is a fixed-line (or landline) phone number\n"
-                                                       @"[0.5 line small font - abbreviated: 'fixed'].");
+                                                       @"[0.5 line small font].");
             break;
 
         case PhoneNumberTypeMobile:
@@ -185,10 +182,7 @@ static NSString*        defaultBaseIsoCountryCode;
             break;
 
         case PhoneNumberTypeFixedLineOrMobile:
-            string = NSLocalizedStringWithDefaultValue(@"General:NumberType FixedLineOrMobile", nil,
-                                                       [NSBundle mainBundle], @"fixed-line or mobile",
-                                                       @"Indicates that this is a either a fixed-line or mobile phone number\n"
-                                                       @"[0.5 line small font - abbreviated: 'fixed or mobile' or 'landline or mobile'].");
+            // Not interesting for user to see 'fixed or mobile' because it does not add much.
             break;
 
         case PhoneNumberTypePager:
@@ -200,16 +194,16 @@ static NSString*        defaultBaseIsoCountryCode;
 
         case PhoneNumberTypePersonalNumber:
             string = NSLocalizedStringWithDefaultValue(@"General:NumberType PersonalNumber", nil,
-                                                       [NSBundle mainBundle], @"personal number",
+                                                       [NSBundle mainBundle], @"personal",
                                                        @"Indicates that this is a personal phone number\n"
-                                                       @"[0.5 line small font - abbreviated: 'personal'].");
+                                                       @"[0.5 line small font].");
             break;
 
         case PhoneNumberTypePremiumRate:
             string = NSLocalizedStringWithDefaultValue(@"General:NumberType PresmiumRate", nil,
-                                                       [NSBundle mainBundle], @"premium-rate",
+                                                       [NSBundle mainBundle], @"premium",
                                                        @"Indicates that this is a premium-rate (one that costs extra) phone number\n"
-                                                       @"[0.5 line small font - abbreviated: 'premium'].");
+                                                       @"[0.5 line small font].");
             break;
 
         case PhoneNumberTypeSharedCost:
@@ -235,9 +229,9 @@ static NSString*        defaultBaseIsoCountryCode;
 
         case PhoneNumberTypeUan: // Universal Access Number
             string = NSLocalizedStringWithDefaultValue(@"General:NumberType UniversalAccessNumber", nil,
-                                                       [NSBundle mainBundle], @"universal access",
+                                                       [NSBundle mainBundle], @"access",
                                                        @"Indicates that this is a universal access phone number\n"
-                                                       @"[0.5 line small font - abbreviated: 'access'].");
+                                                       @"[0.5 line small font].");
             break;
 
         case PhoneNumberTypeVoiceMail:
@@ -249,7 +243,7 @@ static NSString*        defaultBaseIsoCountryCode;
 
         case PhoneNumberTypeVoip:
             string = NSLocalizedStringWithDefaultValue(@"General:NumberType VoIP", nil,
-                                                       [NSBundle mainBundle], @"over-internet",
+                                                       [NSBundle mainBundle], @"internet",
                                                        @"Indicates that this is a over internet phone number\n"
                                                        @"[0.5 line small font - abbreviated: 'internet'].");
             break;

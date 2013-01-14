@@ -19,6 +19,7 @@
 #import "CallManager.h"
 #import "CallViewController.h"
 
+#import "WebClient.h"//### for test
 
 @interface AppDelegate ()
 {
@@ -58,6 +59,27 @@
     [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
     [LibPhoneNumber sharedInstance];    // This loads the JavaScript library.
 
+    [[WebClient sharedClient] postAccounts:@{ @"receipt" :           @"1234567890",
+                                              @"mobileCountryCode" : @"206",
+                                              @"mobileNetworkCode" : @"10",
+                                              @"notificationToken" : @"0987654321",
+                                              @"deviceName"        : @"Kees' iPhone",
+                                              @"deviceOs"          : @"iPhone OS 6.0",
+                                              @"deviceModel"       : @"iPhone 5",
+                                              @"appVersion"        : @"1.0" }
+                                   success:^(AFHTTPRequestOperation* operation, id responseObject)
+     {
+         NSLog(@"SUCCESS: %@", responseObject);
+     }
+                                   failure:^(AFHTTPRequestOperation* operation, NSError* error)
+     {
+         NSLog(@"ERROR: %@", [error localizedDescription]);
+     }];
+
+    // return YES;
+
+
+    
     //### Set current fixed SIP credentials.
     [Settings sharedSettings].sipServer   = @"178.63.93.9";
     [Settings sharedSettings].sipRealm    = @"*";

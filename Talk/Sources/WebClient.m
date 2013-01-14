@@ -9,6 +9,7 @@
 #import "WebClient.h"
 #import "AFJSONRequestOperation.h"
 #import "Settings.h"
+#import "Common.h"
 
 
 @implementation WebClient
@@ -19,14 +20,14 @@ static WebClient*   sharedClient;
 
 + (void)initialize
 {
-    if ([Settings class] == self)
+    if ([WebClient class] == self)
     {
-        sharedClient = [self new];
-
         sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:[Settings sharedSettings].webBaseUrl]];
         [sharedClient setParameterEncoding:AFJSONParameterEncoding];
+        [sharedClient setDefaultHeader:@"Accept" value:@"application/json"];
         [sharedClient registerHTTPOperationClass:[AFJSONRequestOperation class]];
-        [sharedClient setAuthorizationHeaderWithUsername:@"" password:@""];
+        [sharedClient setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
+                                                password:[Settings sharedSettings].webPassword];
     }
 }
 
@@ -49,34 +50,35 @@ static WebClient*   sharedClient;
 
 
 - (void)postAccounts:(NSDictionary*)parameters
-             success:(void (^)(AFHTTPRequestOperation* request, NSDictionary* parameters))success
-             failure:(void (^)(AFHTTPRequestOperation* request, NSError* error))failure
+             success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
+             failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
 {
     [self postPath:@"accounts"
         parameters:parameters
-           success:^(AFHTTPRequestOperation* request, id JSON)
+           success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
-        NSLog(@"getPath request: %@", request.request.URL);
+        NSLog(@"getPath request: %@", operation.request.URL);
 
-        if(JSON && [JSON isKindOfClass:[NSDictionary class]])
+        NSDictionary* reponseDictionary = responseObject;
+        if(responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
         {
-            if(success)
+            if (success)
             {
-                success(request, parameters);
+                success(operation, reponseDictionary);
             }
         }
         else
         {
-#warning //### Creat correct error domain in Settings.
-            NSError*    error = [NSError errorWithDomain:@"com.sample.url.error" code:1 userInfo:nil];
+            NSString*   errorDomain = [Settings sharedSettings].errorDomain;
+            NSError*    error       = [NSError errorWithDomain:errorDomain code:1 userInfo:nil];
+            
             if(failure)
             {
-                failure(request,error);
+                failure(operation, error);
             }
         }
     }
-
-    failure:failure];
+           failure:failure];
 }
 
 @end

@@ -134,6 +134,7 @@
 					<object class="IBUIView" id="1018709773">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">287</int>
+						<array class="NSMutableArray" key="NSSubviews"/>
 						<string key="NSFrame">{{0, 90}, {320, 320}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
@@ -264,6 +265,7 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">130</int>
 						<reference key="object" ref="1018709773"/>
+						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -296,7 +298,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">215</int>
+			<int key="maxID">217</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

@@ -230,7 +230,16 @@
     else if (phoneNumber.isValid)
     {
         NSString*   impossible;
-        
+        NSString*   country = [[CountryNames sharedNames] nameForIsoCountryCode:[phoneNumber isoCountryCode]];
+        if ([country length] > 0)
+        {
+            country = [NSString stringWithFormat:@"%@ - ", country];
+        }
+        else
+        {
+            country = @"";
+        }
+
         if (phoneNumber.isPossible == NO)
         {
             impossible = NSLocalizedStringWithDefaultValue(@"General:Number Impossible", nil,
@@ -238,21 +247,21 @@
                                                            @"Indicates that the phone number is impossible (i.e. can't exist)\n"
                                                            @"[0.5 line small font].");
             
-            self.infoLabel.text = [NSString stringWithFormat:@"%@ (%@)", [phoneNumber typeString], impossible];
+            self.infoLabel.text = [NSString stringWithFormat:@"%@%@ (%@)", country, [phoneNumber typeString], impossible];
         }
         else
         {
-            self.infoLabel.text = [NSString stringWithFormat:@"%@", [phoneNumber typeString]];
+            self.infoLabel.text = [NSString stringWithFormat:@"%@%@", country, [phoneNumber typeString]];
         }
     }
     else
     {
-        self.infoLabel.text = @"";
+        self.infoLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:[phoneNumber isoCountryCode]];
     }
 
     //### lookup number in Contacts...
     //### when found show name, else:
-    self.nameLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:[phoneNumber isoCountryCode]];
+    self.nameLabel.text = @"";
 }
 
 
