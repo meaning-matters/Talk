@@ -1574,6 +1574,11 @@ void showLog(int level, const char* data, int len)
             break;
         }
 
+        case PJSIP_SC_REQUEST_TERMINATED:           // 487
+            // Occurs when user end call before being connected.
+            //### Need to do something here?
+            break;
+            
         case CUSTOM_SC_PSTN_TERMINATION_FAIL:       // 514
             [self stopTones:callId];
             failed = SipInterfaceCallFailedPstnTerminationFail;
