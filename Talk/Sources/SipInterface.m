@@ -1397,7 +1397,7 @@ void showLog(int level, const char* data, int len)
     
     pjsua_call_get_info(call_id, &call_info);
 
-    NSLog(@"----------------------------------------- Call:%d %d %s", call_id, call_info.last_status, call_info.state_text.ptr);
+    NSLog(@"---------------------------- Call:%d %d %s", call_id, call_info.last_status, call_info.state_text.ptr);
 
     if (call == nil)
     {
