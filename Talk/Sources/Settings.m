@@ -107,7 +107,7 @@ static NSUserDefaults*  userDefaults;
 
     // Default for tabBarViewControllerClasses is handled in AppDelegate.
 
-    [defaults setObject:@"com.numberbay.app"         forKey:ErrorDomainKey];
+    [defaults setObject:@"com.numberbay.app"            forKey:ErrorDomainKey];
 
     if ([[NetworkStatus sharedStatus].simIsoCountryCode length] > 0)
     {
@@ -119,21 +119,21 @@ static NSUserDefaults*  userDefaults;
         [defaults setObject:[NSNumber numberWithBool:NO]                   forKey:HomeCountryFromSimKey];
     }
 
-    [defaults setObject:@"http://5.39.84.168:9090/"  forKey:WebBaseUrlKey];
-    [defaults setObject:@""                          forKey:LastDialedNumberKey];
-    [defaults setObject:[NSNumber numberWithBool:NO] forKey:AllowCellularDataCallsKey];
-    [defaults setObject:[NSNumber numberWithBool:NO] forKey:LouderVolumeKey];
+    [defaults setObject:@"http://5.39.84.168:9090/"     forKey:WebBaseUrlKey];
+    [defaults setObject:@""                             forKey:LastDialedNumberKey];
+    [defaults setObject:[NSNumber numberWithBool:NO]    forKey:AllowCellularDataCallsKey];
+    [defaults setObject:[NSNumber numberWithBool:NO]    forKey:LouderVolumeKey];
 
     [userDefaults registerDefaults:defaults];
 }
 
 
-- (NSString*)getKeychainValueForKey:(NSString*)key
+- (NSString*)getKeychainValueForKey:(NSString*)key service:(NSString*)service
 {
     NSError*    error = nil;
     NSString*   value;
 
-    value = [KeychainUtility getPasswordForUsername:key andServiceName:SipServiveKey error:&error];
+    value = [KeychainUtility getPasswordForUsername:key andServiceName:service error:&error];
     if (value == nil && error != nil)
     {
         NSLog(@"//### Error getting value from keychain: %@", [error localizedDescription]);
@@ -143,11 +143,11 @@ static NSUserDefaults*  userDefaults;
 }
 
 
-- (void)storeKeychainValue:(NSString*)value forKey:(NSString*)key
+- (void)storeKeychainValue:(NSString*)value forKey:(NSString*)key service:(NSString*)service
 {
     NSError*    error = nil;
 
-    if ([KeychainUtility storeUsername:key andPassword:value forServiceName:SipServiveKey updateExisting:YES error:&error] == NO)
+    if ([KeychainUtility storeUsername:key andPassword:value forServiceName:service updateExisting:YES error:&error] == NO)
     {
         NSLog(@"//### Error storing value in keychain: %@", [error localizedDescription]);
     }
@@ -165,12 +165,12 @@ static NSUserDefaults*  userDefaults;
     self.homeCountryFromSim          = [userDefaults boolForKey:HomeCountryFromSimKey];
     self.lastDialedNumber            = [userDefaults objectForKey:LastDialedNumberKey];
     self.webBaseUrl                  = [userDefaults objectForKey:WebBaseUrlKey];
-    self.webUsername                 = [self getKeychainValueForKey:WebUsernameKey];
-    self.webPassword                 = [self getKeychainValueForKey:WebPasswordKey];
+    self.webUsername                 = [self getKeychainValueForKey:WebUsernameKey service:WebServiceKey];
+    self.webPassword                 = [self getKeychainValueForKey:WebPasswordKey service:WebServiceKey];
     self.sipServer                   = [userDefaults objectForKey:SipServerKey];
-    self.sipRealm                    = [self getKeychainValueForKey:SipRealmKey];
-    self.sipUsername                 = [self getKeychainValueForKey:SipUsernameKey];
-    self.sipPassword                 = [self getKeychainValueForKey:SipPasswordKey];
+    self.sipRealm                    = [self getKeychainValueForKey:SipRealmKey    service:SipServiveKey];
+    self.sipUsername                 = [self getKeychainValueForKey:SipUsernameKey service:SipServiveKey];
+    self.sipPassword                 = [self getKeychainValueForKey:SipPasswordKey service:SipServiveKey];
     self.allowCellularDataCalls      = [userDefaults boolForKey:AllowCellularDataCallsKey];
     self.louderVolume                = [userDefaults boolForKey:LouderVolumeKey];
 }
@@ -223,14 +223,14 @@ static NSUserDefaults*  userDefaults;
 - (void)setWebUsername:(NSString*)webUsername
 {
     _webUsername = webUsername;
-    [self storeKeychainValue:webUsername forKey:WebUsernameKey];
+    [self storeKeychainValue:webUsername forKey:WebUsernameKey service:WebServiceKey];
 }
 
 
 - (void)setWebPassword:(NSString*)webPassword
 {
     _webPassword = webPassword;
-    [self storeKeychainValue:webPassword forKey:WebPasswordKey];
+    [self storeKeychainValue:webPassword forKey:WebPasswordKey service:WebServiceKey];
 }
 
 
@@ -244,21 +244,21 @@ static NSUserDefaults*  userDefaults;
 - (void)setSipRealm:(NSString*)sipRealm
 {
     _sipRealm = sipRealm;
-    [self storeKeychainValue:sipRealm forKey:SipRealmKey];
+    [self storeKeychainValue:sipRealm forKey:SipRealmKey service:SipServiveKey];
 }
 
 
 - (void)setSipUsername:(NSString*)sipUsername
 {
     _sipUsername = sipUsername;
-    [self storeKeychainValue:sipUsername forKey:SipUsernameKey];
+    [self storeKeychainValue:sipUsername forKey:SipUsernameKey service:SipServerKey];
 }
 
 
 - (void)setSipPassword:(NSString*)sipPassword
 {
     _sipPassword = sipPassword;
-    [self storeKeychainValue:sipPassword forKey:SipPasswordKey];
+    [self storeKeychainValue:sipPassword forKey:SipPasswordKey service:SipServiveKey];
 }
 
 

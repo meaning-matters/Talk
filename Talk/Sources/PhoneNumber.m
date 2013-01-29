@@ -11,19 +11,11 @@
 #import "LibPhoneNumber.h"
 
 
-@interface PhoneNumber ()
-{
-}
-
-@end
-
-
 @implementation PhoneNumber
 
 @synthesize baseIsoCountryCode   = _baseIsoCountryCode;
 @synthesize numberIsoCountryCode = _numberIsoCountryCode;
 @synthesize number               = _number;
-
 
 static NSString*        defaultBaseIsoCountryCode;
 

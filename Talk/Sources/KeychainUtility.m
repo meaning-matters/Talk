@@ -135,6 +135,7 @@ static NSString*    KeychainUtilityErrorDomain = @"KeychainUtilityErrorDomain";
     {
         if (error != nil)
         {
+            NSLog(@"%@", [*error localizedDescription]);
             *error = [NSError errorWithDomain:KeychainUtilityErrorDomain code:-2000 userInfo:nil];
         }
         

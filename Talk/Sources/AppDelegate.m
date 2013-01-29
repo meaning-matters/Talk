@@ -18,6 +18,7 @@
 #import "LibPhoneNumber.h"
 #import "CallManager.h"
 #import "CallViewController.h"
+#import "PurchaseManager.h"
 
 #import "WebClient.h"//### for test
 
@@ -50,16 +51,17 @@
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
     // Trigger singletons.
-    [Skinning      sharedSkinning];
-    [NetworkStatus sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.
-    [CallManager   sharedManager];
-    [Settings      sharedSettings];
+    [Skinning        sharedSkinning];
+    [NetworkStatus   sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.
+    [CallManager     sharedManager];
+    [Settings        sharedSettings];
+    [PurchaseManager sharedManager];
 
     // Initialize phone number stuff.
     [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
     [LibPhoneNumber sharedInstance];    // This loads the JavaScript library.
 
-    [[WebClient sharedClient] postAccounts:@{ @"receipt" :           @"1234567890",
+    [[WebClient sharedClient] postAccounts:@{ @"receipt"           : @"1234567890",
                                               @"mobileCountryCode" : @"206",
                                               @"mobileNetworkCode" : @"10",
                                               @"notificationToken" : @"0987654321",
@@ -79,7 +81,6 @@
     // return YES;
 
 
-    
     //### Set current fixed SIP credentials.
     [Settings sharedSettings].sipServer   = @"178.63.93.9";
     [Settings sharedSettings].sipRealm    = @"*";

@@ -56,28 +56,28 @@ static WebClient*   sharedClient;
     [self postPath:@"accounts"
         parameters:parameters
            success:^(AFHTTPRequestOperation* operation, id responseObject)
-    {
-        NSLog(@"getPath request: %@", operation.request.URL);
+     {
+         NSLog(@"getPath request: %@", operation.request.URL);
 
-        NSDictionary* reponseDictionary = responseObject;
-        if(responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
-        {
-            if (success)
-            {
-                success(operation, reponseDictionary);
-            }
-        }
-        else
-        {
-            NSString*   errorDomain = [Settings sharedSettings].errorDomain;
-            NSError*    error       = [NSError errorWithDomain:errorDomain code:1 userInfo:nil];
-            
-            if(failure)
-            {
-                failure(operation, error);
-            }
-        }
-    }
+         NSDictionary* reponseDictionary = responseObject;
+         if(responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
+         {
+             if (success)
+             {
+                 success(operation, reponseDictionary);
+             }
+         }
+         else
+         {
+             NSString*   errorDomain = [Settings sharedSettings].errorDomain;
+             NSError*    error       = [NSError errorWithDomain:errorDomain code:1 userInfo:nil];
+
+             if(failure)
+             {
+                 failure(operation, error);
+             }
+         }
+     }
            failure:failure];
 }
 

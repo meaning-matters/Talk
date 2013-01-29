@@ -614,6 +614,13 @@
 		4888D526166D200E00572566 /* HangupPhoneSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D523166D200E00572566 /* HangupPhoneSmall.png */; };
 		4888D527166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D524166D200E00572566 /* HangupPhoneSmall@2x.png */; };
 		4888D528166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D524166D200E00572566 /* HangupPhoneSmall@2x.png */; };
+		4895D19A16B1BE9200BCA581 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4895D19916B1BE9200BCA581 /* StoreKit.framework */; };
+		4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D19C16B1C4F200BCA581 /* PurchaseManager.m */; };
+		4895D19E16B1C4F200BCA581 /* PurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D19C16B1C4F200BCA581 /* PurchaseManager.m */; };
+		4895D1B416B7AC4100BCA581 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4895D1B216B7AC4100BCA581 /* Icon.png */; };
+		4895D1B516B7AC4100BCA581 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4895D1B216B7AC4100BCA581 /* Icon.png */; };
+		4895D1B616B7AC4100BCA581 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4895D1B316B7AC4100BCA581 /* Icon@2x.png */; };
+		4895D1B716B7AC4100BCA581 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4895D1B316B7AC4100BCA581 /* Icon@2x.png */; };
 		48A2CDFC16834FC100506A7C /* RingbackTones.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A2CDFB16834FC100506A7C /* RingbackTones.json */; };
 		48A2CDFD16834FC100506A7C /* RingbackTones.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A2CDFB16834FC100506A7C /* RingbackTones.json */; };
 		48AD95DA164AC4FE006178E6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95D9164AC4FE006178E6 /* ViewController.m */; };
@@ -1350,7 +1357,7 @@
 		48826908164BDC3400EA58AE /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		4882748C1660E20C00B41EA1 /* DtmfPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DtmfPlayer.h; sourceTree = "<group>"; };
 		4882748D1660E20C00B41EA1 /* DtmfPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DtmfPlayer.m; sourceTree = "<group>"; };
-		48884A701615CE920005AA79 /* Talk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Talk.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		48884A701615CE920005AA79 /* NumberBay0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NumberBay0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48884A741615CE920005AA79 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		48884A761615CE920005AA79 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		48884A781615CE920005AA79 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1373,6 +1380,11 @@
 		4888D519166D1AEE00572566 /* HangupPhone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HangupPhone@2x.png"; sourceTree = "<group>"; };
 		4888D523166D200E00572566 /* HangupPhoneSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HangupPhoneSmall.png; sourceTree = "<group>"; };
 		4888D524166D200E00572566 /* HangupPhoneSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HangupPhoneSmall@2x.png"; sourceTree = "<group>"; };
+		4895D19916B1BE9200BCA581 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		4895D19B16B1C4F100BCA581 /* PurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseManager.h; sourceTree = "<group>"; };
+		4895D19C16B1C4F200BCA581 /* PurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseManager.m; sourceTree = "<group>"; };
+		4895D1B216B7AC4100BCA581 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		4895D1B316B7AC4100BCA581 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		48A2CDFB16834FC100506A7C /* RingbackTones.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = RingbackTones.json; path = Resources/RingbackTones.json; sourceTree = "<group>"; };
 		48AD95D8164AC4FE006178E6 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		48AD95D9164AC4FE006178E6 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
@@ -1507,6 +1519,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4895D19A16B1BE9200BCA581 /* StoreKit.framework in Frameworks */,
 				484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */,
 				48DD72AC169F55C400CD7080 /* MobileCoreServices.framework in Frameworks */,
 				48DD727D169CCF1C00CD7080 /* CoreData.framework in Frameworks */,
@@ -1665,6 +1678,8 @@
 				485ECBDF16525D1600364F08 /* Views */,
 				48AF45591649790900DFE3D8 /* ViewControllers */,
 				48DD7283169F3C7000CD7080 /* Web API */,
+				4895D19B16B1C4F100BCA581 /* PurchaseManager.h */,
+				4895D19C16B1C4F200BCA581 /* PurchaseManager.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -1710,6 +1725,8 @@
 		48338FB316170D8C0033F4C1 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				4895D1B216B7AC4100BCA581 /* Icon.png */,
+				4895D1B316B7AC4100BCA581 /* Icon@2x.png */,
 				48338FB416170D8C0033F4C1 /* Default-568h@2x.png */,
 				48338FB516170D8C0033F4C1 /* Default.png */,
 				48338FB616170D8C0033F4C1 /* Default@2x.png */,
@@ -2252,7 +2269,7 @@
 		48884A711615CE920005AA79 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				48884A701615CE920005AA79 /* Talk.app */,
+				48884A701615CE920005AA79 /* NumberBay0.app */,
 				48884AA51615CE920005AA79 /* TalkTests.octest */,
 			);
 			name = Products;
@@ -2264,6 +2281,7 @@
 				48EE399616777EBB00823E09 /* WebRTC */,
 				48338F55161628410033F4C1 /* OpenSSL */,
 				48338F54161628310033F4C1 /* pjsip */,
+				4895D19916B1BE9200BCA581 /* StoreKit.framework */,
 				48DD727C169CCF1C00CD7080 /* CoreData.framework */,
 				487A7C9916978DBE007693EE /* MediaPlayer.framework */,
 				4888D28E16724FCD00B55B22 /* Security.framework */,
@@ -2497,7 +2515,7 @@
 			);
 			name = Talk;
 			productName = Talk;
-			productReference = 48884A701615CE920005AA79 /* Talk.app */;
+			productReference = 48884A701615CE920005AA79 /* NumberBay0.app */;
 			productType = "com.apple.product-type.application";
 		};
 		48884AA41615CE920005AA79 /* TalkTests */ = {
@@ -3101,6 +3119,8 @@
 				4888D527166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */,
 				48A2CDFC16834FC100506A7C /* RingbackTones.json in Resources */,
 				48206EF8168DD8180040B04E /* Tones.json in Resources */,
+				4895D1B416B7AC4100BCA581 /* Icon.png in Resources */,
+				4895D1B616B7AC4100BCA581 /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3171,6 +3191,8 @@
 				4888D528166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */,
 				48A2CDFD16834FC100506A7C /* RingbackTones.json in Resources */,
 				48206EF9168DD8180040B04E /* Tones.json in Resources */,
+				4895D1B516B7AC4100BCA581 /* Icon.png in Resources */,
+				4895D1B716B7AC4100BCA581 /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3261,6 +3283,7 @@
 				48DD72CF169F56F000CD7080 /* AFXMLRequestOperation.m in Sources */,
 				48DD72D1169F56F000CD7080 /* UIImageView+AFNetworking.m in Sources */,
 				48DD72D5169F5AC600CD7080 /* WebClient.m in Sources */,
+				4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3319,6 +3342,7 @@
 				48DD72D0169F56F000CD7080 /* AFXMLRequestOperation.m in Sources */,
 				48DD72D2169F56F000CD7080 /* UIImageView+AFNetworking.m in Sources */,
 				48DD72D6169F5AC600CD7080 /* WebClient.m in Sources */,
+				4895D19E16B1C4F200BCA581 /* PurchaseManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3404,6 +3428,7 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3435,6 +3460,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PRODUCT_NAME = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -3456,8 +3482,8 @@
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
 					"\"$(SRCROOT)/External/WebRTC\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "AB1B819F-987E-4A86-832F-D190D04339B0";
+				PRODUCT_NAME = NumberBay0;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C0798B36-D1E1-45BE-8C40-FE2DA6578E04";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -3477,7 +3503,7 @@
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
 					"\"$(SRCROOT)/External/WebRTC\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = NumberBay0;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

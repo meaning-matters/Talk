@@ -106,26 +106,29 @@ static SipInterface*    sipInterface;
 // Checks non-emergency number.
 - (BOOL)checkPhoneNumber:(PhoneNumber*)phoneNumber
 {
-    BOOL    result;
+    BOOL        result;
+    NSString*   title;
+    NSString*   message;
+    NSString*   buttonTitle;
 
     if ([[Settings sharedSettings].homeCountry length] == 0 && [phoneNumber isInternational] == NO)
     {
-        NSString*   title = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownTitle", nil,
-                                                              [NSBundle mainBundle], @"Country Unknown",
-                                                              @"Alert title informing about home country being unknown\n"
-                                                              @"[iOS alert title size].");
+        title = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownTitle", nil,
+                                                  [NSBundle mainBundle], @"Country Unknown",
+                                                  @"Alert title informing about home country being unknown\n"
+                                                  @"[iOS alert title size].");
 
-        NSString*   message = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownMessage", nil,
-                                                                [NSBundle mainBundle],
-                                                                @"The country for this (local) number can't be determined. "
-                                                                @"Select the default country, or dial an international number.",
-                                                                @"Alert message informing about home country being unknown\n"
-                                                                @"[iOS alert message size]");
+        message = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"The country for this (local) number can't be determined. "
+                                                    @"Select the default country, or dial an international number.",
+                                                    @"Alert message informing about home country being unknown\n"
+                                                    @"[iOS alert message size]");
 
-        NSString*   buttonTitle = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownButton", nil,
-                                                                    [NSBundle mainBundle], @"Select",
-                                                                    @"Alert button title for selecting home country\n"
-                                                                    @"[iOS small alert button size]");
+        buttonTitle = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownButton", nil,
+                                                        [NSBundle mainBundle], @"Select",
+                                                        @"Alert button title for selecting home country\n"
+                                                        @"[iOS small alert button size]");
 
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
@@ -156,20 +159,20 @@ static SipInterface*    sipInterface;
     }
     else if ([NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableDisconnected)
     {
-        NSString*   title = NSLocalizedStringWithDefaultValue(@"Call:Voip NotConnectedTitle", nil,
-                                                              [NSBundle mainBundle], @"No Internet Connection",
-                                                              @"Alert title informing about not being able to make a "
-                                                              @"call because not connected to internet\n"
-                                                              @"[iOS alert title size - abbreviated: 'No Internet' or "
-                                                              @"'Not Connected'].");
+        title = NSLocalizedStringWithDefaultValue(@"Call:Voip NotConnectedTitle", nil,
+                                                  [NSBundle mainBundle], @"No Internet Connection",
+                                                  @"Alert title informing about not being able to make a "
+                                                  @"call because not connected to internet\n"
+                                                  @"[iOS alert title size - abbreviated: 'No Internet' or "
+                                                  @"'Not Connected'].");
 
-        NSString*   message = NSLocalizedStringWithDefaultValue(@"Call:Voip NotConnectedMessage", nil,
-                                                                [NSBundle mainBundle],
-                                                                @"You can't make this call because there is no internet "
-                                                                @"connection.",
-                                                                @"Alert message informing about not being able to make a "
-                                                                @"call because not connected to internet\n"
-                                                                @"[iOS alert message size]");
+        message = NSLocalizedStringWithDefaultValue(@"Call:Voip NotConnectedMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"You can't make this call because there is no internet "
+                                                    @"connection.",
+                                                    @"Alert message informing about not being able to make a "
+                                                    @"call because not connected to internet\n"
+                                                    @"[iOS alert message size]");
 
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
@@ -180,19 +183,19 @@ static SipInterface*    sipInterface;
     else if ([NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableCellular &&
              [Settings sharedSettings].allowCellularDataCalls == NO)
     {
-        NSString*   title = NSLocalizedStringWithDefaultValue(@"Call:Voip DisallowCellularTitle", nil,
-                                                              [NSBundle mainBundle], @"No Cellular Data Calls",
-                                                              @"Alert title informing about not being able to make a "
-                                                              @"call over cellular data, because that's not allowed\n"
-                                                              @"[iOS alert title size - abbreviated: 'No Data Calls'].");
+        title = NSLocalizedStringWithDefaultValue(@"Call:Voip DisallowCellularTitle", nil,
+                                                  [NSBundle mainBundle], @"No Cellular Data Calls",
+                                                  @"Alert title informing about not being able to make a "
+                                                  @"call over cellular data, because that's not allowed\n"
+                                                  @"[iOS alert title size - abbreviated: 'No Data Calls'].");
 
-        NSString*   message = NSLocalizedStringWithDefaultValue(@"Call:Voip DisallowCellularMessage", nil,
-                                                                [NSBundle mainBundle],
-                                                                @"You can't make this call because cellular data calls "
-                                                                @"are disabled in app Settings.",
-                                                                @"Alert message informing about not being able to make a "
-                                                                @"call over cellular data, because that's not allowed\n"
-                                                                @"[iOS alert message size]");
+        message = NSLocalizedStringWithDefaultValue(@"Call:Voip DisallowCellularMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"You can't make this call because cellular data calls "
+                                                    @"are disabled in app Settings.",
+                                                    @"Alert message informing about not being able to make a "
+                                                    @"call over cellular data, because that's not allowed\n"
+                                                    @"[iOS alert message size]");
 
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
@@ -202,19 +205,19 @@ static SipInterface*    sipInterface;
     }
     else if ([NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableCaptivePortal)
     {
-        NSString*   title = NSLocalizedStringWithDefaultValue(@"Call:Voip CaptivePortalTitle", nil,
-                                                              [NSBundle mainBundle], @"Behind Captive Portal",
-                                                              @"Alert title informing about not being able to make a "
-                                                              @"call because behind a Wi-Fi captive portal\n"
-                                                              @"[iOS alert title size - abbreviated: 'Captive Portal'].");
+        title = NSLocalizedStringWithDefaultValue(@"Call:Voip CaptivePortalTitle", nil,
+                                                  [NSBundle mainBundle], @"Behind Captive Portal",
+                                                  @"Alert title informing about not being able to make a "
+                                                  @"call because behind a Wi-Fi captive portal\n"
+                                                  @"[iOS alert title size - abbreviated: 'Captive Portal'].");
 
-        NSString*   message = NSLocalizedStringWithDefaultValue(@"Call:Voip CaptivePortalMessage", nil,
-                                                                [NSBundle mainBundle],
-                                                                @"You can't make this call because Wi-Fi is connected "
-                                                                @"to a captive portal (%@), which requires you to log in.",
-                                                                @"Alert message informing about not being able to make a "
-                                                                @"call because behind a Wi-Fi captive portal\n"
-                                                                @"[iOS alert message size]");
+        message = NSLocalizedStringWithDefaultValue(@"Call:Voip CaptivePortalMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"You can't make this call because Wi-Fi is connected "
+                                                    @"to a captive portal (%@), which requires you to log in.",
+                                                    @"Alert message informing about not being able to make a "
+                                                    @"call because behind a Wi-Fi captive portal\n"
+                                                    @"[iOS alert message size]");
         message = [NSString stringWithFormat:message, [[NetworkStatus sharedStatus] getSsid]];
 
         [BlockAlertView showAlertViewWithTitle:title
@@ -244,7 +247,7 @@ static SipInterface*    sipInterface;
     switch (failed)
     {
         case SipInterfaceCallFailedNotAllowedCountry:
-            message = NSLocalizedStringWithDefaultValue(@"Call:Failed NotAllowedCountry", nil,
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed NotAllowedCountryMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"The dialed number is in a country that is not supported.",
                                                         @"Alert message informing that a call was not possible because "
@@ -253,7 +256,7 @@ static SipInterface*    sipInterface;
             break;
 
         case SipInterfaceCallFailedNotAllowedNumber:
-            message = NSLocalizedStringWithDefaultValue(@"Call:Failed NotAllowedNumber", nil,
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed NotAllowedNumberMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"The dialed number is to a destination that is not supported.",
                                                         @"Alert message informing that a call was not possible because "
@@ -262,7 +265,7 @@ static SipInterface*    sipInterface;
             break;
 
         case SipInterfaceCallFailedNoCredit:
-            message = NSLocalizedStringWithDefaultValue(@"Call:Failed NoCredit", nil,
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed NoCreditMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"There is not enough credit to make this call. "
                                                         @"Buy more, and be ready to call in a snap.",
@@ -272,7 +275,7 @@ static SipInterface*    sipInterface;
             break;
 
         case SipInterfaceCallFailedCalleeNotOnline:
-            message = NSLocalizedStringWithDefaultValue(@"Call:Failed CalleeNotOnline", nil,
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed CalleeNotOnlineMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"The called person appears to be offline.",
                                                         @"Alert message informing that a call could not be connected "
@@ -281,7 +284,7 @@ static SipInterface*    sipInterface;
             break;
 
         case SipInterfaceCallFailedTooManyCalls:
-            message = NSLocalizedStringWithDefaultValue(@"Call:Failed TooManyCalls", nil,
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed TooManyCallsMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"The number of simultaneous calls has been reached; "
                                                         @"no more calls can be added.",
@@ -291,7 +294,7 @@ static SipInterface*    sipInterface;
             break;
 
         case SipInterfaceCallFailedTechnical:
-            message = NSLocalizedStringWithDefaultValue(@"Call:Failed Internal", nil,
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed InternalIssueMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"This call could not be made due to a technical issue.",
                                                         @"Alert message informing that a call failed due to a "
@@ -300,7 +303,7 @@ static SipInterface*    sipInterface;
             break;
 
         case SipInterfaceCallFailedInvalidNumber:
-            message = NSLocalizedStringWithDefaultValue(@"Call:Failed InvalidNumber", nil,
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed InvalidNumberMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"The number appears to be invalid.",
                                                         @"Alert message informing that a call could not be made because "
@@ -310,7 +313,7 @@ static SipInterface*    sipInterface;
 
             
         case SipInterfaceCallFailedBadRequest:
-            message = NSLocalizedStringWithDefaultValue(@"Call:Failed BadRequest", nil,
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed BadRequestMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"...",
                                                         @"Alert message informing that a call could not be made because "
@@ -319,7 +322,7 @@ static SipInterface*    sipInterface;
             break;
 
         case SipInterfaceCallFailedNotFound:
-            message = NSLocalizedStringWithDefaultValue(@"Call:Failed NotFound", nil,
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed NotFoundMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"...",
                                                         @"Alert message informing that a call could not be made because "
@@ -328,7 +331,7 @@ static SipInterface*    sipInterface;
             break;
 
         case SipInterfaceCallFailedTemporarilyUnavailable:
-            message = NSLocalizedStringWithDefaultValue(@"Call:Failed TemporarilyUnavailable", nil,
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed TemporarilyUnavailableMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"...",
                                                         @"Alert message informing that a call could not be made because "
@@ -337,7 +340,7 @@ static SipInterface*    sipInterface;
             break;
 
         case SipInterfaceCallFailedPstnTerminationFail:
-            message = NSLocalizedStringWithDefaultValue(@"Call:Failed PstnTerminationFail", nil,
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed PstnTerminationFailMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"...",
                                                         @"Alert message informing that a call could not be made because "
@@ -346,7 +349,7 @@ static SipInterface*    sipInterface;
             break;
 
         case SipInterfaceCallFailedCallRoutingError:
-            message = NSLocalizedStringWithDefaultValue(@"Call:Failed CallRoutingError", nil,
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed CallRoutingErrorMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"...",
                                                         @"Alert message informing that a call could not be made because "
@@ -355,7 +358,7 @@ static SipInterface*    sipInterface;
             break;
 
         case SipInterfaceCallFailedOtherSipError:
-            message = NSLocalizedStringWithDefaultValue(@"Call:Failed OtherSipError", nil,
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed OtherSipErrorMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"...",
                                                         @"Alert message informing that a call could not be made because "
@@ -386,29 +389,67 @@ static SipInterface*    sipInterface;
     }
     else if ([self checkPhoneNumber:phoneNumber] == YES)
     {
-        call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOut];
-        call.identityNumber = identity;
-
-        NSDictionary*   tones = [[Tones sharedTones] tonesForIsoCountryCode:[phoneNumber isoCountryCode]];
-        sipInterface.louderVolume = [Settings sharedSettings].louderVolume;
-        if ([sipInterface makeCall:call tones:tones] == YES)
+        if ([[Settings sharedSettings].webUsername length] > 0)
         {
-            callViewController = [[CallViewController alloc] initWithCall:call];
-            callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            [Common.appDelegate.tabBarController presentViewController:callViewController
-                                                              animated:YES
-                                                            completion:^
-             {
-                 if ([Common deviceHasReceiver] == NO)
-                 {
-                     [callViewController setSpeakerEnable:NO];
-                 }
-             }];
+            if ([[Settings sharedSettings].sipUsername length] > 0)
+            {
+                call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOut];
+                call.identityNumber = identity;
+
+                NSDictionary*   tones = [[Tones sharedTones] tonesForIsoCountryCode:[phoneNumber isoCountryCode]];
+                sipInterface.louderVolume = [Settings sharedSettings].louderVolume;
+                if ([sipInterface makeCall:call tones:tones] == YES)
+                {
+                    callViewController = [[CallViewController alloc] initWithCall:call];
+                    callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                    [Common.appDelegate.tabBarController presentViewController:callViewController
+                                                                      animated:YES
+                                                                    completion:^
+                     {
+                         if ([Common deviceHasReceiver] == NO)
+                         {
+                             [callViewController setSpeakerEnable:NO];
+                         }
+                     }];
+                }
+                else
+                {
+                    callViewController = nil;
+                    NSLog(@"//### Call failed.");
+                }
+            }
+            else
+            {
+
+            }
         }
         else
         {
-            callViewController = nil;
-            NSLog(@"//### Call failed.");
+            NSString*   title;
+            NSString*   message;
+
+            title = NSLocalizedStringWithDefaultValue(@"Call:Account NoAcountTitle", nil,
+                                                      [NSBundle mainBundle], @"Get An Account",
+                                                      @"Alert title telling that an account is needed "
+                                                      @"to make calls.\n"
+                                                      @"[iOS alert title size - abbreviated: 'Get Account'].");
+            message = NSLocalizedStringWithDefaultValue(@"Call:Account NoAccountMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"You can only make calls when you have an account.\n"
+                                                        @"Buy one now, and get going in a minute!",
+                                                        @"Alert message telling \n"
+                                                        @"[iOS alert message size]");
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+            {
+                if (!cancelled)
+                {
+                    //###
+                }
+            }
+                                 cancelButtonTitle:[CommonStrings cancelString]
+                                 otherButtonTitles:[CommonStrings buyString], nil];
         }
     }
 
@@ -424,21 +465,24 @@ static SipInterface*    sipInterface;
 
 - (BOOL)callMobilePhoneNumber:(PhoneNumber*)phoneNumber
 {
+    NSString*   title;
+    NSString*   message;
+
     if ([NetworkStatus sharedStatus].allowsMobileCalls)
     {
         NSURL*  url = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", phoneNumber.number]];
         if ([[UIApplication sharedApplication] openURL:url] == NO)
         {
-            NSString*   title = NSLocalizedStringWithDefaultValue(@"Call:Mobile CallFailedTitle", nil,
-                                                                  [NSBundle mainBundle], @"Mobile Call Failed",
-                                                                  @"Alert title informing about mobile call that failed\n"
-                                                                  @"[iOS alert title size - abbreviated: 'Call Failed'].");
+            title = NSLocalizedStringWithDefaultValue(@"Call:Mobile CallFailedTitle", nil,
+                                                      [NSBundle mainBundle], @"Mobile Call Failed",
+                                                      @"Alert title informing about mobile call that failed\n"
+                                                      @"[iOS alert title size - abbreviated: 'Call Failed'].");
 
-            NSString*   message = NSLocalizedStringWithDefaultValue(@"Call:Mobile CallFailedMessage", nil,
-                                                                    [NSBundle mainBundle],
-                                                                    @"An attempt was made to make a mobile call, but it failed.",
-                                                                    @"Alert message informing about mobile call that failed\n"
-                                                                    @"[iOS alert message size]");
+            message = NSLocalizedStringWithDefaultValue(@"Call:Mobile CallFailedMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"An attempt was made to make a mobile call, but it failed.",
+                                                        @"Alert message informing about mobile call that failed\n"
+                                                        @"[iOS alert message size]");
 
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
@@ -455,16 +499,16 @@ static SipInterface*    sipInterface;
     }
     else if (phoneNumber.isEmergency)
     {
-        NSString*   title = NSLocalizedStringWithDefaultValue(@"Call:Mobile NoEmergencyTitle", nil,
-                                                              [NSBundle mainBundle], @"No Emergency Calls",
-                                                              @"Alert title informing that emergency calls are not supported\n"
-                                                              @"[iOS alert title size].");
+        title = NSLocalizedStringWithDefaultValue(@"Call:Mobile NoEmergencyTitle", nil,
+                                                  [NSBundle mainBundle], @"No Emergency Calls",
+                                                  @"Alert title informing that emergency calls are not supported\n"
+                                                  @"[iOS alert title size].");
 
-        NSString*   message = NSLocalizedStringWithDefaultValue(@"Call:Mobile NoEmergencyTitle", nil,
-                                                                [NSBundle mainBundle],
-                                                                @"Your device does not allow making emergency calls.",
-                                                                @"Alert message informing that emergency calls are not supported\n"
-                                                                @"[iOS alert message size]");
+        message = NSLocalizedStringWithDefaultValue(@"Call:Mobile NoEmergencyTitle", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"Your device does not allow making emergency calls.",
+                                                    @"Alert message informing that emergency calls are not supported\n"
+                                                    @"[iOS alert message size]");
 
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
@@ -476,16 +520,16 @@ static SipInterface*    sipInterface;
     }
     else
     {
-        NSString*   title = NSLocalizedStringWithDefaultValue(@"Call:Mobile CallImpossibleTitle", nil,
-                                                              [NSBundle mainBundle], @"No Mobile Calls",
-                                                              @"Alert title informing that mobile calls are not supported\n"
-                                                              @"[iOS alert title size].");
+        title = NSLocalizedStringWithDefaultValue(@"Call:Mobile CallImpossibleTitle", nil,
+                                                  [NSBundle mainBundle], @"No Mobile Calls",
+                                                  @"Alert title informing that mobile calls are not supported\n"
+                                                  @"[iOS alert title size].");
 
-        NSString*   message = NSLocalizedStringWithDefaultValue(@"Call:Mobile CallImpossibleMessage", nil,
-                                                                [NSBundle mainBundle],
-                                                                @"Your device does not allow making mobile calls.",
-                                                                @"Alert message informing that mobile calls are not supported\n"
-                                                                @"[iOS alert message size]");
+        message = NSLocalizedStringWithDefaultValue(@"Call:Mobile CallImpossibleMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"Your device does not allow making mobile calls.",
+                                                    @"Alert message informing that mobile calls are not supported\n"
+                                                    @"[iOS alert message size]");
 
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
@@ -578,12 +622,12 @@ static SipInterface*    sipInterface;
     }
     else
     {
-        NSString*   title = NSLocalizedStringWithDefaultValue(@"Call:Failed AlertTitle", nil,
-                                                              [NSBundle mainBundle], @"No Call Made",
-                                                              @"Alert title informing (in non-negative way: not using "
-                                                              @"words like failed/error/...) that call could not be "
-                                                              @"made\n"
-                                                              @"[iOS alert title size].");
+        NSString*   title;
+        title = NSLocalizedStringWithDefaultValue(@"Call:Failed AlertTitle", nil,
+                                                  [NSBundle mainBundle], @"No Call Made",
+                                                  @"Alert title informing (in non-negative way: not using "
+                                                  @"words like failed/error/...) that call could not be made\n"
+                                                  @"[iOS alert title size].");
 
         if (reason == SipInterfaceCallFailedNoCredit)
         {

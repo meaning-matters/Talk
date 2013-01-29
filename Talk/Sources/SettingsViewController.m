@@ -368,7 +368,7 @@ typedef enum
         NSString*   message = NSLocalizedStringWithDefaultValue(@"Settings:AllowDataCalls AllowWaningMessage", nil,
                                                                 [NSBundle mainBundle],
                                                                 @"Depending on your mobile plan, cellular data calls "
-                                                                @"may add a cost from your operator.",
+                                                                @"may add a cost from your mobile operator.",
                                                                 @"Alert message informing about allowing cellular "
                                                                 @"data calls\n"
                                                                 @"[iOS alert message size]");
