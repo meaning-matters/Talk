@@ -12,6 +12,7 @@
 #import "BlockAlertView.h"
 #import "Settings.h"
 #import "NetworkStatus.h"
+#import "PurchaseManager.h"
 #import "PhoneNumber.h"
 #import "CountriesViewController.h"
 #import "CallViewController.h"
@@ -102,138 +103,6 @@ static SipInterface*    sipInterface;
 
 
 #pragma mark Utility Methods
-
-// Checks non-emergency number.
-- (BOOL)checkPhoneNumber:(PhoneNumber*)phoneNumber
-{
-    BOOL        result;
-    NSString*   title;
-    NSString*   message;
-    NSString*   buttonTitle;
-
-    if ([[Settings sharedSettings].homeCountry length] == 0 && [phoneNumber isInternational] == NO)
-    {
-        title = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownTitle", nil,
-                                                  [NSBundle mainBundle], @"Country Unknown",
-                                                  @"Alert title informing about home country being unknown\n"
-                                                  @"[iOS alert title size].");
-
-        message = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownMessage", nil,
-                                                    [NSBundle mainBundle],
-                                                    @"The country for this (local) number can't be determined. "
-                                                    @"Select the default country, or dial an international number.",
-                                                    @"Alert message informing about home country being unknown\n"
-                                                    @"[iOS alert message size]");
-
-        buttonTitle = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownButton", nil,
-                                                        [NSBundle mainBundle], @"Select",
-                                                        @"Alert button title for selecting home country\n"
-                                                        @"[iOS small alert button size]");
-
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-         {
-             if (buttonIndex == 1)
-             {
-                 UINavigationController*    modalViewController;
-                 CountriesViewController*   countriesViewController;
-                 UITabBarController*        tabBarController;
-
-                 countriesViewController = [[CountriesViewController alloc] init];
-                 countriesViewController.isModal = YES;
-
-                 modalViewController = [[UINavigationController alloc] initWithRootViewController:countriesViewController];
-                 modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-
-                 tabBarController = [Common appDelegate].tabBarController;
-                 [tabBarController presentViewController:modalViewController
-                                                animated:YES
-                                              completion:nil];
-             }
-         }
-                             cancelButtonTitle:[CommonStrings cancelString]
-                             otherButtonTitles:buttonTitle, nil];
-
-        result = NO;
-    }
-    else if ([NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableDisconnected)
-    {
-        title = NSLocalizedStringWithDefaultValue(@"Call:Voip NotConnectedTitle", nil,
-                                                  [NSBundle mainBundle], @"No Internet Connection",
-                                                  @"Alert title informing about not being able to make a "
-                                                  @"call because not connected to internet\n"
-                                                  @"[iOS alert title size - abbreviated: 'No Internet' or "
-                                                  @"'Not Connected'].");
-
-        message = NSLocalizedStringWithDefaultValue(@"Call:Voip NotConnectedMessage", nil,
-                                                    [NSBundle mainBundle],
-                                                    @"You can't make this call because there is no internet "
-                                                    @"connection.",
-                                                    @"Alert message informing about not being able to make a "
-                                                    @"call because not connected to internet\n"
-                                                    @"[iOS alert message size]");
-
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:nil
-                             cancelButtonTitle:[CommonStrings closeString]
-                             otherButtonTitles:nil];
-    }
-    else if ([NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableCellular &&
-             [Settings sharedSettings].allowCellularDataCalls == NO)
-    {
-        title = NSLocalizedStringWithDefaultValue(@"Call:Voip DisallowCellularTitle", nil,
-                                                  [NSBundle mainBundle], @"No Cellular Data Calls",
-                                                  @"Alert title informing about not being able to make a "
-                                                  @"call over cellular data, because that's not allowed\n"
-                                                  @"[iOS alert title size - abbreviated: 'No Data Calls'].");
-
-        message = NSLocalizedStringWithDefaultValue(@"Call:Voip DisallowCellularMessage", nil,
-                                                    [NSBundle mainBundle],
-                                                    @"You can't make this call because cellular data calls "
-                                                    @"are disabled in app Settings.",
-                                                    @"Alert message informing about not being able to make a "
-                                                    @"call over cellular data, because that's not allowed\n"
-                                                    @"[iOS alert message size]");
-
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:nil
-                             cancelButtonTitle:[CommonStrings closeString]
-                             otherButtonTitles:nil];
-    }
-    else if ([NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableCaptivePortal)
-    {
-        title = NSLocalizedStringWithDefaultValue(@"Call:Voip CaptivePortalTitle", nil,
-                                                  [NSBundle mainBundle], @"Behind Captive Portal",
-                                                  @"Alert title informing about not being able to make a "
-                                                  @"call because behind a Wi-Fi captive portal\n"
-                                                  @"[iOS alert title size - abbreviated: 'Captive Portal'].");
-
-        message = NSLocalizedStringWithDefaultValue(@"Call:Voip CaptivePortalMessage", nil,
-                                                    [NSBundle mainBundle],
-                                                    @"You can't make this call because Wi-Fi is connected "
-                                                    @"to a captive portal (%@), which requires you to log in.",
-                                                    @"Alert message informing about not being able to make a "
-                                                    @"call because behind a Wi-Fi captive portal\n"
-                                                    @"[iOS alert message size]");
-        message = [NSString stringWithFormat:message, [[NetworkStatus sharedStatus] getSsid]];
-
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:nil
-                             cancelButtonTitle:[CommonStrings closeString]
-                             otherButtonTitles:nil];
-    }
-    else
-    {
-        result = YES;
-    }
-    
-    return result;
-}
-
 
 #warning I makes no sense to have messages for errors that are never used in an alert.  The current
 #warning code only shows a message when no CallViewController was shown yet: a very limited  number.
@@ -371,6 +240,212 @@ static SipInterface*    sipInterface;
 }
 
 
+- (BOOL)checkAccount
+{
+    BOOL    result;
+
+    if ([[Settings sharedSettings].webUsername length] > 0)
+    {
+        if ([[Settings sharedSettings].sipUsername length] > 0)
+        {
+            result = YES;
+        }
+        else
+        {
+            result = NO;
+        }
+    }
+    else
+    {
+        NSString*   title;
+        NSString*   message;
+
+        title = NSLocalizedStringWithDefaultValue(@"Call:Account NoAcountTitle", nil,
+                                                  [NSBundle mainBundle], @"Get An Account",
+                                                  @"Alert title telling that an account is needed "
+                                                  @"to make calls.\n"
+                                                  @"[iOS alert title size - abbreviated: 'Get Account'].");
+        message = NSLocalizedStringWithDefaultValue(@"Call:Account NoAccountMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"You can only make calls when you have an account.\n"
+                                                    @"Buy one now, or retrieve your existing account.",
+                                                    @"Alert message telling \n"
+                                                    @"[iOS alert message size]");
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+         {
+             if (!cancelled)
+             {
+                 [[PurchaseManager sharedManager] restoreCompletedTransactions:^(BOOL success, NSArray* transactions)
+                  {
+
+                  }];
+             }
+         }
+                             cancelButtonTitle:[CommonStrings cancelString]
+                             otherButtonTitles:[CommonStrings okString], nil];
+
+        result = NO;
+    }
+
+    return result;
+}
+
+
+// Checks non-emergency number.
+- (BOOL)checkPhoneNumber:(PhoneNumber*)phoneNumber
+{
+    BOOL        result;
+    NSString*   title;
+    NSString*   message;
+    NSString*   buttonTitle;
+
+    if ([[Settings sharedSettings].homeCountry length] == 0 && [phoneNumber isInternational] == NO)
+    {
+        title = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownTitle", nil,
+                                                  [NSBundle mainBundle], @"Country Unknown",
+                                                  @"Alert title informing about home country being unknown\n"
+                                                  @"[iOS alert title size].");
+
+        message = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"The country for this (local) number can't be determined. "
+                                                    @"Select the default country, or dial an international number.",
+                                                    @"Alert message informing about home country being unknown\n"
+                                                    @"[iOS alert message size]");
+
+        buttonTitle = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownButton", nil,
+                                                        [NSBundle mainBundle], @"Select",
+                                                        @"Alert button title for selecting home country\n"
+                                                        @"[iOS small alert button size]");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+         {
+             if (buttonIndex == 1)
+             {
+                 UINavigationController*    modalViewController;
+                 CountriesViewController*   countriesViewController;
+                 UITabBarController*        tabBarController;
+
+                 countriesViewController = [[CountriesViewController alloc] init];
+                 countriesViewController.isModal = YES;
+
+                 modalViewController = [[UINavigationController alloc] initWithRootViewController:countriesViewController];
+                 modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+
+                 tabBarController = [Common appDelegate].tabBarController;
+                 [tabBarController presentViewController:modalViewController
+                                                animated:YES
+                                              completion:nil];
+             }
+         }
+                             cancelButtonTitle:[CommonStrings cancelString]
+                             otherButtonTitles:buttonTitle, nil];
+
+        result = NO;
+    }
+    else
+    {
+        result = YES;
+    }
+
+    return result;
+}
+
+
+- (BOOL)checkNetwork
+{
+    BOOL        result;
+    NSString*   title;
+    NSString*   message;
+
+    if ([NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableDisconnected)
+    {
+        title = NSLocalizedStringWithDefaultValue(@"Call:Voip NotConnectedTitle", nil,
+                                                  [NSBundle mainBundle], @"No Internet Connection",
+                                                  @"Alert title informing about not being able to make a "
+                                                  @"call because not connected to internet\n"
+                                                  @"[iOS alert title size - abbreviated: 'No Internet' or "
+                                                  @"'Not Connected'].");
+
+        message = NSLocalizedStringWithDefaultValue(@"Call:Voip NotConnectedMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"You can't make this call because there is no internet "
+                                                    @"connection.",
+                                                    @"Alert message informing about not being able to make a "
+                                                    @"call because not connected to internet\n"
+                                                    @"[iOS alert message size]");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[CommonStrings closeString]
+                             otherButtonTitles:nil];
+
+        result = NO;
+    }
+    else if ([NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableCellular &&
+             [Settings sharedSettings].allowCellularDataCalls == NO)
+    {
+        title = NSLocalizedStringWithDefaultValue(@"Call:Voip DisallowCellularTitle", nil,
+                                                  [NSBundle mainBundle], @"No Cellular Data Calls",
+                                                  @"Alert title informing about not being able to make a "
+                                                  @"call over cellular data, because that's not allowed\n"
+                                                  @"[iOS alert title size - abbreviated: 'No Data Calls'].");
+
+        message = NSLocalizedStringWithDefaultValue(@"Call:Voip DisallowCellularMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"You can't make this call because cellular data calls "
+                                                    @"are disabled in app Settings.",
+                                                    @"Alert message informing about not being able to make a "
+                                                    @"call over cellular data, because that's not allowed\n"
+                                                    @"[iOS alert message size]");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[CommonStrings closeString]
+                             otherButtonTitles:nil];
+
+        result = NO;
+    }
+    else if ([NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableCaptivePortal)
+    {
+        title = NSLocalizedStringWithDefaultValue(@"Call:Voip CaptivePortalTitle", nil,
+                                                  [NSBundle mainBundle], @"Behind Captive Portal",
+                                                  @"Alert title informing about not being able to make a "
+                                                  @"call because behind a Wi-Fi captive portal\n"
+                                                  @"[iOS alert title size - abbreviated: 'Captive Portal'].");
+
+        message = NSLocalizedStringWithDefaultValue(@"Call:Voip CaptivePortalMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"You can't make this call because Wi-Fi is connected "
+                                                    @"to a captive portal (%@), which requires you to log in.",
+                                                    @"Alert message informing about not being able to make a "
+                                                    @"call because behind a Wi-Fi captive portal\n"
+                                                    @"[iOS alert message size]");
+        message = [NSString stringWithFormat:message, [[NetworkStatus sharedStatus] getSsid]];
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[CommonStrings closeString]
+                             otherButtonTitles:nil];
+        
+        result = NO;
+    }
+    else
+    {
+        result = YES;
+    }
+    
+    return result;
+}
+
+
 #pragma mark - Public API
 
 - (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity
@@ -387,69 +462,31 @@ static SipInterface*    sipInterface;
             call.network = CallNetworkMobile;
         }
     }
-    else if ([self checkPhoneNumber:phoneNumber] == YES)
+    else if ([self checkAccount] && [self checkNetwork] && [self checkPhoneNumber:phoneNumber])
     {
-        if ([[Settings sharedSettings].webUsername length] > 0)
+        call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOut];
+        call.identityNumber = identity;
+
+        NSDictionary*   tones = [[Tones sharedTones] tonesForIsoCountryCode:[phoneNumber isoCountryCode]];
+        sipInterface.louderVolume = [Settings sharedSettings].louderVolume;
+        if ([sipInterface makeCall:call tones:tones] == YES)
         {
-            if ([[Settings sharedSettings].sipUsername length] > 0)
+            callViewController = [[CallViewController alloc] initWithCall:call];
+            callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [Common.appDelegate.tabBarController presentViewController:callViewController
+                                                              animated:YES
+                                                            completion:^
             {
-                call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOut];
-                call.identityNumber = identity;
-
-                NSDictionary*   tones = [[Tones sharedTones] tonesForIsoCountryCode:[phoneNumber isoCountryCode]];
-                sipInterface.louderVolume = [Settings sharedSettings].louderVolume;
-                if ([sipInterface makeCall:call tones:tones] == YES)
+                if ([Common deviceHasReceiver] == NO)
                 {
-                    callViewController = [[CallViewController alloc] initWithCall:call];
-                    callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                    [Common.appDelegate.tabBarController presentViewController:callViewController
-                                                                      animated:YES
-                                                                    completion:^
-                     {
-                         if ([Common deviceHasReceiver] == NO)
-                         {
-                             [callViewController setSpeakerEnable:NO];
-                         }
-                     }];
+                    [callViewController setSpeakerEnable:NO];
                 }
-                else
-                {
-                    callViewController = nil;
-                    NSLog(@"//### Call failed.");
-                }
-            }
-            else
-            {
-
-            }
+            }];
         }
         else
         {
-            NSString*   title;
-            NSString*   message;
-
-            title = NSLocalizedStringWithDefaultValue(@"Call:Account NoAcountTitle", nil,
-                                                      [NSBundle mainBundle], @"Get An Account",
-                                                      @"Alert title telling that an account is needed "
-                                                      @"to make calls.\n"
-                                                      @"[iOS alert title size - abbreviated: 'Get Account'].");
-            message = NSLocalizedStringWithDefaultValue(@"Call:Account NoAccountMessage", nil,
-                                                        [NSBundle mainBundle],
-                                                        @"You can only make calls when you have an account.\n"
-                                                        @"Buy one now, and get going in a minute!",
-                                                        @"Alert message telling \n"
-                                                        @"[iOS alert message size]");
-            [BlockAlertView showAlertViewWithTitle:title
-                                           message:message
-                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
-            {
-                if (!cancelled)
-                {
-                    //###
-                }
-            }
-                                 cancelButtonTitle:[CommonStrings cancelString]
-                                 otherButtonTitles:[CommonStrings buyString], nil];
+            callViewController = nil;
+            NSLog(@"//### Call failed.");
         }
     }
 

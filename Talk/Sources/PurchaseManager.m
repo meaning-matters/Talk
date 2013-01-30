@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Cornelis van der Bent. All rights reserved.
 //
 
-#import <StoreKit/StoreKit.h>
+// Test accounts: aaa@nb.aaa Qwertu1 (aaa/bbb/ccc/ddd).
+
 #import "PurchaseManager.h"
 #import "NetworkStatus.h"
-#import "Settings.h"
 
 
 // These must match perfectly to what's in iTunesConnect for this app!
@@ -25,20 +25,26 @@ NSString* const  PurchaseManagerProductIdentifierCredit20 = PRODUCT_IDENTIFIER_B
 NSString* const  PurchaseManagerProductIdentifierCredit50 = PRODUCT_IDENTIFIER_BASE @"Credit50";
 
 
-@interface PurchaseManager () <SKProductsRequestDelegate>
+@interface PurchaseManager () <SKProductsRequestDelegate, SKPaymentTransactionObserver>
 
 @property (nonatomic, strong) NSSet*                productIdentifiers;
 @property (nonatomic, strong) SKProductsRequest*    productsRequest;
+@property (nonatomic, copy) void (^completion)(BOOL success, NSArray* transactions);
+@property (nonatomic, strong) NSMutableArray*       restoredTransactions;
 
 @end
 
 
 @implementation PurchaseManager
 
-@synthesize products            = _products;
-@synthesize currencyRate        = _currencyRate;
-@synthesize productIdentifiers  = _productIdentifiers;
-@synthesize productsRequest     = _productsRequest;
+@synthesize delegate             = _delegate;
+@synthesize products             = _products;
+@synthesize currencyRate         = _currencyRate;
+@synthesize productIdentifiers   = _productIdentifiers;
+@synthesize productsRequest      = _productsRequest;
+@synthesize completion           = _completion;
+@synthesize restoredTransactions = _restoredTransactions;
+
 
 static PurchaseManager*     sharedManager;
 
@@ -85,6 +91,9 @@ static PurchaseManager*     sharedManager;
                 [[NSNotificationCenter defaultCenter] removeObserver:observer];
             }
         }];
+
+        sharedManager.restoredTransactions = [NSMutableArray array];
+        [[SKPaymentQueue defaultQueue] addTransactionObserver:sharedManager];
     }
 }
 
@@ -116,6 +125,8 @@ static PurchaseManager*     sharedManager;
     for (SKProduct* product in self.products)
     {
         // Calculate the currency conversion rate for all Credits and take the highest.
+        // We also loop over all credit products, instead of taking just one, to prevent
+        // that this calculation break when products are disabled in iTunesConnect.
         NSRange range = [product.productIdentifier rangeOfString:@"Credit"];
         if (range.location != NSNotFound)
         {
@@ -137,6 +148,59 @@ static PurchaseManager*     sharedManager;
     NSLog(@"//### Failed to load list of products.");
     
     self.productsRequest = nil;
+}
+
+
+#pragma mark - SKPaymentTransactionObserver
+
+- (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue*)queue
+{
+    NSLog(@"paymentQueueRestoreCompletedTransactionsFinished");
+    self.completion(YES, self.restoredTransactions);
+
+    for (SKPaymentTransaction* transaction in self.restoredTransactions)
+    {
+        [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+    }
+
+    [self.restoredTransactions removeAllObjects];
+    self.completion = nil;
+}
+
+
+- (void)paymentQueue:(SKPaymentQueue*)queue restoreCompletedTransactionsFailedWithError:(NSError*)error
+{
+    NSLog(@"paymentQueueRestoreCompletedTransactionsFinished");
+    self.completion(NO, nil);
+}
+
+
+- (void)paymentQueue:(SKPaymentQueue*)queue updatedTransactions:(NSArray*)transactions
+{
+    for (SKPaymentTransaction* transaction in transactions)
+    {
+        switch (transaction.transactionState)
+        {
+            case SKPaymentTransactionStatePurchasing:
+                break;
+
+            case SKPaymentTransactionStatePurchased:
+                break;
+
+            case SKPaymentTransactionStateFailed:
+                break;
+
+            case SKPaymentTransactionStateRestored:
+                [self.restoredTransactions addObject:transactions];
+                break;
+        }
+    };
+}
+
+
+- (void)paymentQueue:(SKPaymentQueue*)queue updatedDownloads:(NSArray*)downloads
+{
+    // We don't have downloads.  (This method is required, that's the only reason it's here.)
 }
 
 
@@ -163,6 +227,14 @@ static PurchaseManager*     sharedManager;
     }
 
     return formattedString;
+}
+
+
+- (void)restoreCompletedTransactions:(void (^)(BOOL success, NSArray* transactions))completion;
+{
+    self.completion = completion;
+
+    [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
 }
 
 @end
