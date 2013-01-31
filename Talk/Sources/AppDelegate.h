@@ -21,8 +21,10 @@
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
 
-@property (nonatomic, strong) UIWindow*                     window;
-@property (nonatomic, strong) UITabBarController*           tabBarController;
+@property (nonatomic, strong) UIWindow*                                 window;
+@property (nonatomic, strong) UITabBarController*                       tabBarController;
+
+@property (nonatomic, strong) NSString*                                 deviceToken;
 
 @property (nonatomic, strong) AboutViewController*                      aboutViewController;
 @property (nonatomic, strong) CreditViewController*                     creditViewController;
@@ -41,5 +43,6 @@
 
 - (void)saveContext;
 - (NSURL*)applicationDocumentsDirectory;
++ (AppDelegate*)appDelegate;
 
 @end

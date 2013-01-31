@@ -20,7 +20,6 @@
 #import "CallViewController.h"
 #import "PurchaseManager.h"
 
-#import "WebClient.h"//### for test
 
 @interface AppDelegate ()
 {
@@ -33,6 +32,7 @@
 @implementation AppDelegate
 
 @synthesize tabBarController           = _tabBarController;
+@synthesize deviceToken                = _deviceToken;
 @synthesize aboutViewController        = _aboutViewController;
 @synthesize creditViewController       = _creditViewController;
 @synthesize dialerViewController       = _dialerViewController;
@@ -50,6 +50,11 @@
 
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+     UIRemoteNotificationTypeBadge |
+     UIRemoteNotificationTypeSound |
+     UIRemoteNotificationTypeAlert];
+    
     // Trigger singletons.
     [Skinning        sharedSkinning];
     [NetworkStatus   sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.
@@ -60,26 +65,6 @@
     // Initialize phone number stuff.
     [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
     [LibPhoneNumber sharedInstance];    // This loads the JavaScript library.
-
-    [[WebClient sharedClient] postAccounts:@{ @"receipt"           : @"1234567890",
-                                              @"mobileCountryCode" : @"206",
-                                              @"mobileNetworkCode" : @"10",
-                                              @"notificationToken" : @"0987654321",
-                                              @"deviceName"        : @"Kees' iPhone",
-                                              @"deviceOs"          : @"iPhone OS 6.0",
-                                              @"deviceModel"       : @"iPhone 5",
-                                              @"appVersion"        : @"1.0" }
-                                   success:^(AFHTTPRequestOperation* operation, id responseObject)
-     {
-         NSLog(@"SUCCESS: %@", responseObject);
-     }
-                                   failure:^(AFHTTPRequestOperation* operation, NSError* error)
-     {
-         NSLog(@"ERROR: %@", [error localizedDescription]);
-     }];
-
-    // return YES;
-
 
     //### Set current fixed SIP credentials.
     [Settings sharedSettings].sipServer   = @"178.63.93.9";
@@ -144,6 +129,19 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     [self saveContext];
+}
+
+
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)token
+{
+    NSString *string = [[token description] stringByReplacingOccurrencesOfString:@" " withString:@""];
+    self.deviceToken = [string substringWithRange:NSMakeRange(1, [string length] - 2)];   // Strip off '<' and '>'.
+}
+
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+    self.deviceToken = nil;
 }
 
 
@@ -374,6 +372,12 @@
 - (NSURL *)applicationDocumentsDirectory
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+
++ (AppDelegate*)appDelegate
+{
+    return (AppDelegate*)[UIApplication sharedApplication].delegate;
 }
 
 @end

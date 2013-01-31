@@ -793,6 +793,8 @@
 		48EDD23F1667A0B6007B89DA /* CallOptionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 48EDD23D1667A0B6007B89DA /* CallOptionButton.m */; };
 		48EE399916777EEC00823E09 /* libWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48EE399816777EEC00823E09 /* libWebRTC.a */; };
 		48EE399A16777EEC00823E09 /* libWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48EE399816777EEC00823E09 /* libWebRTC.a */; };
+		48F5D2ED16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
+		48F5D2EE16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
 		48FD99D5161855D30061191B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D4161855D30061191B /* CoreMedia.framework */; };
 		48FD99D9161855EF0061191B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D8161855EF0061191B /* AVFoundation.framework */; };
 		48FD99DB161856070061191B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99DA161856070061191B /* AudioToolbox.framework */; };
@@ -1505,6 +1507,8 @@
 		48EDD23C1667A0B6007B89DA /* CallOptionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallOptionButton.h; sourceTree = "<group>"; };
 		48EDD23D1667A0B6007B89DA /* CallOptionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallOptionButton.m; sourceTree = "<group>"; };
 		48EE399816777EEC00823E09 /* libWebRTC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWebRTC.a; path = External/WebRTC/libWebRTC.a; sourceTree = "<group>"; };
+		48F5D2EB16B9A380001576E1 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
+		48F5D2EC16B9A380001576E1 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
 		48FD99D4161855D30061191B /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		48FD99D6161855E10061191B /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		48FD99D8161855EF0061191B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -1594,6 +1598,8 @@
 		482A639A165F922E00325B3F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				48F5D2EB16B9A380001576E1 /* Base64.h */,
+				48F5D2EC16B9A380001576E1 /* Base64.m */,
 				4837BB64165F726300E46C36 /* BlockAlertView.h */,
 				4837BB65165F726300E46C36 /* BlockAlertView.m */,
 				48FD99E51618CC370061191B /* Common.h */,
@@ -1663,6 +1669,8 @@
 				4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */,
 				48CB0773163D76C300B07199 /* PhoneNumber.h */,
 				48CB0774163D76C300B07199 /* PhoneNumber.m */,
+				4895D19B16B1C4F100BCA581 /* PurchaseManager.h */,
+				4895D19C16B1C4F200BCA581 /* PurchaseManager.m */,
 				48206EF21684B0700040B04E /* RingbackTones.h */,
 				48206EF31684B0700040B04E /* RingbackTones.m */,
 				48AF457F164A45A000DFE3D8 /* Settings.h */,
@@ -1678,8 +1686,6 @@
 				485ECBDF16525D1600364F08 /* Views */,
 				48AF45591649790900DFE3D8 /* ViewControllers */,
 				48DD7283169F3C7000CD7080 /* Web API */,
-				4895D19B16B1C4F100BCA581 /* PurchaseManager.h */,
-				4895D19C16B1C4F200BCA581 /* PurchaseManager.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -3284,6 +3290,7 @@
 				48DD72D1169F56F000CD7080 /* UIImageView+AFNetworking.m in Sources */,
 				48DD72D5169F5AC600CD7080 /* WebClient.m in Sources */,
 				4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */,
+				48F5D2ED16B9A380001576E1 /* Base64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3343,6 +3350,7 @@
 				48DD72D2169F56F000CD7080 /* UIImageView+AFNetworking.m in Sources */,
 				48DD72D6169F5AC600CD7080 /* WebClient.m in Sources */,
 				4895D19E16B1C4F200BCA581 /* PurchaseManager.m in Sources */,
+				48F5D2EE16B9A380001576E1 /* Base64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3483,7 +3491,7 @@
 					"\"$(SRCROOT)/External/WebRTC\"",
 				);
 				PRODUCT_NAME = NumberBay0;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C0798B36-D1E1-45BE-8C40-FE2DA6578E04";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "54756586-D042-4801-8BDF-8BA9BA21CEE9";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

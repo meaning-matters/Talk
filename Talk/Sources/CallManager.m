@@ -17,6 +17,7 @@
 #import "CountriesViewController.h"
 #import "CallViewController.h"
 #import "Tones.h"
+#import "Base64.h"
 
 
 @interface CallManager ()
@@ -274,15 +275,16 @@ static SipInterface*    sipInterface;
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
-         {
-             if (!cancelled)
-             {
-                 [[PurchaseManager sharedManager] restoreCompletedTransactions:^(BOOL success, NSArray* transactions)
-                  {
+        {
+            if (!cancelled)
+            {
+                [[PurchaseManager sharedManager] restoreOrBuyAccount:^(BOOL success,
+                                                                       SKPaymentTransaction* transaction)
+                {
 
-                  }];
-             }
-         }
+                }];
+            }
+        }
                              cancelButtonTitle:[CommonStrings cancelString]
                              otherButtonTitles:[CommonStrings okString], nil];
 
@@ -336,7 +338,7 @@ static SipInterface*    sipInterface;
                  modalViewController = [[UINavigationController alloc] initWithRootViewController:countriesViewController];
                  modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 
-                 tabBarController = [Common appDelegate].tabBarController;
+                 tabBarController = [AppDelegate appDelegate].tabBarController;
                  [tabBarController presentViewController:modalViewController
                                                 animated:YES
                                               completion:nil];
@@ -473,9 +475,9 @@ static SipInterface*    sipInterface;
         {
             callViewController = [[CallViewController alloc] initWithCall:call];
             callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            [Common.appDelegate.tabBarController presentViewController:callViewController
-                                                              animated:YES
-                                                            completion:^
+            [AppDelegate.appDelegate.tabBarController presentViewController:callViewController
+                                                                   animated:YES
+                                                                 completion:^
             {
                 if ([Common deviceHasReceiver] == NO)
                 {

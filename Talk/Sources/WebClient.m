@@ -59,6 +59,7 @@ static WebClient*   sharedClient;
      {
          NSLog(@"getPath request: %@", operation.request.URL);
 
+#warning Can't this assignment be moved inside the if{} and test isKindOfClass on responseObject?
          NSDictionary* reponseDictionary = responseObject;
          if(responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
          {
@@ -72,7 +73,7 @@ static WebClient*   sharedClient;
              NSString*   errorDomain = [Settings sharedSettings].errorDomain;
              NSError*    error       = [NSError errorWithDomain:errorDomain code:1 userInfo:nil];
 
-             if(failure)
+             if (failure)
              {
                  failure(operation, error);
              }

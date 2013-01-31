@@ -50,8 +50,6 @@
 
 + (UIFont*)phoneFontOfSize:(CGFloat)size;
 
-+ (AppDelegate*)appDelegate;
-
 + (NSString*)stringWithOsStatus:(OSStatus)status;
 
 @end

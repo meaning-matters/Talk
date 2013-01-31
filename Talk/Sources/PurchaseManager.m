@@ -10,6 +10,9 @@
 
 #import "PurchaseManager.h"
 #import "NetworkStatus.h"
+#import "Common.h"
+#import "Base64.h"
+#import "WebClient.h"
 
 
 // These must match perfectly to what's in iTunesConnect for this app!
@@ -29,22 +32,13 @@ NSString* const  PurchaseManagerProductIdentifierCredit50 = PRODUCT_IDENTIFIER_B
 
 @property (nonatomic, strong) NSSet*                productIdentifiers;
 @property (nonatomic, strong) SKProductsRequest*    productsRequest;
-@property (nonatomic, copy) void (^completion)(BOOL success, NSArray* transactions);
+@property (nonatomic, copy) void (^accountCompletion)(BOOL success, SKPaymentTransaction* transaction);
 @property (nonatomic, strong) NSMutableArray*       restoredTransactions;
 
 @end
 
 
 @implementation PurchaseManager
-
-@synthesize delegate             = _delegate;
-@synthesize products             = _products;
-@synthesize currencyRate         = _currencyRate;
-@synthesize productIdentifiers   = _productIdentifiers;
-@synthesize productsRequest      = _productsRequest;
-@synthesize completion           = _completion;
-@synthesize restoredTransactions = _restoredTransactions;
-
 
 static PurchaseManager*     sharedManager;
 
@@ -56,6 +50,7 @@ static PurchaseManager*     sharedManager;
     if ([PurchaseManager class] == self)
     {
         sharedManager = [self new];
+        sharedManager.delegate = sharedManager; //### Do everyting in here for now.
 
         sharedManager.productIdentifiers = [NSSet setWithObjects:
                                             PurchaseManagerProductIdentifierAccount,
@@ -87,12 +82,12 @@ static PurchaseManager*     sharedManager;
 
             if (sharedManager.products != nil)
             {
-                // At subsequent time the app get connected to internet, and when products were loaded at earlier time.
+                // At subsequent time the app get connected to internet,
+                // and when products loaded & transactions restored at earlier time.
                 [[NSNotificationCenter defaultCenter] removeObserver:observer];
             }
         }];
 
-        sharedManager.restoredTransactions = [NSMutableArray array];
         [[SKPaymentQueue defaultQueue] addTransactionObserver:sharedManager];
     }
 }
@@ -115,6 +110,122 @@ static PurchaseManager*     sharedManager;
 }
 
 
+#pragma mark - Helper Methods
+
+- (SKProduct*)getProductForProductIdentifier:(NSString*)productIdentifier
+{
+    for (SKProduct* product in self.products)
+    {
+        if ([product.productIdentifier isEqualToString:productIdentifier])
+        {
+            return product;
+        }
+    }
+
+    return nil;
+}
+
+
+- (BOOL)isAccountProductIdentifier:(NSString*)productIdentifier
+{
+    return [productIdentifier isEqualToString:PurchaseManagerProductIdentifierAccount];
+}
+
+
+- (BOOL)isNumberProductIdentifier:(NSString*)productIdentifier
+{
+    return [productIdentifier isEqualToString:PurchaseManagerProductIdentifierNumber];
+}
+
+
+- (BOOL)isCreditProductIdentifier:(NSString*)productIdentifier
+{
+    return ([productIdentifier isEqualToString:PurchaseManagerProductIdentifierCredit1] ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierCredit2] ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierCredit5] ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierCredit10] ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierCredit20] ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierCredit50]);
+}
+
+
+- (float)usdCreditOfProductIdentifier:(NSString*)productIdentifier
+{
+    if ([self isCreditProductIdentifier:productIdentifier])
+    {
+        NSRange     range = [productIdentifier rangeOfString:@"Credit"];
+        NSUInteger  index = range.location + range.length;
+
+        return [[productIdentifier substringFromIndex:index] floatValue] - 0.01f;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+
+#pragma mark - PurchaseManagerDelegate
+
+- (void)processAccountTransaction:(SKPaymentTransaction*)transaction
+{
+    NSMutableDictionary*    dictionary = [NSMutableDictionary dictionary];
+
+    dictionary[@"receipt"]           = [Base64 encode:transaction.transactionReceipt];
+#warning Check that deviceToken is available!!  If not stop and report.
+    dictionary[@"notificationToken"] = [AppDelegate appDelegate].deviceToken;
+    dictionary[@"deviceName"]        = [UIDevice currentDevice].name;
+    dictionary[@"deviceOs"]          = [NSString stringWithFormat:@"%@ %@",
+                                        [UIDevice currentDevice].systemName,
+                                        [UIDevice currentDevice].systemVersion];
+    dictionary[@"deviceModel"]       = [UIDevice currentDevice].model;
+    dictionary[@"appVersion"]        = [Common bundleVersion];
+
+    if ([NetworkStatus sharedStatus].simMobileCountryCode != nil)
+    {
+        dictionary[@"mobileCountryCode"] = [NetworkStatus sharedStatus].simMobileCountryCode;
+    }
+
+    if ([NetworkStatus sharedStatus].simMobileNetworkCode != nil)
+    {
+        dictionary[@"mobileNetworkCode"] = [NetworkStatus sharedStatus].simMobileNetworkCode;
+    }
+
+    [[WebClient sharedClient] postAccounts:dictionary
+                                   success:^(AFHTTPRequestOperation* operation, id responseObject)
+    {
+        [self finishTransaction:transaction];
+        self.accountCompletion(YES, transaction);
+        self.accountCompletion = nil;
+        NSLog(@"SUCCESS: %@", responseObject);
+    }
+                                   failure:^(AFHTTPRequestOperation* operation, NSError* error)
+    {
+        self.accountCompletion(NO, nil);
+        self.accountCompletion = nil;
+        NSLog(@"ERROR: %@", [error localizedDescription]);
+    }];
+}
+
+
+- (void)purchaseManager:(PurchaseManager*)purchaseManager processNumberTransaction:(SKPaymentTransaction*)transaction
+{
+    [purchaseManager finishTransaction:transaction];
+}
+
+
+- (void)purchaseManager:(PurchaseManager*)purchaseManager processCreditTransaction:(SKPaymentTransaction*)transaction
+{
+    [purchaseManager finishTransaction:transaction];
+}
+
+
+- (void)purchaseManager:(PurchaseManager*)purchaseManager restoreNumberTransaction:(SKPaymentTransaction*)transaction
+{
+    [purchaseManager finishTransaction:transaction];
+}
+
+
 #pragma mark - SKProductsRequestDelegate
 
 - (void)productsRequest:(SKProductsRequest*)request didReceiveResponse:(SKProductsResponse*)response
@@ -126,12 +237,10 @@ static PurchaseManager*     sharedManager;
     {
         // Calculate the currency conversion rate for all Credits and take the highest.
         // We also loop over all credit products, instead of taking just one, to prevent
-        // that this calculation break when products are disabled in iTunesConnect.
-        NSRange range = [product.productIdentifier rangeOfString:@"Credit"];
-        if (range.location != NSNotFound)
+        // that this calculation break when products are disabled in iTunesConnect.        
+        if ([self isCreditProductIdentifier:product.productIdentifier])
         {
-            NSUInteger  index = range.location + range.length;
-            float       usdPrice = [[product.productIdentifier substringFromIndex:index] floatValue] - 0.01f;
+            float       usdPrice = [self usdCreditOfProductIdentifier:product.productIdentifier];
             float       rate = product.price.doubleValue / usdPrice;
 
             if (self.currencyRate == 0 || rate > self.currencyRate)
@@ -154,24 +263,45 @@ static PurchaseManager*     sharedManager;
 #pragma mark - SKPaymentTransactionObserver
 
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue*)queue
-{
+{    
     NSLog(@"paymentQueueRestoreCompletedTransactionsFinished");
-    self.completion(YES, self.restoredTransactions);
+    SKPaymentTransaction*   accountTransaction = nil;
 
     for (SKPaymentTransaction* transaction in self.restoredTransactions)
     {
-        [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+        if ([self isAccountProductIdentifier:transaction.payment.productIdentifier])
+        {
+            accountTransaction = transaction;
+        }
+        else if ([self isNumberProductIdentifier:transaction.payment.productIdentifier])
+        {
+            [self.delegate purchaseManager:self restoreNumberTransaction:transaction];
+        }
+        else
+        {
+            NSLog(@"//### Encountered unexpected restored transaction: %@.", transaction.payment.productIdentifier);
+        }
     }
 
-    [self.restoredTransactions removeAllObjects];
-    self.completion = nil;
+    if (accountTransaction != nil)
+    {
+        [self processAccountTransaction:accountTransaction];
+    }
+    else if (self.accountCompletion != nil)
+    {
+        [self buyProductIdentifier:PurchaseManagerProductIdentifierAccount];
+    }
 }
 
 
 - (void)paymentQueue:(SKPaymentQueue*)queue restoreCompletedTransactionsFailedWithError:(NSError*)error
 {
-    NSLog(@"paymentQueueRestoreCompletedTransactionsFinished");
-    self.completion(NO, nil);
+    NSLog(@"restoreCompletedTransactionsFailedWithError: %@", [error localizedDescription]);
+
+    self.accountCompletion(NO, nil);
+    
+    self.restoredTransactions = nil;
+    self.accountCompletion    = nil;
 }
 
 
@@ -182,16 +312,45 @@ static PurchaseManager*     sharedManager;
         switch (transaction.transactionState)
         {
             case SKPaymentTransactionStatePurchasing:
+                NSLog(@"//### Busy purchasing.");
                 break;
 
             case SKPaymentTransactionStatePurchased:
+                if ([self isAccountProductIdentifier:transaction.payment.productIdentifier])
+                {
+                    [self processAccountTransaction:transaction];
+                }
+                else if ([self isNumberProductIdentifier:transaction.payment.productIdentifier])
+                {
+                    [self purchaseManager:self processNumberTransaction:transaction];
+                }
+                else if ([self isCreditProductIdentifier:transaction.payment.productIdentifier])
+                {
+                    [self purchaseManager:self processCreditTransaction:transaction];
+                }
                 break;
 
             case SKPaymentTransactionStateFailed:
+#warning //### Assume that this is only for purchase, and never happens for restore.  I asked dev forums.
+                NSLog(@"//###  Transaction failed: %@.", transaction.payment.productIdentifier);
+                if ([self isAccountProductIdentifier:transaction.payment.productIdentifier] &&
+                    self.accountCompletion != nil)
+                {
+                    self.accountCompletion(NO, nil);
+                    self.accountCompletion = nil;
+                }
+                
+                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 break;
 
             case SKPaymentTransactionStateRestored:
-                [self.restoredTransactions addObject:transactions];
+                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];  // Finish multiple times is allowed.
+                if (self.restoredTransactions == nil)
+                {
+                    self.restoredTransactions = [NSMutableArray array];
+                }
+                
+                [self.restoredTransactions addObject:transaction];
                 break;
         }
     };
@@ -218,7 +377,7 @@ static PurchaseManager*     sharedManager;
         [numberFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
         [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
         [numberFormatter setLocale:((SKProduct*)self.products[0]).priceLocale];
-        
+
         formattedString = [numberFormatter stringFromNumber:@(usdPrice * self.currencyRate)];
     }
     else
@@ -230,11 +389,42 @@ static PurchaseManager*     sharedManager;
 }
 
 
-- (void)restoreCompletedTransactions:(void (^)(BOOL success, NSArray* transactions))completion;
+- (void)restoreOrBuyAccount:(void (^)(BOOL success, SKPaymentTransaction* transaction))completion;
 {
-    self.completion = completion;
+    if (self.accountCompletion != nil)
+    {
+        completion(NO, nil);
+        
+        return;
+    }
+
+    self.accountCompletion = completion;
 
     [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
+}
+
+
+- (BOOL)buyProductIdentifier:(NSString*)productIdentifier
+{
+    SKProduct* product = [self getProductForProductIdentifier:productIdentifier];
+
+    if (product != nil)
+    {
+        SKPayment*  payment = [SKPayment paymentWithProduct:product];
+        [[SKPaymentQueue defaultQueue] addPayment:payment];
+
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}
+
+
+- (void)finishTransaction:(SKPaymentTransaction*)transaction
+{
+    [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
 }
 
 @end

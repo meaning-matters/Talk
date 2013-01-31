@@ -12,17 +12,14 @@
 
 @class PurchaseManager;
 
+// Delegate methods must call finishTransaction: when successful!
 @protocol PurchaseManagerDelegate <NSObject>
 
-- (BOOL)purchaseManager:(PurchaseManager*)purchaseManager processAccountTransaction:(SKPaymentTransaction*)transaction;
+- (void)purchaseManager:(PurchaseManager*)purchaseManager processNumberTransaction:(SKPaymentTransaction*)transaction;
 
-- (BOOL)purchaseManager:(PurchaseManager*)purchaseManager processNumberTransaction:(SKPaymentTransaction*)transaction;
+- (void)purchaseManager:(PurchaseManager*)purchaseManager processCreditTransaction:(SKPaymentTransaction*)transaction;
 
-- (BOOL)purchaseManager:(PurchaseManager*)purchaseManager processCreditTransaction:(SKPaymentTransaction*)transaction;
-
-- (BOOL)purchaseManager:(PurchaseManager*)purchaseManager restoreAccountTransaction:(SKPaymentTransaction*)transaction;
-
-- (BOOL)purchaseManager:(PurchaseManager*)purchaseManager restoreNumberTransaction:(SKPaymentTransaction*)transaction;
+- (void)purchaseManager:(PurchaseManager*)purchaseManager restoreNumberTransaction:(SKPaymentTransaction*)transaction;
 
 @end
 
@@ -37,7 +34,7 @@ extern NSString* const  PurchaseManagerProductIdentifierCredit20;
 extern NSString* const  PurchaseManagerProductIdentifierCredit50;
 
 
-@interface PurchaseManager : NSObject
+@interface PurchaseManager : NSObject <PurchaseManagerDelegate>
 
 @property (nonatomic, assign) id<PurchaseManagerDelegate>   delegate;
 @property (nonatomic, strong) NSArray*                      products;
@@ -48,6 +45,10 @@ extern NSString* const  PurchaseManagerProductIdentifierCredit50;
 
 - (NSString*)localizedFormattedPrice:(float)usdPrice;
 
-- (void)restoreCompletedTransactions:(void (^)(BOOL success, NSArray* transactions))completion;
+- (void)restoreOrBuyAccount:(void (^)(BOOL success, SKPaymentTransaction* transaction))completion;
+
+- (BOOL)buyProductIdentifier:(NSString*)productIdentifier;
+
+- (void)finishTransaction:(SKPaymentTransaction*)transaction;
 
 @end

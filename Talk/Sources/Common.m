@@ -197,12 +197,6 @@
 }
 
 
-+ (AppDelegate*)appDelegate
-{
-    return (AppDelegate*)[UIApplication sharedApplication].delegate;
-}
-
-
 + (NSString*)stringWithOsStatus:(OSStatus)status
 {
     char    error[sizeof(OSStatus) + 1];
