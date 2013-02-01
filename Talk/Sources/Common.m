@@ -9,6 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
 #import <objc/message.h>
+#import <sys/utsname.h>
 #import "Common.h"
 
 
@@ -121,6 +122,17 @@
 + (BOOL)deviceHasReceiver
 {
     return [[UIDevice currentDevice].model isEqualToString:@"iPhone"];
+}
+
+
+// Add: http://stackoverflow.com/questions/1108859/detect-the-specific-iphone-ipod-touch-model
++ (NSString*)deviceModel
+{
+    struct utsname  systemInfo;
+
+    uname(&systemInfo);
+
+    return [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
 }
 
 

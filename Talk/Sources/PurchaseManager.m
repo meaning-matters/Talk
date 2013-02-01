@@ -180,7 +180,7 @@ static PurchaseManager*     sharedManager;
     dictionary[@"deviceOs"]          = [NSString stringWithFormat:@"%@ %@",
                                         [UIDevice currentDevice].systemName,
                                         [UIDevice currentDevice].systemVersion];
-    dictionary[@"deviceModel"]       = [UIDevice currentDevice].model;
+    dictionary[@"deviceModel"]       = [Common deviceModel];
     dictionary[@"appVersion"]        = [Common bundleVersion];
 
     if ([NetworkStatus sharedStatus].simMobileCountryCode != nil)

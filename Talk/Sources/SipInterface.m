@@ -53,7 +53,7 @@
     NSMutableArray*         calls;
     Call*                   currentCall;
 
-    pjsua_config	    config;
+    pjsua_config            config;
     pjsua_logging_config    log_cfg;
     pjsua_media_config	    media_cfg;
     pjsua_acc_config	    account_config;
@@ -66,19 +66,19 @@
 
     pj_pool_t*              pool;
 
-    unsigned		    tone_count;
+    unsigned                tone_count;
     pjmedia_tone_desc	    tones[32];
     pjsua_conf_port_id	    tone_slots[32];
-    unsigned		    auto_answer;
-    unsigned		    duration;
+    unsigned                auto_answer;
+    unsigned                duration;
 
-    int			    ringback_slot;
+    int                     ringback_slot;
     pjmedia_port*           ringback_port;
-    int			    busy_slot;
+    int                     busy_slot;
     pjmedia_port*           busy_port;
-    int			    congestion_slot;
+    int                     congestion_slot;
     pjmedia_port*           congestion_port;
-    int			    ring_slot;
+    int                     ring_slot;
     pjmedia_port*           ring_port;
 }
 
@@ -291,6 +291,11 @@ void showLog(int level, const char* data, int len)
 #error SRTP is required.
 #endif
     config.use_srtp = PJMEDIA_SRTP_MANDATORY;
+
+    // Make that PJSIP uses it's own DNS resolver; to avoid blocking of iOS gethostbyname() implementation.
+    pj_cstr(&(config.nameserver[0]), "8.8.8.8");    // https://developers.google.com/speed/public-dns/docs/using.
+    pj_cstr(&(config.nameserver[1]), "8.8.4.4");    // https://developers.google.com/speed/public-dns/docs/using
+    config.nameserver_count = 2;
 
     media_cfg.no_vad = PJ_TRUE;
 
