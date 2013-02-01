@@ -11,6 +11,8 @@
 #import <objc/message.h>
 #import <sys/utsname.h>
 #import "Common.h"
+#import "CommonStrings.h"
+#import "BlockAlertView.h"
 
 
 @implementation Common
@@ -217,6 +219,41 @@
     error[sizeof(OSStatus)] = '\0';
 
     return [NSString stringWithFormat:@"%s", error];
+}
+
+
++ (BOOL)checkRemoteNotifications
+{
+    UIRemoteNotificationType notificationTypes = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+    if (!(notificationTypes & UIRemoteNotificationTypeAlert) || !(notificationTypes & UIRemoteNotificationTypeBadge))
+    {
+        NSString*   title;
+        NSString*   message;
+
+        title = NSLocalizedStringWithDefaultValue(@"General:AppStatus NoNotificationsTitle", nil,
+                                                  [NSBundle mainBundle], @"Notications Disabled",
+                                                  @"Alert title telling that required notifications are disabled.\n"
+                                                  @"[iOS alert title size - abbreviated: 'Can't Pay'].");
+        message = NSLocalizedStringWithDefaultValue(@"General:AppStatus NoNotificationsMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"At least alert and badge notifications must be enabled.\n"
+                                                    @"Go to iOS Settings > Notifications > %@.",
+                                                    @"Alert message telling that required notifications are disabled.\n"
+                                                    @"[iOS alert message size - use correct iOS terms for: Settings "
+                                                    @"and Notifications!]");
+        message = [NSString stringWithFormat:message, [Common bundleName]];
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[CommonStrings closeString]
+                             otherButtonTitles:nil];
+
+        return NO;
+    }
+    else
+    {
+        return YES;
+    }
 }
 
 @end

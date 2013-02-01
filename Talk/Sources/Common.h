@@ -51,4 +51,6 @@
 
 + (NSString*)stringWithOsStatus:(OSStatus)status;
 
++ (BOOL)checkRemoteNotifications;
+
 @end

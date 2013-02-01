@@ -400,6 +400,17 @@ static PurchaseManager*     sharedManager;
         return;
     }
 
+    if ([Common checkRemoteNotifications] == NO)
+    {
+        return;
+    }
+    else if ([[AppDelegate appDelegate].deviceToken length] == 0)
+    {
+        NSLog(@"//### Device token not available (yet).");
+
+        return;
+    }
+
     self.accountCompletion = completion;
 
     [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
@@ -429,14 +440,14 @@ static PurchaseManager*     sharedManager;
         NSString*   title;
         NSString*   message;
 
-        title = NSLocalizedStringWithDefaultValue(@"Purchase:Buy CantPurchaseTitle", nil,
+        title = NSLocalizedStringWithDefaultValue(@"Purchase:General CantPurchaseTitle", nil,
                                                   [NSBundle mainBundle], @"Can't Make Purchases",
                                                   @"Alert title telling in-app purchases are disabled.\n"
                                                   @"[iOS alert title size - abbreviated: 'Can't Pay'].");
-        message = NSLocalizedStringWithDefaultValue(@"Purchase:Buy CantPurchaseMessage", nil,
+        message = NSLocalizedStringWithDefaultValue(@"Purchase:General CantPurchaseMessage", nil,
                                                     [NSBundle mainBundle],
                                                     @"In-app purchases are disabled.\n"
-                                                    @"To enable, go to iOS Settings -> General -> Restrictions.",
+                                                    @"To enable, go to iOS Settings > General > Restrictions.",
                                                     @"Alert message telling that in-app purchases are disabled.\n"
                                                     @"[iOS alert message size - use correct iOS terms for: Settings, "
                                                     @"General and Restrictions!]");
