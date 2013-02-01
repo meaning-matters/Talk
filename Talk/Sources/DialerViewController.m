@@ -190,6 +190,9 @@
 
 - (void)updateReachable
 {
+    BOOL    hasAccount = [[Settings sharedSettings].webUsername length] > 0 &&
+                         [[Settings sharedSettings].sipUsername length] > 0;
+
     switch ([NetworkStatus sharedStatus].reachableStatus)
     {
         case NetworkStatusReachableDisconnected:
@@ -197,11 +200,11 @@
             break;
 
         case NetworkStatusReachableCellular:
-            self.keypadView.keyCallButton.selected = [Settings sharedSettings].allowCellularDataCalls;
+            self.keypadView.keyCallButton.selected = hasAccount && [Settings sharedSettings].allowCellularDataCalls;
             break;
 
         case NetworkStatusReachableWifi:
-            self.keypadView.keyCallButton.selected = YES;
+            self.keypadView.keyCallButton.selected = hasAccount;
             break;
 
         case NetworkStatusReachableCaptivePortal:
