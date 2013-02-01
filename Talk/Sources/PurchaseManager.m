@@ -11,6 +11,8 @@
 #import "PurchaseManager.h"
 #import "NetworkStatus.h"
 #import "Common.h"
+#import "CommonStrings.h"
+#import "BlockAlertView.h"
 #import "Base64.h"
 #import "WebClient.h"
 
@@ -406,17 +408,44 @@ static PurchaseManager*     sharedManager;
 
 - (BOOL)buyProductIdentifier:(NSString*)productIdentifier
 {
-    SKProduct* product = [self getProductForProductIdentifier:productIdentifier];
-
-    if (product != nil)
+    if ([SKPaymentQueue canMakePayments])
     {
-        SKPayment*  payment = [SKPayment paymentWithProduct:product];
-        [[SKPaymentQueue defaultQueue] addPayment:payment];
+        SKProduct* product = [self getProductForProductIdentifier:productIdentifier];
 
-        return YES;
+        if (product != nil)
+        {
+            SKPayment*  payment = [SKPayment paymentWithProduct:product];
+            [[SKPaymentQueue defaultQueue] addPayment:payment];
+
+            return YES;
+        }
+        else
+        {
+            return NO;
+        }
     }
     else
     {
+        NSString*   title;
+        NSString*   message;
+
+        title = NSLocalizedStringWithDefaultValue(@"Purchase:Buy CantPurchaseTitle", nil,
+                                                  [NSBundle mainBundle], @"Can't Make Purchases",
+                                                  @"Alert title telling in-app purchases are disabled.\n"
+                                                  @"[iOS alert title size - abbreviated: 'Can't Pay'].");
+        message = NSLocalizedStringWithDefaultValue(@"Purchase:Buy CantPurchaseMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"In-app purchases are disabled.\n"
+                                                    @"To enable, go to iOS Settings -> General -> Restrictions.",
+                                                    @"Alert message telling that in-app purchases are disabled.\n"
+                                                    @"[iOS alert message size - use correct iOS terms for: Settings, "
+                                                    @"General and Restrictions!]");
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[CommonStrings closeString]
+                             otherButtonTitles:nil];
+
         return NO;
     }
 }

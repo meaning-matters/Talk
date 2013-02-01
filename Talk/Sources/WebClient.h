@@ -8,6 +8,24 @@
 
 #import "AFHTTPClient.h"
 
+
+typedef enum
+{
+    WebClientStatusOk,
+    WebClientStatusFailMissingField,
+    WebClientStatusFailInvalidField,
+    WebClientStatusFailInternalServer,
+    WebClientStatusFailServiceUnavailable,
+    WebClientStatusFailInvalidReceipt,
+    WebClientStatusFailUnknownMcc,
+    WebClientStatusFailUnknownMnc,
+    WebClientStatusFailDeviceNameNotUnique,
+    WebClientStatusFailNoStatesForCountry,
+    WebClientStatusFailInvalidInfo,
+    WebClientStatusFailDataTooLarge,
+} WebClientStatus;
+
+
 @interface WebClient : AFHTTPClient
 
 + (WebClient*)sharedClient;
