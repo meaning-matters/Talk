@@ -23,21 +23,6 @@
 
 @implementation CallViewController
 
-@synthesize calls               = _calls;
-@synthesize backgroundImageView = _backgroundImageView;
-@synthesize topView             = _topView;
-@synthesize centerRootView      = _centerRootView;
-@synthesize bottomView          = _bottomView;
-@synthesize topImageView        = _topImageView;
-@synthesize bottomImageView     = _bottomImageView;
-@synthesize infoLabel           = _infoLabel;
-@synthesize calleeLabel         = _calleeLabel;
-@synthesize dtmfLabel           = _dtmfLabel;
-@synthesize statusLabel         = _statusLabel;
-@synthesize endButton           = _endButton;
-@synthesize hideButton          = _hideButton;
-
-
 - (id)init
 {
     if (self = [super initWithNibName:@"CallView" bundle:nil])

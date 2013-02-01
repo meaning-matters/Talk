@@ -10,23 +10,6 @@
 
 @implementation Call
 
-@synthesize phoneNumber      = _phoneNumber;
-@synthesize calledNumber     = _calledNumber;
-@synthesize identityNumber   = _identityNumber;
-@synthesize abRecordId       = _abRecordId;
-@synthesize beginDate        = _beginDate;
-@synthesize connectDate      = _connectDate;
-@synthesize endDate          = _endDate;
-@synthesize state            = _state;
-@synthesize direction        = _direction;
-@synthesize network          = _network;
-@synthesize callId           = _callId;
-@synthesize ringbackToneOn   = _ringbackToneOn;
-@synthesize busyToneOn       = _busyToneOn;
-@synthesize congestionToneOn = _congestionToneOn;
-@synthesize ringToneOn       = _ringToneOn;
-
-
 - (id)initWithPhoneNumber:(PhoneNumber*)phoneNumber direction:(CallDirection)direction
 {
     if (self = [super init])

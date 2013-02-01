@@ -17,9 +17,6 @@
 
 @implementation BlockAlertView
 
-@synthesize completion = _completion;
-
-
 + (BlockAlertView*)showAlertViewWithTitle:(NSString*)title
                                   message:(NSString*)message
                                completion:(void (^)(BOOL cancelled, NSInteger buttonIndex))completion

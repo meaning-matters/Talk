@@ -40,21 +40,6 @@ NSString* const LouderVolumeKey                = @"LouderVolume";
 static Settings*        sharedSettings;
 static NSUserDefaults*  userDefaults;
 
-@synthesize tabBarViewControllerClasses = _tabBarViewControllerClasses;
-@synthesize errorDomain                 = _errorDomain;
-@synthesize homeCountry                 = _homeCountry;
-@synthesize homeCountryFromSim          = _homeCountryFromSim;
-@synthesize lastDialedNumber            = _lastDialedNumber;
-@synthesize webBaseUrl                  = _webBaseUrl;
-@synthesize webUsername                 = _webUsername;
-@synthesize webPassword                 = _webPassword;
-@synthesize sipServer                   = _sipServer;
-@synthesize sipRealm                    = _sipRealm;
-@synthesize sipUsername                 = _sipUsername;
-@synthesize sipPassword                 = _sipPassword;
-@synthesize allowCellularDataCalls      = _allowCellularDataCalls;
-@synthesize louderVolume                = _louderVolume;
-
 
 #pragma mark - Singleton Stuff
 

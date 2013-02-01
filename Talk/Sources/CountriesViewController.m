@@ -24,10 +24,6 @@
 
 @implementation CountriesViewController
 
-@synthesize tableView = _tableView;
-@synthesize isModal   = _isModal;
-
-
 - (id)init
 {
     if (self = [super initWithNibName:@"CountriesView" bundle:nil])

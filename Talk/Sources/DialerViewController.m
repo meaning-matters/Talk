@@ -27,10 +27,6 @@
 @implementation DialerViewController
 
 @synthesize keypadView  = _keypadView;
-@synthesize infoLabel   = _infoLabel;
-@synthesize numberLabel = _numberLabel;
-@synthesize nameLabel   = _nameLabel;
-
 
 - (id)init
 {

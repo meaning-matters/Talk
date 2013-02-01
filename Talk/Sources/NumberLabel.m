@@ -10,9 +10,6 @@
 
 @implementation NumberLabel
 
-@synthesize delegate = _delegate;
-
-
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super initWithCoder:aDecoder])

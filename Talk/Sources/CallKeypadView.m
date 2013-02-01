@@ -11,22 +11,6 @@
 
 @implementation CallKeypadView
 
-@synthesize view          = _view;
-@synthesize key1Button    = _key1Button;
-@synthesize key2Button    = _key2Button;
-@synthesize key3Button    = _key3Button;
-@synthesize key4Button    = _key4Button;
-@synthesize key5Button    = _key5Button;
-@synthesize key6Button    = _key6Button;
-@synthesize key7Button    = _key7Button;
-@synthesize key8Button    = _key8Button;
-@synthesize key9Button    = _key9Button;
-@synthesize keyStarButton = _keyStarButton;
-@synthesize key0Button    = _key0Button;
-@synthesize keyHashButton = _keyHashButton;
-@synthesize delegate      = _delegate;
-
-
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame])

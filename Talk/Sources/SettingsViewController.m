@@ -33,8 +33,6 @@ typedef enum
 
 @implementation SettingsViewController
 
-@synthesize tableView = _tableView;
-
 #pragma mark - Basic Stuff
 
 - (id)init

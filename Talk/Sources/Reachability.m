@@ -59,13 +59,6 @@ static void TMReachabilityCallback(SCNetworkReachabilityRef   target,
 
 @implementation Reachability
 
-@synthesize reachabilityRef         = _reachabilityRef;
-@synthesize reachabilitySerialQueue = _reachabilitySerialQueue;
-@synthesize reachableBlock          = _reachableBlock;
-@synthesize unreachableBlock        = _unreachableBlock;
-@synthesize reachabilityObject      = _reachabilityObject;
-
-
 #pragma mark - Constructor Methods
 
 + (Reachability*)reachabilityWithHostname:(NSString*)hostname

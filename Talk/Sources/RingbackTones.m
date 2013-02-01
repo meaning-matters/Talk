@@ -18,9 +18,6 @@ static RingbackTones*   sharedTones;
 
 #pragma mark - Singleton Stuff
 
-@synthesize tonesDictionary = _tonesDictionary;
-
-
 + (void)initialize
 {
     if ([RingbackTones class] == self)

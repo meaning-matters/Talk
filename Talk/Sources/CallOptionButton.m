@@ -11,9 +11,6 @@
 
 @implementation CallOptionButton
 
-@synthesize on = _on;
-
-
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame])

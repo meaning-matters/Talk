@@ -23,9 +23,6 @@ static CountryNames*    sharedNames;
 
 #pragma mark - Singleton Stuff
 
-@synthesize namesDictionary = _namesDictionary;
-
-
 + (void)initialize
 {
     if ([CountryNames class] == self)

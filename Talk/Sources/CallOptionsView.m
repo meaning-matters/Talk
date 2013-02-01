@@ -30,19 +30,6 @@
 
 @implementation CallOptionsView
 
-@synthesize view          = _view;
-@synthesize muteButton    = _muteButton;
-@synthesize keypadButton  = _keypadButton;
-@synthesize speakerButton = _speakerButton;
-@synthesize addButton     = _addButton;
-@synthesize holdButton    = _holdButton;
-@synthesize groupsButton  = _groupsButton;
-@synthesize delegate      = _delegate;
-@synthesize onMute        = _onMute;
-@synthesize onHold        = _onHold;
-@synthesize onSpeaker     = _onSpeaker;
-
-
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame])

@@ -13,11 +13,7 @@
 
 @implementation PhoneNumber
 
-@synthesize baseIsoCountryCode   = _baseIsoCountryCode;
-@synthesize numberIsoCountryCode = _numberIsoCountryCode;
-@synthesize number               = _number;
-
-static NSString*        defaultBaseIsoCountryCode;
+static NSString*    defaultBaseIsoCountryCode;
 
 
 + (void)setDefaultBaseIsoCountryCode:(NSString*)isoCountryCode

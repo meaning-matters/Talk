@@ -17,9 +17,6 @@ static Tones*   sharedTones;
 
 #pragma mark - Singleton Stuff
 
-@synthesize tonesDictionary = _tonesDictionary;
-
-
 + (void)initialize
 {
     if ([Tones class] == self)

@@ -140,13 +140,7 @@ void showLog(int level, const char* data, int len)
 
 @implementation SipInterface
 
-@synthesize delegate        = _delegate;
-@synthesize realm           = _realm;
-@synthesize server          = _server;
-@synthesize username        = _username;
-@synthesize password        = _password;
-@synthesize louderVolume    = _louderVolume;
-@synthesize registered      = _registered;
+@synthesize registered = _registered;
 
 
 #pragma mark - Initialization

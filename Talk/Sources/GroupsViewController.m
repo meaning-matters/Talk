@@ -32,8 +32,6 @@
 
 @implementation GroupsViewController
 
-@synthesize textField = _textField;
-
 - (id)init
 {
     if (self = [super initWithNibName:@"GroupsView" bundle:nil])

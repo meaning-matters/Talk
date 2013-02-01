@@ -31,18 +31,6 @@
 
 @implementation AppDelegate
 
-@synthesize tabBarController           = _tabBarController;
-@synthesize deviceToken                = _deviceToken;
-@synthesize aboutViewController        = _aboutViewController;
-@synthesize creditViewController       = _creditViewController;
-@synthesize dialerViewController       = _dialerViewController;
-@synthesize forwardingsViewController  = _forwardingsViewController;
-@synthesize groupsViewController       = _groupsViewController;
-@synthesize helpViewController         = _helpViewController;
-@synthesize numbersViewController      = _numbersViewController;
-@synthesize recentsViewController      = _recentsViewController;
-@synthesize shareViewController        = _shareViewController;
-@synthesize settingsViewController     = _settingsViewController;
 @synthesize managedObjectContext       = _managedObjectContext;
 @synthesize managedObjectModel         = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
