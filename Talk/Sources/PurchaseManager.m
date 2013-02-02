@@ -204,6 +204,31 @@ static PurchaseManager*     sharedManager;
             self.accountCompletion = nil;
             NSLog(@"SUCCESS: %@", content);
         }
+        else if (status == WebClientStatusFailDeviceNameNotUnique)
+        {
+            NSString*   title;
+            NSString*   message;
+
+            title = NSLocalizedStringWithDefaultValue(@"Purchase:General DeviceNameNotUniqueTitle", nil,
+                                                      [NSBundle mainBundle], @"Device Name Not Unique",
+                                                      @"Alert title telling that the name of the device is already in "
+                                                      @"use\n[iOS alert title size - abbreviated: 'Can't Pay'].");
+            message = NSLocalizedStringWithDefaultValue(@"Purchase:General DeviceNameNotUniqueMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"The name of this device '%@' is already in use.\n"
+                                                        @"Connect the device to your computer, go to its "
+                                                        @"Summary in iTunes, and tap on the name to change it.",
+                                                        @"Alert message telling that name of device is already in use.\n"
+                                                        @"[iOS alert message size - use correct terms for: iTunes and "
+                                                        @"Summary!]");
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:nil
+                                 cancelButtonTitle:[CommonStrings closeString]
+                                 otherButtonTitles:nil];
+            
+            self.accountCompletion(NO, nil);    // With nil as object, no additional alert will be shown.
+        }
         else
         {
             // If this was a restored transaction, it already been 'finished' in updatedTransactions:.
