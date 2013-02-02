@@ -219,10 +219,10 @@
 
 - (void)tabBarController:(UITabBarController*)tabBarController willBeginCustomizingViewControllers:(NSArray*)viewControllers
 {
-    id customizeView = [[[tabBarController view] subviews] objectAtIndex:1];
+    id customizeView = [[tabBarController view] subviews][1];
     if([customizeView isKindOfClass:NSClassFromString(@"UITabBarCustomizeView")] == YES)
     {
-        UINavigationBar*    navigationBar = (UINavigationBar*)[[customizeView subviews] objectAtIndex:0];
+        UINavigationBar*    navigationBar = (UINavigationBar*)[customizeView subviews][0];
         if ([navigationBar isKindOfClass:[UINavigationBar class]])
         {
             navigationBar.topItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemUndo

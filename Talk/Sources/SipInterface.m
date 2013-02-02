@@ -182,7 +182,7 @@ void showLog(int level, const char* data, int len)
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification* note)
         {
-            NetworkStatusMobileCall status = [[note.userInfo objectForKey:@"status"] intValue];
+            NetworkStatusMobileCall status = [note.userInfo[@"status"] intValue];
             if (status == NetworkStatusMobileCallIncoming)
             {
                 // Set all calls on hold.

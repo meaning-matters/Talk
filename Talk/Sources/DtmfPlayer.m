@@ -37,7 +37,7 @@ static DtmfPlayer*  sharedPlayer;
 
     if (error == nil && data != nil)
     {
-        [sharedPlayer->audioDataObjects setObject:data forKey:[NSString stringWithFormat:@"%c", character]];
+        sharedPlayer->audioDataObjects[[NSString stringWithFormat:@"%c", character]] = data;
 
         return YES;
     }
@@ -121,7 +121,7 @@ static DtmfPlayer*  sharedPlayer;
             NSData*                 data;
             NSError*                error = nil;
 
-            data = [audioDataObjects objectForKey:[NSString stringWithFormat:@"%c", '0']];
+            data = audioDataObjects[[NSString stringWithFormat:@"%c", '0']];
             audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:&error];
             audioPlayer.volume= 0.00001f;
 
@@ -138,7 +138,7 @@ static DtmfPlayer*  sharedPlayer;
         NSData*                 data;
         NSError*                error = nil;
 
-        data = [audioDataObjects objectForKey:[NSString stringWithFormat:@"%c", character]];
+        data = audioDataObjects[[NSString stringWithFormat:@"%c", character]];
         audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:&error];
         audioPlayer.volume = 0.02f;
         [audioPlayer play];

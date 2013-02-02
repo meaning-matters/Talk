@@ -46,7 +46,7 @@
             else
             {
                 indexArray = [NSMutableArray array];
-                [nameIndexDictionary setObject:indexArray forKey:nameIndex];
+                nameIndexDictionary[nameIndex] = indexArray;
                 [indexArray addObject:name];
             }
         }
@@ -54,7 +54,7 @@
         nameIndexArray = [[nameIndexDictionary allKeys] sortedArrayUsingSelector:@selector(localizedCompare:)];
         for (NSString* nameIndex in nameIndexArray)
         {
-            [[nameIndexDictionary objectForKey:nameIndex] sortedArrayUsingSelector:@selector(localizedCompare:)];
+            [nameIndexDictionary[nameIndex] sortedArrayUsingSelector:@selector(localizedCompare:)];
         }
     }
 
@@ -113,13 +113,13 @@
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[nameIndexDictionary objectForKey:nameIndexArray[section]] count];
+    return [nameIndexDictionary[nameIndexArray[section]] count];
 }
 
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString*           name = [nameIndexDictionary objectForKey:nameIndexArray[indexPath.section]][indexPath.row];
+    NSString*           name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
     UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:indexPath];
 
     [Settings sharedSettings].homeCountry = [[CountryNames sharedNames] isoCountryCodeForName:name];
@@ -140,7 +140,7 @@
         // Shown from Settings.
         // Set the parent cell to prevent quick update right after animations.
         NSArray*                viewControllers = self.navigationController.viewControllers;
-        SettingsViewController* parent = (SettingsViewController*)[viewControllers objectAtIndex:[viewControllers count] - 2];
+        SettingsViewController* parent = (SettingsViewController*)viewControllers[[viewControllers count] - 2];
         NSIndexPath*            parentIndexPath = parent.tableView.indexPathForSelectedRow;
         UITableViewCell*        parentCell = [parent.tableView cellForRowAtIndexPath:parentIndexPath];
         parentCell.imageView.image = [UIImage imageNamed:[Settings sharedSettings].homeCountry];
@@ -161,7 +161,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
-    NSString*   name = [nameIndexDictionary objectForKey:nameIndexArray[indexPath.section]][indexPath.row];
+    NSString*   name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
     NSString*   isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
 
     cell.imageView.image = [UIImage imageNamed:isoCountryCode];

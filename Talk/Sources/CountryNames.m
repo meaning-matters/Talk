@@ -55,13 +55,13 @@ static CountryNames*    sharedNames;
 
 - (NSString*)nameForIsoCountryCode:(NSString*)isoCountryCode
 {
-    return [self.namesDictionary objectForKey:[isoCountryCode uppercaseString]];
+    return self.namesDictionary[[isoCountryCode uppercaseString]];
 }
 
 
 - (NSString*)isoCountryCodeForName:(NSString*)name
 {
-    return [[self.namesDictionary allKeysForObject:name] objectAtIndex:0];
+    return [self.namesDictionary allKeysForObject:name][0];
 }
 
 @end

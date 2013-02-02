@@ -50,7 +50,7 @@ static RingbackTones*   sharedTones;
 
 - (NSDictionary*)toneForIsoCountryCode:(NSString*)isoCountryCode
 {
-    NSDictionary*   tone = [self.tonesDictionary objectForKey:[isoCountryCode uppercaseString]];
+    NSDictionary*   tone = self.tonesDictionary[[isoCountryCode uppercaseString]];
 
     if (tone == nil)
     {
@@ -77,7 +77,7 @@ static RingbackTones*   sharedTones;
     int count = 0;
     for (NSString* country in countries)
     {
-        if ([self.tonesDictionary objectForKey:country] == nil)
+        if (self.tonesDictionary[country] == nil)
         {
             NSLog(@">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> %3d: %@ :  %@", ++count, country, [[CountryNames sharedNames] nameForIsoCountryCode:country]);
         }
@@ -87,7 +87,7 @@ static RingbackTones*   sharedTones;
     count = 0;
     for (NSString* tone in tones)
     {
-        if ([[CountryNames sharedNames].namesDictionary objectForKey:tone] == nil)
+        if ([CountryNames sharedNames].namesDictionary[tone] == nil)
         {
             NSLog(@"++++++++++++++++++++++++++++++++ %3d: %@", ++count, tone);
         }

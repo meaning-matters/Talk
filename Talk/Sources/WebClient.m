@@ -67,8 +67,8 @@ static WebClient*   sharedClient;
 
 - (WebClientStatus)getResponseStatus:(NSDictionary*)response
 {
-    NSString*   string = [response objectForKey:@"status"];
-    NSNumber*   number = [statuses objectForKey:string];
+    NSString*   string = response[@"status"];
+    NSNumber*   number = statuses[string];
 
     if (number != nil)
     {
@@ -100,7 +100,7 @@ static WebClient*   sharedClient;
         NSDictionary* reponseDictionary = responseObject;
         if(responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
         {
-            reply([self getResponseStatus:reponseDictionary], [reponseDictionary objectForKey:@"content"]);
+            reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
         }
         else
         {

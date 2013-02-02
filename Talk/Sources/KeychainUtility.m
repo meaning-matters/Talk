@@ -52,7 +52,7 @@ static NSString*    KeychainUtilityErrorDomain = @"KeychainUtilityErrorDomain";
     // version of this code (which set the password as a generic attribute instead of password data).
 
     NSMutableDictionary* attributeQuery = [query mutableCopy];
-    [attributeQuery setObject:(id) kCFBooleanTrue forKey:(__bridge_transfer id) kSecReturnAttributes];
+    [attributeQuery setObject:(id)kCFBooleanTrue forKey:(__bridge_transfer id) kSecReturnAttributes];
     CFTypeRef attrResult = NULL;
     OSStatus status = SecItemCopyMatching((__bridge_retained CFDictionaryRef) attributeQuery, &attrResult);
     //NSDictionary *attributeResult = (__bridge_transfer NSDictionary*)attrResult;

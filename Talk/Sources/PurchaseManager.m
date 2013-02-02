@@ -71,7 +71,7 @@ static PurchaseManager*     sharedManager;
                                                                       queue:[NSOperationQueue mainQueue]
                                                                  usingBlock:^(NSNotification* note)
         {
-            NetworkStatusReachable reachable = [[note.userInfo objectForKey:@"status"] intValue];
+            NetworkStatusReachable reachable = [note.userInfo[@"status"] intValue];
 
             if ((reachable == NetworkStatusReachableWifi || reachable == NetworkStatusReachableCellular) &&
                 sharedManager.productsRequest == nil && sharedManager.products == nil)

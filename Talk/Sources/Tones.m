@@ -49,7 +49,7 @@ static Tones*   sharedTones;
 
 - (NSDictionary*)tonesForIsoCountryCode:(NSString*)isoCountryCode
 {
-    NSDictionary*   tones = [self.tonesDictionary objectForKey:[isoCountryCode uppercaseString]];
+    NSDictionary*   tones = self.tonesDictionary[[isoCountryCode uppercaseString]];
 
     if (tones == nil)
     {
