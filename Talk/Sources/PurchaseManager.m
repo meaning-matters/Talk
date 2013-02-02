@@ -15,6 +15,7 @@
 #import "BlockAlertView.h"
 #import "Base64.h"
 #import "WebClient.h"
+#import "Settings.h"
 
 
 // These must match perfectly to what's in iTunesConnect for this app!
@@ -34,7 +35,7 @@ NSString* const  PurchaseManagerProductIdentifierCredit50 = PRODUCT_IDENTIFIER_B
 
 @property (nonatomic, strong) NSSet*                productIdentifiers;
 @property (nonatomic, strong) SKProductsRequest*    productsRequest;
-@property (nonatomic, copy) void (^accountCompletion)(BOOL success, SKPaymentTransaction* transaction);
+@property (nonatomic, copy) void (^accountCompletion)(BOOL success, id object);
 @property (nonatomic, strong) NSMutableArray*       restoredTransactions;
 
 @end
@@ -206,7 +207,10 @@ static PurchaseManager*     sharedManager;
         else
         {
             // If this was a restored transaction, it already been 'finished' in updatedTransactions:.
-            self.accountCompletion(NO, nil);
+            NSError*    error = [[NSError alloc] initWithDomain:[Settings sharedSettings].errorDomain
+                                                           code:SKErrorUnknown  //### Make app-wide errors.
+                                                       userInfo:nil];
+            self.accountCompletion(NO, error);
             self.accountCompletion = nil;
         }
     }];
@@ -305,10 +309,9 @@ static PurchaseManager*     sharedManager;
     NSLog(@"restoreCompletedTransactionsFailedWithError: %@", [error localizedDescription]);
     [Common enableNetworkActivityIndicator:NO];
 
-    self.accountCompletion(NO, nil);
-    
-    self.restoredTransactions = nil;
+    self.accountCompletion(NO, error);
     self.accountCompletion    = nil;
+    self.restoredTransactions = nil;
 }
 
 
@@ -345,7 +348,7 @@ static PurchaseManager*     sharedManager;
                 if ([self isAccountProductIdentifier:transaction.payment.productIdentifier] &&
                     self.accountCompletion != nil)
                 {
-                    self.accountCompletion(NO, nil);
+                    self.accountCompletion(NO, transaction.error);
                     self.accountCompletion = nil;
                 }
                 
@@ -398,7 +401,7 @@ static PurchaseManager*     sharedManager;
 }
 
 
-- (void)restoreOrBuyAccount:(void (^)(BOOL success, SKPaymentTransaction* transaction))completion;
+- (void)restoreOrBuyAccount:(void (^)(BOOL success, id object))completion;
 {
     if (self.accountCompletion != nil)
     {

@@ -279,15 +279,16 @@ static SipInterface*    sipInterface;
         {
             if (!cancelled)
             {
-                [[PurchaseManager sharedManager] restoreOrBuyAccount:^(BOOL success,
-                                                                       SKPaymentTransaction* transaction)
+                [[PurchaseManager sharedManager] restoreOrBuyAccount:^(BOOL success, id object)
                 {
                     if (success == YES)
                     {
+                        SKPaymentTransaction*   transaction = object;
+
                         //### We have Web username/password now.  So now request SIP account.
                         //...
                     }
-                    else
+                    else if (object != nil && ((NSError*)object).code != SKErrorPaymentCancelled)
                     {
                         NSString*   title;
                         NSString*   message;
