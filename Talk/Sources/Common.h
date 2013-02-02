@@ -53,4 +53,6 @@
 
 + (BOOL)checkRemoteNotifications;
 
++ (void)enableNetworkActivityIndicator:(BOOL)enable;
+
 @end

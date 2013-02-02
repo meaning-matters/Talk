@@ -12,9 +12,13 @@
 #import "Common.h"
 
 
+static NSDictionary* statuses;
+
+
 @implementation WebClient
 
 static WebClient*   sharedClient;
+
 
 #pragma mark - Singleton Stuff
 
@@ -28,6 +32,16 @@ static WebClient*   sharedClient;
         [sharedClient registerHTTPOperationClass:[AFJSONRequestOperation class]];
         [sharedClient setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
                                                 password:[Settings sharedSettings].webPassword];
+
+        statuses = @{ @"OK":                          @(WebClientStatusOk),
+                      @"FAIL_INVALID_REQUEST":        @(WebClientStatusFailInvalidRequest),
+                      @"FAIL_SERVER_INTERNAL":        @(WebClientStatusFailServerIternal),
+                      @"FAIL_SERVICE_UNAVAILABLE":    @(WebClientStatusFailServiceUnavailable),
+                      @"FAIL_INVALID_RECEIPT":        @(WebClientStatusFailInvalidReceipt),
+                      @"FAIL_DEVICE_NAME_NOT_UNIQUE": @(WebClientStatusFailDeviceNameNotUnique),
+                      @"FAIL_NO_STATES_FOR_COUNTRY":  @(WebClientStatusFailNoStatesForCountry),
+                      @"FAIL_INVALID_INFO":           @(WebClientStatusFailInvalidInfo),
+                      @"FAIL_DATA_TOO_LARGE":         @(WebClientStatusFailDataTooLarge) };
     }
 }
 
@@ -49,37 +63,55 @@ static WebClient*   sharedClient;
 }
 
 
-- (void)postAccounts:(NSDictionary*)parameters
-             success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
-             failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
+#pragma mark - Helper Methods
+
+- (WebClientStatus)getResponseStatus:(NSDictionary*)response
 {
+    NSString*   string = [response objectForKey:@"status"];
+    NSNumber*   number = [statuses objectForKey:string];
+
+    if (number != nil)
+    {
+        return [number intValue];
+    }
+    else
+    {
+        return WebClientStatusFailUnspecified;
+    }
+}
+
+
+#pragma mark - Public API
+
+- (void)postAccounts:(NSDictionary*)parameters
+               reply:(void (^)(WebClientStatus status, id content))reply
+{
+    assert(reply != nil);
+
+    [Common enableNetworkActivityIndicator:YES];
+
     [self postPath:@"accounts"
         parameters:parameters
            success:^(AFHTTPRequestOperation* operation, id responseObject)
-     {
-         NSLog(@"getPath request: %@", operation.request.URL);
+    {
+        NSLog(@"getPath request: %@", operation.request.URL);
+        [Common enableNetworkActivityIndicator:NO];
 
-#warning Can't this assignment be moved inside the if{} and test isKindOfClass on responseObject?
-         NSDictionary* reponseDictionary = responseObject;
-         if(responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
-         {
-             if (success)
-             {
-                 success(operation, reponseDictionary);
-             }
-         }
-         else
-         {
-             NSString*   errorDomain = [Settings sharedSettings].errorDomain;
-             NSError*    error       = [NSError errorWithDomain:errorDomain code:1 userInfo:nil];
-
-             if (failure)
-             {
-                 failure(operation, error);
-             }
-         }
-     }
-           failure:failure];
+        NSDictionary* reponseDictionary = responseObject;
+        if(responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
+        {
+            reply([self getResponseStatus:reponseDictionary], [reponseDictionary objectForKey:@"content"]);
+        }
+        else
+        {
+            reply(WebClientStatusFailInvalidResponse, nil);
+        }
+    }
+           failure:^(AFHTTPRequestOperation* operation, NSError* error)
+    {
+        [Common enableNetworkActivityIndicator:NO];
+        reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
+    }];
 }
 
 @end

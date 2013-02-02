@@ -256,4 +256,17 @@
     }
 }
 
+
++ (void)enableNetworkActivityIndicator:(BOOL)enable
+{
+    static int  count;
+
+    @synchronized(self)
+    {
+        enable ? count++ : (count == 0 ? count : count--);
+
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = count > 0;
+    }
+}
+
 @end

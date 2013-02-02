@@ -194,18 +194,21 @@ static PurchaseManager*     sharedManager;
     }
 
     [[WebClient sharedClient] postAccounts:dictionary
-                                   success:^(AFHTTPRequestOperation* operation, id responseObject)
+                                     reply:^(WebClientStatus status, id content)
     {
-        [self finishTransaction:transaction];
-        self.accountCompletion(YES, transaction);
-        self.accountCompletion = nil;
-        NSLog(@"SUCCESS: %@", responseObject);
-    }
-                                   failure:^(AFHTTPRequestOperation* operation, NSError* error)
-    {
-        self.accountCompletion(NO, nil);
-        self.accountCompletion = nil;
-        NSLog(@"ERROR: %@", [error localizedDescription]);
+        if (status == WebClientStatusOk)
+        {
+            [self finishTransaction:transaction];
+            self.accountCompletion(YES, transaction);
+            self.accountCompletion = nil;
+            NSLog(@"SUCCESS: %@", content);
+        }
+        else
+        {
+            // If this was a restored transaction, it already been 'finished' in updatedTransactions:.
+            self.accountCompletion(NO, nil);
+            self.accountCompletion = nil;
+        }
     }];
 }
 
@@ -268,6 +271,7 @@ static PurchaseManager*     sharedManager;
 {    
     NSLog(@"paymentQueueRestoreCompletedTransactionsFinished");
     SKPaymentTransaction*   accountTransaction = nil;
+    [Common enableNetworkActivityIndicator:NO];
 
     for (SKPaymentTransaction* transaction in self.restoredTransactions)
     {
@@ -299,6 +303,7 @@ static PurchaseManager*     sharedManager;
 - (void)paymentQueue:(SKPaymentQueue*)queue restoreCompletedTransactionsFailedWithError:(NSError*)error
 {
     NSLog(@"restoreCompletedTransactionsFailedWithError: %@", [error localizedDescription]);
+    [Common enableNetworkActivityIndicator:NO];
 
     self.accountCompletion(NO, nil);
     
@@ -318,6 +323,7 @@ static PurchaseManager*     sharedManager;
                 break;
 
             case SKPaymentTransactionStatePurchased:
+                [Common enableNetworkActivityIndicator:NO];
                 if ([self isAccountProductIdentifier:transaction.payment.productIdentifier])
                 {
                     [self processAccountTransaction:transaction];
@@ -333,6 +339,7 @@ static PurchaseManager*     sharedManager;
                 break;
 
             case SKPaymentTransactionStateFailed:
+                [Common enableNetworkActivityIndicator:NO];
 #warning //### Assume that this is only for purchase, and never happens for restore.  I asked dev forums.
                 NSLog(@"//###  Transaction failed: %@.", transaction.payment.productIdentifier);
                 if ([self isAccountProductIdentifier:transaction.payment.productIdentifier] &&
@@ -414,6 +421,7 @@ static PurchaseManager*     sharedManager;
     self.accountCompletion = completion;
 
     [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
+    [Common enableNetworkActivityIndicator:YES];
 }
 
 
@@ -427,6 +435,7 @@ static PurchaseManager*     sharedManager;
         {
             SKPayment*  payment = [SKPayment paymentWithProduct:product];
             [[SKPaymentQueue defaultQueue] addPayment:payment];
+            [Common enableNetworkActivityIndicator:YES];
 
             return YES;
         }

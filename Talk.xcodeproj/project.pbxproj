@@ -1685,7 +1685,6 @@
 				488268D1164BCF6300EA58AE /* Networking */,
 				485ECBDF16525D1600364F08 /* Views */,
 				48AF45591649790900DFE3D8 /* ViewControllers */,
-				48DD7283169F3C7000CD7080 /* Web API */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -2258,6 +2257,8 @@
 				488268D8164BCF8600EA58AE /* NetworkStatus.m */,
 				48826907164BDC3400EA58AE /* Reachability.h */,
 				48826908164BDC3400EA58AE /* Reachability.m */,
+				48DD72D3169F5AC600CD7080 /* WebClient.h */,
+				48DD72D4169F5AC600CD7080 /* WebClient.m */,
 			);
 			name = Networking;
 			sourceTree = "<group>";
@@ -2416,15 +2417,6 @@
 				48DD727F169CD4A200CD7080 /* DataModel.xcdatamodeld */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
-		};
-		48DD7283169F3C7000CD7080 /* Web API */ = {
-			isa = PBXGroup;
-			children = (
-				48DD72D3169F5AC600CD7080 /* WebClient.h */,
-				48DD72D4169F5AC600CD7080 /* WebClient.m */,
-			);
-			name = "Web API";
 			sourceTree = "<group>";
 		};
 		48DD7284169F548600CD7080 /* External */ = {

@@ -12,17 +12,17 @@
 typedef enum
 {
     WebClientStatusOk,
-    WebClientStatusFailMissingField,
-    WebClientStatusFailInvalidField,
-    WebClientStatusFailInternalServer,
+    WebClientStatusFailInvalidRequest,
+    WebClientStatusFailServerIternal,
     WebClientStatusFailServiceUnavailable,
     WebClientStatusFailInvalidReceipt,
-    WebClientStatusFailUnknownMcc,
-    WebClientStatusFailUnknownMnc,
     WebClientStatusFailDeviceNameNotUnique,
     WebClientStatusFailNoStatesForCountry,
     WebClientStatusFailInvalidInfo,
     WebClientStatusFailDataTooLarge,
+    WebClientStatusFailNetworkProblem,  // Local.
+    WebClientStatusFailInvalidResponse, // Local.
+    WebClientStatusFailUnspecified,     // Local.
 } WebClientStatus;
 
 
@@ -31,7 +31,6 @@ typedef enum
 + (WebClient*)sharedClient;
 
 - (void)postAccounts:(NSDictionary*)parameters
-             success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
-             failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure;
+               reply:(void (^)(WebClientStatus status, id content))reply;
 
 @end

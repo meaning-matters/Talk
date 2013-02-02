@@ -282,7 +282,34 @@ static SipInterface*    sipInterface;
                 [[PurchaseManager sharedManager] restoreOrBuyAccount:^(BOOL success,
                                                                        SKPaymentTransaction* transaction)
                 {
+                    if (success == YES)
+                    {
+                        //### We have Web username/password now.  So now request SIP account.
+                        //...
+                    }
+                    else
+                    {
+                        NSString*   title;
+                        NSString*   message;
 
+                        title = NSLocalizedStringWithDefaultValue(@"Purchase:Failure AlertTitle", nil,
+                                                                  [NSBundle mainBundle], @"Getting Account Failed",
+                                                                  @"Alert title telling that getting an account failed.\n"
+                                                                  @"[iOS alert title size - abbreviated: 'Account Failed'].");
+                        message = NSLocalizedStringWithDefaultValue(@"Purchase:Failure AlertMessage", nil,
+                                                                    [NSBundle mainBundle],
+                                                                    @"Something went wrong while getting your account. "
+                                                                    @"try again later.\n(The payment you may have done, "
+                                                                    @"is not lost.)",
+                                                                    @"Alert message telling that getting an account "
+                                                                    @"failed\n"
+                                                                    @"[iOS alert message size]");
+                        [BlockAlertView showAlertViewWithTitle:title
+                                                       message:message
+                                                    completion:nil
+                                             cancelButtonTitle:[CommonStrings closeString]
+                                             otherButtonTitles:nil];
+                    }
                 }];
             }
         }
