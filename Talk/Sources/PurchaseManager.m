@@ -172,37 +172,69 @@ static PurchaseManager*     sharedManager;
 
 - (void)processAccountTransaction:(SKPaymentTransaction*)transaction
 {
-    NSMutableDictionary*    dictionary = [NSMutableDictionary dictionary];
+    if ([[AppDelegate appDelegate].deviceToken length] == 0)
+    {
+        NSLog(@"//### Device Token not available (yet).");
+        
+        return;
+    }
 
-    dictionary[@"receipt"]           = [Base64 encode:transaction.transactionReceipt];
+    NSMutableDictionary*    parameters = [NSMutableDictionary dictionary];
+
+    parameters[@"receipt"]           = [Base64 encode:transaction.transactionReceipt];
 #warning Check that deviceToken is available!!  If not stop and report.
-    dictionary[@"notificationToken"] = [AppDelegate appDelegate].deviceToken;
-    dictionary[@"deviceName"]        = [UIDevice currentDevice].name;
-    dictionary[@"deviceOs"]          = [NSString stringWithFormat:@"%@ %@",
+    parameters[@"notificationToken"] = [AppDelegate appDelegate].deviceToken;
+    parameters[@"deviceName"]        = [UIDevice currentDevice].name;
+    parameters[@"deviceOs"]          = [NSString stringWithFormat:@"%@ %@",
                                         [UIDevice currentDevice].systemName,
                                         [UIDevice currentDevice].systemVersion];
-    dictionary[@"deviceModel"]       = [Common deviceModel];
-    dictionary[@"appVersion"]        = [Common bundleVersion];
+    parameters[@"deviceModel"]       = [Common deviceModel];
+    parameters[@"appVersion"]        = [Common bundleVersion];
 
     if ([NetworkStatus sharedStatus].simMobileCountryCode != nil)
     {
-        dictionary[@"mobileCountryCode"] = [NetworkStatus sharedStatus].simMobileCountryCode;
+        parameters[@"mobileCountryCode"] = [NetworkStatus sharedStatus].simMobileCountryCode;
     }
 
     if ([NetworkStatus sharedStatus].simMobileNetworkCode != nil)
     {
-        dictionary[@"mobileNetworkCode"] = [NetworkStatus sharedStatus].simMobileNetworkCode;
+        parameters[@"mobileNetworkCode"] = [NetworkStatus sharedStatus].simMobileNetworkCode;
     }
 
-    [[WebClient sharedClient] postAccounts:dictionary
-                                     reply:^(WebClientStatus status, id content)
+    [[WebClient sharedClient] retrieveWebAccount:parameters
+                                           reply:^(WebClientStatus status, id content)
     {
         if (status == WebClientStatusOk)
         {
-            [self finishTransaction:transaction];
-            self.accountCompletion(YES, transaction);
-            self.accountCompletion = nil;
             NSLog(@"SUCCESS: %@", content);
+
+            [Settings sharedSettings].webUsername = ((NSDictionary*)content)[@"username"];
+            [Settings sharedSettings].webPassword = ((NSDictionary*)content)[@"password"];
+
+            NSMutableDictionary*    parameters = [NSMutableDictionary dictionary];
+            parameters[@"deviceName"] = [UIDevice currentDevice].name;
+            [[WebClient sharedClient] retrieveSipAccount:parameters
+                                                   reply:^(WebClientStatus status, id content)
+            {
+                if (status == WebClientStatusOk)
+                {
+                    [Settings sharedSettings].sipRealm    = ((NSDictionary*)content)[@"sipRealm"];
+                    [Settings sharedSettings].sipUsername = ((NSDictionary*)content)[@"sipUsername"];
+                    [Settings sharedSettings].sipPassword = ((NSDictionary*)content)[@"sipPassword"];
+
+                    [self finishTransaction:transaction];
+                    self.accountCompletion(YES, transaction);
+                    self.accountCompletion = nil;
+                }
+                else
+                {
+                    NSError*    error = [[NSError alloc] initWithDomain:[Settings sharedSettings].errorDomain
+                                                                   code:SKErrorUnknown  //### Make app-wide errors.
+                                                               userInfo:nil];
+                    self.accountCompletion(NO, error);
+                    self.accountCompletion = nil;
+                }
+            }];
         }
         else if (status == WebClientStatusFailDeviceNameNotUnique)
         {
@@ -297,7 +329,7 @@ static PurchaseManager*     sharedManager;
 #pragma mark - SKPaymentTransactionObserver
 
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue*)queue
-{    
+{
     NSLog(@"paymentQueueRestoreCompletedTransactionsFinished");
     SKPaymentTransaction*   accountTransaction = nil;
     [Common enableNetworkActivityIndicator:NO];

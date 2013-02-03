@@ -1046,7 +1046,7 @@ void showLog(int level, const char* data, int len)
 
     for (unsigned mi = 0; mi < info.media_cnt; ++mi)
     {
-	if (info.media[mi].type == PJMEDIA_TYPE_AUDIO)
+        if (info.media[mi].type == PJMEDIA_TYPE_AUDIO)
         {
             if (info.media[mi].status == PJSUA_CALL_MEDIA_LOCAL_HOLD)
             {

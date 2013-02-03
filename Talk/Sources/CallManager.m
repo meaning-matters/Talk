@@ -269,7 +269,8 @@ static SipInterface*    sipInterface;
         message = NSLocalizedStringWithDefaultValue(@"Call:Account NoAccountMessage", nil,
                                                     [NSBundle mainBundle],
                                                     @"You can only make calls when you have an account.\n"
-                                                    @"Buy one now, or retrieve your existing account.",
+                                                    @"Buy one now (price paid is initial credit), or retrieve your "
+                                                    @"existing account.",
                                                     @"Alert message telling than an account is needed to "
                                                     @"make calls.\n"
                                                     @"[iOS alert message size]");

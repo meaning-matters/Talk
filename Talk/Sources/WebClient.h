@@ -30,7 +30,10 @@ typedef enum
 
 + (WebClient*)sharedClient;
 
-- (void)postAccounts:(NSDictionary*)parameters
-               reply:(void (^)(WebClientStatus status, id content))reply;
+- (void)retrieveWebAccount:(NSDictionary*)parameters
+                     reply:(void (^)(WebClientStatus status, id content))reply;
+
+- (void)retrieveSipAccount:(NSDictionary*)parameters
+                     reply:(void (^)(WebClientStatus status, id content))reply;
 
 @end

@@ -48,17 +48,18 @@
     [NetworkStatus   sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.
     [CallManager     sharedManager];
     [Settings        sharedSettings];
-    [PurchaseManager sharedManager];
 
     // Initialize phone number stuff.
     [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
     [LibPhoneNumber sharedInstance];    // This loads the JavaScript library.
 
     //### Set current fixed SIP credentials.
+    /*
     [Settings sharedSettings].sipServer   = @"178.63.93.9";
     [Settings sharedSettings].sipRealm    = @"*";
     [Settings sharedSettings].sipUsername = @"1000";
     [Settings sharedSettings].sipPassword = @"1234azertytettn";
+     */
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.tabBarController = [[UITabBarController alloc] init];
@@ -124,6 +125,11 @@
 {
     NSString *string = [[token description] stringByReplacingOccurrencesOfString:@" " withString:@""];
     self.deviceToken = [string substringWithRange:NSMakeRange(1, [string length] - 2)];   // Strip off '<' and '>'.
+
+    // When account purchase transaction has not been finished, the PurchaseManager receives
+    // it again at app startup.  This is however slightly earlier than that device token is
+    // received.  Therefore the PurchaseManager is started up here.
+    [PurchaseManager sharedManager];
 }
 
 

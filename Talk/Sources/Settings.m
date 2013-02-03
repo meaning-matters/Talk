@@ -124,7 +124,7 @@ static NSUserDefaults*  userDefaults;
         NSLog(@"//### Error getting value from keychain: %@", [error localizedDescription]);
     }
 
-    return value;
+    return value ? value : @"";
 }
 
 
