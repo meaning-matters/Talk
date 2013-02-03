@@ -42,7 +42,7 @@
 
 - (id)initWithCall:(Call*)call
 {
-    if ([self init])
+    if (self = [self init])
     {
         [self addCall:call];
     }
@@ -265,6 +265,7 @@
     //// Cleanup
     CGGradientRelease(normalGradient);
     CGGradientRelease(highlightGradient);
+    CGGradientRelease(disableGradient);
     CGColorSpaceRelease(colorSpace);
 }
 

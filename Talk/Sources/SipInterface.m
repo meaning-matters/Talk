@@ -1040,7 +1040,7 @@ void showLog(int level, const char* data, int len)
 - (BOOL)isCallOnHold:(Call*)call
 {
     pjsua_call_info info;
-    BOOL            onHold;
+    BOOL            onHold = NO;
 
     pjsua_call_get_info(call.callId, &info);
 
@@ -1672,8 +1672,8 @@ void showLog(int level, const char* data, int len)
 {
     const pjsip_method info_method =
     {
-	PJSIP_OTHER_METHOD,
-	{
+        PJSIP_OTHER_METHOD,
+        {
             "INFO",
             4
         }
@@ -1681,86 +1681,86 @@ void showLog(int level, const char* data, int len)
 
     if (pjsip_method_cmp(&tsx->method, &info_method) == 0)
     {
-	/*
-	 * Handle INFO method.
-	 */
-	const pj_str_t STR_APPLICATION = { "application", 11};
-	const pj_str_t STR_DTMF_RELAY  = { "dtmf-relay", 10 };
-	pjsip_msg_body* body = NULL;
-	pj_bool_t       dtmf_info = PJ_FALSE;
+        /*
+         * Handle INFO method.
+         */
+        const pj_str_t STR_APPLICATION = { "application", 11};
+        const pj_str_t STR_DTMF_RELAY  = { "dtmf-relay", 10 };
+        pjsip_msg_body* body = NULL;
+        pj_bool_t       dtmf_info = PJ_FALSE;
 
-	if (tsx->role == PJSIP_ROLE_UAC)
+        if (tsx->role == PJSIP_ROLE_UAC)
         {
-	    if (e->body.tsx_state.type == PJSIP_EVENT_TX_MSG)
+            if (e->body.tsx_state.type == PJSIP_EVENT_TX_MSG)
             {
-		body = e->body.tsx_state.src.tdata->msg->body;
+                body = e->body.tsx_state.src.tdata->msg->body;
             }
-	    else
-            {
-		body = e->body.tsx_state.tsx->last_tx->msg->body;
-            }
-	}
-        else
-        {
-	    if (e->body.tsx_state.type == PJSIP_EVENT_RX_MSG)
-            {
-		body = e->body.tsx_state.src.rdata->msg_info.msg->body;
-            }
-	}
-
-	/* Check DTMF content in the INFO message */
-	if (body && body->len &&
-	    pj_stricmp(&body->content_type.type, &STR_APPLICATION) == 0 &&
-	    pj_stricmp(&body->content_type.subtype, &STR_DTMF_RELAY) == 0)
-	{
-	    dtmf_info = PJ_TRUE;
-	}
-
-	if (dtmf_info && tsx->role == PJSIP_ROLE_UAC &&
-	    (tsx->state == PJSIP_TSX_STATE_COMPLETED ||
-             (tsx->state == PJSIP_TSX_STATE_TERMINATED &&
-              e->body.tsx_state.prev_state != PJSIP_TSX_STATE_COMPLETED)))
-	{
-	    /* Status of outgoing INFO request */
-	    if (tsx->status_code >= 200 && tsx->status_code < 300)
-            {
-		PJ_LOG(4, (THIS_FILE, "Call %d: DTMF sent successfully with INFO", call_id));
-	    }
-            else if (tsx->status_code >= 300)
-            {
-		PJ_LOG(4, (THIS_FILE, "Call %d: Failed to send DTMF with INFO: %d/%.*s",
-                           call_id, tsx->status_code, (int)tsx->status_text.slen, tsx->status_text.ptr));
-	    }
-	}
-        else if (dtmf_info && tsx->role == PJSIP_ROLE_UAS && tsx->state == PJSIP_TSX_STATE_TRYING)
-	{
-	    /* Answer incoming INFO with 200/OK */
-	    pjsip_rx_data*  rdata;
-	    pjsip_tx_data*  tdata;
-	    pj_status_t     status;
-
-	    rdata = e->body.tsx_state.src.rdata;
-
-	    if (rdata->msg_info.msg->body)
-            {
-		status = pjsip_endpt_create_response(tsx->endpt, rdata, 200, NULL, &tdata);
-		if (status == PJ_SUCCESS)
-                {
-		    status = pjsip_tsx_send_msg(tsx, tdata);
-                }
-
-		PJ_LOG(3, (THIS_FILE, "Call %d: incoming INFO:\n%.*s",
-                           call_id, (int)rdata->msg_info.msg->body->len, rdata->msg_info.msg->body->data));
-	    }
             else
             {
-		status = pjsip_endpt_create_response(tsx->endpt, rdata, 400, NULL, &tdata);
-		if (status == PJ_SUCCESS)
+                body = e->body.tsx_state.tsx->last_tx->msg->body;
+            }
+        }
+        else
+        {
+            if (e->body.tsx_state.type == PJSIP_EVENT_RX_MSG)
+            {
+                body = e->body.tsx_state.src.rdata->msg_info.msg->body;
+            }
+        }
+
+        /* Check DTMF content in the INFO message */
+        if (body && body->len &&
+            pj_stricmp(&body->content_type.type, &STR_APPLICATION) == 0 &&
+            pj_stricmp(&body->content_type.subtype, &STR_DTMF_RELAY) == 0)
+        {
+            dtmf_info = PJ_TRUE;
+        }
+
+        if (dtmf_info && tsx->role == PJSIP_ROLE_UAC &&
+            (tsx->state == PJSIP_TSX_STATE_COMPLETED ||
+             (tsx->state == PJSIP_TSX_STATE_TERMINATED &&
+              e->body.tsx_state.prev_state != PJSIP_TSX_STATE_COMPLETED)))
+        {
+            /* Status of outgoing INFO request */
+            if (tsx->status_code >= 200 && tsx->status_code < 300)
+            {
+                PJ_LOG(4, (THIS_FILE, "Call %d: DTMF sent successfully with INFO", call_id));
+            }
+                else if (tsx->status_code >= 300)
+            {
+                PJ_LOG(4, (THIS_FILE, "Call %d: Failed to send DTMF with INFO: %d/%.*s",
+                           call_id, tsx->status_code, (int)tsx->status_text.slen, tsx->status_text.ptr));
+            }
+        }
+        else if (dtmf_info && tsx->role == PJSIP_ROLE_UAS && tsx->state == PJSIP_TSX_STATE_TRYING)
+        {
+            /* Answer incoming INFO with 200/OK */
+            pjsip_rx_data*  rdata;
+            pjsip_tx_data*  tdata;
+            pj_status_t     status;
+
+            rdata = e->body.tsx_state.src.rdata;
+
+            if (rdata->msg_info.msg->body)
+            {
+                status = pjsip_endpt_create_response(tsx->endpt, rdata, 200, NULL, &tdata);
+                if (status == PJ_SUCCESS)
                 {
-		    status = pjsip_tsx_send_msg(tsx, tdata);
+                    pjsip_tsx_send_msg(tsx, tdata);
                 }
-	    }
-	}
+
+                PJ_LOG(3, (THIS_FILE, "Call %d: incoming INFO:\n%.*s",
+                           call_id, (int)rdata->msg_info.msg->body->len, rdata->msg_info.msg->body->data));
+            }
+            else
+            {
+                status = pjsip_endpt_create_response(tsx->endpt, rdata, 400, NULL, &tdata);
+                if (status == PJ_SUCCESS)
+                {
+                    pjsip_tsx_send_msg(tsx, tdata);
+                }
+            }
+        }
     }
 }
 

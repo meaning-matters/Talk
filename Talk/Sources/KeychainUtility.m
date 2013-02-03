@@ -54,7 +54,7 @@ static NSString*    KeychainUtilityErrorDomain = @"KeychainUtilityErrorDomain";
     NSMutableDictionary* attributeQuery = [query mutableCopy];
     [attributeQuery setObject:(id)kCFBooleanTrue forKey:(__bridge_transfer id) kSecReturnAttributes];
     CFTypeRef attrResult = NULL;
-    OSStatus status = SecItemCopyMatching((__bridge_retained CFDictionaryRef) attributeQuery, &attrResult);
+    OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef) attributeQuery, &attrResult);
     //NSDictionary *attributeResult = (__bridge_transfer NSDictionary*)attrResult;
 
     if (status != noErr)
@@ -74,7 +74,7 @@ static NSString*    KeychainUtilityErrorDomain = @"KeychainUtilityErrorDomain";
     NSMutableDictionary* passwordQuery = [query mutableCopy];
     [passwordQuery setObject:(id) kCFBooleanTrue forKey:(__bridge_transfer id) kSecReturnData];
     CFTypeRef resData = NULL;
-    status = SecItemCopyMatching((__bridge_retained CFDictionaryRef) passwordQuery, (CFTypeRef*)&resData);
+    status = SecItemCopyMatching((__bridge CFDictionaryRef) passwordQuery, (CFTypeRef*)&resData);
     NSData* resultData = (__bridge_transfer NSData*)resData;
 
     if (status != noErr)
@@ -270,7 +270,7 @@ static NSString*    KeychainUtilityErrorDomain = @"KeychainUtilityErrorDomain";
                                kCFBooleanTrue, nil];
     NSDictionary*   query = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 
-    OSStatus status = SecItemDelete((__bridge_retained CFDictionaryRef) query);
+    OSStatus status = SecItemDelete((__bridge CFDictionaryRef) query);
     
     if (error != nil && status != noErr) 
     {

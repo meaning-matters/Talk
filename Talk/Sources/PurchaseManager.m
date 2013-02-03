@@ -386,6 +386,15 @@ static PurchaseManager*     sharedManager;
                 [Common enableNetworkActivityIndicator:NO];
                 if ([self isAccountProductIdentifier:transaction.payment.productIdentifier])
                 {
+                    if (self.accountCompletion == nil)
+                    {
+                        // We get here when the transaction was not finished yet.
+                        self.accountCompletion = ^(BOOL status, id object)
+                        {
+                            //  NSLog(@"//### ");
+                        };
+                    }
+
                     [self processAccountTransaction:transaction];
                 }
                 else if ([self isNumberProductIdentifier:transaction.payment.productIdentifier])
