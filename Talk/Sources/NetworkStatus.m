@@ -108,36 +108,36 @@ static NSTimer*                 loadUrlTestTimer;
                                                       object:nil
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification* note)
-     {
-         // The UIApplicationDidBecomeActiveNotification can be received a second
-         // time (e.g. after "Turn Off Airplane More or Use Wi-Fi to Access Data").
-         // Use loadUrlTestTimer as flag to make sure we set up only once.
-         //
-         // (BTW, UIApplicationWillEnterForegroundNotification is not received
-         //  the first time, when the app starts.  So that would not have helped.)
-         if (loadUrlTestTimer == nil)
-         {
-             [sharedStatus  loadUrlTest:nil];
-             [hostReach     startNotifier];
+    {
+        // The UIApplicationDidBecomeActiveNotification can be received a second
+        // time (e.g. after "Turn Off Airplane More or Use Wi-Fi to Access Data").
+        // Use loadUrlTestTimer as flag to make sure we set up only once.
+        //
+        // (BTW, UIApplicationWillEnterForegroundNotification is not received
+        //  the first time, when the app starts.  So that would not have helped.)
+        if (loadUrlTestTimer == nil)
+        {
+            [sharedStatus  loadUrlTest:nil];
+            [hostReach     startNotifier];
 
-             loadUrlTestTimer = [NSTimer scheduledTimerWithTimeInterval:LOAD_URL_TEST_INTERVAL
-                                                                 target:self
-                                                               selector:@selector(loadUrlTest:)
-                                                               userInfo:nil
-                                                                repeats:YES];
-         }
-     }];
+            loadUrlTestTimer = [NSTimer scheduledTimerWithTimeInterval:LOAD_URL_TEST_INTERVAL
+                                                                target:self
+                                                              selector:@selector(loadUrlTest:)
+                                                              userInfo:nil
+                                                               repeats:YES];
+        }
+    }];
 
     [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification
                                                       object:nil
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification* note)
-     {
-         [hostReach stopNotifier];
+    {
+        [hostReach stopNotifier];
 
-         [loadUrlTestTimer invalidate];
-         loadUrlTestTimer = nil;
-     }];
+        [loadUrlTestTimer invalidate];
+        loadUrlTestTimer = nil;
+    }];
 }
 
 
@@ -172,7 +172,7 @@ static NSTimer*                 loadUrlTestTimer;
                               object:self];
     };
 
-    callCenter  = [[CTCallCenter alloc] init];
+    callCenter = [[CTCallCenter alloc] init];
     callCenter.callEventHandler=^(CTCall* call)
     {
         [Common postNotificationName:NetworkStatusMobileCallStateChangedNotification
@@ -223,43 +223,43 @@ static NSTimer*                 loadUrlTestTimer;
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:[[NSOperationQueue alloc] init]
                                completionHandler:^(NSURLResponse* response, NSData* data, NSError* error)
-         {
-             NetworkStatusReachable networkStatusReachable;
+        {
+            NetworkStatusReachable networkStatusReachable;
 
-             NSString*  html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-             if ([html rangeOfString:LOAD_URL_TEST_STRING].location != NSNotFound && error == nil)
-             {
-                 networkStatusReachable = [hostReach currentReachabilityStatus];
-             }
-             else if (error == nil)
-             {
-                 // Received data, but not the expected.  Check for captive portal.
-                 if ([html rangeOfString:@"WISPAccessGatewayParam"].location != NSNotFound)
-                 {
-                     // WISPr portal reply found.
-                     networkStatusReachable = NetworkStatusReachableCaptivePortal;
-                 }
-                 else
-                 {
-                     // No, or unknown captive portal.
-                     //### Could be extended with WiFi & Internet status, and looking at SSID.
-                     networkStatusReachable = NetworkStatusReachableDisconnected;
-                 }
-             }
-             else
-             {
-                 // Error.
-                 networkStatusReachable = NetworkStatusReachableDisconnected;
-             }
+            NSString*  html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            if ([html rangeOfString:LOAD_URL_TEST_STRING].location != NSNotFound && error == nil)
+            {
+                networkStatusReachable = [hostReach currentReachabilityStatus];
+            }
+            else if (error == nil)
+            {
+                // Received data, but not the expected.  Check for captive portal.
+                if ([html rangeOfString:@"WISPAccessGatewayParam"].location != NSNotFound)
+                {
+                    // WISPr portal reply found.
+                    networkStatusReachable = NetworkStatusReachableCaptivePortal;
+                }
+                else
+                {
+                    // No, or unknown captive portal.
+                    //### Could be extended with WiFi & Internet status, and looking at SSID.
+                    networkStatusReachable = NetworkStatusReachableDisconnected;
+                }
+            }
+            else
+            {
+                // Error.
+                networkStatusReachable = NetworkStatusReachableDisconnected;
+            }
 
-             if (networkStatusReachable != previousNetworkStatusReachable)
-             {
-                 previousNetworkStatusReachable = networkStatusReachable;
-                 [Common postNotificationName:NetworkStatusReachableNotification
-                                     userInfo:@{ @"status" : @(networkStatusReachable) }
-                                       object:self];
-             }
-         }];
+            if (networkStatusReachable != previousNetworkStatusReachable)
+            {
+                previousNetworkStatusReachable = networkStatusReachable;
+                [Common postNotificationName:NetworkStatusReachableNotification
+                                    userInfo:@{ @"status" : @(networkStatusReachable) }
+                                      object:self];
+            }
+        }];
     }
 }
 
