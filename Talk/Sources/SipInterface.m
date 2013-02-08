@@ -292,15 +292,21 @@ void showLog(int level, const char* data, int len)
 #endif
     config.use_srtp = PJMEDIA_SRTP_MANDATORY;
 
-    // Make that PJSIP uses it's own DNS resolver; to avoid blocking of iOS gethostbyname() implementation.
-    pj_cstr(&(config.nameserver[0]), "8.8.8.8");    // https://developers.google.com/speed/public-dns/docs/using.
-    pj_cstr(&(config.nameserver[1]), "8.8.4.4");    // https://developers.google.com/speed/public-dns/docs/using
+    // Make that PJSIP uses it's own DNS resolver; to avoid blocking of iOS gethostbyname()
+    // implementation.
+    //
+    // Use Google's name servers: https://developers.google.com/speed/public-dns/docs/using
+    //
+    // Defining name servers, enables SIP SRV which includes failover functionality.
+    // But SIP SRV is only enabled if there is no proxy set in account_config!
+    pj_cstr(&(config.nameserver[0]), "8.8.8.8");
+    pj_cstr(&(config.nameserver[1]), "8.8.4.4");
     config.nameserver_count = 2;
 
     media_cfg.no_vad = PJ_TRUE;
 
-    account_config.reg_uri = pj_str((char*)[[NSString stringWithFormat:@"sip:%@", self.server] UTF8String]);
-    account_config.id = pj_str((char*)[[NSString stringWithFormat:@"sip:%@@%@", self.username, self.server] UTF8String]);
+    account_config.reg_uri = pj_str((char*)[[NSString stringWithFormat:@"sip:%@;transport=tls", self.server] UTF8String]);
+    account_config.id = pj_str((char*)[[NSString stringWithFormat:@"sip:%@@%@;transport=tls", self.username, self.server] UTF8String]);
     account_config.cred_info[0].username = pj_str((char*)[self.username UTF8String]);
     account_config.cred_info[0].scheme   = pj_str("Digest");
     account_config.cred_info[0].realm = pj_str((char*)[self.realm UTF8String]);
@@ -308,12 +314,6 @@ void showLog(int level, const char* data, int len)
     account_config.cred_info[0].data = pj_str((char*)[self.password UTF8String]);
     account_config.cred_count++;
     account_config.use_srtp = config.use_srtp;
-    //### Attempt to force all over TLS: https://trac.pjsip.org/repos/wiki/Using_SIP_TCP
-    //### Seems to fix bug that hangup_all did not work often, resulting in multiple BYE
-    //### being sent.  But it did work sometimes as well; may have to do with Wi-Fi quality.
-    //### Was done in Newcastle with bad network in hotel and Starbucks.
-    account_config.proxy[account_config.proxy_cnt++] = pj_str((char*)[[NSString stringWithFormat:@"sip:%@;transport=tls",
-                                                                                 self.server] UTF8String]);
 }
 
 
@@ -728,7 +728,8 @@ void showLog(int level, const char* data, int len)
             pjsip_generic_string_hdr_init2(&header, &header_name, &header_value);
             pjsua_msg_data_init(&msg_data);
             pj_list_push_back(&msg_data.hdr_list, &header);
-          
+
+#warning Sometimes on bad network: Assertion failed: (aud_subsys.pf), function pjmedia_aud_dev_default_param, file ../src/pjmedia-audiodev/audiodev.c, line 682.
             status = pjsua_call_make_call(pjsua_acc_get_default(), &uri, &call_opt, (__bridge void*)call, &msg_data, &call_id);
             if (status == PJ_SUCCESS)
             {
@@ -1177,14 +1178,14 @@ void showLog(int level, const char* data, int len)
 
     if (call.ringbackToneOn)
     {
-	return;
+        return;
     }
 
     call.ringbackToneOn = YES;
 
     if (ringback_slot != PJSUA_INVALID_ID)
     {
-	pjsua_conf_connect(ringback_slot, 0);
+        pjsua_conf_connect(ringback_slot, 0);
     }
 }
 
@@ -1195,14 +1196,14 @@ void showLog(int level, const char* data, int len)
 
     if (call.ringbackToneOn)
     {
-	return;
+        return;
     }
 
     call.busyToneOn = YES;
 
     if (busy_slot != PJSUA_INVALID_ID)
     {
-	pjsua_conf_connect(busy_slot, 0);
+        pjsua_conf_connect(busy_slot, 0);
     }
 }
 
@@ -1213,14 +1214,14 @@ void showLog(int level, const char* data, int len)
 
     if (call.ringToneOn)
     {
-	return;
+        return;
     }
 
     call.ringToneOn = YES;
 
     if (ring_slot != PJSUA_INVALID_ID)
     {
-	pjsua_conf_connect(ring_slot, 0);
+        pjsua_conf_connect(ring_slot, 0);
     }
 }
 
@@ -1231,24 +1232,24 @@ void showLog(int level, const char* data, int len)
 
     if (call.ringbackToneOn)
     {
-	call.ringbackToneOn = NO;
+        call.ringbackToneOn = NO;
 
-	if (ringback_slot != PJSUA_INVALID_ID)
-	{
-	    pjsua_conf_disconnect(ringback_slot, 0);
-	    pjmedia_tonegen_rewind(ringback_port);
-	}
+        if (ringback_slot != PJSUA_INVALID_ID)
+        {
+            pjsua_conf_disconnect(ringback_slot, 0);
+            pjmedia_tonegen_rewind(ringback_port);
+        }
     }
 
     if (call.ringToneOn)
     {
-	call.ringToneOn = NO;
+        call.ringToneOn = NO;
 
-	if (ring_slot != PJSUA_INVALID_ID)
-	{
-	    pjsua_conf_disconnect(ring_slot, 0);
-	    pjmedia_tonegen_rewind(ring_port);
-	}
+        if (ring_slot != PJSUA_INVALID_ID)
+        {
+            pjsua_conf_disconnect(ring_slot, 0);
+            pjmedia_tonegen_rewind(ring_port);
+        }
     }
 }
 

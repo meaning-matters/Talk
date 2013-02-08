@@ -245,6 +245,9 @@ static SipInterface*    sipInterface;
 {
     BOOL    result;
 
+#warning TEMP
+    return YES;
+
     if ([[Settings sharedSettings].webUsername length] > 0)
     {
         if ([[Settings sharedSettings].sipUsername length] > 0)

@@ -86,7 +86,7 @@ static WebClient*   sharedClient;
 {
     [Common enableNetworkActivityIndicator:YES];
 
-    [self postPath:@"accounts"
+    [self postPath:@"users"
         parameters:parameters
            success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
