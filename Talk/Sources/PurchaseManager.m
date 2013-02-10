@@ -206,7 +206,9 @@ static PurchaseManager*     sharedManager;
     {
         if (status == WebClientStatusOk)
         {
-            NSLog(@"SUCCESS: %@", content);
+            NSLog(@"SUCCESS: %@\nBUT WE DON'T STORE WEB ACCOUNT FOR TESTING", content);
+#warning NOT STORED!!!
+            return ;
 
             [Settings sharedSettings].webUsername = ((NSDictionary*)content)[@"username"];
             [Settings sharedSettings].webPassword = ((NSDictionary*)content)[@"password"];

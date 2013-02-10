@@ -730,6 +730,8 @@ void showLog(int level, const char* data, int len)
             pj_list_push_back(&msg_data.hdr_list, &header);
 
 #warning Sometimes on bad network: Assertion failed: (aud_subsys.pf), function pjmedia_aud_dev_default_param, file ../src/pjmedia-audiodev/audiodev.c, line 682.
+
+//### Occurs when PJSIP has not finished restart() and a new call is made.
             status = pjsua_call_make_call(pjsua_acc_get_default(), &uri, &call_opt, (__bridge void*)call, &msg_data, &call_id);
             if (status == PJ_SUCCESS)
             {

@@ -18,6 +18,9 @@
 #import "Reachability.h"
 
 
+#warning Network status sometimes does not seem to be updated when app stays open; and when making a call it says: not connected.
+#warning However when app is put in background and foreground, a call can be made.  So it seems that close-open refreshes the connected state.
+
 #define REACHABILITY_HOSTNAME   @"www.google.com"
 #define LOAD_URL_TEST_URL       @"http://www.apple.com/library/test/success.html"
 #define LOAD_URL_TEST_STRING    @"<TITLE>Success</TITLE>"   // Part of received HTML
