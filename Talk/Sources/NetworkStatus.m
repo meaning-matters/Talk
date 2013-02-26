@@ -16,6 +16,7 @@
 #import "NetworkStatus.h"
 #import "Common.h"
 #import "Reachability.h"
+#import "Settings.h"
 
 
 #warning Network status sometimes does not seem to be updated when app stays open; and when making a call it says: not connected.
@@ -169,7 +170,8 @@ static NSTimer*                 loadUrlTestTimer;
         {
             info = @{ @"status" : @(NetworkStatusSimNotAvailable) };
         }
-        
+
+        [Settings sharedSettings].homeCountry = self.simIsoCountryCode;
         [Common postNotificationName:NetworkStatusSimChangedNotification
                             userInfo:info
                               object:self];

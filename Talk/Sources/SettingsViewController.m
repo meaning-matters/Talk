@@ -55,9 +55,9 @@ typedef enum
                                                       object:nil
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification* note)
-     {
-         [self.tableView reloadData];
-     }];
+    {
+        [self.tableView reloadData];
+    }];
 }
 
 

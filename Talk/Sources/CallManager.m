@@ -18,11 +18,13 @@
 #import "CallViewController.h"
 #import "Tones.h"
 #import "Base64.h"
+#import "ProvisioningViewController.h"
 
 
 @interface CallManager ()
 {
-    CallViewController* callViewController;
+    CallViewController*         callViewController;
+    ProvisioningViewController* provisioningViewController;
 }
 
 @end
@@ -281,6 +283,16 @@ static SipInterface*    sipInterface;
         {
             if (!cancelled)
             {
+                provisioningViewController = [[ProvisioningViewController alloc] init];
+                provisioningViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+                [AppDelegate.appDelegate.tabBarController presentViewController:provisioningViewController
+                                                                       animated:YES
+                                                                     completion:^
+                 {
+
+                 }];
+
+/*
                 [[PurchaseManager sharedManager] restoreOrBuyAccount:^(BOOL success, id object)
                 {
                     if (success == YES)
@@ -314,6 +326,7 @@ static SipInterface*    sipInterface;
                                              otherButtonTitles:nil];
                     }
                 }];
+ */
             }
         }
                              cancelButtonTitle:[CommonStrings cancelString]

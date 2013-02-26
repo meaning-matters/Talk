@@ -37,6 +37,10 @@
 		482A639E165FA94400325B3F /* CallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A639C165FA94400325B3F /* CallManager.m */; };
 		482A63A1165FF73400325B3F /* NumberLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A63A0165FF73400325B3F /* NumberLabel.m */; };
 		482A63A2165FF73400325B3F /* NumberLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A63A0165FF73400325B3F /* NumberLabel.m */; };
+		482D2DED16C815BE00E13B91 /* ProvisioningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 482D2DEC16C815BE00E13B91 /* ProvisioningViewController.m */; };
+		482D2DEE16C815BE00E13B91 /* ProvisioningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 482D2DEC16C815BE00E13B91 /* ProvisioningViewController.m */; };
+		482D2DF016C8172900E13B91 /* ProvisioningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482D2DEF16C8172900E13B91 /* ProvisioningView.xib */; };
+		482D2DF116C8172900E13B91 /* ProvisioningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482D2DEF16C8172900E13B91 /* ProvisioningView.xib */; };
 		48338F68161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */; };
 		48338F69161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */; };
 		48338F6A161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F57161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a */; };
@@ -828,6 +832,9 @@
 		482A639C165FA94400325B3F /* CallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallManager.m; sourceTree = "<group>"; };
 		482A639F165FF73400325B3F /* NumberLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberLabel.h; sourceTree = "<group>"; };
 		482A63A0165FF73400325B3F /* NumberLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberLabel.m; sourceTree = "<group>"; };
+		482D2DEB16C815BE00E13B91 /* ProvisioningViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProvisioningViewController.h; sourceTree = "<group>"; };
+		482D2DEC16C815BE00E13B91 /* ProvisioningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProvisioningViewController.m; sourceTree = "<group>"; };
+		482D2DEF16C8172900E13B91 /* ProvisioningView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProvisioningView.xib; sourceTree = "<group>"; };
 		48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libg7221codec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libg7221codec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48338F57161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgsmcodec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libgsmcodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48338F58161628690033F4C1 /* libilbccodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libilbccodec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libilbccodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
@@ -2368,6 +2375,7 @@
 				48AF4560164979CE00DFE3D8 /* RecentsView.xib */,
 				48AF4510164948F000DFE3D8 /* SettingsView.xib */,
 				48AF455A1649794B00DFE3D8 /* ShareView.xib */,
+				482D2DEF16C8172900E13B91 /* ProvisioningView.xib */,
 			);
 			path = XIBs;
 			sourceTree = "<group>";
@@ -2393,6 +2401,8 @@
 				48AF44FD1649483600DFE3D8 /* HelpViewController.m */,
 				48AF44E81649479100DFE3D8 /* NumbersViewController.h */,
 				48AF44E91649479100DFE3D8 /* NumbersViewController.m */,
+				482D2DEB16C815BE00E13B91 /* ProvisioningViewController.h */,
+				482D2DEC16C815BE00E13B91 /* ProvisioningViewController.m */,
 				48AF456716497A1B00DFE3D8 /* RecentsViewController.h */,
 				48AF456816497A1B00DFE3D8 /* RecentsViewController.m */,
 				48AF4555164978BE00DFE3D8 /* ShareViewController.h */,
@@ -3119,6 +3129,7 @@
 				48206EF8168DD8180040B04E /* Tones.json in Resources */,
 				4895D1B416B7AC4100BCA581 /* Icon.png in Resources */,
 				4895D1B616B7AC4100BCA581 /* Icon@2x.png in Resources */,
+				482D2DF016C8172900E13B91 /* ProvisioningView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3191,6 +3202,7 @@
 				48206EF9168DD8180040B04E /* Tones.json in Resources */,
 				4895D1B516B7AC4100BCA581 /* Icon.png in Resources */,
 				4895D1B716B7AC4100BCA581 /* Icon@2x.png in Resources */,
+				482D2DF116C8172900E13B91 /* ProvisioningView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3283,6 +3295,7 @@
 				48DD72D5169F5AC600CD7080 /* WebClient.m in Sources */,
 				4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */,
 				48F5D2ED16B9A380001576E1 /* Base64.m in Sources */,
+				482D2DED16C815BE00E13B91 /* ProvisioningViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3343,6 +3356,7 @@
 				48DD72D6169F5AC600CD7080 /* WebClient.m in Sources */,
 				4895D19E16B1C4F200BCA581 /* PurchaseManager.m in Sources */,
 				48F5D2EE16B9A380001576E1 /* Base64.m in Sources */,
+				482D2DEE16C815BE00E13B91 /* ProvisioningViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3483,7 +3497,7 @@
 					"\"$(SRCROOT)/External/WebRTC\"",
 				);
 				PRODUCT_NAME = NumberBay0;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "54756586-D042-4801-8BDF-8BA9BA21CEE9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "017DF480-99D2-4AFD-9A9F-C56DBDDFFE02";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
