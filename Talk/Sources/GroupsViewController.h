@@ -11,6 +11,6 @@
 
 @interface GroupsViewController : ViewController
 
-@property (nonatomic, strong) IBOutlet UITextField* textField;
+@property (nonatomic, weak) IBOutlet UITextField*   textField;
 
 @end

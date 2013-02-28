@@ -15,9 +15,9 @@
 
 @interface DialerViewController : ViewController <KeypadViewDelegate, NumberLabelDelegate>
 
-@property (nonatomic, strong, readonly) IBOutlet KeypadView*    keypadView;
-@property (nonatomic, strong) IBOutlet UILabel*                 infoLabel;      // Label above number.
-@property (nonatomic, strong) IBOutlet NumberLabel*             numberLabel;
-@property (nonatomic, strong) IBOutlet UILabel*                 nameLabel;      // Label below number.
+@property (nonatomic, weak, readonly) IBOutlet KeypadView*  keypadView;
+@property (nonatomic, weak) IBOutlet UILabel*               infoLabel;      // Label above number.
+@property (nonatomic, weak) IBOutlet NumberLabel*           numberLabel;
+@property (nonatomic, weak) IBOutlet UILabel*               nameLabel;      // Label below number.
 
 @end

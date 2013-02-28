@@ -15,23 +15,23 @@
 
 @interface CallViewController : UIViewController <CallOptionsViewDelegate, CallKeypadViewDelegate>
 
-@property (nonatomic, strong) NSMutableArray*               calls;
+@property (nonatomic, strong) NSMutableArray*       calls;
 
-@property (nonatomic, strong) IBOutlet UIImageView*         backgroundImageView;
-@property (nonatomic, strong) IBOutlet UIView*              topView;
-@property (nonatomic, strong) IBOutlet UIView*              centerRootView;
-@property (nonatomic, strong) IBOutlet UIView*              bottomView;
+@property (nonatomic, weak) IBOutlet UIImageView*   backgroundImageView;
+@property (nonatomic, weak) IBOutlet UIView*        topView;
+@property (nonatomic, weak) IBOutlet UIView*        centerRootView;
+@property (nonatomic, weak) IBOutlet UIView*        bottomView;
 
-@property (nonatomic, strong) IBOutlet UIImageView*         topImageView;
-@property (nonatomic, strong) IBOutlet UIImageView*         bottomImageView;
+@property (nonatomic, weak) IBOutlet UIImageView*   topImageView;
+@property (nonatomic, weak) IBOutlet UIImageView*   bottomImageView;
 
-@property (nonatomic, strong) IBOutlet UILabel*             infoLabel;
-@property (nonatomic, strong) IBOutlet UILabel*             calleeLabel;
-@property (nonatomic, strong) IBOutlet UILabel*             dtmfLabel;
-@property (nonatomic, strong) IBOutlet UILabel*             statusLabel;
+@property (nonatomic, weak) IBOutlet UILabel*       infoLabel;
+@property (nonatomic, weak) IBOutlet UILabel*       calleeLabel;
+@property (nonatomic, weak) IBOutlet UILabel*       dtmfLabel;
+@property (nonatomic, weak) IBOutlet UILabel*       statusLabel;
 
-@property (nonatomic, strong) IBOutlet UIButton*            endButton;
-@property (nonatomic, strong) IBOutlet UIButton*            hideButton;
+@property (nonatomic, weak) IBOutlet UIButton*      endButton;
+@property (nonatomic, weak) IBOutlet UIButton*      hideButton;
 
 
 - (id)initWithCall:(Call*)call;

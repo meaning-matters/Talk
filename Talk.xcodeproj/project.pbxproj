@@ -1504,9 +1504,9 @@
 		48EDD20A1667652A007B89DA /* SpeakerCall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SpeakerCall@2x.png"; sourceTree = "<group>"; };
 		48EDD226166770B8007B89DA /* CallOptionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallOptionsView.xib; sourceTree = "<group>"; };
 		48EDD229166771B8007B89DA /* CallKeypadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallKeypadView.xib; sourceTree = "<group>"; };
-		48EDD22C16677219007B89DA /* CallOptionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallOptionsView.h; sourceTree = "<group>"; };
+		48EDD22C16677219007B89DA /* CallOptionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CallOptionsView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		48EDD22D16677219007B89DA /* CallOptionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallOptionsView.m; sourceTree = "<group>"; };
-		48EDD2301667722B007B89DA /* CallKeypadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallKeypadView.h; sourceTree = "<group>"; };
+		48EDD2301667722B007B89DA /* CallKeypadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CallKeypadView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		48EDD2311667722B007B89DA /* CallKeypadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallKeypadView.m; sourceTree = "<group>"; };
 		48EDD2341667729E007B89DA /* KeypadKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeypadKey.h; sourceTree = "<group>"; };
 		48EDD2381667A0A5007B89DA /* CallKeypadButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallKeypadButton.h; sourceTree = "<group>"; };

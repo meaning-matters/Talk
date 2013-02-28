@@ -23,18 +23,18 @@
 @interface CallKeypadView : UIView
 
 @property (nonatomic, strong) IBOutlet UIView*              view;
-@property (nonatomic, strong) IBOutlet CallKeypadButton*    key1Button;
-@property (nonatomic, strong) IBOutlet CallKeypadButton*    key2Button;
-@property (nonatomic, strong) IBOutlet CallKeypadButton*    key3Button;
-@property (nonatomic, strong) IBOutlet CallKeypadButton*    key4Button;
-@property (nonatomic, strong) IBOutlet CallKeypadButton*    key5Button;
-@property (nonatomic, strong) IBOutlet CallKeypadButton*    key6Button;
-@property (nonatomic, strong) IBOutlet CallKeypadButton*    key7Button;
-@property (nonatomic, strong) IBOutlet CallKeypadButton*    key8Button;
-@property (nonatomic, strong) IBOutlet CallKeypadButton*    key9Button;
-@property (nonatomic, strong) IBOutlet CallKeypadButton*    keyStarButton;
-@property (nonatomic, strong) IBOutlet CallKeypadButton*    key0Button;         // '0' or '+'
-@property (nonatomic, strong) IBOutlet CallKeypadButton*    keyHashButton;
+@property (nonatomic, weak) IBOutlet CallKeypadButton*      key1Button;
+@property (nonatomic, weak) IBOutlet CallKeypadButton*      key2Button;
+@property (nonatomic, weak) IBOutlet CallKeypadButton*      key3Button;
+@property (nonatomic, weak) IBOutlet CallKeypadButton*      key4Button;
+@property (nonatomic, weak) IBOutlet CallKeypadButton*      key5Button;
+@property (nonatomic, weak) IBOutlet CallKeypadButton*      key6Button;
+@property (nonatomic, weak) IBOutlet CallKeypadButton*      key7Button;
+@property (nonatomic, weak) IBOutlet CallKeypadButton*      key8Button;
+@property (nonatomic, weak) IBOutlet CallKeypadButton*      key9Button;
+@property (nonatomic, weak) IBOutlet CallKeypadButton*      keyStarButton;
+@property (nonatomic, weak) IBOutlet CallKeypadButton*      key0Button;         // '0' or '+'
+@property (nonatomic, weak) IBOutlet CallKeypadButton*      keyHashButton;
 
 @property (nonatomic, assign) id<CallKeypadViewDelegate>    delegate;
 

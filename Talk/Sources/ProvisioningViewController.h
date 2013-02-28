@@ -14,9 +14,9 @@
 @property (nonatomic, strong) IBOutlet UIView*          introView;
 
 // Intro View
-@property (nonatomic, strong) IBOutlet UINavigationBar* introNavigationBar;
-@property (nonatomic, strong) IBOutlet UIButton*        introRestoreButton;
-@property (nonatomic, strong) IBOutlet UIButton*        introBuyButton;
+@property (nonatomic, weak) IBOutlet UINavigationBar*   introNavigationBar;
+@property (nonatomic, weak) IBOutlet UIButton*          introRestoreButton;
+@property (nonatomic, weak) IBOutlet UIButton*          introBuyButton;
 
 // Intro View
 - (IBAction)introCancelAction:(id)sender;

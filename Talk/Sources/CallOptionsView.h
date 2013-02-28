@@ -38,12 +38,12 @@
 @interface CallOptionsView : UIView
 
 @property (nonatomic, strong) IBOutlet UIView*              view;
-@property (nonatomic, strong) IBOutlet CallOptionButton*    muteButton;
-@property (nonatomic, strong) IBOutlet CallOptionButton*    keypadButton;
-@property (nonatomic, strong) IBOutlet CallOptionButton*    speakerButton;
-@property (nonatomic, strong) IBOutlet CallOptionButton*    addButton;
-@property (nonatomic, strong) IBOutlet CallOptionButton*    holdButton;
-@property (nonatomic, strong) IBOutlet CallOptionButton*    groupsButton;
+@property (nonatomic, weak) IBOutlet CallOptionButton*      muteButton;
+@property (nonatomic, weak) IBOutlet CallOptionButton*      keypadButton;
+@property (nonatomic, weak) IBOutlet CallOptionButton*      speakerButton;
+@property (nonatomic, weak) IBOutlet CallOptionButton*      addButton;
+@property (nonatomic, weak) IBOutlet CallOptionButton*      holdButton;
+@property (nonatomic, weak) IBOutlet CallOptionButton*      groupsButton;
 
 @property (nonatomic, assign) BOOL                          onMute;
 @property (nonatomic, assign) BOOL                          onSpeaker;
