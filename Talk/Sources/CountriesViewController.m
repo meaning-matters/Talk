@@ -225,10 +225,6 @@
     if (searchText.length == 0)
     {
         isFiltered = NO;
-
-        [searchBar performSelector:@selector(resignFirstResponder)
-                        withObject:nil
-                        afterDelay:0.1];
     }
     else
     {
@@ -255,8 +251,16 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar*)searchBar
 {
+    [searchBar performSelector:@selector(resignFirstResponder)
+                    withObject:nil
+                    afterDelay:0.1];
+}
+
+
+- (void)searchBarCancelButtonClicked:(UISearchBar*)searchBar
+{
     isFiltered = NO;
-    self.searchBar.text = @""; 
+    self.searchBar.text = @"";
     [self.tableView reloadData];
 
     [searchBar performSelector:@selector(resignFirstResponder)
