@@ -14,8 +14,10 @@
 @interface CountriesViewController ()
 {
     NSArray*                namesArray;
-    NSMutableDictionary*    nameIndexDictionary;
-    NSArray*                nameIndexArray;
+    NSArray*                nameIndexArray;         // Array with all letters.
+    NSMutableDictionary*    nameIndexDictionary;    // Dictionary with entry (containing array of names) per letter.
+    NSMutableArray*         filteredNamesArray;
+    BOOL                    isFiltered;
     UITableViewCell*        selectedCell;
 }
 
@@ -54,7 +56,7 @@
         nameIndexArray = [[nameIndexDictionary allKeys] sortedArrayUsingSelector:@selector(localizedCompare:)];
         for (NSString* nameIndex in nameIndexArray)
         {
-            [nameIndexDictionary[nameIndex] sortedArrayUsingSelector:@selector(localizedCompare:)];
+            nameIndexDictionary[nameIndex] = [nameIndexDictionary[nameIndex] sortedArrayUsingSelector:@selector(localizedCompare:)];
         }
     }
 
@@ -82,6 +84,22 @@
 
         self.navigationItem.leftBarButtonItem = cancelButton;
     }
+
+    for (UIView* searchBarSubview in [self.searchBar subviews])
+    {
+        if ([searchBarSubview conformsToProtocol:@protocol(UITextInputTraits)])
+        {
+            @try
+            {
+                [(UITextField*)searchBarSubview setReturnKeyType:UIReturnKeyDone];
+                [(UITextField*)searchBarSubview setKeyboardAppearance:UIKeyboardAppearanceAlert];
+            }
+            @catch (NSException* exception)
+            {
+                // Ignore exception.
+            }
+        }
+    }
 }
 
 
@@ -95,32 +113,41 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return [nameIndexArray count];
+    return isFiltered ? 1 : [nameIndexArray count];
 }
 
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return nameIndexArray[section];
+    return isFiltered ? nil : nameIndexArray[section];
 }
 
 
 - (NSArray*)sectionIndexTitlesForTableView:(UITableView*)tableView
 {
-    return nameIndexArray;
+    return isFiltered ? nil : nameIndexArray;
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [nameIndexDictionary[nameIndexArray[section]] count];
+    return isFiltered ? filteredNamesArray.count : [nameIndexDictionary[nameIndexArray[section]] count];
 }
 
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString*           name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
     UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSString*           name;
+
+    if (isFiltered)
+    {
+        name = filteredNamesArray[indexPath.row];
+    }
+    else
+    {
+        name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
+    }
 
     [Settings sharedSettings].homeCountry = [[CountryNames sharedNames] isoCountryCodeForName:name];
 
@@ -154,15 +181,25 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell;
-
+    NSString*           name;
+    NSString*           isoCountryCode;
+    
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
-    NSString*   name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
-    NSString*   isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
+    if (isFiltered)
+    {
+        name = filteredNamesArray[indexPath.row];
+    }
+    else
+    {
+        name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
+    }
+
+    isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
 
     cell.imageView.image = [UIImage imageNamed:isoCountryCode];
     cell.textLabel.text = name;
@@ -178,6 +215,53 @@
     }
 
     return cell;
+}
+
+
+#pragma mark - Search Bar Delegate
+
+- (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
+{
+    if (searchText.length == 0)
+    {
+        isFiltered = NO;
+
+        [searchBar performSelector:@selector(resignFirstResponder)
+                        withObject:nil
+                        afterDelay:0.1];
+    }
+    else
+    {
+        isFiltered = YES;
+        filteredNamesArray = [NSMutableArray array];
+        NSString*       nameIndex = [[searchText substringToIndex:1] uppercaseString];
+        NSMutableArray* indexArray;
+        if ((indexArray = [nameIndexDictionary valueForKey:nameIndex]) != nil)
+        {
+            for (NSString* countryName in indexArray)
+            {
+                NSRange range = [countryName rangeOfString:searchText options:NSCaseInsensitiveSearch];
+                if (range.location == 0)
+                {
+                    [filteredNamesArray addObject:countryName];
+                }
+            }
+        }
+    }
+
+    [self.tableView reloadData];
+}
+
+
+- (void)searchBarSearchButtonClicked:(UISearchBar*)searchBar
+{
+    isFiltered = NO;
+    self.searchBar.text = @""; 
+    [self.tableView reloadData];
+
+    [searchBar performSelector:@selector(resignFirstResponder)
+                    withObject:nil
+                    afterDelay:0.1];
 }
 
 @end
