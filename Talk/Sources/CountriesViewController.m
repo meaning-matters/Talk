@@ -85,6 +85,7 @@
         self.navigationItem.leftBarButtonItem = cancelButton;
     }
 
+    // Change Search to Done on search keyboard.
     for (UIView* searchBarSubview in [self.searchBar subviews])
     {
         if ([searchBarSubview conformsToProtocol:@protocol(UITextInputTraits)])

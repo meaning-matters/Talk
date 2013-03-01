@@ -124,8 +124,6 @@
     NSString *string = [[token description] stringByReplacingOccurrencesOfString:@" " withString:@""];
     self.deviceToken = [string substringWithRange:NSMakeRange(1, [string length] - 2)];   // Strip off '<' and '>'.
 
-
-    NSLog(@"Device Token: %@", self.deviceToken);
     // When account purchase transaction has not been finished, the PurchaseManager receives
     // it again at app startup.  This is however slightly earlier than that device token is
     // received.  Therefore the PurchaseManager is started up here.
