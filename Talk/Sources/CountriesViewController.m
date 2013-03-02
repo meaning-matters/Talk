@@ -262,15 +262,7 @@
     self.searchBar.text = @"";
     [self.tableView reloadData];
 
-    // Disable search-bar cancel button.
-    for (UIView* possibleButton in self.searchBar.subviews)
-    {
-        if ([possibleButton isKindOfClass:[UIButton class]])
-        {
-            ((UIButton*)possibleButton).enabled = NO;
-            break;
-        }
-    }
+    [self enableCancelButton:NO];
 
     [searchBar performSelector:@selector(resignFirstResponder)
                     withObject:nil
@@ -294,16 +286,23 @@
     {
         [self.searchBar resignFirstResponder];
 
-        // Enable search-bar cancel button.
-        for (UIView* possibleButton in self.searchBar.subviews)
+        [self enableCancelButton:[self.searchBar.text length] > 0];
+    }
+}
+
+
+- (void)enableCancelButton:(BOOL)enabled
+{
+    // Enable search-bar cancel button.
+    for (UIView* possibleButton in self.searchBar.subviews)
+    {
+        if ([possibleButton isKindOfClass:[UIButton class]])
         {
-            if ([possibleButton isKindOfClass:[UIButton class]])
-            {
-                ((UIButton*)possibleButton).enabled = YES;
-                break;
-            }
+            ((UIButton*)possibleButton).enabled = enabled;
+            break;
         }
     }
 }
+
 
 @end
