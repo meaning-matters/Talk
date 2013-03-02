@@ -17,6 +17,7 @@
     NSArray*                nameIndexArray;         // Array with all letters.
     NSMutableDictionary*    nameIndexDictionary;    // Dictionary with entry (containing array of names) per letter.
     NSMutableArray*         filteredNamesArray;
+
     BOOL                    isFiltered;
     UITableViewCell*        selectedCell;
 }
@@ -76,7 +77,7 @@
 
     if (self.isModal)
     {
-        UIBarButtonItem*           cancelButton;
+        UIBarButtonItem*    cancelButton;
 
         cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                      target:self
@@ -231,14 +232,13 @@
     {
         isFiltered = YES;
         filteredNamesArray = [NSMutableArray array];
-        NSString*       nameIndex = [[searchText substringToIndex:1] uppercaseString];
-        NSMutableArray* indexArray;
-        if ((indexArray = [nameIndexDictionary valueForKey:nameIndex]) != nil)
+
+        for (NSString* nameIndex in nameIndexArray)
         {
-            for (NSString* countryName in indexArray)
+            for (NSString* countryName in nameIndexDictionary[nameIndex])
             {
                 NSRange range = [countryName rangeOfString:searchText options:NSCaseInsensitiveSearch];
-                if (range.location == 0)
+                if (range.location != NSNotFound)
                 {
                     [filteredNamesArray addObject:countryName];
                 }
@@ -252,9 +252,7 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar*)searchBar
 {
-    [searchBar performSelector:@selector(resignFirstResponder)
-                    withObject:nil
-                    afterDelay:0.1];
+    [self done];
 }
 
 
@@ -264,9 +262,48 @@
     self.searchBar.text = @"";
     [self.tableView reloadData];
 
+    // Disable search-bar cancel button.
+    for (UIView* possibleButton in self.searchBar.subviews)
+    {
+        if ([possibleButton isKindOfClass:[UIButton class]])
+        {
+            ((UIButton*)possibleButton).enabled = NO;
+            break;
+        }
+    }
+
     [searchBar performSelector:@selector(resignFirstResponder)
                     withObject:nil
                     afterDelay:0.1];
+}
+
+
+#pragma mark - Scrollview Delegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)activeScrollView
+{
+    [self done];
+}
+
+
+#pragma Utility Methods
+
+- (void)done
+{
+    if ([self.searchBar isFirstResponder])
+    {
+        [self.searchBar resignFirstResponder];
+
+        // Enable search-bar cancel button.
+        for (UIView* possibleButton in self.searchBar.subviews)
+        {
+            if ([possibleButton isKindOfClass:[UIButton class]])
+            {
+                ((UIButton*)possibleButton).enabled = YES;
+                break;
+            }
+        }
+    }
 }
 
 @end

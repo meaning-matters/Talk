@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CountriesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
+@interface CountriesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
+                                                       UISearchBarDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UISearchBar*   searchBar;
 @property (nonatomic, weak) IBOutlet UITableView*   tableView;
