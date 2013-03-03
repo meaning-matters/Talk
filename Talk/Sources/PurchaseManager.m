@@ -374,6 +374,43 @@ static PurchaseManager*     sharedManager;
 }
 
 
+
+/*
+ [[PurchaseManager sharedManager] restoreOrBuyAccount:^(BOOL success, id object)
+ {
+ if (success == YES)
+ {
+ SKPaymentTransaction*   transaction = object;
+
+ //### We have Web username/password now.  So now request SIP account.
+ //...
+ }
+ else if (object != nil && ((NSError*)object).code != SKErrorPaymentCancelled)
+ {
+ NSString*   title;
+ NSString*   message;
+
+ title = NSLocalizedStringWithDefaultValue(@"Purchase:Failure AlertTitle", nil,
+ [NSBundle mainBundle], @"Getting Account Failed",
+ @"Alert title telling that getting an account failed.\n"
+ @"[iOS alert title size - abbreviated: 'Account Failed'].");
+ message = NSLocalizedStringWithDefaultValue(@"Purchase:Failure AlertMessage", nil,
+ [NSBundle mainBundle],
+ @"Something went wrong while getting your account. "
+ @"try again later.\n(The payment you may have done, "
+ @"is not lost.)",
+ @"Alert message telling that getting an account "
+ @"failed\n"
+ @"[iOS alert message size]");
+ [BlockAlertView showAlertViewWithTitle:title
+ message:message
+ completion:nil
+ cancelButtonTitle:[CommonStrings closeString]
+ otherButtonTitles:nil];
+ }
+ }];
+ */
+
 - (void)paymentQueue:(SKPaymentQueue*)queue updatedTransactions:(NSArray*)transactions
 {
     for (SKPaymentTransaction* transaction in transactions)
@@ -547,4 +584,9 @@ static PurchaseManager*     sharedManager;
     [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
 }
 
+
+- (void)viewWillLayoutSubviews
+{
+    
+}
 @end

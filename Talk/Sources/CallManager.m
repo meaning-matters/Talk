@@ -247,92 +247,20 @@ static SipInterface*    sipInterface;
 {
     BOOL    result;
 
-    if ([[Settings sharedSettings].webUsername length] > 0)
+    if ([[Settings sharedSettings].webUsername length] > 0 && [[Settings sharedSettings].sipUsername length] > 0)
     {
-        if ([[Settings sharedSettings].sipUsername length] > 0)
-        {
-            result = YES;
-        }
-        else
-        {
-            result = NO;
-#warning GET SIP ACCOUNT!
-        }
+        result = YES;
     }
     else
     {
-        NSString*   title;
-        NSString*   message;
-
-        title = NSLocalizedStringWithDefaultValue(@"Call:Account NoAcountTitle", nil,
-                                                  [NSBundle mainBundle], @"Get An Account",
-                                                  @"Alert title telling that an account is needed "
-                                                  @"to make calls.\n"
-                                                  @"[iOS alert title size - abbreviated: 'Get Account'].");
-        message = NSLocalizedStringWithDefaultValue(@"Call:Account NoAccountMessage", nil,
-                                                    [NSBundle mainBundle],
-                                                    @"You can only make calls when you have an account.\n"
-                                                    @"Buy one now (price paid is initial credit), or retrieve your "
-                                                    @"existing account.",
-                                                    @"Alert message telling than an account is needed to "
-                                                    @"make calls.\n"
-                                                    @"[iOS alert message size]");
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-        {
-            if (!cancelled)
-            {
-                provisioningViewController = [[ProvisioningViewController alloc] init];
-                provisioningViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-                [AppDelegate.appDelegate.tabBarController presentViewController:provisioningViewController
-                                                                       animated:YES
-                                                                     completion:^
-                 {
-
-                 }];
-
-/*
-                [[PurchaseManager sharedManager] restoreOrBuyAccount:^(BOOL success, id object)
-                {
-                    if (success == YES)
-                    {
-                        SKPaymentTransaction*   transaction = object;
-
-                        //### We have Web username/password now.  So now request SIP account.
-                        //...
-                    }
-                    else if (object != nil && ((NSError*)object).code != SKErrorPaymentCancelled)
-                    {
-                        NSString*   title;
-                        NSString*   message;
-
-                        title = NSLocalizedStringWithDefaultValue(@"Purchase:Failure AlertTitle", nil,
-                                                                  [NSBundle mainBundle], @"Getting Account Failed",
-                                                                  @"Alert title telling that getting an account failed.\n"
-                                                                  @"[iOS alert title size - abbreviated: 'Account Failed'].");
-                        message = NSLocalizedStringWithDefaultValue(@"Purchase:Failure AlertMessage", nil,
-                                                                    [NSBundle mainBundle],
-                                                                    @"Something went wrong while getting your account. "
-                                                                    @"try again later.\n(The payment you may have done, "
-                                                                    @"is not lost.)",
-                                                                    @"Alert message telling that getting an account "
-                                                                    @"failed\n"
-                                                                    @"[iOS alert message size]");
-                        [BlockAlertView showAlertViewWithTitle:title
-                                                       message:message
-                                                    completion:nil
-                                             cancelButtonTitle:[CommonStrings closeString]
-                                             otherButtonTitles:nil];
-                    }
-                }];
- */
-            }
-        }
-                             cancelButtonTitle:[CommonStrings cancelString]
-                             otherButtonTitles:[CommonStrings okString], nil];
-
         result = NO;
+        provisioningViewController = [[ProvisioningViewController alloc] init];
+        provisioningViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [AppDelegate.appDelegate.tabBarController presentViewController:provisioningViewController
+                                                               animated:YES
+                                                             completion:^
+        {
+        }];
     }
 
     return result;

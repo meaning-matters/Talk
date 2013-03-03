@@ -43,6 +43,7 @@
     self.introNavigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"Provisioning:Title Intro", nil,
                                                                               [NSBundle mainBundle], @"Get Account",
                                                                               @"...");
+
     [self.view addSubview:self.introView];
 }
 
