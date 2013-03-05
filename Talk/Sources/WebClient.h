@@ -36,4 +36,8 @@ typedef enum
 - (void)retrieveSipAccount:(NSDictionary*)parameters
                      reply:(void (^)(WebClientStatus status, id content))reply;
 
+- (void)retrieveCredit:(void (^)(WebClientStatus status, id content))reply;
+
+- (void)retrieveNumbers:(void (^)(WebClientStatus status, id content))reply;
+
 @end

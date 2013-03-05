@@ -143,4 +143,68 @@ static WebClient*   sharedClient;
     }];
 }
 
+
+- (void)retrieveCredit:(void (^)(WebClientStatus status, id content))reply
+{
+    [Common enableNetworkActivityIndicator:YES];
+
+    [sharedClient setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
+                                            password:[Settings sharedSettings].webPassword];
+
+    [self getPath:[NSString stringWithFormat:@"users/%@/credit", [Settings sharedSettings].webUsername]
+       parameters:nil
+          success:^(AFHTTPRequestOperation* operation, id responseObject)
+    {
+        NSLog(@"getPath request: %@", operation.request.URL);
+        [Common enableNetworkActivityIndicator:NO];
+
+        NSDictionary* reponseDictionary = responseObject;
+        if(responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
+        {
+            reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
+        }
+        else
+        {
+            reply(WebClientStatusFailInvalidResponse, nil);
+        }
+    }
+        failure:^(AFHTTPRequestOperation* operation, NSError* error)
+    {
+        [Common enableNetworkActivityIndicator:NO];
+        reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
+    }];
+}
+
+
+- (void)retrieveNumbers:(void (^)(WebClientStatus status, id content))reply
+{
+    [Common enableNetworkActivityIndicator:YES];
+
+    [sharedClient setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
+                                            password:[Settings sharedSettings].webPassword];
+
+    [self getPath:[NSString stringWithFormat:@"users/%@/numbers", [Settings sharedSettings].webUsername]
+       parameters:nil
+          success:^(AFHTTPRequestOperation* operation, id responseObject)
+    {
+        NSLog(@"getPath request: %@", operation.request.URL);
+        [Common enableNetworkActivityIndicator:NO];
+
+        NSDictionary* reponseDictionary = responseObject;
+        if(responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
+        {
+            reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
+        }
+        else
+        {
+            reply(WebClientStatusFailInvalidResponse, nil);
+        }
+    }
+        failure:^(AFHTTPRequestOperation* operation, NSError* error)
+    {
+        [Common enableNetworkActivityIndicator:NO];
+        reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
+    }];
+}
+
 @end

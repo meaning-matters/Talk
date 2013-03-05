@@ -23,6 +23,7 @@
 #import "BlockAlertView.h"
 #import "CommonStrings.h"
 #import "Common.h"
+#import "WebClient.h"
 
 
 @interface ProvisioningViewController ()
@@ -75,7 +76,17 @@
     self.failNavigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"Provisioning:Fail BarTitle", nil,
                                                                              [NSBundle mainBundle], @"Failed",
                                                                              @"...");
-    
+
+    self.readyNavigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BarTitle", nil,
+                                                                              [NSBundle mainBundle], @"Ready",
+                                                                              @"...");
+    self.readyCreditButton.titleLabel.text = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready CreditButtonTitle", nil,
+                                                                               [NSBundle mainBundle], @"Credit",
+                                                                               @"...");
+    self.readyNumberButton.titleLabel.text = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready CreditButtonTitle", nil,
+                                                                               [NSBundle mainBundle], @"Number",
+                                                                               @"...");
+
     [self.view addSubview:self.introView];
     currentView = self.introView;
 }
@@ -141,12 +152,37 @@
                                                                     @"[1 line]");
             [self showView:self.busyView];
 
+            [[WebClient sharedClient] retrieveCredit:^(WebClientStatus status, id content)
+            {
+                if (status == WebClientStatusOk)
+                {
+                    NSLog(@"####");
+                }
+                else
+                {
+                    NSLog(@"####");
+                }
+            }];
+
             self.busyLabel.text = NSLocalizedStringWithDefaultValue(@"Purchase:BusyNumbers LabelText", nil,
                                                                     [NSBundle mainBundle], @"Retrieving numbers...",
                                                                     @"Label text telling that app is busy retrieving "
                                                                     @"the user's telephone numbers\n"
                                                                     @"[1 line]");
             
+            [[WebClient sharedClient] retrieveNumbers:^(WebClientStatus status, id content)
+            {
+                if (status == WebClientStatusOk)
+                {
+                    NSLog(@"####");
+                }
+                else
+                {
+                    NSLog(@"####");
+                }
+            }];
+
+
             [self showView:self.readyView];
         }
         else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
