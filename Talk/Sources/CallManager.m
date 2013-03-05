@@ -254,13 +254,12 @@ static SipInterface*    sipInterface;
     else
     {
         result = NO;
+
         provisioningViewController = [[ProvisioningViewController alloc] init];
         provisioningViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [AppDelegate.appDelegate.tabBarController presentViewController:provisioningViewController
                                                                animated:YES
-                                                             completion:^
-        {
-        }];
+                                                             completion:nil];
     }
 
     return result;

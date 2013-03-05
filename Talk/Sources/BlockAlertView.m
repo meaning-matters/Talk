@@ -23,13 +23,18 @@
                         cancelButtonTitle:(NSString*)cancelButtonTitle
                         otherButtonTitles:(NSString*)otherButtonTitles, ...
 {
+    va_list arguments;
+    va_start(arguments, otherButtonTitles);
+
     BlockAlertView* alert = [[BlockAlertView alloc] initWithTitle:title
                                                           message:message
                                                         completion:completion
                                                 cancelButtonTitle:cancelButtonTitle
-                                                otherButtonTitles:otherButtonTitles, nil];
-
+                                                otherButtonTitles:otherButtonTitles
+                                                        arguments:arguments];
     [alert show];
+
+    va_end(arguments);
 
     return alert;
 }
@@ -39,7 +44,8 @@
                          message:(NSString*)message
                       completion:(void (^)(BOOL cancelled, NSInteger buttonIndex))completion
                cancelButtonTitle:(NSString*)cancelButtonTitle
-               otherButtonTitles:(NSString*)otherButtonTitles, ...
+               otherButtonTitles:(NSString*)otherButtonTitles
+                       arguments:(va_list)arguments
 {
     self = [super initWithTitle:title
                         message:message
@@ -51,17 +57,12 @@
     {
         _completion = completion;
 
-        va_list titles;
-        va_start(titles, otherButtonTitles);
-
-        for (NSString* title = otherButtonTitles; title != nil; title = (__bridge NSString *)va_arg(titles, void *))
+        for (NSString* title = otherButtonTitles; title != nil; title = (__bridge NSString *)va_arg(arguments, void *))
         {
             [self addButtonWithTitle:title];
         }
-        
-        va_end(titles);
     }
-    
+
     return self;
 }
 

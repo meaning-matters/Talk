@@ -172,6 +172,7 @@ static PurchaseManager*     sharedManager;
 
 - (void)processAccountTransaction:(SKPaymentTransaction*)transaction
 {
+#warning Good place of this?
     if ([[AppDelegate appDelegate].deviceToken length] == 0)
     {
         NSLog(@"//### Device Token not available (yet).");
@@ -180,41 +181,35 @@ static PurchaseManager*     sharedManager;
     }
 
     NSMutableDictionary*    parameters = [NSMutableDictionary dictionary];
-
-    parameters[@"receipt"]           = [Base64 encode:transaction.transactionReceipt];
-#warning Check that deviceToken is available!!  If not stop and report.
-    parameters[@"notificationToken"] = [AppDelegate appDelegate].deviceToken;
-    parameters[@"deviceName"]        = [UIDevice currentDevice].name;
-    parameters[@"deviceOs"]          = [NSString stringWithFormat:@"%@ %@",
-                                        [UIDevice currentDevice].systemName,
-                                        [UIDevice currentDevice].systemVersion];
-    parameters[@"deviceModel"]       = [Common deviceModel];
-    parameters[@"appVersion"]        = [Common bundleVersion];
-
-    if ([NetworkStatus sharedStatus].simMobileCountryCode != nil)
-    {
-        parameters[@"mobileCountryCode"] = [NetworkStatus sharedStatus].simMobileCountryCode;
-    }
-
-    if ([NetworkStatus sharedStatus].simMobileNetworkCode != nil)
-    {
-        parameters[@"mobileNetworkCode"] = [NetworkStatus sharedStatus].simMobileNetworkCode;
-    }
+    parameters[@"receipt"] = [Base64 encode:transaction.transactionReceipt];
 
     [[WebClient sharedClient] retrieveWebAccount:parameters
                                            reply:^(WebClientStatus status, id content)
     {
         if (status == WebClientStatusOk)
         {
-            NSLog(@"SUCCESS: %@\nBUT WE DON'T STORE WEB ACCOUNT FOR TESTING", content);
-#warning NOT STORED!!!
-            return ;
-
             [Settings sharedSettings].webUsername = ((NSDictionary*)content)[@"username"];
             [Settings sharedSettings].webPassword = ((NSDictionary*)content)[@"password"];
 
             NSMutableDictionary*    parameters = [NSMutableDictionary dictionary];
-            parameters[@"deviceName"] = [UIDevice currentDevice].name;
+            parameters[@"deviceName"]        = [UIDevice currentDevice].name;
+            parameters[@"notificationToken"] = [AppDelegate appDelegate].deviceToken;
+            parameters[@"deviceOs"]          = [NSString stringWithFormat:@"%@ %@",
+                                                [UIDevice currentDevice].systemName,
+                                                [UIDevice currentDevice].systemVersion];
+            parameters[@"deviceModel"]       = [Common deviceModel];
+            parameters[@"appVersion"]        = [Common bundleVersion];
+
+            if ([NetworkStatus sharedStatus].simMobileCountryCode != nil)
+            {
+                parameters[@"mobileCountryCode"] = [NetworkStatus sharedStatus].simMobileCountryCode;
+            }
+
+            if ([NetworkStatus sharedStatus].simMobileNetworkCode != nil)
+            {
+                parameters[@"mobileNetworkCode"] = [NetworkStatus sharedStatus].simMobileNetworkCode;
+            }
+
             [[WebClient sharedClient] retrieveSipAccount:parameters
                                                    reply:^(WebClientStatus status, id content)
             {
@@ -373,43 +368,6 @@ static PurchaseManager*     sharedManager;
     self.restoredTransactions = nil;
 }
 
-
-
-/*
- [[PurchaseManager sharedManager] restoreOrBuyAccount:^(BOOL success, id object)
- {
- if (success == YES)
- {
- SKPaymentTransaction*   transaction = object;
-
- //### We have Web username/password now.  So now request SIP account.
- //...
- }
- else if (object != nil && ((NSError*)object).code != SKErrorPaymentCancelled)
- {
- NSString*   title;
- NSString*   message;
-
- title = NSLocalizedStringWithDefaultValue(@"Purchase:Failure AlertTitle", nil,
- [NSBundle mainBundle], @"Getting Account Failed",
- @"Alert title telling that getting an account failed.\n"
- @"[iOS alert title size - abbreviated: 'Account Failed'].");
- message = NSLocalizedStringWithDefaultValue(@"Purchase:Failure AlertMessage", nil,
- [NSBundle mainBundle],
- @"Something went wrong while getting your account. "
- @"try again later.\n(The payment you may have done, "
- @"is not lost.)",
- @"Alert message telling that getting an account "
- @"failed\n"
- @"[iOS alert message size]");
- [BlockAlertView showAlertViewWithTitle:title
- message:message
- completion:nil
- cancelButtonTitle:[CommonStrings closeString]
- otherButtonTitles:nil];
- }
- }];
- */
 
 - (void)paymentQueue:(SKPaymentQueue*)queue updatedTransactions:(NSArray*)transactions
 {
