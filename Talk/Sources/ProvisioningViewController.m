@@ -156,34 +156,31 @@
             {
                 if (status == WebClientStatusOk)
                 {
-                    NSLog(@"####");
+                    self.busyLabel.text = NSLocalizedStringWithDefaultValue(@"Purchase:BusyNumbers LabelText", nil,
+                                                                            [NSBundle mainBundle], @"Retrieving numbers...",
+                                                                            @"Label text telling that app is busy retrieving "
+                                                                            @"the user's telephone numbers\n"
+                                                                            @"[1 line]");
+
+                    [[WebClient sharedClient] retrieveNumbers:^(WebClientStatus status, id content)
+                    {
+                        if (status == WebClientStatusOk)
+                        {
+                            //### Set ready text telling about current credit and number of numbers that are available.
+
+                            [self showView:self.readyView];
+                        }
+                        else
+                        {
+                            NSLog(@"####");
+                        }
+                    }];
                 }
                 else
                 {
                     NSLog(@"####");
                 }
             }];
-
-            self.busyLabel.text = NSLocalizedStringWithDefaultValue(@"Purchase:BusyNumbers LabelText", nil,
-                                                                    [NSBundle mainBundle], @"Retrieving numbers...",
-                                                                    @"Label text telling that app is busy retrieving "
-                                                                    @"the user's telephone numbers\n"
-                                                                    @"[1 line]");
-            
-            [[WebClient sharedClient] retrieveNumbers:^(WebClientStatus status, id content)
-            {
-                if (status == WebClientStatusOk)
-                {
-                    NSLog(@"####");
-                }
-                else
-                {
-                    NSLog(@"####");
-                }
-            }];
-
-
-            [self showView:self.readyView];
         }
         else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
         {
