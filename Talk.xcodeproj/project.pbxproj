@@ -618,6 +618,10 @@
 		4888D526166D200E00572566 /* HangupPhoneSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D523166D200E00572566 /* HangupPhoneSmall.png */; };
 		4888D527166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D524166D200E00572566 /* HangupPhoneSmall@2x.png */; };
 		4888D528166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D524166D200E00572566 /* HangupPhoneSmall@2x.png */; };
+		488AD1EA16E799C3004D3A2A /* NumberStatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488AD1E916E799C3004D3A2A /* NumberStatesViewController.m */; };
+		488AD1EB16E799C3004D3A2A /* NumberStatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488AD1E916E799C3004D3A2A /* NumberStatesViewController.m */; };
+		488AD1ED16E799F4004D3A2A /* NumberStatesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */; };
+		488AD1EE16E799F4004D3A2A /* NumberStatesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */; };
 		4895D19A16B1BE9200BCA581 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4895D19916B1BE9200BCA581 /* StoreKit.framework */; };
 		4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D19C16B1C4F200BCA581 /* PurchaseManager.m */; };
 		4895D19E16B1C4F200BCA581 /* PurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D19C16B1C4F200BCA581 /* PurchaseManager.m */; };
@@ -1393,6 +1397,9 @@
 		4888D519166D1AEE00572566 /* HangupPhone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HangupPhone@2x.png"; sourceTree = "<group>"; };
 		4888D523166D200E00572566 /* HangupPhoneSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HangupPhoneSmall.png; sourceTree = "<group>"; };
 		4888D524166D200E00572566 /* HangupPhoneSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HangupPhoneSmall@2x.png"; sourceTree = "<group>"; };
+		488AD1E816E799C3004D3A2A /* NumberStatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberStatesViewController.h; sourceTree = "<group>"; };
+		488AD1E916E799C3004D3A2A /* NumberStatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberStatesViewController.m; sourceTree = "<group>"; };
+		488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberStatesView.xib; sourceTree = "<group>"; };
 		4895D19916B1BE9200BCA581 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		4895D19B16B1C4F100BCA581 /* PurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseManager.h; sourceTree = "<group>"; };
 		4895D19C16B1C4F200BCA581 /* PurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseManager.m; sourceTree = "<group>"; };
@@ -2378,12 +2385,13 @@
 				48AF450D164948DC00DFE3D8 /* GroupsView.xib */,
 				48AF45131649490100DFE3D8 /* HelpView.xib */,
 				48D0A6F91655E2C600FA2D98 /* KeypadView.xib */,
+				48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */,
 				48AF4504164948A300DFE3D8 /* NumbersView.xib */,
 				48AF4560164979CE00DFE3D8 /* RecentsView.xib */,
 				48AF4510164948F000DFE3D8 /* SettingsView.xib */,
 				48AF455A1649794B00DFE3D8 /* ShareView.xib */,
 				482D2DEF16C8172900E13B91 /* ProvisioningView.xib */,
-				48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */,
+				488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */,
 			);
 			path = XIBs;
 			sourceTree = "<group>";
@@ -2409,6 +2417,8 @@
 				48AF44FD1649483600DFE3D8 /* HelpViewController.m */,
 				48B5AAF016E6A58400BA4084 /* NumberCountriesViewController.h */,
 				48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */,
+				488AD1E816E799C3004D3A2A /* NumberStatesViewController.h */,
+				488AD1E916E799C3004D3A2A /* NumberStatesViewController.m */,
 				48AF44E81649479100DFE3D8 /* NumbersViewController.h */,
 				48AF44E91649479100DFE3D8 /* NumbersViewController.m */,
 				482D2DEB16C815BE00E13B91 /* ProvisioningViewController.h */,
@@ -3141,6 +3151,7 @@
 				4895D1B616B7AC4100BCA581 /* Icon@2x.png in Resources */,
 				482D2DF016C8172900E13B91 /* ProvisioningView.xib in Resources */,
 				48B5AAEE16E69DE900BA4084 /* NumberCountriesView.xib in Resources */,
+				488AD1ED16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3215,6 +3226,7 @@
 				4895D1B716B7AC4100BCA581 /* Icon@2x.png in Resources */,
 				482D2DF116C8172900E13B91 /* ProvisioningView.xib in Resources */,
 				48B5AAEF16E69DE900BA4084 /* NumberCountriesView.xib in Resources */,
+				488AD1EE16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3309,6 +3321,7 @@
 				48F5D2ED16B9A380001576E1 /* Base64.m in Sources */,
 				482D2DED16C815BE00E13B91 /* ProvisioningViewController.m in Sources */,
 				48B5AAF216E6A58700BA4084 /* NumberCountriesViewController.m in Sources */,
+				488AD1EA16E799C3004D3A2A /* NumberStatesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3371,6 +3384,7 @@
 				48F5D2EE16B9A380001576E1 /* Base64.m in Sources */,
 				482D2DEE16C815BE00E13B91 /* ProvisioningViewController.m in Sources */,
 				48B5AAF316E6A58700BA4084 /* NumberCountriesViewController.m in Sources */,
+				488AD1EB16E799C3004D3A2A /* NumberStatesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

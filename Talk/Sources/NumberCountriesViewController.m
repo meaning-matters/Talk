@@ -9,12 +9,17 @@
 #import "NumberCountriesViewController.h"
 #import "CountryNames.h"
 #import "WebClient.h"
+#import "BlockAlertView.h"
+#import "CommonStrings.h"
 
 @interface NumberCountriesViewController ()
 {
-    NSArray*        countriesArray;
-    NSMutableArray* filteredCountriesArray;
-    BOOL            isFiltered;
+    NSArray*                nameIndexArray;         // Array with all first letters of country names.
+    NSMutableDictionary*    nameIndexDictionary;    // Dictionary with entry (containing array of names) per letter.
+    NSMutableArray*         filteredNamesArray;
+
+    NSMutableArray*         countriesArray;
+    BOOL                    isFiltered;
 }
 
 @end
@@ -26,32 +31,131 @@
 {
     if (self = [super initWithNibName:@"NumberCountriesView" bundle:nil])
     {
-        self.title = NSLocalizedStringWithDefaultValue(@"Countries:CountriesList ScreenTitle", nil,
-                                                       [NSBundle mainBundle], @"Countries",
-                                                       @"Title of app screen with list of countries\n"
-                                                       @"[1 line larger font].");
+        countriesArray = [NSMutableArray array];
     }
 
     return self;
 }
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.navigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries ScreenTitle", nil,
+                                                                         [NSBundle mainBundle], @"Select Country",
+                                                                         @"Title of app screen with list of countries\n"
+                                                                         @"[1 line larger font].");
 
     [[WebClient sharedClient] retrieveNumberCountries:^(WebClientStatus status, id content)
     {
         if (status == WebClientStatusOk)
         {
-            countriesArray = (NSArray*)content;
+            // Combine number types per country.
+            for (NSDictionary* newCountry in (NSArray*)content)
+            {
+                NSMutableDictionary*    matchedCountry = nil;
+                for (NSMutableDictionary* country in countriesArray)
+                {
+                    if ([newCountry[@"isoCode"] isEqualToString:country[@"isoCode"]])
+                    {
+                        matchedCountry = country;
+                        break;
+                    }
+                }
+
+                if (matchedCountry == nil)
+                {
+                    NSMutableDictionary* country = [NSMutableDictionary dictionaryWithDictionary:newCountry];
+                    country[[country[@"type"] lowercaseString]] = [NSNumber numberWithBool:YES];
+                    [countriesArray addObject:country];
+                }
+                else
+                {
+                    matchedCountry[[newCountry[@"type"] lowercaseString]] = [NSNumber numberWithBool:YES];
+                }
+            }
+
+            // Create indexes.
+            nameIndexDictionary = [NSMutableDictionary dictionary];
+            for (NSMutableDictionary* country in countriesArray)
+            {
+                NSString*       name = [[CountryNames sharedNames] nameForIsoCountryCode:country[@"isoCode"]];
+                NSString*       nameIndex = [name substringToIndex:1];
+                NSMutableArray* indexArray;
+                if ((indexArray = [nameIndexDictionary valueForKey:nameIndex]) != nil)
+                {
+                    [indexArray addObject:name];
+                }
+                else
+                {
+                    indexArray = [NSMutableArray array];
+                    nameIndexDictionary[nameIndex] = indexArray;
+                    [indexArray addObject:name];
+                }
+            }
+
+            // Sort indexes.
+            nameIndexArray = [[nameIndexDictionary allKeys] sortedArrayUsingSelector:@selector(localizedCompare:)];
+            for (NSString* nameIndex in nameIndexArray)
+            {
+                nameIndexDictionary[nameIndex] = [nameIndexDictionary[nameIndex] sortedArrayUsingSelector:@selector(localizedCompare:)];
+            }
+
             [self.tableView reloadData];
+        }
+        else if (status == WebClientStatusFailServiceUnavailable)
+        {
+            NSString*   title;
+            NSString*   message;
+
+            title = NSLocalizedStringWithDefaultValue(@"NumberCountries UnavailableAlertTitle", nil,
+                                                      [NSBundle mainBundle], @"Service Unavailable",
+                                                      @"Alert title telling that loading countries over internet failed.\n"
+                                                      @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"NumberCountries UnavailableAlertMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"The service for buying numbers is temporarily offline."
+                                                        @"\n\nPlease try again later.",
+                                                        @"Alert message telling that loading countries over internet failed.\n"
+                                                        @"[iOS alert message size - use correct iOS terms for: Settings "
+                                                        @"and Notifications!]");
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+             {
+                 [self dismissViewControllerAnimated:YES completion:nil];
+             }
+                                 cancelButtonTitle:[CommonStrings cancelString]
+                                 otherButtonTitles:nil];
         }
         else
         {
-            NSLog(@"####");
+            NSString*   title;
+            NSString*   message;
+
+            title = NSLocalizedStringWithDefaultValue(@"NumberCountries LoadFailAlertTitle", nil,
+                                                      [NSBundle mainBundle], @"Loading Failed",
+                                                      @"Alert title telling that loading countries over internet failed.\n"
+                                                      @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"NumberCountries LoadFailAlertMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Loading the list of countries failed.\n\nPlease try again later.",
+                                                        @"Alert message telling that loading countries over internet failed.\n"
+                                                        @"[iOS alert message size - use correct iOS terms for: Settings "
+                                                        @"and Notifications!]");
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+            {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
+                                 cancelButtonTitle:[CommonStrings cancelString]
+                                 otherButtonTitles:nil];
         }
     }];
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -64,28 +168,52 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return 1;
+    return isFiltered ? 1 : [nameIndexArray count];
+}
+
+
+- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return isFiltered ? nil : nameIndexArray[section];
+}
+
+
+- (NSArray*)sectionIndexTitlesForTableView:(UITableView*)tableView
+{
+    return isFiltered ? nil : nameIndexArray;
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return isFiltered ? filteredCountriesArray.count : countriesArray.count;
+    return isFiltered ? filteredNamesArray.count : [nameIndexDictionary[nameIndexArray[section]] count];
 }
 
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSString*           name;
+    NSString*           isoCountryCode;
     NSDictionary*       country;
 
     if (isFiltered)
     {
-        country = filteredCountriesArray[indexPath.row];
+        name = filteredNamesArray[indexPath.row];
     }
     else
     {
-        country = countriesArray[indexPath.row];
+        name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
+    }
+
+    // Look up country.
+    isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
+    for (country in countriesArray)
+    {
+        if ([country[@"isoCode"] isEqualToString:isoCountryCode])
+        {
+            break;
+        }
     }
 
     //### push next level.
@@ -95,8 +223,9 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell;
-    NSDictionary*       country;
+    NSString*           name;
     NSString*           isoCountryCode;
+    NSDictionary*       country;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
@@ -106,18 +235,26 @@
 
     if (isFiltered)
     {
-        country = filteredCountriesArray[indexPath.row];
+        name = filteredNamesArray[indexPath.row];
     }
     else
     {
-        country = countriesArray[indexPath.row];
+        name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
     }
 
-    isoCountryCode = country[@"isoCode"];
+    // Look up country.
+    isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
+    for (country in countriesArray)
+    {
+        if ([country[@"isoCode"] isEqualToString:isoCountryCode])
+        {
+            break;
+        }
+    }
 
     cell.imageView.image = [UIImage imageNamed:isoCountryCode];
-    cell.textLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:isoCountryCode];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.text = name;
+    cell.accessoryType = UITableViewCellAccessoryNone;
 
     return cell;
 }
@@ -134,7 +271,7 @@
     else
     {
         isFiltered = YES;
-        filteredCountriesArray = [NSMutableArray array];
+        filteredNamesArray = [NSMutableArray array];
 
         for (NSDictionary* country in countriesArray)
         {
@@ -142,7 +279,7 @@
             NSRange     range = [countryName rangeOfString:searchText options:NSCaseInsensitiveSearch];
             if (range.location != NSNotFound)
             {
-                [filteredCountriesArray addObject:country];
+                [filteredNamesArray addObject:countryName];
             }
         }
     }
@@ -180,6 +317,12 @@
 
 
 #pragma mark - Utility Methods
+
+- (void)processRetrievedArray:(NSArray*)countries
+{
+
+}
+
 
 - (void)done
 {

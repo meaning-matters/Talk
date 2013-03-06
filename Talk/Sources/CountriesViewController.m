@@ -14,7 +14,7 @@
 @interface CountriesViewController ()
 {
     NSArray*                namesArray;
-    NSArray*                nameIndexArray;         // Array with all letters.
+    NSArray*                nameIndexArray;         // Array with all first letters of country names.
     NSMutableDictionary*    nameIndexDictionary;    // Dictionary with entry (containing array of names) per letter.
     NSMutableArray*         filteredNamesArray;
 
