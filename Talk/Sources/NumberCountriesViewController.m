@@ -42,15 +42,21 @@
 {
     [super viewDidLoad];
 
-    self.navigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries ScreenTitle", nil,
-                                                                         [NSBundle mainBundle], @"Select Country",
-                                                                         @"Title of app screen with list of countries\n"
-                                                                         @"[1 line larger font].");
+    self.navigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries:Loading ScreenTitle", nil,
+                                                                         [NSBundle mainBundle], @"Loading Countries...",
+                                                                         @"Title of app screen with list of countries, "
+                                                                         @"while loading.\n"
+                                                                         @"[1 line larger font - abbreviated 'Loading...'].");
 
     [[WebClient sharedClient] retrieveNumberCountries:^(WebClientStatus status, id content)
     {
         if (status == WebClientStatusOk)
         {
+            self.navigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries:Done ScreenTitle", nil,
+                                                                                 [NSBundle mainBundle], @"Available Countries",
+                                                                                 @"Title of app screen with list of countries.\n"
+                                                                                 @"[1 line larger font - abbreviated 'Countries'].");
+
             // Combine number types per country.
             for (NSDictionary* newCountry in (NSArray*)content)
             {
@@ -353,6 +359,7 @@
 
 - (IBAction)cancelAction:(id)sender
 {
+    [[WebClient sharedClient] cancelAllRetrieveNumberCountries];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

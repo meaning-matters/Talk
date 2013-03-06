@@ -42,4 +42,15 @@ typedef enum
 
 - (void)retrieveNumberCountries:(void (^)(WebClientStatus status, id content))reply;
 
+
+- (void)cancelAllRetrieveWebAccount;
+
+- (void)cancelAllRetrieveSipAccount;
+
+- (void)cancelAllRetrieveCredit;
+
+- (void)cancelAllRetrieveNumbers;
+
+- (void)cancelAllRetrieveNumberCountries;
+
 @end

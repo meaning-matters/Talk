@@ -5,6 +5,9 @@
 //  Created by Cornelis van der Bent on 10/01/13.
 //  Copyright (c) 2013 Cornelis van der Bent. All rights reserved.
 //
+//  See link below for all URL load error codes and give more details than WebClientStatusFailNetworkProblem:
+//  https://developer.apple.com/library/mac/#documentation/Cocoa/Reference/Foundation/Miscellaneous/Foundation_Constants/Reference/reference.html
+
 
 #import "WebClient.h"
 #import "AFJSONRequestOperation.h"
@@ -79,6 +82,74 @@ static WebClient*   sharedClient;
 }
 
 
+- (void)postPath:(NSString*)path parameters:(NSDictionary*)parameters reply:(void (^)(WebClientStatus status, id content))reply
+{
+    [Common enableNetworkActivityIndicator:YES];
+
+    [sharedClient setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
+                                            password:[Settings sharedSettings].webPassword];
+
+    [self postPath:path
+        parameters:parameters
+           success:^(AFHTTPRequestOperation* operation, id responseObject)
+     {
+         [Common enableNetworkActivityIndicator:NO];
+
+         NSDictionary* reponseDictionary = responseObject;
+         if(responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
+         {
+             reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
+         }
+         else
+         {
+             reply(WebClientStatusFailInvalidResponse, nil);
+         }
+     }
+          failure:^(AFHTTPRequestOperation* operation, NSError* error)
+     {
+         [Common enableNetworkActivityIndicator:NO];
+         if (error != nil && error.code != NSURLErrorCancelled)
+         {
+             reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
+         }
+     }];
+}
+
+
+- (void)getPath:(NSString*)path parameters:(NSDictionary*)parameters reply:(void (^)(WebClientStatus status, id content))reply
+{
+    [Common enableNetworkActivityIndicator:YES];
+
+    [sharedClient setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
+                                            password:[Settings sharedSettings].webPassword];
+
+    [self getPath:path
+       parameters:parameters
+          success:^(AFHTTPRequestOperation* operation, id responseObject)
+     {
+         [Common enableNetworkActivityIndicator:NO];
+
+         NSDictionary* reponseDictionary = responseObject;
+         if(responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
+         {
+             reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
+         }
+         else
+         {
+             reply(WebClientStatusFailInvalidResponse, nil);
+         }
+     }
+          failure:^(AFHTTPRequestOperation* operation, NSError* error)
+     {
+         [Common enableNetworkActivityIndicator:NO];
+         if (error != nil && error.code != NSURLErrorCancelled)
+         {
+             reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
+         }
+     }];
+}
+
+
 #pragma mark - Public API
 
 - (void)retrieveWebAccount:(NSDictionary*)parameters
@@ -106,7 +177,10 @@ static WebClient*   sharedClient;
            failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
         [Common enableNetworkActivityIndicator:NO];
-        reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
+        if (error != nil && error.code != NSURLErrorCancelled)
+        {
+            reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
+        }
     }];
 }
 
@@ -114,130 +188,66 @@ static WebClient*   sharedClient;
 - (void)retrieveSipAccount:(NSDictionary*)parameters
                     reply:(void (^)(WebClientStatus status, id content))reply
 {
-    [Common enableNetworkActivityIndicator:YES];
-
-    [sharedClient setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
-                                            password:[Settings sharedSettings].webPassword];
-
     [self postPath:[NSString stringWithFormat:@"users/%@/devices", [Settings sharedSettings].webUsername]
         parameters:parameters
-           success:^(AFHTTPRequestOperation* operation, id responseObject)
-    {
-        NSLog(@"postPath request: %@", operation.request.URL);
-        [Common enableNetworkActivityIndicator:NO];
-
-        NSDictionary* reponseDictionary = responseObject;
-        if(responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
-        {
-            reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
-        }
-        else
-        {
-            reply(WebClientStatusFailInvalidResponse, nil);
-        }
-    }
-           failure:^(AFHTTPRequestOperation* operation, NSError* error)
-    {
-        [Common enableNetworkActivityIndicator:NO];
-        reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
-    }];
+             reply:reply];
 }
 
 
 - (void)retrieveCredit:(void (^)(WebClientStatus status, id content))reply
 {
-    [Common enableNetworkActivityIndicator:YES];
-
-    [sharedClient setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
-                                            password:[Settings sharedSettings].webPassword];
-
     [self getPath:[NSString stringWithFormat:@"users/%@/credit", [Settings sharedSettings].webUsername]
        parameters:nil
-          success:^(AFHTTPRequestOperation* operation, id responseObject)
-    {
-        NSLog(@"getPath request: %@", operation.request.URL);
-        [Common enableNetworkActivityIndicator:NO];
-
-        NSDictionary* reponseDictionary = responseObject;
-        if(responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
-        {
-            reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
-        }
-        else
-        {
-            reply(WebClientStatusFailInvalidResponse, nil);
-        }
-    }
-        failure:^(AFHTTPRequestOperation* operation, NSError* error)
-    {
-        [Common enableNetworkActivityIndicator:NO];
-        reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
-    }];
+            reply:reply];
 }
 
 
 - (void)retrieveNumbers:(void (^)(WebClientStatus status, id content))reply
 {
-    [Common enableNetworkActivityIndicator:YES];
-
-    [sharedClient setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
-                                            password:[Settings sharedSettings].webPassword];
-
     [self getPath:[NSString stringWithFormat:@"users/%@/numbers", [Settings sharedSettings].webUsername]
        parameters:nil
-          success:^(AFHTTPRequestOperation* operation, id responseObject)
-    {
-        NSLog(@"getPath request: %@", operation.request.URL);
-        [Common enableNetworkActivityIndicator:NO];
-
-        NSDictionary* reponseDictionary = responseObject;
-        if(responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
-        {
-            reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
-        }
-        else
-        {
-            reply(WebClientStatusFailInvalidResponse, nil);
-        }
-    }
-        failure:^(AFHTTPRequestOperation* operation, NSError* error)
-    {
-        [Common enableNetworkActivityIndicator:NO];
-        reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
-    }];
+            reply:reply];
 }
 
 
 - (void)retrieveNumberCountries:(void (^)(WebClientStatus status, id content))reply
 {
-    [Common enableNetworkActivityIndicator:YES];
-
-    [sharedClient setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
-                                            password:[Settings sharedSettings].webPassword];
-
-    [self getPath:@"numbers/countries"
-       parameters:nil
-          success:^(AFHTTPRequestOperation* operation, id responseObject)
-     {
-         NSLog(@"getPath request: %@", operation.request.URL);
-         [Common enableNetworkActivityIndicator:NO];
-
-         NSDictionary* reponseDictionary = responseObject;
-         if(responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
-         {
-             reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
-         }
-         else
-         {
-             reply(WebClientStatusFailInvalidResponse, nil);
-         }
-     }
-          failure:^(AFHTTPRequestOperation* operation, NSError* error)
-     {
-         [Common enableNetworkActivityIndicator:NO];
-         reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
-     }];
+    [self getPath:@"numbers/countries" parameters:nil reply:reply];
 }
 
+
+#pragma mark - Public Utility
+
+- (void)cancelAllRetrieveWebAccount
+{
+    [self cancelAllHTTPOperationsWithMethod:@"POST" path:@"users"];
+}
+
+
+- (void)cancelAllRetrieveSipAccount
+{
+    [self cancelAllHTTPOperationsWithMethod:@"POST" path:[NSString stringWithFormat:@"users/%@/devices",
+                                                          [Settings sharedSettings].webUsername]];
+}
+
+
+- (void)cancelAllRetrieveCredit
+{
+    [self cancelAllHTTPOperationsWithMethod:@"GET" path:[NSString stringWithFormat:@"users/%@/credit",
+                                                         [Settings sharedSettings].webUsername]];
+}
+
+
+- (void)cancelAllRetrieveNumbers
+{
+    [self cancelAllHTTPOperationsWithMethod:@"GET" path:[NSString stringWithFormat:@"users/%@/numbers",
+                                                         [Settings sharedSettings].webUsername]];
+}
+
+
+- (void)cancelAllRetrieveNumberCountries
+{
+    [self cancelAllHTTPOperationsWithMethod:@"GET" path:@"numbers/countries"];
+}
 
 @end
