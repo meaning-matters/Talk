@@ -24,7 +24,6 @@
 @interface CallManager ()
 {
     CallViewController*         callViewController;
-    ProvisioningViewController* provisioningViewController;
 }
 
 @end
@@ -254,6 +253,8 @@ static SipInterface*    sipInterface;
     else
     {
         result = NO;
+
+        ProvisioningViewController* provisioningViewController;
 
         provisioningViewController = [[ProvisioningViewController alloc] init];
         provisioningViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;

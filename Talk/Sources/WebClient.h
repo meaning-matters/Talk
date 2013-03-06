@@ -40,4 +40,6 @@ typedef enum
 
 - (void)retrieveNumbers:(void (^)(WebClientStatus status, id content))reply;
 
+- (void)retrieveNumberCountries:(void (^)(WebClientStatus status, id content))reply;
+
 @end

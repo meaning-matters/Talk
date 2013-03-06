@@ -82,7 +82,6 @@
         cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                      target:self
                                                                      action:@selector(cancel)];
-
         self.navigationItem.leftBarButtonItem = cancelButton;
     }
 
@@ -278,7 +277,7 @@
 }
 
 
-#pragma Utility Methods
+#pragma mark - Utility Methods
 
 - (void)done
 {
