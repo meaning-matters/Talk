@@ -95,8 +95,8 @@
 
     isFiltered = NO;
     [self.tableView reloadData];
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
-    [self.searchDisplayController setActive:NO animated:NO];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.searchDisplayController setActive:NO animated:YES];
 }
 
 

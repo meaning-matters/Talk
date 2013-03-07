@@ -41,6 +41,13 @@
 }
 
 
+- (void)cancel
+{
+    [[WebClient sharedClient] cancelAllRetrieveNumberCountries];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -49,7 +56,7 @@
 
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                  target:self
-                                                                 action:@selector(cancelAction:)];
+                                                                 action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
     self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries:Loading ScreenTitle", nil,
@@ -119,6 +126,13 @@
             }
 
             [self.tableView reloadData];
+            if (isFiltered)
+            {
+                [self searchBar:self.searchDisplayController.searchBar
+                  textDidChange:self.searchDisplayController.searchBar.text];
+
+                [self.searchDisplayController.searchResultsTableView reloadData];
+            }
         }
         else if (status == WebClientStatusFailServiceUnavailable)
         {
@@ -170,6 +184,17 @@
                                  otherButtonTitles:nil];
         }
     }];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    isFiltered = NO;
+    [self.tableView reloadData];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.searchDisplayController setActive:NO animated:YES];
 }
 
 
@@ -276,7 +301,19 @@
 }
 
 
-#pragma mark - Search Bar Delegate
+#pragma mark - Search Bar & Controller Delegate
+
+- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller
+{
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
+{
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
 
 - (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
 {
@@ -289,13 +326,15 @@
         isFiltered = YES;
         filteredNamesArray = [NSMutableArray array];
 
-        for (NSDictionary* country in countriesArray)
+        for (NSString* nameIndex in nameIndexArray)
         {
-            NSString*   countryName = [[CountryNames sharedNames] nameForIsoCountryCode:country[@"isoCode"]];
-            NSRange     range = [countryName rangeOfString:searchText options:NSCaseInsensitiveSearch];
-            if (range.location != NSNotFound)
+            for (NSString* countryName in nameIndexDictionary[nameIndex])
             {
-                [filteredNamesArray addObject:countryName];
+                NSRange range = [countryName rangeOfString:searchText options:NSCaseInsensitiveSearch];
+                if (range.location != NSNotFound)
+                {
+                    [filteredNamesArray addObject:countryName];
+                }
             }
         }
     }
@@ -304,73 +343,11 @@
 }
 
 
-- (void)searchBarSearchButtonClicked:(UISearchBar*)searchBar
-{
-    [self done];
-}
-
-
 - (void)searchBarCancelButtonClicked:(UISearchBar*)searchBar
 {
     isFiltered = NO;
-    self.searchBar.text = @"";
     [self.tableView reloadData];
-
-    [self enableCancelButton:NO];
-
-    [searchBar performSelector:@selector(resignFirstResponder)
-                    withObject:nil
-                    afterDelay:0.1];
-}
-
-
-#pragma mark - Scrollview Delegate
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)activeScrollView
-{
-    [self done];
-}
-
-
-#pragma mark - Utility Methods
-
-- (void)processRetrievedArray:(NSArray*)countries
-{
-
-}
-
-
-- (void)done
-{
-    if ([self.searchBar isFirstResponder])
-    {
-        [self.searchBar resignFirstResponder];
-
-        [self enableCancelButton:[self.searchBar.text length] > 0];
-    }
-}
-
-
-- (void)enableCancelButton:(BOOL)enabled
-{
-    // Enable search-bar cancel button.
-    for (UIView* possibleButton in self.searchBar.subviews)
-    {
-        if ([possibleButton isKindOfClass:[UIButton class]])
-        {
-            ((UIButton*)possibleButton).enabled = enabled;
-            break;
-        }
-    }
-}
-
-
-#pragma mark - Actions
-
-- (IBAction)cancelAction:(id)sender
-{
-    [[WebClient sharedClient] cancelAllRetrieveNumberCountries];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 @end
