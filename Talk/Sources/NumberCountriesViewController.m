@@ -12,6 +12,7 @@
 #import "BlockAlertView.h"
 #import "CommonStrings.h"
 
+
 @interface NumberCountriesViewController ()
 {
     NSArray*                nameIndexArray;         // Array with all first letters of country names.
@@ -31,6 +32,8 @@
 {
     if (self = [super initWithNibName:@"NumberCountriesView" bundle:nil])
     {
+        self.title = @"HelloWorld";
+
         countriesArray = [NSMutableArray array];
     }
 
@@ -42,20 +45,27 @@
 {
     [super viewDidLoad];
 
-    self.navigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries:Loading ScreenTitle", nil,
-                                                                         [NSBundle mainBundle], @"Loading Countries...",
-                                                                         @"Title of app screen with list of countries, "
-                                                                         @"while loading.\n"
-                                                                         @"[1 line larger font - abbreviated 'Loading...'].");
+    UIBarButtonItem*    cancelButton;
+
+    cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                 target:self
+                                                                 action:@selector(cancelAction:)];
+    self.navigationItem.rightBarButtonItem = cancelButton;
+
+    self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries:Loading ScreenTitle", nil,
+                                                                  [NSBundle mainBundle], @"Loading Countries...",
+                                                                  @"Title of app screen with list of countries, "
+                                                                  @"while loading.\n"
+                                                                  @"[1 line larger font - abbreviated 'Loading...'].");
 
     [[WebClient sharedClient] retrieveNumberCountries:^(WebClientStatus status, id content)
     {
         if (status == WebClientStatusOk)
         {
-            self.navigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries:Done ScreenTitle", nil,
-                                                                                 [NSBundle mainBundle], @"Available Countries",
-                                                                                 @"Title of app screen with list of countries.\n"
-                                                                                 @"[1 line larger font - abbreviated 'Countries'].");
+            self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries:Done ScreenTitle", nil,
+                                                                          [NSBundle mainBundle], @"Available Countries",
+                                                                          @"Title of app screen with list of countries.\n"
+                                                                          @"[1 line larger font - abbreviated 'Countries'].");
 
             // Combine number types per country.
             for (NSDictionary* newCountry in (NSArray*)content)

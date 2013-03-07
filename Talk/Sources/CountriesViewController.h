@@ -9,9 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface CountriesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
-                                                       UISearchBarDelegate, UIScrollViewDelegate>
+                                                       UISearchBarDelegate, UISearchDisplayDelegate>
 
-@property (nonatomic, weak) IBOutlet UISearchBar*   searchBar;
 @property (nonatomic, weak) IBOutlet UITableView*   tableView;
 @property (nonatomic, assign) BOOL                  isModal;    // Set when shown as modal, and not from Settings.
 

@@ -222,11 +222,15 @@
 
 - (void)addAction
 {
+    UINavigationController*         modalViewController;
     NumberCountriesViewController*  numberCountriesViewController;
-    
+
     numberCountriesViewController = [[NumberCountriesViewController alloc] init];
-    numberCountriesViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [AppDelegate.appDelegate.tabBarController presentViewController:numberCountriesViewController
+    
+    modalViewController = [[UINavigationController alloc] initWithRootViewController:numberCountriesViewController];
+    modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+
+    [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
                                                            animated:YES
                                                          completion:nil];
 }

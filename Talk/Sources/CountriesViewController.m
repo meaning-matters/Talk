@@ -10,6 +10,8 @@
 #import "SettingsViewController.h"
 #import "CountryNames.h"
 #import "Settings.h"
+#import "NSObject+Blocks.h"
+
 
 @interface CountriesViewController ()
 {
@@ -84,23 +86,17 @@
                                                                      action:@selector(cancel)];
         self.navigationItem.leftBarButtonItem = cancelButton;
     }
+}
 
-    // Change Search to Done on search keyboard.
-    for (UIView* searchBarSubview in [self.searchBar subviews])
-    {
-        if ([searchBarSubview conformsToProtocol:@protocol(UITextInputTraits)])
-        {
-            @try
-            {
-                [(UITextField*)searchBarSubview setReturnKeyType:UIReturnKeyDone];
-                [(UITextField*)searchBarSubview setKeyboardAppearance:UIKeyboardAppearanceAlert];
-            }
-            @catch (NSException* exception)
-            {
-                // Ignore exception.
-            }
-        }
-    }
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    isFiltered = NO;
+    [self.tableView reloadData];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [self.searchDisplayController setActive:NO animated:NO];
 }
 
 
@@ -219,7 +215,19 @@
 }
 
 
-#pragma mark - Search Bar Delegate
+#pragma mark - Search Bar & Controller Delegate
+
+- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller
+{
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
+{
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
 
 - (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
 {
@@ -249,59 +257,11 @@
 }
 
 
-- (void)searchBarSearchButtonClicked:(UISearchBar*)searchBar
-{
-    [self done];
-}
-
-
 - (void)searchBarCancelButtonClicked:(UISearchBar*)searchBar
 {
     isFiltered = NO;
-    self.searchBar.text = @"";
     [self.tableView reloadData];
-
-    [self enableCancelButton:NO];
-
-    [searchBar performSelector:@selector(resignFirstResponder)
-                    withObject:nil
-                    afterDelay:0.1];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
-
-
-#pragma mark - Scrollview Delegate
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)activeScrollView
-{
-    [self done];
-}
-
-
-#pragma mark - Utility Methods
-
-- (void)done
-{
-    if ([self.searchBar isFirstResponder])
-    {
-        [self.searchBar resignFirstResponder];
-
-        [self enableCancelButton:[self.searchBar.text length] > 0];
-    }
-}
-
-
-- (void)enableCancelButton:(BOOL)enabled
-{
-    // Enable search-bar cancel button.
-    for (UIView* possibleButton in self.searchBar.subviews)
-    {
-        if ([possibleButton isKindOfClass:[UIButton class]])
-        {
-            ((UIButton*)possibleButton).enabled = enabled;
-            break;
-        }
-    }
-}
-
 
 @end

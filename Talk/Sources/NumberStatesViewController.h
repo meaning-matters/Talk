@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NumberStatesViewController : UIViewController
+@interface NumberStatesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
+                                                          UISearchBarDelegate, UIScrollViewDelegate>
+
+@property (nonatomic, weak) IBOutlet UINavigationBar*   navigationBar;
+@property (nonatomic, weak) IBOutlet UISearchBar*       searchBar;
+@property (nonatomic, weak) IBOutlet UITableView*       tableView;
+
+
+- (IBAction)cancelAction:(id)sender;
 
 @end

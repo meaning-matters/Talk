@@ -622,6 +622,8 @@
 		488AD1EB16E799C3004D3A2A /* NumberStatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488AD1E916E799C3004D3A2A /* NumberStatesViewController.m */; };
 		488AD1ED16E799F4004D3A2A /* NumberStatesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */; };
 		488AD1EE16E799F4004D3A2A /* NumberStatesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */; };
+		488AD1F116E80A60004D3A2A /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */; };
+		488AD1F216E80A60004D3A2A /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */; };
 		4895D19A16B1BE9200BCA581 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4895D19916B1BE9200BCA581 /* StoreKit.framework */; };
 		4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D19C16B1C4F200BCA581 /* PurchaseManager.m */; };
 		4895D19E16B1C4F200BCA581 /* PurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D19C16B1C4F200BCA581 /* PurchaseManager.m */; };
@@ -1400,6 +1402,8 @@
 		488AD1E816E799C3004D3A2A /* NumberStatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberStatesViewController.h; sourceTree = "<group>"; };
 		488AD1E916E799C3004D3A2A /* NumberStatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberStatesViewController.m; sourceTree = "<group>"; };
 		488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberStatesView.xib; sourceTree = "<group>"; };
+		488AD1EF16E80A60004D3A2A /* NSObject+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Blocks.h"; sourceTree = "<group>"; };
+		488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Blocks.m"; sourceTree = "<group>"; };
 		4895D19916B1BE9200BCA581 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		4895D19B16B1C4F100BCA581 /* PurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseManager.h; sourceTree = "<group>"; };
 		4895D19C16B1C4F200BCA581 /* PurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseManager.m; sourceTree = "<group>"; };
@@ -1628,6 +1632,8 @@
 				482A6395165F903900325B3F /* CommonStrings.h */,
 				482A6396165F903900325B3F /* CommonStrings.m */,
 				48EDD2341667729E007B89DA /* KeypadKey.h */,
+				488AD1EF16E80A60004D3A2A /* NSObject+Blocks.h */,
+				488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */,
 				482608EC166A4706007F0844 /* NSTimer+Blocks.h */,
 				482608ED166A4706007F0844 /* NSTimer+Blocks.m */,
 				482A639F165FF73400325B3F /* NumberLabel.h */,
@@ -2386,12 +2392,12 @@
 				48AF45131649490100DFE3D8 /* HelpView.xib */,
 				48D0A6F91655E2C600FA2D98 /* KeypadView.xib */,
 				48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */,
+				488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */,
 				48AF4504164948A300DFE3D8 /* NumbersView.xib */,
 				48AF4560164979CE00DFE3D8 /* RecentsView.xib */,
 				48AF4510164948F000DFE3D8 /* SettingsView.xib */,
 				48AF455A1649794B00DFE3D8 /* ShareView.xib */,
 				482D2DEF16C8172900E13B91 /* ProvisioningView.xib */,
-				488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */,
 			);
 			path = XIBs;
 			sourceTree = "<group>";
@@ -3322,6 +3328,7 @@
 				482D2DED16C815BE00E13B91 /* ProvisioningViewController.m in Sources */,
 				48B5AAF216E6A58700BA4084 /* NumberCountriesViewController.m in Sources */,
 				488AD1EA16E799C3004D3A2A /* NumberStatesViewController.m in Sources */,
+				488AD1F116E80A60004D3A2A /* NSObject+Blocks.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3385,6 +3392,7 @@
 				482D2DEE16C815BE00E13B91 /* ProvisioningViewController.m in Sources */,
 				48B5AAF316E6A58700BA4084 /* NumberCountriesViewController.m in Sources */,
 				488AD1EB16E799C3004D3A2A /* NumberStatesViewController.m in Sources */,
+				488AD1F216E80A60004D3A2A /* NSObject+Blocks.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
