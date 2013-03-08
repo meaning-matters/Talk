@@ -7,6 +7,7 @@
 //
 
 #import "NumberCountriesViewController.h"
+#import "NumberStatesViewController.h"
 #import "CountryNames.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
@@ -70,7 +71,7 @@
         if (status == WebClientStatusOk)
         {
             self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries:Done ScreenTitle", nil,
-                                                                          [NSBundle mainBundle], @"Available Countries",
+                                                                          [NSBundle mainBundle], @"Countries",
                                                                           @"Title of app screen with list of countries.\n"
                                                                           @"[1 line larger font - abbreviated 'Countries'].");
 
@@ -257,7 +258,17 @@
         }
     }
 
-    //### push next level.
+    if ([country[@"hasStates"] boolValue])
+    {
+        NumberStatesViewController* viewController;
+        viewController = [[NumberStatesViewController alloc] initWithIsoCountryCode:isoCountryCode
+                                                                          countryId:[country[@"countryId"] intValue]];
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
+    else
+    {
+        
+    }
 }
 
 

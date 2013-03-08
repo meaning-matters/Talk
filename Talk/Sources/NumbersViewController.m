@@ -47,29 +47,41 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                            target:self
                                                                                            action:@selector(addAction)];
+}
 
-    // Change Search to Done on search keyboard.
-    for (UIView* searchBarSubview in [self.searchBar subviews])
-    {
-        if ([searchBarSubview conformsToProtocol:@protocol(UITextInputTraits)])
-        {
-            @try
-            {
-                [(UITextField*)searchBarSubview setReturnKeyType:UIReturnKeyDone];
-                [(UITextField*)searchBarSubview setKeyboardAppearance:UIKeyboardAppearanceAlert];
-            }
-            @catch (NSException* exception)
-            {
-                // Ignore exception.
-            }
-        }
-    }
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    isFiltered = NO;
+    [self.tableView reloadData];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.searchDisplayController setActive:NO animated:YES];
 }
 
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+
+#pragma mark - Utility Methods
+
+- (void)addAction
+{
+    UINavigationController*         modalViewController;
+    NumberCountriesViewController*  numberCountriesViewController;
+
+    numberCountriesViewController = [[NumberCountriesViewController alloc] init];
+
+    modalViewController = [[UINavigationController alloc] initWithRootViewController:numberCountriesViewController];
+    modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+
+    [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
+                                                           animated:YES
+                                                         completion:nil];
 }
 
 
@@ -140,6 +152,18 @@
 
 #pragma mark - Search Bar Delegate
 
+- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller
+{
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
+{
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
+
 - (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
 {
     if (searchText.length == 0)
@@ -165,74 +189,11 @@
 }
 
 
-- (void)searchBarSearchButtonClicked:(UISearchBar*)searchBar
-{
-    [self done];
-}
-
-
 - (void)searchBarCancelButtonClicked:(UISearchBar*)searchBar
 {
     isFiltered = NO;
-    self.searchBar.text = @"";
     [self.tableView reloadData];
-
-    [self enableCancelButton:NO];
-
-    [searchBar performSelector:@selector(resignFirstResponder)
-                    withObject:nil
-                    afterDelay:0.1];
-}
-
-
-#pragma mark - Scrollview Delegate
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)activeScrollView
-{
-    [self done];
-}
-
-
-#pragma mark - Utility Methods
-
-- (void)done
-{
-    if ([self.searchBar isFirstResponder])
-    {
-        [self.searchBar resignFirstResponder];
-
-        [self enableCancelButton:[self.searchBar.text length] > 0];
-    }
-}
-
-
-- (void)enableCancelButton:(BOOL)enabled
-{
-    // Enable search-bar cancel button.
-    for (UIView* possibleButton in self.searchBar.subviews)
-    {
-        if ([possibleButton isKindOfClass:[UIButton class]])
-        {
-            ((UIButton*)possibleButton).enabled = enabled;
-            break;
-        }
-    }
-}
-
-
-- (void)addAction
-{
-    UINavigationController*         modalViewController;
-    NumberCountriesViewController*  numberCountriesViewController;
-
-    numberCountriesViewController = [[NumberCountriesViewController alloc] init];
-    
-    modalViewController = [[UINavigationController alloc] initWithRootViewController:numberCountriesViewController];
-    modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-
-    [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
-                                                           animated:YES
-                                                         completion:nil];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 @end

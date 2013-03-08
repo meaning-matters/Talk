@@ -9,13 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface NumberStatesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
-                                                          UISearchBarDelegate, UIScrollViewDelegate>
+                                                          UISearchBarDelegate, UISearchDisplayDelegate>
 
-@property (nonatomic, weak) IBOutlet UINavigationBar*   navigationBar;
-@property (nonatomic, weak) IBOutlet UISearchBar*       searchBar;
-@property (nonatomic, weak) IBOutlet UITableView*       tableView;
+- (id)initWithIsoCountryCode:(NSString*)isoCountryCode countryId:(int)countryId;
 
 
-- (IBAction)cancelAction:(id)sender;
+@property (nonatomic, weak) IBOutlet UITableView*   tableView;
 
 @end

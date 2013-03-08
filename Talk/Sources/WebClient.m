@@ -152,6 +152,8 @@ static WebClient*   sharedClient;
 
 #pragma mark - Public API
 
+#warning replace parameters with argument list and put as much logic of the API request in these methods!
+
 - (void)retrieveWebAccount:(NSDictionary*)parameters
                      reply:(void (^)(WebClientStatus status, id content))reply
 {
@@ -216,6 +218,16 @@ static WebClient*   sharedClient;
 }
 
 
+- (void)retrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode
+                                   parameters:(NSDictionary*)parameters
+                                        reply:(void (^)(WebClientStatus status, id content))reply
+{
+    [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/states", isoCountryCode]
+       parameters:parameters
+            reply:reply];
+}
+
+
 #pragma mark - Public Utility
 
 - (void)cancelAllRetrieveWebAccount
@@ -248,6 +260,13 @@ static WebClient*   sharedClient;
 - (void)cancelAllRetrieveNumberCountries
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET" path:@"numbers/countries"];
+}
+
+
+- (void)cancelAllRetrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode
+{
+    [self cancelAllHTTPOperationsWithMethod:@"GET" path:[NSString stringWithFormat:@"numbers/countries/%@/states",
+                                                         isoCountryCode]];
 }
 
 @end

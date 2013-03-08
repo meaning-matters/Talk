@@ -10,9 +10,8 @@
 #import "ViewController.h"
 
 @interface NumbersViewController : ViewController <UITableViewDataSource, UITableViewDelegate,
-                                                   UISearchBarDelegate, UIScrollViewDelegate>
+                                                   UISearchBarDelegate, UISearchDisplayDelegate>
 
-@property (nonatomic, weak) IBOutlet UISearchBar*   searchBar;
 @property (nonatomic, weak) IBOutlet UITableView*   tableView;
 
 @end

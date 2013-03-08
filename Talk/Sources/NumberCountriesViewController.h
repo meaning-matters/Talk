@@ -11,6 +11,6 @@
 @interface NumberCountriesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
                                                              UISearchBarDelegate, UISearchDisplayDelegate>
 
-@property (nonatomic, weak) IBOutlet UITableView*       tableView;
+@property (nonatomic, weak) IBOutlet UITableView*   tableView;
 
 @end
