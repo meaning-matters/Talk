@@ -218,12 +218,11 @@ static WebClient*   sharedClient;
 }
 
 
-- (void)retrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode
-                                   parameters:(NSDictionary*)parameters
-                                        reply:(void (^)(WebClientStatus status, id content))reply
+- (void)retrieveNumberStatesForCountryId:(NSString*)countryId
+                                   reply:(void (^)(WebClientStatus status, id content))reply
 {
-    [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/states", isoCountryCode]
-       parameters:parameters
+    [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/states", countryId]
+       parameters:nil
             reply:reply];
 }
 
@@ -263,10 +262,10 @@ static WebClient*   sharedClient;
 }
 
 
-- (void)cancelAllRetrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode
+- (void)cancelAllRetrieveNumberStatesForCountryId:(NSString*)countryId
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET" path:[NSString stringWithFormat:@"numbers/countries/%@/states",
-                                                         isoCountryCode]];
+                                                         countryId]];
 }
 
 @end

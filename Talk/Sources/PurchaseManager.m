@@ -464,7 +464,7 @@ static PurchaseManager*     sharedManager;
 }
 
 
-- (void)restoreOrBuyAccount:(void (^)(BOOL success, id object))completion;
+- (void)restoreOrBuyAccount:(void (^)(BOOL success, id object))completion
 {
     if (self.accountCompletion != nil)
     {

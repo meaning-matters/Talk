@@ -14,8 +14,7 @@
 
 @interface NumberStatesViewController ()
 {
-    NSString*               isoCountryCode;
-    int                     countryId;
+    NSDictionary*           country;
 
     NSArray*                nameIndexArray;         // Array with all first letters of country names.
     NSMutableDictionary*    nameIndexDictionary;    // Dictionary with entry (containing array of names) per letter.
@@ -30,12 +29,11 @@
 
 @implementation NumberStatesViewController
 
-- (id)initWithIsoCountryCode:(NSString*)theIsoCountryCode countryId:(int)theCountryId
+- (id)initWithCountry:(NSDictionary*)theCountry
 {
     if (self = [super initWithNibName:@"NumberStatesView" bundle:nil])
     {
-        isoCountryCode = theIsoCountryCode;
-        countryId      = theCountryId;
+        country = theCountry;
     }
 
     return self;
@@ -44,7 +42,7 @@
 
 - (void)cancel
 {
-    [[WebClient sharedClient] cancelAllRetrieveNumberCountries];
+    [[WebClient sharedClient] cancelAllRetrieveNumberStatesForCountryId:country[@"countryId"]];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -66,9 +64,8 @@
                                                                   @"while loading.\n"
                                                                   @"[1 line larger font - abbreviated 'Loading...'].");
 
-    [[WebClient sharedClient] retrieveNumberStatesForIsoCountryCode:isoCountryCode
-                                                         parameters:@{ @"countryId" : @(countryId) }
-                                                              reply:^(WebClientStatus status, id content)
+    [[WebClient sharedClient] retrieveNumberStatesForCountryId:country[@"countryId"]
+                                                         reply:^(WebClientStatus status, id content)
     {
         if (status == WebClientStatusOk)
         {
@@ -78,6 +75,7 @@
                                                                           @"[1 line larger font - abbreviated 'Countries'].");
 
             // Create indexes.
+            statesArray = content;
             nameIndexDictionary = [NSMutableDictionary dictionary];
             for (NSMutableDictionary* state in statesArray)
             {
@@ -259,7 +257,7 @@
         }
     }
 
-    cell.imageView.image = [UIImage imageNamed:isoCountryCode];
+    cell.imageView.image = [UIImage imageNamed:country[@"isoCode"]];
     cell.textLabel.text = name;
     cell.accessoryType = UITableViewCellAccessoryNone;
 

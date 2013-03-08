@@ -42,10 +42,8 @@ typedef enum
 
 - (void)retrieveNumberCountries:(void (^)(WebClientStatus status, id content))reply;
 
-- (void)retrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode
-                                   parameters:(NSDictionary*)parameters
-                                        reply:(void (^)(WebClientStatus status, id content))reply;
-
+- (void)retrieveNumberStatesForCountryId:(NSString*)countryId
+                                   reply:(void (^)(WebClientStatus status, id content))reply;
 
 - (void)cancelAllRetrieveWebAccount;
 
@@ -57,6 +55,6 @@ typedef enum
 
 - (void)cancelAllRetrieveNumberCountries;
 
-- (void)cancelAllRetrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode;
+- (void)cancelAllRetrieveNumberStatesForCountryId:(NSString*)countryId;
 
 @end

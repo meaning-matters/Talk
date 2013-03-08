@@ -261,8 +261,7 @@
     if ([country[@"hasStates"] boolValue])
     {
         NumberStatesViewController* viewController;
-        viewController = [[NumberStatesViewController alloc] initWithIsoCountryCode:isoCountryCode
-                                                                          countryId:[country[@"countryId"] intValue]];
+        viewController = [[NumberStatesViewController alloc] initWithCountry:country];
         [self.navigationController pushViewController:viewController animated:YES];
     }
     else
