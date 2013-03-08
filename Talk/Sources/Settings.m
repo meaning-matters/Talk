@@ -143,6 +143,10 @@ static NSUserDefaults*  userDefaults;
 {
     // We assign to property (with self.xyz, instread of to _xyz) so that a value that
     // was added as default (in registerDefaults) is saved as normal setting.
+    //
+    // This does not apply for the keychain items, which have no default value.  But,
+    // more importantly self.xyz for keychain values stores that value in the keychain
+    // immediately again, and this caused them to be wiped.
     
     self.tabBarViewControllerClasses = [userDefaults objectForKey:TabBarViewControllerClassesKey];
     self.errorDomain                 = [userDefaults objectForKey:ErrorDomainKey];
@@ -150,12 +154,12 @@ static NSUserDefaults*  userDefaults;
     self.homeCountryFromSim          = [userDefaults boolForKey:HomeCountryFromSimKey];
     self.lastDialedNumber            = [userDefaults objectForKey:LastDialedNumberKey];
     self.webBaseUrl                  = [userDefaults objectForKey:WebBaseUrlKey];
-    self.webUsername                 = [self getKeychainValueForKey:WebUsernameKey service:WebServiceKey];
-    self.webPassword                 = [self getKeychainValueForKey:WebPasswordKey service:WebServiceKey];
+    _webUsername                     = [self getKeychainValueForKey:WebUsernameKey service:WebServiceKey];
+    _webPassword                     = [self getKeychainValueForKey:WebPasswordKey service:WebServiceKey];
     self.sipServer                   = [userDefaults objectForKey:SipServerKey];
-    self.sipRealm                    = [self getKeychainValueForKey:SipRealmKey    service:SipServiveKey];
-    self.sipUsername                 = [self getKeychainValueForKey:SipUsernameKey service:SipServiveKey];
-    self.sipPassword                 = [self getKeychainValueForKey:SipPasswordKey service:SipServiveKey];
+    _sipRealm                        = [self getKeychainValueForKey:SipRealmKey    service:SipServiveKey];
+    _sipUsername                     = [self getKeychainValueForKey:SipUsernameKey service:SipServiveKey];
+    _sipPassword                     = [self getKeychainValueForKey:SipPasswordKey service:SipServiveKey];
     self.allowCellularDataCalls      = [userDefaults boolForKey:AllowCellularDataCallsKey];
     self.louderVolume                = [userDefaults boolForKey:LouderVolumeKey];
 }
