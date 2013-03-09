@@ -44,7 +44,6 @@
 				<string key="NSFrame">{{0, 20}, {320, 548}}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MAA</bytes>
@@ -76,7 +75,7 @@
 							<object class="IBUINavigationItem" id="729447237">
 								<reference key="IBUINavigationBar" ref="488593003"/>
 								<string key="IBUITitle">Intro</string>
-								<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="825493339">
+								<object class="IBUIBarButtonItem" key="IBUIRightBarButtonItem" id="825493339">
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 									<int key="IBUIStyle">1</int>
 									<reference key="IBUINavigationItem" ref="729447237"/>
@@ -155,7 +154,6 @@
 						<string key="NSFrame">{{168, 484}, {132, 44}}</string>
 						<reference key="NSSuperview" ref="851991011"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -213,7 +211,7 @@
 							<object class="IBUINavigationItem" id="344960000">
 								<reference key="IBUINavigationBar" ref="347430130"/>
 								<string key="IBUITitle">Busy</string>
-								<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="196480098">
+								<object class="IBUIBarButtonItem" key="IBUIRightBarButtonItem" id="196480098">
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 									<int key="IBUIStyle">1</int>
 									<reference key="IBUINavigationItem" ref="344960000"/>
@@ -247,7 +245,6 @@
 						<string key="NSFrame">{{10, 318}, {300, 21}}</string>
 						<reference key="NSSuperview" ref="417786069"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -316,7 +313,7 @@
 							<object class="IBUINavigationItem" id="591199507">
 								<reference key="IBUINavigationBar" ref="763743568"/>
 								<string key="IBUITitle">Fail</string>
-								<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="468127707">
+								<object class="IBUIBarButtonItem" key="IBUIRightBarButtonItem" id="468127707">
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 									<int key="IBUIStyle">1</int>
 									<reference key="IBUINavigationItem" ref="591199507"/>
@@ -352,7 +349,6 @@
 						<string key="NSFrame">{{20, 485}, {280, 44}}</string>
 						<reference key="NSSuperview" ref="345011924"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -401,7 +397,7 @@
 							<object class="IBUINavigationItem" id="567779958">
 								<reference key="IBUINavigationBar" ref="768468946"/>
 								<string key="IBUITitle">Ready</string>
-								<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="25408771">
+								<object class="IBUIBarButtonItem" key="IBUIRightBarButtonItem" id="25408771">
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 									<int key="IBUIStyle">1</int>
 									<reference key="IBUINavigationItem" ref="567779958"/>

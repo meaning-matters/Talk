@@ -84,7 +84,7 @@
         cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                      target:self
                                                                      action:@selector(cancel)];
-        self.navigationItem.leftBarButtonItem = cancelButton;
+        self.navigationItem.rightBarButtonItem = cancelButton;
     }
 }
 
