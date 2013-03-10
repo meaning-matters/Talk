@@ -8,11 +8,13 @@
 
 #import "NumberCountriesViewController.h"
 #import "NumberStatesViewController.h"
+#import "NumberAreasViewController.h"
 #import "CountryNames.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
 #import "CommonStrings.h"
 #import "NumberType.h"
+#import "Common.h"
 
 
 @interface NumberCountriesViewController ()
@@ -35,8 +37,6 @@
 {
     if (self = [super initWithNibName:@"NumberCountriesView" bundle:nil])
     {
-        self.title = @"HelloWorld";
-
         allCountriesArray = [NSMutableArray array];
         countriesArray    = [NSMutableArray array];
     }
@@ -45,16 +45,15 @@
 }
 
 
-- (void)cancel
-{
-    [[WebClient sharedClient] cancelAllRetrieveNumberCountries];
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries:Loading ScreenTitle", nil,
+                                                                  [NSBundle mainBundle], @"Loading Countries...",
+                                                                  @"Title of app screen with list of countries, "
+                                                                  @"while loading.\n"
+                                                                  @"[1 line larger font - abbreviated 'Loading...'].");
 
     UIBarButtonItem*    cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
@@ -62,16 +61,10 @@
                                                                  action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
-    self.numberTypeSegmentedControl.segmentedControlStyle = 7;
+    self.numberTypeSegmentedControl.segmentedControlStyle = UndocumentedSearchScopeBarSegmentedControlStyle;
     [self.numberTypeSegmentedControl setTitle:[NumberType numberTypeString:1UL << 0] forSegmentAtIndex:0];
     [self.numberTypeSegmentedControl setTitle:[NumberType numberTypeString:1UL << 1] forSegmentAtIndex:1];
     [self.numberTypeSegmentedControl setTitle:[NumberType numberTypeString:1UL << 2] forSegmentAtIndex:2];
-
-    self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries:Loading ScreenTitle", nil,
-                                                                  [NSBundle mainBundle], @"Loading Countries...",
-                                                                  @"Title of app screen with list of countries, "
-                                                                  @"while loading.\n"
-                                                                  @"[1 line larger font - abbreviated 'Loading...'].");
 
     [[WebClient sharedClient] retrieveNumberCountries:^(WebClientStatus status, id content)
     {
@@ -195,10 +188,10 @@
 {
     // Select from all on numberType.
     [countriesArray removeAllObjects];
-    NumberTypeMask  mask = 1UL << [self.numberTypeSegmentedControl selectedSegmentIndex];
+    NumberTypeMask  numberTypeMask = 1UL << [self.numberTypeSegmentedControl selectedSegmentIndex];
     for (NSMutableDictionary* country in allCountriesArray)
     {
-        if ([country[@"numberTypes"] intValue] & mask)
+        if ([country[@"numberTypes"] intValue] & numberTypeMask)
         {
             [countriesArray addObject:country];
         }
@@ -239,6 +232,14 @@
         [self.searchDisplayController.searchResultsTableView reloadData];
     }
 }
+
+
+- (void)cancel
+{
+    [[WebClient sharedClient] cancelAllRetrieveNumberCountries];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 #pragma mark - Table View Delegates
 
@@ -292,15 +293,21 @@
         }
     }
 
+    NumberTypeMask  numberTypeMask = 1UL << self.numberTypeSegmentedControl.selectedSegmentIndex;
     if ([country[@"hasStates"] boolValue])
     {
         NumberStatesViewController* viewController;
-        viewController = [[NumberStatesViewController alloc] initWithCountry:country];
+        viewController = [[NumberStatesViewController alloc] initWithCountry:country
+                                                              numberTypeMask:numberTypeMask];
         [self.navigationController pushViewController:viewController animated:YES];
     }
     else
     {
-        
+        NumberAreasViewController*  viewController;
+        viewController = [[NumberAreasViewController alloc] initWithCountry:country
+                                                                    stateId:nil
+                                                             numberTypeMask:numberTypeMask];
+        [self.navigationController pushViewController:viewController animated:YES];
     }
 }
 

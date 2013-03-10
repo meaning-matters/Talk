@@ -9,7 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "AppDelegate.h"
 
-#define CFReleaseSafe(x)    { if ((x) != NULL) CFRelease(x); }
+#define CFReleaseSafe(x)                                { if ((x) != NULL) CFRelease(x); }
+
+// http://stackoverflow.com/questions/3172794/scope-bar-for-uitableview-like-app-store
+#define UndocumentedSearchScopeBarSegmentedControlStyle 7
 
 @interface Common : NSObject
 

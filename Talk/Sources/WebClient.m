@@ -227,6 +227,25 @@ static WebClient*   sharedClient;
 }
 
 
+- (void)retrieveNumberAreasForCountryId:(NSString*)countryId
+                                stateId:(NSString*)stateId
+                                  reply:(void (^)(WebClientStatus status, id content))reply
+{
+    [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/states/%@/areas", countryId, stateId]
+       parameters:nil
+            reply:reply];
+}
+
+
+- (void)retrieveNumberAreasForCountryId:(NSString*)countryId
+                                  reply:(void (^)(WebClientStatus status, id content))reply
+{
+    [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/areas", countryId]
+       parameters:nil
+            reply:reply];
+}
+
+
 #pragma mark - Public Utility
 
 - (void)cancelAllRetrieveWebAccount
@@ -266,6 +285,22 @@ static WebClient*   sharedClient;
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET" path:[NSString stringWithFormat:@"numbers/countries/%@/states",
                                                          countryId]];
+}
+
+
+- (void)cancelAllRetrieveNumberAreasForCountryId:(NSString*)countryId stateId:(NSString*)stateId
+{
+    [self cancelAllHTTPOperationsWithMethod:@"GET"
+                                       path:[NSString stringWithFormat:@"numbers/countries/%@/states/%@/areas",
+                                             countryId, stateId]];
+}
+
+
+- (void)cancelAllRetrieveNumberAreasForCountryId:(NSString*)countryId
+{
+    [self cancelAllHTTPOperationsWithMethod:@"GET"
+                                       path:[NSString stringWithFormat:@"numbers/countries/%@/areas",
+                                             countryId]];
 }
 
 @end

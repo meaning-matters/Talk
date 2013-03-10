@@ -45,6 +45,14 @@ typedef enum
 - (void)retrieveNumberStatesForCountryId:(NSString*)countryId
                                    reply:(void (^)(WebClientStatus status, id content))reply;
 
+- (void)retrieveNumberAreasForCountryId:(NSString*)countryId
+                                stateId:(NSString*)stateId
+                                  reply:(void (^)(WebClientStatus status, id content))reply;
+
+- (void)retrieveNumberAreasForCountryId:(NSString*)countryId
+                                  reply:(void (^)(WebClientStatus status, id content))reply;
+
+
 - (void)cancelAllRetrieveWebAccount;
 
 - (void)cancelAllRetrieveSipAccount;
@@ -56,5 +64,9 @@ typedef enum
 - (void)cancelAllRetrieveNumberCountries;
 
 - (void)cancelAllRetrieveNumberStatesForCountryId:(NSString*)countryId;
+
+- (void)cancelAllRetrieveNumberAreasForCountryId:(NSString*)countryId stateId:(NSString*)stateId;
+
+- (void)cancelAllRetrieveNumberAreasForCountryId:(NSString*)countryId;
 
 @end

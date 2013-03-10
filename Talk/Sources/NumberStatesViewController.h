@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NumberType.h"
 
 @interface NumberStatesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
                                                           UISearchBarDelegate, UISearchDisplayDelegate>
 
-- (id)initWithCountry:(NSDictionary*)country;
+- (id)initWithCountry:(NSDictionary*)country numberTypeMask:(NumberTypeMask)numberTypeMask;
 
 
 @property (nonatomic, weak) IBOutlet UITableView*   tableView;

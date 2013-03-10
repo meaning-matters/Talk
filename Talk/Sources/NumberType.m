@@ -34,4 +34,20 @@
     }
 }
 
+
++ (NSUInteger)numberTypeMaskToIndex:(NumberTypeMask)mask
+{
+    switch (mask)
+    {
+        case NumberTypeGeographicMask:
+            return 0;
+
+        case NumberTypeTollFreeMask:
+            return 1;
+
+        case NumberTypeNationalMask:
+            return 2;
+    }
+}
+
 @end

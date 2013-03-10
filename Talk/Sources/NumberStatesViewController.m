@@ -15,6 +15,7 @@
 @interface NumberStatesViewController ()
 {
     NSDictionary*           country;
+    NumberTypeMask          numberTypeMask;          // Not used in this class, just being passed on.
 
     NSArray*                nameIndexArray;         // Array with all first letters of country names.
     NSMutableDictionary*    nameIndexDictionary;    // Dictionary with entry (containing array of names) per letter.
@@ -29,21 +30,15 @@
 
 @implementation NumberStatesViewController
 
-- (id)initWithCountry:(NSDictionary*)theCountry
+- (id)initWithCountry:(NSDictionary*)theCountry numberTypeMask:(NumberTypeMask)theNumberTypeMask
 {
     if (self = [super initWithNibName:@"NumberStatesView" bundle:nil])
     {
-        country = theCountry;
+        country        = theCountry;
+        numberTypeMask = theNumberTypeMask;
     }
 
     return self;
-}
-
-
-- (void)cancel
-{
-    [[WebClient sharedClient] cancelAllRetrieveNumberStatesForCountryId:country[@"countryId"]];
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -173,6 +168,15 @@
 }
 
 
+#pragma mark - Helper Methods
+
+- (void)cancel
+{
+    [[WebClient sharedClient] cancelAllRetrieveNumberStatesForCountryId:country[@"countryId"]];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
 #pragma mark - Table View Delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
@@ -258,8 +262,8 @@
     }
 
     cell.imageView.image = [UIImage imageNamed:country[@"isoCode"]];
-    cell.textLabel.text = name;
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.textLabel.text  = name;
+    cell.accessoryType   = UITableViewCellAccessoryNone;
 
     return cell;
 }
