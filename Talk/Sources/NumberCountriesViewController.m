@@ -12,6 +12,7 @@
 #import "WebClient.h"
 #import "BlockAlertView.h"
 #import "CommonStrings.h"
+#import "NumberType.h"
 
 
 @interface NumberCountriesViewController ()
@@ -20,6 +21,7 @@
     NSMutableDictionary*    nameIndexDictionary;    // Dictionary with entry (containing array of names) per letter.
     NSMutableArray*         filteredNamesArray;
 
+    NSMutableArray*         allCountriesArray;
     NSMutableArray*         countriesArray;
     BOOL                    isFiltered;
 }
@@ -35,7 +37,8 @@
     {
         self.title = @"HelloWorld";
 
-        countriesArray = [NSMutableArray array];
+        allCountriesArray = [NSMutableArray array];
+        countriesArray    = [NSMutableArray array];
     }
 
     return self;
@@ -54,11 +57,15 @@
     [super viewDidLoad];
 
     UIBarButtonItem*    cancelButton;
-
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                  target:self
                                                                  action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
+
+    self.numberTypeSegmentedControl.segmentedControlStyle = 7;
+    [self.numberTypeSegmentedControl setTitle:[NumberType numberTypeString:1UL << 0] forSegmentAtIndex:0];
+    [self.numberTypeSegmentedControl setTitle:[NumberType numberTypeString:1UL << 1] forSegmentAtIndex:1];
+    [self.numberTypeSegmentedControl setTitle:[NumberType numberTypeString:1UL << 2] forSegmentAtIndex:2];
 
     self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries:Loading ScreenTitle", nil,
                                                                   [NSBundle mainBundle], @"Loading Countries...",
@@ -75,11 +82,11 @@
                                                                           @"Title of app screen with list of countries.\n"
                                                                           @"[1 line larger font - abbreviated 'Countries'].");
 
-            // Combine number types per country.
+            // Combine numberTypes per country.
             for (NSDictionary* newCountry in (NSArray*)content)
             {
                 NSMutableDictionary*    matchedCountry = nil;
-                for (NSMutableDictionary* country in countriesArray)
+                for (NSMutableDictionary* country in allCountriesArray)
                 {
                     if ([newCountry[@"isoCode"] isEqualToString:country[@"isoCode"]])
                     {
@@ -90,50 +97,26 @@
 
                 if (matchedCountry == nil)
                 {
-                    NSMutableDictionary* country = [NSMutableDictionary dictionaryWithDictionary:newCountry];
-                    country[[country[@"type"] lowercaseString]] = [NSNumber numberWithBool:YES];
-                    [countriesArray addObject:country];
+                    matchedCountry = [NSMutableDictionary dictionaryWithDictionary:newCountry];
+                    matchedCountry[@"numberTypes"] = @(0);
+                    [allCountriesArray addObject:matchedCountry];
                 }
-                else
+
+                if ([newCountry[@"numberType"] isEqualToString:@"GEOGRAPHIC"])
                 {
-                    matchedCountry[[newCountry[@"type"] lowercaseString]] = [NSNumber numberWithBool:YES];
+                    matchedCountry[@"numberTypes"] = @([matchedCountry[@"numberTypes"] intValue] | NumberTypeGeographicMask);
                 }
-            }
-
-            // Create indexes.
-            nameIndexDictionary = [NSMutableDictionary dictionary];
-            for (NSMutableDictionary* country in countriesArray)
-            {
-                NSString*       name = [[CountryNames sharedNames] nameForIsoCountryCode:country[@"isoCode"]];
-                NSString*       nameIndex = [name substringToIndex:1];
-                NSMutableArray* indexArray;
-                if ((indexArray = [nameIndexDictionary valueForKey:nameIndex]) != nil)
+                else if ([newCountry[@"numberType"] isEqualToString:@"TOLLFREE"])
                 {
-                    [indexArray addObject:name];
+                    matchedCountry[@"numberTypes"] = @([matchedCountry[@"numberTypes"] intValue] | NumberTypeTollFreeMask);
                 }
-                else
+                else if ([newCountry[@"numberType"] isEqualToString:@"NATIONAL"])
                 {
-                    indexArray = [NSMutableArray array];
-                    nameIndexDictionary[nameIndex] = indexArray;
-                    [indexArray addObject:name];
+                    matchedCountry[@"numberTypes"] = @([matchedCountry[@"numberTypes"] intValue] | NumberTypeNationalMask);
                 }
             }
 
-            // Sort indexes.
-            nameIndexArray = [[nameIndexDictionary allKeys] sortedArrayUsingSelector:@selector(localizedCompare:)];
-            for (NSString* nameIndex in nameIndexArray)
-            {
-                nameIndexDictionary[nameIndex] = [nameIndexDictionary[nameIndex] sortedArrayUsingSelector:@selector(localizedCompare:)];
-            }
-
-            [self.tableView reloadData];
-            if (isFiltered)
-            {
-                [self searchBar:self.searchDisplayController.searchBar
-                  textDidChange:self.searchDisplayController.searchBar.text];
-
-                [self.searchDisplayController.searchResultsTableView reloadData];
-            }
+            [self sortOutArrays];
         }
         else if (status == WebClientStatusFailServiceUnavailable)
         {
@@ -205,6 +188,57 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+#pragma mark - Helper Methods
+
+- (void)sortOutArrays
+{
+    // Select from all on numberType.
+    [countriesArray removeAllObjects];
+    NumberTypeMask  mask = 1UL << [self.numberTypeSegmentedControl selectedSegmentIndex];
+    for (NSMutableDictionary* country in allCountriesArray)
+    {
+        if ([country[@"numberTypes"] intValue] & mask)
+        {
+            [countriesArray addObject:country];
+        }
+    }
+
+    // Create indexes.
+    nameIndexDictionary = [NSMutableDictionary dictionary];
+    for (NSMutableDictionary* country in countriesArray)
+    {
+        NSString*       name = [[CountryNames sharedNames] nameForIsoCountryCode:country[@"isoCode"]];
+        NSString*       nameIndex = [name substringToIndex:1];
+        NSMutableArray* indexArray;
+        if ((indexArray = [nameIndexDictionary valueForKey:nameIndex]) != nil)
+        {
+            [indexArray addObject:name];
+        }
+        else
+        {
+            indexArray = [NSMutableArray array];
+            nameIndexDictionary[nameIndex] = indexArray;
+            [indexArray addObject:name];
+        }
+    }
+
+    // Sort indexes.
+    nameIndexArray = [[nameIndexDictionary allKeys] sortedArrayUsingSelector:@selector(localizedCompare:)];
+    for (NSString* nameIndex in nameIndexArray)
+    {
+        nameIndexDictionary[nameIndex] = [nameIndexDictionary[nameIndex] sortedArrayUsingSelector:@selector(localizedCompare:)];
+    }
+
+    [self.tableView reloadData];
+    if (isFiltered)
+    {
+        [self searchBar:self.searchDisplayController.searchBar
+          textDidChange:self.searchDisplayController.searchBar.text];
+
+        [self.searchDisplayController.searchResultsTableView reloadData];
+    }
+}
 
 #pragma mark - Table View Delegates
 
@@ -313,15 +347,15 @@
 
 #pragma mark - Search Bar & Controller Delegate
 
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller
-{
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-}
-
-
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
 {
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
+
+- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller
+{
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 
@@ -358,6 +392,15 @@
     isFiltered = NO;
     [self.tableView reloadData];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+
+#pragma mark - UI Actions
+
+- (IBAction)numberTypeChangedAction:(id)sender
+{
+    [self sortOutArrays];
+    [self.tableView reloadData];
 }
 
 @end

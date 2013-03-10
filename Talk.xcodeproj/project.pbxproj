@@ -23,6 +23,8 @@
 /* Begin PBXBuildFile section */
 		4812727316487E2D00534450 /* LibPhoneNumber.js in Resources */ = {isa = PBXBuildFile; fileRef = 4812727216487E2D00534450 /* LibPhoneNumber.js */; };
 		4812727416487E2D00534450 /* LibPhoneNumber.js in Sources */ = {isa = PBXBuildFile; fileRef = 4812727216487E2D00534450 /* LibPhoneNumber.js */; };
+		48200D1C16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
+		48200D1D16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
 		48206EF41684B0700040B04E /* RingbackTones.m in Sources */ = {isa = PBXBuildFile; fileRef = 48206EF31684B0700040B04E /* RingbackTones.m */; };
 		48206EF51684B0700040B04E /* RingbackTones.m in Sources */ = {isa = PBXBuildFile; fileRef = 48206EF31684B0700040B04E /* RingbackTones.m */; };
 		48206EF8168DD8180040B04E /* Tones.json in Resources */ = {isa = PBXBuildFile; fileRef = 48206EF7168DD8180040B04E /* Tones.json */; };
@@ -631,6 +633,10 @@
 		4895D1B516B7AC4100BCA581 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4895D1B216B7AC4100BCA581 /* Icon.png */; };
 		4895D1B616B7AC4100BCA581 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4895D1B316B7AC4100BCA581 /* Icon@2x.png */; };
 		4895D1B716B7AC4100BCA581 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4895D1B316B7AC4100BCA581 /* Icon@2x.png */; };
+		4896D8FC16EBE5A7008A2354 /* NumberAreasView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4896D8FB16EBE5A7008A2354 /* NumberAreasView.xib */; };
+		4896D8FD16EBE5A7008A2354 /* NumberAreasView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4896D8FB16EBE5A7008A2354 /* NumberAreasView.xib */; };
+		4896D90016EBE613008A2354 /* NumberAreasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */; };
+		4896D90116EBE613008A2354 /* NumberAreasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */; };
 		48A2CDFC16834FC100506A7C /* RingbackTones.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A2CDFB16834FC100506A7C /* RingbackTones.json */; };
 		48A2CDFD16834FC100506A7C /* RingbackTones.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A2CDFB16834FC100506A7C /* RingbackTones.json */; };
 		48AD95DA164AC4FE006178E6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95D9164AC4FE006178E6 /* ViewController.m */; };
@@ -829,6 +835,8 @@
 
 /* Begin PBXFileReference section */
 		4812727216487E2D00534450 /* LibPhoneNumber.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = LibPhoneNumber.js; path = External/LibPhoneNumber/LibPhoneNumber.js; sourceTree = SOURCE_ROOT; };
+		48200D1A16EC89BA0069677E /* NumberType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberType.h; sourceTree = "<group>"; };
+		48200D1B16EC89BA0069677E /* NumberType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberType.m; sourceTree = "<group>"; };
 		48206EF21684B0700040B04E /* RingbackTones.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingbackTones.h; sourceTree = "<group>"; };
 		48206EF31684B0700040B04E /* RingbackTones.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RingbackTones.m; sourceTree = "<group>"; };
 		48206EF7168DD8180040B04E /* Tones.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Tones.json; path = Resources/Tones.json; sourceTree = "<group>"; };
@@ -1409,6 +1417,9 @@
 		4895D19C16B1C4F200BCA581 /* PurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseManager.m; sourceTree = "<group>"; };
 		4895D1B216B7AC4100BCA581 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		4895D1B316B7AC4100BCA581 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		4896D8FB16EBE5A7008A2354 /* NumberAreasView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreasView.xib; sourceTree = "<group>"; };
+		4896D8FE16EBE612008A2354 /* NumberAreasViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreasViewController.h; sourceTree = "<group>"; };
+		4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreasViewController.m; sourceTree = "<group>"; };
 		48A2CDFB16834FC100506A7C /* RingbackTones.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = RingbackTones.json; path = Resources/RingbackTones.json; sourceTree = "<group>"; };
 		48AD95D8164AC4FE006178E6 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		48AD95D9164AC4FE006178E6 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
@@ -1638,6 +1649,8 @@
 				482608ED166A4706007F0844 /* NSTimer+Blocks.m */,
 				482A639F165FF73400325B3F /* NumberLabel.h */,
 				482A63A0165FF73400325B3F /* NumberLabel.m */,
+				48200D1A16EC89BA0069677E /* NumberType.h */,
+				48200D1B16EC89BA0069677E /* NumberType.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -2391,6 +2404,7 @@
 				48AF450D164948DC00DFE3D8 /* GroupsView.xib */,
 				48AF45131649490100DFE3D8 /* HelpView.xib */,
 				48D0A6F91655E2C600FA2D98 /* KeypadView.xib */,
+				4896D8FB16EBE5A7008A2354 /* NumberAreasView.xib */,
 				48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */,
 				488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */,
 				48AF4504164948A300DFE3D8 /* NumbersView.xib */,
@@ -2421,6 +2435,8 @@
 				48AF44F5164947E600DFE3D8 /* GroupsViewController.m */,
 				48AF44FC1649483600DFE3D8 /* HelpViewController.h */,
 				48AF44FD1649483600DFE3D8 /* HelpViewController.m */,
+				4896D8FE16EBE612008A2354 /* NumberAreasViewController.h */,
+				4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */,
 				48B5AAF016E6A58400BA4084 /* NumberCountriesViewController.h */,
 				48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */,
 				488AD1E816E799C3004D3A2A /* NumberStatesViewController.h */,
@@ -3158,6 +3174,7 @@
 				482D2DF016C8172900E13B91 /* ProvisioningView.xib in Resources */,
 				48B5AAEE16E69DE900BA4084 /* NumberCountriesView.xib in Resources */,
 				488AD1ED16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
+				4896D8FC16EBE5A7008A2354 /* NumberAreasView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3233,6 +3250,7 @@
 				482D2DF116C8172900E13B91 /* ProvisioningView.xib in Resources */,
 				48B5AAEF16E69DE900BA4084 /* NumberCountriesView.xib in Resources */,
 				488AD1EE16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
+				4896D8FD16EBE5A7008A2354 /* NumberAreasView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3329,6 +3347,8 @@
 				48B5AAF216E6A58700BA4084 /* NumberCountriesViewController.m in Sources */,
 				488AD1EA16E799C3004D3A2A /* NumberStatesViewController.m in Sources */,
 				488AD1F116E80A60004D3A2A /* NSObject+Blocks.m in Sources */,
+				4896D90016EBE613008A2354 /* NumberAreasViewController.m in Sources */,
+				48200D1C16EC89BA0069677E /* NumberType.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3393,6 +3413,8 @@
 				48B5AAF316E6A58700BA4084 /* NumberCountriesViewController.m in Sources */,
 				488AD1EB16E799C3004D3A2A /* NumberStatesViewController.m in Sources */,
 				488AD1F216E80A60004D3A2A /* NSObject+Blocks.m in Sources */,
+				4896D90116EBE613008A2354 /* NumberAreasViewController.m in Sources */,
+				48200D1D16EC89BA0069677E /* NumberType.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

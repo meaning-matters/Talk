@@ -11,6 +11,9 @@
 @interface NumberCountriesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
                                                              UISearchBarDelegate, UISearchDisplayDelegate>
 
-@property (nonatomic, weak) IBOutlet UITableView*   tableView;
+@property (nonatomic, weak) IBOutlet UISegmentedControl*    numberTypeSegmentedControl;
+@property (nonatomic, weak) IBOutlet UITableView*           tableView;
+
+- (IBAction)numberTypeChangedAction:(id)sender;
 
 @end
