@@ -18,4 +18,6 @@
 
 + (NSString*)buyString;
 
++ (NSString*)loadingString;
+
 @end

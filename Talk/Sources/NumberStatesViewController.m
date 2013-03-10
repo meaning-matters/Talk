@@ -10,6 +10,7 @@
 #import "WebClient.h"
 #import "BlockAlertView.h"
 #import "CommonStrings.h"
+#import "NumberAreasViewController.h"
 
 
 @interface NumberStatesViewController ()
@@ -46,18 +47,13 @@
 {
     [super viewDidLoad];
 
-    UIBarButtonItem*    cancelButton;
+    self.navigationItem.title = [CommonStrings loadingString];
 
+    UIBarButtonItem*    cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                  target:self
                                                                  action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
-
-    self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberStates:Loading ScreenTitle", nil,
-                                                                  [NSBundle mainBundle], @"Loading States...",
-                                                                  @"Title of app screen with list of countries, "
-                                                                  @"while loading.\n"
-                                                                  @"[1 line larger font - abbreviated 'Loading...'].");
 
     [[WebClient sharedClient] retrieveNumberStatesForCountryId:country[@"countryId"]
                                                          reply:^(WebClientStatus status, id content)
@@ -65,9 +61,9 @@
         if (status == WebClientStatusOk)
         {
             self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberStates:Done ScreenTitle", nil,
-                                                                          [NSBundle mainBundle], @"Available States",
+                                                                          [NSBundle mainBundle], @"States",
                                                                           @"Title of app screen with list of states.\n"
-                                                                          @"[1 line larger font - abbreviated 'Countries'].");
+                                                                          @"[1 line larger font].");
 
             // Create indexes.
             statesArray = content;
@@ -159,6 +155,8 @@
     [self.tableView reloadData];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.searchDisplayController setActive:NO animated:YES];
+
+    [[WebClient sharedClient] cancelAllRetrieveNumberStatesForCountryId:country[@"countryId"]];
 }
 
 
@@ -172,7 +170,6 @@
 
 - (void)cancel
 {
-    [[WebClient sharedClient] cancelAllRetrieveNumberStatesForCountryId:country[@"countryId"]];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -227,7 +224,11 @@
         }
     }
 
-    //### push next level.
+    NumberAreasViewController*  viewController;
+    viewController = [[NumberAreasViewController alloc] initWithCountry:country
+                                                                stateId:state[@"stateId"]
+                                                         numberTypeMask:numberTypeMask];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 

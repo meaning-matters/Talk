@@ -57,24 +57,18 @@
 {
     [super viewDidLoad];
 
-    UIBarButtonItem*    cancelButton;
+    self.navigationItem.title = [CommonStrings loadingString];
 
+    UIBarButtonItem*    cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                  target:self
                                                                  action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
-    self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries:Loading ScreenTitle", nil,
-                                                                  [NSBundle mainBundle], @"Loading Countries...",
-                                                                  @"Title of app screen with list of countries, "
-                                                                  @"while loading.\n"
-                                                                  @"[1 line larger font - abbreviated 'Loading...'].");
-
     self.numberTypeSegmentedControl.segmentedControlStyle = UndocumentedSearchScopeBarSegmentedControlStyle;
     [self.numberTypeSegmentedControl setTitle:[NumberType numberTypeString:1UL << 0] forSegmentAtIndex:0];
     [self.numberTypeSegmentedControl setTitle:[NumberType numberTypeString:1UL << 1] forSegmentAtIndex:1];
     [self.numberTypeSegmentedControl setTitle:[NumberType numberTypeString:1UL << 2] forSegmentAtIndex:2];
-    [self.numberTypeSegmentedControl setSelectedSegmentIndex:[NumberType numberTypeMaskToIndex:numberTypeMask]];
 
     if (stateId != nil)
     {
@@ -110,6 +104,34 @@
 }
 
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self.tableView reloadData];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    isFiltered = NO;
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.searchDisplayController setActive:NO animated:YES];
+
+    if (stateId != nil)
+    {
+        [[WebClient sharedClient] cancelAllRetrieveNumberAreasForCountryId:country[@"countryId"]
+                                                                   stateId:stateId];
+    }
+    else
+    {
+        [[WebClient sharedClient] cancelAllRetrieveNumberAreasForCountryId:country[@"countryId"]];
+    }
+}
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -120,10 +142,10 @@
 
 - (void)processContent:(id)content
 {
-    self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries:Done ScreenTitle", nil,
-                                                                  [NSBundle mainBundle], @"Countries",
-                                                                  @"Title of app screen with list of countries.\n"
-                                                                  @"[1 line larger font - abbreviated 'Countries'].");
+    self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberAreas:Done ScreenTitle", nil,
+                                                                  [NSBundle mainBundle], @"Areas",
+                                                                  @"Title of app screen with list of areas.\n"
+                                                                  @"[1 line larger font].");
 
     // Combine numberTypes per area.
     for (NSDictionary* newArea in (NSArray*)content)
@@ -146,10 +168,17 @@
             {
                 matchedArea[@"name"] = [matchedArea[@"name"] capitalizedString];
             }
-            else
+            else if ([matchedArea objectForKey:@"areaCode"] != [NSNull null])
             {
                 // To support non-geographic numbers with little code change.
                 matchedArea[@"name"] = matchedArea[@"areaCode"];
+            }
+            else
+            {
+                matchedArea[@"name"] = NSLocalizedStringWithDefaultValue(@"NumberAreas:Table NoAreaCode", nil,
+                                                                         [NSBundle mainBundle], @"<unknown area code>",
+                                                                         @"Explains that area code is not available.\n"
+                                                                         @"[1 line larger font].");
             }
 
             [allAreasArray addObject:matchedArea];
@@ -180,15 +209,15 @@
         NSString*   title;
         NSString*   message;
 
-        title = NSLocalizedStringWithDefaultValue(@"NumberCountries UnavailableAlertTitle", nil,
+        title = NSLocalizedStringWithDefaultValue(@"NumberAreas UnavailableAlertTitle", nil,
                                                   [NSBundle mainBundle], @"Service Unavailable",
-                                                  @"Alert title telling that loading countries over internet failed.\n"
+                                                  @"Alert title telling that loading areas over internet failed.\n"
                                                   @"[iOS alert title size].");
-        message = NSLocalizedStringWithDefaultValue(@"NumberCountries UnavailableAlertMessage", nil,
+        message = NSLocalizedStringWithDefaultValue(@"NumberAreas UnavailableAlertMessage", nil,
                                                     [NSBundle mainBundle],
                                                     @"The service for buying numbers is temporarily offline."
                                                     @"\n\nPlease try again later.",
-                                                    @"Alert message telling that loading countries over internet failed.\n"
+                                                    @"Alert message telling that loading areas over internet failed.\n"
                                                     @"[iOS alert message size - use correct iOS terms for: Settings "
                                                     @"and Notifications!]");
         [BlockAlertView showAlertViewWithTitle:title
@@ -205,14 +234,14 @@
         NSString*   title;
         NSString*   message;
 
-        title = NSLocalizedStringWithDefaultValue(@"NumberCountries LoadFailAlertTitle", nil,
+        title = NSLocalizedStringWithDefaultValue(@"NumberAreas LoadFailAlertTitle", nil,
                                                   [NSBundle mainBundle], @"Loading Failed",
                                                   @"Alert title telling that loading countries over internet failed.\n"
                                                   @"[iOS alert title size].");
-        message = NSLocalizedStringWithDefaultValue(@"NumberCountries LoadFailAlertMessage", nil,
+        message = NSLocalizedStringWithDefaultValue(@"NumberAreas LoadFailAlertMessage", nil,
                                                     [NSBundle mainBundle],
-                                                    @"Loading the list of countries failed.\n\nPlease try again later.",
-                                                    @"Alert message telling that loading countries over internet failed.\n"
+                                                    @"Loading the list of areas failed.\n\nPlease try again later.",
+                                                    @"Alert message telling that loading areas over internet failed.\n"
                                                     @"[iOS alert message size - use correct iOS terms for: Settings "
                                                     @"and Notifications!]");
         [BlockAlertView showAlertViewWithTitle:title
@@ -230,8 +259,6 @@
 - (void)sortOutArrays
 {
     // Select from all on numberType.
-    [areasArray removeAllObjects];
-    numberTypeMask = 1UL << [self.numberTypeSegmentedControl selectedSegmentIndex];
     for (NSMutableDictionary* area in allAreasArray)
     {
         if ([area[@"numberTypes"] intValue] & numberTypeMask)
@@ -279,16 +306,6 @@
 
 - (void)cancel
 {
-    if (stateId != nil)
-    {
-        [[WebClient sharedClient] cancelAllRetrieveNumberAreasForCountryId:country[@"countryId"]
-                                                                   stateId:stateId];
-    }
-    else
-    {
-        [[WebClient sharedClient] cancelAllRetrieveNumberAreasForCountryId:country[@"countryId"]];
-    }
-
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -433,15 +450,6 @@
     isFiltered = NO;
     [self.tableView reloadData];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
-}
-
-
-#pragma mark - UI Actions
-
-- (IBAction)numberTypeChangedAction:(id)sender
-{
-    [self sortOutArrays];
-    [self.tableView reloadData];
 }
 
 @end

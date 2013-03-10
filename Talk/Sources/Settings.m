@@ -14,6 +14,7 @@
 #import "Settings.h"
 #import "NetworkStatus.h"
 #import "KeychainUtility.h"
+#import "NumberType.h"
 
 
 NSString* const RunBeforeKey                   = @"RunBefore";
@@ -33,6 +34,7 @@ NSString* const SipPasswordKey                 = @"SipPassword";            // U
 NSString* const SipServiveKey                  = @"SipAccount";             // Used as keychain service.
 NSString* const AllowCellularDataCallsKey      = @"AllowCellularDataCalls";
 NSString* const LouderVolumeKey                = @"LouderVolume";
+NSString* const NumberTypeMaskKey              = @"NumberTypeMask";
 
 
 @implementation Settings
@@ -92,7 +94,7 @@ static NSUserDefaults*  userDefaults;
 
     // Default for tabBarViewControllerClasses is handled in AppDelegate.
 
-    [defaults setObject:@"com.numberbay.app"            forKey:ErrorDomainKey];
+    [defaults setObject:@"com.numberbay.app"                               forKey:ErrorDomainKey];
 
     if ([[NetworkStatus sharedStatus].simIsoCountryCode length] > 0)
     {
@@ -104,10 +106,11 @@ static NSUserDefaults*  userDefaults;
         [defaults setObject:[NSNumber numberWithBool:NO]                   forKey:HomeCountryFromSimKey];
     }
 
-    [defaults setObject:@"http://5.39.84.168:9090/"     forKey:WebBaseUrlKey];
-    [defaults setObject:@""                             forKey:LastDialedNumberKey];
-    [defaults setObject:[NSNumber numberWithBool:NO]    forKey:AllowCellularDataCallsKey];
-    [defaults setObject:[NSNumber numberWithBool:NO]    forKey:LouderVolumeKey];
+    [defaults setObject:@"http://5.39.84.168:9090/"                        forKey:WebBaseUrlKey];
+    [defaults setObject:@""                                                forKey:LastDialedNumberKey];
+    [defaults setObject:[NSNumber numberWithBool:NO]                       forKey:AllowCellularDataCallsKey];
+    [defaults setObject:[NSNumber numberWithBool:NO]                       forKey:LouderVolumeKey];
+    [defaults setObject:[NSNumber numberWithInt:NumberTypeGeographicMask]  forKey:NumberTypeMaskKey];
 
     [userDefaults registerDefaults:defaults];
 }
@@ -162,6 +165,7 @@ static NSUserDefaults*  userDefaults;
     _sipPassword                     = [self getKeychainValueForKey:SipPasswordKey service:SipServiveKey];
     self.allowCellularDataCalls      = [userDefaults boolForKey:AllowCellularDataCallsKey];
     self.louderVolume                = [userDefaults boolForKey:LouderVolumeKey];
+    self.numberTypeMask              = [userDefaults integerForKey:NumberTypeMaskKey];
 }
 
 
@@ -262,6 +266,13 @@ static NSUserDefaults*  userDefaults;
 {
     _louderVolume = louderVolume;
     [userDefaults setBool:louderVolume forKey:LouderVolumeKey];
+}
+
+
+- (void)setNumberTypeMask:(NumberTypeMask)numberTypeMask
+{
+    _numberTypeMask = numberTypeMask;
+    [userDefaults setInteger:numberTypeMask forKey:NumberTypeMaskKey];
 }
 
 @end

@@ -15,6 +15,7 @@
 #import "CommonStrings.h"
 #import "NumberType.h"
 #import "Common.h"
+#import "Settings.h"
 
 
 @interface NumberCountriesViewController ()
@@ -49,11 +50,7 @@
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries:Loading ScreenTitle", nil,
-                                                                  [NSBundle mainBundle], @"Loading Countries...",
-                                                                  @"Title of app screen with list of countries, "
-                                                                  @"while loading.\n"
-                                                                  @"[1 line larger font - abbreviated 'Loading...'].");
+    self.navigationItem.title = [CommonStrings loadingString];
 
     UIBarButtonItem*    cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
@@ -65,6 +62,8 @@
     [self.numberTypeSegmentedControl setTitle:[NumberType numberTypeString:1UL << 0] forSegmentAtIndex:0];
     [self.numberTypeSegmentedControl setTitle:[NumberType numberTypeString:1UL << 1] forSegmentAtIndex:1];
     [self.numberTypeSegmentedControl setTitle:[NumberType numberTypeString:1UL << 2] forSegmentAtIndex:2];
+    NSInteger   index = [NumberType numberTypeMaskToIndex:[Settings sharedSettings].numberTypeMask];
+    [self.numberTypeSegmentedControl setSelectedSegmentIndex:index];
 
     [[WebClient sharedClient] retrieveNumberCountries:^(WebClientStatus status, id content)
     {
@@ -73,7 +72,7 @@
             self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries:Done ScreenTitle", nil,
                                                                           [NSBundle mainBundle], @"Countries",
                                                                           @"Title of app screen with list of countries.\n"
-                                                                          @"[1 line larger font - abbreviated 'Countries'].");
+                                                                          @"[1 line larger font].");
 
             // Combine numberTypes per country.
             for (NSDictionary* newCountry in (NSArray*)content)
@@ -164,14 +163,23 @@
 }
 
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self.tableView reloadData];
+}
+
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
 
     isFiltered = NO;
-    [self.tableView reloadData];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.searchDisplayController setActive:NO animated:YES];
+    
+    [[WebClient sharedClient] cancelAllRetrieveNumberCountries];
 }
 
 
@@ -236,7 +244,6 @@
 
 - (void)cancel
 {
-    [[WebClient sharedClient] cancelAllRetrieveNumberCountries];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -406,8 +413,8 @@
 
 - (IBAction)numberTypeChangedAction:(id)sender
 {
+    [Settings sharedSettings].numberTypeMask = 1UL << self.numberTypeSegmentedControl.selectedSegmentIndex;
     [self sortOutArrays];
-    [self.tableView reloadData];
 }
 
 @end
