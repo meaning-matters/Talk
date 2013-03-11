@@ -301,7 +301,7 @@
     }
 
     NumberTypeMask  numberTypeMask = 1UL << self.numberTypeSegmentedControl.selectedSegmentIndex;
-    if ([country[@"hasStates"] boolValue])
+    if ([country[@"hasStates"] boolValue] && numberTypeMask == NumberTypeGeographicMask)
     {
         NumberStatesViewController* viewController;
         viewController = [[NumberStatesViewController alloc] initWithCountry:country
