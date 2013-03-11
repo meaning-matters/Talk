@@ -238,10 +238,11 @@ static WebClient*   sharedClient;
 
 
 - (void)retrieveNumberAreasForCountryId:(NSString*)countryId
+                         numberTypeMask:(NumberTypeMask)numberTypeMask
                                   reply:(void (^)(WebClientStatus status, id content))reply
 {
     [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/areas", countryId]
-       parameters:nil
+       parameters:@{ @"numberType" : [NumberType numberTypeString:numberTypeMask] }
             reply:reply];
 }
 
@@ -250,55 +251,68 @@ static WebClient*   sharedClient;
 
 - (void)cancelAllRetrieveWebAccount
 {
-    [self cancelAllHTTPOperationsWithMethod:@"POST" path:@"users"];
+    [self cancelAllHTTPOperationsWithMethod:@"POST" parameters:nil path:@"users"];
 }
 
 
 - (void)cancelAllRetrieveSipAccount
 {
-    [self cancelAllHTTPOperationsWithMethod:@"POST" path:[NSString stringWithFormat:@"users/%@/devices",
-                                                          [Settings sharedSettings].webUsername]];
+    [self cancelAllHTTPOperationsWithMethod:@"POST"
+                                 parameters:nil
+                                       path:[NSString stringWithFormat:@"users/%@/devices",
+                                             [Settings sharedSettings].webUsername]];
 }
 
 
 - (void)cancelAllRetrieveCredit
 {
-    [self cancelAllHTTPOperationsWithMethod:@"GET" path:[NSString stringWithFormat:@"users/%@/credit",
-                                                         [Settings sharedSettings].webUsername]];
+    [self cancelAllHTTPOperationsWithMethod:@"GET"
+                                 parameters:nil
+                                       path:[NSString stringWithFormat:@"users/%@/credit",
+                                             [Settings sharedSettings].webUsername]];
 }
 
 
 - (void)cancelAllRetrieveNumbers
 {
-    [self cancelAllHTTPOperationsWithMethod:@"GET" path:[NSString stringWithFormat:@"users/%@/numbers",
-                                                         [Settings sharedSettings].webUsername]];
+    [self cancelAllHTTPOperationsWithMethod:@"GET"
+                                 parameters:nil
+                                       path:[NSString stringWithFormat:@"users/%@/numbers",
+                                             [Settings sharedSettings].webUsername]];
 }
 
 
 - (void)cancelAllRetrieveNumberCountries
 {
-    [self cancelAllHTTPOperationsWithMethod:@"GET" path:@"numbers/countries"];
+    [self cancelAllHTTPOperationsWithMethod:@"GET"
+                                 parameters:nil
+                                       path:@"numbers/countries"];
 }
 
 
 - (void)cancelAllRetrieveNumberStatesForCountryId:(NSString*)countryId
 {
-    [self cancelAllHTTPOperationsWithMethod:@"GET" path:[NSString stringWithFormat:@"numbers/countries/%@/states",
-                                                         countryId]];
+    [self cancelAllHTTPOperationsWithMethod:@"GET"
+                                 parameters:nil
+                                       path:[NSString stringWithFormat:@"numbers/countries/%@/states",
+                                             countryId]];
 }
 
 
 - (void)cancelAllRetrieveNumberAreasForCountryId:(NSString*)countryId stateId:(NSString*)stateId
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
+                                 parameters:nil
                                        path:[NSString stringWithFormat:@"numbers/countries/%@/states/%@/areas",
                                              countryId, stateId]];
 }
 
 
 - (void)cancelAllRetrieveNumberAreasForCountryId:(NSString*)countryId
+                                  numberTypeMask:(NumberTypeMask)numberTypeMask
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
+                                 parameters:@{ @"numberType" : [NumberType numberTypeString:numberTypeMask] }
                                        path:[NSString stringWithFormat:@"numbers/countries/%@/areas",
                                              countryId]];
 }

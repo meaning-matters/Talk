@@ -65,11 +65,6 @@
                                                                  action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
-    self.numberTypeSegmentedControl.segmentedControlStyle = UndocumentedSearchScopeBarSegmentedControlStyle;
-    [self.numberTypeSegmentedControl setTitle:[NumberType numberTypeString:1UL << 0] forSegmentAtIndex:0];
-    [self.numberTypeSegmentedControl setTitle:[NumberType numberTypeString:1UL << 1] forSegmentAtIndex:1];
-    [self.numberTypeSegmentedControl setTitle:[NumberType numberTypeString:1UL << 2] forSegmentAtIndex:2];
-
     if (stateId != nil)
     {
         [[WebClient sharedClient] retrieveNumberAreasForCountryId:country[@"countryId"]
@@ -89,6 +84,7 @@
     else
     {
         [[WebClient sharedClient] retrieveNumberAreasForCountryId:country[@"countryId"]
+                                                   numberTypeMask:numberTypeMask
                                                             reply:^(WebClientStatus status, id content)
          {
              if (status == WebClientStatusOk)
@@ -127,7 +123,8 @@
     }
     else
     {
-        [[WebClient sharedClient] cancelAllRetrieveNumberAreasForCountryId:country[@"countryId"]];
+        [[WebClient sharedClient] cancelAllRetrieveNumberAreasForCountryId:country[@"countryId"]
+                                                            numberTypeMask:numberTypeMask];
     }
 }
 

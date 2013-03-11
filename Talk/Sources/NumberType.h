@@ -21,6 +21,8 @@ typedef enum
 
 + (NSString*)numberTypeString:(NumberTypeMask)mask;
 
++ (NSString*)numberTypeLocalizedString:(NumberTypeMask)mask;
+
 + (NSUInteger)numberTypeMaskToIndex:(NumberTypeMask)mask;
 
 @end

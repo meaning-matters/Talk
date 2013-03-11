@@ -15,6 +15,22 @@
     switch (mask)
     {
         case NumberTypeGeographicMask:
+            return  @"GEOGRAPHIC";
+
+        case NumberTypeTollFreeMask:
+            return @"TOLLFREE";
+
+        case NumberTypeNationalMask:
+            return @"NATIONAL";
+    }
+}
+
+
++ (NSString*)numberTypeLocalizedString:(NumberTypeMask)mask
+{
+    switch (mask)
+    {
+        case NumberTypeGeographicMask:
             return NSLocalizedStringWithDefaultValue(@"NumberType:Strings Geographic", nil,
                                                      [NSBundle mainBundle], @"Geographic",
                                                      @"Standard term for geographic phone number (in a certain city)\n"

@@ -325,7 +325,7 @@ typedef enum {
  
  @discussion This method only cancels `AFHTTPRequestOperations` whose request URL matches the HTTP client base URL with the path appended. For complete control over the lifecycle of enqueued operations, you can access the `operationQueue` property directly, which allows you to, for instance, cancel operations filtered by a predicate, or simply use `-cancelAllRequests`. Note that the operation queue may include non-HTTP operations, so be sure to check the type before attempting to directly introspect an operation's `request` property.
  */
-- (void)cancelAllHTTPOperationsWithMethod:(NSString *)method path:(NSString *)path;
+- (void)cancelAllHTTPOperationsWithMethod:(NSString *)method parameters:(NSDictionary*)parameters path:(NSString *)path;
 
 ///---------------------------------------
 /// @name Batching HTTP Request Operations

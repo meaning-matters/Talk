@@ -13,13 +13,11 @@
 @interface NumberAreasViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
                                                          UISearchBarDelegate, UISearchDisplayDelegate>
 
-@property (nonatomic, weak) IBOutlet UISegmentedControl*    numberTypeSegmentedControl;
 @property (nonatomic, weak) IBOutlet UITableView*           tableView;
+
 
 - (id)initWithCountry:(NSDictionary*)country
               stateId:(NSString*)stateId
        numberTypeMask:(NumberTypeMask)numberTypeMask;
-
-- (IBAction)numberTypeChangedAction:(id)sender;
 
 @end

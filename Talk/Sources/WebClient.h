@@ -7,6 +7,7 @@
 //
 
 #import "AFHTTPClient.h"
+#import "NumberType.h"
 
 
 typedef enum
@@ -50,6 +51,7 @@ typedef enum
                                   reply:(void (^)(WebClientStatus status, id content))reply;
 
 - (void)retrieveNumberAreasForCountryId:(NSString*)countryId
+                         numberTypeMask:(NumberTypeMask)numberTypeMask
                                   reply:(void (^)(WebClientStatus status, id content))reply;
 
 
@@ -67,6 +69,6 @@ typedef enum
 
 - (void)cancelAllRetrieveNumberAreasForCountryId:(NSString*)countryId stateId:(NSString*)stateId;
 
-- (void)cancelAllRetrieveNumberAreasForCountryId:(NSString*)countryId;
+- (void)cancelAllRetrieveNumberAreasForCountryId:(NSString*)countryId numberTypeMask:(NumberTypeMask)numberTypeMask;
 
 @end

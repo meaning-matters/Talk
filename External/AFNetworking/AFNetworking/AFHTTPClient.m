@@ -532,9 +532,10 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
 }
 
 - (void)cancelAllHTTPOperationsWithMethod:(NSString *)method
+                               parameters:(NSDictionary*)parameters
                                      path:(NSString *)path
 {
-    NSString *URLStringToMatched = [[[self requestWithMethod:(method ?: @"GET") path:path parameters:nil] URL] absoluteString];
+    NSString *URLStringToMatched = [[[self requestWithMethod:(method ?: @"GET") path:path parameters:parameters] URL] absoluteString];
     
     for (NSOperation *operation in [self.operationQueue operations]) {
         if (![operation isKindOfClass:[AFHTTPRequestOperation class]]) {
@@ -543,7 +544,7 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
         
         BOOL hasMatchingMethod = !method || [method isEqualToString:[[(AFHTTPRequestOperation *)operation request] HTTPMethod]];
         BOOL hasMatchingURL = [[[[(AFHTTPRequestOperation *)operation request] URL] absoluteString] isEqualToString:URLStringToMatched];
-        
+
         if (hasMatchingMethod && hasMatchingURL) {
             [operation cancel];
         }
