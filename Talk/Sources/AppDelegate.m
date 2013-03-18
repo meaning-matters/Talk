@@ -53,7 +53,6 @@
     [Skinning        sharedSkinning];
     [NetworkStatus   sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.
     [CallManager     sharedManager];
-    [Settings        sharedSettings];
 
     // Initialize phone number stuff.
     [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];

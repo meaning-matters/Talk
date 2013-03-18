@@ -31,7 +31,7 @@ NSString* const SipServerKey                   = @"SipServer";
 NSString* const SipRealmKey                    = @"SipRealm";               // Used as keychain 'username'.
 NSString* const SipUsernameKey                 = @"SipUsername";            // Used as keychain 'username'.
 NSString* const SipPasswordKey                 = @"SipPassword";            // Used as keychain 'username'.
-NSString* const SipServiveKey                  = @"SipAccount";             // Used as keychain service.
+NSString* const SipServiceKey                  = @"SipAccount";             // Used as keychain service.
 NSString* const AllowCellularDataCallsKey      = @"AllowCellularDataCalls";
 NSString* const LouderVolumeKey                = @"LouderVolume";
 NSString* const NumberTypeMaskKey              = @"NumberTypeMask";
@@ -52,19 +52,23 @@ static NSUserDefaults*  userDefaults;
         sharedSettings = [self new];
         userDefaults = [NSUserDefaults standardUserDefaults];
 
-        [sharedSettings registerDefaults];
-        [sharedSettings getInitialValues];
-
         if ([userDefaults boolForKey:RunBeforeKey] == NO)
         {
+            [userDefaults setBool:YES forKey:RunBeforeKey];
+            if ([userDefaults synchronize] == NO)
+            {
+                NSLog(@"//### Failed to synchronize user-defaults!");
+            }
+
             [KeychainUtility deleteItemForUsername:WebUsernameKey andServiceName:WebServiceKey error:nil];
             [KeychainUtility deleteItemForUsername:WebPasswordKey andServiceName:WebServiceKey error:nil];
-            [KeychainUtility deleteItemForUsername:SipUsernameKey andServiceName:SipServiveKey error:nil];
-            [KeychainUtility deleteItemForUsername:SipPasswordKey andServiceName:SipServiveKey error:nil];
-            
-            [userDefaults setBool:YES forKey:RunBeforeKey];
-            [userDefaults synchronize];
+            [KeychainUtility deleteItemForUsername:SipRealmKey    andServiceName:SipServiceKey error:nil];
+            [KeychainUtility deleteItemForUsername:SipUsernameKey andServiceName:SipServiceKey error:nil];
+            [KeychainUtility deleteItemForUsername:SipPasswordKey andServiceName:SipServiceKey error:nil];            
         }
+
+        [sharedSettings registerDefaults];
+        [sharedSettings getInitialValues];
     }
 }
 
@@ -160,9 +164,9 @@ static NSUserDefaults*  userDefaults;
     _webUsername                     = [self getKeychainValueForKey:WebUsernameKey service:WebServiceKey];
     _webPassword                     = [self getKeychainValueForKey:WebPasswordKey service:WebServiceKey];
     self.sipServer                   = [userDefaults objectForKey:SipServerKey];
-    _sipRealm                        = [self getKeychainValueForKey:SipRealmKey    service:SipServiveKey];
-    _sipUsername                     = [self getKeychainValueForKey:SipUsernameKey service:SipServiveKey];
-    _sipPassword                     = [self getKeychainValueForKey:SipPasswordKey service:SipServiveKey];
+    _sipRealm                        = [self getKeychainValueForKey:SipRealmKey    service:SipServiceKey];
+    _sipUsername                     = [self getKeychainValueForKey:SipUsernameKey service:SipServiceKey];
+    _sipPassword                     = [self getKeychainValueForKey:SipPasswordKey service:SipServiceKey];
     self.allowCellularDataCalls      = [userDefaults boolForKey:AllowCellularDataCallsKey];
     self.louderVolume                = [userDefaults boolForKey:LouderVolumeKey];
     self.numberTypeMask              = [userDefaults integerForKey:NumberTypeMaskKey];
@@ -212,7 +216,6 @@ static NSUserDefaults*  userDefaults;
     [userDefaults setObject:webBaseUrl forKey:WebBaseUrlKey];
 }
 
-
 - (void)setWebUsername:(NSString*)webUsername
 {
     _webUsername = webUsername;
@@ -237,21 +240,21 @@ static NSUserDefaults*  userDefaults;
 - (void)setSipRealm:(NSString*)sipRealm
 {
     _sipRealm = sipRealm;
-    [self storeKeychainValue:sipRealm forKey:SipRealmKey service:SipServiveKey];
+    [self storeKeychainValue:sipRealm forKey:SipRealmKey service:SipServiceKey];
 }
 
 
 - (void)setSipUsername:(NSString*)sipUsername
 {
     _sipUsername = sipUsername;
-    [self storeKeychainValue:sipUsername forKey:SipUsernameKey service:SipServerKey];
+    [self storeKeychainValue:sipUsername forKey:SipUsernameKey service:SipServiceKey];
 }
 
 
 - (void)setSipPassword:(NSString*)sipPassword
 {
     _sipPassword = sipPassword;
-    [self storeKeychainValue:sipPassword forKey:SipPasswordKey service:SipServiveKey];
+    [self storeKeychainValue:sipPassword forKey:SipPasswordKey service:SipServiceKey];
 }
 
 

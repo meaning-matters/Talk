@@ -18,7 +18,7 @@ static char decodingTable[128];
 
 + (void)initialize 
 {
-    if (self == [Base64 class]) 
+    if ([Base64 class] == self)
     {
         memset(decodingTable, 0, ArrayLength(decodingTable));
         for (NSInteger i = 0; i < ArrayLength(encodingTable); i++) 

@@ -123,8 +123,7 @@
     }
     else
     {
-        [[WebClient sharedClient] cancelAllRetrieveNumberAreasForCountryId:country[@"countryId"]
-                                                            numberTypeMask:numberTypeMask];
+        [[WebClient sharedClient] cancelAllRetrieveNumberAreasForCountryId:country[@"countryId"]];
     }
 }
 

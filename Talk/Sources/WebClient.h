@@ -54,6 +54,9 @@ typedef enum
                          numberTypeMask:(NumberTypeMask)numberTypeMask
                                   reply:(void (^)(WebClientStatus status, id content))reply;
 
+- (void)retrieveNumberAreaInfoForIsoCountryCode:(NSString*)isoCountryCode
+                                       areaCode:(NSString*)areaCode
+                                          reply:(void (^)(WebClientStatus status, id content))reply;
 
 - (void)cancelAllRetrieveWebAccount;
 
@@ -69,6 +72,8 @@ typedef enum
 
 - (void)cancelAllRetrieveNumberAreasForCountryId:(NSString*)countryId stateId:(NSString*)stateId;
 
-- (void)cancelAllRetrieveNumberAreasForCountryId:(NSString*)countryId numberTypeMask:(NumberTypeMask)numberTypeMask;
+- (void)cancelAllRetrieveNumberAreasForCountryId:(NSString*)countryId;
+
+- (void)cancelAllRetrieveAreaInfoForIsoCountryCode:(NSString*)isoCountryCode areaCode:(NSString*)areaCode;
 
 @end

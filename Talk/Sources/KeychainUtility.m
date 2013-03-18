@@ -121,6 +121,8 @@ static NSString*    KeychainUtilityErrorDomain = @"KeychainUtilityErrorDomain";
         }
     }
 
+    NSLog(@"%@(%@) = %@", username, serviceName, password);
+
     return password;
 }
 

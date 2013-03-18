@@ -247,18 +247,27 @@ static WebClient*   sharedClient;
 }
 
 
+- (void)retrieveNumberAreaInfoForIsoCountryCode:(NSString*)isoCountryCode
+                                       areaCode:(NSString*)areaCode
+                                          reply:(void (^)(WebClientStatus status, id content))reply;
+{
+    [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/areas/%@", isoCountryCode, areaCode]
+       parameters:nil
+            reply:reply];
+}
+
+
 #pragma mark - Public Utility
 
 - (void)cancelAllRetrieveWebAccount
 {
-    [self cancelAllHTTPOperationsWithMethod:@"POST" parameters:nil path:@"users"];
+    [self cancelAllHTTPOperationsWithMethod:@"POST" path:@"users"];
 }
 
 
 - (void)cancelAllRetrieveSipAccount
 {
     [self cancelAllHTTPOperationsWithMethod:@"POST"
-                                 parameters:nil
                                        path:[NSString stringWithFormat:@"users/%@/devices",
                                              [Settings sharedSettings].webUsername]];
 }
@@ -267,7 +276,6 @@ static WebClient*   sharedClient;
 - (void)cancelAllRetrieveCredit
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                 parameters:nil
                                        path:[NSString stringWithFormat:@"users/%@/credit",
                                              [Settings sharedSettings].webUsername]];
 }
@@ -276,7 +284,6 @@ static WebClient*   sharedClient;
 - (void)cancelAllRetrieveNumbers
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                 parameters:nil
                                        path:[NSString stringWithFormat:@"users/%@/numbers",
                                              [Settings sharedSettings].webUsername]];
 }
@@ -285,7 +292,6 @@ static WebClient*   sharedClient;
 - (void)cancelAllRetrieveNumberCountries
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                 parameters:nil
                                        path:@"numbers/countries"];
 }
 
@@ -293,7 +299,6 @@ static WebClient*   sharedClient;
 - (void)cancelAllRetrieveNumberStatesForCountryId:(NSString*)countryId
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                 parameters:nil
                                        path:[NSString stringWithFormat:@"numbers/countries/%@/states",
                                              countryId]];
 }
@@ -302,19 +307,24 @@ static WebClient*   sharedClient;
 - (void)cancelAllRetrieveNumberAreasForCountryId:(NSString*)countryId stateId:(NSString*)stateId
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                 parameters:nil
                                        path:[NSString stringWithFormat:@"numbers/countries/%@/states/%@/areas",
                                              countryId, stateId]];
 }
 
 
 - (void)cancelAllRetrieveNumberAreasForCountryId:(NSString*)countryId
-                                  numberTypeMask:(NumberTypeMask)numberTypeMask
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                 parameters:@{ @"numberType" : [NumberType numberTypeString:numberTypeMask] }
                                        path:[NSString stringWithFormat:@"numbers/countries/%@/areas",
                                              countryId]];
+}
+
+
+- (void)cancelAllRetrieveAreaInfoForIsoCountryCode:(NSString*)isoCountryCode areaCode:(NSString*)areaCode
+{
+    [self cancelAllHTTPOperationsWithMethod:@"GET"
+                                       path:[NSString stringWithFormat:@"numbers/countries/%@/areas/%@",
+                                             isoCountryCode, areaCode]];
 }
 
 @end

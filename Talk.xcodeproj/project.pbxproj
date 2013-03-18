@@ -43,6 +43,10 @@
 		482D2DEE16C815BE00E13B91 /* ProvisioningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 482D2DEC16C815BE00E13B91 /* ProvisioningViewController.m */; };
 		482D2DF016C8172900E13B91 /* ProvisioningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482D2DEF16C8172900E13B91 /* ProvisioningView.xib */; };
 		482D2DF116C8172900E13B91 /* ProvisioningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482D2DEF16C8172900E13B91 /* ProvisioningView.xib */; };
+		4830462016EE222C000F9B05 /* NumberAreaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4830461F16EE222C000F9B05 /* NumberAreaView.xib */; };
+		4830462116EE222C000F9B05 /* NumberAreaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4830461F16EE222C000F9B05 /* NumberAreaView.xib */; };
+		4830462416EE269D000F9B05 /* NumberAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4830462316EE269D000F9B05 /* NumberAreaViewController.m */; };
+		4830462516EE269D000F9B05 /* NumberAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4830462316EE269D000F9B05 /* NumberAreaViewController.m */; };
 		48338F68161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */; };
 		48338F69161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */; };
 		48338F6A161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F57161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a */; };
@@ -853,6 +857,9 @@
 		482D2DEB16C815BE00E13B91 /* ProvisioningViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProvisioningViewController.h; sourceTree = "<group>"; };
 		482D2DEC16C815BE00E13B91 /* ProvisioningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProvisioningViewController.m; sourceTree = "<group>"; };
 		482D2DEF16C8172900E13B91 /* ProvisioningView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProvisioningView.xib; sourceTree = "<group>"; };
+		4830461F16EE222C000F9B05 /* NumberAreaView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreaView.xib; sourceTree = "<group>"; };
+		4830462216EE269D000F9B05 /* NumberAreaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaViewController.h; sourceTree = "<group>"; };
+		4830462316EE269D000F9B05 /* NumberAreaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaViewController.m; sourceTree = "<group>"; };
 		48338F56161628690033F4C1 /* libg7221codec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libg7221codec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libg7221codec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48338F57161628690033F4C1 /* libgsmcodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgsmcodec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libgsmcodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48338F58161628690033F4C1 /* libilbccodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libilbccodec-arm-apple-darwin9.a"; path = "External/pjproject-2.0.1/install/lib/libilbccodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
@@ -2412,6 +2419,7 @@
 				48AF4510164948F000DFE3D8 /* SettingsView.xib */,
 				48AF455A1649794B00DFE3D8 /* ShareView.xib */,
 				482D2DEF16C8172900E13B91 /* ProvisioningView.xib */,
+				4830461F16EE222C000F9B05 /* NumberAreaView.xib */,
 			);
 			path = XIBs;
 			sourceTree = "<group>";
@@ -2437,6 +2445,8 @@
 				48AF44FD1649483600DFE3D8 /* HelpViewController.m */,
 				4896D8FE16EBE612008A2354 /* NumberAreasViewController.h */,
 				4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */,
+				4830462216EE269D000F9B05 /* NumberAreaViewController.h */,
+				4830462316EE269D000F9B05 /* NumberAreaViewController.m */,
 				48B5AAF016E6A58400BA4084 /* NumberCountriesViewController.h */,
 				48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */,
 				488AD1E816E799C3004D3A2A /* NumberStatesViewController.h */,
@@ -3175,6 +3185,7 @@
 				48B5AAEE16E69DE900BA4084 /* NumberCountriesView.xib in Resources */,
 				488AD1ED16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
 				4896D8FC16EBE5A7008A2354 /* NumberAreasView.xib in Resources */,
+				4830462016EE222C000F9B05 /* NumberAreaView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3251,6 +3262,7 @@
 				48B5AAEF16E69DE900BA4084 /* NumberCountriesView.xib in Resources */,
 				488AD1EE16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
 				4896D8FD16EBE5A7008A2354 /* NumberAreasView.xib in Resources */,
+				4830462116EE222C000F9B05 /* NumberAreaView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3349,6 +3361,7 @@
 				488AD1F116E80A60004D3A2A /* NSObject+Blocks.m in Sources */,
 				4896D90016EBE613008A2354 /* NumberAreasViewController.m in Sources */,
 				48200D1C16EC89BA0069677E /* NumberType.m in Sources */,
+				4830462416EE269D000F9B05 /* NumberAreaViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3415,6 +3428,7 @@
 				488AD1F216E80A60004D3A2A /* NSObject+Blocks.m in Sources */,
 				4896D90116EBE613008A2354 /* NumberAreasViewController.m in Sources */,
 				48200D1D16EC89BA0069677E /* NumberType.m in Sources */,
+				4830462516EE269D000F9B05 /* NumberAreaViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
