@@ -215,6 +215,7 @@ static PurchaseManager*     sharedManager;
             {
                 if (status == WebClientStatusOk)
                 {
+                    [Settings sharedSettings].sipServer   = ((NSDictionary*)content)[@"sipRealm"];
                     [Settings sharedSettings].sipRealm    = ((NSDictionary*)content)[@"sipRealm"];
                     [Settings sharedSettings].sipUsername = ((NSDictionary*)content)[@"sipUsername"];
                     [Settings sharedSettings].sipPassword = ((NSDictionary*)content)[@"sipPassword"];
@@ -542,9 +543,4 @@ static PurchaseManager*     sharedManager;
     [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
 }
 
-
-- (void)viewWillLayoutSubviews
-{
-    
-}
 @end

@@ -119,7 +119,7 @@
 
 - (IBAction)introCancelAction:(id)sender
 {
-    //### Stop any purchase or server actions, or at least make sure they don't mess up/crash things.
+#warning  //### Stop any purchase or server actions, or at least make sure they don't mess up/crash things.
 
     [self dismissViewControllerAnimated:YES
                              completion:^
@@ -207,7 +207,7 @@
 
 - (IBAction)busyCancelAction:(id)sender
 {
-    //### Stop any purchase or server actions, or at least make sure they don't mess up/crash things.
+#warning //### Stop any purchase or server actions, or at least make sure they don't mess up/crash things.
 
     [self dismissViewControllerAnimated:YES
                              completion:^
@@ -221,6 +221,8 @@
 
 - (IBAction)failCancelAction:(id)sender
 {
+#warning //### Stop any purchase or server actions, or at least make sure they don't mess up/crash things.
+
     [self dismissViewControllerAnimated:YES
                              completion:^
     {
@@ -243,6 +245,8 @@
 
 - (IBAction)readyCancelAction:(id)sender
 {
+#warning //### Stop any purchase or server actions, or at least make sure they don't mess up/crash things.
+
     [self dismissViewControllerAnimated:YES
                              completion:^
      {
