@@ -111,7 +111,7 @@ static SipInterface*    sipInterface;
 #warning Need to rethink this (hence a number of empty ... ones below): perhaps always have CallView
 #warning and show a short line instead of full message?  On the other hand it's good to have a popup
 #warning for the NoCredit one, with a Buy button.
-- (NSString*)callFailedMessage:(SipInterfaceCallFailed)failed
+- (NSString*)callFailedMessage:(SipInterfaceCallFailed)failed sipStatus:(int)sipStatus
 {
     NSString*   message;
 
@@ -186,7 +186,7 @@ static SipInterface*    sipInterface;
         case SipInterfaceCallFailedBadRequest:
             message = NSLocalizedStringWithDefaultValue(@"Call:Failed BadRequestMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"...",
+                                                        @"Bad request ...",
                                                         @"Alert message informing that a call could not be made because "
                                                         @"...."
                                                         @"[iOS alert message size].");
@@ -195,7 +195,16 @@ static SipInterface*    sipInterface;
         case SipInterfaceCallFailedNotFound:
             message = NSLocalizedStringWithDefaultValue(@"Call:Failed NotFoundMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"...",
+                                                        @"Not found ...",
+                                                        @"Alert message informing that a call could not be made because "
+                                                        @"...."
+                                                        @"[iOS alert message size].");
+            break;
+
+        case SipInterfaceCallFailedRequestTimeout:
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed RequestTimeoutMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Request timeout ...",
                                                         @"Alert message informing that a call could not be made because "
                                                         @"...."
                                                         @"[iOS alert message size].");
@@ -204,7 +213,7 @@ static SipInterface*    sipInterface;
         case SipInterfaceCallFailedTemporarilyUnavailable:
             message = NSLocalizedStringWithDefaultValue(@"Call:Failed TemporarilyUnavailableMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"...",
+                                                        @"Temporarily unavailable ...",
                                                         @"Alert message informing that a call could not be made because "
                                                         @"...."
                                                         @"[iOS alert message size].");
@@ -213,7 +222,7 @@ static SipInterface*    sipInterface;
         case SipInterfaceCallFailedPstnTerminationFail:
             message = NSLocalizedStringWithDefaultValue(@"Call:Failed PstnTerminationFailMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"...",
+                                                        @"Pstn termination fail ...",
                                                         @"Alert message informing that a call could not be made because "
                                                         @"...."
                                                         @"[iOS alert message size].");
@@ -222,7 +231,7 @@ static SipInterface*    sipInterface;
         case SipInterfaceCallFailedCallRoutingError:
             message = NSLocalizedStringWithDefaultValue(@"Call:Failed CallRoutingErrorMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"...",
+                                                        @"Call routing error ...",
                                                         @"Alert message informing that a call could not be made because "
                                                         @"...."
                                                         @"[iOS alert message size].");
@@ -231,10 +240,11 @@ static SipInterface*    sipInterface;
         case SipInterfaceCallFailedOtherSipError:
             message = NSLocalizedStringWithDefaultValue(@"Call:Failed OtherSipErrorMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"...",
+                                                        @"SIP error (%d)",
                                                         @"Alert message informing that a call could not be made because "
                                                         @"...."
                                                         @"[iOS alert message size].");
+            message = [NSString stringWithFormat:message, sipStatus];
             break;
     }
 
@@ -625,7 +635,9 @@ static SipInterface*    sipInterface;
 }
 
 
-- (void)sipInterface:(SipInterface*)interface callFailed:(Call*)call reason:(SipInterfaceCallFailed)reason
+- (void)sipInterface:(SipInterface*)interface callFailed:(Call*)call
+              reason:(SipInterfaceCallFailed)reason
+           sipStatus:(int)sipStatus
 {
     if (callViewController != nil)
     {
@@ -643,7 +655,7 @@ static SipInterface*    sipInterface;
         if (reason == SipInterfaceCallFailedNoCredit)
         {
             [BlockAlertView showAlertViewWithTitle:title
-                                           message:[self callFailedMessage:reason]
+                                           message:[self callFailedMessage:reason sipStatus:0]
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
              {
                  if (buttonIndex == 1)
@@ -657,7 +669,7 @@ static SipInterface*    sipInterface;
         else
         {
             [BlockAlertView showAlertViewWithTitle:title
-                                           message:[self callFailedMessage:reason]
+                                           message:[self callFailedMessage:reason sipStatus:sipStatus]
                                         completion:nil
                                  cancelButtonTitle:[CommonStrings cancelString]
                                  otherButtonTitles:nil];

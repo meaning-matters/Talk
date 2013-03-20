@@ -29,6 +29,7 @@ typedef enum
     SipInterfaceCallFailedInvalidNumber,        // Malformed URL, ...?
     SipInterfaceCallFailedBadRequest,
     SipInterfaceCallFailedNotFound,
+    SipInterfaceCallFailedRequestTimeout,
     SipInterfaceCallFailedTemporarilyUnavailable,
     SipInterfaceCallFailedPstnTerminationFail,
     SipInterfaceCallFailedCallRoutingError,
@@ -61,7 +62,9 @@ typedef enum
 
 - (void)sipInterface:(SipInterface*)interface callDeclined:(Call*)call;
 
-- (void)sipInterface:(SipInterface*)interface callFailed:(Call*)call reason:(SipInterfaceCallFailed)reason;
+- (void)sipInterface:(SipInterface*)interface callFailed:(Call*)call
+              reason:(SipInterfaceCallFailed)reason
+           sipStatus:(int)sipStatus;
 
 - (void)sipInterface:(SipInterface*)interface callIncoming:(Call*)call;
 

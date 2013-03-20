@@ -695,7 +695,7 @@ void showLog(int level, const char* data, int len)
         NSLog(@"//### Can't make call, maximum calls (%d) reached.", PJSUA_MAX_CALLS);
         dispatch_async(dispatch_get_main_queue(), ^
         {
-            [self.delegate sipInterface:self callFailed:call reason:SipInterfaceCallFailedTooManyCalls];
+            [self.delegate sipInterface:self callFailed:call reason:SipInterfaceCallFailedTooManyCalls sipStatus:0];
         });
 
         return NO;
@@ -760,7 +760,7 @@ void showLog(int level, const char* data, int len)
                     }
                     
                     call.state = CallStateFailed;
-                    [self.delegate sipInterface:self callFailed:call reason:reason];
+                    [self.delegate sipInterface:self callFailed:call reason:reason sipStatus:status];
                 });
 
                 result = NO;
@@ -1541,6 +1541,11 @@ void showLog(int level, const char* data, int len)
             failed = SipInterfaceCallFailedNotFound;
             break;
 
+        case PJSIP_SC_REQUEST_TIMEOUT:              // 408
+            [self stopTones:callId];
+            failed = SipInterfaceCallFailedRequestTimeout;
+            break;
+
         case CUSTOM_SC_NOT_ALLOWED_COUNTRY:         // 451
             [self stopTones:callId];
             failed = SipInterfaceCallFailedNotAllowedCountry;
@@ -1616,7 +1621,7 @@ void showLog(int level, const char* data, int len)
     {
         dispatch_async(dispatch_get_main_queue(), ^
         {
-            [self.delegate sipInterface:self callFailed:call reason:failed];
+            [self.delegate sipInterface:self callFailed:call reason:failed sipStatus:status];
         });
     }
 }
