@@ -42,13 +42,7 @@
      UIRemoteNotificationTypeBadge |
      UIRemoteNotificationTypeSound |
      UIRemoteNotificationTypeAlert];
-/*
-    //### Set current fixed SIP credentials.
-    [Settings sharedSettings].sipServer   = @"178.63.93.9";
-    [Settings sharedSettings].sipRealm    = @"*";
-    [Settings sharedSettings].sipUsername = @"1000";
-    [Settings sharedSettings].sipPassword = @"1234azertytettn";
-*/
+
     // Trigger singletons.
     [Skinning        sharedSkinning];
     [NetworkStatus   sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.
