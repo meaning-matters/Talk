@@ -389,7 +389,7 @@ static PurchaseManager*     sharedManager;
                         // We get here when the transaction was not finished yet.
                         self.accountCompletion = ^(BOOL status, id object)
                         {
-                            //  NSLog(@"//### ");
+                            NSLog(@"//### transaction was not finished yet");
                         };
                     }
 

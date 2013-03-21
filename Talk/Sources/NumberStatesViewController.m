@@ -226,7 +226,7 @@
 
     NumberAreasViewController*  viewController;
     viewController = [[NumberAreasViewController alloc] initWithCountry:country
-                                                                stateId:state[@"stateId"]
+                                                                  state:state
                                                          numberTypeMask:numberTypeMask];
     [self.navigationController pushViewController:viewController animated:YES];
 }

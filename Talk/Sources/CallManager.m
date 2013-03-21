@@ -461,6 +461,7 @@ static SipInterface*    sipInterface;
                                                                    animated:YES
                                                                  completion:^
             {
+                NSLog(@"%p", callViewController);
                 if ([Common deviceHasReceiver] == NO)
                 {
                     [callViewController setSpeakerEnable:NO];

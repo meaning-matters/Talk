@@ -312,7 +312,7 @@
     {
         NumberAreasViewController*  viewController;
         viewController = [[NumberAreasViewController alloc] initWithCountry:country
-                                                                    stateId:nil
+                                                                      state:nil
                                                              numberTypeMask:numberTypeMask];
         [self.navigationController pushViewController:viewController animated:YES];
     }

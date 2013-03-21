@@ -12,4 +12,7 @@
 
 @property (nonatomic, weak) IBOutlet UITableView*   tableView;
 
+
+- (id)initWithCountry:(NSDictionary*)country state:(NSDictionary*)state area:(NSDictionary*)area;
+
 @end

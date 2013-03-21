@@ -13,12 +13,13 @@
 #import "BlockAlertView.h"
 #import "CommonStrings.h"
 #import "Common.h"
+#import "NumberAreaViewController.h"
 
 
 @interface NumberAreasViewController ()
 {
     NSDictionary*           country;
-    NSString*               stateId;
+    NSDictionary*           state;
     NumberTypeMask          numberTypeMask;
 
     NSArray*                nameIndexArray;         // Array with all first letters of country names.
@@ -36,13 +37,13 @@
 @implementation NumberAreasViewController
 
 - (id)initWithCountry:(NSDictionary*)theCountry
-              stateId:(NSString*)theStateId
+                state:(NSDictionary*)theState
        numberTypeMask:(NumberTypeMask)theNumberTypeMask
 {
     if (self = [super initWithNibName:@"NumberAreasView" bundle:nil])
     {
         country        = theCountry;
-        stateId        = theStateId;   // Is nil for country without states.
+        state          = theState;      // Is nil for country without states.
         numberTypeMask = theNumberTypeMask;
 
         allAreasArray  = [NSMutableArray array];
@@ -65,10 +66,10 @@
                                                                  action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
-    if (stateId != nil)
+    if (state != nil)
     {
         [[WebClient sharedClient] retrieveNumberAreasForCountryId:country[@"countryId"]
-                                                          stateId:stateId
+                                                          stateId:state[@"stateId"]
                                                             reply:^(WebClientStatus status, id content)
          {
              if (status == WebClientStatusOk)
@@ -116,10 +117,10 @@
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.searchDisplayController setActive:NO animated:YES];
 
-    if (stateId != nil)
+    if (state != nil)
     {
         [[WebClient sharedClient] cancelAllRetrieveNumberAreasForCountryId:country[@"countryId"]
-                                                                   stateId:stateId];
+                                                                   stateId:state[@"stateId"]];
     }
     else
     {
@@ -356,8 +357,9 @@
         }
     }
 
-    //### push next level.
-    NSLog(@"%@", area);
+    NumberAreaViewController*   viewController;
+    viewController = [[NumberAreaViewController alloc] initWithCountry:country state:state area:area];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 
@@ -391,10 +393,16 @@
         }
     }
 
-    cell.imageView.image = [UIImage imageNamed:country[@"isoCode"]];
-    cell.textLabel.text = name;
     cell.accessoryType = UITableViewCellAccessoryNone;
-    
+    if (area[@"areaCode"] != [NSNull null] && [area[@"areaCode"] isEqualToString:name] == NO)
+    {
+        cell.textLabel.text = [NSString stringWithFormat:@"%@ - %@", area[@"areaCode"], name];
+    }
+    else
+    {
+        cell.textLabel.text = name;
+    }
+
     return cell;
 }
 

@@ -17,7 +17,7 @@
 
 
 - (id)initWithCountry:(NSDictionary*)country
-              stateId:(NSString*)stateId
+                state:(NSDictionary*)theState
        numberTypeMask:(NumberTypeMask)numberTypeMask;
 
 @end
