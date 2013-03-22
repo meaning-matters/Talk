@@ -19,6 +19,7 @@
 #import "CallManager.h"
 #import "CallViewController.h"
 #import "PurchaseManager.h"
+#import "Common.h"
 
 
 @interface AppDelegate ()
@@ -36,42 +37,66 @@
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
 
+- (void)setUp
+{
+    static dispatch_once_t  isSetUp;
+    
+    dispatch_once(&isSetUp, ^
+    {
+        // Trigger singletons.
+        [Skinning        sharedSkinning];
+        [NetworkStatus   sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.
+        [CallManager     sharedManager];
+
+        // Initialize phone number stuff.
+        [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
+        [LibPhoneNumber sharedInstance];    // This loads the JavaScript library.
+
+        // Basic UI.
+        self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        self.tabBarController = [[UITabBarController alloc] init];
+        self.tabBarController.delegate = self;
+
+        // Must be placed here, just before tabs are added.  Otherwise navigation bar
+        // will overlap with status bar.
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
+
+        [self addViewControllersToTabBar];
+        self.window.rootViewController = self.tabBarController;
+        [self.window makeKeyAndVisible];
+
+        [[AVAudioSession sharedInstance] setActive:YES error:NULL]; // Make sure there's an audio session.
+        [[NSNotificationCenter defaultCenter] addObserver:self
+#warning Do with block, instead of method.
+                                                 selector:@selector(keepVolumeAboveZero:)
+                                                     name:@"AVSystemController_SystemVolumeDidChangeNotification"
+                                                   object:nil];
+    });
+}
+
+
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
+#warning Don't forget to remove, and to switch to NO 'Application supports iTunes file sharing' in .plist.
+    // [Common redirectStderrToFile];
+
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
      UIRemoteNotificationTypeBadge |
      UIRemoteNotificationTypeSound |
      UIRemoteNotificationTypeAlert];
 
-    // Trigger singletons.
-    [Skinning        sharedSkinning];
-    [NetworkStatus   sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.
-    [CallManager     sharedManager];
-
-    // Initialize phone number stuff.
-    [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
-    [LibPhoneNumber sharedInstance];    // This loads the JavaScript library.
-    
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.tabBarController = [[UITabBarController alloc] init];
-    self.tabBarController.delegate = self;
-
-    // Must be placed here, just before tabs are added.  Otherwise navigation bar
-    // will overlap with status bar.
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
-
-    [self addViewControllersToTabBar];
-    self.window.rootViewController = self.tabBarController;
-    [self.window makeKeyAndVisible];
-
-    [[AVAudioSession sharedInstance] setActive:YES error:NULL]; // Make sure there's an audio session.
-    [[NSNotificationCenter defaultCenter] addObserver:self
-#warning Do with block, instead of method.
-                                             selector:@selector(keepVolumeAboveZero:)
-                                                 name:@"AVSystemController_SystemVolumeDidChangeNotification"
-                                               object:nil];
+    if ([UIApplication sharedApplication].protectedDataAvailable)
+    {
+        [self setUp];
+    }
 
     return YES;
+}
+
+
+- (void)applicationProtectedDataDidBecomeAvailable:(UIApplication*)application
+{
+    [self setUp];
 }
 
 

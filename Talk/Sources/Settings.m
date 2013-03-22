@@ -64,7 +64,7 @@ static NSUserDefaults*  userDefaults;
             [KeychainUtility deleteItemForUsername:WebPasswordKey andServiceName:WebServiceKey error:nil];
             [KeychainUtility deleteItemForUsername:SipRealmKey    andServiceName:SipServiceKey error:nil];
             [KeychainUtility deleteItemForUsername:SipUsernameKey andServiceName:SipServiceKey error:nil];
-            [KeychainUtility deleteItemForUsername:SipPasswordKey andServiceName:SipServiceKey error:nil];            
+            [KeychainUtility deleteItemForUsername:SipPasswordKey andServiceName:SipServiceKey error:nil];
         }
 
         [sharedSettings registerDefaults];

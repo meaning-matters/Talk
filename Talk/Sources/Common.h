@@ -58,4 +58,6 @@
 
 + (void)enableNetworkActivityIndicator:(BOOL)enable;
 
++ (void)redirectStderrToFile;
+
 @end

@@ -176,7 +176,6 @@ void showLog(int level, const char* data, int len)
              [self keepAlive];
          }];
 
-
         [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusMobileCallStateChangedNotification
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
