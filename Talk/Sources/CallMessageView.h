@@ -10,7 +10,7 @@
 
 @interface CallMessageView : UIView
 
-@property (nonatomic, strong) IBOutlet UIView*      view;
-@property (nonatomic, weak) IBOutlet UITextField*   textField;
+@property (nonatomic, strong) IBOutlet UIView*  view;
+@property (nonatomic, weak) IBOutlet UILabel*   label;
 
 @end

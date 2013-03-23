@@ -456,7 +456,7 @@
 
 - (void)showMessageViewWithText:(NSString*)text
 {
-    callMessageView.textField.text = text;
+    callMessageView.label.text = @"";
 
     [UIView transitionFromView:[self.centerRootView.subviews lastObject]
                         toView:callMessageView
@@ -464,6 +464,8 @@
                        options:UIViewAnimationOptionTransitionCrossDissolve
                     completion:^(BOOL finished)
      {
+         callMessageView.label.text = text;
+
          [Common setWidth:280 ofView:self.endButton];
          [self drawEndButton];
 
@@ -607,6 +609,13 @@
 
 - (void)updateCallFailed:(Call*)call message:(NSString*)message;
 {
+    if (call == nil)
+    {
+        NSLog(@"//### Call is nil (failed)");
+        Call* call = [[Call alloc] init];
+        call.state = CallStateFailed;
+    }
+
     self.statusLabel.text = [call stateString];
     [self showMessageViewWithText:message];
 }
