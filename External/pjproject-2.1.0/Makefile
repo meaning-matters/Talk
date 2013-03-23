@@ -107,15 +107,16 @@ pjsua-test:
 
 prefix = $(ac_prefix)
 
+.PHONY: install
 install:
-	mkdir -p $(DESTDIR)$(prefix)/lib
-	cp -f $(APP_LIB_FILES) $(DESTDIR)$(prefix)/lib/
-	mkdir -p $(DESTDIR)$(prefix)/include
+	mkdir -p ./install/lib
+	cp -f $(APP_LIB_FILES) ./install/lib/
+	mkdir -p ./install/include
 	for d in pjlib pjlib-util pjnath pjmedia pjsip; do \
-		cp -RLf $$d/include/* $(DESTDIR)$(prefix)/include/; \
+		cp -RLf $$d/include/* ./install/include/; \
 	done
-	mkdir -p $(DESTDIR)$(prefix)/lib/pkgconfig
-	sed -e "s!@PREFIX@!$(DESTDIR)$(prefix)!" libpjproject.pc.in | \
+	mkdir -p ./install/lib/pkgconfig
+	sed -e "s!@PREFIX@!./install/!" libpjproject.pc.in | \
 		sed -e "s/@PJ_VERSION@/$(PJ_VERSION)/" | \
 		sed -e "s!@PJ_LDLIBS@!$(PJ_LDLIBS)!" | \
-		sed -e "s!@PJ_INSTALL_CFLAGS@!$(PJ_INSTALL_CFLAGS)!" > $(DESTDIR)/$(prefix)/lib/pkgconfig/libpjproject.pc
+		sed -e "s!@PJ_INSTALL_CFLAGS@!$(PJ_INSTALL_CFLAGS)!" > ./install/lib/pkgconfig/libpjproject.pc

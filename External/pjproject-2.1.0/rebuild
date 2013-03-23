@@ -1,0 +1,37 @@
+#! /bin/bash
+
+# Point to OpenSSL
+export OPENSSL=${PWD}/../OpenSSL-for-iPhone/
+export CFLAGS="-O2 -Wno-unused-label -I${OPENSSL}/include/"
+export LDFLAGS="-L${OPENSSL}/lib/ -lcrypto -lssl"
+
+# Clean Build Output
+rm install/lib/*.a
+rm install/lib/pkgconfig
+rm install/lib/*/*.a
+rm install/lib/*/pkgconfig
+
+# Build ARMV7
+make clean
+export ARCH='-arch armv7' 
+./configure-iphone
+make dep
+make
+make install
+mkdir install/lib/armv7
+mv install/lib/*.a install/lib/armv7
+rm -R install/lib/pkgconfig
+
+# Build ARMV7S
+make clean
+export ARCH='-arch armv7s' 
+./configure-iphone
+make dep
+make
+make install
+mkdir install/lib/armv7s
+mv install/lib/*.a install/lib/armv7s
+rm -R install/lib/pkgconfig
+
+# Combine Builds
+cd install/lib; ./combine
