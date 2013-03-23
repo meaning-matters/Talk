@@ -2,7 +2,12 @@ OpenSSL
 * Was cloned from x2on.de's github. 
 * Simply following the instructions resulted in lib/.
 
-pjproject-2.0.1
+pjproject-2.n.m
+* Download the .tar.bz2 file as this contain UNIX newlines.
+* Add '#define PJ_CONFIG_IPHONE 1' and '#include <pj/config_site_sample.h>'
+  to pjlib/include/pj/config_site.h.
+* Copy ./install/lib/combine from older pjsip to ./install/lib/.
+* Run ./configure-iphone (well, better use the rebuild script (see below)).
 * Modified Makefile to install into install/.
 * To build for armv7s:
   - Move install/lib/* to install/lib/armv7/
