@@ -54,13 +54,14 @@ typedef enum
 @property (nonatomic, assign) CallState                 state;
 @property (nonatomic, assign) CallDirection             direction;
 @property (nonatomic, assign) CallNetwork               network;
+@property (nonatomic, assign) BOOL                      endedByUser;
 
 // SipInterface specifics.
-@property (nonatomic, assign) int               callId;
-@property (nonatomic, assign) BOOL              ringbackToneOn;
-@property (nonatomic, assign) BOOL              busyToneOn;
-@property (nonatomic, assign) BOOL              congestionToneOn;
-@property (nonatomic, assign) BOOL              ringToneOn;
+@property (nonatomic, assign) int                       callId;
+@property (nonatomic, assign) BOOL                      ringbackToneOn;
+@property (nonatomic, assign) BOOL                      busyToneOn;
+@property (nonatomic, assign) BOOL                      congestionToneOn;
+@property (nonatomic, assign) BOOL                      ringToneOn;
 
 
 - (id)initWithPhoneNumber:(PhoneNumber*)phoneNumber direction:(CallDirection)direction;

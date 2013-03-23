@@ -10,7 +10,6 @@
 #import "CallOptionsView.h"
 #import "CallKeypadView.h"
 #import "Call.h"
-#import "SipInterface.h"
 
 
 @interface CallViewController : UIViewController <CallOptionsViewDelegate, CallKeypadViewDelegate>
@@ -60,7 +59,7 @@
 
 - (void)updateCallDeclined:(Call*)call;
 
-- (void)updateCallFailed:(Call*)call reason:(SipInterfaceCallFailed)reason;
+- (void)updateCallFailed:(Call*)call message:(NSString*)message;
 
 - (void)setCall:(Call*)call onMute:(BOOL)onMute;
 

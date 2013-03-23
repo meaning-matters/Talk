@@ -139,7 +139,7 @@ static SipInterface*    sipInterface;
             message = NSLocalizedStringWithDefaultValue(@"Call:Failed NoCreditMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"There is not enough credit to make this call. "
-                                                        @"Buy more, and be ready to call in a snap.",
+                                                        @"Buy more, and be ready to call again in a snap.",
                                                         @"Alert message informing that a call could not be connected "
                                                         @"because there was not enough calling credit\n"
                                                         @"[iOS alert message size].");
@@ -481,7 +481,15 @@ static SipInterface*    sipInterface;
 
 - (void)endCall:(Call*)call
 {
-    [sipInterface hangupCall:call reason:nil];
+    if (call != nil)
+    {
+        [sipInterface hangupCall:call reason:nil];
+    }
+    else
+    {
+        // Call must have been ended earlier.
+        [callViewController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 
@@ -619,8 +627,11 @@ static SipInterface*    sipInterface;
     [callViewController updateCallEnded:call];
 
 #warning Do only when last call was ended.
-    [callViewController dismissViewControllerAnimated:YES completion:nil];
-    callViewController = nil;
+    if (call.endedByUser)
+    {
+        [callViewController dismissViewControllerAnimated:YES completion:nil];
+        callViewController = nil;
+    }
 }
 
 
@@ -642,7 +653,7 @@ static SipInterface*    sipInterface;
 {
     if (callViewController != nil)
     {
-        [callViewController updateCallFailed:call reason:reason];
+        [callViewController updateCallFailed:call message:[self callFailedMessage:reason sipStatus:sipStatus]];
     }
     else
     {

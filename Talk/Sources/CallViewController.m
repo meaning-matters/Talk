@@ -10,12 +10,14 @@
 #import "CallViewController.h"
 #import "Common.h"
 #import "CallManager.h"
+#import "CallMessageView.h"
 
 
 @interface CallViewController ()
 {
     CallOptionsView*    callOptionsView;
     CallKeypadView*     callKeypadView;
+    CallMessageView*    callMessageView;
 }
 
 @end
@@ -72,6 +74,7 @@
     CGRect  frame = CGRectMake(0, 0, self.centerRootView.frame.size.width, self.centerRootView.frame.size.height);
     callOptionsView = [[CallOptionsView alloc] initWithFrame:frame];
     callKeypadView  = [[CallKeypadView  alloc] initWithFrame:frame];
+    callMessageView = [[CallMessageView alloc] initWithFrame:frame];
 
     callOptionsView.delegate = self;
     callKeypadView.delegate  = self;
@@ -449,11 +452,49 @@
 }
 
 
+#pragma Message View
+
+- (void)showMessageViewWithText:(NSString*)text
+{
+    callMessageView.textField.text = text;
+
+    [UIView transitionFromView:[self.centerRootView.subviews lastObject]
+                        toView:callMessageView
+                      duration:0.5
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    completion:^(BOOL finished)
+     {
+         [Common setWidth:280 ofView:self.endButton];
+         [self drawEndButton];
+
+         self.endButton.hidden   = NO;
+         self.hideButton.hidden  = YES;
+         self.infoLabel.hidden   = NO;
+         self.calleeLabel.hidden = NO;
+         self.statusLabel.hidden = NO;
+         self.dtmfLabel.hidden   = YES;
+
+         [self.endButton setImage:[UIImage imageNamed:@"HangupPhone"] forState:UIControlStateNormal];
+         [self.endButton setImage:[UIImage imageNamed:@"HangupPhone"] forState:UIControlStateHighlighted];
+     }];
+
+    self.endButton.hidden   = YES;
+    self.hideButton.hidden  = YES;
+    self.infoLabel.hidden   = YES;
+    self.calleeLabel.hidden = YES;
+    self.statusLabel.hidden = YES;
+    self.dtmfLabel.hidden   = YES;
+}
+
+
 #pragma mark - Button Actions
 
 - (IBAction)endAction:(id)sender
 {
-    [[CallManager sharedManager] endCall:[self.calls lastObject]];  //### Should be active call.
+    Call*   call = [self.calls lastObject];
+
+    call.endedByUser = YES;
+    [[CallManager sharedManager] endCall:call];  //### Should be active call.
 }
 
 
@@ -564,9 +605,10 @@
 }
 
 
-- (void)updateCallFailed:(Call*)call reason:(SipInterfaceCallFailed)reason
+- (void)updateCallFailed:(Call*)call message:(NSString*)message;
 {
     self.statusLabel.text = [call stateString];
+    [self showMessageViewWithText:message];
 }
 
 

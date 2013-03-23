@@ -1620,6 +1620,7 @@ void showLog(int level, const char* data, int len)
     {
         dispatch_async(dispatch_get_main_queue(), ^
         {
+            call.state = CallStateFailed;
             [self.delegate sipInterface:self callFailed:call reason:failed sipStatus:status];
         });
     }
