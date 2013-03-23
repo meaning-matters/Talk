@@ -62,6 +62,8 @@ typedef enum
 
 - (NSString*)typeString;
 
+- (NSString*)infoString;
+
 - (NSString*)originalFormat;
 
 - (NSString*)e164Format;

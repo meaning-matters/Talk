@@ -61,7 +61,7 @@
     self.bottomView.backgroundColor     = [UIColor clearColor];
 
     Call*   call = [self.calls lastObject];
-    self.infoLabel.text   = [call.phoneNumber typeString];
+    self.infoLabel.text   = [call.phoneNumber infoString];
     self.calleeLabel.text = [call.phoneNumber asYouTypeFormat];
     self.statusLabel.text = [call stateString];
     self.dtmfLabel.text   = @"";

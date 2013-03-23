@@ -9,6 +9,7 @@
 #import "PhoneNumber.h"
 #import "Common.h"
 #import "LibPhoneNumber.h"
+#import "CountryNames.h"
 
 
 @implementation PhoneNumber
@@ -235,6 +236,50 @@ static NSString*    defaultBaseIsoCountryCode;
                                                        @"Indicates that this is a over internet phone number\n"
                                                        @"[0.5 line small font - abbreviated: 'internet'].");
             break;
+    }
+
+    return string;
+}
+
+
+- (NSString*)infoString
+{
+    NSString*   string = @"";
+
+    if (self.isEmergency)
+    {
+        string = [NSString stringWithFormat:@"%@", [self typeString]];
+    }
+    else if (self.isValid)
+    {
+        NSString*   impossible;
+        NSString*   country = [[CountryNames sharedNames] nameForIsoCountryCode:[self isoCountryCode]];
+        if ([country length] > 0)
+        {
+            country = [NSString stringWithFormat:@"%@ - ", country];
+        }
+        else
+        {
+            country = @"";
+        }
+
+        if (self.isPossible == NO)
+        {
+            impossible = NSLocalizedStringWithDefaultValue(@"General:Number Impossible", nil,
+                                                           [NSBundle mainBundle], @"impossible",
+                                                           @"Indicates that the phone number is impossible (i.e. can't exist)\n"
+                                                           @"[0.5 line small font].");
+
+            string = [NSString stringWithFormat:@"%@%@ (%@)", country, [self typeString], impossible];
+        }
+        else
+        {
+            string = [NSString stringWithFormat:@"%@%@", country, [self typeString]];
+        }
+    }
+    else
+    {
+        string = [[CountryNames sharedNames] nameForIsoCountryCode:[self isoCountryCode]];
     }
 
     return string;
