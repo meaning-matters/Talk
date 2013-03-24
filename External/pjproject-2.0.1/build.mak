@@ -106,7 +106,7 @@ PJ_VIDEO_LDFLAGS += $(SDL_LDFLAGS) $(FFMPEG_LDFLAGS) $(V4L2_LDFLAGS)
 export APP_CC := /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/llvm-gcc
 export APP_CXX := /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/llvm-g++
 export APP_CFLAGS := -DPJ_AUTOCONF=1\
-	-O2 -Wno-unused-label -I/Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/ -DPJ_SDK_NAME="\"iPhoneOS6.0.sdk\"" -arch armv7s -isysroot /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk -DPJ_IS_BIG_ENDIAN=0 -DPJ_IS_LITTLE_ENDIAN=1\
+	-O2 -Wno-unused-label -I/Users/case/Projects/Talk/Talk/External/pjproject-2.1.0/../OpenSSL-for-iPhone//include/ -DPJ_SDK_NAME="\"iPhoneOS6.1.sdk\"" -arch armv7 -isysroot /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -DPJ_IS_BIG_ENDIAN=0 -DPJ_IS_LITTLE_ENDIAN=1\
 	$(PJ_VIDEO_CFLAGS) \
 	-I$(PJDIR)/pjlib/include\
 	-I$(PJDIR)/pjlib-util/include\
@@ -121,7 +121,7 @@ export APP_LDFLAGS := -L$(PJDIR)/pjlib/lib\
 	-L$(PJDIR)/pjsip/lib\
 	-L$(PJDIR)/third_party/lib\
 	$(PJ_VIDEO_LDFLAGS) \
-	-L/Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//lib/ -lcrypto -lssl -arch armv7s -isysroot /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk -framework AudioToolbox -framework Foundation
+	-L/Users/case/Projects/Talk/Talk/External/pjproject-2.1.0/../OpenSSL-for-iPhone//lib/ -arch armv7 -isysroot /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -framework AudioToolbox -framework Foundation
 export APP_LDLIBS := -lpjsua-$(TARGET_NAME)\
 	-lpjsip-ua-$(TARGET_NAME)\
 	-lpjsip-simple-$(TARGET_NAME)\
@@ -164,6 +164,6 @@ export PJ_LIB_FILES := $(APP_LIB_FILES)
 export PJ_INSTALL_DIR := /usr/local
 export PJ_INSTALL_INC_DIR := $(PJ_INSTALL_DIR)/include
 export PJ_INSTALL_LIB_DIR := $(PJ_INSTALL_DIR)/lib
-export PJ_INSTALL_CFLAGS := -I$(PJ_INSTALL_INC_DIR) -DPJ_AUTOCONF=1	-O2 -Wno-unused-label -I/Users/case/Projects/Talk/Talk/External/pjproject-2.0.1/../OpenSSL-for-iPhone//include/ -DPJ_SDK_NAME="\"iPhoneOS6.0.sdk\"" -arch armv7s -isysroot /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk -DPJ_IS_BIG_ENDIAN=0 -DPJ_IS_LITTLE_ENDIAN=1
+export PJ_INSTALL_CFLAGS := -I$(PJ_INSTALL_INC_DIR) -DPJ_AUTOCONF=1	-O2 -Wno-unused-label -I/Users/case/Projects/Talk/Talk/External/pjproject-2.1.0/../OpenSSL-for-iPhone//include/ -DPJ_SDK_NAME="\"iPhoneOS6.1.sdk\"" -arch armv7 -isysroot /Applications/XCode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -DPJ_IS_BIG_ENDIAN=0 -DPJ_IS_LITTLE_ENDIAN=1
 export PJ_INSTALL_CXXFLAGS := $(PJ_INSTALL_CFLAGS)
 export PJ_INSTALL_LDFLAGS := -L$(PJ_INSTALL_LIB_DIR) $(APP_LDLIBS)
