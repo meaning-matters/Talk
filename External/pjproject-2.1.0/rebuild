@@ -2,7 +2,7 @@
 
 # Point to OpenSSL
 export OPENSSL=${PWD}/../OpenSSL-for-iPhone/
-export CFLAGS="-O2 -Wno-unused-label -I${OPENSSL}/include/"
+export CFLAGS="-O2 -Wno-unused-label -I${OPENSSL}/include/ -DNDEBUG"
 export LDFLAGS="-L${OPENSSL}/lib/ -lcrypto -lssl"
 
 # Clean Build Output

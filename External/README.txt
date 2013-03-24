@@ -6,6 +6,8 @@ pjproject-2.n.m
 * Download the .tar.bz2 file as this contain UNIX newlines.
 * Add '#define PJ_CONFIG_IPHONE 1' and '#include <pj/config_site_sample.h>'
   to pjlib/include/pj/config_site.h.
+* Also added PJ_ENABLE_EXTRA_CHECK 1 to config_site.h, this has to do with 
+  a problem I have when calling pjsua_call_make_call(), see SipInterface.m.
 * Copy ./install/lib/combine from older pjsip to ./install/lib/.
 * Run ./configure-iphone (well, better use the rebuild script (see below)).
 * Modified Makefile to install into install/.
@@ -24,7 +26,11 @@ pjproject-2.n.m
   of course always up to date.)
 * Created rebuild script, that does all the steps above and more.  Note: for
   some reason the configure scripts did not see OpenSSL, so I had to add
-  -lcrypto -lssl to the LDFLAGS.
+  -lcrypto -lssl to the LDFLAGS; this is because aconfigure does not pick
+  up OpenSSL, so we need to explicitly add the libraries that had to be added
+  by configure.
+* To prevent failed assertion abort(), I've added -DDEBUG as compile flag to
+  rebuild.
 
 LibPhoneNumber
 * Building (using Google's Closure Builder) the single JavaScript file for

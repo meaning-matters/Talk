@@ -1416,24 +1416,6 @@
 		48A261BF16FDE26100007638 /* CallMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallMessageView.xib; sourceTree = "<group>"; };
 		48A261C216FDE32400007638 /* CallMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallMessageView.h; sourceTree = "<group>"; };
 		48A261C316FDE32400007638 /* CallMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallMessageView.m; sourceTree = "<group>"; };
-		48A261C616FE4F5F00007638 /* libg7221codec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libg7221codec-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libg7221codec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
-		48A261C716FE4F5F00007638 /* libgsmcodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgsmcodec-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libgsmcodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
-		48A261C816FE4F5F00007638 /* libilbccodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libilbccodec-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libilbccodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
-		48A261C916FE4F5F00007638 /* libmilenage-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libmilenage-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libmilenage-arm-apple-darwin9.a"; sourceTree = "<group>"; };
-		48A261CA16FE4F5F00007638 /* libpj-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpj-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libpj-arm-apple-darwin9.a"; sourceTree = "<group>"; };
-		48A261CB16FE4F5F00007638 /* libpjlib-util-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpjlib-util-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libpjlib-util-arm-apple-darwin9.a"; sourceTree = "<group>"; };
-		48A261CC16FE4F5F00007638 /* libpjmedia-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpjmedia-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libpjmedia-arm-apple-darwin9.a"; sourceTree = "<group>"; };
-		48A261CD16FE4F5F00007638 /* libpjmedia-audiodev-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpjmedia-audiodev-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libpjmedia-audiodev-arm-apple-darwin9.a"; sourceTree = "<group>"; };
-		48A261CE16FE4F5F00007638 /* libpjmedia-codec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpjmedia-codec-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libpjmedia-codec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
-		48A261CF16FE4F5F00007638 /* libpjmedia-videodev-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpjmedia-videodev-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libpjmedia-videodev-arm-apple-darwin9.a"; sourceTree = "<group>"; };
-		48A261D016FE4F5F00007638 /* libpjnath-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpjnath-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libpjnath-arm-apple-darwin9.a"; sourceTree = "<group>"; };
-		48A261D116FE4F5F00007638 /* libpjsip-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpjsip-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libpjsip-arm-apple-darwin9.a"; sourceTree = "<group>"; };
-		48A261D216FE4F5F00007638 /* libpjsip-simple-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpjsip-simple-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libpjsip-simple-arm-apple-darwin9.a"; sourceTree = "<group>"; };
-		48A261D316FE4F5F00007638 /* libpjsip-ua-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpjsip-ua-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libpjsip-ua-arm-apple-darwin9.a"; sourceTree = "<group>"; };
-		48A261D416FE4F5F00007638 /* libpjsua-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpjsua-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libpjsua-arm-apple-darwin9.a"; sourceTree = "<group>"; };
-		48A261D516FE4F5F00007638 /* libresample-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libresample-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libresample-arm-apple-darwin9.a"; sourceTree = "<group>"; };
-		48A261D616FE4F5F00007638 /* libspeex-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libspeex-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libspeex-arm-apple-darwin9.a"; sourceTree = "<group>"; };
-		48A261D716FE4F5F00007638 /* libsrtp-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsrtp-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libsrtp-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48A261EA16FE4F9700007638 /* libg7221codec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libg7221codec-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libg7221codec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48A261EB16FE4F9700007638 /* libgsmcodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgsmcodec-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libgsmcodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48A261EC16FE4F9700007638 /* libilbccodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libilbccodec-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libilbccodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
@@ -2340,24 +2322,6 @@
 		48884A651615CE920005AA79 = {
 			isa = PBXGroup;
 			children = (
-				48A261C616FE4F5F00007638 /* libg7221codec-arm-apple-darwin9.a */,
-				48A261C716FE4F5F00007638 /* libgsmcodec-arm-apple-darwin9.a */,
-				48A261C816FE4F5F00007638 /* libilbccodec-arm-apple-darwin9.a */,
-				48A261C916FE4F5F00007638 /* libmilenage-arm-apple-darwin9.a */,
-				48A261CA16FE4F5F00007638 /* libpj-arm-apple-darwin9.a */,
-				48A261CB16FE4F5F00007638 /* libpjlib-util-arm-apple-darwin9.a */,
-				48A261CC16FE4F5F00007638 /* libpjmedia-arm-apple-darwin9.a */,
-				48A261CD16FE4F5F00007638 /* libpjmedia-audiodev-arm-apple-darwin9.a */,
-				48A261CE16FE4F5F00007638 /* libpjmedia-codec-arm-apple-darwin9.a */,
-				48A261CF16FE4F5F00007638 /* libpjmedia-videodev-arm-apple-darwin9.a */,
-				48A261D016FE4F5F00007638 /* libpjnath-arm-apple-darwin9.a */,
-				48A261D116FE4F5F00007638 /* libpjsip-arm-apple-darwin9.a */,
-				48A261D216FE4F5F00007638 /* libpjsip-simple-arm-apple-darwin9.a */,
-				48A261D316FE4F5F00007638 /* libpjsip-ua-arm-apple-darwin9.a */,
-				48A261D416FE4F5F00007638 /* libpjsua-arm-apple-darwin9.a */,
-				48A261D516FE4F5F00007638 /* libresample-arm-apple-darwin9.a */,
-				48A261D616FE4F5F00007638 /* libspeex-arm-apple-darwin9.a */,
-				48A261D716FE4F5F00007638 /* libsrtp-arm-apple-darwin9.a */,
 				48884A7A1615CE920005AA79 /* Talk */,
 				48884AAC1615CE920005AA79 /* TalkTests */,
 				48884A731615CE920005AA79 /* Frameworks */,
@@ -3551,7 +3515,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"PJ_IOS=1",
 					"PJ_AUTOCONF=1",
-					"DEBUG=1",
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -3611,6 +3574,11 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Cornelis van der Bent (VJFBHX834U)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"PJ_IOS=1",
+					"PJ_AUTOCONF=1",
+					"$(inherited)",
+				);
 				HEADER_SEARCH_PATHS = (
 					"External/pjproject-2.1.0/install/include/",
 					External/WebRTC/GlueLogic,
@@ -3647,6 +3615,7 @@
 					"\"$(SRCROOT)/External/WebRTC\"",
 					"\"$(SRCROOT)/External/pjproject-2.1.0/install/lib\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = NumberBay0;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

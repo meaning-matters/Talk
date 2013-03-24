@@ -728,9 +728,10 @@ void showLog(int level, const char* data, int len)
             pjsua_msg_data_init(&msg_data);
             pj_list_push_back(&msg_data.hdr_list, &header);
 
-#warning Sometimes on bad network: Assertion failed: (aud_subsys.pf), function pjmedia_aud_dev_default_param, file ../src/pjmedia-audiodev/audiodev.c, line 682.
-
-//### Occurs when PJSIP has not finished restart() and a new call is made.
+#warning Sometimes (on bad network): Assertion failed: (aud_subsys.pf), function pjmedia_aud_dev_default_param, file ../src/pjmedia-audiodev/audiodev.c, line 682.
+            //### Occurs when PJSIP has not finished restart() and a new call is made.
+            //### This actually happens all the time when ending a call very early and doing a new one immediately after.
+            //### I've added PJ_ENABLE_EXTRA_CHECK to config_site.h to possibly avoid the app crash, see PJ_ASSERT_RETURN().
             status = pjsua_call_make_call(pjsua_acc_get_default(), &uri, &call_opt, (__bridge void*)call, &msg_data, &call_id);
             if (status == PJ_SUCCESS)
             {
@@ -742,7 +743,9 @@ void showLog(int level, const char* data, int len)
             else
             {
                 NSLog(@"//### Failed to make call: %d.", status);
-                dispatch_sync(dispatch_get_main_queue(), ^
+#warning //### This was originally dispatch_sync(), but that caused a deadlock: see scenario above.
+                //### We get here by compiling PJSIP with -DDEBUG (in rebuild) and PJ_ENABLE_EXTRA_CHECK (in config_site.h).
+                dispatch_async(dispatch_get_main_queue(), ^
                 {
                     SipInterfaceCallFailed  reason;
 
