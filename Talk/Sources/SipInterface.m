@@ -1426,35 +1426,36 @@ void showLog(int level, const char* data, int len)
         case PJSIP_INV_STATE_EARLY:         // After response with To tag.
         {
             int         code;
-	    pj_str_t    reason;
-	    pjsip_msg*  msg;
+            pj_str_t    reason;
+            pjsip_msg*  msg;
 
-	    /* This can only occur because of TX or RX message */
-	    pj_assert(e->type == PJSIP_EVENT_TSX_STATE);
+            /* This can only occur because of TX or RX message */
+            pj_assert(e->type == PJSIP_EVENT_TSX_STATE);
 
-	    if (e->body.tsx_state.type == PJSIP_EVENT_RX_MSG)
+            if (e->body.tsx_state.type == PJSIP_EVENT_RX_MSG)
             {
-		msg = e->body.tsx_state.src.rdata->msg_info.msg;
-	    }
+                msg = e->body.tsx_state.src.rdata->msg_info.msg;
+            }
             else
             {
-		msg = e->body.tsx_state.src.tdata->msg;
-	    }
+                msg = e->body.tsx_state.src.tdata->msg;
+            }
 
-	    code   = msg->line.status.code;
-	    reason = msg->line.status.reason;
+            code   = msg->line.status.code;
+            reason = msg->line.status.reason;
 
-	    /* Start ringback for 180 for UAC unless there's SDP in 180 */
-	    if (call_info.role == PJSIP_ROLE_UAC && code == 180 && msg->body == NULL && call_info.media_status == PJSUA_CALL_MEDIA_NONE)
-	    {
-		[self startRingbackTone:call_id];
+            /* Start ringback for 180 for UAC unless there's SDP in 180 */
+            if (call_info.role == PJSIP_ROLE_UAC && code == 180 && msg->body == NULL &&
+                call_info.media_status == PJSUA_CALL_MEDIA_NONE)
+            {
+                [self startRingbackTone:call_id];
 
                 dispatch_async(dispatch_get_main_queue(), ^
                 {
                     call.state = CallStateRinging;
                     [self.delegate sipInterface:self callRinging:call];
                 });
-	    }
+            }
             else
             {
                 dispatch_async(dispatch_get_main_queue(), ^
@@ -1463,8 +1464,8 @@ void showLog(int level, const char* data, int len)
                     [self.delegate sipInterface:self callRinging:call];
                 });
             }
-
-	    PJ_LOG(3, (THIS_FILE, "Call %d state changed to %s (%d %.*s)",
+            
+            PJ_LOG(3, (THIS_FILE, "Call %d state changed to %s (%d %.*s)",
                        call_id, call_info.state_text.ptr, code, (int)reason.slen, reason.ptr));
             break;
         }
