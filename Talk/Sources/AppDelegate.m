@@ -319,7 +319,7 @@
         return _persistentStoreCoordinator;
     }
 
-    NSURL*      storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"CoreDataTemplate.sqlite"];
+    NSURL*      storeURL = [Common documentPath:@"CoreDataTemplate.sqlite"];
     NSError*    error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
@@ -376,12 +376,6 @@
             abort();
         }
     }
-}
-
-
-- (NSURL*)applicationDocumentsDirectory
-{
-    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
 

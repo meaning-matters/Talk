@@ -16,7 +16,9 @@
 
 @interface Common : NSObject
 
-+ (NSString*)documentFilePath:(NSString*)fileName;
++ (NSURL*)documentsDirectory;
+
++ (NSURL*)documentPath:(NSString*)name;
 
 + (NSData*)dataForResource:(NSString*)resourse ofType:(NSString*)type;
 

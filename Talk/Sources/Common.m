@@ -17,13 +17,15 @@
 
 @implementation Common
 
-+ (NSString*)documentFilePath:(NSString*)fileName
++ (NSURL*)documentsDirectory
 {
-    NSArray*    paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    NSString*   documentsDirectory = paths[0];
-    
-    return [documentsDirectory stringByAppendingPathComponent:fileName];
+    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+
++ (NSURL*)documentPath:(NSString*)name
+{
+    return [[Common documentsDirectory] URLByAppendingPathComponent:name];
 }
 
 
