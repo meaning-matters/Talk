@@ -1,28 +1,28 @@
 //
-//  PurchasedNumber.m
+//  NumberData.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 25/03/13.
 //  Copyright (c) 2013 Cornelis van der Bent. All rights reserved.
 //
 
-#import "PurchasedNumber.h"
+#import "NumberData.h"
 
-
-@implementation PurchasedNumber
+@implementation NumberData
 
 @dynamic e164;
-@dynamic salutation;
-@dynamic lastName;
-@dynamic firstName;
-@dynamic company;
-@dynamic street;
-@dynamic city;
-@dynamic building;
-@dynamic zipCode;
-@dynamic isoCountryCode;
 @dynamic areaCode;
+@dynamic isoCountryCode;
 @dynamic purchaseDateTime;
 @dynamic renewalDateTime;
+
+@dynamic salutation;
+@dynamic firstName;
+@dynamic lastName;
+@dynamic company;
+@dynamic street;
+@dynamic building;
+@dynamic city;
+@dynamic zipCode;
 
 @end

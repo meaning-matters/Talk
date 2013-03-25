@@ -8,13 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CoreDataManager : NSObject
+@interface DataManager : NSObject
 
 @property (nonatomic, strong, readonly) NSManagedObjectContext*         managedObjectContext;
 @property (nonatomic, strong, readonly) NSManagedObjectModel*           managedObjectModel;
 @property (nonatomic, strong, readonly) NSPersistentStoreCoordinator*   persistentStoreCoordinator;
 
-+ (CoreDataManager*)sharedManager;
++ (DataManager*)sharedManager;
 
 - (void)saveContext;
 

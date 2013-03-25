@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="PurchasedNumber" representedClassName="PurchasedNumber" syncable="YES">
+    <entity name="Number" representedClassName="NumberData" syncable="YES">
         <attribute name="areaCode" attributeType="String" syncable="YES"/>
         <attribute name="building" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
@@ -16,6 +16,6 @@
         <attribute name="zipCode" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="PurchasedNumber" positionX="304" positionY="180" width="128" height="238"/>
+        <element name="Number" positionX="304" positionY="180" width="128" height="238"/>
     </elements>
 </model>

@@ -61,6 +61,8 @@ static LibPhoneNumber*  sharedInstance;
     
     [webView loadHTMLString:@"<script src='LibPhoneNumber.js'></script>"
                     baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]]];
+    
+    CFRunLoopRunInMode((CFStringRef)NSDefaultRunLoopMode, 5.0, NO); // Start maximum 5s app delay for loading.
 }
 
 
@@ -68,12 +70,14 @@ static LibPhoneNumber*  sharedInstance;
 
 - (void)webViewDidFinishLoad:(UIWebView*)aWebView
 {
+	CFRunLoopStop([[NSRunLoop currentRunLoop] getCFRunLoop]);       // Stop the delay.
 }
 
 
 - (void)webView:(UIWebView*)webView didFailLoadWithError:(NSError*)error
 {
-    NSLog(@"LibPhoneNumber ERROR: %@", error);
+    CFRunLoopStop([[NSRunLoop currentRunLoop] getCFRunLoop]);       // Stop the delay.
+    NSLog(@"LibPhoneNumber ERROR: %@", [error localizedDescription]);
 }
 
 

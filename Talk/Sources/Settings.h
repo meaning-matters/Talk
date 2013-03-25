@@ -13,6 +13,8 @@
 
 + (Settings*)sharedSettings;
 
+@property (nonatomic, readonly) BOOL            runBefore;          // NO if this is the first time the app runs.
+
 @property (nonatomic, strong) NSArray*          tabBarViewControllerClasses;
 
 @property (nonatomic, strong) NSString*         errorDomain;        // Used when creating an NSError.

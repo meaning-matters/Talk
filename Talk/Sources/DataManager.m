@@ -6,12 +6,12 @@
 //  Copyright (c) 2013 Cornelis van der Bent. All rights reserved.
 //
 
-#import "CoreDataManager.h"
+#import "DataManager.h"
 #import "Common.h"
 
-@implementation CoreDataManager
+@implementation DataManager
 
-static CoreDataManager* sharedManager;
+static DataManager* sharedManager;
 
 @synthesize managedObjectContext       = _managedObjectContext;
 @synthesize managedObjectModel         = _managedObjectModel;
@@ -22,7 +22,7 @@ static CoreDataManager* sharedManager;
 
 + (void)initialize
 {
-    if ([CoreDataManager class] == self)
+    if ([DataManager class] == self)
     {
         sharedManager = [self new];
 
@@ -39,7 +39,7 @@ static CoreDataManager* sharedManager;
 
 + (id)allocWithZone:(NSZone*)zone
 {
-    if (sharedManager && [CoreDataManager class] == self)
+    if (sharedManager && [DataManager class] == self)
     {
         [NSException raise:NSGenericException format:@"Duplicate CoreDataManager singleton creation"];
     }
@@ -48,7 +48,7 @@ static CoreDataManager* sharedManager;
 }
 
 
-+ (CoreDataManager*)sharedManager
++ (DataManager*)sharedManager
 {
     return sharedManager;
 }
@@ -65,7 +65,7 @@ static CoreDataManager* sharedManager;
         return _managedObjectContext;
     }
 
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+    NSPersistentStoreCoordinator *coordinator = self.persistentStoreCoordinator;
     if (coordinator != nil)
     {
         _managedObjectContext = [[NSManagedObjectContext alloc] init];
@@ -85,7 +85,7 @@ static CoreDataManager* sharedManager;
         return _managedObjectModel;
     }
 
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"CoreData" withExtension:@"momd"];
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Data" withExtension:@"momd"];
     _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
 
     return _managedObjectModel;
@@ -101,9 +101,9 @@ static CoreDataManager* sharedManager;
         return _persistentStoreCoordinator;
     }
 
-    NSURL*      storeURL = [Common documentPath:@"CoreData.sqlite"];
+    NSURL*      storeURL = [Common documentPath:@"Data.sqlite"];
     NSError*    error = nil;
-    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
                                                    configuration:nil
                                                              URL:storeURL

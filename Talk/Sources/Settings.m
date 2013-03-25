@@ -39,6 +39,7 @@ NSString* const NumberTypeMaskKey              = @"NumberTypeMask";
 
 @implementation Settings
 
+static BOOL             runBefore;
 static Settings*        sharedSettings;
 static NSUserDefaults*  userDefaults;
 
@@ -52,7 +53,7 @@ static NSUserDefaults*  userDefaults;
         sharedSettings = [self new];
         userDefaults = [NSUserDefaults standardUserDefaults];
 
-        if ([userDefaults boolForKey:RunBeforeKey] == NO)
+        if ((runBefore = [userDefaults boolForKey:RunBeforeKey]) == NO)
         {
             [userDefaults setBool:YES forKey:RunBeforeKey];
             if ([userDefaults synchronize] == NO)
@@ -170,6 +171,14 @@ static NSUserDefaults*  userDefaults;
     self.allowCellularDataCalls      = [userDefaults boolForKey:AllowCellularDataCallsKey];
     self.louderVolume                = [userDefaults boolForKey:LouderVolumeKey];
     self.numberTypeMask              = [userDefaults integerForKey:NumberTypeMaskKey];
+}
+
+
+#pragma mark - Getter
+
+- (BOOL)runBefore
+{
+    return runBefore;
 }
 
 

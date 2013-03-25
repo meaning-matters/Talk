@@ -9,6 +9,11 @@
 #import "NumbersViewController.h"
 #import "NumberCountriesViewController.h"
 #import "AppDelegate.h"
+#import "DataManager.h"
+#import "Settings.h"
+#import "NumberData.h"
+#import "BlockAlertView.h"
+#import "PhoneNumber.h"
 
 
 @interface NumbersViewController ()
@@ -16,6 +21,9 @@
     NSMutableArray*         numbersArray;
     NSMutableArray*         filteredNumbersArray;
     BOOL                    isFiltered;
+
+    NSManagedObjectContext* managedObjectContext;
+    NSDateFormatter*        dateFormatter;
 }
 
 @end
@@ -33,7 +41,42 @@
                                                        @"[1 line larger font].");
         self.tabBarItem.image = [UIImage imageNamed:@"NumbersTab.png"];
 
-        numbersArray = [NSMutableArray array];
+        numbersArray         = [NSMutableArray array];
+        managedObjectContext = [DataManager sharedManager].managedObjectContext;
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+
+#warning //### Remove this later.
+        if ([Settings sharedSettings].runBefore == NO)
+        {
+            NumberData* numberData = (NumberData*)[NSEntityDescription insertNewObjectForEntityForName:@"Number"
+                                                                                inManagedObjectContext:managedObjectContext];
+            numberData.e164             = @"+32499298238";
+            numberData.areaCode         = @"499";
+            numberData.isoCountryCode   = @"BE";
+            numberData.purchaseDateTime = [NSDate date];
+            numberData.renewalDateTime  = [NSDate date];
+            numberData.salutation       = @"Mr.";
+            numberData.firstName        = @"Cornelis";
+            numberData.lastName         = @"van der Bent";
+            numberData.company          = @"NumberBay";
+            numberData.street           = @"Craenendonck";
+            numberData.building         = @"12";
+            numberData.city             = @"Leuven";
+            numberData.zipCode          = @"3000";
+
+            NSError*    error = nil;
+            if ([managedObjectContext save:&error] == NO)
+            {
+                //### Handle error in better way.
+                [BlockAlertView showAlertViewWithTitle:@"Saving Number Failed"
+                                               message:nil
+                                            completion:nil
+                                     cancelButtonTitle:@"Close"
+                                     otherButtonTitles:nil];
+            }
+        }
     }
 
     return self;
@@ -47,6 +90,8 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                            target:self
                                                                                            action:@selector(addAction)];
+
+    [self fetchData];
 }
 
 
@@ -82,6 +127,29 @@
     [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
                                                            animated:YES
                                                          completion:nil];
+}
+
+
+- (void)fetchData
+{
+    NSFetchRequest*         request = [[NSFetchRequest alloc] init];
+    NSEntityDescription*    entity = [NSEntityDescription entityForName:@"Number"
+                                                 inManagedObjectContext:managedObjectContext];
+    [request setEntity:entity];
+
+    NSArray*    sortDescriptors = @[ [[NSSortDescriptor alloc] initWithKey:@"isoCountryCode" ascending:NO] ];
+    [request setSortDescriptors:sortDescriptors];
+
+    NSError*        error = nil;
+    NSMutableArray* results = [[managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
+    if (results == nil)
+    {
+        // Handle the error.
+    }
+    else
+    {
+        numbersArray = results;
+    }
 }
 
 
@@ -122,8 +190,7 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell;
-    NSDictionary*       number;
-    NSString*           isoCountryCode;
+    NumberData*         number;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
@@ -140,10 +207,11 @@
         number = numbersArray[indexPath.row];
     }
 
-    isoCountryCode = number[@"isoCountryCode"];
+    NSString*   text = [[[PhoneNumber alloc] initWithNumber:number.e164] internationalFormat];
+    NSLog(@"%@", text);
 
-    cell.imageView.image = [UIImage imageNamed:isoCountryCode];
-    cell.textLabel.text  = number[@"number"];
+    cell.imageView.image = [UIImage imageNamed:number.isoCountryCode];
+    cell.textLabel.text  = [[[PhoneNumber alloc] initWithNumber:number.e164] internationalFormat];
     cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;

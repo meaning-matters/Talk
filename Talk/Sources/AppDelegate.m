@@ -19,7 +19,7 @@
 #import "CallManager.h"
 #import "CallViewController.h"
 #import "PurchaseManager.h"
-#import "CoreDataManager.h"
+#import "DataManager.h"
 #import "Common.h"
 
 
@@ -40,10 +40,10 @@
     dispatch_once(&onceToken, ^
     {
         // Trigger singletons.
-        [Skinning        sharedSkinning];
-        [NetworkStatus   sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.
-        [CallManager     sharedManager];
-        [CoreDataManager sharedManager];
+        [Skinning      sharedSkinning];
+        [NetworkStatus sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.
+        [CallManager   sharedManager];
+        [DataManager   sharedManager];
 
         // Initialize phone number stuff.
         [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];

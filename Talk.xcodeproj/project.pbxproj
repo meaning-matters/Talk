@@ -594,10 +594,10 @@
 		488AD1EE16E799F4004D3A2A /* NumberStatesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */; };
 		488AD1F116E80A60004D3A2A /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */; };
 		488AD1F216E80A60004D3A2A /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */; };
-		488FBBDA17007CC6000ECC71 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBD917007CC6000ECC71 /* CoreDataManager.m */; };
-		488FBBDB17007CC6000ECC71 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBD917007CC6000ECC71 /* CoreDataManager.m */; };
-		488FBBE21700852F000ECC71 /* PurchasedNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBE11700852F000ECC71 /* PurchasedNumber.m */; };
-		488FBBE31700852F000ECC71 /* PurchasedNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBE11700852F000ECC71 /* PurchasedNumber.m */; };
+		488FBBDA17007CC6000ECC71 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBD917007CC6000ECC71 /* DataManager.m */; };
+		488FBBDB17007CC6000ECC71 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBD917007CC6000ECC71 /* DataManager.m */; };
+		488FBBE21700852F000ECC71 /* NumberData.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBE11700852F000ECC71 /* NumberData.m */; };
+		488FBBE31700852F000ECC71 /* NumberData.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBE11700852F000ECC71 /* NumberData.m */; };
 		4895D19A16B1BE9200BCA581 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4895D19916B1BE9200BCA581 /* StoreKit.framework */; };
 		4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D19C16B1C4F200BCA581 /* PurchaseManager.m */; };
 		4895D19E16B1C4F200BCA581 /* PurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D19C16B1C4F200BCA581 /* PurchaseManager.m */; };
@@ -758,8 +758,8 @@
 		48D3F01E164F9284002041A9 /* CountryNames.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F01D164F9284002041A9 /* CountryNames.m */; };
 		48D3F01F164F9284002041A9 /* CountryNames.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F01D164F9284002041A9 /* CountryNames.m */; };
 		48DD727D169CCF1C00CD7080 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DD727C169CCF1C00CD7080 /* CoreData.framework */; };
-		48DD7281169CD4A200CD7080 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 48DD727F169CD4A200CD7080 /* DataModel.xcdatamodeld */; };
-		48DD7282169CD4A200CD7080 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 48DD727F169CD4A200CD7080 /* DataModel.xcdatamodeld */; };
+		48DD7281169CD4A200CD7080 /* Data.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 48DD727F169CD4A200CD7080 /* Data.xcdatamodeld */; };
+		48DD7282169CD4A200CD7080 /* Data.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 48DD727F169CD4A200CD7080 /* Data.xcdatamodeld */; };
 		48DD72AC169F55C400CD7080 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DD72AB169F55C400CD7080 /* MobileCoreServices.framework */; };
 		48DD72C1169F56F000CD7080 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DD72AF169F56F000CD7080 /* AFHTTPClient.m */; };
 		48DD72C2169F56F000CD7080 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DD72AF169F56F000CD7080 /* AFHTTPClient.m */; };
@@ -1409,10 +1409,10 @@
 		488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberStatesView.xib; sourceTree = "<group>"; };
 		488AD1EF16E80A60004D3A2A /* NSObject+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Blocks.h"; sourceTree = "<group>"; };
 		488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Blocks.m"; sourceTree = "<group>"; };
-		488FBBD817007CC6000ECC71 /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
-		488FBBD917007CC6000ECC71 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
-		488FBBE01700852F000ECC71 /* PurchasedNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchasedNumber.h; sourceTree = "<group>"; };
-		488FBBE11700852F000ECC71 /* PurchasedNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchasedNumber.m; sourceTree = "<group>"; };
+		488FBBD817007CC6000ECC71 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
+		488FBBD917007CC6000ECC71 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
+		488FBBE01700852F000ECC71 /* NumberData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberData.h; sourceTree = "<group>"; };
+		488FBBE11700852F000ECC71 /* NumberData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberData.m; sourceTree = "<group>"; };
 		4895D19916B1BE9200BCA581 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		4895D19B16B1C4F100BCA581 /* PurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseManager.h; sourceTree = "<group>"; };
 		4895D19C16B1C4F200BCA581 /* PurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseManager.m; sourceTree = "<group>"; };
@@ -1515,7 +1515,7 @@
 		48D3F01C164F9284002041A9 /* CountryNames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryNames.h; sourceTree = "<group>"; };
 		48D3F01D164F9284002041A9 /* CountryNames.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryNames.m; sourceTree = "<group>"; };
 		48DD727C169CCF1C00CD7080 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		48DD7280169CD4A200CD7080 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		48DD7280169CD4A200CD7080 /* Data.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data.xcdatamodel; sourceTree = "<group>"; };
 		48DD72AB169F55C400CD7080 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		48DD72AE169F56F000CD7080 /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		48DD72AF169F56F000CD7080 /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
@@ -2418,10 +2418,10 @@
 		488FBBD717007C39000ECC71 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				488FBBD817007CC6000ECC71 /* CoreDataManager.h */,
-				488FBBD917007CC6000ECC71 /* CoreDataManager.m */,
-				488FBBE01700852F000ECC71 /* PurchasedNumber.h */,
-				488FBBE11700852F000ECC71 /* PurchasedNumber.m */,
+				488FBBD817007CC6000ECC71 /* DataManager.h */,
+				488FBBD917007CC6000ECC71 /* DataManager.m */,
+				488FBBE01700852F000ECC71 /* NumberData.h */,
+				488FBBE11700852F000ECC71 /* NumberData.m */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -2506,7 +2506,7 @@
 				48A2CDFB16834FC100506A7C /* RingbackTones.json */,
 				48206EF7168DD8180040B04E /* Tones.json */,
 				48D0A6E51654D65200FA2D98 /* SipConfig.cfg */,
-				48DD727F169CD4A200CD7080 /* DataModel.xcdatamodeld */,
+				48DD727F169CD4A200CD7080 /* Data.xcdatamodeld */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -3374,7 +3374,7 @@
 				4888D292167250AB00B55B22 /* KeychainUtility.m in Sources */,
 				48206EF41684B0700040B04E /* RingbackTones.m in Sources */,
 				48206EFC168DD8D30040B04E /* Tones.m in Sources */,
-				48DD7281169CD4A200CD7080 /* DataModel.xcdatamodeld in Sources */,
+				48DD7281169CD4A200CD7080 /* Data.xcdatamodeld in Sources */,
 				48DD72C1169F56F000CD7080 /* AFHTTPClient.m in Sources */,
 				48DD72C3169F56F000CD7080 /* AFHTTPRequestOperation.m in Sources */,
 				48DD72C5169F56F000CD7080 /* AFImageRequestOperation.m in Sources */,
@@ -3395,8 +3395,8 @@
 				48200D1C16EC89BA0069677E /* NumberType.m in Sources */,
 				4830462416EE269D000F9B05 /* NumberAreaViewController.m in Sources */,
 				48A261C416FDE32400007638 /* CallMessageView.m in Sources */,
-				488FBBDA17007CC6000ECC71 /* CoreDataManager.m in Sources */,
-				488FBBE21700852F000ECC71 /* PurchasedNumber.m in Sources */,
+				488FBBDA17007CC6000ECC71 /* DataManager.m in Sources */,
+				488FBBE21700852F000ECC71 /* NumberData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3444,7 +3444,7 @@
 				4888D293167250AB00B55B22 /* KeychainUtility.m in Sources */,
 				48206EF51684B0700040B04E /* RingbackTones.m in Sources */,
 				48206EFD168DD8D30040B04E /* Tones.m in Sources */,
-				48DD7282169CD4A200CD7080 /* DataModel.xcdatamodeld in Sources */,
+				48DD7282169CD4A200CD7080 /* Data.xcdatamodeld in Sources */,
 				48DD72C2169F56F000CD7080 /* AFHTTPClient.m in Sources */,
 				48DD72C4169F56F000CD7080 /* AFHTTPRequestOperation.m in Sources */,
 				48DD72C6169F56F000CD7080 /* AFImageRequestOperation.m in Sources */,
@@ -3465,8 +3465,8 @@
 				48200D1D16EC89BA0069677E /* NumberType.m in Sources */,
 				4830462516EE269D000F9B05 /* NumberAreaViewController.m in Sources */,
 				48A261C516FDE32400007638 /* CallMessageView.m in Sources */,
-				488FBBDB17007CC6000ECC71 /* CoreDataManager.m in Sources */,
-				488FBBE31700852F000ECC71 /* PurchasedNumber.m in Sources */,
+				488FBBDB17007CC6000ECC71 /* DataManager.m in Sources */,
+				488FBBE31700852F000ECC71 /* NumberData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3840,14 +3840,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		48DD727F169CD4A200CD7080 /* DataModel.xcdatamodeld */ = {
+		48DD727F169CD4A200CD7080 /* Data.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				48DD7280169CD4A200CD7080 /* DataModel.xcdatamodel */,
+				48DD7280169CD4A200CD7080 /* Data.xcdatamodel */,
 			);
-			currentVersion = 48DD7280169CD4A200CD7080 /* DataModel.xcdatamodel */;
-			name = DataModel.xcdatamodeld;
-			path = Resources/DataModel.xcdatamodeld;
+			currentVersion = 48DD7280169CD4A200CD7080 /* Data.xcdatamodel */;
+			name = Data.xcdatamodeld;
+			path = Resources/Data.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
