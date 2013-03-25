@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="DataModel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C3006" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
-    <elements/>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="PurchasedNumber" syncable="YES">
+        <attribute name="areaCode" attributeType="String" syncable="YES"/>
+        <attribute name="building" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="company" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="e164" attributeType="String" syncable="YES"/>
+        <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isoCountryCode" attributeType="String" minValueString="2" maxValueString="2" syncable="YES"/>
+        <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="purchaseDateTime" attributeType="Date" syncable="YES"/>
+        <attribute name="renewalDateTime" attributeType="Date" syncable="YES"/>
+        <attribute name="salutation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="street" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zipCode" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="PurchasedNumber" positionX="304" positionY="180" width="128" height="238"/>
+    </elements>
 </model>
