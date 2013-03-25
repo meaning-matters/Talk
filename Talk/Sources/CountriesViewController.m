@@ -94,7 +94,6 @@
     [super viewWillDisappear:animated];
 
     isFiltered = NO;
-    [self.tableView reloadData];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.searchDisplayController setActive:NO animated:YES];
 }
@@ -151,8 +150,6 @@
     selectedCell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
     selectedCell = cell;
-
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     if (self.isModal == YES)
     {
