@@ -62,7 +62,7 @@ static LibPhoneNumber*  sharedInstance;
     [webView loadHTMLString:@"<script src='LibPhoneNumber.js'></script>"
                     baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]]];
     
-    CFRunLoopRunInMode((CFStringRef)NSDefaultRunLoopMode, 5.0, NO); // Start maximum 5s app delay for loading.
+    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 5.0, NO);             // Start maximum 5s app delay for loading.
 }
 
 
