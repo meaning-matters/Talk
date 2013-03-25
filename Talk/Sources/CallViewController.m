@@ -87,9 +87,10 @@
     [self drawHideButton];
     self.hideButton.hidden = YES;
 
-    callOptionsView.muteButton.enabled = NO;
-    callOptionsView.addButton.enabled  = NO;
-    callOptionsView.holdButton.enabled = NO;
+    callOptionsView.muteButton.enabled   = NO;
+    callOptionsView.keypadButton.enabled = NO;
+    callOptionsView.addButton.enabled    = NO;
+    callOptionsView.holdButton.enabled   = NO;
 }
 
 
@@ -577,9 +578,10 @@
 {
     self.statusLabel.text = [call stateString];
 
-    callOptionsView.muteButton.enabled = YES;
-    callOptionsView.addButton.enabled  = YES;
-    callOptionsView.holdButton.enabled = YES;
+    callOptionsView.muteButton.enabled   = YES;
+    callOptionsView.keypadButton.enabled = YES;
+    callOptionsView.addButton.enabled    = YES;
+    callOptionsView.holdButton.enabled   = YES;
 }
 
 
