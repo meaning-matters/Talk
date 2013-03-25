@@ -207,9 +207,6 @@
         number = numbersArray[indexPath.row];
     }
 
-    NSString*   text = [[[PhoneNumber alloc] initWithNumber:number.e164] internationalFormat];
-    NSLog(@"%@", text);
-
     cell.imageView.image = [UIImage imageNamed:number.isoCountryCode];
     cell.textLabel.text  = [[[PhoneNumber alloc] initWithNumber:number.e164] internationalFormat];
     cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;

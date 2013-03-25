@@ -61,8 +61,12 @@ static LibPhoneNumber*  sharedInstance;
     
     [webView loadHTMLString:@"<script src='LibPhoneNumber.js'></script>"
                     baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]]];
-    
-    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 5.0, NO);             // Start maximum 5s app delay for loading.
+
+    // Start a run-loop to create a maximum 5s app delay for loading Javascript.
+    if (CFRunLoopRunInMode(kCFRunLoopDefaultMode, 5.0, NO) != kCFRunLoopRunStopped)
+    {
+        NSLog(@"//### Javascript not fully loaded in time.");
+    }
 }
 
 
@@ -70,14 +74,17 @@ static LibPhoneNumber*  sharedInstance;
 
 - (void)webViewDidFinishLoad:(UIWebView*)aWebView
 {
-	CFRunLoopStop([[NSRunLoop currentRunLoop] getCFRunLoop]);       // Stop the delay.
+    // Stop the Javascript loading run-loop.
+	CFRunLoopStop([[NSRunLoop currentRunLoop] getCFRunLoop]);
 }
 
 
 - (void)webView:(UIWebView*)webView didFailLoadWithError:(NSError*)error
 {
-    CFRunLoopStop([[NSRunLoop currentRunLoop] getCFRunLoop]);       // Stop the delay.
-    NSLog(@"LibPhoneNumber ERROR: %@", [error localizedDescription]);
+    // Stop the Javascript loading run-loop.
+    CFRunLoopStop([[NSRunLoop currentRunLoop] getCFRunLoop]);
+    
+    NSLog(@"Loading Javascript error: %@", [error localizedDescription]);
 }
 
 
