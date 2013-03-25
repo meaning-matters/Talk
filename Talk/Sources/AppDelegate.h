@@ -37,12 +37,6 @@
 @property (nonatomic, strong) ShareViewController*                      shareViewController;
 @property (nonatomic, strong) SettingsViewController*                   settingsViewController;
 
-@property (nonatomic, strong, readonly) NSManagedObjectContext*         managedObjectContext;
-@property (nonatomic, strong, readonly) NSManagedObjectModel*           managedObjectModel;
-@property (nonatomic, strong, readonly) NSPersistentStoreCoordinator*   persistentStoreCoordinator;
-
-- (void)saveContext;
-- (NSURL*)applicationDocumentsDirectory;
 + (AppDelegate*)appDelegate;
 
 @end

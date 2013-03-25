@@ -594,6 +594,10 @@
 		488AD1EE16E799F4004D3A2A /* NumberStatesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */; };
 		488AD1F116E80A60004D3A2A /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */; };
 		488AD1F216E80A60004D3A2A /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */; };
+		488FBBDA17007CC6000ECC71 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBD917007CC6000ECC71 /* CoreDataManager.m */; };
+		488FBBDB17007CC6000ECC71 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBD917007CC6000ECC71 /* CoreDataManager.m */; };
+		488FBBE21700852F000ECC71 /* PurchasedNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBE11700852F000ECC71 /* PurchasedNumber.m */; };
+		488FBBE31700852F000ECC71 /* PurchasedNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBE11700852F000ECC71 /* PurchasedNumber.m */; };
 		4895D19A16B1BE9200BCA581 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4895D19916B1BE9200BCA581 /* StoreKit.framework */; };
 		4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D19C16B1C4F200BCA581 /* PurchaseManager.m */; };
 		4895D19E16B1C4F200BCA581 /* PurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D19C16B1C4F200BCA581 /* PurchaseManager.m */; };
@@ -1405,6 +1409,10 @@
 		488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberStatesView.xib; sourceTree = "<group>"; };
 		488AD1EF16E80A60004D3A2A /* NSObject+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Blocks.h"; sourceTree = "<group>"; };
 		488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Blocks.m"; sourceTree = "<group>"; };
+		488FBBD817007CC6000ECC71 /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
+		488FBBD917007CC6000ECC71 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
+		488FBBE01700852F000ECC71 /* PurchasedNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchasedNumber.h; sourceTree = "<group>"; };
+		488FBBE11700852F000ECC71 /* PurchasedNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchasedNumber.m; sourceTree = "<group>"; };
 		4895D19916B1BE9200BCA581 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		4895D19B16B1C4F100BCA581 /* PurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseManager.h; sourceTree = "<group>"; };
 		4895D19C16B1C4F200BCA581 /* PurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseManager.m; sourceTree = "<group>"; };
@@ -1736,6 +1744,7 @@
 				48206EFA168DD8D30040B04E /* Tones.h */,
 				48206EFB168DD8D30040B04E /* Tones.m */,
 				482A639A165F922E00325B3F /* Common */,
+				488FBBD717007C39000ECC71 /* CoreData */,
 				488268D1164BCF6300EA58AE /* Networking */,
 				485ECBDF16525D1600364F08 /* Views */,
 				48AF45591649790900DFE3D8 /* ViewControllers */,
@@ -2404,6 +2413,17 @@
 				48884AAF1615CE920005AA79 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		488FBBD717007C39000ECC71 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				488FBBD817007CC6000ECC71 /* CoreDataManager.h */,
+				488FBBD917007CC6000ECC71 /* CoreDataManager.m */,
+				488FBBE01700852F000ECC71 /* PurchasedNumber.h */,
+				488FBBE11700852F000ECC71 /* PurchasedNumber.m */,
+			);
+			name = CoreData;
 			sourceTree = "<group>";
 		};
 		48AF44E116490FF200DFE3D8 /* XIBs */ = {
@@ -3375,6 +3395,8 @@
 				48200D1C16EC89BA0069677E /* NumberType.m in Sources */,
 				4830462416EE269D000F9B05 /* NumberAreaViewController.m in Sources */,
 				48A261C416FDE32400007638 /* CallMessageView.m in Sources */,
+				488FBBDA17007CC6000ECC71 /* CoreDataManager.m in Sources */,
+				488FBBE21700852F000ECC71 /* PurchasedNumber.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3443,6 +3465,8 @@
 				48200D1D16EC89BA0069677E /* NumberType.m in Sources */,
 				4830462516EE269D000F9B05 /* NumberAreaViewController.m in Sources */,
 				48A261C516FDE32400007638 /* CallMessageView.m in Sources */,
+				488FBBDB17007CC6000ECC71 /* CoreDataManager.m in Sources */,
+				488FBBE31700852F000ECC71 /* PurchasedNumber.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
