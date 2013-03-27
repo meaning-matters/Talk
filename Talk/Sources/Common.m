@@ -287,4 +287,37 @@
 }
 
 
++ (unsigned)countSetBits:(unsigned long)value
+{
+    unsigned count = 0;
+    
+    while (value)
+    {
+        count += value & 1;
+        value >>= 1;
+    }
+
+    return count;
+}
+
+
++ (unsigned long)getNthSetBit:(unsigned)n inValue:(unsigned long)value
+{
+    unsigned long   bit = 1;
+
+    while (value)
+    {
+        if ((value & 1) && (n == 0))
+        {
+            break;
+        }
+
+        n--;
+        bit   <<= 1;
+        value >>= 1;
+    }
+
+    return bit;
+}
+
 @end

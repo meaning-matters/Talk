@@ -598,6 +598,10 @@
 		488FBBDB17007CC6000ECC71 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBD917007CC6000ECC71 /* DataManager.m */; };
 		488FBBE21700852F000ECC71 /* NumberData.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBE11700852F000ECC71 /* NumberData.m */; };
 		488FBBE31700852F000ECC71 /* NumberData.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBE11700852F000ECC71 /* NumberData.m */; };
+		489387FB17039158005CC795 /* ForwardingData.m in Sources */ = {isa = PBXBuildFile; fileRef = 489387FA17039158005CC795 /* ForwardingData.m */; };
+		489387FC17039158005CC795 /* ForwardingData.m in Sources */ = {isa = PBXBuildFile; fileRef = 489387FA17039158005CC795 /* ForwardingData.m */; };
+		489387FF17039165005CC795 /* RecordingData.m in Sources */ = {isa = PBXBuildFile; fileRef = 489387FE17039165005CC795 /* RecordingData.m */; };
+		4893880017039165005CC795 /* RecordingData.m in Sources */ = {isa = PBXBuildFile; fileRef = 489387FE17039165005CC795 /* RecordingData.m */; };
 		4895D19A16B1BE9200BCA581 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4895D19916B1BE9200BCA581 /* StoreKit.framework */; };
 		4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D19C16B1C4F200BCA581 /* PurchaseManager.m */; };
 		4895D19E16B1C4F200BCA581 /* PurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D19C16B1C4F200BCA581 /* PurchaseManager.m */; };
@@ -741,6 +745,10 @@
 		48B5AAEF16E69DE900BA4084 /* NumberCountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */; };
 		48B5AAF216E6A58700BA4084 /* NumberCountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */; };
 		48B5AAF316E6A58700BA4084 /* NumberCountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */; };
+		48BC7F3C1702FDD1006671B5 /* NumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BC7F3B1702FDD1006671B5 /* NumberViewController.m */; };
+		48BC7F3D1702FDD1006671B5 /* NumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BC7F3B1702FDD1006671B5 /* NumberViewController.m */; };
+		48BC7F3F1702FE8D006671B5 /* NumberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BC7F3E1702FE8D006671B5 /* NumberView.xib */; };
+		48BC7F401702FE8D006671B5 /* NumberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BC7F3E1702FE8D006671B5 /* NumberView.xib */; };
 		48BD8BE81663E7A400F2CB45 /* CallView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BD8BE71663E7A400F2CB45 /* CallView.xib */; };
 		48BD8BEC1663E87800F2CB45 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BD8BEB1663E87800F2CB45 /* CallViewController.m */; };
 		48BD8BED1663E87800F2CB45 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BD8BEB1663E87800F2CB45 /* CallViewController.m */; };
@@ -1413,6 +1421,10 @@
 		488FBBD917007CC6000ECC71 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		488FBBE01700852F000ECC71 /* NumberData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberData.h; sourceTree = "<group>"; };
 		488FBBE11700852F000ECC71 /* NumberData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberData.m; sourceTree = "<group>"; };
+		489387F917039158005CC795 /* ForwardingData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForwardingData.h; sourceTree = "<group>"; };
+		489387FA17039158005CC795 /* ForwardingData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForwardingData.m; sourceTree = "<group>"; };
+		489387FD17039165005CC795 /* RecordingData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingData.h; sourceTree = "<group>"; };
+		489387FE17039165005CC795 /* RecordingData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordingData.m; sourceTree = "<group>"; };
 		4895D19916B1BE9200BCA581 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		4895D19B16B1C4F100BCA581 /* PurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseManager.h; sourceTree = "<group>"; };
 		4895D19C16B1C4F200BCA581 /* PurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseManager.m; sourceTree = "<group>"; };
@@ -1502,6 +1514,9 @@
 		48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberCountriesView.xib; sourceTree = "<group>"; };
 		48B5AAF016E6A58400BA4084 /* NumberCountriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberCountriesViewController.h; sourceTree = "<group>"; };
 		48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberCountriesViewController.m; sourceTree = "<group>"; };
+		48BC7F3A1702FDD1006671B5 /* NumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberViewController.h; sourceTree = "<group>"; };
+		48BC7F3B1702FDD1006671B5 /* NumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberViewController.m; sourceTree = "<group>"; };
+		48BC7F3E1702FE8D006671B5 /* NumberView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberView.xib; sourceTree = "<group>"; };
 		48BD8BE71663E7A400F2CB45 /* CallView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallView.xib; sourceTree = "<group>"; };
 		48BD8BEA1663E87800F2CB45 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallViewController.h; sourceTree = "<group>"; };
 		48BD8BEB1663E87800F2CB45 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallViewController.m; sourceTree = "<group>"; };
@@ -2420,8 +2435,12 @@
 			children = (
 				488FBBD817007CC6000ECC71 /* DataManager.h */,
 				488FBBD917007CC6000ECC71 /* DataManager.m */,
+				489387F917039158005CC795 /* ForwardingData.h */,
+				489387FA17039158005CC795 /* ForwardingData.m */,
 				488FBBE01700852F000ECC71 /* NumberData.h */,
 				488FBBE11700852F000ECC71 /* NumberData.m */,
+				489387FD17039165005CC795 /* RecordingData.h */,
+				489387FE17039165005CC795 /* RecordingData.m */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -2450,6 +2469,7 @@
 				48AF4510164948F000DFE3D8 /* SettingsView.xib */,
 				48AF455A1649794B00DFE3D8 /* ShareView.xib */,
 				482D2DEF16C8172900E13B91 /* ProvisioningView.xib */,
+				48BC7F3E1702FE8D006671B5 /* NumberView.xib */,
 			);
 			path = XIBs;
 			sourceTree = "<group>";
@@ -2481,6 +2501,8 @@
 				48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */,
 				488AD1E816E799C3004D3A2A /* NumberStatesViewController.h */,
 				488AD1E916E799C3004D3A2A /* NumberStatesViewController.m */,
+				48BC7F3A1702FDD1006671B5 /* NumberViewController.h */,
+				48BC7F3B1702FDD1006671B5 /* NumberViewController.m */,
 				48AF44E81649479100DFE3D8 /* NumbersViewController.h */,
 				48AF44E91649479100DFE3D8 /* NumbersViewController.m */,
 				482D2DEB16C815BE00E13B91 /* ProvisioningViewController.h */,
@@ -3217,6 +3239,7 @@
 				4896D8FC16EBE5A7008A2354 /* NumberAreasView.xib in Resources */,
 				4830462016EE222C000F9B05 /* NumberAreaView.xib in Resources */,
 				48A261C016FDE26100007638 /* CallMessageView.xib in Resources */,
+				48BC7F3F1702FE8D006671B5 /* NumberView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3295,6 +3318,7 @@
 				4896D8FD16EBE5A7008A2354 /* NumberAreasView.xib in Resources */,
 				4830462116EE222C000F9B05 /* NumberAreaView.xib in Resources */,
 				48A261C116FDE26100007638 /* CallMessageView.xib in Resources */,
+				48BC7F401702FE8D006671B5 /* NumberView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3397,6 +3421,9 @@
 				48A261C416FDE32400007638 /* CallMessageView.m in Sources */,
 				488FBBDA17007CC6000ECC71 /* DataManager.m in Sources */,
 				488FBBE21700852F000ECC71 /* NumberData.m in Sources */,
+				48BC7F3C1702FDD1006671B5 /* NumberViewController.m in Sources */,
+				489387FB17039158005CC795 /* ForwardingData.m in Sources */,
+				489387FF17039165005CC795 /* RecordingData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3467,6 +3494,9 @@
 				48A261C516FDE32400007638 /* CallMessageView.m in Sources */,
 				488FBBDB17007CC6000ECC71 /* DataManager.m in Sources */,
 				488FBBE31700852F000ECC71 /* NumberData.m in Sources */,
+				48BC7F3D1702FDD1006671B5 /* NumberViewController.m in Sources */,
+				489387FC17039158005CC795 /* ForwardingData.m in Sources */,
+				4893880017039165005CC795 /* RecordingData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

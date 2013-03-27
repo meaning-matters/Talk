@@ -10,11 +10,13 @@
 
 @implementation NumberData
 
+@dynamic name;
 @dynamic e164;
 @dynamic areaCode;
 @dynamic isoCountryCode;
 @dynamic purchaseDateTime;
 @dynamic renewalDateTime;
+@dynamic renewalPrice;
 
 @dynamic salutation;
 @dynamic firstName;
@@ -24,5 +26,7 @@
 @dynamic building;
 @dynamic city;
 @dynamic zipCode;
+@dynamic stateName;
+@dynamic stateCode;
 
 @end

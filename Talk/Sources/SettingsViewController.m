@@ -23,14 +23,6 @@ typedef enum
 } TableSections;
 
 
-@interface SettingsViewController ()
-{
-    NSIndexPath*    selectedIndexPath;
-}
-
-@end
-
-
 @implementation SettingsViewController
 
 #pragma mark - Basic Stuff
@@ -72,8 +64,7 @@ typedef enum
 {
     [super viewWillAppear:animated];
 
-    [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
-    selectedIndexPath = nil;
+    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
 
     // When there's no longer a SIM supplying country, reset the homeCountryFromSim settings.
     if ([NetworkStatus sharedStatus].simIsoCountryCode == nil &&
@@ -177,7 +168,6 @@ typedef enum
     switch (indexPath.section)
     {
         case TableSectionHomeCountry:
-            selectedIndexPath = indexPath;
             [self.navigationController pushViewController:[[CountriesViewController alloc] init] animated:YES];
             break;
 

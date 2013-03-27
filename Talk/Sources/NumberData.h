@@ -13,11 +13,13 @@
 @interface NumberData : NSManagedObject
 
 // Mandatory.
+@property (nonatomic, retain) NSString* name;           // Default: formatted number.
 @property (nonatomic, retain) NSString* e164;
 @property (nonatomic, retain) NSString* areaCode;
 @property (nonatomic, retain) NSString* isoCountryCode;
 @property (nonatomic, retain) NSDate*   purchaseDateTime;
 @property (nonatomic, retain) NSDate*   renewalDateTime;
+@property (nonatomic, assign) float     renewalPrice;
 
 // Optional.
 @property (nonatomic, retain) NSString* salutation;
@@ -28,5 +30,7 @@
 @property (nonatomic, retain) NSString* building;
 @property (nonatomic, retain) NSString* city;
 @property (nonatomic, retain) NSString* zipCode;
+@property (nonatomic, retain) NSString* stateName;
+@property (nonatomic, retain) NSString* stateCode;
 
 @end

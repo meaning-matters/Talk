@@ -62,4 +62,8 @@
 
 + (void)redirectStderrToFile;
 
++ (unsigned)countSetBits:(unsigned long)value;
+
++ (unsigned long)getNthSetBit:(unsigned)n inValue:(unsigned long)value; // With n == 0 return first bit set.
+
 @end

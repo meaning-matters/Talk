@@ -8,12 +8,12 @@
 
 #import "NumbersViewController.h"
 #import "NumberCountriesViewController.h"
+#import "NumberViewController.h"
 #import "AppDelegate.h"
 #import "DataManager.h"
 #import "Settings.h"
 #import "NumberData.h"
 #import "BlockAlertView.h"
-#import "PhoneNumber.h"
 
 
 @interface NumbersViewController ()
@@ -52,6 +52,7 @@
         {
             NumberData* numberData = (NumberData*)[NSEntityDescription insertNewObjectForEntityForName:@"Number"
                                                                                 inManagedObjectContext:managedObjectContext];
+            numberData.name             = @"Business Mobile";
             numberData.e164             = @"+32499298238";
             numberData.areaCode         = @"499";
             numberData.isoCountryCode   = @"BE";
@@ -100,9 +101,16 @@
     [super viewWillDisappear:animated];
 
     isFiltered = NO;
-    [self.tableView reloadData];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.searchDisplayController setActive:NO animated:YES];
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
 }
 
 
@@ -170,7 +178,7 @@
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    NSDictionary*       number;
+    NumberData*         number;
 
     if (isFiltered)
     {
@@ -181,9 +189,9 @@
         number = numbersArray[indexPath.row];
     }
 
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-    [self.navigationController popViewControllerAnimated:YES];
+    NumberViewController*   viewController;
+    viewController = [[NumberViewController alloc] initWithNumber:number];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 
@@ -208,7 +216,7 @@
     }
 
     cell.imageView.image = [UIImage imageNamed:number.isoCountryCode];
-    cell.textLabel.text  = [[[PhoneNumber alloc] initWithNumber:number.e164] internationalFormat];
+    cell.textLabel.text  = number.name;
     cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
@@ -240,9 +248,9 @@
         isFiltered = YES;
         filteredNumbersArray = [NSMutableArray array];
 
-        for (NSDictionary* number in numbersArray)
+        for (NumberData* number in numbersArray)
         {
-            NSRange range = [number[@"something"] rangeOfString:searchText options:NSCaseInsensitiveSearch];
+            NSRange range = [number.name rangeOfString:searchText options:NSCaseInsensitiveSearch];
             if (range.location != NSNotFound)
             {
                 [filteredNumbersArray addObject:number];

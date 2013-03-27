@@ -110,7 +110,6 @@ static DataManager* sharedManager;
                                                          options:nil
                                                            error:&error])
     {
-#warning //### Replace this implementation with code to handle the error appropriately.
         /* abort() causes the application to generate a crash log and terminate. You should not use this
          function in a shipping application, although it may be useful during development.
 
@@ -133,6 +132,8 @@ static DataManager* sharedManager;
          Lightweight migration will only work for a limited set of schema changes; consult
          "Core Data Model Versioning and Data Migration Programming Guide" for details.
          */
+#warning //### Implement migration https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CoreDataVersioning/Articles/Introduction.html#//apple_ref/doc/uid/TP40004399-CH1-SW1
+
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }

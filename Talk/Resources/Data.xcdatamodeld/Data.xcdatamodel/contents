@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Forwarding" representedClassName="ForwardingData" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rules" optional="YES" attributeType="Binary" syncable="YES"/>
+        <relationship name="numbers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Number" inverseName="forwarding" inverseEntity="Number" syncable="YES"/>
+        <relationship name="recordings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Recording" inverseName="forwardings" inverseEntity="Recording" syncable="YES"/>
+    </entity>
     <entity name="Number" representedClassName="NumberData" syncable="YES">
         <attribute name="areaCode" attributeType="String" syncable="YES"/>
         <attribute name="building" optional="YES" attributeType="String" syncable="YES"/>
@@ -9,13 +15,26 @@
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isoCountryCode" attributeType="String" minValueString="2" maxValueString="2" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="purchaseDateTime" attributeType="Date" syncable="YES"/>
         <attribute name="renewalDateTime" attributeType="Date" syncable="YES"/>
+        <attribute name="renewalPrice" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="salutation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stateCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stateName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="street" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zipCode" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="forwarding" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Forwarding" inverseName="numbers" inverseEntity="Forwarding" syncable="YES"/>
+    </entity>
+    <entity name="Recording" representedClassName="RecordingData" syncable="YES">
+        <attribute name="hashString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="forwardings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Forwarding" inverseName="recordings" inverseEntity="Forwarding" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Number" positionX="304" positionY="180" width="128" height="238"/>
+        <element name="Forwarding" positionX="268" positionY="-0" width="128" height="103"/>
+        <element name="Number" positionX="43" positionY="-225" width="128" height="315"/>
+        <element name="Recording" positionX="484" positionY="-0" width="128" height="103"/>
     </elements>
 </model>
