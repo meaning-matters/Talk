@@ -147,12 +147,24 @@
 }
 
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+
+    if (isFiltered == YES)
+    {
+        isFiltered = NO;
+        [self.tableView reloadData];
+    }
+}
+
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
 
-    isFiltered = NO;
-    [self.tableView reloadData];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.searchDisplayController setActive:NO animated:YES];
 

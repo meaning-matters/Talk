@@ -167,7 +167,13 @@
 {
     [super viewWillAppear:animated];
 
-    [self.tableView reloadData];
+    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+
+    if (isFiltered == YES)
+    {
+        isFiltered = NO;
+        [self.tableView reloadData];
+    }
 }
 
 
@@ -175,7 +181,6 @@
 {
     [super viewWillDisappear:animated];
 
-    isFiltered = NO;
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.searchDisplayController setActive:NO animated:YES];
     
