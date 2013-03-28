@@ -29,10 +29,14 @@ typedef enum
     SipInterfaceCallFailedInvalidNumber,        // Malformed URL, ...?
     SipInterfaceCallFailedBadRequest,
     SipInterfaceCallFailedNotFound,
+    SipInterfaceCallFailedAuthenticationRequired,
     SipInterfaceCallFailedRequestTimeout,
     SipInterfaceCallFailedTemporarilyUnavailable,
+    SipInterfaceCallFailedAddressIncomplete,
+    SipInterfaceCallFailedInternalServerError,
     SipInterfaceCallFailedPstnTerminationFail,
     SipInterfaceCallFailedCallRoutingError,
+    SipInterfaceCallFailedServerError,          // For all 5xx SIP statuses.
     SipInterfaceCallFailedOtherSipError,
 } SipInterfaceCallFailed;
 

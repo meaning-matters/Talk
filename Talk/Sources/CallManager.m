@@ -201,6 +201,16 @@ static SipInterface*    sipInterface;
                                                         @"[iOS alert message size].");
             break;
 
+        case SipInterfaceCallFailedAuthenticationRequired:
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed AuthenticationRequiredMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Authentication required ...", // Occurred when not registed or so.
+                                                        @"Alert message informing that a call could not be made because "
+                                                        @"...."
+                                                        @"[iOS alert message size].");
+            break;
+
+
         case SipInterfaceCallFailedRequestTimeout:
             message = NSLocalizedStringWithDefaultValue(@"Call:Failed RequestTimeoutMessage", nil,
                                                         [NSBundle mainBundle],
@@ -214,6 +224,23 @@ static SipInterface*    sipInterface;
             message = NSLocalizedStringWithDefaultValue(@"Call:Failed TemporarilyUnavailableMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"Temporarily unavailable ...",
+                                                        @"Alert message informing that a call could not be made because "
+                                                        @"...."
+                                                        @"[iOS alert message size].");
+            break;
+
+        case SipInterfaceCallFailedAddressIncomplete:
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed ddressIncompleteMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Address incomplete ...",
+                                                        @"Alert message informing that a call could not be made because "
+                                                        @"...."
+                                                        @"[iOS alert message size].");
+            break;
+        case SipInterfaceCallFailedInternalServerError:
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed InternalServerErrorMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Internal server error ...",
                                                         @"Alert message informing that a call could not be made because "
                                                         @"...."
                                                         @"[iOS alert message size].");
@@ -235,6 +262,16 @@ static SipInterface*    sipInterface;
                                                         @"Alert message informing that a call could not be made because "
                                                         @"...."
                                                         @"[iOS alert message size].");
+            break;
+
+        case SipInterfaceCallFailedServerError:
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed ServerErrorMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Server error (%d)",
+                                                        @"Alert message informing that a call could not be made because "
+                                                        @"...."
+                                                        @"[iOS alert message size].");
+            message = [NSString stringWithFormat:message, sipStatus];
             break;
 
         case SipInterfaceCallFailedOtherSipError:

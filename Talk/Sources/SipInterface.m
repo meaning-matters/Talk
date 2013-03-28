@@ -1544,6 +1544,11 @@ void showLog(int level, const char* data, int len)
             failed = SipInterfaceCallFailedNotFound;
             break;
 
+        case PJSIP_SC_PROXY_AUTHENTICATION_REQUIRED:// 407
+            [self stopTones:callId];
+            failed = SipInterfaceCallFailedAuthenticationRequired;
+            break;
+
         case PJSIP_SC_REQUEST_TIMEOUT:              // 408
             [self stopTones:callId];
             failed = SipInterfaceCallFailedRequestTimeout;
@@ -1574,6 +1579,11 @@ void showLog(int level, const char* data, int len)
             failed = SipInterfaceCallFailedTemporarilyUnavailable;
             break;
 
+        case PJSIP_SC_ADDRESS_INCOMPLETE:           // 484
+            [self stopTones:callId];
+            failed = SipInterfaceCallFailedAddressIncomplete;
+            break;
+
         case PJSIP_SC_BUSY_HERE:                    // 486
         {
             [self startBusyTone:callId];
@@ -1588,7 +1598,12 @@ void showLog(int level, const char* data, int len)
             // Occurs when user end call before being connected.
             //### Need to do something here?
             break;
-            
+
+        case PJSIP_SC_INTERNAL_SERVER_ERROR:        // 500
+            [self stopTones:callId];
+            failed = SipInterfaceCallFailedInternalServerError;
+            break;
+
         case CUSTOM_SC_PSTN_TERMINATION_FAIL:       // 514
             [self stopTones:callId];
             failed = SipInterfaceCallFailedPstnTerminationFail;
@@ -1610,7 +1625,12 @@ void showLog(int level, const char* data, int len)
         }
 
         default:
-            if (status >= 300)
+            if ((status / 100) == 5)
+            {
+                [self stopTones:callId];
+                failed = SipInterfaceCallFailedServerError;
+            }
+            else if (status >= 300)
             {
                 [self stopTones:callId];
                 failed = SipInterfaceCallFailedOtherSipError;
