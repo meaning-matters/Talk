@@ -559,6 +559,7 @@
 
 - (void)updateCallCalling:(Call*)call
 {
+    self.statusLabel.text = [call stateString];
 }
 
 

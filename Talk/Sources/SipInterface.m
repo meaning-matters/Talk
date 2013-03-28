@@ -50,7 +50,7 @@
 
 @interface SipInterface ()
 {
-    NSMutableArray*         calls;
+    NSMutableArray*         calls;          // The array and its call may only be accessed on main thread! 
     Call*                   currentCall;
 
     pjsua_config            config;
@@ -735,17 +735,14 @@ void showLog(int level, const char* data, int len)
             status = pjsua_call_make_call(pjsua_acc_get_default(), &uri, &call_opt, (__bridge void*)call, &msg_data, &call_id);
             if (status == PJ_SUCCESS)
             {
-#warning //### onCallState is called (at least once) before call is added to calls. This causes 'error' in onCallState.
-                call.callId = call_id;
-                [calls addObject:call];
+                [self findCallForCallId:call_id]; // Addes call to calls array when not already in there.
                 result = YES;
             }
             else
             {
                 NSLog(@"//### Failed to make call: %d.", status);
-#warning //### This was originally dispatch_sync(), but that caused a deadlock: see scenario above.
                 //### We get here by compiling PJSIP with -DDEBUG (in rebuild) and PJ_ENABLE_EXTRA_CHECK (in config_site.h).
-                dispatch_async(dispatch_get_main_queue(), ^
+                dispatch_block_t    block = ^
                 {
                     SipInterfaceCallFailed  reason;
 
@@ -754,16 +751,25 @@ void showLog(int level, const char* data, int len)
                         case PJSIP_EINVALIDREQURI:  // Occurred when due to bug called to "sip:015 66 66 66@....".
                             reason = SipInterfaceCallFailedInvalidNumber;
                             break;
-                            
-                        //### Determine which other PJSIP errors can occor here; then created SipInterfaceCallFailedXyz's.
+
+                            //### Determine which other PJSIP errors can occor here; then created SipInterfaceCallFailedXyz's.
                         default:
                             reason = SipInterfaceCallFailedTechnical;
                             break;
                     }
-                    
+
                     call.state = CallStateFailed;
                     [self.delegate sipInterface:self callFailed:call reason:reason sipStatus:status];
-                });
+                };
+                
+                if ([NSThread isMainThread])
+                {
+                    block();
+                }
+                else
+                {
+                    dispatch_sync(dispatch_get_main_queue(), block);
+                }
 
                 result = NO;
             }
@@ -1070,21 +1076,45 @@ void showLog(int level, const char* data, int len)
 
 - (Call*)findCallForCallId:(pjsua_call_id)callId
 {
-    for (Call* call in calls)
+    __block Call*       call = nil;
+    dispatch_block_t    block = ^
     {
-        if (call.callId == callId)
+        for (call in calls)
         {
-            return call;
+            if (call.callId == callId)
+            {
+                break;
+            }
         }
-    }
 
-    if ([calls count] > 1)
+        if ((call = (__bridge Call*)pjsua_call_get_user_data(callId)) != nil)
+        {
+            // Probably first time call is being lookup.  And since callId was not know by app
+            // when call was made (it's defined by PJSIP), we need to do two things here:
+            [calls addObject:call];
+            call.callId = callId;
+        }
+        else
+        {
+            NSLog(@"//########################### No call found.");
+
+            if ([calls count] > 1)
+            {
+                NSLog(@"//########################## More than one (%d) calls.", [calls count]);
+            }
+        }
+    };
+
+    if ([NSThread isMainThread])
     {
-        NSLog(@"//########################## More than one (%d) calls.", [calls count]);
+        block();
+    }
+    else
+    {
+        dispatch_sync(dispatch_get_main_queue(), block);
     }
 
-    NSLog(@"//########################### No call found.");
-    return nil;
+    return call;
 }
 
 
@@ -1400,8 +1430,6 @@ void showLog(int level, const char* data, int len)
     pjsua_call_info call_info;
     
     pjsua_call_get_info(call_id, &call_info);
-
-    NSLog(@"---------------------------- Call:%d %d %s", call_id, call_info.last_status, call_info.state_text.ptr);
 
     if (call == nil)
     {
