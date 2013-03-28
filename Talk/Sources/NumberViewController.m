@@ -9,6 +9,7 @@
 #import "NumberViewController.h"
 #import "Common.h"
 #import "PhoneNumber.h"
+#import "CountryNames.h"
 
 
 typedef enum
@@ -64,6 +65,17 @@ typedef enum
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+    [[NSBundle mainBundle] loadNibNamed:@"NumberHeaderView" owner:self options:nil];
+    self.tableView.tableHeaderView = self.tableHeaderView;
+    self.tableView.allowsSelectionDuringEditing = YES;
+
+    self.nameTextField.text = number.name;
+    self.numberLabel.text = [[PhoneNumber alloc] initWithNumber:number.e164].internationalFormat;
+    self.flagImageView.image = [UIImage imageNamed:number.isoCountryCode];
+    self.countryLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:number.isoCountryCode];
 }
 
 

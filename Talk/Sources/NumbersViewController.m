@@ -52,7 +52,7 @@
         {
             NumberData* numberData = (NumberData*)[NSEntityDescription insertNewObjectForEntityForName:@"Number"
                                                                                 inManagedObjectContext:managedObjectContext];
-            numberData.name             = @"Business Mobile";
+            numberData.name             = @"Business Mobile Number BE";
             numberData.e164             = @"+32499298238";
             numberData.areaCode         = @"499";
             numberData.isoCountryCode   = @"BE";
