@@ -11,6 +11,7 @@
 #import "Common.h"
 #import "CallManager.h"
 #import "CallMessageView.h"
+#import "NSTimer+Blocks.h"
 
 
 @interface CallViewController ()
@@ -18,6 +19,8 @@
     CallOptionsView*    callOptionsView;
     CallKeypadView*     callKeypadView;
     CallMessageView*    callMessageView;
+    NSTimer*            durationTimer;
+    int                 duration;
 }
 
 @end
@@ -583,17 +586,43 @@
     callOptionsView.keypadButton.enabled = YES;
     callOptionsView.addButton.enabled    = YES;
     callOptionsView.holdButton.enabled   = YES;
+
+    duration = 1;
+    durationTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:YES block:^
+                    {
+                        if (duration < 3600)
+                        {
+                            self.statusLabel.text = [NSString stringWithFormat:@"%02d:%02d",
+                                                     (duration % 3600) / 60,
+                                                     duration % 60];
+                        }
+                        else
+                        {
+                            self.statusLabel.text = [NSString stringWithFormat:@"%d:%02d:%02d",
+                                                     duration / 3600,
+                                                     (duration % 3600) / 60,
+                                                     duration % 60];
+                        }
+
+                        duration++;
+                    }];
 }
 
 
 - (void)updateCallEnding:(Call*)call
 {
+    [durationTimer invalidate];
+    durationTimer = nil;
+
     self.statusLabel.text = [call stateString];
 }
 
 
 - (void)updateCallEnded:(Call*)call
 {
+    [durationTimer invalidate];
+    durationTimer = nil;
+
     [self endCall:call];
 }
 
@@ -618,6 +647,9 @@
         Call* call = [[Call alloc] init];
         call.state = CallStateFailed;
     }
+
+    [durationTimer invalidate];
+    durationTimer = nil;
 
     self.statusLabel.text = [call stateString];
     [self showMessageViewWithText:message];

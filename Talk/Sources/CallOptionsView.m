@@ -152,11 +152,10 @@
 {
     if (muteTimer == nil)
     {
-        muteTimer = [NSTimer scheduledTimerWithTimeInterval:FIRST_TIMEOUT block:^
+        muteTimer = [NSTimer scheduledTimerWithTimeInterval:FIRST_TIMEOUT repeats:NO block:^
                     {
                         muteTimer = nil;
-                    }
-                                                    repeats:NO];
+                    }];
 
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
         {
@@ -176,11 +175,10 @@
 {
     if (speakerTimer == nil)
     {
-        speakerTimer = [NSTimer scheduledTimerWithTimeInterval:FIRST_TIMEOUT block:^
+        speakerTimer = [NSTimer scheduledTimerWithTimeInterval:FIRST_TIMEOUT repeats:NO block:^
                        {
                            speakerTimer = nil;
-                       }
-                                                    repeats:NO];
+                       }];
 
         // Add short delay to allow redraw of button (also on main thread).  This was only
         // required for speaker button but was, for symmetry, also added for mute and hold.
@@ -202,11 +200,10 @@
 {
     if (holdTimer == nil)
     {
-        holdTimer = [NSTimer scheduledTimerWithTimeInterval:FIRST_TIMEOUT block:^
+        holdTimer = [NSTimer scheduledTimerWithTimeInterval:FIRST_TIMEOUT repeats:NO block:^
                     {
                         holdTimer = nil;
-                    }
-                                                    repeats:NO];
+                    }];
 
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
         {
@@ -227,11 +224,10 @@
     if (muteTimer != nil)
     {
         [muteTimer invalidate];
-        muteTimer = [NSTimer scheduledTimerWithTimeInterval:SECOND_TIMEOUT block:^
+        muteTimer = [NSTimer scheduledTimerWithTimeInterval:SECOND_TIMEOUT repeats:NO block:^
                     {
                         muteTimer = nil;
-                    }
-                                                    repeats:NO];
+                    }];
     }
 
     _onMute = onMute;
@@ -244,11 +240,10 @@
     if (speakerTimer != nil)
     {
         [speakerTimer invalidate];
-        speakerTimer = [NSTimer scheduledTimerWithTimeInterval:SECOND_TIMEOUT block:^
+        speakerTimer = [NSTimer scheduledTimerWithTimeInterval:SECOND_TIMEOUT repeats:NO block:^
                        {
                            speakerTimer = nil;
-                       }
-                                                       repeats:NO];
+                       }];
     }
 
     _onSpeaker = onSpeaker;
@@ -261,11 +256,10 @@
     if (holdTimer != nil)
     {
         [holdTimer invalidate];
-        holdTimer = [NSTimer scheduledTimerWithTimeInterval:SECOND_TIMEOUT block:^
+        holdTimer = [NSTimer scheduledTimerWithTimeInterval:SECOND_TIMEOUT repeats:NO block:^
                     {
                         holdTimer = nil;
-                    }
-                                                    repeats:NO];
+                    }];
     }
 
     _onHold = onHold;
