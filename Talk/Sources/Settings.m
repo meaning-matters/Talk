@@ -15,6 +15,7 @@
 #import "NetworkStatus.h"
 #import "KeychainUtility.h"
 #import "NumberType.h"
+#import "Common.h"
 
 
 NSString* const RunBeforeKey                   = @"RunBefore";
@@ -229,6 +230,8 @@ static NSUserDefaults*  userDefaults;
 {
     _webUsername = webUsername;
     [self storeKeychainValue:webUsername forKey:WebUsernameKey service:WebServiceKey];
+
+    [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
 }
 
 
@@ -236,6 +239,8 @@ static NSUserDefaults*  userDefaults;
 {
     _webPassword = webPassword;
     [self storeKeychainValue:webPassword forKey:WebPasswordKey service:WebServiceKey];
+
+    [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
 }
 
 
@@ -250,6 +255,8 @@ static NSUserDefaults*  userDefaults;
 {
     _sipRealm = sipRealm;
     [self storeKeychainValue:sipRealm forKey:SipRealmKey service:SipServiceKey];
+
+    [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
 }
 
 
@@ -257,6 +264,8 @@ static NSUserDefaults*  userDefaults;
 {
     _sipUsername = sipUsername;
     [self storeKeychainValue:sipUsername forKey:SipUsernameKey service:SipServiceKey];
+
+    [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
 }
 
 
@@ -264,6 +273,8 @@ static NSUserDefaults*  userDefaults;
 {
     _sipPassword = sipPassword;
     [self storeKeychainValue:sipPassword forKey:SipPasswordKey service:SipServiceKey];
+    
+    [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
 }
 
 

@@ -64,10 +64,10 @@ static SipInterface*    sipInterface;
 
 + (BOOL)initializeSipInterface
 {
-    if ([Settings sharedSettings].sipServer   != nil &&
-        [Settings sharedSettings].sipRealm    != nil &&
-        [Settings sharedSettings].sipUsername != nil &&
-        [Settings sharedSettings].sipPassword != nil)
+    if ([[Settings sharedSettings].sipServer   length] > 0 &&
+        [[Settings sharedSettings].sipRealm    length] > 0 &&
+        [[Settings sharedSettings].sipUsername length] > 0 &&
+        [[Settings sharedSettings].sipPassword length] > 0)
     {
         // Initialize SIP stuff.
         Settings*   settings = [Settings sharedSettings];
