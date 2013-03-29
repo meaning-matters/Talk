@@ -437,7 +437,7 @@ static SipInterface*    sipInterface;
             }
         }
                              cancelButtonTitle:[CommonStrings closeString]
-                             otherButtonTitles:[CommonStrings enableString]];
+                             otherButtonTitles:[CommonStrings enableString], nil];
 
         result = NO;
     }
