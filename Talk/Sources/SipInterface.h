@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <pjsua-lib/pjsua.h>
-#import "Call.h"
+
+@class SipInterface;
+@class Call;
 
 
 typedef enum
@@ -47,8 +49,6 @@ typedef enum
     SipInterfaceErrorInternal,                  //### Think of more usefull ones.
 } SipInterfaceError;
 
-
-@class SipInterface;
 
 @protocol SipInterfaceDelegate <NSObject>   // All these methods will be invoked on main thread.
 

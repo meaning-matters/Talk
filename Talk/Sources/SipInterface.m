@@ -13,6 +13,7 @@
 #import "Common.h"
 #import "NetworkStatus.h"
 #import "webrtc.h"      // Glue-logic with libWebRTC.a.
+#import "Call.h"
 
 
 #define THIS_FILE	"SipInterface"

@@ -726,6 +726,9 @@ static SipInterface*    sipInterface;
     {
         call.userInformedAboutFailure = YES;
 
+        call.sipInterfaceFailure = reason;
+        call.sipFailedStatus     = sipStatus;
+
         if (callViewController != nil)
         {
             [callViewController updateCallFailed:call message:[self callFailedMessage:reason sipStatus:sipStatus]];
