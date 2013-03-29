@@ -635,6 +635,12 @@ static SipInterface*    sipInterface;
 }
 
 
+- (void)sendCall:(Call*)call dtmfCharacter:(char)character
+{
+    [sipInterface sendCall:call dtmfCharacter:character];
+}
+
+
 #pragma mark SipInterface Delegate
 
 - (void)sipInterface:(SipInterface*)interface callCalling:(Call*)call

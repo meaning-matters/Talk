@@ -12,6 +12,7 @@
 #import "CallManager.h"
 #import "CallMessageView.h"
 #import "NSTimer+Blocks.h"
+#import "DtmfPlayer.h"
 
 
 @interface CallViewController ()
@@ -445,6 +446,10 @@
 - (void)callKeypadView:(CallKeypadView*)keypadView pressedDigitKey:(KeypadKey)key
 {
     self.dtmfLabel.text = [NSString stringWithFormat:@"%@%c", self.dtmfLabel.text, key];
+
+    [[DtmfPlayer sharedPlayer] playForCharacter:key];
+
+    [[CallManager sharedManager] sendCall:[self.calls lastObject] dtmfCharacter:key];
 }
 
 

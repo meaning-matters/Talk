@@ -953,6 +953,30 @@ void showLog(int level, const char* data, int len)
 }
 
 
+- (void)sendCall:(Call*)call dtmfCharacter:(char)character
+{
+    if (pjsua_call_has_media(call.callId))
+    {
+        char        buffer[2] = { character, 0 };
+        pj_str_t    digit;
+        pj_status_t status;
+
+        digit = pj_str(buffer);
+
+        status = pjsua_call_dial_dtmf(call.callId, &digit);
+        
+        if (status != PJ_SUCCESS)
+        {
+            pjsua_perror(THIS_FILE, "Unable to send DTMF", status);
+        }
+        else
+        {
+            puts("DTMF digits enqueued for transmission");
+        }
+    }
+}
+
+
 - (SipInterfaceRegistered)registered
 {
     return _registered;

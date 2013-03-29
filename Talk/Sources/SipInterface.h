@@ -115,4 +115,6 @@ typedef enum
 
 - (void)setOnSpeaker:(BOOL)onSpeaker;
 
+- (void)sendCall:(Call*)call dtmfCharacter:(char)character;
+
 @end
