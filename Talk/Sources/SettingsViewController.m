@@ -342,11 +342,19 @@ typedef enum
 }
 
 
+- (void)allowDataCalls
+{
+    [self allowDataCallsSwitchAction:nil];
+}
+
+
+// Can be invoked with sender == nil.
 - (void)allowDataCallsSwitchAction:(id)sender
 {
     UISwitch*   allowDataCallsSwitch = sender;
 
-    if (allowDataCallsSwitch.on == YES && [Settings sharedSettings].allowCellularDataCalls == NO)
+    if ((allowDataCallsSwitch.on == YES || allowDataCallsSwitch == nil) &&
+        [Settings sharedSettings].allowCellularDataCalls == NO)
     {
         NSString*   title = NSLocalizedStringWithDefaultValue(@"Settings:AllowDataCalls AllowWarningTitle", nil,
                                                               [NSBundle mainBundle], @"Cellular Data Calls",
@@ -364,16 +372,16 @@ typedef enum
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
-         {
-             if (buttonIndex == 1)
-             {
-                 [Settings sharedSettings].allowCellularDataCalls = YES;
-             }
-             else
-             {
-                 [allowDataCallsSwitch setOn:NO animated:YES];
-             }
-         }
+        {
+            if (buttonIndex == 1)
+            {
+                [Settings sharedSettings].allowCellularDataCalls = YES;
+            }
+            else
+            {
+                [allowDataCallsSwitch setOn:NO animated:YES];
+            }
+        }
                              cancelButtonTitle:[CommonStrings cancelString]
                              otherButtonTitles:[CommonStrings okString], nil];
     }

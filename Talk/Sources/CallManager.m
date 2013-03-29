@@ -19,6 +19,8 @@
 #import "Tones.h"
 #import "Base64.h"
 #import "ProvisioningViewController.h"
+#import "SettingsViewController.h"
+#import "AppDelegate.h"
 
 
 @interface CallManager ()
@@ -427,9 +429,15 @@ static SipInterface*    sipInterface;
 
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
-                                    completion:nil
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            if (buttonIndex == 1)
+            {
+                [[AppDelegate appDelegate].settingsViewController allowDataCalls];
+            }
+        }
                              cancelButtonTitle:[CommonStrings closeString]
-                             otherButtonTitles:nil];
+                             otherButtonTitles:[CommonStrings enableString]];
 
         result = NO;
     }

@@ -13,4 +13,6 @@
 
 @property (nonatomic, strong) IBOutlet UITableView* tableView;
 
+- (void)allowDataCalls; // Prompts user if data calls must be enable.
+
 @end

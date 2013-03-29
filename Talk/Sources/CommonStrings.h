@@ -20,4 +20,6 @@
 
 + (NSString*)loadingString;
 
++ (NSString*)enableString;
+
 @end
