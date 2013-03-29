@@ -722,7 +722,7 @@ static SipInterface*    sipInterface;
               reason:(SipInterfaceCallFailed)reason
            sipStatus:(int)sipStatus
 {
-    if (call.userInformedAboutFailure == NO)
+    if (call.userInformedAboutFailure == NO && call.endedByUser == NO)
     {
         call.userInformedAboutFailure = YES;
 

@@ -592,9 +592,10 @@ void showLog(int level, const char* data, int len)
             {
                 call.state = CallStateEnded;
                 [self.delegate sipInterface:self callEnded:call];
-                [calls removeObject:call];
             }
         }
+
+        [calls removeAllObjects];
     });
 
     return status;
@@ -794,8 +795,9 @@ void showLog(int level, const char* data, int len)
         {
             call.state = CallStateEnded;
             [self.delegate sipInterface:self callEnded:call];
-            [calls removeObject:call];
         }
+
+        [calls removeAllObjects];
     });
 
     [self restart];
