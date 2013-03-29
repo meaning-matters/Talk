@@ -55,6 +55,7 @@ typedef enum
 @property (nonatomic, assign) CallDirection             direction;
 @property (nonatomic, assign) CallNetwork               network;
 @property (nonatomic, assign) BOOL                      endedByUser;
+@property (nonatomic, assign) BOOL                      userInformedAboutFailure;
 
 // SipInterface specifics.
 @property (nonatomic, assign) int                       callId;

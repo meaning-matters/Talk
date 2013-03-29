@@ -150,28 +150,21 @@ static NSUserDefaults*  userDefaults;
 
 - (void)getInitialValues
 {
-    // We assign to property (with self.xyz, instread of to _xyz) so that a value that
-    // was added as default (in registerDefaults) is saved as normal setting.
-    //
-    // This does not apply for the keychain items, which have no default value.  But,
-    // more importantly self.xyz for keychain values stores that value in the keychain
-    // immediately again, and this caused them to be wiped.
-    
-    self.tabBarViewControllerClasses = [userDefaults objectForKey:TabBarViewControllerClassesKey];
-    self.errorDomain                 = [userDefaults objectForKey:ErrorDomainKey];
-    self.homeCountry                 = [userDefaults objectForKey:HomeCountryKey];
-    self.homeCountryFromSim          = [userDefaults boolForKey:HomeCountryFromSimKey];
-    self.lastDialedNumber            = [userDefaults objectForKey:LastDialedNumberKey];
-    self.webBaseUrl                  = [userDefaults objectForKey:WebBaseUrlKey];
-    _webUsername                     = [self getKeychainValueForKey:WebUsernameKey service:WebServiceKey];
-    _webPassword                     = [self getKeychainValueForKey:WebPasswordKey service:WebServiceKey];
-    self.sipServer                   = [userDefaults objectForKey:SipServerKey];
-    _sipRealm                        = [self getKeychainValueForKey:SipRealmKey    service:SipServiceKey];
-    _sipUsername                     = [self getKeychainValueForKey:SipUsernameKey service:SipServiceKey];
-    _sipPassword                     = [self getKeychainValueForKey:SipPasswordKey service:SipServiceKey];
-    self.allowCellularDataCalls      = [userDefaults boolForKey:AllowCellularDataCallsKey];
-    self.louderVolume                = [userDefaults boolForKey:LouderVolumeKey];
-    self.numberTypeMask              = [userDefaults integerForKey:NumberTypeMaskKey];
+    _tabBarViewControllerClasses = [userDefaults objectForKey:TabBarViewControllerClassesKey];
+    _errorDomain                 = [userDefaults objectForKey:ErrorDomainKey];
+    _homeCountry                 = [userDefaults objectForKey:HomeCountryKey];
+    _homeCountryFromSim          = [userDefaults boolForKey:HomeCountryFromSimKey];
+    _lastDialedNumber            = [userDefaults objectForKey:LastDialedNumberKey];
+    _webBaseUrl                  = [userDefaults objectForKey:WebBaseUrlKey];
+    _webUsername                 = [self getKeychainValueForKey:WebUsernameKey service:WebServiceKey];
+    _webPassword                 = [self getKeychainValueForKey:WebPasswordKey service:WebServiceKey];
+    _sipServer                   = [userDefaults objectForKey:SipServerKey];
+    _sipRealm                    = [self getKeychainValueForKey:SipRealmKey    service:SipServiceKey];
+    _sipUsername                 = [self getKeychainValueForKey:SipUsernameKey service:SipServiceKey];
+    _sipPassword                 = [self getKeychainValueForKey:SipPasswordKey service:SipServiceKey];
+    _allowCellularDataCalls      = [userDefaults boolForKey:AllowCellularDataCallsKey];
+    _louderVolume                = [userDefaults boolForKey:LouderVolumeKey];
+    _numberTypeMask              = [userDefaults integerForKey:NumberTypeMaskKey];
 }
 
 

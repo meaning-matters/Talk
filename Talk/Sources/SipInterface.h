@@ -32,8 +32,10 @@ typedef enum
     SipInterfaceCallFailedAuthenticationRequired,
     SipInterfaceCallFailedRequestTimeout,
     SipInterfaceCallFailedTemporarilyUnavailable,
+    SipInterfaceCallFailedCallDoesNotExist,     // When server gets message for call it does not know (anymore).
     SipInterfaceCallFailedAddressIncomplete,
     SipInterfaceCallFailedInternalServerError,
+    SipInterfaceCallFailedServiceUnavailable,
     SipInterfaceCallFailedPstnTerminationFail,
     SipInterfaceCallFailedCallRoutingError,
     SipInterfaceCallFailedServerError,          // For all 5xx SIP statuses.

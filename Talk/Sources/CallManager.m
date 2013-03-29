@@ -169,10 +169,11 @@ static SipInterface*    sipInterface;
         case SipInterfaceCallFailedTechnical:
             message = NSLocalizedStringWithDefaultValue(@"Call:Failed InternalIssueMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"This call could not be made due to a technical issue.",
+                                                        @"This call could not be made due to a technical issue (%d).",
                                                         @"Alert message informing that a call failed due to a "
                                                         @"technical problem\n"
                                                         @"[iOS alert message size].");
+            message = [NSString stringWithFormat:message, sipStatus];
             break;
 
         case SipInterfaceCallFailedInvalidNumber:
@@ -231,6 +232,15 @@ static SipInterface*    sipInterface;
                                                         @"[iOS alert message size].");
             break;
 
+        case SipInterfaceCallFailedCallDoesNotExist:
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed CallDoesNotExistMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Failed to setup call ...",
+                                                        @"Alert message informing that a call could not be made because "
+                                                        @"...."
+                                                        @"[iOS alert message size].");
+            break;
+
         case SipInterfaceCallFailedAddressIncomplete:
             message = NSLocalizedStringWithDefaultValue(@"Call:Failed ddressIncompleteMessage", nil,
                                                         [NSBundle mainBundle],
@@ -239,10 +249,20 @@ static SipInterface*    sipInterface;
                                                         @"...."
                                                         @"[iOS alert message size].");
             break;
+            
         case SipInterfaceCallFailedInternalServerError:
             message = NSLocalizedStringWithDefaultValue(@"Call:Failed InternalServerErrorMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"Internal server error ...",
+                                                        @"Alert message informing that a call could not be made because "
+                                                        @"...."
+                                                        @"[iOS alert message size].");
+            break;
+
+        case SipInterfaceCallFailedServiceUnavailable:
+            message = NSLocalizedStringWithDefaultValue(@"Call:Failed ServiceUnavailableMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Service unavailable ...",
                                                         @"Alert message informing that a call could not be made because "
                                                         @"...."
                                                         @"[iOS alert message size].");
@@ -702,40 +722,45 @@ static SipInterface*    sipInterface;
               reason:(SipInterfaceCallFailed)reason
            sipStatus:(int)sipStatus
 {
-    if (callViewController != nil)
+    if (call.userInformedAboutFailure == NO)
     {
-        [callViewController updateCallFailed:call message:[self callFailedMessage:reason sipStatus:sipStatus]];
-    }
-    else
-    {
-        NSString*   title;
-        title = NSLocalizedStringWithDefaultValue(@"Call:Failed AlertTitle", nil,
-                                                  [NSBundle mainBundle], @"No Call Made",
-                                                  @"Alert title informing (in non-negative way: not using "
-                                                  @"words like failed/error/...) that call could not be made\n"
-                                                  @"[iOS alert title size].");
+        call.userInformedAboutFailure = YES;
 
-        if (reason == SipInterfaceCallFailedNoCredit)
+        if (callViewController != nil)
         {
-            [BlockAlertView showAlertViewWithTitle:title
-                                           message:[self callFailedMessage:reason sipStatus:0]
-                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
-             {
-                 if (buttonIndex == 1)
-                 {
-                     //### Open Purchases view controller.  See checkPhoneNumber: for example code.
-                 }
-             }
-                                 cancelButtonTitle:[CommonStrings cancelString]
-                                 otherButtonTitles:[CommonStrings buyString], nil];
+            [callViewController updateCallFailed:call message:[self callFailedMessage:reason sipStatus:sipStatus]];
         }
         else
         {
-            [BlockAlertView showAlertViewWithTitle:title
-                                           message:[self callFailedMessage:reason sipStatus:sipStatus]
-                                        completion:nil
-                                 cancelButtonTitle:[CommonStrings cancelString]
-                                 otherButtonTitles:nil];
+            NSString*   title;
+            title = NSLocalizedStringWithDefaultValue(@"Call:Failed AlertTitle", nil,
+                                                      [NSBundle mainBundle], @"No Call Made",
+                                                      @"Alert title informing (in non-negative way: not using "
+                                                      @"words like failed/error/...) that call could not be made\n"
+                                                      @"[iOS alert title size].");
+
+            if (reason == SipInterfaceCallFailedNoCredit)
+            {
+                [BlockAlertView showAlertViewWithTitle:title
+                                               message:[self callFailedMessage:reason sipStatus:0]
+                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                 {
+                     if (buttonIndex == 1)
+                     {
+                         //### Open Purchases view controller.  See checkPhoneNumber: for example code.
+                     }
+                 }
+                                     cancelButtonTitle:[CommonStrings cancelString]
+                                     otherButtonTitles:[CommonStrings buyString], nil];
+            }
+            else
+            {
+                [BlockAlertView showAlertViewWithTitle:title
+                                               message:[self callFailedMessage:reason sipStatus:sipStatus]
+                                            completion:nil
+                                     cancelButtonTitle:[CommonStrings cancelString]
+                                     otherButtonTitles:nil];
+            }
         }
     }
 }

@@ -1631,6 +1631,11 @@ void showLog(int level, const char* data, int len)
             failed = SipInterfaceCallFailedTemporarilyUnavailable;
             break;
 
+        case PJSIP_SC_CALL_TSX_DOES_NOT_EXIST:      // 481 server does not know the call
+            [self stopTones:callId];
+            failed = SipInterfaceCallFailedCallDoesNotExist;
+            break;
+
         case PJSIP_SC_ADDRESS_INCOMPLETE:           // 484
             [self stopTones:callId];
             failed = SipInterfaceCallFailedAddressIncomplete;
@@ -1654,6 +1659,11 @@ void showLog(int level, const char* data, int len)
         case PJSIP_SC_INTERNAL_SERVER_ERROR:        // 500
             [self stopTones:callId];
             failed = SipInterfaceCallFailedInternalServerError;
+            break;
+
+        case PJSIP_SC_SERVICE_UNAVAILABLE:          // 503
+            [self stopTones:callId];
+            failed = SipInterfaceCallFailedServiceUnavailable;
             break;
 
         case CUSTOM_SC_PSTN_TERMINATION_FAIL:       // 514
