@@ -34,6 +34,12 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		48ADD0E91705E999001515EB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48ADD0E81705E999001515EB /* Security.framework */; };
+		48ADD0EA1705EA25001515EB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48ADD0E81705E999001515EB /* Security.framework */; };
+		48ADD0EB1705EA26001515EB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48ADD0E81705E999001515EB /* Security.framework */; };
+		48ADD0EC1705EA27001515EB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48ADD0E81705E999001515EB /* Security.framework */; };
+		48ADD0ED1705EA27001515EB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48ADD0E81705E999001515EB /* Security.framework */; };
+		48ADD0EE1705EA28001515EB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48ADD0E81705E999001515EB /* Security.framework */; };
 		AA747D9F0F9514B9006C5449 /* ios_ngn_stack_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* ios_ngn_stack_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 		EC3021DB16444A300084F78F /* tdav_consumer_t140.h in Headers */ = {isa = PBXBuildFile; fileRef = EC3021D716444A300084F78F /* tdav_consumer_t140.h */; };
@@ -2018,6 +2024,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		48ADD0E81705E999001515EB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		AA747D9E0F9514B9006C5449 /* ios_ngn_stack_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ios_ngn_stack_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libios_ngn_stack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libios_ngn_stack.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3359,6 +3366,7 @@
 				ECDDBC2D137CA7960027105F /* CoreVideo.framework in Frameworks */,
 				EC9075E01393199700E14556 /* libsqlite3.dylib in Frameworks */,
 				EC90C9C513B3A589000386CA /* SystemConfiguration.framework in Frameworks */,
+				48ADD0ED1705EA27001515EB /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3386,6 +3394,7 @@
 				ECDDBC27137CA77C0027105F /* CoreMedia.framework in Frameworks */,
 				ECDDBC28137CA77C0027105F /* CoreVideo.framework in Frameworks */,
 				EC90C9C413B3A571000386CA /* SystemConfiguration.framework in Frameworks */,
+				48ADD0EC1705EA27001515EB /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3418,6 +3427,7 @@
 				ECDDBC1F137CA7440027105F /* CoreVideo.framework in Frameworks */,
 				EC9075D91393197400E14556 /* libsqlite3.dylib in Frameworks */,
 				EC90C9C113B3A530000386CA /* SystemConfiguration.framework in Frameworks */,
+				48ADD0EA1705EA25001515EB /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3425,6 +3435,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48ADD0E91705E999001515EB /* Security.framework in Frameworks */,
 				EC83BC631369C64800DD3355 /* libios_ngn_stack.a in Frameworks */,
 				EC83BC641369C64800DD3355 /* libtinyDAV.a in Frameworks */,
 				EC83BC651369C64800DD3355 /* libtinyHTTP.a in Frameworks */,
@@ -3482,6 +3493,7 @@
 				ECDDBB9D137C9CB40027105F /* CoreVideo.framework in Frameworks */,
 				EC83FF961380A29F00060A9D /* libsqlite3.dylib in Frameworks */,
 				EC90C9C313B3A561000386CA /* SystemConfiguration.framework in Frameworks */,
+				48ADD0EB1705EA26001515EB /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3628,6 +3640,7 @@
 				ECFDFB4513A9693900D4C62A /* libsqlite3.dylib in Frameworks */,
 				ECFDFB4813A9695D00D4C62A /* CoreGraphics.framework in Frameworks */,
 				EC90C9C613B3A5A8000386CA /* SystemConfiguration.framework in Frameworks */,
+				48ADD0EE1705EA28001515EB /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3665,6 +3678,7 @@
 		0867D691FE84028FC02AAC07 /* ios-ngn-stack */ = {
 			isa = PBXGroup;
 			children = (
+				48ADD0E81705E999001515EB /* Security.framework */,
 				EC83BA0F1369908500DD3355 /* Tests */,
 				ECFD28FA135E7B2E00E6A9A3 /* Doubango */,
 				ECFD23BC135D532A00E6A9A3 /* Classes */,
@@ -8980,9 +8994,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DOUBANGO_HOME = ../../../../../doubango/branches/2.0/doubango;
 				DOUBANGO_INCLUDES = "$DOUBANGO_HOME/tinySDP/include $DOUBANGO_HOME/tinySMS/include $DOUBANGO_HOME/tinyHTTP/include $DOUBANGO_HOME/tinySIP/include $DOUBANGO_HOME/tinyRTP/include $DOUBANGO_HOME/tinyMEDIA/include $DOUBANGO_HOME/tinyNET/src $DOUBANGO_HOME/tinyDAV/include $DOUBANGO_HOME/thirdparties/iphone/include $DOUBANGO_HOME/thirdparties/common/include";
-				DOUBANGO_LIBS = $DOUBANGO_HOME/thirdparties/iphone/lib/armv6;
-				"DOUBANGO_LIBS[arch=armv6]" = $DOUBANGO_HOME/thirdparties/iphone/lib/armv6;
+				DOUBANGO_LIBS = $DOUBANGO_HOME/thirdparties/iphone/lib/armv7;
 				"DOUBANGO_LIBS[arch=armv7]" = $DOUBANGO_HOME/thirdparties/iphone/lib/armv7;
+				"DOUBANGO_LIBS[arch=armv7s]" = $DOUBANGO_HOME/thirdparties/iphone/lib/armv7s;
 				"DOUBANGO_LIBS[sdk=iphonesimulator*][arch=*]" = $DOUBANGO_HOME/thirdparties/iphone/lib/i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -8990,10 +9004,10 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = "";
 				NGN_STACK_HOME = ..;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-fms-extensions",
 					"-DRECYCLE_STACK=1",
@@ -9028,14 +9042,14 @@
 				DOUBANGO_HOME = ../../../../../doubango/branches/2.0/doubango;
 				DOUBANGO_INCLUDES = "$DOUBANGO_HOME/tinySDP/include $DOUBANGO_HOME/tinySMS/include $DOUBANGO_HOME/tinyHTTP/include $DOUBANGO_HOME/tinySIP/include $DOUBANGO_HOME/tinyRTP/include $DOUBANGO_HOME/tinyMEDIA/include $DOUBANGO_HOME/tinyNET/src $DOUBANGO_HOME/tinyDAV/include $DOUBANGO_HOME/thirdparties/iphone/include $DOUBANGO_HOME/thirdparties/common/include";
 				DOUBANGO_LIBS = $DOUBANGO_HOME/thirdparties/iphone/lib/armv6;
-				"DOUBANGO_LIBS[arch=armv6]" = $DOUBANGO_HOME/thirdparties/iphone/lib/armv6;
 				"DOUBANGO_LIBS[arch=armv7]" = $DOUBANGO_HOME/thirdparties/iphone/lib/armv7;
+				"DOUBANGO_LIBS[arch=armv7s]" = $DOUBANGO_HOME/thirdparties/iphone/lib/armv7s;
 				"DOUBANGO_LIBS[sdk=iphonesimulator*][arch=*]" = $DOUBANGO_HOME/thirdparties/iphone/lib/i386;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				NGN_STACK_HOME = ..;
 				OTHER_CFLAGS = (
 					"-fms-extensions",
@@ -9348,6 +9362,7 @@
 				INFOPLIST_FILE = ../testAudioCall/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = $DOUBANGO_LIBS;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-lsrtp",
 					"-lssl",

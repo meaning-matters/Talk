@@ -85,3 +85,16 @@ AFNetworking
 * SystemConfiguration/SystemConfiguration.h & MobileCoreServices/MobileCoreServices.h
   added to Talk-Prefix.pch.
 * Added SystemConfiguration & MobileCoreServices iOS frameworks to project.
+
+doubt (IMS client from Doubango.org)
+* Followed first steps: http://code.google.com/p/idoubs/wiki/Building_iDoubs_v2_x to
+  download and chmod.
+* Removed 1.0 branches of doubango and iPhone/idoubs; will only look at 2.0.
+* Opened doubs/iPhone/idoubs/branches/2.0/ios-ngn-stack/ios-ngn-stack.xcodeproj
+* In PROJECT User-Defined modified armv6 items to armv7s.
+* Had to add Security.Framework, and check marked all testXyz apps as target
+  member.
+* Because armv7s libs are missing in ./doubango/branches/2.0/doubango/thirdparties/
+  iphone/lib/armv7s compared to .../armv7, had to set Build Active Arch. Only to No
+  on PROJECT ios-ngn-stack.  Now the testXyz apps in ios-ngn-stack.xcodeproj build
+  and run!  :-)
