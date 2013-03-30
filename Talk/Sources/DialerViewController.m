@@ -240,7 +240,7 @@
     phoneNumber.number = [NSString stringWithFormat:@"%@%c", phoneNumber.number, key];
     [self update];
 
-    [[DtmfPlayer sharedPlayer] playForCharacter:key];
+    [[DtmfPlayer sharedPlayer] playCharacter:key atVolume:0.02f];
 }
 
 

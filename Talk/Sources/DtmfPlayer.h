@@ -12,7 +12,7 @@
 
 + (DtmfPlayer*)sharedPlayer;
 
-- (void)playForCharacter:(char)character;
+- (void)playCharacter:(char)character atVolume:(float)volume;
 
 - (void)startKeepAlive;
 

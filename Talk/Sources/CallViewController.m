@@ -496,9 +496,9 @@
 {
     self.dtmfLabel.text = [NSString stringWithFormat:@"%@%c", self.dtmfLabel.text, key];
 
-    [[DtmfPlayer sharedPlayer] playForCharacter:key];
+    [[DtmfPlayer sharedPlayer] playCharacter:key atVolume:1.5f];
 
-    // [[CallManager sharedManager] sendCall:[self.calls lastObject] dtmfCharacter:key];
+    [[CallManager sharedManager] sendCall:[self.calls lastObject] dtmfCharacter:key];
 }
 
 

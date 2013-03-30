@@ -116,31 +116,21 @@ static DtmfPlayer*  sharedPlayer;
 {
     if ([audioPlayer isPlaying] == NO)
     {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
-        {
-            NSData*                 data;
-            NSError*                error = nil;
-
-            data = audioDataObjects[[NSString stringWithFormat:@"%c", '0']];
-            audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:&error];
-            audioPlayer.volume= 0.00001f;
-
-            [audioPlayer play];
-        });
+        [self playCharacter:'0' atVolume:0.00001f];
     }
 }
 
 
-- (void)playForCharacter:(char)character
+- (void)playCharacter:(char)character atVolume:(float)volume
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
     {
-        NSData*                 data;
-        NSError*                error = nil;
+        NSData*     data;
+        NSError*    error = nil;
 
         data = audioDataObjects[[NSString stringWithFormat:@"%c", character]];
         audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:&error];
-        audioPlayer.volume = 0.02f;
+        audioPlayer.volume = volume;
         [audioPlayer play];
     });
 }
