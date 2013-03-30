@@ -10,6 +10,10 @@
 
 @interface UIView (AnimateHidden)
 
+- (void)setHiddenAnimated:(BOOL)hide withDuration:(NSTimeInterval)duration completion:(void (^)())completion;
+
+- (void)setHiddenAnimated:(BOOL)hide withDuration:(NSTimeInterval)duration;
+
 - (void)setHiddenAnimated:(BOOL)hide;
 
 @end

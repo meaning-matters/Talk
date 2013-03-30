@@ -10,32 +10,45 @@
 
 @implementation UIView (AnimateHidden)
 
-- (void)setHiddenAnimated:(BOOL)hide
+- (void)setHiddenAnimated:(BOOL)hide withDuration:(NSTimeInterval)duration completion:(void (^)())completion
 {
-    [UIView animateWithDuration:0.5
-                          delay:0.0
-                        options:UIViewAnimationCurveEaseOut
+    // For interoperability with hidden property: set start alpha.
+    self.alpha = !self.hidden;
+
+    // To see the animation.
+    self.hidden = NO;
+
+    [UIView animateWithDuration:duration
+                          delay:0
+                        options:UIViewAnimationCurveLinear
                      animations:^
     {
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-        if (hide)
-        {
-            self.alpha = 0;
-        }
-        else
-        {
-            self.hidden = NO;
-            self.alpha = 1;
-        }
+        self.alpha = hide ? 0.0001 : 0.9099;    // A value just off, prevents animation from being skipped.
     }
                      completion:^(BOOL finished)
     {
-        if (hide)
+        self.hidden = hide;
+
+        // For interoperability with hidden property: alpha must end at 1.
+        self.alpha = 1;
+
+        if (completion != nil)
         {
-            self.hidden= YES;
-            self.alpha = 1;
+            completion();
         }
     }];
+}
+
+
+- (void)setHiddenAnimated:(BOOL)hide withDuration:(NSTimeInterval)duration
+{
+    [self setHiddenAnimated:hide withDuration:duration completion:nil];
+}
+
+
+- (void)setHiddenAnimated:(BOOL)hide
+{
+    [self setHiddenAnimated:hide withDuration:0.5 completion:nil];
 }
 
 @end
