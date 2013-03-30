@@ -13,6 +13,7 @@
 #import "CallMessageView.h"
 #import "NSTimer+Blocks.h"
 #import "DtmfPlayer.h"
+#import "UIView+AnimateHidden.h"
 
 
 @interface CallViewController ()
@@ -89,7 +90,9 @@
 
     [self drawEndButton];
     [self drawHideButton];
-    self.hideButton.hidden = YES;
+    [self drawRetryButton];
+    self.hideButton.hidden  = YES;
+    self.retryButton.hidden = YES;
 
     callOptionsView.muteButton.enabled   = NO;
     callOptionsView.keypadButton.enabled = NO;
@@ -239,8 +242,8 @@
 
     UIColor* normalGradientBottom = [UIColor colorWithRed: 0.802 green: 0.109 blue: 0 alpha: 0.8];
     UIColor* normalGradientTop = [UIColor colorWithRed: 0.799 green: 0.397 blue: 0.397 alpha: 0.8];
-    UIColor* highlightGradientTop = [UIColor colorWithRed: 0.502 green: 0.253 blue: 0.257 alpha: 1];
-    UIColor* highlightGradientBottom = [UIColor colorWithRed: 0.5 green: 0.051 blue: 0 alpha: 1];
+    UIColor* highlightGradientTop = [UIColor colorWithRed: 0.502 green: 0.253 blue: 0.257 alpha: 0.8];
+    UIColor* highlightGradientBottom = [UIColor colorWithRed: 0.5 green: 0.051 blue: 0 alpha: 0.8];
     UIColor* disableGradientTop = [UIColor colorWithRed: 0.4 green: 0.4 blue: 0.4 alpha: 0.8];
     UIColor* disableGradientBottom = [UIColor colorWithRed: 0.1 green: 0.1 blue: 0.1 alpha: 0.8];
 
@@ -309,6 +312,51 @@
     //// Cleanup
     CGGradientRelease(normalGradient);
     CGGradientRelease(highlightGradient);
+    CGColorSpaceRelease(colorSpace);
+}
+
+
+- (void)drawRetryButton
+{
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+
+    UIColor* normalGradientBottom = [UIColor colorWithRed: 0 green: 0.75 blue: 0.2 alpha: 0.8];
+    UIColor* normalGradientTop = [UIColor colorWithRed: 0.3 green: 0.75 blue: 0.42 alpha: 0.8];
+    UIColor* highlightGradientBottom = [UIColor colorWithRed: 0.185 green: 0.42 blue: 0.248 alpha: 0.8];
+    UIColor* highlightGradientTop = [UIColor colorWithRed: 0 green: 0.42 blue: 0.112 alpha: 0.8];
+    UIColor* disableGradientTop = [UIColor colorWithRed: 0.4 green: 0.4 blue: 0.4 alpha: 0.8];
+    UIColor* disableGradientBottom = [UIColor colorWithRed: 0.1 green: 0.1 blue: 0.1 alpha: 0.8];
+
+    //// Gradient Declarations
+    NSArray* normalGradientColors = [NSArray arrayWithObjects:
+                                     (id)normalGradientTop.CGColor,
+                                     (id)normalGradientBottom.CGColor, nil];
+    CGFloat normalGradientLocations[] = {0, 1};
+    CGGradientRef normalGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)normalGradientColors, normalGradientLocations);
+    NSArray* highlightGradientColors = [NSArray arrayWithObjects:
+                                        (id)highlightGradientTop.CGColor,
+                                        (id)highlightGradientBottom.CGColor, nil];
+    CGFloat highlightGradientLocations[] = {0, 1};
+    CGGradientRef highlightGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)highlightGradientColors, highlightGradientLocations);
+    NSArray* disableGradientColors = [NSArray arrayWithObjects:
+                                      (id)disableGradientTop.CGColor,
+                                      (id)disableGradientBottom.CGColor, nil];
+    CGFloat disableGradientLocations[] = {0, 1};
+    CGGradientRef disableGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)disableGradientColors, disableGradientLocations);
+
+    UIImage* normalImage = [self drawButtonImageWithGradient:normalGradient size:self.retryButton.frame.size];
+    UIImage* highlightImage = [self drawButtonImageWithGradient:highlightGradient size:self.retryButton.frame.size];
+    UIImage* disableImage = [self drawButtonImageWithGradient:disableGradient size:self.retryButton.frame.size];
+
+    [self.retryButton setBackgroundImage:normalImage forState:UIControlStateNormal];
+    [self.retryButton setBackgroundImage:highlightImage forState:UIControlStateHighlighted];
+    [self.retryButton setBackgroundImage:disableImage forState:UIControlStateDisabled];
+    [self.retryButton setNeedsDisplay];
+
+    //// Cleanup
+    CGGradientRelease(normalGradient);
+    CGGradientRelease(highlightGradient);
+    CGGradientRelease(disableGradient);
     CGColorSpaceRelease(colorSpace);
 }
 
@@ -396,20 +444,21 @@
      {
          [Common setWidth:130 ofView:self.endButton];
          [self drawEndButton];
-         
+         [self.endButton setImage:[UIImage imageNamed:@"HangupPhoneSmall"] forState:UIControlStateNormal];
+         [self.endButton setImage:[UIImage imageNamed:@"HangupPhoneSmall"] forState:UIControlStateHighlighted];
+
          self.endButton.hidden   = NO;
          self.hideButton.hidden  = NO;
+         self.retryButton.hidden = YES;
          self.infoLabel.hidden   = YES;
          self.calleeLabel.hidden = YES;
          self.statusLabel.hidden = YES;
          self.dtmfLabel.hidden   = NO;
-
-         [self.endButton setImage:[UIImage imageNamed:@"HangupPhoneSmall"] forState:UIControlStateNormal];
-         [self.endButton setImage:[UIImage imageNamed:@"HangupPhoneSmall"] forState:UIControlStateHighlighted];
      }];
 
     self.endButton.hidden   = YES;
     self.hideButton.hidden  = YES;
+    self.retryButton.hidden = YES;
     self.infoLabel.hidden   = YES;
     self.calleeLabel.hidden = YES;
     self.statusLabel.hidden = YES;
@@ -449,7 +498,7 @@
 
     [[DtmfPlayer sharedPlayer] playForCharacter:key];
 
-    [[CallManager sharedManager] sendCall:[self.calls lastObject] dtmfCharacter:key];
+    // [[CallManager sharedManager] sendCall:[self.calls lastObject] dtmfCharacter:key];
 }
 
 
@@ -475,22 +524,26 @@
      {
          callMessageView.label.text = text;
 
-         [Common setWidth:280 ofView:self.endButton];
+         [Common setWidth:130 ofView:self.endButton];
          [self drawEndButton];
+         [self.endButton setImage:[UIImage imageNamed:@"HangupPhoneSmall"] forState:UIControlStateNormal];
+         [self.endButton setImage:[UIImage imageNamed:@"HangupPhoneSmall"] forState:UIControlStateHighlighted];
 
          self.endButton.hidden   = NO;
          self.hideButton.hidden  = YES;
+         self.retryButton.hidden = NO;
          self.infoLabel.hidden   = NO;
          self.calleeLabel.hidden = NO;
          self.statusLabel.hidden = NO;
          self.dtmfLabel.hidden   = YES;
-
-         [self.endButton setImage:[UIImage imageNamed:@"HangupPhone"] forState:UIControlStateNormal];
-         [self.endButton setImage:[UIImage imageNamed:@"HangupPhone"] forState:UIControlStateHighlighted];
      }];
 
+    [self hideButtonsAndLabelsAnimated];
+
+    return;
     self.endButton.hidden   = YES;
     self.hideButton.hidden  = YES;
+    self.retryButton.hidden = YES;
     self.infoLabel.hidden   = YES;
     self.calleeLabel.hidden = YES;
     self.statusLabel.hidden = YES;
@@ -519,23 +572,44 @@
      {
          [Common setWidth:280 ofView:self.endButton];
          [self drawEndButton];
+         [self.endButton setImage:[UIImage imageNamed:@"HangupPhone"] forState:UIControlStateNormal];
+         [self.endButton setImage:[UIImage imageNamed:@"HangupPhone"] forState:UIControlStateHighlighted];
+
          self.endButton.hidden   = NO;
          self.hideButton.hidden  = YES;
+         self.retryButton.hidden = YES;
          self.infoLabel.hidden   = NO;
          self.calleeLabel.hidden = NO;
          self.statusLabel.hidden = NO;
          self.dtmfLabel.hidden   = YES;
-
-         [self.endButton setImage:[UIImage imageNamed:@"HangupPhone"] forState:UIControlStateNormal];
-         [self.endButton setImage:[UIImage imageNamed:@"HangupPhone"] forState:UIControlStateHighlighted];
      }];
 
     self.endButton.hidden   = YES;
     self.hideButton.hidden  = YES;
+    self.retryButton.hidden = YES;
     self.infoLabel.hidden   = YES;
     self.calleeLabel.hidden = YES;
     self.statusLabel.hidden = YES;
     self.dtmfLabel.hidden   = YES;
+}
+
+
+- (IBAction)retryAction:(id)sender
+{
+    [[CallManager sharedManager] retryCall:[self.calls lastObject]];
+}
+
+#pragma mark - Utility Methods
+
+- (void)hideButtonsAndLabelsAnimated
+{
+    [self.endButton   setHiddenAnimated:YES];
+    [self.hideButton  setHiddenAnimated:YES];
+    [self.retryButton setHiddenAnimated:YES];
+    [self.infoLabel   setHiddenAnimated:YES];
+    [self.calleeLabel setHiddenAnimated:YES];
+    [self.statusLabel setHiddenAnimated:YES];
+    [self.dtmfLabel   setHiddenAnimated:YES];
 }
 
 

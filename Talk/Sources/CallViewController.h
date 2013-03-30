@@ -31,6 +31,7 @@
 
 @property (nonatomic, weak) IBOutlet UIButton*      endButton;
 @property (nonatomic, weak) IBOutlet UIButton*      hideButton;
+@property (nonatomic, weak) IBOutlet UIButton*      retryButton;
 
 
 - (id)initWithCall:(Call*)call;
@@ -38,6 +39,8 @@
 - (IBAction)endAction:(id)sender;
 
 - (IBAction)hideAction:(id)sender;
+
+- (IBAction)retryAction:(id)sender;
 
 - (void)addCall:(Call*)call;
 

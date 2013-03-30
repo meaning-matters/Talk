@@ -558,6 +558,21 @@ static SipInterface*    sipInterface;
 }
 
 
+- (void)retryCall:(Call*)call
+{
+    if (call != nil)
+    {
+        call.mustBeRetried = YES;
+        [sipInterface hangupCall:call reason:nil];
+    }
+    else
+    {
+        // Call must have been ended earlier.
+        [callViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+
 - (BOOL)callMobilePhoneNumber:(PhoneNumber*)phoneNumber
 {
     NSString*   title;

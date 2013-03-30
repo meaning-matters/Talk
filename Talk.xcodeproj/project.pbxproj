@@ -661,6 +661,12 @@
 		48AD95DB164AC4FE006178E6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95D9164AC4FE006178E6 /* ViewController.m */; };
 		48AD95DF164AE582006178E6 /* Skinning.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95DE164AE582006178E6 /* Skinning.m */; };
 		48AD95E0164AE582006178E6 /* Skinning.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95DE164AE582006178E6 /* Skinning.m */; };
+		48ADD0F11706551F001515EB /* RetryPhoneSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 48ADD0EF1706551D001515EB /* RetryPhoneSmall.png */; };
+		48ADD0F21706551F001515EB /* RetryPhoneSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 48ADD0EF1706551D001515EB /* RetryPhoneSmall.png */; };
+		48ADD0F31706551F001515EB /* RetryPhoneSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48ADD0F01706551E001515EB /* RetryPhoneSmall@2x.png */; };
+		48ADD0F41706551F001515EB /* RetryPhoneSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48ADD0F01706551E001515EB /* RetryPhoneSmall@2x.png */; };
+		48ADD0F71706791A001515EB /* UIView+AnimateHidden.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD0F61706791A001515EB /* UIView+AnimateHidden.m */; };
+		48ADD0F81706791A001515EB /* UIView+AnimateHidden.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD0F61706791A001515EB /* UIView+AnimateHidden.m */; };
 		48AF44EA1649479100DFE3D8 /* NumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44E91649479100DFE3D8 /* NumbersViewController.m */; };
 		48AF44EB1649479100DFE3D8 /* NumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44E91649479100DFE3D8 /* NumbersViewController.m */; };
 		48AF44EE164947B300DFE3D8 /* CreditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44ED164947B300DFE3D8 /* CreditViewController.m */; };
@@ -1462,6 +1468,10 @@
 		48AD95D9164AC4FE006178E6 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		48AD95DD164AE581006178E6 /* Skinning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skinning.h; sourceTree = "<group>"; };
 		48AD95DE164AE582006178E6 /* Skinning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Skinning.m; sourceTree = "<group>"; };
+		48ADD0EF1706551D001515EB /* RetryPhoneSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RetryPhoneSmall.png; sourceTree = "<group>"; };
+		48ADD0F01706551E001515EB /* RetryPhoneSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RetryPhoneSmall@2x.png"; sourceTree = "<group>"; };
+		48ADD0F517067919001515EB /* UIView+AnimateHidden.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+AnimateHidden.h"; sourceTree = "<group>"; };
+		48ADD0F61706791A001515EB /* UIView+AnimateHidden.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+AnimateHidden.m"; sourceTree = "<group>"; };
 		48AF44E81649479100DFE3D8 /* NumbersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumbersViewController.h; sourceTree = "<group>"; };
 		48AF44E91649479100DFE3D8 /* NumbersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumbersViewController.m; sourceTree = "<group>"; };
 		48AF44EC164947B300DFE3D8 /* CreditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditViewController.h; sourceTree = "<group>"; };
@@ -1691,6 +1701,8 @@
 				482A63A0165FF73400325B3F /* NumberLabel.m */,
 				48200D1A16EC89BA0069677E /* NumberType.h */,
 				48200D1B16EC89BA0069677E /* NumberType.m */,
+				48ADD0F517067919001515EB /* UIView+AnimateHidden.h */,
+				48ADD0F61706791A001515EB /* UIView+AnimateHidden.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -2591,6 +2603,8 @@
 				48EDD2061667652A007B89DA /* KeypadCall@2x.png */,
 				48EDD2071667652A007B89DA /* MuteCall.png */,
 				48EDD2081667652A007B89DA /* MuteCall@2x.png */,
+				48ADD0EF1706551D001515EB /* RetryPhoneSmall.png */,
+				48ADD0F01706551E001515EB /* RetryPhoneSmall@2x.png */,
 				48EDD2091667652A007B89DA /* SpeakerCall.png */,
 				48EDD20A1667652A007B89DA /* SpeakerCall@2x.png */,
 				48EDD1FF1667652A007B89DA /* Backgrounds */,
@@ -3245,6 +3259,8 @@
 				48A261C016FDE26100007638 /* CallMessageView.xib in Resources */,
 				48BC7F3F1702FE8D006671B5 /* NumberView.xib in Resources */,
 				4893880217044F59005CC795 /* NumberHeaderView.xib in Resources */,
+				48ADD0F11706551F001515EB /* RetryPhoneSmall.png in Resources */,
+				48ADD0F31706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3325,6 +3341,8 @@
 				48A261C116FDE26100007638 /* CallMessageView.xib in Resources */,
 				48BC7F401702FE8D006671B5 /* NumberView.xib in Resources */,
 				4893880317044F59005CC795 /* NumberHeaderView.xib in Resources */,
+				48ADD0F21706551F001515EB /* RetryPhoneSmall.png in Resources */,
+				48ADD0F41706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3430,6 +3448,7 @@
 				48BC7F3C1702FDD1006671B5 /* NumberViewController.m in Sources */,
 				489387FB17039158005CC795 /* ForwardingData.m in Sources */,
 				489387FF17039165005CC795 /* RecordingData.m in Sources */,
+				48ADD0F71706791A001515EB /* UIView+AnimateHidden.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3503,6 +3522,7 @@
 				48BC7F3D1702FDD1006671B5 /* NumberViewController.m in Sources */,
 				489387FC17039158005CC795 /* ForwardingData.m in Sources */,
 				4893880017039165005CC795 /* RecordingData.m in Sources */,
+				48ADD0F81706791A001515EB /* UIView+AnimateHidden.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

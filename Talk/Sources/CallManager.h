@@ -30,6 +30,8 @@
 
 - (void)endCall:(Call*)call;
 
+- (void)retryCall:(Call*)call;
+
 - (BOOL)callMobilePhoneNumber:(PhoneNumber*)phoneNumber;
 
 - (void)setCall:(Call*)call onMute:(BOOL)onMute;
