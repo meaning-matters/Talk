@@ -14,13 +14,11 @@
 
 typedef enum
 {
-    TableSectionNumber       = 1UL << 0,
-    TableSectionForwarding   = 1UL << 1,
-    TableSectionCountry      = 1UL << 2, // The optional state will be placed in a row under country.
-    TableSectionArea         = 1UL << 3,
-    TableSectionSubscription = 1UL << 4,
-    TableSectionRealName     = 1UL << 5,
-    TableSectionAddress      = 1UL << 6,
+    TableSectionForwarding   = 1UL << 0,
+    TableSectionArea         = 1UL << 1,    // The optional state will be placed in a row here.
+    TableSectionSubscription = 1UL << 2,
+    TableSectionRealName     = 1UL << 3,
+    TableSectionAddress      = 1UL << 4,
 } TableSections;
 
 
@@ -47,9 +45,7 @@ typedef enum
                                                        @"[1 line larger font].");
 
         // Mandatory sections.
-        sections |= TableSectionNumber;
         sections |= TableSectionForwarding;
-        sections |= TableSectionCountry;
         sections |= TableSectionArea;
         sections |= TableSectionSubscription;
 
@@ -99,16 +95,7 @@ typedef enum
 
     switch ([Common getNthSetBit:section inValue:sections])
     {
-        case TableSectionNumber:
-            break;
-
         case TableSectionForwarding:
-            break;
-
-        case TableSectionCountry:
-            title = NSLocalizedStringWithDefaultValue(@"Number:Country SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Country",
-                                                      @"....");
             break;
 
         case TableSectionArea:
@@ -146,6 +133,16 @@ typedef enum
 
     switch ([Common getNthSetBit:section inValue:sections])
     {
+        case TableSectionForwarding:
+            title = NSLocalizedStringWithDefaultValue(@"Number:Forwarding SectionFooter", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"With 'Default' all devices associated with this number "
+                                                      @"will ring when an incoming call is received.",
+                                                      @"Explanation how to cancel a payed subscription for "
+                                                      @"using a phone number\n"
+                                                      @"[* lines]");
+            break;
+
         case TableSectionSubscription:
             title = NSLocalizedStringWithDefaultValue(@"Number:Subscription SectionFooter", nil,
                                                       [NSBundle mainBundle],
@@ -164,34 +161,27 @@ typedef enum
 {
     NSInteger   numberOfRows = 0;
 
+#warning Make fully dynamic.
     switch ([Common getNthSetBit:section inValue:sections])
     {
-        case TableSectionNumber:
-            numberOfRows = 2;
-            break;
-
         case TableSectionForwarding:
             numberOfRows = 1;
             break;
 
-        case TableSectionCountry:
-            numberOfRows = 1;
-            break;
-
         case TableSectionArea:
-            numberOfRows = 1;
+            numberOfRows = 3;
             break;
 
         case TableSectionSubscription:
-            numberOfRows = 1;
+            numberOfRows = 3;
             break;
 
         case TableSectionRealName:
-            numberOfRows = 1;
+            numberOfRows = 4;
             break;
 
         case TableSectionAddress:
-            numberOfRows = 1;
+            numberOfRows = 4;
             break;
     }
 
@@ -210,13 +200,7 @@ typedef enum
 
     switch ([Common getNthSetBit:indexPath.section inValue:sections])
     {
-        case TableSectionNumber:
-            break;
-
         case TableSectionForwarding:
-            break;
-
-        case TableSectionCountry:
             break;
 
         case TableSectionArea:
@@ -240,32 +224,24 @@ typedef enum
 
     switch ([Common getNthSetBit:indexPath.section inValue:sections])
     {
-        case TableSectionNumber:
-            cell = [self numberCellForRowAtIndexPath:indexPath];
-            break;
-
         case TableSectionForwarding:
-            cell = [self numberCellForRowAtIndexPath:indexPath];
-            break;
-
-        case TableSectionCountry:
-            cell = [self numberCellForRowAtIndexPath:indexPath];
+            cell = [self forwardingCellForRowAtIndexPath:indexPath];
             break;
 
         case TableSectionArea:
-            cell = [self numberCellForRowAtIndexPath:indexPath];
+            cell = [self areaCellForRowAtIndexPath:indexPath];
             break;
 
         case TableSectionSubscription:
-            cell = [self numberCellForRowAtIndexPath:indexPath];
+            cell = [self subscriptionCellForRowAtIndexPath:indexPath];
             break;
 
         case TableSectionRealName:
-            cell = [self numberCellForRowAtIndexPath:indexPath];
+            cell = [self nameCellForRowAtIndexPath:indexPath];
             break;
 
         case TableSectionAddress:
-            cell = [self numberCellForRowAtIndexPath:indexPath];
+            cell = [self addressCellForRowAtIndexPath:indexPath];
             break;
     }
 
@@ -273,7 +249,7 @@ typedef enum
 }
 
 
-- (UITableViewCell*)numberCellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)forwardingCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell;
 
@@ -283,26 +259,206 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"Value2Cell"];
     }
 
-    if (indexPath.row == 0)
-    {
-        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:Name Label", nil,
-                                                                [NSBundle mainBundle], @"Name",
-                                                                @"....");
-        cell.detailTextLabel.text = number.name;
-        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-    }
-    else
-    {
-        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:Number Label", nil,
-                                                                [NSBundle mainBundle], @"Number",
-                                                                @"....");
-        cell.detailTextLabel.text = [[PhoneNumber alloc] initWithNumber:number.e164].internationalFormat;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
+    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:Name Label", nil,
+                                                            [NSBundle mainBundle], @"Forwarding",
+                                                            @"....");
+    cell.detailTextLabel.text = @"Default";
 
+    cell.selectionStyle  = UITableViewCellSelectionStyleBlue;
+    cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
     cell.imageView.image = nil;
-    cell.accessoryType = UITableViewCellAccessoryNone;
 
+    return cell;
+}
+
+
+- (UITableViewCell*)areaCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell*    cell;
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"Value2Cell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"Value2Cell"];
+    }
+
+#warning Parameterize fully: no area code available, number type, ...
+    switch (indexPath.row)
+    {
+        case 0:
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:NumberType Label", nil,
+                                                                    [NSBundle mainBundle], @"Type",
+                                                                    @"....");
+            cell.detailTextLabel.text = @"Geographic";
+            break;
+
+        case 1:
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:AreaCode Label", nil,
+                                                                    [NSBundle mainBundle], @"Code",
+                                                                    @"....");
+            cell.detailTextLabel.text = number.areaCode;
+            break;
+
+        case 2:
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:AreaName Label", nil,
+                                                                    [NSBundle mainBundle], @"City",
+                                                                    @"....");
+            cell.detailTextLabel.text = @"Leuven";
+            break;
+
+#warning Add State here.
+    }
+
+    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
+    cell.accessoryType   = UITableViewCellAccessoryNone;
+    cell.imageView.image = nil;
+    
+    return cell;
+}
+
+
+- (UITableViewCell*)subscriptionCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell*    cell;
+    NSDateFormatter*    dateFormatter = [[NSDateFormatter alloc] init];
+    NSString*           dateFormat = [NSDateFormatter dateFormatFromTemplate:@"E MMM d yyyy"
+                                                                     options:0
+                                                                      locale:[NSLocale currentLocale]];
+    [dateFormatter setDateFormat:dateFormat];
+    [dateFormatter setLocale:[NSLocale currentLocale]];
+    
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"Value2Cell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"Value2Cell"];
+    }
+
+    switch (indexPath.row)
+    {
+        case 0:
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionPurchaseDate Label", nil,
+                                                                    [NSBundle mainBundle], @"Purchased",
+                                                                    @"....");
+            cell.detailTextLabel.text = [dateFormatter stringFromDate:number.purchaseDateTime];
+            break;
+
+        case 1:
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionRenewalDate Label", nil,
+                                                                    [NSBundle mainBundle], @"Renewal",
+                                                                    @"....");
+            cell.detailTextLabel.text = [dateFormatter stringFromDate:number.purchaseDateTime];
+            break;
+
+        case 2:
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionRenewalPrice Label", nil,
+                                                                    [NSBundle mainBundle], @"Renewal Price",
+                                                                    @"....");
+            cell.detailTextLabel.text = @"€3.79";
+            break;
+    }
+
+    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
+    cell.accessoryType   = UITableViewCellAccessoryNone;
+    cell.imageView.image = nil;
+    
+    return cell;
+}
+
+
+- (UITableViewCell*)nameCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell*    cell;
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"Value2Cell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"Value2Cell"];
+    }
+
+    switch (indexPath.row)
+    {
+        case 0:
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:NameSalutation Label", nil,
+                                                                    [NSBundle mainBundle], @"Title",
+                                                                    @"....");
+            cell.detailTextLabel.text = number.salutation;
+            break;
+
+        case 1:
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:NameFirst Label", nil,
+                                                                    [NSBundle mainBundle], @"First",
+                                                                    @"....");
+            cell.detailTextLabel.text = number.firstName;
+            break;
+
+        case 2:
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:NameLast Label", nil,
+                                                                    [NSBundle mainBundle], @"Last",
+                                                                    @"....");
+            cell.detailTextLabel.text = number.lastName;
+            break;
+
+        case 3:
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:NameCompany Label", nil,
+                                                                    [NSBundle mainBundle], @"Company",
+                                                                    @"....");
+            cell.detailTextLabel.text = number.company;
+            break;
+    }
+
+    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
+    cell.accessoryType   = UITableViewCellAccessoryNone;
+    cell.imageView.image = nil;
+    
+    return cell;
+}
+
+
+- (UITableViewCell*)addressCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell*    cell;
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"Value2Cell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"Value2Cell"];
+    }
+
+    switch (indexPath.row)
+    {
+        case 0:
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:AddressStreet Label", nil,
+                                                                    [NSBundle mainBundle], @"Street",
+                                                                    @"....");
+            cell.detailTextLabel.text = number.street;
+            break;
+
+        case 1:
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:AddressBuilding Label", nil,
+                                                                    [NSBundle mainBundle], @"Number",
+                                                                    @"....");
+            cell.detailTextLabel.text = number.building;
+            break;
+
+        case 2:
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:AddressCity Label", nil,
+                                                                    [NSBundle mainBundle], @"City",
+                                                                    @"....");
+            cell.detailTextLabel.text = number.city;
+            break;
+
+        case 3:
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:AddressZip Label", nil,
+                                                                    [NSBundle mainBundle], @"ZIP Code",
+                                                                    @"....");
+            cell.detailTextLabel.text = number.zipCode;
+            break;
+    }
+
+    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
+    cell.accessoryType   = UITableViewCellAccessoryNone;
+    cell.imageView.image = nil;
+    
     return cell;
 }
 

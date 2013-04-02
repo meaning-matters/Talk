@@ -2480,12 +2480,12 @@
 				48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */,
 				488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */,
 				48AF4504164948A300DFE3D8 /* NumbersView.xib */,
+				4893880117044F59005CC795 /* NumberHeaderView.xib */,
+				48BC7F3E1702FE8D006671B5 /* NumberView.xib */,
 				48AF4560164979CE00DFE3D8 /* RecentsView.xib */,
 				48AF4510164948F000DFE3D8 /* SettingsView.xib */,
 				48AF455A1649794B00DFE3D8 /* ShareView.xib */,
 				482D2DEF16C8172900E13B91 /* ProvisioningView.xib */,
-				48BC7F3E1702FE8D006671B5 /* NumberView.xib */,
-				4893880117044F59005CC795 /* NumberHeaderView.xib */,
 			);
 			path = XIBs;
 			sourceTree = "<group>";
