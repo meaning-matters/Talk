@@ -55,7 +55,7 @@ typedef enum
 @property (nonatomic, assign) CallState                 state;
 @property (nonatomic, assign) CallDirection             direction;
 @property (nonatomic, assign) CallNetwork               network;
-@property (nonatomic, assign) BOOL                      endedByUser;
+@property (nonatomic, assign) BOOL                      readyForCleanup;
 @property (nonatomic, assign) BOOL                      userInformedAboutFailure;
 @property (nonatomic, assign) BOOL                      mustBeRetried;
 

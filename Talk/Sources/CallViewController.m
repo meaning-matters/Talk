@@ -536,7 +536,7 @@ const NSTimeInterval    TransitionDuration = 0.5;
 {
     Call*   call = [self.calls lastObject];
 
-    call.endedByUser = YES;
+    call.readyForCleanup = YES;
     [[CallManager sharedManager] endCall:call];  //### Should be active call.
 }
 

@@ -3209,7 +3209,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"./**",
-					"../pjproject-2.0.1/install/include/",
+					"../pjproject-2.1.0/install/include/",
 				);
 				INSTALL_PATH = lib;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;

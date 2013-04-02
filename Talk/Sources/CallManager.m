@@ -713,7 +713,7 @@ static SipInterface*    sipInterface;
     [callViewController updateCallEnded:call];
 
 #warning Do only when last call was ended.
-    if (call.endedByUser)
+    if (call.readyForCleanup)
     {
         [callViewController dismissViewControllerAnimated:YES completion:nil];
         callViewController = nil;
@@ -737,7 +737,7 @@ static SipInterface*    sipInterface;
               reason:(SipInterfaceCallFailed)reason
            sipStatus:(int)sipStatus
 {
-    if (call.userInformedAboutFailure == NO && call.endedByUser == NO)
+    if (call.userInformedAboutFailure == NO && call.readyForCleanup == NO)
     {
         call.userInformedAboutFailure = YES;
 
