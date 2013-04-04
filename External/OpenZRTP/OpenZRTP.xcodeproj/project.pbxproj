@@ -1,0 +1,482 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		48ADD124170D9EF8001515EB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48ADD123170D9EF8001515EB /* Foundation.framework */; };
+		48ADD139170DA014001515EB /* Base32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD132170DA014001515EB /* Base32.cpp */; };
+		48ADD173170DA030001515EB /* zAlgoSupported.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD13E170DA02F001515EB /* zAlgoSupported.cpp */; };
+		48ADD174170DA030001515EB /* zCommit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD142170DA030001515EB /* zCommit.cpp */; };
+		48ADD175170DA030001515EB /* zConf2Ack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD144170DA030001515EB /* zConf2Ack.cpp */; };
+		48ADD176170DA030001515EB /* zConfirm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD146170DA030001515EB /* zConfirm.cpp */; };
+		48ADD177170DA030001515EB /* zCRC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD148170DA030001515EB /* zCRC.cpp */; };
+		48ADD178170DA030001515EB /* zCryptoContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD14A170DA030001515EB /* zCryptoContext.cpp */; };
+		48ADD179170DA030001515EB /* zDH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD14C170DA030001515EB /* zDH.cpp */; };
+		48ADD17A170DA030001515EB /* zDHPart.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD14E170DA030001515EB /* zDHPart.cpp */; };
+		48ADD17B170DA030001515EB /* zEndpointInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD150170DA030001515EB /* zEndpointInfo.cpp */; };
+		48ADD17C170DA030001515EB /* zError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD152170DA030001515EB /* zError.cpp */; };
+		48ADD17D170DA030001515EB /* zErrorAck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD154170DA030001515EB /* zErrorAck.cpp */; };
+		48ADD17E170DA030001515EB /* zGoClear.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD156170DA030001515EB /* zGoClear.cpp */; };
+		48ADD17F170DA030001515EB /* zGoClearAck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD158170DA030001515EB /* zGoClearAck.cpp */; };
+		48ADD180170DA030001515EB /* zHello.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD15A170DA030001515EB /* zHello.cpp */; };
+		48ADD181170DA030001515EB /* zHelloAck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD15C170DA030001515EB /* zHelloAck.cpp */; };
+		48ADD182170DA030001515EB /* zopenssl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD15E170DA030001515EB /* zopenssl.cpp */; };
+		48ADD183170DA030001515EB /* zPacketBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD160170DA030001515EB /* zPacketBase.cpp */; };
+		48ADD184170DA030001515EB /* zPing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD162170DA030001515EB /* zPing.cpp */; };
+		48ADD185170DA030001515EB /* zPingAck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD164170DA030001515EB /* zPingAck.cpp */; };
+		48ADD186170DA030001515EB /* zQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD166170DA030001515EB /* zQueue.cpp */; };
+		48ADD187170DA030001515EB /* zRecord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD168170DA030001515EB /* zRecord.cpp */; };
+		48ADD188170DA030001515EB /* zRtpEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD16B170DA030001515EB /* zRtpEngine.cpp */; };
+		48ADD189170DA030001515EB /* zStateMachineDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD16D170DA030001515EB /* zStateMachineDef.cpp */; };
+		48ADD18A170DA030001515EB /* zTextData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD16F170DA030001515EB /* zTextData.cpp */; };
+		48ADD194170DA5A4001515EB /* pj_callbackadapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD18C170DA5A4001515EB /* pj_callbackadapter.cpp */; };
+		48ADD195170DA5A4001515EB /* pj_srtpadapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD18E170DA5A4001515EB /* pj_srtpadapter.cpp */; };
+		48ADD196170DA5A4001515EB /* pj_zrtp_transport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD190170DA5A4001515EB /* pj_zrtp_transport.cpp */; };
+		48ADD197170DA5A4001515EB /* pj_zrtpadapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD192170DA5A4001515EB /* pj_zrtpadapter.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		48ADD11E170D9EF8001515EB /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		48ADD120170D9EF8001515EB /* libOpenZRTP.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOpenZRTP.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		48ADD123170D9EF8001515EB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		48ADD127170D9EF8001515EB /* OpenZRTP-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenZRTP-Prefix.pch"; sourceTree = "<group>"; };
+		48ADD132170DA014001515EB /* Base32.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Base32.cpp; path = Sources/Base32.cpp; sourceTree = "<group>"; };
+		48ADD133170DA014001515EB /* Base32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Base32.h; path = Sources/Base32.h; sourceTree = "<group>"; };
+		48ADD134170DA014001515EB /* basicqueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = basicqueue.h; path = Sources/basicqueue.h; sourceTree = "<group>"; };
+		48ADD135170DA014001515EB /* cond.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cond.h; path = Sources/cond.h; sourceTree = "<group>"; };
+		48ADD136170DA014001515EB /* int.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = int.h; path = Sources/int.h; sourceTree = "<group>"; };
+		48ADD137170DA014001515EB /* network.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = network.h; path = Sources/network.h; sourceTree = "<group>"; };
+		48ADD138170DA014001515EB /* packetQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = packetQueue.h; path = Sources/packetQueue.h; sourceTree = "<group>"; };
+		48ADD13A170DA02F001515EB /* rtp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rtp.h; path = Sources/rtp.h; sourceTree = "<group>"; };
+		48ADD13B170DA02F001515EB /* sRtpSecrets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sRtpSecrets.h; path = Sources/sRtpSecrets.h; sourceTree = "<group>"; };
+		48ADD13C170DA02F001515EB /* synch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = synch.h; path = Sources/synch.h; sourceTree = "<group>"; };
+		48ADD13D170DA02F001515EB /* UserCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserCallback.h; path = Sources/UserCallback.h; sourceTree = "<group>"; };
+		48ADD13E170DA02F001515EB /* zAlgoSupported.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zAlgoSupported.cpp; path = Sources/zAlgoSupported.cpp; sourceTree = "<group>"; };
+		48ADD13F170DA02F001515EB /* zAlgoSupported.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zAlgoSupported.h; path = Sources/zAlgoSupported.h; sourceTree = "<group>"; };
+		48ADD140170DA02F001515EB /* zCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zCallback.h; path = Sources/zCallback.h; sourceTree = "<group>"; };
+		48ADD141170DA030001515EB /* zCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zCodes.h; path = Sources/zCodes.h; sourceTree = "<group>"; };
+		48ADD142170DA030001515EB /* zCommit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zCommit.cpp; path = Sources/zCommit.cpp; sourceTree = "<group>"; };
+		48ADD143170DA030001515EB /* zCommit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zCommit.h; path = Sources/zCommit.h; sourceTree = "<group>"; };
+		48ADD144170DA030001515EB /* zConf2Ack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zConf2Ack.cpp; path = Sources/zConf2Ack.cpp; sourceTree = "<group>"; };
+		48ADD145170DA030001515EB /* zConf2Ack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zConf2Ack.h; path = Sources/zConf2Ack.h; sourceTree = "<group>"; };
+		48ADD146170DA030001515EB /* zConfirm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zConfirm.cpp; path = Sources/zConfirm.cpp; sourceTree = "<group>"; };
+		48ADD147170DA030001515EB /* zConfirm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zConfirm.h; path = Sources/zConfirm.h; sourceTree = "<group>"; };
+		48ADD148170DA030001515EB /* zCRC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zCRC.cpp; path = Sources/zCRC.cpp; sourceTree = "<group>"; };
+		48ADD149170DA030001515EB /* zCRC32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zCRC32.h; path = Sources/zCRC32.h; sourceTree = "<group>"; };
+		48ADD14A170DA030001515EB /* zCryptoContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zCryptoContext.cpp; path = Sources/zCryptoContext.cpp; sourceTree = "<group>"; };
+		48ADD14B170DA030001515EB /* zCryptoContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zCryptoContext.h; path = Sources/zCryptoContext.h; sourceTree = "<group>"; };
+		48ADD14C170DA030001515EB /* zDH.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zDH.cpp; path = Sources/zDH.cpp; sourceTree = "<group>"; };
+		48ADD14D170DA030001515EB /* zDH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zDH.h; path = Sources/zDH.h; sourceTree = "<group>"; };
+		48ADD14E170DA030001515EB /* zDHPart.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zDHPart.cpp; path = Sources/zDHPart.cpp; sourceTree = "<group>"; };
+		48ADD14F170DA030001515EB /* zDHPart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zDHPart.h; path = Sources/zDHPart.h; sourceTree = "<group>"; };
+		48ADD150170DA030001515EB /* zEndpointInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zEndpointInfo.cpp; path = Sources/zEndpointInfo.cpp; sourceTree = "<group>"; };
+		48ADD151170DA030001515EB /* zEndpointInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zEndpointInfo.h; path = Sources/zEndpointInfo.h; sourceTree = "<group>"; };
+		48ADD152170DA030001515EB /* zError.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zError.cpp; path = Sources/zError.cpp; sourceTree = "<group>"; };
+		48ADD153170DA030001515EB /* zError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zError.h; path = Sources/zError.h; sourceTree = "<group>"; };
+		48ADD154170DA030001515EB /* zErrorAck.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zErrorAck.cpp; path = Sources/zErrorAck.cpp; sourceTree = "<group>"; };
+		48ADD155170DA030001515EB /* zErrorAck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zErrorAck.h; path = Sources/zErrorAck.h; sourceTree = "<group>"; };
+		48ADD156170DA030001515EB /* zGoClear.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zGoClear.cpp; path = Sources/zGoClear.cpp; sourceTree = "<group>"; };
+		48ADD157170DA030001515EB /* zGoClear.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zGoClear.h; path = Sources/zGoClear.h; sourceTree = "<group>"; };
+		48ADD158170DA030001515EB /* zGoClearAck.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zGoClearAck.cpp; path = Sources/zGoClearAck.cpp; sourceTree = "<group>"; };
+		48ADD159170DA030001515EB /* zGoClearAck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zGoClearAck.h; path = Sources/zGoClearAck.h; sourceTree = "<group>"; };
+		48ADD15A170DA030001515EB /* zHello.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zHello.cpp; path = Sources/zHello.cpp; sourceTree = "<group>"; };
+		48ADD15B170DA030001515EB /* zHello.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zHello.h; path = Sources/zHello.h; sourceTree = "<group>"; };
+		48ADD15C170DA030001515EB /* zHelloAck.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zHelloAck.cpp; path = Sources/zHelloAck.cpp; sourceTree = "<group>"; };
+		48ADD15D170DA030001515EB /* zHelloAck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zHelloAck.h; path = Sources/zHelloAck.h; sourceTree = "<group>"; };
+		48ADD15E170DA030001515EB /* zopenssl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zopenssl.cpp; path = Sources/zopenssl.cpp; sourceTree = "<group>"; };
+		48ADD15F170DA030001515EB /* zopenssl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zopenssl.h; path = Sources/zopenssl.h; sourceTree = "<group>"; };
+		48ADD160170DA030001515EB /* zPacketBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zPacketBase.cpp; path = Sources/zPacketBase.cpp; sourceTree = "<group>"; };
+		48ADD161170DA030001515EB /* zPacketBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zPacketBase.h; path = Sources/zPacketBase.h; sourceTree = "<group>"; };
+		48ADD162170DA030001515EB /* zPing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zPing.cpp; path = Sources/zPing.cpp; sourceTree = "<group>"; };
+		48ADD163170DA030001515EB /* zPing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zPing.h; path = Sources/zPing.h; sourceTree = "<group>"; };
+		48ADD164170DA030001515EB /* zPingAck.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zPingAck.cpp; path = Sources/zPingAck.cpp; sourceTree = "<group>"; };
+		48ADD165170DA030001515EB /* zPingAck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zPingAck.h; path = Sources/zPingAck.h; sourceTree = "<group>"; };
+		48ADD166170DA030001515EB /* zQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zQueue.cpp; path = Sources/zQueue.cpp; sourceTree = "<group>"; };
+		48ADD167170DA030001515EB /* zQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zQueue.h; path = Sources/zQueue.h; sourceTree = "<group>"; };
+		48ADD168170DA030001515EB /* zRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zRecord.cpp; path = Sources/zRecord.cpp; sourceTree = "<group>"; };
+		48ADD169170DA030001515EB /* zRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zRecord.h; path = Sources/zRecord.h; sourceTree = "<group>"; };
+		48ADD16A170DA030001515EB /* zRtpConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zRtpConfig.h; path = Sources/zRtpConfig.h; sourceTree = "<group>"; };
+		48ADD16B170DA030001515EB /* zRtpEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zRtpEngine.cpp; path = Sources/zRtpEngine.cpp; sourceTree = "<group>"; };
+		48ADD16C170DA030001515EB /* zRtpEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zRtpEngine.h; path = Sources/zRtpEngine.h; sourceTree = "<group>"; };
+		48ADD16D170DA030001515EB /* zStateMachineDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zStateMachineDef.cpp; path = Sources/zStateMachineDef.cpp; sourceTree = "<group>"; };
+		48ADD16E170DA030001515EB /* zStateMachineDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zStateMachineDef.h; path = Sources/zStateMachineDef.h; sourceTree = "<group>"; };
+		48ADD16F170DA030001515EB /* zTextData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = zTextData.cpp; path = Sources/zTextData.cpp; sourceTree = "<group>"; };
+		48ADD170170DA030001515EB /* zTextData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zTextData.h; path = Sources/zTextData.h; sourceTree = "<group>"; };
+		48ADD171170DA030001515EB /* zTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zTimer.h; path = Sources/zTimer.h; sourceTree = "<group>"; };
+		48ADD172170DA030001515EB /* zTimer2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zTimer2.h; path = Sources/zTimer2.h; sourceTree = "<group>"; };
+		48ADD18C170DA5A4001515EB /* pj_callbackadapter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pj_callbackadapter.cpp; sourceTree = "<group>"; };
+		48ADD18D170DA5A4001515EB /* pj_callbackadapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pj_callbackadapter.h; sourceTree = "<group>"; };
+		48ADD18E170DA5A4001515EB /* pj_srtpadapter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pj_srtpadapter.cpp; sourceTree = "<group>"; };
+		48ADD18F170DA5A4001515EB /* pj_srtpadapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pj_srtpadapter.h; sourceTree = "<group>"; };
+		48ADD190170DA5A4001515EB /* pj_zrtp_transport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pj_zrtp_transport.cpp; sourceTree = "<group>"; };
+		48ADD191170DA5A4001515EB /* pj_zrtp_transport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pj_zrtp_transport.h; sourceTree = "<group>"; };
+		48ADD192170DA5A4001515EB /* pj_zrtpadapter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pj_zrtpadapter.cpp; sourceTree = "<group>"; };
+		48ADD193170DA5A4001515EB /* pj_zrtpadapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pj_zrtpadapter.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		48ADD11D170D9EF8001515EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				48ADD124170D9EF8001515EB /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		48ADD117170D9EF8001515EB = {
+			isa = PBXGroup;
+			children = (
+				48ADD125170D9EF8001515EB /* OpenZRTP */,
+				48ADD122170D9EF8001515EB /* Frameworks */,
+				48ADD121170D9EF8001515EB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		48ADD121170D9EF8001515EB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				48ADD120170D9EF8001515EB /* libOpenZRTP.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		48ADD122170D9EF8001515EB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				48ADD123170D9EF8001515EB /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		48ADD125170D9EF8001515EB /* OpenZRTP */ = {
+			isa = PBXGroup;
+			children = (
+				48ADD131170D9F40001515EB /* Sources */,
+				48ADD126170D9EF8001515EB /* Supporting Files */,
+			);
+			path = OpenZRTP;
+			sourceTree = "<group>";
+		};
+		48ADD126170D9EF8001515EB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				48ADD127170D9EF8001515EB /* OpenZRTP-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		48ADD131170D9F40001515EB /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				48ADD18B170DA5A4001515EB /* pj */,
+				48ADD132170DA014001515EB /* Base32.cpp */,
+				48ADD133170DA014001515EB /* Base32.h */,
+				48ADD134170DA014001515EB /* basicqueue.h */,
+				48ADD135170DA014001515EB /* cond.h */,
+				48ADD136170DA014001515EB /* int.h */,
+				48ADD137170DA014001515EB /* network.h */,
+				48ADD138170DA014001515EB /* packetQueue.h */,
+				48ADD13A170DA02F001515EB /* rtp.h */,
+				48ADD13B170DA02F001515EB /* sRtpSecrets.h */,
+				48ADD13C170DA02F001515EB /* synch.h */,
+				48ADD13D170DA02F001515EB /* UserCallback.h */,
+				48ADD13E170DA02F001515EB /* zAlgoSupported.cpp */,
+				48ADD13F170DA02F001515EB /* zAlgoSupported.h */,
+				48ADD140170DA02F001515EB /* zCallback.h */,
+				48ADD141170DA030001515EB /* zCodes.h */,
+				48ADD142170DA030001515EB /* zCommit.cpp */,
+				48ADD143170DA030001515EB /* zCommit.h */,
+				48ADD144170DA030001515EB /* zConf2Ack.cpp */,
+				48ADD145170DA030001515EB /* zConf2Ack.h */,
+				48ADD146170DA030001515EB /* zConfirm.cpp */,
+				48ADD147170DA030001515EB /* zConfirm.h */,
+				48ADD148170DA030001515EB /* zCRC.cpp */,
+				48ADD149170DA030001515EB /* zCRC32.h */,
+				48ADD14A170DA030001515EB /* zCryptoContext.cpp */,
+				48ADD14B170DA030001515EB /* zCryptoContext.h */,
+				48ADD14C170DA030001515EB /* zDH.cpp */,
+				48ADD14D170DA030001515EB /* zDH.h */,
+				48ADD14E170DA030001515EB /* zDHPart.cpp */,
+				48ADD14F170DA030001515EB /* zDHPart.h */,
+				48ADD150170DA030001515EB /* zEndpointInfo.cpp */,
+				48ADD151170DA030001515EB /* zEndpointInfo.h */,
+				48ADD152170DA030001515EB /* zError.cpp */,
+				48ADD153170DA030001515EB /* zError.h */,
+				48ADD154170DA030001515EB /* zErrorAck.cpp */,
+				48ADD155170DA030001515EB /* zErrorAck.h */,
+				48ADD156170DA030001515EB /* zGoClear.cpp */,
+				48ADD157170DA030001515EB /* zGoClear.h */,
+				48ADD158170DA030001515EB /* zGoClearAck.cpp */,
+				48ADD159170DA030001515EB /* zGoClearAck.h */,
+				48ADD15A170DA030001515EB /* zHello.cpp */,
+				48ADD15B170DA030001515EB /* zHello.h */,
+				48ADD15C170DA030001515EB /* zHelloAck.cpp */,
+				48ADD15D170DA030001515EB /* zHelloAck.h */,
+				48ADD15E170DA030001515EB /* zopenssl.cpp */,
+				48ADD15F170DA030001515EB /* zopenssl.h */,
+				48ADD160170DA030001515EB /* zPacketBase.cpp */,
+				48ADD161170DA030001515EB /* zPacketBase.h */,
+				48ADD162170DA030001515EB /* zPing.cpp */,
+				48ADD163170DA030001515EB /* zPing.h */,
+				48ADD164170DA030001515EB /* zPingAck.cpp */,
+				48ADD165170DA030001515EB /* zPingAck.h */,
+				48ADD166170DA030001515EB /* zQueue.cpp */,
+				48ADD167170DA030001515EB /* zQueue.h */,
+				48ADD168170DA030001515EB /* zRecord.cpp */,
+				48ADD169170DA030001515EB /* zRecord.h */,
+				48ADD16A170DA030001515EB /* zRtpConfig.h */,
+				48ADD16B170DA030001515EB /* zRtpEngine.cpp */,
+				48ADD16C170DA030001515EB /* zRtpEngine.h */,
+				48ADD16D170DA030001515EB /* zStateMachineDef.cpp */,
+				48ADD16E170DA030001515EB /* zStateMachineDef.h */,
+				48ADD16F170DA030001515EB /* zTextData.cpp */,
+				48ADD170170DA030001515EB /* zTextData.h */,
+				48ADD171170DA030001515EB /* zTimer.h */,
+				48ADD172170DA030001515EB /* zTimer2.h */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		48ADD18B170DA5A4001515EB /* pj */ = {
+			isa = PBXGroup;
+			children = (
+				48ADD18C170DA5A4001515EB /* pj_callbackadapter.cpp */,
+				48ADD18D170DA5A4001515EB /* pj_callbackadapter.h */,
+				48ADD18E170DA5A4001515EB /* pj_srtpadapter.cpp */,
+				48ADD18F170DA5A4001515EB /* pj_srtpadapter.h */,
+				48ADD190170DA5A4001515EB /* pj_zrtp_transport.cpp */,
+				48ADD191170DA5A4001515EB /* pj_zrtp_transport.h */,
+				48ADD192170DA5A4001515EB /* pj_zrtpadapter.cpp */,
+				48ADD193170DA5A4001515EB /* pj_zrtpadapter.h */,
+			);
+			name = pj;
+			path = Sources/pj;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		48ADD11F170D9EF8001515EB /* OpenZRTP */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 48ADD12E170D9EF8001515EB /* Build configuration list for PBXNativeTarget "OpenZRTP" */;
+			buildPhases = (
+				48ADD11C170D9EF8001515EB /* Sources */,
+				48ADD11D170D9EF8001515EB /* Frameworks */,
+				48ADD11E170D9EF8001515EB /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OpenZRTP;
+			productName = OpenZRTP;
+			productReference = 48ADD120170D9EF8001515EB /* libOpenZRTP.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		48ADD118170D9EF8001515EB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "Cornelis van der Bent";
+			};
+			buildConfigurationList = 48ADD11B170D9EF8001515EB /* Build configuration list for PBXProject "OpenZRTP" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 48ADD117170D9EF8001515EB;
+			productRefGroup = 48ADD121170D9EF8001515EB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				48ADD11F170D9EF8001515EB /* OpenZRTP */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		48ADD11C170D9EF8001515EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				48ADD139170DA014001515EB /* Base32.cpp in Sources */,
+				48ADD173170DA030001515EB /* zAlgoSupported.cpp in Sources */,
+				48ADD174170DA030001515EB /* zCommit.cpp in Sources */,
+				48ADD175170DA030001515EB /* zConf2Ack.cpp in Sources */,
+				48ADD176170DA030001515EB /* zConfirm.cpp in Sources */,
+				48ADD177170DA030001515EB /* zCRC.cpp in Sources */,
+				48ADD178170DA030001515EB /* zCryptoContext.cpp in Sources */,
+				48ADD179170DA030001515EB /* zDH.cpp in Sources */,
+				48ADD17A170DA030001515EB /* zDHPart.cpp in Sources */,
+				48ADD17B170DA030001515EB /* zEndpointInfo.cpp in Sources */,
+				48ADD17C170DA030001515EB /* zError.cpp in Sources */,
+				48ADD17D170DA030001515EB /* zErrorAck.cpp in Sources */,
+				48ADD17E170DA030001515EB /* zGoClear.cpp in Sources */,
+				48ADD17F170DA030001515EB /* zGoClearAck.cpp in Sources */,
+				48ADD180170DA030001515EB /* zHello.cpp in Sources */,
+				48ADD181170DA030001515EB /* zHelloAck.cpp in Sources */,
+				48ADD182170DA030001515EB /* zopenssl.cpp in Sources */,
+				48ADD183170DA030001515EB /* zPacketBase.cpp in Sources */,
+				48ADD184170DA030001515EB /* zPing.cpp in Sources */,
+				48ADD185170DA030001515EB /* zPingAck.cpp in Sources */,
+				48ADD186170DA030001515EB /* zQueue.cpp in Sources */,
+				48ADD187170DA030001515EB /* zRecord.cpp in Sources */,
+				48ADD188170DA030001515EB /* zRtpEngine.cpp in Sources */,
+				48ADD189170DA030001515EB /* zStateMachineDef.cpp in Sources */,
+				48ADD18A170DA030001515EB /* zTextData.cpp in Sources */,
+				48ADD194170DA5A4001515EB /* pj_callbackadapter.cpp in Sources */,
+				48ADD195170DA5A4001515EB /* pj_srtpadapter.cpp in Sources */,
+				48ADD196170DA5A4001515EB /* pj_zrtp_transport.cpp in Sources */,
+				48ADD197170DA5A4001515EB /* pj_zrtpadapter.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		48ADD12C170D9EF8001515EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"PJ_IOS=1",
+					"PJ_AUTOCONF=1",
+					"HAVE_PTHREAD_H=1",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = "";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../../OpenSSL-for-iPhone/include";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		48ADD12D170D9EF8001515EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = "";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../../OpenSSL-for-iPhone/include";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		48ADD12F170D9EF8001515EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/OpenZRTP.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "OpenZRTP/OpenZRTP-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"../OpenSSL-for-iPhone/include",
+					"../pjproject-2.1.0/install/include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../OpenSSL-for-iPhone/lib\"",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		48ADD130170D9EF8001515EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/OpenZRTP.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "OpenZRTP/OpenZRTP-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"../OpenSSL-for-iPhone/include",
+					"../pjproject-2.1.0/install/include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../OpenSSL-for-iPhone/lib\"",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		48ADD11B170D9EF8001515EB /* Build configuration list for PBXProject "OpenZRTP" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				48ADD12C170D9EF8001515EB /* Debug */,
+				48ADD12D170D9EF8001515EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		48ADD12E170D9EF8001515EB /* Build configuration list for PBXNativeTarget "OpenZRTP" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				48ADD12F170D9EF8001515EB /* Debug */,
+				48ADD130170D9EF8001515EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 48ADD118170D9EF8001515EB /* Project object */;
+}
