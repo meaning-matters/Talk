@@ -799,6 +799,8 @@
 		48DD72D2169F56F000CD7080 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DD72C0169F56F000CD7080 /* UIImageView+AFNetworking.m */; };
 		48DD72D5169F5AC600CD7080 /* WebClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DD72D4169F5AC600CD7080 /* WebClient.m */; };
 		48DD72D6169F5AC600CD7080 /* WebClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DD72D4169F5AC600CD7080 /* WebClient.m */; };
+		48E4AB8C170DCFCF00A4B236 /* libOpenZRTP.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E4AB8B170DCFCF00A4B236 /* libOpenZRTP.a */; };
+		48E4AB8D170DCFCF00A4B236 /* libOpenZRTP.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E4AB8B170DCFCF00A4B236 /* libOpenZRTP.a */; };
 		48EC6DBE16545B1F00394A4B /* AC.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EC6DBC16545B1F00394A4B /* AC.png */; };
 		48EC6DBF16545B1F00394A4B /* AC.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EC6DBC16545B1F00394A4B /* AC.png */; };
 		48EC6DC016545B1F00394A4B /* AC@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EC6DBD16545B1F00394A4B /* AC@2x.png */; };
@@ -1570,6 +1572,7 @@
 		48DD72C0169F56F000CD7080 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		48DD72D3169F5AC600CD7080 /* WebClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebClient.h; sourceTree = "<group>"; };
 		48DD72D4169F5AC600CD7080 /* WebClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebClient.m; sourceTree = "<group>"; };
+		48E4AB8B170DCFCF00A4B236 /* libOpenZRTP.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOpenZRTP.a; path = External/OpenZRTP/lib/Release/libOpenZRTP.a; sourceTree = "<group>"; };
 		48EC6DBC16545B1F00394A4B /* AC.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AC.png; sourceTree = "<group>"; };
 		48EC6DBD16545B1F00394A4B /* AC@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AC@2x.png"; sourceTree = "<group>"; };
 		48EDD1FD1667652A007B89DA /* AddCall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AddCall.png; sourceTree = "<group>"; };
@@ -1650,6 +1653,7 @@
 				48A2621A16FE4F9700007638 /* libresample-arm-apple-darwin9.a in Frameworks */,
 				48A2621C16FE4F9700007638 /* libspeex-arm-apple-darwin9.a in Frameworks */,
 				48A2621E16FE4F9700007638 /* libsrtp-arm-apple-darwin9.a in Frameworks */,
+				48E4AB8C170DCFCF00A4B236 /* libOpenZRTP.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1681,6 +1685,7 @@
 				48A2621B16FE4F9700007638 /* libresample-arm-apple-darwin9.a in Frameworks */,
 				48A2621D16FE4F9700007638 /* libspeex-arm-apple-darwin9.a in Frameworks */,
 				48A2621F16FE4F9700007638 /* libsrtp-arm-apple-darwin9.a in Frameworks */,
+				48E4AB8D170DCFCF00A4B236 /* libOpenZRTP.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2386,6 +2391,7 @@
 		48884A731615CE920005AA79 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				48E4AB8A170DC94000A4B236 /* OpenZRTP */,
 				48EE399616777EBB00823E09 /* WebRTC */,
 				48338F55161628410033F4C1 /* OpenSSL */,
 				48338F54161628310033F4C1 /* pjsip */,
@@ -2591,6 +2597,14 @@
 			name = AFNetworking;
 			path = External/AFNetworking/AFNetworking;
 			sourceTree = SOURCE_ROOT;
+		};
+		48E4AB8A170DC94000A4B236 /* OpenZRTP */ = {
+			isa = PBXGroup;
+			children = (
+				48E4AB8B170DCFCF00A4B236 /* libOpenZRTP.a */,
+			);
+			name = OpenZRTP;
+			sourceTree = "<group>";
 		};
 		48EDD1FC1667652A007B89DA /* Call */ = {
 			isa = PBXGroup;
@@ -3681,6 +3695,7 @@
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
 					"\"$(SRCROOT)/External/WebRTC\"",
 					"\"$(SRCROOT)/External/pjproject-2.1.0/install/lib\"",
+					"\"$(SRCROOT)/External/OpenZRTP/lib/Release\"",
 				);
 				PRODUCT_NAME = NumberBay0;
 				PROVISIONING_PROFILE = "";
@@ -3708,6 +3723,7 @@
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
 					"\"$(SRCROOT)/External/WebRTC\"",
 					"\"$(SRCROOT)/External/pjproject-2.1.0/install/lib\"",
+					"\"$(SRCROOT)/External/OpenZRTP/lib/Release\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = NumberBay0;
@@ -3734,6 +3750,7 @@
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
 					"\"$(SRCROOT)/External/WebRTC\"",
 					"\"$(SRCROOT)/External/pjproject-2.1.0/install/lib\"",
+					"\"$(SRCROOT)/External/OpenZRTP/lib/Release\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -3758,6 +3775,7 @@
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
 					"\"$(SRCROOT)/External/WebRTC\"",
 					"\"$(SRCROOT)/External/pjproject-2.1.0/install/lib\"",
+					"\"$(SRCROOT)/External/OpenZRTP/lib/Release\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -3818,6 +3836,7 @@
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
 					"\"$(SRCROOT)/External/WebRTC\"",
 					"\"$(SRCROOT)/External/pjproject-2.1.0/install/lib\"",
+					"\"$(SRCROOT)/External/OpenZRTP/lib/Release\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = NumberBay0;
@@ -3844,6 +3863,7 @@
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
 					"\"$(SRCROOT)/External/WebRTC\"",
 					"\"$(SRCROOT)/External/pjproject-2.1.0/install/lib\"",
+					"\"$(SRCROOT)/External/OpenZRTP/lib/Release\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
