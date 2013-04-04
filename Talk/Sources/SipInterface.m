@@ -223,7 +223,7 @@ void showLog(int level, const char* data, int len)
     pjmedia_endpt*  endpt = pjsua_get_pjmedia_endpt();
     if ((status = pjmedia_codec_webrtc_init(endpt)) != PJ_SUCCESS)
     {
-        return status;
+       return status;
     }
 
     /* Initialize our module to handle otherwise unhandled request */
@@ -1479,6 +1479,7 @@ void showLog(int level, const char* data, int len)
         }
             
         case PJSIP_INV_STATE_INCOMING:      // After INVITE is received.
+            NSLog(@"fff");
             break;
 
         case PJSIP_INV_STATE_EARLY:         // After response with To tag.
