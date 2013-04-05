@@ -296,27 +296,27 @@ static WebClient*   sharedClient;
 }
 
 
-- (void)cancelAllRetrieveNumberStatesForCountryId:(NSString*)countryId
+- (void)cancelAllRetrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
                                        path:[NSString stringWithFormat:@"numbers/countries/%@/states",
-                                             countryId]];
+                                             isoCountryCode]];
 }
 
 
-- (void)cancelAllRetrieveNumberAreasForCountryId:(NSString*)countryId stateId:(NSString*)stateId
+- (void)cancelAllRetrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode stateCode:(NSString*)stateCode
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
                                        path:[NSString stringWithFormat:@"numbers/countries/%@/states/%@/areas",
-                                             countryId, stateId]];
+                                             isoCountryCode, stateCode]];
 }
 
 
-- (void)cancelAllRetrieveNumberAreasForCountryId:(NSString*)countryId
+- (void)cancelAllRetrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
                                        path:[NSString stringWithFormat:@"numbers/countries/%@/areas",
-                                             countryId]];
+                                             isoCountryCode]];
 }
 
 

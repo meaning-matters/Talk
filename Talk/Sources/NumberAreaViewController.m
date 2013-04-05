@@ -78,8 +78,7 @@ typedef enum
                                                                               [NSBundle mainBundle], @"Area",
                                                                               @"Title of app screen with one area.\n"
                                                                               @"[1 line larger font].");
-
-                info = [NSMutableDictionary dictionaryWithDictionary:content];
+                info = [NSMutableArray arrayWithArray:content];
             }
             else if (status == WebClientStatusFailServiceUnavailable)
             {
@@ -142,10 +141,35 @@ typedef enum
 }
 
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    [[WebClient sharedClient] cancelAllRetrieveAreaInfoForIsoCountryCode:country[@"isoCountryCode"]
+                                                                areaCode:area[@"areaCode"]];
+}
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
 }
+
+
+#pragma mark - Helper Methods
+
+- (void)cancel
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
 
 
 #pragma mark - Table View Delegates

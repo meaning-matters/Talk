@@ -168,7 +168,7 @@
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.searchDisplayController setActive:NO animated:YES];
 
-    [[WebClient sharedClient] cancelAllRetrieveNumberStatesForCountryId:country[@"countryId"]];
+    [[WebClient sharedClient] cancelAllRetrieveNumberStatesForIsoCountryCode:country[@"isoCountryCode"]];
 }
 
 

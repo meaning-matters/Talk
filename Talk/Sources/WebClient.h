@@ -68,11 +68,11 @@ typedef enum
 
 - (void)cancelAllRetrieveNumberCountries;
 
-- (void)cancelAllRetrieveNumberStatesForCountryId:(NSString*)countryId;
+- (void)cancelAllRetrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode;
 
-- (void)cancelAllRetrieveNumberAreasForCountryId:(NSString*)countryId stateId:(NSString*)stateId;
+- (void)cancelAllRetrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode stateCode:(NSString*)stateCode;
 
-- (void)cancelAllRetrieveNumberAreasForCountryId:(NSString*)countryId;
+- (void)cancelAllRetrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode;
 
 - (void)cancelAllRetrieveAreaInfoForIsoCountryCode:(NSString*)isoCountryCode areaCode:(NSString*)areaCode;
 

@@ -124,12 +124,12 @@
 
     if (state != nil)
     {
-        [[WebClient sharedClient] cancelAllRetrieveNumberAreasForCountryId:country[@"countryId"]
-                                                                   stateId:state[@"stateId"]];
+        [[WebClient sharedClient] cancelAllRetrieveNumberAreasForIsoCountryCode:country[@"isoCountryCode"]
+                                                                      stateCode:state[@"stateCode"]];
     }
     else
     {
-        [[WebClient sharedClient] cancelAllRetrieveNumberAreasForCountryId:country[@"countryId"]];
+        [[WebClient sharedClient] cancelAllRetrieveNumberAreasForIsoCountryCode:country[@"isoCountryCode"]];
     }
 }
 
