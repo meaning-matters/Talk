@@ -43,16 +43,16 @@ typedef enum
 
 - (void)retrieveNumberCountries:(void (^)(WebClientStatus status, id content))reply;
 
-- (void)retrieveNumberStatesForCountryId:(NSString*)countryId
-                                   reply:(void (^)(WebClientStatus status, id content))reply;
+- (void)retrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode
+                                        reply:(void (^)(WebClientStatus status, id content))reply;
 
-- (void)retrieveNumberAreasForCountryId:(NSString*)countryId
-                                stateId:(NSString*)stateId
-                                  reply:(void (^)(WebClientStatus status, id content))reply;
+- (void)retrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
+                                   stateCode:(NSString*)stateCode
+                                       reply:(void (^)(WebClientStatus status, id content))reply;
 
-- (void)retrieveNumberAreasForCountryId:(NSString*)countryId
-                         numberTypeMask:(NumberTypeMask)numberTypeMask
-                                  reply:(void (^)(WebClientStatus status, id content))reply;
+- (void)retrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
+                              numberTypeMask:(NumberTypeMask)numberTypeMask
+                                       reply:(void (^)(WebClientStatus status, id content))reply;
 
 - (void)retrieveNumberAreaInfoForIsoCountryCode:(NSString*)isoCountryCode
                                        areaCode:(NSString*)areaCode

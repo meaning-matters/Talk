@@ -55,7 +55,7 @@
                                                                  action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
-    [[WebClient sharedClient] retrieveNumberStatesForCountryId:country[@"countryId"]
+    [[WebClient sharedClient] retrieveNumberStatesForIsoCountryCode:country[@"isoCountryCode"]
                                                          reply:^(WebClientStatus status, id content)
     {
         if (status == WebClientStatusOk)
@@ -70,7 +70,7 @@
             nameIndexDictionary = [NSMutableDictionary dictionary];
             for (NSMutableDictionary* state in statesArray)
             {
-                NSString*       name = state[@"name"];
+                NSString*       name = state[@"stateName"];
                 NSString*       nameIndex = [name substringToIndex:1];
                 NSMutableArray* indexArray;
                 if ((indexArray = [nameIndexDictionary valueForKey:nameIndex]) != nil)
@@ -230,7 +230,7 @@
     // Look up state.
     for (state in statesArray)
     {
-        if ([state[@"name"] isEqualToString:name])
+        if ([state[@"stateName"] isEqualToString:name])
         {
             break;
         }
@@ -268,13 +268,13 @@
     // Look up country.
     for (state in statesArray)
     {
-        if ([state[@"name"] isEqualToString:name])
+        if ([state[@"stateName"] isEqualToString:name])
         {
             break;
         }
     }
 
-    cell.imageView.image = [UIImage imageNamed:country[@"isoCode"]];
+    cell.imageView.image = [UIImage imageNamed:country[@"isoCountryCode"]];
     cell.textLabel.text  = name;
     cell.accessoryType   = UITableViewCellAccessoryNone;
 

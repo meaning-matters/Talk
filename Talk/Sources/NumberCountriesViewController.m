@@ -80,7 +80,7 @@
                 NSMutableDictionary*    matchedCountry = nil;
                 for (NSMutableDictionary* country in allCountriesArray)
                 {
-                    if ([newCountry[@"isoCode"] isEqualToString:country[@"isoCode"]])
+                    if ([newCountry[@"isoCountryCode"] isEqualToString:country[@"isoCountryCode"]])
                     {
                         matchedCountry = country;
                         break;
@@ -214,7 +214,7 @@
     nameIndexDictionary = [NSMutableDictionary dictionary];
     for (NSMutableDictionary* country in countriesArray)
     {
-        NSString*       name = [[CountryNames sharedNames] nameForIsoCountryCode:country[@"isoCode"]];
+        NSString*       name = [[CountryNames sharedNames] nameForIsoCountryCode:country[@"isoCountryCode"]];
         NSString*       nameIndex = [name substringToIndex:1];
         NSMutableArray* indexArray;
         if ((indexArray = [nameIndexDictionary valueForKey:nameIndex]) != nil)
@@ -299,7 +299,7 @@
     isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
     for (country in countriesArray)
     {
-        if ([country[@"isoCode"] isEqualToString:isoCountryCode])
+        if ([country[@"isoCountryCode"] isEqualToString:isoCountryCode])
         {
             break;
         }
@@ -350,7 +350,7 @@
     isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
     for (country in countriesArray)
     {
-        if ([country[@"isoCode"] isEqualToString:isoCountryCode])
+        if ([country[@"isoCountryCode"] isEqualToString:isoCountryCode])
         {
             break;
         }

@@ -68,7 +68,7 @@ typedef enum
 
     if (requireInfo)
     {
-        [[WebClient sharedClient] retrieveNumberAreaInfoForIsoCountryCode:country[@"isoCode"]
+        [[WebClient sharedClient] retrieveNumberAreaInfoForIsoCountryCode:country[@"isoCountryCode"]
                                                                  areaCode:area[@"areaCode"]
                                                                     reply:^(WebClientStatus status, id content)
         {
@@ -377,7 +377,7 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
-    cell.imageView.image = [UIImage imageNamed:country[@"isoCode"]];
+    cell.imageView.image = [UIImage imageNamed:country[@"isoCountryCode"]];
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 

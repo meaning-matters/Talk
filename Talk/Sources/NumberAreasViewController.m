@@ -68,9 +68,9 @@
 
     if (state != nil)
     {
-        [[WebClient sharedClient] retrieveNumberAreasForCountryId:country[@"countryId"]
-                                                          stateId:state[@"stateId"]
-                                                            reply:^(WebClientStatus status, id content)
+        [[WebClient sharedClient] retrieveNumberAreasForIsoCountryCode:country[@"isoCountryCode"]
+                                                             stateCode:state[@"stateCode"]
+                                                                 reply:^(WebClientStatus status, id content)
          {
              if (status == WebClientStatusOk)
              {
@@ -84,9 +84,9 @@
     }
     else
     {
-        [[WebClient sharedClient] retrieveNumberAreasForCountryId:country[@"countryId"]
-                                                   numberTypeMask:numberTypeMask
-                                                            reply:^(WebClientStatus status, id content)
+        [[WebClient sharedClient] retrieveNumberAreasForIsoCountryCode:country[@"isoCountryCode"]
+                                                        numberTypeMask:numberTypeMask
+                                                                 reply:^(WebClientStatus status, id content)
          {
              if (status == WebClientStatusOk)
              {
@@ -166,18 +166,18 @@
         {
             matchedArea = [NSMutableDictionary dictionaryWithDictionary:newArea];
             matchedArea[@"numberTypes"] = @(0);
-            if ([matchedArea objectForKey:@"name"] != [NSNull null])
+            if ([matchedArea objectForKey:@"areaName"] != [NSNull null])
             {
-                matchedArea[@"name"] = [matchedArea[@"name"] capitalizedString];
+                matchedArea[@"areaName"] = [matchedArea[@"areaName"] capitalizedString];
             }
             else if ([matchedArea objectForKey:@"areaCode"] != [NSNull null])
             {
                 // To support non-geographic numbers with little code change.
-                matchedArea[@"name"] = matchedArea[@"areaCode"];
+                matchedArea[@"areaName"] = matchedArea[@"areaCode"];
             }
             else
             {
-                matchedArea[@"name"] = NSLocalizedStringWithDefaultValue(@"NumberAreas:Table NoAreaCode", nil,
+                matchedArea[@"areaName"] = NSLocalizedStringWithDefaultValue(@"NumberAreas:Table NoAreaCode", nil,
                                                                          [NSBundle mainBundle], @"<unknown area code>",
                                                                          @"Explains that area code is not available.\n"
                                                                          @"[1 line larger font].");
@@ -273,7 +273,7 @@
     nameIndexDictionary = [NSMutableDictionary dictionary];
     for (NSMutableDictionary* area in areasArray)
     {
-        NSString*       name = area[@"name"];
+        NSString*       name = area[@"areaName"];
         NSString*       nameIndex = [name substringToIndex:1];
         NSMutableArray* indexArray;
         if ((indexArray = [nameIndexDictionary valueForKey:nameIndex]) != nil)
@@ -356,7 +356,7 @@
     // Look up area.
     for (area in areasArray)
     {
-        if ([area[@"name"] isEqualToString:name])
+        if ([area[@"areaName"] isEqualToString:name])
         {
             break;
         }
@@ -392,7 +392,7 @@
     // Look up area.
     for (area in areasArray)
     {
-        if ([area[@"name"] isEqualToString:name])
+        if ([area[@"areaName"] isEqualToString:name])
         {
             break;
         }
