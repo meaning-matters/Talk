@@ -71,32 +71,32 @@
         [[WebClient sharedClient] retrieveNumberAreasForIsoCountryCode:country[@"isoCountryCode"]
                                                              stateCode:state[@"stateCode"]
                                                                  reply:^(WebClientStatus status, id content)
-         {
-             if (status == WebClientStatusOk)
-             {
-                 [self processContent:content];
-             }
-             else
-             {
-                 [self handleWebClientStatus:status];
-             }
-         }];
+        {
+            if (status == WebClientStatusOk)
+            {
+                [self processContent:content];
+            }
+            else
+            {
+                [self handleWebClientStatus:status];
+            }
+        }];
     }
     else
     {
         [[WebClient sharedClient] retrieveNumberAreasForIsoCountryCode:country[@"isoCountryCode"]
                                                         numberTypeMask:numberTypeMask
                                                                  reply:^(WebClientStatus status, id content)
-         {
-             if (status == WebClientStatusOk)
-             {
-                 [self processContent:content];
-             }
-             else
-             {
-                 [self handleWebClientStatus:status];
-             }
-         }];
+        {
+            if (status == WebClientStatusOk)
+            {
+                [self processContent:content];
+            }
+            else
+            {
+                [self handleWebClientStatus:status];
+            }
+        }];
     }
 }
 
@@ -178,9 +178,9 @@
             else
             {
                 matchedArea[@"areaName"] = NSLocalizedStringWithDefaultValue(@"NumberAreas:Table NoAreaCode", nil,
-                                                                         [NSBundle mainBundle], @"<unknown area code>",
-                                                                         @"Explains that area code is not available.\n"
-                                                                         @"[1 line larger font].");
+                                                                             [NSBundle mainBundle], @"<unknown area code>",
+                                                                             @"Explains that area code is not available.\n"
+                                                                             @"[1 line larger font].");
             }
 
             [allAreasArray addObject:matchedArea];
