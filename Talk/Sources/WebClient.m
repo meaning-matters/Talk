@@ -82,7 +82,9 @@ static WebClient*   sharedClient;
 }
 
 
-- (void)postPath:(NSString*)path parameters:(NSDictionary*)parameters reply:(void (^)(WebClientStatus status, id content))reply
+- (void)postPath:(NSString*)path
+      parameters:(NSDictionary*)parameters
+           reply:(void (^)(WebClientStatus status, id content))reply
 {
     [Common enableNetworkActivityIndicator:YES];
 
@@ -92,31 +94,33 @@ static WebClient*   sharedClient;
     [self postPath:path
         parameters:parameters
            success:^(AFHTTPRequestOperation* operation, id responseObject)
-     {
-         [Common enableNetworkActivityIndicator:NO];
+    {
+        [Common enableNetworkActivityIndicator:NO];
 
-         NSDictionary* reponseDictionary = responseObject;
-         if(responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
-         {
-             reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
-         }
-         else
-         {
-             reply(WebClientStatusFailInvalidResponse, nil);
-         }
-     }
+        NSDictionary* reponseDictionary = responseObject;
+        if (responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
+        {
+            reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
+        }
+        else
+        {
+            reply(WebClientStatusFailInvalidResponse, nil);
+        }
+    }
           failure:^(AFHTTPRequestOperation* operation, NSError* error)
-     {
-         [Common enableNetworkActivityIndicator:NO];
-         if (error != nil && error.code != NSURLErrorCancelled)
-         {
-             reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
-         }
-     }];
+    {
+        [Common enableNetworkActivityIndicator:NO];
+        if (error != nil && error.code != NSURLErrorCancelled)
+        {
+            reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
+        }
+    }];
 }
 
 
-- (void)getPath:(NSString*)path parameters:(NSDictionary*)parameters reply:(void (^)(WebClientStatus status, id content))reply
+- (void)getPath:(NSString*)path
+     parameters:(NSDictionary*)parameters
+          reply:(void (^)(WebClientStatus status, id content))reply
 {
     [Common enableNetworkActivityIndicator:YES];
 
@@ -126,27 +130,27 @@ static WebClient*   sharedClient;
     [self getPath:path
        parameters:parameters
           success:^(AFHTTPRequestOperation* operation, id responseObject)
-     {
-         [Common enableNetworkActivityIndicator:NO];
+    {
+        [Common enableNetworkActivityIndicator:NO];
 
-         NSDictionary* reponseDictionary = responseObject;
-         if(responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
-         {
-             reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
-         }
-         else
-         {
-             reply(WebClientStatusFailInvalidResponse, nil);
-         }
-     }
+        NSDictionary* reponseDictionary = responseObject;
+        if (responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
+        {
+            reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
+        }
+        else
+        {
+            reply(WebClientStatusFailInvalidResponse, nil);
+        }
+    }
           failure:^(AFHTTPRequestOperation* operation, NSError* error)
-     {
-         [Common enableNetworkActivityIndicator:NO];
-         if (error != nil && error.code != NSURLErrorCancelled)
-         {
-             reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
-         }
-     }];
+    {
+        [Common enableNetworkActivityIndicator:NO];
+        if (error != nil && error.code != NSURLErrorCancelled)
+        {
+            reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
+        }
+    }];
 }
 
 
@@ -167,7 +171,7 @@ static WebClient*   sharedClient;
         [Common enableNetworkActivityIndicator:NO];
 
         NSDictionary* reponseDictionary = responseObject;
-        if(responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
+        if (responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
         {
             reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
         }
