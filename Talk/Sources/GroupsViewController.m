@@ -49,10 +49,4 @@
     [super viewDidLoad];
 }
 
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
-
 @end

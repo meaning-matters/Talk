@@ -134,12 +134,6 @@
 }
 
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
-
-
 #pragma mark - Helper Methods
 
 - (void)processContent:(id)content

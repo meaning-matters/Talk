@@ -92,12 +92,6 @@
 }
 
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
-
-
 #pragma mark - Utility Methods
 
 - (void)showView:(UIView*)toShowView

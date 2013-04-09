@@ -134,12 +134,6 @@ const NSTimeInterval    TransitionDuration = 0.5;
 }
 
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
-
-
 #pragma mark - Drawing
 
 - (void)drawTopImage
