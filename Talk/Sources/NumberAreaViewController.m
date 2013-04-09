@@ -24,6 +24,10 @@ typedef enum
 } TableSections;
 
 
+const int   TextFieldCellTag = 1234;
+const int   CountryCellTag   = 4321;
+
+
 @interface NumberAreaViewController ()
 {
     NSDictionary*           country;
@@ -222,13 +226,26 @@ typedef enum
 - (void)addCountryImageToCell:(UITableViewCell*)cell isoCountryCode:(NSString*)isoCountryCode
 {
     UIImage*        image = [UIImage imageNamed:isoCountryCode];
-    UIImageView*    imageView;
+    UIImageView*    imageView = (UIImageView*)[cell viewWithTag:CountryCellTag];
     CGRect          frame = CGRectMake(33, 4, image.size.width, image.size.height);
 
-    imageView = [[UIImageView alloc] initWithFrame:frame];
+    imageView = (imageView == nil) ? [[UIImageView alloc] initWithFrame:frame] : imageView;
+    imageView.tag = CountryCellTag;
     imageView.image = image;
 
     [cell.contentView addSubview:imageView];
+}
+
+
+- (NSIndexPath*)findCellIndexPathForSubview:(UIView*)subview
+{
+    UIView* superview = subview.superview;
+    while ([superview class] != [UITableViewCell class])
+    {
+        superview = superview.superview;
+    }
+
+    return [self.tableView indexPathForCell:(UITableViewCell*)superview];
 }
 
 
@@ -253,17 +270,20 @@ typedef enum
             break;
 
         case TableSectionNaming:
+            title = NSLocalizedStringWithDefaultValue(@"NumberArea:Naming SectionHeader", nil,
+                                                      [NSBundle mainBundle], @"Enter a Name...",
+                                                      @"...");
             break;
 
         case TableSectionName:
             title = NSLocalizedStringWithDefaultValue(@"NumberArea:Name SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Name",
+                                                      [NSBundle mainBundle], @"Supply Contact Name...",
                                                       @"Name and company of someone.");
             break;
 
         case TableSectionAddress:
             title = NSLocalizedStringWithDefaultValue(@"NumberArea:Address SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Address",
+                                                      [NSBundle mainBundle], @"Supply Contact Address...",
                                                       @"Address of someone.");
             break;
 
@@ -456,14 +476,14 @@ typedef enum
             }
             else
             {
-                cell.textLabel.text = @"  ";
+                cell.textLabel.text = @" "; // Without this, the detailTextLabel is on the left.
                 cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:country[@"isoCountryCode"]];
                 [self addCountryImageToCell:cell isoCountryCode:country[@"isoCountryCode"]];
             }
             break;
 
         case 4:
-            cell.textLabel.text = @"  ";
+            cell.textLabel.text = @" ";     // Without this, the detailTextLabel is on the left.
             cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:country[@"isoCountryCode"]];
             [self addCountryImageToCell:cell isoCountryCode:country[@"isoCountryCode"]];
             break;
@@ -479,17 +499,24 @@ typedef enum
 - (UITableViewCell*)namingCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell;
+    UITextField*        textField;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"TextFieldCell"];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"TextFieldCell"];
+        textField = [self addTextFieldToCell:cell];
+        textField.tag = TextFieldCellTag;
+    }
+    else
+    {
+        textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
     }
 
     cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Name Label", nil,
                                                             [NSBundle mainBundle], @"Name",
                                                             @"....");
-    nameTextField = [self addTextFieldToCell:cell];
+    nameTextField = textField;
 
     cell.detailTextLabel.text = nil;
     cell.imageView.image = nil;
@@ -503,11 +530,18 @@ typedef enum
 - (UITableViewCell*)nameCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell;
+    UITextField*        textField;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"TextFieldCell"];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"TextFieldCell"];
+        textField = [self addTextFieldToCell:cell];
+        textField.tag = TextFieldCellTag;
+    }
+    else
+    {
+        textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
     }
 
     switch (indexPath.row)
@@ -516,28 +550,28 @@ typedef enum
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Salutation Label", nil,
                                                                     [NSBundle mainBundle], @"Title",
                                                                     @"....");
-            salutationTextField = [self addTextFieldToCell:cell];
+            salutationTextField = textField;
             break;
 
         case 1:
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:FirstName Label", nil,
                                                                     [NSBundle mainBundle], @"Firstname",
                                                                     @"....");
-            firstNameTextField = [self addTextFieldToCell:cell];
+            firstNameTextField = textField;
             break;
 
         case 2:
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:LastName Label", nil,
                                                                     [NSBundle mainBundle], @"Lastname",
                                                                     @"....");
-            lastNameTextField = [self addTextFieldToCell:cell];
+            lastNameTextField = textField;
             break;
 
         case 3:
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Company Label", nil,
                                                                     [NSBundle mainBundle], @"Company",
                                                                     @"....");
-            companyTextField = [self addTextFieldToCell:cell];
+            companyTextField = textField;
             break;
     }
 
@@ -554,11 +588,18 @@ typedef enum
 {
     UITableViewCell*    cell;
     NSString*           identifier = (indexPath.row <= 1) ? @"TextFieldCell" : @"Value2Cell";
+    UITextField*        textField;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:identifier];
+        textField = [self addTextFieldToCell:cell];
+        textField.tag = TextFieldCellTag;
+    }
+    else
+    {
+        textField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];
     }
 
     switch (indexPath.row)
@@ -568,7 +609,7 @@ typedef enum
                                                                     [NSBundle mainBundle], @"Street",
                                                                     @"....");
             cell.detailTextLabel.text = nil;
-            streetTextField = [self addTextFieldToCell:cell];
+            streetTextField = textField;
             cell.accessoryType  = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             break;
@@ -578,7 +619,7 @@ typedef enum
                                                                     [NSBundle mainBundle], @"Building",
                                                                     @"....");
             cell.detailTextLabel.text = nil;
-            buildingTextField = [self addTextFieldToCell:cell];
+            buildingTextField = textField;
             cell.accessoryType  = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             break;
@@ -628,6 +669,13 @@ typedef enum
 
 
 #pragma mark - TextField Delegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField*)textField
+{
+    activeCellIndexPath = [self findCellIndexPathForSubview:textField];
+    return YES;
+}
+
 
 - (BOOL)textFieldShouldClear:(UITextField*)textField
 {
@@ -713,13 +761,13 @@ typedef enum
         [UIView animateWithDuration:animationDuration delay:delay
                             options:UIViewAnimationOptionBeginFromCurrentState
                          animations:^
-         {
-             self.tableView.frame = tableFrame;
-         }
+        {
+            self.tableView.frame = tableFrame;
+        }
                          completion:^(BOOL finished)
-         {
-             [self tableAnimationEnded:nil finished:nil contextInfo:nil];
-         }];
+        {
+            [self tableAnimationEnded:nil finished:nil contextInfo:nil];
+        }];
     }
 }
 
@@ -733,12 +781,6 @@ typedef enum
     else
     {
         keyboardShown = NO;
-    }
-
-    if (self.inputAccessoryView)
-    {
-        self.tableView.contentInset          = UIEdgeInsetsZero;
-        self.tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
     }
 
     if (keyboardOverlap == 0)
@@ -767,9 +809,9 @@ typedef enum
     [UIView animateWithDuration:animationDuration delay:0
                         options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^
-     {
-         self.tableView.frame = tableFrame;
-     }
+    {
+        self.tableView.frame = tableFrame;
+    }
                      completion:nil];
 }
 
