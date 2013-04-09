@@ -61,6 +61,14 @@
 		4837BB3D165D701F00E46C36 /* LibPhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */; };
 		4837BB66165F726400E46C36 /* BlockAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB65165F726300E46C36 /* BlockAlertView.m */; };
 		4837BB67165F726400E46C36 /* BlockAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB65165F726300E46C36 /* BlockAlertView.m */; };
+		484D936C1712FBA1006FA875 /* NumberAreaCitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936B1712FBA1006FA875 /* NumberAreaCitiesViewController.m */; };
+		484D936D1712FBA1006FA875 /* NumberAreaCitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936B1712FBA1006FA875 /* NumberAreaCitiesViewController.m */; };
+		484D937017131E97006FA875 /* NumberAreaZipsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936F17131E97006FA875 /* NumberAreaZipsViewController.m */; };
+		484D937117131E97006FA875 /* NumberAreaZipsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936F17131E97006FA875 /* NumberAreaZipsViewController.m */; };
+		484D937317132518006FA875 /* NumberAreaCitiesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484D937217132518006FA875 /* NumberAreaCitiesView.xib */; };
+		484D937417132518006FA875 /* NumberAreaCitiesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484D937217132518006FA875 /* NumberAreaCitiesView.xib */; };
+		484D937617132539006FA875 /* NumberAreaZipsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484D937517132539006FA875 /* NumberAreaZipsView.xib */; };
+		484D937717132539006FA875 /* NumberAreaZipsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484D937517132539006FA875 /* NumberAreaZipsView.xib */; };
 		484F7C3B164C15770059A5A6 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3A164C15770059A5A6 /* CoreTelephony.framework */; };
 		484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */; };
 		485ECBCC1651642D00364F08 /* CountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBCB1651642D00364F08 /* CountriesView.xib */; };
@@ -902,6 +910,12 @@
 		4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibPhoneNumber.m; sourceTree = "<group>"; };
 		4837BB64165F726300E46C36 /* BlockAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockAlertView.h; sourceTree = "<group>"; };
 		4837BB65165F726300E46C36 /* BlockAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockAlertView.m; sourceTree = "<group>"; };
+		484D936A1712FBA1006FA875 /* NumberAreaCitiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaCitiesViewController.h; sourceTree = "<group>"; };
+		484D936B1712FBA1006FA875 /* NumberAreaCitiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaCitiesViewController.m; sourceTree = "<group>"; };
+		484D936E17131E96006FA875 /* NumberAreaZipsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaZipsViewController.h; sourceTree = "<group>"; };
+		484D936F17131E97006FA875 /* NumberAreaZipsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaZipsViewController.m; sourceTree = "<group>"; };
+		484D937217132518006FA875 /* NumberAreaCitiesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreaCitiesView.xib; sourceTree = "<group>"; };
+		484D937517132539006FA875 /* NumberAreaZipsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreaZipsView.xib; sourceTree = "<group>"; };
 		484F7C3A164C15770059A5A6 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		485ECBCB1651642D00364F08 /* CountriesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CountriesView.xib; sourceTree = "<group>"; };
@@ -2489,7 +2503,9 @@
 				48AF450D164948DC00DFE3D8 /* GroupsView.xib */,
 				48AF45131649490100DFE3D8 /* HelpView.xib */,
 				48D0A6F91655E2C600FA2D98 /* KeypadView.xib */,
+				484D937217132518006FA875 /* NumberAreaCitiesView.xib */,
 				4830461F16EE222C000F9B05 /* NumberAreaView.xib */,
+				484D937517132539006FA875 /* NumberAreaZipsView.xib */,
 				4896D8FB16EBE5A7008A2354 /* NumberAreasView.xib */,
 				48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */,
 				488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */,
@@ -2525,8 +2541,12 @@
 				48AF44FD1649483600DFE3D8 /* HelpViewController.m */,
 				4896D8FE16EBE612008A2354 /* NumberAreasViewController.h */,
 				4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */,
+				484D936A1712FBA1006FA875 /* NumberAreaCitiesViewController.h */,
+				484D936B1712FBA1006FA875 /* NumberAreaCitiesViewController.m */,
 				4830462216EE269D000F9B05 /* NumberAreaViewController.h */,
 				4830462316EE269D000F9B05 /* NumberAreaViewController.m */,
+				484D936E17131E96006FA875 /* NumberAreaZipsViewController.h */,
+				484D936F17131E97006FA875 /* NumberAreaZipsViewController.m */,
 				48B5AAF016E6A58400BA4084 /* NumberCountriesViewController.h */,
 				48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */,
 				488AD1E816E799C3004D3A2A /* NumberStatesViewController.h */,
@@ -3283,6 +3303,8 @@
 				4893880217044F59005CC795 /* NumberHeaderView.xib in Resources */,
 				48ADD0F11706551F001515EB /* RetryPhoneSmall.png in Resources */,
 				48ADD0F31706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
+				484D937317132518006FA875 /* NumberAreaCitiesView.xib in Resources */,
+				484D937617132539006FA875 /* NumberAreaZipsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3365,6 +3387,8 @@
 				4893880317044F59005CC795 /* NumberHeaderView.xib in Resources */,
 				48ADD0F21706551F001515EB /* RetryPhoneSmall.png in Resources */,
 				48ADD0F41706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
+				484D937417132518006FA875 /* NumberAreaCitiesView.xib in Resources */,
+				484D937717132539006FA875 /* NumberAreaZipsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3471,6 +3495,8 @@
 				489387FB17039158005CC795 /* ForwardingData.m in Sources */,
 				489387FF17039165005CC795 /* RecordingData.m in Sources */,
 				48ADD0F71706791A001515EB /* UIView+AnimateHidden.m in Sources */,
+				484D936C1712FBA1006FA875 /* NumberAreaCitiesViewController.m in Sources */,
+				484D937017131E97006FA875 /* NumberAreaZipsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3545,6 +3571,8 @@
 				489387FC17039158005CC795 /* ForwardingData.m in Sources */,
 				4893880017039165005CC795 /* RecordingData.m in Sources */,
 				48ADD0F81706791A001515EB /* UIView+AnimateHidden.m in Sources */,
+				484D936D1712FBA1006FA875 /* NumberAreaCitiesViewController.m in Sources */,
+				484D937117131E97006FA875 /* NumberAreaZipsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

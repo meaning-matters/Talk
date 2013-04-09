@@ -149,6 +149,7 @@
                                                                   @"Title of app screen with list of areas.\n"
                                                                   @"[1 line larger font].");
 
+#warning Can there be different number types???  Don't think so.
     // Combine numberTypes per area.
     for (NSDictionary* newArea in (NSArray*)content)
     {
@@ -363,7 +364,10 @@
     }
 
     NumberAreaViewController*   viewController;
-    viewController = [[NumberAreaViewController alloc] initWithCountry:country state:state area:area];
+    viewController = [[NumberAreaViewController alloc] initWithCountry:country
+                                                                 state:state
+                                                                  area:area
+                                                        numberTypeMask:numberTypeMask];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

@@ -351,7 +351,7 @@ typedef enum
 
         case 2:
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionRenewalPrice Label", nil,
-                                                                    [NSBundle mainBundle], @"Renewal Price",
+                                                                    [NSBundle mainBundle], @"Price",
                                                                     @"....");
             cell.detailTextLabel.text = @"€3.79";
             break;

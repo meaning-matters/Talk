@@ -307,12 +307,11 @@
 
     while (value)
     {
-        if ((value & 1) && (n == 0))
+        if ((value & 1) && (n-- == 0))
         {
             break;
         }
 
-        n--;
         bit   <<= 1;
         value >>= 1;
     }

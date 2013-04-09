@@ -7,12 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NumberType.h"
 
-@interface NumberAreaViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+
+@interface NumberAreaViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
+                                                        UITextFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView*   tableView;
 
 
-- (id)initWithCountry:(NSDictionary*)country state:(NSDictionary*)state area:(NSDictionary*)area;
+- (id)initWithCountry:(NSDictionary*)theCountry
+                state:(NSDictionary*)theState
+                 area:(NSDictionary*)theArea
+       numberTypeMask:(NumberTypeMask)theNumberTypeMask;
 
 @end
