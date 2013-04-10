@@ -7,6 +7,8 @@
 //
 
 #import "NumberAreaViewController.h"
+#import "NumberAreaZipsViewController.h"
+#import "NumberAreaCitiesViewController.h"
 #import "CommonStrings.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
@@ -35,7 +37,8 @@ const int   CountryCellTag   = 4321;
     NSDictionary*           area;
     NumberTypeMask          numberTypeMask;
 
-    NSMutableDictionary*    info;
+    NSArray*                citiesZipsArray;
+    NSMutableDictionary*    purchaseInfo;
     BOOL                    requireInfo;
     BOOL                    isChecked;
     TableSections           sections;
@@ -48,6 +51,8 @@ const int   CountryCellTag   = 4321;
     UITextField*            companyTextField;
     UITextField*            streetTextField;
     UITextField*            buildingTextField;
+    UITextField*            zipCodeTextField;
+    UITextField*            cityNameTextField;
 
     // Keyboard stuff.
     BOOL                    keyboardShown;
@@ -71,7 +76,7 @@ const int   CountryCellTag   = 4321;
         state          = theState;
         area           = theArea;
         numberTypeMask = theNumberTypeMask;
-        info           = [NSMutableDictionary dictionary];
+        purchaseInfo   = [NSMutableDictionary dictionary];
         requireInfo    = [area[@"requireInfo"] boolValue];
 
         // Mandatory sections.
@@ -144,7 +149,8 @@ const int   CountryCellTag   = 4321;
                                                                           [NSBundle mainBundle], @"Area",
                                                                           @"Title of app screen with one area.\n"
                                                                           @"[1 line larger font].");
-            info = [NSMutableArray arrayWithArray:content];
+            citiesZipsArray = [NSArray arrayWithArray:content];
+            [self.tableView reloadData];
         }
         else if (status == WebClientStatusFailServiceUnavailable)
         {
@@ -307,7 +313,7 @@ const int   CountryCellTag   = 4321;
         case TableSectionNaming:
             title = NSLocalizedStringWithDefaultValue(@"NumberArea:Naming SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"Give this telephone number a short name that is easy "
+                                                      @"Give this number a short descriptive name that is easy "
                                                       @"to remember.\nCan not be changed afterwards!",
                                                       @"Explaining that user must supply a name.");
             break;
@@ -318,7 +324,8 @@ const int   CountryCellTag   = 4321;
         case TableSectionAddress:
             title = NSLocalizedStringWithDefaultValue(@"NumberArea:Address SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"For this area name and address information is required.",
+                                                      @"For a telephone number in this area, a contact name and address "
+                                                      @"are (legally) required.",
                                                       @"Explaining that information must be supplied by user.");
             break;
 
@@ -372,9 +379,6 @@ const int   CountryCellTag   = 4321;
 {
     UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:indexPath];
     CGRect          frame = cell.detailTextLabel.frame;
-
-    NSLog(@"%f %f %f %f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
-    NSLog(@"%@", cell.detailTextLabel.font);
 
     if ([self.tableView cellForRowAtIndexPath:indexPath].selectionStyle == UITableViewCellSelectionStyleNone)
     {
@@ -516,6 +520,9 @@ const int   CountryCellTag   = 4321;
     cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Name Label", nil,
                                                             [NSBundle mainBundle], @"Name",
                                                             @"....");
+    textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:Name Placeholder", nil,
+                                                              [NSBundle mainBundle], @"Required",
+                                                              @"....");
     nameTextField = textField;
 
     cell.detailTextLabel.text = nil;
@@ -550,6 +557,9 @@ const int   CountryCellTag   = 4321;
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Salutation Label", nil,
                                                                     [NSBundle mainBundle], @"Title",
                                                                     @"....");
+            textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:Salutation Placeholder", nil,
+                                                                      [NSBundle mainBundle], @"Required (Mr, Mrs, ...) ",
+                                                                      @"....");
             salutationTextField = textField;
             break;
 
@@ -557,6 +567,9 @@ const int   CountryCellTag   = 4321;
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:FirstName Label", nil,
                                                                     [NSBundle mainBundle], @"Firstname",
                                                                     @"....");
+            textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:FirstName Placeholder", nil,
+                                                                      [NSBundle mainBundle], @"Required",
+                                                                      @"....");
             firstNameTextField = textField;
             break;
 
@@ -564,6 +577,9 @@ const int   CountryCellTag   = 4321;
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:LastName Label", nil,
                                                                     [NSBundle mainBundle], @"Lastname",
                                                                     @"....");
+            textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:LastName Placeholder", nil,
+                                                                      [NSBundle mainBundle], @"Required",
+                                                                      @"....");
             lastNameTextField = textField;
             break;
 
@@ -571,6 +587,9 @@ const int   CountryCellTag   = 4321;
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Company Label", nil,
                                                                     [NSBundle mainBundle], @"Company",
                                                                     @"....");
+            textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:Company Placeholder", nil,
+                                                                      [NSBundle mainBundle], @"Required",
+                                                                      @"....");
             companyTextField = textField;
             break;
     }
@@ -587,8 +606,21 @@ const int   CountryCellTag   = 4321;
 - (UITableViewCell*)addressCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell;
-    NSString*           identifier = (indexPath.row <= 1) ? @"TextFieldCell" : @"Value2Cell";
+    NSString*           identifier = (indexPath.row <= 1) ? @"TextFieldCell" : @"DisabledTextFieldCell";
     UITextField*        textField;
+    NSString*           singleZipCode  = nil;
+    NSString*           singleCityName = nil;
+
+    if ([citiesZipsArray count] == 1)
+    {
+        singleCityName = citiesZipsArray[0][@"cityName"];
+
+        NSArray*    zipCodes = citiesZipsArray[0][@"zipCodes"];
+        if ([zipCodes count] == 1)
+        {
+            singleZipCode = citiesZipsArray[0][@"zipCodes"][0];
+        }
+    }
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil)
@@ -608,7 +640,9 @@ const int   CountryCellTag   = 4321;
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Street Label", nil,
                                                                     [NSBundle mainBundle], @"Street",
                                                                     @"....");
-            cell.detailTextLabel.text = nil;
+            textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:Street Placeholder", nil,
+                                                                      [NSBundle mainBundle], @"Required",
+                                                                      @"....");
             streetTextField = textField;
             cell.accessoryType  = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -618,7 +652,9 @@ const int   CountryCellTag   = 4321;
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Building Label", nil,
                                                                     [NSBundle mainBundle], @"Building",
                                                                     @"....");
-            cell.detailTextLabel.text = nil;
+            textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:Street Placeholder", nil,
+                                                                      [NSBundle mainBundle], @"Required",
+                                                                      @"....");
             buildingTextField = textField;
             cell.accessoryType  = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -628,22 +664,51 @@ const int   CountryCellTag   = 4321;
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:ZipCode Label", nil,
                                                                     [NSBundle mainBundle], @"ZIP Code",
                                                                     @"Postalcode, Post Code, ...");
-            
-            cell.detailTextLabel.text = nil;
-            cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
-            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+            if (singleZipCode == nil)
+            {
+                textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:ZipCode Placeholder", nil,
+                                                                          [NSBundle mainBundle], @"Required, select from list",
+                                                                          @"....");
+                cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+                cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+            }
+            else
+            {
+                textField.text = singleZipCode;
+                cell.accessoryType  = UITableViewCellAccessoryNone;
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+
+            textField.userInteractionEnabled = NO;
+            zipCodeTextField = textField;
             break;
 
         case 3:
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:City Label", nil,
                                                                     [NSBundle mainBundle], @"City",
                                                                     @"....");
-            cell.detailTextLabel.text = nil;
-            cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
-            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+            if (singleCityName == nil)
+            {
+                textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:ZipCode Placeholder", nil,
+                                                                          [NSBundle mainBundle], @"Required, select from list",
+                                                                          @"....");
+                textField.text = nil;
+                cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+                cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+            }
+            else
+            {
+                textField.text = singleCityName;
+                cell.accessoryType  = UITableViewCellAccessoryNone;
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+
+            textField.userInteractionEnabled = NO;
+            cityNameTextField = textField;
             break;
     }
 
+    cell.detailTextLabel.text = nil;
     cell.imageView.image = nil;
 
     return cell;
