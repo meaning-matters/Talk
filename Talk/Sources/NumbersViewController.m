@@ -224,13 +224,13 @@
 
 #pragma mark - Search Bar Delegate
 
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController*)controller
 {
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller
+- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController*)controller
 {
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }

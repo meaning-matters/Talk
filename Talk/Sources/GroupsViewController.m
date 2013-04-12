@@ -15,7 +15,7 @@
     NSString *name;
     for ( int i = 0; i < [allPeople count]; i++ )
     {
-        name = (__bridge_transfer NSString *) ABRecordCopyValue((__bridge ABRecordRef)allPeople[i], kABPersonFirstNameProperty);
+        name = (__bridge_transfer NSString*) ABRecordCopyValue((__bridge ABRecordRef)allPeople[i], kABPersonFirstNameProperty);
     }
     CFRelease(addressBook);
     allPeople = nil;

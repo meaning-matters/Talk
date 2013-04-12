@@ -149,7 +149,7 @@
 }
 
 
-+ (void)postNotificationName:(NSString *)name userInfo:(NSDictionary*)userInfo object:(id)object
++ (void)postNotificationName:(NSString*)name userInfo:(NSDictionary*)userInfo object:(id)object
 {
     dispatch_async(dispatch_get_main_queue(), ^
     {

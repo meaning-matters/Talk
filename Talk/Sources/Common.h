@@ -40,7 +40,7 @@
 
 + (void)postNotificationName:(NSString*)name object:(id)object;
 
-+ (void)postNotificationName:(NSString *)name userInfo:(NSDictionary*)userInfo object:(id)object;
++ (void)postNotificationName:(NSString*)name userInfo:(NSDictionary*)userInfo object:(id)object;
 
 + (void)setCornerRadius:(CGFloat)radius ofView:(UIView*)view;
 

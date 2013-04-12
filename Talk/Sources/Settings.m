@@ -185,7 +185,7 @@ static NSUserDefaults*  userDefaults;
 }
 
 
-- (void)setErrorDomain:(NSString *)errorDomain
+- (void)setErrorDomain:(NSString*)errorDomain
 {
     _errorDomain = errorDomain;
     [userDefaults setObject:errorDomain forKey:ErrorDomainKey];
@@ -213,7 +213,7 @@ static NSUserDefaults*  userDefaults;
 }
 
 
-- (void)setWebBaseUrl:(NSString *)webBaseUrl
+- (void)setWebBaseUrl:(NSString*)webBaseUrl
 {
     _webBaseUrl = webBaseUrl;
     [userDefaults setObject:webBaseUrl forKey:WebBaseUrlKey];
@@ -238,7 +238,7 @@ static NSUserDefaults*  userDefaults;
 }
 
 
-- (void)setSipServer:(NSString *)sipServer
+- (void)setSipServer:(NSString*)sipServer
 {
     _sipServer = sipServer;
     [userDefaults setObject:sipServer forKey:SipServerKey];

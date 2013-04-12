@@ -57,7 +57,7 @@
     {
         _completion = completion;
 
-        for (NSString* title = otherButtonTitles; title != nil; title = (__bridge NSString *)va_arg(arguments, void *))
+        for (NSString* title = otherButtonTitles; title != nil; title = (__bridge NSString*)va_arg(arguments, void*))
         {
             [self addButtonWithTitle:title];
         }
