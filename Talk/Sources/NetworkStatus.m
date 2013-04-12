@@ -106,7 +106,7 @@ static NSTimer*                 loadUrlTestTimer;
          }
      }];
 
-    hostReach     = [Reachability reachabilityWithHostname:REACHABILITY_HOSTNAME];
+    hostReach = [Reachability reachabilityWithHostname:REACHABILITY_HOSTNAME];
 
     [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidBecomeActiveNotification
                                                       object:nil

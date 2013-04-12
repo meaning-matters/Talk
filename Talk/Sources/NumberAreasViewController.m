@@ -14,6 +14,7 @@
 #import "CommonStrings.h"
 #import "Common.h"
 #import "NumberAreaViewController.h"
+#import "NumberAreasCell.h"
 
 
 @interface NumberAreasViewController ()
@@ -59,6 +60,9 @@
     [super viewDidLoad];
 
     self.navigationItem.title = [CommonStrings loadingString];
+
+    [self.tableView registerNib:[UINib nibWithNibName:@"NumberAreasCell" bundle:nil]
+         forCellReuseIdentifier:@"NumberAreasCell"];
 
     UIBarButtonItem*    cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
@@ -143,59 +147,86 @@
                                                                   @"Title of app screen with list of areas.\n"
                                                                   @"[1 line larger font].");
 
-#warning Can there be different number types???  Don't think so.
-    // Combine numberTypes per area.
-    for (NSDictionary* newArea in (NSArray*)content)
+    if ([(NSArray*)content count] != 0)
     {
-        NSMutableDictionary*    matchedArea = nil;
-        for (NSMutableDictionary* area in allAreasArray)
+#warning Can there be different number types???  Don't think so.
+        // Combine numberTypes per area.
+        for (NSDictionary* newArea in (NSArray*)content)
         {
-            if ([newArea[@"areaId"] isEqualToString:area[@"areaId"]])
+            NSMutableDictionary*    matchedArea = nil;
+            for (NSMutableDictionary* area in allAreasArray)
             {
-                matchedArea = area;
-                break;
-            }
-        }
-
-        if (matchedArea == nil)
-        {
-            matchedArea = [NSMutableDictionary dictionaryWithDictionary:newArea];
-            matchedArea[@"numberTypes"] = @(0);
-            if ([matchedArea objectForKey:@"areaName"] != [NSNull null])
-            {
-                matchedArea[@"areaName"] = [matchedArea[@"areaName"] capitalizedString];
-            }
-            else if ([matchedArea objectForKey:@"areaCode"] != [NSNull null])
-            {
-                // To support non-geographic numbers with little code change.
-                matchedArea[@"areaName"] = matchedArea[@"areaCode"];
-            }
-            else
-            {
-                matchedArea[@"areaName"] = NSLocalizedStringWithDefaultValue(@"NumberAreas:Table NoAreaCode", nil,
-                                                                             [NSBundle mainBundle], @"<unknown area code>",
-                                                                             @"Explains that area code is not available.\n"
-                                                                             @"[1 line larger font].");
+                if ([newArea[@"areaId"] isEqualToString:area[@"areaId"]])
+                {
+                    matchedArea = area;
+                    break;
+                }
             }
 
-            [allAreasArray addObject:matchedArea];
-        }
+            if (matchedArea == nil)
+            {
+                matchedArea = [NSMutableDictionary dictionaryWithDictionary:newArea];
+                matchedArea[@"numberTypes"] = @(0);
+                if ([matchedArea objectForKey:@"areaName"] != [NSNull null])
+                {
+                    matchedArea[@"areaName"] = [matchedArea[@"areaName"] capitalizedString];
+                }
+                else if ([matchedArea objectForKey:@"areaCode"] != [NSNull null])
+                {
+                    // To support non-geographic numbers with little code change.
+                    matchedArea[@"areaName"] = matchedArea[@"areaCode"];
+                }
+                else
+                {
+                    matchedArea[@"areaName"] = NSLocalizedStringWithDefaultValue(@"NumberAreas:Table NoAreaCode", nil,
+                                                                                 [NSBundle mainBundle], @"Unknown area code",
+                                                                                 @"Explains that area code is not available.\n"
+                                                                                 @"[1 line larger font].");
+                }
 
-        if ([newArea[@"numberType"] isEqualToString:@"GEOGRAPHIC"])
-        {
-            matchedArea[@"numberTypes"] = @([matchedArea[@"numberTypes"] intValue] | NumberTypeGeographicMask);
+                [allAreasArray addObject:matchedArea];
+            }
+
+            if ([newArea[@"numberType"] isEqualToString:@"GEOGRAPHIC"])
+            {
+                matchedArea[@"numberTypes"] = @([matchedArea[@"numberTypes"] intValue] | NumberTypeGeographicMask);
+            }
+            else if ([newArea[@"numberType"] isEqualToString:@"TOLLFREE"])
+            {
+                matchedArea[@"numberTypes"] = @([matchedArea[@"numberTypes"] intValue] | NumberTypeTollFreeMask);
+            }
+            else if ([newArea[@"numberType"] isEqualToString:@"NATIONAL"])
+            {
+                matchedArea[@"numberTypes"] = @([matchedArea[@"numberTypes"] intValue] | NumberTypeNationalMask);
+            }
         }
-        else if ([newArea[@"numberType"] isEqualToString:@"TOLLFREE"])
-        {
-            matchedArea[@"numberTypes"] = @([matchedArea[@"numberTypes"] intValue] | NumberTypeTollFreeMask);
-        }
-        else if ([newArea[@"numberType"] isEqualToString:@"NATIONAL"])
-        {
-            matchedArea[@"numberTypes"] = @([matchedArea[@"numberTypes"] intValue] | NumberTypeNationalMask);
-        }
+        
+        [self sortOutArrays];
     }
+    else
+    {
+        NSString*   title;
+        NSString*   message;
 
-    [self sortOutArrays];
+        title = NSLocalizedStringWithDefaultValue(@"NumberAreas NoNumbersAlertTitle", nil,
+                                                  [NSBundle mainBundle], @"Numbers Unavailable",
+                                                  @"Alert title telling that telephone numbers are not available.\n"
+                                                  @"[iOS alert title size].");
+        message = NSLocalizedStringWithDefaultValue(@"NumberAreas NoNumbersAlertMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"These numbers are not available for purchase at the moment."
+                                                    @"\n\nPlease try again later.",
+                                                    @"Alert message telling that telephone numbers are not available.\n"
+                                                    @"[iOS alert message size!]");
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+                             cancelButtonTitle:[CommonStrings closeString]
+                             otherButtonTitles:nil];
+    }
 }
 
 
@@ -215,8 +246,7 @@
                                                     @"The service for buying numbers is temporarily offline."
                                                     @"\n\nPlease try again later.",
                                                     @"Alert message telling that loading areas over internet failed.\n"
-                                                    @"[iOS alert message size - use correct iOS terms for: Settings "
-                                                    @"and Notifications!]");
+                                                    @"[iOS alert message size!]");
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
@@ -239,8 +269,7 @@
                                                     [NSBundle mainBundle],
                                                     @"Loading the list of areas failed.\n\nPlease try again later.",
                                                     @"Alert message telling that loading areas over internet failed.\n"
-                                                    @"[iOS alert message size - use correct iOS terms for: Settings "
-                                                    @"and Notifications!]");
+                                                    @"[iOS alert message size!]");
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
@@ -368,14 +397,14 @@
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
+    NumberAreasCell*    cell;
     NSString*           name;
     NSDictionary*       area;
 
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumberAreasCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
+        cell = [[NumberAreasCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NumberAreasCell"];
     }
 
     if (isFiltered)
@@ -397,13 +426,23 @@
     }
 
     cell.accessoryType = UITableViewCellAccessoryNone;
-    if (area[@"areaCode"] != [NSNull null] && [area[@"areaCode"] isEqualToString:name] == NO)
+    if (area[@"areaCode"] != [NSNull null])
     {
-        cell.textLabel.text = [NSString stringWithFormat:@"%@ - %@", area[@"areaCode"], name];
+        if ([area[@"areaCode"] isEqualToString:name] == NO)
+        {
+            cell.areaCode.text = area[@"areaCode"];
+            cell.areaName.text = name;
+        }
+        else
+        {
+            cell.areaCode.text = name;
+            cell.areaName.text = @"";
+        }
     }
     else
     {
-        cell.textLabel.text = name;
+        cell.areaCode.text = @"---";
+        cell.areaName.text = name;
     }
 
     return cell;
