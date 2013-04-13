@@ -245,13 +245,13 @@
                                                   @"[iOS alert title size].");
         message = NSLocalizedStringWithDefaultValue(@"NumberAreaZips CityMismatchAlertMessage", nil,
                                                     [NSBundle mainBundle],
-                                                    @"The ZIP code you selected belongs to another "
-                                                    @"city than the one you selected earlier: %@.\n"
-                                                    @"Do you want to select another city?",
+                                                    @"The current city: %@, does not have the ZIP code you "
+                                                    @"selected now.\nDo you also want to select the correctly "
+                                                    @"matching city: %@?",
                                                     @"Alert message telling saying that city does not match.\n"
                                                     @"[iOS alert message size - use correct term for "
                                                     @"'ZIP code']");
-        message = [NSString stringWithFormat:message, purchaseInfo[@"city"]];
+        message = [NSString stringWithFormat:message, purchaseInfo[@"city"], mismatchCity[@"city"]];
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
