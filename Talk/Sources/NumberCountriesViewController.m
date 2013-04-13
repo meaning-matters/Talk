@@ -124,8 +124,7 @@
                                                         @"The service for buying numbers is temporarily offline."
                                                         @"\n\nPlease try again later.",
                                                         @"Alert message telling that loading countries over internet failed.\n"
-                                                        @"[iOS alert message size - use correct iOS terms for: Settings "
-                                                        @"and Notifications!]");
+                                                        @"[iOS alert message size]");
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
@@ -148,8 +147,7 @@
                                                         [NSBundle mainBundle],
                                                         @"Loading the list of countries failed.\n\nPlease try again later.",
                                                         @"Alert message telling that loading countries over internet failed.\n"
-                                                        @"[iOS alert message size - use correct iOS terms for: Settings "
-                                                        @"and Notifications!]");
+                                                        @"[iOS alert message size]");
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)

@@ -13,6 +13,6 @@
 @property (nonatomic, weak) IBOutlet UITableView*   tableView;
 
 
-- (id)initWithZipsArray:(NSArray*)array selectedCityZip:(NSMutableDictionary*)selection;    // The selection is modified.
+- (id)initWithCitiesArray:(NSArray*)array purchaseInfo:(NSMutableDictionary*)info;
 
 @end

@@ -43,6 +43,8 @@ NSString* const  PurchaseManagerProductIdentifierCredit50 = PRODUCT_IDENTIFIER_B
 
 @implementation PurchaseManager
 
+@synthesize currencyCode = _currencyCode;
+
 static PurchaseManager*     sharedManager;
 
 
@@ -77,6 +79,9 @@ static PurchaseManager*     sharedManager;
             if ((reachable == NetworkStatusReachableWifi || reachable == NetworkStatusReachableCellular) &&
                 sharedManager.productsRequest == nil && sharedManager.products == nil)
             {
+#warning WRONG!!! This needs to be done everytime when the user is shown purchasable goods.
+#warning          Also make sure that currency code is set each time!!!
+
                 // At first time the app gets connected to internet.
                 sharedManager.productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:sharedManager.productIdentifiers];
                 sharedManager.productsRequest.delegate = sharedManager;
@@ -301,11 +306,13 @@ static PurchaseManager*     sharedManager;
     {
         // Calculate the currency conversion rate for all Credits and take the highest.
         // We also loop over all credit products, instead of taking just one, to prevent
-        // that this calculation break when products are disabled in iTunesConnect.        
+        // that this calculation breaks when products are disabled in iTunesConnect.        
         if ([self isCreditProductIdentifier:product.productIdentifier])
         {
             float       usdPrice = [self usdCreditOfProductIdentifier:product.productIdentifier];
             float       rate = product.price.doubleValue / usdPrice;
+
+            _currencyCode = [product.priceLocale objectForKey:NSLocaleCurrencyCode];
 
             if (self.currencyRate == 0 || rate > self.currencyRate)
             {

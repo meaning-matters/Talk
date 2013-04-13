@@ -7,18 +7,22 @@
 //
 
 #import "NumberAreaCitiesViewController.h"
+#import "BlockAlertView.h"
+#import "CommonStrings.h"
 
 
 @interface NumberAreaCitiesViewController ()
 {
-    NSArray*                nameIndexArray;         // Array with all first letters of country names.
+    NSArray*                nameIndexArray;         // Array with all first letters of city names.
     NSMutableDictionary*    nameIndexDictionary;    // Dictionary with entry (containing array of names) per letter.
     NSMutableArray*         filteredNamesArray;
 
     NSArray*                citiesArray;
     BOOL                    isFiltered;
 
-    NSMutableDictionary*    selectedCityZip;
+    NSMutableDictionary*    purchaseInfo;
+
+    UITableViewCell*        checkmarkedCell;        // Previous cell with checkmark.
 }
 
 @end
@@ -26,12 +30,17 @@
 
 @implementation NumberAreaCitiesViewController
 
-- (id)initWithCitiesArray:(NSArray*)array selectedCityZip:(NSMutableDictionary*)selection;
+- (id)initWithCitiesArray:(NSArray*)array purchaseInfo:(NSMutableDictionary*)info;
 {
     if (self = [super initWithNibName:@"NumberAreaCitiesView" bundle:nil])
     {
-        citiesArray     = array;
-        selectedCityZip = selection;
+        self.title = NSLocalizedStringWithDefaultValue(@"NumbersAreaCities ScreenTitle", nil,
+                                                       [NSBundle mainBundle], @"Cities",
+                                                       @"Title of app screen with list of cities\n"
+                                                       @"[1 line larger font].");
+
+        citiesArray  = array;
+        purchaseInfo = info;
     }
 
     return self;
@@ -42,29 +51,13 @@
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberAreaCities:Ready ScreenTitle", nil,
-                                                                  [NSBundle mainBundle], @"Cities",
-                                                                  @"Title of app screen with list of cities.\n"
-                                                                  @"[1 line larger font].");
     UIBarButtonItem*    cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                  target:self
                                                                  action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
-}
 
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
-
-    if (isFiltered == YES)
-    {
-        isFiltered = NO;
-        [self.tableView reloadData];
-    }
+    [self sortOutArrays];
 }
 
 
@@ -85,7 +78,7 @@
     nameIndexDictionary = [NSMutableDictionary dictionary];
     for (NSMutableDictionary* city in citiesArray)
     {
-        NSString*       name = city[@"cityName"];
+        NSString*       name = city[@"city"];
         NSString*       nameIndex = [name substringToIndex:1];
         NSMutableArray* indexArray;
         if ((indexArray = [nameIndexDictionary valueForKey:nameIndex]) != nil)
@@ -164,10 +157,83 @@
         name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
     }
 
-    selectedCityZip[@"cityName"] = name;
-    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    // If a ZIP code is already selected, check if it matches the city.
+    NSString*   mismatchZipCode = purchaseInfo[@"zipCode"];
+    if (purchaseInfo[@"zipCode"] != nil)
+    {
+        for (NSDictionary* city in citiesArray)
+        {
+            if ([name isEqualToString:city[@"city"]])
+            {
+                // Found selected city, now check if current ZIP code belongs.
+                for (NSString* zipCode in city[@"zipCodes"])
+                {
+                    if ([purchaseInfo[@"zipCode"] isEqualToString:zipCode])
+                    {
+                        // Yes, the selected city matches the current ZIP code, so no problem.
+                        mismatchZipCode = nil;
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
-    [self.navigationController popViewControllerAnimated:YES];
+    if (mismatchZipCode == nil)
+    {
+        if (checkmarkedCell.accessoryType == UITableViewCellAccessoryCheckmark)
+        {
+            checkmarkedCell.accessoryType = UITableViewCellAccessoryNone;
+        }
+
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+
+        purchaseInfo[@"city"] = name;
+
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else
+    {
+        NSString*   title;
+        NSString*   message;
+
+        title = NSLocalizedStringWithDefaultValue(@"NumberAreaCities ZipMismatchAlertTitle", nil,
+                                                  [NSBundle mainBundle], @"ZIP Code Mismatch",
+                                                  @"Alert title saying that ZIP code does not match.\n"
+                                                  @"[iOS alert title size - use correct term for 'ZIP code'].");
+        message = NSLocalizedStringWithDefaultValue(@"NumberAreaCities ZipMismatchAlertMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"The current ZIP code does not belong to the city "
+                                                    @"you selected.\nYou will have to select another ZIP code.",
+                                                    @"Alert message telling saying that ZIP code does not match.\n"
+                                                    @"[iOS alert message size - use correct term for 'ZIP code']");
+        message = [NSString stringWithFormat:message, mismatchZipCode];
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+         {
+             if (buttonIndex == 1)
+             {
+                 if (checkmarkedCell.accessoryType == UITableViewCellAccessoryCheckmark)
+                 {
+                     checkmarkedCell.accessoryType = UITableViewCellAccessoryNone;
+                 }
+
+                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
+
+                 [purchaseInfo removeObjectForKey:@"zipCode"];
+                 purchaseInfo[@"city"]    = name;
+
+                 [self.navigationController popViewControllerAnimated:YES];
+             }
+             else
+             {
+                 [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+             }
+         }
+                             cancelButtonTitle:[CommonStrings cancelString]
+                             otherButtonTitles:[CommonStrings okString], nil];
+    }
 }
 
 
@@ -175,7 +241,6 @@
 {
     UITableViewCell*    cell;
     NSString*           name;
-    NSDictionary*       city;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
@@ -192,17 +257,16 @@
         name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
     }
 
-    // Look up area.
-    for (city in citiesArray)
-    {
-        if ([city[@"cityName"] isEqualToString:name])
-        {
-            break;
-        }
-    }
-
-    cell.accessoryType = UITableViewCellAccessoryNone;
     cell.textLabel.text = name;
+    if ([name isEqualToString:purchaseInfo[@"city"]])
+    {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        checkmarkedCell = cell;
+    }
+    else
+    {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
 
     return cell;
 }

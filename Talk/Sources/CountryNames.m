@@ -11,7 +11,6 @@
 //  For localization look here: http://en.wikipedia.org/wiki/List_of_country_names_in_various_languages
 //  and/or here: http://cldr.unicode.org
 
-
 #import "CountryNames.h"
 #import "Common.h"
 
@@ -25,6 +24,19 @@ static CountryNames*    sharedNames;
 
 + (void)initialize
 {
+#warning Implement using:
+    NSMutableArray *countries = [NSMutableArray arrayWithCapacity: [[NSLocale ISOCountryCodes] count]];
+
+    for (NSString *countryCode in [NSLocale ISOCountryCodes])
+    {
+        NSString *identifier = [NSLocale localeIdentifierFromComponents:[NSDictionary dictionaryWithObject:countryCode
+                                                                                                    forKey:NSLocaleCountryCode]];
+        NSString *country = [[NSLocale currentLocale] displayNameForKey:NSLocaleIdentifier value:identifier];
+        [countries addObject:country];
+        NSLog(@"%@", country);
+    }
+
+
     if ([CountryNames class] == self)
     {
         sharedNames = [self new];

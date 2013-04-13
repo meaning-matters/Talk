@@ -169,7 +169,10 @@
                 matchedArea[@"numberTypes"] = @(0);
                 if ([matchedArea objectForKey:@"areaName"] != [NSNull null])
                 {
-                    matchedArea[@"areaName"] = [matchedArea[@"areaName"] capitalizedString];
+#warning Don't change string here, only capitalize in UI code: i.e. when setting the cell label/textfield.
+#warning howeverm this may affect sorting order?
+                    NSLocale*   locale = [NSLocale currentLocale];
+                    matchedArea[@"areaName"] = [matchedArea[@"areaName"] capitalizedStringWithLocale:locale];
                 }
                 else if ([matchedArea objectForKey:@"areaCode"] != [NSNull null])
                 {
@@ -210,13 +213,13 @@
 
         title = NSLocalizedStringWithDefaultValue(@"NumberAreas NoNumbersAlertTitle", nil,
                                                   [NSBundle mainBundle], @"Numbers Unavailable",
-                                                  @"Alert title telling that telephone numbers are not available.\n"
+                                                  @"Alert title telling that phone numbers are not available.\n"
                                                   @"[iOS alert title size].");
         message = NSLocalizedStringWithDefaultValue(@"NumberAreas NoNumbersAlertMessage", nil,
                                                     [NSBundle mainBundle],
                                                     @"These numbers are not available for purchase at the moment."
                                                     @"\n\nPlease try again later.",
-                                                    @"Alert message telling that telephone numbers are not available.\n"
+                                                    @"Alert message telling that phone numbers are not available.\n"
                                                     @"[iOS alert message size!]");
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message

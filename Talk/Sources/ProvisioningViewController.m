@@ -153,7 +153,7 @@
                     self.busyLabel.text = NSLocalizedStringWithDefaultValue(@"Purchase:BusyNumbers LabelText", nil,
                                                                             [NSBundle mainBundle], @"Retrieving numbers...",
                                                                             @"Label text telling that app is busy retrieving "
-                                                                            @"the user's telephone numbers\n"
+                                                                            @"the user's phone numbers\n"
                                                                             @"[1 line]");
 
                     [[WebClient sharedClient] retrieveNumbers:^(WebClientStatus status, id content)
