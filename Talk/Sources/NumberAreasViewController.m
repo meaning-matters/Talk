@@ -47,7 +47,6 @@
         state          = theState;      // Is nil for country without states.
         numberTypeMask = theNumberTypeMask;
 
-        allAreasArray  = [NSMutableArray array];
         areasArray     = [NSMutableArray array];
     }
 
@@ -147,63 +146,34 @@
                                                                   @"Title of app screen with list of areas.\n"
                                                                   @"[1 line larger font].");
 
-    if ([(NSArray*)content count] != 0)
+    if ([(NSArray*)content count] > 0)
     {
-#warning Can there be different number types???  Don't think so.
-        // Combine numberTypes per area.
-        for (NSDictionary* newArea in (NSArray*)content)
+        for (NSDictionary* area in content)
         {
-            NSMutableDictionary*    matchedArea = nil;
-            for (NSMutableDictionary* area in allAreasArray)
+            NSMutableDictionary*    mutableArea;
+
+            mutableArea = [NSMutableDictionary dictionaryWithDictionary:area];
+            if ([mutableArea objectForKey:@"areaName"] != [NSNull null])
             {
-                if ([newArea[@"areaId"] isEqualToString:area[@"areaId"]])
-                {
-                    matchedArea = area;
-                    break;
-                }
+                NSLocale*   locale = [NSLocale currentLocale];
+                mutableArea[@"areaName"] = [mutableArea[@"areaName"] capitalizedStringWithLocale:locale];
+            }
+            else if ([mutableArea objectForKey:@"areaCode"] != [NSNull null])
+            {
+                // To support non-geographic numbers with little code change.
+                mutableArea[@"areaName"] = mutableArea[@"areaCode"];
+            }
+            else
+            {
+                mutableArea[@"areaName"] = NSLocalizedStringWithDefaultValue(@"NumberAreas:Table NoAreaCode", nil,
+                                                                             [NSBundle mainBundle], @"Unknown area code",
+                                                                             @"Explains that area code is not available.\n"
+                                                                             @"[1 line larger font].");
             }
 
-            if (matchedArea == nil)
-            {
-                matchedArea = [NSMutableDictionary dictionaryWithDictionary:newArea];
-                matchedArea[@"numberTypes"] = @(0);
-                if ([matchedArea objectForKey:@"areaName"] != [NSNull null])
-                {
-#warning Don't change string here, only capitalize in UI code: i.e. when setting the cell label/textfield.
-#warning howeverm this may affect sorting order?
-                    NSLocale*   locale = [NSLocale currentLocale];
-                    matchedArea[@"areaName"] = [matchedArea[@"areaName"] capitalizedStringWithLocale:locale];
-                }
-                else if ([matchedArea objectForKey:@"areaCode"] != [NSNull null])
-                {
-                    // To support non-geographic numbers with little code change.
-                    matchedArea[@"areaName"] = matchedArea[@"areaCode"];
-                }
-                else
-                {
-                    matchedArea[@"areaName"] = NSLocalizedStringWithDefaultValue(@"NumberAreas:Table NoAreaCode", nil,
-                                                                                 [NSBundle mainBundle], @"Unknown area code",
-                                                                                 @"Explains that area code is not available.\n"
-                                                                                 @"[1 line larger font].");
-                }
-
-                [allAreasArray addObject:matchedArea];
-            }
-
-            if ([newArea[@"numberType"] isEqualToString:@"GEOGRAPHIC"])
-            {
-                matchedArea[@"numberTypes"] = @([matchedArea[@"numberTypes"] intValue] | NumberTypeGeographicMask);
-            }
-            else if ([newArea[@"numberType"] isEqualToString:@"TOLLFREE"])
-            {
-                matchedArea[@"numberTypes"] = @([matchedArea[@"numberTypes"] intValue] | NumberTypeTollFreeMask);
-            }
-            else if ([newArea[@"numberType"] isEqualToString:@"NATIONAL"])
-            {
-                matchedArea[@"numberTypes"] = @([matchedArea[@"numberTypes"] intValue] | NumberTypeNationalMask);
-            }
+            [areasArray addObject:mutableArea];
         }
-        
+
         [self sortOutArrays];
     }
     else
@@ -287,15 +257,6 @@
 
 - (void)sortOutArrays
 {
-    // Select from all on numberType.
-    for (NSMutableDictionary* area in allAreasArray)
-    {
-        if ([area[@"numberTypes"] intValue] & numberTypeMask)
-        {
-            [areasArray addObject:area];
-        }
-    }
-
     // Create indexes.
     nameIndexDictionary = [NSMutableDictionary dictionary];
     for (NSMutableDictionary* area in areasArray)
@@ -367,7 +328,6 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:indexPath];
     NSString*           name;
     NSDictionary*       area;
 
