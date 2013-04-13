@@ -19,7 +19,7 @@
 
 typedef enum
 {
-    TableSectionArea    = 1UL << 0, // Type, area code, area name.
+    TableSectionArea    = 1UL << 0, // Type, area code, area name, state, country.
     TableSectionNaming  = 1UL << 1, // Name given by user.
     TableSectionName    = 1UL << 2, // Salutation, irst, last, company.
     TableSectionAddress = 1UL << 3, // Street, number, city, zipcode.
@@ -405,7 +405,6 @@ const int   CountryCellTag   = 4321;
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*                cell = [self.tableView cellForRowAtIndexPath:indexPath];
     NumberAreaZipsViewController*   zipsViewController;
     NumberAreaCitiesViewController* citiesViewController;
 
@@ -653,20 +652,19 @@ const int   CountryCellTag   = 4321;
     NSString*           identifier = (indexPath.row <= 1 || citiesArray.count == 0) ? @"TextFieldCell" :
                                                                                       @"DisabledTextFieldCell";
     UITextField*        textField;
-#warning these two singles can be boolean because value is saved in purchaseinfo
-    NSString*           singleZipCode = nil;
-    NSString*           singleCity    = nil;
+    BOOL                singleZipCode = NO;
+    BOOL                singleCity    = NO;
 
     if (citiesArray.count == 1)
     {
-        singleCity = citiesArray[0][@"city"];
-        purchaseInfo[@"city"] = singleCity;
+        singleCity = YES;
+        purchaseInfo[@"city"] = citiesArray[0][@"city"];
 
         NSArray*    zipCodes = citiesArray[0][@"zipCodes"];
         if ([zipCodes count] == 1)
         {
-            singleZipCode = citiesArray[0][@"zipCodes"][0];
-            purchaseInfo[@"zipCode"] = singleZipCode;
+            singleZipCode = YES;
+            purchaseInfo[@"zipCode"] = citiesArray[0][@"zipCodes"][0];
         }
     }
 
@@ -726,7 +724,7 @@ const int   CountryCellTag   = 4321;
             }
             else
             {
-                if (singleZipCode == nil)
+                if (singleZipCode == NO)
                 {
                     textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:ZipCode Placeholder B", nil,
                                                                               [NSBundle mainBundle], @"Required, select from list",
@@ -756,7 +754,7 @@ const int   CountryCellTag   = 4321;
             }
             else
             {
-                if (singleCity == nil)
+                if (singleCity == NO)
                 {
                     textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:ZipCode Placeholder", nil,
                                                                               [NSBundle mainBundle], @"Required, select from list",
