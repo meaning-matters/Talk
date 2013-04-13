@@ -26,6 +26,15 @@ typedef enum
     TableSectionAction  = 1UL << 4, // Check info, or Buy.
 } TableSections;
 
+typedef enum
+{
+    AreaRowType     = 1UL << 0,
+    AreaRowAreaCode = 1UL << 1,
+    AreaRowAreaName = 1UL << 2,
+    AreaRowState    = 1UL << 3,
+    AreaRowCountry  = 1UL << 4,
+} AreaRows;
+
 
 const int   TextFieldCellTag = 1234;
 const int   CountryCellTag   = 4321;
@@ -43,6 +52,7 @@ const int   CountryCellTag   = 4321;
     BOOL                    requireInfo;
     BOOL                    isChecked;
     TableSections           sections;
+    AreaRows                areaRows;
 
     // Editables.
     UITextField*            nameTextField;
@@ -88,6 +98,16 @@ const int   CountryCellTag   = 4321;
         // Optional Sections.
         sections |= requireInfo ? TableSectionName    : 0;
         sections |= requireInfo ? TableSectionAddress : 0;
+
+        // Always there Area section rows.
+        areaRows |= AreaRowType;
+        areaRows |= AreaRowCountry;
+        
+        // Conditionally there Area section rows.
+        BOOL    allCities = [[area objectForKey:@"areaName"] caseInsensitiveCompare:@"All cities"] == NSOrderedSame;
+        areaRows |= ([area[@"areaCode"] length] > 0) ?                           AreaRowAreaCode : 0;
+        areaRows |= (numberTypeMask == NumberTypeGeographicMask && !allCities) ? AreaRowAreaName : 0;
+        areaRows |= (state != nil) ?                                             AreaRowState    : 0;
    }
     
     return self;
@@ -125,17 +145,6 @@ const int   CountryCellTag   = 4321;
 {
     [super viewWillAppear:animated];
 
-    /*
-    if (self.tableView.indexPathForSelectedRow != nil)
-    {
-        NSIndexPath*        indexPath = self.tableView.indexPathForSelectedRow;
-        UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:indexPath];
-        UITextField*        textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
-
-        NSString*           key = objc_getAssociatedObject(textField, @"PurchaseInfoKey");
-        textField.text = purchaseInfo[key];
-    }
-*/
     zipCodeTextField.text = purchaseInfo[@"zipCode"];
     cityTextField.text    = purchaseInfo[@"city"];
 
@@ -147,8 +156,10 @@ const int   CountryCellTag   = 4321;
 {
     [super viewWillDisappear:animated];
 
+    NSString*   areaCode = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : @"0";
+
     [[WebClient sharedClient] cancelAllRetrieveAreaInfoForIsoCountryCode:country[@"isoCountryCode"]
-                                                                areaCode:area[@"areaCode"]];
+                                                                areaCode:areaCode];
 }
 
 
@@ -156,8 +167,10 @@ const int   CountryCellTag   = 4321;
 
 - (void)loadData
 {
+    NSString*   areaCode = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : @"0";
+
     [[WebClient sharedClient] retrieveNumberAreaInfoForIsoCountryCode:country[@"isoCountryCode"]
-                                                             areaCode:area[@"areaCode"]
+                                                             areaCode:areaCode
                                                                 reply:^(WebClientStatus status, id content)
     {
         if (status == WebClientStatusOk)
@@ -366,7 +379,7 @@ const int   CountryCellTag   = 4321;
     switch ([Common getNthSetBit:section inValue:sections])
     {
         case TableSectionArea:
-            numberOfRows = 3 + (numberTypeMask == NumberTypeGeographicMask) + (state != nil);
+            numberOfRows = [Common countSetBits:areaRows];
             break;
 
         case TableSectionNaming:
@@ -464,42 +477,18 @@ const int   CountryCellTag   = 4321;
 {
     UITableViewCell*    cell;
     NSString*           identifier;
-    int                 index;      // 0:type, 1:area-code, 2:area, 3:state, 4:country
 
-    identifier  = (indexPath.row <= 2 + (state != nil)) ? @"Value2Cell" : @"CountryCell";
+    identifier  = ([Common getNthSetBit:indexPath.row inValue:areaRows] == AreaRowCountry) ? @"CountryCell"
+                                                                                           : @"Value2Cell";
     cell        = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:identifier];
     }
 
-    // Determine which data must appear in current row.
-    switch (indexPath.row)
+    switch ([Common getNthSetBit:indexPath.row inValue:areaRows])
     {
-        case 0:
-            index = 0;
-            break;
-
-        case 1:
-            index = 1;
-            break;
-
-        case 2:
-            index = (numberTypeMask == NumberTypeGeographicMask) ? 2 : 4;
-            break;
-
-        case 3:
-            index = (state != nil) ? 3 : 4;
-            break;
-
-        case 4:
-            index = 4;
-            break;
-    }
-
-    switch (index)
-    {
-        case 0:
+        case AreaRowType:
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:NumberType Label", nil,
                                                                     [NSBundle mainBundle], @"Type",
                                                                     @"....");
@@ -507,7 +496,7 @@ const int   CountryCellTag   = 4321;
             cell.imageView.image = nil;
             break;
 
-        case 1:
+        case AreaRowAreaCode:
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:AreaCode Label", nil,
                                                                     [NSBundle mainBundle], @"Area Code",
                                                                     @"....");
@@ -515,7 +504,7 @@ const int   CountryCellTag   = 4321;
             cell.imageView.image = nil;
             break;
 
-        case 2:
+        case AreaRowAreaName:
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:AreaName Label", nil,
                                                                     [NSBundle mainBundle], @"Area",
                                                                     @"....");
@@ -523,7 +512,7 @@ const int   CountryCellTag   = 4321;
             cell.imageView.image = nil;
             break;
 
-        case 3:
+        case AreaRowState:
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:State Label", nil,
                                                                     [NSBundle mainBundle], @"State",
                                                                     @"....");
@@ -531,14 +520,14 @@ const int   CountryCellTag   = 4321;
             cell.imageView.image = nil;
             break;
 
-        case 4:
+        case AreaRowCountry:
             cell.textLabel.text = @" ";     // Without this, the detailTextLabel is on the left.
             cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:country[@"isoCountryCode"]];
             [self addCountryImageToCell:cell isoCountryCode:country[@"isoCountryCode"]];
             break;
     }
 
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.accessoryType  = UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     return cell;

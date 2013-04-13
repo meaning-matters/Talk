@@ -27,7 +27,6 @@
     NSMutableDictionary*    nameIndexDictionary;    // Dictionary with entry (containing array of names) per letter.
     NSMutableArray*         filteredNamesArray;
 
-    NSMutableArray*         allAreasArray;
     NSMutableArray*         areasArray;
     BOOL                    isFiltered;
 }
@@ -150,13 +149,24 @@
     {
         for (NSDictionary* area in content)
         {
-            NSMutableDictionary*    mutableArea;
+            NSMutableDictionary*    mutableArea = [NSMutableDictionary dictionaryWithDictionary:area];
 
-            mutableArea = [NSMutableDictionary dictionaryWithDictionary:area];
             if ([mutableArea objectForKey:@"areaName"] != [NSNull null])
             {
-                NSLocale*   locale = [NSLocale currentLocale];
-                mutableArea[@"areaName"] = [mutableArea[@"areaName"] capitalizedStringWithLocale:locale];
+                if ([[mutableArea objectForKey:@"areaName"] caseInsensitiveCompare:@"All cities"] == NSOrderedSame)
+                {
+                    // Handle special case seen with Denmark: One area for all cities.  We only localize at the moment.
+                    mutableArea[@"areaName"] = NSLocalizedStringWithDefaultValue(@"NumberAreas:Table AllC", nil,
+                                                                                 [NSBundle mainBundle], @"All cities",
+                                                                                 @"Indicates that something applies to all "
+                                                                                 @"cities of a country.\n"
+                                                                                 @"[1 line larger font].");
+                }
+                else
+                {
+                    NSLocale*   locale = [NSLocale currentLocale];
+                    mutableArea[@"areaName"] = [mutableArea[@"areaName"] capitalizedStringWithLocale:locale];
+                }
             }
             else if ([mutableArea objectForKey:@"areaCode"] != [NSNull null])
             {
@@ -165,10 +175,12 @@
             }
             else
             {
+                // Both areaName, areaCode and city are null.
                 mutableArea[@"areaName"] = NSLocalizedStringWithDefaultValue(@"NumberAreas:Table NoAreaCode", nil,
                                                                              [NSBundle mainBundle], @"Unknown area code",
                                                                              @"Explains that area code is not available.\n"
                                                                              @"[1 line larger font].");
+                mutableArea[@"areaCode"] = @"";
             }
 
             [areasArray addObject:mutableArea];
@@ -389,7 +401,7 @@
     }
 
     cell.accessoryType = UITableViewCellAccessoryNone;
-    if (area[@"areaCode"] != [NSNull null])
+    if ([area[@"areaCode"] length] > 0)
     {
         if ([area[@"areaCode"] isEqualToString:name] == NO)
         {
