@@ -24,18 +24,15 @@ static CountryNames*    sharedNames;
 
 + (void)initialize
 {
-#warning Implement using:
+#warning Implement/Replace this class using:  (but need to sort out locales first: We don't want countries to be in other locale than app texts.
     NSMutableArray *countries = [NSMutableArray arrayWithCapacity: [[NSLocale ISOCountryCodes] count]];
-
     for (NSString *countryCode in [NSLocale ISOCountryCodes])
     {
         NSString *identifier = [NSLocale localeIdentifierFromComponents:[NSDictionary dictionaryWithObject:countryCode
                                                                                                     forKey:NSLocaleCountryCode]];
         NSString *country = [[NSLocale currentLocale] displayNameForKey:NSLocaleIdentifier value:identifier];
         [countries addObject:country];
-        NSLog(@"%@", country);
     }
-
 
     if ([CountryNames class] == self)
     {
