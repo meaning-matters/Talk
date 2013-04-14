@@ -937,12 +937,20 @@ const int   CountryCellTag   = 4321;
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-    NSString*       key = objc_getAssociatedObject(textField, @"PurchaseInfoKey");
+    NSString*   key = objc_getAssociatedObject(textField, @"PurchaseInfoKey");
 
     if ((nextIndexPath = [self nextEmptyIndexPath:key]) != nil)
     {
-        NSLog(@"NEXT FIELD KEY: %@", key);
+        UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
 
+        if (cell != nil)
+        {
+            UITextField*    nextTextField;
+
+            nextTextField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];
+            [nextTextField becomeFirstResponder];
+        }
+        
         [self.tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         return NO;
     }
@@ -975,11 +983,6 @@ const int   CountryCellTag   = 4321;
         UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
         nextIndexPath = nil;
         
-        if (cell == nil)
-        {
-            NSLog(@"CELL IS NIL - CAN't set first responder");
-        }
-
         nextTextField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];
         [nextTextField becomeFirstResponder];
     }
