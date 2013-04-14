@@ -124,6 +124,11 @@ const int   CountryCellTag   = 4321;
                                                                  action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
+    UITapGestureRecognizer* gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                        action:@selector(hideKeyboard)];
+    gestureRecognizer.cancelsTouchesInView = NO;
+    [self.tableView addGestureRecognizer:gestureRecognizer];
+    
     [self addKeyboardNotifications];
 
     if (requireInfo)
@@ -164,6 +169,12 @@ const int   CountryCellTag   = 4321;
 
 
 #pragma mark - Helper Methods
+
+- (void)hideKeyboard
+{
+    [[self.tableView superview] endEditing:YES];
+}
+
 
 - (void)loadData
 {
