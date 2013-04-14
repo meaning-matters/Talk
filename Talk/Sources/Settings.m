@@ -54,6 +54,7 @@ static NSUserDefaults*  userDefaults;
         sharedSettings = [self new];
         userDefaults = [NSUserDefaults standardUserDefaults];
 
+#warning See if looking "AppleLanguages" item in NSUIserDefaults helps fixing the data loss problem.
         if ((runBefore = [userDefaults boolForKey:RunBeforeKey]) == NO)
         {
             [userDefaults setBool:YES forKey:RunBeforeKey];

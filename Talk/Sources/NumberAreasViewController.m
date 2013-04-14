@@ -164,8 +164,7 @@
                 }
                 else
                 {
-                    NSLocale*   locale = [NSLocale currentLocale];
-                    mutableArea[@"areaName"] = [mutableArea[@"areaName"] capitalizedStringWithLocale:locale];
+                    mutableArea[@"areaName"] = [Common capitalizedString:mutableArea[@"areaName"]];
                 }
             }
             else if ([mutableArea objectForKey:@"areaCode"] != [NSNull null])

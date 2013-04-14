@@ -319,4 +319,12 @@
     return bit;
 }
 
+
++ (NSString*)capitalizedString:(NSString*)string
+{
+    NSLocale*   locale = [NSLocale currentLocale];
+
+    return [string capitalizedStringWithLocale:locale];
+}
+
 @end

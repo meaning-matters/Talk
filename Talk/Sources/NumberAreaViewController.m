@@ -770,7 +770,7 @@ const int   CountryCellTag   = 4321;
             }
             
             cityTextField = textField;
-            cityTextField.text = purchaseInfo[@"city"];
+            cityTextField.text = [Common capitalizedString:purchaseInfo[@"city"]];
             objc_setAssociatedObject(cityTextField, @"PurchaseInfoKey", @"city", OBJC_ASSOCIATION_RETAIN);
             break;
     }

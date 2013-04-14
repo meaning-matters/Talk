@@ -66,4 +66,6 @@
 
 + (unsigned long)getNthSetBit:(unsigned)n inValue:(unsigned long)value; // With n == 0 return first bit set.
 
++ (NSString*)capitalizedString:(NSString*)string;
+
 @end
