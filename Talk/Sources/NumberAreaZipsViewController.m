@@ -9,6 +9,7 @@
 #import "NumberAreaZipsViewController.h"
 #import "BlockAlertView.h"
 #import "CommonStrings.h"
+#import "Common.h"
 
 
 @interface NumberAreaZipsViewController ()
@@ -19,6 +20,7 @@
 
     NSArray*                citiesArray;
     BOOL                    isFiltered;
+    NSMutableDictionary*    cityLookupDictionary;   // A map between ZIP code and matching city.
 
     NSMutableDictionary*    purchaseInfo;
 
@@ -67,11 +69,17 @@
 {
     NSMutableArray* zipCodesArray = [NSMutableArray array];
     nameIndexDictionary           = [NSMutableDictionary dictionary];
+    cityLookupDictionary          = [NSMutableDictionary dictionary];
 
-    // Create one big ZIP codes array.
+    // Create one big ZIP codes array, and create city lookup dictionary.
     for (NSMutableDictionary* city in citiesArray)
     {
         [zipCodesArray addObjectsFromArray:city[@"zipCodes"]];
+
+        for (NSString* zipCode in city[@"zipCodes"])
+        {
+            cityLookupDictionary[zipCode] = city[@"city"];
+        }
     }
 
     // Find maximum ZIP code size.
@@ -191,34 +199,16 @@
     }
 
     // Lookup city that belongs to this ZIP code, and check if it matches with current city.
-    NSDictionary*   mismatchCity = nil;
-    for (NSDictionary* city in citiesArray)
+    NSString*   mismatchCity = nil;
+    if (purchaseInfo[@"city"] != nil &&
+        [[cityLookupDictionary objectForKey:name] isEqualToString:purchaseInfo[@"city"]] == NO)
     {
-        NSString*   zipCode;
-
-        for (zipCode in city[@"zipCodes"])
-        {
-            if ([name isEqualToString:zipCode])
-            {
-                if (purchaseInfo[@"city"] != nil &&
-                    [city[@"city"] isEqualToString:purchaseInfo[@"city"]] == NO)
-                {
-                    mismatchCity = city;
-                }
-                else
-                {
-                    // Set city that belongs to selected ZIP code.
-                    purchaseInfo[@"city"] = city[@"city"];
-                }
-
-                break;
-            }
-        }
-
-        if ([name isEqualToString:zipCode])
-        {
-            break;
-        }
+        mismatchCity = [cityLookupDictionary objectForKey:name];
+    }
+    else
+    {
+        // Set city that belongs to selected ZIP code.
+        purchaseInfo[@"city"] = [cityLookupDictionary objectForKey:name];
     }
 
     if (mismatchCity == nil)
@@ -245,13 +235,14 @@
                                                   @"[iOS alert title size].");
         message = NSLocalizedStringWithDefaultValue(@"NumberAreaZips CityMismatchAlertMessage", nil,
                                                     [NSBundle mainBundle],
-                                                    @"The current city: %@, does not have the ZIP code you "
-                                                    @"selected now.\nDo you also want to select the correctly "
+                                                    @"The current city: %@, does not match the ZIP code you "
+                                                    @"selected.\nDo you also want to select the correctly "
                                                     @"matching city: %@?",
                                                     @"Alert message telling saying that city does not match.\n"
                                                     @"[iOS alert message size - use correct term for "
                                                     @"'ZIP code']");
-        message = [NSString stringWithFormat:message, purchaseInfo[@"city"], mismatchCity[@"city"]];
+        message = [NSString stringWithFormat:message, [Common capitalizedString:purchaseInfo[@"city"]],
+                                                      [Common capitalizedString:mismatchCity]];
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
@@ -266,7 +257,7 @@
                  cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
                  purchaseInfo[@"zipCode"] = name;
-                 purchaseInfo[@"city"]    = mismatchCity[@"city"];
+                 purchaseInfo[@"city"]    = mismatchCity;
 
                  [self.navigationController popViewControllerAnimated:YES];
              }
@@ -286,10 +277,10 @@
     UITableViewCell*    cell;
     NSString*           name;
 
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"SubtitleCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SubtitleCell"];
     }
 
     if (isFiltered)
@@ -302,6 +293,7 @@
     }
 
     cell.textLabel.text = name;
+    cell.detailTextLabel.text = [cityLookupDictionary objectForKey:name];
     if ([name isEqualToString:purchaseInfo[@"zipCode"]])
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;

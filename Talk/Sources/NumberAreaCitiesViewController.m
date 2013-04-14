@@ -9,6 +9,7 @@
 #import "NumberAreaCitiesViewController.h"
 #import "BlockAlertView.h"
 #import "CommonStrings.h"
+#import "Common.h"
 
 
 @interface NumberAreaCitiesViewController ()
@@ -203,8 +204,8 @@
                                                   @"[iOS alert title size - use correct term for 'ZIP code'].");
         message = NSLocalizedStringWithDefaultValue(@"NumberAreaCities ZipMismatchAlertMessage", nil,
                                                     [NSBundle mainBundle],
-                                                    @"The current ZIP code: %@, does not belong to the city "
-                                                    @"you selected now.\nYou will have to select a ZIP code again.",
+                                                    @"The current ZIP code: %@, does not match the city "
+                                                    @"you selected.\nYou will have to select a ZIP code again.",
                                                     @"Alert message telling saying that ZIP code does not match.\n"
                                                     @"[iOS alert message size - use correct term for 'ZIP code']");
         message = [NSString stringWithFormat:message, mismatchZipCode];
