@@ -269,11 +269,12 @@
 - (void)sortOutArrays
 {
     // Create indexes.
+    int size = (areasArray.count > 8);  // Don't show index with 8 or less items.
     nameIndexDictionary = [NSMutableDictionary dictionary];
     for (NSMutableDictionary* area in areasArray)
     {
         NSString*       name = area[@"areaName"];
-        NSString*       nameIndex = [name substringToIndex:1];
+        NSString*       nameIndex = [name substringToIndex:size];
         NSMutableArray* indexArray;
         if ((indexArray = [nameIndexDictionary valueForKey:nameIndex]) != nil)
         {

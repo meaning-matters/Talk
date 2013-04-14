@@ -76,11 +76,12 @@
 - (void)sortOutArrays
 {
     // Create indexes.
+    int size = (citiesArray.count > 8); // Don't show index with 8 or less items.
     nameIndexDictionary = [NSMutableDictionary dictionary];
     for (NSMutableDictionary* city in citiesArray)
     {
         NSString*       name = city[@"city"];
-        NSString*       nameIndex = [name substringToIndex:1];
+        NSString*       nameIndex = [name substringToIndex:size];
         NSMutableArray* indexArray;
         if ((indexArray = [nameIndexDictionary valueForKey:nameIndex]) != nil)
         {

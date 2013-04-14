@@ -117,6 +117,7 @@
     }
 
     // Create indexes.
+    size = (zipCodesArray.count > 8);   // Don't show index with 8 or less items.
     for (NSString* zipCode in zipCodesArray)
     {
         NSString*       name = zipCode;
