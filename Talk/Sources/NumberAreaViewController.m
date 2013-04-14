@@ -65,6 +65,18 @@ const int   CountryCellTag   = 4321;
     UITextField*            zipCodeTextField;
     UITextField*            cityTextField;
 
+    NSIndexPath*            nameIndexPath;
+    NSIndexPath*            salutationIndexPath;
+    NSIndexPath*            firstNameIndexPath;
+    NSIndexPath*            lastNameIndexPath;
+    NSIndexPath*            companyIndexPath;
+    NSIndexPath*            streetIndexPath;
+    NSIndexPath*            buildingIndexPath;
+    NSIndexPath*            zipCodeIndexPath;
+    NSIndexPath*            cityIndexPath;
+
+    NSIndexPath*            nextIndexPath;
+
     // Keyboard stuff.
     BOOL                    keyboardShown;
     CGFloat                 keyboardOverlap;
@@ -108,6 +120,8 @@ const int   CountryCellTag   = 4321;
         areaRows |= ([area[@"areaCode"] length] > 0) ?                           AreaRowAreaCode : 0;
         areaRows |= (numberTypeMask == NumberTypeGeographicMask && !allCities) ? AreaRowAreaName : 0;
         areaRows |= (state != nil) ?                                             AreaRowState    : 0;
+
+        [self initializeIndexPaths];
    }
     
     return self;
@@ -124,6 +138,7 @@ const int   CountryCellTag   = 4321;
                                                                  action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
+    // Let keyboard be hidden when user taps outside text fields.
     UITapGestureRecognizer* gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                         action:@selector(hideKeyboard)];
     gestureRecognizer.cancelsTouchesInView = NO;
@@ -259,13 +274,100 @@ const int   CountryCellTag   = 4321;
     [textField setFont:[UIFont boldSystemFontOfSize:15]];
 
     textField.adjustsFontSizeToFitWidth = NO;
-    textField.returnKeyType             = UIReturnKeyDone;
     textField.autocapitalizationType    = UITextAutocapitalizationTypeWords;
     textField.delegate                  = self;
 
     [cell.contentView addSubview:textField];
 
     return textField;
+}
+
+
+- (NSIndexPath*)nextEmptyIndexPath:(NSString*)currentKey
+{
+    unsigned    emptyMask  = 0;
+    unsigned    currentBit = 0;
+
+    if (requireInfo)
+    {
+        emptyMask |= ([purchaseInfo[@"name"]       length] == 0) << 0;
+        emptyMask |= ([purchaseInfo[@"salutation"] length] == 0) << 1;
+        emptyMask |= ([purchaseInfo[@"firstName"]  length] == 0) << 2;
+        emptyMask |= ([purchaseInfo[@"lastName"]   length] == 0) << 3;
+        emptyMask |= ([purchaseInfo[@"company"]    length] == 0) << 4;
+        emptyMask |= ([purchaseInfo[@"street"]     length] == 0) << 5;
+        emptyMask |= ([purchaseInfo[@"building"]   length] == 0) << 6;
+        if (citiesArray.count == 0)
+        {
+            emptyMask |= ([purchaseInfo[@"zipCode"]    length] == 0) << 7;
+            emptyMask |= ([purchaseInfo[@"city"]       length] == 0) << 8;
+        }
+    }
+    else
+    {
+        emptyMask |= ([purchaseInfo[@"name"]       length] == 0) << 0;
+    }
+
+    if (emptyMask != 0)
+    {
+        currentBit |= [currentKey isEqualToString:@"name"]       << 0;
+        currentBit |= [currentKey isEqualToString:@"salutation"] << 1;
+        currentBit |= [currentKey isEqualToString:@"firstName"]  << 2;
+        currentBit |= [currentKey isEqualToString:@"lastName"]   << 3;
+        currentBit |= [currentKey isEqualToString:@"company"]    << 4;
+        currentBit |= [currentKey isEqualToString:@"street"]     << 5;
+        currentBit |= [currentKey isEqualToString:@"building"]   << 6;
+        currentBit |= [currentKey isEqualToString:@"zipCode"]    << 7;
+        currentBit |= [currentKey isEqualToString:@"city"]       << 8;
+
+        // Find next bit set in emptyMask.
+        unsigned    nextBit = currentBit << 1;
+        while ((nextBit & emptyMask) == 0 && nextBit != 0)
+        {
+            nextBit <<= 1;
+        }
+
+        // When not found yet, start from begin.
+        if (nextBit == 0)
+        {
+            nextBit = 1;
+            while (((nextBit & emptyMask) == 0 || nextBit == currentBit) && nextBit != 0)
+            {
+                nextBit <<= 1;
+            }
+        }
+
+        NSIndexPath*    indexPath = nil;
+        indexPath = (nextBit == (1 << 0)) ? nameIndexPath       : indexPath;
+        indexPath = (nextBit == (1 << 1)) ? salutationIndexPath : indexPath;
+        indexPath = (nextBit == (1 << 2)) ? firstNameIndexPath  : indexPath;
+        indexPath = (nextBit == (1 << 3)) ? lastNameIndexPath   : indexPath;
+        indexPath = (nextBit == (1 << 4)) ? companyIndexPath    : indexPath;
+        indexPath = (nextBit == (1 << 5)) ? streetIndexPath     : indexPath;
+        indexPath = (nextBit == (1 << 6)) ? buildingIndexPath   : indexPath;
+        indexPath = (nextBit == (1 << 7)) ? zipCodeIndexPath    : indexPath;
+        indexPath = (nextBit == (1 << 8)) ? cityIndexPath       : indexPath;
+        
+        return indexPath;
+    }
+    else
+    {
+        return nil;
+    }
+}
+
+
+- (void)initializeIndexPaths
+{
+    nameIndexPath       = [NSIndexPath indexPathForItem:0 inSection:1];
+    salutationIndexPath = [NSIndexPath indexPathForItem:0 inSection:2];
+    firstNameIndexPath  = [NSIndexPath indexPathForItem:1 inSection:2];
+    lastNameIndexPath   = [NSIndexPath indexPathForItem:2 inSection:2];
+    companyIndexPath    = [NSIndexPath indexPathForItem:3 inSection:2];
+    streetIndexPath     = [NSIndexPath indexPathForItem:0 inSection:3];
+    buildingIndexPath   = [NSIndexPath indexPathForItem:1 inSection:3];
+    zipCodeIndexPath    = [NSIndexPath indexPathForItem:2 inSection:3];
+    cityIndexPath       = [NSIndexPath indexPathForItem:3 inSection:3];
 }
 
 
@@ -815,16 +917,14 @@ const int   CountryCellTag   = 4321;
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField*)textField
 {
-    activeCellIndexPath = [self findCellIndexPathForSubview:textField];
-    return YES;
-}
-
-
-- (void)textFieldDidEndEditing:(UITextField*)textField
-{
     NSString*   key = objc_getAssociatedObject(textField, @"PurchaseInfoKey");
 
-    purchaseInfo[key] = textField.text;
+    textField.returnKeyType = [self nextEmptyIndexPath:key] ? UIReturnKeyNext : UIReturnKeyDone;
+#warning The method reloadInputViews messes up two-byte keyboards (e.g. Kanji).
+    [textField reloadInputViews];
+
+    activeCellIndexPath = [self findCellIndexPathForSubview:textField];
+    return YES;
 }
 
 
@@ -837,8 +937,52 @@ const int   CountryCellTag   = 4321;
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-    [textField resignFirstResponder];
+    NSString*       key = objc_getAssociatedObject(textField, @"PurchaseInfoKey");
+
+    if ((nextIndexPath = [self nextEmptyIndexPath:key]) != nil)
+    {
+        NSLog(@"NEXT FIELD KEY: %@", key);
+
+        [self.tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        return NO;
+    }
+    else
+    {
+        [textField resignFirstResponder];
+        return YES;
+    }
+}
+
+
+- (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
+{
+    NSString*   key  = objc_getAssociatedObject(textField, @"PurchaseInfoKey");
+
+    purchaseInfo[key] = [textField.text stringByReplacingCharactersInRange:range withString:string];
+
     return YES;
+}
+
+
+#pragma mark - Scrollview Delegate
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView*)scrollView
+{
+    if (nextIndexPath != nil)
+    {
+        UITextField*    nextTextField;
+
+        UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
+        nextIndexPath = nil;
+        
+        if (cell == nil)
+        {
+            NSLog(@"CELL IS NIL - CAN't set first responder");
+        }
+
+        nextTextField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];
+        [nextTextField becomeFirstResponder];
+    }
 }
 
 
