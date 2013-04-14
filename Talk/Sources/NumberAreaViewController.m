@@ -242,14 +242,15 @@ const int   CountryCellTag   = 4321;
 - (UITextField*)addTextFieldToCell:(UITableViewCell*)cell
 {
     UITextField*    textField;
-    CGRect          frame = CGRectMake(83, 11, 216, 30);
+    CGRect          frame = CGRectMake(83, 11, 198, 30);
 
     textField = [[UITextField alloc] initWithFrame:frame];
     [textField setFont:[UIFont boldSystemFontOfSize:15]];
 
-    textField.returnKeyType          = UIReturnKeyDone;
-    textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
-    textField.delegate               = self;
+    textField.adjustsFontSizeToFitWidth = NO;
+    textField.returnKeyType             = UIReturnKeyDone;
+    textField.autocapitalizationType    = UITextAutocapitalizationTypeWords;
+    textField.delegate                  = self;
 
     [cell.contentView addSubview:textField];
 
