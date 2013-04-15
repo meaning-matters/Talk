@@ -167,7 +167,7 @@
                     mutableArea[@"areaName"] = [Common capitalizedString:mutableArea[@"areaName"]];
                 }
             }
-            else if ([mutableArea objectForKey:@"areaCode"] != [NSNull null])
+            else if ([[mutableArea objectForKey:@"areaCode"] isEqualToString:@"0"] == NO)
             {
                 // To support non-geographic numbers with little code change.
                 mutableArea[@"areaName"] = mutableArea[@"areaCode"];
