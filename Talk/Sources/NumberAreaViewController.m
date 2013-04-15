@@ -847,7 +847,7 @@ const int   CountryCellTag   = 4321;
                     cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
                     textField.text = nil;
-                    purchaseInfo[@"zipCode"] = nil; // // Resets what user may have typed while loading (on slow internet).
+                    purchaseInfo[@"zipCode"] = @"";     // Resets what user may have typed while loading (on slow internet).
                 }
                 
                 textField.userInteractionEnabled = NO;
@@ -880,7 +880,7 @@ const int   CountryCellTag   = 4321;
                     cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
                     textField.text = nil;
-                    purchaseInfo[@"city"] = nil;    // Resets what user may have typed while loading (on slow internet).
+                    purchaseInfo[@"city"] = @"";    // Resets what user may have typed while loading (on slow internet).
                 }
 
                 textField.userInteractionEnabled = NO;
