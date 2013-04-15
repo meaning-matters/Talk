@@ -15,6 +15,8 @@
 #import "BlockAlertView.h"
 #import "Common.h"
 #import "CountryNames.h"
+#import "NumberAreaActionCell.h"
+#import "PurchaseManager.h"
 
 
 typedef enum
@@ -158,6 +160,9 @@ const int   CountryCellTag   = 4321;
                                                                       @"Title of app screen with one area.\n"
                                                                       @"[1 line larger font].");
     }
+
+    [self.tableView registerNib:[UINib nibWithNibName:@"NumberAreaActionCell" bundle:nil]
+         forCellReuseIdentifier:@"NumberAreaActionCell"];
 }
 
 
@@ -394,6 +399,35 @@ const int   CountryCellTag   = 4321;
     }
 
     return [self.tableView indexPathForCell:(UITableViewCell*)superview];
+}
+
+
+- (NSString*)priceString
+{
+    NSString*   string;
+    SKProduct*  numberProduct = nil;
+
+    for (SKProduct* product in [PurchaseManager sharedManager].products)
+    {
+#warning IMPORTANT Replace @"" with purchaseInfo[@"monthlyFeeTier"] once products are in
+        NSString*   suffix = [NSString stringWithFormat:@"Number%@", @""];
+
+        if ([product.productIdentifier rangeOfString:suffix].location != NSNotFound)
+        {
+            numberProduct = product;
+            break;
+        }
+    }
+
+    if (numberProduct == nil)
+    {
+        NSLog(@"//### We have a serious problem here!");
+        return @"----";
+    }
+    else
+    {
+        return @"";//[[PurchaseManager sharedManager] localizedFormattedPriceForProduct:numberProduct];
+    }
 }
 
 
@@ -893,7 +927,7 @@ const int   CountryCellTag   = 4321;
     }
 
     cell.detailTextLabel.text = nil;
-    cell.imageView.image = nil;
+    cell.imageView.image      = nil;
 
     return cell;
 }
@@ -901,17 +935,36 @@ const int   CountryCellTag   = 4321;
 
 - (UITableViewCell*)actionCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
+    NumberAreaActionCell*   cell;
+    NSString*               text;
 
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumberAreaActionCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
+        cell = [[NumberAreaActionCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                           reuseIdentifier:@"NumberAreaActionCell"];
+    }
+
+    if (requireInfo == YES && isChecked == NO)
+    {
+        text = NSLocalizedStringWithDefaultValue(@"NumberArea:Action CheckInfoLabel", nil,
+                                                 [NSBundle mainBundle],
+                                                 @"Check Supplied Information",
+                                                 @"....");
+    }
+    else
+    {
+        text = NSLocalizedStringWithDefaultValue(@"NumberArea:Action BuyLabel", nil,
+                                                 [NSBundle mainBundle],
+                                                 @"Buy for %@",
+                                                 @"Parameter is price (with currency sign).");
+        text = [NSString stringWithFormat:text, [self priceString]];
     }
 
     cell.imageView.image = nil;
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    cell.textLabel.text  = nil;
+    cell.accessoryType   = UITableViewCellAccessoryNone;
+    cell.selectionStyle  = UITableViewCellSelectionStyleBlue;
 
     return cell;
 }

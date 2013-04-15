@@ -65,6 +65,10 @@
 		484A949E171821CB009E22B9 /* NumberAreasCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484A949C171821CB009E22B9 /* NumberAreasCell.xib */; };
 		484A94A1171822D4009E22B9 /* NumberAreasCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 484A94A0171822D4009E22B9 /* NumberAreasCell.m */; };
 		484A94A2171822D4009E22B9 /* NumberAreasCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 484A94A0171822D4009E22B9 /* NumberAreasCell.m */; };
+		484A94A6171C5065009E22B9 /* NumberAreaActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484A94A5171C5065009E22B9 /* NumberAreaActionCell.xib */; };
+		484A94A7171C5065009E22B9 /* NumberAreaActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484A94A5171C5065009E22B9 /* NumberAreaActionCell.xib */; };
+		484A94AA171C518D009E22B9 /* NumberAreaActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 484A94A9171C518C009E22B9 /* NumberAreaActionCell.m */; };
+		484A94AB171C518D009E22B9 /* NumberAreaActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 484A94A9171C518C009E22B9 /* NumberAreaActionCell.m */; };
 		484D936C1712FBA1006FA875 /* NumberAreaCitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936B1712FBA1006FA875 /* NumberAreaCitiesViewController.m */; };
 		484D936D1712FBA1006FA875 /* NumberAreaCitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936B1712FBA1006FA875 /* NumberAreaCitiesViewController.m */; };
 		484D937017131E97006FA875 /* NumberAreaZipsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936F17131E97006FA875 /* NumberAreaZipsViewController.m */; };
@@ -917,6 +921,9 @@
 		484A949C171821CB009E22B9 /* NumberAreasCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreasCell.xib; sourceTree = "<group>"; };
 		484A949F171822D4009E22B9 /* NumberAreasCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreasCell.h; sourceTree = "<group>"; };
 		484A94A0171822D4009E22B9 /* NumberAreasCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreasCell.m; sourceTree = "<group>"; };
+		484A94A5171C5065009E22B9 /* NumberAreaActionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreaActionCell.xib; sourceTree = "<group>"; };
+		484A94A8171C518C009E22B9 /* NumberAreaActionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaActionCell.h; sourceTree = "<group>"; };
+		484A94A9171C518C009E22B9 /* NumberAreaActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaActionCell.m; sourceTree = "<group>"; };
 		484D936A1712FBA1006FA875 /* NumberAreaCitiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaCitiesViewController.h; sourceTree = "<group>"; };
 		484D936B1712FBA1006FA875 /* NumberAreaCitiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaCitiesViewController.m; sourceTree = "<group>"; };
 		484D936E17131E96006FA875 /* NumberAreaZipsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaZipsViewController.h; sourceTree = "<group>"; };
@@ -1881,6 +1888,8 @@
 				485ECBE116525D3600364F08 /* KeypadView.m */,
 				485ECBE41652B9BD00364F08 /* KeypadButton.h */,
 				485ECBE51652B9BE00364F08 /* KeypadButton.m */,
+				484A94A8171C518C009E22B9 /* NumberAreaActionCell.h */,
+				484A94A9171C518C009E22B9 /* NumberAreaActionCell.m */,
 				484A949F171822D4009E22B9 /* NumberAreasCell.h */,
 				484A94A0171822D4009E22B9 /* NumberAreasCell.m */,
 			);
@@ -2512,6 +2521,7 @@
 				48AF450D164948DC00DFE3D8 /* GroupsView.xib */,
 				48AF45131649490100DFE3D8 /* HelpView.xib */,
 				48D0A6F91655E2C600FA2D98 /* KeypadView.xib */,
+				484A94A5171C5065009E22B9 /* NumberAreaActionCell.xib */,
 				484D937217132518006FA875 /* NumberAreaCitiesView.xib */,
 				4830461F16EE222C000F9B05 /* NumberAreaView.xib */,
 				484D937517132539006FA875 /* NumberAreaZipsView.xib */,
@@ -3316,6 +3326,7 @@
 				484D937317132518006FA875 /* NumberAreaCitiesView.xib in Resources */,
 				484D937617132539006FA875 /* NumberAreaZipsView.xib in Resources */,
 				484A949D171821CB009E22B9 /* NumberAreasCell.xib in Resources */,
+				484A94A6171C5065009E22B9 /* NumberAreaActionCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3401,6 +3412,7 @@
 				484D937417132518006FA875 /* NumberAreaCitiesView.xib in Resources */,
 				484D937717132539006FA875 /* NumberAreaZipsView.xib in Resources */,
 				484A949E171821CB009E22B9 /* NumberAreasCell.xib in Resources */,
+				484A94A7171C5065009E22B9 /* NumberAreaActionCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3510,6 +3522,7 @@
 				484D936C1712FBA1006FA875 /* NumberAreaCitiesViewController.m in Sources */,
 				484D937017131E97006FA875 /* NumberAreaZipsViewController.m in Sources */,
 				484A94A1171822D4009E22B9 /* NumberAreasCell.m in Sources */,
+				484A94AA171C518D009E22B9 /* NumberAreaActionCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3587,6 +3600,7 @@
 				484D936D1712FBA1006FA875 /* NumberAreaCitiesViewController.m in Sources */,
 				484D937117131E97006FA875 /* NumberAreaZipsViewController.m in Sources */,
 				484A94A2171822D4009E22B9 /* NumberAreasCell.m in Sources */,
+				484A94AB171C518D009E22B9 /* NumberAreaActionCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -46,6 +46,8 @@ extern NSString* const  PurchaseManagerProductIdentifierCredit50;
 
 - (NSString*)localizedFormattedPrice:(float)usdPrice;
 
+- (NSString*)priceStringForProductIdentifier:(SKProduct*)product;
+
 - (void)restoreOrBuyAccount:(void (^)(BOOL success, id object))completion;
 
 - (BOOL)buyProductIdentifier:(NSString*)productIdentifier;

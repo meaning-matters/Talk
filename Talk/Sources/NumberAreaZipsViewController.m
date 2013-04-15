@@ -117,7 +117,7 @@
     }
 
     // Create indexes.
-    size = (zipCodesArray.count > 8);   // Don't show index with 8 or less items.
+    size = (zipCodesArray.count <= 8) ? 1 : size;   // Don't show index with 8 or less items.
     for (NSString* zipCode in zipCodesArray)
     {
         NSString*       name = zipCode;
@@ -201,7 +201,7 @@
 
     // Lookup city that belongs to this ZIP code, and check if it matches with current city.
     NSString*   mismatchCity = nil;
-    if (purchaseInfo[@"city"] != nil &&
+    if ([purchaseInfo[@"city"] length] > 0 &&
         [[cityLookupDictionary objectForKey:name] isEqualToString:purchaseInfo[@"city"]] == NO)
     {
         mismatchCity = [cityLookupDictionary objectForKey:name];

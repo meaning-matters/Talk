@@ -181,7 +181,7 @@
         }
     }
 
-    if (mismatchZipCode == nil)
+    if (mismatchZipCode.length == 0)
     {
         if (checkmarkedCell.accessoryType == UITableViewCellAccessoryCheckmark)
         {
@@ -224,7 +224,7 @@
                  cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
                  [purchaseInfo removeObjectForKey:@"zipCode"];
-                 purchaseInfo[@"city"]    = name;
+                 purchaseInfo[@"city"] = name;
 
                  [self.navigationController popViewControllerAnimated:YES];
              }

@@ -29,7 +29,7 @@ NSString* const  PurchaseManagerProductIdentifierCredit5  = PRODUCT_IDENTIFIER_B
 NSString* const  PurchaseManagerProductIdentifierCredit10 = PRODUCT_IDENTIFIER_BASE @"Credit10";
 NSString* const  PurchaseManagerProductIdentifierCredit20 = PRODUCT_IDENTIFIER_BASE @"Credit20";
 NSString* const  PurchaseManagerProductIdentifierCredit50 = PRODUCT_IDENTIFIER_BASE @"Credit50";
-
+ 
 
 @interface PurchaseManager () <SKProductsRequestDelegate, SKPaymentTransactionObserver>
 
@@ -469,6 +469,30 @@ static PurchaseManager*     sharedManager;
     }
 
     return formattedString;
+}
+
+
+- (NSString*)priceStringForProductIdentifier:(NSString*)productIdentifier
+{
+    SKProduct*  product = [self getProductForProductIdentifier:productIdentifier];
+    NSString*   priceString;
+
+    if (product != nil)
+    {
+        NSNumberFormatter*  numberFormatter;
+
+        numberFormatter = [[NSNumberFormatter alloc] init];
+        [numberFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
+        [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+        [numberFormatter setLocale:product.priceLocale];
+
+        priceString = [numberFormatter stringFromNumber:product.price];
+    }
+    else
+    {
+#warning //### Handle this!!!
+        priceString = @"----";
+    }
 }
 
 
