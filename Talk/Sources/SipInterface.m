@@ -81,6 +81,8 @@
     pjmedia_port*           congestion_port;
     int                     ring_slot;
     pjmedia_port*           ring_port;
+
+    BOOL                    isRestarting;
 }
 
 @end
@@ -536,20 +538,29 @@ void showLog(int level, const char* data, int len)
             if ((status = pjsua_start()) != PJ_SUCCESS)
             {
                 NSLog(@"//### pjsua_start() failed: %d.", status);
-                               
+
+#warning Add another restart here after some time, we can't just give up forever!!!
                 [self destroy];
+            }
+            else
+            {
+                isRestarting = NO;
             }
         }
         else
         {
+#warning Add another restart here after some time, we can't just give up forever!!!
             NSLog(@"//### Failed to initialize PJSUA.");
         }
     });
 }
 
 
+#warning The methdod is called in many places, but it basically kills the app/PJSIP.  Some restart must be added.
 - (pj_status_t)destroy
 {
+    isRestarting = YES;
+
     pj_status_t status;
     unsigned    i;
 
@@ -593,6 +604,7 @@ void showLog(int level, const char* data, int len)
             {
                 call.state = CallStateEnded;
                 [self.delegate sipInterface:self callEnded:call];
+                pjsua_call_set_user_data(call.callId, NULL);
             }
         }
 
@@ -796,6 +808,7 @@ void showLog(int level, const char* data, int len)
         {
             call.state = CallStateEnded;
             [self.delegate sipInterface:self callEnded:call];
+            pjsua_call_set_user_data(call.callId, NULL);
         }
 
         [calls removeAllObjects];
@@ -1114,20 +1127,37 @@ void showLog(int level, const char* data, int len)
             }
         }
 
-        if ((call = (__bridge Call*)pjsua_call_get_user_data(callId)) != nil)
+        unsigned        count = pjsua_call_get_count();
+        pjsua_call_id*  callIds = calloc(count, sizeof(pjsua_call_id));
+        int             index;
+
+        pjsua_enum_calls(callIds, &count);
+        for (index = 0; index < count; index++)
         {
-            // Probably first time call is being lookup.  And since callId was not know by app
-            // when call was made (it's defined by PJSIP), we need to do two things here:
-            [calls addObject:call];
-            call.callId = callId;
+            if (callId == callIds[index])
+            {
+                break;
+            }
+        }
+
+        if (index < count)
+        {
+            // PJSIP still knows this call.
+            if ((call = (__bridge Call*)pjsua_call_get_user_data(callId)) != nil)
+            {
+                // Probably first time call is being looked up.  And since callId was not know by app
+                // when call was made (it's defined by PJSIP), we need to do two things here:
+                [calls addObject:call];
+                call.callId = callId;
+            }
         }
         else
         {
-            NSLog(@"//########################### No call found.");
+            NSLog(@"//########## No PJSIP call found.");
 
-            if ([calls count] > 1)
+            if ([calls count] > 0)
             {
-                NSLog(@"//########################## More than one (%d) calls.", [calls count]);
+                NSLog(@"//########## But there are %d app call(s).", [calls count]);
             }
         }
     };
@@ -1568,6 +1598,7 @@ void showLog(int level, const char* data, int len)
                 call.state = CallStateEnded;
                 [self.delegate sipInterface:self callEnded:call];
                 [calls removeObject:call];
+                pjsua_call_set_user_data(call.callId, NULL);    //### Added at MON 15 APR insearch for crash bug.  Gave problems?
             });
             break;
         }
