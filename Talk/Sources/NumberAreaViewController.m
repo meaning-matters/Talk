@@ -841,11 +841,13 @@ const int   CountryCellTag   = 4321;
                 if (singleZipCode == NO)
                 {
                     textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:ZipCode Placeholder B", nil,
-                                                                              [NSBundle mainBundle], @"Required, select from list",
+                                                                              [NSBundle mainBundle],
+                                                                              @"Required, select from list",
                                                                               @"....");
                     cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
                     textField.text = nil;
+                    purchaseInfo[@"zipCode"] = nil; // // Resets what user may have typed while loading (on slow internet).
                 }
                 
                 textField.userInteractionEnabled = NO;
@@ -871,12 +873,14 @@ const int   CountryCellTag   = 4321;
                 if (singleCity == NO)
                 {
                     textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:ZipCode Placeholder", nil,
-                                                                              [NSBundle mainBundle], @"Required, select from list",
+                                                                              [NSBundle mainBundle],
+                                                                              @"Required, select from list",
                                                                               @"....");
                     textField.text = nil;
                     cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
                     textField.text = nil;
+                    purchaseInfo[@"city"] = nil;    // Resets what user may have typed while loading (on slow internet).
                 }
 
                 textField.userInteractionEnabled = NO;
