@@ -25,7 +25,6 @@
 
 
 extern NSString* const  PurchaseManagerProductIdentifierAccount;
-extern NSString* const  PurchaseManagerProductIdentifierNumber;
 extern NSString* const  PurchaseManagerProductIdentifierCredit1;
 extern NSString* const  PurchaseManagerProductIdentifierCredit2;
 extern NSString* const  PurchaseManagerProductIdentifierCredit5;
@@ -44,9 +43,11 @@ extern NSString* const  PurchaseManagerProductIdentifierCredit50;
 
 + (PurchaseManager*)sharedManager;
 
+- (NSString*)productIdentifierForNumberTier:(int)tier;
+
 - (NSString*)localizedFormattedPrice:(float)usdPrice;
 
-- (NSString*)priceStringForProductIdentifier:(SKProduct*)product;
+- (NSString*)localizedPriceForProductIdentifier:(NSString*)identifier;
 
 - (void)restoreOrBuyAccount:(void (^)(BOOL success, id object))completion;
 

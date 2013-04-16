@@ -22,7 +22,22 @@
 #warning MAKE SURE TO UPDATE PRODUCT_IDENTIFIER_BASE WHEN MOVING TO FINAL APP ACCOUNT
 #define PRODUCT_IDENTIFIER_BASE @"com.numberbay0."
 NSString* const  PurchaseManagerProductIdentifierAccount  = PRODUCT_IDENTIFIER_BASE @"Account";
-NSString* const  PurchaseManagerProductIdentifierNumber   = PRODUCT_IDENTIFIER_BASE @"Number";
+NSString* const  PurchaseManagerProductIdentifierNumber1  = PRODUCT_IDENTIFIER_BASE @"Number1";
+NSString* const  PurchaseManagerProductIdentifierNumber2  = PRODUCT_IDENTIFIER_BASE @"Number2";
+NSString* const  PurchaseManagerProductIdentifierNumber3  = PRODUCT_IDENTIFIER_BASE @"Number3";
+NSString* const  PurchaseManagerProductIdentifierNumber4  = PRODUCT_IDENTIFIER_BASE @"Number4";
+NSString* const  PurchaseManagerProductIdentifierNumber5  = PRODUCT_IDENTIFIER_BASE @"Number5";
+NSString* const  PurchaseManagerProductIdentifierNumber6  = PRODUCT_IDENTIFIER_BASE @"Number6";
+NSString* const  PurchaseManagerProductIdentifierNumber7  = PRODUCT_IDENTIFIER_BASE @"Number7";
+NSString* const  PurchaseManagerProductIdentifierNumber8  = PRODUCT_IDENTIFIER_BASE @"Number8";
+NSString* const  PurchaseManagerProductIdentifierNumber9  = PRODUCT_IDENTIFIER_BASE @"Number9";
+NSString* const  PurchaseManagerProductIdentifierNumber10 = PRODUCT_IDENTIFIER_BASE @"Number10";
+NSString* const  PurchaseManagerProductIdentifierNumber11 = PRODUCT_IDENTIFIER_BASE @"Number11";
+NSString* const  PurchaseManagerProductIdentifierNumber12 = PRODUCT_IDENTIFIER_BASE @"Number12";
+NSString* const  PurchaseManagerProductIdentifierNumber13 = PRODUCT_IDENTIFIER_BASE @"Number13";
+NSString* const  PurchaseManagerProductIdentifierNumber14 = PRODUCT_IDENTIFIER_BASE @"Number15";
+NSString* const  PurchaseManagerProductIdentifierNumber15 = PRODUCT_IDENTIFIER_BASE @"Number16";
+NSString* const  PurchaseManagerProductIdentifierNumber16 = PRODUCT_IDENTIFIER_BASE @"Number1";
 NSString* const  PurchaseManagerProductIdentifierCredit1  = PRODUCT_IDENTIFIER_BASE @"Credit1";
 NSString* const  PurchaseManagerProductIdentifierCredit2  = PRODUCT_IDENTIFIER_BASE @"Credit2";
 NSString* const  PurchaseManagerProductIdentifierCredit5  = PRODUCT_IDENTIFIER_BASE @"Credit5";
@@ -59,13 +74,30 @@ static PurchaseManager*     sharedManager;
 
         sharedManager.productIdentifiers = [NSSet setWithObjects:
                                             PurchaseManagerProductIdentifierAccount,
-                                            PurchaseManagerProductIdentifierNumber,
+                                            PurchaseManagerProductIdentifierNumber1,
+                                            PurchaseManagerProductIdentifierNumber2,
+                                            PurchaseManagerProductIdentifierNumber3,
+                                            PurchaseManagerProductIdentifierNumber4,
+                                            PurchaseManagerProductIdentifierNumber5,
+                                            PurchaseManagerProductIdentifierNumber6,
+                                            PurchaseManagerProductIdentifierNumber7,
+                                            PurchaseManagerProductIdentifierNumber8,
+                                            PurchaseManagerProductIdentifierNumber9,
+                                            PurchaseManagerProductIdentifierNumber10,
+                                            PurchaseManagerProductIdentifierNumber11,
+                                            PurchaseManagerProductIdentifierNumber12,
+                                            PurchaseManagerProductIdentifierNumber13,
+                                            PurchaseManagerProductIdentifierNumber14,
+                                            PurchaseManagerProductIdentifierNumber15,
+                                            PurchaseManagerProductIdentifierNumber16,
                                             PurchaseManagerProductIdentifierCredit1,
                                             PurchaseManagerProductIdentifierCredit2,
                                             PurchaseManagerProductIdentifierCredit5,
                                             PurchaseManagerProductIdentifierCredit10,
                                             PurchaseManagerProductIdentifierCredit20,
                                             PurchaseManagerProductIdentifierCredit50, nil];
+
+        [[SKPaymentQueue defaultQueue] addTransactionObserver:sharedManager];
 
         // Load the products each time the app starts.
         __block id  observer;
@@ -79,13 +111,8 @@ static PurchaseManager*     sharedManager;
             if ((reachable == NetworkStatusReachableWifi || reachable == NetworkStatusReachableCellular) &&
                 sharedManager.productsRequest == nil && sharedManager.products == nil)
             {
-#warning WRONG!!! This needs to be done everytime when the user is shown purchasable goods.
-#warning          Also make sure that currency code is set each time!!!
-
                 // At first time the app gets connected to internet.
-                sharedManager.productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:sharedManager.productIdentifiers];
-                sharedManager.productsRequest.delegate = sharedManager;
-                [sharedManager.productsRequest start];
+                [sharedManager loadProducts];
             }
 
             if (sharedManager.products != nil)
@@ -95,8 +122,6 @@ static PurchaseManager*     sharedManager;
                 [[NSNotificationCenter defaultCenter] removeObserver:observer];
             }
         }];
-
-        [[SKPaymentQueue defaultQueue] addTransactionObserver:sharedManager];
     }
 }
 
@@ -142,15 +167,30 @@ static PurchaseManager*     sharedManager;
 
 - (BOOL)isNumberProductIdentifier:(NSString*)productIdentifier
 {
-    return [productIdentifier isEqualToString:PurchaseManagerProductIdentifierNumber];
+    return ([productIdentifier isEqualToString:PurchaseManagerProductIdentifierNumber1]  ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierNumber2]  ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierNumber3]  ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierNumber4]  ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierNumber5]  ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierNumber6]  ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierNumber7]  ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierNumber8]  ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierNumber9]  ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierNumber10] ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierNumber11] ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierNumber12] ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierNumber13] ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierNumber14] ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierNumber15] ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierNumber16]);
 }
 
 
 - (BOOL)isCreditProductIdentifier:(NSString*)productIdentifier
 {
-    return ([productIdentifier isEqualToString:PurchaseManagerProductIdentifierCredit1] ||
-            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierCredit2] ||
-            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierCredit5] ||
+    return ([productIdentifier isEqualToString:PurchaseManagerProductIdentifierCredit1]  ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierCredit2]  ||
+            [productIdentifier isEqualToString:PurchaseManagerProductIdentifierCredit5]  ||
             [productIdentifier isEqualToString:PurchaseManagerProductIdentifierCredit10] ||
             [productIdentifier isEqualToString:PurchaseManagerProductIdentifierCredit20] ||
             [productIdentifier isEqualToString:PurchaseManagerProductIdentifierCredit50]);
@@ -325,6 +365,12 @@ static PurchaseManager*     sharedManager;
 
 - (void)request:(SKRequest*)request didFailWithError:(NSError*)error
 {
+#warning Replace with something for users!!!
+    [BlockAlertView showAlertViewWithTitle:@"iTunes Store Error"
+                                   message:[error localizedDescription]
+                                completion:nil cancelButtonTitle:[CommonStrings closeString]
+                         otherButtonTitles:nil];
+
     NSLog(@"//### Failed to load list of products.");
     
     self.productsRequest = nil;
@@ -371,7 +417,11 @@ static PurchaseManager*     sharedManager;
     NSLog(@"restoreCompletedTransactionsFailedWithError: %@", [error localizedDescription]);
     [Common enableNetworkActivityIndicator:NO];
 
-    self.accountCompletion(NO, error);
+    if (self.accountCompletion != nil)
+    {
+        self.accountCompletion(NO, error);
+    }
+    
     self.accountCompletion    = nil;
     self.restoredTransactions = nil;
 }
@@ -448,6 +498,22 @@ static PurchaseManager*     sharedManager;
 
 #pragma mark - Public API
 
+- (void)loadProducts
+{
+    self.productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:self.productIdentifiers];
+    self.productsRequest.delegate = self;
+    [self.productsRequest start];
+}
+
+
+- (NSString*)productIdentifierForNumberTier:(int)tier
+{
+    NSString*   identifier = [NSString stringWithFormat: PRODUCT_IDENTIFIER_BASE @"Number%d", tier];
+
+    return [self getProductForProductIdentifier:identifier].productIdentifier;
+}
+
+
 - (NSString*)localizedFormattedPrice:(float)usdPrice
 {
     NSString*   formattedString;
@@ -472,9 +538,9 @@ static PurchaseManager*     sharedManager;
 }
 
 
-- (NSString*)priceStringForProductIdentifier:(NSString*)productIdentifier
+- (NSString*)localizedPriceForProductIdentifier:(NSString*)identifier;
 {
-    SKProduct*  product = [self getProductForProductIdentifier:productIdentifier];
+    SKProduct*  product = [self getProductForProductIdentifier:identifier];
     NSString*   priceString;
 
     if (product != nil)
@@ -493,6 +559,8 @@ static PurchaseManager*     sharedManager;
 #warning //### Handle this!!!
         priceString = @"----";
     }
+
+    return priceString;
 }
 
 
