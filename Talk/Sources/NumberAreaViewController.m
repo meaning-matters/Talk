@@ -456,7 +456,7 @@ const int   CountryCellTag   = 4321;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return [Common countSetBits:sections];
+    return [Common bitsSetCount:sections];
 }
 
 
@@ -464,7 +464,7 @@ const int   CountryCellTag   = 4321;
 {
     NSString*   title = nil;
 
-    switch ([Common getNthSetBit:section inValue:sections])
+    switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionArea:
             title = NSLocalizedStringWithDefaultValue(@"NumberArea:Area SectionHeader", nil,
@@ -502,7 +502,7 @@ const int   CountryCellTag   = 4321;
 {
     NSString*   title = nil;
 
-    switch ([Common getNthSetBit:section inValue:sections])
+    switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionArea:
             break;
@@ -545,10 +545,10 @@ const int   CountryCellTag   = 4321;
 {
     NSInteger   numberOfRows = 0;
 
-    switch ([Common getNthSetBit:section inValue:sections])
+    switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionArea:
-            numberOfRows = [Common countSetBits:areaRows];
+            numberOfRows = [Common bitsSetCount:areaRows];
             break;
 
         case TableSectionNaming:
@@ -583,7 +583,7 @@ const int   CountryCellTag   = 4321;
     }
     else
     {
-        switch ([Common getNthSetBit:indexPath.section inValue:sections])
+        switch ([Common nthBitSet:indexPath.section inValue:sections])
         {
             case TableSectionAddress:
                 switch (indexPath.row)
@@ -649,7 +649,7 @@ const int   CountryCellTag   = 4321;
 {
     UITableViewCell*    cell;
 
-    switch ([Common getNthSetBit:indexPath.section inValue:sections])
+    switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionArea:
             cell = [self areaCellForRowAtIndexPath:indexPath];
@@ -681,7 +681,7 @@ const int   CountryCellTag   = 4321;
     UITableViewCell*    cell;
     NSString*           identifier;
 
-    identifier  = ([Common getNthSetBit:indexPath.row inValue:areaRows] == AreaRowCountry) ? @"CountryCell"
+    identifier  = ([Common nthBitSet:indexPath.row inValue:areaRows] == AreaRowCountry) ? @"CountryCell"
                                                                                            : @"Value2Cell";
     cell        = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil)
@@ -689,7 +689,7 @@ const int   CountryCellTag   = 4321;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:identifier];
     }
 
-    switch ([Common getNthSetBit:indexPath.row inValue:areaRows])
+    switch ([Common nthBitSet:indexPath.row inValue:areaRows])
     {
         case AreaRowType:
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:NumberType Label", nil,

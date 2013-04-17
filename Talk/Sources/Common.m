@@ -287,7 +287,7 @@
 }
 
 
-+ (unsigned)countSetBits:(unsigned long)value
++ (unsigned)bitsSetCount:(unsigned long)value
 {
     unsigned count = 0;
     
@@ -301,7 +301,7 @@
 }
 
 
-+ (unsigned long)getNthSetBit:(unsigned)n inValue:(unsigned long)value
++ (unsigned long)nthBitSet:(unsigned)n inValue:(unsigned long)value
 {
     unsigned long   bit = 1;
 

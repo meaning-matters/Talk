@@ -79,7 +79,7 @@ typedef enum
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return [Common countSetBits:sections];
+    return [Common bitsSetCount:sections];
 }
 
 
@@ -87,7 +87,7 @@ typedef enum
 {
     NSString*   title = nil;
 
-    switch ([Common getNthSetBit:section inValue:sections])
+    switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionForwarding:
             break;
@@ -125,7 +125,7 @@ typedef enum
 {
     NSString*   title = nil;
 
-    switch ([Common getNthSetBit:section inValue:sections])
+    switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionForwarding:
             title = NSLocalizedStringWithDefaultValue(@"Number:Forwarding SectionFooter", nil,
@@ -156,7 +156,7 @@ typedef enum
     NSInteger   numberOfRows = 0;
 
 #warning Make fully dynamic.
-    switch ([Common getNthSetBit:section inValue:sections])
+    switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionForwarding:
             numberOfRows = 1;
@@ -192,7 +192,7 @@ typedef enum
 
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    switch ([Common getNthSetBit:indexPath.section inValue:sections])
+    switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionForwarding:
             break;
@@ -216,7 +216,7 @@ typedef enum
 {
     UITableViewCell*    cell = nil;
 
-    switch ([Common getNthSetBit:indexPath.section inValue:sections])
+    switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionForwarding:
             cell = [self forwardingCellForRowAtIndexPath:indexPath];

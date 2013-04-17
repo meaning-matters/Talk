@@ -62,9 +62,9 @@
 
 + (void)redirectStderrToFile;
 
-+ (unsigned)countSetBits:(unsigned long)value;
++ (unsigned)bitsSetCount:(unsigned long)value;
 
-+ (unsigned long)getNthSetBit:(unsigned)n inValue:(unsigned long)value; // With n == 0 return first bit set.
++ (unsigned long)nthBitSet:(unsigned)n inValue:(unsigned long)value; // With n == 0 return first bit set.
 
 + (NSString*)capitalizedString:(NSString*)string;
 
