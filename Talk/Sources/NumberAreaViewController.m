@@ -68,7 +68,6 @@ const int   CountryCellTag   = 4321;
     NSIndexPath*            buildingIndexPath;
     NSIndexPath*            zipCodeIndexPath;
     NSIndexPath*            cityIndexPath;
-    NSIndexPath*            actionIndexPath;
 
     NSIndexPath*            nextIndexPath;      // Index-path of cell to show after Next button is tapped.
 
@@ -359,6 +358,31 @@ const int   CountryCellTag   = 4321;
 }
 
 
+- (BOOL)isPurchaseInfoComplete
+{
+    BOOL    complete;
+
+    if (requireInfo == YES)
+    {
+        complete = ([purchaseInfo[@"name"] length]       > 0 &&
+                    [purchaseInfo[@"salutation"] length] > 0 &&
+                    [purchaseInfo[@"firstName"] length]  > 0 &&
+                    [purchaseInfo[@"lastName"] length]   > 0 &&
+                    [purchaseInfo[@"company"] length]    > 0 &&
+                    [purchaseInfo[@"street"] length]     > 0 &&
+                    [purchaseInfo[@"building"] length]   > 0 &&
+                    [purchaseInfo[@"zipCode"] length]    > 0 &&
+                    [purchaseInfo[@"city"] length]       > 0);
+    }
+    else
+    {
+        complete = ([purchaseInfo[@"name"] length]       > 0);
+    }
+
+    return complete;
+}
+
+
 - (void)initializeIndexPaths
 {
     nameIndexPath       = [NSIndexPath indexPathForItem:0 inSection:1];
@@ -370,7 +394,6 @@ const int   CountryCellTag   = 4321;
     buildingIndexPath   = [NSIndexPath indexPathForItem:1 inSection:3];
     zipCodeIndexPath    = [NSIndexPath indexPathForItem:2 inSection:3];
     cityIndexPath       = [NSIndexPath indexPathForItem:3 inSection:3];
-    actionIndexPath     = [NSIndexPath indexPathForItem:0 inSection:requireInfo ? 4 : 2];
  }
 
 
@@ -580,7 +603,7 @@ const int   CountryCellTag   = 4321;
                 break;
 
             case TableSectionAction:
-                if ([self nextEmptyIndexPathForKey:nil] == nil)
+                if ([self isPurchaseInfoComplete] == YES)
                 {
                     if (requireInfo == YES && isChecked == NO)
                     {
