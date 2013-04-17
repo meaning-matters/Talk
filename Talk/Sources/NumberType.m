@@ -10,7 +10,7 @@
 
 @implementation NumberType
 
-+ (NSString*)numberTypeString:(NumberTypeMask)mask
++ (NSString*)stringForNumberType:(NumberTypeMask)mask
 {
     switch (mask)
     {
@@ -26,7 +26,7 @@
 }
 
 
-+ (NSString*)numberTypeLocalizedString:(NumberTypeMask)mask
++ (NSString*)localizedStringForNumberType:(NumberTypeMask)mask
 {
     switch (mask)
     {

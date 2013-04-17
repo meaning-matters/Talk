@@ -410,8 +410,8 @@
         }
         else
         {
-            cell.areaCode.text = name;
-            cell.areaName.text = @"";
+            cell.areaCode.text = area[@"areaCode"];
+            cell.areaName.text = [NumberType localizedStringForNumberType:numberTypeMask];
         }
     }
     else

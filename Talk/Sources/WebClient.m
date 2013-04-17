@@ -246,7 +246,7 @@ static WebClient*   sharedClient;
                                        reply:(void (^)(WebClientStatus status, id content))reply
 {
     [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/areas", isoCountryCode]
-       parameters:@{ @"numberType" : [NumberType numberTypeString:numberTypeMask] }
+       parameters:@{ @"numberType" : [NumberType stringForNumberType:numberTypeMask] }
             reply:reply];
 }
 

@@ -19,9 +19,9 @@ typedef enum
 
 @interface NumberType : NSObject
 
-+ (NSString*)numberTypeString:(NumberTypeMask)mask;
++ (NSString*)stringForNumberType:(NumberTypeMask)mask;
 
-+ (NSString*)numberTypeLocalizedString:(NumberTypeMask)mask;
++ (NSString*)localizedStringForNumberType:(NumberTypeMask)mask;
 
 + (NSUInteger)numberTypeMaskToIndex:(NumberTypeMask)mask;
 

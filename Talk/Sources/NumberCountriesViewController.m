@@ -59,9 +59,9 @@
     self.navigationItem.rightBarButtonItem = cancelButton;
 
     self.numberTypeSegmentedControl.segmentedControlStyle = UndocumentedSearchScopeBarSegmentedControlStyle;
-    [self.numberTypeSegmentedControl setTitle:[NumberType numberTypeLocalizedString:1UL << 0] forSegmentAtIndex:0];
-    [self.numberTypeSegmentedControl setTitle:[NumberType numberTypeLocalizedString:1UL << 1] forSegmentAtIndex:1];
-    [self.numberTypeSegmentedControl setTitle:[NumberType numberTypeLocalizedString:1UL << 2] forSegmentAtIndex:2];
+    [self.numberTypeSegmentedControl setTitle:[NumberType localizedStringForNumberType:1UL << 0] forSegmentAtIndex:0];
+    [self.numberTypeSegmentedControl setTitle:[NumberType localizedStringForNumberType:1UL << 1] forSegmentAtIndex:1];
+    [self.numberTypeSegmentedControl setTitle:[NumberType localizedStringForNumberType:1UL << 2] forSegmentAtIndex:2];
     NSInteger   index = [NumberType numberTypeMaskToIndex:[Settings sharedSettings].numberTypeMask];
     [self.numberTypeSegmentedControl setSelectedSegmentIndex:index];
 

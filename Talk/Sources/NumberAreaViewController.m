@@ -695,7 +695,7 @@ const int   CountryCellTag   = 4321;
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:NumberType Label", nil,
                                                                     [NSBundle mainBundle], @"Type",
                                                                     @"....");
-            cell.detailTextLabel.text = [NumberType numberTypeLocalizedString:numberTypeMask];
+            cell.detailTextLabel.text = [NumberType localizedStringForNumberType:numberTypeMask];
             cell.imageView.image = nil;
             break;
 
