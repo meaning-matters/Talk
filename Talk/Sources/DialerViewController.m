@@ -51,6 +51,11 @@
                  phoneNumber = [[PhoneNumber alloc] initWithNumber:phoneNumber.number]; //### Can this give memory problems???
                  [self update];
              }
+
+             if ([Settings sharedSettings].allowCellularDataCalls == YES)
+             {
+                 [self updateReachable];
+             }
          }];
 
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification
