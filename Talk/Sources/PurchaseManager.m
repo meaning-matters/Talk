@@ -104,9 +104,9 @@ static PurchaseManager*     sharedManager;
         observer = [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusReachableNotification
                                                                      object:nil
                                                                       queue:[NSOperationQueue mainQueue]
-                                                                 usingBlock:^(NSNotification* note)
+                                                                 usingBlock:^(NSNotification* notification)
         {
-            NetworkStatusReachable reachable = [note.userInfo[@"status"] intValue];
+            NetworkStatusReachable reachable = [notification.userInfo[@"status"] intValue];
 
             if ((reachable == NetworkStatusReachableWifi || reachable == NetworkStatusReachableCellular) &&
                 sharedManager.productsRequest == nil && sharedManager.products == nil)
@@ -339,6 +339,8 @@ static PurchaseManager*     sharedManager;
 
 - (void)productsRequest:(SKProductsRequest*)request didReceiveResponse:(SKProductsResponse*)response
 {
+    [Common enableNetworkActivityIndicator:NO];
+
     self.productsRequest = nil;
     self.products = response.products;
 
@@ -365,14 +367,30 @@ static PurchaseManager*     sharedManager;
 
 - (void)request:(SKRequest*)request didFailWithError:(NSError*)error
 {
-#warning Replace with something for users!!!
-    [BlockAlertView showAlertViewWithTitle:@"iTunes Store Error"
-                                   message:[error localizedDescription]
-                                completion:nil cancelButtonTitle:[CommonStrings closeString]
+    NSString*   title;
+    NSString*   message;
+
+    [Common enableNetworkActivityIndicator:NO];
+
+    title = NSLocalizedStringWithDefaultValue(@"Purchase:General ProductLoadFailAlertTitle", nil,
+                                              [NSBundle mainBundle], @"Loading Products Failed",
+                                              @"Alert title telling in-app purchases are disabled.\n"
+                                              @"[iOS alert title size - abbreviated: 'Can't Pay'].");
+    message = NSLocalizedStringWithDefaultValue(@"Purchase:General ProductLoadFailAlertMessage", nil,
+                                                [NSBundle mainBundle],
+                                                @"Loading the In-App Purchase products from the iTunes Store "
+                                                @"failed: %@.\nPlease try again later.",
+                                                @"Alert message: Information could not be loaded over internet.\n"
+                                                @"[iOS alert message size]");
+    message = [NSString stringWithFormat:message, [error localizedDescription]];
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:nil
+                         cancelButtonTitle:[CommonStrings closeString]
                          otherButtonTitles:nil];
 
     NSLog(@"//### Failed to load list of products.");
-    
+
     self.productsRequest = nil;
 }
 
@@ -503,6 +521,8 @@ static PurchaseManager*     sharedManager;
     self.productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:self.productIdentifiers];
     self.productsRequest.delegate = self;
     [self.productsRequest start];
+
+    [Common enableNetworkActivityIndicator:YES];
 }
 
 
