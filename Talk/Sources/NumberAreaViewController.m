@@ -511,7 +511,7 @@ const int   CountryCellTag   = 4321;
             title = NSLocalizedStringWithDefaultValue(@"NumberArea:Naming SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"Give this number a short descriptive name that is easy "
-                                                      @"to remember.\nCan not be changed afterwards!",
+                                                      @"to remember.\nCan be changed afterwards.",
                                                       @"Explaining that user must supply a name.");
             break;
 
