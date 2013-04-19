@@ -36,6 +36,7 @@ NSString* const SipServiceKey                  = @"SipAccount";             // U
 NSString* const AllowCellularDataCallsKey      = @"AllowCellularDataCalls";
 NSString* const LouderVolumeKey                = @"LouderVolume";
 NSString* const NumberTypeMaskKey              = @"NumberTypeMask";
+NSString* const ForwardsingsSelectionKey       = @"ForwardingsSelection";
 
 
 @implementation Settings
@@ -118,6 +119,7 @@ static NSUserDefaults*  userDefaults;
     [defaults setObject:[NSNumber numberWithBool:NO]                       forKey:AllowCellularDataCallsKey];
     [defaults setObject:[NSNumber numberWithBool:NO]                       forKey:LouderVolumeKey];
     [defaults setObject:[NSNumber numberWithInt:NumberTypeGeographicMask]  forKey:NumberTypeMaskKey];
+    [defaults setObject:[NSNumber numberWithInt:0]                         forKey:ForwardsingsSelectionKey];
 
     [userDefaults registerDefaults:defaults];
 }
@@ -166,6 +168,7 @@ static NSUserDefaults*  userDefaults;
     _allowCellularDataCalls      = [userDefaults boolForKey:AllowCellularDataCallsKey];
     _louderVolume                = [userDefaults boolForKey:LouderVolumeKey];
     _numberTypeMask              = [userDefaults integerForKey:NumberTypeMaskKey];
+    _forwardingsSelection        = [userDefaults integerForKey:ForwardsingsSelectionKey];
 }
 
 
@@ -291,6 +294,13 @@ static NSUserDefaults*  userDefaults;
 {
     _numberTypeMask = numberTypeMask;
     [userDefaults setInteger:numberTypeMask forKey:NumberTypeMaskKey];
+}
+
+
+- (void)setForwardingsSelection:(NSInteger)forwardingsSelection
+{
+    _forwardingsSelection = forwardingsSelection;
+    [userDefaults setInteger:forwardingsSelection forKey:ForwardsingsSelectionKey];
 }
 
 @end

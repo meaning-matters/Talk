@@ -13,18 +13,18 @@
 
 + (Settings*)sharedSettings;
 
-@property (nonatomic, readonly) BOOL            runBefore;          // NO if this is the first time the app runs.
+@property (nonatomic, readonly) BOOL            runBefore;              // NO if this is the first time the app runs.
 
 @property (nonatomic, strong) NSArray*          tabBarViewControllerClasses;
 
-@property (nonatomic, strong) NSString*         errorDomain;        // Used when creating an NSError.
+@property (nonatomic, strong) NSString*         errorDomain;            // Used when creating an NSError.
 
-@property (nonatomic, strong) NSString*         homeCountry;        // ISO Country Code.
-@property (nonatomic, assign) BOOL              homeCountryFromSim; // ISO Country Code.
+@property (nonatomic, strong) NSString*         homeCountry;            // ISO Country Code.
+@property (nonatomic, assign) BOOL              homeCountryFromSim;     // ISO Country Code.
 
 @property (nonatomic, strong) NSString*         lastDialedNumber;
 
-@property (nonatomic, strong) NSString*         webBaseUrl;         // Base URL of web API.
+@property (nonatomic, strong) NSString*         webBaseUrl;             // Base URL of web API.
 @property (nonatomic, strong) NSString*         webUsername;
 @property (nonatomic, strong) NSString*         webPassword;
 
@@ -37,6 +37,7 @@
 
 @property (nonatomic, assign) BOOL              louderVolume;
 
-@property (nonatomic, assign) NumberTypeMask    numberTypeMask;     // Most recent selected numberType.
+@property (nonatomic, assign) NumberTypeMask    numberTypeMask;         // Selected numberType in NumberView.
+@property (nonatomic, assign) NSInteger         forwardingsSelection;   // Selected segment/table in ForwardingsView.
 
 @end

@@ -9,6 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "ViewController.h"
 
-@interface ForwardingsViewController : ViewController
+
+@interface ForwardingsViewController : ViewController <UITableViewDataSource, UITableViewDelegate,
+                                                       NSFetchedResultsControllerDelegate>
+
+@property (nonatomic, weak) IBOutlet UISegmentedControl*    selectionSegmentedControl;
+@property (nonatomic, weak) IBOutlet UITableView*           forwardingsTableView;
+@property (nonatomic, weak) IBOutlet UITableView*           recordingsTableView;
+
+- (IBAction)selectionChangedAction:(id)sender;
 
 @end

@@ -184,7 +184,7 @@
                                        //NSStringFromClass([RecentsViewController     class]),
                                        //NSStringFromClass([GroupsViewController      class]),
                                        NSStringFromClass([DialerViewController      class]),
-                                       //NSStringFromClass([ForwardingsViewController class]),
+                                       NSStringFromClass([ForwardingsViewController class]),
                                        //NSStringFromClass([CreditViewController      class]),
                                        //NSStringFromClass([HelpViewController        class]),
                                        //NSStringFromClass([AboutViewController       class]),
