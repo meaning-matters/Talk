@@ -7,9 +7,12 @@
 //
 
 #import "ForwardingsViewController.h"
+#import "RecordingViewController.h"
 #import "DataManager.h"
 #import "Common.h"
 #import "Settings.h"
+#import "ForwardingData.h"
+#import "RecordingData.h"
 
 
 typedef enum
@@ -21,6 +24,8 @@ typedef enum
 
 @interface ForwardingsViewController ()
 {
+    UISegmentedControl*         selectionSegmentedControl;
+
     DataManager*                dataManager;
     NSFetchedResultsController* fetchedForwardingsController;
     NSFetchedResultsController* fetchedRecordingsController;
@@ -41,11 +46,7 @@ typedef enum
         self.title = NSLocalizedString(@"Forwardings", @"Forwardings tab title");
         self.tabBarItem.image = [UIImage imageNamed:@"ForwardingsTab.png"];
 
-
         dataManager = [DataManager sharedManager];
-
-        fetchedForwardingsController = [self fetchResultsForEntityName:@"Forwarding" withSortKey:@"name"];
-        fetchedRecordingsController  = [self fetchResultsForEntityName:@"Recording"  withSortKey:@"name"];
     }
     
     return self;
@@ -69,11 +70,25 @@ typedef enum
                                                         @"Title of button selecting recordings.\n"
                                                         @"[1/2 line larger font].");
 
-    self.selectionSegmentedControl.segmentedControlStyle = UndocumentedSearchScopeBarSegmentedControlStyle;
-    [self.selectionSegmentedControl setTitle:forwardingsTitle forSegmentAtIndex:0];
-    [self.selectionSegmentedControl setTitle:recordingsTitle  forSegmentAtIndex:1];
+    selectionSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[forwardingsTitle, recordingsTitle]];
+    selectionSegmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
+    [selectionSegmentedControl addTarget:self
+                                  action:@selector(selectionUpdateAction)
+                        forControlEvents:UIControlEventValueChanged];
     NSInteger   index = [Settings sharedSettings].forwardingsSelection;
-    [self.selectionSegmentedControl setSelectedSegmentIndex:index];
+    [selectionSegmentedControl setSelectedSegmentIndex:index];
+    self.navigationItem.titleView = selectionSegmentedControl;
+
+    fetchedForwardingsController = [self fetchResultsForEntityName:@"Forwarding" withSortKey:@"name"];
+    fetchedRecordingsController  = [self fetchResultsForEntityName:@"Recording"  withSortKey:@"name"];
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self selectionUpdateAction];
 }
 
 
@@ -99,6 +114,12 @@ typedef enum
                                                               sectionNameKeyPath:nil
                                                                        cacheName:nil];
     resultsController.delegate = self;
+
+    NSError*    error = nil;
+    if ([resultsController performFetch:&error] == NO)
+    {
+        [self handleError:error];
+    }
 
     return resultsController;
 }
@@ -134,7 +155,6 @@ typedef enum
         cell = [self recordingCellForIndexPath:indexPath];
     }
 
-
     return cell;
 }
 
@@ -149,7 +169,8 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
-    ///#### configure
+    cell.imageView.image = [UIImage imageNamed:@"List"];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
 }
@@ -165,9 +186,48 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
-    ///#### configure
+    cell.imageView.image = [UIImage imageNamed:@"Microphone"];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
+}
+
+
+- (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+forRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        if (tableView == self.forwardingsTableView)
+        {
+
+        }
+        else
+        {
+            NSManagedObjectContext* context = [fetchedRecordingsController managedObjectContext];
+            RecordingData*          recording = [fetchedRecordingsController objectAtIndexPath:indexPath];
+            NSError*                error;
+
+            if (recording.forwardings.count > 0)
+            {
+
+            }
+            else
+            {
+                [context deleteObject:recording];
+            }
+
+            if (![context save:&error])
+            {
+                [self handleError:error];
+            }
+
+            if (fetchedRecordingsController.fetchedObjects.count == 0)
+            {
+                [self doneRecordingsAction];
+            }
+        }
+    }
 }
 
 
@@ -247,23 +307,127 @@ typedef enum
 
 #pragma mark - Actions
 
-- (IBAction)selectionChangedAction:(id)sender
+- (void)selectionUpdateAction
 {
-    selection = self.selectionSegmentedControl.selectedSegmentIndex;
-    [Settings sharedSettings].forwardingsSelection = selection;
+    if (selection != selectionSegmentedControl.selectedSegmentIndex)
+    {
+        selection = selectionSegmentedControl.selectedSegmentIndex;
+        [Settings sharedSettings].forwardingsSelection = selection;
+    }
 
+    UIBarButtonItem*    leftItem;
+    UIBarButtonItem*    rightItem;
     switch (selection)
     {
         case SelectionForwardings:
+            if (self.forwardingsTableView.isEditing == YES)
+            {
+                leftItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                         target:self
+                                                                         action:@selector(doneForwardingsAction)];
+                rightItem = nil;
+            }
+            else
+            {
+                if (fetchedForwardingsController.fetchedObjects.count > 0)
+                {
+                    leftItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                              target:self
+                                                                              action:@selector(editForwardingsAction)];
+                }
+                else
+                {
+                    rightItem = nil;
+                }
+
+                rightItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                          target:self
+                                                                          action:@selector(addForwardingAction)];
+            }
+
             self.forwardingsTableView.hidden = NO;
             self.recordingsTableView.hidden  = YES;
             break;
 
         case SelectionRecordings:
+            if (self.recordingsTableView.isEditing == YES)
+            {
+                leftItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                         target:self
+                                                                         action:@selector(doneRecordingsAction)];
+                rightItem = nil;
+            }
+            else
+            {
+                if (fetchedRecordingsController.fetchedObjects.count > 0)
+                {
+                    leftItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                              target:self
+                                                                              action:@selector(editRecordingsAction)];
+                }
+                else
+                {
+                    rightItem = nil;
+                }
+
+                rightItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                          target:self
+                                                                          action:@selector(addRecordingAction)];
+            }
+
             self.forwardingsTableView.hidden = YES;
             self.recordingsTableView.hidden  = NO;
             break;
     }
+
+    self.navigationItem.leftBarButtonItem  = leftItem;
+    self.navigationItem.rightBarButtonItem = rightItem;
+}
+
+
+- (void)editForwardingsAction
+{
+    [self.forwardingsTableView setEditing:YES animated:YES];
+
+    [self selectionUpdateAction];
+}
+
+
+- (void)editRecordingsAction
+{
+    [self.recordingsTableView setEditing:YES animated:YES];
+
+    [self selectionUpdateAction];
+}
+
+
+- (void)doneForwardingsAction
+{
+    [self.forwardingsTableView setEditing:NO animated:YES];
+
+    [self selectionUpdateAction];
+}
+
+
+- (void)doneRecordingsAction
+{
+    [self.recordingsTableView setEditing:NO animated:YES];
+
+    [self selectionUpdateAction];
+}
+
+
+- (void)addForwardingAction
+{
+
+}
+
+
+- (void)addRecordingAction
+{
+    RecordingViewController*    recordingViewController;
+    recordingViewController = [[RecordingViewController alloc] initWithFetchedResultsController:fetchedRecordingsController];
+    [self.navigationController pushViewController:recordingViewController animated:YES];
 }
 
 
@@ -279,7 +443,6 @@ typedef enum
     {
         return self.recordingsTableView;
     }
-
 }
 
 
@@ -293,6 +456,15 @@ typedef enum
     {
         return fetchedRecordingsController;
     }
+}
+
+
+- (void)handleError:(NSError*)error
+{
+    NSLog(@"Fetch from CoreData error %@, %@", error, [error userInfo]);
+
+#warning //### Replace with code to fix this and/or inform user!!!
+    abort();
 }
 
 @end

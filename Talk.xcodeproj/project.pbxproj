@@ -57,6 +57,16 @@
 		48338FB916170D8C0033F4C1 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48338FB616170D8C0033F4C1 /* Default@2x.png */; };
 		48338FD116181B750033F4C1 /* SipInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 48338FD016181B750033F4C1 /* SipInterface.m */; };
 		48338FD216181B750033F4C1 /* SipInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 48338FD016181B750033F4C1 /* SipInterface.m */; };
+		483679DE1721F2E1001A02AF /* RecordingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 483679DD1721F2E0001A02AF /* RecordingViewController.m */; };
+		483679DF1721F2E1001A02AF /* RecordingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 483679DD1721F2E0001A02AF /* RecordingViewController.m */; };
+		483679F21722F2CF001A02AF /* List.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679EE1722F2CF001A02AF /* List.png */; };
+		483679F31722F2CF001A02AF /* List.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679EE1722F2CF001A02AF /* List.png */; };
+		483679F41722F2CF001A02AF /* List@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679EF1722F2CF001A02AF /* List@2x.png */; };
+		483679F51722F2CF001A02AF /* List@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679EF1722F2CF001A02AF /* List@2x.png */; };
+		483679F61722F2CF001A02AF /* Microphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679F01722F2CF001A02AF /* Microphone.png */; };
+		483679F71722F2CF001A02AF /* Microphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679F01722F2CF001A02AF /* Microphone.png */; };
+		483679F81722F2CF001A02AF /* Microphone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679F11722F2CF001A02AF /* Microphone@2x.png */; };
+		483679F91722F2CF001A02AF /* Microphone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679F11722F2CF001A02AF /* Microphone@2x.png */; };
 		4837BB3C165D701F00E46C36 /* LibPhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */; };
 		4837BB3D165D701F00E46C36 /* LibPhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */; };
 		4837BB66165F726400E46C36 /* BlockAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB65165F726300E46C36 /* BlockAlertView.m */; };
@@ -914,6 +924,12 @@
 		48338FB616170D8C0033F4C1 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		48338FCF16181B750033F4C1 /* SipInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SipInterface.h; sourceTree = "<group>"; };
 		48338FD016181B750033F4C1 /* SipInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SipInterface.m; sourceTree = "<group>"; };
+		483679DC1721F2DF001A02AF /* RecordingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingViewController.h; sourceTree = "<group>"; };
+		483679DD1721F2E0001A02AF /* RecordingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordingViewController.m; sourceTree = "<group>"; };
+		483679EE1722F2CF001A02AF /* List.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = List.png; sourceTree = "<group>"; };
+		483679EF1722F2CF001A02AF /* List@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "List@2x.png"; sourceTree = "<group>"; };
+		483679F01722F2CF001A02AF /* Microphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Microphone.png; sourceTree = "<group>"; };
+		483679F11722F2CF001A02AF /* Microphone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Microphone@2x.png"; sourceTree = "<group>"; };
 		4837BB3A165D701F00E46C36 /* LibPhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibPhoneNumber.h; sourceTree = "<group>"; };
 		4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibPhoneNumber.m; sourceTree = "<group>"; };
 		4837BB64165F726300E46C36 /* BlockAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockAlertView.h; sourceTree = "<group>"; };
@@ -1827,6 +1843,7 @@
 				48338FB316170D8C0033F4C1 /* App */,
 				48EDD1FC1667652A007B89DA /* Call */,
 				485F68461637270100D61365 /* Flags */,
+				483679ED1722F2CF001A02AF /* Other */,
 				48338FA916170CBA0033F4C1 /* Tabs */,
 			);
 			path = Images;
@@ -1869,6 +1886,17 @@
 				48338FB616170D8C0033F4C1 /* Default@2x.png */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		483679ED1722F2CF001A02AF /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				483679EE1722F2CF001A02AF /* List.png */,
+				483679EF1722F2CF001A02AF /* List@2x.png */,
+				483679F01722F2CF001A02AF /* Microphone.png */,
+				483679F11722F2CF001A02AF /* Microphone@2x.png */,
+			);
+			path = Other;
 			sourceTree = "<group>";
 		};
 		485ECBDF16525D1600364F08 /* Views */ = {
@@ -2585,6 +2613,8 @@
 				48AF44F9164947FA00DFE3D8 /* SettingsViewController.m */,
 				48AD95D8164AC4FE006178E6 /* ViewController.h */,
 				48AD95D9164AC4FE006178E6 /* ViewController.m */,
+				483679DC1721F2DF001A02AF /* RecordingViewController.h */,
+				483679DD1721F2E0001A02AF /* RecordingViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -3327,6 +3357,10 @@
 				484D937617132539006FA875 /* NumberAreaZipsView.xib in Resources */,
 				484A949D171821CB009E22B9 /* NumberAreasCell.xib in Resources */,
 				484A94A6171C5065009E22B9 /* NumberAreaActionCell.xib in Resources */,
+				483679F21722F2CF001A02AF /* List.png in Resources */,
+				483679F41722F2CF001A02AF /* List@2x.png in Resources */,
+				483679F61722F2CF001A02AF /* Microphone.png in Resources */,
+				483679F81722F2CF001A02AF /* Microphone@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3413,6 +3447,10 @@
 				484D937717132539006FA875 /* NumberAreaZipsView.xib in Resources */,
 				484A949E171821CB009E22B9 /* NumberAreasCell.xib in Resources */,
 				484A94A7171C5065009E22B9 /* NumberAreaActionCell.xib in Resources */,
+				483679F31722F2CF001A02AF /* List.png in Resources */,
+				483679F51722F2CF001A02AF /* List@2x.png in Resources */,
+				483679F71722F2CF001A02AF /* Microphone.png in Resources */,
+				483679F91722F2CF001A02AF /* Microphone@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3523,6 +3561,7 @@
 				484D937017131E97006FA875 /* NumberAreaZipsViewController.m in Sources */,
 				484A94A1171822D4009E22B9 /* NumberAreasCell.m in Sources */,
 				484A94AA171C518D009E22B9 /* NumberAreaActionCell.m in Sources */,
+				483679DE1721F2E1001A02AF /* RecordingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3601,6 +3640,7 @@
 				484D937117131E97006FA875 /* NumberAreaZipsViewController.m in Sources */,
 				484A94A2171822D4009E22B9 /* NumberAreasCell.m in Sources */,
 				484A94AB171C518D009E22B9 /* NumberAreaActionCell.m in Sources */,
+				483679DF1721F2E1001A02AF /* RecordingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

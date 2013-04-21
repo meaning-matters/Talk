@@ -44,19 +44,19 @@
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification* note)
-         {
-             if ([phoneNumber.baseIsoCountryCode isEqualToString:[Settings sharedSettings].homeCountry] == NO)
-             {
-                 [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
-                 phoneNumber = [[PhoneNumber alloc] initWithNumber:phoneNumber.number]; //### Can this give memory problems???
-                 [self update];
-             }
+        {
+            if ([phoneNumber.baseIsoCountryCode isEqualToString:[Settings sharedSettings].homeCountry] == NO)
+            {
+                [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
+                phoneNumber = [[PhoneNumber alloc] initWithNumber:phoneNumber.number]; //### Can this give memory problems???
+                [self update];
+            }
 
-             if ([Settings sharedSettings].allowCellularDataCalls == YES)
-             {
-                 [self updateReachable];
-             }
-         }];
+            if ([Settings sharedSettings].allowCellularDataCalls == YES)
+            {
+                [self updateReachable];
+            }
+        }];
 
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification
                                                           object:nil

@@ -53,12 +53,12 @@ static SipInterface*    sipInterface;
                                                                          object:nil
                                                                           queue:[NSOperationQueue mainQueue]
                                                                      usingBlock:^(NSNotification* note)
-             {
-                 if ([self initializeSipInterface] == YES)
-                 {
-                     [[NSNotificationCenter defaultCenter] removeObserver:observer];
-                 }
-             }];
+            {
+                if ([self initializeSipInterface] == YES)
+                {
+                    [[NSNotificationCenter defaultCenter] removeObserver:observer];
+                }
+            }];
         }
     }
 }
