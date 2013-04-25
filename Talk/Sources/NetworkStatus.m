@@ -98,7 +98,7 @@ static NSTimer*                 loadUrlTestTimer;
                  }
                  else
                  {
-                     // Switch between Wi-Fi and Cellular, or still at captice portal.
+                     // Switch between Wi-Fi and Cellular, or still at captive portal.
                      // Let's check the connection.
                      [self loadUrlTest:nil];
                  }
@@ -152,7 +152,7 @@ static NSTimer*                 loadUrlTestTimer;
     // The below block is only executed when a different SIM is installed.  Nothing
     // happens when a SIM is removed, or when the same SIM is installed again.
     //
-    // To get more trigger observe @"kCTSIMSupportSIMStatusChangeNotification",
+    // To get more triggers observe @"kCTSIMSupportSIMStatusChangeNotification",
     // but this is a private iOS API so may cause trouble with Apple.  And, getting
     // these triggers does not help, because CTTelephonyNetworkInfo is not wiped
     // when a SIM is removed.  Only after restarting the device without SIM:

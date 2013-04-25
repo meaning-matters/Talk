@@ -38,8 +38,8 @@ typedef enum
 } AreaRows;
 
 
-const int   TextFieldCellTag = 1234;
-const int   CountryCellTag   = 4321;
+static const int    TextFieldCellTag = 1234;
+static const int    CountryCellTag   = 4321;
 
 
 @interface NumberAreaViewController ()

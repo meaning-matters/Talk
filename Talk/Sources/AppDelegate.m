@@ -62,7 +62,7 @@
         self.window.rootViewController = self.tabBarController;
         [self.window makeKeyAndVisible];
 
-        [[AVAudioSession sharedInstance] setActive:YES error:NULL]; // Make sure there's an audio session.
+        [[AVAudioSession sharedInstance] setActive:YES error:nil]; // Make sure there's an audio session.
         [[NSNotificationCenter defaultCenter] addObserver:self
 #warning Do with block, instead of method.
                                                  selector:@selector(keepVolumeAboveZero:)

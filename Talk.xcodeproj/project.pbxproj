@@ -67,6 +67,58 @@
 		483679F71722F2CF001A02AF /* Microphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679F01722F2CF001A02AF /* Microphone.png */; };
 		483679F81722F2CF001A02AF /* Microphone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679F11722F2CF001A02AF /* Microphone@2x.png */; };
 		483679F91722F2CF001A02AF /* Microphone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679F11722F2CF001A02AF /* Microphone@2x.png */; };
+		483679FB17246977001A02AF /* RecordingControlsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 483679FA17246977001A02AF /* RecordingControlsCell.xib */; };
+		483679FC17246977001A02AF /* RecordingControlsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 483679FA17246977001A02AF /* RecordingControlsCell.xib */; };
+		48367A1517247B2D001A02AF /* CueForwardBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679FD17247B2B001A02AF /* CueForwardBlack.png */; };
+		48367A1617247B2D001A02AF /* CueForwardBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679FD17247B2B001A02AF /* CueForwardBlack.png */; };
+		48367A1717247B2D001A02AF /* CueForwardBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679FE17247B2B001A02AF /* CueForwardBlack@2x.png */; };
+		48367A1817247B2D001A02AF /* CueForwardBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679FE17247B2B001A02AF /* CueForwardBlack@2x.png */; };
+		48367A1917247B2D001A02AF /* CueForwardWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679FF17247B2B001A02AF /* CueForwardWhite.png */; };
+		48367A1A17247B2D001A02AF /* CueForwardWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679FF17247B2B001A02AF /* CueForwardWhite.png */; };
+		48367A1B17247B2D001A02AF /* CueForwardWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0017247B2B001A02AF /* CueForwardWhite@2x.png */; };
+		48367A1C17247B2D001A02AF /* CueForwardWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0017247B2B001A02AF /* CueForwardWhite@2x.png */; };
+		48367A1D17247B2D001A02AF /* CuePauseBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0117247B2B001A02AF /* CuePauseBlack.png */; };
+		48367A1E17247B2D001A02AF /* CuePauseBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0117247B2B001A02AF /* CuePauseBlack.png */; };
+		48367A1F17247B2D001A02AF /* CuePauseBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0217247B2B001A02AF /* CuePauseBlack@2x.png */; };
+		48367A2017247B2D001A02AF /* CuePauseBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0217247B2B001A02AF /* CuePauseBlack@2x.png */; };
+		48367A2117247B2D001A02AF /* CuePauseWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0317247B2B001A02AF /* CuePauseWhite.png */; };
+		48367A2217247B2D001A02AF /* CuePauseWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0317247B2B001A02AF /* CuePauseWhite.png */; };
+		48367A2317247B2D001A02AF /* CuePauseWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0417247B2B001A02AF /* CuePauseWhite@2x.png */; };
+		48367A2417247B2D001A02AF /* CuePauseWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0417247B2B001A02AF /* CuePauseWhite@2x.png */; };
+		48367A2517247B2D001A02AF /* CuePlayBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0517247B2B001A02AF /* CuePlayBlack.png */; };
+		48367A2617247B2D001A02AF /* CuePlayBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0517247B2B001A02AF /* CuePlayBlack.png */; };
+		48367A2717247B2D001A02AF /* CuePlayBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0617247B2C001A02AF /* CuePlayBlack@2x.png */; };
+		48367A2817247B2D001A02AF /* CuePlayBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0617247B2C001A02AF /* CuePlayBlack@2x.png */; };
+		48367A2917247B2D001A02AF /* CuePlayWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0717247B2C001A02AF /* CuePlayWhite.png */; };
+		48367A2A17247B2D001A02AF /* CuePlayWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0717247B2C001A02AF /* CuePlayWhite.png */; };
+		48367A2B17247B2D001A02AF /* CuePlayWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0817247B2C001A02AF /* CuePlayWhite@2x.png */; };
+		48367A2C17247B2D001A02AF /* CuePlayWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0817247B2C001A02AF /* CuePlayWhite@2x.png */; };
+		48367A2D17247B2D001A02AF /* CueRecordRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0917247B2C001A02AF /* CueRecordRed.png */; };
+		48367A2E17247B2D001A02AF /* CueRecordRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0917247B2C001A02AF /* CueRecordRed.png */; };
+		48367A2F17247B2D001A02AF /* CueRecordRed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0A17247B2C001A02AF /* CueRecordRed@2x.png */; };
+		48367A3017247B2D001A02AF /* CueRecordRed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0A17247B2C001A02AF /* CueRecordRed@2x.png */; };
+		48367A3117247B2D001A02AF /* CueRecordWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0B17247B2C001A02AF /* CueRecordWhite.png */; };
+		48367A3217247B2D001A02AF /* CueRecordWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0B17247B2C001A02AF /* CueRecordWhite.png */; };
+		48367A3317247B2D001A02AF /* CueRecordWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0C17247B2D001A02AF /* CueRecordWhite@2x.png */; };
+		48367A3417247B2D001A02AF /* CueRecordWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0C17247B2D001A02AF /* CueRecordWhite@2x.png */; };
+		48367A3517247B2D001A02AF /* CueReverseBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0D17247B2D001A02AF /* CueReverseBlack.png */; };
+		48367A3617247B2D001A02AF /* CueReverseBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0D17247B2D001A02AF /* CueReverseBlack.png */; };
+		48367A3717247B2D001A02AF /* CueReverseBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0E17247B2D001A02AF /* CueReverseBlack@2x.png */; };
+		48367A3817247B2D001A02AF /* CueReverseBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0E17247B2D001A02AF /* CueReverseBlack@2x.png */; };
+		48367A3917247B2D001A02AF /* CueReverseWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0F17247B2D001A02AF /* CueReverseWhite.png */; };
+		48367A3A17247B2D001A02AF /* CueReverseWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A0F17247B2D001A02AF /* CueReverseWhite.png */; };
+		48367A3B17247B2D001A02AF /* CueReverseWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A1017247B2D001A02AF /* CueReverseWhite@2x.png */; };
+		48367A3C17247B2D001A02AF /* CueReverseWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A1017247B2D001A02AF /* CueReverseWhite@2x.png */; };
+		48367A3D17247B2D001A02AF /* CueStopBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A1117247B2D001A02AF /* CueStopBlack.png */; };
+		48367A3E17247B2D001A02AF /* CueStopBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A1117247B2D001A02AF /* CueStopBlack.png */; };
+		48367A3F17247B2D001A02AF /* CueStopBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A1217247B2D001A02AF /* CueStopBlack@2x.png */; };
+		48367A4017247B2D001A02AF /* CueStopBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A1217247B2D001A02AF /* CueStopBlack@2x.png */; };
+		48367A4117247B2D001A02AF /* CueStopWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A1317247B2D001A02AF /* CueStopWhite.png */; };
+		48367A4217247B2D001A02AF /* CueStopWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A1317247B2D001A02AF /* CueStopWhite.png */; };
+		48367A4317247B2D001A02AF /* CueStopWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A1417247B2D001A02AF /* CueStopWhite@2x.png */; };
+		48367A4417247B2D001A02AF /* CueStopWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A1417247B2D001A02AF /* CueStopWhite@2x.png */; };
+		48367A47172552D2001A02AF /* RecordingControlsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48367A46172552D2001A02AF /* RecordingControlsCell.m */; };
+		48367A48172552D2001A02AF /* RecordingControlsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48367A46172552D2001A02AF /* RecordingControlsCell.m */; };
 		4837BB3C165D701F00E46C36 /* LibPhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */; };
 		4837BB3D165D701F00E46C36 /* LibPhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */; };
 		4837BB66165F726400E46C36 /* BlockAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB65165F726300E46C36 /* BlockAlertView.m */; };
@@ -777,6 +829,13 @@
 		48AF456A16497A1B00DFE3D8 /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF456816497A1B00DFE3D8 /* RecentsViewController.m */; };
 		48AF4581164A45A100DFE3D8 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4580164A45A100DFE3D8 /* Settings.m */; };
 		48AF4582164A45A100DFE3D8 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4580164A45A100DFE3D8 /* Settings.m */; };
+		48B32A011725B65000F49182 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48B32A001725B65000F49182 /* CoreAudio.framework */; };
+		48B32A0D1725B71A00F49182 /* AQRecorder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 48B32A041725B71A00F49182 /* AQRecorder.mm */; };
+		48B32A0E1725B71A00F49182 /* AQRecorder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 48B32A041725B71A00F49182 /* AQRecorder.mm */; };
+		48B32A111725B71A00F49182 /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48B32A091725B71A00F49182 /* CAStreamBasicDescription.cpp */; };
+		48B32A121725B71A00F49182 /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48B32A091725B71A00F49182 /* CAStreamBasicDescription.cpp */; };
+		48B32A131725B71A00F49182 /* CAXException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48B32A0B1725B71A00F49182 /* CAXException.cpp */; };
+		48B32A141725B71A00F49182 /* CAXException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48B32A0B1725B71A00F49182 /* CAXException.cpp */; };
 		48B5AAEE16E69DE900BA4084 /* NumberCountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */; };
 		48B5AAEF16E69DE900BA4084 /* NumberCountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */; };
 		48B5AAF216E6A58700BA4084 /* NumberCountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */; };
@@ -930,6 +989,33 @@
 		483679EF1722F2CF001A02AF /* List@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "List@2x.png"; sourceTree = "<group>"; };
 		483679F01722F2CF001A02AF /* Microphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Microphone.png; sourceTree = "<group>"; };
 		483679F11722F2CF001A02AF /* Microphone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Microphone@2x.png"; sourceTree = "<group>"; };
+		483679FA17246977001A02AF /* RecordingControlsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecordingControlsCell.xib; sourceTree = "<group>"; };
+		483679FD17247B2B001A02AF /* CueForwardBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CueForwardBlack.png; sourceTree = "<group>"; };
+		483679FE17247B2B001A02AF /* CueForwardBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CueForwardBlack@2x.png"; sourceTree = "<group>"; };
+		483679FF17247B2B001A02AF /* CueForwardWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CueForwardWhite.png; sourceTree = "<group>"; };
+		48367A0017247B2B001A02AF /* CueForwardWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CueForwardWhite@2x.png"; sourceTree = "<group>"; };
+		48367A0117247B2B001A02AF /* CuePauseBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CuePauseBlack.png; sourceTree = "<group>"; };
+		48367A0217247B2B001A02AF /* CuePauseBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CuePauseBlack@2x.png"; sourceTree = "<group>"; };
+		48367A0317247B2B001A02AF /* CuePauseWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CuePauseWhite.png; sourceTree = "<group>"; };
+		48367A0417247B2B001A02AF /* CuePauseWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CuePauseWhite@2x.png"; sourceTree = "<group>"; };
+		48367A0517247B2B001A02AF /* CuePlayBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CuePlayBlack.png; sourceTree = "<group>"; };
+		48367A0617247B2C001A02AF /* CuePlayBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CuePlayBlack@2x.png"; sourceTree = "<group>"; };
+		48367A0717247B2C001A02AF /* CuePlayWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CuePlayWhite.png; sourceTree = "<group>"; };
+		48367A0817247B2C001A02AF /* CuePlayWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CuePlayWhite@2x.png"; sourceTree = "<group>"; };
+		48367A0917247B2C001A02AF /* CueRecordRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CueRecordRed.png; sourceTree = "<group>"; };
+		48367A0A17247B2C001A02AF /* CueRecordRed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CueRecordRed@2x.png"; sourceTree = "<group>"; };
+		48367A0B17247B2C001A02AF /* CueRecordWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CueRecordWhite.png; sourceTree = "<group>"; };
+		48367A0C17247B2D001A02AF /* CueRecordWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CueRecordWhite@2x.png"; sourceTree = "<group>"; };
+		48367A0D17247B2D001A02AF /* CueReverseBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CueReverseBlack.png; sourceTree = "<group>"; };
+		48367A0E17247B2D001A02AF /* CueReverseBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CueReverseBlack@2x.png"; sourceTree = "<group>"; };
+		48367A0F17247B2D001A02AF /* CueReverseWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CueReverseWhite.png; sourceTree = "<group>"; };
+		48367A1017247B2D001A02AF /* CueReverseWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CueReverseWhite@2x.png"; sourceTree = "<group>"; };
+		48367A1117247B2D001A02AF /* CueStopBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CueStopBlack.png; sourceTree = "<group>"; };
+		48367A1217247B2D001A02AF /* CueStopBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CueStopBlack@2x.png"; sourceTree = "<group>"; };
+		48367A1317247B2D001A02AF /* CueStopWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CueStopWhite.png; sourceTree = "<group>"; };
+		48367A1417247B2D001A02AF /* CueStopWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CueStopWhite@2x.png"; sourceTree = "<group>"; };
+		48367A45172552D2001A02AF /* RecordingControlsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingControlsCell.h; sourceTree = "<group>"; };
+		48367A46172552D2001A02AF /* RecordingControlsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordingControlsCell.m; sourceTree = "<group>"; };
 		4837BB3A165D701F00E46C36 /* LibPhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibPhoneNumber.h; sourceTree = "<group>"; };
 		4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibPhoneNumber.m; sourceTree = "<group>"; };
 		4837BB64165F726300E46C36 /* BlockAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockAlertView.h; sourceTree = "<group>"; };
@@ -1574,6 +1660,14 @@
 		48AF456816497A1B00DFE3D8 /* RecentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentsViewController.m; sourceTree = "<group>"; };
 		48AF457F164A45A000DFE3D8 /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
 		48AF4580164A45A100DFE3D8 /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
+		48B32A001725B65000F49182 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		48B32A031725B71A00F49182 /* AQRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AQRecorder.h; sourceTree = "<group>"; };
+		48B32A041725B71A00F49182 /* AQRecorder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AQRecorder.mm; sourceTree = "<group>"; };
+		48B32A081725B71A00F49182 /* CAMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMath.h; sourceTree = "<group>"; };
+		48B32A091725B71A00F49182 /* CAStreamBasicDescription.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAStreamBasicDescription.cpp; sourceTree = "<group>"; };
+		48B32A0A1725B71A00F49182 /* CAStreamBasicDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAStreamBasicDescription.h; sourceTree = "<group>"; };
+		48B32A0B1725B71A00F49182 /* CAXException.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAXException.cpp; sourceTree = "<group>"; };
+		48B32A0C1725B71A00F49182 /* CAXException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAXException.h; sourceTree = "<group>"; };
 		48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberCountriesView.xib; sourceTree = "<group>"; };
 		48B5AAF016E6A58400BA4084 /* NumberCountriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberCountriesViewController.h; sourceTree = "<group>"; };
 		48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberCountriesViewController.m; sourceTree = "<group>"; };
@@ -1660,6 +1754,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48B32A011725B65000F49182 /* CoreAudio.framework in Frameworks */,
 				48ADD0FC170C12CD001515EB /* AddressBook.framework in Frameworks */,
 				48ADD0FA170C12C2001515EB /* AddressBookUI.framework in Frameworks */,
 				4895D19A16B1BE9200BCA581 /* StoreKit.framework in Frameworks */,
@@ -1891,6 +1986,30 @@
 		483679ED1722F2CF001A02AF /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				483679FD17247B2B001A02AF /* CueForwardBlack.png */,
+				483679FE17247B2B001A02AF /* CueForwardBlack@2x.png */,
+				483679FF17247B2B001A02AF /* CueForwardWhite.png */,
+				48367A0017247B2B001A02AF /* CueForwardWhite@2x.png */,
+				48367A0117247B2B001A02AF /* CuePauseBlack.png */,
+				48367A0217247B2B001A02AF /* CuePauseBlack@2x.png */,
+				48367A0317247B2B001A02AF /* CuePauseWhite.png */,
+				48367A0417247B2B001A02AF /* CuePauseWhite@2x.png */,
+				48367A0517247B2B001A02AF /* CuePlayBlack.png */,
+				48367A0617247B2C001A02AF /* CuePlayBlack@2x.png */,
+				48367A0717247B2C001A02AF /* CuePlayWhite.png */,
+				48367A0817247B2C001A02AF /* CuePlayWhite@2x.png */,
+				48367A0917247B2C001A02AF /* CueRecordRed.png */,
+				48367A0A17247B2C001A02AF /* CueRecordRed@2x.png */,
+				48367A0B17247B2C001A02AF /* CueRecordWhite.png */,
+				48367A0C17247B2D001A02AF /* CueRecordWhite@2x.png */,
+				48367A0D17247B2D001A02AF /* CueReverseBlack.png */,
+				48367A0E17247B2D001A02AF /* CueReverseBlack@2x.png */,
+				48367A0F17247B2D001A02AF /* CueReverseWhite.png */,
+				48367A1017247B2D001A02AF /* CueReverseWhite@2x.png */,
+				48367A1117247B2D001A02AF /* CueStopBlack.png */,
+				48367A1217247B2D001A02AF /* CueStopBlack@2x.png */,
+				48367A1317247B2D001A02AF /* CueStopWhite.png */,
+				48367A1417247B2D001A02AF /* CueStopWhite@2x.png */,
 				483679EE1722F2CF001A02AF /* List.png */,
 				483679EF1722F2CF001A02AF /* List@2x.png */,
 				483679F01722F2CF001A02AF /* Microphone.png */,
@@ -1920,6 +2039,8 @@
 				484A94A9171C518C009E22B9 /* NumberAreaActionCell.m */,
 				484A949F171822D4009E22B9 /* NumberAreasCell.h */,
 				484A94A0171822D4009E22B9 /* NumberAreasCell.m */,
+				48367A45172552D2001A02AF /* RecordingControlsCell.h */,
+				48367A46172552D2001A02AF /* RecordingControlsCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2455,6 +2576,7 @@
 				48EE399616777EBB00823E09 /* WebRTC */,
 				48338F55161628410033F4C1 /* OpenSSL */,
 				48338F54161628310033F4C1 /* pjsip */,
+				48B32A001725B65000F49182 /* CoreAudio.framework */,
 				48ADD0FB170C12CC001515EB /* AddressBook.framework */,
 				48ADD0F9170C12C1001515EB /* AddressBookUI.framework */,
 				4895D19916B1BE9200BCA581 /* StoreKit.framework */,
@@ -2564,6 +2686,7 @@
 				48AF4510164948F000DFE3D8 /* SettingsView.xib */,
 				48AF455A1649794B00DFE3D8 /* ShareView.xib */,
 				482D2DEF16C8172900E13B91 /* ProvisioningView.xib */,
+				483679FA17246977001A02AF /* RecordingControlsCell.xib */,
 			);
 			path = XIBs;
 			sourceTree = "<group>";
@@ -2607,16 +2730,39 @@
 				482D2DEC16C815BE00E13B91 /* ProvisioningViewController.m */,
 				48AF456716497A1B00DFE3D8 /* RecentsViewController.h */,
 				48AF456816497A1B00DFE3D8 /* RecentsViewController.m */,
+				483679DC1721F2DF001A02AF /* RecordingViewController.h */,
+				483679DD1721F2E0001A02AF /* RecordingViewController.m */,
 				48AF4555164978BE00DFE3D8 /* ShareViewController.h */,
 				48AF4556164978BE00DFE3D8 /* ShareViewController.m */,
 				48AF44F8164947FA00DFE3D8 /* SettingsViewController.h */,
 				48AF44F9164947FA00DFE3D8 /* SettingsViewController.m */,
 				48AD95D8164AC4FE006178E6 /* ViewController.h */,
 				48AD95D9164AC4FE006178E6 /* ViewController.m */,
-				483679DC1721F2DF001A02AF /* RecordingViewController.h */,
-				483679DD1721F2E0001A02AF /* RecordingViewController.m */,
 			);
 			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		48B32A021725B71A00F49182 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				48B32A031725B71A00F49182 /* AQRecorder.h */,
+				48B32A041725B71A00F49182 /* AQRecorder.mm */,
+				48B32A051725B71A00F49182 /* PublicUtility */,
+			);
+			name = Audio;
+			path = External/Audio;
+			sourceTree = SOURCE_ROOT;
+		};
+		48B32A051725B71A00F49182 /* PublicUtility */ = {
+			isa = PBXGroup;
+			children = (
+				48B32A081725B71A00F49182 /* CAMath.h */,
+				48B32A091725B71A00F49182 /* CAStreamBasicDescription.cpp */,
+				48B32A0A1725B71A00F49182 /* CAStreamBasicDescription.h */,
+				48B32A0B1725B71A00F49182 /* CAXException.cpp */,
+				48B32A0C1725B71A00F49182 /* CAXException.h */,
+			);
+			path = PublicUtility;
 			sourceTree = "<group>";
 		};
 		48CB076F163D5E3500B07199 /* Resources */ = {
@@ -2636,6 +2782,7 @@
 		48DD7284169F548600CD7080 /* External */ = {
 			isa = PBXGroup;
 			children = (
+				48B32A021725B71A00F49182 /* Audio */,
 				48DD72AD169F56F000CD7080 /* AFNetworking */,
 			);
 			name = External;
@@ -3361,6 +3508,31 @@
 				483679F41722F2CF001A02AF /* List@2x.png in Resources */,
 				483679F61722F2CF001A02AF /* Microphone.png in Resources */,
 				483679F81722F2CF001A02AF /* Microphone@2x.png in Resources */,
+				483679FB17246977001A02AF /* RecordingControlsCell.xib in Resources */,
+				48367A1517247B2D001A02AF /* CueForwardBlack.png in Resources */,
+				48367A1717247B2D001A02AF /* CueForwardBlack@2x.png in Resources */,
+				48367A1917247B2D001A02AF /* CueForwardWhite.png in Resources */,
+				48367A1B17247B2D001A02AF /* CueForwardWhite@2x.png in Resources */,
+				48367A1D17247B2D001A02AF /* CuePauseBlack.png in Resources */,
+				48367A1F17247B2D001A02AF /* CuePauseBlack@2x.png in Resources */,
+				48367A2117247B2D001A02AF /* CuePauseWhite.png in Resources */,
+				48367A2317247B2D001A02AF /* CuePauseWhite@2x.png in Resources */,
+				48367A2517247B2D001A02AF /* CuePlayBlack.png in Resources */,
+				48367A2717247B2D001A02AF /* CuePlayBlack@2x.png in Resources */,
+				48367A2917247B2D001A02AF /* CuePlayWhite.png in Resources */,
+				48367A2B17247B2D001A02AF /* CuePlayWhite@2x.png in Resources */,
+				48367A2D17247B2D001A02AF /* CueRecordRed.png in Resources */,
+				48367A2F17247B2D001A02AF /* CueRecordRed@2x.png in Resources */,
+				48367A3117247B2D001A02AF /* CueRecordWhite.png in Resources */,
+				48367A3317247B2D001A02AF /* CueRecordWhite@2x.png in Resources */,
+				48367A3517247B2D001A02AF /* CueReverseBlack.png in Resources */,
+				48367A3717247B2D001A02AF /* CueReverseBlack@2x.png in Resources */,
+				48367A3917247B2D001A02AF /* CueReverseWhite.png in Resources */,
+				48367A3B17247B2D001A02AF /* CueReverseWhite@2x.png in Resources */,
+				48367A3D17247B2D001A02AF /* CueStopBlack.png in Resources */,
+				48367A3F17247B2D001A02AF /* CueStopBlack@2x.png in Resources */,
+				48367A4117247B2D001A02AF /* CueStopWhite.png in Resources */,
+				48367A4317247B2D001A02AF /* CueStopWhite@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3451,6 +3623,31 @@
 				483679F51722F2CF001A02AF /* List@2x.png in Resources */,
 				483679F71722F2CF001A02AF /* Microphone.png in Resources */,
 				483679F91722F2CF001A02AF /* Microphone@2x.png in Resources */,
+				483679FC17246977001A02AF /* RecordingControlsCell.xib in Resources */,
+				48367A1617247B2D001A02AF /* CueForwardBlack.png in Resources */,
+				48367A1817247B2D001A02AF /* CueForwardBlack@2x.png in Resources */,
+				48367A1A17247B2D001A02AF /* CueForwardWhite.png in Resources */,
+				48367A1C17247B2D001A02AF /* CueForwardWhite@2x.png in Resources */,
+				48367A1E17247B2D001A02AF /* CuePauseBlack.png in Resources */,
+				48367A2017247B2D001A02AF /* CuePauseBlack@2x.png in Resources */,
+				48367A2217247B2D001A02AF /* CuePauseWhite.png in Resources */,
+				48367A2417247B2D001A02AF /* CuePauseWhite@2x.png in Resources */,
+				48367A2617247B2D001A02AF /* CuePlayBlack.png in Resources */,
+				48367A2817247B2D001A02AF /* CuePlayBlack@2x.png in Resources */,
+				48367A2A17247B2D001A02AF /* CuePlayWhite.png in Resources */,
+				48367A2C17247B2D001A02AF /* CuePlayWhite@2x.png in Resources */,
+				48367A2E17247B2D001A02AF /* CueRecordRed.png in Resources */,
+				48367A3017247B2D001A02AF /* CueRecordRed@2x.png in Resources */,
+				48367A3217247B2D001A02AF /* CueRecordWhite.png in Resources */,
+				48367A3417247B2D001A02AF /* CueRecordWhite@2x.png in Resources */,
+				48367A3617247B2D001A02AF /* CueReverseBlack.png in Resources */,
+				48367A3817247B2D001A02AF /* CueReverseBlack@2x.png in Resources */,
+				48367A3A17247B2D001A02AF /* CueReverseWhite.png in Resources */,
+				48367A3C17247B2D001A02AF /* CueReverseWhite@2x.png in Resources */,
+				48367A3E17247B2D001A02AF /* CueStopBlack.png in Resources */,
+				48367A4017247B2D001A02AF /* CueStopBlack@2x.png in Resources */,
+				48367A4217247B2D001A02AF /* CueStopWhite.png in Resources */,
+				48367A4417247B2D001A02AF /* CueStopWhite@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3562,6 +3759,10 @@
 				484A94A1171822D4009E22B9 /* NumberAreasCell.m in Sources */,
 				484A94AA171C518D009E22B9 /* NumberAreaActionCell.m in Sources */,
 				483679DE1721F2E1001A02AF /* RecordingViewController.m in Sources */,
+				48367A47172552D2001A02AF /* RecordingControlsCell.m in Sources */,
+				48B32A0D1725B71A00F49182 /* AQRecorder.mm in Sources */,
+				48B32A111725B71A00F49182 /* CAStreamBasicDescription.cpp in Sources */,
+				48B32A131725B71A00F49182 /* CAXException.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3641,6 +3842,10 @@
 				484A94A2171822D4009E22B9 /* NumberAreasCell.m in Sources */,
 				484A94AB171C518D009E22B9 /* NumberAreaActionCell.m in Sources */,
 				483679DF1721F2E1001A02AF /* RecordingViewController.m in Sources */,
+				48367A48172552D2001A02AF /* RecordingControlsCell.m in Sources */,
+				48B32A0E1725B71A00F49182 /* AQRecorder.mm in Sources */,
+				48B32A121725B71A00F49182 /* CAStreamBasicDescription.cpp in Sources */,
+				48B32A141725B71A00F49182 /* CAXException.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

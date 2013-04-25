@@ -101,7 +101,7 @@ static DataManager* sharedManager;
         return _persistentStoreCoordinator;
     }
 
-    NSURL*      storeURL = [Common documentPath:@"Data.sqlite"];
+    NSURL*      storeURL = [Common documentUrl:@"Data.sqlite"];
     NSError*    error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
