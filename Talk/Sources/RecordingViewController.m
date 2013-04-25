@@ -130,7 +130,14 @@ static const int    TextFieldCellTag = 1111;
 
     NSArray*    topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"RecordingControlsCell" owner:self options:nil];
     controlsCell = [topLevelObjects objectAtIndex:0];
-    
+
+    // Let keyboard be hidden when user taps outside text fields.
+    UITapGestureRecognizer* gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                        action:@selector(hideKeyboard:)];
+    gestureRecognizer.cancelsTouchesInView = NO;
+    gestureRecognizer.delegate = self;
+    [self.tableView addGestureRecognizer:gestureRecognizer];
+
     [self updateControls];
     self.meterProgressView.progress = 0;
     self.timeSlider.value = 0;
@@ -601,6 +608,22 @@ static const int    TextFieldCellTag = 1111;
 }
 
 
+#pragma mark - Gesture Recognizer Delegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer shouldReceiveTouch:(UITouch*)touch
+{
+    if ([touch.view isKindOfClass:[UITextField class]] ||
+        [touch.view isKindOfClass:[UIButton class]])
+    {
+        return NO;
+    }
+    else
+    {
+        return YES;
+    }
+}
+
+
 #pragma mark - Helper Methods
 
 - (void)startRecording
@@ -806,14 +829,9 @@ static void audioRouteChangeListener(
 }
 
 
-#warning Not used.
-- (void)resetAudioRoute
+- (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
 {
-    UInt32      routeSize = sizeof(CFStringRef);
-    CFStringRef routeRef;
-    OSStatus    status = AudioSessionGetProperty(kAudioSessionProperty_AudioRoute, &routeSize, &routeRef);
-    NSString*   route = (__bridge NSString*)routeRef;
-
+    [[self.tableView superview] endEditing:YES];
 }
 
 @end

@@ -10,7 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 
 
-@interface RecordingViewController : UITableViewController <UITextFieldDelegate,
+@interface RecordingViewController : UITableViewController <UITextFieldDelegate, UIGestureRecognizerDelegate,
                                                             AVAudioRecorderDelegate, AVAudioPlayerDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel*               timeLabel;
