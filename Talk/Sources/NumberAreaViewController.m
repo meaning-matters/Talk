@@ -1039,11 +1039,13 @@ static const int    CountryCellTag   = 4321;
         }
         
         [self.tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        
         return NO;
     }
     else
     {
         [textField resignFirstResponder];
+        
         return YES;
     }
 }

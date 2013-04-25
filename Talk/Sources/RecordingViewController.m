@@ -97,6 +97,12 @@ static const int    TextFieldCellTag = 1111;
             {
                 NSLog(@"//### Failed to create audio recorder: %@", [error localizedDescription]);
             }
+
+            recording.uuid = uuid;
+        }
+        else
+        {
+            //...
         }
 
         // Select initial audio route, and add listerer for changes.
@@ -377,6 +383,8 @@ static const int    TextFieldCellTag = 1111;
         abort();
     }
 
+    recording.urlString = [audioRecorder.url absoluteString];
+
     tappedSave = YES;   // Prevents removal of file in viewWillDisappear.
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -624,7 +632,35 @@ static const int    TextFieldCellTag = 1111;
 }
 
 
+#pragma mark - TextField Delegate
+
+- (BOOL)textFieldShouldReturn:(UITextField*)textField
+{
+    [textField resignFirstResponder];
+
+    return YES;
+}
+
+
+- (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
+{
+    recording.name = [textField.text stringByReplacingCharactersInRange:range withString:string];
+
+    [self enableSaveButton];
+
+    return YES;
+}
+
+
 #pragma mark - Helper Methods
+
+- (void)enableSaveButton
+{
+    BOOL    hasRecording = ([audioRecorder.url checkResourceIsReachableAndReturnError:nil] == YES);
+
+    self.navigationItem.rightBarButtonItem.enabled = (recording.name.length > 0) && hasRecording && !isPausedRecording;
+}
+
 
 - (void)startRecording
 {
@@ -752,6 +788,7 @@ static const int    TextFieldCellTag = 1111;
     textField.autocapitalizationType    = UITextAutocapitalizationTypeWords;
     textField.clearButtonMode           = UITextFieldViewModeWhileEditing;
     textField.contentVerticalAlignment  = UIControlContentVerticalAlignmentCenter;
+    textField.returnKeyType             = UIReturnKeyDone;
 
     textField.delegate                  = self;
 
@@ -785,7 +822,7 @@ static const int    TextFieldCellTag = 1111;
     self.pauseButton.enabled        = (isRecording || isPlaying) && !isForwarding && !isReversing && !isSliding;
     self.forwardButton.enabled      = isPlaying && !isReversing && !isSliding;
 
-    self.navigationItem.rightBarButtonItem.enabled = canPlay && !isRecording && !isPausedRecording;
+    [self enableSaveButton];
 
     for (int n = 1; n < 26; n++)
     {

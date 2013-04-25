@@ -27,9 +27,9 @@
         <relationship name="forwarding" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Forwarding" inverseName="numbers" inverseEntity="Forwarding" syncable="YES"/>
     </entity>
     <entity name="Recording" representedClassName="RecordingData" syncable="YES">
-        <attribute name="hashString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="forwardings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Forwarding" inverseName="recordings" inverseEntity="Forwarding" syncable="YES"/>
     </entity>
     <elements>

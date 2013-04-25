@@ -12,7 +12,7 @@
 
 @implementation RecordingData
 
-@dynamic hashString;
+@dynamic uuid;
 @dynamic name;
 @dynamic urlString;
 @dynamic forwardings;

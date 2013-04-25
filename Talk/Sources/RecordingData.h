@@ -13,7 +13,7 @@
 
 @interface RecordingData : NSManagedObject
 
-@property (nonatomic, retain) NSString* hashString;
+@property (nonatomic, retain) NSString* uuid;
 @property (nonatomic, retain) NSString* name;
 @property (nonatomic, retain) NSString* urlString;
 @property (nonatomic, retain) NSSet*    forwardings;
