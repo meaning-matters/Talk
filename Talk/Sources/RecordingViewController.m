@@ -79,7 +79,7 @@ static const int    TextFieldCellTag = 1111;
         if (recording.urlString.length == 0)
         {
             NSString*       uuid = [[NSUUID UUID] UUIDString];
-            NSURL*          url  = [Common documentUrl:[NSString stringWithFormat:@"%@.aac", uuid]];
+            NSURL*          url  = [Common audioUrl:[NSString stringWithFormat:@"%@.aac", uuid]];
             NSError*        error;
             NSDictionary*   settings = @{ AVEncoderAudioQualityKey : @(AVAudioQualityMedium),
                                           AVEncoderBitRateKey      : @(12800),
@@ -156,9 +156,25 @@ static const int    TextFieldCellTag = 1111;
 {
     [super viewWillDisappear:animated];
 
-    if (audioRecorder.isRecording)
+    if ([self.navigationController.viewControllers indexOfObject:self] != NSNotFound)
     {
-        [self pauseButtonAction:nil];
+        if (audioRecorder.isRecording || audioPlayer.isPlaying)
+        {
+            [self pauseButtonAction:nil];
+        }
+    }
+    else
+    {
+        // Back button was pressed, because self is no longer in the navigation stack.
+        [audioRecorder stop];
+        [audioPlayer stop];
+
+        NSError*    error;
+        [[NSFileManager defaultManager] removeItemAtURL:audioRecorder.url error:&error];
+        if (error != nil)
+        {
+            NSLog(@"//### Failed to remove unused audio file: %@.", [error localizedDescription]);
+        }
     }
 }
 
@@ -247,7 +263,7 @@ static const int    TextFieldCellTag = 1111;
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"NameCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NameCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NameCell"];
         textField = [self addTextFieldToCell:cell];
         textField.tag = TextFieldCellTag;
     }
@@ -256,13 +272,12 @@ static const int    TextFieldCellTag = 1111;
         textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
     }
 
-    textField.placeholder = NSLocalizedStringWithDefaultValue(@"Recording:Name Placeholder", nil,
-                                                              [NSBundle mainBundle], @"Required",
-                                                              @"....");
+    textField.placeholder = [CommonStrings requiredString];
 
-    cell.imageView.image      = nil;
-    cell.accessoryType        = UITableViewCellAccessoryNone;
-    cell.selectionStyle       = UITableViewCellSelectionStyleNone;
+    cell.textLabel.text   = [CommonStrings nameString];
+    cell.imageView.image  = nil;
+    cell.accessoryType    = UITableViewCellAccessoryNone;
+    cell.selectionStyle   = UITableViewCellSelectionStyleNone;
 
     return cell;
 }

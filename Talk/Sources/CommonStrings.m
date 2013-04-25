@@ -72,4 +72,13 @@
                                              @"[iOS standard size].");
 }
 
+
++ (NSString*)requiredString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Required", nil,
+                                             [NSBundle mainBundle], @"Required",
+                                             @"Standard placeholder text in textfield, telling it needs to be filled in\n"
+                                             @"[iOS standard size].");
+}
+
 @end

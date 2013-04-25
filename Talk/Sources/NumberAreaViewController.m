@@ -754,13 +754,9 @@ static const int    CountryCellTag   = 4321;
         textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
     }
 
-    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Name Label", nil,
-                                                            [NSBundle mainBundle], @"Name",
-                                                            @"....");
-    textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:Name Placeholder", nil,
-                                                              [NSBundle mainBundle], @"Required",
-                                                              @"....");
-    textField.text = purchaseInfo[@"name"];
+    cell.textLabel.text   = [CommonStrings nameString];
+    textField.placeholder = [CommonStrings requiredString];
+    textField.text        = purchaseInfo[@"name"];
     objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"name", OBJC_ASSOCIATION_RETAIN);
 
     cell.detailTextLabel.text = nil;
@@ -806,9 +802,7 @@ static const int    CountryCellTag   = 4321;
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:FirstName Label", nil,
                                                                     [NSBundle mainBundle], @"Firstname",
                                                                     @"....");
-            textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:FirstName Placeholder", nil,
-                                                                      [NSBundle mainBundle], @"Required",
-                                                                      @"....");
+            textField.placeholder = [CommonStrings requiredString];
             textField.text = purchaseInfo[@"firstName"];
             objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"firstName", OBJC_ASSOCIATION_RETAIN);
             break;
@@ -817,9 +811,7 @@ static const int    CountryCellTag   = 4321;
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:LastName Label", nil,
                                                                     [NSBundle mainBundle], @"Lastname",
                                                                     @"....");
-            textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:LastName Placeholder", nil,
-                                                                      [NSBundle mainBundle], @"Required",
-                                                                      @"....");
+            textField.placeholder = [CommonStrings requiredString];
             textField.text = purchaseInfo[@"lastName"];
             objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"lastName", OBJC_ASSOCIATION_RETAIN);
             break;
@@ -828,9 +820,7 @@ static const int    CountryCellTag   = 4321;
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Company Label", nil,
                                                                     [NSBundle mainBundle], @"Company",
                                                                     @"....");
-            textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:Company Placeholder", nil,
-                                                                      [NSBundle mainBundle], @"Required",
-                                                                      @"....");
+            textField.placeholder = [CommonStrings requiredString];
             textField.text = purchaseInfo[@"company"];
             objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"company", OBJC_ASSOCIATION_RETAIN);
             break;
@@ -891,9 +881,7 @@ static const int    CountryCellTag   = 4321;
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Street Label", nil,
                                                                     [NSBundle mainBundle], @"Street",
                                                                     @"....");
-            textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:Street Placeholder", nil,
-                                                                      [NSBundle mainBundle], @"Required",
-                                                                      @"....");
+            textField.placeholder = [CommonStrings requiredString];
             textField.text = purchaseInfo[@"street"];
             objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"street", OBJC_ASSOCIATION_RETAIN);
             break;
@@ -902,9 +890,7 @@ static const int    CountryCellTag   = 4321;
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Building Label", nil,
                                                                     [NSBundle mainBundle], @"Building",
                                                                     @"....");
-            textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:Street Placeholder", nil,
-                                                                      [NSBundle mainBundle], @"Required",
-                                                                      @"....");
+            textField.placeholder = [CommonStrings requiredString];
             textField.text = purchaseInfo[@"building"];
             objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"building", OBJC_ASSOCIATION_RETAIN);
             break;
@@ -915,9 +901,7 @@ static const int    CountryCellTag   = 4321;
                                                                     @"Postalcode, Post Code, ...");
             if (citiesArray.count == 0)
             {
-                textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:ZipCode Placeholder A", nil,
-                                                                          [NSBundle mainBundle], @"Required",
-                                                                          @"....");
+                textField.placeholder = [CommonStrings requiredString];
             }
             else
             {
@@ -947,9 +931,7 @@ static const int    CountryCellTag   = 4321;
                                                                     @"....");
             if (citiesArray.count == 0)
             {
-                textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:ZipCode Placeholder A", nil,
-                                                                          [NSBundle mainBundle], @"Required",
-                                                                          @"....");
+                textField.placeholder = [CommonStrings requiredString];
             }
             else
             {

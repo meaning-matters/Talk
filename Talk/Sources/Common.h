@@ -20,6 +20,10 @@
 
 + (NSURL*)documentUrl:(NSString*)name;
 
++ (NSURL*)audioDirectoryUrl;
+
++ (NSURL*)audioUrl:(NSString*)name;
+
 + (NSData*)dataForResource:(NSString*)resourse ofType:(NSString*)type;
 
 + (NSString*)bundleVersion;

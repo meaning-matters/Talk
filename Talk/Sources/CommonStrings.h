@@ -24,4 +24,6 @@
 
 + (NSString*)nameString;
 
++ (NSString*)requiredString;
+
 @end

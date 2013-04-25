@@ -29,6 +29,25 @@
 }
 
 
++ (NSURL*)audioDirectoryUrl
+{
+    NSURL*  url = [[Common documentsDirectoryUrl] URLByAppendingPathComponent:@"audio/"];
+
+    [[NSFileManager defaultManager] createDirectoryAtURL:url
+                             withIntermediateDirectories:YES
+                                                     attributes:nil
+                                                   error:nil];
+
+    return url;
+}
+
+
++ (NSURL*)audioUrl:(NSString*)name
+{
+    return [[Common audioDirectoryUrl] URLByAppendingPathComponent:name];
+}
+
+
 + (NSData*)dataForResource:(NSString*)resourse ofType:(NSString*)type
 {
     NSString*   path = [[NSBundle mainBundle] pathForResource:resourse ofType:type];
