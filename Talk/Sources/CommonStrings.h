@@ -22,4 +22,6 @@
 
 + (NSString*)enableString;
 
++ (NSString*)nameString;
+
 @end

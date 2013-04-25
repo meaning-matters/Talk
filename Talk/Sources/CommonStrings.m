@@ -63,4 +63,13 @@
                                              @"[iOS standard size].");
 }
 
+
++ (NSString*)nameString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Name", nil,
+                                             [NSBundle mainBundle], @"Name",
+                                             @"Standard string to label a name of something\n"
+                                             @"[iOS standard size].");
+}
+
 @end

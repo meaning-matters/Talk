@@ -10,6 +10,7 @@
 #import "Common.h"
 #import "PhoneNumber.h"
 #import "CountryNames.h"
+#import "CommonStrings.h"
 
 
 typedef enum
@@ -105,9 +106,7 @@ typedef enum
             break;
 
         case TableSectionRealName:
-            title = NSLocalizedStringWithDefaultValue(@"Number:Name SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Name",
-                                                      @"....");
+            title = [CommonStrings nameString];
             break;
 
         case TableSectionAddress:

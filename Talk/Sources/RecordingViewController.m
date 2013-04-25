@@ -152,6 +152,17 @@ static const int    TextFieldCellTag = 1111;
 }
 
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    if (audioRecorder.isRecording)
+    {
+        [self pauseButtonAction:nil];
+    }
+}
+
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
