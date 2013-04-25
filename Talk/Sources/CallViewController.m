@@ -636,23 +636,23 @@ const NSTimeInterval    TransitionDuration = 0.5;
 
     duration = 1;
     durationTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:YES block:^
-                    {
-                        if (duration < 3600)
-                        {
-                            self.statusLabel.text = [NSString stringWithFormat:@"%02d:%02d",
-                                                     (duration % 3600) / 60,
-                                                     duration % 60];
-                        }
-                        else
-                        {
-                            self.statusLabel.text = [NSString stringWithFormat:@"%d:%02d:%02d",
-                                                     duration / 3600,
-                                                     (duration % 3600) / 60,
-                                                     duration % 60];
-                        }
+    {
+        if (duration < 3600)
+        {
+            self.statusLabel.text = [NSString stringWithFormat:@"%02d:%02d",
+                                     (duration % 3600) / 60,
+                                     duration % 60];
+        }
+        else
+        {
+            self.statusLabel.text = [NSString stringWithFormat:@"%d:%02d:%02d",
+                                     duration / 3600,
+                                     (duration % 3600) / 60,
+                                     duration % 60];
+        }
 
-                        duration++;
-                    }];
+        duration++;
+    }];
 }
 
 

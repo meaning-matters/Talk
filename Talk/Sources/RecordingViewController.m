@@ -35,7 +35,7 @@ static const int    TextFieldCellTag = 1111;
     BOOL                        isPausedRecording;
     BOOL                        isPausedPlaying;
     float                       duration;
-
+    BOOL                        tappedSave;
 
     AVAudioRecorder*            audioRecorder;
     AVAudioPlayer*              audioPlayer;
@@ -98,6 +98,16 @@ static const int    TextFieldCellTag = 1111;
                 NSLog(@"//### Failed to create audio recorder: %@", [error localizedDescription]);
             }
         }
+
+        // Select initial audio route, and add listerer for changes.
+        audioRouteChangeListener(NULL, kAudioSessionProperty_AudioRouteChange, 0, NULL);
+        OSStatus result = AudioSessionAddPropertyListener(kAudioSessionProperty_AudioRouteChange,
+                                                          audioRouteChangeListener,
+                                                          (__bridge void*)self);
+        if (result != 0)
+        {
+            NSLog(@"//### Failed to set AudioRouteChange listener: %@", [Common stringWithOsStatus:result]);
+        }
     }
 
     return self;
@@ -114,9 +124,9 @@ static const int    TextFieldCellTag = 1111;
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
-    self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+    self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
                                                                                             target:self
-                                                                                            action:@selector(doneAction)];
+                                                                                            action:@selector(saveAction)];
 
     NSArray*    topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"RecordingControlsCell" owner:self options:nil];
     controlsCell = [topLevelObjects objectAtIndex:0];
@@ -165,15 +175,22 @@ static const int    TextFieldCellTag = 1111;
     }
     else
     {
-        // Back button was pressed, because self is no longer in the navigation stack.
+        // We're being popped, because self is no longer in the navigation stack.
         [audioRecorder stop];
         [audioPlayer stop];
 
-        NSError*    error;
-        [[NSFileManager defaultManager] removeItemAtURL:audioRecorder.url error:&error];
-        if (error != nil)
+        AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_AudioRouteChange,
+                                                       audioRouteChangeListener,
+                                                       (__bridge void*)self);
+
+        if (tappedSave == NO)
         {
-            NSLog(@"//### Failed to remove unused audio file: %@.", [error localizedDescription]);
+            NSError*    error;
+            [[NSFileManager defaultManager] removeItemAtURL:audioRecorder.url error:&error];
+            if (error != nil)
+            {
+                NSLog(@"//### Failed to remove unused audio file: %@.", [error localizedDescription]);
+            }
         }
     }
 }
@@ -344,7 +361,7 @@ static const int    TextFieldCellTag = 1111;
 
 #pragma mark - Actions
 
-- (void)doneAction
+- (void)saveAction
 {
     NSError*    error;
     if ([managedObjectContext save:&error] == NO || [[fetchedResultsController managedObjectContext] save:&error] == NO)
@@ -353,6 +370,7 @@ static const int    TextFieldCellTag = 1111;
         abort();
     }
 
+    tappedSave = YES;   // Prevents removal of file in viewWillDisappear.
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -463,10 +481,6 @@ static const int    TextFieldCellTag = 1111;
 
 - (IBAction)playButtonAction:(id)sender
 {
-    UInt32      audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
-    
-    AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(audioRouteOverride), &audioRouteOverride);
-
     if (isPausedPlaying == NO)
     {
         NSError*    error;
@@ -748,6 +762,8 @@ static const int    TextFieldCellTag = 1111;
     self.pauseButton.enabled        = (isRecording || isPlaying) && !isForwarding && !isReversing && !isSliding;
     self.forwardButton.enabled      = isPlaying && !isReversing && !isSliding;
 
+    self.navigationItem.rightBarButtonItem.enabled = canPlay && !isRecording && !isPausedRecording;
+
     for (int n = 1; n < 26; n++)
     {
         UIProgressView* progressView = meterProgressViewsArray[n];
@@ -756,6 +772,41 @@ static const int    TextFieldCellTag = 1111;
 }
 
 
+static void audioRouteChangeListener(
+    void*                   inClientData,
+    AudioSessionPropertyID  inID,
+    UInt32                  inDataSize,
+    const void*             inData)
+{
+    if (inID == kAudioSessionProperty_AudioRouteChange)
+    {
+        CFStringRef newRoute;
+        UInt32      size = sizeof(CFStringRef);
+
+        AudioSessionGetProperty(kAudioSessionProperty_AudioRoute, &size, &newRoute);
+        if (newRoute)
+        {
+            CFShow(newRoute);
+            if (CFStringCompare(newRoute, CFSTR("ReceiverAndMicrophone"), (UInt32)NULL) == kCFCompareEqualTo)
+            {
+                UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
+                AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute,
+                                        sizeof(audioRouteOverride),
+                                        &audioRouteOverride);
+            }
+            else if (CFStringCompare(newRoute, CFSTR("HeadsetInOut"), (UInt32)NULL) == kCFCompareEqualTo)
+            {
+                UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_None;
+                AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute,
+                                         sizeof(audioRouteOverride),
+                                         &audioRouteOverride);
+            }
+        }
+    }
+}
+
+
+#warning Not used.
 - (void)resetAudioRoute
 {
     UInt32      routeSize = sizeof(CFStringRef);
