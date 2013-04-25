@@ -27,7 +27,6 @@
 
 - (id)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController;
 
-- (IBAction)timeSliderChangedAction:(id)sender;
 - (IBAction)timeSliderDownAction:(id)sender;
 - (IBAction)timeSliderUpAction:(id)sender;
 - (IBAction)reverseButtonDownAction:(id)sender;
