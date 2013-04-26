@@ -71,15 +71,8 @@ static const int    TextFieldCellTag = 1111;
         sections |= TableSectionControls;
         sections |= (self.recording.forwardings.count > 0) ? TableSectionForwardings : 0;
 
-        // Select initial audio route, and add listerer for changes.
+        // Select initial audio route.
         audioRouteChangeListener(NULL, kAudioSessionProperty_AudioRouteChange, 0, NULL);
-        OSStatus result = AudioSessionAddPropertyListener(kAudioSessionProperty_AudioRouteChange,
-                                                          audioRouteChangeListener,
-                                                          (__bridge void*)self);
-        if (result != 0)
-        {
-            NSLog(@"//### Failed to set AudioRouteChange listener: %@", [Common stringWithOsStatus:result]);
-        }
     }
 
     return self;
@@ -157,7 +150,6 @@ static const int    TextFieldCellTag = 1111;
 
     self.meterProgressView.progress = 0;
     self.timeSlider.value = 0;
-    self.timeLabel.text = [NSString stringWithFormat:@"%ds", (int)duration];
 
     if (isNew)
     {
@@ -191,9 +183,28 @@ static const int    TextFieldCellTag = 1111;
 }
 
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    OSStatus result = AudioSessionAddPropertyListener(kAudioSessionProperty_AudioRouteChange,
+                                                      audioRouteChangeListener,
+                                                      (__bridge void*)self);
+    if (result != 0)
+    {
+        NSLog(@"//### Failed to set AudioRouteChange listener: %@", [Common stringWithOsStatus:result]);
+    }
+}
+
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+
+    // Remove property listener because it interferes during a call.
+    AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_AudioRouteChange,
+                                                   audioRouteChangeListener,
+                                                   (__bridge void*)self);
 
     if ([self.navigationController.viewControllers indexOfObject:self] != NSNotFound)
     {
@@ -207,10 +218,6 @@ static const int    TextFieldCellTag = 1111;
         // We're being popped, because self is no longer in the navigation stack.
         [audioRecorder stop];
         [audioPlayer stop];
-
-        AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_AudioRouteChange,
-                                                       audioRouteChangeListener,
-                                                       (__bridge void*)self);
 
         if (tappedSave == NO)
         {
@@ -453,8 +460,6 @@ static const int    TextFieldCellTag = 1111;
 {
     if (audioRecorder.isRecording || isPausedRecording)
     {
-        duration = audioRecorder.currentTime;
-
         [audioRecorder stop];
         isPausedRecording = NO;
 
@@ -477,8 +482,6 @@ static const int    TextFieldCellTag = 1111;
     }
 
     [self updateControls];
-
-    self.timeLabel.text = [NSString stringWithFormat:@"%ds", (int)duration];
 }
 
 
@@ -527,12 +530,7 @@ static const int    TextFieldCellTag = 1111;
         [meteringTimer invalidate];
         meteringTimer = nil;
 
-        [self setMeterLevel:0.0f];
-        
-        self.timeLabel.text = NSLocalizedStringWithDefaultValue(@"RecordingView RecordingPausedLabel", nil,
-                                                                [NSBundle mainBundle], @"Recording is paused",
-                                                                @"Label saying that recording audio is paused\n"
-                                                                @"[1 line].");
+        [self setMeterLevel:0.0f];        
     }
 
     if (audioPlayer.isPlaying)
@@ -542,11 +540,6 @@ static const int    TextFieldCellTag = 1111;
         
         [sliderTimer invalidate];
         sliderTimer = nil;
-
-        self.timeLabel.text = NSLocalizedStringWithDefaultValue(@"RecordingView RecordingPausedLabel", nil,
-                                                                [NSBundle mainBundle], @"Playing is paused",
-                                                                @"Label saying that playing audio is paused\n"
-                                                                @"[1 line].");
     }
 
     [self updateControls];
@@ -555,7 +548,29 @@ static const int    TextFieldCellTag = 1111;
 
 - (IBAction)continueButtonAction:(id)sender
 {
-    [audioRecorder record];
+    if ([audioRecorder record] == NO)
+    {
+        NSString*   title;
+        NSString*   message;
+
+        title = NSLocalizedStringWithDefaultValue(@"RecordingView CantContinueTitle", nil,
+                                                  [NSBundle mainBundle], @"Recording Stopped",
+                                                  @"A recording could not be continued after a pause\n"
+                                                  @"[iOS alert title size].");
+
+        message = NSLocalizedStringWithDefaultValue(@"RecordingView OverwriteMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"This recording could not be continued after the pause, and "
+                                                    @"was stopped.",
+                                                    @"Alert message: audio recording stopped due to problem.\n"
+                                                    @"[iOS alert message size]");
+
+        [BlockAlertView showAlertViewWithTitle:title message:message
+                                    completion:nil
+                             cancelButtonTitle:[CommonStrings closeString]
+                             otherButtonTitles:nil];
+    }
+
     isPausedRecording = NO;
 
     meteringTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 repeats:YES block:^
@@ -604,7 +619,6 @@ static const int    TextFieldCellTag = 1111;
     [self updateSlider];
 
     [self updateControls];
-    self.timeLabel.text = [NSString stringWithFormat:@"%ds", (int)duration];
 }
 
 
@@ -667,7 +681,7 @@ static const int    TextFieldCellTag = 1111;
         return;
     }
 
-    if ([audioRecorder prepareToRecord] == NO || [audioRecorder record] == NO)
+    if ([audioRecorder record] == NO)
     {
         NSLog(@"//### Failed to start recording.");
 
@@ -715,8 +729,10 @@ static const int    TextFieldCellTag = 1111;
 
         [self setMeterLevel:level];
 
+        duration = audioRecorder.currentTime;
+
 #warning Localize these times!
-        self.timeLabel.text = [NSString stringWithFormat:@"%ds", (int)audioRecorder.currentTime];
+        self.timeLabel.text = [NSString stringWithFormat:@"%ds", (int)duration];
     }
 }
 
@@ -820,6 +836,25 @@ static const int    TextFieldCellTag = 1111;
         UIProgressView* progressView = meterProgressViewsArray[n];
         progressView.hidden = self.meterProgressView.hidden;
     }
+
+    if (isPausedRecording)
+    {
+        self.timeLabel.text = NSLocalizedStringWithDefaultValue(@"RecordingView RecordingPausedLabel", nil,
+                                                                [NSBundle mainBundle], @"Recording is paused",
+                                                                @"Label saying that recording audio is paused\n"
+                                                                @"[1 line].");
+    }
+    else if (isPausedPlaying)
+    {
+        self.timeLabel.text = NSLocalizedStringWithDefaultValue(@"RecordingView RecordingPausedLabel", nil,
+                                                                [NSBundle mainBundle], @"Playing is paused",
+                                                                @"Label saying that playing audio is paused\n"
+                                                                @"[1 line].");
+    }
+    else if (canPlay && !isRecording && !isPlaying)
+    {
+        self.timeLabel.text = [NSString stringWithFormat:@"%ds", (int)duration];
+    }
 }
 
 
@@ -837,7 +872,6 @@ static void audioRouteChangeListener(
         AudioSessionGetProperty(kAudioSessionProperty_AudioRoute, &size, &newRoute);
         if (newRoute)
         {
-            CFShow(newRoute);
             if (CFStringCompare(newRoute, CFSTR("ReceiverAndMicrophone"), (UInt32)NULL) == kCFCompareEqualTo)
             {
                 UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
