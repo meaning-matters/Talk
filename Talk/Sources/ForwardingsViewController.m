@@ -87,6 +87,15 @@ typedef enum
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    if (selection == SelectionForwardings)
+    {
+        [self.forwardingsTableView deselectRowAtIndexPath:self.forwardingsTableView.indexPathForSelectedRow animated:YES];
+    }
+    else
+    {
+        [self.recordingsTableView deselectRowAtIndexPath:self.recordingsTableView.indexPathForSelectedRow animated:YES];
+    }
     
     [self selectionUpdateAction];
 }
@@ -142,6 +151,23 @@ typedef enum
 }
 
 
+- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    if (tableView == self.forwardingsTableView)
+    {
+
+    }
+    else
+    {
+        RecordingViewController*    recordingViewController;
+        recordingViewController = [[RecordingViewController alloc] initWithFetchedResultsController:fetchedRecordingsController];
+        recordingViewController.recording = [fetchedRecordingsController objectAtIndexPath:indexPath];  // Must be set before shown.
+
+        [self.navigationController pushViewController:recordingViewController animated:YES];
+    }
+}
+
+
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell;
@@ -186,6 +212,8 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
+    RecordingData*  recording = [fetchedRecordingsController objectAtIndexPath:indexPath];
+    cell.textLabel.text = recording.name;
     cell.imageView.image = [UIImage imageNamed:@"Microphone"];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
@@ -269,9 +297,12 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath*)newIndexPath
 {
-    UITableView*    tableView = [self tableViewForResultsController:controller];
+    UITableView*        tableView = [self tableViewForResultsController:controller];
+    UITableViewCell*    cell;
+    RecordingData*      recording;
+    ForwardingData*     forwarding;
 
-    switch(type)
+    switch (type)
     {
         case NSFetchedResultsChangeInsert:
             [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
@@ -284,7 +315,17 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
             break;
 
         case NSFetchedResultsChangeUpdate:
-            [tableView cellForRowAtIndexPath:indexPath];    //### Needed?
+            cell = [tableView cellForRowAtIndexPath:indexPath];
+            if (tableView == self.forwardingsTableView)
+            {
+                forwarding = [controller objectAtIndexPath:indexPath];
+                cell.textLabel.text = forwarding.name;
+            }
+            else
+            {
+                recording = [controller objectAtIndexPath:indexPath];
+                cell.textLabel.text = recording.name;
+            }
             break;
 
         case NSFetchedResultsChangeMove:

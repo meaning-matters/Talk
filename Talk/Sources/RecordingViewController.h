@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import "RecordingData.h"
 
 
 @interface RecordingViewController : UITableViewController <UITextFieldDelegate, UIGestureRecognizerDelegate,
@@ -23,6 +24,8 @@
 @property (nonatomic, weak) IBOutlet UIButton*              pauseButton;
 @property (nonatomic, weak) IBOutlet UIButton*              continueButton; // Continue recording.
 @property (nonatomic, weak) IBOutlet UIButton*              forwardButton;
+
+@property (nonatomic, strong) RecordingData*                recording;
 
 
 - (id)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController;

@@ -301,7 +301,6 @@
 								<string key="NSFrame">{{230, 80}, {50, 50}}</string>
 								<reference key="NSSuperview" ref="288079874"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -715,7 +714,6 @@
 						<string key="reverseButtonDownAction:">id</string>
 						<string key="reverseButtonUpAction:">id</string>
 						<string key="stopButtonAction:">id</string>
-						<string key="timeSliderChangedAction:">id</string>
 						<string key="timeSliderDownAction:">id</string>
 						<string key="timeSliderUpAction:">id</string>
 					</dictionary>
@@ -754,10 +752,6 @@
 						</object>
 						<object class="IBActionInfo" key="stopButtonAction:">
 							<string key="name">stopButtonAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="timeSliderChangedAction:">
-							<string key="name">timeSliderChangedAction:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="timeSliderDownAction:">

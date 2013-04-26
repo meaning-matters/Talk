@@ -8,7 +8,6 @@
 
 #import "RecordingViewController.h"
 #import "RecordingControlsCell.h"
-#import "RecordingData.h"
 #import "Common.h"
 #import "NSTimer+Blocks.h"
 #import "BlockAlertView.h"
@@ -29,6 +28,7 @@ static const int    TextFieldCellTag = 1111;
 @interface RecordingViewController ()
 {
     TableSections               sections;
+    BOOL                        isNew;
     BOOL                        isForwarding;
     BOOL                        isReversing;
     BOOL                        isSliding;
@@ -37,6 +37,8 @@ static const int    TextFieldCellTag = 1111;
     float                       duration;
     BOOL                        tappedSave;
 
+    NSString*                   name;
+
     AVAudioRecorder*            audioRecorder;
     AVAudioPlayer*              audioPlayer;
     NSTimer*                    sliderTimer;
@@ -44,7 +46,6 @@ static const int    TextFieldCellTag = 1111;
 
     NSFetchedResultsController* fetchedResultsController;
     NSManagedObjectContext*     managedObjectContext;
-    RecordingData*              recording;
     RecordingControlsCell*      controlsCell;
 
     NSMutableArray*             meterProgressViewsArray;
@@ -57,6 +58,8 @@ static const int    TextFieldCellTag = 1111;
 
 - (id)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
 {
+    fetchedResultsController = resultsController;
+
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
         self.title = NSLocalizedStringWithDefaultValue(@"RecordingView ScreenTitle", nil,
@@ -64,46 +67,9 @@ static const int    TextFieldCellTag = 1111;
                                                        @"Title of app screen with details of an audio recording\n"
                                                        @"[1 line larger font].");
 
-        fetchedResultsController = resultsController;
-
-        // Create a new managed object context for the new book; set its parent to the fetched results controller's context.
-        managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        [managedObjectContext setParentContext:[fetchedResultsController managedObjectContext]];
-        recording = (RecordingData*)[NSEntityDescription insertNewObjectForEntityForName:@"Recording"
-                                                                  inManagedObjectContext:managedObjectContext];
-
         sections |= TableSectionName;
         sections |= TableSectionControls;
-        sections |= (recording.forwardings.count > 0) ? TableSectionForwardings : 0;
-
-        if (recording.urlString.length == 0)
-        {
-            NSString*       uuid = [[NSUUID UUID] UUIDString];
-            NSURL*          url  = [Common audioUrl:[NSString stringWithFormat:@"%@.aac", uuid]];
-            NSError*        error;
-            NSDictionary*   settings = @{ AVEncoderAudioQualityKey : @(AVAudioQualityMedium),
-                                          AVEncoderBitRateKey      : @(12800),
-                                          AVNumberOfChannelsKey    : @(1),
-                                          AVSampleRateKey          : @(44100.0f),
-                                          AVFormatIDKey            : @(kAudioFormatMPEG4AAC) };
-            
-            audioRecorder = [[AVAudioRecorder alloc] initWithURL:url settings:settings error:&error];
-            if (error == nil)
-            {
-                audioRecorder.meteringEnabled = YES;
-                audioRecorder.delegate = self;
-            }
-            else
-            {
-                NSLog(@"//### Failed to create audio recorder: %@", [error localizedDescription]);
-            }
-
-            recording.uuid = uuid;
-        }
-        else
-        {
-            //...
-        }
+        sections |= (self.recording.forwardings.count > 0) ? TableSectionForwardings : 0;
 
         // Select initial audio route, and add listerer for changes.
         audioRouteChangeListener(NULL, kAudioSessionProperty_AudioRouteChange, 0, NULL);
@@ -123,12 +89,57 @@ static const int    TextFieldCellTag = 1111;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+    if (self.recording == nil)
+    {
+        NSString*       uuid = [[NSUUID UUID] UUIDString];
+        NSURL*          url  = [Common audioUrl:[NSString stringWithFormat:@"%@.aac", uuid]];
+        NSError*        error;
+        NSDictionary*   settings = @{ AVEncoderAudioQualityKey : @(AVAudioQualityMedium),
+                                      AVEncoderBitRateKey      : @(12800),
+                                      AVNumberOfChannelsKey    : @(1),
+                                      AVSampleRateKey          : @(44100.0f),
+                                      AVFormatIDKey            : @(kAudioFormatMPEG4AAC) };
+
+        audioRecorder = [[AVAudioRecorder alloc] initWithURL:url settings:settings error:&error];
+        if (error == nil)
+        {
+            audioRecorder.meteringEnabled = YES;
+            audioRecorder.delegate = self;
+        }
+        else
+        {
+            NSLog(@"//### Failed to create audio recorder: %@", [error localizedDescription]);
+        }
+
+        // Create a new managed object context for the new recording; set its parent to the fetched results controller's context.
+        managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+        [managedObjectContext setParentContext:[fetchedResultsController managedObjectContext]];
+        self.recording = (RecordingData*)[NSEntityDescription insertNewObjectForEntityForName:@"Recording"
+                                                                       inManagedObjectContext:managedObjectContext];
+        self.recording.uuid      = uuid;
+        self.recording.urlString = [url absoluteString];
+        
+        isNew = YES;
+    }
+    else
+    {
+        NSError*    error;
+        NSURL*      url = [NSURL URLWithString:self.recording.urlString];
+        audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+        if (error == nil)
+        {
+            audioPlayer.delegate = self;
+        }
+        else
+        {
+            NSLog(@"//### Failed to create audio player: %@", [error localizedDescription]);
+        }
+
+        duration = audioPlayer.duration;
+        
+        isNew = NO;
+    }
 
     self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
                                                                                             target:self
@@ -144,34 +155,39 @@ static const int    TextFieldCellTag = 1111;
     gestureRecognizer.delegate = self;
     [self.tableView addGestureRecognizer:gestureRecognizer];
 
-    [self updateControls];
     self.meterProgressView.progress = 0;
     self.timeSlider.value = 0;
+    self.timeLabel.text = [NSString stringWithFormat:@"%ds", (int)duration];
 
-    meterProgressViewsArray = [NSMutableArray array];
-    self.meterProgressView.progressTintColor = [UIColor greenColor];
-    [meterProgressViewsArray addObject:self.meterProgressView];
-    CGRect  frame = self.meterProgressView.frame;
-    for (int n = 1; n < 26; n++)
+    if (isNew)
     {
-        frame.origin.x += frame.size.width;
-        UIProgressView* progressView = [[UIProgressView alloc] initWithFrame:frame];
-        [meterProgressViewsArray addObject:progressView];
-        [controlsCell.contentView addSubview:progressView];
+        meterProgressViewsArray = [NSMutableArray array];
+        self.meterProgressView.progressTintColor = [UIColor greenColor];
+        [meterProgressViewsArray addObject:self.meterProgressView];
+        CGRect  frame = self.meterProgressView.frame;
+        for (int n = 1; n < 26; n++)
+        {
+            frame.origin.x += frame.size.width;
+            UIProgressView* progressView = [[UIProgressView alloc] initWithFrame:frame];
+            [meterProgressViewsArray addObject:progressView];
+            [controlsCell.contentView addSubview:progressView];
 
-        if ((n / 25.0f) < 0.25f)
-        {
-            progressView.progressTintColor = [UIColor greenColor];
-        }
-        else if ((n / 25.0f) < 0.8)
-        {
-            progressView.progressTintColor = [UIColor yellowColor];
-        }
-        else
-        {
-            progressView.progressTintColor = [UIColor redColor];
+            if ((n / 25.0f) < 0.25f)
+            {
+                progressView.progressTintColor = [UIColor greenColor];
+            }
+            else if ((n / 25.0f) < 0.8)
+            {
+                progressView.progressTintColor = [UIColor yellowColor];
+            }
+            else
+            {
+                progressView.progressTintColor = [UIColor redColor];
+            }
         }
     }
+
+    [self updateControls];
 }
 
 
@@ -213,7 +229,7 @@ static const int    TextFieldCellTag = 1111;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return 2 + (recording.forwardings.count > 0);
+    return 2 + (self.recording.forwardings.count > 0);
 }
 
 
@@ -232,7 +248,7 @@ static const int    TextFieldCellTag = 1111;
             break;
 
         case TableSectionForwardings:
-            numberOfRows = recording.forwardings.count;
+            numberOfRows = self.recording.forwardings.count;
             break;
     }
 
@@ -303,6 +319,7 @@ static const int    TextFieldCellTag = 1111;
     }
 
     textField.placeholder = [CommonStrings requiredString];
+    textField.text = self.recording.name;
 
     cell.textLabel.text   = [CommonStrings nameString];
     cell.imageView.image  = nil;
@@ -318,45 +335,6 @@ static const int    TextFieldCellTag = 1111;
     return controlsCell;
 }
 
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Table view delegate
 
@@ -377,13 +355,23 @@ static const int    TextFieldCellTag = 1111;
 - (void)saveAction
 {
     NSError*    error;
-    if ([managedObjectContext save:&error] == NO || [[fetchedResultsController managedObjectContext] save:&error] == NO)
+
+    self.recording.name = name;
+
+    if (managedObjectContext != nil)
+    {
+        if ([managedObjectContext save:&error] == NO || [[fetchedResultsController managedObjectContext] save:&error] == NO)
+        {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
+    }
+
+    if ([[fetchedResultsController managedObjectContext] save:&error] == NO)
     {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
-
-    recording.urlString = [audioRecorder.url absoluteString];
 
     tappedSave = YES;   // Prevents removal of file in viewWillDisappear.
     [self.navigationController popViewControllerAnimated:YES];
@@ -496,7 +484,7 @@ static const int    TextFieldCellTag = 1111;
 
 - (IBAction)playButtonAction:(id)sender
 {
-    if (isPausedPlaying == NO)
+    if (isPausedPlaying == NO && isNew)
     {
         NSError*    error;
         audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioRecorder.url error:&error];
@@ -515,7 +503,11 @@ static const int    TextFieldCellTag = 1111;
         [self updateSlider];
     }];
 
-    [audioPlayer play];
+    if ([audioPlayer play] == NO)
+    {
+        NSLog(@"//### Failed to start playing");
+    }
+
     isPausedPlaying = NO;
 
     // For some reason the durations are not constant.
@@ -644,7 +636,7 @@ static const int    TextFieldCellTag = 1111;
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
 {
-    recording.name = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    name = [textField.text stringByReplacingCharactersInRange:range withString:string];
 
     [self enableSaveButton];
 
@@ -658,7 +650,7 @@ static const int    TextFieldCellTag = 1111;
 {
     BOOL    hasRecording = ([audioRecorder.url checkResourceIsReachableAndReturnError:nil] == YES);
 
-    self.navigationItem.rightBarButtonItem.enabled = (recording.name.length > 0) && hasRecording && !isPausedRecording;
+    self.navigationItem.rightBarButtonItem.enabled = (name.length > 0) && ((hasRecording && !isPausedRecording) || !isNew);
 }
 
 
@@ -731,10 +723,10 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)setMeterLevel:(float)level
 {
-    for (int n = 0; n < 26; n++)
+    for (int n = 0; n < meterProgressViewsArray.count; n++)
     {
         UIProgressView* progressView = meterProgressViewsArray[n];
-        progressView.progress = (level * 26.0f > n) ? 1 : 0;
+        progressView.progress = (level * meterProgressViewsArray.count > n) ? 1 : 0;
     }
 }
 
@@ -800,10 +792,9 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)updateControls
 {
-    BOOL        isNew       = (recording.urlString.length == 0);
     BOOL        isPlaying   = audioPlayer.isPlaying;
     BOOL        isRecording = audioRecorder.isRecording;
-    BOOL        canPlay     = ([audioRecorder.url checkResourceIsReachableAndReturnError:nil] == YES);
+    BOOL        canPlay     = ([audioRecorder.url checkResourceIsReachableAndReturnError:nil] == YES) || !isNew;
 
     // These expressions are negated so that they are about when an UI item is visible (instead of hidden). 
     self.meterProgressView.hidden   = !((isNew && !canPlay) || isRecording || isPausedRecording);
@@ -824,7 +815,7 @@ static const int    TextFieldCellTag = 1111;
 
     [self enableSaveButton];
 
-    for (int n = 1; n < 26; n++)
+    for (int n = 1; n < meterProgressViewsArray.count; n++)
     {
         UIProgressView* progressView = meterProgressViewsArray[n];
         progressView.hidden = self.meterProgressView.hidden;
@@ -857,9 +848,9 @@ static void audioRouteChangeListener(
             else if (CFStringCompare(newRoute, CFSTR("HeadsetInOut"), (UInt32)NULL) == kCFCompareEqualTo)
             {
                 UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_None;
-                AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute,
-                                         sizeof(audioRouteOverride),
-                                         &audioRouteOverride);
+                AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute,
+                                        sizeof(audioRouteOverride),
+                                        &audioRouteOverride);
             }
         }
     }

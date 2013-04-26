@@ -830,12 +830,6 @@
 		48AF4581164A45A100DFE3D8 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4580164A45A100DFE3D8 /* Settings.m */; };
 		48AF4582164A45A100DFE3D8 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4580164A45A100DFE3D8 /* Settings.m */; };
 		48B32A011725B65000F49182 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48B32A001725B65000F49182 /* CoreAudio.framework */; };
-		48B32A0D1725B71A00F49182 /* AQRecorder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 48B32A041725B71A00F49182 /* AQRecorder.mm */; };
-		48B32A0E1725B71A00F49182 /* AQRecorder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 48B32A041725B71A00F49182 /* AQRecorder.mm */; };
-		48B32A111725B71A00F49182 /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48B32A091725B71A00F49182 /* CAStreamBasicDescription.cpp */; };
-		48B32A121725B71A00F49182 /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48B32A091725B71A00F49182 /* CAStreamBasicDescription.cpp */; };
-		48B32A131725B71A00F49182 /* CAXException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48B32A0B1725B71A00F49182 /* CAXException.cpp */; };
-		48B32A141725B71A00F49182 /* CAXException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48B32A0B1725B71A00F49182 /* CAXException.cpp */; };
 		48B5AAEE16E69DE900BA4084 /* NumberCountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */; };
 		48B5AAEF16E69DE900BA4084 /* NumberCountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */; };
 		48B5AAF216E6A58700BA4084 /* NumberCountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */; };
@@ -847,6 +841,10 @@
 		48BD8BE81663E7A400F2CB45 /* CallView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BD8BE71663E7A400F2CB45 /* CallView.xib */; };
 		48BD8BEC1663E87800F2CB45 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BD8BEB1663E87800F2CB45 /* CallViewController.m */; };
 		48BD8BED1663E87800F2CB45 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BD8BEB1663E87800F2CB45 /* CallViewController.m */; };
+		48CA5034172AEEB100CB1B7B /* CueRecordBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CA5032172AEEB100CB1B7B /* CueRecordBlack.png */; };
+		48CA5035172AEEB100CB1B7B /* CueRecordBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CA5032172AEEB100CB1B7B /* CueRecordBlack.png */; };
+		48CA5036172AEEB100CB1B7B /* CueRecordBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CA5033172AEEB100CB1B7B /* CueRecordBlack@2x.png */; };
+		48CA5037172AEEB100CB1B7B /* CueRecordBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CA5033172AEEB100CB1B7B /* CueRecordBlack@2x.png */; };
 		48CB0775163D76C300B07199 /* PhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CB0774163D76C300B07199 /* PhoneNumber.m */; };
 		48D0A6E61654D65200FA2D98 /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E51654D65200FA2D98 /* SipConfig.cfg */; };
 		48D0A6E71654D65200FA2D98 /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E51654D65200FA2D98 /* SipConfig.cfg */; };
@@ -1661,13 +1659,6 @@
 		48AF457F164A45A000DFE3D8 /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
 		48AF4580164A45A100DFE3D8 /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
 		48B32A001725B65000F49182 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
-		48B32A031725B71A00F49182 /* AQRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AQRecorder.h; sourceTree = "<group>"; };
-		48B32A041725B71A00F49182 /* AQRecorder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AQRecorder.mm; sourceTree = "<group>"; };
-		48B32A081725B71A00F49182 /* CAMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMath.h; sourceTree = "<group>"; };
-		48B32A091725B71A00F49182 /* CAStreamBasicDescription.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAStreamBasicDescription.cpp; sourceTree = "<group>"; };
-		48B32A0A1725B71A00F49182 /* CAStreamBasicDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAStreamBasicDescription.h; sourceTree = "<group>"; };
-		48B32A0B1725B71A00F49182 /* CAXException.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAXException.cpp; sourceTree = "<group>"; };
-		48B32A0C1725B71A00F49182 /* CAXException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAXException.h; sourceTree = "<group>"; };
 		48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberCountriesView.xib; sourceTree = "<group>"; };
 		48B5AAF016E6A58400BA4084 /* NumberCountriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberCountriesViewController.h; sourceTree = "<group>"; };
 		48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberCountriesViewController.m; sourceTree = "<group>"; };
@@ -1677,6 +1668,8 @@
 		48BD8BE71663E7A400F2CB45 /* CallView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallView.xib; sourceTree = "<group>"; };
 		48BD8BEA1663E87800F2CB45 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallViewController.h; sourceTree = "<group>"; };
 		48BD8BEB1663E87800F2CB45 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallViewController.m; sourceTree = "<group>"; };
+		48CA5032172AEEB100CB1B7B /* CueRecordBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CueRecordBlack.png; sourceTree = "<group>"; };
+		48CA5033172AEEB100CB1B7B /* CueRecordBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CueRecordBlack@2x.png"; sourceTree = "<group>"; };
 		48CB0773163D76C300B07199 /* PhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumber.h; sourceTree = "<group>"; };
 		48CB0774163D76C300B07199 /* PhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneNumber.m; sourceTree = "<group>"; };
 		48D0A6E51654D65200FA2D98 /* SipConfig.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SipConfig.cfg; path = Resources/SipConfig.cfg; sourceTree = "<group>"; };
@@ -1998,6 +1991,8 @@
 				48367A0617247B2C001A02AF /* CuePlayBlack@2x.png */,
 				48367A0717247B2C001A02AF /* CuePlayWhite.png */,
 				48367A0817247B2C001A02AF /* CuePlayWhite@2x.png */,
+				48CA5032172AEEB100CB1B7B /* CueRecordBlack.png */,
+				48CA5033172AEEB100CB1B7B /* CueRecordBlack@2x.png */,
 				48367A0917247B2C001A02AF /* CueRecordRed.png */,
 				48367A0A17247B2C001A02AF /* CueRecordRed@2x.png */,
 				48367A0B17247B2C001A02AF /* CueRecordWhite.png */,
@@ -2742,29 +2737,6 @@
 			name = ViewControllers;
 			sourceTree = "<group>";
 		};
-		48B32A021725B71A00F49182 /* Audio */ = {
-			isa = PBXGroup;
-			children = (
-				48B32A031725B71A00F49182 /* AQRecorder.h */,
-				48B32A041725B71A00F49182 /* AQRecorder.mm */,
-				48B32A051725B71A00F49182 /* PublicUtility */,
-			);
-			name = Audio;
-			path = External/Audio;
-			sourceTree = SOURCE_ROOT;
-		};
-		48B32A051725B71A00F49182 /* PublicUtility */ = {
-			isa = PBXGroup;
-			children = (
-				48B32A081725B71A00F49182 /* CAMath.h */,
-				48B32A091725B71A00F49182 /* CAStreamBasicDescription.cpp */,
-				48B32A0A1725B71A00F49182 /* CAStreamBasicDescription.h */,
-				48B32A0B1725B71A00F49182 /* CAXException.cpp */,
-				48B32A0C1725B71A00F49182 /* CAXException.h */,
-			);
-			path = PublicUtility;
-			sourceTree = "<group>";
-		};
 		48CB076F163D5E3500B07199 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -2782,7 +2754,6 @@
 		48DD7284169F548600CD7080 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				48B32A021725B71A00F49182 /* Audio */,
 				48DD72AD169F56F000CD7080 /* AFNetworking */,
 			);
 			name = External;
@@ -3533,6 +3504,8 @@
 				48367A3F17247B2D001A02AF /* CueStopBlack@2x.png in Resources */,
 				48367A4117247B2D001A02AF /* CueStopWhite.png in Resources */,
 				48367A4317247B2D001A02AF /* CueStopWhite@2x.png in Resources */,
+				48CA5034172AEEB100CB1B7B /* CueRecordBlack.png in Resources */,
+				48CA5036172AEEB100CB1B7B /* CueRecordBlack@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3648,6 +3621,8 @@
 				48367A4017247B2D001A02AF /* CueStopBlack@2x.png in Resources */,
 				48367A4217247B2D001A02AF /* CueStopWhite.png in Resources */,
 				48367A4417247B2D001A02AF /* CueStopWhite@2x.png in Resources */,
+				48CA5035172AEEB100CB1B7B /* CueRecordBlack.png in Resources */,
+				48CA5037172AEEB100CB1B7B /* CueRecordBlack@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3760,9 +3735,6 @@
 				484A94AA171C518D009E22B9 /* NumberAreaActionCell.m in Sources */,
 				483679DE1721F2E1001A02AF /* RecordingViewController.m in Sources */,
 				48367A47172552D2001A02AF /* RecordingControlsCell.m in Sources */,
-				48B32A0D1725B71A00F49182 /* AQRecorder.mm in Sources */,
-				48B32A111725B71A00F49182 /* CAStreamBasicDescription.cpp in Sources */,
-				48B32A131725B71A00F49182 /* CAXException.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3843,9 +3815,6 @@
 				484A94AB171C518D009E22B9 /* NumberAreaActionCell.m in Sources */,
 				483679DF1721F2E1001A02AF /* RecordingViewController.m in Sources */,
 				48367A48172552D2001A02AF /* RecordingControlsCell.m in Sources */,
-				48B32A0E1725B71A00F49182 /* AQRecorder.mm in Sources */,
-				48B32A121725B71A00F49182 /* CAStreamBasicDescription.cpp in Sources */,
-				48B32A141725B71A00F49182 /* CAXException.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

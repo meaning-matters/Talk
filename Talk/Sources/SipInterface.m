@@ -1509,7 +1509,7 @@ void showLog(int level, const char* data, int len)
         }
             
         case PJSIP_INV_STATE_INCOMING:      // After INVITE is received.
-            NSLog(@"fff");
+            NSLog(@"INCOMING");
             break;
 
         case PJSIP_INV_STATE_EARLY:         // After response with To tag.
