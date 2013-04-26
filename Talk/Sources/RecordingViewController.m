@@ -206,7 +206,7 @@ static const int    TextFieldCellTag = 1111;
                                                    audioRouteChangeListener,
                                                    (__bridge void*)self);
 
-    if ([self.navigationController.viewControllers indexOfObject:self] != NSNotFound)
+    if ([self.navigationController.viewControllers indexOfObject:self] != NSNotFound)   // May not be future proof.
     {
         if (audioRecorder.isRecording || audioPlayer.isPlaying)
         {
@@ -219,7 +219,7 @@ static const int    TextFieldCellTag = 1111;
         [audioRecorder stop];
         [audioPlayer stop];
 
-        if (tappedSave == NO)
+        if (isNew && tappedSave == NO && duration > 0)
         {
             NSError*    error;
             [[NSFileManager defaultManager] removeItemAtURL:audioRecorder.url error:&error];
