@@ -49,6 +49,8 @@ static const int    TextFieldCellTag = 1111;
     RecordingControlsCell*      controlsCell;
 
     NSMutableArray*             meterProgressViewsArray;
+
+    id                          willResignActiveObserver;
 }
 
 @end
@@ -73,6 +75,15 @@ static const int    TextFieldCellTag = 1111;
 
         // Select initial audio route.
         audioRouteChangeListener(NULL, kAudioSessionProperty_AudioRouteChange, 0, NULL);
+
+        NSNotificationCenter*   center = [NSNotificationCenter defaultCenter];
+        willResignActiveObserver = [center addObserverForName:UIApplicationWillResignActiveNotification
+                                                       object:nil
+                                                        queue:[NSOperationQueue mainQueue]
+                                                   usingBlock:^(NSNotification* note)
+        {
+            [self pauseButtonAction:nil];
+        }];
     }
 
     return self;
@@ -217,6 +228,8 @@ static const int    TextFieldCellTag = 1111;
         // We're being popped, because self is no longer in the navigation stack.
         [audioRecorder stop];
         [audioPlayer stop];
+
+        [[NSNotificationCenter defaultCenter] removeObserver:willResignActiveObserver];
 
         if (isNew && tappedSave == NO && duration > 0)
         {
@@ -554,25 +567,13 @@ static const int    TextFieldCellTag = 1111;
 {
     if (audioRecorder.isRecording)
     {
-        [audioRecorder pause];
-        isPausedRecording = YES;
-
-        [meteringTimer invalidate];
-        meteringTimer = nil;
-
-        [self setMeterLevel:0.0f];        
+        [self pauseRecording];
     }
 
     if (audioPlayer.isPlaying)
     {
-        [audioPlayer pause];
-        isPausedPlaying = YES;
-        
-        [sliderTimer invalidate];
-        sliderTimer = nil;
+        [self pausePlaying];
     }
-
-    [self updateControls];
 }
 
 
@@ -629,12 +630,15 @@ static const int    TextFieldCellTag = 1111;
 
 #pragma mark - Recorder Delegate
 
-- (void)audioRecorderEncodeErrorDidOccur:(AVAudioRecorder*)recorder error:(NSError*)error
-{
+- (void)audioRecorderBeginInterruption:(AVAudioRecorder*)recorder
+{    
+    [self pauseRecording];
 }
 
-- (void)audioRecorderDidFinishRecording:(AVAudioRecorder*)recorder successfully:(BOOL)flag
+
+- (void)audioRecorderEncodeErrorDidOccur:(AVAudioRecorder*)recorder error:(NSError*)error
 {
+    NSLog(@"//### Audio recorder encoding error: %@.", [error localizedDescription]);
 }
 
 
@@ -649,6 +653,18 @@ static const int    TextFieldCellTag = 1111;
     [self updateSlider];
 
     [self updateControls];
+}
+
+
+- (void)audioPlayerBeginInterruption:(AVAudioPlayer*)player
+{
+    [self pausePlaying];
+}
+
+
+- (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer*)player error:(NSError*)error
+{
+    NSLog(@"//### Audio player decoding error: %@.", [error localizedDescription]);
 }
 
 
@@ -689,6 +705,32 @@ static const int    TextFieldCellTag = 1111;
 
 
 #pragma mark - Helper Methods
+
+- (void)pauseRecording
+{
+    [audioRecorder pause];
+    isPausedRecording = YES;
+
+    [meteringTimer invalidate];
+    meteringTimer = nil;
+
+    [self setMeterLevel:0.0f];
+
+    [self updateControls];
+}
+
+
+- (void)pausePlaying
+{
+    [audioPlayer pause];
+    isPausedPlaying = YES;
+
+    [sliderTimer invalidate];
+    sliderTimer = nil;
+
+    [self updateControls];
+}
+
 
 - (void)enableSaveButton
 {
