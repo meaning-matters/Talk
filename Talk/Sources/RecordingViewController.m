@@ -89,9 +89,7 @@ static const int    TextFieldCellTag = 1111;
         NSURL*          url  = [Common audioUrl:[NSString stringWithFormat:@"%@.aac", uuid]];
         NSError*        error;
         NSDictionary*   settings = @{ AVEncoderAudioQualityKey : @(AVAudioQualityMedium),
-                                      AVEncoderBitRateKey      : @(12800),
                                       AVNumberOfChannelsKey    : @(1),
-                                      AVSampleRateKey          : @(44100.0f),
                                       AVFormatIDKey            : @(kAudioFormatMPEG4AAC) };
 
         audioRecorder = [[AVAudioRecorder alloc] initWithURL:url settings:settings error:&error];
@@ -129,6 +127,7 @@ static const int    TextFieldCellTag = 1111;
             NSLog(@"//### Failed to create audio player: %@", [error localizedDescription]);
         }
 
+        [audioPlayer prepareToPlay];
         duration = audioPlayer.duration;
         
         isNew = NO;
@@ -232,7 +231,7 @@ static const int    TextFieldCellTag = 1111;
 }
 
 
-#pragma mark - Table view data source
+#pragma mark - TableView Delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
@@ -283,6 +282,39 @@ static const int    TextFieldCellTag = 1111;
     }
 
     return height;
+}
+
+
+- (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
+{
+    NSString*   title = nil;
+
+    switch ([Common nthBitSet:section inValue:sections])
+    {
+        case TableSectionName:
+            if (isNew)
+            {
+                title = NSLocalizedStringWithDefaultValue(@"RecordingView:Name SectionFooter", nil,
+                                                          [NSBundle mainBundle],
+                                                          @"Give this recording a short descriptive name that is easy "
+                                                          @"to remember.\nCan be changed afterwards.",
+                                                          @"Explaining that user must supply a name.");
+            }
+            break;
+
+        case TableSectionControls:
+            if (isNew)
+            {
+                title = NSLocalizedStringWithDefaultValue(@"RecordingView:Controls SectionFooter", nil,
+                                                          [NSBundle mainBundle],
+                                                          @"After you have saved the recording, it can not be "
+                                                          @"changed afterwards.",
+                                                          @"....");
+            }
+            break;
+    }
+    
+    return title;
 }
 
 
@@ -342,8 +374,6 @@ static const int    TextFieldCellTag = 1111;
     return controlsCell;
 }
 
-
-#pragma mark - Table view delegate
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
