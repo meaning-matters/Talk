@@ -24,6 +24,8 @@
 
 + (NSString*)nameString;
 
++ (NSString*)nameFooterString;
+
 + (NSString*)requiredString;
 
 @end

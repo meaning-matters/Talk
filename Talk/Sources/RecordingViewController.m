@@ -59,8 +59,11 @@ static const int    TextFieldCellTag = 1111;
 @implementation RecordingViewController
 
 - (id)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
+                             recording:(RecordingData*)recording
 {
     fetchedResultsController = resultsController;
+    self.recording           = recording;
+    isNew                    = (recording == nil);
 
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
@@ -94,7 +97,7 @@ static const int    TextFieldCellTag = 1111;
 {
     [super viewDidLoad];
 
-    if (self.recording == nil)
+    if (isNew)
     {
         NSString*       uuid = [[NSUUID UUID] UUIDString];
         NSURL*          url  = [Common audioUrl:[NSString stringWithFormat:@"%@.aac", uuid]];
@@ -121,8 +124,6 @@ static const int    TextFieldCellTag = 1111;
                                                                        inManagedObjectContext:managedObjectContext];
         self.recording.uuid      = uuid;
         self.recording.urlString = [url absoluteString];
-        
-        isNew = YES;
     }
     else
     {
@@ -140,8 +141,6 @@ static const int    TextFieldCellTag = 1111;
 
         [audioPlayer prepareToPlay];
         duration = audioPlayer.duration;
-        
-        isNew = NO;
     }
 
     self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
@@ -248,7 +247,7 @@ static const int    TextFieldCellTag = 1111;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return 2 + (self.recording.forwardings.count > 0);
+    return [Common bitsSetCount:sections];
 }
 
 
@@ -307,11 +306,7 @@ static const int    TextFieldCellTag = 1111;
         case TableSectionName:
             if (isNew)
             {
-                title = NSLocalizedStringWithDefaultValue(@"RecordingView:Name SectionFooter", nil,
-                                                          [NSBundle mainBundle],
-                                                          @"Give this recording a short descriptive name that is easy "
-                                                          @"to remember.\nCan be changed afterwards.",
-                                                          @"Explaining that user must supply a name.");
+                title = [CommonStrings nameFooterString];
             }
             break;
 
@@ -385,18 +380,6 @@ static const int    TextFieldCellTag = 1111;
 - (UITableViewCell*)controlsCellForIndexPath:(NSIndexPath*)indexPath
 {
     return controlsCell;
-}
-
-
-- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
 }
 
 

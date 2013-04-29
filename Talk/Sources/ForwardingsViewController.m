@@ -8,6 +8,7 @@
 
 #import "ForwardingsViewController.h"
 #import "RecordingViewController.h"
+#import "ForwardingViewController.h"
 #import "DataManager.h"
 #import "Common.h"
 #import "Settings.h"
@@ -155,15 +156,23 @@ typedef enum
 {
     if (tableView == self.forwardingsTableView)
     {
+        ForwardingViewController*   viewController;
+        ForwardingData*             forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
 
+        viewController = [[ForwardingViewController alloc] initWithFetchedResultsController:fetchedForwardingsController
+                                                                                 forwarding:forwarding];
+
+        [self.navigationController pushViewController:viewController animated:YES];
     }
     else
     {
-        RecordingViewController*    recordingViewController;
-        recordingViewController = [[RecordingViewController alloc] initWithFetchedResultsController:fetchedRecordingsController];
-        recordingViewController.recording = [fetchedRecordingsController objectAtIndexPath:indexPath];  // Must be set before shown.
+        RecordingViewController*    viewController;
+        RecordingData*              recording = [fetchedRecordingsController objectAtIndexPath:indexPath];
+        
+        viewController = [[RecordingViewController alloc] initWithFetchedResultsController:fetchedRecordingsController
+                                                                                 recording:recording];
 
-        [self.navigationController pushViewController:recordingViewController animated:YES];
+        [self.navigationController pushViewController:viewController animated:YES];
     }
 }
 
@@ -195,6 +204,8 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
+    ForwardingData* forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
+    cell.textLabel.text = forwarding.name;
     cell.imageView.image = [UIImage imageNamed:@"List"];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
@@ -228,7 +239,28 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     {
         if (tableView == self.forwardingsTableView)
         {
+            NSManagedObjectContext* context = [fetchedForwardingsController managedObjectContext];
+            ForwardingData*         forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
+            NSError*                error;
 
+            if (forwarding.numbers.count > 0)
+            {
+
+            }
+            else
+            {
+                [context deleteObject:forwarding];
+            }
+
+            if (![context save:&error])
+            {
+                [self handleError:error];
+            }
+
+            if (fetchedForwardingsController.fetchedObjects.count == 0)
+            {
+                [self doneForwardingsAction];
+            }
         }
         else
         {
@@ -460,15 +492,19 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
 - (void)addForwardingAction
 {
-
+    ForwardingViewController*   viewController;
+    viewController = [[ForwardingViewController alloc] initWithFetchedResultsController:fetchedForwardingsController
+                                                                             forwarding:nil];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 
 - (void)addRecordingAction
 {
-    RecordingViewController*    recordingViewController;
-    recordingViewController = [[RecordingViewController alloc] initWithFetchedResultsController:fetchedRecordingsController];
-    [self.navigationController pushViewController:recordingViewController animated:YES];
+    RecordingViewController*    viewController;
+    viewController = [[RecordingViewController alloc] initWithFetchedResultsController:fetchedRecordingsController
+                                                                             recording:nil];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 

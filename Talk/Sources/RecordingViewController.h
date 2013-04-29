@@ -28,7 +28,8 @@
 @property (nonatomic, strong) RecordingData*                recording;
 
 
-- (id)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController;
+- (id)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
+                             recording:(RecordingData*)recording;
 
 - (IBAction)timeSliderDownAction:(id)sender;
 - (IBAction)timeSliderUpAction:(id)sender;

@@ -508,11 +508,7 @@ static const int    CountryCellTag   = 4321;
             break;
 
         case TableSectionNaming:
-            title = NSLocalizedStringWithDefaultValue(@"NumberArea:Naming SectionFooter", nil,
-                                                      [NSBundle mainBundle],
-                                                      @"Give this number a short descriptive name that is easy "
-                                                      @"to remember.\nCan be changed afterwards.",
-                                                      @"Explaining that user must supply a name.");
+            title = [CommonStrings nameFooterString];
             break;
 
         case TableSectionName:
