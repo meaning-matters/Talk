@@ -37,6 +37,7 @@ NSString* const AllowCellularDataCallsKey      = @"AllowCellularDataCalls";
 NSString* const LouderVolumeKey                = @"LouderVolume";
 NSString* const NumberTypeMaskKey              = @"NumberTypeMask";
 NSString* const ForwardsingsSelectionKey       = @"ForwardingsSelection";
+NSString* const CurrencyCodeKey                = @"CurrencyCode";
 
 
 @implementation Settings
@@ -120,6 +121,7 @@ static NSUserDefaults*  userDefaults;
     [defaults setObject:[NSNumber numberWithBool:NO]                       forKey:LouderVolumeKey];
     [defaults setObject:[NSNumber numberWithInt:NumberTypeGeographicMask]  forKey:NumberTypeMaskKey];
     [defaults setObject:[NSNumber numberWithInt:0]                         forKey:ForwardsingsSelectionKey];
+    [defaults setObject:@""                                                forKey:CurrencyCodeKey];
 
     [userDefaults registerDefaults:defaults];
 }
@@ -169,6 +171,7 @@ static NSUserDefaults*  userDefaults;
     _louderVolume                = [userDefaults boolForKey:LouderVolumeKey];
     _numberTypeMask              = [userDefaults integerForKey:NumberTypeMaskKey];
     _forwardingsSelection        = [userDefaults integerForKey:ForwardsingsSelectionKey];
+    _currencyCode                = [userDefaults objectForKey:CurrencyCodeKey];
 }
 
 
@@ -301,6 +304,13 @@ static NSUserDefaults*  userDefaults;
 {
     _forwardingsSelection = forwardingsSelection;
     [userDefaults setInteger:forwardingsSelection forKey:ForwardsingsSelectionKey];
+}
+
+
+- (void)setCurrencyCode:(NSString*)currencyCode
+{
+    _currencyCode = currencyCode;
+    [userDefaults setObject:currencyCode forKey:CurrencyCodeKey];
 }
 
 @end

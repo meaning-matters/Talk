@@ -37,7 +37,6 @@ extern NSString* const  PurchaseManagerProductIdentifierCredit50;
 
 @property (nonatomic, assign) id<PurchaseManagerDelegate>   delegate;
 @property (nonatomic, strong) NSArray*                      products;
-@property (nonatomic, assign) float                         currencyRate;   // To convert credit from USD to local currency.
 @property (nonatomic, readonly) NSString*                   currencyCode;   // Currency code (e.g. "USD" for current Store.
 
 
@@ -45,7 +44,7 @@ extern NSString* const  PurchaseManagerProductIdentifierCredit50;
 
 - (NSString*)productIdentifierForNumberTier:(int)tier;
 
-- (NSString*)localizedFormattedPrice:(float)usdPrice;
+- (NSString*)localizedFormattedPrice:(float)price;
 
 - (NSString*)localizedPriceForProductIdentifier:(NSString*)identifier;
 

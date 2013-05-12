@@ -40,4 +40,6 @@
 @property (nonatomic, assign) NumberTypeMask    numberTypeMask;         // Selected numberType in NumberView.
 @property (nonatomic, assign) NSInteger         forwardingsSelection;   // Selected segment/table in ForwardingsView.
 
+@property (nonatomic, strong) NSString*         currencyCode;           // Backup until Store products are received.
+
 @end
