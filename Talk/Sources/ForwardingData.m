@@ -14,7 +14,7 @@
 @implementation ForwardingData
 
 @dynamic name;
-@dynamic rules;
+@dynamic statements;
 @dynamic numbers;
 @dynamic recordings;
 

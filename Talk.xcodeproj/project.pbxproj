@@ -847,6 +847,8 @@
 		48CA5037172AEEB100CB1B7B /* CueRecordBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CA5033172AEEB100CB1B7B /* CueRecordBlack@2x.png */; };
 		48CA503D172C5EB400CB1B7B /* ForwardingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CA503C172C5EB400CB1B7B /* ForwardingViewController.m */; };
 		48CA503E172C5EB400CB1B7B /* ForwardingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CA503C172C5EB400CB1B7B /* ForwardingViewController.m */; };
+		48CA5042172FC6C800CB1B7B /* ForwardingSequenceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CA5041172FC6C800CB1B7B /* ForwardingSequenceViewController.m */; };
+		48CA5043172FC6C800CB1B7B /* ForwardingSequenceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CA5041172FC6C800CB1B7B /* ForwardingSequenceViewController.m */; };
 		48CB0775163D76C300B07199 /* PhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CB0774163D76C300B07199 /* PhoneNumber.m */; };
 		48D0A6E61654D65200FA2D98 /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E51654D65200FA2D98 /* SipConfig.cfg */; };
 		48D0A6E71654D65200FA2D98 /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E51654D65200FA2D98 /* SipConfig.cfg */; };
@@ -1531,7 +1533,7 @@
 		48826908164BDC3400EA58AE /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		4882748C1660E20C00B41EA1 /* DtmfPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DtmfPlayer.h; sourceTree = "<group>"; };
 		4882748D1660E20C00B41EA1 /* DtmfPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DtmfPlayer.m; sourceTree = "<group>"; };
-		48884A701615CE920005AA79 /* NumberBay0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NumberBay0.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		48884A701615CE920005AA79 /* NumberBay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NumberBay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48884A741615CE920005AA79 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		48884A761615CE920005AA79 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		48884A781615CE920005AA79 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1674,6 +1676,8 @@
 		48CA5033172AEEB100CB1B7B /* CueRecordBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CueRecordBlack@2x.png"; sourceTree = "<group>"; };
 		48CA503B172C5EB300CB1B7B /* ForwardingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForwardingViewController.h; sourceTree = "<group>"; };
 		48CA503C172C5EB400CB1B7B /* ForwardingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForwardingViewController.m; sourceTree = "<group>"; };
+		48CA5040172FC6C800CB1B7B /* ForwardingSequenceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForwardingSequenceViewController.h; sourceTree = "<group>"; };
+		48CA5041172FC6C800CB1B7B /* ForwardingSequenceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForwardingSequenceViewController.m; sourceTree = "<group>"; };
 		48CB0773163D76C300B07199 /* PhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumber.h; sourceTree = "<group>"; };
 		48CB0774163D76C300B07199 /* PhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneNumber.m; sourceTree = "<group>"; };
 		48D0A6E51654D65200FA2D98 /* SipConfig.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SipConfig.cfg; path = Resources/SipConfig.cfg; sourceTree = "<group>"; };
@@ -2562,7 +2566,7 @@
 		48884A711615CE920005AA79 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				48884A701615CE920005AA79 /* NumberBay0.app */,
+				48884A701615CE920005AA79 /* NumberBay.app */,
 				48884AA51615CE920005AA79 /* TalkTests.octest */,
 			);
 			name = Products;
@@ -2706,6 +2710,8 @@
 				48CA503B172C5EB300CB1B7B /* ForwardingViewController.h */,
 				48CA503C172C5EB400CB1B7B /* ForwardingViewController.m */,
 				48AF4563164979F300DFE3D8 /* ForwardingsViewController.h */,
+				48CA5040172FC6C800CB1B7B /* ForwardingSequenceViewController.h */,
+				48CA5041172FC6C800CB1B7B /* ForwardingSequenceViewController.m */,
 				48AF4564164979F400DFE3D8 /* ForwardingsViewController.m */,
 				48AF44F4164947E600DFE3D8 /* GroupsViewController.h */,
 				48AF44F5164947E600DFE3D8 /* GroupsViewController.m */,
@@ -2861,7 +2867,7 @@
 			);
 			name = Talk;
 			productName = Talk;
-			productReference = 48884A701615CE920005AA79 /* NumberBay0.app */;
+			productReference = 48884A701615CE920005AA79 /* NumberBay.app */;
 			productType = "com.apple.product-type.application";
 		};
 		48884AA41615CE920005AA79 /* TalkTests */ = {
@@ -3742,6 +3748,7 @@
 				483679DE1721F2E1001A02AF /* RecordingViewController.m in Sources */,
 				48367A47172552D2001A02AF /* RecordingControlsCell.m in Sources */,
 				48CA503D172C5EB400CB1B7B /* ForwardingViewController.m in Sources */,
+				48CA5042172FC6C800CB1B7B /* ForwardingSequenceViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3823,6 +3830,7 @@
 				483679DF1721F2E1001A02AF /* RecordingViewController.m in Sources */,
 				48367A48172552D2001A02AF /* RecordingControlsCell.m in Sources */,
 				48CA503E172C5EB400CB1B7B /* ForwardingViewController.m in Sources */,
+				48CA5043172FC6C800CB1B7B /* ForwardingSequenceViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3975,7 +3983,7 @@
 					"\"$(SRCROOT)/External/pjproject-2.1.0/install/lib\"",
 					"\"$(SRCROOT)/External/OpenZRTP/lib/Release\"",
 				);
-				PRODUCT_NAME = NumberBay0;
+				PRODUCT_NAME = NumberBay;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -4004,7 +4012,7 @@
 					"\"$(SRCROOT)/External/OpenZRTP/lib/Release\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = NumberBay0;
+				PRODUCT_NAME = NumberBay;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -4117,7 +4125,7 @@
 					"\"$(SRCROOT)/External/OpenZRTP/lib/Release\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = NumberBay0;
+				PRODUCT_NAME = NumberBay;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

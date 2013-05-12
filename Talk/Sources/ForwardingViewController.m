@@ -16,7 +16,7 @@
 typedef enum
 {
     TableSectionName       = 1UL << 0, // User-given name.
-    TableSectionRules      = 1UL << 1,
+    TableSectionStatements = 1UL << 1,
     TableSectionNumbers    = 1UL << 2,
     TableSectionRecordings = 1UL << 3,
 } TableSections;
@@ -31,6 +31,7 @@ static const int    TextFieldCellTag = 1111;
     BOOL                        isNew;
 
     NSString*                   name;
+    NSMutableArray*             statementsArray;
 
     NSFetchedResultsController* fetchedResultsController;
     NSManagedObjectContext*     managedObjectContext;
@@ -56,7 +57,7 @@ static const int    TextFieldCellTag = 1111;
                                                        @"[1 line larger font].");
 
         sections |= TableSectionName;
-        sections |= TableSectionRules;
+        sections |= TableSectionStatements;
         sections |= (self.forwarding.numbers.count > 0)    ? TableSectionNumbers    : 0;
         sections |= (self.forwarding.recordings.count > 0) ? TableSectionRecordings : 0;
     }
@@ -76,11 +77,13 @@ static const int    TextFieldCellTag = 1111;
         [managedObjectContext setParentContext:[fetchedResultsController managedObjectContext]];
         self.forwarding = (ForwardingData*)[NSEntityDescription insertNewObjectForEntityForName:@"Forwarding"
                                                                          inManagedObjectContext:managedObjectContext];
+
+        // Default is call all user's devices without timeout.
+        self.forwarding.statements = [Common jsonDataWithObject: @[ @{ @"call" : @{ @"devices" : @[ @"$(devices)" ] } } ] ];
     }
-    else
-    {
-    }
-    
+
+    statementsArray = [Common mutableObjectWithJsonData:self.forwarding.statements];
+
     self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
                                                                                             target:self
                                                                                             action:@selector(saveAction)];
@@ -105,7 +108,8 @@ static const int    TextFieldCellTag = 1111;
 
     if (managedObjectContext != nil)
     {
-        if ([managedObjectContext save:&error] == NO || [[fetchedResultsController managedObjectContext] save:&error] == NO)
+        if ([managedObjectContext save:&error] == NO ||
+            [[fetchedResultsController managedObjectContext] save:&error] == NO)
         {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
@@ -140,7 +144,7 @@ static const int    TextFieldCellTag = 1111;
             numberOfRows = 1;
             break;
 
-        case TableSectionRules:
+        case TableSectionStatements:
             numberOfRows = 1;
             break;
 
@@ -170,7 +174,7 @@ static const int    TextFieldCellTag = 1111;
             }
             break;
 
-        case TableSectionRules:
+        case TableSectionStatements:
             break;
 
         case TableSectionNumbers:
@@ -194,8 +198,8 @@ static const int    TextFieldCellTag = 1111;
             cell = [self nameCellForRowAtIndexPath:indexPath];
             break;
 
-        case TableSectionRules:
-            cell = [self rulesCellForRowAtIndexPath:indexPath];
+        case TableSectionStatements:
+            cell = [self statementsCellForRowAtIndexPath:indexPath];
             break;
 
         case TableSectionNumbers:
@@ -240,14 +244,14 @@ static const int    TextFieldCellTag = 1111;
 }
 
 
-- (UITableViewCell*)rulesCellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)statementsCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell;
 
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"RulesCell"];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"StatementsCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RulesCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"StatementsCell"];
     }
 
     cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"ForwardingView RulesTitle", nil,
@@ -315,7 +319,7 @@ static const int    TextFieldCellTag = 1111;
         case TableSectionName:
             break;
 
-        case TableSectionRules:
+        case TableSectionStatements:
             break;
 
         case TableSectionNumbers:

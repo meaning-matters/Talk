@@ -14,7 +14,7 @@
 @interface ForwardingData : NSManagedObject
 
 @property (nonatomic, retain) NSString* name;
-@property (nonatomic, retain) NSData*   rules;
+@property (nonatomic, retain) NSData*   statements;
 @property (nonatomic, retain) NSSet*    numbers;
 @property (nonatomic, retain) NSSet*    recordings;
 

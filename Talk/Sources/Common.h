@@ -38,6 +38,10 @@
 
 + (id)objectWithJsonString:(NSString*)string;
 
++ (id)mutableObjectWithJsonData:(NSData*)data;
+
++ (id)mutableObjectWithJsonString:(NSString*)string;
+
 + (NSString*)deviceModel;
 
 + (BOOL)deviceHasReceiver;

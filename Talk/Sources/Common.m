@@ -142,6 +142,40 @@
 }
 
 
++ (id)mutableObjectWithJsonData:(NSData*)data
+{
+    NSError*                error = nil;
+    id                      object;
+    NSJSONReadingOptions    options = NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves;
+
+    object = [NSJSONSerialization JSONObjectWithData:data options:options error:&error];
+
+    if (error != nil)
+    {
+        //### Replace.
+        NSLog(@"Error serializing from JSON data: %@.", [error localizedDescription]);
+
+        return nil;
+    }
+    else
+    {
+        return object;
+    }
+}
+
+
++ (id)mutableObjectWithJsonString:(NSString*)string
+{
+    id      object;
+    NSData* data;
+
+    data   = [string dataUsingEncoding:NSUTF8StringEncoding];
+    object = [Common mutableObjectWithJsonData:data];
+
+    return object;
+}
+
+
 + (BOOL)deviceHasReceiver
 {
     return [[UIDevice currentDevice].model isEqualToString:@"iPhone"];

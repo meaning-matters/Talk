@@ -20,7 +20,7 @@
 
 // These must match perfectly to what's in iTunesConnect for this app!
 #warning MAKE SURE TO UPDATE PRODUCT_IDENTIFIER_BASE WHEN MOVING TO FINAL APP ACCOUNT
-#define PRODUCT_IDENTIFIER_BASE @"com.numberbay0."
+#define PRODUCT_IDENTIFIER_BASE @"com.numberbay."
 NSString* const  PurchaseManagerProductIdentifierAccount  = PRODUCT_IDENTIFIER_BASE @"Account";
 NSString* const  PurchaseManagerProductIdentifierNumber1  = PRODUCT_IDENTIFIER_BASE @"Number1";
 NSString* const  PurchaseManagerProductIdentifierNumber2  = PRODUCT_IDENTIFIER_BASE @"Number2";
