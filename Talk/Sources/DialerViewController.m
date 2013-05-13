@@ -119,6 +119,7 @@
     switch ((int)self.view.frame.size.height)
     {
         case 367:   // 320x480 screen, More tab.
+            [Common setY:10       ofView:self.brandingImageView];
             [Common setY:2        ofView:self.infoLabel];
             [Common setY:24       ofView:self.numberLabel];
             [Common setY:64       ofView:self.nameLabel];
@@ -127,6 +128,7 @@
             break;
 
         case 347:   // 320x480 screen, More tab, with in-call iOS flasher at top.
+            [Common setY:10       ofView:self.brandingImageView];
             [Common setY:2        ofView:self.infoLabel];
             [Common setY:24       ofView:self.numberLabel];
             [Common setY:64       ofView:self.nameLabel];
@@ -135,6 +137,7 @@
             break;
 
         case 411:   // 320x480 screen, regular tab.
+            [Common setY:10       ofView:self.brandingImageView];
             [Common setY:2        ofView:self.infoLabel];
             [Common setY:24       ofView:self.numberLabel];
             [Common setY:64       ofView:self.nameLabel];
@@ -143,6 +146,7 @@
             break;
 
         case 291:   // 320x480 screen, regular tab, with in-call iOS flasher at top.
+            [Common setY:10       ofView:self.brandingImageView];
             [Common setY:2        ofView:self.infoLabel];
             [Common setY:24       ofView:self.numberLabel];
             [Common setY:64       ofView:self.nameLabel];
@@ -151,6 +155,7 @@
             break;
 
         case 455:   // 320x568 screen, More tab.
+            [Common setY:15       ofView:self.brandingImageView];
             [Common setY:7        ofView:self.infoLabel];
             [Common setY:33       ofView:self.numberLabel];
             [Common setY:77       ofView:self.nameLabel];
@@ -159,6 +164,7 @@
             break;
 
         case 435:   // 320x568 screen, More tab, with in-call iOS flasher at top.
+            [Common setY:15       ofView:self.brandingImageView];
             [Common setY:7        ofView:self.infoLabel];
             [Common setY:33       ofView:self.numberLabel];
             [Common setY:77       ofView:self.nameLabel];
@@ -167,6 +173,7 @@
             break;
 
         case 499:   // 320x568 screen, regular tab.
+            [Common setY:14       ofView:self.brandingImageView];
             [Common setY:6        ofView:self.infoLabel];
             [Common setY:32       ofView:self.numberLabel];
             [Common setY:76       ofView:self.nameLabel];
@@ -175,6 +182,7 @@
             break;
 
         case 479:   // 320x568 screen, regular tab, with in-call iOS flasher at top.
+            [Common setY:14       ofView:self.brandingImageView];
             [Common setY:6        ofView:self.infoLabel];
             [Common setY:32       ofView:self.numberLabel];
             [Common setY:76       ofView:self.nameLabel];
@@ -225,6 +233,7 @@
         self.keypadView.keyCallButton.selected = [NetworkStatus sharedStatus].allowsMobileCalls;
     }
 
+    self.brandingImageView.hidden = self.numberLabel.text.length > 0;
 
     //### lookup number in Contacts...
     //### when found show name, else:

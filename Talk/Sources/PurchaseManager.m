@@ -492,9 +492,15 @@ static PurchaseManager*     sharedManager;
     {
         [self processAccountTransaction:accountTransaction];
     }
-    else if (self.accountCompletion != nil)
+    else
     {
-        [self buyProductIdentifier:PurchaseManagerProductIdentifierAccount];
+        if (self.accountCompletion != nil)
+        {
+            self.accountCompletion(YES, nil);
+        }
+
+        self.accountCompletion    = nil;
+        self.restoredTransactions = nil;
     }
 }
 
@@ -657,7 +663,27 @@ static PurchaseManager*     sharedManager;
 }
 
 
-- (void)restoreOrBuyAccount:(void (^)(BOOL success, id object))completion
+- (void)buyAccount:(void (^)(BOOL success, id object))completion
+{
+    if (self.accountCompletion != nil)
+    {
+        completion(NO, nil);
+
+        return;
+    }
+
+    if ([Common checkRemoteNotifications] == NO)
+    {
+        return;
+    }
+
+    self.accountCompletion = completion;
+
+    [[PurchaseManager sharedManager] buyProductIdentifier:PurchaseManagerProductIdentifierAccount];
+}
+
+
+- (void)restoreAccount:(void (^)(BOOL success, id object))completion
 {
     if (self.accountCompletion != nil)
     {
@@ -668,12 +694,6 @@ static PurchaseManager*     sharedManager;
 
     if ([Common checkRemoteNotifications] == NO)
     {
-        return;
-    }
-    else if ([[AppDelegate appDelegate].deviceToken length] == 0)
-    {
-        NSLog(@"//### Device token not available (yet).");
-
         return;
     }
 

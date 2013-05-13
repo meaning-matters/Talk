@@ -48,7 +48,9 @@ extern NSString* const  PurchaseManagerProductIdentifierCredit50;
 
 - (NSString*)localizedPriceForProductIdentifier:(NSString*)identifier;
 
-- (void)restoreOrBuyAccount:(void (^)(BOOL success, id object))completion;
+- (void)buyAccount:(void (^)(BOOL success, id object))completion;
+
+- (void)restoreAccount:(void (^)(BOOL success, id object))completion;
 
 - (BOOL)buyProductIdentifier:(NSString*)productIdentifier;
 

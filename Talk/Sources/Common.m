@@ -305,6 +305,30 @@
 
         return NO;
     }
+    else if ([[AppDelegate appDelegate].deviceToken length] == 0)
+    {
+        NSString*   title;
+        NSString*   message;
+
+        title = NSLocalizedStringWithDefaultValue(@"General:AppStatus NotificationsUnavailableTitle", nil,
+                                                  [NSBundle mainBundle], @"Notifications Unavailable",
+                                                  @"Alert title telling that app is not ready yet.\n"
+                                                  @"[iOS alert title size - abbreviated: 'Can't Pay'].");
+        message = NSLocalizedStringWithDefaultValue(@"General:AppStatus NotificationsUnavailableMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"The app is not ready to receive notifications, "
+                                                    @"please try again a little later.",
+                                                    @"Alert message telling that app is not ready yet.\n"
+                                                    @"[iOS alert message size - use correct iOS term for: Notifications!]");
+        message = [NSString stringWithFormat:message, [Common bundleName]];
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[CommonStrings closeString]
+                             otherButtonTitles:nil];
+
+        return NO;
+    }
     else
     {
         return YES;

@@ -123,6 +123,10 @@
 		4837BB3D165D701F00E46C36 /* LibPhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */; };
 		4837BB66165F726400E46C36 /* BlockAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB65165F726300E46C36 /* BlockAlertView.m */; };
 		4837BB67165F726400E46C36 /* BlockAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB65165F726300E46C36 /* BlockAlertView.m */; };
+		4846D8A3174170CF00C40713 /* Branding.png in Resources */ = {isa = PBXBuildFile; fileRef = 4846D8A1174170CF00C40713 /* Branding.png */; };
+		4846D8A4174170CF00C40713 /* Branding.png in Resources */ = {isa = PBXBuildFile; fileRef = 4846D8A1174170CF00C40713 /* Branding.png */; };
+		4846D8A5174170CF00C40713 /* Branding@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4846D8A2174170CF00C40713 /* Branding@2x.png */; };
+		4846D8A6174170CF00C40713 /* Branding@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4846D8A2174170CF00C40713 /* Branding@2x.png */; };
 		484A949D171821CB009E22B9 /* NumberAreasCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484A949C171821CB009E22B9 /* NumberAreasCell.xib */; };
 		484A949E171821CB009E22B9 /* NumberAreasCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484A949C171821CB009E22B9 /* NumberAreasCell.xib */; };
 		484A94A1171822D4009E22B9 /* NumberAreasCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 484A94A0171822D4009E22B9 /* NumberAreasCell.m */; };
@@ -1022,6 +1026,8 @@
 		4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibPhoneNumber.m; sourceTree = "<group>"; };
 		4837BB64165F726300E46C36 /* BlockAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockAlertView.h; sourceTree = "<group>"; };
 		4837BB65165F726300E46C36 /* BlockAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockAlertView.m; sourceTree = "<group>"; };
+		4846D8A1174170CF00C40713 /* Branding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Branding.png; sourceTree = "<group>"; };
+		4846D8A2174170CF00C40713 /* Branding@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Branding@2x.png"; sourceTree = "<group>"; };
 		484A949C171821CB009E22B9 /* NumberAreasCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreasCell.xib; sourceTree = "<group>"; };
 		484A949F171822D4009E22B9 /* NumberAreasCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreasCell.h; sourceTree = "<group>"; };
 		484A94A0171822D4009E22B9 /* NumberAreasCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreasCell.m; sourceTree = "<group>"; };
@@ -2811,6 +2817,8 @@
 			children = (
 				48EDD1FD1667652A007B89DA /* AddCall.png */,
 				48EDD1FE1667652A007B89DA /* AddCall@2x.png */,
+				4846D8A1174170CF00C40713 /* Branding.png */,
+				4846D8A2174170CF00C40713 /* Branding@2x.png */,
 				4888D516166D1AEE00572566 /* Flip.png */,
 				4888D517166D1AEE00572566 /* Flip@2x.png */,
 				48EDD2011667652A007B89DA /* GroupsCall.png */,
@@ -3518,6 +3526,8 @@
 				48367A4317247B2D001A02AF /* CueStopWhite@2x.png in Resources */,
 				48CA5034172AEEB100CB1B7B /* CueRecordBlack.png in Resources */,
 				48CA5036172AEEB100CB1B7B /* CueRecordBlack@2x.png in Resources */,
+				4846D8A3174170CF00C40713 /* Branding.png in Resources */,
+				4846D8A5174170CF00C40713 /* Branding@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3635,6 +3645,8 @@
 				48367A4417247B2D001A02AF /* CueStopWhite@2x.png in Resources */,
 				48CA5035172AEEB100CB1B7B /* CueRecordBlack.png in Resources */,
 				48CA5037172AEEB100CB1B7B /* CueRecordBlack@2x.png in Resources */,
+				4846D8A4174170CF00C40713 /* Branding.png in Resources */,
+				4846D8A6174170CF00C40713 /* Branding@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

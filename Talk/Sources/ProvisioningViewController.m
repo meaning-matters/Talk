@@ -125,6 +125,10 @@
 
 - (IBAction)introBuyAction:(id)sender
 {
+    [[PurchaseManager sharedManager] buyAccount:^(BOOL success, id object)
+    {
+
+    }];
 }
 
 
@@ -136,9 +140,9 @@
                                                             @"[1 line]");
     [self showView:self.busyView];
 
-    [[PurchaseManager sharedManager] restoreOrBuyAccount:^(BOOL success, id object)
+    [[PurchaseManager sharedManager] restoreAccount:^(BOOL success, id object)
     {
-        if (success == YES)
+        if (success == YES && object != nil)
         {
             self.busyLabel.text = NSLocalizedStringWithDefaultValue(@"Purchase:BusyCredit LabelText", nil,
                                                                     [NSBundle mainBundle], @"Checking credit...",
@@ -176,6 +180,10 @@
                 }
             }];
         }
+        else if (success == YES && object == nil)
+        {
+            
+        }
         else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
         {
             [self dismissViewControllerAnimated:YES completion:nil];
@@ -192,6 +200,10 @@
                                                        @"[iOS alert message size]");
             self.failTextView.text = [NSString stringWithFormat:format, [(NSError*)object localizedDescription]];
             [self showView:self.failView];
+        }
+        else
+        {
+            
         }
     }];
 }
