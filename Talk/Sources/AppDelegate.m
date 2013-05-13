@@ -26,6 +26,8 @@
 @interface AppDelegate ()
 {
     NSMutableArray* defaultTabBarViewControllers;
+    UIImageView*    defaultFadeImage;
+    BOOL            hasFadedDefaultImage;
 }
 
 @end
@@ -56,11 +58,13 @@
 
         // Must be placed here, just before tabs are added.  Otherwise navigation bar
         // will overlap with status bar.
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
 
         [self addViewControllersToTabBar];
         self.window.rootViewController = self.tabBarController;
         [self.window makeKeyAndVisible];
+
+        [self showDefaultImage];
 
         [[AVAudioSession sharedInstance] setActive:YES error:nil]; // Make sure there's an audio session.
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -265,6 +269,48 @@
 
         [Settings sharedSettings].tabBarViewControllerClasses = viewControllerClasses;
         defaultTabBarViewControllers = [NSMutableArray arrayWithArray:viewControllers];
+    }
+}
+
+
+#pragma mark - Default Image Fading
+
+- (void)showDefaultImage
+{
+    if ([UIScreen mainScreen].bounds.size.height == 480)
+    {
+        defaultFadeImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default"]];
+    }
+    else
+    {
+        defaultFadeImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default-568h"]];
+    }
+
+    [self.window addSubview:defaultFadeImage];
+    [self performSelector:@selector(fadeDefaultImage) withObject:nil afterDelay:2.0];
+}
+
+
+- (void)fadeDefaultImage
+{
+    if (hasFadedDefaultImage)
+    {
+        return;
+    }
+    else
+    {
+        hasFadedDefaultImage = YES;
+
+        [UIView animateWithDuration:1.0
+                         animations:^
+        {
+            defaultFadeImage.alpha = 0.0f;
+        }
+                         completion:^(BOOL finished)
+        {
+            [defaultFadeImage removeFromSuperview];
+            defaultFadeImage = nil;
+        }];
     }
 }
 
