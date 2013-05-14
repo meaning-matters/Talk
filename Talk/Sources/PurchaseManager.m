@@ -256,14 +256,6 @@ static PurchaseManager*     sharedManager;
 
 - (void)processAccountTransaction:(SKPaymentTransaction*)transaction
 {
-#warning Good place of this?
-    if ([[AppDelegate appDelegate].deviceToken length] == 0)
-    {
-        NSLog(@"//### Device Token not available (yet).");
-        
-        return;
-    }
-
     NSMutableDictionary*    parameters = [NSMutableDictionary dictionary];
     parameters[@"receipt"] = [Base64 encode:transaction.transactionReceipt];
 
@@ -500,6 +492,10 @@ static PurchaseManager*     sharedManager;
                         // We get here when the transaction was not finished yet.
                         self.accountCompletion = ^(BOOL status, id object)
                         {
+                            if (status == YES)
+                            {
+                                //### finish transaction?  It seems to have be done already: check!
+                            }
                             NSLog(@"//### transaction was not finished yet");
                         };
                     }

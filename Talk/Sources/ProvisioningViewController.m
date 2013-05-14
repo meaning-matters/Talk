@@ -182,7 +182,25 @@
         }
         else if (success == YES && object == nil)
         {
+            NSString*   title;
+            NSString*   message;
+
+            title = NSLocalizedStringWithDefaultValue(@"Provisioning NothingToRestoreTitle", nil,
+                                                      [NSBundle mainBundle], @"Nothing To Restore",
+                                                      @"Alert title telling there is no account that could be restored.\n"
+                                                      @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"Provisioning NothingToRestoreMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"No account was purchased earlier with the current Apple ID.",
+                                                        @"Alert message telling there is no account that could be restored.\n"
+                                                        @"[iOS alert message size]");
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:nil
+                                 cancelButtonTitle:[CommonStrings closeString]
+                                 otherButtonTitles:nil];
             
+            [self showView:self.introView];
         }
         else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
         {
