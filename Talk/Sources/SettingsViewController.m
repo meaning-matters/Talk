@@ -13,15 +13,23 @@
 #import "CountryNames.h"
 #import "CommonStrings.h"
 #import "BlockAlertView.h"
+#import "Common.h"
 
 
 typedef enum
 {
-    TableSectionHomeCountry,
-    TableSectionCallOptions,
-    TableSectionNumber          // Number of table sections.
+    TableSectionHomeCountry = 1UL << 0,
+    TableSectionCallOptions = 1UL << 1,
+    TableSectionReset       = 1UL << 2,
 } TableSections;
 
+
+@interface SettingsViewController ()
+{
+    TableSections           sections;
+}
+
+@end
 
 @implementation SettingsViewController
 
@@ -33,6 +41,11 @@ typedef enum
     {
         self.title = NSLocalizedString(@"Settings", @"Settings tab title");
         self.tabBarItem.image = [UIImage imageNamed:@"SettingsTab.png"];
+
+        // Mandatory sections.
+        sections |= TableSectionHomeCountry;
+        sections |= TableSectionCallOptions;
+        sections |= TableSectionReset;
     }
     
     return self;
@@ -80,7 +93,7 @@ typedef enum
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return TableSectionNumber;
+    return [Common bitsSetCount:sections];
 }
 
 
@@ -88,7 +101,7 @@ typedef enum
 {
     NSString*   title = nil;
 
-    switch (section)
+    switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionHomeCountry:
             title = NSLocalizedStringWithDefaultValue(@"Settings:HomeCountry SectionHeader", nil,
@@ -101,6 +114,12 @@ typedef enum
                                                       [NSBundle mainBundle], @"Call Options",
                                                       @"Various options related to making calls.");
             break;
+
+        case TableSectionReset:
+            title = NSLocalizedStringWithDefaultValue(@"Settings:Reset SectionHeader", nil,
+                                                      [NSBundle mainBundle], @"Reset",
+                                                      @"Option to reset all app settings & content.");
+            break;
     }
 
     return title;
@@ -111,7 +130,7 @@ typedef enum
 {
     NSString*   title = nil;
 
-    switch (section)
+    switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionHomeCountry:
             title = NSLocalizedStringWithDefaultValue(@"Settings:HomeCountryInfo SectionFooter", nil,
@@ -127,6 +146,17 @@ typedef enum
                                                       @"Louder Volume extends the maximum volume; handy in noisy environments.",
                                                       @"Explanation what the Louder Volume setting is doing\n"
                                                       @"[* lines]");
+            break;
+
+        case TableSectionReset:
+            title = NSLocalizedStringWithDefaultValue(@"Settings:ResetInfo SectionFooter", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"This wipes your account and all data from the app. "
+                                                      @"You can restore your account, purchased numbers, and "
+                                                      @"forwardings later again.",
+                                                      @"Explanation what the Reset setting is doing\n"
+                                                      @"[* lines]");
+            break;
     }
 
     return title;
@@ -137,7 +167,7 @@ typedef enum
 {
     NSInteger   numberOfRows = 0;
 
-    switch (section)
+    switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionHomeCountry:
             numberOfRows = ([NetworkStatus sharedStatus].simIsoCountryCode != nil) ? 2 : 1;
@@ -146,6 +176,9 @@ typedef enum
         case TableSectionCallOptions:
             numberOfRows = [NetworkStatus sharedStatus].simAvailable ? 2 : 1;
             break;
+
+        case TableSectionReset:
+            numberOfRows = 1;
     }
 
     return numberOfRows;
@@ -159,10 +192,43 @@ typedef enum
         return;
     }
 
-    switch (indexPath.section)
+    NSString*   title;
+    NSString*   message;
+
+    switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionHomeCountry:
             [self.navigationController pushViewController:[[CountriesViewController alloc] init] animated:YES];
+            break;
+
+        case TableSectionReset:
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+            title = NSLocalizedStringWithDefaultValue(@"Settings:Reset ResetTitle", nil,
+                                                      [NSBundle mainBundle], @"Reset All",
+                                                      @"Alert title informing about resetting all user data\n"
+                                                      @"[iOS alert title size].");
+
+            message = NSLocalizedStringWithDefaultValue(@"Settings:Reset ResetMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Are you sure you want to wipe your account and data?",
+                                                        @"Alert message informing about resetting all user data\n"
+                                                        @"[iOS alert message size]");
+            
+            {   // Prevents "Switch case is in protected scope” compiler error at default:.
+                [BlockAlertView showAlertViewWithTitle:title
+                                               message:message
+                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                 {
+                     if (buttonIndex == 1)
+                     {
+                         [[AppDelegate appDelegate] resetAll];
+                         [self.tableView reloadData];
+                     }
+                 }
+                                     cancelButtonTitle:[CommonStrings cancelString]
+                                     otherButtonTitles:[CommonStrings okString], nil];
+            }
             break;
 
         default:
@@ -175,7 +241,7 @@ typedef enum
 {
     UITableViewCell*    cell;
 
-    switch (indexPath.section)
+    switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionHomeCountry:
             cell = [self homeCountryCellForRowAtIndexPath:indexPath];
@@ -183,6 +249,10 @@ typedef enum
 
         case TableSectionCallOptions:
             cell = [self callOptionsCellForRowAtIndexPath:indexPath];
+            break;
+
+        case TableSectionReset:
+            cell = [self resetCellForRowAtIndexPath:indexPath];
             break;
             
         default:
@@ -317,6 +387,27 @@ typedef enum
         [switchView addTarget:self action:@selector(louderVolumeSwitchAction:)
              forControlEvents:UIControlEventValueChanged];
     }
+
+    return cell;
+}
+
+
+- (UITableViewCell*)resetCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell*    cell;
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"ResetCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"ResetCell"];
+    }
+
+    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:Reset CellText", nil,
+                                                            [NSBundle mainBundle], @"Reset All",
+                                                            @"Title of table cell for resetting all user data\n"
+                                                            @"[2/3 line - abbreviated: 'Reset'].");
+    cell.accessoryType  = UITableViewCellAccessoryNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 
     return cell;
 }

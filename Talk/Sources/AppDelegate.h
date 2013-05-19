@@ -39,4 +39,6 @@
 
 + (AppDelegate*)appDelegate;
 
+- (void)resetAll;
+
 @end

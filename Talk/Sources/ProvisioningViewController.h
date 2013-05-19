@@ -12,21 +12,16 @@
 
 // The views.
 @property (nonatomic, strong) IBOutlet UIView*                  introView;
-@property (nonatomic, strong) IBOutlet UIView*                  busyView;
 @property (nonatomic, strong) IBOutlet UIView*                  failView;
 @property (nonatomic, strong) IBOutlet UIView*                  readyView;
-
 
 // Intro View
 @property (nonatomic, weak) IBOutlet UINavigationBar*           introNavigationBar;
 @property (nonatomic, weak) IBOutlet UITextView*                introTextView;
 @property (nonatomic, weak) IBOutlet UIButton*                  introRestoreButton;
 @property (nonatomic, weak) IBOutlet UIButton*                  introBuyButton;
-
-// Busy View
-@property (nonatomic, weak) IBOutlet UINavigationBar*           busyNavigationBar;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView*   busyActivityIndicator;
-@property (nonatomic, weak) IBOutlet UILabel*                   busyLabel;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView*   introRestoreActivityIndicator;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView*   introBuyActivityIndicator;
 
 // Fail View
 @property (nonatomic, weak) IBOutlet UINavigationBar*           failNavigationBar;
@@ -44,9 +39,6 @@
 - (IBAction)introCancelAction:(id)sender;
 - (IBAction)introRestoreAction:(id)sender;
 - (IBAction)introBuyAction:(id)sender;
-
-// Busy View
-- (IBAction)busyCancelAction:(id)sender;
 
 // Fail View
 - (IBAction)failCancelAction:(id)sender;

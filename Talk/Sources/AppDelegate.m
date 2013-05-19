@@ -322,4 +322,21 @@
     return (AppDelegate*)[UIApplication sharedApplication].delegate;
 }
 
+
+- (void)resetAll
+{
+#warning Stop things in background, like audio downloads. Especially for conflicts with CoreData being cleared.
+
+    [[DataManager sharedManager] removeAll];
+
+    [[Settings sharedSettings] resetAll];
+
+    NSError*    error;
+    [[NSFileManager defaultManager] removeItemAtURL:[Common audioDirectoryUrl] error:&error];
+    if (error != nil)
+    {
+        NSLog(@"//### Failed to remove audio directory: %@", [error localizedDescription]);
+    }
+}
+
 @end

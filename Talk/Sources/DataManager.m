@@ -9,6 +9,15 @@
 #import "DataManager.h"
 #import "Common.h"
 
+
+@interface DataManager ()
+{
+    NSURL*  storeUrl;
+}
+
+@end
+
+
 @implementation DataManager
 
 static DataManager* sharedManager;
@@ -26,7 +35,17 @@ static DataManager* sharedManager;
     {
         sharedManager = [self new];
 
+        sharedManager->storeUrl = [Common documentUrl:@"Data.sqlite"];
+
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillTerminateNotification
+                                                          object:nil
+                                                           queue:[NSOperationQueue mainQueue]
+                                                      usingBlock:^(NSNotification* note)
+        {
+            [sharedManager saveContext];
+        }];
+
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification* note)
@@ -101,12 +120,11 @@ static DataManager* sharedManager;
         return _persistentStoreCoordinator;
     }
 
-    NSURL*      storeURL = [Common documentUrl:@"Data.sqlite"];
     NSError*    error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
                                                    configuration:nil
-                                                             URL:storeURL
+                                                             URL:storeUrl
                                                          options:nil
                                                            error:&error])
     {
@@ -124,7 +142,7 @@ static DataManager* sharedManager;
 
          If you encounter schema incompatibility errors during development, you can reduce their frequency by:
          * Simply deleting the existing store:
-         [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil]
+         [[NSFileManager defaultManager] removeItemAtURL:storeUrl error:nil]
 
          * Performing automatic lightweight migration by passing the following dictionary as the options parameter:
          @{NSMigratePersistentStoresAutomaticallyOption:@YES, NSInferMappingModelAutomaticallyOption:@YES}
@@ -141,6 +159,8 @@ static DataManager* sharedManager;
     return _persistentStoreCoordinator;
 }
 
+
+#pragma mark - Public API
 
 - (void)saveContext
 {
@@ -159,6 +179,21 @@ static DataManager* sharedManager;
             abort();
         }
     }
+}
+
+
+- (void)removeAll
+{
+    [[NSFileManager defaultManager] removeItemAtURL:storeUrl error:nil];
+
+    for (NSManagedObject* object in [self.managedObjectContext registeredObjects])
+    {
+        [self.managedObjectContext deleteObject:object];
+    }
+
+    _managedObjectModel         = nil;
+    _managedObjectContext       = nil;
+    _persistentStoreCoordinator = nil;
 }
 
 @end

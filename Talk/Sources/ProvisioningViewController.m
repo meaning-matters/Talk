@@ -69,10 +69,6 @@
                                                                                 [NSBundle mainBundle], @"Buy",
                                                                                 @"...");
 
-    self.busyNavigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"Provisioning:Busy BarTitle", nil,
-                                                                             [NSBundle mainBundle], @"Busy",
-                                                                             @"...");
-
     self.failNavigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"Provisioning:Fail BarTitle", nil,
                                                                              [NSBundle mainBundle], @"Failed",
                                                                              @"...");
@@ -89,6 +85,20 @@
 
     [self.view addSubview:self.introView];
     currentView = self.introView;
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    [[PurchaseManager sharedManager] loadProducts:^(BOOL success)
+    {
+         if (success == NO)
+         {
+             [self dismissViewControllerAnimated:YES completion:nil];
+         }
+    }];
 }
 
 
@@ -109,6 +119,77 @@
 }
 
 
+- (void)setBusy:(BOOL)busy
+{
+    self.introRestoreButton.enabled = busy ? NO   : YES;
+    self.introBuyButton.enabled     = busy ? NO   : YES;
+    self.introRestoreButton.alpha   = busy ? 0.5f : 1.0f;
+    self.introBuyButton.alpha       = busy ? 0.5f : 1.0f;
+}
+
+
+- (void)setRestoreBusy:(BOOL)busy
+{
+    [self setBusy:busy];
+
+    if (busy)
+    {
+        [self.introRestoreActivityIndicator startAnimating];
+    }
+    else
+    {
+        [self.introRestoreActivityIndicator stopAnimating];
+    }
+}
+
+
+- (void)setBuyBusy:(BOOL)busy
+{
+    [self setBusy:busy];
+
+    if (busy)
+    {
+        [self.introBuyActivityIndicator startAnimating];
+    }
+    else
+    {
+        [self.introBuyActivityIndicator stopAnimating];
+    }
+}
+
+
+- (void)restore
+{
+    NSString*   title   = nil;
+    NSString*   message = nil;
+
+    [[WebClient sharedClient] retrieveCredit:^(WebClientStatus status, id content)
+    {
+        if (status == WebClientStatusOk)
+        {
+        }
+        else
+        {
+            NSLog(@"####");
+        }
+    }];
+
+    [[WebClient sharedClient] retrieveNumbers:^(WebClientStatus status, id content)
+    {
+        if (status == WebClientStatusOk)
+        {
+            //### Set ready text telling about current credit and number of numbers that are available.
+
+            [self showView:self.readyView];
+        }
+        else
+        {
+            NSLog(@"####");
+        }
+    }];
+}
+
+
 #pragma mark - Intro UI Actions
 
 - (IBAction)introCancelAction:(id)sender
@@ -125,63 +206,38 @@
 
 - (IBAction)introBuyAction:(id)sender
 {
+    [self setBuyBusy:YES];
+
     [[PurchaseManager sharedManager] buyAccount:^(BOOL success, id object)
     {
+        [self setBuyBusy:NO];
 
+        if (success == YES)
+        {
+            [self setBuyBusy:NO];
+
+            [self restore];            
+        }
     }];
 }
 
 
 - (IBAction)introRestoreAction:(id)sender
 {
-    self.busyLabel.text = NSLocalizedStringWithDefaultValue(@"Purchase:BusyAccount LabelText", nil,
-                                                            [NSBundle mainBundle], @"Restoring account...",
-                                                            @"Label text telling that app is busy restoring the account\n"
-                                                            @"[1 line]");
-    [self showView:self.busyView];
-
+    [self setRestoreBusy:YES];
+    
     [[PurchaseManager sharedManager] restoreAccount:^(BOOL success, id object)
     {
         if (success == YES && object != nil)
         {
-            self.busyLabel.text = NSLocalizedStringWithDefaultValue(@"Purchase:BusyCredit LabelText", nil,
-                                                                    [NSBundle mainBundle], @"Checking credit...",
-                                                                    @"Label text telling that app is busy checking credit\n"
-                                                                    @"[1 line]");
-            [self showView:self.busyView];
+            [self setRestoreBusy:NO];
 
-            [[WebClient sharedClient] retrieveCredit:^(WebClientStatus status, id content)
-            {
-                if (status == WebClientStatusOk)
-                {
-                    self.busyLabel.text = NSLocalizedStringWithDefaultValue(@"Purchase:BusyNumbers LabelText", nil,
-                                                                            [NSBundle mainBundle], @"Retrieving numbers...",
-                                                                            @"Label text telling that app is busy retrieving "
-                                                                            @"the user's phone numbers\n"
-                                                                            @"[1 line]");
-
-                    [[WebClient sharedClient] retrieveNumbers:^(WebClientStatus status, id content)
-                    {
-                        if (status == WebClientStatusOk)
-                        {
-                            //### Set ready text telling about current credit and number of numbers that are available.
-
-                            [self showView:self.readyView];
-                        }
-                        else
-                        {
-                            NSLog(@"####");
-                        }
-                    }];
-                }
-                else
-                {
-                    NSLog(@"####");
-                }
-            }];
+            [self restore];
         }
         else if (success == YES && object == nil)
         {
+            [self setRestoreBusy:NO];
+
             NSString*   title;
             NSString*   message;
 
@@ -221,7 +277,7 @@
         }
         else
         {
-            
+            [self setRestoreBusy:NO];
         }
     }];
 }

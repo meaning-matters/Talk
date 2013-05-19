@@ -78,6 +78,7 @@ NSString* const  PurchaseManagerProductIdentifierCredit50             = PRODUCT_
 @property (nonatomic, strong) NSSet*                productIdentifiers;
 @property (nonatomic, strong) SKProductsRequest*    productsRequest;
 @property (nonatomic, copy) void (^accountCompletion)(BOOL success, id object);
+@property (nonatomic, copy) void (^loadCompletion)(BOOL success);
 @property (nonatomic, strong) NSMutableArray*       restoredTransactions;
 
 @end
@@ -163,7 +164,7 @@ static PurchaseManager*     sharedManager;
                 sharedManager.productsRequest == nil && sharedManager.products == nil)
             {
                 // At first time the app gets connected to internet.
-                [sharedManager loadProducts];
+                [sharedManager loadProducts:nil];
             }
 
             if (sharedManager.products != nil)
@@ -370,11 +371,8 @@ static PurchaseManager*     sharedManager;
 
 - (void)productsRequest:(SKProductsRequest*)request didReceiveResponse:(SKProductsResponse*)response
 {
-    [Common enableNetworkActivityIndicator:NO];
-
-    self.productsRequest = nil;
     self.products = response.products;
-
+    
     for (SKProduct* product in self.products)
     {
         if ([self isCreditProductIdentifier:product.productIdentifier])
@@ -384,6 +382,11 @@ static PurchaseManager*     sharedManager;
             break;
         }
     }
+
+    [Common enableNetworkActivityIndicator:NO];
+    self.loadCompletion ? self.loadCompletion(YES) : 0;
+    self.loadCompletion = nil;
+    self.productsRequest = nil;
 }
 
 
@@ -392,28 +395,42 @@ static PurchaseManager*     sharedManager;
     NSString*   title;
     NSString*   message;
 
-    [Common enableNetworkActivityIndicator:NO];
-
     title = NSLocalizedStringWithDefaultValue(@"Purchase:General ProductLoadFailAlertTitle", nil,
                                               [NSBundle mainBundle], @"Loading Products Failed",
                                               @"Alert title telling in-app purchases are disabled.\n"
                                               @"[iOS alert title size - abbreviated: 'Can't Pay'].");
     message = NSLocalizedStringWithDefaultValue(@"Purchase:General ProductLoadFailAlertMessage", nil,
                                                 [NSBundle mainBundle],
-                                                @"Loading the In-App Purchase products from the iTunes Store "
-                                                @"failed: %@.\nPlease try again later.",
+                                                @"Loading iTunes Store products failed: %@.\nPlease try again later.",
                                                 @"Alert message: Information could not be loaded over internet.\n"
                                                 @"[iOS alert message size]");
-    message = [NSString stringWithFormat:message, [error localizedDescription]];
+    if (error != nil)
+    {
+        message = [NSString stringWithFormat:message, [error localizedDescription]];
+    }
+    else
+    {
+        NSString*   description = NSLocalizedStringWithDefaultValue(@"Purchase:General NoInternet", nil,
+                                                                    [NSBundle mainBundle],
+                                                                    @"There is no internet connection",
+                                                                    @"Short text that is part of alert message.\n"
+                                                                    @"[Keep short]");
+        message = [NSString stringWithFormat:message, description];
+    }
+    
     [BlockAlertView showAlertViewWithTitle:title
                                    message:message
-                                completion:nil
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        [Common enableNetworkActivityIndicator:NO];
+        self.loadCompletion ? self.loadCompletion(NO) : 0;
+        self.loadCompletion = nil;
+        self.productsRequest = nil;
+    }
                          cancelButtonTitle:[CommonStrings closeString]
                          otherButtonTitles:nil];
 
     NSLog(@"//### Failed to load list of products.");
-
-    self.productsRequest = nil;
 }
 
 
@@ -492,11 +509,7 @@ static PurchaseManager*     sharedManager;
                         // We get here when the transaction was not finished yet.
                         self.accountCompletion = ^(BOOL status, id object)
                         {
-                            if (status == YES)
-                            {
-                                //### finish transaction?  It seems to have be done already: check!
-                            }
-                            NSLog(@"//### transaction was not finished yet");
+                            // Dummy block.
                         };
                     }
 
@@ -552,13 +565,18 @@ static PurchaseManager*     sharedManager;
 
 #pragma mark - Public API
 
-- (void)loadProducts
+- (void)loadProducts:(void (^)(BOOL success))completion
 {
-    self.productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:self.productIdentifiers];
-    self.productsRequest.delegate = self;
-    [self.productsRequest start];
+    if (self.productsRequest == nil)
+    {
+        self.loadCompletion = completion;
 
-    [Common enableNetworkActivityIndicator:YES];
+        self.productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:self.productIdentifiers];
+        self.productsRequest.delegate = self;
+        [self.productsRequest start];
+
+        [Common enableNetworkActivityIndicator:YES];
+    }
 }
 
 

@@ -18,4 +18,6 @@
 
 - (void)saveContext;
 
+- (void)removeAll;
+
 @end
