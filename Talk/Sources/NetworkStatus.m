@@ -35,7 +35,6 @@ NSString* const NetworkStatusReachableNotification              = @"NetworkStatu
 
 @implementation NetworkStatus
 
-static NetworkStatus*           sharedStatus;
 static Reachability*            hostReach;
 static NetworkStatusReachable   previousNetworkStatusReachable;
 static CTTelephonyNetworkInfo*  networkInfo;
@@ -45,31 +44,20 @@ static NSTimer*                 loadUrlTestTimer;
 
 #pragma mark - Singleton Stuff
 
-+ (void)initialize
-{
-    if ([NetworkStatus class] == self)
-    {
-        sharedStatus = [self new];
-        [sharedStatus setUpReachability];
-        [sharedStatus setUpCoreTelephony];
-    }
-}
-
-
-+ (id)allocWithZone:(NSZone*)zone
-{
-    if (sharedStatus && [NetworkStatus class] == self)
-    {
-        [NSException raise:NSGenericException format:@"Duplicate NetworkStatus singleton creation"];
-    }
-
-    return [super allocWithZone:zone];
-}
-
-
 + (NetworkStatus*)sharedStatus
 {
-    return sharedStatus;
+    static NetworkStatus*   sharedInstance;
+    static dispatch_once_t  onceToken;
+
+    dispatch_once(&onceToken, ^
+    {
+        sharedInstance = [[NetworkStatus alloc] init];
+
+        [sharedInstance setUpReachability];
+        [sharedInstance setUpCoreTelephony];
+    });
+
+    return sharedInstance;
 }
 
 
@@ -121,8 +109,8 @@ static NSTimer*                 loadUrlTestTimer;
         //  the first time, when the app starts.  So that would not have helped.)
         if (loadUrlTestTimer == nil)
         {
-            [sharedStatus  loadUrlTest:nil];
-            [hostReach     startNotifier];
+            [self loadUrlTest:nil];
+            [hostReach startNotifier];
 
             loadUrlTestTimer = [NSTimer scheduledTimerWithTimeInterval:LOAD_URL_TEST_INTERVAL
                                                                 target:self

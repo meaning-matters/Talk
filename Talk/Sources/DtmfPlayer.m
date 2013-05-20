@@ -26,10 +26,38 @@
 
 @implementation DtmfPlayer
 
-static DtmfPlayer*  sharedPlayer;
++ (DtmfPlayer*)sharedPlayer
+{
+    static DtmfPlayer*      sharedInstance;
+    static dispatch_once_t  onceToken;
+
+    dispatch_once(&onceToken, ^
+    {
+        sharedInstance = [[DtmfPlayer alloc] init];
+
+        sharedInstance->audioDataObjects = [NSMutableDictionary dictionary];
+
+        for (char character = '0'; character <= '9'; character++)
+        {
+            if ([sharedInstance initializeSound:character name:[NSString stringWithFormat:@"%c", character]] == NO)
+            {
+                NSLog(@"Error loading DTMF sound.");
+                break;
+            }
+        }
+
+        if ([sharedInstance initializeSound:'*' name:@"star"] == NO ||
+            [sharedInstance initializeSound:'#' name:@"pound"]== NO)
+        {
+            NSLog(@"Error loading DTMF sound.");
+        }
+    });
+    
+    return sharedInstance;
+}
 
 
-+ (BOOL)initializeSound:(char)character name:(NSString*)name
+- (BOOL)initializeSound:(char)character name:(NSString*)name
 {
     NSError*    error = nil;
     NSString*   path = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/dtmf-%@.caf", name];
@@ -37,7 +65,7 @@ static DtmfPlayer*  sharedPlayer;
 
     if (error == nil && data != nil)
     {
-        sharedPlayer->audioDataObjects[[NSString stringWithFormat:@"%c", character]] = data;
+        audioDataObjects[[NSString stringWithFormat:@"%c", character]] = data;
 
         return YES;
     }
@@ -48,55 +76,12 @@ static DtmfPlayer*  sharedPlayer;
 }
 
 
-+ (void)initialize
-{
-    if ([DtmfPlayer class] == self)
-    {
-        sharedPlayer = [self new];
-
-        sharedPlayer->audioDataObjects = [NSMutableDictionary dictionary];
-
-        for (char character = '0'; character <= '9'; character++)
-        {
-            if ([DtmfPlayer initializeSound:character name:[NSString stringWithFormat:@"%c", character]] == NO)
-            {
-                NSLog(@"Error loading DTMF sound.");
-                break;
-            }
-        }
-
-        if ([DtmfPlayer initializeSound:'*' name:@"star"] == NO ||
-            [DtmfPlayer initializeSound:'#' name:@"pound"]== NO)
-        {
-            NSLog(@"Error loading DTMF sound.");
-        }
-    }
-}
-
-
-+ (id)allocWithZone:(NSZone*)zone
-{
-    if (sharedPlayer && [DtmfPlayer class] == self)
-    {
-        [NSException raise:NSGenericException format:@"Duplicate DtmfPlayer singleton creation"];
-    }
-
-    return [super allocWithZone:zone];
-}
-
-
-+ (DtmfPlayer*)sharedPlayer
-{
-    return sharedPlayer;
-}
-
-
 - (void)startKeepAlive
 {
     if (keepAliveTimer == nil)
     {
         keepAliveTimer = [NSTimer scheduledTimerWithTimeInterval:4
-                                                          target:sharedPlayer
+                                                          target:self
                                                         selector:@selector(playKeepAlive)
                                                         userInfo:nil
                                                          repeats:YES];

@@ -41,17 +41,20 @@ NSString* const CurrencyCodeKey                = @"CurrencyCode";
 @implementation Settings
 
 static BOOL             runBefore;
-static Settings*        sharedSettings;
 static NSUserDefaults*  userDefaults;
 
 
 #pragma mark - Singleton Stuff
 
-+ (void)initialize
++ (Settings*)sharedSettings
 {
-    if ([Settings class] == self)
+    static Settings*        sharedInstance;
+    static dispatch_once_t  onceToken;
+
+    dispatch_once(&onceToken, ^
     {
-        sharedSettings = [self new];
+        sharedInstance = [[Settings alloc] init];
+
         userDefaults = [NSUserDefaults standardUserDefaults];
 
 #warning See if looking "AppleLanguages" item in NSUIserDefaults helps fixing the data loss problem.
@@ -70,26 +73,11 @@ static NSUserDefaults*  userDefaults;
             [Keychain deleteStringForKey:SipPasswordKey];
         }
 
-        [sharedSettings registerDefaults];
-        [sharedSettings getInitialValues];
-    }
-}
+        [sharedInstance registerDefaults];
+        [sharedInstance getInitialValues];
+    });
 
-
-+ (id)allocWithZone:(NSZone*)zone
-{
-    if (sharedSettings && [Settings class] == self)
-    {
-        [NSException raise:NSGenericException format:@"Duplicate Settings singleton creation"];
-    }
-
-    return [super allocWithZone:zone];
-}
-
-
-+ (Settings*)sharedSettings
-{
-    return sharedSettings;
+    return sharedInstance;
 }
 
 
@@ -116,8 +104,8 @@ static NSUserDefaults*  userDefaults;
 
     [userDefaults synchronize];
 
-    [sharedSettings registerDefaults];
-    [sharedSettings getInitialValues];
+    [self registerDefaults];
+    [self getInitialValues];
 }
 
 

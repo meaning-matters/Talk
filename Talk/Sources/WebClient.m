@@ -20,19 +20,20 @@ static NSDictionary* statuses;
 
 @implementation WebClient
 
-static WebClient*   sharedClient;
-
-
 #pragma mark - Singleton Stuff
 
-+ (void)initialize
++ (WebClient*)sharedClient
 {
-    if ([WebClient class] == self)
+    static WebClient*       sharedInstance;
+    static dispatch_once_t  onceToken;
+
+    dispatch_once(&onceToken, ^
     {
-        sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:[Settings sharedSettings].webBaseUrl]];
-        [sharedClient setParameterEncoding:AFJSONParameterEncoding];
-        [sharedClient setDefaultHeader:@"Accept" value:@"application/json"];
-        [sharedClient registerHTTPOperationClass:[AFJSONRequestOperation class]];
+        sharedInstance = [[self alloc] initWithBaseURL:[NSURL URLWithString:[Settings sharedSettings].webBaseUrl]];
+
+        [sharedInstance setParameterEncoding:AFJSONParameterEncoding];
+        [sharedInstance setDefaultHeader:@"Accept" value:@"application/json"];
+        [sharedInstance registerHTTPOperationClass:[AFJSONRequestOperation class]];
 
         statuses = @{ @"OK":                          @(WebClientStatusOk),
                       @"FAIL_INVALID_REQUEST":        @(WebClientStatusFailInvalidRequest),
@@ -43,24 +44,9 @@ static WebClient*   sharedClient;
                       @"FAIL_NO_STATES_FOR_COUNTRY":  @(WebClientStatusFailNoStatesForCountry),
                       @"FAIL_INVALID_INFO":           @(WebClientStatusFailInvalidInfo),
                       @"FAIL_DATA_TOO_LARGE":         @(WebClientStatusFailDataTooLarge) };
-    }
-}
+    });
 
-
-+ (id)allocWithZone:(NSZone*)zone
-{
-    if (sharedClient && [WebClient class] == self)
-    {
-        [NSException raise:NSGenericException format:@"Duplicate WebClient singleton creation"];
-    }
-
-    return [super allocWithZone:zone];
-}
-
-
-+ (WebClient*)sharedClient
-{
-    return sharedClient;
+    return sharedInstance;
 }
 
 
@@ -88,8 +74,8 @@ static WebClient*   sharedClient;
 {
     [Common enableNetworkActivityIndicator:YES];
 
-    [sharedClient setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
-                                            password:[Settings sharedSettings].webPassword];
+    [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
+                                    password:[Settings sharedSettings].webPassword];
 
     [self postPath:path
         parameters:parameters
@@ -124,8 +110,8 @@ static WebClient*   sharedClient;
 {
     [Common enableNetworkActivityIndicator:YES];
 
-    [sharedClient setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
-                                            password:[Settings sharedSettings].webPassword];
+    [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
+                                    password:[Settings sharedSettings].webPassword];
 
     [self getPath:path
        parameters:parameters

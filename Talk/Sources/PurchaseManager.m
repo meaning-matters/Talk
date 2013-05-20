@@ -89,68 +89,69 @@ NSString* const  PurchaseManagerProductIdentifierCredit50             = PRODUCT_
 
 @synthesize currencyCode = _currencyCode;
 
-static PurchaseManager*     sharedManager;
-
-
 #pragma mark - Singleton Stuff
 
-+ (void)initialize
++ (PurchaseManager*)sharedManager
 {
-    if ([PurchaseManager class] == self)
+    static PurchaseManager* sharedInstance;
+    static dispatch_once_t  onceToken;
+
+    dispatch_once(&onceToken, ^
     {
-        sharedManager = [self new];
-        sharedManager.delegate = sharedManager; //### Do everyting in here for now.
+        sharedInstance = [[PurchaseManager alloc] init];
 
-        sharedManager.productIdentifiers = [NSSet setWithObjects:
-                                            PurchaseManagerProductIdentifierAccount,
-                                            PurchaseManagerProductIdentifierNumberSetup1,
-                                            PurchaseManagerProductIdentifierNumberSetup2,
-                                            PurchaseManagerProductIdentifierNumberSetup3,
-                                            PurchaseManagerProductIdentifierNumberSetup4,
-                                            PurchaseManagerProductIdentifierNumberSetup5,
-                                            PurchaseManagerProductIdentifierNumberSetup6,
-                                            PurchaseManagerProductIdentifierNumberSetup7,
-                                            PurchaseManagerProductIdentifierNumberSetup8,
-                                            PurchaseManagerProductIdentifierNumberSetup9,
-                                            PurchaseManagerProductIdentifierNumberSetup10,
-                                            PurchaseManagerProductIdentifierNumberSetup11,
-                                            PurchaseManagerProductIdentifierNumberSetup12,
-                                            PurchaseManagerProductIdentifierNumberSetup13,
-                                            PurchaseManagerProductIdentifierNumberSetup14,
-                                            PurchaseManagerProductIdentifierNumberSetup15,
-                                            PurchaseManagerProductIdentifierNumberSetup16,
-                                            PurchaseManagerProductIdentifierNumberSetup17,
-                                            PurchaseManagerProductIdentifierNumberSetup18,
-                                            PurchaseManagerProductIdentifierNumberSetup19,
-                                            PurchaseManagerProductIdentifierNumberSetup20,
-                                            PurchaseManagerProductIdentifierNumberSubscription1,
-                                            PurchaseManagerProductIdentifierNumberSubscription2,
-                                            PurchaseManagerProductIdentifierNumberSubscription3,
-                                            PurchaseManagerProductIdentifierNumberSubscription4,
-                                            PurchaseManagerProductIdentifierNumberSubscription5,
-                                            PurchaseManagerProductIdentifierNumberSubscription6,
-                                            PurchaseManagerProductIdentifierNumberSubscription7,
-                                            PurchaseManagerProductIdentifierNumberSubscription8,
-                                            PurchaseManagerProductIdentifierNumberSubscription9,
-                                            PurchaseManagerProductIdentifierNumberSubscription10,
-                                            PurchaseManagerProductIdentifierNumberSubscription11,
-                                            PurchaseManagerProductIdentifierNumberSubscription12,
-                                            PurchaseManagerProductIdentifierNumberSubscription13,
-                                            PurchaseManagerProductIdentifierNumberSubscription14,
-                                            PurchaseManagerProductIdentifierNumberSubscription15,
-                                            PurchaseManagerProductIdentifierNumberSubscription16,
-                                            PurchaseManagerProductIdentifierNumberSubscription17,
-                                            PurchaseManagerProductIdentifierNumberSubscription18,
-                                            PurchaseManagerProductIdentifierNumberSubscription19,
-                                            PurchaseManagerProductIdentifierNumberSubscription20,
-                                            PurchaseManagerProductIdentifierCredit1,
-                                            PurchaseManagerProductIdentifierCredit2,
-                                            PurchaseManagerProductIdentifierCredit5,
-                                            PurchaseManagerProductIdentifierCredit10,
-                                            PurchaseManagerProductIdentifierCredit20,
-                                            PurchaseManagerProductIdentifierCredit50, nil];
+        sharedInstance.delegate = sharedInstance; //### Do everyting in here for now.
 
-        [[SKPaymentQueue defaultQueue] addTransactionObserver:sharedManager];
+        sharedInstance.productIdentifiers = [NSSet setWithObjects:
+                                             PurchaseManagerProductIdentifierAccount,
+                                             PurchaseManagerProductIdentifierNumberSetup1,
+                                             PurchaseManagerProductIdentifierNumberSetup2,
+                                             PurchaseManagerProductIdentifierNumberSetup3,
+                                             PurchaseManagerProductIdentifierNumberSetup4,
+                                             PurchaseManagerProductIdentifierNumberSetup5,
+                                             PurchaseManagerProductIdentifierNumberSetup6,
+                                             PurchaseManagerProductIdentifierNumberSetup7,
+                                             PurchaseManagerProductIdentifierNumberSetup8,
+                                             PurchaseManagerProductIdentifierNumberSetup9,
+                                             PurchaseManagerProductIdentifierNumberSetup10,
+                                             PurchaseManagerProductIdentifierNumberSetup11,
+                                             PurchaseManagerProductIdentifierNumberSetup12,
+                                             PurchaseManagerProductIdentifierNumberSetup13,
+                                             PurchaseManagerProductIdentifierNumberSetup14,
+                                             PurchaseManagerProductIdentifierNumberSetup15,
+                                             PurchaseManagerProductIdentifierNumberSetup16,
+                                             PurchaseManagerProductIdentifierNumberSetup17,
+                                             PurchaseManagerProductIdentifierNumberSetup18,
+                                             PurchaseManagerProductIdentifierNumberSetup19,
+                                             PurchaseManagerProductIdentifierNumberSetup20,
+                                             PurchaseManagerProductIdentifierNumberSubscription1,
+                                             PurchaseManagerProductIdentifierNumberSubscription2,
+                                             PurchaseManagerProductIdentifierNumberSubscription3,
+                                             PurchaseManagerProductIdentifierNumberSubscription4,
+                                             PurchaseManagerProductIdentifierNumberSubscription5,
+                                             PurchaseManagerProductIdentifierNumberSubscription6,
+                                             PurchaseManagerProductIdentifierNumberSubscription7,
+                                             PurchaseManagerProductIdentifierNumberSubscription8,
+                                             PurchaseManagerProductIdentifierNumberSubscription9,
+                                             PurchaseManagerProductIdentifierNumberSubscription10,
+                                             PurchaseManagerProductIdentifierNumberSubscription11,
+                                             PurchaseManagerProductIdentifierNumberSubscription12,
+                                             PurchaseManagerProductIdentifierNumberSubscription13,
+                                             PurchaseManagerProductIdentifierNumberSubscription14,
+                                             PurchaseManagerProductIdentifierNumberSubscription15,
+                                             PurchaseManagerProductIdentifierNumberSubscription16,
+                                             PurchaseManagerProductIdentifierNumberSubscription17,
+                                             PurchaseManagerProductIdentifierNumberSubscription18,
+                                             PurchaseManagerProductIdentifierNumberSubscription19,
+                                             PurchaseManagerProductIdentifierNumberSubscription20,
+                                             PurchaseManagerProductIdentifierCredit1,
+                                             PurchaseManagerProductIdentifierCredit2,
+                                             PurchaseManagerProductIdentifierCredit5,
+                                             PurchaseManagerProductIdentifierCredit10,
+                                             PurchaseManagerProductIdentifierCredit20,
+                                             PurchaseManagerProductIdentifierCredit50, nil];
+
+        [[SKPaymentQueue defaultQueue] addTransactionObserver:sharedInstance];
 
         // Load the products each time the app starts.
         __block id  observer;
@@ -162,39 +163,24 @@ static PurchaseManager*     sharedManager;
             NetworkStatusReachable reachable = [notification.userInfo[@"status"] intValue];
 
             if ((reachable == NetworkStatusReachableWifi || reachable == NetworkStatusReachableCellular) &&
-                sharedManager.productsRequest == nil && sharedManager.products == nil)
+                sharedInstance.productsRequest == nil && sharedInstance.products == nil)
             {
                 // At first time the app gets connected to internet.
-                [sharedManager loadProducts:nil];
+                [sharedInstance loadProducts:nil];
             }
 
-            if (sharedManager.products != nil)
+            if (sharedInstance.products != nil)
             {
                 // At subsequent time the app get connected to internet,
                 // and when products loaded & transactions restored at earlier time.
                 [[NSNotificationCenter defaultCenter] removeObserver:observer];
             }
         }];
-    }
 
-    sharedManager->_currencyCode = [Settings sharedSettings].currencyCode;
-}
+        sharedInstance->_currencyCode = [Settings sharedSettings].currencyCode;
+    });
 
-
-+ (id)allocWithZone:(NSZone*)zone
-{
-    if (sharedManager && [PurchaseManager class] == self)
-    {
-        [NSException raise:NSGenericException format:@"Duplicate PurchaseManager singleton creation"];
-    }
-
-    return [super allocWithZone:zone];
-}
-
-
-+ (PurchaseManager*)sharedManager
-{
-    return sharedManager;
+    return sharedInstance;
 }
 
 

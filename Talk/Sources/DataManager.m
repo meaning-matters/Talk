@@ -20,8 +20,6 @@
 
 @implementation DataManager
 
-static DataManager* sharedManager;
-
 @synthesize managedObjectContext       = _managedObjectContext;
 @synthesize managedObjectModel         = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
@@ -29,47 +27,35 @@ static DataManager* sharedManager;
 
 #pragma mark - Singleton Stuff
 
-+ (void)initialize
++ (DataManager*)sharedManager
 {
-    if ([DataManager class] == self)
-    {
-        sharedManager = [self new];
+    static DataManager*     sharedInstance;
+    static dispatch_once_t  onceToken;
 
-        sharedManager->storeUrl = [Common documentUrl:@"Data.sqlite"];
+    dispatch_once(&onceToken, ^
+    {
+        sharedInstance = [[DataManager alloc] init];
+
+        sharedInstance->storeUrl = [Common documentUrl:@"Data.sqlite"];
 
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillTerminateNotification
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification* note)
-        {
-            [sharedManager saveContext];
-        }];
+         {
+             [sharedInstance saveContext];
+         }];
 
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification* note)
-        {
-            [sharedManager saveContext];
-        }];
-    }
-}
-
-
-+ (id)allocWithZone:(NSZone*)zone
-{
-    if (sharedManager && [DataManager class] == self)
-    {
-        [NSException raise:NSGenericException format:@"Duplicate CoreDataManager singleton creation"];
-    }
-
-    return [super allocWithZone:zone];
-}
-
-
-+ (DataManager*)sharedManager
-{
-    return sharedManager;
+         {
+             [sharedInstance saveContext];
+         }];
+    });
+    
+    return sharedInstance;
 }
 
 

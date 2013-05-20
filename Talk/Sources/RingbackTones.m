@@ -13,36 +13,22 @@
 
 @implementation RingbackTones
 
-static RingbackTones*   sharedTones;
-
-
 #pragma mark - Singleton Stuff
-
-+ (void)initialize
-{
-    if ([RingbackTones class] == self)
-    {
-        sharedTones = [self new];
-        NSData* data = [Common dataForResource:@"RingbackTones" ofType:@"json"];
-        sharedTones.tonesDictionary = [Common objectWithJsonData:data];
-    }
-}
-
-
-+ (id)allocWithZone:(NSZone*)zone
-{
-    if (sharedTones && [RingbackTones class] == self)
-    {
-        [NSException raise:NSGenericException format:@"Duplicate RingbackTones singleton creation"];
-    }
-
-    return [super allocWithZone:zone];
-}
-
 
 + (RingbackTones*)sharedTones;
 {
-    return sharedTones;
+    static RingbackTones*   sharedInstance;
+    static dispatch_once_t  onceToken;
+
+    dispatch_once(&onceToken, ^
+    {
+        sharedInstance = [[RingbackTones alloc] init];
+
+        NSData* data = [Common dataForResource:@"RingbackTones" ofType:@"json"];
+        sharedInstance.tonesDictionary = [Common objectWithJsonData:data];
+    });
+
+    return sharedInstance;
 }
 
 

@@ -17,14 +17,28 @@
 
 @implementation CountryNames
 
-static CountryNames*    sharedNames;
-
-
 #pragma mark - Singleton Stuff
 
-+ (void)initialize
++ (CountryNames*)sharedNames;
 {
-#warning Implement/Replace this class using:  (but need to sort out locales first: We don't want countries to be in other locale than app texts.
+    static CountryNames*    sharedInstance;
+    static dispatch_once_t  onceToken;
+    
+    dispatch_once(&onceToken, ^
+    {
+        sharedInstance = [[CountryNames alloc] init];
+
+        NSData* data = [Common dataForResource:@"CountryNames" ofType:@"json"];
+        sharedInstance.namesDictionary = [Common objectWithJsonData:data];
+    });
+    
+    return sharedInstance;
+}
+
+
+- (void)todo
+{
+#warning //### Implement/Replace this class using:  (but need to sort out locales first: We don't want countries to be in other locale than app texts.
     NSMutableArray *countries = [NSMutableArray arrayWithCapacity: [[NSLocale ISOCountryCodes] count]];
     for (NSString *countryCode in [NSLocale ISOCountryCodes])
     {
@@ -33,30 +47,6 @@ static CountryNames*    sharedNames;
         NSString *country = [[NSLocale currentLocale] displayNameForKey:NSLocaleIdentifier value:identifier];
         [countries addObject:country];
     }
-
-    if ([CountryNames class] == self)
-    {
-        sharedNames = [self new];
-        NSData* data = [Common dataForResource:@"CountryNames" ofType:@"json"];
-        sharedNames.namesDictionary = [Common objectWithJsonData:data];
-    }
-}
-
-
-+ (id)allocWithZone:(NSZone*)zone
-{
-    if (sharedNames && [CountryNames class] == self)
-    {
-        [NSException raise:NSGenericException format:@"Duplicate CountryNames singleton creation"];
-    }
-
-    return [super allocWithZone:zone];
-}
-
-
-+ (CountryNames*)sharedNames;
-{
-    return sharedNames;
 }
 
 

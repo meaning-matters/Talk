@@ -12,36 +12,22 @@
 
 @implementation Tones
 
-static Tones*   sharedTones;
-
-
 #pragma mark - Singleton Stuff
-
-+ (void)initialize
-{
-    if ([Tones class] == self)
-    {
-        sharedTones = [self new];
-        NSData* data = [Common dataForResource:@"Tones" ofType:@"json"];
-        sharedTones.tonesDictionary = [Common objectWithJsonData:data];
-    }
-}
-
-
-+ (id)allocWithZone:(NSZone*)zone
-{
-    if (sharedTones && [Tones class] == self)
-    {
-        [NSException raise:NSGenericException format:@"Duplicate Tones singleton creation"];
-    }
-
-    return [super allocWithZone:zone];
-}
-
 
 + (Tones*)sharedTones;
 {
-    return sharedTones;
+    static Tones*           sharedInstance;
+    static dispatch_once_t  onceToken;
+
+    dispatch_once(&onceToken, ^
+    {
+        sharedInstance = [[Tones alloc] init];
+
+        NSData* data = [Common dataForResource:@"Tones" ofType:@"json"];
+        sharedInstance.tonesDictionary = [Common objectWithJsonData:data];
+    });
+
+    return sharedInstance;
 }
 
 

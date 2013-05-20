@@ -22,34 +22,20 @@
 
 @implementation LibPhoneNumber
 
-static LibPhoneNumber*  sharedInstance;
-
-
 #pragma mark - Singleton Stuff
-
-+ (void)initialize
-{
-    if ([LibPhoneNumber class] == self)
-    {
-        sharedInstance = [self new];
-        [sharedInstance setUp];
-    }
-}
-
-
-+ (id)allocWithZone:(NSZone*)zone
-{
-    if (sharedInstance && [LibPhoneNumber class] == self)
-    {
-        [NSException raise:NSGenericException format:@"Duplicate LibPhoneNumber singleton creation"];
-    }
-
-    return [super allocWithZone:zone];
-}
-
 
 + (LibPhoneNumber*)sharedInstance
 {
+    static LibPhoneNumber*  sharedInstance;
+    static dispatch_once_t  onceToken;
+
+    dispatch_once(&onceToken, ^
+    {
+        sharedInstance = [[LibPhoneNumber alloc] init];
+
+        [sharedInstance setUp];
+    });
+
     return sharedInstance;
 }
 
