@@ -18,7 +18,7 @@
     NSAssert(account     != nil, @"Invalid account");
     NSAssert(inputString != nil, @"Invalid string");
 
-    NSMutableDictionary *query = [NSMutableDictionary dictionary];
+    NSMutableDictionary* query = [NSMutableDictionary dictionary];
 
     [query setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
     [query setObject:account forKey:(__bridge id)kSecAttrAccount];
