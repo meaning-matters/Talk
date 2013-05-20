@@ -153,9 +153,9 @@
     if (muteTimer == nil)
     {
         muteTimer = [NSTimer scheduledTimerWithTimeInterval:FIRST_TIMEOUT repeats:NO block:^
-                    {
-                        muteTimer = nil;
-                    }];
+        {
+            muteTimer = nil;
+        }];
 
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
         {
@@ -176,9 +176,9 @@
     if (speakerTimer == nil)
     {
         speakerTimer = [NSTimer scheduledTimerWithTimeInterval:FIRST_TIMEOUT repeats:NO block:^
-                       {
-                           speakerTimer = nil;
-                       }];
+        {
+            speakerTimer = nil;
+        }];
 
         // Add short delay to allow redraw of button (also on main thread).  This was only
         // required for speaker button but was, for symmetry, also added for mute and hold.
@@ -201,9 +201,9 @@
     if (holdTimer == nil)
     {
         holdTimer = [NSTimer scheduledTimerWithTimeInterval:FIRST_TIMEOUT repeats:NO block:^
-                    {
-                        holdTimer = nil;
-                    }];
+        {
+            holdTimer = nil;
+        }];
 
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
         {
@@ -225,9 +225,9 @@
     {
         [muteTimer invalidate];
         muteTimer = [NSTimer scheduledTimerWithTimeInterval:SECOND_TIMEOUT repeats:NO block:^
-                    {
-                        muteTimer = nil;
-                    }];
+        {
+            muteTimer = nil;
+        }];
     }
 
     _onMute = onMute;
@@ -241,9 +241,9 @@
     {
         [speakerTimer invalidate];
         speakerTimer = [NSTimer scheduledTimerWithTimeInterval:SECOND_TIMEOUT repeats:NO block:^
-                       {
-                           speakerTimer = nil;
-                       }];
+        {
+            speakerTimer = nil;
+        }];
     }
 
     _onSpeaker = onSpeaker;
@@ -257,9 +257,9 @@
     {
         [holdTimer invalidate];
         holdTimer = [NSTimer scheduledTimerWithTimeInterval:SECOND_TIMEOUT repeats:NO block:^
-                    {
-                        holdTimer = nil;
-                    }];
+        {
+            holdTimer = nil;
+        }];
     }
 
     _onHold = onHold;

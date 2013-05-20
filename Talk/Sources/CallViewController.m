@@ -631,7 +631,7 @@ const NSTimeInterval    TransitionDuration = 0.5;
 
     callOptionsView.muteButton.enabled   = YES;
     callOptionsView.keypadButton.enabled = YES;
-    callOptionsView.addButton.enabled    = YES;
+    callOptionsView.addButton.enabled    = NO;
     callOptionsView.holdButton.enabled   = YES;
 
     duration = 1;
