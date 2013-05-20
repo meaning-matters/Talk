@@ -62,13 +62,12 @@ static NSUserDefaults*  userDefaults;
             {
                 NSLog(@"//### Failed to synchronize user-defaults!");
             }
-/*
-            [KeychainUtility deleteItemForUsername:WebUsernameKey andServiceName:WebServiceKey error:nil];
-            [KeychainUtility deleteItemForUsername:WebPasswordKey andServiceName:WebServiceKey error:nil];
-            [KeychainUtility deleteItemForUsername:SipRealmKey    andServiceName:SipServiceKey error:nil];
-            [KeychainUtility deleteItemForUsername:SipUsernameKey andServiceName:SipServiceKey error:nil];
-            [KeychainUtility deleteItemForUsername:SipPasswordKey andServiceName:SipServiceKey error:nil];
- */
+
+            [Keychain deleteStringForKey:WebUsernameKey];
+            [Keychain deleteStringForKey:WebPasswordKey];
+            [Keychain deleteStringForKey:SipRealmKey];
+            [Keychain deleteStringForKey:SipUsernameKey];
+            [Keychain deleteStringForKey:SipPasswordKey];
         }
 
         [sharedSettings registerDefaults];

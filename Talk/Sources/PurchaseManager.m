@@ -16,6 +16,7 @@
 #import "Base64.h"
 #import "WebClient.h"
 #import "Settings.h"
+#import "CallManager.h"
 
 
 // These must match perfectly to what's in iTunesConnect.
@@ -296,6 +297,8 @@ static PurchaseManager*     sharedManager;
                     [Settings sharedSettings].sipRealm    = ((NSDictionary*)content)[@"sipRealm"];
                     [Settings sharedSettings].sipUsername = ((NSDictionary*)content)[@"sipUsername"];
                     [Settings sharedSettings].sipPassword = ((NSDictionary*)content)[@"sipPassword"];
+
+                    [[CallManager sharedManager] resetSipAccount];
 
                     [self finishTransaction:transaction];
                     self.accountCompletion(YES, transaction);

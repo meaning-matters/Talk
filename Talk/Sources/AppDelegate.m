@@ -331,6 +331,8 @@
 
     [[Settings sharedSettings] resetAll];
 
+    [[CallManager sharedManager] resetSipAccount];
+
     NSError*    error;
     [[NSFileManager defaultManager] removeItemAtURL:[Common audioDirectoryUrl] error:&error];
     if (error != nil)

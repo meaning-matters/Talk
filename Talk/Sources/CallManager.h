@@ -26,6 +26,8 @@
 
 + (CallManager*)sharedManager;
 
+- (void)resetSipAccount;    // Must be called when SIP account has changed.
+
 - (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity;
 
 - (void)endCall:(Call*)call;

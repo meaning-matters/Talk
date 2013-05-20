@@ -33,76 +33,29 @@
 
 @implementation CallManager
 
-static CallManager*     sharedManager;
 static SipInterface*    sipInterface;
 
 
 #pragma mark - Singleton Stuff
 
-+ (void)initialize
++ (CallManager*)sharedManager
 {
-    if ([CallManager class] == self)
+    static CallManager*    sharedInstance;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^
     {
-        sharedManager = [self new];
+        sharedInstance = [[CallManager alloc] init];
 
-        if ([self initializeSipInterface] == NO)
-        {
-            // Wait until SIP account is available.
-            __block id  observer;
-            observer = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
-                                                                         object:nil
-                                                                          queue:[NSOperationQueue mainQueue]
-                                                                     usingBlock:^(NSNotification* note)
-            {
-                if ([self initializeSipInterface] == YES)
-                {
-                    [[NSNotificationCenter defaultCenter] removeObserver:observer];
-                }
-            }];
-        }
-    }
-}
-
-
-+ (BOOL)initializeSipInterface
-{
-    if ([[Settings sharedSettings].sipServer   length] > 0 &&
-        [[Settings sharedSettings].sipRealm    length] > 0 &&
-        [[Settings sharedSettings].sipUsername length] > 0 &&
-        [[Settings sharedSettings].sipPassword length] > 0)
-    {
-        // Initialize SIP stuff.
         Settings*   settings = [Settings sharedSettings];
-
         sipInterface = [[SipInterface alloc] initWithRealm:settings.sipRealm
                                                     server:settings.sipServer
                                                   username:settings.sipUsername
                                                   password:settings.sipPassword];
-        sipInterface.delegate = sharedManager;
-
-        return YES;
-    }
-    else
-    {
-        return NO;
-    }
-}
-
-
-+ (id)allocWithZone:(NSZone*)zone
-{
-    if (sharedManager && [CallManager class] == self)
-    {
-        [NSException raise:NSGenericException format:@"Duplicate CallManager singleton creation"];
-    }
-
-    return [super allocWithZone:zone];
-}
-
-
-+ (CallManager*)sharedManager
-{
-    return sharedManager;
+        sipInterface.delegate = sharedInstance;
+    });
+    
+    return sharedInstance;
 }
 
 
@@ -496,6 +449,18 @@ static SipInterface*    sipInterface;
 
 
 #pragma mark - Public API
+
+- (void)resetSipAccount
+{
+    Settings*   settings = [Settings sharedSettings];
+    sipInterface.realm    = settings.sipRealm;
+    sipInterface.server   = settings.sipServer;
+    sipInterface.username = settings.sipUsername;
+    sipInterface.password = settings.sipPassword;
+
+    [sipInterface restart];
+}
+
 
 - (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity
 {

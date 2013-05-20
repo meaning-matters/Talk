@@ -170,14 +170,14 @@ void showLog(int level, const char* data, int len)
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification* note)
-         {
+        {
              // Keep alive once when the app closes; makes sure interval is never longer than KEEP_ALIVE_INTERVAL.
              [self keepAlive];
-         }];
+        }];
         [[UIApplication sharedApplication] setKeepAliveTimeout:KEEP_ALIVE_INTERVAL handler:^
-         {
+        {
              [self keepAlive];
-         }];
+        }];
 
         [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusMobileCallStateChangedNotification
                                                           object:nil
