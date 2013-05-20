@@ -8,6 +8,7 @@
 
 #import "SettingsViewController.h"
 #import "CountriesViewController.h"
+#import "ProvisioningViewController.h"
 #import "Settings.h"
 #import "NetworkStatus.h"
 #import "CountryNames.h"
@@ -20,16 +21,18 @@ typedef enum
 {
     TableSectionHomeCountry = 1UL << 0,
     TableSectionCallOptions = 1UL << 1,
-    TableSectionReset       = 1UL << 2,
+    TableSectionAccountData = 1UL << 2,
 } TableSections;
 
 
 @interface SettingsViewController ()
 {
-    TableSections           sections;
+    TableSections   sections;
+    Settings*       settings;
 }
 
 @end
+
 
 @implementation SettingsViewController
 
@@ -45,7 +48,9 @@ typedef enum
         // Mandatory sections.
         sections |= TableSectionHomeCountry;
         sections |= TableSectionCallOptions;
-        sections |= TableSectionReset;
+        sections |= TableSectionAccountData;
+
+        settings = [Settings sharedSettings];
     }
     
     return self;
@@ -80,10 +85,9 @@ typedef enum
     [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
 
     // When there's no longer a SIM supplying country, reset the homeCountryFromSim settings.
-    if ([NetworkStatus sharedStatus].simIsoCountryCode == nil &&
-        [Settings sharedSettings].homeCountryFromSim == YES)
+    if ([NetworkStatus sharedStatus].simIsoCountryCode == nil && settings.homeCountryFromSim == YES)
     {
-        [Settings sharedSettings].homeCountryFromSim = NO;
+        settings.homeCountryFromSim = NO;
         [self.tableView reloadData];
     }
 }
@@ -115,10 +119,10 @@ typedef enum
                                                       @"Various options related to making calls.");
             break;
 
-        case TableSectionReset:
-            title = NSLocalizedStringWithDefaultValue(@"Settings:Reset SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Reset",
-                                                      @"Option to reset all app settings & content.");
+        case TableSectionAccountData:
+            title = NSLocalizedStringWithDefaultValue(@"Settings:AccountData SectionHeader", nil,
+                                                      [NSBundle mainBundle], @"Account Data",
+                                                      @"Option to reset all app settings & data.");
             break;
     }
 
@@ -148,12 +152,11 @@ typedef enum
                                                       @"[* lines]");
             break;
 
-        case TableSectionReset:
-            title = NSLocalizedStringWithDefaultValue(@"Settings:ResetInfo SectionFooter", nil,
+        case TableSectionAccountData:
+            title = NSLocalizedStringWithDefaultValue(@"Settings:AccountDataInfo SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"This wipes your account and all data from the app. "
-                                                      @"You can restore your account, purchased numbers, and "
-                                                      @"forwardings later again.",
+                                                      @"After a reset, you can restore your account, purchased "
+                                                      @"numbers, forwardings, and credit on any device.",
                                                       @"Explanation what the Reset setting is doing\n"
                                                       @"[* lines]");
             break;
@@ -177,8 +180,9 @@ typedef enum
             numberOfRows = [NetworkStatus sharedStatus].simAvailable ? 2 : 1;
             break;
 
-        case TableSectionReset:
-            numberOfRows = 1;
+        case TableSectionAccountData:
+            numberOfRows = [settings hasAccount] ? 1 : 2;
+            break;
     }
 
     return numberOfRows;
@@ -201,33 +205,46 @@ typedef enum
             [self.navigationController pushViewController:[[CountriesViewController alloc] init] animated:YES];
             break;
 
-        case TableSectionReset:
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        case TableSectionAccountData:
+            if ([settings hasAccount] == NO && indexPath.row == 0)
+            {
+                ProvisioningViewController* provisioningViewController;
 
-            title = NSLocalizedStringWithDefaultValue(@"Settings:Reset ResetTitle", nil,
-                                                      [NSBundle mainBundle], @"Reset All",
-                                                      @"Alert title informing about resetting all user data\n"
-                                                      @"[iOS alert title size].");
+                provisioningViewController = [[ProvisioningViewController alloc] init];
+                provisioningViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+                [AppDelegate.appDelegate.tabBarController presentViewController:provisioningViewController
+                                                                       animated:YES
+                                                                     completion:nil];
+            }
+            else
+            {
+                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                
+                title = NSLocalizedStringWithDefaultValue(@"Settings:Reset ResetTitle", nil,
+                                                          [NSBundle mainBundle], @"Reset All",
+                                                          @"Alert title informing about resetting all user data\n"
+                                                          @"[iOS alert title size].");
 
-            message = NSLocalizedStringWithDefaultValue(@"Settings:Reset ResetMessage", nil,
-                                                        [NSBundle mainBundle],
-                                                        @"Are you sure you want to wipe your account and data?",
-                                                        @"Alert message informing about resetting all user data\n"
-                                                        @"[iOS alert message size]");
-            
-            {   // Prevents "Switch case is in protected scope” compiler error at default:.
-                [BlockAlertView showAlertViewWithTitle:title
-                                               message:message
-                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
-                 {
-                     if (buttonIndex == 1)
-                     {
-                         [[AppDelegate appDelegate] resetAll];
-                         [self.tableView reloadData];
-                     }
-                 }
-                                     cancelButtonTitle:[CommonStrings cancelString]
-                                     otherButtonTitles:[CommonStrings okString], nil];
+                message = NSLocalizedStringWithDefaultValue(@"Settings:Reset ResetMessage", nil,
+                                                            [NSBundle mainBundle],
+                                                            @"Are you sure you want to wipe your account and data?",
+                                                            @"Alert message informing about resetting all user data\n"
+                                                            @"[iOS alert message size]");
+
+                {   // Prevents "Switch case is in protected scope” compiler error at default:.
+                    [BlockAlertView showAlertViewWithTitle:title
+                                                   message:message
+                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+                    {
+                        if (buttonIndex == 1)
+                        {
+                            [[AppDelegate appDelegate] resetAll];
+                            [self.tableView reloadData];
+                        }
+                    }
+                                         cancelButtonTitle:[CommonStrings cancelString]
+                                         otherButtonTitles:[CommonStrings okString], nil];
+                }
             }
             break;
 
@@ -251,8 +268,8 @@ typedef enum
             cell = [self callOptionsCellForRowAtIndexPath:indexPath];
             break;
 
-        case TableSectionReset:
-            cell = [self resetCellForRowAtIndexPath:indexPath];
+        case TableSectionAccountData:
+            cell = [self accountDataCellForRowAtIndexPath:indexPath];
             break;
             
         default:
@@ -287,7 +304,7 @@ typedef enum
                                                                 @"Title of switch if home country must be read from SIM card\n"
                                                                 @"[2/3 line - abbreviated: 'From SIM'].");
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        switchView.on = [Settings sharedSettings].homeCountryFromSim;
+        switchView.on = settings.homeCountryFromSim;
         [switchView addTarget:self action:@selector(readFromSimSwitchAction:)
              forControlEvents:UIControlEventValueChanged];
     }
@@ -301,13 +318,13 @@ typedef enum
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
         }
 
-        if ([Settings sharedSettings].homeCountry != nil)
+        if (settings.homeCountry != nil)
         {
             // Note: This is also done in CountriesViewController (to update the
             //       selected cell before animation).  So pay a visit there when
             //       changing this.
-            cell.imageView.image = [UIImage imageNamed:[Settings sharedSettings].homeCountry];
-            cell.textLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:[Settings sharedSettings].homeCountry];
+            cell.imageView.image = [UIImage imageNamed:settings.homeCountry];
+            cell.textLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:settings.homeCountry];
         }
         else
         {
@@ -318,7 +335,7 @@ typedef enum
                                                                     @"[1 line - abbreviated: 'Not Selected'");
         }
         
-        if ([NetworkStatus sharedStatus].simIsoCountryCode != nil && [Settings sharedSettings].homeCountryFromSim)
+        if ([NetworkStatus sharedStatus].simIsoCountryCode != nil && settings.homeCountryFromSim)
         {
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -358,7 +375,7 @@ typedef enum
                                                                 @"Title of switch if calls over cellular data (3G/EDGE/...) are allowed\n"
                                                                 @"[2/3 line - abbreviated: 'Data Calls'].");
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        switchView.on = [Settings sharedSettings].allowCellularDataCalls;
+        switchView.on = settings.allowCellularDataCalls;
         [switchView addTarget:self action:@selector(allowDataCallsSwitchAction:)
              forControlEvents:UIControlEventValueChanged];
     }
@@ -383,7 +400,7 @@ typedef enum
                                                                 @"Title of switch if volume during call must be set a bit louder\n"
                                                                 @"[2/3 line - abbreviated: 'Louder'].");
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        switchView.on = [Settings sharedSettings].louderVolume;
+        switchView.on = settings.louderVolume;
         [switchView addTarget:self action:@selector(louderVolumeSwitchAction:)
              forControlEvents:UIControlEventValueChanged];
     }
@@ -392,20 +409,31 @@ typedef enum
 }
 
 
-- (UITableViewCell*)resetCellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)accountDataCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell;
 
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"ResetCell"];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"AccountDataCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"ResetCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"AccountDataCell"];
     }
 
-    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:Reset CellText", nil,
-                                                            [NSBundle mainBundle], @"Reset All",
-                                                            @"Title of table cell for resetting all user data\n"
-                                                            @"[2/3 line - abbreviated: 'Reset'].");
+    if ([settings hasAccount] == NO && indexPath.row == 0)
+    {
+        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:Get Account CellText", nil,
+                                                                [NSBundle mainBundle], @"Get Account",
+                                                                @"Title of table cell for resetting all user data\n"
+                                                                @"[2/3 line - abbreviated: 'Reset'].");
+    }
+    else
+    {
+        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:Reset CellText", nil,
+                                                                [NSBundle mainBundle], @"Reset All",
+                                                                @"Title of table cell for resetting all user data\n"
+                                                                @"[2/3 line - abbreviated: 'Reset'].");
+    }
+
     cell.accessoryType  = UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 
@@ -417,10 +445,10 @@ typedef enum
 
 - (void)readFromSimSwitchAction:(id)sender
 {
-    [Settings sharedSettings].homeCountryFromSim = ((UISwitch*)sender).on;
-    if ([Settings sharedSettings].homeCountryFromSim)
+    settings.homeCountryFromSim = ((UISwitch*)sender).on;
+    if (settings.homeCountryFromSim)
     {
-        [Settings sharedSettings].homeCountry = [NetworkStatus sharedStatus].simIsoCountryCode;
+        settings.homeCountry = [NetworkStatus sharedStatus].simIsoCountryCode;
     }
     
     [self.tableView reloadData];
@@ -439,7 +467,7 @@ typedef enum
     UISwitch*   allowDataCallsSwitch = sender;
 
     if ((allowDataCallsSwitch.on == YES || allowDataCallsSwitch == nil) &&
-        [Settings sharedSettings].allowCellularDataCalls == NO)
+        settings.allowCellularDataCalls == NO)
     {
         NSString*   title = NSLocalizedStringWithDefaultValue(@"Settings:AllowDataCalls AllowWarningTitle", nil,
                                                               [NSBundle mainBundle], @"Cellular Data Calls",
@@ -460,7 +488,7 @@ typedef enum
         {
             if (buttonIndex == 1)
             {
-                [Settings sharedSettings].allowCellularDataCalls = YES;
+                settings.allowCellularDataCalls = YES;
             }
             else
             {
@@ -472,7 +500,7 @@ typedef enum
     }
     else
     {
-        [Settings sharedSettings].allowCellularDataCalls = NO;
+        settings.allowCellularDataCalls = NO;
     }
 }
 
@@ -481,7 +509,7 @@ typedef enum
 {
     UISwitch*   louderVolumeSwitch = sender;
 
-    [Settings sharedSettings].louderVolume = louderVolumeSwitch.on;
+    settings.louderVolume = louderVolumeSwitch.on;
 }
 
 @end

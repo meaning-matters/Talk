@@ -109,6 +109,13 @@ static NSUserDefaults*  userDefaults;
 }
 
 
+- (BOOL)hasAccount
+{
+    return (self.webUsername.length > 0 && self.webPassword.length > 0 &&
+            self.sipUsername.length > 0 && self.sipPassword.length > 0);
+}
+
+
 #pragma mark - Helper Methods
 
 - (void)registerDefaults

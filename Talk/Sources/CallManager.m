@@ -268,7 +268,7 @@ static SipInterface*    sipInterface;
 {
     BOOL    result;
 
-    if ([[Settings sharedSettings].webUsername length] > 0 && [[Settings sharedSettings].sipUsername length] > 0)
+    if ([[Settings sharedSettings] hasAccount])
     {
         result = YES;
     }

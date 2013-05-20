@@ -15,6 +15,8 @@
 
 - (void)resetAll;
 
+- (BOOL)hasAccount;
+
 @property (nonatomic, readonly) BOOL            runBefore;              // NO if this is the first time the app runs.
 
 @property (nonatomic, strong) NSArray*          tabBarViewControllerClasses;
