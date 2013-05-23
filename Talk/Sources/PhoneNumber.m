@@ -29,6 +29,17 @@ static NSString*    defaultBaseIsoCountryCode;
 }
 
 
+- (void)setNumber:(NSString*)number
+{
+    NSCharacterSet* stripSet = [NSCharacterSet characterSetWithCharactersInString:@"()-. \t\n\r"];
+    NSString*       strippedText;
+
+    strippedText = [[number componentsSeparatedByCharactersInSet:stripSet] componentsJoinedByString:@""];
+
+    _number = strippedText;
+}
+
+
 #pragma mark - Creation
 
 - (id)init

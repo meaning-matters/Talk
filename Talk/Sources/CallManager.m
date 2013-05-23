@@ -289,69 +289,6 @@ static SipInterface*    sipInterface;
 }
 
 
-// Checks non-emergency number.
-- (BOOL)checkPhoneNumber:(PhoneNumber*)phoneNumber
-{
-    BOOL        result;
-    NSString*   title;
-    NSString*   message;
-    NSString*   buttonTitle;
-
-    if ([[Settings sharedSettings].homeCountry length] == 0 && [phoneNumber isInternational] == NO)
-    {
-        title = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownTitle", nil,
-                                                  [NSBundle mainBundle], @"Country Unknown",
-                                                  @"Alert title informing about home country being unknown\n"
-                                                  @"[iOS alert title size].");
-
-        message = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownMessage", nil,
-                                                    [NSBundle mainBundle],
-                                                    @"The country for this (local) number can't be determined. "
-                                                    @"Select the default country, or dial an international number.",
-                                                    @"Alert message informing about home country being unknown\n"
-                                                    @"[iOS alert message size]");
-
-        buttonTitle = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownButton", nil,
-                                                        [NSBundle mainBundle], @"Select",
-                                                        @"Alert button title for selecting home country\n"
-                                                        @"[iOS small alert button size]");
-
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-         {
-             if (buttonIndex == 1)
-             {
-                 UINavigationController*    modalViewController;
-                 CountriesViewController*   countriesViewController;
-                 UITabBarController*        tabBarController;
-
-                 countriesViewController = [[CountriesViewController alloc] init];
-                 countriesViewController.isModal = YES;
-
-                 modalViewController = [[UINavigationController alloc] initWithRootViewController:countriesViewController];
-                 modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-
-                 tabBarController = [AppDelegate appDelegate].tabBarController;
-                 [tabBarController presentViewController:modalViewController
-                                                animated:YES
-                                              completion:nil];
-             }
-         }
-                             cancelButtonTitle:[CommonStrings cancelString]
-                             otherButtonTitles:buttonTitle, nil];
-
-        result = NO;
-    }
-    else
-    {
-        result = YES;
-    }
-
-    return result;
-}
-
-
 - (BOOL)checkNetwork
 {
     BOOL        result;
@@ -476,7 +413,7 @@ static SipInterface*    sipInterface;
             call.network = CallNetworkMobile;
         }
     }
-    else if ([self checkAccount] && [self checkNetwork] && [self checkPhoneNumber:phoneNumber])
+    else if ([self checkAccount] && [self checkNetwork] && [Common checkCountryOfPhoneNumber:phoneNumber])
     {
         call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOut];
         call.identityNumber = identity;

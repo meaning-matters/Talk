@@ -13,6 +13,9 @@
 #import "Common.h"
 #import "CommonStrings.h"
 #import "BlockAlertView.h"
+#import "Settings.h"
+#import "AppDelegate.h"
+#import "CountriesViewController.h"
 
 
 @implementation Common
@@ -333,6 +336,68 @@
     {
         return YES;
     }
+}
+
+
+// Checks only non-emergency number.
++ (BOOL)checkCountryOfPhoneNumber:(PhoneNumber*)phoneNumber
+{
+    BOOL        result;
+    NSString*   title;
+    NSString*   message;
+    NSString*   buttonTitle;
+
+    if ([[Settings sharedSettings].homeCountry length] == 0 && [phoneNumber isInternational] == NO)
+    {
+        title = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownTitle", nil,
+                                                  [NSBundle mainBundle], @"Country Unknown",
+                                                  @"Alert title informing about home country being unknown\n"
+                                                  @"[iOS alert title size].");
+
+        message = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"The country for this (local) number can't be determined. "
+                                                    @"Select the default country, or enter an international number.",
+                                                    @"Alert message informing about home country being unknown\n"
+                                                    @"[iOS alert message size]");
+
+        buttonTitle = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownButton", nil,
+                                                        [NSBundle mainBundle], @"Select",
+                                                        @"Alert button title for selecting home country\n"
+                                                        @"[iOS small alert button size]");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+         {
+             if (buttonIndex == 1)
+             {
+                 CountriesViewController*   countriesViewController;
+                 UINavigationController*    modalViewController;
+                 id                         topViewController;
+
+                 countriesViewController = [[CountriesViewController alloc] init];
+                 countriesViewController.isModal = YES;
+
+                 modalViewController = [[UINavigationController alloc] initWithRootViewController:countriesViewController];
+                 modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+
+                 topViewController = [[[[[UIApplication sharedApplication] keyWindow] subviews] objectAtIndex:0] nextResponder];
+
+                 [topViewController presentViewController:modalViewController animated:YES completion:nil];
+             }
+         }
+                             cancelButtonTitle:[CommonStrings cancelString]
+                             otherButtonTitles:buttonTitle, nil];
+
+        result = NO;
+    }
+    else
+    {
+        result = YES;
+    }
+    
+    return result;
 }
 
 

@@ -11,14 +11,17 @@
 #import "CommonStrings.h"
 #import "NumberData.h"
 #import "RecordingData.h"
+#import "PhoneNumber.h"
+#import "Settings.h"
 
 
 typedef enum
 {
-    TableSectionName       = 1UL << 0, // User-given name.
-    TableSectionStatements = 1UL << 1,
-    TableSectionNumbers    = 1UL << 2,
-    TableSectionRecordings = 1UL << 3,
+    TableSectionName       = 1UL << 0,  // User-given name.
+    TableSectionNumber     = 1UL << 1,  //### Temporary
+    TableSectionStatements = 1UL << 2,
+    TableSectionNumbers    = 1UL << 3,
+    TableSectionRecordings = 1UL << 4,
 } TableSections;
 
 
@@ -31,10 +34,14 @@ static const int    TextFieldCellTag = 1111;
     BOOL                        isNew;
 
     NSString*                   name;
+    PhoneNumber*                phoneNumber;
     NSMutableArray*             statementsArray;
 
     NSFetchedResultsController* fetchedResultsController;
     NSManagedObjectContext*     managedObjectContext;
+
+    UITextField*                nameTextField;
+    UITextField*                numberTextField;
 }
 
 @end
@@ -57,9 +64,15 @@ static const int    TextFieldCellTag = 1111;
                                                        @"[1 line larger font].");
 
         sections |= TableSectionName;
+        sections |= TableSectionNumber;
+#if FULL_FORWARDINGS
         sections |= TableSectionStatements;
+#endif
         sections |= (self.forwarding.numbers.count > 0)    ? TableSectionNumbers    : 0;
         sections |= (self.forwarding.recordings.count > 0) ? TableSectionRecordings : 0;
+
+        name = forwarding.name;
+        phoneNumber = [[PhoneNumber alloc] init];
     }
     
     return self;
@@ -79,15 +92,27 @@ static const int    TextFieldCellTag = 1111;
                                                                          inManagedObjectContext:managedObjectContext];
 
         // Default is call all user's devices without timeout.
-        self.forwarding.statements = [Common jsonDataWithObject: @[ @{ @"call" : @{ @"devices" : @[ @"$(devices)" ] } } ] ];
+        self.forwarding.statements = [Common jsonDataWithObject: @[ @{ @"call" : @{ @"e164" : @[ @"" ] } } ] ];
     }
 
     statementsArray = [Common mutableObjectWithJsonData:self.forwarding.statements];
+    phoneNumber.number = statementsArray[0][@"call"][@"e164"][0];
 
-    self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                                                            target:self
-                                                                                            action:@selector(saveAction)];
-    [self enableSaveButton];
+    UIBarButtonItem*    buttonItem;
+
+    if (isNew)
+    {
+        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                                   target:self
+                                                                   action:@selector(saveAction)];
+        self.navigationItem.leftBarButtonItem = buttonItem;
+        [self enableSaveButton];
+
+        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                   target:self
+                                                                   action:@selector(cancel)];
+        self.navigationItem.rightBarButtonItem = buttonItem;
+    }
 
     // Let keyboard be hidden when user taps outside text fields.
     UITapGestureRecognizer* gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -105,6 +130,8 @@ static const int    TextFieldCellTag = 1111;
     NSError*    error;
 
     self.forwarding.name = name;
+    statementsArray[0][@"call"][@"e164"][0] = phoneNumber.number;
+    self.forwarding.statements = [Common jsonDataWithObject:statementsArray];
 
     if (managedObjectContext != nil)
     {
@@ -122,11 +149,18 @@ static const int    TextFieldCellTag = 1111;
         abort();
     }
 
-    [self.navigationController popViewControllerAnimated:YES];
+    if (isNew)
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 
-#pragma mark TableView Delegates
+#pragma mark - TableView Delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
@@ -141,6 +175,10 @@ static const int    TextFieldCellTag = 1111;
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionName:
+            numberOfRows = 1;
+            break;
+
+        case TableSectionNumber:
             numberOfRows = 1;
             break;
 
@@ -198,6 +236,10 @@ static const int    TextFieldCellTag = 1111;
             cell = [self nameCellForRowAtIndexPath:indexPath];
             break;
 
+        case TableSectionNumber:
+            cell = [self numberCellForRowAtIndexPath:indexPath];
+            break;
+
         case TableSectionStatements:
             cell = [self statementsCellForRowAtIndexPath:indexPath];
             break;
@@ -218,27 +260,58 @@ static const int    TextFieldCellTag = 1111;
 - (UITableViewCell*)nameCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell;
-    UITextField*        textField;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"NameCell"];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NameCell"];
-        textField = [self addTextFieldToCell:cell];
-        textField.tag = TextFieldCellTag;
+        nameTextField = [self addTextFieldToCell:cell];
+        nameTextField.tag = TextFieldCellTag;
     }
     else
     {
-        textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
+        nameTextField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
     }
 
-    textField.placeholder = [CommonStrings requiredString];
-    textField.text = self.forwarding.name;
+    nameTextField.placeholder = [CommonStrings requiredString];
+    nameTextField.text        = name;
 
-    cell.textLabel.text   = [CommonStrings nameString];
-    cell.imageView.image  = nil;
-    cell.accessoryType    = UITableViewCellAccessoryNone;
-    cell.selectionStyle   = UITableViewCellSelectionStyleNone;
+    cell.textLabel.text  = [CommonStrings nameString];
+    cell.imageView.image = nil;
+    cell.accessoryType   = UITableViewCellAccessoryNone;
+    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
+
+    return cell;
+}
+
+
+- (UITableViewCell*)numberCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell*    cell;
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumberCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NumberCell"];
+        numberTextField = [self addTextFieldToCell:cell];
+        numberTextField.tag = TextFieldCellTag;
+    }
+    else
+    {
+        numberTextField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
+    }
+
+    numberTextField.placeholder  = [CommonStrings requiredString];
+    numberTextField.text         = phoneNumber.asYouTypeFormat;
+    numberTextField.keyboardType = UIKeyboardTypePhonePad;
+    [numberTextField addTarget:self
+                        action:@selector(textFieldDidChange:)
+              forControlEvents:UIControlEventEditingChanged];
+
+    cell.textLabel.text  = [CommonStrings numberString];
+    cell.imageView.image = nil;
+    cell.accessoryType   = UITableViewCellAccessoryNone;
+    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
 
     return cell;
 }
@@ -349,6 +422,36 @@ static const int    TextFieldCellTag = 1111;
 
 #pragma mark - TextField Delegate
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField*)textField
+{
+    if (textField == numberTextField)
+    {
+        return [Common checkCountryOfPhoneNumber:phoneNumber];
+    }
+    else
+    {
+        return YES;
+    }
+}
+
+
+- (BOOL)textFieldShouldClear:(UITextField*)textField
+{
+    if (textField == nameTextField)
+    {
+        name = @"";
+    }
+    else
+    {
+        phoneNumber.number = @"";
+    }
+
+    [self enableSaveButton];
+
+    return YES;
+}
+
+
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
     [textField resignFirstResponder];
@@ -359,7 +462,16 @@ static const int    TextFieldCellTag = 1111;
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
 {
-    name = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    NSString*   text  = [textField.text stringByReplacingCharactersInRange:range withString:string];
+
+    if (textField == nameTextField)
+    {
+        name = text;
+    }
+    else
+    {
+        phoneNumber.number = text;
+    }
 
     [self enableSaveButton];
 
@@ -367,11 +479,18 @@ static const int    TextFieldCellTag = 1111;
 }
 
 
+// Called only for NumberTextField; not a delegate method.
+- (void)textFieldDidChange:(UITextField*)textField
+{
+    textField.text = phoneNumber.asYouTypeFormat;
+}
+
+
 #pragma mark - Helper Methods
 
 - (void)enableSaveButton
 {
-    self.navigationItem.rightBarButtonItem.enabled = (name.length > 0);
+    self.navigationItem.leftBarButtonItem.enabled = (name.length > 0) && phoneNumber.isValid;
 }
 
 
@@ -402,5 +521,10 @@ static const int    TextFieldCellTag = 1111;
     [[self.tableView superview] endEditing:YES];
 }
 
+
+- (void)cancel
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 @end

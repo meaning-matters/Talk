@@ -15,3 +15,5 @@
     #import <SystemConfiguration/SystemConfiguration.h>     // Needed for AFNetworking.
     #import <MobileCoreServices/MobileCoreServices.h>       // Needed for AFNetworking.
 #endif
+
+#define FULL_FORWARDINGS  0

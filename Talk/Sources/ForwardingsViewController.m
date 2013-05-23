@@ -78,10 +78,14 @@ typedef enum
                         forControlEvents:UIControlEventValueChanged];
     NSInteger   index = [Settings sharedSettings].forwardingsSelection;
     [selectionSegmentedControl setSelectedSegmentIndex:index];
+#if FULL_FORWARDINGS
     self.navigationItem.titleView = selectionSegmentedControl;
+#endif
 
     fetchedForwardingsController = [self fetchResultsForEntityName:@"Forwarding" withSortKey:@"name"];
+#if FULL_FORWARDINGS
     fetchedRecordingsController  = [self fetchResultsForEntityName:@"Recording"  withSortKey:@"name"];
+#endif
 }
 
 
@@ -492,10 +496,18 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
 - (void)addForwardingAction
 {
+    UINavigationController*     modalViewController;
     ForwardingViewController*   viewController;
+
     viewController = [[ForwardingViewController alloc] initWithFetchedResultsController:fetchedForwardingsController
                                                                              forwarding:nil];
-    [self.navigationController pushViewController:viewController animated:YES];
+
+    modalViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+
+    [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
+                                                           animated:YES
+                                                         completion:nil];
 }
 
 

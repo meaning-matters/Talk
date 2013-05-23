@@ -91,4 +91,13 @@
                                              @"[iOS standard size].");
 }
 
+
++ (NSString*)numberString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Number", nil,
+                                             [NSBundle mainBundle], @"Number",
+                                             @"Standard string to label a phone number\n"
+                                             @"[iOS standard size].");
+}
+
 @end

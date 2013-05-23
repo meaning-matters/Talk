@@ -66,6 +66,8 @@
 
 + (BOOL)checkRemoteNotifications;
 
++ (BOOL)checkCountryOfPhoneNumber:(PhoneNumber*)phoneNumber;    // Works only for non-emergency numbers.
+
 + (void)enableNetworkActivityIndicator:(BOOL)enable;
 
 + (void)redirectStderrToFile;

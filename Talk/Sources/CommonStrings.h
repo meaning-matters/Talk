@@ -28,4 +28,6 @@
 
 + (NSString*)requiredString;
 
++ (NSString*)numberString;
+
 @end

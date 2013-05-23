@@ -159,7 +159,7 @@
         NSIndexPath*            parentIndexPath = parent.tableView.indexPathForSelectedRow;
         UITableViewCell*        parentCell = [parent.tableView cellForRowAtIndexPath:parentIndexPath];
         parentCell.imageView.image = [UIImage imageNamed:[Settings sharedSettings].homeCountry];
-        parentCell.textLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:[Settings sharedSettings].homeCountry];
+        parentCell.textLabel.text  = [[CountryNames sharedNames] nameForIsoCountryCode:[Settings sharedSettings].homeCountry];
 
         [self.navigationController popViewControllerAnimated:YES];
     }

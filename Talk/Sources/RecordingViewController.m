@@ -366,7 +366,7 @@ static const int    TextFieldCellTag = 1111;
     }
 
     textField.placeholder = [CommonStrings requiredString];
-    textField.text = self.recording.name;
+    textField.text = self.recording.name;//### Must be edited 'name'!
 
     cell.textLabel.text   = [CommonStrings nameString];
     cell.imageView.image  = nil;
