@@ -342,13 +342,20 @@
 // Checks only non-emergency number.
 + (BOOL)checkCountryOfPhoneNumber:(PhoneNumber*)phoneNumber
 {
-    BOOL        result;
-    NSString*   title;
-    NSString*   message;
-    NSString*   buttonTitle;
+    static UIAlertView* alertView;
+    BOOL                result;
+    NSString*           title;
+    NSString*           message;
+    NSString*           buttonTitle;
 
     if ([[Settings sharedSettings].homeCountry length] == 0 && [phoneNumber isInternational] == NO)
     {
+        // Prevent alert being shown more than once.
+        if (alertView != nil)
+        {
+            return NO;
+        }
+        
         title = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownTitle", nil,
                                                   [NSBundle mainBundle], @"Country Unknown",
                                                   @"Alert title informing about home country being unknown\n"
@@ -366,29 +373,43 @@
                                                         @"Alert button title for selecting home country\n"
                                                         @"[iOS small alert button size]");
 
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-         {
-             if (buttonIndex == 1)
-             {
-                 CountriesViewController*   countriesViewController;
-                 UINavigationController*    modalViewController;
-                 id                         topViewController;
+        alertView = [BlockAlertView showAlertViewWithTitle:title
+                                                   message:message
+                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            if (buttonIndex == 1)
+            {
+                CountriesViewController*    countriesViewController;
+                UINavigationController*     modalViewController;
+                UIViewController*           topViewController;
 
-                 countriesViewController = [[CountriesViewController alloc] init];
-                 countriesViewController.isModal = YES;
+                countriesViewController = [[CountriesViewController alloc] init];
+                countriesViewController.isModal = YES;
 
-                 modalViewController = [[UINavigationController alloc] initWithRootViewController:countriesViewController];
-                 modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+                modalViewController = [[UINavigationController alloc] initWithRootViewController:countriesViewController];
+                modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 
-                 topViewController = [[[[[UIApplication sharedApplication] keyWindow] subviews] objectAtIndex:0] nextResponder];
+                topViewController = [AppDelegate appDelegate].window.rootViewController;
 
-                 [topViewController presentViewController:modalViewController animated:YES completion:nil];
-             }
-         }
-                             cancelButtonTitle:[CommonStrings cancelString]
-                             otherButtonTitles:buttonTitle, nil];
+                if (topViewController.presentedViewController != nil)
+                {
+                    topViewController = topViewController.presentedViewController;
+                }
+            
+                    // topViewController = [[[[UIApplication sharedApplication] keyWindow] subviews][0] nextResponder];
+
+                [topViewController presentViewController:modalViewController animated:YES completion:^
+                {
+                    alertView = nil;
+                }];
+            }
+            else
+            {
+                alertView = nil;
+            }
+        }
+                                         cancelButtonTitle:[CommonStrings cancelString]
+                                         otherButtonTitles:buttonTitle, nil];
 
         result = NO;
     }

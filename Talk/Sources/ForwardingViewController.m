@@ -102,17 +102,17 @@ static const int    TextFieldCellTag = 1111;
 
     if (isNew)
     {
-        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                                   target:self
-                                                                   action:@selector(saveAction)];
-        self.navigationItem.leftBarButtonItem = buttonItem;
-        [self enableSaveButton];
-
         buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                    target:self
                                                                    action:@selector(cancel)];
-        self.navigationItem.rightBarButtonItem = buttonItem;
+        self.navigationItem.leftBarButtonItem = buttonItem;
     }
+
+    buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                               target:self
+                                                               action:@selector(saveAction)];
+    self.navigationItem.rightBarButtonItem = buttonItem;
+    [self enableSaveButton];
 
     // Let keyboard be hidden when user taps outside text fields.
     UITapGestureRecognizer* gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -130,7 +130,7 @@ static const int    TextFieldCellTag = 1111;
     NSError*    error;
 
     self.forwarding.name = name;
-    statementsArray[0][@"call"][@"e164"][0] = phoneNumber.number;
+    statementsArray[0][@"call"][@"e164"][0] = phoneNumber.e164Format;
     self.forwarding.statements = [Common jsonDataWithObject:statementsArray];
 
     if (managedObjectContext != nil)
@@ -422,19 +422,6 @@ static const int    TextFieldCellTag = 1111;
 
 #pragma mark - TextField Delegate
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField*)textField
-{
-    if (textField == numberTextField)
-    {
-        return [Common checkCountryOfPhoneNumber:phoneNumber];
-    }
-    else
-    {
-        return YES;
-    }
-}
-
-
 - (BOOL)textFieldShouldClear:(UITextField*)textField
 {
     if (textField == nameTextField)
@@ -490,7 +477,15 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)enableSaveButton
 {
-    self.navigationItem.leftBarButtonItem.enabled = (name.length > 0) && phoneNumber.isValid;
+    if (name.length > 0 && ((phoneNumber.isValid && [Settings sharedSettings].homeCountry.length > 0) ||
+                            phoneNumber.isInternational))
+    {
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    }
 }
 
 
@@ -519,6 +514,11 @@ static const int    TextFieldCellTag = 1111;
 - (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
 {
     [[self.tableView superview] endEditing:YES];
+
+    if (numberTextField.text.length > 0)
+    {
+        [Common checkCountryOfPhoneNumber:phoneNumber];
+    }
 }
 
 
