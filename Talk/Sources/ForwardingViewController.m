@@ -477,8 +477,8 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)enableSaveButton
 {
-    if (name.length > 0 && ((phoneNumber.isValid && [Settings sharedSettings].homeCountry.length > 0) ||
-                            phoneNumber.isInternational))
+    if ([name stringByReplacingOccurrencesOfString:@" " withString:@""].length > 0 &&
+        ((phoneNumber.isValid && [Settings sharedSettings].homeCountry.length > 0) || phoneNumber.isInternational))
     {
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
