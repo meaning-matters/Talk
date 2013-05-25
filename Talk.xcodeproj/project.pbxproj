@@ -1036,8 +1036,8 @@
 		4846D8A2174170CF00C40713 /* Branding@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Branding@2x.png"; sourceTree = "<group>"; };
 		4846D8A71743F47000C40713 /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo.png; sourceTree = "<group>"; };
 		4846D8A81743F47000C40713 /* Logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Logo@2x.png"; sourceTree = "<group>"; };
-		484943291750CFDC00E1D5C4 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "App/Icon-72.png"; sourceTree = "<group>"; };
-		4849432A1750CFDC00E1D5C4 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72@2x.png"; path = "App/Icon-72@2x.png"; sourceTree = "<group>"; };
+		484943291750CFDC00E1D5C4 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
+		4849432A1750CFDC00E1D5C4 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72@2x.png"; sourceTree = "<group>"; };
 		484A949C171821CB009E22B9 /* NumberAreasCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreasCell.xib; sourceTree = "<group>"; };
 		484A949F171822D4009E22B9 /* NumberAreasCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreasCell.h; sourceTree = "<group>"; };
 		484A94A0171822D4009E22B9 /* NumberAreasCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreasCell.m; sourceTree = "<group>"; };
@@ -1954,8 +1954,6 @@
 			children = (
 				4846D8A71743F47000C40713 /* Logo.png */,
 				4846D8A81743F47000C40713 /* Logo@2x.png */,
-				484943291750CFDC00E1D5C4 /* Icon-72.png */,
-				4849432A1750CFDC00E1D5C4 /* Icon-72@2x.png */,
 				48338FB316170D8C0033F4C1 /* App */,
 				48EDD1FC1667652A007B89DA /* Call */,
 				485F68461637270100D61365 /* Flags */,
@@ -1997,6 +1995,8 @@
 			children = (
 				4895D1B216B7AC4100BCA581 /* Icon.png */,
 				4895D1B316B7AC4100BCA581 /* Icon@2x.png */,
+				484943291750CFDC00E1D5C4 /* Icon-72.png */,
+				4849432A1750CFDC00E1D5C4 /* Icon-72@2x.png */,
 				48338FB416170D8C0033F4C1 /* Default-568h@2x.png */,
 				48338FB516170D8C0033F4C1 /* Default.png */,
 				48338FB616170D8C0033F4C1 /* Default@2x.png */,
