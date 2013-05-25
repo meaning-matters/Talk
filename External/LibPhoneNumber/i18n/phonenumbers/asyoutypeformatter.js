@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright (C) 2010 The Libphonenumber Authors
+ * Copyright (C) 2010 The Libphonenumber Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -199,6 +199,7 @@ i18n.phonenumbers.AsYouTypeFormatter = function(regionCode) {
  */
 i18n.phonenumbers.AsYouTypeFormatter.SEPARATOR_BEFORE_NATIONAL_NUMBER_ = ' ';
 
+
 /**
  * @const
  * @type {i18n.phonenumbers.PhoneMetadata}
@@ -364,7 +365,7 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.getAvailableFormats_ =
     if (!nationalPrefixIsUsedByCountry || this.isCompleteNumber_ ||
         format.getNationalPrefixOptionalWhenFormatting() ||
         this.phoneUtil_.formattingRuleHasFirstGroupOnly(
-            format.getNationalPrefixFormattingRule())) {
+            format.getNationalPrefixFormattingRuleOrDefault())) {
       if (this.isFormatEligible_(format.getFormatOrDefault())) {
         this.possibleFormats_.push(format);
       }
@@ -686,8 +687,8 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.ableToExtractLongerNdd_ =
     this.nationalNumber_.append(this.nationalPrefixExtracted_);
     this.nationalNumber_.append(nationalNumberStr);
     // Remove the previously extracted NDD from prefixBeforeNationalNumber. We
-    // cannot simply set it to empty string because people sometimes enter
-    // national prefix after country code, e.g +44 (0)20-1234-5678.
+    // cannot simply set it to empty string because people sometimes incorrectly
+    // enter national prefix after the country code, e.g. +44 (0)20-1234-5678.
     /** @type {string} */
     var prefixBeforeNationalNumberStr =
         this.prefixBeforeNationalNumber_.toString();
