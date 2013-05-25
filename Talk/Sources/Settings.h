@@ -46,4 +46,9 @@
 
 @property (nonatomic, strong) NSString*         currencyCode;           // Backup until Store products are received.
 
+@property (nonatomic, readonly) NSString*       appId;                  // Used in rate-app URL.
+@property (nonatomic, readonly) NSString*       appVersion;
+@property (nonatomic, readonly) NSString*       appDisplayName;
+@property (nonatomic, readonly) NSString*       companyNameAddress;     // Used on About.
+
 @end

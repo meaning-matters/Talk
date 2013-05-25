@@ -11,4 +11,13 @@
 
 @interface AboutViewController : ViewController
 
+@property (nonatomic, weak) IBOutlet UILabel*   companyLabel;
+@property (nonatomic, weak) IBOutlet UILabel*   versionLabel;
+@property (nonatomic, weak) IBOutlet UIButton*  rateButton;
+@property (nonatomic, weak) IBOutlet UIButton*  licensesButton;
+
+- (IBAction)rateAction:(id)sender;
+
+- (IBAction)licensesAction:(id)sender;
+
 @end

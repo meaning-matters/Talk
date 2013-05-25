@@ -308,4 +308,32 @@ static NSUserDefaults*  userDefaults;
     [userDefaults setObject:currencyCode forKey:CurrencyCodeKey];
 }
 
+
+- (NSString*)appId
+{
+    return @"642013221";
+}
+
+
+- (NSString*)appVersion
+{
+    NSDictionary*   infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    
+    return [infoDictionary objectForKey:@"CFBundleVersion"];
+}
+
+
+- (NSString*)appDisplayName
+{
+    NSDictionary*   infoDictionary = [[NSBundle mainBundle] infoDictionary];
+
+    return [infoDictionary objectForKey:@"CFBundleDisplayName"];
+}
+
+
+- (NSString*)companyNameAddress
+{
+    return @"NumberBay Ltd.\n100 Barbirolli Square\nManchester M2 3AB\nUnited Kingdom";
+}
+
 @end
