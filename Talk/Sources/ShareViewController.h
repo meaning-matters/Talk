@@ -11,4 +11,10 @@
 
 @interface ShareViewController : ViewController
 
+@property (nonatomic, weak) IBOutlet UIButton*  twitterButton;
+@property (nonatomic, weak) IBOutlet UIButton*  facebookButton;
+@property (nonatomic, weak) IBOutlet UIButton*  smsButton;
+@property (nonatomic, weak) IBOutlet UIButton*  emailButton;
+@property (nonatomic, weak) IBOutlet UIButton*  rateButton;
+
 @end
