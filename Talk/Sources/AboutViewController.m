@@ -8,6 +8,7 @@
 
 #import "AboutViewController.h"
 #import "Settings.h"
+#import "LicensesViewController.h"
 
 
 @interface AboutViewController ()
@@ -61,7 +62,16 @@
 
 - (IBAction)licensesAction:(id)sender
 {
+    LicensesViewController* licensesViewController;
+    UINavigationController* modalViewController;
 
+    licensesViewController = [[LicensesViewController alloc] init];
+
+    modalViewController = [[UINavigationController alloc] initWithRootViewController:licensesViewController];
+    modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:modalViewController
+                       animated:YES
+                     completion:nil];
 }
 
 @end

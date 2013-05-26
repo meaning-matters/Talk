@@ -133,6 +133,14 @@
 		4846D8AC1743F47100C40713 /* Logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4846D8A81743F47000C40713 /* Logo@2x.png */; };
 		4849432B1750CFDC00E1D5C4 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943291750CFDC00E1D5C4 /* Icon-72.png */; };
 		4849432C1750CFDC00E1D5C4 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4849432A1750CFDC00E1D5C4 /* Icon-72@2x.png */; };
+		4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849432E1752263600E1D5C4 /* LicensesViewController.m */; };
+		484943301752263600E1D5C4 /* LicensesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849432E1752263600E1D5C4 /* LicensesViewController.m */; };
+		48494332175226D800E1D5C4 /* Licenses.json in Resources */ = {isa = PBXBuildFile; fileRef = 48494331175226D800E1D5C4 /* Licenses.json */; };
+		48494333175226D800E1D5C4 /* Licenses.json in Resources */ = {isa = PBXBuildFile; fileRef = 48494331175226D800E1D5C4 /* Licenses.json */; };
+		4849433C175240EB00E1D5C4 /* LicenseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849433B175240EA00E1D5C4 /* LicenseViewController.m */; };
+		4849433D175240EB00E1D5C4 /* LicenseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849433B175240EA00E1D5C4 /* LicenseViewController.m */; };
+		4849433F1752410500E1D5C4 /* LicenseView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4849433E1752410500E1D5C4 /* LicenseView.xib */; };
+		484943401752410500E1D5C4 /* LicenseView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4849433E1752410500E1D5C4 /* LicenseView.xib */; };
 		484A949D171821CB009E22B9 /* NumberAreasCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484A949C171821CB009E22B9 /* NumberAreasCell.xib */; };
 		484A949E171821CB009E22B9 /* NumberAreasCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484A949C171821CB009E22B9 /* NumberAreasCell.xib */; };
 		484A94A1171822D4009E22B9 /* NumberAreasCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 484A94A0171822D4009E22B9 /* NumberAreasCell.m */; };
@@ -1038,6 +1046,12 @@
 		4846D8A81743F47000C40713 /* Logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Logo@2x.png"; sourceTree = "<group>"; };
 		484943291750CFDC00E1D5C4 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		4849432A1750CFDC00E1D5C4 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72@2x.png"; sourceTree = "<group>"; };
+		4849432D1752263600E1D5C4 /* LicensesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LicensesViewController.h; sourceTree = "<group>"; };
+		4849432E1752263600E1D5C4 /* LicensesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LicensesViewController.m; sourceTree = "<group>"; };
+		48494331175226D800E1D5C4 /* Licenses.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Licenses.json; path = Resources/Licenses.json; sourceTree = "<group>"; };
+		4849433A175240EA00E1D5C4 /* LicenseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LicenseViewController.h; sourceTree = "<group>"; };
+		4849433B175240EA00E1D5C4 /* LicenseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LicenseViewController.m; sourceTree = "<group>"; };
+		4849433E1752410500E1D5C4 /* LicenseView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LicenseView.xib; sourceTree = "<group>"; };
 		484A949C171821CB009E22B9 /* NumberAreasCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreasCell.xib; sourceTree = "<group>"; };
 		484A949F171822D4009E22B9 /* NumberAreasCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreasCell.h; sourceTree = "<group>"; };
 		484A94A0171822D4009E22B9 /* NumberAreasCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreasCell.m; sourceTree = "<group>"; };
@@ -2694,6 +2708,7 @@
 				48AF450D164948DC00DFE3D8 /* GroupsView.xib */,
 				48AF45131649490100DFE3D8 /* HelpView.xib */,
 				48D0A6F91655E2C600FA2D98 /* KeypadView.xib */,
+				4849433E1752410500E1D5C4 /* LicenseView.xib */,
 				484A94A5171C5065009E22B9 /* NumberAreaActionCell.xib */,
 				484D937217132518006FA875 /* NumberAreaCitiesView.xib */,
 				4830461F16EE222C000F9B05 /* NumberAreaView.xib */,
@@ -2737,6 +2752,10 @@
 				48AF44F5164947E600DFE3D8 /* GroupsViewController.m */,
 				48AF44FC1649483600DFE3D8 /* HelpViewController.h */,
 				48AF44FD1649483600DFE3D8 /* HelpViewController.m */,
+				4849433A175240EA00E1D5C4 /* LicenseViewController.h */,
+				4849433B175240EA00E1D5C4 /* LicenseViewController.m */,
+				4849432D1752263600E1D5C4 /* LicensesViewController.h */,
+				4849432E1752263600E1D5C4 /* LicensesViewController.m */,
 				484D936A1712FBA1006FA875 /* NumberAreaCitiesViewController.h */,
 				484D936B1712FBA1006FA875 /* NumberAreaCitiesViewController.m */,
 				4830462216EE269D000F9B05 /* NumberAreaViewController.h */,
@@ -2779,6 +2798,7 @@
 				48206EF7168DD8180040B04E /* Tones.json */,
 				48D0A6E51654D65200FA2D98 /* SipConfig.cfg */,
 				48DD727F169CD4A200CD7080 /* Data.xcdatamodeld */,
+				48494331175226D800E1D5C4 /* Licenses.json */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -3546,6 +3566,8 @@
 				4846D8AB1743F47100C40713 /* Logo@2x.png in Resources */,
 				4849432B1750CFDC00E1D5C4 /* Icon-72.png in Resources */,
 				4849432C1750CFDC00E1D5C4 /* Icon-72@2x.png in Resources */,
+				48494332175226D800E1D5C4 /* Licenses.json in Resources */,
+				4849433F1752410500E1D5C4 /* LicenseView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3667,6 +3689,8 @@
 				4846D8A6174170CF00C40713 /* Branding@2x.png in Resources */,
 				4846D8AA1743F47100C40713 /* Logo.png in Resources */,
 				4846D8AC1743F47100C40713 /* Logo@2x.png in Resources */,
+				48494333175226D800E1D5C4 /* Licenses.json in Resources */,
+				484943401752410500E1D5C4 /* LicenseView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3781,6 +3805,8 @@
 				48CA503D172C5EB400CB1B7B /* ForwardingViewController.m in Sources */,
 				48CA5042172FC6C800CB1B7B /* ForwardingSequenceViewController.m in Sources */,
 				48B0C3F9174989F500DAB3BD /* Keychain.m in Sources */,
+				4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */,
+				4849433C175240EB00E1D5C4 /* LicenseViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3863,6 +3889,8 @@
 				48CA503E172C5EB400CB1B7B /* ForwardingViewController.m in Sources */,
 				48CA5043172FC6C800CB1B7B /* ForwardingSequenceViewController.m in Sources */,
 				48B0C3FA174989F500DAB3BD /* Keychain.m in Sources */,
+				484943301752263600E1D5C4 /* LicensesViewController.m in Sources */,
+				4849433D175240EB00E1D5C4 /* LicenseViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
