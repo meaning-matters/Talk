@@ -193,8 +193,8 @@
                                         NSStringFromClass([HelpViewController        class]),
                                         NSStringFromClass([AboutViewController       class]),
                                         NSStringFromClass([SettingsViewController    class]),
-                                        //NSStringFromClass([ShareViewController       class])];
-                                       ];
+                                        NSStringFromClass([ShareViewController       class])];
+
     NSSet*  preferredSet = [NSSet setWithArray:[Settings sharedSettings].tabBarViewControllerClasses];
     NSSet*  defaultSet   = [NSSet setWithArray:viewControllerClasses];
 

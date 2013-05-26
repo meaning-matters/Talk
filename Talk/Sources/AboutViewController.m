@@ -44,6 +44,20 @@
                                                                 @"To form software version (e.g. 'Version 1.2.5')\n"
                                                                 @"[1 line normal font].");
     self.versionLabel.text = [NSString stringWithFormat:versionText, [Settings sharedSettings].appVersion];
+
+    NSString*   title;
+
+    title = NSLocalizedStringWithDefaultValue(@"About RateAppButtonTitle", nil,
+                                              [NSBundle mainBundle], @"Rate in App Store ...",
+                                              @"Button title to open iOS App Store.\n"
+                                              @"[1 line normal font - must use correct iOS term].");
+    [self.rateButton setTitle:title forState:UIControlStateNormal];
+
+    title = NSLocalizedStringWithDefaultValue(@"About LicensesButtonTitle", nil,
+                                              [NSBundle mainBundle], @"Licenses",
+                                              @"Button title to show open software licenses screen.\n"
+                                              @"[1 line normal font - must use correct iOS term].");
+    [self.licensesButton setTitle:title forState:UIControlStateNormal];
 }
 
 
