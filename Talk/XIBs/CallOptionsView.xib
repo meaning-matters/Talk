@@ -40,7 +40,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{12, 12}, {90, 111}}</string>
 						<reference key="NSSuperview" ref="276810534"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="255725443"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -84,7 +83,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{103, 12}, {90, 111}}</string>
 						<reference key="NSSuperview" ref="276810534"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="16893984"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -115,7 +113,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{194, 12}, {90, 111}}</string>
 						<reference key="NSSuperview" ref="276810534"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="835677616"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -146,7 +143,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{12, 124}, {90, 111}}</string>
 						<reference key="NSSuperview" ref="276810534"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="786681756"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -177,7 +173,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{103, 124}, {90, 111}}</string>
 						<reference key="NSSuperview" ref="276810534"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="37281994"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -208,8 +203,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{194, 124}, {90, 111}}</string>
 						<reference key="NSSuperview" ref="276810534"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -237,7 +230,6 @@
 				</array>
 				<string key="NSFrameSize">{296, 247}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="721403804"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
@@ -469,99 +461,7 @@
 			<nil key="sourceID"/>
 			<int key="maxID">86</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">CallOptionButton</string>
-					<string key="superclassName">UIButton</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/CallOptionButton.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">CallOptionsView</string>
-					<string key="superclassName">UIView</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="addAction:">id</string>
-						<string key="groupsAction:">id</string>
-						<string key="holdAction:">id</string>
-						<string key="keypadAction:">id</string>
-						<string key="muteAction:">id</string>
-						<string key="speakerAction:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="addAction:">
-							<string key="name">addAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="groupsAction:">
-							<string key="name">groupsAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="holdAction:">
-							<string key="name">holdAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="keypadAction:">
-							<string key="name">keypadAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="muteAction:">
-							<string key="name">muteAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="speakerAction:">
-							<string key="name">speakerAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="addButton">CallOptionButton</string>
-						<string key="groupsButton">CallOptionButton</string>
-						<string key="holdButton">CallOptionButton</string>
-						<string key="keypadButton">CallOptionButton</string>
-						<string key="muteButton">CallOptionButton</string>
-						<string key="speakerButton">CallOptionButton</string>
-						<string key="view">UIView</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="addButton">
-							<string key="name">addButton</string>
-							<string key="candidateClassName">CallOptionButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="groupsButton">
-							<string key="name">groupsButton</string>
-							<string key="candidateClassName">CallOptionButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="holdButton">
-							<string key="name">holdButton</string>
-							<string key="candidateClassName">CallOptionButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="keypadButton">
-							<string key="name">keypadButton</string>
-							<string key="candidateClassName">CallOptionButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="muteButton">
-							<string key="name">muteButton</string>
-							<string key="candidateClassName">CallOptionButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="speakerButton">
-							<string key="name">speakerButton</string>
-							<string key="candidateClassName">CallOptionButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="view">
-							<string key="name">view</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/CallOptionsView.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>

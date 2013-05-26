@@ -8,13 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "ViewController.h"
+#import "ShareButton.h"
+
 
 @interface ShareViewController : ViewController
 
-@property (nonatomic, weak) IBOutlet UIButton*  twitterButton;
-@property (nonatomic, weak) IBOutlet UIButton*  facebookButton;
-@property (nonatomic, weak) IBOutlet UIButton*  smsButton;
-@property (nonatomic, weak) IBOutlet UIButton*  emailButton;
-@property (nonatomic, weak) IBOutlet UIButton*  rateButton;
+@property (nonatomic, weak) IBOutlet ShareButton*   twitterButton;
+@property (nonatomic, weak) IBOutlet ShareButton*   facebookButton;
+@property (nonatomic, weak) IBOutlet ShareButton*   appStoreButton;
+@property (nonatomic, weak) IBOutlet ShareButton*   emailButton;
+@property (nonatomic, weak) IBOutlet ShareButton*   messageButton;
+
+@property (nonatomic, weak) IBOutlet UILabel*       thanksLabel;
 
 @end
