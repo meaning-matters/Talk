@@ -7,8 +7,9 @@
 //
 
 #import "AboutViewController.h"
-#import "Settings.h"
 #import "LicensesViewController.h"
+#import "CreditsViewController.h"
+#import "Settings.h"
 
 
 @interface AboutViewController ()
@@ -47,15 +48,15 @@
 
     NSString*   title;
 
-    title = NSLocalizedStringWithDefaultValue(@"About RateAppButtonTitle", nil,
-                                              [NSBundle mainBundle], @"Rate in App Store ...",
-                                              @"Button title to open iOS App Store.\n"
-                                              @"[1 line normal font - must use correct iOS term].");
-    [self.rateButton setTitle:title forState:UIControlStateNormal];
+    title = NSLocalizedStringWithDefaultValue(@"About CreditsButtonTitle", nil,
+                                              [NSBundle mainBundle], @"Credits",
+                                              @"Button title to open credits/thanks (not calling credit) screen.\n"
+                                              @"[1 line normal font].");
+    [self.creditsButton setTitle:title forState:UIControlStateNormal];
 
     title = NSLocalizedStringWithDefaultValue(@"About LicensesButtonTitle", nil,
                                               [NSBundle mainBundle], @"Licenses",
-                                              @"Button title to show open software licenses screen.\n"
+                                              @"Button title to show open-source software licenses screen.\n"
                                               @"[1 line normal font - must use correct iOS term].");
     [self.licensesButton setTitle:title forState:UIControlStateNormal];
 }
@@ -63,14 +64,18 @@
 
 #pragma mark - Actions
 
-- (IBAction)rateAction:(id)sender
+- (IBAction)creditsAction:(id)sender
 {
-    NSString* url = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews"
-                    @"?id=%@&onlyLatestVersion=true&pageNumber=0&sortOrdering=1&"
-                    @"type=Purple+Software";
-    url = [NSString stringWithFormat:url, [Settings sharedSettings].appId];
+    CreditsViewController*  creditsViewController;
+    UINavigationController* modalViewController;
 
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+    creditsViewController = [[CreditsViewController alloc] init];
+
+    modalViewController = [[UINavigationController alloc] initWithRootViewController:creditsViewController];
+    modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:modalViewController
+                       animated:YES
+                     completion:nil];
 }
 
 

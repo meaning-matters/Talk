@@ -7,6 +7,8 @@
 //
 
 #import "ShareViewController.h"
+#import "Settings.h"
+
 
 @interface ShareViewController ()
 
@@ -36,6 +38,42 @@
     self.appStoreButton.color = [UIColor colorWithRed:0.21f green:0.59f blue:0.81f alpha:1.0f];
     self.emailButton.color    = [UIColor colorWithRed:0.19f green:0.44f blue:0.78f alpha:1.0f];
     self.messageButton.color  = [UIColor colorWithRed:0.11f green:0.85f blue:0.02f alpha:1.0f];
+}
+
+
+
+- (IBAction)twitterAction:(id)sender
+{
+
+}
+
+
+- (IBAction)facebookAction:(id)sender
+{
+
+}
+
+
+- (IBAction)appStoreAction:(id)sender
+{
+    NSString* url = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews"
+    @"?id=%@&onlyLatestVersion=true&pageNumber=0&sortOrdering=1&"
+    @"type=Purple+Software";
+    url = [NSString stringWithFormat:url, [Settings sharedSettings].appId];
+
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+}
+
+
+- (IBAction)emailAction:(id)sender
+{
+
+}
+
+
+- (IBAction)messageAction:(id)sender
+{
+
 }
 
 @end

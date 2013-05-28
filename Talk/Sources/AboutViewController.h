@@ -13,10 +13,10 @@
 
 @property (nonatomic, weak) IBOutlet UILabel*   companyLabel;
 @property (nonatomic, weak) IBOutlet UILabel*   versionLabel;
-@property (nonatomic, weak) IBOutlet UIButton*  rateButton;
+@property (nonatomic, weak) IBOutlet UIButton*  creditsButton;
 @property (nonatomic, weak) IBOutlet UIButton*  licensesButton;
 
-- (IBAction)rateAction:(id)sender;
+- (IBAction)creditsAction:(id)sender;
 
 - (IBAction)licensesAction:(id)sender;
 

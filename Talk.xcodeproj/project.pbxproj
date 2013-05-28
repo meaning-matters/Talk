@@ -183,6 +183,12 @@
 		484943A81753252800E1D5C4 /* TwitterWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943811753252800E1D5C4 /* TwitterWhite.png */; };
 		484943A91753252800E1D5C4 /* TwitterWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943821753252800E1D5C4 /* TwitterWhite@2x.png */; };
 		484943AA1753252800E1D5C4 /* TwitterWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943821753252800E1D5C4 /* TwitterWhite@2x.png */; };
+		484943AD1753C00100E1D5C4 /* CreditsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484943AC1753C00000E1D5C4 /* CreditsViewController.m */; };
+		484943AE1753C00100E1D5C4 /* CreditsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484943AC1753C00000E1D5C4 /* CreditsViewController.m */; };
+		484943B01753C44D00E1D5C4 /* CreditsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484943AF1753C44D00E1D5C4 /* CreditsView.xib */; };
+		484943B11753C44D00E1D5C4 /* CreditsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484943AF1753C44D00E1D5C4 /* CreditsView.xib */; };
+		484943B31754762800E1D5C4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 484943B21754762800E1D5C4 /* Credits.rtf */; };
+		484943B41754762800E1D5C4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 484943B21754762800E1D5C4 /* Credits.rtf */; };
 		484A949D171821CB009E22B9 /* NumberAreasCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484A949C171821CB009E22B9 /* NumberAreasCell.xib */; };
 		484A949E171821CB009E22B9 /* NumberAreasCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484A949C171821CB009E22B9 /* NumberAreasCell.xib */; };
 		484A94A1171822D4009E22B9 /* NumberAreasCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 484A94A0171822D4009E22B9 /* NumberAreasCell.m */; };
@@ -1116,6 +1122,10 @@
 		484943801753252800E1D5C4 /* TwitterBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TwitterBlack@2x.png"; sourceTree = "<group>"; };
 		484943811753252800E1D5C4 /* TwitterWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TwitterWhite.png; sourceTree = "<group>"; };
 		484943821753252800E1D5C4 /* TwitterWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TwitterWhite@2x.png"; sourceTree = "<group>"; };
+		484943AB1753C00000E1D5C4 /* CreditsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditsViewController.h; sourceTree = "<group>"; };
+		484943AC1753C00000E1D5C4 /* CreditsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditsViewController.m; sourceTree = "<group>"; };
+		484943AF1753C44D00E1D5C4 /* CreditsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreditsView.xib; sourceTree = "<group>"; };
+		484943B21754762800E1D5C4 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; name = Credits.rtf; path = Resources/Credits.rtf; sourceTree = "<group>"; };
 		484A949C171821CB009E22B9 /* NumberAreasCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreasCell.xib; sourceTree = "<group>"; };
 		484A949F171822D4009E22B9 /* NumberAreasCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreasCell.h; sourceTree = "<group>"; };
 		484A94A0171822D4009E22B9 /* NumberAreasCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreasCell.m; sourceTree = "<group>"; };
@@ -2796,6 +2806,7 @@
 				48A261BF16FDE26100007638 /* CallMessageView.xib */,
 				48EDD226166770B8007B89DA /* CallOptionsView.xib */,
 				485ECBCB1651642D00364F08 /* CountriesView.xib */,
+				484943AF1753C44D00E1D5C4 /* CreditsView.xib */,
 				48AF4507164948B800DFE3D8 /* CreditView.xib */,
 				48AF450A164948CD00DFE3D8 /* DialerView.xib */,
 				48AF455D1649799F00DFE3D8 /* ForwardingsView.xib */,
@@ -2832,6 +2843,8 @@
 				48BD8BEB1663E87800F2CB45 /* CallViewController.m */,
 				485ECBCE1651646700364F08 /* CountriesViewController.h */,
 				485ECBCF1651646700364F08 /* CountriesViewController.m */,
+				484943AB1753C00000E1D5C4 /* CreditsViewController.h */,
+				484943AC1753C00000E1D5C4 /* CreditsViewController.m */,
 				48AF44EC164947B300DFE3D8 /* CreditViewController.h */,
 				48AF44ED164947B300DFE3D8 /* CreditViewController.m */,
 				48AF44F0164947CD00DFE3D8 /* DialerViewController.h */,
@@ -2886,6 +2899,7 @@
 			isa = PBXGroup;
 			children = (
 				48D0A6EC1654D66E00FA2D98 /* CountryNames.json */,
+				484943B21754762800E1D5C4 /* Credits.rtf */,
 				48D0A6E81654D66200FA2D98 /* InfoPlist.strings */,
 				4812727216487E2D00534450 /* LibPhoneNumber.js */,
 				48A2CDFB16834FC100506A7C /* RingbackTones.json */,
@@ -3682,6 +3696,8 @@
 				484943A51753252800E1D5C4 /* TwitterBlack@2x.png in Resources */,
 				484943A71753252800E1D5C4 /* TwitterWhite.png in Resources */,
 				484943A91753252800E1D5C4 /* TwitterWhite@2x.png in Resources */,
+				484943B01753C44D00E1D5C4 /* CreditsView.xib in Resources */,
+				484943B31754762800E1D5C4 /* Credits.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3825,6 +3841,8 @@
 				484943A61753252800E1D5C4 /* TwitterBlack@2x.png in Resources */,
 				484943A81753252800E1D5C4 /* TwitterWhite.png in Resources */,
 				484943AA1753252800E1D5C4 /* TwitterWhite@2x.png in Resources */,
+				484943B11753C44D00E1D5C4 /* CreditsView.xib in Resources */,
+				484943B41754762800E1D5C4 /* Credits.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3942,6 +3960,7 @@
 				4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */,
 				4849433C175240EB00E1D5C4 /* LicenseViewController.m in Sources */,
 				4849436D17529DE100E1D5C4 /* ShareButton.m in Sources */,
+				484943AD1753C00100E1D5C4 /* CreditsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4027,6 +4046,7 @@
 				484943301752263600E1D5C4 /* LicensesViewController.m in Sources */,
 				4849433D175240EB00E1D5C4 /* LicenseViewController.m in Sources */,
 				4849436E17529DE100E1D5C4 /* ShareButton.m in Sources */,
+				484943AE1753C00100E1D5C4 /* CreditsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

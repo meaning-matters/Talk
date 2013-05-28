@@ -21,4 +21,15 @@
 
 @property (nonatomic, weak) IBOutlet UILabel*       thanksLabel;
 
+
+- (IBAction)twitterAction:(id)sender;
+
+- (IBAction)facebookAction:(id)sender;
+
+- (IBAction)appStoreAction:(id)sender;
+
+- (IBAction)emailAction:(id)sender;
+
+- (IBAction)messageAction:(id)sender;
+
 @end
