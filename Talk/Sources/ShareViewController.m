@@ -222,7 +222,6 @@
 }
 
 
-
 #pragma mark - Helpers
 
 - (NSString*)initialText
