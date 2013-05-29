@@ -9,10 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "AppDelegate.h"
 
-#define CFReleaseSafe(x)                                { if ((x) != NULL) CFRelease(x); }
 
 // http://stackoverflow.com/questions/3172794/scope-bar-for-uitableview-like-app-store
 #define UndocumentedSearchScopeBarSegmentedControlStyle 7
+
+#define CFReleaseSafe(x)                                { if ((x) != NULL) CFRelease(x); }
+
 
 @interface Common : NSObject
 
@@ -29,6 +31,8 @@
 + (NSString*)bundleVersion;
 
 + (NSString*)bundleName;
+
++ (NSString*)appStoreUrlString;
 
 + (NSData*)jsonDataWithObject:(id)object;
 

@@ -6,8 +6,11 @@
 //  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
 //
 
+#import <Social/Social.h>
 #import "ShareViewController.h"
 #import "Settings.h"
+#import "CommonStrings.h"
+#import "Common.h"
 
 
 @interface ShareViewController ()
@@ -41,27 +44,35 @@
 }
 
 
-
 - (IBAction)twitterAction:(id)sender
 {
+    SLComposeViewController*    controller;
 
+    controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+    [controller setInitialText:[self initialText]];
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 
 - (IBAction)facebookAction:(id)sender
 {
+    SLComposeViewController*    controller;
 
+    controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+    [controller setInitialText:[self initialText]];
+    [controller addImage:[UIImage imageNamed:@"LogoFacebook.png"]]; // Must be 403 pixels wide to fill timeline.
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 
 - (IBAction)appStoreAction:(id)sender
 {
-    NSString* url = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews"
-    @"?id=%@&onlyLatestVersion=true&pageNumber=0&sortOrdering=1&"
-    @"type=Purple+Software";
-    url = [NSString stringWithFormat:url, [Settings sharedSettings].appId];
+    NSString* urlString = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews"
+                          @"?id=%@&onlyLatestVersion=true&pageNumber=0&sortOrdering=1&"
+                          @"type=Purple+Software";
+    urlString = [NSString stringWithFormat:urlString, [Settings sharedSettings].appId];
 
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
 }
 
 
@@ -74,6 +85,25 @@
 - (IBAction)messageAction:(id)sender
 {
 
+}
+
+
+#pragma mark - Helpers
+
+- (NSString*)initialText
+{
+    NSString*                   text;
+
+    text = NSLocalizedStringWithDefaultValue(@"Share BosyText", nil,
+                                             [NSBundle mainBundle],
+                                             @"Check this out: %@ Great internet telephony for business and "
+                                             @"frequent travellers.",
+                                             @"Default text put in Twitter/Facebook/... message to promote "
+                                             @"this app\n"
+                                             @"[iOS alert title size - parameter is URL to iOS app].");
+    text = [NSString stringWithFormat:text, [Common appStoreUrlString]];
+
+    return text;
 }
 
 @end

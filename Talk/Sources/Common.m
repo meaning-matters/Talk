@@ -72,6 +72,14 @@
 }
 
 
++ (NSString*)appStoreUrlString
+{
+    NSString*   appName = [[Common bundleName] stringByReplacingOccurrencesOfString:@" " withString:@""];
+
+    return [NSString stringWithFormat:@"http://itunes.com/apps/%@", appName];
+}
+
+
 + (NSData*)jsonDataWithObject:(id)object
 {
     NSError*                error = nil;
