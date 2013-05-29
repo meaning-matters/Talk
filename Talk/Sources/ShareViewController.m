@@ -10,6 +10,7 @@
 #import "ShareViewController.h"
 #import "Settings.h"
 #import "CommonStrings.h"
+#import "BlockAlertView.h"
 #import "Common.h"
 
 
@@ -78,25 +79,159 @@
 
 - (IBAction)emailAction:(id)sender
 {
+    if ([MFMailComposeViewController canSendMail])
+    {
+        MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+        controller.mailComposeDelegate = self;
+        [controller setSubject:[Common bundleName]];
+        [controller setMessageBody:[self initialText] isHTML:NO];
+        [self presentViewController:controller animated:YES completion:nil];
+    }
+    else
+    {
+        NSString*   title;
+        NSString*   message;
 
+        title = NSLocalizedStringWithDefaultValue(@"Share NoMailAccountTitle", nil,
+                                                  [NSBundle mainBundle], @"No Email Accounts",
+                                                  @"Alert title that no text message (SMS) can be send\n"
+                                                  @"[iOS alert title size].");
+
+        message = NSLocalizedStringWithDefaultValue(@"Share NoEmailAccountMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"There are no email accounts configured. You can add an email "
+                                                    @"account in iOS Settings > Mail, ....",
+                                                    @"Alert message that no email can be send\n"
+                                                    @"[iOS alert message size]");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[CommonStrings closeString]
+                             otherButtonTitles:nil];
+    }
 }
 
 
 - (IBAction)messageAction:(id)sender
 {
+    if ([MFMessageComposeViewController canSendText])
+    {
+        MFMessageComposeViewController* controller = [[MFMessageComposeViewController alloc] init];
+        controller.messageComposeDelegate = self;
+        controller.body = [self initialText];
+        [self presentViewController:controller animated:YES completion:nil];
+    }
+    else
+    {
+        NSString*   title;
+        NSString*   message;
+        
+        title = NSLocalizedStringWithDefaultValue(@"Share NoTextMessageTitle", nil,
+                                                  [NSBundle mainBundle], @"Can't Send Message",
+                                                  @"Alert title that no text message (SMS) can be send\n"
+                                                  @"[iOS alert title size].");
 
+        message = NSLocalizedStringWithDefaultValue(@"Share NoTextMessageMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"You can't send a text message now. You can enable iMessage in "
+                                                    @"iOS Settings > Messages.",
+                                                    @"Alert message that no text message (SMS) can be send\n"
+                                                    @"[iOS alert message size - Settings, iMessage and Message are "
+                                                    @"iOS terms]");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[CommonStrings closeString]
+                             otherButtonTitles:nil];
+    }
 }
+
+
+#pragma mark - MF Delegates
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError*)error
+{
+    if (result == MFMailComposeResultFailed)
+    {
+        NSString*   title;
+        NSString*   message;
+
+        title = NSLocalizedStringWithDefaultValue(@"Share EmailFailedTitle", nil,
+                                                  [NSBundle mainBundle], @"Failed To Send Email",
+                                                  @"Alert title that sending an email failed\n"
+                                                  @"[iOS alert title size].");
+
+        message = NSLocalizedStringWithDefaultValue(@"Share EmailFailedMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"Sending the text message failed.",
+                                                    @"Alert message that sending an email failed\n"
+                                                    @"[iOS alert message size]");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL canceled, NSInteger buttonIndex)
+         {
+             [self dismissViewControllerAnimated:YES completion:nil];
+         }
+                             cancelButtonTitle:[CommonStrings closeString]
+                             otherButtonTitles:nil];
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+
+- (void)messageComposeViewController:(MFMessageComposeViewController*)controller
+                 didFinishWithResult:(MessageComposeResult)result
+{
+    if (result == MessageComposeResultFailed)
+    {
+        NSString*   title;
+        NSString*   message;
+
+        title = NSLocalizedStringWithDefaultValue(@"Share MessageFailedTitle", nil,
+                                                  [NSBundle mainBundle], @"Failed To Send Message",
+                                                  @"Alert title that sending a text message (SMS) failed\n"
+                                                  @"[iOS alert title size].");
+
+        message = NSLocalizedStringWithDefaultValue(@"Share MessageFailedMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"Sending the text message failed.",
+                                                    @"Alert message that sending a text message (SMS) failed\n"
+                                                    @"[iOS alert message size]");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL canceled, NSInteger buttonIndex)
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+                             cancelButtonTitle:[CommonStrings closeString]
+                             otherButtonTitles:nil];
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
 
 
 #pragma mark - Helpers
 
 - (NSString*)initialText
 {
-    NSString*                   text;
+    NSString*   text;
 
     text = NSLocalizedStringWithDefaultValue(@"Share BosyText", nil,
                                              [NSBundle mainBundle],
-                                             @"Check this out: %@ Great internet telephony for business and "
+                                             @"Check this out: %@ Great internet telephony for businesses and "
                                              @"frequent travellers.",
                                              @"Default text put in Twitter/Facebook/... message to promote "
                                              @"this app\n"
