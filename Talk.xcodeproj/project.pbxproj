@@ -704,6 +704,10 @@
 		4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3F5175668CA0006542F /* LogoFacebook.png */; };
 		4864B3F7175668CA0006542F /* LogoFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3F5175668CA0006542F /* LogoFacebook.png */; };
 		4864B3F917566E950006542F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4864B3F817566E950006542F /* MessageUI.framework */; };
+		4864B3FC1757C72F0006542F /* ContactUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4864B3FB1757C72F0006542F /* ContactUsViewController.m */; };
+		4864B3FD1757C72F0006542F /* ContactUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4864B3FB1757C72F0006542F /* ContactUsViewController.m */; };
+		4864B3FF1757C8E80006542F /* ContactUsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3FE1757C8E80006542F /* ContactUsView.xib */; };
+		4864B4001757C8E80006542F /* ContactUsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3FE1757C8E80006542F /* ContactUsView.xib */; };
 		487A7C9A16978DBE007693EE /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 487A7C9916978DBE007693EE /* MediaPlayer.framework */; };
 		488268D9164BCF8600EA58AE /* NetworkStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 488268D8164BCF8600EA58AE /* NetworkStatus.m */; };
 		488268DA164BCF8600EA58AE /* NetworkStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 488268D8164BCF8600EA58AE /* NetworkStatus.m */; };
@@ -1637,6 +1641,9 @@
 		485F6A381637270100D61365 /* ZW@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ZW@2x.png"; sourceTree = "<group>"; };
 		4864B3F5175668CA0006542F /* LogoFacebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LogoFacebook.png; sourceTree = "<group>"; };
 		4864B3F817566E950006542F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		4864B3FA1757C72F0006542F /* ContactUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsViewController.h; sourceTree = "<group>"; };
+		4864B3FB1757C72F0006542F /* ContactUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsViewController.m; sourceTree = "<group>"; };
+		4864B3FE1757C8E80006542F /* ContactUsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactUsView.xib; sourceTree = "<group>"; };
 		487A7C9916978DBE007693EE /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		488268D7164BCF8600EA58AE /* NetworkStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkStatus.h; sourceTree = "<group>"; };
 		488268D8164BCF8600EA58AE /* NetworkStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkStatus.m; sourceTree = "<group>"; };
@@ -2842,6 +2849,7 @@
 				48AF455A1649794B00DFE3D8 /* ShareView.xib */,
 				482D2DEF16C8172900E13B91 /* ProvisioningView.xib */,
 				483679FA17246977001A02AF /* RecordingControlsCell.xib */,
+				4864B3FE1757C8E80006542F /* ContactUsView.xib */,
 			);
 			path = XIBs;
 			sourceTree = "<group>";
@@ -2903,6 +2911,8 @@
 				48AF44F9164947FA00DFE3D8 /* SettingsViewController.m */,
 				48AD95D8164AC4FE006178E6 /* ViewController.h */,
 				48AD95D9164AC4FE006178E6 /* ViewController.m */,
+				4864B3FA1757C72F0006542F /* ContactUsViewController.h */,
+				4864B3FB1757C72F0006542F /* ContactUsViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -3711,6 +3721,7 @@
 				484943B01753C44D00E1D5C4 /* CreditsView.xib in Resources */,
 				484943B31754762800E1D5C4 /* Credits.rtf in Resources */,
 				4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */,
+				4864B3FF1757C8E80006542F /* ContactUsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3857,6 +3868,7 @@
 				484943B11753C44D00E1D5C4 /* CreditsView.xib in Resources */,
 				484943B41754762800E1D5C4 /* Credits.rtf in Resources */,
 				4864B3F7175668CA0006542F /* LogoFacebook.png in Resources */,
+				4864B4001757C8E80006542F /* ContactUsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3975,6 +3987,7 @@
 				4849433C175240EB00E1D5C4 /* LicenseViewController.m in Sources */,
 				4849436D17529DE100E1D5C4 /* ShareButton.m in Sources */,
 				484943AD1753C00100E1D5C4 /* CreditsViewController.m in Sources */,
+				4864B3FC1757C72F0006542F /* ContactUsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4061,6 +4074,7 @@
 				4849433D175240EB00E1D5C4 /* LicenseViewController.m in Sources */,
 				4849436E17529DE100E1D5C4 /* ShareButton.m in Sources */,
 				484943AE1753C00100E1D5C4 /* CreditsViewController.m in Sources */,
+				4864B3FD1757C72F0006542F /* ContactUsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
