@@ -136,7 +136,7 @@ static NSUserDefaults*  userDefaults;
         [defaults setObject:[NSNumber numberWithBool:NO]                   forKey:HomeCountryFromSimKey];
     }
 
-    [defaults setObject:@"http://5.39.84.168:9090/"                        forKey:WebBaseUrlKey];
+    [defaults setObject:@"https://api.numberbay.com/"                      forKey:WebBaseUrlKey];
     [defaults setObject:@""                                                forKey:LastDialedNumberKey];
     [defaults setObject:[NSNumber numberWithBool:NO]                       forKey:AllowCellularDataCallsKey];
     [defaults setObject:[NSNumber numberWithBool:NO]                       forKey:LouderVolumeKey];
