@@ -44,7 +44,9 @@ extern NSString* const  PurchaseManagerProductIdentifierCredit50;
 
 - (void)loadProducts:(void (^)(BOOL success))completion;
 
-- (NSString*)productIdentifierForNumberTier:(int)tier;
+- (NSString*)productIdentifierForNumberSetupTier:(int)tier;
+
+- (NSString*)productIdentifierForNumberSubscriptionTier:(int)tier;
 
 - (NSString*)localizedFormattedPrice:(float)price;
 

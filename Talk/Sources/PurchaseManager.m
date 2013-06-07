@@ -569,9 +569,17 @@ NSString* const  PurchaseManagerProductIdentifierCredit50             = PRODUCT_
 }
 
 
-- (NSString*)productIdentifierForNumberTier:(int)tier
+- (NSString*)productIdentifierForNumberSetupTier:(int)tier
 {
-    NSString*   identifier = [NSString stringWithFormat: PRODUCT_IDENTIFIER_BASE @"Number%d", tier];
+    NSString*   identifier = [NSString stringWithFormat:PRODUCT_IDENTIFIER_BASE @"NumberSetup%d", tier];
+
+    return [self getProductForProductIdentifier:identifier].productIdentifier;
+}
+
+
+- (NSString*)productIdentifierForNumberSubscriptionTier:(int)tier
+{
+    NSString*   identifier = [NSString stringWithFormat:PRODUCT_IDENTIFIER_BASE @"NumberSubscription%d", tier];
 
     return [self getProductForProductIdentifier:identifier].productIdentifier;
 }

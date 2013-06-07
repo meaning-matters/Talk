@@ -436,7 +436,7 @@ static const int    CountryCellTag   = 4321;
     tier = tier / 100.0f  / 0.89f;
     NSLog(@"TIER %d", (int)roundf(tier));
 
-    productIdentifier = [[PurchaseManager sharedManager] productIdentifierForNumberTier:(int)roundf(tier)];
+    productIdentifier = [[PurchaseManager sharedManager] productIdentifierForNumberSubscriptionTier:(int)roundf(tier)];
  
     if (productIdentifier == nil)
     {

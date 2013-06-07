@@ -2824,6 +2824,7 @@
 				48EDD229166771B8007B89DA /* CallKeypadView.xib */,
 				48A261BF16FDE26100007638 /* CallMessageView.xib */,
 				48EDD226166770B8007B89DA /* CallOptionsView.xib */,
+				4864B3FE1757C8E80006542F /* ContactUsView.xib */,
 				485ECBCB1651642D00364F08 /* CountriesView.xib */,
 				484943AF1753C44D00E1D5C4 /* CreditsView.xib */,
 				48AF4507164948B800DFE3D8 /* CreditView.xib */,
@@ -2849,7 +2850,6 @@
 				48AF455A1649794B00DFE3D8 /* ShareView.xib */,
 				482D2DEF16C8172900E13B91 /* ProvisioningView.xib */,
 				483679FA17246977001A02AF /* RecordingControlsCell.xib */,
-				4864B3FE1757C8E80006542F /* ContactUsView.xib */,
 			);
 			path = XIBs;
 			sourceTree = "<group>";
