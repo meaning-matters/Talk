@@ -255,7 +255,7 @@ NSString* const  PurchaseManagerProductIdentifierCredit50             = PRODUCT_
             [Settings sharedSettings].webUsername = ((NSDictionary*)content)[@"username"];
             [Settings sharedSettings].webPassword = ((NSDictionary*)content)[@"password"];
 
-            NSMutableDictionary*    parameters = [NSMutableDictionary dictionary];
+            NSMutableDictionary*  parameters = [NSMutableDictionary dictionary];
             parameters[@"deviceName"]        = [UIDevice currentDevice].name;
             parameters[@"notificationToken"] = [AppDelegate appDelegate].deviceToken;
             parameters[@"deviceOs"]          = [NSString stringWithFormat:@"%@ %@",

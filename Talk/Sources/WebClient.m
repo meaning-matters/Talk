@@ -219,20 +219,23 @@ static NSDictionary* statuses;
 
 - (void)retrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
                                    stateCode:(NSString*)stateCode
+                                currencyCode:(NSString*)currencyCode
                                        reply:(void (^)(WebClientStatus status, id content))reply
 {
     [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/states/%@/areas", isoCountryCode, stateCode]
-       parameters:nil
+       parameters:@{ @"currencyCode" : currencyCode }
             reply:reply];
 }
 
 
 - (void)retrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
                               numberTypeMask:(NumberTypeMask)numberTypeMask
+                                currencyCode:(NSString*)currencyCode
                                        reply:(void (^)(WebClientStatus status, id content))reply
 {
     [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/areas", isoCountryCode]
-       parameters:@{ @"numberType" : [NumberType stringForNumberType:numberTypeMask] }
+       parameters:@{ @"numberType"   : [NumberType stringForNumberType:numberTypeMask],
+                     @"currencyCode" : currencyCode }
             reply:reply];
 }
 
@@ -244,6 +247,15 @@ static NSDictionary* statuses;
     [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/areas/%@", isoCountryCode, areaCode]
        parameters:nil
             reply:reply];
+}
+
+
+- (void)purchaseNumber:(NSDictionary*)parameters
+                 reply:(void (^)(WebClientStatus status, id content))reply
+{
+    [self postPath:[NSString stringWithFormat:@"users/%@/numbers", [Settings sharedSettings].webUsername]
+        parameters:parameters
+             reply:reply];
 }
 
 
@@ -317,4 +329,11 @@ static NSDictionary* statuses;
                                              isoCountryCode, areaCode]];
 }
 
+
+- (void)cancelAllPurchaseNumber
+{
+    [self cancelAllHTTPOperationsWithMethod:@"POST"
+                                       path:[NSString stringWithFormat:@"users/%@/numbers",
+                                             [Settings sharedSettings].webUsername]];
+}
 @end

@@ -15,6 +15,7 @@
 #import "Common.h"
 #import "NumberAreaViewController.h"
 #import "NumberAreasCell.h"
+#import "Settings.h"
 
 
 @interface NumberAreasViewController ()
@@ -72,6 +73,7 @@
     {
         [[WebClient sharedClient] retrieveNumberAreasForIsoCountryCode:country[@"isoCountryCode"]
                                                              stateCode:state[@"stateCode"]
+                                                          currencyCode:[Settings sharedSettings].currencyCode
                                                                  reply:^(WebClientStatus status, id content)
         {
             if (status == WebClientStatusOk)
@@ -88,6 +90,7 @@
     {
         [[WebClient sharedClient] retrieveNumberAreasForIsoCountryCode:country[@"isoCountryCode"]
                                                         numberTypeMask:numberTypeMask
+                                                          currencyCode:[Settings sharedSettings].currencyCode
                                                                  reply:^(WebClientStatus status, id content)
         {
             if (status == WebClientStatusOk)

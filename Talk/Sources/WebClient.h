@@ -48,15 +48,21 @@ typedef enum
 
 - (void)retrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
                                    stateCode:(NSString*)stateCode
+                                currencyCode:(NSString*)currencyCode
                                        reply:(void (^)(WebClientStatus status, id content))reply;
 
 - (void)retrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
                               numberTypeMask:(NumberTypeMask)numberTypeMask
+                                currencyCode:(NSString*)currencyCode
                                        reply:(void (^)(WebClientStatus status, id content))reply;
 
 - (void)retrieveNumberAreaInfoForIsoCountryCode:(NSString*)isoCountryCode
                                        areaCode:(NSString*)areaCode
                                           reply:(void (^)(WebClientStatus status, id content))reply;
+
+
+- (void)purchaseNumber:(NSDictionary*)parameters
+                 reply:(void (^)(WebClientStatus status, id content))reply;
 
 - (void)cancelAllRetrieveWebAccount;
 
@@ -75,5 +81,8 @@ typedef enum
 - (void)cancelAllRetrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode;
 
 - (void)cancelAllRetrieveAreaInfoForIsoCountryCode:(NSString*)isoCountryCode areaCode:(NSString*)areaCode;
+
+
+- (void)cancelAllPurchaseNumber;
 
 @end
