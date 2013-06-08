@@ -15,13 +15,16 @@
     switch (mask)
     {
         case NumberTypeGeographicMask:
-            return  @"GEOGRAPHIC";
+            return @"GEOGRAPHIC";
 
         case NumberTypeTollFreeMask:
             return @"TOLLFREE";
 
         case NumberTypeNationalMask:
             return @"NATIONAL";
+
+        case NumberTypeInternationalMask:
+            return @"INTERNATIONAL";
     }
 }
 
@@ -47,6 +50,12 @@
                                                      [NSBundle mainBundle], @"National",
                                                      @"Standard term for national phone number (not in a certain city)\n"
                                                      @"[iOS standard size].");
+
+        case NumberTypeInternationalMask:
+            return NSLocalizedStringWithDefaultValue(@"NumberType:Strings International", nil,
+                                                     [NSBundle mainBundle], @"International",
+                                                     @"Standard term for international phone number\n"
+                                                     @"[iOS standard size].");
     }
 }
 
@@ -63,6 +72,9 @@
 
         case NumberTypeNationalMask:
             return 2;
+
+        case NumberTypeInternationalMask:
+            return 3;
     }
 }
 

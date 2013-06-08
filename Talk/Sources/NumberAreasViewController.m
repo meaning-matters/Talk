@@ -73,6 +73,7 @@
     {
         [[WebClient sharedClient] retrieveNumberAreasForIsoCountryCode:country[@"isoCountryCode"]
                                                              stateCode:state[@"stateCode"]
+                                                        numberTypeMask:numberTypeMask
                                                           currencyCode:[Settings sharedSettings].currencyCode
                                                                  reply:^(WebClientStatus status, id content)
         {

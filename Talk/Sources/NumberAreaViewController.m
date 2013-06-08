@@ -431,7 +431,7 @@ static const int    CountryCellTag   = 4321;
 
 #warning THIS IS A FAKE CALCULATION FOR EURO, MUST BE DONE ON SERVER!!!
 #warning Also add setup fee: Probably best as purchased item as well, otherwise the user may need to buy credit which complicates both app and user experience.
-    tier = [area[@"monthlyFeeTier"] intValue];
+    tier = [area[@"renewalFeeTier"] intValue];
     tier = tier * (100.0f / 70.0f) * 1.5 * 1.05;   // 30% Apple margin + 50% our profit margin + currency risk margin.
     tier = tier / 100.0f  / 0.89f;
     NSLog(@"TIER %d", (int)roundf(tier));
@@ -603,8 +603,16 @@ static const int    CountryCellTag   = 4321;
                 {
                     if (requireInfo == YES && isChecked == NO)
                     {
-                        //### Check info at server.
                         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+                        purchaseInfo[@"isoCountryCode"] = country[@"isoCountryCode"];
+                        purchaseInfo[@"numberType"]     = area[@"numberType"];
+                        purchaseInfo[@"areaCode"]       = area[@"areaCode"];
+                        [[WebClient sharedClient] checkPurchaseInfo:purchaseInfo
+                                                              reply:^(WebClientStatus status, id content)
+                        {
+                            
+                        }];
                     }
                     else
                     {

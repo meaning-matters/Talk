@@ -11,9 +11,10 @@
 
 typedef enum
 {
-    NumberTypeGeographicMask = 1UL << 0,
-    NumberTypeTollFreeMask   = 1UL << 1,
-    NumberTypeNationalMask   = 1UL << 2,
+    NumberTypeGeographicMask    = 1UL << 0,
+    NumberTypeTollFreeMask      = 1UL << 1,
+    NumberTypeNationalMask      = 1UL << 2,
+    NumberTypeInternationalMask = 1UL << 3,
 } NumberTypeMask;
 
 

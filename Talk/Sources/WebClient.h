@@ -37,10 +37,6 @@ typedef enum
 - (void)retrieveSipAccount:(NSDictionary*)parameters
                      reply:(void (^)(WebClientStatus status, id content))reply;
 
-- (void)retrieveCredit:(void (^)(WebClientStatus status, id content))reply;
-
-- (void)retrieveNumbers:(void (^)(WebClientStatus status, id content))reply;
-
 - (void)retrieveNumberCountries:(void (^)(WebClientStatus status, id content))reply;
 
 - (void)retrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode
@@ -48,6 +44,7 @@ typedef enum
 
 - (void)retrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
                                    stateCode:(NSString*)stateCode
+                              numberTypeMask:(NumberTypeMask)numberTypeMask
                                 currencyCode:(NSString*)currencyCode
                                        reply:(void (^)(WebClientStatus status, id content))reply;
 
@@ -60,17 +57,20 @@ typedef enum
                                        areaCode:(NSString*)areaCode
                                           reply:(void (^)(WebClientStatus status, id content))reply;
 
+- (void)checkPurchaseInfo:(NSDictionary*)parameters
+                    reply:(void (^)(WebClientStatus status, id content))reply;
 
 - (void)purchaseNumber:(NSDictionary*)parameters
                  reply:(void (^)(WebClientStatus status, id content))reply;
 
+- (void)retrieveNumbers:(void (^)(WebClientStatus status, id content))reply;
+
+- (void)retrieveCredit:(void (^)(WebClientStatus status, id content))reply;
+
+
 - (void)cancelAllRetrieveWebAccount;
 
 - (void)cancelAllRetrieveSipAccount;
-
-- (void)cancelAllRetrieveCredit;
-
-- (void)cancelAllRetrieveNumbers;
 
 - (void)cancelAllRetrieveNumberCountries;
 
@@ -82,7 +82,12 @@ typedef enum
 
 - (void)cancelAllRetrieveAreaInfoForIsoCountryCode:(NSString*)isoCountryCode areaCode:(NSString*)areaCode;
 
+- (void)cancelAllCheckPurchaseInfo;
 
 - (void)cancelAllPurchaseNumber;
+
+- (void)cancelAllRetrieveNumbers;
+
+- (void)cancelAllRetrieveCredit;
 
 @end

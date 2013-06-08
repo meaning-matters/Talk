@@ -144,6 +144,7 @@ static NSDictionary* statuses;
 
 #warning replace parameters with argument list and put as much logic of the API request in these methods!
 
+// 1. CREATE/UPDATE ACCOUNT
 - (void)retrieveWebAccount:(NSDictionary*)parameters
                      reply:(void (^)(WebClientStatus status, id content))reply
 {
@@ -177,6 +178,7 @@ static NSDictionary* statuses;
 }
 
 
+// 2. ADD/UPDATE DEVICE
 - (void)retrieveSipAccount:(NSDictionary*)parameters
                     reply:(void (^)(WebClientStatus status, id content))reply
 {
@@ -186,28 +188,26 @@ static NSDictionary* statuses;
 }
 
 
-- (void)retrieveCredit:(void (^)(WebClientStatus status, id content))reply
-{
-    [self getPath:[NSString stringWithFormat:@"users/%@/credit", [Settings sharedSettings].webUsername]
-       parameters:nil
-            reply:reply];
-}
+// 3. GET LIST OF DEVICES
+// ...
 
 
-- (void)retrieveNumbers:(void (^)(WebClientStatus status, id content))reply
-{
-    [self getPath:[NSString stringWithFormat:@"users/%@/numbers", [Settings sharedSettings].webUsername]
-       parameters:nil
-            reply:reply];
-}
+// 4. GET DEVICE INFO
+// ...
 
 
+// 5. DELETE DEVICE
+// ...
+
+
+// 6. GET LIST OF ALL AVAILABLE NUMBER COUNTRIES
 - (void)retrieveNumberCountries:(void (^)(WebClientStatus status, id content))reply
 {
     [self getPath:@"numbers/countries" parameters:nil reply:reply];
 }
 
 
+// 7. GET LIST OF ALL AVAILABLE NUMBER STATES
 - (void)retrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode
                                         reply:(void (^)(WebClientStatus status, id content))reply
 {
@@ -217,17 +217,21 @@ static NSDictionary* statuses;
 }
 
 
+// 8A. GET LIST OF ALL AVAILABLE NUMBER AREAS (with states)
 - (void)retrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
                                    stateCode:(NSString*)stateCode
+                              numberTypeMask:(NumberTypeMask)numberTypeMask
                                 currencyCode:(NSString*)currencyCode
                                        reply:(void (^)(WebClientStatus status, id content))reply
 {
     [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/states/%@/areas", isoCountryCode, stateCode]
-       parameters:@{ @"currencyCode" : currencyCode }
+       parameters:@{ @"numberType"   : [NumberType stringForNumberType:numberTypeMask],
+                     @"currencyCode" : currencyCode }
             reply:reply];
 }
 
 
+// 8B. GET LIST OF ALL AVAILABLE NUMBER AREAS (no states)
 - (void)retrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
                               numberTypeMask:(NumberTypeMask)numberTypeMask
                                 currencyCode:(NSString*)currencyCode
@@ -240,6 +244,7 @@ static NSDictionary* statuses;
 }
 
 
+// 9. GET PURCHASE INFO DATA
 - (void)retrieveNumberAreaInfoForIsoCountryCode:(NSString*)isoCountryCode
                                        areaCode:(NSString*)areaCode
                                           reply:(void (^)(WebClientStatus status, id content))reply;
@@ -250,6 +255,15 @@ static NSDictionary* statuses;
 }
 
 
+// 10. CHECK IF PURCHASE INFO IS VALID
+- (void)checkPurchaseInfo:(NSDictionary*)parameters
+                    reply:(void (^)(WebClientStatus status, id content))reply
+{
+    [self postPath:@"numbers/check" parameters:parameters reply:reply];
+}
+
+
+// 11a. PURCHASE NUMBER
 - (void)purchaseNumber:(NSDictionary*)parameters
                  reply:(void (^)(WebClientStatus status, id content))reply
 {
@@ -257,6 +271,91 @@ static NSDictionary* statuses;
         parameters:parameters
              reply:reply];
 }
+
+
+// 11b. UPDATE NUMBER'S NAME
+// ...
+
+
+// 12. GET LIST OF NUMBERS
+- (void)retrieveNumbers:(void (^)(WebClientStatus status, id content))reply
+{
+    [self getPath:[NSString stringWithFormat:@"users/%@/numbers", [Settings sharedSettings].webUsername]
+       parameters:nil
+            reply:reply];
+}
+
+
+// 13. GET NUMBER INFO
+// ...
+
+
+// 14. BUY CALLING CREDIT
+// ...
+
+
+// 15. GET CURRENT CALLING CREDIT
+- (void)retrieveCredit:(void (^)(WebClientStatus status, id content))reply
+{
+    [self getPath:[NSString stringWithFormat:@"users/%@/credit", [Settings sharedSettings].webUsername]
+       parameters:nil
+            reply:reply];
+}
+
+
+// 16. GET CALL RATE (PER MINUTE)
+// ...
+
+
+// 17. GET CDRS
+// ...
+
+
+// 18. GET VOICEMAIL STATUS
+// ...
+
+
+// 19. UPLOAD IVR OR UPDATE IVR
+// ...
+
+// 20. DELETE IVR
+// ...
+
+
+// 21. GET LIST IVR UUID'S ON SERVER
+// ...
+
+
+// 22. DOWNLOAD IVR
+// ...
+
+
+// 23. SET/CLEAR IVR FOR A NUMBER
+// ...
+
+
+// 24. RETRIEVE IVR FOR A NUMBER
+// ...
+
+
+// 25. UPLOAD AUDIO OR RENAME AUDIO FILE
+// ...
+
+
+// 26. DOWNLOAD AUDIO FILE
+// ...
+
+
+// 27. DELETE AUDIO FILE
+// ...
+
+
+// 28. GET LIST OF AUDIO UUID'S ON SERVER
+// ...
+
+
+// 29. USER FEEDBACK
+// ...
 
 
 #pragma mark - Public Utility
@@ -271,22 +370,6 @@ static NSDictionary* statuses;
 {
     [self cancelAllHTTPOperationsWithMethod:@"POST"
                                        path:[NSString stringWithFormat:@"users/%@/devices",
-                                             [Settings sharedSettings].webUsername]];
-}
-
-
-- (void)cancelAllRetrieveCredit
-{
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:[NSString stringWithFormat:@"users/%@/credit",
-                                             [Settings sharedSettings].webUsername]];
-}
-
-
-- (void)cancelAllRetrieveNumbers
-{
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:[NSString stringWithFormat:@"users/%@/numbers",
                                              [Settings sharedSettings].webUsername]];
 }
 
@@ -330,10 +413,33 @@ static NSDictionary* statuses;
 }
 
 
+- (void)cancelAllCheckPurchaseInfo
+{
+    [self cancelAllHTTPOperationsWithMethod:@"POST" path:@"numbers/check"];
+}
+
+
 - (void)cancelAllPurchaseNumber
 {
     [self cancelAllHTTPOperationsWithMethod:@"POST"
                                        path:[NSString stringWithFormat:@"users/%@/numbers",
                                              [Settings sharedSettings].webUsername]];
 }
+
+
+- (void)cancelAllRetrieveNumbers
+{
+    [self cancelAllHTTPOperationsWithMethod:@"GET"
+                                       path:[NSString stringWithFormat:@"users/%@/numbers",
+                                             [Settings sharedSettings].webUsername]];
+}
+
+
+- (void)cancelAllRetrieveCredit
+{
+    [self cancelAllHTTPOperationsWithMethod:@"GET"
+                                       path:[NSString stringWithFormat:@"users/%@/credit",
+                                             [Settings sharedSettings].webUsername]];
+}
+
 @end

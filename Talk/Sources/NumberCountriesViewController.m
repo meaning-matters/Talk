@@ -106,6 +106,10 @@
                 {
                     matchedCountry[@"numberTypes"] = @([matchedCountry[@"numberTypes"] intValue] | NumberTypeNationalMask);
                 }
+                else if ([newCountry[@"numberType"] isEqualToString:@"INTERNATIONAL"])
+                {
+                    matchedCountry[@"numberTypes"] = @([matchedCountry[@"numberTypes"] intValue] | NumberTypeInternationalMask);
+                }
             }
 
             [self sortOutArrays];
