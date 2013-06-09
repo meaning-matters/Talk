@@ -204,6 +204,9 @@ static const int    CountryCellTag   = 4321;
                                                                           @"Title of app screen with one area.\n"
                                                                           @"[1 line larger font].");
             citiesArray = [NSArray arrayWithArray:content];
+            purchaseInfo[@"zipCode"] = @"";     // Resets what user may have typed while loading (on slow internet).
+            purchaseInfo[@"city"]    = @"";     // Resets what user may have typed while loading (on slow internet).
+
             [self.tableView reloadData];
         }
         else if (status == WebClientStatusFailServiceUnavailable)
@@ -614,15 +617,15 @@ static const int    CountryCellTag   = 4321;
                             if (status == WebClientStatusOk)
                             {
                                 isChecked = YES;
-                                [self.tableView reloadData];
+                                [self.tableView beginUpdates];
+                                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section]
+                                              withRowAnimation:UITableViewRowAnimationFade];
+                                [self.tableView endUpdates];                                
                             }
                             else
                             {
                                 // differentiate between network error, and not validated.
 
-                                //### only for code test
-                                isChecked = YES;
-                                [self.tableView reloadData];
                             }
                         }];
                     }
@@ -930,7 +933,6 @@ static const int    CountryCellTag   = 4321;
                     cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
                     textField.text = nil;
-                    purchaseInfo[@"zipCode"] = @"";     // Resets what user may have typed while loading (on slow internet).
                 }
                 
                 textField.userInteractionEnabled = NO;
@@ -961,7 +963,6 @@ static const int    CountryCellTag   = 4321;
                     cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
                     textField.text = nil;
-                    purchaseInfo[@"city"] = @"";    // Resets what user may have typed while loading (on slow internet).
                 }
 
                 textField.userInteractionEnabled = NO;
