@@ -491,6 +491,20 @@
 }
 
 
++ (unsigned long)bitIndex:(unsigned long)value
+{
+    unsigned long   index = 0;
+
+    while (value >> 1)
+    {
+        index++;
+        value >>= 1;
+    }
+
+    return index;
+}
+
+
 + (NSString*)capitalizedString:(NSString*)string
 {
     NSLocale*   locale = [NSLocale currentLocale];

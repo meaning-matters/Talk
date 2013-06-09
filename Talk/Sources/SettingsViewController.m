@@ -17,6 +17,7 @@
 #import "Common.h"
 
 
+// Update reloadSections calls when adding/removing sections.
 typedef enum
 {
     TableSectionHomeCountry = 1UL << 0,
@@ -66,7 +67,14 @@ typedef enum
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification* note)
     {
-        [self.tableView reloadData];
+        NSMutableIndexSet*  indexSet = [NSMutableIndexSet indexSet];
+        [indexSet addIndex:[Common bitIndex:TableSectionHomeCountry]];
+        [indexSet addIndex:[Common bitIndex:TableSectionCallOptions]];
+        
+        [self.tableView beginUpdates];
+        [self.tableView reloadSections:indexSet
+                      withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView endUpdates];
     }];
 }
 
@@ -234,7 +242,11 @@ typedef enum
                         if (buttonIndex == 1)
                         {
                             [[AppDelegate appDelegate] resetAll];
-                            [self.tableView reloadData];
+                            
+                            [self.tableView beginUpdates];
+                            [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)]
+                                          withRowAnimation:UITableViewRowAnimationFade];
+                            [self.tableView endUpdates];
                         }
                     }
                                          cancelButtonTitle:[CommonStrings cancelString]
@@ -446,8 +458,11 @@ typedef enum
     {
         settings.homeCountry = [NetworkStatus sharedStatus].simIsoCountryCode;
     }
-    
-    [self.tableView reloadData];
+
+    [self.tableView beginUpdates];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:[Common bitIndex:TableSectionHomeCountry]]
+                  withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
 }
 
 

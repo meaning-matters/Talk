@@ -144,7 +144,7 @@ static NSTimer*                 loadUrlTestTimer;
     // but this is a private iOS API so may cause trouble with Apple.  And, getting
     // these triggers does not help, because CTTelephonyNetworkInfo is not wiped
     // when a SIM is removed.  Only after restarting the device without SIM:
-    // ISOCountryCode is @"", MCC is @"", and MNC is @"00"; HasVoIP remains 1m and
+    // ISOCountryCode is @"", MCC is @"", and MNC is @"00"; HasVoIP remains 1 and
     // even CarrierName remained unchanged (@"Mobistar" e.g.).
     networkInfo.subscriberCellularProviderDidUpdateNotifier = ^(CTCarrier*carrier)
     {

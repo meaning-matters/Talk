@@ -19,6 +19,7 @@
 #import "PurchaseManager.h"
 
 
+// Update reloadSections calls when adding/removing sections.
 typedef enum
 {
     TableSectionArea    = 1UL << 0, // Type, area code, area name, state, country.

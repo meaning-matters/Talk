@@ -70,7 +70,7 @@
 
 + (BOOL)checkRemoteNotifications;
 
-+ (BOOL)checkCountryOfPhoneNumber:(PhoneNumber*)phoneNumber;    // Works only for non-emergency numbers.
++ (BOOL)checkCountryOfPhoneNumber:(PhoneNumber*)phoneNumber;            // Works only for non-emergency numbers.
 
 + (void)enableNetworkActivityIndicator:(BOOL)enable;
 
@@ -78,7 +78,9 @@
 
 + (unsigned)bitsSetCount:(unsigned long)value;
 
-+ (unsigned long)nthBitSet:(unsigned)n inValue:(unsigned long)value; // With n == 0 return first bit set.
++ (unsigned long)nthBitSet:(unsigned)n inValue:(unsigned long)value;    // With n == 0 return first bit set.
+
++ (unsigned long)bitIndex:(unsigned long)value;                         // Converts table section mask to index.
 
 + (NSString*)capitalizedString:(NSString*)string;
 
