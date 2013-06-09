@@ -747,7 +747,7 @@ void showLog(int level, const char* data, int len)
             uri = pj_str((char*)[uriString cStringUsingEncoding:NSASCIIStringEncoding]);
             pjsua_call_setting_default(&call_opt);
 
-#warning These two headers are homemade, ask Teluu how to do this in standard SIP way.
+#warning These two headers are homemade, ask Teluu how to do this in standard SIP way.  (In log you see "privacy=off;screen=no".)
             pjsua_msg_data_init(&msg_data);
 
             // Create header containing number/identity from which this call is made.
