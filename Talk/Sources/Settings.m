@@ -32,7 +32,7 @@ NSString* const SipRealmKey                    = @"SipRealm";               // U
 NSString* const SipUsernameKey                 = @"SipUsername";            // Used as keychain 'username'.
 NSString* const SipPasswordKey                 = @"SipPassword";            // Used as keychain 'username'.
 NSString* const AllowCellularDataCallsKey      = @"AllowCellularDataCalls";
-NSString* const LouderVolumeKey                = @"LouderVolume";
+NSString* const ShowCallerIdKey                = @"ShowCallerId";
 NSString* const NumberTypeMaskKey              = @"NumberTypeMask";
 NSString* const ForwardsingsSelectionKey       = @"ForwardingsSelection";
 NSString* const CurrencyCodeKey                = @"CurrencyCode";
@@ -97,7 +97,7 @@ static NSUserDefaults*  userDefaults;
     [Keychain deleteStringForKey:SipUsernameKey];
     [Keychain deleteStringForKey:SipPasswordKey];
     [userDefaults removeObjectForKey:AllowCellularDataCallsKey];
-    [userDefaults removeObjectForKey:LouderVolumeKey];
+    [userDefaults removeObjectForKey:ShowCallerIdKey];
     [userDefaults removeObjectForKey:NumberTypeMaskKey];
     [userDefaults removeObjectForKey:ForwardsingsSelectionKey];
     [userDefaults removeObjectForKey:CurrencyCodeKey];
@@ -139,7 +139,7 @@ static NSUserDefaults*  userDefaults;
     [defaults setObject:@"https://api.numberbay.com/"                      forKey:WebBaseUrlKey];
     [defaults setObject:@""                                                forKey:LastDialedNumberKey];
     [defaults setObject:[NSNumber numberWithBool:NO]                       forKey:AllowCellularDataCallsKey];
-    [defaults setObject:[NSNumber numberWithBool:NO]                       forKey:LouderVolumeKey];
+    [defaults setObject:[NSNumber numberWithBool:YES]                      forKey:ShowCallerIdKey];
     [defaults setObject:[NSNumber numberWithInt:NumberTypeGeographicMask]  forKey:NumberTypeMaskKey];
     [defaults setObject:[NSNumber numberWithInt:0]                         forKey:ForwardsingsSelectionKey];
     [defaults setObject:@""                                                forKey:CurrencyCodeKey];
@@ -163,7 +163,7 @@ static NSUserDefaults*  userDefaults;
     _sipUsername                 = [Keychain getStringForKey:SipUsernameKey];
     _sipPassword                 = [Keychain getStringForKey:SipPasswordKey];
     _allowCellularDataCalls      = [userDefaults boolForKey:AllowCellularDataCallsKey];
-    _louderVolume                = [userDefaults boolForKey:LouderVolumeKey];
+    _showCallerId                = [userDefaults boolForKey:ShowCallerIdKey];
     _numberTypeMask              = [userDefaults integerForKey:NumberTypeMaskKey];
     _forwardingsSelection        = [userDefaults integerForKey:ForwardsingsSelectionKey];
     _currencyCode                = [userDefaults objectForKey:CurrencyCodeKey];
@@ -281,10 +281,10 @@ static NSUserDefaults*  userDefaults;
 }
 
 
-- (void)setLouderVolume:(BOOL)louderVolume
+- (void)setShowCallerId:(BOOL)showCallerId
 {
-    _louderVolume = louderVolume;
-    [userDefaults setBool:louderVolume forKey:LouderVolumeKey];
+    _showCallerId = showCallerId;
+    [userDefaults setBool:showCallerId forKey:ShowCallerIdKey];
 }
 
 

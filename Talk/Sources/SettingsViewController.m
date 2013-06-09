@@ -145,11 +145,6 @@ typedef enum
             break;
 
         case TableSectionCallOptions:
-            title = NSLocalizedStringWithDefaultValue(@"Settings:CallOptionInfo SectionFooter", nil,
-                                                      [NSBundle mainBundle],
-                                                      @"Louder Volume extends the maximum volume; handy in noisy environments.",
-                                                      @"Explanation what the Louder Volume setting is doing\n"
-                                                      @"[* lines]");
             break;
 
         case TableSectionAccountData:
@@ -395,13 +390,14 @@ typedef enum
             switchView = (UISwitch*)cell.accessoryView;
         }
 
-        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:LouderVolume CellText", nil,
-                                                                [NSBundle mainBundle], @"Louder Volume",
-                                                                @"Title of switch if volume during call must be set a bit louder\n"
-                                                                @"[2/3 line - abbreviated: 'Louder'].");
+        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:ShowCallId CellText", nil,
+                                                                [NSBundle mainBundle], @"Show My Caller ID",
+                                                                @"Title of switch if people called see my number\n"
+                                                                @"[2/3 line - abbreviated: 'Show Caller ID', use "
+                                                                @"exact same term as in iOS].");
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        switchView.on = settings.louderVolume;
-        [switchView addTarget:self action:@selector(louderVolumeSwitchAction:)
+        switchView.on = settings.showCallerId;
+        [switchView addTarget:self action:@selector(showCallerIdSwitchAction:)
              forControlEvents:UIControlEventValueChanged];
     }
 
@@ -505,11 +501,11 @@ typedef enum
 }
 
 
-- (void)louderVolumeSwitchAction:(id)sender
+- (void)showCallerIdSwitchAction:(id)sender
 {
-    UISwitch*   louderVolumeSwitch = sender;
+    UISwitch*   showCallerIdSwitch = sender;
 
-    settings.louderVolume = louderVolumeSwitch.on;
+    settings.showCallerId = showCallerIdSwitch.on;
 }
 
 @end

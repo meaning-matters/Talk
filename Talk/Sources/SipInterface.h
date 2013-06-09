@@ -98,8 +98,6 @@ typedef enum
 @property (nonatomic, strong) NSString*                 username;
 @property (nonatomic, strong) NSString*                 password;
 
-@property (nonatomic, assign) BOOL                      louderVolume;
-
 @property (nonatomic, readonly) SipInterfaceRegistered  registered;
 
 

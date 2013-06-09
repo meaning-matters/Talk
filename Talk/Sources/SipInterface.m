@@ -21,11 +21,16 @@
 #define FORCE_HANGUP_TIMEOUT            4.0f    // Seconds after which PJSIP is restarted if no disconnect received.
 
 // Volume Levels.  Note that these are linear values, so 2.0 is only a bit louder.
-#define SPEAKER_LEVEL_NORMAL            1.0f
-#define SPEAKER_LEVEL_RECEIVER          2.0f
-#define SPEAKER_LOUDER_FACTOR_NORMAL    1.5f
-#define SPEAKER_LOUDER_FACTOR_RECEIVER  2.0f
-#define MICROPHONE_LEVEL_NORMAL         1.0f
+#define OUTPUT_LEVEL_RECEIVER          3.2f
+#define OUTPUT_LEVEL_SPEAKER           2.0f
+#define OUTPUT_LEVEL_HEADSET           0.8f
+#define OUTPUT_LEVEL_HEADPHONE         1.0f
+#define OUTPUT_LEVEL_BLUETOOTH         1.0f
+#define OUTPUT_LEVEL_LINE              1.0f
+#define INPUT_LEVEL_MICROPHONE         1.0f
+#define INPUT_LEVEL_HEADSET            1.0f
+#define INPUT_LEVEL_BLUETOOTH          1.0f
+#define INPUT_LEVEL_LINE               1.0f
 
 // Ringtones                            US          UK
 #define RINGBACK_FREQ1                  440     /* 400 */
@@ -64,6 +69,8 @@
     pjsip_redirect_op	    redir_op;
 
     pj_bool_t               speaker_on;      // Speaker button on UI.
+    float                   inputLevel;
+    float                   outputLevel;
 
     pj_pool_t*              pool;
 
@@ -158,6 +165,9 @@ void showLog(int level, const char* data, int len)
         _password   = password;
         _registered = SipInterfaceRegisteredNo;
 
+        inputLevel  = INPUT_LEVEL_MICROPHONE;
+        outputLevel = OUTPUT_LEVEL_RECEIVER;
+
         pj_log_set_log_func(&showLog);
 
         calls = [NSMutableArray array];
@@ -174,6 +184,7 @@ void showLog(int level, const char* data, int len)
              // Keep alive once when the app closes; makes sure interval is never longer than KEEP_ALIVE_INTERVAL.
              [self keepAlive];
         }];
+
         [[UIApplication sharedApplication] setKeepAliveTimeout:KEEP_ALIVE_INTERVAL handler:^
         {
              [self keepAlive];
@@ -735,9 +746,16 @@ void showLog(int level, const char* data, int len)
             uri = pj_str((char*)[uriString cStringUsingEncoding:NSASCIIStringEncoding]);
             pjsua_call_setting_default(&call_opt);
 
-            // Create optional header containing number/identity from which this call is made.
+            // Create header containing number/identity from which this call is made.
             header_name = pj_str("Identity");
             header_value = pj_str((char*)[call.identityNumber cStringUsingEncoding:NSASCIIStringEncoding]);
+            pjsip_generic_string_hdr_init2(&header, &header_name, &header_value);
+            pjsua_msg_data_init(&msg_data);
+            pj_list_push_back(&msg_data.hdr_list, &header);
+
+            // Create header for 'Show My Caller ID' option.
+            header_name = pj_str("Privacy");
+            header_value = pj_str(call.showCallerId ? "none" : "id");
             pjsip_generic_string_hdr_init2(&header, &header_name, &header_value);
             pjsua_msg_data_init(&msg_data);
             pj_list_push_back(&msg_data.hdr_list, &header);
@@ -911,11 +929,11 @@ void showLog(int level, const char* data, int len)
 
     if (onMute)
     {
-        status = [self setMicrophoneLevel:0.0f callId:call.callId];
+        status = [self setInputLevel:0.0f callId:call.callId];
     }
     else
     {
-        status = [self setMicrophoneLevel:MICROPHONE_LEVEL_NORMAL callId:call.callId];
+        status = [self setInputLevel:inputLevel callId:call.callId];
     }
 
     dispatch_async(dispatch_get_main_queue(), ^
@@ -1044,7 +1062,7 @@ void showLog(int level, const char* data, int len)
 }
 
 
-- (pj_status_t)setMicrophoneLevel:(float)microphoneLevel callId:(pjsua_call_id)callId
+- (pj_status_t)setInputLevel:(float)level callId:(pjsua_call_id)callId
 {
     pj_status_t status;
 
@@ -1054,19 +1072,19 @@ void showLog(int level, const char* data, int len)
 
     if (conf_port != PJSUA_INVALID_ID)
     {
-        status = pjsua_conf_adjust_tx_level(conf_port, microphoneLevel);
+        status = pjsua_conf_adjust_tx_level(conf_port, level);
     }
     else
     {
         status = PJ_ENOTFOUND;
-        NSLog(@"//### No conference port.");
+        NSLog(@"//### setInputLevel: No conference port.");
     }
 
     return status;
 }
 
 
-- (pj_status_t)setSpeakerLevel:(float)speakerLevel callId:(pjsua_call_id)callId
+- (pj_status_t)setOutputLevel:(float)level callId:(pjsua_call_id)callId
 {
     pj_status_t status;
 
@@ -1076,12 +1094,12 @@ void showLog(int level, const char* data, int len)
 
     if (conf_port != PJSUA_INVALID_ID)
     {
-        status = pjsua_conf_adjust_rx_level(conf_port, speakerLevel);
+        status = pjsua_conf_adjust_rx_level(conf_port, level);
     }
     else
     {
         status = PJ_ENOTFOUND;
-        NSLog(@"//### No conference port.");
+        NSLog(@"//### setOutputLevel No conference port.");
     }
     
     return status;
@@ -1179,9 +1197,8 @@ void showLog(int level, const char* data, int len)
 {
     UInt32      routeSize = sizeof(CFStringRef);
     CFStringRef routeRef;
-    OSStatus    status = AudioSessionGetProperty(kAudioSessionProperty_AudioRoute, &routeSize, &routeRef);
-    NSString*   route = (__bridge NSString*)routeRef;
-    float       speakerLevel;
+    OSStatus    status    = AudioSessionGetProperty(kAudioSessionProperty_AudioRoute, &routeSize, &routeRef);
+    NSString*   route     = (__bridge NSString*)routeRef;
 
     if (status != 0)
     {
@@ -1194,71 +1211,81 @@ void showLog(int level, const char* data, int len)
     {
         [self.delegate sipInterface:self onSpeaker:NO];
         [self.delegate sipInterface:self speakerEnable:NO];
-        speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
+        inputLevel  = INPUT_LEVEL_HEADSET;
+        outputLevel = OUTPUT_LEVEL_HEADSET;
     }
     else if ([route isEqualToString:@"Headphone"])
     {
         [self.delegate sipInterface:self onSpeaker:NO];
         [self.delegate sipInterface:self speakerEnable:NO];
-        speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
+        inputLevel  = INPUT_LEVEL_MICROPHONE;
+        outputLevel = OUTPUT_LEVEL_HEADPHONE;
     }
     else if ([route isEqualToString:@"Speaker"])
     {
         [self.delegate sipInterface:self onSpeaker:YES];
         [self.delegate sipInterface:self speakerEnable:YES];
-        speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
+        outputLevel = OUTPUT_LEVEL_SPEAKER;
     }
     else if ([route isEqualToString:@"SpeakerAndMicrophone"])       // In call: plain iPod Touch & iPad.
     {
         [self.delegate sipInterface:self onSpeaker:YES];
         [self.delegate sipInterface:self speakerEnable:YES];
-        speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
+        inputLevel  = INPUT_LEVEL_MICROPHONE;
+        outputLevel = OUTPUT_LEVEL_SPEAKER;
     }
     else if ([route isEqualToString:@"HeadphonesAndMicrophone"])    // In call: All device with headphones (i.e. without microphone).
     {                                                               // And very briefly after plugging in headset.
         [self.delegate sipInterface:self onSpeaker:NO];
         [self.delegate sipInterface:self speakerEnable:NO];
-        speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
+        inputLevel  = INPUT_LEVEL_MICROPHONE;
+        outputLevel = OUTPUT_LEVEL_HEADPHONE;
     }
     else if ([route isEqualToString:@"HeadsetInOut"])               // In call: All devices when using headset (i.e. with microphone).
     {
         [self.delegate sipInterface:self onSpeaker:NO];
         [self.delegate sipInterface:self speakerEnable:NO];
-        speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
+        inputLevel  = INPUT_LEVEL_HEADSET;
+        outputLevel = OUTPUT_LEVEL_HEADSET;
     }
     else if ([route isEqualToString:@"ReceiverAndMicrophone"])      // In call: plain iPhone.
     {
         [self.delegate sipInterface:self onSpeaker:NO];
         [self.delegate sipInterface:self speakerEnable:YES];
-        speakerLevel = SPEAKER_LEVEL_RECEIVER * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_RECEIVER : 1.0f);
+        inputLevel  = INPUT_LEVEL_MICROPHONE;
+        outputLevel = OUTPUT_LEVEL_RECEIVER;
     }
     else if ([route isEqualToString:@"LineOut"])
     {
         [self.delegate sipInterface:self onSpeaker:NO];
         [self.delegate sipInterface:self speakerEnable:NO];
-        speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
+        outputLevel = OUTPUT_LEVEL_LINE;
     }
     else if ([route isEqualToString:@"LineInOut"])
     {
         [self.delegate sipInterface:self onSpeaker:NO];
         [self.delegate sipInterface:self speakerEnable:NO];
-        speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
+        inputLevel  = INPUT_LEVEL_LINE;
+        outputLevel = OUTPUT_LEVEL_LINE;
     }
     else if ([route isEqualToString:@"HeadsetBT"])
     {
         [self.delegate sipInterface:self onSpeaker:NO];
         [self.delegate sipInterface:self speakerEnable:NO];
-        speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
+        inputLevel  = INPUT_LEVEL_BLUETOOTH;
+        outputLevel = OUTPUT_LEVEL_BLUETOOTH;
     }
     else
     {
-        speakerLevel = SPEAKER_LEVEL_NORMAL * (self.louderVolume ? SPEAKER_LOUDER_FACTOR_NORMAL : 1.0f);
+        inputLevel  = INPUT_LEVEL_MICROPHONE;
+        outputLevel = OUTPUT_LEVEL_RECEIVER;
         NSLog(@"//### Unknown Audio Route: %@", route);
     }
 
     for (Call* call in calls)
     {
-        [self setSpeakerLevel:speakerLevel callId:call.callId];
+        [self setInputLevel:inputLevel   callId:call.callId];
+        [self setOutputLevel:outputLevel callId:call.callId];
     }
 }
 

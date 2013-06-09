@@ -403,7 +403,7 @@ static SipInterface*    sipInterface;
 {
     Call*   call = nil;
 
-    //### Check that number and identity are non empty!
+#warning //### Check that number and identity are non empty!
 
     if (phoneNumber.isEmergency)
     {
@@ -417,9 +417,9 @@ static SipInterface*    sipInterface;
     {
         call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOut];
         call.identityNumber = identity;
+        call.showCallerId   = [Settings sharedSettings].showCallerId;
 
         NSDictionary*   tones = [[Tones sharedTones] tonesForIsoCountryCode:[phoneNumber isoCountryCode]];
-        sipInterface.louderVolume = [Settings sharedSettings].louderVolume;
         if ([sipInterface makeCall:call tones:tones] == YES)
         {
             callViewController = [[CallViewController alloc] initWithCall:call];

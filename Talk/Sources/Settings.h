@@ -38,8 +38,7 @@
 @property (nonatomic, strong) NSString*         sipPassword;
 
 @property (nonatomic, assign) BOOL              allowCellularDataCalls;
-
-@property (nonatomic, assign) BOOL              louderVolume;
+@property (nonatomic, assign) BOOL              showCallerId;
 
 @property (nonatomic, assign) NumberTypeMask    numberTypeMask;         // Selected numberType in NumberView.
 @property (nonatomic, assign) NSInteger         forwardingsSelection;   // Selected segment/table in ForwardingsView.

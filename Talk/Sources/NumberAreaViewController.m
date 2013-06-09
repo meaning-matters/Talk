@@ -611,7 +611,19 @@ static const int    CountryCellTag   = 4321;
                         [[WebClient sharedClient] checkPurchaseInfo:purchaseInfo
                                                               reply:^(WebClientStatus status, id content)
                         {
-                            
+                            if (status == WebClientStatusOk)
+                            {
+                                isChecked = YES;
+                                [self.tableView reloadData];
+                            }
+                            else
+                            {
+                                // differentiate between network error, and not validated.
+
+                                //### only for code test
+                                isChecked = YES;
+                                [self.tableView reloadData];
+                            }
                         }];
                     }
                     else

@@ -48,6 +48,7 @@ typedef enum
 @property (nonatomic, strong, readonly) PhoneNumber*    phoneNumber;
 @property (nonatomic, strong) NSString*                 calledNumber;
 @property (nonatomic, strong) NSString*                 identityNumber;     // Number form/on which call is made/received.
+@property (nonatomic, assign) BOOL                      showCallerId;
 @property (nonatomic, assign) ABRecordID                abRecordId;
 @property (nonatomic, strong, readonly) NSDate*         beginDate;
 @property (nonatomic, strong, readonly) NSDate*         connectDate;
