@@ -737,7 +737,8 @@ void showLog(int level, const char* data, int len)
             pjsua_msg_data            msg_data;
             pj_str_t                  header_name;
             pj_str_t                  header_value;
-            pjsip_generic_string_hdr  header;
+            pjsip_generic_string_hdr  identityHeader;
+            pjsip_generic_string_hdr  privacyHeader;
             pj_status_t               status;
 
             [self registerThread];
@@ -746,19 +747,20 @@ void showLog(int level, const char* data, int len)
             uri = pj_str((char*)[uriString cStringUsingEncoding:NSASCIIStringEncoding]);
             pjsua_call_setting_default(&call_opt);
 
-            // Create header containing number/identity from which this call is made.
-            header_name = pj_str("Identity");
-            header_value = pj_str((char*)[call.identityNumber cStringUsingEncoding:NSASCIIStringEncoding]);
-            pjsip_generic_string_hdr_init2(&header, &header_name, &header_value);
+#warning These two headers are homemade, ask Teluu how to do this in standard SIP way.
             pjsua_msg_data_init(&msg_data);
-            pj_list_push_back(&msg_data.hdr_list, &header);
+
+            // Create header containing number/identity from which this call is made.
+            header_name  = pj_str("Identity");
+            header_value = pj_str((char*)[call.identityNumber cStringUsingEncoding:NSASCIIStringEncoding]);
+            pjsip_generic_string_hdr_init2(&identityHeader, &header_name, &header_value);
+            pj_list_push_back(&msg_data.hdr_list, &identityHeader);
 
             // Create header for 'Show My Caller ID' option.
-            header_name = pj_str("Privacy");
+            header_name  = pj_str("Privacy");
             header_value = pj_str(call.showCallerId ? "none" : "id");
-            pjsip_generic_string_hdr_init2(&header, &header_name, &header_value);
-            pjsua_msg_data_init(&msg_data);
-            pj_list_push_back(&msg_data.hdr_list, &header);
+            pjsip_generic_string_hdr_init2(&privacyHeader, &header_name, &header_value);
+            pj_list_push_back(&msg_data.hdr_list, &privacyHeader);
 
 #warning Sometimes (on bad network): Assertion failed: (aud_subsys.pf), function pjmedia_aud_dev_default_param, file ../src/pjmedia-audiodev/audiodev.c, line 682.
             //### Occurs when PJSIP has not finished restart() and a new call is made.
