@@ -338,8 +338,20 @@ NSString* const  PurchaseManagerProductIdentifierCredit50             = PRODUCT_
 }
 
 
-- (void)purchaseManager:(PurchaseManager*)purchaseManager processNumberTransaction:(SKPaymentTransaction*)transaction
+- (void)purchaseManager:(PurchaseManager*)purchaseManager processNumberSetupTransaction:(SKPaymentTransaction*)transaction
 {
+    NSString*   receipt = [Base64 encode:transaction.transactionReceipt];
+    NSLog(@"setup receipt: %@", receipt);
+
+    [purchaseManager finishTransaction:transaction];
+}
+
+
+- (void)purchaseManager:(PurchaseManager*)purchaseManager processNumberSubscriptionTransaction:(SKPaymentTransaction*)transaction
+{
+    NSString*   receipt = [Base64 encode:transaction.transactionReceipt];
+    NSLog(@"subscription receipt: %@", receipt);
+
     [purchaseManager finishTransaction:transaction];
 }
 
@@ -506,11 +518,11 @@ NSString* const  PurchaseManagerProductIdentifierCredit50             = PRODUCT_
                 }
                 else if ([self isNumberSetupProductIdentifier:transaction.payment.productIdentifier])
                 {
-                    [self purchaseManager:self processNumberTransaction:transaction];
+                    [self purchaseManager:self processNumberSetupTransaction:transaction];
                 }
                 else if ([self isNumberSubscriptionProductIdentifier:transaction.payment.productIdentifier])
                 {
-                    [self purchaseManager:self processNumberTransaction:transaction];
+                    [self purchaseManager:self processNumberSubscriptionTransaction:transaction];
                 }
                 else if ([self isCreditProductIdentifier:transaction.payment.productIdentifier])
                 {
@@ -527,6 +539,10 @@ NSString* const  PurchaseManagerProductIdentifierCredit50             = PRODUCT_
                 {
                     self.accountCompletion(NO, transaction.error);
                     self.accountCompletion = nil;
+                }
+                else
+                {
+                    NSLog(@"Transaction failed: %@", [transaction.error localizedDescription]);
                 }
                 
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
@@ -571,17 +587,31 @@ NSString* const  PurchaseManagerProductIdentifierCredit50             = PRODUCT_
 
 - (NSString*)productIdentifierForNumberSetupTier:(int)tier
 {
-    NSString*   identifier = [NSString stringWithFormat:PRODUCT_IDENTIFIER_BASE @"NumberSetup%d", tier];
+    if (tier > 0)
+    {
+        NSString*   identifier = [NSString stringWithFormat:PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"%d", tier];
 
-    return [self getProductForProductIdentifier:identifier].productIdentifier;
+        return [self getProductForProductIdentifier:identifier].productIdentifier;
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 
-- (NSString*)productIdentifierForNumberSubscriptionTier:(int)tier
+- (NSString*)productIdentifierForNumberRenewalTier:(int)tier
 {
-    NSString*   identifier = [NSString stringWithFormat:PRODUCT_IDENTIFIER_BASE @"NumberSubscription%d", tier];
+    if (tier > 0)
+    {
+        NSString*   identifier = [NSString stringWithFormat:PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"%d", tier];
 
-    return [self getProductForProductIdentifier:identifier].productIdentifier;
+        return [self getProductForProductIdentifier:identifier].productIdentifier;
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 

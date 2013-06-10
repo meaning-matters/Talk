@@ -440,7 +440,7 @@ static const int    CountryCellTag   = 4321;
     tier = tier / 100.0f  / 0.89f;
     NSLog(@"TIER %d", (int)roundf(tier));
 
-    productIdentifier = [[PurchaseManager sharedManager] productIdentifierForNumberSubscriptionTier:(int)roundf(tier)];
+    productIdentifier = [[PurchaseManager sharedManager] productIdentifierForNumberRenewalTier:(int)roundf(tier)];
  
     if (productIdentifier == nil)
     {
@@ -605,10 +605,10 @@ static const int    CountryCellTag   = 4321;
             case TableSectionAction:
                 if ([self isPurchaseInfoComplete] == YES)
                 {
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+
                     if (requireInfo == YES && isChecked == NO)
                     {
-                        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-
                         purchaseInfo[@"isoCountryCode"] = country[@"isoCountryCode"];
                         purchaseInfo[@"numberType"]     = area[@"numberType"];
                         purchaseInfo[@"areaCode"]       = area[@"areaCode"];
@@ -632,8 +632,36 @@ static const int    CountryCellTag   = 4321;
                     }
                     else
                     {
-                        //### Buy number subscription + setup fee
-                        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                        int                 setupTier   = [[area objectForKey:@"setupFeeTier"]   intValue];
+                        int                 renewalTier = [[area objectForKey:@"renewalFeeTier"] intValue];
+                        NSString*           setupIdentifier;
+                        NSString*           renewalIdentifier;
+                        PurchaseManager*    purchaseManager = [PurchaseManager sharedManager];
+
+                        //### Until server delivers correct tier.  (check maximum tier from server).
+                        setupTier = 2;
+                        renewalTier = 10;
+
+                        setupIdentifier   = [purchaseManager productIdentifierForNumberSetupTier:setupTier];
+                        renewalIdentifier = [purchaseManager productIdentifierForNumberRenewalTier:renewalTier];
+
+                        if (setupIdentifier != nil)
+                        {
+                            if ([purchaseManager buyProductIdentifier:setupIdentifier] == NO)
+                            {
+                                // PurchaseManager already has alert; so we just leave.
+                                return;
+                            }
+                        }
+
+                        if (renewalIdentifier)
+                        {
+                            if ([purchaseManager buyProductIdentifier:renewalIdentifier] == NO)
+                            {
+                                // PurchaseManager already has alert; so we just leave.
+                                return;
+                            }
+                        }
                     }
                 }
                 else
