@@ -69,30 +69,30 @@ static NSTimer*                 loadUrlTestTimer;
                                                       object:nil
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification* note)
-     {
-         if (note.object == hostReach)
-         {
-             NetworkStatusReachable networkStatusReachable = [hostReach currentReachabilityStatus];
+    {
+        if (note.object == hostReach)
+        {
+            NetworkStatusReachable networkStatusReachable = [hostReach currentReachabilityStatus];
 
-             if (networkStatusReachable != previousNetworkStatusReachable)
-             {
-                 // We always get here when previous is NetworkStatusReachableCaptivePortal.
-                 if (networkStatusReachable == NetworkStatusReachableDisconnected)
-                 {
-                     previousNetworkStatusReachable = networkStatusReachable;
-                     [Common postNotificationName:NetworkStatusReachableNotification
-                                         userInfo:@{ @"status" : @(networkStatusReachable) }
-                                           object:self];
-                 }
-                 else
-                 {
-                     // Switch between Wi-Fi and Cellular, or still at captive portal.
-                     // Let's check the connection.
-                     [self loadUrlTest:nil];
-                 }
-             }
-         }
-     }];
+            if (networkStatusReachable != previousNetworkStatusReachable)
+            {
+                // We always get here when previous is NetworkStatusReachableCaptivePortal.
+                if (networkStatusReachable == NetworkStatusReachableDisconnected)
+                {
+                    previousNetworkStatusReachable = networkStatusReachable;
+                    [Common postNotificationName:NetworkStatusReachableNotification
+                                        userInfo:@{ @"status" : @(networkStatusReachable) }
+                                          object:self];
+                }
+                else
+                {
+                    // Switch between Wi-Fi and Cellular, or still at captive portal.
+                    // Let's check the connection.
+                    [self loadUrlTest:nil];
+                }
+            }
+        }
+    }];
 
     hostReach = [Reachability reachabilityWithHostname:REACHABILITY_HOSTNAME];
 
@@ -166,7 +166,7 @@ static NSTimer*                 loadUrlTestTimer;
     };
 
     callCenter = [[CTCallCenter alloc] init];
-    callCenter.callEventHandler=^(CTCall* call)
+    callCenter.callEventHandler = ^(CTCall* call)
     {
         [Common postNotificationName:NetworkStatusMobileCallStateChangedNotification
                             userInfo:@{ @"status" : @([self convertCallState:call.callState]) }
