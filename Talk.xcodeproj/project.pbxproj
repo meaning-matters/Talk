@@ -744,6 +744,9 @@
 		488AD1EE16E799F4004D3A2A /* NumberStatesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */; };
 		488AD1F116E80A60004D3A2A /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */; };
 		488AD1F216E80A60004D3A2A /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */; };
+		488D7754178076E300099470 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488D7753178076E300099470 /* HockeySDK.framework */; };
+		488D77561780773800099470 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488D77551780773800099470 /* CoreText.framework */; };
+		488D7759178078CC00099470 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488D7758178078CC00099470 /* QuartzCore.framework */; };
 		488FBBDA17007CC6000ECC71 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBD917007CC6000ECC71 /* DataManager.m */; };
 		488FBBDB17007CC6000ECC71 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBD917007CC6000ECC71 /* DataManager.m */; };
 		488FBBE21700852F000ECC71 /* NumberData.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBE11700852F000ECC71 /* NumberData.m */; };
@@ -1677,6 +1680,9 @@
 		488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberStatesView.xib; sourceTree = "<group>"; };
 		488AD1EF16E80A60004D3A2A /* NSObject+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Blocks.h"; sourceTree = "<group>"; };
 		488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Blocks.m"; sourceTree = "<group>"; };
+		488D7753178076E300099470 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HockeySDK.framework; path = "External/HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework"; sourceTree = "<group>"; };
+		488D77551780773800099470 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		488D7758178078CC00099470 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		488FBBD817007CC6000ECC71 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		488FBBD917007CC6000ECC71 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		488FBBE01700852F000ECC71 /* NumberData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberData.h; sourceTree = "<group>"; };
@@ -1873,6 +1879,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				488D7759178078CC00099470 /* QuartzCore.framework in Frameworks */,
+				488D77561780773800099470 /* CoreText.framework in Frameworks */,
 				4864B3F917566E950006542F /* MessageUI.framework in Frameworks */,
 				484943B617551EB100E1D5C4 /* Social.framework in Frameworks */,
 				48B32A011725B65000F49182 /* CoreAudio.framework in Frameworks */,
@@ -1914,6 +1922,7 @@
 				48A2621C16FE4F9700007638 /* libspeex-arm-apple-darwin9.a in Frameworks */,
 				48A2621E16FE4F9700007638 /* libsrtp-arm-apple-darwin9.a in Frameworks */,
 				48E4AB8C170DCFCF00A4B236 /* libOpenZRTP.a in Frameworks */,
+				488D7754178076E300099470 /* HockeySDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2730,31 +2739,30 @@
 		48884A731615CE920005AA79 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				48E4AB8A170DC94000A4B236 /* OpenZRTP */,
-				48EE399616777EBB00823E09 /* WebRTC */,
-				48338F55161628410033F4C1 /* OpenSSL */,
-				48338F54161628310033F4C1 /* pjsip */,
-				4864B3F817566E950006542F /* MessageUI.framework */,
-				48B32A001725B65000F49182 /* CoreAudio.framework */,
-				484943B517551EB100E1D5C4 /* Social.framework */,
+				488D7757178077A900099470 /* External */,
 				48ADD0FB170C12CC001515EB /* AddressBook.framework */,
 				48ADD0F9170C12C1001515EB /* AddressBookUI.framework */,
-				4895D19916B1BE9200BCA581 /* StoreKit.framework */,
-				48DD727C169CCF1C00CD7080 /* CoreData.framework */,
-				487A7C9916978DBE007693EE /* MediaPlayer.framework */,
-				4888D28E16724FCD00B55B22 /* Security.framework */,
-				48884A741615CE920005AA79 /* UIKit.framework */,
-				48884A761615CE920005AA79 /* Foundation.framework */,
-				48884A781615CE920005AA79 /* CoreGraphics.framework */,
-				48884AA61615CE920005AA79 /* SenTestingKit.framework */,
-				48FD99DC161856120061191B /* CFNetwork.framework */,
 				48FD99DA161856070061191B /* AudioToolbox.framework */,
 				48FD99D8161855EF0061191B /* AVFoundation.framework */,
-				484F7C3A164C15770059A5A6 /* CoreTelephony.framework */,
-				48FD99D6161855E10061191B /* CoreVideo.framework */,
-				484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */,
-				48DD72AB169F55C400CD7080 /* MobileCoreServices.framework */,
+				48FD99DC161856120061191B /* CFNetwork.framework */,
+				48B32A001725B65000F49182 /* CoreAudio.framework */,
+				48DD727C169CCF1C00CD7080 /* CoreData.framework */,
+				48884A781615CE920005AA79 /* CoreGraphics.framework */,
 				48FD99D4161855D30061191B /* CoreMedia.framework */,
+				484F7C3A164C15770059A5A6 /* CoreTelephony.framework */,
+				488D77551780773800099470 /* CoreText.framework */,
+				48FD99D6161855E10061191B /* CoreVideo.framework */,
+				48884A761615CE920005AA79 /* Foundation.framework */,
+				487A7C9916978DBE007693EE /* MediaPlayer.framework */,
+				4864B3F817566E950006542F /* MessageUI.framework */,
+				48DD72AB169F55C400CD7080 /* MobileCoreServices.framework */,
+				488D7758178078CC00099470 /* QuartzCore.framework */,
+				4888D28E16724FCD00B55B22 /* Security.framework */,
+				48884AA61615CE920005AA79 /* SenTestingKit.framework */,
+				484943B517551EB100E1D5C4 /* Social.framework */,
+				4895D19916B1BE9200BCA581 /* StoreKit.framework */,
+				484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */,
+				48884A741615CE920005AA79 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2799,6 +2807,18 @@
 				48884AAF1615CE920005AA79 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		488D7757178077A900099470 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				48E4AB8A170DC94000A4B236 /* OpenZRTP */,
+				48EE399616777EBB00823E09 /* WebRTC */,
+				48338F55161628410033F4C1 /* OpenSSL */,
+				48338F54161628310033F4C1 /* pjsip */,
+				488D7753178076E300099470 /* HockeySDK.framework */,
+			);
+			name = External;
 			sourceTree = "<group>";
 		};
 		488FBBD717007C39000ECC71 /* CoreData */ = {
@@ -4208,6 +4228,10 @@
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/External/HockeySDK-iOS/HockeySDK.embeddedframework\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4241,6 +4265,10 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/External/HockeySDK-iOS/HockeySDK.embeddedframework\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -4354,6 +4382,10 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/External/HockeySDK-iOS/HockeySDK.embeddedframework\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
