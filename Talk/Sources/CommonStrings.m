@@ -100,4 +100,22 @@
                                              @"[iOS standard size].");
 }
 
+
++ (NSString*)monthString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Month", nil,
+                                             [NSBundle mainBundle], @"month",
+                                             @"Standard string for the singular of 'month'\n"
+                                             @"[No size contraint].");
+}
+
+
++ (NSString*)monthsString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Months", nil,
+                                             [NSBundle mainBundle], @"months",
+                                             @"Standard string for the plural of 'month'\n"
+                                             @"[No size contraint].");
+}
+
 @end

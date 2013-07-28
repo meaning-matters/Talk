@@ -10,6 +10,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import <HockeySDK/HockeySDK.h>
 #import "AppDelegate.h"
 #import "Settings.h"
 #import "PhoneNumber.h"
@@ -90,6 +91,9 @@
     {
         [self setUp];
     }
+
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"6abff73fa5eb64771ac8a5124ebc33f5" delegate:self];
+    [[BITHockeyManager sharedHockeyManager] startManager];
 
     return YES;
 }

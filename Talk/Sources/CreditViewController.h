@@ -11,4 +11,6 @@
 
 @interface CreditViewController : ViewController
 
+- (IBAction)buyAction:(id)sender;
+
 @end

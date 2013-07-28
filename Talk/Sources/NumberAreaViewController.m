@@ -10,6 +10,7 @@
 #import "NumberAreaViewController.h"
 #import "NumberAreaZipsViewController.h"
 #import "NumberAreaCitiesViewController.h"
+#import "BuyNumberViewController.h"
 #import "CommonStrings.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
@@ -427,35 +428,6 @@ static const int    CountryCellTag   = 4321;
 }
 
 
-- (NSString*)priceString
-{
-    NSString*   string;
-    NSString*   productIdentifier;
-    float       tier;
-
-#warning THIS IS A FAKE CALCULATION FOR EURO, MUST BE DONE ON SERVER!!!
-#warning Also add setup fee: Probably best as purchased item as well, otherwise the user may need to buy credit which complicates both app and user experience.
-    tier = [area[@"renewalFeeTier"] intValue];
-    tier = tier * (100.0f / 70.0f) * 1.5 * 1.05;   // 30% Apple margin + 50% our profit margin + currency risk margin.
-    tier = tier / 100.0f  / 0.89f;
-    NSLog(@"TIER %d", (int)roundf(tier));
-
-    productIdentifier = [[PurchaseManager sharedManager] productIdentifierForNumberRenewalTier:(int)roundf(tier)];
- 
-    if (productIdentifier == nil)
-    {
-        NSLog(@"//### We have a serious problem here!");
-        string = @"----";
-    }
-    else
-    {
-        string = [[PurchaseManager sharedManager] localizedPriceForProductIdentifier:productIdentifier];
-    }
-    
-    return string;
-}
-
-
 #pragma mark - Table View Delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
@@ -495,6 +467,9 @@ static const int    CountryCellTag   = 4321;
             break;
 
         case TableSectionAction:
+            title = NSLocalizedStringWithDefaultValue(@"NumberArea:Buy SectionHeader", nil,
+                                                      [NSBundle mainBundle], @"Initial Duration",
+                                                      @"Initial number of months.");
             break;
     }
 
@@ -529,10 +504,18 @@ static const int    CountryCellTag   = 4321;
         case TableSectionAction:
             if (requireInfo == YES && isChecked == NO)
             {
-                title = NSLocalizedStringWithDefaultValue(@"NumberArea:Action SectionFooter", nil,
+                title = NSLocalizedStringWithDefaultValue(@"NumberArea:Action SectionFooterCheck", nil,
                                                           [NSBundle mainBundle],
                                                           @"The information supplied must first be checked.",
                                                           @"Telephone area (or city).");
+            }
+            else
+            {
+                title = NSLocalizedStringWithDefaultValue(@"NumberArea:Action SectionFooterBuy", nil,
+                                                          [NSBundle mainBundle],
+                                                          @"You can always buy extra months to use "
+                                                          @"this phone number.",
+                                                          @"Explaining that user can buy more months.");
             }
             break;
     }
@@ -564,7 +547,7 @@ static const int    CountryCellTag   = 4321;
             break;
 
         case TableSectionAction:
-            numberOfRows = 1;
+            numberOfRows = (requireInfo == YES && isChecked == NO) ? 1 : 6;
             break;
     }
 
@@ -621,47 +604,18 @@ static const int    CountryCellTag   = 4321;
                                 [self.tableView beginUpdates];
                                 [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section]
                                               withRowAnimation:UITableViewRowAnimationFade];
-                                [self.tableView endUpdates];                                
+                                [self.tableView endUpdates];
                             }
                             else
                             {
                                 // differentiate between network error, and not validated.
-
                             }
                         }];
                     }
                     else
                     {
-                        int                 setupTier   = [[area objectForKey:@"setupFeeTier"]   intValue];
-                        int                 renewalTier = [[area objectForKey:@"renewalFeeTier"] intValue];
-                        NSString*           setupIdentifier;
-                        NSString*           renewalIdentifier;
-                        PurchaseManager*    purchaseManager = [PurchaseManager sharedManager];
-
-                        //### Until server delivers correct tier.  (check maximum tier from server).
-                        setupTier = 2;
-                        renewalTier = 10;
-
-                        setupIdentifier   = [purchaseManager productIdentifierForNumberSetupTier:setupTier];
-                        renewalIdentifier = [purchaseManager productIdentifierForNumberRenewalTier:renewalTier];
-
-                        if (setupIdentifier != nil)
-                        {
-                            if ([purchaseManager buyProductIdentifier:setupIdentifier] == NO)
-                            {
-                                // PurchaseManager already has alert; so we just leave.
-                                return;
-                            }
-                        }
-
-                        if (renewalIdentifier)
-                        {
-                            if ([purchaseManager buyProductIdentifier:renewalIdentifier] == NO)
-                            {
-                                // PurchaseManager already has alert; so we just leave.
-                                return;
-                            }
-                        }
+                        BuyNumberViewController* viewController = [[BuyNumberViewController alloc] initWithArea:area];
+                        [self.navigationController pushViewController:viewController animated:YES];
                     }
                 }
                 else
@@ -681,9 +635,9 @@ static const int    CountryCellTag   = 4321;
                     [BlockAlertView showAlertViewWithTitle:title
                                                    message:message
                                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
-                     {
-                         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                     }
+                    {
+                        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                    }
                                          cancelButtonTitle:[CommonStrings closeString]
                                          otherButtonTitles:nil];
                 }
@@ -1031,11 +985,13 @@ static const int    CountryCellTag   = 4321;
     }
     else
     {
-        text = NSLocalizedStringWithDefaultValue(@"NumberArea:Action BuyLabel", nil,
-                                                 [NSBundle mainBundle],
-                                                 @"Buy %@",
-                                                 @"Parameter is price (with currency sign).");
-        text = [NSString stringWithFormat:text, [self priceString]];
+        BuyNumberViewController* modalViewController = [[BuyNumberViewController alloc] initWithArea:area];
+        modalViewController.area = area;
+
+        modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentViewController:modalViewController
+                           animated:YES
+                         completion:nil];
     }
 
     cell.label.text = text;

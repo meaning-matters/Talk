@@ -13,6 +13,7 @@
 #import "AFJSONRequestOperation.h"
 #import "Settings.h"
 #import "Common.h"
+#import "PurchaseManager.h"
 
 
 static NSDictionary* statuses;
@@ -150,7 +151,8 @@ static NSDictionary* statuses;
 {
     [Common enableNetworkActivityIndicator:YES];
 
-    [self postPath:@"users"
+    NSString* currencyCode = [[PurchaseManager sharedManager] currencyCode];
+    [self postPath:[NSString stringWithFormat:@"users?currencyCode=%@", currencyCode]
         parameters:parameters
            success:^(AFHTTPRequestOperation* operation, id responseObject)
     {

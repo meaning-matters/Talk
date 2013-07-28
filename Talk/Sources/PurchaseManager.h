@@ -19,12 +19,10 @@
 
 - (void)purchaseManager:(PurchaseManager*)purchaseManager processCreditTransaction:(SKPaymentTransaction*)transaction;
 
-- (void)purchaseManager:(PurchaseManager*)purchaseManager restoreNumberTransaction:(SKPaymentTransaction*)transaction;
-
 @end
 
 
-extern NSString* const  PurchaseManagerProductIdentifierAccount;
+extern NSString* const  PurchaseManagerProductIdentifierAccount1;
 extern NSString* const  PurchaseManagerProductIdentifierCredit1;
 extern NSString* const  PurchaseManagerProductIdentifierCredit2;
 extern NSString* const  PurchaseManagerProductIdentifierCredit5;
@@ -44,9 +42,9 @@ extern NSString* const  PurchaseManagerProductIdentifierCredit50;
 
 - (void)loadProducts:(void (^)(BOOL success))completion;
 
-- (NSString*)productIdentifierForNumberSetupTier:(int)tier;
+- (NSString*)productIdentifierForCreditTier:(int)tier;
 
-- (NSString*)productIdentifierForNumberRenewalTier:(int)tier;
+- (NSString*)productIdentifierForNumberTier:(int)tier;
 
 - (NSString*)localizedFormattedPrice:(float)price;
 

@@ -22,61 +22,12 @@
 // These must match perfectly to what's in iTunesConnect.
 #define PRODUCT_IDENTIFIER_BASE @"com.numberbay."
 #define ACCOUNT                 @"Account"
-#define NUMBER_SETUP            @"NumberSetup"
-#define NUMBER_SUBSCRIPTION     @"NumberSubscription"
 #define CREDIT                  @"Credit"
-NSString* const  PurchaseManagerProductIdentifierAccount              = PRODUCT_IDENTIFIER_BASE ACCOUNT;
-NSString* const  PurchaseManagerProductIdentifierNumberSetup1         = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"1";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup2         = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"2";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup3         = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"3";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup4         = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"4";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup5         = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"5";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup6         = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"6";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup7         = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"7";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup8         = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"8";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup9         = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"9";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup10        = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"10";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup11        = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"11";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup12        = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"12";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup13        = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"13";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup14        = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"14";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup15        = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"15";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup16        = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"16";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup17        = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"17";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup18        = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"18";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup19        = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"19";
-NSString* const  PurchaseManagerProductIdentifierNumberSetup20        = PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"20";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription1  = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"1";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription2  = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"2";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription3  = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"3";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription4  = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"4";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription5  = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"5";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription6  = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"6";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription7  = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"7";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription8  = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"8";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription9  = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"9";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription10 = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"10";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription11 = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"11";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription12 = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"12";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription13 = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"13";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription14 = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"14";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription15 = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"15";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription16 = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"16";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription17 = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"17";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription18 = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"18";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription19 = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"19";
-NSString* const  PurchaseManagerProductIdentifierNumberSubscription20 = PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"20";
-NSString* const  PurchaseManagerProductIdentifierCredit1              = PRODUCT_IDENTIFIER_BASE CREDIT @"1";
-NSString* const  PurchaseManagerProductIdentifierCredit2              = PRODUCT_IDENTIFIER_BASE CREDIT @"2";
-NSString* const  PurchaseManagerProductIdentifierCredit5              = PRODUCT_IDENTIFIER_BASE CREDIT @"5";
-NSString* const  PurchaseManagerProductIdentifierCredit10             = PRODUCT_IDENTIFIER_BASE CREDIT @"10";
-NSString* const  PurchaseManagerProductIdentifierCredit20             = PRODUCT_IDENTIFIER_BASE CREDIT @"20";
-NSString* const  PurchaseManagerProductIdentifierCredit50             = PRODUCT_IDENTIFIER_BASE CREDIT @"50";
- 
+#define NUMBER                  @"Number"
 
 @interface PurchaseManager () <SKProductsRequestDelegate, SKPaymentTransactionObserver>
 
-@property (nonatomic, strong) NSSet*                productIdentifiers;
+@property (nonatomic, strong) NSMutableSet*         productIdentifiers;
 @property (nonatomic, strong) SKProductsRequest*    productsRequest;
 @property (nonatomic, copy) void (^accountCompletion)(BOOL success, id object);
 @property (nonatomic, copy) void (^loadCompletion)(BOOL success);
@@ -102,54 +53,8 @@ NSString* const  PurchaseManagerProductIdentifierCredit50             = PRODUCT_
 
         sharedInstance.delegate = sharedInstance; //### Do everyting in here for now.
 
-        sharedInstance.productIdentifiers = [NSSet setWithObjects:
-                                             PurchaseManagerProductIdentifierAccount,
-                                             PurchaseManagerProductIdentifierNumberSetup1,
-                                             PurchaseManagerProductIdentifierNumberSetup2,
-                                             PurchaseManagerProductIdentifierNumberSetup3,
-                                             PurchaseManagerProductIdentifierNumberSetup4,
-                                             PurchaseManagerProductIdentifierNumberSetup5,
-                                             PurchaseManagerProductIdentifierNumberSetup6,
-                                             PurchaseManagerProductIdentifierNumberSetup7,
-                                             PurchaseManagerProductIdentifierNumberSetup8,
-                                             PurchaseManagerProductIdentifierNumberSetup9,
-                                             PurchaseManagerProductIdentifierNumberSetup10,
-                                             PurchaseManagerProductIdentifierNumberSetup11,
-                                             PurchaseManagerProductIdentifierNumberSetup12,
-                                             PurchaseManagerProductIdentifierNumberSetup13,
-                                             PurchaseManagerProductIdentifierNumberSetup14,
-                                             PurchaseManagerProductIdentifierNumberSetup15,
-                                             PurchaseManagerProductIdentifierNumberSetup16,
-                                             PurchaseManagerProductIdentifierNumberSetup17,
-                                             PurchaseManagerProductIdentifierNumberSetup18,
-                                             PurchaseManagerProductIdentifierNumberSetup19,
-                                             PurchaseManagerProductIdentifierNumberSetup20,
-                                             PurchaseManagerProductIdentifierNumberSubscription1,
-                                             PurchaseManagerProductIdentifierNumberSubscription2,
-                                             PurchaseManagerProductIdentifierNumberSubscription3,
-                                             PurchaseManagerProductIdentifierNumberSubscription4,
-                                             PurchaseManagerProductIdentifierNumberSubscription5,
-                                             PurchaseManagerProductIdentifierNumberSubscription6,
-                                             PurchaseManagerProductIdentifierNumberSubscription7,
-                                             PurchaseManagerProductIdentifierNumberSubscription8,
-                                             PurchaseManagerProductIdentifierNumberSubscription9,
-                                             PurchaseManagerProductIdentifierNumberSubscription10,
-                                             PurchaseManagerProductIdentifierNumberSubscription11,
-                                             PurchaseManagerProductIdentifierNumberSubscription12,
-                                             PurchaseManagerProductIdentifierNumberSubscription13,
-                                             PurchaseManagerProductIdentifierNumberSubscription14,
-                                             PurchaseManagerProductIdentifierNumberSubscription15,
-                                             PurchaseManagerProductIdentifierNumberSubscription16,
-                                             PurchaseManagerProductIdentifierNumberSubscription17,
-                                             PurchaseManagerProductIdentifierNumberSubscription18,
-                                             PurchaseManagerProductIdentifierNumberSubscription19,
-                                             PurchaseManagerProductIdentifierNumberSubscription20,
-                                             PurchaseManagerProductIdentifierCredit1,
-                                             PurchaseManagerProductIdentifierCredit2,
-                                             PurchaseManagerProductIdentifierCredit5,
-                                             PurchaseManagerProductIdentifierCredit10,
-                                             PurchaseManagerProductIdentifierCredit20,
-                                             PurchaseManagerProductIdentifierCredit50, nil];
+        sharedInstance.productIdentifiers = [NSMutableSet set];
+        [sharedInstance addProductIdentifiers];
 
         [[SKPaymentQueue defaultQueue] addTransactionObserver:sharedInstance];
 
@@ -184,6 +89,24 @@ NSString* const  PurchaseManagerProductIdentifierCredit50             = PRODUCT_
 }
 
 
+- (void)addProductIdentifiers
+{
+    [self.productIdentifiers addObject:[self productIdentifierForAccountTier:1]];
+
+    [self.productIdentifiers addObject:[self productIdentifierForCreditTier: 1]];
+    [self.productIdentifiers addObject:[self productIdentifierForCreditTier: 2]];
+    [self.productIdentifiers addObject:[self productIdentifierForCreditTier: 5]];
+    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:10]];
+    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:20]];
+    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:50]];
+
+    for (int tier = 1; tier <= 80; tier++)
+    {
+        [self.productIdentifiers addObject:[self productIdentifierForNumberTier:tier]];
+    }
+}
+
+
 #pragma mark - Helper Methods
 
 - (SKProduct*)getProductForProductIdentifier:(NSString*)productIdentifier
@@ -206,37 +129,15 @@ NSString* const  PurchaseManagerProductIdentifierCredit50             = PRODUCT_
 }
 
 
-- (BOOL)isNumberSetupProductIdentifier:(NSString*)productIdentifier
-{
-    return ([productIdentifier rangeOfString:NUMBER_SETUP].location != NSNotFound);
-}
-
-
-- (BOOL)isNumberSubscriptionProductIdentifier:(NSString*)productIdentifier
-{
-    return ([productIdentifier rangeOfString:NUMBER_SUBSCRIPTION].location != NSNotFound);
-}
-
-
 - (BOOL)isCreditProductIdentifier:(NSString*)productIdentifier
 {
     return ([productIdentifier rangeOfString:CREDIT].location != NSNotFound);
 }
 
 
-- (float)usdCreditOfProductIdentifier:(NSString*)productIdentifier
+- (BOOL)isNumberProductIdentifier:(NSString*)productIdentifier
 {
-    if ([self isCreditProductIdentifier:productIdentifier])
-    {
-        NSRange     range = [productIdentifier rangeOfString:@"Credit"];
-        NSUInteger  index = range.location + range.length;
-
-        return [[productIdentifier substringFromIndex:index] floatValue] - 0.01f;
-    }
-    else
-    {
-        return 0;
-    }
+    return ([productIdentifier rangeOfString:NUMBER].location != NSNotFound);
 }
 
 
@@ -338,19 +239,10 @@ NSString* const  PurchaseManagerProductIdentifierCredit50             = PRODUCT_
 }
 
 
-- (void)purchaseManager:(PurchaseManager*)purchaseManager processNumberSetupTransaction:(SKPaymentTransaction*)transaction
+- (void)purchaseManager:(PurchaseManager*)purchaseManager processNumberTransaction:(SKPaymentTransaction*)transaction
 {
     NSString*   receipt = [Base64 encode:transaction.transactionReceipt];
-    NSLog(@"setup receipt: %@", receipt);
-
-    [purchaseManager finishTransaction:transaction];
-}
-
-
-- (void)purchaseManager:(PurchaseManager*)purchaseManager processNumberSubscriptionTransaction:(SKPaymentTransaction*)transaction
-{
-    NSString*   receipt = [Base64 encode:transaction.transactionReceipt];
-    NSLog(@"subscription receipt: %@", receipt);
+    NSLog(@"number receipt: %@", receipt);
 
     [purchaseManager finishTransaction:transaction];
 }
@@ -358,12 +250,9 @@ NSString* const  PurchaseManagerProductIdentifierCredit50             = PRODUCT_
 
 - (void)purchaseManager:(PurchaseManager*)purchaseManager processCreditTransaction:(SKPaymentTransaction*)transaction
 {
-    [purchaseManager finishTransaction:transaction];
-}
+    NSString*   receipt = [Base64 encode:transaction.transactionReceipt];
+    NSLog(@"credit receipt: %@", receipt);
 
-
-- (void)purchaseManager:(PurchaseManager*)purchaseManager restoreNumberTransaction:(SKPaymentTransaction*)transaction
-{
     [purchaseManager finishTransaction:transaction];
 }
 
@@ -449,10 +338,6 @@ NSString* const  PurchaseManagerProductIdentifierCredit50             = PRODUCT_
         {
             accountTransaction = transaction;
         }
-        else if ([self isNumberSubscriptionProductIdentifier:transaction.payment.productIdentifier])
-        {
-            [self.delegate purchaseManager:self restoreNumberTransaction:transaction];
-        }
         else
         {
             NSLog(@"//### Encountered unexpected restored transaction: %@.", transaction.payment.productIdentifier);
@@ -516,13 +401,9 @@ NSString* const  PurchaseManagerProductIdentifierCredit50             = PRODUCT_
 
                     [self processAccountTransaction:transaction];
                 }
-                else if ([self isNumberSetupProductIdentifier:transaction.payment.productIdentifier])
+                else if ([self isNumberProductIdentifier:transaction.payment.productIdentifier])
                 {
-                    [self purchaseManager:self processNumberSetupTransaction:transaction];
-                }
-                else if ([self isNumberSubscriptionProductIdentifier:transaction.payment.productIdentifier])
-                {
-                    [self purchaseManager:self processNumberSubscriptionTransaction:transaction];
+                    [self purchaseManager:self processNumberTransaction:transaction];
                 }
                 else if ([self isCreditProductIdentifier:transaction.payment.productIdentifier])
                 {
@@ -585,33 +466,21 @@ NSString* const  PurchaseManagerProductIdentifierCredit50             = PRODUCT_
 }
 
 
-- (NSString*)productIdentifierForNumberSetupTier:(int)tier
+- (NSString*)productIdentifierForAccountTier:(int)tier
 {
-    if (tier > 0)
-    {
-        NSString*   identifier = [NSString stringWithFormat:PRODUCT_IDENTIFIER_BASE NUMBER_SETUP @"%d", tier];
-
-        return [self getProductForProductIdentifier:identifier].productIdentifier;
-    }
-    else
-    {
-        return nil;
-    }
+    return [NSString stringWithFormat:PRODUCT_IDENTIFIER_BASE ACCOUNT @"%d", tier];
 }
 
 
-- (NSString*)productIdentifierForNumberRenewalTier:(int)tier
+- (NSString*)productIdentifierForCreditTier:(int)tier
 {
-    if (tier > 0)
-    {
-        NSString*   identifier = [NSString stringWithFormat:PRODUCT_IDENTIFIER_BASE NUMBER_SUBSCRIPTION @"%d", tier];
+    return [NSString stringWithFormat:PRODUCT_IDENTIFIER_BASE CREDIT @"%d", tier];
+}
 
-        return [self getProductForProductIdentifier:identifier].productIdentifier;
-    }
-    else
-    {
-        return nil;
-    }
+
+- (NSString*)productIdentifierForNumberTier:(int)tier
+{
+    return [NSString stringWithFormat:PRODUCT_IDENTIFIER_BASE NUMBER @"%d", tier];
 }
 
 
@@ -681,7 +550,7 @@ NSString* const  PurchaseManagerProductIdentifierCredit50             = PRODUCT_
 
     self.accountCompletion = completion;
 
-    [[PurchaseManager sharedManager] buyProductIdentifier:PurchaseManagerProductIdentifierAccount];
+    [[PurchaseManager sharedManager] buyProductIdentifier:[self productIdentifierForAccountTier:1]];
 }
 
 

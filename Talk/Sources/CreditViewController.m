@@ -7,6 +7,7 @@
 //
 
 #import "CreditViewController.h"
+#import "PurchaseManager.h"
 
 @interface CreditViewController ()
 
@@ -30,6 +31,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+}
+
+
+- (IBAction)buyAction:(id)sender
+{
+    [[PurchaseManager sharedManager] buyProductIdentifier:@"com.numberbay.Credit1"];
+    [[PurchaseManager sharedManager] buyProductIdentifier:@"com.numberbay.Credit2"];
+    [[PurchaseManager sharedManager] buyProductIdentifier:@"com.numberbay.Credit5"];
+    [[PurchaseManager sharedManager] buyProductIdentifier:@"com.numberbay.Credit10"];
+    [[PurchaseManager sharedManager] buyProductIdentifier:@"com.numberbay.Credit20"];
+    [[PurchaseManager sharedManager] buyProductIdentifier:@"com.numberbay.Credit50"];
 }
 
 @end

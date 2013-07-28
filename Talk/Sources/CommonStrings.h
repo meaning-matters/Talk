@@ -30,4 +30,8 @@
 
 + (NSString*)numberString;
 
++ (NSString*)monthString;
+
++ (NSString*)monthsString;
+
 @end
