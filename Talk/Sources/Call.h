@@ -31,8 +31,8 @@ typedef enum
 
 typedef enum
 {
-    CallDirectionOut,
-    CallDirectionIn,
+    CallDirectionIncoming,
+    CallDirectionOutgoing,
 } CallDirection;
 
 

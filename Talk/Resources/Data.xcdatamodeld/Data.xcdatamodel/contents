@@ -6,6 +6,16 @@
         <relationship name="numbers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Number" inverseName="forwarding" inverseEntity="Number" syncable="YES"/>
         <relationship name="recordings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Recording" inverseName="forwardings" inverseEntity="Recording" syncable="YES"/>
     </entity>
+    <entity name="NBRecentContactEntry" syncable="YES">
+        <attribute name="contactID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="data" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="direction" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="duration" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="e164" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="timeZone" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Number" representedClassName="NumberData" syncable="YES">
         <attribute name="areaCode" attributeType="String" syncable="YES"/>
         <attribute name="building" optional="YES" attributeType="String" syncable="YES"/>
@@ -36,5 +46,6 @@
         <element name="Forwarding" positionX="268" positionY="-0" width="128" height="105"/>
         <element name="Number" positionX="43" positionY="-225" width="128" height="315"/>
         <element name="Recording" positionX="484" positionY="-0" width="128" height="103"/>
+        <element name="NBRecentContactEntry" positionX="403" positionY="-432" width="128" height="163"/>
     </elements>
 </model>

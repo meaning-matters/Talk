@@ -409,13 +409,13 @@ static SipInterface*    sipInterface;
     {
         if ([self callMobilePhoneNumber:phoneNumber] == YES)
         {
-            call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOut];
+            call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
             call.network = CallNetworkMobile;
         }
     }
     else if ([self checkAccount] && [self checkNetwork] && [Common checkCountryOfPhoneNumber:phoneNumber])
     {
-        call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOut];
+        call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
         call.identityNumber = identity;
         call.showCallerId   = [Settings sharedSettings].showCallerId;
 

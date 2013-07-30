@@ -17,6 +17,7 @@
 #import "RecentsViewController.h"
 #import "ShareViewController.h"
 #import "SettingsViewController.h"
+#import "NBPeoplePickerNavigationController.h"
 
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
@@ -36,6 +37,7 @@
 @property (nonatomic, strong) RecentsViewController*                    recentsViewController;
 @property (nonatomic, strong) ShareViewController*                      shareViewController;
 @property (nonatomic, strong) SettingsViewController*                   settingsViewController;
+@property (nonatomic, strong) NBPeoplePickerNavigationController*       peoplePickerViewController;
 
 + (AppDelegate*)appDelegate;
 

@@ -122,7 +122,9 @@
 
 - (IBAction)key0LongPressAction:(id)sender
 {
-    switch ([sender state])
+    UIGestureRecognizer*    recognizer = sender;
+
+    switch ([recognizer state])
     {
         case UIGestureRecognizerStateBegan:
             [self.delegate keypadViewPressedEraseKey:self];
@@ -130,7 +132,7 @@
             break;
 
         case UIGestureRecognizerStateEnded:
-            // One the gesture recognizer kicked in, digitKeyReleaseAction won't
+            // Once the gesture recognizer kicked in, digitKeyReleaseAction won't
             // be called anymore.  So we need to enable button here.
             [self digitKeyReleaseAction:nil];
             break;
@@ -155,7 +157,9 @@
 
 - (IBAction)keyEraseLongPressAction:(id)sender
 {
-    switch ([sender state])
+    UIGestureRecognizer*    recognizer = sender;
+
+    switch ([recognizer state])
     {
         case UIGestureRecognizerStateBegan:
             eraseTimer = [NSTimer scheduledTimerWithTimeInterval:0.1

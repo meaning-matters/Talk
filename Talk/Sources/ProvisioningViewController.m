@@ -55,12 +55,16 @@
                                                                               @"...");
     self.introTextView.text = NSLocalizedStringWithDefaultValue(@"Provisioning:Intro Text", nil,
                                                                 [NSBundle mainBundle],
-                                                                @"To make calls you need an account, a phone number, "
-                                                                @"and credit.\n\nIf you have set up things earlier, "
-                                                                @"you can restore everything.\n\nWhen you are new, "
-                                                                @"start with buying an account, and follow the steps."
-                                                                @"The price of the account will be added to your "
-                                                                @"credit, so does not cost you extra.",
+                                                                @"To use NumberBay, you need an account with credit, "
+                                                                @"and your phone number needs to be verified. "
+                                                                @"\n\nWhen you already have an account: Restore your "
+                                                                @"credit and numbers."
+                                                                @"\n\nWhen you are new: Buy an account, and follow "
+                                                                @"the steps to verify your number. The price of the "
+                                                                @"account will be your initial credit, so does not "
+                                                                @"cost you extra. "
+                                                                @"\n\nLogged in, you can buy more credit, and numbers "
+                                                                @"from 50 countries.",
                                                                 @"...");
     self.introRestoreButton.titleLabel.text = NSLocalizedStringWithDefaultValue(@"Provisioning:Intro RestoreButtonTitle", nil,
                                                                                 [NSBundle mainBundle], @"Restore",

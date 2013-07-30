@@ -196,8 +196,16 @@
                     NSError*    error = [[NSError alloc] initWithDomain:[Settings sharedSettings].errorDomain
                                                                    code:SKErrorUnknown  //### Make app-wide errors.
                                                                userInfo:nil];
-                    self.accountCompletion(NO, error);
-                    self.accountCompletion = nil;
+                    if (self.accountCompletion != nil)
+                    {
+                        self.accountCompletion(NO, error);
+                        self.accountCompletion = nil;
+                    }
+                    else
+                    {
+                        NSLog(@"//### accountCompletion == nil");
+#warning Sometimes get here when two different accounts failed and Store retrieves them both at app start.
+                    }
                 }
             }];
         }

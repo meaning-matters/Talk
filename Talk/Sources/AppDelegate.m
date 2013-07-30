@@ -197,7 +197,8 @@
                                         NSStringFromClass([HelpViewController        class]),
                                         NSStringFromClass([AboutViewController       class]),
                                         NSStringFromClass([SettingsViewController    class]),
-                                        NSStringFromClass([ShareViewController       class])];
+                                        NSStringFromClass([ShareViewController       class]),
+                                        NSStringFromClass([NBPeoplePickerNavigationController class])];
 
     NSSet*  preferredSet = [NSSet setWithArray:[Settings sharedSettings].tabBarViewControllerClasses];
     NSSet*  defaultSet   = [NSSet setWithArray:viewControllerClasses];
@@ -218,14 +219,24 @@
     {
         // All view controllers are embedded in a navigation controller.
         UIViewController*   viewController = [[NSClassFromString(class) alloc] init];
-        [viewControllers addObject:viewController.navigationController];
 
-        // Set appropriate AppDelegate property.
-        SEL selector = NSSelectorFromString([@"set" stringByAppendingFormat:@"%@:", [class description]]);
+        if (viewController.navigationController == nil)
+        {
+            // For NBPeoplePickerNavigationController.
+            [viewControllers addObject:viewController];
+            [self setPeoplePickerViewController:[viewControllers lastObject]];
+        }
+        else
+        {
+            [viewControllers addObject:viewController.navigationController];
+
+            // Set appropriate AppDelegate property.
+            SEL selector = NSSelectorFromString([@"set" stringByAppendingFormat:@"%@:", [class description]]);
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        [self performSelector:selector withObject:[[viewControllers lastObject] topViewController]];
+            [self performSelector:selector withObject:[[viewControllers lastObject] topViewController]];
 #pragma clang diagnostic pop
+        }
     }
 
     defaultTabBarViewControllers = viewControllers;

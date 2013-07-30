@@ -429,9 +429,9 @@ typedef enum
 
     if ([settings hasAccount] == NO && indexPath.row == 0)
     {
-        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:Get Account CellText", nil,
-                                                                [NSBundle mainBundle], @"Get Account",
-                                                                @"Title of table cell for resetting all user data\n"
+        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:Get Started CellText", nil,
+                                                                [NSBundle mainBundle], @"Get Started",
+                                                                @"Title of table cell for getting an account\n"
                                                                 @"[2/3 line - abbreviated: 'Reset'].");
     }
     else
