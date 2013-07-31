@@ -84,4 +84,6 @@
 
 + (NSString*)capitalizedString:(NSString*)string;
 
++ (void)showProvisioningViewController;
+
 @end

@@ -16,6 +16,7 @@
 #import "Settings.h"
 #import "AppDelegate.h"
 #import "CountriesViewController.h"
+#import "ProvisioningViewController.h"
 
 
 @implementation Common
@@ -510,6 +511,18 @@
     NSLocale*   locale = [NSLocale currentLocale];
 
     return [string capitalizedStringWithLocale:locale];
+}
+
+
++ (void)showProvisioningViewController
+{
+    ProvisioningViewController* provisioningViewController;
+
+    provisioningViewController = [[ProvisioningViewController alloc] init];
+    provisioningViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [AppDelegate.appDelegate.tabBarController presentViewController:provisioningViewController
+                                                           animated:YES
+                                                         completion:nil];
 }
 
 @end

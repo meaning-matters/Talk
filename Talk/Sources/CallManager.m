@@ -18,7 +18,6 @@
 #import "CallViewController.h"
 #import "Tones.h"
 #import "Base64.h"
-#import "ProvisioningViewController.h"
 #import "SettingsViewController.h"
 #import "AppDelegate.h"
 
@@ -275,14 +274,7 @@ static SipInterface*    sipInterface;
     else
     {
         result = NO;
-
-        ProvisioningViewController* provisioningViewController;
-
-        provisioningViewController = [[ProvisioningViewController alloc] init];
-        provisioningViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        [AppDelegate.appDelegate.tabBarController presentViewController:provisioningViewController
-                                                               animated:YES
-                                                             completion:nil];
+        [Common showProvisioningViewController];
     }
 
     return result;

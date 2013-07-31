@@ -1120,7 +1120,6 @@
 
 /* Begin PBXFileReference section */
 		4805788317A4F7CF006923BD /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/nl.lproj/Localizable.strings; sourceTree = "<group>"; };
-		4805788517A4FA89006923BD /* NBAddContactDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBAddContactDelegate.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddContactDelegate.h; sourceTree = "<group>"; };
 		4805788617A4FAAA006923BD /* NBAddressBookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBAddressBookManager.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressBookManager.h; sourceTree = "<group>"; };
 		4805788717A4FAAA006923BD /* NBAddressBookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBAddressBookManager.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressBookManager.m; sourceTree = "<group>"; };
 		4805788817A4FAAA006923BD /* NBAddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBAddressCell.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressCell.h; sourceTree = "<group>"; };
@@ -1129,7 +1128,6 @@
 		4805788B17A4FAAA006923BD /* NBAddUnknownContactDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBAddUnknownContactDelegate.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddUnknownContactDelegate.h; sourceTree = "<group>"; };
 		4805788C17A4FAAA006923BD /* NBCallsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBCallsView.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBCallsView.h; sourceTree = "<group>"; };
 		4805788D17A4FAAA006923BD /* NBCallsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBCallsView.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBCallsView.m; sourceTree = "<group>"; };
-		4805788E17A4FAAA006923BD /* NBCellSelectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBCellSelectionDelegate.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBCellSelectionDelegate.h; sourceTree = "<group>"; };
 		4805788F17A4FAAA006923BD /* NBContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBContact.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBContact.h; sourceTree = "<group>"; };
 		4805789017A4FAAA006923BD /* NBContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBContact.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBContact.m; sourceTree = "<group>"; };
 		4805789117A4FAAA006923BD /* NBContactStructureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBContactStructureManager.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBContactStructureManager.h; sourceTree = "<group>"; };
@@ -2152,13 +2150,11 @@
 			children = (
 				4805791517A5135C006923BD /* Recents */,
 				4805791917A51437006923BD /* Contacts */,
-				4805788517A4FA89006923BD /* NBAddContactDelegate.h */,
 				4805788617A4FAAA006923BD /* NBAddressBookManager.h */,
 				4805788717A4FAAA006923BD /* NBAddressBookManager.m */,
 				4805788817A4FAAA006923BD /* NBAddressCell.h */,
 				4805788917A4FAAA006923BD /* NBAddressCell.m */,
 				4805788A17A4FAAA006923BD /* NBAddressFieldHandler.h */,
-				4805788E17A4FAAA006923BD /* NBCellSelectionDelegate.h */,
 				4805788F17A4FAAA006923BD /* NBContact.h */,
 				4805789017A4FAAA006923BD /* NBContact.m */,
 				4805789117A4FAAA006923BD /* NBContactStructureManager.h */,
@@ -3306,10 +3302,10 @@
 				48BC7F3A1702FDD1006671B5 /* NumberViewController.h */,
 				48BC7F3B1702FDD1006671B5 /* NumberViewController.m */,
 				48AF44E81649479100DFE3D8 /* NumbersViewController.h */,
+				48AF44E91649479100DFE3D8 /* NumbersViewController.m */,
 				482D2DEB16C815BE00E13B91 /* ProvisioningViewController.h */,
 				482D2DEC16C815BE00E13B91 /* ProvisioningViewController.m */,
 				48AF456716497A1B00DFE3D8 /* RecentsViewController.h */,
-				48AF44E91649479100DFE3D8 /* NumbersViewController.m */,
 				48AF456816497A1B00DFE3D8 /* RecentsViewController.m */,
 				483679DC1721F2DF001A02AF /* RecordingViewController.h */,
 				483679DD1721F2E0001A02AF /* RecordingViewController.m */,

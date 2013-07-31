@@ -8,7 +8,6 @@
 
 #import "SettingsViewController.h"
 #import "CountriesViewController.h"
-#import "ProvisioningViewController.h"
 #import "Settings.h"
 #import "NetworkStatus.h"
 #import "CountryNames.h"
@@ -211,13 +210,7 @@ typedef enum
         case TableSectionAccountData:
             if ([settings hasAccount] == NO && indexPath.row == 0)
             {
-                ProvisioningViewController* provisioningViewController;
-
-                provisioningViewController = [[ProvisioningViewController alloc] init];
-                provisioningViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-                [AppDelegate.appDelegate.tabBarController presentViewController:provisioningViewController
-                                                                       animated:YES
-                                                                     completion:nil];
+                [Common showProvisioningViewController];
             }
             else
             {

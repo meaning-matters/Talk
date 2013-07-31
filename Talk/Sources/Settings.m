@@ -20,6 +20,7 @@
 
 NSString* const RunBeforeKey                   = @"RunBefore";
 NSString* const TabBarViewControllerClassesKey = @"TabBarViewControllerClasses";
+NSString* const TabBarSelectedIndexKey         = @"TabBarSelectedIndex";
 NSString* const ErrorDomainKey                 = @"ErrorDomain";
 NSString* const HomeCountryKey                 = @"HomeCountry";
 NSString* const HomeCountryFromSimKey          = @"HomeCountryFromSim";
@@ -34,7 +35,7 @@ NSString* const SipPasswordKey                 = @"SipPassword";            // U
 NSString* const AllowCellularDataCallsKey      = @"AllowCellularDataCalls";
 NSString* const ShowCallerIdKey                = @"ShowCallerId";
 NSString* const NumberTypeMaskKey              = @"NumberTypeMask";
-NSString* const ForwardsingsSelectionKey       = @"ForwardingsSelection";
+NSString* const ForwardingsSelectionKey        = @"ForwardingsSelection";
 NSString* const CurrencyCodeKey                = @"CurrencyCode";
 
 
@@ -99,7 +100,7 @@ static NSUserDefaults*  userDefaults;
     [userDefaults removeObjectForKey:AllowCellularDataCallsKey];
     [userDefaults removeObjectForKey:ShowCallerIdKey];
     [userDefaults removeObjectForKey:NumberTypeMaskKey];
-    [userDefaults removeObjectForKey:ForwardsingsSelectionKey];
+    [userDefaults removeObjectForKey:ForwardingsSelectionKey];
     [userDefaults removeObjectForKey:CurrencyCodeKey];
 
     [userDefaults synchronize];
@@ -123,6 +124,7 @@ static NSUserDefaults*  userDefaults;
     NSMutableDictionary*    defaults = [NSMutableDictionary dictionary];
 
     // Default for tabBarViewControllerClasses is handled in AppDelegate.
+    [defaults setObject:[NSNumber numberWithInt:2] forKey:TabBarSelectedIndexKey];  // The keypad.
 
     [defaults setObject:@"com.numberbay.app"                               forKey:ErrorDomainKey];
 
@@ -141,7 +143,7 @@ static NSUserDefaults*  userDefaults;
     [defaults setObject:[NSNumber numberWithBool:NO]                       forKey:AllowCellularDataCallsKey];
     [defaults setObject:[NSNumber numberWithBool:YES]                      forKey:ShowCallerIdKey];
     [defaults setObject:[NSNumber numberWithInt:NumberTypeGeographicMask]  forKey:NumberTypeMaskKey];
-    [defaults setObject:[NSNumber numberWithInt:0]                         forKey:ForwardsingsSelectionKey];
+    [defaults setObject:[NSNumber numberWithInt:0]                         forKey:ForwardingsSelectionKey];
     [defaults setObject:@""                                                forKey:CurrencyCodeKey];
 
     [userDefaults registerDefaults:defaults];
@@ -151,6 +153,7 @@ static NSUserDefaults*  userDefaults;
 - (void)getInitialValues
 {
     _tabBarViewControllerClasses = [userDefaults objectForKey:TabBarViewControllerClassesKey];
+    _tabBarSelectedIndex         = [userDefaults integerForKey:TabBarSelectedIndexKey];
     _errorDomain                 = [userDefaults objectForKey:ErrorDomainKey];
     _homeCountry                 = [userDefaults objectForKey:HomeCountryKey];
     _homeCountryFromSim          = [userDefaults boolForKey:HomeCountryFromSimKey];
@@ -165,7 +168,7 @@ static NSUserDefaults*  userDefaults;
     _allowCellularDataCalls      = [userDefaults boolForKey:AllowCellularDataCallsKey];
     _showCallerId                = [userDefaults boolForKey:ShowCallerIdKey];
     _numberTypeMask              = [userDefaults integerForKey:NumberTypeMaskKey];
-    _forwardingsSelection        = [userDefaults integerForKey:ForwardsingsSelectionKey];
+    _forwardingsSelection        = [userDefaults integerForKey:ForwardingsSelectionKey];
     _currencyCode                = [userDefaults objectForKey:CurrencyCodeKey];
 }
 
@@ -184,6 +187,13 @@ static NSUserDefaults*  userDefaults;
 {
     _tabBarViewControllerClasses = tabBarViewControllerClasses;
     [userDefaults setObject:tabBarViewControllerClasses forKey:TabBarViewControllerClassesKey];
+}
+
+
+- (void)setTabBarSelectedIndex:(NSInteger)tabBarSelectedIndex
+{
+    _tabBarSelectedIndex = tabBarSelectedIndex;
+    [userDefaults setInteger:tabBarSelectedIndex forKey:TabBarSelectedIndexKey];
 }
 
 
@@ -298,7 +308,7 @@ static NSUserDefaults*  userDefaults;
 - (void)setForwardingsSelection:(NSInteger)forwardingsSelection
 {
     _forwardingsSelection = forwardingsSelection;
-    [userDefaults setInteger:forwardingsSelection forKey:ForwardsingsSelectionKey];
+    [userDefaults setInteger:forwardingsSelection forKey:ForwardingsSelectionKey];
 }
 
 

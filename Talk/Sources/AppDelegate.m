@@ -222,7 +222,7 @@
 
         if (viewController.navigationController == nil)
         {
-            // For NBPeoplePickerNavigationController.
+            //### For NBPeoplePickerNavigationController.
             [viewControllers addObject:viewController];
             [self setPeoplePickerViewController:[viewControllers lastObject]];
         }
@@ -239,8 +239,9 @@
         }
     }
 
-    defaultTabBarViewControllers = viewControllers;
+    defaultTabBarViewControllers          = viewControllers;
     self.tabBarController.viewControllers = viewControllers;
+    self.tabBarController.selectedIndex   = [Settings sharedSettings].tabBarSelectedIndex;
 }
 
 
@@ -325,6 +326,11 @@
         {
             [defaultFadeImage removeFromSuperview];
             defaultFadeImage = nil;
+
+            if ([Settings sharedSettings].hasAccount == NO)
+            {
+                [Common showProvisioningViewController];
+            }
         }];
     }
 }

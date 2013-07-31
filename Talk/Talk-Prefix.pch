@@ -105,10 +105,12 @@ typedef enum
 typedef enum
 {
     UP_FILLER   = 0,
-    UP_CONTACT  = 1,
-    UP_ADD      = 2,
-    UP_SHARE    = 3
+    UP_EMAIL    = 1,
+    UP_CONTACT  = 2,
+    UP_ADD      = 3,
+    UP_SHARE    = 4
 } UnknownContactSection;
+
 
 //Constants used for address buildup
 #define ADDRESS_KEY_STREET  @"Street"

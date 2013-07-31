@@ -14,6 +14,7 @@
 #import "Settings.h"
 #import "NumberData.h"
 #import "BlockAlertView.h"
+#import "Common.h"
 
 
 @interface NumbersViewController ()
@@ -123,17 +124,24 @@
 
 - (void)addAction
 {
-    UINavigationController*         modalViewController;
-    NumberCountriesViewController*  numberCountriesViewController;
+    if ([Settings sharedSettings].hasAccount == YES)
+    {
+        UINavigationController*         modalViewController;
+        NumberCountriesViewController*  numberCountriesViewController;
 
-    numberCountriesViewController = [[NumberCountriesViewController alloc] init];
+        numberCountriesViewController = [[NumberCountriesViewController alloc] init];
 
-    modalViewController = [[UINavigationController alloc] initWithRootViewController:numberCountriesViewController];
-    modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        modalViewController = [[UINavigationController alloc] initWithRootViewController:numberCountriesViewController];
+        modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 
-    [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
-                                                           animated:YES
-                                                         completion:nil];
+        [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
+                                                               animated:YES
+                                                             completion:nil];
+    }
+    else
+    {
+        [Common showProvisioningViewController];
+    }
 }
 
 
