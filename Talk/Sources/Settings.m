@@ -124,7 +124,7 @@ static NSUserDefaults*  userDefaults;
     NSMutableDictionary*    defaults = [NSMutableDictionary dictionary];
 
     // Default for tabBarViewControllerClasses is handled in AppDelegate.
-    [defaults setObject:[NSNumber numberWithInt:2] forKey:TabBarSelectedIndexKey];  // The keypad.
+    [defaults setObject:[NSNumber numberWithInt:2] forKey:TabBarSelectedIndexKey];  // The dialer.
 
     [defaults setObject:@"com.numberbay.app"                               forKey:ErrorDomainKey];
 
