@@ -49,7 +49,7 @@
         [DataManager   sharedManager];
 
         // Initialize phone number stuff.
-        [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
+        [PhoneNumber setDefaultIsoCountryCode:[Settings sharedSettings].homeCountry];
         [LibPhoneNumber sharedInstance];    // This loads the JavaScript library.
 
         // Basic UI.

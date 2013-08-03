@@ -33,7 +33,6 @@
 		480578AA17A4FAAA006923BD /* NBGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4805789C17A4FAAA006923BD /* NBGroup.m */; };
 		480578AB17A4FAAA006923BD /* NBGroupsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4805789E17A4FAAA006923BD /* NBGroupsManager.m */; };
 		480578AC17A4FAAA006923BD /* NBGroupsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578A017A4FAAA006923BD /* NBGroupsTableViewController.m */; };
-		480578D817A4FABD006923BD /* NBMissedCallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578AE17A4FABD006923BD /* NBMissedCallCell.m */; };
 		480578D917A4FABD006923BD /* NBNameTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578B017A4FABD006923BD /* NBNameTableViewCell.m */; };
 		480578DA17A4FABD006923BD /* NBNewFieldTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578B217A4FABD006923BD /* NBNewFieldTableViewController.m */; };
 		480578DB17A4FABD006923BD /* NBNewPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578B417A4FABD006923BD /* NBNewPersonViewController.m */; };
@@ -67,7 +66,6 @@
 		480578FC17A50FB2006923BD /* NBGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4805789C17A4FAAA006923BD /* NBGroup.m */; };
 		480578FD17A50FB2006923BD /* NBGroupsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4805789E17A4FAAA006923BD /* NBGroupsManager.m */; };
 		480578FE17A50FB2006923BD /* NBGroupsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578A017A4FAAA006923BD /* NBGroupsTableViewController.m */; };
-		480578FF17A50FB2006923BD /* NBMissedCallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578AE17A4FABD006923BD /* NBMissedCallCell.m */; };
 		4805790017A50FB2006923BD /* NBNameTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578B017A4FABD006923BD /* NBNameTableViewCell.m */; };
 		4805790117A50FB2006923BD /* NBNewFieldTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578B217A4FABD006923BD /* NBNewFieldTableViewController.m */; };
 		4805790217A50FB2006923BD /* NBNewPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578B417A4FABD006923BD /* NBNewPersonViewController.m */; };
@@ -264,12 +262,12 @@
 		484943A81753252800E1D5C4 /* TwitterWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943811753252800E1D5C4 /* TwitterWhite.png */; };
 		484943A91753252800E1D5C4 /* TwitterWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943821753252800E1D5C4 /* TwitterWhite@2x.png */; };
 		484943AA1753252800E1D5C4 /* TwitterWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943821753252800E1D5C4 /* TwitterWhite@2x.png */; };
-		484943AD1753C00100E1D5C4 /* CreditsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484943AC1753C00000E1D5C4 /* CreditsViewController.m */; };
-		484943AE1753C00100E1D5C4 /* CreditsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484943AC1753C00000E1D5C4 /* CreditsViewController.m */; };
-		484943B01753C44D00E1D5C4 /* CreditsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484943AF1753C44D00E1D5C4 /* CreditsView.xib */; };
-		484943B11753C44D00E1D5C4 /* CreditsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484943AF1753C44D00E1D5C4 /* CreditsView.xib */; };
-		484943B31754762800E1D5C4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 484943B21754762800E1D5C4 /* Credits.rtf */; };
-		484943B41754762800E1D5C4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 484943B21754762800E1D5C4 /* Credits.rtf */; };
+		484943AD1753C00100E1D5C4 /* ThanksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484943AC1753C00000E1D5C4 /* ThanksViewController.m */; };
+		484943AE1753C00100E1D5C4 /* ThanksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484943AC1753C00000E1D5C4 /* ThanksViewController.m */; };
+		484943B01753C44D00E1D5C4 /* ThanksView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484943AF1753C44D00E1D5C4 /* ThanksView.xib */; };
+		484943B11753C44D00E1D5C4 /* ThanksView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484943AF1753C44D00E1D5C4 /* ThanksView.xib */; };
+		484943B31754762800E1D5C4 /* Thanks.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 484943B21754762800E1D5C4 /* Thanks.rtf */; };
+		484943B41754762800E1D5C4 /* Thanks.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 484943B21754762800E1D5C4 /* Thanks.rtf */; };
 		484943B617551EB100E1D5C4 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484943B517551EB100E1D5C4 /* Social.framework */; };
 		484A949D171821CB009E22B9 /* NumberAreasCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484A949C171821CB009E22B9 /* NumberAreasCell.xib */; };
 		484A949E171821CB009E22B9 /* NumberAreasCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484A949C171821CB009E22B9 /* NumberAreasCell.xib */; };
@@ -795,6 +793,10 @@
 		4865A9DC1792C5550028785F /* BuyNumberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4865A9DA1792C5550028785F /* BuyNumberCell.xib */; };
 		4865A9DF1792C8B70028785F /* BuyNumberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* BuyNumberCell.m */; };
 		4865A9E01792C8B70028785F /* BuyNumberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* BuyNumberCell.m */; };
+		4877EDB817AB7ADF0013B18F /* NBRecentCallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDB717AB7ADF0013B18F /* NBRecentCallCell.m */; };
+		4877EDB917AB7ADF0013B18F /* NBRecentCallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDB717AB7ADF0013B18F /* NBRecentCallCell.m */; };
+		4877EDBC17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */; };
+		4877EDBD17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */; };
 		487A7C9A16978DBE007693EE /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 487A7C9916978DBE007693EE /* MediaPlayer.framework */; };
 		488268D9164BCF8600EA58AE /* NetworkStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 488268D8164BCF8600EA58AE /* NetworkStatus.m */; };
 		488268DA164BCF8600EA58AE /* NetworkStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 488268D8164BCF8600EA58AE /* NetworkStatus.m */; };
@@ -1146,8 +1148,6 @@
 		4805789E17A4FAAA006923BD /* NBGroupsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBGroupsManager.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBGroupsManager.m; sourceTree = "<group>"; };
 		4805789F17A4FAAA006923BD /* NBGroupsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBGroupsTableViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBGroupsTableViewController.h; sourceTree = "<group>"; };
 		480578A017A4FAAA006923BD /* NBGroupsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBGroupsTableViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBGroupsTableViewController.m; sourceTree = "<group>"; };
-		480578AD17A4FABD006923BD /* NBMissedCallCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBMissedCallCell.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBMissedCallCell.h; sourceTree = "<group>"; };
-		480578AE17A4FABD006923BD /* NBMissedCallCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBMissedCallCell.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBMissedCallCell.m; sourceTree = "<group>"; };
 		480578AF17A4FABD006923BD /* NBNameTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBNameTableViewCell.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNameTableViewCell.h; sourceTree = "<group>"; };
 		480578B017A4FABD006923BD /* NBNameTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBNameTableViewCell.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNameTableViewCell.m; sourceTree = "<group>"; };
 		480578B117A4FABD006923BD /* NBNewFieldTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBNewFieldTableViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNewFieldTableViewController.h; sourceTree = "<group>"; };
@@ -1310,10 +1310,10 @@
 		484943801753252800E1D5C4 /* TwitterBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TwitterBlack@2x.png"; sourceTree = "<group>"; };
 		484943811753252800E1D5C4 /* TwitterWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TwitterWhite.png; sourceTree = "<group>"; };
 		484943821753252800E1D5C4 /* TwitterWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TwitterWhite@2x.png"; sourceTree = "<group>"; };
-		484943AB1753C00000E1D5C4 /* CreditsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditsViewController.h; sourceTree = "<group>"; };
-		484943AC1753C00000E1D5C4 /* CreditsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditsViewController.m; sourceTree = "<group>"; };
-		484943AF1753C44D00E1D5C4 /* CreditsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreditsView.xib; sourceTree = "<group>"; };
-		484943B21754762800E1D5C4 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; name = Credits.rtf; path = Resources/Credits.rtf; sourceTree = "<group>"; };
+		484943AB1753C00000E1D5C4 /* ThanksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThanksViewController.h; sourceTree = "<group>"; };
+		484943AC1753C00000E1D5C4 /* ThanksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThanksViewController.m; sourceTree = "<group>"; };
+		484943AF1753C44D00E1D5C4 /* ThanksView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThanksView.xib; sourceTree = "<group>"; };
+		484943B21754762800E1D5C4 /* Thanks.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; name = Thanks.rtf; path = Resources/Thanks.rtf; sourceTree = "<group>"; };
 		484943B517551EB100E1D5C4 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		484A949C171821CB009E22B9 /* NumberAreasCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreasCell.xib; sourceTree = "<group>"; };
 		484A949F171822D4009E22B9 /* NumberAreasCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreasCell.h; sourceTree = "<group>"; };
@@ -1829,6 +1829,10 @@
 		4865A9DA1792C5550028785F /* BuyNumberCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BuyNumberCell.xib; sourceTree = "<group>"; };
 		4865A9DD1792C8B70028785F /* BuyNumberCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyNumberCell.h; sourceTree = "<group>"; };
 		4865A9DE1792C8B70028785F /* BuyNumberCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyNumberCell.m; sourceTree = "<group>"; };
+		4877EDB617AB7ADF0013B18F /* NBRecentCallCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBRecentCallCell.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentCallCell.h; sourceTree = "<group>"; };
+		4877EDB717AB7ADF0013B18F /* NBRecentCallCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBRecentCallCell.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentCallCell.m; sourceTree = "<group>"; };
+		4877EDBA17AD27700013B18F /* PhoneNumberTextFieldDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumberTextFieldDelegate.h; sourceTree = "<group>"; };
+		4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneNumberTextFieldDelegate.m; sourceTree = "<group>"; };
 		487A7C9916978DBE007693EE /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		488268D7164BCF8600EA58AE /* NetworkStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkStatus.h; sourceTree = "<group>"; };
 		488268D8164BCF8600EA58AE /* NetworkStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkStatus.m; sourceTree = "<group>"; };
@@ -2242,8 +2246,8 @@
 		4805791817A51389006923BD /* Custom Cells */ = {
 			isa = PBXGroup;
 			children = (
-				480578AD17A4FABD006923BD /* NBMissedCallCell.h */,
-				480578AE17A4FABD006923BD /* NBMissedCallCell.m */,
+				4877EDB617AB7ADF0013B18F /* NBRecentCallCell.h */,
+				4877EDB717AB7ADF0013B18F /* NBRecentCallCell.m */,
 			);
 			name = "Custom Cells";
 			sourceTree = "<group>";
@@ -2319,6 +2323,8 @@
 				48200D1B16EC89BA0069677E /* NumberType.m */,
 				48ADD0F517067919001515EB /* UIView+AnimateHidden.h */,
 				48ADD0F61706791A001515EB /* UIView+AnimateHidden.m */,
+				4877EDBA17AD27700013B18F /* PhoneNumberTextFieldDelegate.h */,
+				4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -3225,7 +3231,6 @@
 				48EDD226166770B8007B89DA /* CallOptionsView.xib */,
 				4864B3FE1757C8E80006542F /* ContactUsView.xib */,
 				485ECBCB1651642D00364F08 /* CountriesView.xib */,
-				484943AF1753C44D00E1D5C4 /* CreditsView.xib */,
 				48AF4507164948B800DFE3D8 /* CreditView.xib */,
 				48AF450A164948CD00DFE3D8 /* DialerView.xib */,
 				48AF455D1649799F00DFE3D8 /* ForwardingsView.xib */,
@@ -3246,10 +3251,11 @@
 				4893880117044F59005CC795 /* NumberHeaderView.xib */,
 				48BC7F3E1702FE8D006671B5 /* NumberView.xib */,
 				48AF4560164979CE00DFE3D8 /* RecentsView.xib */,
+				483679FA17246977001A02AF /* RecordingControlsCell.xib */,
 				48AF4510164948F000DFE3D8 /* SettingsView.xib */,
 				48AF455A1649794B00DFE3D8 /* ShareView.xib */,
 				482D2DEF16C8172900E13B91 /* ProvisioningView.xib */,
-				483679FA17246977001A02AF /* RecordingControlsCell.xib */,
+				484943AF1753C44D00E1D5C4 /* ThanksView.xib */,
 			);
 			path = XIBs;
 			sourceTree = "<group>";
@@ -3267,8 +3273,6 @@
 				4864B3FB1757C72F0006542F /* ContactUsViewController.m */,
 				485ECBCE1651646700364F08 /* CountriesViewController.h */,
 				485ECBCF1651646700364F08 /* CountriesViewController.m */,
-				484943AB1753C00000E1D5C4 /* CreditsViewController.h */,
-				484943AC1753C00000E1D5C4 /* CreditsViewController.m */,
 				48AF44EC164947B300DFE3D8 /* CreditViewController.h */,
 				48AF44ED164947B300DFE3D8 /* CreditViewController.m */,
 				48AF44F0164947CD00DFE3D8 /* DialerViewController.h */,
@@ -3313,6 +3317,8 @@
 				48AF4556164978BE00DFE3D8 /* ShareViewController.m */,
 				48AF44F8164947FA00DFE3D8 /* SettingsViewController.h */,
 				48AF44F9164947FA00DFE3D8 /* SettingsViewController.m */,
+				484943AB1753C00000E1D5C4 /* ThanksViewController.h */,
+				484943AC1753C00000E1D5C4 /* ThanksViewController.m */,
 				48AD95D8164AC4FE006178E6 /* ViewController.h */,
 				48AD95D9164AC4FE006178E6 /* ViewController.m */,
 			);
@@ -3323,7 +3329,7 @@
 			isa = PBXGroup;
 			children = (
 				48D0A6EC1654D66E00FA2D98 /* CountryNames.json */,
-				484943B21754762800E1D5C4 /* Credits.rtf */,
+				484943B21754762800E1D5C4 /* Thanks.rtf */,
 				48D0A6E81654D66200FA2D98 /* InfoPlist.strings */,
 				4812727216487E2D00534450 /* LibPhoneNumber.js */,
 				48A2CDFB16834FC100506A7C /* RingbackTones.json */,
@@ -4120,8 +4126,8 @@
 				484943A51753252800E1D5C4 /* TwitterBlack@2x.png in Resources */,
 				484943A71753252800E1D5C4 /* TwitterWhite.png in Resources */,
 				484943A91753252800E1D5C4 /* TwitterWhite@2x.png in Resources */,
-				484943B01753C44D00E1D5C4 /* CreditsView.xib in Resources */,
-				484943B31754762800E1D5C4 /* Credits.rtf in Resources */,
+				484943B01753C44D00E1D5C4 /* ThanksView.xib in Resources */,
+				484943B31754762800E1D5C4 /* Thanks.rtf in Resources */,
 				4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */,
 				4864B3FF1757C8E80006542F /* ContactUsView.xib in Resources */,
 				4865A9DB1792C5550028785F /* BuyNumberCell.xib in Resources */,
@@ -4283,8 +4289,8 @@
 				484943A61753252800E1D5C4 /* TwitterBlack@2x.png in Resources */,
 				484943A81753252800E1D5C4 /* TwitterWhite.png in Resources */,
 				484943AA1753252800E1D5C4 /* TwitterWhite@2x.png in Resources */,
-				484943B11753C44D00E1D5C4 /* CreditsView.xib in Resources */,
-				484943B41754762800E1D5C4 /* Credits.rtf in Resources */,
+				484943B11753C44D00E1D5C4 /* ThanksView.xib in Resources */,
+				484943B41754762800E1D5C4 /* Thanks.rtf in Resources */,
 				4864B3F7175668CA0006542F /* LogoFacebook.png in Resources */,
 				4864B4001757C8E80006542F /* ContactUsView.xib in Resources */,
 				4865A9DC1792C5550028785F /* BuyNumberCell.xib in Resources */,
@@ -4405,7 +4411,7 @@
 				4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */,
 				4849433C175240EB00E1D5C4 /* LicenseViewController.m in Sources */,
 				4849436D17529DE100E1D5C4 /* ShareButton.m in Sources */,
-				484943AD1753C00100E1D5C4 /* CreditsViewController.m in Sources */,
+				484943AD1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
 				4864B3FC1757C72F0006542F /* ContactUsViewController.m in Sources */,
 				4865A9D817926CE00028785F /* BuyNumberViewController.m in Sources */,
 				4865A9DF1792C8B70028785F /* BuyNumberCell.m in Sources */,
@@ -4422,7 +4428,6 @@
 				480578FC17A50FB2006923BD /* NBGroup.m in Sources */,
 				480578FD17A50FB2006923BD /* NBGroupsManager.m in Sources */,
 				480578FE17A50FB2006923BD /* NBGroupsTableViewController.m in Sources */,
-				480578FF17A50FB2006923BD /* NBMissedCallCell.m in Sources */,
 				4805790017A50FB2006923BD /* NBNameTableViewCell.m in Sources */,
 				4805790117A50FB2006923BD /* NBNewFieldTableViewController.m in Sources */,
 				4805790217A50FB2006923BD /* NBNewPersonViewController.m in Sources */,
@@ -4443,6 +4448,8 @@
 				4805791117A50FB2006923BD /* NSMutableString+Appending.m in Sources */,
 				4805791217A50FBF006923BD /* NSString+Common.m in Sources */,
 				48C3446617A7CCA700E385B6 /* NBPeopleTableViewCell.m in Sources */,
+				4877EDB817AB7ADF0013B18F /* NBRecentCallCell.m in Sources */,
+				4877EDBC17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4528,7 +4535,7 @@
 				484943301752263600E1D5C4 /* LicensesViewController.m in Sources */,
 				4849433D175240EB00E1D5C4 /* LicenseViewController.m in Sources */,
 				4849436E17529DE100E1D5C4 /* ShareButton.m in Sources */,
-				484943AE1753C00100E1D5C4 /* CreditsViewController.m in Sources */,
+				484943AE1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
 				4864B3FD1757C72F0006542F /* ContactUsViewController.m in Sources */,
 				4865A9D917926CE00028785F /* BuyNumberViewController.m in Sources */,
 				4865A9E01792C8B70028785F /* BuyNumberCell.m in Sources */,
@@ -4544,7 +4551,6 @@
 				480578AA17A4FAAA006923BD /* NBGroup.m in Sources */,
 				480578AB17A4FAAA006923BD /* NBGroupsManager.m in Sources */,
 				480578AC17A4FAAA006923BD /* NBGroupsTableViewController.m in Sources */,
-				480578D817A4FABD006923BD /* NBMissedCallCell.m in Sources */,
 				480578D917A4FABD006923BD /* NBNameTableViewCell.m in Sources */,
 				480578DA17A4FABD006923BD /* NBNewFieldTableViewController.m in Sources */,
 				480578DB17A4FABD006923BD /* NBNewPersonViewController.m in Sources */,
@@ -4566,6 +4572,8 @@
 				480578F017A4FACF006923BD /* NSMutableString+Appending.m in Sources */,
 				480578F117A4FACF006923BD /* NSString+Common.m in Sources */,
 				48C3446717A7CCA700E385B6 /* NBPeopleTableViewCell.m in Sources */,
+				4877EDB917AB7ADF0013B18F /* NBRecentCallCell.m in Sources */,
+				4877EDBD17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

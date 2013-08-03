@@ -173,7 +173,7 @@
 
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
-                                    completion:^(BOOL canceled, NSInteger buttonIndex)
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
          {
              [self dismissViewControllerAnimated:YES completion:nil];
          }
@@ -208,7 +208,7 @@
 
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
-                                    completion:^(BOOL canceled, NSInteger buttonIndex)
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
         {
             [self dismissViewControllerAnimated:YES completion:nil];
         }

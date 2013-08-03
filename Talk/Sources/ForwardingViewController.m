@@ -517,7 +517,7 @@ static const int    TextFieldCellTag = 1111;
 
     if (numberTextField.text.length > 0)
     {
-        [Common checkCountryOfPhoneNumber:phoneNumber];
+        [Common checkCountryOfPhoneNumber:phoneNumber completion:nil];
     }
 }
 

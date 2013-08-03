@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PhoneNumber.h"
 
 @interface BlockAlertView : UIAlertView <UIAlertViewDelegate>
 
@@ -15,5 +16,13 @@
                             completion:(void (^)(BOOL cancelled, NSInteger buttonIndex))completion
                      cancelButtonTitle:(NSString*)cancelButtonTitle
                      otherButtonTitles:(NSString*)otherButtonTitles, ...;
+
++ (BlockAlertView*)showPhoneNumberAlertViewWithTitle:(NSString*)title
+                                             message:(NSString*)message
+                                          completion:(void (^)(BOOL         cancelled,
+                                                               NSInteger    buttonIndex,
+                                                               PhoneNumber* phoneNumber))completion
+                                   cancelButtonTitle:(NSString*)cancelButtonTitle
+                                   otherButtonTitles:(NSString*)otherButtonTitles, ...;
 
 @end

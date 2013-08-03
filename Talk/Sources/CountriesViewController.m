@@ -69,7 +69,13 @@
 
 - (void)cancel
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:^
+    {
+        if (self.dismissCompletion != nil)
+        {
+            self.dismissCompletion(YES);
+        }
+    }];
 }
 
 
@@ -148,7 +154,13 @@
     if (self.isModal == YES)
     {
         // Shown as modal.
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES completion:^
+        {
+            if (self.dismissCompletion != nil)
+            {
+                self.dismissCompletion(YES);
+            }
+        }];
     }
     else
     {

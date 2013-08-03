@@ -20,7 +20,7 @@
 
 - (BOOL)isValidNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode;
 
-- (BOOL)isValidNumber:(NSString*)number forBaseIsoCountryCode:(NSString*)isoCountryCode;//### difference with previous???
+- (BOOL)isValidNumber:(NSString*)number forIsoCountryCode:(NSString*)isoCountryCode;//### See code what's different with previous.
 
 - (BOOL)isPossibleNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode;
 

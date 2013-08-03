@@ -56,6 +56,8 @@
 
 + (void)setCornerRadius:(CGFloat)radius ofView:(UIView*)view;
 
++ (void)setBorderWidth:(CGFloat)width color:(UIColor*)color ofView:(UIView*)view;
+
 + (void)setX:(CGFloat)x ofView:(UIView*)view;
 
 + (void)setY:(CGFloat)y ofView:(UIView*)view;
@@ -70,7 +72,8 @@
 
 + (BOOL)checkRemoteNotifications;
 
-+ (BOOL)checkCountryOfPhoneNumber:(PhoneNumber*)phoneNumber;            // Works only for non-emergency numbers.
+// Works only for non-emergency numbers.
++ (BOOL)checkCountryOfPhoneNumber:(PhoneNumber*)phoneNumber completion:(void (^)(PhoneNumber* phoneNumber))completion;
 
 + (void)enableNetworkActivityIndicator:(BOOL)enable;
 

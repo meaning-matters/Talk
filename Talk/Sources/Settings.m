@@ -107,6 +107,8 @@ static NSUserDefaults*  userDefaults;
 
     [self registerDefaults];
     [self getInitialValues];
+
+    [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
 }
 
 
@@ -152,9 +154,9 @@ static NSUserDefaults*  userDefaults;
 
 - (void)getInitialValues
 {
-    _tabBarViewControllerClasses = [userDefaults objectForKey:TabBarViewControllerClassesKey];
-    _tabBarSelectedIndex         = [userDefaults integerForKey:TabBarSelectedIndexKey];
-    _errorDomain                 = [userDefaults objectForKey:ErrorDomainKey];
+    _tabBarViewControllerClasses = ;
+    _tabBarSelectedIndex         = ;
+    _errorDomain                 = ;
     _homeCountry                 = [userDefaults objectForKey:HomeCountryKey];
     _homeCountryFromSim          = [userDefaults boolForKey:HomeCountryFromSimKey];
     _lastDialedNumber            = [userDefaults objectForKey:LastDialedNumberKey];
@@ -183,27 +185,48 @@ static NSUserDefaults*  userDefaults;
 
 #pragma mark - Setters
 
+- (NSArray*)tabBarViewControllerClasses
+{
+    return [userDefaults objectForKey:TabBarViewControllerClassesKey];
+}
+
+
 - (void)setTabBarViewControllerClasses:(NSArray*)tabBarViewControllerClasses
 {
-    _tabBarViewControllerClasses = tabBarViewControllerClasses;
     [userDefaults setObject:tabBarViewControllerClasses forKey:TabBarViewControllerClassesKey];
+}
+
+
+- (NSInteger)tabBarSelectedIndex
+{
+    return [userDefaults integerForKey:TabBarSelectedIndexKey];
 }
 
 
 - (void)setTabBarSelectedIndex:(NSInteger)tabBarSelectedIndex
 {
-    _tabBarSelectedIndex = tabBarSelectedIndex;
     [userDefaults setInteger:tabBarSelectedIndex forKey:TabBarSelectedIndexKey];
+}
+
+
+- (NSString*)errorDomain
+{
+    return [userDefaults objectForKey:ErrorDomainKey];
 }
 
 
 - (void)setErrorDomain:(NSString*)errorDomain
 {
-    _errorDomain = errorDomain;
     [userDefaults setObject:errorDomain forKey:ErrorDomainKey];
 }
 
 
+- (NSString*)homeCountry
+{
+
+}
+
+....
 - (void)setHomeCountry:(NSString*)homeCountry
 {
     _homeCountry = homeCountry;

@@ -465,7 +465,7 @@ static const int    TextFieldCellTag = 1111;
                                                         @"Button title for starting an audio recording\n"
                                                         @"[iOS alert button size 1/2 alert width].");
 
-        [BlockAlertView showAlertViewWithTitle:title message:message completion:^(BOOL canceled, NSInteger buttonIndex)
+        [BlockAlertView showAlertViewWithTitle:title message:message completion:^(BOOL cancelled, NSInteger buttonIndex)
         {
             if (buttonIndex == 1)
             {

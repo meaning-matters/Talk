@@ -8,7 +8,7 @@
 
 #import "AboutViewController.h"
 #import "LicensesViewController.h"
-#import "CreditsViewController.h"
+#import "ThanksViewController.h"
 #import "Settings.h"
 
 
@@ -48,11 +48,11 @@
 
     NSString*   title;
 
-    title = NSLocalizedStringWithDefaultValue(@"About CreditsButtonTitle", nil,
-                                              [NSBundle mainBundle], @"Credits",
-                                              @"Button title to open credits/thanks (not calling credit) screen.\n"
+    title = NSLocalizedStringWithDefaultValue(@"About ThanksButtonTitle", nil,
+                                              [NSBundle mainBundle], @"Thanks",
+                                              @"Button title to open thanks screen.\n"
                                               @"[1 line normal font].");
-    [self.creditsButton setTitle:title forState:UIControlStateNormal];
+    [self.thanksButton setTitle:title forState:UIControlStateNormal];
 
     title = NSLocalizedStringWithDefaultValue(@"About LicensesButtonTitle", nil,
                                               [NSBundle mainBundle], @"Licenses",
@@ -64,14 +64,14 @@
 
 #pragma mark - Actions
 
-- (IBAction)creditsAction:(id)sender
+- (IBAction)thanksAction:(id)sender
 {
-    CreditsViewController*  creditsViewController;
+    ThanksViewController*  thanksViewController;
     UINavigationController* modalViewController;
 
-    creditsViewController = [[CreditsViewController alloc] init];
+    thanksViewController = [[ThanksViewController alloc] init];
 
-    modalViewController = [[UINavigationController alloc] initWithRootViewController:creditsViewController];
+    modalViewController = [[UINavigationController alloc] initWithRootViewController:thanksViewController];
     modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentViewController:modalViewController
                        animated:YES

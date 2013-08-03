@@ -230,6 +230,13 @@
 }
 
 
++ (void)setBorderWidth:(CGFloat)width color:(UIColor*)color ofView:(UIView*)view
+{
+    view.layer.borderWidth = width;
+    view.layer.borderColor = [color CGColor];
+}
+
+
 + (void)setX:(CGFloat)x ofView:(UIView*)view
 {
     CGRect  frame;
@@ -349,7 +356,7 @@
 
 
 // Checks only non-emergency number.
-+ (BOOL)checkCountryOfPhoneNumber:(PhoneNumber*)phoneNumber
++ (BOOL)checkCountryOfPhoneNumber:(PhoneNumber*)phoneNumber completion:(void (^)(PhoneNumber* phoneNumber))completion
 {
     static UIAlertView* alertView;
     BOOL                result;
@@ -394,6 +401,10 @@
 
                 countriesViewController = [[CountriesViewController alloc] init];
                 countriesViewController.isModal = YES;
+                countriesViewController.dismissCompletion = ^(BOOL cancelled)
+                {
+                    completion(phoneNumber);
+                };
 
                 modalViewController = [[UINavigationController alloc] initWithRootViewController:countriesViewController];
                 modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -405,7 +416,7 @@
                     topViewController = topViewController.presentedViewController;
                 }
             
-                    // topViewController = [[[[UIApplication sharedApplication] keyWindow] subviews][0] nextResponder];
+                // topViewController = [[[[UIApplication sharedApplication] keyWindow] subviews][0] nextResponder];
 
                 [topViewController presentViewController:modalViewController animated:YES completion:^
                 {

@@ -24,6 +24,10 @@
 #import "CommonStrings.h"
 #import "Common.h"
 #import "WebClient.h"
+#import "Settings.h"
+#import "CreditViewController.h"
+#import "NumberCountriesViewController.h"
+#import "AppDelegate.h"
 
 
 @interface ProvisioningViewController ()
@@ -61,31 +65,44 @@
                                                                 @"the steps to verify your number. The price of the "
                                                                 @"account will be your initial credit, so does not "
                                                                 @"cost you extra. "
-                                                                @"\n\nLogged in, you can buy more credit, and numbers "
-                                                                @"from 50 countries."
                                                                 @"\n\nWhen you already have an account: Restore your "
                                                                 @"credit and numbers.",
                                                                 @"...");
-    self.introRestoreButton.titleLabel.text = NSLocalizedStringWithDefaultValue(@"Provisioning:Intro RestoreButtonTitle", nil,
-                                                                                [NSBundle mainBundle], @"Restore",
-                                                                                @"...");
-    self.introBuyButton.titleLabel.text = NSLocalizedStringWithDefaultValue(@"Provisioning:Intro BuyButtonTitle", nil,
-                                                                                [NSBundle mainBundle], @"Buy",
-                                                                                @"...");
+    [self.introRestoreButton setTitle:NSLocalizedStringWithDefaultValue(@"Provisioning:Intro RestoreButtonTitle", nil,
+                                                                        [NSBundle mainBundle], @"Restore",
+                                                                        @"...")
+                             forState:UIControlStateNormal];
+    [self.introBuyButton setTitle:NSLocalizedStringWithDefaultValue(@"Provisioning:Intro BuyButtonTitle", nil,
+                                                                    [NSBundle mainBundle], @"Buy",
+                                                                    @"...")
+                         forState:UIControlStateNormal];
+
+    self.verifyNavigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"Provisioning:Verify BarTitle", nil,
+                                                                               [NSBundle mainBundle], @"Verify Number",
+                                                                               @"...");
+
+    self.readyNavigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BarTitle", nil,
+                                                                              [NSBundle mainBundle], @"Ready",
+                                                                              @"...");
+    [self.readyCreditButton setTitle:NSLocalizedStringWithDefaultValue(@"Provisioning:Ready CreditButtonTitle", nil,
+                                                                       [NSBundle mainBundle], @"Credit",
+                                                                       @"...")
+                            forState:UIControlStateNormal];
+    [self.readyNumberButton setTitle:NSLocalizedStringWithDefaultValue(@"Provisioning:Ready CreditButtonTitle", nil,
+                                                                       [NSBundle mainBundle], @"Number",
+                                                                       @"...")
+                            forState:UIControlStateNormal];
 
     self.failNavigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"Provisioning:Fail BarTitle", nil,
                                                                              [NSBundle mainBundle], @"Failed",
                                                                              @"...");
 
-    self.readyNavigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BarTitle", nil,
-                                                                              [NSBundle mainBundle], @"Ready",
-                                                                              @"...");
-    self.readyCreditButton.titleLabel.text = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready CreditButtonTitle", nil,
-                                                                               [NSBundle mainBundle], @"Credit",
-                                                                               @"...");
-    self.readyNumberButton.titleLabel.text = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready CreditButtonTitle", nil,
-                                                                               [NSBundle mainBundle], @"Number",
-                                                                               @"...");
+    [Common setCornerRadius:10 ofView:self.verifyStep1View];
+    [Common setCornerRadius:10 ofView:self.verifyStep2View];
+    [Common setCornerRadius:10 ofView:self.verifyStep3View];
+    [Common setBorderWidth:0.8 color:[UIColor darkGrayColor] ofView:self.verifyStep1View];
+    [Common setBorderWidth:0.8 color:[UIColor darkGrayColor] ofView:self.verifyStep2View];
+    [Common setBorderWidth:0.8 color:[UIColor darkGrayColor] ofView:self.verifyStep3View];
 
     [self.view addSubview:self.introView];
     currentView = self.introView;
@@ -103,6 +120,56 @@
              [self dismissViewControllerAnimated:YES completion:nil];
          }
     }];
+}
+
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+
+    // We deliberately set the KeypadView height to a fivefold, so that all keys
+    // can be equally high.  This is assumed in the layout code of KeypadView!
+    NSLog(@"%d", (int)self.view.frame.size.height);
+    switch ((int)self.view.frame.size.height)
+    {
+        case 460:   // 320x480 screen, More tab.
+        case 440:   // 320x480 screen, with in-call iOS flasher at top.
+            [Common setHeight:75 ofView:self.verifyStep1View];
+            [Common setHeight:75 ofView:self.verifyStep2View];
+            [Common setHeight:75 ofView:self.verifyStep3View];
+            [Common setY:199     ofView:self.verifyStep1View];
+            [Common setY:282     ofView:self.verifyStep2View];
+            [Common setY:365     ofView:self.verifyStep3View];
+            [Common setY:-2      ofView:self.verifyStep1Label];
+            [Common setY:-2      ofView:self.verifyStep2Label];
+            [Common setY:-2      ofView:self.verifyStep3Label];
+            [Common setY:28      ofView:self.verifyNumberButton];
+            [Common setY:28      ofView:self.verifyCallButton];
+            [Common setY:28      ofView:self.verifyCodeLabel];
+            [Common setHeight:36 ofView:self.verifyNumberButton];
+            [Common setHeight:36 ofView:self.verifyCallButton];
+            [Common setHeight:36 ofView:self.verifyCodeLabel];
+            break;
+
+        case 548:   // 320x568 screen.
+        case 528:   // 320x568 screen, with in-call iOS flasher at top.
+            [Common setHeight:90 ofView:self.verifyStep1View];
+            [Common setHeight:90 ofView:self.verifyStep2View];
+            [Common setHeight:90 ofView:self.verifyStep3View];
+            [Common setY:242     ofView:self.verifyStep1View];
+            [Common setY:340     ofView:self.verifyStep2View];
+            [Common setY:438     ofView:self.verifyStep3View];
+            [Common setY:0       ofView:self.verifyStep1Label];
+            [Common setY:0       ofView:self.verifyStep2Label];
+            [Common setY:0       ofView:self.verifyStep3Label];
+            [Common setY:37      ofView:self.verifyNumberButton];
+            [Common setY:37      ofView:self.verifyCallButton];
+            [Common setY:37      ofView:self.verifyCodeLabel];
+            [Common setHeight:40 ofView:self.verifyNumberButton];
+            [Common setHeight:40 ofView:self.verifyCallButton];
+            [Common setHeight:40 ofView:self.verifyCodeLabel];
+            break;
+    }
 }
 
 
@@ -200,6 +267,9 @@
 {
 #warning  //### Stop any purchase or server actions, or at least make sure they don't mess up/crash things.
 
+    [self showView:self.verifyView];
+    return;
+
     [self dismissViewControllerAnimated:YES
                              completion:^
     {
@@ -287,17 +357,111 @@
 }
 
 
-#pragma mark - Busy UI Actions
+#pragma mark -  Verify UI Actions
 
-- (IBAction)busyCancelAction:(id)sender
+- (IBAction)verifyCancelAction:(id)sender
 {
-#warning //### Stop any purchase or server actions, or at least make sure they don't mess up/crash things.
+    NSString*   title;
+    NSString*   message;
 
-    [self dismissViewControllerAnimated:YES
-                             completion:^
+    title = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyCancelTitle", nil,
+                                              [NSBundle mainBundle], @"Cancel Account Activation",
+                                              @"Cancel user account activation.\n"
+                                              @"[iOS alert title size].");
+    message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyCancelMessage", nil,
+                                                [NSBundle mainBundle],
+                                                @"Are you sure you want to cancel the activation of your account?\n\n"
+                                                @"(You can restore it later, on any device.)",
+                                                @"Alert message if user wants to cancel.\n"
+                                                @"[iOS alert message size]");
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
     {
-        //### ?
+        if (buttonIndex == 1)
+        {
+            [[Settings sharedSettings] resetAll];
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+    }
+                         cancelButtonTitle:[CommonStrings noString]
+                         otherButtonTitles:[CommonStrings yesString], nil];
+}
+
+
+- (IBAction)verifyNumberAction:(id)sender
+{
+    __block BlockAlertView*  alert;
+    NSString*                title;
+    NSString*                message;
+
+    title = NSLocalizedStringWithDefaultValue(@"Provisioning EnterNumberTitle", nil,
+                                              [NSBundle mainBundle], @"Enter Your Number",
+                                              @"Title asking user to enter their phone number.\n"
+                                              @"[iOS alert title size].");
+    message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyCancelMessage", nil,
+                                                [NSBundle mainBundle],
+                                                @"Enter a number you own; it will be linked to your account.",
+                                                @"Message explaining about the phone number they need to enter.\n"
+                                                @"[iOS alert message size]");
+    alert = [BlockAlertView showPhoneNumberAlertViewWithTitle:title
+                                                      message:message
+                                                   completion:^(BOOL         cancelled,
+                                                                NSInteger    buttonIndex,
+                                                                PhoneNumber* phoneNumber)
+    {
+        if (buttonIndex == 1)
+        {
+            // We only get here when the international format is available; BlockAlertView takes care of this.
+            [self.verifyNumberButton setTitle:[phoneNumber internationalFormat] forState:UIControlStateNormal];
+        }
+    }
+                                            cancelButtonTitle:[CommonStrings cancelString]
+                                            otherButtonTitles:[CommonStrings okString], nil];
+}
+
+
+- (IBAction)verifyCallAction:(id)sender
+{
+    
+}
+
+
+#pragma mark - Ready UI Actions
+
+- (IBAction)readyDoneAction:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (IBAction)readyCreditAction:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:^
+    {
+        CreditViewController*   viewController = [[CreditViewController alloc] init];
+        viewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [AppDelegate.appDelegate.tabBarController presentViewController:viewController animated:YES completion:nil];
     }];
+}
+
+
+- (IBAction)readyNumberAction:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:^
+     {
+         UINavigationController*         modalViewController;
+         NumberCountriesViewController*  numberCountriesViewController;
+
+         numberCountriesViewController = [[NumberCountriesViewController alloc] init];
+
+         modalViewController = [[UINavigationController alloc] initWithRootViewController:numberCountriesViewController];
+         modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+
+         [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
+                                                                animated:YES
+                                                              completion:nil];
+     }];
 }
 
 
@@ -305,49 +469,13 @@
 
 - (IBAction)failCancelAction:(id)sender
 {
-#warning //### Stop any purchase or server actions, or at least make sure they don't mess up/crash things.
-
-    [self dismissViewControllerAnimated:YES
-                             completion:^
-    {
-        //### ?
-    }];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
 - (IBAction)failCloseAction:(id)sender
 {
-    [self dismissViewControllerAnimated:YES
-                             completion:^
-    {
-        //### ?
-    }];
-}
-
-
-#pragma mark - Ready UI Actions
-
-- (IBAction)readyCancelAction:(id)sender
-{
-#warning //### Stop any purchase or server actions, or at least make sure they don't mess up/crash things.
-
-    [self dismissViewControllerAnimated:YES
-                             completion:^
-     {
-         //### ?
-     }];
-}
-
-
-- (IBAction)readyCreditAction:(id)sender
-{
-
-}
-
-
-- (IBAction)readyNumberAction:(id)sender
-{
-
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

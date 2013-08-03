@@ -1,24 +1,24 @@
 //
-//  CreditsViewController.m
+//  ThanksViewController.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 27/05/13.
 //  Copyright (c) 2013 Cornelis van der Bent. All rights reserved.
 //
 
-#import "CreditsViewController.h"
+#import "ThanksViewController.h"
 #import "Common.h"
 
 
-@implementation CreditsViewController
+@implementation ThanksViewController
 
 - (id)init
 {
-    if (self = [super initWithNibName:@"CreditsView" bundle:nil])
+    if (self = [super initWithNibName:@"ThanksView" bundle:nil])
     {
-        self.title = NSLocalizedStringWithDefaultValue(@"Credits ScreenTitle", nil,
-                                                       [NSBundle mainBundle], @"Credits",
-                                                       @"Title of app screen with credits/thanks (no calling credit)\n"
+        self.title = NSLocalizedStringWithDefaultValue(@"Thanks ScreenTitle", nil,
+                                                       [NSBundle mainBundle], @"Thanks",
+                                                       @"Title of app screen with thanks\n"
                                                        @"[1 line larger font].");
     }
     
@@ -36,7 +36,7 @@
                                                                action:@selector(cancel)];
     self.navigationItem.leftBarButtonItem = buttonItem;
 
-    NSString*       path = [[NSBundle mainBundle] pathForAuxiliaryExecutable:@"Credits.rtf"];
+    NSString*       path = [[NSBundle mainBundle] pathForAuxiliaryExecutable:@"Thanks.rtf"];
     NSURL*          url = [[NSURL alloc] initFileURLWithPath:path];
     NSURLRequest*   request = [NSURLRequest requestWithURL:url];
     [self.webView loadRequest:request];

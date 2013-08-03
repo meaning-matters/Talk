@@ -405,7 +405,7 @@ static SipInterface*    sipInterface;
             call.network = CallNetworkMobile;
         }
     }
-    else if ([self checkAccount] && [self checkNetwork] && [Common checkCountryOfPhoneNumber:phoneNumber])
+    else if ([self checkAccount] && [self checkNetwork] && [Common checkCountryOfPhoneNumber:phoneNumber completion:nil])
     {
         call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
         call.identityNumber = identity;
@@ -684,7 +684,7 @@ static SipInterface*    sipInterface;
 }
 
 
-- (void)sipInterface:(SipInterface*)interface callIncomingCanceled:(Call*)call
+- (void)sipInterface:(SipInterface*)interface callIncomingCancelled:(Call*)call
 {
 
 }

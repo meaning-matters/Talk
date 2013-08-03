@@ -74,7 +74,7 @@ typedef enum
 
 - (void)sipInterface:(SipInterface*)interface callIncoming:(Call*)call;
 
-- (void)sipInterface:(SipInterface*)interface callIncomingCanceled:(Call*)call;
+- (void)sipInterface:(SipInterface*)interface callIncomingCancelled:(Call*)call;
 
 - (void)sipInterface:(SipInterface*)interface call:(Call*)call onMute:(BOOL)onMute;     // Response method of requesting on-mute.
 

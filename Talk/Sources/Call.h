@@ -21,7 +21,7 @@ typedef enum
     CallStateConnected,
     CallStateEnding,
     CallStateEnded,
-    CallStateCanceled,
+    CallStateCancelled,
     CallStateBusy,
     CallStateDeclined,
     CallStateNotAllowed,

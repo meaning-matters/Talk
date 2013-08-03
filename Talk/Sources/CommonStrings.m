@@ -37,6 +37,24 @@
 }
 
 
++ (NSString*)noString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings No", nil,
+                                             [NSBundle mainBundle], @"No",
+                                             @"Standard string seen on [alert] buttons to say no to something\n"
+                                             @"[iOS standard size].");
+}
+
+
++ (NSString*)yesString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Yes", nil,
+                                             [NSBundle mainBundle], @"Yes",
+                                             @"Standard string seen on [alert] buttons to say yes to something\n"
+                                             @"[iOS standard size].");
+}
+
+
 + (NSString*)buyString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Buy", nil,

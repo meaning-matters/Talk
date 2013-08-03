@@ -15,6 +15,7 @@
 
 + (void)saveString:(NSString*)inputString forKey:(NSString*)account
 {
+#warning //### Replace this assert with something gentle, because it happened sometimes when server failed.
     NSAssert(account     != nil, @"Invalid account");
     NSAssert(inputString != nil, @"Invalid string");
 

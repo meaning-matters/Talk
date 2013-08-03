@@ -16,6 +16,10 @@
 
 + (NSString*)okString;
 
++ (NSString*)noString;
+
++ (NSString*)yesString;
+
 + (NSString*)buyString;
 
 + (NSString*)loadingString;

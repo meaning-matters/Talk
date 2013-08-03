@@ -14,18 +14,22 @@
 
 @implementation PhoneNumber
 
-static NSString*    defaultBaseIsoCountryCode;
+@synthesize isoCountryCode = _isoCountryCode;
+
+static NSString*    defaultIsoCountryCode;
 
 
-+ (void)setDefaultBaseIsoCountryCode:(NSString*)isoCountryCode
++ (void)setDefaultIsoCountryCode:(NSString*)isoCountryCode
 {
-    defaultBaseIsoCountryCode = isoCountryCode;
+#warning Being called many times when doing Reset All from Settings.  Sort out why! (During start app also 10 times.)
+#warning When above is fixed, change this into @property.
+    defaultIsoCountryCode = isoCountryCode;
 }
 
 
-+ (NSString*)defaultBaseIsoCountryCode
++ (NSString*)defaultIsoCountryCode
 {
-    return defaultBaseIsoCountryCode;
+    return defaultIsoCountryCode;
 }
 
 
@@ -37,6 +41,13 @@ static NSString*    defaultBaseIsoCountryCode;
     strippedText = [[number componentsSeparatedByCharactersInSet:stripSet] componentsJoinedByString:@""];
 
     _number = strippedText;
+
+    _isoCountryCode = [[LibPhoneNumber sharedInstance] isoCountryCodeOfNumber:self.number
+                                                               isoCountryCode:defaultIsoCountryCode];
+    if (_isoCountryCode == nil)
+    {
+        _isoCountryCode = defaultIsoCountryCode;
+    }
 }
 
 
@@ -46,7 +57,7 @@ static NSString*    defaultBaseIsoCountryCode;
 {
     if (self = [super init])
     {
-        _baseIsoCountryCode = defaultBaseIsoCountryCode;
+        _isoCountryCode = defaultIsoCountryCode;
         _number = @"";
     }
     
@@ -58,20 +69,18 @@ static NSString*    defaultBaseIsoCountryCode;
 {
     if (self = [super init])
     {
-        _baseIsoCountryCode = defaultBaseIsoCountryCode;
-        _number = number;
+        self.number = number;
     }
     
     return self;
 }
 
 
-- (id)initWithNumber:(NSString*)number baseIsoCountryCode:(NSString*)isoCountryCode;
+- (id)initWithNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode;
 {
     if (self = [super init])
     {
-        _baseIsoCountryCode = isoCountryCode;
-        _number = number;
+        self.number = number;
     }
     
     return self;
@@ -80,33 +89,33 @@ static NSString*    defaultBaseIsoCountryCode;
 
 #pragma mark - Public API
 
-- (NSString*)callCountryCode
+- (NSString*)isoCountryCode
 {
-    return [[LibPhoneNumber sharedInstance] callCountryCodeOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
+    return (_isoCountryCode != nil) ? _isoCountryCode : defaultIsoCountryCode;
 }
 
 
-- (NSString*)isoCountryCode
+- (NSString*)callCountryCode
 {
-    return [[LibPhoneNumber sharedInstance] isoCountryCodeOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
+    return [[LibPhoneNumber sharedInstance] callCountryCodeOfNumber:self.number isoCountryCode:self.isoCountryCode];
 }
 
 
 - (BOOL)isValid
 {
-    return [[LibPhoneNumber sharedInstance] isValidNumber:self.number isoCountryCode:self.baseIsoCountryCode];
+    return [[LibPhoneNumber sharedInstance] isValidNumber:self.number isoCountryCode:self.isoCountryCode];
 }
 
 
-- (BOOL)isValidForBaseIsoCountryCode
+- (BOOL)isValidForBaseIsoCountryCode:(NSString*)isoCountryCode;
 {
-    return [[LibPhoneNumber sharedInstance] isValidNumber:self.number forBaseIsoCountryCode:self.baseIsoCountryCode];
+    return [[LibPhoneNumber sharedInstance] isValidNumber:self.number forIsoCountryCode:isoCountryCode];
 }
 
 
 - (BOOL)isPossible
 {
-    return [[LibPhoneNumber sharedInstance] isPossibleNumber:self.number isoCountryCode:self.baseIsoCountryCode];
+    return [[LibPhoneNumber sharedInstance] isPossibleNumber:self.number isoCountryCode:self.isoCountryCode];
 }
 
 
@@ -115,8 +124,8 @@ static NSString*    defaultBaseIsoCountryCode;
 - (BOOL)isInternational
 {
     BOOL            international;
-    PhoneNumber*    nlPhoneNumber = [[PhoneNumber alloc] initWithNumber:self.number baseIsoCountryCode:@"NL"];
-    PhoneNumber*    bePhoneNumber = [[PhoneNumber alloc] initWithNumber:self.number baseIsoCountryCode:@"BE"];
+    PhoneNumber*    nlPhoneNumber = [[PhoneNumber alloc] initWithNumber:self.number isoCountryCode:@"NL"];
+    PhoneNumber*    bePhoneNumber = [[PhoneNumber alloc] initWithNumber:self.number isoCountryCode:@"BE"];
 
     if ([nlPhoneNumber isValid] && [bePhoneNumber isValid])
     {
@@ -140,13 +149,13 @@ static NSString*    defaultBaseIsoCountryCode;
 
 - (BOOL)isEmergency
 {
-    return [[LibPhoneNumber sharedInstance] isEmergencyNumber:self.number isoCountryCode:self.baseIsoCountryCode];
+    return [[LibPhoneNumber sharedInstance] isEmergencyNumber:self.number isoCountryCode:self.isoCountryCode];
 }
 
 
 - (PhoneNumberType)type
 {
-    return [[LibPhoneNumber sharedInstance] typeOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
+    return [[LibPhoneNumber sharedInstance] typeOfNumber:self.number isoCountryCode:self.isoCountryCode];
 }
 
 
@@ -299,7 +308,7 @@ static NSString*    defaultBaseIsoCountryCode;
 
 - (NSString*)originalFormat
 {
-    return [[LibPhoneNumber sharedInstance] originalFormatOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
+    return [[LibPhoneNumber sharedInstance] originalFormatOfNumber:self.number isoCountryCode:self.isoCountryCode];
 }
 
 
@@ -307,7 +316,7 @@ static NSString*    defaultBaseIsoCountryCode;
 {
     NSString*   format;
 
-    format = [[LibPhoneNumber sharedInstance] e164FormatOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
+    format = [[LibPhoneNumber sharedInstance] e164FormatOfNumber:self.number isoCountryCode:self.isoCountryCode];
 
     if ([format isEqualToString:@"invalid"])
     {
@@ -320,26 +329,27 @@ static NSString*    defaultBaseIsoCountryCode;
 
 - (NSString*)internationalFormat
 {
-    return [[LibPhoneNumber sharedInstance] internationalFormatOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
+#warning Handle LibPhoneNumber returning "invalid" (here, or in LibPhoneNumber).  Also localize!  (May apply for other methods as well.)
+    return [[LibPhoneNumber sharedInstance] internationalFormatOfNumber:self.number isoCountryCode:self.isoCountryCode];
 }
 
 
 - (NSString*)nationalFormat
 {
-    return [[LibPhoneNumber sharedInstance] nationalFormatOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
+    return [[LibPhoneNumber sharedInstance] nationalFormatOfNumber:self.number isoCountryCode:self.isoCountryCode];
 }
 
 
 - (NSString*)outOfCountryFormatFromIsoCountryCode:(NSString*)isoCountryCode
 {
-    return [[LibPhoneNumber sharedInstance] outOfCountryFormatOfNumber:self.number isoCountryCode:self.baseIsoCountryCode
+    return [[LibPhoneNumber sharedInstance] outOfCountryFormatOfNumber:self.number isoCountryCode:self.isoCountryCode
                                                    outOfIsoCountryCode:isoCountryCode];
 }
 
 
 - (NSString*)asYouTypeFormat
 {
-    return [[LibPhoneNumber sharedInstance] asYouTypeFormatOfNumber:self.number isoCountryCode:self.baseIsoCountryCode];
+    return [[LibPhoneNumber sharedInstance] asYouTypeFormatOfNumber:self.number isoCountryCode:self.isoCountryCode];
 }
 
 @end

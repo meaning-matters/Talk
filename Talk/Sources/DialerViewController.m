@@ -45,10 +45,10 @@
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification* note)
         {
-            if ([phoneNumber.baseIsoCountryCode isEqualToString:[Settings sharedSettings].homeCountry] == NO)
+            [PhoneNumber setDefaultIsoCountryCode:[Settings sharedSettings].homeCountry];
+            if ([phoneNumber.isoCountryCode isEqualToString:[Settings sharedSettings].homeCountry] == NO)
             {
-                [PhoneNumber setDefaultBaseIsoCountryCode:[Settings sharedSettings].homeCountry];
-                phoneNumber = [[PhoneNumber alloc] initWithNumber:phoneNumber.number]; //### Can this give memory problems???
+                phoneNumber = [[PhoneNumber alloc] initWithNumber:phoneNumber.number];
                 [self update];
             }
 

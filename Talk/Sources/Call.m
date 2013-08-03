@@ -93,10 +93,10 @@
                                                        @"[1 line small font].");
             break;
 
-        case CallStateCanceled:
-            string = NSLocalizedStringWithDefaultValue(@"Call:Status Canceled", nil,
-                                                       [NSBundle mainBundle], @"canceled",
-                                                       @"In-call status that user has canceled not yet connected call; Apple standard\n"
+        case CallStateCancelled:
+            string = NSLocalizedStringWithDefaultValue(@"Call:Status Cancelled", nil,
+                                                       [NSBundle mainBundle], @"cancelled",
+                                                       @"In-call status that user has cancelled not yet connected call; Apple standard\n"
                                                        @"[1 line small font].");
             break;
         case CallStateBusy:

@@ -12,6 +12,7 @@
                                                        UISearchBarDelegate, UISearchDisplayDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView*   tableView;
-@property (nonatomic, assign) BOOL                  isModal;    // Set when shown as modal, and not from Settings.
+@property (nonatomic, assign) BOOL                  isModal;           // Set when shown as modal, and not from Settings.
+@property (nonatomic, copy) void (^dismissCompletion)(BOOL cancelled); // Only called when modal.
 
 @end

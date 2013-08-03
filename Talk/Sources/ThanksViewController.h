@@ -1,5 +1,5 @@
 //
-//  CreditsViewController.h
+//  ThanksViewController.h
 //  Talk
 //
 //  Created by Cornelis van der Bent on 27/05/13.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CreditsViewController : UIViewController
+@interface ThanksViewController : UIViewController
 
 @property (nonatomic, weak) IBOutlet UIWebView* webView;
 
