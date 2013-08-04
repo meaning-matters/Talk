@@ -16,7 +16,7 @@
 
 @synthesize isoCountryCode = _isoCountryCode;
 
-static NSString*    defaultIsoCountryCode;
+static NSString*    defaultIsoCountryCode = @"";
 
 
 + (void)setDefaultIsoCountryCode:(NSString*)isoCountryCode
@@ -44,7 +44,7 @@ static NSString*    defaultIsoCountryCode;
 
     _isoCountryCode = [[LibPhoneNumber sharedInstance] isoCountryCodeOfNumber:self.number
                                                                isoCountryCode:defaultIsoCountryCode];
-    if (_isoCountryCode == nil)
+    if (_isoCountryCode.length == 0)
     {
         _isoCountryCode = defaultIsoCountryCode;
     }
@@ -91,7 +91,7 @@ static NSString*    defaultIsoCountryCode;
 
 - (NSString*)isoCountryCode
 {
-    return (_isoCountryCode != nil) ? _isoCountryCode : defaultIsoCountryCode;
+    return (_isoCountryCode.length > 0) ? _isoCountryCode : defaultIsoCountryCode;
 }
 
 

@@ -14,7 +14,7 @@
 @interface BlockAlertView ()
 
 @property (nonatomic, copy) void (^completion)(BOOL cancelled, NSInteger buttonIndex);
-@property (nonatomic, copy) void (^phoneNumberCompletion)(BOOL cancelled, NSInteger buttonIndex, PhoneNumber* phoneNumber);
+@property (nonatomic, copy) void (^phoneNumberCompletion)(BOOL cancelled, PhoneNumber* phoneNumber);
 @property (nonatomic, strong) PhoneNumberTextFieldDelegate* phoneNumberTextFieldDelegate;
 
 @end
@@ -47,8 +47,8 @@
 
 + (BlockAlertView*)showPhoneNumberAlertViewWithTitle:(NSString*)title
                                              message:(NSString*)message
+                                         phoneNumber:(PhoneNumber*)phoneNumber
                                           completion:(void (^)(BOOL         cancelled,
-                                                               NSInteger    buttonIndex,
                                                                PhoneNumber* phoneNumber))completion
                                    cancelButtonTitle:(NSString*)cancelButtonTitle
                                    otherButtonTitles:(NSString*)otherButtonTitles, ...
@@ -60,15 +60,21 @@
                                                                   message:message
                                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
     {
+        // Only the cancel must be handled here.
+        if (cancelled == YES)
+        {
+            alert->_phoneNumberCompletion(cancelled, phoneNumber);
+        }
     }
                                                         cancelButtonTitle:cancelButtonTitle
                                                         otherButtonTitles:otherButtonTitles
                                                                 arguments:arguments];
 
-    alert.alertViewStyle    = UIAlertViewStylePlainTextInput;
+    alert.alertViewStyle               = UIAlertViewStylePlainTextInput;
     
-    UITextField* textField  = [alert textFieldAtIndex:0];
-    textField.textAlignment = NSTextAlignmentCenter;
+    UITextField* textField             = [alert textFieldAtIndex:0];
+    textField.textAlignment            = NSTextAlignmentCenter;
+    textField.text                     = [phoneNumber asYouTypeFormat];
     [textField setKeyboardType:UIKeyboardTypePhonePad];
 
     alert->_phoneNumberCompletion      = completion;
@@ -88,19 +94,17 @@
     if (self.phoneNumberTextFieldDelegate != nil && buttonIndex == 1)
     {
         if ([Common checkCountryOfPhoneNumber:self.phoneNumberTextFieldDelegate.phoneNumber
-                                   completion:^(PhoneNumber* phoneNumber)
+                                   completion:^(BOOL cancelled, PhoneNumber* phoneNumber)
         {
-            if ([phoneNumber isValid] == YES)
-            {
-                self.phoneNumberCompletion(NO, 1, phoneNumber);
-            }
-            else
-            {
-                self.phoneNumberCompletion(YES, 0, phoneNumber);
-            }
+            self.phoneNumberCompletion(cancelled, phoneNumber);
         }] == YES)
         {
-            self.phoneNumberCompletion(YES, 1, self.phoneNumberTextFieldDelegate.phoneNumber);
+            // Number already has ISO country code; call completion now.
+            self.phoneNumberCompletion(NO, self.phoneNumberTextFieldDelegate.phoneNumber);
+        }
+        else
+        {
+            // No ISO country code yet; wait for checkCountryOfPhoneNumber to complete.
         }
     }
     

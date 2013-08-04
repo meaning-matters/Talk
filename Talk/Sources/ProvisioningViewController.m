@@ -32,7 +32,9 @@
 
 @interface ProvisioningViewController ()
 {
-    UIView* currentView;
+    UIView*         currentView;
+    PhoneNumber*    verifyPhoneNumber;
+    NSString*       verifyNumberButtonTitle;
 }
 
 @end
@@ -80,6 +82,15 @@
     self.verifyNavigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"Provisioning:Verify BarTitle", nil,
                                                                                [NSBundle mainBundle], @"Verify Number",
                                                                                @"...");
+    [self.verifyNumberButton setTitle:NSLocalizedStringWithDefaultValue(@"Provisioning:Verify EnterNumberTitle", nil,
+                                                                        [NSBundle mainBundle], @"Enter Number",
+                                                                        @"...")
+                             forState:UIControlStateNormal];
+    verifyNumberButtonTitle = self.verifyNumberButton.titleLabel.text;
+    [self.verifyCallButton setTitle:NSLocalizedStringWithDefaultValue(@"Provisioning:Verify CallMeTitle", nil,
+                                                                      [NSBundle mainBundle], @"CallMe",
+                                                                      @"...")
+                           forState:UIControlStateNormal];
 
     self.readyNavigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BarTitle", nil,
                                                                               [NSBundle mainBundle], @"Ready",
@@ -406,14 +417,41 @@
                                                 @"[iOS alert message size]");
     alert = [BlockAlertView showPhoneNumberAlertViewWithTitle:title
                                                       message:message
+                                                  phoneNumber:verifyPhoneNumber
                                                    completion:^(BOOL         cancelled,
-                                                                NSInteger    buttonIndex,
                                                                 PhoneNumber* phoneNumber)
     {
-        if (buttonIndex == 1)
+        if (cancelled == NO)
         {
-            // We only get here when the international format is available; BlockAlertView takes care of this.
-            [self.verifyNumberButton setTitle:[phoneNumber internationalFormat] forState:UIControlStateNormal];
+            verifyPhoneNumber = phoneNumber;
+
+            if ([phoneNumber isValid])
+            {
+                [self.verifyNumberButton setTitle:[phoneNumber internationalFormat] forState:UIControlStateNormal];
+            }
+            else
+            {
+                NSString*   title;
+                NSString*   message;
+
+                title = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidTitle", nil,
+                                                          [NSBundle mainBundle], @"Invalid Number",
+                                                          @"Phone number is not correct.\n"
+                                                          @"[iOS alert title size].");
+                message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidMessage", nil,
+                                                            [NSBundle mainBundle],
+                                                            @"The phone number you entered is invalid, "
+                                                            @"please correct.",
+                                                            @"Alert message that entered phone number is invalid.\n"
+                                                            @"[iOS alert message size]");
+                [BlockAlertView showAlertViewWithTitle:title
+                                               message:message
+                                            completion:nil
+                                     cancelButtonTitle:[CommonStrings closeString]
+                                     otherButtonTitles:nil];
+                
+                [self.verifyNumberButton setTitle:verifyNumberButtonTitle forState:UIControlStateNormal];
+            }
         }
     }
                                             cancelButtonTitle:[CommonStrings cancelString]
@@ -423,7 +461,7 @@
 
 - (IBAction)verifyCallAction:(id)sender
 {
-    
+
 }
 
 

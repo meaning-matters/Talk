@@ -19,8 +19,8 @@
 
 + (BlockAlertView*)showPhoneNumberAlertViewWithTitle:(NSString*)title
                                              message:(NSString*)message
+                                         phoneNumber:(PhoneNumber*)phoneNumber
                                           completion:(void (^)(BOOL         cancelled,
-                                                               NSInteger    buttonIndex,
                                                                PhoneNumber* phoneNumber))completion
                                    cancelButtonTitle:(NSString*)cancelButtonTitle
                                    otherButtonTitles:(NSString*)otherButtonTitles, ...;

@@ -15,8 +15,10 @@
 {
     if (self = [super init])
     {
-        self.phoneNumber = [[PhoneNumber alloc] init];
-        self.textField   = textField;
+        self.phoneNumber        = [[PhoneNumber alloc] init];
+        self.phoneNumber.number = textField.text;
+        
+        self.textField          = textField;
         [textField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     }
 

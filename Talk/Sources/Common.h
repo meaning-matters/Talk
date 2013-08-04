@@ -73,7 +73,8 @@
 + (BOOL)checkRemoteNotifications;
 
 // Works only for non-emergency numbers.
-+ (BOOL)checkCountryOfPhoneNumber:(PhoneNumber*)phoneNumber completion:(void (^)(PhoneNumber* phoneNumber))completion;
++ (BOOL)checkCountryOfPhoneNumber:(PhoneNumber*)phoneNumber
+                       completion:(void (^)(BOOL cancelled, PhoneNumber* phoneNumber))completion;
 
 + (void)enableNetworkActivityIndicator:(BOOL)enable;
 

@@ -28,7 +28,7 @@ NSString* const LastDialedNumberKey            = @"LastDialedNumber";
 NSString* const WebBaseUrlKey                  = @"WebBaseUrl";
 NSString* const WebUsernameKey                 = @"WebUsername";            // Used as keychain 'username'.
 NSString* const WebPasswordKey                 = @"WebPassword";            // Used as keychain 'username'.
-NSString* const SipServerKey                   = @"SipServer";
+NSString* const SipServerKey                   = @"SipServer";              // Used as keychain 'username'.
 NSString* const SipRealmKey                    = @"SipRealm";               // Used as keychain 'username'.
 NSString* const SipUsernameKey                 = @"SipUsername";            // Used as keychain 'username'.
 NSString* const SipPasswordKey                 = @"SipPassword";            // Used as keychain 'username'.
@@ -69,13 +69,13 @@ static NSUserDefaults*  userDefaults;
 
             [Keychain deleteStringForKey:WebUsernameKey];
             [Keychain deleteStringForKey:WebPasswordKey];
+            [Keychain deleteStringForKey:SipServerKey];
             [Keychain deleteStringForKey:SipRealmKey];
             [Keychain deleteStringForKey:SipUsernameKey];
             [Keychain deleteStringForKey:SipPasswordKey];
         }
 
-        [sharedInstance registerDefaults];
-        [sharedInstance getInitialValues];
+        [userDefaults registerDefaults:[sharedInstance defaults]];
     });
 
     return sharedInstance;
@@ -84,31 +84,19 @@ static NSUserDefaults*  userDefaults;
 
 - (void)resetAll
 {
-    [userDefaults removeObjectForKey:RunBeforeKey];
-    [userDefaults removeObjectForKey:TabBarViewControllerClassesKey];
-    [userDefaults removeObjectForKey:ErrorDomainKey];
-    [userDefaults removeObjectForKey:HomeCountryKey];
-    [userDefaults removeObjectForKey:HomeCountryFromSimKey];
-    [userDefaults removeObjectForKey:LastDialedNumberKey];
-    [userDefaults removeObjectForKey:WebBaseUrlKey];
-    [Keychain deleteStringForKey:WebUsernameKey];
-    [Keychain deleteStringForKey:WebPasswordKey];
-    [userDefaults removeObjectForKey:SipServerKey];
-    [Keychain deleteStringForKey:SipRealmKey];
-    [Keychain deleteStringForKey:SipUsernameKey];
-    [Keychain deleteStringForKey:SipPasswordKey];
-    [userDefaults removeObjectForKey:AllowCellularDataCallsKey];
-    [userDefaults removeObjectForKey:ShowCallerIdKey];
-    [userDefaults removeObjectForKey:NumberTypeMaskKey];
-    [userDefaults removeObjectForKey:ForwardingsSelectionKey];
-    [userDefaults removeObjectForKey:CurrencyCodeKey];
+    [Keychain     deleteStringForKey:WebUsernameKey];
+    [Keychain     deleteStringForKey:WebPasswordKey];
+    [Keychain     deleteStringForKey:SipServerKey];
+    [Keychain     deleteStringForKey:SipRealmKey];
+    [Keychain     deleteStringForKey:SipUsernameKey];
+    [Keychain     deleteStringForKey:SipPasswordKey];
+
+    for (NSString* key in [[self defaults] allKeys])
+    {
+        [userDefaults setObject:[[self defaults] objectForKey:key] forKey:key];
+    }
 
     [userDefaults synchronize];
-
-    [self registerDefaults];
-    [self getInitialValues];
-
-    [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
 }
 
 
@@ -121,57 +109,41 @@ static NSUserDefaults*  userDefaults;
 
 #pragma mark - Helper Methods
 
-- (void)registerDefaults
+- (NSDictionary*)defaults
 {
-    NSMutableDictionary*    defaults = [NSMutableDictionary dictionary];
+    static NSMutableDictionary* dictionary;
+    static dispatch_once_t      onceToken;
 
-    // Default for tabBarViewControllerClasses is handled in AppDelegate.
-    [defaults setObject:[NSNumber numberWithInt:2] forKey:TabBarSelectedIndexKey];  // The dialer.
-
-    [defaults setObject:@"com.numberbay.app"                               forKey:ErrorDomainKey];
-
-    if ([[NetworkStatus sharedStatus].simIsoCountryCode length] > 0)
+    dispatch_once(&onceToken, ^
     {
-        [defaults setObject:[NetworkStatus sharedStatus].simIsoCountryCode forKey:HomeCountryKey];
-        [defaults setObject:[NSNumber numberWithBool:YES]                  forKey:HomeCountryFromSimKey];
-    }
-    else
-    {
-        [defaults setObject:[NSNumber numberWithBool:NO]                   forKey:HomeCountryFromSimKey];
-    }
+        dictionary = [NSMutableDictionary dictionary];
 
-    [defaults setObject:@"https://api.numberbay.com/"                      forKey:WebBaseUrlKey];
-    [defaults setObject:@""                                                forKey:LastDialedNumberKey];
-    [defaults setObject:[NSNumber numberWithBool:NO]                       forKey:AllowCellularDataCallsKey];
-    [defaults setObject:[NSNumber numberWithBool:YES]                      forKey:ShowCallerIdKey];
-    [defaults setObject:[NSNumber numberWithInt:NumberTypeGeographicMask]  forKey:NumberTypeMaskKey];
-    [defaults setObject:[NSNumber numberWithInt:0]                         forKey:ForwardingsSelectionKey];
-    [defaults setObject:@""                                                forKey:CurrencyCodeKey];
+        // Default for tabBarViewControllerClasses is handled in AppDelegate.
+        [dictionary setObject:@(2)                                               forKey:TabBarSelectedIndexKey];    // The dialer.
 
-    [userDefaults registerDefaults:defaults];
-}
+        [dictionary setObject:@"com.numberbay.app"                               forKey:ErrorDomainKey];
 
+        if ([[NetworkStatus sharedStatus].simIsoCountryCode length] > 0)
+        {
+            [dictionary setObject:[NetworkStatus sharedStatus].simIsoCountryCode forKey:HomeCountryKey];
+            [dictionary setObject:@(YES)                                         forKey:HomeCountryFromSimKey];
+        }
+        else
+        {
+            [dictionary setObject:@""                                            forKey:HomeCountryKey];
+            [dictionary setObject:@(NO)                                          forKey:HomeCountryFromSimKey];
+        }
 
-- (void)getInitialValues
-{
-    _tabBarViewControllerClasses = ;
-    _tabBarSelectedIndex         = ;
-    _errorDomain                 = ;
-    _homeCountry                 = [userDefaults objectForKey:HomeCountryKey];
-    _homeCountryFromSim          = [userDefaults boolForKey:HomeCountryFromSimKey];
-    _lastDialedNumber            = [userDefaults objectForKey:LastDialedNumberKey];
-    _webBaseUrl                  = [userDefaults objectForKey:WebBaseUrlKey];
-    _webUsername                 = [Keychain getStringForKey:WebUsernameKey];
-    _webPassword                 = [Keychain getStringForKey:WebPasswordKey];
-    _sipServer                   = [userDefaults objectForKey:SipServerKey];
-    _sipRealm                    = [Keychain getStringForKey:SipRealmKey];
-    _sipUsername                 = [Keychain getStringForKey:SipUsernameKey];
-    _sipPassword                 = [Keychain getStringForKey:SipPasswordKey];
-    _allowCellularDataCalls      = [userDefaults boolForKey:AllowCellularDataCallsKey];
-    _showCallerId                = [userDefaults boolForKey:ShowCallerIdKey];
-    _numberTypeMask              = [userDefaults integerForKey:NumberTypeMaskKey];
-    _forwardingsSelection        = [userDefaults integerForKey:ForwardingsSelectionKey];
-    _currencyCode                = [userDefaults objectForKey:CurrencyCodeKey];
+        [dictionary setObject:@""                                                forKey:LastDialedNumberKey];
+        [dictionary setObject:@"https://api.numberbay.com/"                      forKey:WebBaseUrlKey];
+        [dictionary setObject:@(NO)                                              forKey:AllowCellularDataCallsKey];
+        [dictionary setObject:@(YES)                                             forKey:ShowCallerIdKey];
+        [dictionary setObject:@(NumberTypeGeographicMask)                        forKey:NumberTypeMaskKey];
+        [dictionary setObject:@(0)                                               forKey:ForwardingsSelectionKey];
+        [dictionary setObject:@""                                                forKey:CurrencyCodeKey];
+    });
+
+    return dictionary;
 }
 
 
@@ -223,121 +195,192 @@ static NSUserDefaults*  userDefaults;
 
 - (NSString*)homeCountry
 {
-
+    return [userDefaults objectForKey:HomeCountryKey];
 }
 
-....
+
 - (void)setHomeCountry:(NSString*)homeCountry
 {
-    _homeCountry = homeCountry;
     [userDefaults setObject:homeCountry forKey:HomeCountryKey];
+}
+
+
+- (BOOL)homeCountryFromSim
+{
+    return [userDefaults boolForKey:HomeCountryFromSimKey];
 }
 
 
 - (void)setHomeCountryFromSim:(BOOL)homeCountryFromSim
 {
-    _homeCountryFromSim = homeCountryFromSim;
     [userDefaults setBool:homeCountryFromSim forKey:HomeCountryFromSimKey];
+}
+
+
+- (NSString*)lastDialedNumber
+{
+    return [userDefaults objectForKey:LastDialedNumberKey];
 }
 
 
 - (void)setLastDialedNumber:(NSString*)lastDialedNumber
 {
-    _lastDialedNumber = lastDialedNumber;
     [userDefaults setObject:lastDialedNumber forKey:LastDialedNumberKey];
+}
+
+
+- (NSString*)webBaseUrl
+{
+    return [userDefaults objectForKey:WebBaseUrlKey];
 }
 
 
 - (void)setWebBaseUrl:(NSString*)webBaseUrl
 {
-    _webBaseUrl = webBaseUrl;
     [userDefaults setObject:webBaseUrl forKey:WebBaseUrlKey];
+}
+
+
+- (NSString*)webUsername
+{
+    return [Keychain getStringForKey:WebUsernameKey];
 }
 
 
 - (void)setWebUsername:(NSString*)webUsername
 {
-    _webUsername = webUsername;
     [Keychain saveString:webUsername forKey:WebUsernameKey];
 
     [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
 }
 
 
+- (NSString*)webPassword
+{
+    return [Keychain getStringForKey:WebPasswordKey];
+}
+
+
 - (void)setWebPassword:(NSString*)webPassword
 {
-    _webPassword = webPassword;
     [Keychain saveString:webPassword forKey:WebPasswordKey];
 
     [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
 }
 
 
+- (NSString*)sipServer
+{
+    return [Keychain getStringForKey:SipServerKey];
+}
+
+
 - (void)setSipServer:(NSString*)sipServer
 {
-    _sipServer = sipServer;
-    [userDefaults setObject:sipServer forKey:SipServerKey];
+    [Keychain saveString:sipServer forKey:SipServerKey];
+
+    [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
+}
+
+
+- (NSString*)sipRealm
+{
+    return [Keychain getStringForKey:SipRealmKey];
 }
 
 
 - (void)setSipRealm:(NSString*)sipRealm
 {
-    _sipRealm = sipRealm;
     [Keychain saveString:sipRealm forKey:SipRealmKey];
 
     [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
 }
 
 
+- (NSString*)sipUsername
+{
+    return [Keychain getStringForKey:SipUsernameKey];
+}
+
+
 - (void)setSipUsername:(NSString*)sipUsername
 {
-    _sipUsername = sipUsername;
     [Keychain saveString:sipUsername forKey:SipUsernameKey];
 
     [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
 }
 
 
+- (NSString*)sipPassword
+{
+    return [Keychain getStringForKey:SipPasswordKey];
+}
+
+
 - (void)setSipPassword:(NSString*)sipPassword
 {
-    _sipPassword = sipPassword;
     [Keychain saveString:sipPassword forKey:SipPasswordKey];
     
     [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
 }
 
 
+- (BOOL)allowCellularDataCalls
+{
+    return [userDefaults boolForKey:AllowCellularDataCallsKey];
+}
+
+
 - (void)setAllowCellularDataCalls:(BOOL)allowCellularDataCalls
 {
-    _allowCellularDataCalls = allowCellularDataCalls;
     [userDefaults setBool:allowCellularDataCalls forKey:AllowCellularDataCallsKey];
+}
+
+
+- (BOOL)showCallerId
+{
+    return [userDefaults boolForKey:ShowCallerIdKey];
 }
 
 
 - (void)setShowCallerId:(BOOL)showCallerId
 {
-    _showCallerId = showCallerId;
     [userDefaults setBool:showCallerId forKey:ShowCallerIdKey];
+}
+
+
+- (NumberTypeMask)numberTypeMask
+{
+    return [userDefaults integerForKey:NumberTypeMaskKey];
 }
 
 
 - (void)setNumberTypeMask:(NumberTypeMask)numberTypeMask
 {
-    _numberTypeMask = numberTypeMask;
     [userDefaults setInteger:numberTypeMask forKey:NumberTypeMaskKey];
+}
+
+
+- (NSInteger)forwardingsSelection
+{
+    return [userDefaults integerForKey:ForwardingsSelectionKey];
 }
 
 
 - (void)setForwardingsSelection:(NSInteger)forwardingsSelection
 {
-    _forwardingsSelection = forwardingsSelection;
     [userDefaults setInteger:forwardingsSelection forKey:ForwardingsSelectionKey];
+}
+
+
+- (NSString*)currencyCode
+{
+    return [userDefaults objectForKey:CurrencyCodeKey];
 }
 
 
 - (void)setCurrencyCode:(NSString*)currencyCode
 {
-    _currencyCode = currencyCode;
     [userDefaults setObject:currencyCode forKey:CurrencyCodeKey];
 }
 

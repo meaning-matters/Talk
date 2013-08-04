@@ -356,7 +356,8 @@
 
 
 // Checks only non-emergency number.
-+ (BOOL)checkCountryOfPhoneNumber:(PhoneNumber*)phoneNumber completion:(void (^)(PhoneNumber* phoneNumber))completion
++ (BOOL)checkCountryOfPhoneNumber:(PhoneNumber*)phoneNumber
+                       completion:(void (^)(BOOL cancelled, PhoneNumber* phoneNumber))completion
 {
     static UIAlertView* alertView;
     BOOL                result;
@@ -403,7 +404,7 @@
                 countriesViewController.isModal = YES;
                 countriesViewController.dismissCompletion = ^(BOOL cancelled)
                 {
-                    completion(phoneNumber);
+                    completion(NO, phoneNumber);
                 };
 
                 modalViewController = [[UINavigationController alloc] initWithRootViewController:countriesViewController];
@@ -426,6 +427,8 @@
             else
             {
                 alertView = nil;
+                
+                completion(YES, phoneNumber);
             }
         }
                                          cancelButtonTitle:[CommonStrings cancelString]
