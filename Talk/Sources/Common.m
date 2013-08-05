@@ -205,24 +205,6 @@
 }
 
 
-+ (void)postNotificationName:(NSString*)name object:(id)object
-{
-    dispatch_async(dispatch_get_main_queue(), ^
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:name object:object];
-    });
-}
-
-
-+ (void)postNotificationName:(NSString*)name userInfo:(NSDictionary*)userInfo object:(id)object
-{
-    dispatch_async(dispatch_get_main_queue(), ^
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:name object:object userInfo:userInfo];
-    });
-}
-
-
 + (void)setCornerRadius:(CGFloat)radius ofView:(UIView*)view
 {
     view.layer.cornerRadius = radius;
@@ -230,9 +212,14 @@
 }
 
 
-+ (void)setBorderWidth:(CGFloat)width color:(UIColor*)color ofView:(UIView*)view
++ (void)setBorderWidth:(CGFloat)width ofView:(UIView*)view
 {
     view.layer.borderWidth = width;
+}
+
+
++ (void)setBorderColor:(UIColor*)color ofView:(UIView*)view
+{
     view.layer.borderColor = [color CGColor];
 }
 

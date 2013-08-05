@@ -38,4 +38,6 @@
 
 + (NSString*)monthsString;
 
++ (NSString*)callString;
+
 @end

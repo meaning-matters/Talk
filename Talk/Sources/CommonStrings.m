@@ -136,4 +136,13 @@
                                              @"[No size contraint].");
 }
 
+
++ (NSString*)callString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Call", nil,
+                                             [NSBundle mainBundle], @"Call",
+                                             @"Standard string for on button to initiate a phone call\n"
+                                             @"[No size contraint, use iOS naming].");
+}
+
 @end

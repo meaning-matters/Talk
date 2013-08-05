@@ -153,8 +153,9 @@
     {
         if (status == WebClientStatusOk)
         {
-            [Settings sharedSettings].webUsername = ((NSDictionary*)content)[@"username"];
-            [Settings sharedSettings].webPassword = ((NSDictionary*)content)[@"password"];
+            [Settings sharedSettings].webUsername  = ((NSDictionary*)content)[@"username"];
+            [Settings sharedSettings].webPassword  = ((NSDictionary*)content)[@"password"];
+            [Settings sharedSettings].verifiedE164 = ((NSDictionary*)content)[@"e164"];
 
             NSMutableDictionary*  parameters = [NSMutableDictionary dictionary];
             parameters[@"deviceName"]        = [UIDevice currentDevice].name;

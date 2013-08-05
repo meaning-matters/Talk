@@ -21,8 +21,6 @@ static NSString*    defaultIsoCountryCode = @"";
 
 + (void)setDefaultIsoCountryCode:(NSString*)isoCountryCode
 {
-#warning Being called many times when doing Reset All from Settings.  Sort out why! (During start app also 10 times.)
-#warning When above is fixed, change this into @property.
     defaultIsoCountryCode = isoCountryCode;
 }
 
@@ -317,10 +315,27 @@ static NSString*    defaultIsoCountryCode = @"";
     NSString*   format;
 
     format = [[LibPhoneNumber sharedInstance] e164FormatOfNumber:self.number isoCountryCode:self.isoCountryCode];
-
     if ([format isEqualToString:@"invalid"])
     {
         format = nil;
+    }
+
+    return format;
+}
+
+
+- (NSString*)e164FormatWithoutPlus
+{
+    NSString*   format;
+
+    format = [self e164Format];
+    if ([format isEqualToString:@"invalid"])
+    {
+        format = nil;
+    }
+    else
+    {
+        format = [format substringFromIndex:1];
     }
 
     return format;

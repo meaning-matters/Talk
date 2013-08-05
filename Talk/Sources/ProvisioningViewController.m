@@ -33,6 +33,10 @@
 @interface ProvisioningViewController ()
 {
     UIView*         currentView;
+
+    NSString*       readyBuyText;       // New user.
+    NSString*       readyRestoreText;   // Exixting user.
+
     PhoneNumber*    verifyPhoneNumber;
     NSString*       verifyNumberButtonTitle;
 }
@@ -62,11 +66,11 @@
     self.introTextView.text = NSLocalizedStringWithDefaultValue(@"Provisioning:Intro Text", nil,
                                                                 [NSBundle mainBundle],
                                                                 @"To use NumberBay, you need an account with credit, "
-                                                                @"and your phone number needs to be verified. "
+                                                                @"and your phone number needs to be verified."
                                                                 @"\n\nWhen you are new: Buy an account, and follow "
                                                                 @"the steps to verify your number. The price of the "
                                                                 @"account will be your initial credit, so does not "
-                                                                @"cost you extra. "
+                                                                @"cost you extra."
                                                                 @"\n\nWhen you already have an account: Restore your "
                                                                 @"credit and numbers.",
                                                                 @"...");
@@ -95,6 +99,18 @@
     self.readyNavigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BarTitle", nil,
                                                                               [NSBundle mainBundle], @"Ready",
                                                                               @"...");
+    readyBuyText = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BuyText", nil,
+                                                     [NSBundle mainBundle],
+                                                     @"Welcome! With NumberBuy you're reachable in up to 50 countries. "
+                                                     @"Call forwarding, for each of the geographic, national, or "
+                                                     @"toll-free numbers you buy, can be changed instantly.\n\n"
+                                                     @"Your initial credit is %@; you can top up now. Or, have a look "
+                                                     @"at the extensive list of countries.\n\n",
+                                                     @"Welcome text for a new user.");
+    readyRestoreText = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready RestoreText", nil,
+                                                         [NSBundle mainBundle],
+                                                         @"mention credit and numbers",
+                                                         @"Welcome text for existing user.");
     [self.readyCreditButton setTitle:NSLocalizedStringWithDefaultValue(@"Provisioning:Ready CreditButtonTitle", nil,
                                                                        [NSBundle mainBundle], @"Credit",
                                                                        @"...")
@@ -108,12 +124,15 @@
                                                                              [NSBundle mainBundle], @"Failed",
                                                                              @"...");
 
-    [Common setCornerRadius:10 ofView:self.verifyStep1View];
-    [Common setCornerRadius:10 ofView:self.verifyStep2View];
-    [Common setCornerRadius:10 ofView:self.verifyStep3View];
-    [Common setBorderWidth:0.8 color:[UIColor darkGrayColor] ofView:self.verifyStep1View];
-    [Common setBorderWidth:0.8 color:[UIColor darkGrayColor] ofView:self.verifyStep2View];
-    [Common setBorderWidth:0.8 color:[UIColor darkGrayColor] ofView:self.verifyStep3View];
+    [Common setCornerRadius:10                     ofView:self.verifyStep1View];
+    [Common setCornerRadius:10                     ofView:self.verifyStep2View];
+    [Common setCornerRadius:10                     ofView:self.verifyStep3View];
+    [Common setBorderWidth:0.8                     ofView:self.verifyStep1View];
+    [Common setBorderWidth:0.8                     ofView:self.verifyStep2View];
+    [Common setBorderWidth:0.8                     ofView:self.verifyStep3View];
+    [Common setBorderColor:[UIColor darkGrayColor] ofView:self.verifyStep1View];
+    [Common setBorderColor:[UIColor darkGrayColor] ofView:self.verifyStep2View];
+    [Common setBorderColor:[UIColor darkGrayColor] ofView:self.verifyStep3View];
 
     [self.view addSubview:self.introView];
     currentView = self.introView;
@@ -138,9 +157,7 @@
 {
     [super viewWillLayoutSubviews];
 
-    // We deliberately set the KeypadView height to a fivefold, so that all keys
-    // can be equally high.  This is assumed in the layout code of KeypadView!
-    NSLog(@"%d", (int)self.view.frame.size.height);
+    // 'Magic' Y & height values have been measured in XIB.
     switch ((int)self.view.frame.size.height)
     {
         case 460:   // 320x480 screen, More tab.
@@ -201,74 +218,107 @@
 }
 
 
-- (void)setBusy:(BOOL)busy
+- (void)setIntroBusy:(BOOL)busy
 {
     self.introRestoreButton.enabled = busy ? NO   : YES;
     self.introBuyButton.enabled     = busy ? NO   : YES;
     self.introRestoreButton.alpha   = busy ? 0.5f : 1.0f;
     self.introBuyButton.alpha       = busy ? 0.5f : 1.0f;
-}
 
-
-- (void)setRestoreBusy:(BOOL)busy
-{
-    [self setBusy:busy];
-
-    if (busy)
-    {
-        [self.introRestoreActivityIndicator startAnimating];
-    }
-    else
+    if (busy == NO)
     {
         [self.introRestoreActivityIndicator stopAnimating];
+        [self.introBuyActivityIndicator     stopAnimating];
     }
 }
 
 
-- (void)setBuyBusy:(BOOL)busy
+- (void)restoreCreditAndNumbers
 {
-    [self setBusy:busy];
-
-    if (busy)
-    {
-        [self.introBuyActivityIndicator startAnimating];
-    }
-    else
-    {
-        [self.introBuyActivityIndicator stopAnimating];
-    }
-}
-
-
-- (void)restore
-{
-    NSString*   title   = nil;
-    NSString*   message = nil;
-
     [[WebClient sharedClient] retrieveCredit:^(WebClientStatus status, id content)
     {
         if (status == WebClientStatusOk)
         {
+            [[WebClient sharedClient] retrieveNumbers:^(WebClientStatus status, id content)
+            {
+                if (status == WebClientStatusOk)
+                {
+                    if ([Settings sharedSettings].verifiedE164.length == 0)
+                    {
+                        [self setVerifyStep:1];
+                        [self showView:self.verifyView];
+                    }
+                    else
+                    {
+                        [self showView:self.readyView];
+                        //###  Set ready text telling about current credit and number of numbers that are available.
+                    }
+                }
+                else
+                {
+                    NSString*   title;
+                    NSString*   message;
+
+                    title = NSLocalizedStringWithDefaultValue(@"Provisioning FailedNumbersTitle", nil,
+                                                              [NSBundle mainBundle], @"Loading Numbers Failed",
+                                                              @"Alart title: Phone numbers could not be downloaded.\n"
+                                                              @"[iOS alert title size].");
+                    message = NSLocalizedStringWithDefaultValue(@"Provisioning FailedNumbersMessage", nil,
+                                                                [NSBundle mainBundle],
+                                                                @"Your phone numbers could not be restored.\n\n"
+                                                                @"Please try again later.",
+                                                                @"Alert message: Phone numbers could not be downloaded.\n"
+                                                                @"[iOS alert message size]");
+                    [BlockAlertView showAlertViewWithTitle:title
+                                                   message:message
+                                                completion:nil
+                                         cancelButtonTitle:[CommonStrings closeString]
+                                         otherButtonTitles:nil];
+                }
+            }];
         }
         else
         {
-            NSLog(@"####");
+            NSString*   title;
+            NSString*   message;
+
+            title = NSLocalizedStringWithDefaultValue(@"Provisioning FailedCreditTitle", nil,
+                                                      [NSBundle mainBundle], @"Loading Credit Failed",
+                                                      @"Alart title: Calling credit could not be downloaded.\n"
+                                                      @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"Provisioning FailedNumbersMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Your credit could not be loaded.\n\n"
+                                                        @"Please try again later.",
+                                                        @"Alert message: Calling credit could not be loaded.\n"
+                                                        @"[iOS alert message size]");
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:nil
+                                 cancelButtonTitle:[CommonStrings closeString]
+                                 otherButtonTitles:nil];
         }
     }];
+}
 
-    [[WebClient sharedClient] retrieveNumbers:^(WebClientStatus status, id content)
+
+- (void)setVerifyStep:(int)step
+{
+    self.verifyStep1View.alpha = (step >= 1) ? 1 : 0.5;
+    self.verifyStep2View.alpha = (step >= 2) ? 1 : 0.5;
+    self.verifyStep3View.alpha = (step >= 3) ? 1 : 0.5;
+
+    self.verifyNumberButton.enabled = (step == 1 || step == 2) ? YES : NO;
+    self.verifyCallButton.enabled   =              (step == 2) ? YES : NO;
+
+    if (step == 3)
     {
-        if (status == WebClientStatusOk)
-        {
-            //### Set ready text telling about current credit and number of numbers that are available.
-
-            [self showView:self.readyView];
-        }
-        else
-        {
-            NSLog(@"####");
-        }
-    }];
+        [self.verifyCallActivityIndicator startAnimating];
+    }
+    else
+    {
+        [self.verifyCallActivityIndicator stopAnimating];
+    }
 }
 
 
@@ -276,32 +326,22 @@
 
 - (IBAction)introCancelAction:(id)sender
 {
-#warning  //### Stop any purchase or server actions, or at least make sure they don't mess up/crash things.
-
-    [self showView:self.verifyView];
-    return;
-
-    [self dismissViewControllerAnimated:YES
-                             completion:^
-    {
-        //### ?
-    }];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
 - (IBAction)introBuyAction:(id)sender
 {
-    [self setBuyBusy:YES];
+    [self.introBuyActivityIndicator startAnimating];
+    [self setIntroBusy:YES];
 
     [[PurchaseManager sharedManager] buyAccount:^(BOOL success, id object)
     {
-        [self setBuyBusy:NO];
+        [self setIntroBusy:NO];
 
         if (success == YES)
         {
-            [self setBuyBusy:NO];
-
-            [self restore];            
+            [self restoreCreditAndNumbers];
         }
     }];
 }
@@ -309,19 +349,20 @@
 
 - (IBAction)introRestoreAction:(id)sender
 {
-    [self setRestoreBusy:YES];
-    
+    [self.introRestoreActivityIndicator startAnimating];
+    [self setIntroBusy:YES];
+
     [[PurchaseManager sharedManager] restoreAccount:^(BOOL success, id object)
     {
         if (success == YES && object != nil)
         {
-            [self setRestoreBusy:NO];
+            [self setIntroBusy:NO];
 
-            [self restore];
+            [self restoreCreditAndNumbers];
         }
         else if (success == YES && object == nil)
         {
-            [self setRestoreBusy:NO];
+            [self setIntroBusy:NO];
 
             NSString*   title;
             NSString*   message;
@@ -362,7 +403,7 @@
         }
         else
         {
-            [self setRestoreBusy:NO];
+            [self setIntroBusy:NO];
         }
     }];
 }
@@ -487,19 +528,19 @@
 - (IBAction)readyNumberAction:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:^
-     {
-         UINavigationController*         modalViewController;
-         NumberCountriesViewController*  numberCountriesViewController;
+    {
+        UINavigationController*         modalViewController;
+        NumberCountriesViewController*  numberCountriesViewController;
 
-         numberCountriesViewController = [[NumberCountriesViewController alloc] init];
+        numberCountriesViewController = [[NumberCountriesViewController alloc] init];
 
-         modalViewController = [[UINavigationController alloc] initWithRootViewController:numberCountriesViewController];
-         modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        modalViewController = [[UINavigationController alloc] initWithRootViewController:numberCountriesViewController];
+        modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 
-         [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
-                                                                animated:YES
-                                                              completion:nil];
-     }];
+        [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
+                                                               animated:YES
+                                                             completion:nil];
+    }];
 }
 
 

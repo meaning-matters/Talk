@@ -25,9 +25,11 @@ NSString* const ErrorDomainKey                 = @"ErrorDomain";
 NSString* const HomeCountryKey                 = @"HomeCountry";
 NSString* const HomeCountryFromSimKey          = @"HomeCountryFromSim";
 NSString* const LastDialedNumberKey            = @"LastDialedNumber";
+NSString* const WarnedAboutDefaultCliKey       = @"WarnedAboutDefaultCli";
 NSString* const WebBaseUrlKey                  = @"WebBaseUrl";
 NSString* const WebUsernameKey                 = @"WebUsername";            // Used as keychain 'username'.
 NSString* const WebPasswordKey                 = @"WebPassword";            // Used as keychain 'username'.
+NSString* const VerifiedE164Key                = @"VerifiedE164";           // User as keychain 'username'.
 NSString* const SipServerKey                   = @"SipServer";              // Used as keychain 'username'.
 NSString* const SipRealmKey                    = @"SipRealm";               // Used as keychain 'username'.
 NSString* const SipUsernameKey                 = @"SipUsername";            // Used as keychain 'username'.
@@ -69,6 +71,7 @@ static NSUserDefaults*  userDefaults;
 
             [Keychain deleteStringForKey:WebUsernameKey];
             [Keychain deleteStringForKey:WebPasswordKey];
+            [Keychain deleteStringForKey:VerifiedE164Key];
             [Keychain deleteStringForKey:SipServerKey];
             [Keychain deleteStringForKey:SipRealmKey];
             [Keychain deleteStringForKey:SipUsernameKey];
@@ -84,12 +87,13 @@ static NSUserDefaults*  userDefaults;
 
 - (void)resetAll
 {
-    [Keychain     deleteStringForKey:WebUsernameKey];
-    [Keychain     deleteStringForKey:WebPasswordKey];
-    [Keychain     deleteStringForKey:SipServerKey];
-    [Keychain     deleteStringForKey:SipRealmKey];
-    [Keychain     deleteStringForKey:SipUsernameKey];
-    [Keychain     deleteStringForKey:SipPasswordKey];
+    [Keychain deleteStringForKey:WebUsernameKey];
+    [Keychain deleteStringForKey:WebPasswordKey];
+    [Keychain deleteStringForKey:VerifiedE164Key];
+    [Keychain deleteStringForKey:SipServerKey];
+    [Keychain deleteStringForKey:SipRealmKey];
+    [Keychain deleteStringForKey:SipUsernameKey];
+    [Keychain deleteStringForKey:SipPasswordKey];
 
     for (NSString* key in [[self defaults] allKeys])
     {
@@ -102,8 +106,9 @@ static NSUserDefaults*  userDefaults;
 
 - (BOOL)hasAccount
 {
-    return (self.webUsername.length > 0 && self.webPassword.length > 0 &&
-            self.sipUsername.length > 0 && self.sipPassword.length > 0);
+    return (self.webUsername.length  > 0 && self.webPassword.length > 0 &&
+            self.sipUsername.length  > 0 && self.sipPassword.length > 0 &&
+            self.verifiedE164.length > 0);
 }
 
 
@@ -135,6 +140,7 @@ static NSUserDefaults*  userDefaults;
         }
 
         [dictionary setObject:@""                                                forKey:LastDialedNumberKey];
+        [dictionary setObject:@(NO)                                              forKey:WarnedAboutDefaultCliKey];
         [dictionary setObject:@"https://api.numberbay.com/"                      forKey:WebBaseUrlKey];
         [dictionary setObject:@(NO)                                              forKey:AllowCellularDataCallsKey];
         [dictionary setObject:@(YES)                                             forKey:ShowCallerIdKey];
@@ -229,6 +235,18 @@ static NSUserDefaults*  userDefaults;
 }
 
 
+- (BOOL)warnedAboutDefaultCli
+{
+    return [userDefaults boolForKey:WarnedAboutDefaultCliKey];
+}
+
+
+- (void)setWarnedAboutDefaultCli:(BOOL)warnedAboutDefaultCli
+{
+    [userDefaults setBool:warnedAboutDefaultCli forKey:WarnedAboutDefaultCliKey];
+}
+
+
 - (NSString*)webBaseUrl
 {
     return [userDefaults objectForKey:WebBaseUrlKey];
@@ -251,7 +269,7 @@ static NSUserDefaults*  userDefaults;
 {
     [Keychain saveString:webUsername forKey:WebUsernameKey];
 
-    [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:nil];
 }
 
 
@@ -265,7 +283,21 @@ static NSUserDefaults*  userDefaults;
 {
     [Keychain saveString:webPassword forKey:WebPasswordKey];
 
-    [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:nil];
+}
+
+
+- (NSString*)verifiedE164
+{
+    return [Keychain getStringForKey:VerifiedE164Key];
+}
+
+
+- (void)setVerifiedE164:(NSString*)verifiedE164
+{
+    [Keychain saveString:verifiedE164 forKey:VerifiedE164Key];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:nil];
 }
 
 
@@ -279,7 +311,7 @@ static NSUserDefaults*  userDefaults;
 {
     [Keychain saveString:sipServer forKey:SipServerKey];
 
-    [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:nil];
 }
 
 
@@ -293,7 +325,7 @@ static NSUserDefaults*  userDefaults;
 {
     [Keychain saveString:sipRealm forKey:SipRealmKey];
 
-    [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:nil];
 }
 
 
@@ -307,7 +339,7 @@ static NSUserDefaults*  userDefaults;
 {
     [Keychain saveString:sipUsername forKey:SipUsernameKey];
 
-    [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:nil];
 }
 
 
@@ -321,7 +353,7 @@ static NSUserDefaults*  userDefaults;
 {
     [Keychain saveString:sipPassword forKey:SipPasswordKey];
     
-    [Common postNotificationName:NSUserDefaultsDidChangeNotification userInfo:nil object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:nil];
 }
 
 

@@ -80,9 +80,9 @@ static NSTimer*                 loadUrlTestTimer;
                 if (networkStatusReachable == NetworkStatusReachableDisconnected)
                 {
                     previousNetworkStatusReachable = networkStatusReachable;
-                    [Common postNotificationName:NetworkStatusReachableNotification
-                                        userInfo:@{ @"status" : @(networkStatusReachable) }
-                                          object:self];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:NetworkStatusReachableNotification
+                                                                        object:nil
+                                                                      userInfo:@{@"status" : @(networkStatusReachable)}];
                 }
                 else
                 {
@@ -160,17 +160,17 @@ static NSTimer*                 loadUrlTestTimer;
         }
 
         [Settings sharedSettings].homeCountry = self.simIsoCountryCode;
-        [Common postNotificationName:NetworkStatusSimChangedNotification
-                            userInfo:info
-                              object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NetworkStatusSimChangedNotification
+                                                            object:nil
+                                                          userInfo:info];
     };
 
     callCenter = [[CTCallCenter alloc] init];
     callCenter.callEventHandler = ^(CTCall* call)
     {
-        [Common postNotificationName:NetworkStatusMobileCallStateChangedNotification
-                            userInfo:@{ @"status" : @([self convertCallState:call.callState]) }
-                              object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NetworkStatusMobileCallStateChangedNotification
+                                                            object:nil
+                                                          userInfo:@{@"status" : @([self convertCallState:call.callState])}];
     };
 }
 
@@ -248,9 +248,9 @@ static NSTimer*                 loadUrlTestTimer;
             if (networkStatusReachable != previousNetworkStatusReachable)
             {
                 previousNetworkStatusReachable = networkStatusReachable;
-                [Common postNotificationName:NetworkStatusReachableNotification
-                                    userInfo:@{ @"status" : @(networkStatusReachable) }
-                                      object:self];
+                [[NSNotificationCenter defaultCenter] postNotificationName:NetworkStatusReachableNotification
+                                                                    object:nil
+                                                                  userInfo:@{@"status" : @(networkStatusReachable)}];
             }
         }];
     }

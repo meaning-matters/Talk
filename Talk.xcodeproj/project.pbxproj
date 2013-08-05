@@ -1866,6 +1866,7 @@
 		488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberStatesView.xib; sourceTree = "<group>"; };
 		488AD1EF16E80A60004D3A2A /* NSObject+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Blocks.h"; sourceTree = "<group>"; };
 		488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Blocks.m"; sourceTree = "<group>"; };
+		488B8E5B17AFFD8E005C33A2 /* TODO.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		488D7753178076E300099470 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HockeySDK.framework; path = "External/HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework"; sourceTree = "<group>"; };
 		488D77551780773800099470 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		488D7758178078CC00099470 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -3104,6 +3105,7 @@
 		48884A651615CE920005AA79 = {
 			isa = PBXGroup;
 			children = (
+				488B8E5B17AFFD8E005C33A2 /* TODO.txt */,
 				48884A7A1615CE920005AA79 /* Talk */,
 				48884AAC1615CE920005AA79 /* TalkTests */,
 				48884A731615CE920005AA79 /* Frameworks */,

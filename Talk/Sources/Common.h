@@ -50,13 +50,11 @@
 
 + (BOOL)deviceHasReceiver;
 
-+ (void)postNotificationName:(NSString*)name object:(id)object;
-
-+ (void)postNotificationName:(NSString*)name userInfo:(NSDictionary*)userInfo object:(id)object;
-
 + (void)setCornerRadius:(CGFloat)radius ofView:(UIView*)view;
 
-+ (void)setBorderWidth:(CGFloat)width color:(UIColor*)color ofView:(UIView*)view;
++ (void)setBorderWidth:(CGFloat)width ofView:(UIView*)view;
+
++ (void)setBorderColor:(UIColor*)color ofView:(UIView*)view;
 
 + (void)setX:(CGFloat)x ofView:(UIView*)view;
 

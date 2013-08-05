@@ -17,6 +17,11 @@
                      cancelButtonTitle:(NSString*)cancelButtonTitle
                      otherButtonTitles:(NSString*)otherButtonTitles, ...;
 
++ (NSInteger)showBlockingAlertViewWithTitle:(NSString*)title
+                                    message:(NSString*)message
+                          cancelButtonTitle:(NSString*)cancelButtonTitle
+                          otherButtonTitles:(NSString*)otherButtonTitles, ...;
+
 + (BlockAlertView*)showPhoneNumberAlertViewWithTitle:(NSString*)title
                                              message:(NSString*)message
                                          phoneNumber:(PhoneNumber*)phoneNumber
@@ -24,5 +29,6 @@
                                                                PhoneNumber* phoneNumber))completion
                                    cancelButtonTitle:(NSString*)cancelButtonTitle
                                    otherButtonTitles:(NSString*)otherButtonTitles, ...;
+
 
 @end

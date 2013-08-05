@@ -35,9 +35,8 @@
 @property (nonatomic, weak) IBOutlet UILabel*                   verifyStep3Label;
 @property (nonatomic, weak) IBOutlet UIButton*                  verifyNumberButton;
 @property (nonatomic, weak) IBOutlet UIButton*                  verifyCallButton;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView*   verifyRequestActivityIndicator;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView*   verifyCallActivityIndicator;
 @property (nonatomic, weak) IBOutlet UILabel*                   verifyCodeLabel;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView*   verifyWaitActivityIndicator;
 
 // Ready View
 @property (nonatomic, weak) IBOutlet UINavigationBar*           readyNavigationBar;

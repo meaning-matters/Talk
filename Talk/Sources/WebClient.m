@@ -360,6 +360,32 @@ static NSDictionary* statuses;
 // ...
 
 
+// 30A.
+- (void)retrieveVerificationCodeForPhoneNumber:(PhoneNumber*)phoneNumber
+                                         reply:(void (^)(WebClientStatus status, NSString* code))reply
+{
+    [self postPath:[NSString stringWithFormat:@"users/%@/verification", [Settings sharedSettings].webUsername]
+        parameters:@{@"code" : [phoneNumber e164FormatWithoutPlus]}
+             reply:^(WebClientStatus status, id content)
+    {
+        reply(status, (status == WebClientStatusOk) ? content[@"code"]  : nil);
+    }];
+}
+
+
+// 30B.
+- (void)retrieveVerificationStatusForPhoneNumber:(PhoneNumber*)phoneNumber
+                                           reply:(void (^)(WebClientStatus status, BOOL verified))reply
+{
+    [self postPath:[NSString stringWithFormat:@"users/%@/verification", [Settings sharedSettings].webUsername]
+        parameters:@{@"code" : [phoneNumber e164FormatWithoutPlus]}
+             reply:^(WebClientStatus status, id content)
+     {
+         reply(status, (status == WebClientStatusOk) ? content[@"verified"]  : nil);
+     }];
+}
+
+
 #pragma mark - Public Utility
 
 - (void)cancelAllRetrieveWebAccount
@@ -441,6 +467,22 @@ static NSDictionary* statuses;
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
                                        path:[NSString stringWithFormat:@"users/%@/credit",
+                                             [Settings sharedSettings].webUsername]];
+}
+
+
+- (void)cancelAllRetrieveVerificationCode
+{
+    [self cancelAllHTTPOperationsWithMethod:@"POST"
+                                       path:[NSString stringWithFormat:@"users/%@/verification",
+                                             [Settings sharedSettings].webUsername]];
+}
+
+
+- (void)cancelAllRetrieveVerificationStatus
+{
+    [self cancelAllHTTPOperationsWithMethod:@"GET"
+                                       path:[NSString stringWithFormat:@"users/%@/verification",
                                              [Settings sharedSettings].webUsername]];
 }
 

@@ -197,8 +197,7 @@
 
 - (void)updateReachable
 {
-    BOOL    hasAccount = [[Settings sharedSettings].webUsername length] > 0 &&
-                         [[Settings sharedSettings].sipUsername length] > 0;
+    BOOL    hasAccount = [[Settings sharedSettings] hasAccount];
 
     switch ([NetworkStatus sharedStatus].reachableStatus)
     {
@@ -226,7 +225,7 @@
     [self updateReachable];
 
     self.infoLabel.text   = [phoneNumber infoString];
-    self.numberLabel.text = phoneNumber.asYouTypeFormat;
+    self.numberLabel.text = [phoneNumber asYouTypeFormat];
 
     if (phoneNumber.isEmergency)
     {
@@ -267,8 +266,8 @@
     }
     else
     {
-        NSString*   identity = @"+32499298238"; //### Select identity.
-        Call*       call = [[CallManager sharedManager] callPhoneNumber:phoneNumber fromIdentity:identity];
+        NSString* identity = [Settings sharedSettings].verifiedE164; //### Select identity.
+        Call*     call     = [[CallManager sharedManager] callPhoneNumber:phoneNumber fromIdentity:identity];
 
         if (call != nil)
         {

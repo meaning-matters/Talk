@@ -377,6 +377,43 @@ static SipInterface*    sipInterface;
 }
 
 
+- (BOOL)checkWarnedAboutDefaultCli:(NSString*)identity
+{
+    if ([identity isEqualToString:[Settings sharedSettings].verifiedE164] &&
+        [Settings sharedSettings].warnedAboutDefaultCli == NO)
+    {
+        NSString*  title;
+        NSString*  message;
+        NSInteger  buttonIndex;
+
+        title = NSLocalizedStringWithDefaultValue(@"Call:Mobile FirstCallTitle", nil,
+                                                  [NSBundle mainBundle], @"Shown Caller ID",
+                                                  @"Alert title: Which number is being seen\n"
+                                                  @"[iOS alert title size]");
+
+        message = NSLocalizedStringWithDefaultValue(@"Call:Mobile FirstCallMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"By default, people you call will see your verified/personal "
+                                                    @"phone number. You can switch this off in Settings of this app.",
+                                                    @"Alert message: ...\n"
+                                                    @"[iOS alert message size]");
+
+        buttonIndex = [BlockAlertView showBlockingAlertViewWithTitle:title
+                                                             message:message
+                                                   cancelButtonTitle:[CommonStrings cancelString]
+                                                   otherButtonTitles:[CommonStrings callString], nil];
+
+        [Settings sharedSettings].warnedAboutDefaultCli = (buttonIndex == 1);
+            
+        return (buttonIndex == 1);
+    }
+    else
+    {
+        return YES;
+    }
+}
+
+
 #pragma mark - Public API
 
 - (void)resetSipAccount
@@ -405,7 +442,10 @@ static SipInterface*    sipInterface;
             call.network = CallNetworkMobile;
         }
     }
-    else if ([self checkAccount] && [self checkNetwork] && [Common checkCountryOfPhoneNumber:phoneNumber completion:nil])
+    else if ([self checkAccount] &&
+             [self checkNetwork] &&
+             [Common checkCountryOfPhoneNumber:phoneNumber completion:nil] &&
+             [self checkWarnedAboutDefaultCli:identity])
     {
         call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
         call.identityNumber = identity;

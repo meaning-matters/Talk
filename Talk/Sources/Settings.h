@@ -28,10 +28,12 @@
 @property (nonatomic, assign) BOOL              homeCountryFromSim;     // ISO Country Code.
 
 @property (nonatomic, strong) NSString*         lastDialedNumber;
+@property (nonatomic, assign) BOOL              warnedAboutDefaultCli;
 
 @property (nonatomic, strong) NSString*         webBaseUrl;             // Base URL of web API.
 @property (nonatomic, strong) NSString*         webUsername;
 @property (nonatomic, strong) NSString*         webPassword;
+@property (nonatomic, strong) NSString*         verifiedE164;           // Phone number user owns.
 
 @property (nonatomic, strong) NSString*         sipServer;
 @property (nonatomic, strong) NSString*         sipRealm;

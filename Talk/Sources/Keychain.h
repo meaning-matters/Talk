@@ -10,10 +10,10 @@
 
 @interface Keychain : NSObject
 
-+ (void)saveString:(NSString*)inputString forKey:(NSString*)account;
++ (BOOL)saveString:(NSString*)inputString forKey:(NSString*)account;
 
 + (NSString *)getStringForKey:(NSString*)account;
 
-+ (void)deleteStringForKey:(NSString*)account;
++ (BOOL)deleteStringForKey:(NSString*)account;
 
 @end

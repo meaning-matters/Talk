@@ -8,6 +8,7 @@
 
 #import "AFHTTPClient.h"
 #import "NumberType.h"
+#import "PhoneNumber.h"
 
 
 typedef enum
@@ -67,6 +68,11 @@ typedef enum
 
 - (void)retrieveCredit:(void (^)(WebClientStatus status, id content))reply;
 
+- (void)retrieveVerificationCodeForPhoneNumber:(PhoneNumber*)phoneNumber
+                                  reply:(void (^)(WebClientStatus status, NSString* code))reply;
+
+- (void)retrieveVerificationStatusForPhoneNumber:(PhoneNumber*)phoneNumber
+                                           reply:(void (^)(WebClientStatus status, BOOL verified))reply;
 
 - (void)cancelAllRetrieveWebAccount;
 
@@ -89,5 +95,9 @@ typedef enum
 - (void)cancelAllRetrieveNumbers;
 
 - (void)cancelAllRetrieveCredit;
+
+- (void)cancelAllRetrieveVerificationCode;
+
+- (void)cancelAllRetrieveVerificationStatus;
 
 @end

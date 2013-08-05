@@ -68,11 +68,19 @@
         [self showDefaultImage];
 
         [[AVAudioSession sharedInstance] setActive:YES error:nil]; // Make sure there's an audio session.
-        [[NSNotificationCenter defaultCenter] addObserver:self
-#warning Do with block, instead of method.
-                                                 selector:@selector(keepVolumeAboveZero:)
-                                                     name:@"AVSystemController_SystemVolumeDidChangeNotification"
-                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserverForName:@"AVSystemController_SystemVolumeDidChangeNotification"
+                                                          object:nil
+                                                           queue:[NSOperationQueue mainQueue]
+                                                      usingBlock:^(NSNotification* note)
+        {
+            if ([MPMusicPlayerController applicationMusicPlayer].volume < 0.1)
+            {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.05f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
+                {
+                    [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.1];
+                });
+            }
+        }];
     });
 }
 
@@ -167,20 +175,6 @@
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
-}
-
-
-#pragma mark - Helper Methods
-
-- (void)keepVolumeAboveZero:(NSNotification*)notification
-{
-    if ([MPMusicPlayerController applicationMusicPlayer].volume < 0.1)
-    {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.05f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
-        {
-            [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.1];
-        });
-    }
 }
 
 
