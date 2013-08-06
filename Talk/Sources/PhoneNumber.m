@@ -297,7 +297,9 @@ static NSString*    defaultIsoCountryCode = @"";
     }
     else
     {
-        string = [[CountryNames sharedNames] nameForIsoCountryCode:[self isoCountryCode]];
+        NSString* isoCountryCode = [[LibPhoneNumber sharedInstance] isoCountryCodeOfNumber:self.number
+                                                                            isoCountryCode:[self isoCountryCode]];
+        string = [[CountryNames sharedNames] nameForIsoCountryCode:isoCountryCode];
     }
 
     return string;
