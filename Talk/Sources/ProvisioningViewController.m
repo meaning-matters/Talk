@@ -67,11 +67,11 @@
                                                                 [NSBundle mainBundle],
                                                                 @"To use NumberBay, you need an account with credit, "
                                                                 @"and your phone number needs to be verified."
-                                                                @"\n\nWhen you are new: Buy an account, and follow "
+                                                                @"\n\nAre you new? Buy an account, and follow "
                                                                 @"the steps to verify your number. The price of the "
                                                                 @"account will be your initial credit, so does not "
                                                                 @"cost you extra."
-                                                                @"\n\nWhen you already have an account: Restore your "
+                                                                @"\n\nAlready have an account? Restore your "
                                                                 @"credit and numbers.",
                                                                 @"...");
     [self.introRestoreButton setTitle:NSLocalizedStringWithDefaultValue(@"Provisioning:Intro RestoreButtonTitle", nil,
@@ -464,11 +464,49 @@
     {
         if (cancelled == NO)
         {
+            [self setVerifyStep:1];
+            self.verifyCodeLabel.text = nil;
+            
             verifyPhoneNumber = phoneNumber;
 
             if ([phoneNumber isValid])
             {
                 [self.verifyNumberButton setTitle:[phoneNumber internationalFormat] forState:UIControlStateNormal];
+
+                [self.verifyCodeActivityIndicator startAnimating];
+                WebClient* webClient = [WebClient sharedClient];
+                [webClient retrieveVerificationCodeForPhoneNumber:phoneNumber
+                                                           reply:^(WebClientStatus status, NSString* code, BOOL verified)
+                {
+                    [self.verifyCodeActivityIndicator stopAnimating];
+                    if (status == WebClientStatusOk)
+                    {
+                        self.verifyCodeLabel.text = code;
+                        [self setVerifyStep:2];
+                    }
+                    else
+                    {
+                        NSString*   title;
+                        NSString*   message;
+
+                        title = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyErrorTitle", nil,
+                                                                  [NSBundle mainBundle], @"Couldn't Get Code",
+                                                                  @"Something went wrong.\n"
+                                                                  @"[iOS alert title size].");
+                        message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyCancelMessage", nil,
+                                                                    [NSBundle mainBundle],
+                                                                    @"",
+                                                                    @"Alert message if user wants to cancel.\n"
+                                                                    @"[iOS alert message size]");
+                        [BlockAlertView showAlertViewWithTitle:title
+                                                       message:message
+                                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+                         {
+                         }
+                                             cancelButtonTitle:[CommonStrings closeString]
+                                             otherButtonTitles:nil];
+                    }
+                }];
             }
             else
             {
@@ -502,7 +540,79 @@
 
 - (IBAction)verifyCallAction:(id)sender
 {
+    WebClient* webClient = [WebClient sharedClient];
 
+    // Initiate call.
+    [webClient requestVerificationCallForPhoneNumber:verifyPhoneNumber
+                                               reply:^(WebClientStatus status, NSString* code, BOOL verified)
+    {
+        if (status == WebClientStatusOk)
+        {
+            [self checkVerifyStatusWithRepeatCount:10];
+            [self setVerifyStep:3];
+        }
+        else
+        {
+            NSString*   title;
+            NSString*   message;
+
+            title = NSLocalizedStringWithDefaultValue(@"Provisioning CallFailedTitle", nil,
+                                                      [NSBundle mainBundle], @"Failed To Call",
+                                                      @"Calling the user failed.\n"
+                                                      @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"Provisioning CallFailedMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Calling you, to enter the verification code, failed.",
+                                                        @"Alert message that calling the user failed.\n"
+                                                        @"[iOS alert message size]");
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+            {
+                
+            }
+                                 cancelButtonTitle:[CommonStrings closeString]
+                                 otherButtonTitles:nil];
+        }
+    }];
+}
+
+
+- (void)checkVerifyStatusWithRepeatCount:(int)count
+{
+    WebClient* webClient = [WebClient sharedClient];
+
+    if (--count == 0)
+    {
+        [self setVerifyStep:1];
+        
+        return;
+    }
+
+    [webClient retrieveVerificationStatusForPhoneNumber:verifyPhoneNumber
+                                                  reply:^(WebClientStatus status, NSString* code, BOOL verified)
+    {
+        if (status == WebClientStatusOk)
+        {
+            if (verified == YES)
+            {
+                [Settings sharedSettings].verifiedE164 = verifyPhoneNumber.e164Format;
+                [self showView:self.readyView];
+            }
+            else
+            {
+                dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
+                dispatch_after(when, dispatch_get_main_queue(), ^
+                {
+                    [self checkVerifyStatusWithRepeatCount:count - 1];
+                });
+            }
+        }
+        else
+        {
+            NSLog(@"FAIL)");
+        }
+    }];
 }
 
 

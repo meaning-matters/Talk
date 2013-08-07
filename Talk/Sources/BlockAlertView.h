@@ -30,5 +30,4 @@
                                    cancelButtonTitle:(NSString*)cancelButtonTitle
                                    otherButtonTitles:(NSString*)otherButtonTitles, ...;
 
-
 @end

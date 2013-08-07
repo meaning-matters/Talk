@@ -81,6 +81,42 @@ static NSDictionary* statuses;
     [self postPath:path
         parameters:parameters
            success:^(AFHTTPRequestOperation* operation, id responseObject)
+     {
+         [Common enableNetworkActivityIndicator:NO];
+
+         NSDictionary* reponseDictionary = responseObject;
+         if (responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
+         {
+             reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
+         }
+         else
+         {
+             reply(WebClientStatusFailInvalidResponse, nil);
+         }
+     }
+           failure:^(AFHTTPRequestOperation* operation, NSError* error)
+     {
+         [Common enableNetworkActivityIndicator:NO];
+         if (error != nil && error.code != NSURLErrorCancelled)
+         {
+             reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
+         }
+     }];
+}
+
+
+- (void)putPath:(NSString*)path
+     parameters:(NSDictionary*)parameters
+          reply:(void (^)(WebClientStatus status, id content))reply
+{
+    [Common enableNetworkActivityIndicator:YES];
+
+    [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
+                                    password:[Settings sharedSettings].webPassword];
+
+    [self putPath:path
+       parameters:parameters
+          success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
         [Common enableNetworkActivityIndicator:NO];
 
@@ -362,26 +398,62 @@ static NSDictionary* statuses;
 
 // 30A.
 - (void)retrieveVerificationCodeForPhoneNumber:(PhoneNumber*)phoneNumber
-                                         reply:(void (^)(WebClientStatus status, NSString* code))reply
+                                        reply:(void (^)(WebClientStatus status, NSString* code, BOOL verified))reply
 {
-    [self postPath:[NSString stringWithFormat:@"users/%@/verification", [Settings sharedSettings].webUsername]
-        parameters:@{@"code" : [phoneNumber e164FormatWithoutPlus]}
+    [self postPath:[NSString stringWithFormat:@"users/%@/verification?number=%@",
+                    [Settings sharedSettings].webUsername, [phoneNumber e164FormatWithoutPlus]]
+        parameters:nil
              reply:^(WebClientStatus status, id content)
     {
-        reply(status, (status == WebClientStatusOk) ? content[@"code"]  : nil);
+        if (status == WebClientStatusOk)
+        {
+            reply(status, content[@"pin"], [content[@"verified"] boolValue]);
+        }
+        else
+        {
+            reply(status, nil, NO);
+        }
     }];
 }
 
 
 // 30B.
-- (void)retrieveVerificationStatusForPhoneNumber:(PhoneNumber*)phoneNumber
-                                           reply:(void (^)(WebClientStatus status, BOOL verified))reply
+- (void)requestVerificationCallForPhoneNumber:(PhoneNumber*)phoneNumber
+                                        reply:(void (^)(WebClientStatus status, NSString* code, BOOL verified))reply
 {
-    [self postPath:[NSString stringWithFormat:@"users/%@/verification", [Settings sharedSettings].webUsername]
-        parameters:@{@"code" : [phoneNumber e164FormatWithoutPlus]}
+    [self putPath:[NSString stringWithFormat:@"users/%@/verification?number=%@",
+                    [Settings sharedSettings].webUsername, [phoneNumber e164FormatWithoutPlus]]
+        parameters:nil
              reply:^(WebClientStatus status, id content)
      {
-         reply(status, (status == WebClientStatusOk) ? content[@"verified"]  : nil);
+         if (status == WebClientStatusOk)
+         {
+             reply(status, content[@"pin"], [content[@"verified"] boolValue]);
+         }
+         else
+         {
+             reply(status, nil, NO);
+         }
+     }];
+}
+
+
+// 30C.
+- (void)retrieveVerificationStatusForPhoneNumber:(PhoneNumber*)phoneNumber
+                                           reply:(void (^)(WebClientStatus status, NSString* code, BOOL verified))reply
+{
+    [self getPath:[NSString stringWithFormat:@"users/%@/verification", [Settings sharedSettings].webUsername]
+       parameters:@{@"number" : [phoneNumber e164FormatWithoutPlus]}
+            reply:^(WebClientStatus status, id content)
+     {
+         if (status == WebClientStatusOk)
+         {
+             reply(status, content[@"pin"], [content[@"verified"] boolValue]);
+         }
+         else
+         {
+             reply(status, nil, NO);
+         }
      }];
 }
 
@@ -474,6 +546,14 @@ static NSDictionary* statuses;
 - (void)cancelAllRetrieveVerificationCode
 {
     [self cancelAllHTTPOperationsWithMethod:@"POST"
+                                       path:[NSString stringWithFormat:@"users/%@/verification",
+                                             [Settings sharedSettings].webUsername]];
+}
+
+
+- (void)cancelAllRequestVerificationCall
+{
+    [self cancelAllHTTPOperationsWithMethod:@"PUT"
                                        path:[NSString stringWithFormat:@"users/%@/verification",
                                              [Settings sharedSettings].webUsername]];
 }

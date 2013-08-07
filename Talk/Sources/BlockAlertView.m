@@ -70,6 +70,7 @@
 
     va_end(arguments);
 
+    // 'Busy loop', waiting for user to dismiss alert.
     while (dismissed == NO)
     {
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode

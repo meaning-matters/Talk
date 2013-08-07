@@ -24,4 +24,6 @@
 
 * Check all code if @"" and string.length > 0 are used instead of (string != nil), or the other way around!!!
 
-* Fix that Belgium is shown on dialer too much.
+* Check that VC Cancels stop activity as much as possible.
+
+* verplaats ook activity indicators on Number Verif. View (provisioning)
