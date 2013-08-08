@@ -24,14 +24,17 @@
 #define ACCOUNT                 @"Account"
 #define CREDIT                  @"Credit"
 #define NUMBER                  @"Number"
+#define LOAD_PRODUCTS_INTERVAL  3600
+
 
 @interface PurchaseManager () <SKProductsRequestDelegate, SKPaymentTransactionObserver>
 
 @property (nonatomic, strong) NSMutableSet*         productIdentifiers;
-@property (nonatomic, strong) SKProductsRequest*    productsRequest;
+@property (atomic, strong) SKProductsRequest*       productsRequest;
 @property (nonatomic, copy) void (^accountCompletion)(BOOL success, id object);
 @property (nonatomic, copy) void (^loadCompletion)(BOOL success);
 @property (nonatomic, strong) NSMutableArray*       restoredTransactions;
+@property (nonatomic, strong) NSDate*               loadProductsDate;
 
 @end
 
@@ -67,8 +70,7 @@
         {
             NetworkStatusReachable reachable = [notification.userInfo[@"status"] intValue];
 
-            if ((reachable == NetworkStatusReachableWifi || reachable == NetworkStatusReachableCellular) &&
-                sharedInstance.productsRequest == nil && sharedInstance.products == nil)
+            if (reachable == NetworkStatusReachableWifi || reachable == NetworkStatusReachableCellular)
             {
                 // At first time the app gets connected to internet.
                 [sharedInstance loadProducts:nil];
@@ -285,6 +287,7 @@
     [Common enableNetworkActivityIndicator:NO];
     self.loadCompletion ? self.loadCompletion(YES) : 0;
     self.loadCompletion = nil;
+    self.loadProductsDate = [NSDate date];
     self.productsRequest = nil;
 }
 
@@ -462,7 +465,8 @@
 
 - (void)loadProducts:(void (^)(BOOL success))completion
 {
-    if (self.productsRequest == nil)
+    if ((self.loadProductsDate == nil || -[self.loadProductsDate timeIntervalSinceNow] > LOAD_PRODUCTS_INTERVAL) &&
+        self.productsRequest == nil)
     {
         self.loadCompletion = completion;
 
@@ -471,6 +475,16 @@
         [self.productsRequest start];
 
         [Common enableNetworkActivityIndicator:YES];
+    }
+    else if (self.productsRequest != nil && self.loadCompletion == nil)
+    {
+        // The NetworkStatusReachableNotification was fired, and we're busy loading.  But ProvisioningViewController
+        // want to get feedback when done, so we assign that here.
+        self.loadCompletion = completion;
+    }
+    else
+    {
+        completion ? completion(YES) : 0;
     }
 }
 

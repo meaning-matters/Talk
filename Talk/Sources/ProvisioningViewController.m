@@ -34,11 +34,17 @@
 {
     UIView*         currentView;
 
-    NSString*       readyBuyText;       // New user.
-    NSString*       readyRestoreText;   // Exixting user.
+    NSString*       readyBuyText;                   // New user.
+    NSString*       readyRestoreNoNumbersText;      // Existing user with no numbers yet.
+    NSString*       readyRestoreHasNumberText;      // Existing user with only one number.
+    NSString*       readyRestoreHasNumbersText;     // Existing user with multiple numbers.
 
     PhoneNumber*    verifyPhoneNumber;
     NSString*       verifyNumberButtonTitle;
+
+    BOOL            hasRestoredCredit;
+    BOOL            hasRestoredNumbers;
+    BOOL            failedRestoringCreditAndNumbers;
 }
 
 @end
@@ -107,10 +113,18 @@
                                                      @"Your initial credit is %@; you can top up now. Or, have a look "
                                                      @"at the extensive list of countries.\n\n",
                                                      @"Welcome text for a new user.");
-    readyRestoreText = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready RestoreText", nil,
-                                                         [NSBundle mainBundle],
-                                                         @"mention credit and numbers",
-                                                         @"Welcome text for existing user.");
+    readyRestoreNoNumbersText = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready RestoreNoNumbersText", nil,
+                                                                  [NSBundle mainBundle],
+                                                                  @"Welcome back! Your current credit is %@. ...",
+                                                                  @"Welcome text for existing user without telephone numbers.");
+    readyRestoreHasNumberText = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready RestoreNoNumbersText", nil,
+                                                                  [NSBundle mainBundle],
+                                                                  @"Welcome back! Your current credit is %@. ...",
+                                                                  @"Welcome text for existing user without telephone numbers.");
+    readyRestoreHasNumbersText = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready RestoreNoNumbersText", nil,
+                                                                   [NSBundle mainBundle],
+                                                                   @"Welcome back! Your current credit is %@, with %d numbers...",
+                                                                   @"Welcome text for existing user without telephone numbers.");
     [self.readyCreditButton setTitle:NSLocalizedStringWithDefaultValue(@"Provisioning:Ready CreditButtonTitle", nil,
                                                                        [NSBundle mainBundle], @"Credit",
                                                                        @"...")
@@ -143,12 +157,17 @@
 {
     [super viewDidAppear:animated];
 
+    [self setIntroBusy:YES];
     [[PurchaseManager sharedManager] loadProducts:^(BOOL success)
     {
-         if (success == NO)
-         {
-             [self dismissViewControllerAnimated:YES completion:nil];
-         }
+        if (success == YES)
+        {
+            [self setIntroBusy:NO];
+        }
+        else
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
     }];
 }
 
@@ -173,7 +192,9 @@
             [Common setY:-2      ofView:self.verifyStep3Label];
             [Common setY:28      ofView:self.verifyNumberButton];
             [Common setY:28      ofView:self.verifyCallButton];
+            [Common setY:27      ofView:self.verifyCallActivityIndicator];
             [Common setY:28      ofView:self.verifyCodeLabel];
+            [Common setY:27      ofView:self.verifyCodeActivityIndicator];
             [Common setHeight:36 ofView:self.verifyNumberButton];
             [Common setHeight:36 ofView:self.verifyCallButton];
             [Common setHeight:36 ofView:self.verifyCodeLabel];
@@ -192,7 +213,9 @@
             [Common setY:0       ofView:self.verifyStep3Label];
             [Common setY:37      ofView:self.verifyNumberButton];
             [Common setY:37      ofView:self.verifyCallButton];
+            [Common setY:36      ofView:self.verifyCallActivityIndicator];
             [Common setY:37      ofView:self.verifyCodeLabel];
+            [Common setY:36      ofView:self.verifyCodeActivityIndicator];
             [Common setHeight:40 ofView:self.verifyNumberButton];
             [Common setHeight:40 ofView:self.verifyCallButton];
             [Common setHeight:40 ofView:self.verifyCodeLabel];
@@ -237,10 +260,12 @@
 {
     [[WebClient sharedClient] retrieveCredit:^(WebClientStatus status, id content)
     {
+        hasRestoredCredit = YES;
         if (status == WebClientStatusOk)
         {
             [[WebClient sharedClient] retrieveNumbers:^(WebClientStatus status, id content)
             {
+                hasRestoredNumbers = YES;
                 if (status == WebClientStatusOk)
                 {
                     if ([Settings sharedSettings].verifiedE164.length == 0)
@@ -256,6 +281,7 @@
                 }
                 else
                 {
+                    failedRestoringCreditAndNumbers = YES;
                     NSString*   title;
                     NSString*   message;
 
@@ -279,6 +305,7 @@
         }
         else
         {
+            failedRestoringCreditAndNumbers = YES;
             NSString*   title;
             NSString*   message;
 
@@ -342,6 +369,11 @@
         if (success == YES)
         {
             [self restoreCreditAndNumbers];
+        }
+        else
+        {
+#warning Do something.
+            //####
         }
     }];
 }

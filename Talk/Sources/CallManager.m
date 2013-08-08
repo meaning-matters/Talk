@@ -380,6 +380,7 @@ static SipInterface*    sipInterface;
 - (BOOL)checkWarnedAboutDefaultCli:(NSString*)identity
 {
     if ([identity isEqualToString:[Settings sharedSettings].verifiedE164] &&
+        [Settings sharedSettings].showCallerId == YES &&
         [Settings sharedSettings].warnedAboutDefaultCli == NO)
     {
         NSString*  title;
