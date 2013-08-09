@@ -98,12 +98,12 @@
                              forState:UIControlStateNormal];
     verifyNumberButtonTitle = self.verifyNumberButton.titleLabel.text;
     [self.verifyCallButton setTitle:NSLocalizedStringWithDefaultValue(@"Provisioning:Verify CallMeTitle", nil,
-                                                                      [NSBundle mainBundle], @"CallMe",
+                                                                      [NSBundle mainBundle], @"Call Me",
                                                                       @"...")
                            forState:UIControlStateNormal];
 
     self.readyNavigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BarTitle", nil,
-                                                                              [NSBundle mainBundle], @"Ready",
+                                                                              [NSBundle mainBundle], @"Ready To Go",
                                                                               @"...");
     readyBuyText = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BuyText", nil,
                                                      [NSBundle mainBundle],
@@ -133,10 +133,6 @@
                                                                        [NSBundle mainBundle], @"Number",
                                                                        @"...")
                             forState:UIControlStateNormal];
-
-    self.failNavigationBar.topItem.title = NSLocalizedStringWithDefaultValue(@"Provisioning:Fail BarTitle", nil,
-                                                                             [NSBundle mainBundle], @"Failed",
-                                                                             @"...");
 
     [Common setCornerRadius:10                     ofView:self.verifyStep1View];
     [Common setCornerRadius:10                     ofView:self.verifyStep2View];
@@ -285,10 +281,10 @@
                     NSString*   title;
                     NSString*   message;
 
-                    title = NSLocalizedStringWithDefaultValue(@"Provisioning FailedNumbersTitle", nil,
-                                                              [NSBundle mainBundle], @"Loading Numbers Failed",
-                                                              @"Alart title: Phone numbers could not be downloaded.\n"
-                                                              @"[iOS alert title size].");
+                    title   = NSLocalizedStringWithDefaultValue(@"Provisioning FailedNumbersTitle", nil,
+                                                                [NSBundle mainBundle], @"Loading Numbers Failed",
+                                                                @"Alart title: Phone numbers could not be downloaded.\n"
+                                                                @"[iOS alert title size].");
                     message = NSLocalizedStringWithDefaultValue(@"Provisioning FailedNumbersMessage", nil,
                                                                 [NSBundle mainBundle],
                                                                 @"Your phone numbers could not be restored.\n\n"
@@ -309,11 +305,11 @@
             NSString*   title;
             NSString*   message;
 
-            title = NSLocalizedStringWithDefaultValue(@"Provisioning FailedCreditTitle", nil,
-                                                      [NSBundle mainBundle], @"Loading Credit Failed",
-                                                      @"Alart title: Calling credit could not be downloaded.\n"
-                                                      @"[iOS alert title size].");
-            message = NSLocalizedStringWithDefaultValue(@"Provisioning FailedNumbersMessage", nil,
+            title   = NSLocalizedStringWithDefaultValue(@"Provisioning FailedCreditTitle", nil,
+                                                        [NSBundle mainBundle], @"Loading Credit Failed",
+                                                        @"Alart title: Calling credit could not be downloaded.\n"
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"Provisioning FailedCreditMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"Your credit could not be loaded.\n\n"
                                                         @"Please try again later.",
@@ -370,10 +366,34 @@
         {
             [self restoreCreditAndNumbers];
         }
-        else
+        else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
         {
-#warning Do something.
-            //####
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        else if (object != nil)
+        {
+            NSString* title;
+            NSString* message;
+            
+            title   = NSLocalizedStringWithDefaultValue(@"Provisioning FailedBuyTitle", nil,
+                                                        [NSBundle mainBundle], @"Buying Account Failed",
+                                                        @"Alart title: An account could not be bought.\n"
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"Provisioning FailedBuyMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Something went wrong while buying your account: %@.\n\n"
+                                                        @"Please try again later.",
+                                                        @"Message telling that buying an account failed\n"
+                                                        @"[iOS alert message size]");
+            message = [NSString stringWithFormat:message, [object localizedDescription]];
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+            {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
+                                 cancelButtonTitle:[CommonStrings closeString]
+                                 otherButtonTitles:nil];
         }
     }];
 }
@@ -399,10 +419,10 @@
             NSString*   title;
             NSString*   message;
 
-            title = NSLocalizedStringWithDefaultValue(@"Provisioning NothingToRestoreTitle", nil,
-                                                      [NSBundle mainBundle], @"Nothing To Restore",
-                                                      @"Alert title telling there is no account that could be restored.\n"
-                                                      @"[iOS alert title size].");
+            title   = NSLocalizedStringWithDefaultValue(@"Provisioning NothingToRestoreTitle", nil,
+                                                        [NSBundle mainBundle], @"Nothing To Restore",
+                                                        @"Alert title telling there is no account that could be restored.\n"
+                                                        @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"Provisioning NothingToRestoreMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"No account was purchased earlier with the current Apple ID.",
@@ -422,16 +442,28 @@
         }
         else if (object != nil)
         {
-            NSString*   format;
-
-            format = NSLocalizedStringWithDefaultValue(@"Purchase:Failure AlertMessage", nil,
-                                                       [NSBundle mainBundle],
-                                                       @"Something went wrong while getting your account: %@.\n\n"
-                                                       @"Please try again later.",
-                                                       @"Message telling that getting an account failed\n"
-                                                       @"[iOS alert message size]");
-            self.failTextView.text = [NSString stringWithFormat:format, [(NSError*)object localizedDescription]];
-            [self showView:self.failView];
+            NSString* title;
+            NSString* message;
+            
+            title   = NSLocalizedStringWithDefaultValue(@"Provisioning FailedRestoreTitle", nil,
+                                                        [NSBundle mainBundle], @"Restoring Account Failed",
+                                                        @"Alart title: An account could not be restored.\n"
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"Provisioning FailedRestoreMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Something went wrong while restoring your account: %@.\n\n"
+                                                        @"Please try again later.",
+                                                        @"Message telling that restoring an account failed\n"
+                                                        @"[iOS alert message size]");
+            message = [NSString stringWithFormat:message, [object localizedDescription]];
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+             {
+                 [self dismissViewControllerAnimated:YES completion:nil];
+             }
+                                 cancelButtonTitle:[CommonStrings closeString]
+                                 otherButtonTitles:nil];
         }
         else
         {
@@ -441,17 +473,17 @@
 }
 
 
-#pragma mark -  Verify UI Actions
+#pragma mark - Verify UI Actions
 
 - (IBAction)verifyCancelAction:(id)sender
 {
     NSString*   title;
     NSString*   message;
-
-    title = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyCancelTitle", nil,
-                                              [NSBundle mainBundle], @"Cancel Account Activation",
-                                              @"Cancel user account activation.\n"
-                                              @"[iOS alert title size].");
+    
+    title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyCancelTitle", nil,
+                                                [NSBundle mainBundle], @"Cancel Account Activation",
+                                                @"Cancel user account activation.\n"
+                                                @"[iOS alert title size].");
     message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyCancelMessage", nil,
                                                 [NSBundle mainBundle],
                                                 @"Are you sure you want to cancel the activation of your account?\n\n"
@@ -478,21 +510,21 @@
     __block BlockAlertView*  alert;
     NSString*                title;
     NSString*                message;
-
-    title = NSLocalizedStringWithDefaultValue(@"Provisioning EnterNumberTitle", nil,
-                                              [NSBundle mainBundle], @"Enter Your Number",
-                                              @"Title asking user to enter their phone number.\n"
-                                              @"[iOS alert title size].");
+    
+    title   = NSLocalizedStringWithDefaultValue(@"Provisioning EnterNumberTitle", nil,
+                                                [NSBundle mainBundle], @"Enter Your Number",
+                                                @"Title asking user to enter their phone number.\n"
+                                                @"[iOS alert title size].");
     message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyCancelMessage", nil,
                                                 [NSBundle mainBundle],
                                                 @"Enter a number you own; it will be linked to your account.",
                                                 @"Message explaining about the phone number they need to enter.\n"
                                                 @"[iOS alert message size]");
-    alert = [BlockAlertView showPhoneNumberAlertViewWithTitle:title
-                                                      message:message
-                                                  phoneNumber:verifyPhoneNumber
-                                                   completion:^(BOOL         cancelled,
-                                                                PhoneNumber* phoneNumber)
+    alert   = [BlockAlertView showPhoneNumberAlertViewWithTitle:title
+                                                        message:message
+                                                    phoneNumber:verifyPhoneNumber
+                                                     completion:^(BOOL         cancelled,
+                                                                  PhoneNumber* phoneNumber)
     {
         if (cancelled == NO)
         {
@@ -520,11 +552,11 @@
                     {
                         NSString*   title;
                         NSString*   message;
-
-                        title = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyErrorTitle", nil,
-                                                                  [NSBundle mainBundle], @"Couldn't Get Code",
-                                                                  @"Something went wrong.\n"
-                                                                  @"[iOS alert title size].");
+        
+                        title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyErrorTitle", nil,
+                                                                    [NSBundle mainBundle], @"Couldn't Get Code",
+                                                                    @"Something went wrong.\n"
+                                                                    @"[iOS alert title size].");
                         message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyCancelMessage", nil,
                                                                     [NSBundle mainBundle],
                                                                     @"",
@@ -535,8 +567,8 @@
                                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
                          {
                          }
-                                             cancelButtonTitle:[CommonStrings closeString]
-                                             otherButtonTitles:nil];
+                                               cancelButtonTitle:[CommonStrings closeString]
+                                               otherButtonTitles:nil];
                     }
                 }];
             }
@@ -545,10 +577,10 @@
                 NSString*   title;
                 NSString*   message;
 
-                title = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidTitle", nil,
-                                                          [NSBundle mainBundle], @"Invalid Number",
-                                                          @"Phone number is not correct.\n"
-                                                          @"[iOS alert title size].");
+                title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidTitle", nil,
+                                                            [NSBundle mainBundle], @"Invalid Number",
+                                                            @"Phone number is not correct.\n"
+                                                            @"[iOS alert title size].");
                 message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidMessage", nil,
                                                             [NSBundle mainBundle],
                                                             @"The phone number you entered is invalid, "
@@ -588,10 +620,10 @@
             NSString*   title;
             NSString*   message;
 
-            title = NSLocalizedStringWithDefaultValue(@"Provisioning CallFailedTitle", nil,
-                                                      [NSBundle mainBundle], @"Failed To Call",
-                                                      @"Calling the user failed.\n"
-                                                      @"[iOS alert title size].");
+            title   = NSLocalizedStringWithDefaultValue(@"Provisioning CallFailedTitle", nil,
+                                                        [NSBundle mainBundle], @"Failed To Call",
+                                                        @"Calling the user failed.\n"
+                                                        @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"Provisioning CallFailedMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"Calling you, to enter the verification code, failed.",
@@ -683,20 +715,6 @@
                                                                animated:YES
                                                              completion:nil];
     }];
-}
-
-
-#pragma mark - Fail UI Actions
-
-- (IBAction)failCancelAction:(id)sender
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-
-- (IBAction)failCloseAction:(id)sender
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

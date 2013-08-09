@@ -223,7 +223,8 @@ typedef enum
 
                 message = NSLocalizedStringWithDefaultValue(@"Settings:Reset ResetMessage", nil,
                                                             [NSBundle mainBundle],
-                                                            @"Are you sure you want to wipe your account and data?",
+                                                            @"Are you sure you want to wipe your account and data "
+                                                            @"from this device?\n\n",
                                                             @"Alert message informing about resetting all user data\n"
                                                             @"[iOS alert message size]");
 

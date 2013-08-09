@@ -54,8 +54,6 @@
     {
         sharedInstance = [[PurchaseManager alloc] init];
 
-        sharedInstance.delegate = sharedInstance; //### Do everyting in here for now.
-
         sharedInstance.productIdentifiers = [NSMutableSet set];
         [sharedInstance addProductIdentifiers];
 
@@ -143,7 +141,7 @@
 }
 
 
-#pragma mark - PurchaseManagerDelegate
+#pragma mark - Transaction Processing
 
 - (void)processAccountTransaction:(SKPaymentTransaction*)transaction
 {
@@ -196,11 +194,14 @@
                 }
                 else
                 {
-                    NSError*    error = [[NSError alloc] initWithDomain:[Settings sharedSettings].errorDomain
-                                                                   code:SKErrorUnknown  //### Make app-wide errors.
-                                                               userInfo:nil];
                     if (self.accountCompletion != nil)
                     {
+                        NSString* description = NSLocalizedStringWithDefaultValue(@"Purchase:General SipAccountFailed", nil,
+                                                                                  [NSBundle mainBundle], @"Could not get VoIP account",
+                                                                                  @"Error message ...\n"
+                                                                                  @"[...].");
+                        NSError*  error       = [Common errorWithCode:0 description:description];
+
                         self.accountCompletion(NO, error);
                         self.accountCompletion = nil;
                     }
@@ -240,9 +241,11 @@
         else
         {
             // If this was a restored transaction, it already been 'finished' in updatedTransactions:.
-            NSError*    error = [[NSError alloc] initWithDomain:[Settings sharedSettings].errorDomain
-                                                           code:SKErrorUnknown  //### Make app-wide errors.
-                                                       userInfo:nil];
+            NSString* description = NSLocalizedStringWithDefaultValue(@"Purchase:General WebAccountFailed", nil,
+                                                                      [NSBundle mainBundle], @"Could not get web account",
+                                                                      @"Error message ...\n"
+                                                                      @"[...].");
+            NSError*        error = [Common errorWithCode:0 description:description];
             self.accountCompletion(NO, error);
             self.accountCompletion = nil;
         }
@@ -250,21 +253,21 @@
 }
 
 
-- (void)purchaseManager:(PurchaseManager*)purchaseManager processNumberTransaction:(SKPaymentTransaction*)transaction
+- (void)processNumberTransaction:(SKPaymentTransaction*)transaction
 {
     NSString*   receipt = [Base64 encode:transaction.transactionReceipt];
     NSLog(@"number receipt: %@", receipt);
 
-    [purchaseManager finishTransaction:transaction];
+    [self finishTransaction:transaction];
 }
 
 
-- (void)purchaseManager:(PurchaseManager*)purchaseManager processCreditTransaction:(SKPaymentTransaction*)transaction
+- (void)processCreditTransaction:(SKPaymentTransaction*)transaction
 {
     NSString*   receipt = [Base64 encode:transaction.transactionReceipt];
     NSLog(@"credit receipt: %@", receipt);
 
-    [purchaseManager finishTransaction:transaction];
+    [self finishTransaction:transaction];
 }
 
 
@@ -415,11 +418,11 @@
                 }
                 else if ([self isNumberProductIdentifier:transaction.payment.productIdentifier])
                 {
-                    [self purchaseManager:self processNumberTransaction:transaction];
+                    [self processNumberTransaction:transaction];
                 }
                 else if ([self isCreditProductIdentifier:transaction.payment.productIdentifier])
                 {
-                    [self purchaseManager:self processCreditTransaction:transaction];
+                    [self processCreditTransaction:transaction];
                 }
                 break;
 
@@ -461,6 +464,15 @@
 }
 
 
+- (void)paymentQueue:(SKPaymentQueue *)queue removedTransactions:(NSArray*)transactions
+{
+    for (SKPaymentTransaction* transaction in transactions)
+    {
+        [self finishTransaction:transaction];
+    }
+}
+
+
 #pragma mark - Public API
 
 - (void)loadProducts:(void (^)(BOOL success))completion
@@ -478,8 +490,10 @@
     }
     else if (self.productsRequest != nil && self.loadCompletion == nil)
     {
-        // The NetworkStatusReachableNotification was fired, and we're busy loading.  But ProvisioningViewController
-        // want to get feedback when done, so we assign that here.
+        // The NetworkStatusReachableNotification was fired (when we don't set completion),
+        // and we're busy loading.  But any other (making this second invocation, e.g.
+        // ProvisioningViewController) does wants to get feedback when done, so we assign
+        // that here.
         self.loadCompletion = completion;
     }
     else

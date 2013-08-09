@@ -14,7 +14,6 @@
 @property (nonatomic, strong) IBOutlet UIView*                  introView;
 @property (nonatomic, strong) IBOutlet UIView*                  verifyView;
 @property (nonatomic, strong) IBOutlet UIView*                  readyView;
-@property (nonatomic, strong) IBOutlet UIView*                  failView;
 
 // Intro View
 @property (nonatomic, weak) IBOutlet UINavigationBar*           introNavigationBar;
@@ -45,12 +44,6 @@
 @property (nonatomic, weak) IBOutlet UIButton*                  readyCreditButton;
 @property (nonatomic, weak) IBOutlet UIButton*                  readyNumberButton;
 
-// Fail View
-@property (nonatomic, weak) IBOutlet UINavigationBar*           failNavigationBar;
-@property (nonatomic, weak) IBOutlet UITextView*                failTextView;
-@property (nonatomic, weak) IBOutlet UIButton*                  failCloseButton;
-
-
 // Intro View
 - (IBAction)introCancelAction:(id)sender;
 - (IBAction)introRestoreAction:(id)sender;
@@ -65,9 +58,5 @@
 - (IBAction)readyDoneAction:(id)sender;
 - (IBAction)readyCreditAction:(id)sender;
 - (IBAction)readyNumberAction:(id)sender;
-
-// Fail View
-- (IBAction)failCancelAction:(id)sender;
-- (IBAction)failCloseAction:(id)sender;
 
 @end

@@ -188,6 +188,17 @@
 }
 
 
++ (NSError*)errorWithCode:(NSInteger)code description:(NSString*)description
+{
+    NSDictionary* userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedFailureReasonErrorKey];
+    NSError*      error    = [[NSError alloc] initWithDomain:[Settings sharedSettings].errorDomain
+                                                        code:code
+                                                    userInfo:userInfo];
+
+    return error;
+}
+
+
 + (BOOL)deviceHasReceiver
 {
     return [[UIDevice currentDevice].model isEqualToString:@"iPhone"];

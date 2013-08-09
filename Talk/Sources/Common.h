@@ -46,9 +46,11 @@
 
 + (id)mutableObjectWithJsonString:(NSString*)string;
 
-+ (NSString*)deviceModel;
++ (NSError*)errorWithCode:(NSInteger)code description:(NSString*)description;
 
 + (BOOL)deviceHasReceiver;
+
++ (NSString*)deviceModel;
 
 + (void)setCornerRadius:(CGFloat)radius ofView:(UIView*)view;
 

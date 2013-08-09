@@ -4,9 +4,11 @@
 
 * Netherlands Antilles flag not correct, must have 5 instead of 6 stars.
 
-* MobileCountryCodes.json has duplicate keys (e.g. 340), so can't be stored in NSDictionary!  App needs to display choice for ISO country, when MCC has more than one.
+* MobileCountryCodes.json has duplicate keys (e.g. 340), so can't be stored in NSDictionary!  App needs 
+  to display choice for ISO country, when MCC has more than one.
 
-# NOTE: The SIP info (username, password, ...) saved in keychain, can only be read back when app is build with same Apple provisioning profile!!!
+# NOTE: The SIP info (username, password, ...) saved in keychain, can only be read back when app is 
+  build with same Apple provisioning profile!!!
 
 * NetworkStatus only recognises WISPr captive portals when checked host does not return
   the expected data.  Also support other types, or make more general and assume captive
@@ -35,8 +37,9 @@
 * Zag "Nothing to Restore" terwijl er wel een account was.  Zijn er andere errors misschien die nu op een hoop
   worden geveegd?
   
-* Zag dit, zonder ISO: postPath request: https://api.numberbay.com/users?currencyCode=
+* Zag dit, zonder ISO: postPath request: https://api.numberbay.com/users?currencyCode= 
+  Was waarschijnlijk van niet wachten op loadProducts completion.
 
-* Let activity indicators of Prov. Verify view spin as long as the products are not yet received from the store.
-  Do the same for other places where items are being purchased.
+* Crash wanneer switch van/naar airplane mode?
+
 
