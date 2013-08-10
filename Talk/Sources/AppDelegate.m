@@ -343,9 +343,7 @@
 #warning Stop things in background, like audio downloads. Especially for conflicts with CoreData being cleared.
 
     [[DataManager sharedManager] removeAll];
-
-    [[Settings sharedSettings] resetAll];
-
+    [[Settings sharedSettings]   resetAll];
     [[CallManager sharedManager] resetSipAccount];
 
     NSError*    error;

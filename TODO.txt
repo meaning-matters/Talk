@@ -40,11 +40,5 @@
 * Zag dit, zonder ISO: postPath request: https://api.numberbay.com/users?currencyCode= 
   Was waarschijnlijk van niet wachten op loadProducts completion.
 
-* Crash wanneer switch van/naar airplane mode?
-
-* Only restart PJSIP when there's also a verified number.
-
-* Zonder account op Call button op dialer moet meten prov. view tonen (dus ook zonder nummer)!
-
 * Maak één grote Strings.m met daarin alle strings. Groepering onder Common, Provisioning, .... en dan functies
   provisioningInvalidNumberTitle:, met als key @"Privisioning:InvalidNumberTitle".

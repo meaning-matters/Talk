@@ -42,6 +42,7 @@
 @implementation PurchaseManager
 
 @synthesize currencyCode = _currencyCode;
+@synthesize isNewAccount = _isNewAccount;
 
 #pragma mark - Singleton Stuff
 
@@ -185,8 +186,6 @@
                     [Settings sharedSettings].sipRealm    = ((NSDictionary*)content)[@"sipRealm"];
                     [Settings sharedSettings].sipUsername = ((NSDictionary*)content)[@"sipUsername"];
                     [Settings sharedSettings].sipPassword = ((NSDictionary*)content)[@"sipPassword"];
-
-                    [[CallManager sharedManager] resetSipAccount];
 
                     [self finishTransaction:transaction];
                     self.accountCompletion(YES, transaction);
@@ -395,10 +394,19 @@
 {
     for (SKPaymentTransaction* transaction in transactions)
     {
+        if (transaction.originalTransaction != nil)
+        {
+            if ([self isAccountProductIdentifier:transaction.originalTransaction.payment.productIdentifier])
+            {
+                // A new account: up to 1 day old.
+                _isNewAccount = (-[transaction.originalTransaction.transactionDate timeIntervalSinceNow] < (24 * 3600));
+            }
+        }
+
         switch (transaction.transactionState)
         {
             case SKPaymentTransactionStatePurchasing:
-                NSLog(@"//### Busy purchasing.");
+                NSLog(@"//### Busy purchasing");
                 break;
 
             case SKPaymentTransactionStatePurchased:
@@ -587,7 +595,7 @@
 
     self.accountCompletion = completion;
 
-    [[PurchaseManager sharedManager] buyProductIdentifier:[self productIdentifierForAccountTier:1]];
+    [self buyProductIdentifier:[self productIdentifierForAccountTier:1]];
 }
 
 

@@ -39,6 +39,7 @@ NSString* const ShowCallerIdKey                = @"ShowCallerId";
 NSString* const NumberTypeMaskKey              = @"NumberTypeMask";
 NSString* const ForwardingsSelectionKey        = @"ForwardingsSelection";
 NSString* const CurrencyCodeKey                = @"CurrencyCode";
+NSString* const CreditKey                      = @"Credit";
 
 
 @implementation Settings
@@ -147,6 +148,7 @@ static NSUserDefaults*  userDefaults;
         [dictionary setObject:@(NumberTypeGeographicMask)                        forKey:NumberTypeMaskKey];
         [dictionary setObject:@(0)                                               forKey:ForwardingsSelectionKey];
         [dictionary setObject:@""                                                forKey:CurrencyCodeKey];
+        [dictionary setObject:@(0.0f)                                            forKey:CreditKey];
     });
 
     return dictionary;
@@ -414,6 +416,18 @@ static NSUserDefaults*  userDefaults;
 - (void)setCurrencyCode:(NSString*)currencyCode
 {
     [userDefaults setObject:currencyCode forKey:CurrencyCodeKey];
+}
+
+
+- (float)credit
+{
+    return [userDefaults floatForKey:CreditKey];
+}
+
+
+- (void)setCredit:(float)credit
+{
+    [userDefaults setFloat:credit forKey:CreditKey];
 }
 
 

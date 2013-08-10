@@ -28,6 +28,7 @@
 #import "CreditViewController.h"
 #import "NumberCountriesViewController.h"
 #import "AppDelegate.h"
+#import "CallManager.h"
 
 
 @interface ProvisioningViewController ()
@@ -42,9 +43,7 @@
     PhoneNumber*    verifyPhoneNumber;
     NSString*       verifyNumberButtonTitle;
 
-    BOOL            hasRestoredCredit;
-    BOOL            hasRestoredNumbers;
-    BOOL            failedRestoringCreditAndNumbers;
+    BOOL            isNewUser;
 }
 
 @end
@@ -117,11 +116,11 @@
                                                                   [NSBundle mainBundle],
                                                                   @"Welcome back! Your current credit is %@. ...",
                                                                   @"Welcome text for existing user without telephone numbers.");
-    readyRestoreHasNumberText = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready RestoreNoNumbersText", nil,
+    readyRestoreHasNumberText = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready RestoreHasNumberText", nil,
                                                                   [NSBundle mainBundle],
                                                                   @"Welcome back! Your current credit is %@. ...",
                                                                   @"Welcome text for existing user without telephone numbers.");
-    readyRestoreHasNumbersText = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready RestoreNoNumbersText", nil,
+    readyRestoreHasNumbersText = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready RestoreHasNumbersText", nil,
                                                                    [NSBundle mainBundle],
                                                                    @"Welcome back! Your current credit is %@, with %d numbers...",
                                                                    @"Welcome text for existing user without telephone numbers.");
@@ -189,9 +188,9 @@
             [Common setY:-2      ofView:self.verifyStep3Label];
             [Common setY:28      ofView:self.verifyNumberButton];
             [Common setY:28      ofView:self.verifyCallButton];
-            [Common setY:29      ofView:self.verifyCallActivityIndicator];
+            [Common setY:28      ofView:self.verifyCallActivityIndicator];
             [Common setY:28      ofView:self.verifyCodeLabel];
-            [Common setY:29      ofView:self.verifyCodeActivityIndicator];
+            [Common setY:28      ofView:self.verifyCodeActivityIndicator];
             [Common setHeight:37 ofView:self.verifyNumberButton];
             [Common setHeight:37 ofView:self.verifyCallButton];
             [Common setHeight:37 ofView:self.verifyCodeLabel];
@@ -225,6 +224,7 @@
 
 - (void)showView:(UIView*)toShowView
 {
+    [Common setHeight:self.view.frame.size.height ofView:toShowView];
     if (toShowView != currentView)
     {
         [UIView transitionFromView:currentView
@@ -257,14 +257,39 @@
 {
     [[WebClient sharedClient] retrieveCredit:^(WebClientStatus status, id content)
     {
-        hasRestoredCredit = YES;
         if (status == WebClientStatusOk)
         {
+            [Settings sharedSettings].credit = [[content objectForKey:@"credit"] floatValue];
             [[WebClient sharedClient] retrieveNumbers:^(WebClientStatus status, id content)
             {
-                hasRestoredNumbers = YES;
                 if (status == WebClientStatusOk)
                 {
+                    //### Process & Store numbers array!
+                    NSArray*  numbers = content;
+                    float     credit;
+                    NSString* creditString;
+
+                    credit       = [Settings sharedSettings].credit;
+                    creditString = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
+
+                    if ([PurchaseManager sharedManager].isNewAccount == YES && numbers.count == 0)
+                    {
+                        self.readyTextView.text = [NSString stringWithFormat:readyBuyText, creditString];
+                    }
+                    else if (numbers.count == 0)
+                    {
+                        self.readyTextView.text = [NSString stringWithFormat:readyRestoreNoNumbersText, creditString];
+                    }
+                    else if (numbers.count == 1)
+                    {
+                        self.readyTextView.text = [NSString stringWithFormat:readyRestoreHasNumberText, creditString];
+                    }
+                    else
+                    {
+                        self.readyTextView.text = [NSString stringWithFormat:readyRestoreHasNumbersText, creditString,
+                                                                                                         numbers.count];
+                    }
+
                     if ([Settings sharedSettings].verifiedE164.length == 0)
                     {
                         [self setVerifyStep:1];
@@ -273,12 +298,10 @@
                     else
                     {
                         [self showView:self.readyView];
-                        //###  Set ready text telling about current credit and number of numbers that are available.
                     }
                 }
                 else
                 {
-                    failedRestoringCreditAndNumbers = YES;
                     NSString*   title;
                     NSString*   message;
 
@@ -294,7 +317,11 @@
                                                                 @"[iOS alert message size]");
                     [BlockAlertView showAlertViewWithTitle:title
                                                    message:message
-                                                completion:nil
+                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+                    {
+                        [[Settings sharedSettings] resetAll];
+                        [self dismissViewControllerAnimated:YES completion:nil];
+                    }
                                          cancelButtonTitle:[CommonStrings closeString]
                                          otherButtonTitles:nil];
                 }
@@ -302,7 +329,6 @@
         }
         else
         {
-            failedRestoringCreditAndNumbers = YES;
             NSString*   title;
             NSString*   message;
 
@@ -318,7 +344,11 @@
                                                         @"[iOS alert message size]");
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
-                                        completion:nil
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+            {
+                [[Settings sharedSettings] resetAll];
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
                                  cancelButtonTitle:[CommonStrings closeString]
                                  otherButtonTitles:nil];
         }
@@ -407,7 +437,7 @@
 
     [[PurchaseManager sharedManager] restoreAccount:^(BOOL success, id object)
     {
-        if (success == YES && object != nil)
+        if (success == YES && object != nil)    // Transaction is passed, but we don't need/use that.
         {
             [self setIntroBusy:NO];
 
@@ -460,9 +490,9 @@
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
-             {
-                 [self dismissViewControllerAnimated:YES completion:nil];
-             }
+            {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
                                  cancelButtonTitle:[CommonStrings closeString]
                                  otherButtonTitles:nil];
         }
@@ -561,13 +591,14 @@
                         message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyCodeErrorMessage", nil,
                                                                     [NSBundle mainBundle],
                                                                     @"Failed to get a verification code.\n\n"
-                                                                    @"Please restore your account, and try again, later.",
+                                                                    @"Please restore your account and try again later.",
                                                                     @"Alert message if user wants.\n"
                                                                     @"[iOS alert message size]");
                         [BlockAlertView showAlertViewWithTitle:title
                                                        message:message
                                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
                         {
+                            [[Settings sharedSettings] resetAll];
                             [self dismissViewControllerAnimated:YES completion:nil];
                         }
                                                cancelButtonTitle:[CommonStrings closeString]
@@ -642,6 +673,7 @@
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
             {
+                [[Settings sharedSettings] resetAll];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
                                  cancelButtonTitle:[CommonStrings closeString]
@@ -692,6 +724,9 @@
             if (verified == YES)
             {
                 [Settings sharedSettings].verifiedE164 = verifyPhoneNumber.e164Format;
+
+                [[CallManager sharedManager] resetSipAccount];
+
                 [self showView:self.readyView];
             }
             else if (calling == NO)
@@ -747,6 +782,7 @@
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
              {
+                 [[Settings sharedSettings] resetAll];
                  [self dismissViewControllerAnimated:YES completion:nil];
              }
                                  cancelButtonTitle:[CommonStrings closeString]

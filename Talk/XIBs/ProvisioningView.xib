@@ -245,7 +245,7 @@
 			</object>
 			<object class="IBUIView" id="910172075">
 				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">292</int>
+				<int key="NSvFlags">272</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUINavigationBar" id="164848626">
 						<reference key="NSNextResponder" ref="910172075"/>
@@ -519,28 +519,12 @@
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics">
 					<int key="IBUIStatusBarStyle">2</int>
 				</object>
-				<object class="IBUIScreenMetrics" key="IBUISimulatedDestinationMetrics" id="264918152">
-					<string key="IBUISimulatedSizeMetricsClass">IBUIScreenMetrics</string>
-					<object class="NSMutableDictionary" key="IBUINormalizedOrientationToSizeMap">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<array key="dict.sortedKeys">
-							<integer value="1"/>
-							<integer value="3"/>
-						</array>
-						<array key="dict.values">
-							<string>{320, 568}</string>
-							<string>{568, 320}</string>
-						</array>
-					</object>
-					<string key="IBUITargetRuntime">IBCocoaTouchFramework</string>
-					<string key="IBUIDisplayName">Retina 4 Full Screen</string>
-					<int key="IBUIType">2</int>
-				</object>
+				<reference key="IBUISimulatedDestinationMetrics" ref="616804028"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="513508968">
 				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">292</int>
+				<int key="NSvFlags">272</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUINavigationBar" id="768468946">
 						<reference key="NSNextResponder" ref="513508968"/>
@@ -634,7 +618,7 @@
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<reference key="IBUIBackgroundColor" ref="925265735"/>
 				<reference key="IBUISimulatedStatusBarMetrics" ref="68651841"/>
-				<reference key="IBUISimulatedDestinationMetrics" ref="264918152"/>
+				<reference key="IBUISimulatedDestinationMetrics" ref="616804028"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 		</array>
@@ -687,14 +671,6 @@
 						<reference key="destination" ref="851991011"/>
 					</object>
 					<int key="connectionID">131</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">readyView</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="513508968"/>
-					</object>
-					<int key="connectionID">162</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -855,6 +831,14 @@
 						<reference key="destination" ref="932572091"/>
 					</object>
 					<int key="connectionID">1675</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">readyView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="513508968"/>
+					</object>
+					<int key="connectionID">1676</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -1269,7 +1253,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">1675</int>
+			<int key="maxID">1699</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
