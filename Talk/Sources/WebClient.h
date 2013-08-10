@@ -69,13 +69,13 @@ typedef enum
 - (void)retrieveCredit:(void (^)(WebClientStatus status, id content))reply;
 
 - (void)retrieveVerificationCodeForPhoneNumber:(PhoneNumber*)phoneNumber
-                                         reply:(void (^)(WebClientStatus status, NSString* code, BOOL verified))reply;
+                                         reply:(void (^)(WebClientStatus status, NSString* code))reply;
 
 - (void)requestVerificationCallForPhoneNumber:(PhoneNumber*)phoneNumber
-                                        reply:(void (^)(WebClientStatus status, NSString* code, BOOL verified))reply;
+                                        reply:(void (^)(WebClientStatus status))reply;
 
 - (void)retrieveVerificationStatusForPhoneNumber:(PhoneNumber*)phoneNumber
-                                           reply:(void (^)(WebClientStatus status, NSString* code, BOOL verified))reply;
+                                           reply:(void (^)(WebClientStatus status, BOOL calling, BOOL verified))reply;
 
 - (void)cancelAllRetrieveWebAccount;
 

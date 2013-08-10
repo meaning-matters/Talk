@@ -146,6 +146,8 @@
 
     [self.view addSubview:self.introView];
     currentView = self.introView;
+
+    [self setIntroBusy:YES];    // Will be set to NO when products are loaded.
 }
 
 
@@ -153,7 +155,6 @@
 {
     [super viewDidAppear:animated];
 
-    [self setIntroBusy:YES];
     [[PurchaseManager sharedManager] loadProducts:^(BOOL success)
     {
         if (success == YES)
@@ -188,12 +189,12 @@
             [Common setY:-2      ofView:self.verifyStep3Label];
             [Common setY:28      ofView:self.verifyNumberButton];
             [Common setY:28      ofView:self.verifyCallButton];
-            [Common setY:27      ofView:self.verifyCallActivityIndicator];
+            [Common setY:29      ofView:self.verifyCallActivityIndicator];
             [Common setY:28      ofView:self.verifyCodeLabel];
-            [Common setY:27      ofView:self.verifyCodeActivityIndicator];
-            [Common setHeight:36 ofView:self.verifyNumberButton];
-            [Common setHeight:36 ofView:self.verifyCallButton];
-            [Common setHeight:36 ofView:self.verifyCodeLabel];
+            [Common setY:29      ofView:self.verifyCodeActivityIndicator];
+            [Common setHeight:37 ofView:self.verifyNumberButton];
+            [Common setHeight:37 ofView:self.verifyCallButton];
+            [Common setHeight:37 ofView:self.verifyCodeLabel];
             break;
 
         case 548:   // 320x568 screen.
@@ -209,12 +210,12 @@
             [Common setY:0       ofView:self.verifyStep3Label];
             [Common setY:37      ofView:self.verifyNumberButton];
             [Common setY:37      ofView:self.verifyCallButton];
-            [Common setY:36      ofView:self.verifyCallActivityIndicator];
+            [Common setY:39      ofView:self.verifyCallActivityIndicator];
             [Common setY:37      ofView:self.verifyCodeLabel];
-            [Common setY:36      ofView:self.verifyCodeActivityIndicator];
-            [Common setHeight:40 ofView:self.verifyNumberButton];
-            [Common setHeight:40 ofView:self.verifyCallButton];
-            [Common setHeight:40 ofView:self.verifyCodeLabel];
+            [Common setY:39      ofView:self.verifyCodeActivityIndicator];
+            [Common setHeight:41 ofView:self.verifyNumberButton];
+            [Common setHeight:41 ofView:self.verifyCallButton];
+            [Common setHeight:41 ofView:self.verifyCodeLabel];
             break;
     }
 }
@@ -540,7 +541,7 @@
                 [self.verifyCodeActivityIndicator startAnimating];
                 WebClient* webClient = [WebClient sharedClient];
                 [webClient retrieveVerificationCodeForPhoneNumber:phoneNumber
-                                                           reply:^(WebClientStatus status, NSString* code, BOOL verified)
+                                                           reply:^(WebClientStatus status, NSString* code)
                 {
                     [self.verifyCodeActivityIndicator stopAnimating];
                     if (status == WebClientStatusOk)
@@ -553,20 +554,22 @@
                         NSString*   title;
                         NSString*   message;
         
-                        title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyErrorTitle", nil,
+                        title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyCodeErrorTitle", nil,
                                                                     [NSBundle mainBundle], @"Couldn't Get Code",
                                                                     @"Something went wrong.\n"
                                                                     @"[iOS alert title size].");
-                        message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyCancelMessage", nil,
+                        message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyCodeErrorMessage", nil,
                                                                     [NSBundle mainBundle],
-                                                                    @"",
-                                                                    @"Alert message if user wants to cancel.\n"
+                                                                    @"Failed to get a verification code.\n\n"
+                                                                    @"Please restore your account, and try again, later.",
+                                                                    @"Alert message if user wants.\n"
                                                                     @"[iOS alert message size]");
                         [BlockAlertView showAlertViewWithTitle:title
                                                        message:message
                                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
-                         {
-                         }
+                        {
+                            [self dismissViewControllerAnimated:YES completion:nil];
+                        }
                                                cancelButtonTitle:[CommonStrings closeString]
                                                otherButtonTitles:nil];
                     }
@@ -608,11 +611,16 @@
 
     // Initiate call.
     [webClient requestVerificationCallForPhoneNumber:verifyPhoneNumber
-                                               reply:^(WebClientStatus status, NSString* code, BOOL verified)
+                                               reply:^(WebClientStatus status)
     {
         if (status == WebClientStatusOk)
         {
-            [self checkVerifyStatusWithRepeatCount:10];
+            dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
+            dispatch_after(when, dispatch_get_main_queue(), ^(void)
+            {
+                [self checkVerifyStatusWithRepeatCount:20];
+            });
+
             [self setVerifyStep:3];
         }
         else
@@ -626,14 +634,15 @@
                                                         @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"Provisioning CallFailedMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"Calling you, to enter the verification code, failed.",
+                                                        @"Calling you, to enter the verification code, failed.\n\n"
+                                                        @"Please restore your account, and try again, later.",
                                                         @"Alert message that calling the user failed.\n"
                                                         @"[iOS alert message size]");
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
             {
-                
+                [self dismissViewControllerAnimated:YES completion:nil];
             }
                                  cancelButtonTitle:[CommonStrings closeString]
                                  otherButtonTitles:nil];
@@ -648,13 +657,35 @@
 
     if (--count == 0)
     {
-        [self setVerifyStep:1];
-        
+        NSString*   title;
+        NSString*   message;
+
+        //### This is a duplicate of the alert below.
+        title   = NSLocalizedStringWithDefaultValue(@"Provisioning NotVerifiedTitle", nil,
+                                                    [NSBundle mainBundle], @"Number Not Verified",
+                                                    @"The user's phone number was not verified.\n"
+                                                    @"[iOS alert title size].");
+        message = NSLocalizedStringWithDefaultValue(@"Provisioning NotVerifiedMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"Your number has not been verified.\n\n"
+                                                    @"Make sure the phone number is correct, and that you "
+                                                    @"entered the correct code.",
+                                                    @"Alert message verifying the user's number failed.\n"
+                                                    @"[iOS alert message size]");
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+         {
+             [self setVerifyStep:2];
+         }
+                             cancelButtonTitle:[CommonStrings closeString]
+                             otherButtonTitles:nil];
+
         return;
     }
 
     [webClient retrieveVerificationStatusForPhoneNumber:verifyPhoneNumber
-                                                  reply:^(WebClientStatus status, NSString* code, BOOL verified)
+                                                  reply:^(WebClientStatus status, BOOL calling, BOOL verified)
     {
         if (status == WebClientStatusOk)
         {
@@ -663,18 +694,63 @@
                 [Settings sharedSettings].verifiedE164 = verifyPhoneNumber.e164Format;
                 [self showView:self.readyView];
             }
+            else if (calling == NO)
+            {
+                NSString*   title;
+                NSString*   message;
+
+                title   = NSLocalizedStringWithDefaultValue(@"Provisioning NotVerifiedTitle", nil,
+                                                            [NSBundle mainBundle], @"Number Not Verified",
+                                                            @"The user's phone number was not verified.\n"
+                                                            @"[iOS alert title size].");
+                message = NSLocalizedStringWithDefaultValue(@"Provisioning NotVerifiedMessage", nil,
+                                                            [NSBundle mainBundle],
+                                                            @"Your number has not been verified.\n\n"
+                                                            @"Make sure the phone number is correct, and that you "
+                                                            @"entered the correct code.",
+                                                            @"Alert message verifying the user's number failed.\n"
+                                                            @"[iOS alert message size]");
+                [BlockAlertView showAlertViewWithTitle:title
+                                               message:message
+                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                {
+                    [self setVerifyStep:2];
+                }
+                                     cancelButtonTitle:[CommonStrings closeString]
+                                     otherButtonTitles:nil];
+            }
             else
             {
                 dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
                 dispatch_after(when, dispatch_get_main_queue(), ^
                 {
-                    [self checkVerifyStatusWithRepeatCount:count - 1];
+                    [self checkVerifyStatusWithRepeatCount:count];
                 });
             }
         }
         else
         {
-            NSLog(@"FAIL)");
+            NSString*   title;
+            NSString*   message;
+
+            title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyCheckErrorTitle", nil,
+                                                        [NSBundle mainBundle], @"Verification Check Failed",
+                                                        @"Something went wrong.\n"
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyCheckErrorMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Failed to check if verification is ready.\n\n"
+                                                        @"Please restore your account, and try again, later.",
+                                                        @"Alert message if user wants.\n"
+                                                        @"[iOS alert message size]");
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+             {
+                 [self dismissViewControllerAnimated:YES completion:nil];
+             }
+                                 cancelButtonTitle:[CommonStrings closeString]
+                                 otherButtonTitles:nil];
         }
     }];
 }
