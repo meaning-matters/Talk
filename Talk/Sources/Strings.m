@@ -1,14 +1,16 @@
 //
-//  CommonStrings.m
+//  Strings.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 23/11/12.
 //  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
 //
 
-#import "CommonStrings.h"
+#import "Strings.h"
 
-@implementation CommonStrings
+@implementation Strings
+
+#pragma mark - Common
 
 + (NSString*)cancelString
 {
@@ -144,5 +146,7 @@
                                              @"Standard string for on button to initiate a phone call\n"
                                              @"[No size contraint, use iOS naming].");
 }
+
+
 
 @end

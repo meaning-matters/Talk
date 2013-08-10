@@ -11,7 +11,7 @@
 #import "NumberAreaZipsViewController.h"
 #import "NumberAreaCitiesViewController.h"
 #import "BuyNumberViewController.h"
-#import "CommonStrings.h"
+#import "Strings.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
 #import "Common.h"
@@ -145,7 +145,7 @@ static const int    CountryCellTag   = 4321;
 
     if (requireInfo)
     {
-        self.navigationItem.title = [CommonStrings loadingString];
+        self.navigationItem.title = [Strings loadingString];
         [self loadData];
     }
     else
@@ -232,7 +232,7 @@ static const int    CountryCellTag   = 4321;
             {
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
-                                 cancelButtonTitle:[CommonStrings cancelString]
+                                 cancelButtonTitle:[Strings cancelString]
                                  otherButtonTitles:nil];
         }
         else
@@ -255,7 +255,7 @@ static const int    CountryCellTag   = 4321;
             {
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
-                                 cancelButtonTitle:[CommonStrings cancelString]
+                                 cancelButtonTitle:[Strings cancelString]
                                  otherButtonTitles:nil];
         }
     }];
@@ -487,7 +487,7 @@ static const int    CountryCellTag   = 4321;
             break;
 
         case TableSectionNaming:
-            title = [CommonStrings nameFooterString];
+            title = [Strings nameFooterString];
             break;
 
         case TableSectionName:
@@ -638,7 +638,7 @@ static const int    CountryCellTag   = 4321;
                     {
                         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                     }
-                                         cancelButtonTitle:[CommonStrings closeString]
+                                         cancelButtonTitle:[Strings closeString]
                                          otherButtonTitles:nil];
                 }
                 break;
@@ -756,8 +756,8 @@ static const int    CountryCellTag   = 4321;
         textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
     }
 
-    cell.textLabel.text   = [CommonStrings nameString];
-    textField.placeholder = [CommonStrings requiredString];
+    cell.textLabel.text   = [Strings nameString];
+    textField.placeholder = [Strings requiredString];
     textField.text        = purchaseInfo[@"name"];
     objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"name", OBJC_ASSOCIATION_RETAIN);
 
@@ -804,7 +804,7 @@ static const int    CountryCellTag   = 4321;
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:FirstName Label", nil,
                                                                     [NSBundle mainBundle], @"Firstname",
                                                                     @"....");
-            textField.placeholder = [CommonStrings requiredString];
+            textField.placeholder = [Strings requiredString];
             textField.text = purchaseInfo[@"firstName"];
             objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"firstName", OBJC_ASSOCIATION_RETAIN);
             break;
@@ -813,7 +813,7 @@ static const int    CountryCellTag   = 4321;
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:LastName Label", nil,
                                                                     [NSBundle mainBundle], @"Lastname",
                                                                     @"....");
-            textField.placeholder = [CommonStrings requiredString];
+            textField.placeholder = [Strings requiredString];
             textField.text = purchaseInfo[@"lastName"];
             objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"lastName", OBJC_ASSOCIATION_RETAIN);
             break;
@@ -822,7 +822,7 @@ static const int    CountryCellTag   = 4321;
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Company Label", nil,
                                                                     [NSBundle mainBundle], @"Company",
                                                                     @"....");
-            textField.placeholder = [CommonStrings requiredString];
+            textField.placeholder = [Strings requiredString];
             textField.text = purchaseInfo[@"company"];
             objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"company", OBJC_ASSOCIATION_RETAIN);
             break;
@@ -883,7 +883,7 @@ static const int    CountryCellTag   = 4321;
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Street Label", nil,
                                                                     [NSBundle mainBundle], @"Street",
                                                                     @"....");
-            textField.placeholder = [CommonStrings requiredString];
+            textField.placeholder = [Strings requiredString];
             textField.text = purchaseInfo[@"street"];
             objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"street", OBJC_ASSOCIATION_RETAIN);
             break;
@@ -892,7 +892,7 @@ static const int    CountryCellTag   = 4321;
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Building Label", nil,
                                                                     [NSBundle mainBundle], @"Building",
                                                                     @"....");
-            textField.placeholder = [CommonStrings requiredString];
+            textField.placeholder = [Strings requiredString];
             textField.text = purchaseInfo[@"building"];
             objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"building", OBJC_ASSOCIATION_RETAIN);
             break;
@@ -903,7 +903,7 @@ static const int    CountryCellTag   = 4321;
                                                                     @"Postalcode, Post Code, ...");
             if (citiesArray.count == 0)
             {
-                textField.placeholder = [CommonStrings requiredString];
+                textField.placeholder = [Strings requiredString];
             }
             else
             {
@@ -932,7 +932,7 @@ static const int    CountryCellTag   = 4321;
                                                                     @"....");
             if (citiesArray.count == 0)
             {
-                textField.placeholder = [CommonStrings requiredString];
+                textField.placeholder = [Strings requiredString];
             }
             else
             {

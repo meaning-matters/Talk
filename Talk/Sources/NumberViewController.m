@@ -10,7 +10,7 @@
 #import "Common.h"
 #import "PhoneNumber.h"
 #import "CountryNames.h"
-#import "CommonStrings.h"
+#import "Strings.h"
 
 
 typedef enum
@@ -106,7 +106,7 @@ typedef enum
             break;
 
         case TableSectionRealName:
-            title = [CommonStrings nameString];
+            title = [Strings nameString];
             break;
 
         case TableSectionAddress:

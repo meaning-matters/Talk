@@ -97,8 +97,8 @@
 		48206EFD168DD8D30040B04E /* Tones.m in Sources */ = {isa = PBXBuildFile; fileRef = 48206EFB168DD8D30040B04E /* Tones.m */; };
 		482608EE166A4707007F0844 /* NSTimer+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 482608ED166A4706007F0844 /* NSTimer+Blocks.m */; };
 		482608EF166A4707007F0844 /* NSTimer+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 482608ED166A4706007F0844 /* NSTimer+Blocks.m */; };
-		482A6397165F903900325B3F /* CommonStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A6396165F903900325B3F /* CommonStrings.m */; };
-		482A6398165F903900325B3F /* CommonStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A6396165F903900325B3F /* CommonStrings.m */; };
+		482A6397165F903900325B3F /* Strings.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A6396165F903900325B3F /* Strings.m */; };
+		482A6398165F903900325B3F /* Strings.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A6396165F903900325B3F /* Strings.m */; };
 		482A639D165FA94400325B3F /* CallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A639C165FA94400325B3F /* CallManager.m */; };
 		482A639E165FA94400325B3F /* CallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A639C165FA94400325B3F /* CallManager.m */; };
 		482A63A1165FF73400325B3F /* NumberLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A63A0165FF73400325B3F /* NumberLabel.m */; };
@@ -1202,8 +1202,8 @@
 		48206EFB168DD8D30040B04E /* Tones.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tones.m; sourceTree = "<group>"; };
 		482608EC166A4706007F0844 /* NSTimer+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Blocks.h"; sourceTree = "<group>"; };
 		482608ED166A4706007F0844 /* NSTimer+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Blocks.m"; sourceTree = "<group>"; };
-		482A6395165F903900325B3F /* CommonStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonStrings.h; sourceTree = "<group>"; };
-		482A6396165F903900325B3F /* CommonStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonStrings.m; sourceTree = "<group>"; };
+		482A6395165F903900325B3F /* Strings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Strings.h; sourceTree = "<group>"; };
+		482A6396165F903900325B3F /* Strings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Strings.m; sourceTree = "<group>"; };
 		482A639B165FA94400325B3F /* CallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallManager.h; sourceTree = "<group>"; };
 		482A639C165FA94400325B3F /* CallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallManager.m; sourceTree = "<group>"; };
 		482A639F165FF73400325B3F /* NumberLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberLabel.h; sourceTree = "<group>"; };
@@ -2311,8 +2311,8 @@
 				4837BB65165F726300E46C36 /* BlockAlertView.m */,
 				48FD99E51618CC370061191B /* Common.h */,
 				48FD99E61618CC370061191B /* Common.m */,
-				482A6395165F903900325B3F /* CommonStrings.h */,
-				482A6396165F903900325B3F /* CommonStrings.m */,
+				482A6395165F903900325B3F /* Strings.h */,
+				482A6396165F903900325B3F /* Strings.m */,
 				48EDD2341667729E007B89DA /* KeypadKey.h */,
 				488AD1EF16E80A60004D3A2A /* NSObject+Blocks.h */,
 				488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */,
@@ -4361,7 +4361,7 @@
 				48D0A6F41654D6D700FA2D98 /* main.mm in Sources */,
 				4837BB3C165D701F00E46C36 /* LibPhoneNumber.m in Sources */,
 				4837BB66165F726400E46C36 /* BlockAlertView.m in Sources */,
-				482A6397165F903900325B3F /* CommonStrings.m in Sources */,
+				482A6397165F903900325B3F /* Strings.m in Sources */,
 				482A639D165FA94400325B3F /* CallManager.m in Sources */,
 				482A63A1165FF73400325B3F /* NumberLabel.m in Sources */,
 				4882748E1660E20D00B41EA1 /* DtmfPlayer.m in Sources */,
@@ -4485,7 +4485,7 @@
 				48D0A6F51654D6D700FA2D98 /* main.mm in Sources */,
 				4837BB3D165D701F00E46C36 /* LibPhoneNumber.m in Sources */,
 				4837BB67165F726400E46C36 /* BlockAlertView.m in Sources */,
-				482A6398165F903900325B3F /* CommonStrings.m in Sources */,
+				482A6398165F903900325B3F /* Strings.m in Sources */,
 				482A639E165FA94400325B3F /* CallManager.m in Sources */,
 				482A63A2165FF73400325B3F /* NumberLabel.m in Sources */,
 				4882748F1660E20D00B41EA1 /* DtmfPlayer.m in Sources */,

@@ -11,7 +11,7 @@
 #import "Settings.h"
 #import "NetworkStatus.h"
 #import "CountryNames.h"
-#import "CommonStrings.h"
+#import "Strings.h"
 #import "BlockAlertView.h"
 #import "Common.h"
 
@@ -243,8 +243,8 @@ typedef enum
                             [self.tableView endUpdates];
                         }
                     }
-                                         cancelButtonTitle:[CommonStrings cancelString]
-                                         otherButtonTitles:[CommonStrings okString], nil];
+                                         cancelButtonTitle:[Strings cancelString]
+                                         otherButtonTitles:[Strings okString], nil];
                 }
             }
             break;
@@ -500,8 +500,8 @@ typedef enum
                 [allowDataCallsSwitch setOn:NO animated:YES];
             }
         }
-                             cancelButtonTitle:[CommonStrings cancelString]
-                             otherButtonTitles:[CommonStrings okString], nil];
+                             cancelButtonTitle:[Strings cancelString]
+                             otherButtonTitles:[Strings okString], nil];
     }
     else
     {

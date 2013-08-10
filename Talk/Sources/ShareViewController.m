@@ -9,7 +9,7 @@
 #import <Social/Social.h>
 #import "ShareViewController.h"
 #import "Settings.h"
-#import "CommonStrings.h"
+#import "Strings.h"
 #import "BlockAlertView.h"
 #import "Common.h"
 
@@ -107,7 +107,7 @@
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:nil
-                             cancelButtonTitle:[CommonStrings closeString]
+                             cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
     }
 }
@@ -143,7 +143,7 @@
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:nil
-                             cancelButtonTitle:[CommonStrings closeString]
+                             cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
     }
 }
@@ -177,7 +177,7 @@
          {
              [self dismissViewControllerAnimated:YES completion:nil];
          }
-                             cancelButtonTitle:[CommonStrings closeString]
+                             cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
     }
     else
@@ -212,7 +212,7 @@
         {
             [self dismissViewControllerAnimated:YES completion:nil];
         }
-                             cancelButtonTitle:[CommonStrings closeString]
+                             cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
     }
     else

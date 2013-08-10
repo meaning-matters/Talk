@@ -12,7 +12,7 @@
 #import "CountryNames.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
-#import "CommonStrings.h"
+#import "Strings.h"
 #import "NumberType.h"
 #import "Common.h"
 #import "Settings.h"
@@ -50,7 +50,7 @@
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = [CommonStrings loadingString];
+    self.navigationItem.title = [Strings loadingString];
 
     UIBarButtonItem*    cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
@@ -135,7 +135,7 @@
              {
                  [self dismissViewControllerAnimated:YES completion:nil];
              }
-                                 cancelButtonTitle:[CommonStrings cancelString]
+                                 cancelButtonTitle:[Strings cancelString]
                                  otherButtonTitles:nil];
         }
         else
@@ -158,7 +158,7 @@
             {
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
-                                 cancelButtonTitle:[CommonStrings cancelString]
+                                 cancelButtonTitle:[Strings cancelString]
                                  otherButtonTitles:nil];
         }
     }];

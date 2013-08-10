@@ -11,7 +11,7 @@
 #import "Common.h"
 #import "NSTimer+Blocks.h"
 #import "BlockAlertView.h"
-#import "CommonStrings.h"
+#import "Strings.h"
 
 
 typedef enum
@@ -306,7 +306,7 @@ static const int    TextFieldCellTag = 1111;
         case TableSectionName:
             if (isNew)
             {
-                title = [CommonStrings nameFooterString];
+                title = [Strings nameFooterString];
             }
             break;
 
@@ -365,10 +365,10 @@ static const int    TextFieldCellTag = 1111;
         textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
     }
 
-    textField.placeholder = [CommonStrings requiredString];
+    textField.placeholder = [Strings requiredString];
     textField.text = self.recording.name;//### Must be edited 'name'!
 
-    cell.textLabel.text   = [CommonStrings nameString];
+    cell.textLabel.text   = [Strings nameString];
     cell.imageView.image  = nil;
     cell.accessoryType    = UITableViewCellAccessoryNone;
     cell.selectionStyle   = UITableViewCellSelectionStyleNone;
@@ -472,7 +472,7 @@ static const int    TextFieldCellTag = 1111;
                 [self startRecording];
             }
         }
-                             cancelButtonTitle:[CommonStrings cancelString]
+                             cancelButtonTitle:[Strings cancelString]
                              otherButtonTitles:buttonTitle, nil];
     }
     else
@@ -581,7 +581,7 @@ static const int    TextFieldCellTag = 1111;
 
         [BlockAlertView showAlertViewWithTitle:title message:message
                                     completion:nil
-                             cancelButtonTitle:[CommonStrings closeString]
+                             cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
     }
 

@@ -21,7 +21,7 @@
 #import "ProvisioningViewController.h"
 #import "PurchaseManager.h"
 #import "BlockAlertView.h"
-#import "CommonStrings.h"
+#import "Strings.h"
 #import "Common.h"
 #import "WebClient.h"
 #import "Settings.h"
@@ -322,7 +322,7 @@
                         [[Settings sharedSettings] resetAll];
                         [self dismissViewControllerAnimated:YES completion:nil];
                     }
-                                         cancelButtonTitle:[CommonStrings closeString]
+                                         cancelButtonTitle:[Strings closeString]
                                          otherButtonTitles:nil];
                 }
             }];
@@ -349,7 +349,7 @@
                 [[Settings sharedSettings] resetAll];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
-                                 cancelButtonTitle:[CommonStrings closeString]
+                                 cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
         }
     }];
@@ -423,7 +423,7 @@
             {
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
-                                 cancelButtonTitle:[CommonStrings closeString]
+                                 cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
         }
     }];
@@ -462,7 +462,7 @@
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:nil
-                                 cancelButtonTitle:[CommonStrings closeString]
+                                 cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
             
             [self showView:self.introView];
@@ -493,7 +493,7 @@
             {
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
-                                 cancelButtonTitle:[CommonStrings closeString]
+                                 cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
         }
         else
@@ -531,8 +531,8 @@
             [self dismissViewControllerAnimated:YES completion:nil];
         }
     }
-                         cancelButtonTitle:[CommonStrings noString]
-                         otherButtonTitles:[CommonStrings yesString], nil];
+                         cancelButtonTitle:[Strings noString]
+                         otherButtonTitles:[Strings yesString], nil];
 }
 
 
@@ -601,7 +601,7 @@
                             [[Settings sharedSettings] resetAll];
                             [self dismissViewControllerAnimated:YES completion:nil];
                         }
-                                               cancelButtonTitle:[CommonStrings closeString]
+                                               cancelButtonTitle:[Strings closeString]
                                                otherButtonTitles:nil];
                     }
                 }];
@@ -624,15 +624,15 @@
                 [BlockAlertView showAlertViewWithTitle:title
                                                message:message
                                             completion:nil
-                                     cancelButtonTitle:[CommonStrings closeString]
+                                     cancelButtonTitle:[Strings closeString]
                                      otherButtonTitles:nil];
                 
                 [self.verifyNumberButton setTitle:verifyNumberButtonTitle forState:UIControlStateNormal];
             }
         }
     }
-                                            cancelButtonTitle:[CommonStrings cancelString]
-                                            otherButtonTitles:[CommonStrings okString], nil];
+                                            cancelButtonTitle:[Strings cancelString]
+                                            otherButtonTitles:[Strings okString], nil];
 }
 
 
@@ -676,7 +676,7 @@
                 [[Settings sharedSettings] resetAll];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
-                                 cancelButtonTitle:[CommonStrings closeString]
+                                 cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
         }
     }];
@@ -710,7 +710,7 @@
          {
              [self setVerifyStep:2];
          }
-                             cancelButtonTitle:[CommonStrings closeString]
+                             cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
 
         return;
@@ -751,7 +751,7 @@
                 {
                     [self setVerifyStep:2];
                 }
-                                     cancelButtonTitle:[CommonStrings closeString]
+                                     cancelButtonTitle:[Strings closeString]
                                      otherButtonTitles:nil];
             }
             else
@@ -785,7 +785,7 @@
                  [[Settings sharedSettings] resetAll];
                  [self dismissViewControllerAnimated:YES completion:nil];
              }
-                                 cancelButtonTitle:[CommonStrings closeString]
+                                 cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
         }
     }];

@@ -8,7 +8,7 @@
 
 #import "ForwardingViewController.h"
 #import "Common.h"
-#import "CommonStrings.h"
+#import "Strings.h"
 #import "NumberData.h"
 #import "RecordingData.h"
 #import "PhoneNumber.h"
@@ -208,7 +208,7 @@ static const int    TextFieldCellTag = 1111;
         case TableSectionName:
             if (isNew)
             {
-                title = [CommonStrings nameFooterString];
+                title = [Strings nameFooterString];
             }
             break;
 
@@ -273,10 +273,10 @@ static const int    TextFieldCellTag = 1111;
         nameTextField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
     }
 
-    nameTextField.placeholder = [CommonStrings requiredString];
+    nameTextField.placeholder = [Strings requiredString];
     nameTextField.text        = name;
 
-    cell.textLabel.text  = [CommonStrings nameString];
+    cell.textLabel.text  = [Strings nameString];
     cell.imageView.image = nil;
     cell.accessoryType   = UITableViewCellAccessoryNone;
     cell.selectionStyle  = UITableViewCellSelectionStyleNone;
@@ -301,14 +301,14 @@ static const int    TextFieldCellTag = 1111;
         numberTextField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
     }
 
-    numberTextField.placeholder  = [CommonStrings requiredString];
+    numberTextField.placeholder  = [Strings requiredString];
     numberTextField.text         = phoneNumber.asYouTypeFormat;
     numberTextField.keyboardType = UIKeyboardTypePhonePad;
     [numberTextField addTarget:self
                         action:@selector(textFieldDidChange:)
               forControlEvents:UIControlEventEditingChanged];
 
-    cell.textLabel.text  = [CommonStrings numberString];
+    cell.textLabel.text  = [Strings numberString];
     cell.imageView.image = nil;
     cell.accessoryType   = UITableViewCellAccessoryNone;
     cell.selectionStyle  = UITableViewCellSelectionStyleNone;

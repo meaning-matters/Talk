@@ -1,5 +1,5 @@
 //
-//  CommonStrings.h
+//  Strings.h
 //  Talk
 //
 //  Created by Cornelis van der Bent on 23/11/12.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CommonStrings : NSObject
+@interface Strings : NSObject
 
 + (NSString*)cancelString;
 

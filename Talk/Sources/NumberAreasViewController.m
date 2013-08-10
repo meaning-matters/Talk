@@ -11,7 +11,7 @@
 #import "WebClient.h"
 #import "CountryNames.h"
 #import "BlockAlertView.h"
-#import "CommonStrings.h"
+#import "Strings.h"
 #import "Common.h"
 #import "NumberAreaViewController.h"
 #import "NumberAreasCell.h"
@@ -58,7 +58,7 @@
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = [CommonStrings loadingString];
+    self.navigationItem.title = [Strings loadingString];
 
     [self.tableView registerNib:[UINib nibWithNibName:@"NumberAreasCell" bundle:nil]
          forCellReuseIdentifier:@"NumberAreasCell"];
@@ -212,7 +212,7 @@
         {
             [self.navigationController popViewControllerAnimated:YES];
         }
-                             cancelButtonTitle:[CommonStrings closeString]
+                             cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
     }
 }
@@ -241,7 +241,7 @@
         {
             [self dismissViewControllerAnimated:YES completion:nil];
         }
-                             cancelButtonTitle:[CommonStrings cancelString]
+                             cancelButtonTitle:[Strings cancelString]
                              otherButtonTitles:nil];
     }
     else
@@ -264,7 +264,7 @@
         {
             [self dismissViewControllerAnimated:YES completion:nil];
         }
-                             cancelButtonTitle:[CommonStrings cancelString]
+                             cancelButtonTitle:[Strings cancelString]
                              otherButtonTitles:nil];
     }
 }

@@ -11,7 +11,7 @@
 #import "PurchaseManager.h"
 #import "NetworkStatus.h"
 #import "Common.h"
-#import "CommonStrings.h"
+#import "Strings.h"
 #import "BlockAlertView.h"
 #import "Base64.h"
 #import "WebClient.h"
@@ -232,7 +232,7 @@
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:nil
-                                 cancelButtonTitle:[CommonStrings closeString]
+                                 cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
             
             self.accountCompletion(NO, nil);    // With nil as object, no additional alert will be shown.
@@ -331,7 +331,7 @@
         self.loadCompletion = nil;
         self.productsRequest = nil;
     }
-                         cancelButtonTitle:[CommonStrings closeString]
+                         cancelButtonTitle:[Strings closeString]
                          otherButtonTitles:nil];
 
     NSLog(@"//### Failed to load list of products.");
@@ -658,7 +658,7 @@
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:nil
-                             cancelButtonTitle:[CommonStrings closeString]
+                             cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
 
         return NO;

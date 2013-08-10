@@ -11,7 +11,7 @@
 #import <objc/message.h>
 #import <sys/utsname.h>
 #import "Common.h"
-#import "CommonStrings.h"
+#import "Strings.h"
 #import "BlockAlertView.h"
 #import "Settings.h"
 #import "AppDelegate.h"
@@ -317,7 +317,7 @@
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:nil
-                             cancelButtonTitle:[CommonStrings closeString]
+                             cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
 
         return NO;
@@ -341,7 +341,7 @@
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:nil
-                             cancelButtonTitle:[CommonStrings closeString]
+                             cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
 
         return NO;
@@ -429,7 +429,7 @@
                 completion(YES, phoneNumber);
             }
         }
-                                         cancelButtonTitle:[CommonStrings cancelString]
+                                         cancelButtonTitle:[Strings cancelString]
                                          otherButtonTitles:buttonTitle, nil];
 
         result = NO;

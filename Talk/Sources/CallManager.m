@@ -8,7 +8,7 @@
 
 #import "CallManager.h"
 #import "Common.h"
-#import "CommonStrings.h"
+#import "Strings.h"
 #import "BlockAlertView.h"
 #import "Settings.h"
 #import "NetworkStatus.h"
@@ -307,7 +307,7 @@ static SipInterface*    sipInterface;
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:nil
-                             cancelButtonTitle:[CommonStrings closeString]
+                             cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
 
         result = NO;
@@ -338,8 +338,8 @@ static SipInterface*    sipInterface;
                 [[AppDelegate appDelegate].settingsViewController allowDataCalls];
             }
         }
-                             cancelButtonTitle:[CommonStrings closeString]
-                             otherButtonTitles:[CommonStrings enableString], nil];
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:[Strings enableString], nil];
 
         result = NO;
     }
@@ -363,7 +363,7 @@ static SipInterface*    sipInterface;
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:nil
-                             cancelButtonTitle:[CommonStrings closeString]
+                             cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
         
         result = NO;
@@ -401,8 +401,8 @@ static SipInterface*    sipInterface;
 
         buttonIndex = [BlockAlertView showBlockingAlertViewWithTitle:title
                                                              message:message
-                                                   cancelButtonTitle:[CommonStrings cancelString]
-                                                   otherButtonTitles:[CommonStrings callString], nil];
+                                                   cancelButtonTitle:[Strings cancelString]
+                                                   otherButtonTitles:[Strings callString], nil];
 
         [Settings sharedSettings].warnedAboutDefaultCli = (buttonIndex == 1);
             
@@ -532,7 +532,7 @@ static SipInterface*    sipInterface;
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:nil
-                                 cancelButtonTitle:[CommonStrings closeString]
+                                 cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
 
             return NO;
@@ -558,7 +558,7 @@ static SipInterface*    sipInterface;
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:nil
-                             cancelButtonTitle:[CommonStrings closeString]
+                             cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
 
         return NO;
@@ -579,7 +579,7 @@ static SipInterface*    sipInterface;
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:nil
-                             cancelButtonTitle:[CommonStrings closeString]
+                             cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
 
         return NO;
@@ -703,15 +703,15 @@ static SipInterface*    sipInterface;
                          //### Open Purchases view controller.  See checkPhoneNumber: for example code.
                      }
                  }
-                                     cancelButtonTitle:[CommonStrings cancelString]
-                                     otherButtonTitles:[CommonStrings buyString], nil];
+                                     cancelButtonTitle:[Strings cancelString]
+                                     otherButtonTitles:[Strings buyString], nil];
             }
             else
             {
                 [BlockAlertView showAlertViewWithTitle:title
                                                message:[self callFailedMessage:reason sipStatus:sipStatus]
                                             completion:nil
-                                     cancelButtonTitle:[CommonStrings cancelString]
+                                     cancelButtonTitle:[Strings cancelString]
                                      otherButtonTitles:nil];
             }
         }

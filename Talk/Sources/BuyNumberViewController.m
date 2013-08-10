@@ -8,7 +8,7 @@
 
 #import "BuyNumberViewController.h"
 #import "BuyNumberCell.h"
-#import "CommonStrings.h"
+#import "Strings.h"
 #import "PurchaseManager.h"
 
 
@@ -77,7 +77,7 @@
                                              @"the price (including currency sign).");
     text = [NSString stringWithFormat:text,
             months,
-            (months == 1) ? [CommonStrings monthString] : [CommonStrings monthsString],
+            (months == 1) ? [Strings monthString] : [Strings monthsString],
             priceString];
     
     cell.monthsLabel.text = text;

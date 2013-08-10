@@ -8,7 +8,7 @@
 
 #import "NumberAreaCitiesViewController.h"
 #import "BlockAlertView.h"
-#import "CommonStrings.h"
+#import "Strings.h"
 #import "Common.h"
 
 
@@ -233,8 +233,8 @@
                  [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
              }
          }
-                             cancelButtonTitle:[CommonStrings cancelString]
-                             otherButtonTitles:[CommonStrings okString], nil];
+                             cancelButtonTitle:[Strings cancelString]
+                             otherButtonTitles:[Strings okString], nil];
     }
 }
 
