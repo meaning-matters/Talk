@@ -49,7 +49,8 @@
 {
     [super viewWillAppear:animated];
 
-    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+    BOOL pushed = [self isMovingToParentViewController];
+    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:!pushed];
 }
 
 

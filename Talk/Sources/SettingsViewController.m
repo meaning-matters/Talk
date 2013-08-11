@@ -89,7 +89,8 @@ typedef enum
 {
     [super viewWillAppear:animated];
 
-    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+    BOOL pushed = [self isMovingToParentViewController];
+    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:!pushed];
 
     // When there's no longer a SIM supplying country, reset the homeCountryFromSim settings.
     if ([NetworkStatus sharedStatus].simIsoCountryCode == nil && settings.homeCountryFromSim == YES)
