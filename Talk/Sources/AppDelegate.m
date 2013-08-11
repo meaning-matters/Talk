@@ -188,7 +188,7 @@
                                         NSStringFromClass([DialerViewController      class]),
                                         NSStringFromClass([ForwardingsViewController class]),
                                         NSStringFromClass([CreditViewController      class]),
-                                        NSStringFromClass([HelpViewController        class]),
+                                        NSStringFromClass([HelpsViewController       class]),
                                         NSStringFromClass([AboutViewController       class]),
                                         NSStringFromClass([SettingsViewController    class]),
                                         NSStringFromClass([ShareViewController       class]),

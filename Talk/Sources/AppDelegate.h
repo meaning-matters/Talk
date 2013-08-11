@@ -12,7 +12,7 @@
 #import "DialerViewController.h"
 #import "ForwardingsViewController.h"
 #import "GroupsViewController.h"
-#import "HelpViewController.h"
+#import "HelpsViewController.h"
 #import "NumbersViewController.h"
 #import "RecentsViewController.h"
 #import "ShareViewController.h"
@@ -32,7 +32,7 @@
 @property (nonatomic, strong) DialerViewController*                     dialerViewController;
 @property (nonatomic, strong) ForwardingsViewController*                forwardingsViewController;
 @property (nonatomic, strong) GroupsViewController*                     groupsViewController;
-@property (nonatomic, strong) HelpViewController*                       helpViewController;
+@property (nonatomic, strong) HelpsViewController*                      helpsViewController;
 @property (nonatomic, strong) NumbersViewController*                    numbersViewController;
 @property (nonatomic, strong) RecentsViewController*                    recentsViewController;
 @property (nonatomic, strong) ShareViewController*                      shareViewController;

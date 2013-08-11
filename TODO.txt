@@ -42,3 +42,5 @@
 
 * Maak één grote Strings.m met daarin alle strings. Groepering onder Common, Provisioning, .... en dan functies
   provisioningInvalidNumberTitle:, met als key @"Privisioning:InvalidNumberTitle".
+  
+* Technical error: 3200

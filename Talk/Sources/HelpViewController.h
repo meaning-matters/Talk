@@ -2,13 +2,16 @@
 //  HelpViewController.h
 //  Talk
 //
-//  Created by Cornelis van der Bent on 06/11/12.
-//  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
+//  Created by Cornelis van der Bent on 11/08/13.
+//  Copyright (c) 2013 Cornelis van der Bent. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "ViewController.h"
 
-@interface HelpViewController : ViewController
+@interface HelpViewController : UIViewController
+
+@property (nonatomic, weak) IBOutlet UITextView*    textView;
+
+- (id)initWithDictionary:(NSDictionary*)dictionary;
 
 @end

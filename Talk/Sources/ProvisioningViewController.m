@@ -640,19 +640,20 @@
 {
     WebClient* webClient = [WebClient sharedClient];
 
+    [self setVerifyStep:3];
+
     // Initiate call.
     [webClient requestVerificationCallForPhoneNumber:verifyPhoneNumber
                                                reply:^(WebClientStatus status)
     {
         if (status == WebClientStatusOk)
         {
+            // We get here when the user either answered or declined the call.
             dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
             dispatch_after(when, dispatch_get_main_queue(), ^(void)
             {
-                [self checkVerifyStatusWithRepeatCount:20];
+                [self checkVerifyStatusWithRepeatCount:12];
             });
-
-            [self setVerifyStep:3];
         }
         else
         {
