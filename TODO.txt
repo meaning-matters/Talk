@@ -43,4 +43,6 @@
 * Maak één grote Strings.m met daarin alle strings. Groepering onder Common, Provisioning, .... en dan functies
   provisioningInvalidNumberTitle:, met als key @"Privisioning:InvalidNumberTitle".
   
-* Technical error: 3200
+* Technical error: 32004?
+
+* Change number type order in segment: Geo, nat, free
