@@ -45,6 +45,4 @@
   
 * Technical error: 32004?
 
-* Change number type order in segment: Geo, nat, free
-
 * Add Helps item about audio quality + the nature of internet connections.

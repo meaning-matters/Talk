@@ -12,8 +12,8 @@
 typedef enum
 {
     NumberTypeGeographicMask    = 1UL << 0,
-    NumberTypeTollFreeMask      = 1UL << 1,
-    NumberTypeNationalMask      = 1UL << 2,
+    NumberTypeNationalMask      = 1UL << 1,
+    NumberTypeTollFreeMask      = 1UL << 2,
     NumberTypeInternationalMask = 1UL << 3,
 } NumberTypeMask;
 
@@ -21,6 +21,8 @@ typedef enum
 @interface NumberType : NSObject
 
 + (NSString*)stringForNumberType:(NumberTypeMask)mask;
+
++ (NumberTypeMask)numberTypeForString:(NSString*)string;
 
 + (NSString*)localizedStringForNumberType:(NumberTypeMask)mask;
 

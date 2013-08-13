@@ -94,22 +94,8 @@
                     [allCountriesArray addObject:matchedCountry];
                 }
 
-                if ([newCountry[@"numberType"] isEqualToString:@"GEOGRAPHIC"])
-                {
-                    matchedCountry[@"numberTypes"] = @([matchedCountry[@"numberTypes"] intValue] | NumberTypeGeographicMask);
-                }
-                else if ([newCountry[@"numberType"] isEqualToString:@"TOLLFREE"])
-                {
-                    matchedCountry[@"numberTypes"] = @([matchedCountry[@"numberTypes"] intValue] | NumberTypeTollFreeMask);
-                }
-                else if ([newCountry[@"numberType"] isEqualToString:@"NATIONAL"])
-                {
-                    matchedCountry[@"numberTypes"] = @([matchedCountry[@"numberTypes"] intValue] | NumberTypeNationalMask);
-                }
-                else if ([newCountry[@"numberType"] isEqualToString:@"INTERNATIONAL"])
-                {
-                    matchedCountry[@"numberTypes"] = @([matchedCountry[@"numberTypes"] intValue] | NumberTypeInternationalMask);
-                }
+                NumberTypeMask mask = [NumberType numberTypeForString:newCountry[@"numberType"]];
+                matchedCountry[@"numberTypes"] = @([matchedCountry[@"numberTypes"] intValue] | mask);
             }
 
             [self sortOutArrays];
