@@ -11,7 +11,8 @@
 
 
 @interface NumberAreaViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
-                                                        UITextFieldDelegate, UIGestureRecognizerDelegate>
+                                                        UITextFieldDelegate, UIGestureRecognizerDelegate,
+                                                        UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView*   tableView;
 

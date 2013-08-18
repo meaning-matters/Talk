@@ -11,6 +11,7 @@
 
 @interface NumberAreaActionCell : UITableViewCell
 
-@property (nonatomic, weak) IBOutlet UILabel*   label;
+@property (nonatomic, weak) IBOutlet UILabel*                   label;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView*   activityIndicator;
 
 @end

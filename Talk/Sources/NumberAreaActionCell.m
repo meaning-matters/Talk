@@ -8,16 +8,18 @@
 
 #import "NumberAreaActionCell.h"
 
+
 @implementation NumberAreaActionCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString*)reuseIdentifier
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])
+    {
     }
+
     return self;
 }
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

@@ -19,6 +19,7 @@
 #import "CountryNames.h"
 #import "NumberAreaActionCell.h"
 #import "PurchaseManager.h"
+#import "Base64.h"
 
 
 // Update reloadSections calls when adding/removing sections.
@@ -55,6 +56,7 @@ static const int    CountryCellTag   = 4321;
     NSArray*                citiesArray;
     NSMutableDictionary*    purchaseInfo;
     BOOL                    requireInfo;
+    BOOL                    requireImage;
     BOOL                    isChecked;
     TableSections           sections;
     AreaRows                areaRows;
@@ -75,6 +77,7 @@ static const int    CountryCellTag   = 4321;
     NSIndexPath*            buildingIndexPath;
     NSIndexPath*            zipCodeIndexPath;
     NSIndexPath*            cityIndexPath;
+    NSIndexPath*            actionIndexPath;
 
     NSIndexPath*            nextIndexPath;      // Index-path of cell to show after Next button is tapped.
 
@@ -101,7 +104,8 @@ static const int    CountryCellTag   = 4321;
         area           = theArea;
         numberTypeMask = theNumberTypeMask;
         purchaseInfo   = [NSMutableDictionary dictionary];
-        requireInfo    = [area[@"requireInfo"] boolValue];
+        requireInfo    = [area[@"requireInfo"]  boolValue];
+        requireImage   = [area[@"requireImage"] boolValue];
 
         // Mandatory sections.
         sections |= TableSectionArea;
@@ -109,8 +113,8 @@ static const int    CountryCellTag   = 4321;
         sections |= TableSectionAction;
 
         // Optional Sections.
-        sections |= requireInfo ? TableSectionName    : 0;
-        sections |= requireInfo ? TableSectionAddress : 0;
+        sections |= requireInfo  ? TableSectionName    : 0;
+        sections |= requireInfo  ? TableSectionAddress : 0;
 
         // Always there Area section rows.
         areaRows |= AreaRowType;
@@ -177,6 +181,9 @@ static const int    CountryCellTag   = 4321;
     firstNameTextField.placeholder = [self placeHolderForTextField:firstNameTextField];
     lastNameTextField.placeholder  = [self placeHolderForTextField:lastNameTextField];
     companyTextField.placeholder   = [self placeHolderForTextField:companyTextField];
+
+    NumberAreaActionCell* cell = (NumberAreaActionCell*)[self.tableView cellForRowAtIndexPath:actionIndexPath];
+    cell.label.text            = [self actionCellText];
 
     [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
 }
@@ -516,6 +523,52 @@ static const int    CountryCellTag   = 4321;
 }
 
 
+- (IBAction)takePicture
+
+{
+    UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
+
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        [imagePickerController setSourceType:UIImagePickerControllerSourceTypeCamera];
+    }
+
+    imagePickerController.delegate      = self;
+    imagePickerController.allowsEditing = YES;
+    [self presentViewController:imagePickerController animated:YES completion:nil];
+}
+
+
+- (NSString*)actionCellText
+{
+    NSString* text;
+
+    if (requireImage == YES && purchaseInfo[@"image"] == nil)
+    {
+        text = NSLocalizedStringWithDefaultValue(@"NumberArea:Action TakePictureLabel", nil,
+                                                 [NSBundle mainBundle],
+                                                 @"Take Picture...",
+                                                 @"....");
+    }
+    else if (requireInfo == YES && isChecked == NO)
+    {
+        text = NSLocalizedStringWithDefaultValue(@"NumberArea:Action ValidateLabel", nil,
+                                                 [NSBundle mainBundle],
+                                                 @"Validate",
+                                                 @"....");
+    }
+    else
+    {
+        text = NSLocalizedStringWithDefaultValue(@"NumberArea:Action BuyLabel", nil,
+                                                 [NSBundle mainBundle],
+                                                 @"Buy",
+                                                 @"....");
+    }
+
+    return text;
+}
+
+
 #pragma mark - Table View Delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
@@ -587,7 +640,17 @@ static const int    CountryCellTag   = 4321;
             break;
 
         case TableSectionAction:
-            if (requireInfo == YES && isChecked == NO)
+            if (requireImage == YES && purchaseInfo[@"image"] == nil)
+            {
+                title = NSLocalizedStringWithDefaultValue(@"NumberArea:Action SectionFooterTakePicture", nil,
+                                                          [NSBundle mainBundle],
+                                                          @"For this country a proof of address is required.  Take "
+                                                          @"a picture of a recent utility bill, or bank statement, "
+                                                          @"that has your address.  Make sure a data, your name & "
+                                                          @"address, and the name of the company/bank are visible.",
+                                                          @"Telephone area (or city).");
+            }
+            else if (requireInfo == YES && isChecked == NO)
             {
                 title = NSLocalizedStringWithDefaultValue(@"NumberArea:Action SectionFooterCheck", nil,
                                                           [NSBundle mainBundle],
@@ -677,18 +740,34 @@ static const int    CountryCellTag   = 4321;
                 break;
 
             case TableSectionAction:
-                if ([self isPurchaseInfoComplete] == YES)
+                if (requireImage == YES && purchaseInfo[@"image"] == nil)
+                {
+                    [self takePicture];
+                }
+                else if ([self isPurchaseInfoComplete] == YES)
                 {
                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
                     if (requireInfo == YES && isChecked == NO)
                     {
+                        NumberAreaActionCell* cell;
+                        cell = (NumberAreaActionCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+                        cell.userInteractionEnabled = NO;
+                        cell.label.alpha = 0.5f;
+                        [cell.activityIndicator startAnimating];
+
                         purchaseInfo[@"isoCountryCode"] = country[@"isoCountryCode"];
                         purchaseInfo[@"numberType"]     = area[@"numberType"];
                         purchaseInfo[@"areaCode"]       = area[@"areaCode"];
                         [[WebClient sharedClient] checkPurchaseInfo:purchaseInfo
                                                               reply:^(WebClientStatus status, id content)
                         {
+                            NumberAreaActionCell* cell;
+                            cell = (NumberAreaActionCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+                            cell.userInteractionEnabled = YES;
+                            cell.label.alpha = 1.0f;
+                            [cell.activityIndicator stopAnimating];
+
                             if (status == WebClientStatusOk)
                             {
                                 isChecked = YES;
@@ -697,9 +776,55 @@ static const int    CountryCellTag   = 4321;
                                               withRowAnimation:UITableViewRowAnimationFade];
                                 [self.tableView endUpdates];
                             }
+                            else if (status == WebClientStatusFailNetworkProblem)
+                            {
+                                NSString* title;
+                                NSString* message;
+
+                                title   = NSLocalizedStringWithDefaultValue(@"NumberArea CouldNotValidateAlertTitle", nil,
+                                                                            [NSBundle mainBundle], @"Could Not Validate",
+                                                                            @"Alert title telling that there's a "
+                                                                            @"problem with internet connection.\n"
+                                                                            @"[iOS alert title size].");
+                                message = NSLocalizedStringWithDefaultValue(@"NumberArea CouldNotValidateAlertMessage", nil,
+                                                                            [NSBundle mainBundle],
+                                                                            @"There seems to be a problem with the "
+                                                                            @"internet connection.\n\nPlease try again "
+                                                                            @"later.",
+                                                                            @"Alert message telling that there's a "
+                                                                            @"problem with internet connection.\n"
+                                                                            @"[iOS alert message size]");
+                                [BlockAlertView showAlertViewWithTitle:title
+                                                               message:message
+                                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                                 {
+                                     [self dismissViewControllerAnimated:YES completion:nil];
+                                 }
+                                                     cancelButtonTitle:[Strings closeString]
+                                                     otherButtonTitles:nil];
+                            }
                             else
                             {
-                                // differentiate between network error, and not validated.
+                                NSString* title;
+                                NSString* message;
+
+                                title   = NSLocalizedStringWithDefaultValue(@"NumberArea ValidationFailedAlertTitle", nil,
+                                                                            [NSBundle mainBundle], @"Validation Failed",
+                                                                            @"Alert title telling that validating "
+                                                                            @"name & address of user failed.\n"
+                                                                            @"[iOS alert title size].");
+                                message = NSLocalizedStringWithDefaultValue(@"NumberArea ValidationFailedAlertMessage", nil,
+                                                                            [NSBundle mainBundle],
+                                                                            @"Validating your name and address failed (%d).",
+                                                                            @"Alert message telling that validating "
+                                                                            @"name & address of user failed.\n"
+                                                                            @"[iOS alert message size]");
+                                message = [NSString stringWithFormat:message, status];
+                                [BlockAlertView showAlertViewWithTitle:title
+                                                               message:message
+                                                            completion:nil
+                                                     cancelButtonTitle:[Strings closeString]
+                                                     otherButtonTitles:nil];
                             }
                         }];
                     }
@@ -1067,7 +1192,6 @@ static const int    CountryCellTag   = 4321;
 - (UITableViewCell*)actionCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     NumberAreaActionCell*   cell;
-    NSString*               text;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumberAreaActionCell"];
     if (cell == nil)
@@ -1076,22 +1200,9 @@ static const int    CountryCellTag   = 4321;
                                            reuseIdentifier:@"NumberAreaActionCell"];
     }
 
-    if (requireInfo == YES && isChecked == NO)
-    {
-        text = NSLocalizedStringWithDefaultValue(@"NumberArea:Action CheckInfoLabel", nil,
-                                                 [NSBundle mainBundle],
-                                                 @"Validate",
-                                                 @"....");
-    }
-    else
-    {
-        text = NSLocalizedStringWithDefaultValue(@"NumberArea:Action CheckInfoLabel", nil,
-                                                 [NSBundle mainBundle],
-                                                 @"Buy",
-                                                 @"....");
-    }
+    cell.label.text = [self actionCellText];
 
-    cell.label.text = text;
+    actionIndexPath = indexPath;
 
     return cell;
 }
@@ -1331,5 +1442,25 @@ static const int    CountryCellTag   = 4321;
                               scrollPosition:UITableViewScrollPositionNone];
     }
 }
+
+
+#pragma mark - Image Picker Delegate
+
+- (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary*)info
+{
+    UIImage* image = [info objectForKey:UIImagePickerControllerEditedImage];
+    NSData*  data  = UIImageJPEGRepresentation(image, 0.5);
+
+    purchaseInfo[@"image"] = [Base64 encode:data];
+
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController*)picker
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 @end
