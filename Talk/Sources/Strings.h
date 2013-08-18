@@ -32,6 +32,8 @@
 
 + (NSString*)requiredString;
 
++ (NSString*)optionalString;
+
 + (NSString*)numberString;
 
 + (NSString*)monthString;
@@ -39,5 +41,11 @@
 + (NSString*)monthsString;
 
 + (NSString*)callString;
+
++ (NSString*)msString;
+
++ (NSString*)mrString;
+
++ (NSString*)companyString;
 
 @end

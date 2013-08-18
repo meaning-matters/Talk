@@ -301,7 +301,7 @@ static NSDictionary* statuses;
 }
 
 
-// 11a. PURCHASE NUMBER
+// 11A. PURCHASE NUMBER
 - (void)purchaseNumber:(NSDictionary*)parameters
                  reply:(void (^)(WebClientStatus status, id content))reply
 {
@@ -311,7 +311,7 @@ static NSDictionary* statuses;
 }
 
 
-// 11b. UPDATE NUMBER'S NAME
+// 11B. UPDATE NUMBER'S NAME
 // ...
 
 

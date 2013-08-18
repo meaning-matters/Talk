@@ -112,6 +112,15 @@
 }
 
 
++ (NSString*)optionalString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Optional", nil,
+                                             [NSBundle mainBundle], @"Optional",
+                                             @"Standard placeholder text in textfield, telling filling in is optional\n"
+                                             @"[iOS standard size].");
+}
+
+
 + (NSString*)numberString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Number", nil,
@@ -148,5 +157,30 @@
 }
 
 
++ (NSString*)msString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Miss", nil,
+                                             [NSBundle mainBundle], @"Ms.",
+                                             @"Title for woman (miss), both married or not married.\n"
+                                             @"[One line].");
+}
+
+
++ (NSString*)mrString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Mister", nil,
+                                             [NSBundle mainBundle], @"Mr.",
+                                             @"Title for man (mister), both married or not married.\n"
+                                             @"[One line].");
+}
+
+
++ (NSString*)companyString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Company", nil,
+                                             [NSBundle mainBundle], @"Company",
+                                             @"Title indicating a company (opposed to personal Mr. or Ms.).\n"
+                                             @"[One line].");
+}
 
 @end

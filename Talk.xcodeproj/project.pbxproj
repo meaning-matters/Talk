@@ -293,6 +293,8 @@
 		485E38A117B7E13C0089F0F1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E389F17B7E13B0089F0F1 /* HelpViewController.m */; };
 		485E38A317B7E1960089F0F1 /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485E38A217B7E1960089F0F1 /* HelpView.xib */; };
 		485E38A417B7E1960089F0F1 /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485E38A217B7E1960089F0F1 /* HelpView.xib */; };
+		485E38A717C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E38A617C0B7F00089F0F1 /* NumberAreaTitlesViewController.m */; };
+		485E38A817C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E38A617C0B7F00089F0F1 /* NumberAreaTitlesViewController.m */; };
 		485ECBCC1651642D00364F08 /* CountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBCB1651642D00364F08 /* CountriesView.xib */; };
 		485ECBCD1651642D00364F08 /* CountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBCB1651642D00364F08 /* CountriesView.xib */; };
 		485ECBD01651646700364F08 /* CountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485ECBCF1651646700364F08 /* CountriesViewController.m */; };
@@ -1339,6 +1341,8 @@
 		485E389E17B7E1390089F0F1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
 		485E389F17B7E13B0089F0F1 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
 		485E38A217B7E1960089F0F1 /* HelpView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HelpView.xib; sourceTree = "<group>"; };
+		485E38A517C0B7EE0089F0F1 /* NumberAreaTitlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaTitlesViewController.h; sourceTree = "<group>"; };
+		485E38A617C0B7F00089F0F1 /* NumberAreaTitlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaTitlesViewController.m; sourceTree = "<group>"; };
 		485ECBCB1651642D00364F08 /* CountriesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CountriesView.xib; sourceTree = "<group>"; };
 		485ECBCE1651646700364F08 /* CountriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountriesViewController.h; sourceTree = "<group>"; };
 		485ECBCF1651646700364F08 /* CountriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountriesViewController.m; sourceTree = "<group>"; };
@@ -3308,6 +3312,8 @@
 				4849432E1752263600E1D5C4 /* LicensesViewController.m */,
 				484D936A1712FBA1006FA875 /* NumberAreaCitiesViewController.h */,
 				484D936B1712FBA1006FA875 /* NumberAreaCitiesViewController.m */,
+				485E38A517C0B7EE0089F0F1 /* NumberAreaTitlesViewController.h */,
+				485E38A617C0B7F00089F0F1 /* NumberAreaTitlesViewController.m */,
 				4830462216EE269D000F9B05 /* NumberAreaViewController.h */,
 				4830462316EE269D000F9B05 /* NumberAreaViewController.m */,
 				4896D8FE16EBE612008A2354 /* NumberAreasViewController.h */,
@@ -4471,6 +4477,7 @@
 				4877EDB817AB7ADF0013B18F /* NBRecentCallCell.m in Sources */,
 				4877EDBC17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */,
 				485E38A017B7E13C0089F0F1 /* HelpViewController.m in Sources */,
+				485E38A717C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4596,6 +4603,7 @@
 				4877EDB917AB7ADF0013B18F /* NBRecentCallCell.m in Sources */,
 				4877EDBD17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */,
 				485E38A117B7E13C0089F0F1 /* HelpViewController.m in Sources */,
+				485E38A817C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
