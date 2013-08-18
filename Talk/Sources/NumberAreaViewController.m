@@ -307,16 +307,15 @@ static const int    CountryCellTag   = 4321;
     if (requireInfo)
     {
         emptyMask |= ([purchaseInfo[@"name"]       length] == 0) << 0;
-        emptyMask |= ([purchaseInfo[@"salutation"] length] == 0) << 1;
-        emptyMask |= ([purchaseInfo[@"firstName"]  length] == 0) << 2;
-        emptyMask |= ([purchaseInfo[@"lastName"]   length] == 0) << 3;
-        emptyMask |= ([purchaseInfo[@"company"]    length] == 0) << 4;
-        emptyMask |= ([purchaseInfo[@"street"]     length] == 0) << 5;
-        emptyMask |= ([purchaseInfo[@"building"]   length] == 0) << 6;
+        emptyMask |= ([purchaseInfo[@"firstName"]  length] == 0) << 1;
+        emptyMask |= ([purchaseInfo[@"lastName"]   length] == 0) << 2;
+        emptyMask |= ([purchaseInfo[@"company"]    length] == 0) << 3;
+        emptyMask |= ([purchaseInfo[@"street"]     length] == 0) << 4;
+        emptyMask |= ([purchaseInfo[@"building"]   length] == 0) << 5;
         if (citiesArray.count == 0)
         {
-            emptyMask |= ([purchaseInfo[@"zipCode"]    length] == 0) << 7;
-            emptyMask |= ([purchaseInfo[@"city"]       length] == 0) << 8;
+            emptyMask |= ([purchaseInfo[@"zipCode"]    length] == 0) << 6;
+            emptyMask |= ([purchaseInfo[@"city"]       length] == 0) << 7;
         }
     }
     else
@@ -327,14 +326,13 @@ static const int    CountryCellTag   = 4321;
     if (emptyMask != 0)
     {
         currentBit |= [currentKey isEqualToString:@"name"]       << 0;
-        currentBit |= [currentKey isEqualToString:@"salutation"] << 1;
-        currentBit |= [currentKey isEqualToString:@"firstName"]  << 2;
-        currentBit |= [currentKey isEqualToString:@"lastName"]   << 3;
-        currentBit |= [currentKey isEqualToString:@"company"]    << 4;
-        currentBit |= [currentKey isEqualToString:@"street"]     << 5;
-        currentBit |= [currentKey isEqualToString:@"building"]   << 6;
-        currentBit |= [currentKey isEqualToString:@"zipCode"]    << 7;
-        currentBit |= [currentKey isEqualToString:@"city"]       << 8;
+        currentBit |= [currentKey isEqualToString:@"firstName"]  << 1;
+        currentBit |= [currentKey isEqualToString:@"lastName"]   << 2;
+        currentBit |= [currentKey isEqualToString:@"company"]    << 3;
+        currentBit |= [currentKey isEqualToString:@"street"]     << 4;
+        currentBit |= [currentKey isEqualToString:@"building"]   << 5;
+        currentBit |= [currentKey isEqualToString:@"zipCode"]    << 6;
+        currentBit |= [currentKey isEqualToString:@"city"]       << 7;
 
         // Find next bit set in emptyMask.
         unsigned    nextBit = currentBit << 1;
@@ -355,14 +353,13 @@ static const int    CountryCellTag   = 4321;
 
         NSIndexPath*    indexPath = nil;
         indexPath = (nextBit == (1 << 0)) ? nameIndexPath       : indexPath;
-        indexPath = (nextBit == (1 << 1)) ? salutationIndexPath : indexPath;
-        indexPath = (nextBit == (1 << 2)) ? firstNameIndexPath  : indexPath;
-        indexPath = (nextBit == (1 << 3)) ? lastNameIndexPath   : indexPath;
-        indexPath = (nextBit == (1 << 4)) ? companyIndexPath    : indexPath;
-        indexPath = (nextBit == (1 << 5)) ? streetIndexPath     : indexPath;
-        indexPath = (nextBit == (1 << 6)) ? buildingIndexPath   : indexPath;
-        indexPath = (nextBit == (1 << 7)) ? zipCodeIndexPath    : indexPath;
-        indexPath = (nextBit == (1 << 8)) ? cityIndexPath       : indexPath;
+        indexPath = (nextBit == (1 << 1)) ? firstNameIndexPath  : indexPath;
+        indexPath = (nextBit == (1 << 2)) ? lastNameIndexPath   : indexPath;
+        indexPath = (nextBit == (1 << 3)) ? companyIndexPath    : indexPath;
+        indexPath = (nextBit == (1 << 4)) ? streetIndexPath     : indexPath;
+        indexPath = (nextBit == (1 << 5)) ? buildingIndexPath   : indexPath;
+        indexPath = (nextBit == (1 << 6)) ? zipCodeIndexPath    : indexPath;
+        indexPath = (nextBit == (1 << 7)) ? cityIndexPath       : indexPath;
         
         return indexPath;
     }
