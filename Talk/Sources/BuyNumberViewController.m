@@ -10,6 +10,7 @@
 #import "BuyNumberCell.h"
 #import "Strings.h"
 #import "PurchaseManager.h"
+#import "Common.h"
 
 
 @interface BuyNumberViewController ()
@@ -80,7 +81,7 @@
                                              @"the price (including currency sign).");
     text = [NSString stringWithFormat:text,
             months,
-            (months == 1) ? [Strings monthString] : [Strings monthsString],
+            [Common capitalizedString:(months == 1) ? [Strings monthString] : [Strings monthsString]],
             priceString];
     
     cell.monthsLabel.text = text;
@@ -94,7 +95,7 @@
     else
     {
         text = NSLocalizedStringWithDefaultValue(@"BuyNumber:... SetupFeeLabel", nil, [NSBundle mainBundle],
-                                                 @"Setup fee %@",
+                                                 @"plus a setup fee of %@",
                                                  @"[One line]");
     }
 

@@ -162,6 +162,30 @@ static const int    CountryCellTag   = 4321;
         areaRows |= (numberTypeMask == NumberTypeGeographicMask && !allCities) ? AreaRowAreaName : 0;
         areaRows |= (state != nil) ?                                             AreaRowState    : 0;
 
+        // Default naming.
+        NSString* city;
+        NSString* isoCountryCode = country[@"isoCountryCode"];
+        NSString* countryName    = [[CountryNames sharedNames] nameForIsoCountryCode:isoCountryCode];
+        switch (numberTypeMask)
+        {
+            case NumberTypeGeographicMask:
+                city = [Common capitalizedString:area[@"city"]];
+                purchaseInfo[@"name"] = [NSString stringWithFormat:@"%@ (%@)", city, isoCountryCode];
+                break;
+                
+            case NumberTypeNationalMask:
+                purchaseInfo[@"name"] = [NSString stringWithFormat:@"%@ (paid)", countryName];
+                break;
+
+            case NumberTypeTollFreeMask:
+                purchaseInfo[@"name"] = [NSString stringWithFormat:@"%@ (free)", countryName];
+                break;
+
+            case NumberTypeInternationalMask:
+                purchaseInfo[@"name"] = [NSString stringWithFormat:@"International (%@)", area[@"areaCode"]];
+                break;
+        }
+
         [self initializeIndexPaths];
    }
 
@@ -465,7 +489,7 @@ static const int    CountryCellTag   = 4321;
     cityIndexPath       = [NSIndexPath indexPathForItem:3 inSection:3];
     countryIndexPath    = [NSIndexPath indexPathForItem:4 inSection:3];
     actionIndexPath     = [NSIndexPath indexPathForItem:0 inSection:4];
- }
+}
 
 
 - (void)addCountryImageToCell:(UITableViewCell*)cell isoCountryCode:(NSString*)isoCountryCode
