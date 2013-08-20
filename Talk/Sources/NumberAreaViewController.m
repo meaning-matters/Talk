@@ -1152,7 +1152,14 @@ static const int    CountryCellTag   = 4321;
     UITextField*        textField;
     BOOL                singleZipCode = NO;
     BOOL                singleCity    = NO;
-    NSString*           identifier    = indexPath.row == 4 ? @"CountryTextFieldCell" : @"TextFieldCell";
+    NSString*           identifier;
+
+    switch (indexPath.row)
+    {
+        case 1:  identifier = @"BuildingCell";         break;
+        case 4:  identifier = @"CountryTextFieldCell"; break;
+        default: identifier = @"TextFieldCell";        break;
+    }
 
     if (citiesArray.count == 1)
     {
@@ -1203,6 +1210,7 @@ static const int    CountryCellTag   = 4321;
                                                                     @"....");
             textField.placeholder = [Strings requiredString];
             textField.text = purchaseInfo[@"building"];
+            textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
             objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"building", OBJC_ASSOCIATION_RETAIN);
             break;
 
