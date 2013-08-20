@@ -12,6 +12,7 @@
 #import "NumberAreaCitiesViewController.h"
 #import "NumberAreaTitlesViewController.h"
 #import "BuyNumberViewController.h"
+#import "CountriesViewController.h"
 #import "Strings.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
@@ -41,6 +42,14 @@ typedef enum
     AreaRowCountry  = 1UL << 4,
 } AreaRows;
 
+typedef enum
+{
+    InfoTypeNone,
+    InfoTypeLocal,
+    InfoTypeNational,
+    InfoTypeWorldwide,
+} InfoType;
+
 
 static const int    TextFieldCellTag = 1234;
 static const int    CountryCellTag   = 4321;
@@ -55,8 +64,8 @@ static const int    CountryCellTag   = 4321;
 
     NSArray*                citiesArray;
     NSMutableDictionary*    purchaseInfo;
-    BOOL                    requireInfo;
-    BOOL                    requireImage;
+    InfoType                infoType;
+    BOOL                    requireProof;
     BOOL                    isChecked;
     TableSections           sections;
     AreaRows                areaRows;
@@ -67,6 +76,7 @@ static const int    CountryCellTag   = 4321;
     UITextField*            companyTextField;
     UITextField*            zipCodeTextField;
     UITextField*            cityTextField;
+    UITextField*            countryTextField;
 
     NSIndexPath*            nameIndexPath;
     NSIndexPath*            salutationIndexPath;
@@ -77,6 +87,7 @@ static const int    CountryCellTag   = 4321;
     NSIndexPath*            buildingIndexPath;
     NSIndexPath*            zipCodeIndexPath;
     NSIndexPath*            cityIndexPath;
+    NSIndexPath*            countryIndexPath;
     NSIndexPath*            actionIndexPath;
 
     NSIndexPath*            nextIndexPath;      // Index-path of cell to show after Next button is tapped.
@@ -104,8 +115,33 @@ static const int    CountryCellTag   = 4321;
         area           = theArea;
         numberTypeMask = theNumberTypeMask;
         purchaseInfo   = [NSMutableDictionary dictionary];
-        requireInfo    = [area[@"requireInfo"]  boolValue];
-        requireImage   = [area[@"requireImage"] boolValue];
+        requireProof   = [area[@"requireProof"] boolValue];
+
+        if ([area[@"infoType"] isEqualToString:@"NONE"])
+        {
+            infoType = InfoTypeNone;
+        }
+        else if ([area[@"infoType"] isEqualToString:@"LOCAL"])
+        {
+            infoType = InfoTypeLocal;
+        }
+        else if ([area[@"infoType"] isEqualToString:@"NATIONAL"])
+        {
+            infoType = InfoTypeNational;
+        }
+        else if ([area[@"infoType"] isEqualToString:@"WORLDWIDE"])
+        {
+            infoType = InfoTypeWorldwide;
+        }
+        else
+        {
+            infoType = InfoTypeNone;
+        }
+
+        if (infoType == InfoTypeLocal || infoType == InfoTypeNational)
+        {
+            purchaseInfo[@"isoCountryCode"] = country[@"isoCountryCode"];
+        }
 
         // Mandatory sections.
         sections |= TableSectionArea;
@@ -113,8 +149,8 @@ static const int    CountryCellTag   = 4321;
         sections |= TableSectionAction;
 
         // Optional Sections.
-        sections |= requireInfo  ? TableSectionName    : 0;
-        sections |= requireInfo  ? TableSectionAddress : 0;
+        sections |= (infoType == InfoTypeNone) ? 0 : TableSectionName;
+        sections |= (infoType == InfoTypeNone) ? 0 : TableSectionAddress;
 
         // Always there Area section rows.
         areaRows |= AreaRowType;
@@ -128,7 +164,7 @@ static const int    CountryCellTag   = 4321;
 
         [self initializeIndexPaths];
    }
-    
+
     return self;
 }
 
@@ -152,17 +188,17 @@ static const int    CountryCellTag   = 4321;
     
     [self addKeyboardNotifications];
 
-    if (requireInfo)
-    {
-        self.navigationItem.title = [Strings loadingString];
-        [self loadData];
-    }
-    else
+    if (infoType == InfoTypeNone)
     {
         self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberArea ScreenTitle", nil,
                                                                       [NSBundle mainBundle], @"Area",
                                                                       @"Title of app screen with one area.\n"
                                                                       @"[1 line larger font].");
+    }
+    else
+    {
+        self.navigationItem.title = [Strings loadingString];
+        [self loadData];
     }
 
     [self.tableView registerNib:[UINib nibWithNibName:@"NumberAreaActionCell" bundle:nil]
@@ -311,7 +347,11 @@ static const int    CountryCellTag   = 4321;
     unsigned    emptyMask  = 0;
     unsigned    currentBit = 0;
 
-    if (requireInfo)
+    if (infoType == InfoTypeNone)
+    {
+        emptyMask |= ([purchaseInfo[@"name"]       length] == 0) << 0;
+    }
+    else
     {
         emptyMask |= ([purchaseInfo[@"name"]       length] == 0) << 0;
         emptyMask |= ([purchaseInfo[@"firstName"]  length] == 0) << 1;
@@ -324,10 +364,6 @@ static const int    CountryCellTag   = 4321;
             emptyMask |= ([purchaseInfo[@"zipCode"]    length] == 0) << 6;
             emptyMask |= ([purchaseInfo[@"city"]       length] == 0) << 7;
         }
-    }
-    else
-    {
-        emptyMask |= ([purchaseInfo[@"name"]       length] == 0) << 0;
     }
 
     if (emptyMask != 0)
@@ -381,33 +417,34 @@ static const int    CountryCellTag   = 4321;
 {
     BOOL    complete;
 
-    if (requireInfo == YES)
+    if (infoType == InfoTypeNone)
     {
-        if ([purchaseInfo[@"salutation"] isEqualToString:@"COMPANY"] == YES)
-        {
-            complete = ([purchaseInfo[@"name"]       length] > 0 &&
-                        [purchaseInfo[@"salutation"] length] > 0 &&
-                        [purchaseInfo[@"company"]    length] > 0 &&
-                        [purchaseInfo[@"street"]     length] > 0 &&
-                        [purchaseInfo[@"building"]   length] > 0 &&
-                        [purchaseInfo[@"zipCode"]    length] > 0 &&
-                        [purchaseInfo[@"city"]       length] > 0);
-        }
-        else
-        {
-            complete = ([purchaseInfo[@"name"]       length] > 0 &&
-                        [purchaseInfo[@"salutation"] length] > 0 &&
-                        [purchaseInfo[@"firstName"]  length] > 0 &&
-                        [purchaseInfo[@"lastName"]   length] > 0 &&
-                        [purchaseInfo[@"street"]     length] > 0 &&
-                        [purchaseInfo[@"building"]   length] > 0 &&
-                        [purchaseInfo[@"zipCode"]    length] > 0 &&
-                        [purchaseInfo[@"city"]       length] > 0);
-        }
+        complete = ([purchaseInfo[@"name"] length]       > 0);
     }
     else
     {
-        complete = ([purchaseInfo[@"name"] length]       > 0);
+        if ([purchaseInfo[@"salutation"] isEqualToString:@"COMPANY"] == YES)
+        {
+            complete = ([purchaseInfo[@"name"]           length] > 0 &&
+                        [purchaseInfo[@"salutation"]     length] > 0 &&
+                        [purchaseInfo[@"company"]        length] > 0 &&
+                        [purchaseInfo[@"street"]         length] > 0 &&
+                        [purchaseInfo[@"building"]       length] > 0 &&
+                        [purchaseInfo[@"city"]           length] > 0 &&
+                        [purchaseInfo[@"isoCountryCode"] length] > 0);
+        }
+        else
+        {
+            complete = ([purchaseInfo[@"name"]           length] > 0 &&
+                        [purchaseInfo[@"salutation"]     length] > 0 &&
+                        [purchaseInfo[@"firstName"]      length] > 0 &&
+                        [purchaseInfo[@"lastName"]       length] > 0 &&
+                        [purchaseInfo[@"street"]         length] > 0 &&
+                        [purchaseInfo[@"building"]       length] > 0 &&
+                        [purchaseInfo[@"zipCode"]        length] > 0 &&
+                        [purchaseInfo[@"city"]           length] > 0 &&
+                        [purchaseInfo[@"isoCountryCode"] length] > 0);
+        }
     }
 
     return complete;
@@ -425,6 +462,8 @@ static const int    CountryCellTag   = 4321;
     buildingIndexPath   = [NSIndexPath indexPathForItem:1 inSection:3];
     zipCodeIndexPath    = [NSIndexPath indexPathForItem:2 inSection:3];
     cityIndexPath       = [NSIndexPath indexPathForItem:3 inSection:3];
+    countryIndexPath    = [NSIndexPath indexPathForItem:4 inSection:3];
+    actionIndexPath     = [NSIndexPath indexPathForItem:0 inSection:4];
  }
 
 
@@ -543,14 +582,14 @@ static const int    CountryCellTag   = 4321;
 {
     NSString* text;
 
-    if (requireImage == YES && purchaseInfo[@"image"] == nil)
+    if (requireProof == YES && purchaseInfo[@"proofImage"] == nil)
     {
         text = NSLocalizedStringWithDefaultValue(@"NumberArea:Action TakePictureLabel", nil,
                                                  [NSBundle mainBundle],
                                                  @"Take Picture...",
                                                  @"....");
     }
-    else if (requireInfo == YES && isChecked == NO)
+    else if (infoType != InfoTypeNone && isChecked == NO)
     {
         text = NSLocalizedStringWithDefaultValue(@"NumberArea:Action ValidateLabel", nil,
                                                  [NSBundle mainBundle],
@@ -602,9 +641,29 @@ static const int    CountryCellTag   = 4321;
             break;
 
         case TableSectionAddress:
-            title = NSLocalizedStringWithDefaultValue(@"NumberArea:Address SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Contact Address",
-                                                      @"Address of someone.");
+            switch (infoType)
+            {
+                case InfoTypeNone:
+                    break;
+
+                case InfoTypeLocal:
+                    title = NSLocalizedStringWithDefaultValue(@"NumberArea:AddressLocal SectionHeader", nil,
+                                                              [NSBundle mainBundle], @"Local Contact Address",
+                                                              @"Address of someone.");
+                    break;
+
+                case InfoTypeNational:
+                    title = NSLocalizedStringWithDefaultValue(@"NumberArea:AddressNational SectionHeader", nil,
+                                                              [NSBundle mainBundle], @"National Contact Address",
+                                                              @"Address of someone.");
+                    break;
+
+                case InfoTypeWorldwide:
+                    title = NSLocalizedStringWithDefaultValue(@"NumberArea:AddressWorldwide SectionHeader", nil,
+                                                              [NSBundle mainBundle], @"Worldwide Contact Address",
+                                                              @"Address of someone.");
+                    break;
+            }
             break;
 
         case TableSectionAction:
@@ -640,7 +699,7 @@ static const int    CountryCellTag   = 4321;
             break;
 
         case TableSectionAction:
-            if (requireImage == YES && purchaseInfo[@"image"] == nil)
+            if (requireProof == YES && purchaseInfo[@"proofImage"] == nil)
             {
                 title = NSLocalizedStringWithDefaultValue(@"NumberArea:Action SectionFooterTakePicture", nil,
                                                           [NSBundle mainBundle],
@@ -650,7 +709,7 @@ static const int    CountryCellTag   = 4321;
                                                           @"address, and the name of the company/bank are visible.",
                                                           @"Telephone area (or city).");
             }
-            else if (requireInfo == YES && isChecked == NO)
+            else if (infoType != InfoTypeNone && isChecked == NO)
             {
                 title = NSLocalizedStringWithDefaultValue(@"NumberArea:Action SectionFooterCheck", nil,
                                                           [NSBundle mainBundle],
@@ -687,11 +746,11 @@ static const int    CountryCellTag   = 4321;
             break;
 
         case TableSectionName:
-            numberOfRows = requireInfo ? 4 : 0;
+            numberOfRows = (infoType == InfoTypeNone) ? 0 : 4;
             break;
 
         case TableSectionAddress:
-            numberOfRows = requireInfo ? 4 : 0;
+            numberOfRows = (infoType == InfoTypeNone) ? 0 : 5;
             break;
 
         case TableSectionAction:
@@ -708,6 +767,9 @@ static const int    CountryCellTag   = 4321;
     NumberAreaZipsViewController*   zipsViewController;
     NumberAreaCitiesViewController* citiesViewController;
     NumberAreaTitlesViewController* titlesViewController;
+    CountriesViewController*        countriesViewController;
+    NSString*                       isoCountryCode;
+    void (^completion)(BOOL cancelled, NSString* isoCountryCode);
 
     if ([self.tableView cellForRowAtIndexPath:indexPath].selectionStyle == UITableViewCellSelectionStyleNone)
     {
@@ -736,11 +798,31 @@ static const int    CountryCellTag   = 4321;
                                                                                               purchaseInfo:purchaseInfo];
                         [self.navigationController pushViewController:citiesViewController animated:YES];
                         break;
+
+                    case 4:
+                        isoCountryCode = purchaseInfo[@"isoCountryCode"];
+                        completion = ^(BOOL cancelled, NSString* isoCountryCode)
+                        {
+                            if (cancelled == NO)
+                            {
+                                purchaseInfo[@"isoCountryCode"] = isoCountryCode;
+
+                                // Update the cell.
+                                UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                                cell.textLabel.text   = nil;
+                                [self addCountryImageToCell:cell isoCountryCode:isoCountryCode];
+                                countryTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:isoCountryCode];
+                            }
+                        };
+                        countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:isoCountryCode
+                                                                                               completion:completion];
+                        [self.navigationController pushViewController:countriesViewController animated:YES];
+                        break;
                 }
                 break;
 
             case TableSectionAction:
-                if (requireImage == YES && purchaseInfo[@"image"] == nil)
+                if (requireProof == YES && purchaseInfo[@"proofImage"] == nil)
                 {
                     [self takePicture];
                 }
@@ -748,7 +830,7 @@ static const int    CountryCellTag   = 4321;
                 {
                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-                    if (requireInfo == YES && isChecked == NO)
+                    if (infoType != InfoTypeNone && isChecked == NO)
                     {
                         NumberAreaActionCell* cell;
                         cell = (NumberAreaActionCell*)[self.tableView cellForRowAtIndexPath:indexPath];
@@ -900,7 +982,7 @@ static const int    CountryCellTag   = 4321;
     NSString*           identifier;
 
     identifier  = ([Common nthBitSet:indexPath.row inValue:areaRows] == AreaRowCountry) ? @"CountryCell"
-                                                                                           : @"Value2Cell";
+                                                                                        : @"Value2Cell";
     cell        = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil)
     {
@@ -1069,6 +1151,7 @@ static const int    CountryCellTag   = 4321;
     UITextField*        textField;
     BOOL                singleZipCode = NO;
     BOOL                singleCity    = NO;
+    NSString*           identifier    = indexPath.row == 4 ? @"CountryTextFieldCell" : @"TextFieldCell";
 
     if (citiesArray.count == 1)
     {
@@ -1083,10 +1166,10 @@ static const int    CountryCellTag   = 4321;
         }
     }
 
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"TextFieldCell"];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"TextFieldCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:identifier];
         cell.accessoryType  = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
@@ -1179,6 +1262,35 @@ static const int    CountryCellTag   = 4321;
             cityTextField = textField;
             cityTextField.text = [Common capitalizedString:purchaseInfo[@"city"]];
             objc_setAssociatedObject(cityTextField, @"PurchaseInfoKey", @"city", OBJC_ASSOCIATION_RETAIN);
+            break;
+
+        case 4:
+            textField.placeholder            = [Strings requiredString];
+            textField.userInteractionEnabled = NO;
+
+            if (infoType == InfoTypeLocal || infoType == InfoTypeNational)
+            {
+                cell.accessoryType  = UITableViewCellAccessoryNone;
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+            else
+            {
+                cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+                cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+            }
+
+            countryTextField = textField;
+            if (purchaseInfo[@"isoCountryCode"] == nil)
+            {
+                cell.textLabel.text   = [Strings countryString];
+                countryTextField.text = nil;
+            }
+            else
+            {
+                cell.textLabel.text = @" ";  // Without this, detailTextLabel is on the left.
+                countryTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:purchaseInfo[@"isoCountryCode"]];
+                [self addCountryImageToCell:cell isoCountryCode:purchaseInfo[@"isoCountryCode"]];
+            }
             break;
     }
 
@@ -1451,7 +1563,7 @@ static const int    CountryCellTag   = 4321;
     UIImage* image = [info objectForKey:UIImagePickerControllerEditedImage];
     NSData*  data  = UIImageJPEGRepresentation(image, 0.5);
 
-    purchaseInfo[@"image"] = [Base64 encode:data];
+    purchaseInfo[@"proofImage"] = [Base64 encode:data];
 
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -1461,6 +1573,5 @@ static const int    CountryCellTag   = 4321;
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 
 @end

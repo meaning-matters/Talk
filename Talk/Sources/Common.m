@@ -397,13 +397,21 @@
                 CountriesViewController*    countriesViewController;
                 UINavigationController*     modalViewController;
                 UIViewController*           topViewController;
+                NSString*                   homeCountry = [Settings sharedSettings].homeCountry;
 
-                countriesViewController = [[CountriesViewController alloc] init];
-                countriesViewController.isModal = YES;
-                countriesViewController.dismissCompletion = ^(BOOL cancelled)
+                countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:homeCountry
+                                                                                       completion:^(BOOL      cancelled,
+                                                                                                    NSString* isoCountryCode)
                 {
-                    completion(NO, phoneNumber);
-                };
+                    if (cancelled == NO)
+                    {
+                        [Settings sharedSettings].homeCountry = isoCountryCode;
+                    }
+
+                    completion(cancelled, phoneNumber);
+                }];
+
+                countriesViewController.isModal = YES;
 
                 modalViewController = [[UINavigationController alloc] initWithRootViewController:countriesViewController];
                 modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;

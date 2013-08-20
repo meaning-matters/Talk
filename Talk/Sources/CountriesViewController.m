@@ -7,9 +7,7 @@
 //
 
 #import "CountriesViewController.h"
-#import "SettingsViewController.h"
 #import "CountryNames.h"
-#import "Settings.h"
 #import "NSObject+Blocks.h"
 
 
@@ -24,12 +22,16 @@
     UITableViewCell*        selectedCell;
 }
 
+@property (nonatomic, strong) NSString* isoCountryCode;
+@property (nonatomic, copy) void (^completion)(BOOL cancelled, NSString* isoCountryCode);
+
 @end
 
 
 @implementation CountriesViewController
 
-- (id)init
+- (id)initWithIsoCountryCode:(NSString*)isoCountryCode
+                  completion:(void (^)(BOOL cancelled, NSString* isoCountryCode))completion;
 {
     if (self = [super initWithNibName:@"CountriesView" bundle:nil])
     {
@@ -61,6 +63,9 @@
         {
             nameIndexDictionary[nameIndex] = [nameIndexDictionary[nameIndex] sortedArrayUsingSelector:@selector(localizedCompare:)];
         }
+
+        self.isoCountryCode = isoCountryCode;
+        self.completion     = completion;
     }
 
     return self;
@@ -71,9 +76,9 @@
 {
     [self dismissViewControllerAnimated:YES completion:^
     {
-        if (self.dismissCompletion != nil)
+        if (self.completion != nil)
         {
-            self.dismissCompletion(YES);
+            self.completion(YES, nil);
         }
     }];
 }
@@ -145,8 +150,6 @@
         name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
     }
 
-    [Settings sharedSettings].homeCountry = [[CountryNames sharedNames] isoCountryCodeForName:name];
-
     selectedCell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
     selectedCell = cell;
@@ -156,22 +159,15 @@
         // Shown as modal.
         [self dismissViewControllerAnimated:YES completion:^
         {
-            if (self.dismissCompletion != nil)
+            if (self.completion != nil)
             {
-                self.dismissCompletion(YES);
+                self.completion(NO, [[CountryNames sharedNames] isoCountryCodeForName:name]);
             }
         }];
     }
     else
     {
-        // Shown from Settings.
-        // Set the parent cell to prevent quick update right after animations.
-        NSArray*                viewControllers = self.navigationController.viewControllers;
-        SettingsViewController* parent = (SettingsViewController*)viewControllers[[viewControllers count] - 2];
-        NSIndexPath*            parentIndexPath = parent.tableView.indexPathForSelectedRow;
-        UITableViewCell*        parentCell = [parent.tableView cellForRowAtIndexPath:parentIndexPath];
-        parentCell.imageView.image = [UIImage imageNamed:[Settings sharedSettings].homeCountry];
-        parentCell.textLabel.text  = [[CountryNames sharedNames] nameForIsoCountryCode:[Settings sharedSettings].homeCountry];
+        self.completion(NO, [[CountryNames sharedNames] isoCountryCodeForName:name]);
 
         [self.navigationController popViewControllerAnimated:YES];
     }
@@ -204,7 +200,7 @@
     cell.imageView.image = [UIImage imageNamed:isoCountryCode];
     cell.textLabel.text = name;
 
-    if ([isoCountryCode isEqualToString:[Settings sharedSettings].homeCountry])
+    if ([isoCountryCode isEqualToString:self.isoCountryCode])
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
         selectedCell = cell;

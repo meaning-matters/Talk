@@ -46,3 +46,11 @@
 * Technical error: 32004?
 
 * Add Helps item about audio quality + the nature of internet connections.
+
+* Rename homeCountry to homeIsoCountryCode ?  (Settings)
+
+* Check if Common checkCountryOfPhoneNumber is not broken by changes for CountriesVC zie breakpoint
+
+* Create CountryTableCell that takes a iSO country code and use in SettingsVC and NumberAreaVC ...
+
+* Test how currencyCode to #8B can be empty, right after provisioning.  Perhaps order problem with loading products?

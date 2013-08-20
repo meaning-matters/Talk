@@ -199,15 +199,34 @@ typedef enum
         return;
     }
 
-    NSString*   title;
-    NSString*   message;
+    NSString*                title;
+    NSString*                message;
+    NSString*                homeCountry = [Settings sharedSettings].homeCountry;
+    CountriesViewController* countriesViewController;
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionHomeCountry:
-            [self.navigationController pushViewController:[[CountriesViewController alloc] init] animated:YES];
-            break;
+        {
+            countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:homeCountry
+                                                                                   completion:^(BOOL      cancelled,
+                                                                                                NSString* isoCountryCode)
+            {
+                if (cancelled == NO)
+                {
+                    [Settings sharedSettings].homeCountry = isoCountryCode;
 
+                    // Set the cell to prevent quick update right after animations.
+                    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                    cell.imageView.image  = [UIImage imageNamed:[Settings sharedSettings].homeCountry];
+                    cell.textLabel.text   = [[CountryNames sharedNames] nameForIsoCountryCode:[Settings sharedSettings].homeCountry];
+                }
+            }];
+            
+            [self.navigationController pushViewController:countriesViewController animated:YES];
+            break;
+        }
+            
         case TableSectionAccountData:
             if ([settings hasAccount] == NO && indexPath.row == 0)
             {

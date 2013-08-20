@@ -130,6 +130,7 @@
 }
 
 
+// Need many more for i18n: http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html
 + (NSString*)monthString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Month", nil,
@@ -181,6 +182,15 @@
                                              [NSBundle mainBundle], @"Company",
                                              @"Title indicating a company (opposed to personal Mr. or Ms.).\n"
                                              @"[One line].");
+}
+
+
++ (NSString*)countryString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Company", nil,
+                                             [NSBundle mainBundle], @"Country",
+                                             @"Standard string as label for a country name.\n"
+                                             @"[No size contraint].");
 }
 
 @end

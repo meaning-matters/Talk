@@ -41,21 +41,24 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"BuyNumberCell" bundle:nil]
          forCellReuseIdentifier:@"BuyNumberCell"];
 
-    self.clearsSelectionOnViewWillAppear = NO; 
+    self.clearsSelectionOnViewWillAppear = NO;
+
+    UITableViewCell* cell    = [self.tableView dequeueReusableCellWithIdentifier:@"BuyNumberCell"];
+    self.tableView.rowHeight = cell.bounds.size.height;
 }
 
 
-#pragma mark - Table view data source
+#pragma mark - Table View Data Source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return 6;
+    return 1;
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return 6;
 }
 
 
@@ -70,8 +73,8 @@
     NSString* productIdentifier = [[PurchaseManager sharedManager] productIdentifierForNumberTier:tier];
     NSString* priceString       = [[PurchaseManager sharedManager]localizedPriceForProductIdentifier:productIdentifier];
     NSString* text;
-    text = NSLocalizedStringWithDefaultValue(@"BuyNumber:... BuyLabel", nil, [NSBundle mainBundle],
-                                             @"Buy %d %@ for %@",
+    text = NSLocalizedStringWithDefaultValue(@"BuyNumber:... PriceLabel", nil, [NSBundle mainBundle],
+                                             @"%d %@ for %@",
                                              @"Parameters are: number of months (1, 2, 3, ...), "
                                              @"the word 'month' in singular or plural, "
                                              @"the price (including currency sign).");
@@ -81,13 +84,44 @@
             priceString];
     
     cell.monthsLabel.text = text;
-    cell.setupLabel.text  = [[PurchaseManager sharedManager] localizedFormattedPrice:setupFee];
+
+    if (setupFee == 0)
+    {
+        text = NSLocalizedStringWithDefaultValue(@"BuyNumber:... ZeroSetupFeeLabel", nil, [NSBundle mainBundle],
+                                                 @"No setup fee!",
+                                                 @"[One line]");
+    }
+    else
+    {
+        text = NSLocalizedStringWithDefaultValue(@"BuyNumber:... SetupFeeLabel", nil, [NSBundle mainBundle],
+                                                 @"Setup fee %@",
+                                                 @"[One line]");
+    }
+
+    text = [NSString stringWithFormat:text, [[PurchaseManager sharedManager] localizedFormattedPrice:setupFee]];
+    cell.setupLabel.text  = text;
 
     return cell;
 }
 
 
-#pragma mark - Table view delegate
+- (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
+{
+    NSString*   title = nil;
+
+    if (section == 0)
+    {
+        title = NSLocalizedStringWithDefaultValue(@"BuyNumber:... TableFooter", nil, [NSBundle mainBundle],
+                                                  @"The setup fee will be taken from your credit.",
+                                                  @"[Multiple lines]");
+    }
+
+    return title;
+}
+
+
+
+#pragma mark - Table View Delegate
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {

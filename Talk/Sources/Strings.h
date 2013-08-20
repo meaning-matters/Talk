@@ -48,4 +48,6 @@
 
 + (NSString*)companyString;
 
++ (NSString*)countryString;
+
 @end
