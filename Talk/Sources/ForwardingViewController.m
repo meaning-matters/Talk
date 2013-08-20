@@ -499,6 +499,7 @@ static const int    TextFieldCellTag = 1111;
 
     textField.adjustsFontSizeToFitWidth = NO;
     textField.autocapitalizationType    = UITextAutocapitalizationTypeWords;
+    textField.autocorrectionType        = UITextAutocorrectionTypeNo;
     textField.clearButtonMode           = UITextFieldViewModeWhileEditing;
     textField.contentVerticalAlignment  = UIControlContentVerticalAlignmentCenter;
     textField.returnKeyType             = UIReturnKeyDone;

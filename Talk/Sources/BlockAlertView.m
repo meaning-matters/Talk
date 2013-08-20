@@ -110,6 +110,7 @@
     
     UITextField* textField             = [alert textFieldAtIndex:0];
     textField.textAlignment            = NSTextAlignmentCenter;
+    textField.autocorrectionType       = UITextAutocorrectionTypeNo;
     textField.text                     = [phoneNumber asYouTypeFormat];
     [textField setKeyboardType:UIKeyboardTypePhonePad];
 

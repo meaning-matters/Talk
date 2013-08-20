@@ -331,6 +331,7 @@ static const int    CountryCellTag   = 4321;
 
     textField.adjustsFontSizeToFitWidth = NO;
     textField.autocapitalizationType    = UITextAutocapitalizationTypeWords;
+    textField.autocorrectionType        = UITextAutocorrectionTypeNo;
     textField.clearButtonMode           = UITextFieldViewModeWhileEditing;
     textField.contentVerticalAlignment  = UIControlContentVerticalAlignmentCenter;
 

@@ -187,7 +187,7 @@ static NSDictionary* statuses;
 {
     [Common enableNetworkActivityIndicator:YES];
 
-    NSString* currencyCode = [[PurchaseManager sharedManager] currencyCode];
+    NSString* currencyCode = [Settings sharedSettings].currencyCode;
     [self postPath:[NSString stringWithFormat:@"users?currencyCode=%@", currencyCode]
         parameters:parameters
            success:^(AFHTTPRequestOperation* operation, id responseObject)
