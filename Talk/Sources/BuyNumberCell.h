@@ -10,7 +10,8 @@
 
 @interface BuyNumberCell : UITableViewCell
 
-@property (nonatomic, weak) IBOutlet UILabel*   monthsLabel;
-@property (nonatomic, weak) IBOutlet UILabel*   setupLabel;
+@property (nonatomic, weak) IBOutlet UIImageView* periodImageView;
+@property (nonatomic, weak) IBOutlet UILabel*     monthsLabel;
+@property (nonatomic, weak) IBOutlet UILabel*     setupLabel;
 
 @end

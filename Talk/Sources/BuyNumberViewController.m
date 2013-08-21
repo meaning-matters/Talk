@@ -83,7 +83,8 @@
             months,
             [Common capitalizedString:(months == 1) ? [Strings monthString] : [Strings monthsString]],
             priceString];
-    
+
+    cell.periodImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"NumberPeriod%d.png", months]];
     cell.monthsLabel.text = text;
 
     if (setupFee == 0)

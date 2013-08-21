@@ -679,41 +679,37 @@ static SipInterface*    sipInterface;
         call.sipInterfaceFailure = reason;
         call.sipFailedStatus     = sipStatus;
 
-        if (callViewController != nil)
+        if (reason == SipInterfaceCallFailedNoCredit)
         {
-            [callViewController updateCallFailed:call message:[self callFailedMessage:reason sipStatus:sipStatus]];
-        }
-        else
-        {
+            // Get rid of call screen.
+            [callViewController dismissViewControllerAnimated:YES completion:nil];
+            callViewController = nil;
+
             NSString*   title;
             title = NSLocalizedStringWithDefaultValue(@"Call:Failed AlertTitle", nil,
                                                       [NSBundle mainBundle], @"No Call Made",
                                                       @"Alert title informing (in non-negative way: not using "
                                                       @"words like failed/error/...) that call could not be made\n"
                                                       @"[iOS alert title size].");
-
-            if (reason == SipInterfaceCallFailedNoCredit)
-            {
-                [BlockAlertView showAlertViewWithTitle:title
-                                               message:[self callFailedMessage:reason sipStatus:0]
-                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:[self callFailedMessage:reason sipStatus:0]
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+             {
+                 if (buttonIndex == 1)
                  {
-                     if (buttonIndex == 1)
-                     {
-                         //### Open Purchases view controller.  See checkPhoneNumber: for example code.
-                     }
+                     //### Open Purchases view controller.  See checkPhoneNumber: for example code.
                  }
-                                     cancelButtonTitle:[Strings cancelString]
-                                     otherButtonTitles:[Strings buyString], nil];
-            }
-            else
-            {
-                [BlockAlertView showAlertViewWithTitle:title
-                                               message:[self callFailedMessage:reason sipStatus:sipStatus]
-                                            completion:nil
-                                     cancelButtonTitle:[Strings cancelString]
-                                     otherButtonTitles:nil];
-            }
+             }
+                                 cancelButtonTitle:[Strings cancelString]
+                                 otherButtonTitles:[Strings buyString], nil];
+        }
+        else if (callViewController != nil)
+        {
+            [callViewController updateCallFailed:call message:[self callFailedMessage:reason sipStatus:sipStatus]];
+        }
+        else
+        {
+#warning Want to do something with errors after call screen is gone?
         }
     }
 }
