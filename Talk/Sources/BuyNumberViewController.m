@@ -11,6 +11,7 @@
 #import "Strings.h"
 #import "PurchaseManager.h"
 #import "Common.h"
+#import "BlockAlertView.h"
 
 
 @interface BuyNumberViewController ()
@@ -122,7 +123,6 @@
 }
 
 
-
 #pragma mark - Table View Delegate
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
@@ -130,9 +130,50 @@
     int       tier              = [self tierForMonths:[self monthsForIndexPath:indexPath]];
     NSString* productIdentifier = [[PurchaseManager sharedManager] productIdentifierForNumberTier:tier];
 
-    [[PurchaseManager sharedManager] buyProductIdentifier:productIdentifier];
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
+    //### start activity, disable all cells to avoid multiple buy actions.
+
+    //### Check credit { put whole block below within, and mix in block with buying more credit first.
+
+    [[PurchaseManager sharedManager] buyProductIdentifier:productIdentifier completion:^(BOOL success, id object)
+    {
+        //###stop activity indicator.
+
+        if (success == YES)
+        {
+            //### [[SomeClass sharedClass] restoreNumbers];
+            
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        else if (object != nil)
+        {
+            NSString* title;
+            NSString* message;
+
+            title   = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyTitle", nil,
+                                                        [NSBundle mainBundle], @"Buying Number Failed",
+                                                        @"Alart title: A phone number could not be bought.\n"
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Something went wrong while buying your number: %@.\n\n"
+                                                        @"Please try again later.",
+                                                        @"Message telling that buying a phone number failed\n"
+                                                        @"[iOS alert message size]");
+            message = [NSString stringWithFormat:message, [object localizedDescription]];
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+             {
+                 [self dismissViewControllerAnimated:YES completion:nil];
+             }
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+        }
+    }];    
 }
 
 

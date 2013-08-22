@@ -302,17 +302,49 @@ static NSDictionary* statuses;
 
 
 // 11A. PURCHASE NUMBER
-- (void)purchaseNumber:(NSDictionary*)parameters
-                 reply:(void (^)(WebClientStatus status, id content))reply
+- (void)purchaseNumberForReceipt:(NSString*)receipt
+                            name:(NSString*)name
+                  isoCountryCode:(NSString*)isoCountryCode
+                        areaCode:(int)areaCode
+                      numberType:(NumberTypeMask)numberTypeMask
+                            info:(NSDictionary*)info
+                           reply:(void (^)(WebClientStatus status, NSString* e164))reply
 {
-    [self postPath:[NSString stringWithFormat:@"users/%@/numbers", [Settings sharedSettings].webUsername]
+    NSString* username              = [Settings sharedSettings].webUsername;
+    NSMutableDictionary* parameters = [@{@"receipt"        : receipt,
+                                         @"name"           : name,
+                                         @"isoCountryCode" : isoCountryCode,
+                                         @"areaCode"       : @(areaCode),
+                                         @"numberType"     : [NumberType stringForNumberType:numberTypeMask]} mutableCopy];
+    if (info != nil)
+    {
+        [parameters setObject:info forKey:@"info"];
+    }
+
+    [parameters setObject:@(true) forKey:@"debug"];
+
+    [self postPath:[NSString stringWithFormat:@"users/%@/numbers", username]
         parameters:parameters
-             reply:reply];
+             reply:^(WebClientStatus status, id content)
+     {
+         if (status == WebClientStatusOk)
+         {
+             reply(status, content[@"e164"]);
+         }
+         else
+         {
+             reply(status, nil);
+         }
+     }];
 }
 
 
 // 11B. UPDATE NUMBER'S NAME
 // ...
+
+
+// 11C.
+
 
 
 // 12. GET LIST OF NUMBERS
@@ -328,8 +360,26 @@ static NSDictionary* statuses;
 // ...
 
 
-// 14. BUY CALLING CREDIT
-// ...
+// 14. BUY CREDIT
+- (void)purchaseCreditForReceipt:(NSString*)receipt currencyCode:(NSString*)currencyCode
+                           reply:(void (^)(WebClientStatus status, float credit))reply
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self postPath:[NSString stringWithFormat:@"users/%@/credit?currencyCode=%@", username, currencyCode]
+        parameters:@{@"receipt" : receipt}
+             reply:^(WebClientStatus status, id content)
+    {
+        if (status == WebClientStatusOk)
+        {
+            reply(status, [content[@"credit"] floatValue]);
+        }
+        else
+        {
+            reply(status, 0.0f);
+        }
+    }];
+}
 
 
 // 15. GET CURRENT CALLING CREDIT

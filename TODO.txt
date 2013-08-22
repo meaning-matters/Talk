@@ -54,3 +54,9 @@
 * Create CountryTableCell that takes a iSO country code and use in SettingsVC and NumberAreaVC ...
 
 * Test how currencyCode to #8B can be empty, right after provisioning.  Perhaps order problem with loading products?
+
+* Make sure that credit & number purchases are handled correctly when they are pushed by App Store later, i.e.
+  without the UI (for example at app kill/crash/error between payment OK, and processing on server).  The
+  productCompletion will/should be nil then.
+  
+* Rename WebClient methods to simpler prefixes: Get, Buy, ... (instead fo retrieve, purchase, ...).

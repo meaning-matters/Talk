@@ -61,10 +61,19 @@ typedef enum
 - (void)checkPurchaseInfo:(NSDictionary*)parameters
                     reply:(void (^)(WebClientStatus status, id content))reply;
 
-- (void)purchaseNumber:(NSDictionary*)parameters
-                 reply:(void (^)(WebClientStatus status, id content))reply;
+- (void)purchaseNumberForReceipt:(NSString*)receipt
+                            name:(NSString*)name
+                  isoCountryCode:(NSString*)isoCountryCode
+                        areaCode:(int)areaCode
+                      numberType:(NumberTypeMask)numberTypeMask
+                            info:(NSDictionary*)info
+                           reply:(void (^)(WebClientStatus status, NSString* e164))reply;
 
 - (void)retrieveNumbers:(void (^)(WebClientStatus status, id content))reply;
+
+- (void)purchaseCreditForReceipt:(NSString*)receipt
+                    currencyCode:(NSString*)currencyCode
+                           reply:(void (^)(WebClientStatus status, float credit))reply;
 
 - (void)retrieveCredit:(void (^)(WebClientStatus status, id content))reply;
 
@@ -76,6 +85,7 @@ typedef enum
 
 - (void)retrieveVerificationStatusForPhoneNumber:(PhoneNumber*)phoneNumber
                                            reply:(void (^)(WebClientStatus status, BOOL calling, BOOL verified))reply;
+
 
 - (void)cancelAllRetrieveWebAccount;
 
@@ -96,6 +106,8 @@ typedef enum
 - (void)cancelAllPurchaseNumber;
 
 - (void)cancelAllRetrieveNumbers;
+
+- (void)cancelAllPurchaseCredit;
 
 - (void)cancelAllRetrieveCredit;
 

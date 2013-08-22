@@ -36,12 +36,11 @@
 
 - (IBAction)buyAction:(id)sender
 {
-    [[PurchaseManager sharedManager] buyProductIdentifier:@"com.numberbay.Credit1"];
-    [[PurchaseManager sharedManager] buyProductIdentifier:@"com.numberbay.Credit2"];
-    [[PurchaseManager sharedManager] buyProductIdentifier:@"com.numberbay.Credit5"];
-    [[PurchaseManager sharedManager] buyProductIdentifier:@"com.numberbay.Credit10"];
-    [[PurchaseManager sharedManager] buyProductIdentifier:@"com.numberbay.Credit20"];
-    [[PurchaseManager sharedManager] buyProductIdentifier:@"com.numberbay.Credit50"];
+    [[PurchaseManager sharedManager] buyCreditForTier:1
+                                           completion:^(BOOL success, id object)
+    {
+        
+    }];
 }
 
 @end

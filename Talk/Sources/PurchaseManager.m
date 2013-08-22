@@ -32,6 +32,8 @@
 @property (nonatomic, strong) NSMutableSet*         productIdentifiers;
 @property (atomic, strong) SKProductsRequest*       productsRequest;
 @property (nonatomic, copy) void (^accountCompletion)(BOOL success, id object);
+@property (nonatomic, copy) void (^creditCompletion)(BOOL success, id object);
+@property (nonatomic, copy) void (^numberCompletion)(BOOL success, id object);
 @property (nonatomic, copy) void (^loadCompletion)(BOOL success);
 @property (nonatomic, strong) NSMutableArray*       restoredTransactions;
 @property (nonatomic, strong) NSDate*               loadProductsDate;
@@ -142,6 +144,27 @@
 }
 
 
+- (void)completeAccountWithSuccess:(BOOL)success object:(id)object
+{
+    self.accountCompletion ? self.accountCompletion(success, object) : 0;
+    self.accountCompletion = nil;
+}
+
+
+- (void)completeCreditWithSuccess:(BOOL)success object:(id)object
+{
+    self.creditCompletion ? self.creditCompletion(success, object) : 0;
+    self.creditCompletion = nil;
+}
+
+
+- (void)completeNumberWithSuccess:(BOOL)success object:(id)object
+{
+    self.numberCompletion ? self.numberCompletion(success, object) : 0;
+    self.numberCompletion = nil;
+}
+
+
 #pragma mark - Transaction Processing
 
 - (void)processAccountTransaction:(SKPaymentTransaction*)transaction
@@ -188,8 +211,7 @@
                     [Settings sharedSettings].sipPassword = ((NSDictionary*)content)[@"sipPassword"];
 
                     [self finishTransaction:transaction];
-                    self.accountCompletion(YES, transaction);
-                    self.accountCompletion = nil;
+                    [self completeAccountWithSuccess:YES object:transaction];
                 }
                 else
                 {
@@ -201,8 +223,7 @@
                                                                                   @"[...].");
                         NSError*  error       = [Common errorWithCode:0 description:description];
 
-                        self.accountCompletion(NO, error);
-                        self.accountCompletion = nil;
+                        [self completeAccountWithSuccess:NO object:error];
                     }
                     else
                     {
@@ -235,7 +256,7 @@
                                  cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
             
-            self.accountCompletion(NO, nil);    // With nil as object, no additional alert will be shown.
+            [self completeAccountWithSuccess:NO object:nil];  // With nil, no alert will be shown.
         }
         else
         {
@@ -245,8 +266,34 @@
                                                                       @"Error message ...\n"
                                                                       @"[...].");
             NSError*        error = [Common errorWithCode:0 description:description];
-            self.accountCompletion(NO, error);
-            self.accountCompletion = nil;
+            [self completeAccountWithSuccess:NO object:error];
+        }
+    }];
+}
+
+
+- (void)processCreditTransaction:(SKPaymentTransaction*)transaction
+{
+    NSString*   receipt = [Base64 encode:transaction.transactionReceipt];
+
+    [[WebClient sharedClient] purchaseCreditForReceipt:receipt
+                                          currencyCode:self.currencyCode
+                                                 reply:^(WebClientStatus status, float credit)
+    {
+        if (status == WebClientStatusOk)
+        {
+            [self finishTransaction:transaction];
+            [self completeCreditWithSuccess:YES object:transaction];
+        }
+        else
+        {
+            NSString* description = NSLocalizedStringWithDefaultValue(@"Purchase:General CreditFailed", nil,
+                                                                      [NSBundle mainBundle],
+                                                                      @"Could not process credit; will be retried later.",
+                                                                      @"Error message ...\n"
+                                                                      @"[...].");
+            NSError*        error = [Common errorWithCode:0 description:description];
+            [self completeAccountWithSuccess:NO object:error];
         }
     }];
 }
@@ -255,16 +302,27 @@
 - (void)processNumberTransaction:(SKPaymentTransaction*)transaction
 {
     NSString*   receipt = [Base64 encode:transaction.transactionReceipt];
-    NSLog(@"number receipt: %@", receipt);
 
-    [self finishTransaction:transaction];
-}
-
-
-- (void)processCreditTransaction:(SKPaymentTransaction*)transaction
-{
-    NSString*   receipt = [Base64 encode:transaction.transactionReceipt];
-    NSLog(@"credit receipt: %@", receipt);
+    [[WebClient sharedClient] purchaseCreditForReceipt:receipt
+                                          currencyCode:self.currencyCode
+                                                 reply:^(WebClientStatus status, float credit)
+     {
+         if (status == WebClientStatusOk)
+         {
+             [self finishTransaction:transaction];
+             [self completeCreditWithSuccess:YES object:transaction];
+         }
+         else
+         {
+             NSString* description = NSLocalizedStringWithDefaultValue(@"Purchase:General CreditFailed", nil,
+                                                                       [NSBundle mainBundle],
+                                                                       @"Could not process credit; will be retried later.",
+                                                                       @"Error message ...\n"
+                                                                       @"[...].");
+             NSError*        error = [Common errorWithCode:0 description:description];
+             [self completeAccountWithSuccess:NO object:error];
+         }
+     }];
 
     [self finishTransaction:transaction];
 }
@@ -299,10 +357,10 @@
     NSString*   title;
     NSString*   message;
 
-    title = NSLocalizedStringWithDefaultValue(@"Purchase:General ProductLoadFailAlertTitle", nil,
-                                              [NSBundle mainBundle], @"Loading Products Failed",
-                                              @"Alert title telling in-app purchases are disabled.\n"
-                                              @"[iOS alert title size - abbreviated: 'Can't Pay'].");
+    title   = NSLocalizedStringWithDefaultValue(@"Purchase:General ProductLoadFailAlertTitle", nil,
+                                                [NSBundle mainBundle], @"Loading Products Failed",
+                                                @"Alert title telling in-app purchases are disabled.\n"
+                                                @"[iOS alert title size - abbreviated: 'Can't Pay'].");
     message = NSLocalizedStringWithDefaultValue(@"Purchase:General ProductLoadFailAlertMessage", nil,
                                                 [NSBundle mainBundle],
                                                 @"Loading iTunes Store products failed: %@.\nPlease try again later.",
@@ -314,11 +372,11 @@
     }
     else
     {
-        NSString*   description = NSLocalizedStringWithDefaultValue(@"Purchase:General NoInternet", nil,
-                                                                    [NSBundle mainBundle],
-                                                                    @"There is no internet connection",
-                                                                    @"Short text that is part of alert message.\n"
-                                                                    @"[Keep short]");
+        NSString* description = NSLocalizedStringWithDefaultValue(@"Purchase:General NoInternet", nil,
+                                                                  [NSBundle mainBundle],
+                                                                  @"There is no internet connection",
+                                                                  @"Short text that is part of alert message.\n"
+                                                                  @"[Keep short]");
         message = [NSString stringWithFormat:message, description];
     }
     
@@ -364,12 +422,7 @@
     }
     else
     {
-        if (self.accountCompletion != nil)
-        {
-            self.accountCompletion(YES, nil);
-        }
-
-        self.accountCompletion    = nil;
+        [self completeAccountWithSuccess:YES object:nil];
         self.restoredTransactions = nil;
     }
 }
@@ -380,12 +433,7 @@
     NSLog(@"restoreCompletedTransactionsFailedWithError: %@", [error localizedDescription]);
     [Common enableNetworkActivityIndicator:NO];
 
-    if (self.accountCompletion != nil)
-    {
-        self.accountCompletion(NO, error);
-    }
-    
-    self.accountCompletion    = nil;
+    [self completeAccountWithSuccess:NO object:error];
     self.restoredTransactions = nil;
 }
 
@@ -413,43 +461,36 @@
                 [Common enableNetworkActivityIndicator:NO];
                 if ([self isAccountProductIdentifier:transaction.payment.productIdentifier])
                 {
-                    if (self.accountCompletion == nil)
-                    {
-                        // We get here when the transaction was not finished yet.
-                        self.accountCompletion = ^(BOOL status, id object)
-                        {
-                            // Dummy block.
-                        };
-                    }
-
                     [self processAccountTransaction:transaction];
-                }
-                else if ([self isNumberProductIdentifier:transaction.payment.productIdentifier])
-                {
-                    [self processNumberTransaction:transaction];
                 }
                 else if ([self isCreditProductIdentifier:transaction.payment.productIdentifier])
                 {
                     [self processCreditTransaction:transaction];
                 }
+                else if ([self isNumberProductIdentifier:transaction.payment.productIdentifier])
+                {
+                    [self processNumberTransaction:transaction];
+                }
                 break;
 
             case SKPaymentTransactionStateFailed:
                 [Common enableNetworkActivityIndicator:NO];
-#warning //### Assume that this is only for purchase, and never happens for restore.  I asked dev forums.
-                NSLog(@"//###  Transaction failed: %@.", transaction.payment.productIdentifier);
-                if ([self isAccountProductIdentifier:transaction.payment.productIdentifier] &&
-                    self.accountCompletion != nil)
-                {
-                    self.accountCompletion(NO, transaction.error);
-                    self.accountCompletion = nil;
-                }
-                else
-                {
-                    NSLog(@"Transaction failed: %@", [transaction.error localizedDescription]);
-                }
-                
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+
+                NSLog(@"//### %@ transaction failed: %@.", transaction.payment.productIdentifier,
+                                                           [transaction.error localizedDescription]);
+                if ([self isAccountProductIdentifier:transaction.payment.productIdentifier])
+                {
+                    [self completeAccountWithSuccess:NO object:transaction.error];
+                }
+                else if ([self isCreditProductIdentifier:transaction.payment.productIdentifier])
+                {
+                    [self completeCreditWithSuccess:NO object:transaction.error];
+                }
+                else if ([self isNumberProductIdentifier:transaction.payment.productIdentifier])
+                {
+                    [self completeNumberWithSuccess:NO object:transaction.error];
+                }
                 break;
 
             case SKPaymentTransactionStateRestored:
@@ -595,7 +636,7 @@
 
     self.accountCompletion = completion;
 
-    [self buyProductIdentifier:[self productIdentifierForAccountTier:1]];
+    [self buyProductIdentifier:[self productIdentifierForAccountTier:1] completion:nil];
 }
 
 
@@ -620,8 +661,10 @@
 }
 
 
-- (BOOL)buyProductIdentifier:(NSString*)productIdentifier
+- (void)buyProductIdentifier:(NSString*)productIdentifier completion:(void (^)(BOOL success, id object))completion
 {
+    self.numberCompletion = completion;
+
     if ([SKPaymentQueue canMakePayments])
     {
         SKProduct* product = [self getProductForProductIdentifier:productIdentifier];
@@ -632,11 +675,25 @@
             [[SKPaymentQueue defaultQueue] addPayment:payment];
             [Common enableNetworkActivityIndicator:YES];
 
-            return YES;
+            return YES;//### replace with completion() further up.
         }
         else
         {
-            return NO;
+            NSString*   title;
+            NSString*   message;
+            
+            title   = NSLocalizedStringWithDefaultValue(@"Purchase:General NoProductTitle", nil,
+                                                        [NSBundle mainBundle], @"Product Not Available",
+                                                        @"Alert title telling in-app purchases are disabled.\n"
+                                                        @"[iOS alert title size - abbreviated: 'Can't Pay'].");
+            message = NSLocalizedStringWithDefaultValue(@"Purchase:General NoProductMessage", nil,
+                                                       [NSBundle mainBundle],
+                                                        @"The product you're trying to buy is not available, or "
+                                                        @"was not loaded.\n\nPlease try again later.",
+                                                        @"Message telling that product was not found.\n"
+                                                        @"[iOS alert title size - abbreviated: 'Can't Pay'].");
+
+            self.numberCompletion(NO, nil);
         }
     }
     else
@@ -644,10 +701,10 @@
         NSString*   title;
         NSString*   message;
 
-        title = NSLocalizedStringWithDefaultValue(@"Purchase:General CantPurchaseTitle", nil,
-                                                  [NSBundle mainBundle], @"Can't Make Purchases",
-                                                  @"Alert title telling in-app purchases are disabled.\n"
-                                                  @"[iOS alert title size - abbreviated: 'Can't Pay'].");
+        title   = NSLocalizedStringWithDefaultValue(@"Purchase:General CantPurchaseTitle", nil,
+                                                    [NSBundle mainBundle], @"Can't Make Purchases",
+                                                    @"Alert title telling in-app purchases are disabled.\n"
+                                                    @"[iOS alert title size - abbreviated: 'Can't Pay'].");
         message = NSLocalizedStringWithDefaultValue(@"Purchase:General CantPurchaseMessage", nil,
                                                     [NSBundle mainBundle],
                                                     @"In-app purchases are disabled.\n"
@@ -661,7 +718,7 @@
                              cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
 
-        return NO;
+        self.numberCompletion(NO, nil);
     }
 }
 

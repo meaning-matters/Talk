@@ -265,6 +265,7 @@
                 if (status == WebClientStatusOk)
                 {
                     //### Process & Store numbers array!
+                    
                     NSArray*  numbers = content;
                     float     credit;
                     NSString* creditString;

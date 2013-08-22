@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <StoreKit/StoreKit.h>
+#import "NumberType.h"
 
 
 @interface PurchaseManager : NSObject
@@ -33,8 +34,14 @@
 
 - (void)restoreAccount:(void (^)(BOOL success, id object))completion;
 
-- (BOOL)buyProductIdentifier:(NSString*)productIdentifier;
+- (void)buyCreditForTier:(int)tier completion:(void (^)(BOOL success, id object))completion;
 
-- (void)finishTransaction:(SKPaymentTransaction*)transaction;
+- (void)buyNumberForTier:(int)tier
+                    name:(NSString*)name
+          isoCountryCode:(NSString*)isoCountryCode
+                areaCode:(int)areaCode
+              numberType:(NumberTypeMask)numberTypeMask
+                    info:(NSDictionary*)info
+              completion:(void (^)(BOOL success, id object))completion;
 
 @end
