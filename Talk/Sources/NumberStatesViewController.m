@@ -15,7 +15,7 @@
 
 @interface NumberStatesViewController ()
 {
-    NSDictionary*           country;
+    NSString*               isoCountryCode;
     NumberTypeMask          numberTypeMask;          // Not used in this class, just being passed on.
 
     NSArray*                nameIndexArray;         // Array with all first letters of country names.
@@ -31,11 +31,12 @@
 
 @implementation NumberStatesViewController
 
-- (id)initWithCountry:(NSDictionary*)theCountry numberTypeMask:(NumberTypeMask)theNumberTypeMask
+- (id)initWithIsoCountryCode:(NSString*)theIsoCountryCode
+              numberTypeMask:(NumberTypeMask)theNumberTypeMask
 {
     if (self = [super initWithNibName:@"NumberStatesView" bundle:nil])
     {
-        country        = theCountry;
+        isoCountryCode = theIsoCountryCode;
         numberTypeMask = theNumberTypeMask;
     }
 
@@ -55,8 +56,8 @@
                                                                  action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
-    [[WebClient sharedClient] retrieveNumberStatesForIsoCountryCode:country[@"isoCountryCode"]
-                                                         reply:^(WebClientStatus status, id content)
+    [[WebClient sharedClient] retrieveNumberStatesForIsoCountryCode:isoCountryCode
+                                                              reply:^(WebClientStatus status, id content)
     {
         if (status == WebClientStatusOk)
         {
@@ -166,7 +167,7 @@
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.searchDisplayController setActive:NO animated:YES];
 
-    [[WebClient sharedClient] cancelAllRetrieveNumberStatesForIsoCountryCode:country[@"isoCountryCode"]];
+    [[WebClient sharedClient] cancelAllRetrieveNumberStatesForIsoCountryCode:isoCountryCode];
 }
 
 
@@ -229,9 +230,9 @@
     }
 
     NumberAreasViewController*  viewController;
-    viewController = [[NumberAreasViewController alloc] initWithCountry:country
-                                                                  state:state
-                                                         numberTypeMask:numberTypeMask];
+    viewController = [[NumberAreasViewController alloc] initWithIsoCountryCode:isoCountryCode
+                                                                         state:state
+                                                                numberTypeMask:numberTypeMask];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -266,7 +267,7 @@
         }
     }
 
-    cell.imageView.image = [UIImage imageNamed:country[@"isoCountryCode"]];
+    cell.imageView.image = [UIImage imageNamed:isoCountryCode];
     cell.textLabel.text  = name;
     cell.accessoryType   = UITableViewCellAccessoryNone;
 

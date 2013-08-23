@@ -16,8 +16,8 @@
 @property (nonatomic, weak) IBOutlet UITableView*   tableView;
 
 
-- (id)initWithCountry:(NSDictionary*)country
-                state:(NSDictionary*)theState
-       numberTypeMask:(NumberTypeMask)numberTypeMask;
+- (id)initWithIsoCountryCode:(NSString*)isoCountryCode
+                       state:(NSDictionary*)state
+              numberTypeMask:(NumberTypeMask)numberTypeMask;
 
 @end

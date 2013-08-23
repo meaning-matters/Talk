@@ -57,12 +57,13 @@ static const int    CountryCellTag   = 4321;
 
 @interface NumberAreaViewController ()
 {
-    NSDictionary*           country;
+    NSString*               numberIsoCountryCode;
     NSDictionary*           state;
     NSDictionary*           area;
     NumberTypeMask          numberTypeMask;
 
     NSArray*                citiesArray;
+    NSString*               name;
     NSMutableDictionary*    purchaseInfo;
     InfoType                infoType;
     BOOL                    requireProof;
@@ -103,19 +104,19 @@ static const int    CountryCellTag   = 4321;
 
 @implementation NumberAreaViewController
 
-- (id)initWithCountry:(NSDictionary*)theCountry
-                state:(NSDictionary*)theState
-                 area:(NSDictionary*)theArea
-       numberTypeMask:(NumberTypeMask)theNumberTypeMask
+- (id)initWithIsoCountryCode:(NSString*)isoCountryCode
+                       state:(NSDictionary*)theState
+                        area:(NSDictionary*)theArea
+              numberTypeMask:(NumberTypeMask)theNumberTypeMask
 {    
     if (self = [super initWithNibName:@"NumberAreaView" bundle:nil])
     {
-        country        = theCountry;
-        state          = theState;
-        area           = theArea;
-        numberTypeMask = theNumberTypeMask;
-        purchaseInfo   = [NSMutableDictionary dictionary];
-        requireProof   = [area[@"requireProof"] boolValue];
+        numberIsoCountryCode = isoCountryCode;
+        state                = theState;
+        area                 = theArea;
+        numberTypeMask       = theNumberTypeMask;
+        requireProof         = [area[@"requireProof"] boolValue];
+        purchaseInfo         = [NSMutableDictionary dictionary];
 
         if ([area[@"infoType"] isEqualToString:@"NONE"])
         {
@@ -140,7 +141,7 @@ static const int    CountryCellTag   = 4321;
 
         if (infoType == InfoTypeLocal || infoType == InfoTypeNational)
         {
-            purchaseInfo[@"isoCountryCode"] = country[@"isoCountryCode"];
+            purchaseInfo[@"isoCountryCode"] = numberIsoCountryCode;
         }
 
         // Mandatory sections.
@@ -164,25 +165,24 @@ static const int    CountryCellTag   = 4321;
 
         // Default naming.
         NSString* city;
-        NSString* isoCountryCode = country[@"isoCountryCode"];
-        NSString* countryName    = [[CountryNames sharedNames] nameForIsoCountryCode:isoCountryCode];
+        NSString* countryName = [[CountryNames sharedNames] nameForIsoCountryCode:numberIsoCountryCode];
         switch (numberTypeMask)
         {
             case NumberTypeGeographicMask:
                 city = [Common capitalizedString:area[@"city"]];
-                purchaseInfo[@"name"] = [NSString stringWithFormat:@"%@ (%@)", city, isoCountryCode];
+                name = [NSString stringWithFormat:@"%@ (%@)", city, numberIsoCountryCode];
                 break;
                 
             case NumberTypeNationalMask:
-                purchaseInfo[@"name"] = [NSString stringWithFormat:@"%@ (paid)", countryName];
+                name = [NSString stringWithFormat:@"%@ (paid)", countryName];
                 break;
 
             case NumberTypeTollFreeMask:
-                purchaseInfo[@"name"] = [NSString stringWithFormat:@"%@ (free)", countryName];
+                name = [NSString stringWithFormat:@"%@ (free)", countryName];
                 break;
 
             case NumberTypeInternationalMask:
-                purchaseInfo[@"name"] = [NSString stringWithFormat:@"International (%@)", area[@"areaCode"]];
+                name = [NSString stringWithFormat:@"International (%@)", area[@"areaCode"]];
                 break;
         }
 
@@ -255,7 +255,7 @@ static const int    CountryCellTag   = 4321;
 
     NSString*   areaCode = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : @"0";
 
-    [[WebClient sharedClient] cancelAllRetrieveAreaInfoForIsoCountryCode:country[@"isoCountryCode"]
+    [[WebClient sharedClient] cancelAllRetrieveAreaInfoForIsoCountryCode:numberIsoCountryCode
                                                                 areaCode:areaCode];
 }
 
@@ -272,7 +272,7 @@ static const int    CountryCellTag   = 4321;
 {
     NSString*   areaCode = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : @"0";
 
-    [[WebClient sharedClient] retrieveNumberAreaInfoForIsoCountryCode:country[@"isoCountryCode"]
+    [[WebClient sharedClient] retrieveNumberAreaInfoForIsoCountryCode:numberIsoCountryCode
                                                              areaCode:areaCode
                                                                 reply:^(WebClientStatus status, id content)
     {
@@ -293,10 +293,10 @@ static const int    CountryCellTag   = 4321;
             NSString*   title;
             NSString*   message;
 
-            title = NSLocalizedStringWithDefaultValue(@"NumberArea UnavailableAlertTitle", nil,
-                                                      [NSBundle mainBundle], @"Service Unavailable",
-                                                      @"Alert title telling that an online service is not available.\n"
-                                                      @"[iOS alert title size].");
+            title   = NSLocalizedStringWithDefaultValue(@"NumberArea UnavailableAlertTitle", nil,
+                                                        [NSBundle mainBundle], @"Service Unavailable",
+                                                        @"Alert title telling that an online service is not available.\n"
+                                                        @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"NumberArea UnavailableAlertMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"The service for buying numbers is temporarily offline."
@@ -317,10 +317,10 @@ static const int    CountryCellTag   = 4321;
             NSString*   title;
             NSString*   message;
 
-            title = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertTitle", nil,
-                                                      [NSBundle mainBundle], @"Loading Failed",
-                                                      @"Alert title telling that loading information over internet failed.\n"
-                                                      @"[iOS alert title size].");
+            title   = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertTitle", nil,
+                                                        [NSBundle mainBundle], @"Loading Failed",
+                                                        @"Alert title telling that loading information over internet failed.\n"
+                                                        @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"Loading the list of cities and ZIP codes failed.\n\nPlease try again later.",
@@ -374,11 +374,11 @@ static const int    CountryCellTag   = 4321;
 
     if (infoType == InfoTypeNone)
     {
-        emptyMask |= ([purchaseInfo[@"name"]       length] == 0) << 0;
+        emptyMask |= ([name length] == 0) << 0;
     }
     else
     {
-        emptyMask |= ([purchaseInfo[@"name"]       length] == 0) << 0;
+        emptyMask |= ([name                        length] == 0) << 0;
         emptyMask |= ([purchaseInfo[@"firstName"]  length] == 0) << 1;
         emptyMask |= ([purchaseInfo[@"lastName"]   length] == 0) << 2;
         emptyMask |= ([purchaseInfo[@"company"]    length] == 0) << 3;
@@ -444,13 +444,13 @@ static const int    CountryCellTag   = 4321;
 
     if (infoType == InfoTypeNone)
     {
-        complete = ([purchaseInfo[@"name"] length]       > 0);
+        complete = ([name length] > 0);
     }
     else
     {
         if ([purchaseInfo[@"salutation"] isEqualToString:@"COMPANY"] == YES)
         {
-            complete = ([purchaseInfo[@"name"]           length] > 0 &&
+            complete = ([name                            length] > 0 &&
                         [purchaseInfo[@"salutation"]     length] > 0 &&
                         [purchaseInfo[@"company"]        length] > 0 &&
                         [purchaseInfo[@"street"]         length] > 0 &&
@@ -460,7 +460,7 @@ static const int    CountryCellTag   = 4321;
         }
         else
         {
-            complete = ([purchaseInfo[@"name"]           length] > 0 &&
+            complete = ([name                            length] > 0 &&
                         [purchaseInfo[@"salutation"]     length] > 0 &&
                         [purchaseInfo[@"firstName"]      length] > 0 &&
                         [purchaseInfo[@"lastName"]       length] > 0 &&
@@ -494,12 +494,12 @@ static const int    CountryCellTag   = 4321;
 
 - (void)addCountryImageToCell:(UITableViewCell*)cell isoCountryCode:(NSString*)isoCountryCode
 {
-    UIImage*        image = [UIImage imageNamed:isoCountryCode];
+    UIImage*        image     = [UIImage imageNamed:isoCountryCode];
     UIImageView*    imageView = (UIImageView*)[cell viewWithTag:CountryCellTag];
-    CGRect          frame = CGRectMake(33, 4, image.size.width, image.size.height);
+    CGRect          frame     = CGRectMake(33, 4, image.size.width, image.size.height);
 
-    imageView = (imageView == nil) ? [[UIImageView alloc] initWithFrame:frame] : imageView;
-    imageView.tag = CountryCellTag;
+    imageView       = (imageView == nil) ? [[UIImageView alloc] initWithFrame:frame] : imageView;
+    imageView.tag   = CountryCellTag;
     imageView.image = image;
 
     [cell.contentView addSubview:imageView];
@@ -839,6 +839,7 @@ static const int    CountryCellTag   = 4321;
                                 countryTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:isoCountryCode];
                             }
                         };
+                        
                         countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:isoCountryCode
                                                                                                completion:completion];
                         [self.navigationController pushViewController:countriesViewController animated:YES];
@@ -863,9 +864,8 @@ static const int    CountryCellTag   = 4321;
                         cell.label.alpha = 0.5f;
                         [cell.activityIndicator startAnimating];
 
-                        purchaseInfo[@"isoCountryCode"] = country[@"isoCountryCode"];
-                        purchaseInfo[@"numberType"]     = area[@"numberType"];
-                        purchaseInfo[@"areaCode"]       = area[@"areaCode"];
+                        purchaseInfo[@"numberType"] = area[@"numberType"];
+                        purchaseInfo[@"areaCode"]   = area[@"areaCode"];
                         [[WebClient sharedClient] checkPurchaseInfo:purchaseInfo
                                                               reply:^(WebClientStatus status, id content)
                         {
@@ -937,7 +937,12 @@ static const int    CountryCellTag   = 4321;
                     }
                     else
                     {
-                        BuyNumberViewController* viewController = [[BuyNumberViewController alloc] initWithArea:area];
+                        BuyNumberViewController* viewController;
+                        viewController = [[BuyNumberViewController alloc] initWithName:name
+                                                                        isoCountryCode:numberIsoCountryCode
+                                                                                  area:area
+                                                                        numberTypeMask:numberTypeMask
+                                                                                  info:purchaseInfo];
                         [self.navigationController pushViewController:viewController animated:YES];
                     }
                 }
@@ -946,10 +951,10 @@ static const int    CountryCellTag   = 4321;
                     NSString*   title;
                     NSString*   message;
 
-                    title = NSLocalizedStringWithDefaultValue(@"NumberArea InfoIncompleteAlertTitle", nil,
-                                                              [NSBundle mainBundle], @"Information Missing",
-                                                              @"Alert title telling that user did not fill in all information.\n"
-                                                              @"[iOS alert title size].");
+                    title   = NSLocalizedStringWithDefaultValue(@"NumberArea InfoIncompleteAlertTitle", nil,
+                                                                [NSBundle mainBundle], @"Information Missing",
+                                                                @"Alert title telling that user did not fill in all information.\n"
+                                                                @"[iOS alert title size].");
                     message = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertMessage", nil,
                                                                 [NSBundle mainBundle],
                                                                 @"Some of the required information has not been supplied yet.",
@@ -1050,8 +1055,8 @@ static const int    CountryCellTag   = 4321;
 
         case AreaRowCountry:
             cell.textLabel.text       = @" ";     // Without this, the detailTextLabel is on the left.
-            cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:country[@"isoCountryCode"]];
-            [self addCountryImageToCell:cell isoCountryCode:country[@"isoCountryCode"]];
+            cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:numberIsoCountryCode];
+            [self addCountryImageToCell:cell isoCountryCode:numberIsoCountryCode];
             break;
     }
 
@@ -1081,9 +1086,9 @@ static const int    CountryCellTag   = 4321;
 
     cell.textLabel.text              = [Strings nameString];
     textField.placeholder            = [Strings requiredString];
-    textField.text                   = purchaseInfo[@"name"];
+    textField.text                   = name;
     textField.userInteractionEnabled = YES;
-    objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"name", OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(textField, @"TextFieldKey", @"name", OBJC_ASSOCIATION_RETAIN);
 
     cell.detailTextLabel.text = nil;
     cell.imageView.image      = nil;
@@ -1124,7 +1129,7 @@ static const int    CountryCellTag   = 4321;
             textField.placeholder = [Strings requiredString];
             textField.text = [self salutationText];
             textField.userInteractionEnabled = NO;
-            objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"salutation", OBJC_ASSOCIATION_RETAIN);
+            objc_setAssociatedObject(textField, @"TextFieldKey", @"salutation", OBJC_ASSOCIATION_RETAIN);
             break;
 
         case 1:
@@ -1135,7 +1140,7 @@ static const int    CountryCellTag   = 4321;
                                                                     [NSBundle mainBundle], @"Firstname",
                                                                     @"....");
             textField.text = purchaseInfo[@"firstName"];
-            objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"firstName", OBJC_ASSOCIATION_RETAIN);
+            objc_setAssociatedObject(textField, @"TextFieldKey", @"firstName", OBJC_ASSOCIATION_RETAIN);
             break;
 
         case 2:
@@ -1146,7 +1151,7 @@ static const int    CountryCellTag   = 4321;
                                                                     [NSBundle mainBundle], @"Lastname",
                                                                     @"....");
             textField.text = purchaseInfo[@"lastName"];
-            objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"lastName", OBJC_ASSOCIATION_RETAIN);
+            objc_setAssociatedObject(textField, @"TextFieldKey", @"lastName", OBJC_ASSOCIATION_RETAIN);
             break;
 
         case 3:
@@ -1157,7 +1162,7 @@ static const int    CountryCellTag   = 4321;
                                                                     [NSBundle mainBundle], @"Company",
                                                                     @"....");
             textField.text = purchaseInfo[@"company"];
-            objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"company", OBJC_ASSOCIATION_RETAIN);
+            objc_setAssociatedObject(textField, @"TextFieldKey", @"company", OBJC_ASSOCIATION_RETAIN);
             break;
     }
 
@@ -1225,7 +1230,7 @@ static const int    CountryCellTag   = 4321;
                                                                     @"....");
             textField.placeholder = [Strings requiredString];
             textField.text = purchaseInfo[@"street"];
-            objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"street", OBJC_ASSOCIATION_RETAIN);
+            objc_setAssociatedObject(textField, @"TextFieldKey", @"street", OBJC_ASSOCIATION_RETAIN);
             break;
 
         case 1:
@@ -1235,7 +1240,7 @@ static const int    CountryCellTag   = 4321;
             textField.placeholder = [Strings requiredString];
             textField.text = purchaseInfo[@"building"];
             textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
-            objc_setAssociatedObject(textField, @"PurchaseInfoKey", @"building", OBJC_ASSOCIATION_RETAIN);
+            objc_setAssociatedObject(textField, @"TextFieldKey", @"building", OBJC_ASSOCIATION_RETAIN);
             break;
 
         case 2:
@@ -1264,7 +1269,7 @@ static const int    CountryCellTag   = 4321;
             
             zipCodeTextField = textField;
             zipCodeTextField.text = purchaseInfo[@"zipCode"];
-            objc_setAssociatedObject(zipCodeTextField, @"PurchaseInfoKey", @"zipCode", OBJC_ASSOCIATION_RETAIN);
+            objc_setAssociatedObject(zipCodeTextField, @"TextFieldKey", @"zipCode", OBJC_ASSOCIATION_RETAIN);
             break;
 
         case 3:
@@ -1294,7 +1299,7 @@ static const int    CountryCellTag   = 4321;
             
             cityTextField = textField;
             cityTextField.text = [Common capitalizedString:purchaseInfo[@"city"]];
-            objc_setAssociatedObject(cityTextField, @"PurchaseInfoKey", @"city", OBJC_ASSOCIATION_RETAIN);
+            objc_setAssociatedObject(cityTextField, @"TextFieldKey", @"city", OBJC_ASSOCIATION_RETAIN);
             break;
 
         case 4:
@@ -1357,7 +1362,7 @@ static const int    CountryCellTag   = 4321;
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField*)textField
 {
-    NSString*   key = objc_getAssociatedObject(textField, @"PurchaseInfoKey");
+    NSString*   key = objc_getAssociatedObject(textField, @"TextFieldKey");
 
     textField.returnKeyType = [self nextEmptyIndexPathForKey:key] ? UIReturnKeyNext : UIReturnKeyDone;
 #warning The method reloadInputViews messes up two-byte keyboards (e.g. Kanji).
@@ -1370,8 +1375,16 @@ static const int    CountryCellTag   = 4321;
 
 - (BOOL)textFieldShouldClear:(UITextField*)textField
 {
-    NSString*   key  = objc_getAssociatedObject(textField, @"PurchaseInfoKey");
-    purchaseInfo[key] = @"";
+    NSString*   key  = objc_getAssociatedObject(textField, @"TextFieldKey");
+    
+    if ([key isEqualToString:@"name"])
+    {
+        name = @"";
+    }
+    else
+    {
+        purchaseInfo[key] = @"";
+    }
 
     return YES;
 }
@@ -1379,7 +1392,7 @@ static const int    CountryCellTag   = 4321;
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-    NSString*   key = objc_getAssociatedObject(textField, @"PurchaseInfoKey");
+    NSString*   key = objc_getAssociatedObject(textField, @"TextFieldKey");
 
     if ((nextIndexPath = [self nextEmptyIndexPathForKey:key]) != nil)
     {
@@ -1408,9 +1421,16 @@ static const int    CountryCellTag   = 4321;
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
 {
-    NSString*   key  = objc_getAssociatedObject(textField, @"PurchaseInfoKey");
+    NSString*   key  = objc_getAssociatedObject(textField, @"TextFieldKey");
 
-    purchaseInfo[key] = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    if ([key isEqualToString:@"name"])
+    {
+        name = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    }
+    else
+    {
+        purchaseInfo[key] = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    }
 
     return YES;
 }

@@ -262,7 +262,6 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:indexPath];
     NSString*           name;
     NSString*           isoCountryCode;
     NSDictionary*       country;
@@ -290,16 +289,16 @@
     if ([country[@"hasStates"] boolValue] && numberTypeMask == NumberTypeGeographicMask)
     {
         NumberStatesViewController* viewController;
-        viewController = [[NumberStatesViewController alloc] initWithCountry:country
-                                                              numberTypeMask:numberTypeMask];
+        viewController = [[NumberStatesViewController alloc] initWithIsoCountryCode:isoCountryCode
+                                                                     numberTypeMask:numberTypeMask];
         [self.navigationController pushViewController:viewController animated:YES];
     }
     else
     {
         NumberAreasViewController*  viewController;
-        viewController = [[NumberAreasViewController alloc] initWithCountry:country
-                                                                      state:nil
-                                                             numberTypeMask:numberTypeMask];
+        viewController = [[NumberAreasViewController alloc] initWithIsoCountryCode:isoCountryCode
+                                                                        state:nil
+                                                                numberTypeMask:numberTypeMask];
         [self.navigationController pushViewController:viewController animated:YES];
     }
 }
@@ -310,7 +309,6 @@
     UITableViewCell*    cell;
     NSString*           name;
     NSString*           isoCountryCode;
-    NSDictionary*       country;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
@@ -327,16 +325,8 @@
         name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
     }
 
-    // Look up country.
     isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
-    for (country in countriesArray)
-    {
-        if ([country[@"isoCountryCode"] isEqualToString:isoCountryCode])
-        {
-            break;
-        }
-    }
-
+ 
     cell.imageView.image = [UIImage imageNamed:isoCountryCode];
     cell.textLabel.text = name;
     cell.accessoryType = UITableViewCellAccessoryNone;

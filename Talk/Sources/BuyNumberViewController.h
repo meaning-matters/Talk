@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NumberType.h"
 
 @interface BuyNumberViewController : UITableViewController
 
-@property (nonatomic, strong) NSDictionary* area;
-
-- (id)initWithArea:(NSDictionary*)area;
+- (id)initWithName:(NSString*)name
+    isoCountryCode:(NSString*)isoCountryCode
+              area:(NSDictionary*)area
+    numberTypeMask:(NumberTypeMask)numberTypeMask
+              info:(NSDictionary*)info;
 
 @end

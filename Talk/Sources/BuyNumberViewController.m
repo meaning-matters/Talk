@@ -16,20 +16,35 @@
 
 @interface BuyNumberViewController ()
 
+@property (nonatomic, strong) NSString*     name;
+@property (nonatomic, strong) NSString*     isoCountryCode;
+@property (nonatomic, strong) NSDictionary* area;
+@property (nonatomic, strong) NSString*     numberType;
+@property (nonatomic, strong) NSDictionary* info;
+
 @end
 
 
 @implementation BuyNumberViewController
 
-- (id)initWithArea:(NSDictionary*)area
+- (id)initWithName:(NSString*)name
+    isoCountryCode:(NSString*)isoCountryCode
+              area:(NSDictionary*)area
+    numberTypeMask:(NumberTypeMask)numberTypeMask
+              info:(NSDictionary*)info
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
-        self.area = area;
         self.title = NSLocalizedStringWithDefaultValue(@"BuyNumber:... ViewTitle", nil,
                                                        [NSBundle mainBundle],
                                                        @"Buy Number",
                                                        @"[ ].");
+
+        self.name           = name;
+        self.isoCountryCode = isoCountryCode;
+        self.area           = area;
+        self.numberType     = [NumberType stringForNumberType:numberTypeMask];
+        self.info           = info;
     }
 
     return self;
@@ -127,14 +142,19 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    int       tier              = [self tierForMonths:[self monthsForIndexPath:indexPath]];
-    NSString* productIdentifier = [[PurchaseManager sharedManager] productIdentifierForNumberTier:tier];
+    int tier = [self tierForMonths:[self monthsForIndexPath:indexPath]];
 
     //### start activity, disable all cells to avoid multiple buy actions.
 
     //### Check credit { put whole block below within, and mix in block with buying more credit first.
 
-    [[PurchaseManager sharedManager] buyProductIdentifier:productIdentifier completion:^(BOOL success, id object)
+    [[PurchaseManager sharedManager] buyNumberForTier:tier
+                                                 name:self.name
+                                       isoCountryCode:self.isoCountryCode
+                                             areaCode:self.area[@"areaCode"]
+                                           numberType:self.numberType
+                                                 info:self.info
+                                           completion:^(BOOL success, id object)
     {
         //###stop activity indicator.
 

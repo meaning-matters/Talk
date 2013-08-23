@@ -661,6 +661,18 @@
 }
 
 
+- (void)buyNumberForTier:(int)tier
+                    name:(NSString*)name
+          isoCountryCode:(NSString*)isoCountryCode
+                areaCode:(int)areaCode
+              numberType:(NumberTypeMask)numberTypeMask
+                    info:(NSDictionary*)info
+              completion:(void (^)(BOOL success, id object))completion
+{
+
+}
+
+
 - (void)buyProductIdentifier:(NSString*)productIdentifier completion:(void (^)(BOOL success, id object))completion
 {
     self.numberCompletion = completion;
@@ -675,7 +687,7 @@
             [[SKPaymentQueue defaultQueue] addPayment:payment];
             [Common enableNetworkActivityIndicator:YES];
 
-            return YES;//### replace with completion() further up.
+            // return YES;//### replace with completion() further up.
         }
         else
         {

@@ -20,7 +20,7 @@
 
 @interface NumberAreasViewController ()
 {
-    NSDictionary*           country;
+    NSString*               isoCountryCode;
     NSDictionary*           state;
     NumberTypeMask          numberTypeMask;
 
@@ -37,13 +37,13 @@
 
 @implementation NumberAreasViewController
 
-- (id)initWithCountry:(NSDictionary*)theCountry
-                state:(NSDictionary*)theState
-       numberTypeMask:(NumberTypeMask)theNumberTypeMask
+- (id)initWithIsoCountryCode:(NSString*)theIsoCountryCode
+                       state:(NSDictionary*)theState
+              numberTypeMask:(NumberTypeMask)theNumberTypeMask
 {
     if (self = [super initWithNibName:@"NumberAreasView" bundle:nil])
     {
-        country        = theCountry;
+        isoCountryCode = theIsoCountryCode;
         state          = theState;      // Is nil for country without states.
         numberTypeMask = theNumberTypeMask;
 
@@ -71,7 +71,7 @@
 
     if (state != nil)
     {
-        [[WebClient sharedClient] retrieveNumberAreasForIsoCountryCode:country[@"isoCountryCode"]
+        [[WebClient sharedClient] retrieveNumberAreasForIsoCountryCode:isoCountryCode
                                                              stateCode:state[@"stateCode"]
                                                         numberTypeMask:numberTypeMask
                                                           currencyCode:[Settings sharedSettings].currencyCode
@@ -89,7 +89,7 @@
     }
     else
     {
-        [[WebClient sharedClient] retrieveNumberAreasForIsoCountryCode:country[@"isoCountryCode"]
+        [[WebClient sharedClient] retrieveNumberAreasForIsoCountryCode:isoCountryCode
                                                         numberTypeMask:numberTypeMask
                                                           currencyCode:[Settings sharedSettings].currencyCode
                                                                  reply:^(WebClientStatus status, id content)
@@ -130,12 +130,12 @@
 
     if (state != nil)
     {
-        [[WebClient sharedClient] cancelAllRetrieveNumberAreasForIsoCountryCode:country[@"isoCountryCode"]
+        [[WebClient sharedClient] cancelAllRetrieveNumberAreasForIsoCountryCode:isoCountryCode
                                                                       stateCode:state[@"stateCode"]];
     }
     else
     {
-        [[WebClient sharedClient] cancelAllRetrieveNumberAreasForIsoCountryCode:country[@"isoCountryCode"]];
+        [[WebClient sharedClient] cancelAllRetrieveNumberAreasForIsoCountryCode:isoCountryCode];
     }
 }
 
@@ -366,10 +366,10 @@
     }
 
     NumberAreaViewController*   viewController;
-    viewController = [[NumberAreaViewController alloc] initWithCountry:country
-                                                                 state:state
-                                                                  area:area
-                                                        numberTypeMask:numberTypeMask];
+    viewController = [[NumberAreaViewController alloc] initWithIsoCountryCode:isoCountryCode
+                                                                        state:state
+                                                                         area:area
+                                                               numberTypeMask:numberTypeMask];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

@@ -60,3 +60,6 @@
   productCompletion will/should be nil then.
   
 * Rename WebClient methods to simpler prefixes: Get, Buy, ... (instead fo retrieve, purchase, ...).
+
+* Sort PurchaseManager methods in REST.txt order.
+
