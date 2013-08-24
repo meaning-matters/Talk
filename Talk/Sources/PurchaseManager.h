@@ -36,6 +36,8 @@
 
 - (void)buyCreditForTier:(int)tier completion:(void (^)(BOOL success, id object))completion;
 
+- (int)tierForCredit:(float)credit;
+
 - (void)buyNumberForTier:(int)tier
                   months:(int)months
                     name:(NSString*)name

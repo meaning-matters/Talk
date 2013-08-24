@@ -111,7 +111,7 @@
 
 #pragma mark - Helper Methods
 
-- (SKProduct*)getProductForProductIdentifier:(NSString*)productIdentifier
+- (SKProduct*)productForProductIdentifier:(NSString*)productIdentifier
 {
     for (SKProduct* product in self.products)
     {
@@ -571,7 +571,7 @@
 
 - (NSString*)localizedPriceForProductIdentifier:(NSString*)identifier;
 {
-    SKProduct*  product = [self getProductForProductIdentifier:identifier];
+    SKProduct*  product = [self productForProductIdentifier:identifier];
     NSString*   priceString;
 
     if (product != nil)
@@ -634,6 +634,43 @@
 }
 
 
+- (void)buyCreditForTier:(int)tier completion:(void (^)(BOOL success, id object))completion
+{
+    if (self.buyCompletion != nil)
+    {
+        completion(NO, nil);
+
+        return;
+    }
+
+    [self buyProductIdentifier:[self productIdentifierForCreditTier:tier] completion:^(BOOL success, id object)
+    {
+        completion(success, object);
+    }];
+}
+
+
+- (int)tierForCredit:(float)credit
+{
+    NSArray* tierNumbers = @[ @(1), @(2), @(5), @(10), @(20), @(50), @(75) ];
+
+    for (NSNumber* tierNumber in tierNumbers)
+    {
+        int        tier              = [tierNumber intValue];
+        NSString*  productIdentifier = [self productIdentifierForCreditTier:tier];
+        SKProduct* product           = [self productForProductIdentifier:productIdentifier];
+        float      price             = [product.price floatValue];
+
+        if (price > credit)
+        {
+            return tier;
+        }
+    }
+
+    return 0;
+}
+
+
 - (void)buyNumberForTier:(int)tier
                   months:(int)months
                     name:(NSString*)name
@@ -663,7 +700,7 @@
 
     if ([SKPaymentQueue canMakePayments])
     {
-        SKProduct* product = [self getProductForProductIdentifier:productIdentifier];
+        SKProduct* product = [self productForProductIdentifier:productIdentifier];
 
         if (product != nil)
         {

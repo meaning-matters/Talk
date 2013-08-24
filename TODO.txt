@@ -68,3 +68,5 @@
 * Do all tables using http://stackoverflow.com/a/18418549/1971013
 
 * Make number duration images softer (no black borders), and make them 37x37 ipv 38x38.
+
+* Think about if it's really good to cancel the who buy VC when Store alert is cancelled, as is done now.

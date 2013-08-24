@@ -12,6 +12,7 @@
 #import "PurchaseManager.h"
 #import "Common.h"
 #import "BlockAlertView.h"
+#import "WebClient.h"
 
 
 @interface BuyNumberViewController ()
@@ -157,65 +158,191 @@
 
     if (self.buyIndexPath == nil)
     {        
-        int tier   = [self tierForMonths:[self monthsForIndexPath:indexPath]];
-        int months = [self monthsForIndexPath:indexPath];
+        int   numberTier = [self tierForMonths:[self monthsForIndexPath:indexPath]];
+        int   months     = [self monthsForIndexPath:indexPath];
+        float setupFee   = [self.area[@"setupFee"] floatValue];
 
         self.buyIndexPath = indexPath;
 
         [self updateVisibleCells];
 
-        //### start activity, disable all cells to avoid multiple buy actions.
-
-        //### Check credit { put whole block below within, and mix in block with buying more credit first.
-
-        [[PurchaseManager sharedManager] buyNumberForTier:tier
-                                                   months:months
-                                                     name:self.name
-                                           isoCountryCode:self.isoCountryCode
-                                                 areaCode:self.area[@"areaCode"]
-                                               numberType:self.numberType
-                                                     info:self.info
-                                               completion:^(BOOL success, id object)
+        void (^buyNumberBlock)(void) = ^
         {
-            self.buyIndexPath = nil;
-            [self updateVisibleCells];
-
-            if (success == YES)
+            [[PurchaseManager sharedManager] buyNumberForTier:numberTier
+                                                       months:months
+                                                         name:self.name
+                                               isoCountryCode:self.isoCountryCode
+                                                     areaCode:self.area[@"areaCode"]
+                                                   numberType:self.numberType
+                                                         info:self.info
+                                                   completion:^(BOOL success, id object)
             {
-                //### [[SomeClass sharedClass] restoreNumbers];
+                self.buyIndexPath = nil;
+                [self updateVisibleCells];
 
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
-            else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
-            {
-                //      [self dismissViewControllerAnimated:YES completion:nil];
-            }
-            else if (object != nil)
-            {
-                NSString* title;
-                NSString* message;
-
-                title   = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyTitle", nil,
-                                                            [NSBundle mainBundle], @"Buying Number Failed",
-                                                            @"Alart title: A phone number could not be bought.\n"
-                                                            @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyMessage", nil,
-                                                            [NSBundle mainBundle],
-                                                            @"Something went wrong while buying your number: %@.\n\n"
-                                                            @"Please try again later.",
-                                                            @"Message telling that buying a phone number failed\n"
-                                                            @"[iOS alert message size]");
-                message = [NSString stringWithFormat:message, [object localizedDescription]];
-                [BlockAlertView showAlertViewWithTitle:title
-                                               message:message
-                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                if (success == YES)
                 {
                     [self dismissViewControllerAnimated:YES completion:nil];
                 }
-                                     cancelButtonTitle:[Strings closeString]
-                                     otherButtonTitles:nil];
-            }
-        }];
+                else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
+                {
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }
+                else if (object != nil)
+                {
+                    NSString* title;
+                    NSString* message;
+
+                    title   = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyNumberTitle", nil,
+                                                                [NSBundle mainBundle], @"Buying Number Failed",
+                                                                @"Alart title: A phone number could not be bought.\n"
+                                                                @"[iOS alert title size].");
+                    message = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyNumberMessage", nil,
+                                                                [NSBundle mainBundle],
+                                                                @"Something went wrong while buying your number: %@.\n\n"
+                                                                @"Please try again later.",
+                                                                @"Message telling that buying a phone number failed\n"
+                                                                @"[iOS alert message size]");
+                    message = [NSString stringWithFormat:message, [object localizedDescription]];
+                    [BlockAlertView showAlertViewWithTitle:title
+                                                   message:message
+                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+                    {
+                        [self dismissViewControllerAnimated:YES completion:nil];
+                    }
+                                         cancelButtonTitle:[Strings closeString]
+                                         otherButtonTitles:nil];
+                }
+            }];
+        };
+        
+        if (setupFee > 0)
+        {
+            [[WebClient sharedClient] retrieveCredit:^(WebClientStatus status, id content)
+            {
+                if (status == WebClientStatusOk)
+                {
+                    float credit = [content[@"credit"] floatValue];
+
+                    if (setupFee < credit)
+                    {
+                        buyNumberBlock();
+                    }
+                    else
+                    {
+                        int extraCreditTier = [[PurchaseManager sharedManager] tierForCredit:setupFee - credit];
+                        if (extraCreditTier > 0)
+                        {
+                            NSString* productIdentifier;
+                            NSString* extraString;
+                            NSString* creditString;
+                            NSString* title;
+                            NSString* message;
+
+                            productIdentifier = [[PurchaseManager sharedManager] productIdentifierForCreditTier:extraCreditTier];
+                            extraString       = [[PurchaseManager sharedManager] localizedPriceForProductIdentifier:productIdentifier];
+                            creditString      = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
+
+                            title   = NSLocalizedStringWithDefaultValue(@"BuyNumber NeedExtraCreditTitle", nil,
+                                                                        [NSBundle mainBundle], @"Extra Credit Needed",
+                                                                        @"Alart title: extra credit must be bought.\n"
+                                                                        @"[iOS alert title size].");
+                            message = NSLocalizedStringWithDefaultValue(@"BuyNumber NeedExtraCreditMessage", nil,
+                                                                        [NSBundle mainBundle],
+                                                                        @"The setup fee is more than your current "
+                                                                        @"credit: %@.\nYou can buy %@ extra credit now.",
+                                                                        @"Alert message: buying extra credit id needed.\n"
+                                                                        @"[iOS alert message size]");
+                            message = [NSString stringWithFormat:message, creditString, extraString];
+                            [BlockAlertView showAlertViewWithTitle:title
+                                                           message:message
+                                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+                            {
+                                if (cancelled == NO)
+                                {
+                                    [[PurchaseManager sharedManager] buyCreditForTier:extraCreditTier
+                                                                           completion:^(BOOL success, id object)
+                                    {
+                                        if (success == YES)
+                                        {
+                                            buyNumberBlock();
+                                        }
+                                        else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
+                                        {
+                                            [self dismissViewControllerAnimated:YES completion:nil];
+                                        }
+                                        else if (object != nil)
+                                        {
+                                            NSString* title;
+                                            NSString* message;
+
+                                            title   = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyCreditTitle", nil,
+                                                                                        [NSBundle mainBundle], @"Buying Credit Failed",
+                                                                                        @"Alart title: Credit could not be bought.\n"
+                                                                                        @"[iOS alert title size].");
+                                            message = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyCreditMessage", nil,
+                                                                                        [NSBundle mainBundle],
+                                                                                        @"Something went wrong while buying credit: "
+                                                                                        @"%@.\n\nPlease try again later.",
+                                                                                        @"Message telling that buying credit failed\n"
+                                                                                        @"[iOS alert message size]");
+                                            message = [NSString stringWithFormat:message, [object localizedDescription]];
+                                            [BlockAlertView showAlertViewWithTitle:title
+                                                                           message:message
+                                                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+                                            {
+                                                [self dismissViewControllerAnimated:YES completion:nil];
+                                            }
+                                                                 cancelButtonTitle:[Strings closeString]
+                                                                 otherButtonTitles:nil];
+                                        }
+                                    }];
+                                }
+                                else
+                                {
+                                    [self dismissViewControllerAnimated:YES completion:nil];
+                                }
+                            }
+                                                 cancelButtonTitle:[Strings cancelString]
+                                                 otherButtonTitles:[Strings buyString], nil];
+                        }
+                        else
+                        {
+                            NSLog(@"//### Apparently there's no sufficiently high credit product.");
+                        }
+                    }
+                }
+                else
+                {
+                    NSString* title;
+                    NSString* message;
+
+                    title   = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedGetCreditTitle", nil,
+                                                                [NSBundle mainBundle], @"Up-to-date Credit Unknown",
+                                                                @"Alart title: Reading the user's credit failed.\n"
+                                                                @"[iOS alert title size].");
+                    message = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedGetCreditMessage", nil,
+                                                                [NSBundle mainBundle],
+                                                                @"Could not get your up-to-date credit, from our "
+                                                                @"internet server.  (Credit is needed for the "
+                                                                @"setup fee.)\n\nPlease try again later.",
+                                                                @"Message telling that buying a phone number failed\n"
+                                                                @"[iOS alert message size]");
+                    [BlockAlertView showAlertViewWithTitle:title
+                                                   message:message
+                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+                    {
+                        [self dismissViewControllerAnimated:YES completion:nil];
+                    }
+                                         cancelButtonTitle:[Strings closeString]
+                                         otherButtonTitles:nil];
+                }
+            }];
+        }
+        else
+        {
+            buyNumberBlock();
+        }
     }
 }
 
