@@ -63,3 +63,8 @@
 
 * Sort PurchaseManager methods in REST.txt order.
 
+* Check what happens when notifications are of, buyAccount in PurchaseManager.
+
+* Do all tables using http://stackoverflow.com/a/18418549/1971013
+
+* Make number duration images softer (no black borders), and make them 37x37 ipv 38x38.

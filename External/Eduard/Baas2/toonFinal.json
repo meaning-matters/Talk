@@ -1,0 +1,6781 @@
+{
+	"AC" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.384,
+				"off" : 0.384		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 1000.0,
+				"off" : 0.0		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.384,
+				"off" : 0.192,
+				"on" : 0.384,
+				"off" : 2.016		
+			}		
+		]
+	},
+	"AF" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 1.0,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"AX" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.75		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"AL" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"DZ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.5,
+				"off" : 3.5		
+			}		
+		]
+	},
+	"AS" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2		
+			}		
+		]
+	},
+	"AD" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2,
+				"on" : 0.2,
+				"off" : 0.2,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.5,
+				"off" : 3.0		
+			}		
+		]
+	},
+	"AO" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 25,
+				"on" : 1.0,
+				"off" : 5.0		
+			}		
+		]
+	},
+	"AI" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"frequency2" : 480,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"AG" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"frequency2" : 480,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"AR" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.3,
+				"off" : 0.2		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.3,
+				"off" : 0.4		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"AM" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.2,
+				"off" : 0.2,
+				"on" : 0.2,
+				"off" : 0.2,
+				"on" : 0.2,
+				"off" : 0.2,
+				"on" : 0.6,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"AN" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"SX" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"MF" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"CW" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"AW" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"AU" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"CX" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"CC" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"AT" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 420,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 420,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 420,
+				"on" : 1.0,
+				"off" : 5.0		
+			}		
+		]
+	},
+	"AZ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"BS" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 480,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"on" : 0.25,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 480,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"BH" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.35,
+				"on" : 0.225,
+				"off" : 0.525		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"BD" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.2,
+				"off" : 0.3,
+				"on" : 0.7,
+				"off" : 0.8		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"BB" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"frequency2" : 480,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"BY" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.15,
+				"off" : 0.15		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.8,
+				"off" : 3.2		
+			}		
+		]
+	},
+	"BE" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.167,
+				"off" : 0.167		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 3.0		
+			}		
+		]
+	},
+	"BZ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"BJ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 0,
+		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.7,
+				"off" : 3.3		
+			}		
+		]
+	},
+	"BM" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"frequency2" : 480,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"BT" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.6,
+				"off" : 0.6		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.3,
+				"off" : 0.3		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 25,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.6		
+			}		
+		]
+	},
+	"BO" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2,
+				"on" : 0.2,
+				"off" : 0.2,
+				"on" : 0.2,
+				"off" : 0.6		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.15,
+				"off" : 0.3		
+			}		
+		]
+	},
+	"BQ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"BA" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"BW" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.38,
+				"off" : 0.38		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"BR" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"BN" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 0.2		
+			}		
+		]
+	},
+	"BG" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"BF" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"BI" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.7,
+				"off" : 3.3		
+			}		
+		]
+	},
+	"KH" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"VN" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"CM" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.7,
+				"off" : 3.3		
+			}		
+		]
+	},
+	"GQ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.7,
+				"off" : 3.3		
+			}		
+		]
+	},
+	"CA" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"frequency2" : 480,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"CV" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"KY" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"CF" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.7,
+				"off" : 3.3		
+			}		
+		]
+	},
+	"TD" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.7,
+				"off" : 3.3		
+			}		
+		]
+	},
+	"IO" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 480,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.0,
+				"off" : 3.0		
+			}		
+		]
+	},
+	"CL" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 1.0,
+				"off" : 3.0		
+			}		
+		]
+	},
+	"CN" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.35,
+				"off" : 0.35		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.7,
+				"off" : 0.7		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"TW" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.35,
+				"off" : 0.35		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.7,
+				"off" : 0.7		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"KP" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.35,
+				"off" : 0.35		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.7,
+				"off" : 0.7		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"CO" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.1,
+				"off" : 0.25,
+				"on" : 0.35,
+				"off" : 0.25,
+				"on" : 0.65,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.5		
+			}		
+		]
+	},
+	"KM" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.71,
+				"off" : 5.0e-2		
+			}		
+		]
+	},
+	"CG" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"CD" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"CK" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2		
+			}		
+		]
+	},
+	"CR" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.32999998,
+				"off" : 0.32999998		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.32999998,
+				"off" : 0.32999998		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 1.2,
+				"off" : 4.9		
+			}		
+		]
+	},
+	"CI" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 0,
+		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.7,
+				"off" : 3.3		
+			}		
+		]
+	},
+	"TG" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 0,
+		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.7,
+				"off" : 3.3		
+			}		
+		]
+	},
+	"HR" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"CU" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 620,
+				"frequency2" : 480,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"CY" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.5,
+				"off" : 3.0		
+			}		
+		]
+	},
+	"CZ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.32999998,
+				"off" : 0.32999998		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.16499999,
+				"off" : 0.16499999		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"DK" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"DJ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.5,
+				"off" : 3.5		
+			}		
+		]
+	},
+	"DM" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"frequency2" : 480,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"DO" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.8,
+				"off" : 0.8		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.8,
+				"off" : 0.8		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.2		
+			}		
+		]
+	},
+	"HT" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.8,
+				"off" : 0.8		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.8,
+				"off" : 0.8		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.2		
+			}		
+		]
+	},
+	"EC" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.32999998,
+				"off" : 0.32999998		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.32999998,
+				"off" : 0.32999998		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.2,
+				"off" : 4.65		
+			}		
+		]
+	},
+	"EG" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 2.0,
+				"off" : 1.0		
+			}		
+		]
+	},
+	"LY" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 2.0,
+				"off" : 1.0		
+			}		
+		]
+	},
+	"SV" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.32,
+				"off" : 0.32		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.32,
+				"off" : 0.32		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.2,
+				"off" : 4.6		
+			}		
+		]
+	},
+	"EE" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.3,
+				"off" : 0.3		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"ET" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"SO" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"ER" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"FK" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.4,
+				"off" : 0.35,
+				"on" : 0.255,
+				"off" : 0.525		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2		
+			}		
+		]
+	},
+	"FO" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"FJ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.75,
+				"off" : 0.75		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 37.0,
+				"off" : 0.37,
+				"on" : 0.37,
+				"off" : 0.37		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"FI" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.3,
+				"off" : 0.3		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"FR" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.5,
+				"off" : 3.5		
+			}		
+		]
+	},
+	"BL" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.5,
+				"off" : 3.5		
+			}		
+		]
+	},
+	"GF" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.5,
+				"off" : 3.5		
+			}		
+		]
+	},
+	"PF" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.7,
+				"off" : 3.3		
+			}		
+		]
+	},
+	"GA" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.7,
+				"off" : 3.3		
+			}		
+		]
+	},
+	"GM" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"GE" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 3.0		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 1.0		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 25,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"DE" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.48000002,
+				"off" : 0.48000002		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.24000001,
+				"off" : 0.24000001		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"GH" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"GI" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.4,
+				"off" : 0.35,
+				"on" : 0.225,
+				"off" : 0.525		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"GR" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.3,
+				"off" : 0.3		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.15,
+				"off" : 0.15		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"GL" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 445,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 445,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 445,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"GD" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 460,
+				"frequency2" : 620,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 0,
+		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"frequency2" : 480,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"GP" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.5,
+				"off" : 3.5		
+			}		
+		]
+	},
+	"GG" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.4,
+				"off" : 0.35,
+				"on" : 0.25,
+				"off" : 0.52		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2		
+			}		
+		]
+	},
+	"GN" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.1,
+				"off" : 0.1		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.4,
+				"off" : 0.2		
+			}		
+		]
+	},
+	"GW" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.1,
+				"off" : 0.1		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.4,
+				"off" : 0.2		
+			}		
+		]
+	},
+	"GY" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.75,
+				"off" : 3.25		
+			}		
+		]
+	},
+	"HN" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"NI" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"HK" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"frequency2" : 480,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 3.0		
+			}		
+		]
+	},
+	"HU" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.3,
+				"off" : 0.3		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.3,
+				"off" : 0.3		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.25,
+				"off" : 3.75		
+			}		
+		]
+	},
+	"IS" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"IN" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.75,
+				"off" : 0.75		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"ID" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"TL" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"MH" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"NF" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"IR" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"IQ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 1.0,
+				"off" : 1.0		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 1000.0,
+				"off" : 0.0		
+			}		
+		]
+	},
+	"IE" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"IL" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 1.0,
+				"off" : 3.0		
+			}		
+		]
+	},
+	"PS" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 1.0,
+				"off" : 3.0		
+			}		
+		]
+	},
+	"IT" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"VA" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"JM" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"frequency2" : 480,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"JP" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 1.0,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"JE" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.4,
+				"off" : 0.35,
+				"on" : 0.225,
+				"off" : 0.525		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"JO" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 420,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 420,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 420,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"KE" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.6,
+				"on" : 0.2,
+				"off" : 0.6		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.6		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.66999996,
+				"off" : 3.0,
+				"on" : 1.5,
+				"off" : 5.0		
+			}		
+		]
+	},
+	"KI" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"FM" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"PW" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"MP" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"GU" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"KR" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.3,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"frequency2" : 480,
+				"on" : 1.0,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"KW" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"KG" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.8,
+				"off" : 3.2		
+			}		
+		]
+	},
+	"LA" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 1.0		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"LV" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.3,
+				"off" : 0.3		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.15,
+				"off" : 0.15		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"LB" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.24000001,
+				"off" : 0.24000001		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"LS" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 1.0		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"LR" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"LI" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.3,
+				"off" : 0.3		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1000.0,
+				"off" : 0.0		
+			}		
+		]
+	},
+	"LT" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.35,
+				"off" : 0.35		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"LU" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.48000002,
+				"off" : 0.48000002		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.24000001,
+				"off" : 0.24000001		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"MO" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"MK" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"MG" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 0,
+		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.7,
+				"off" : 3.3		
+			}		
+		]
+	},
+	"MW" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"MY" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"MV" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"ML" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 0,
+		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.5,
+				"off" : 3.0		
+			}		
+		]
+	},
+	"MT" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"MQ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.5,
+				"off" : 3.5		
+			}		
+		]
+	},
+	"MR" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.5,
+				"off" : 3.5		
+			}		
+		]
+	},
+	"MU" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.75,
+				"off" : 0.75		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"YT" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.5,
+				"off" : 3.5		
+			}		
+		]
+	},
+	"MX" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"GT" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"MD" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.35,
+				"off" : 0.35		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.8,
+				"off" : 3.2		
+			}		
+		]
+	},
+	"MC" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 0,
+		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.7,
+				"off" : 3.3		
+			}		
+		]
+	},
+	"MS" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"frequency2" : 480,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"MA" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.7,
+				"off" : 3.3		
+			}		
+		]
+	},
+	"MZ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 1.0,
+				"off" : 5.0		
+			}		
+		]
+	},
+	"MM" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"NA" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"NR" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"NP" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.175,
+				"off" : 0.175		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.1,
+				"off" : 3.1		
+			}		
+		]
+	},
+	"NL" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"NC" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 1800,
+				"on" : 0.333,
+				"off" : 0.333,
+				"frequency1" : 1400,
+				"on" : 0.333,
+				"off" : 0.333,
+				"frequency1" : 950,
+				"on" : 0.333,
+				"off" : 0.333		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.7,
+				"off" : 3.3		
+			}		
+		]
+	},
+	"NZ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"NU" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"TO" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"NE" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.7,
+				"off" : 3.3		
+			}		
+		]
+	},
+	"NG" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"NO" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"SJ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"OM" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"PK" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 1.0,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"PA" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.32,
+				"off" : 0.32		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.32,
+				"off" : 0.32		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.2,
+				"off" : 4.65		
+			}		
+		]
+	},
+	"PG" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"PY" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"PE" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2,
+				"on" : 0.2,
+				"off" : 0.2,
+				"on" : 0.2,
+				"off" : 0.6		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.15,
+				"off" : 0.3		
+			}		
+		]
+	},
+	"PH" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"frequency2" : 480,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"PL" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"PT" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.35999998,
+				"off" : 0.35999998		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 5.0		
+			}		
+		]
+	},
+	"QA" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.8,
+				"off" : 0.8		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.4,
+				"off" : 0.35,
+				"on" : 0.22,
+				"off" : 0.52		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.38,
+				"off" : 0.25,
+				"on" : 0.38,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"RO" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.17,
+				"off" : 0.17		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 8.5e-2,
+				"off" : 8.5e-2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 1.85,
+				"off" : 4.15		
+			}		
+		]
+	},
+	"RU" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.8,
+				"off" : 3.2		
+			}		
+		]
+	},
+	"UA" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.8,
+				"off" : 3.2		
+			}		
+		]
+	},
+	"MN" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.8,
+				"off" : 3.2		
+			}		
+		]
+	},
+	"KZ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.8,
+				"off" : 3.2		
+			}		
+		]
+	},
+	"RW" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 0,
+		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.7,
+				"off" : 3.3		
+			}		
+		]
+	},
+	"SH" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.4,
+				"off" : 0.35		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2		
+			}		
+		]
+	},
+	"KN" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"frequency2" : 480,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"LC" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.25,
+				"on" : 0.375,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"PM" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.5,
+				"off" : 3.5		
+			}		
+		]
+	},
+	"VC" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.4,
+				"off" : 0.35,
+				"on" : 0.225,
+				"off" : 0.525		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"WS" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2		
+			}		
+		]
+	},
+	"SM" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.1,
+				"off" : 0.1		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"ST" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 1.0,
+				"off" : 5.0		
+			}		
+		]
+	},
+	"SA" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.2,
+				"off" : 4.6		
+			}		
+		]
+	},
+	"SN" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 1.7,
+				"off" : 3.3		
+			}		
+		]
+	},
+	"RS" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 1.0,
+				"off" : 9.0		
+			}		
+		]
+	},
+	"ME" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 1.0,
+				"off" : 9.0		
+			}		
+		]
+	},
+	"SC" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.225,
+				"off" : 0.525		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"SL" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"SG" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.75,
+				"off" : 0.75		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"SK" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.32999998,
+				"off" : 0.32999998		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.16499999,
+				"off" : 0.16499999		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"SI" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"SB" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.1,
+				"off" : 0.1		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2		
+			}		
+		]
+	},
+	"ZA" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"ES" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.5,
+				"off" : 3.0		
+			}		
+		]
+	},
+	"LK" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.75,
+				"off" : 0.75		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"SD" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 1.0		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"SS" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 1.0		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"SR" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 1.0		
+			}		
+		]
+	},
+	"SZ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"SE" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.75		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 5.0		
+			}		
+		]
+	},
+	"CH" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.2,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"SY" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 1.0,
+				"off" : 0.5		
+			}		
+		]
+	},
+	"TJ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 25,
+				"on" : 0.8,
+				"off" : 3.2		
+			}		
+		]
+	},
+	"UZ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 25,
+				"on" : 0.8,
+				"off" : 3.2		
+			}		
+		]
+	},
+	"TZ" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 1.0		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"TH" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.3,
+				"off" : 0.3		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"TK" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2		
+			}		
+		]
+	},
+	"TT" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"frequency2" : 480,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"TN" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.167,
+				"off" : 0.167		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.2,
+				"off" : 4.65		
+			}		
+		]
+	},
+	"TR" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 0.2,
+				"off" : 0.2,
+				"on" : 0.2,
+				"off" : 0.2,
+				"on" : 0.2,
+				"off" : 0.2,
+				"on" : 0.6,
+				"off" : 0.2		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"TM" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.4		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 25,
+				"on" : 0.4,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"TC" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"frequency2" : 480,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"TV" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 2.5,
+				"off" : 7.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 0.5,
+				"on" : 1.0,
+				"off" : 10.0		
+			}		
+		]
+	},
+	"UG" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"AE" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.4,
+				"off" : 0.35,
+				"frequency1" : 400,
+				"on" : 0.225,
+				"off" : 0.525		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"GB" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.4,
+				"off" : 0.35,
+				"on" : 0.225,
+				"off" : 0.525		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"IM" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.4,
+				"off" : 0.35,
+				"on" : 0.225,
+				"off" : 0.525		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 400,
+				"frequency2" : 450,
+				"on" : 0.4,
+				"off" : 0.2,
+				"on" : 0.4,
+				"off" : 2.0		
+			}		
+		]
+	},
+	"US" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 600,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 600,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 420,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"PR" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 600,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 600,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 420,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"UY" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"VU" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"VE" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"VG" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"frequency2" : 480,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"VI" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 480,
+				"frequency2" : 620,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"frequency2" : 480,
+				"on" : 2.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"WF" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.5,
+				"off" : 3.5		
+			}		
+		]
+	},
+	"YE" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"ZM" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"ZW" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 400,
+				"on" : 0.375,
+				"off" : 0.375		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 425,
+				"on" : 0.167,
+				"off" : 0.167		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 450,
+				"on" : 1.0,
+				"off" : 4.0		
+			}		
+		]
+	},
+	"RE" : 
+	{
+		"busy" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.5,
+				"off" : 0.5		
+			}		
+		],
+		"congestion" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 0.25,
+				"off" : 0.25		
+			}		
+		],
+		"ringing" : 
+		[
+			{
+				"frequency1" : 440,
+				"on" : 1.5,
+				"off" : 3.5		
+			}		
+		]
+	}
+}

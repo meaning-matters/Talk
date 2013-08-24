@@ -1,0 +1,145 @@
+Logboek
+
+27 december
+2.5 uur
+19:00 - 21:30
+Begonnen met opdracht
+Parser geschreven voor tijdzone en landen
+
+28 december
+9:30 - 10:30
+
+Wijzigingen tijdzones:
+duplicaten verwijderd (vatican)
+aparte entry Ascension Island gemaakt
+Aland islands toegevoegd (ligt voor kust zweden)
+Netherlands Antilles toegevoegd (zelfde als bonaire, curaçao)
+verwijderd: Australian External Territories	672	00	0	6 digits	+11.30
+Bolivia (Plurinal state of) heet nu Bolivia
+
+Central African Rep. heet nu Central African Republic
+Chagos Islands toegevoegd (Diego Garcia)
+Christmas Island, Cocos (Keeling) Islands toegevoegd
+DR Congo toegevoegd
+oude entry DR Congo vewrijderd: Dem. Rep. of the Congo	243	00	0	5 to 9 digits	+1
+Korea verplaatst: Dem. People's Rep. of Korea	850	00	0	6 to 17 digits	+9
+Diego Garcia verwijderd: Diego Garcia	246	00	…	7 digits	+6
+Falkland Islands renamed
+verwijderd: French Departments and Territories in the Indian Ocean	262	00	…	9 digits	+3, +4
+verwijderd: Global Mobile Satellite System (GMSS), shared code	881				
+Group of countries, shared code	388				
+Guernsey toegevoegd
+Hong Kong, China renamed
+Vatican verplaatst, renamed naar Vatican City
+trial of a proposed verwijderd
+verwijderd: Inmarsat SNAC	870	00	…	9 digits	
+International Freephone Service	800	…	…	8 digits	
+International Networks, shared code	882				
+International Networks, shared code	883				
+
+International Premium Rate Service (IPRS)	979	…	…	9 digits	
+International Shared Cost Service (ISCS)	808	…	…	8 digits	
+lexical error bij israel eruit gehaald
+Isle of Man, Jersey toegevoegd
+Dem. Peoples. Republic. of Korea ingevoegd, en de juiste korea's North en South genoemd
+Lao P.D.R. heet nu Laos
+Macao, China heet nu Macao
+The Former Yugoslav Republic of Macedonia renamed naar Macedonia en op de juiste positie gezet.
+Mayotte toegevoegd, Moldova renamed
+Norfolk Island toegevoegd, Northern Marianas -> Northern Mariana Islands
+Réunion toegevoegd, met alleen tijdzone
+Saint Barthélemy toegevoegd
+Saint Martin (French part) toegevoegd
+Svalbard en Jan Mayen toegevoegd, Svalbard = spitsbergen
+Syrian Arabic Republic heet nu Syria
+Taiwan, China heet nu Taiwan
+British Virgin Islands verplaatst, renamed naar Virgin Islands, British, United States Virgin Islands -> Virgin Islands, U.S.
+Venezuela (Bolivarian Republic Of) renamed naar Venezuela
+
+
+20:30 - 23:15
+
+Nog aangepast : Iran (Islamic Republic of) -> Iran
+Russian Federation -> Russia
+Parser gefinished
+
+4 Januari
+20:30 - 21:20
+prettyprinten parser
+
+Bij het ontbreken van een congestion tone word de Busy Tone gekozen.
+
+tonen.txt
+afghanistan gekopieerd van pakistan (geen entry van Afgh.)
+Åland Islands gekopieerd van Sweden
+Congestion tone - 	425	0.25 on 0.25 off gekozen voor Algerije
+Samoa gekozen voor American Samoa
+Turkije gekozen voor Armenië
+Iran gekozen voor Azerbaijan
+Congestion tone Latvia gekozen voor Belarus
+Mexico gekozen voor Belize
+Peru voor Bolivia
+Netherlands Antilles bij Bonaire, St Eustatius and Saba
+Uruguay voor Congestion Tone Brazil
+GAmbia voor Cape Verde
+Sudan voor Congestion Chad
+Diego Garcia voor Chagos Islands
+Congo = DR Congo
+Ringing Tone I gekozen bij cuba
+Busy & congestion I bij denemarken
+Diego Garcia weggelaten
+Busy & congestion I bij Dominican Republic
+Congestion Tone French Polynesia gekozen voor French Guyana
+Ringing Tone I gekozen voor India
+Republiek van Korea heet nu South Korea
+Ringing en Congestion I bij Malaysia
+Congestion Tone New Caledonia, laatste deel is nu gelijk aan nederland van 2x[3x0.33 on + announcement]
+Swaziland heeft nu zelfde congestion & busy tones als zuid afrika
+chagos islands : 60 ipm (interruptions per minute) is dus 0.5 on 0.5 off
+China gekozen voor Noord Korea
+Italië gekozen voor vaticaan
+Netherlands Antilles voor Curaçao
+idem voor sint maarten - saint martin
+Virgin Islands British voor US virgin islands
+Chagos Islands allebei 1e frequentie gekozen
+Congestion tone UAE van // naar /
+400+450 bij congestion tone australië
+
+23 Februari 17:30 - 21:00
+
+24 Februari 10:00 - 13:30
+
+620+480 gekozen voor Busy tone Cuba, 400 gekozen voor Congestion cuba
+400 voor Ringing tone Japan
+New Caledonia Congestion aangepast naar 3x0.333 on - off, wat bij de frequenties past
+Dominicaanse Republiek gekozen voor haiti (zelfde als ringback)
+GB voor Isle of Man
+Indonesie voor Marshall Islands, Timor-Leste
+Indonesie voor Norfolk Island (zelfde als ringback, ook hierboven)
+Australië voor christmas island (wikipedia)
+idem voor cocoseilanden
+Cameroon voor Equatorial Guinea
+Ethiopië voor Somalia, Eritrea
+Kiribati voor Micronesia, Guam
+Mexico voor Guatemala
+Guinea voor Guinea-Bissau
+Rusland voor Khazakstan
+Egypte voor Libië
+Russia voor Mongolia, Ukraine
+Honduras voor Nicaragua
+Nieuw Zeeland voor Niue, Tonga
+Micronesie voor Northern Mariana Islands, Palau
+Israel voor Palestinian Territories
+France voor Saint - Barthelemy
+Sudan voor South Sudan
+Noorwegen voor Svalbard and Jan Mayen 
+China voor Taiwan
+USA voor Puerto Rico
+Cote d'Ivoire voor Togo
+Tajikistan voor Uzbekistan
+Cambodia voor Vietnam
+Servië voor Montenegro
+
+Bij verschillende alternatieven kiest de parser de 1e.
+Bij het ontbreken van een Congestion Tone wordt de Busy tone gebruikt, met de helft van de tijden.
+Bij een announcement moet je zelf even verzinnen of je dat wil bewaren of niet, nu heb ik hem op 0 staan. Misschien dat je hem dan beter weg kan gooien. Komt 8x voor.

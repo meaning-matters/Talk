@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSDictionary* area;
 @property (nonatomic, strong) NSString*     numberType;
 @property (nonatomic, strong) NSDictionary* info;
+@property (nonatomic, strong) NSIndexPath*  buyIndexPath;
 
 @end
 
@@ -75,7 +76,34 @@
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 6;
+    if ([self tierForMonths:12] > 0)
+    {
+        return 6;
+    }
+    else if ([self tierForMonths:9] > 0)
+    {
+        return 5;
+    }
+    else if ([self tierForMonths:6] > 0)
+    {
+        return 4;
+    }
+    else if ([self tierForMonths:3] > 0)
+    {
+        return 3;
+    }
+    else if ([self tierForMonths:2] > 0)
+    {
+        return 2;
+    }
+    else if ([self tierForMonths:1] > 0)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 
@@ -83,54 +111,37 @@
 {
     BuyNumberCell* cell = [tableView dequeueReusableCellWithIdentifier:@"BuyNumberCell" forIndexPath:indexPath];
 
-    float setupFee = [[self.area objectForKey:@"setupFee"] floatValue];
-    int   months   = [self monthsForIndexPath:indexPath];
-    int   tier     = [self tierForMonths:months];
-
-    NSString* productIdentifier = [[PurchaseManager sharedManager] productIdentifierForNumberTier:tier];
-    NSString* priceString       = [[PurchaseManager sharedManager]localizedPriceForProductIdentifier:productIdentifier];
-    NSString* text;
-    text = NSLocalizedStringWithDefaultValue(@"BuyNumber:... PriceLabel", nil, [NSBundle mainBundle],
-                                             @"%d %@ for %@",
-                                             @"Parameters are: number of months (1, 2, 3, ...), "
-                                             @"the word 'month' in singular or plural, "
-                                             @"the price (including currency sign).");
-    text = [NSString stringWithFormat:text,
-            months,
-            [Common capitalizedString:(months == 1) ? [Strings monthString] : [Strings monthsString]],
-            priceString];
-
-    cell.periodImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"NumberPeriod%d.png", months]];
-    cell.monthsLabel.text = text;
-
-    if (setupFee == 0)
-    {
-        text = NSLocalizedStringWithDefaultValue(@"BuyNumber:... ZeroSetupFeeLabel", nil, [NSBundle mainBundle],
-                                                 @"No setup fee!",
-                                                 @"[One line]");
-    }
-    else
-    {
-        text = NSLocalizedStringWithDefaultValue(@"BuyNumber:... SetupFeeLabel", nil, [NSBundle mainBundle],
-                                                 @"plus a setup fee of %@",
-                                                 @"[One line]");
-    }
-
-    text = [NSString stringWithFormat:text, [[PurchaseManager sharedManager] localizedFormattedPrice:setupFee]];
-    cell.setupLabel.text  = text;
-
     return cell;
+}
+
+
+- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSString* title;
+
+    title = NSLocalizedStringWithDefaultValue(@"BuyNumber:... TableHeader", nil, [NSBundle mainBundle],
+                                              @"Select Initial Duration",
+                                              @"[Multiple lines]");
+
+    return title;
 }
 
 
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
-    NSString*   title = nil;
+    NSString* title;
 
-    if (section == 0)
+    if ([self tableView:tableView numberOfRowsInSection:0] == 6)
     {
         title = NSLocalizedStringWithDefaultValue(@"BuyNumber:... TableFooter", nil, [NSBundle mainBundle],
                                                   @"The setup fee will be taken from your credit.",
+                                                  @"[Multiple lines]");
+    }
+    else
+    {
+        title = NSLocalizedStringWithDefaultValue(@"BuyNumber:... TableFooter", nil, [NSBundle mainBundle],
+                                                  @"The setup fee will be taken from your credit.\n"
+                                                  @"Due to the high price, not all durations are currently available.",
                                                   @"[Multiple lines]");
     }
 
@@ -142,58 +153,76 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    int tier = [self tierForMonths:[self monthsForIndexPath:indexPath]];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    //### start activity, disable all cells to avoid multiple buy actions.
+    if (self.buyIndexPath == nil)
+    {        
+        int tier   = [self tierForMonths:[self monthsForIndexPath:indexPath]];
+        int months = [self monthsForIndexPath:indexPath];
 
-    //### Check credit { put whole block below within, and mix in block with buying more credit first.
+        self.buyIndexPath = indexPath;
 
-    [[PurchaseManager sharedManager] buyNumberForTier:tier
-                                                 name:self.name
-                                       isoCountryCode:self.isoCountryCode
-                                             areaCode:self.area[@"areaCode"]
-                                           numberType:self.numberType
-                                                 info:self.info
-                                           completion:^(BOOL success, id object)
-    {
-        //###stop activity indicator.
+        [self updateVisibleCells];
 
-        if (success == YES)
+        //### start activity, disable all cells to avoid multiple buy actions.
+
+        //### Check credit { put whole block below within, and mix in block with buying more credit first.
+
+        [[PurchaseManager sharedManager] buyNumberForTier:tier
+                                                   months:months
+                                                     name:self.name
+                                           isoCountryCode:self.isoCountryCode
+                                                 areaCode:self.area[@"areaCode"]
+                                               numberType:self.numberType
+                                                     info:self.info
+                                               completion:^(BOOL success, id object)
         {
-            //### [[SomeClass sharedClass] restoreNumbers];
-            
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
-        else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
-        {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
-        else if (object != nil)
-        {
-            NSString* title;
-            NSString* message;
+            self.buyIndexPath = nil;
+            [self updateVisibleCells];
 
-            title   = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyTitle", nil,
-                                                        [NSBundle mainBundle], @"Buying Number Failed",
-                                                        @"Alart title: A phone number could not be bought.\n"
-                                                        @"[iOS alert title size].");
-            message = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyMessage", nil,
-                                                        [NSBundle mainBundle],
-                                                        @"Something went wrong while buying your number: %@.\n\n"
-                                                        @"Please try again later.",
-                                                        @"Message telling that buying a phone number failed\n"
-                                                        @"[iOS alert message size]");
-            message = [NSString stringWithFormat:message, [object localizedDescription]];
-            [BlockAlertView showAlertViewWithTitle:title
-                                           message:message
-                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
-             {
-                 [self dismissViewControllerAnimated:YES completion:nil];
-             }
-                                 cancelButtonTitle:[Strings closeString]
-                                 otherButtonTitles:nil];
-        }
-    }];    
+            if (success == YES)
+            {
+                //### [[SomeClass sharedClass] restoreNumbers];
+
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
+            else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
+            {
+                //      [self dismissViewControllerAnimated:YES completion:nil];
+            }
+            else if (object != nil)
+            {
+                NSString* title;
+                NSString* message;
+
+                title   = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyTitle", nil,
+                                                            [NSBundle mainBundle], @"Buying Number Failed",
+                                                            @"Alart title: A phone number could not be bought.\n"
+                                                            @"[iOS alert title size].");
+                message = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyMessage", nil,
+                                                            [NSBundle mainBundle],
+                                                            @"Something went wrong while buying your number: %@.\n\n"
+                                                            @"Please try again later.",
+                                                            @"Message telling that buying a phone number failed\n"
+                                                            @"[iOS alert message size]");
+                message = [NSString stringWithFormat:message, [object localizedDescription]];
+                [BlockAlertView showAlertViewWithTitle:title
+                                               message:message
+                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                {
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }
+                                     cancelButtonTitle:[Strings closeString]
+                                     otherButtonTitles:nil];
+            }
+        }];
+    }
+}
+
+
+- (void)tableView:(UITableView*)tableView willDisplayCell:(UITableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    [self updateCell:(BuyNumberCell*)cell atIndexPath:indexPath];
 }
 
 
@@ -229,7 +258,72 @@
         case 12: tier = [[self.area objectForKey:@"twelveMonthTier"] intValue]; break;
     }
 
-    return tier;
+    return (1 <= tier && tier <= 87) ? tier : 0;
+}
+
+
+- (void)updateCell:(BuyNumberCell*)cell atIndexPath:(NSIndexPath*)indexPath
+{
+    float setupFee = [[self.area objectForKey:@"setupFee"] floatValue];
+    int   months   = [self monthsForIndexPath:indexPath];
+    int   tier     = [self tierForMonths:months];
+
+    NSString* productIdentifier = [[PurchaseManager sharedManager] productIdentifierForNumberTier:tier];
+    NSString* priceString       = [[PurchaseManager sharedManager]localizedPriceForProductIdentifier:productIdentifier];
+    NSString* text;
+    text = NSLocalizedStringWithDefaultValue(@"BuyNumber:... PriceLabel", nil, [NSBundle mainBundle],
+                                             @"%d %@ for %@",
+                                             @"Parameters are: number of months (1, 2, 3, ...), "
+                                             @"the word 'month' in singular or plural, "
+                                             @"the price (including currency sign).");
+    text = [NSString stringWithFormat:text,
+            months,
+            [Common capitalizedString:(months == 1) ? [Strings monthString] : [Strings monthsString]],
+            priceString];
+
+    cell.durationImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"NumberDuration%d.png", months]];
+    cell.monthsLabel.text = text;
+
+    if (setupFee == 0)
+    {
+        text = NSLocalizedStringWithDefaultValue(@"BuyNumber:... ZeroSetupFeeLabel", nil, [NSBundle mainBundle],
+                                                 @"No setup fee!",
+                                                 @"[One line]");
+    }
+    else
+    {
+        text = NSLocalizedStringWithDefaultValue(@"BuyNumber:... SetupFeeLabel", nil, [NSBundle mainBundle],
+                                                 @"plus a setup fee of %@",
+                                                 @"[One line]");
+    }
+
+    text = [NSString stringWithFormat:text, [[PurchaseManager sharedManager] localizedFormattedPrice:setupFee]];
+    cell.setupLabel.text = text;
+
+    cell.durationImageView.alpha = self.buyIndexPath ? 0.5 : 1.0;
+    cell.monthsLabel.alpha       = self.buyIndexPath ? 0.5 : 1.0;
+    cell.setupLabel.alpha        = self.buyIndexPath ? 0.5 : 1.0;
+    if (self.buyIndexPath != nil && [self.buyIndexPath compare:indexPath] == NSOrderedSame)
+    {
+        [cell.activityIndicator startAnimating];
+        cell.userInteractionEnabled = NO;
+    }
+    else
+    {
+        [cell.activityIndicator stopAnimating];
+        cell.userInteractionEnabled = YES;
+    }
+}
+
+
+- (void)updateVisibleCells
+{
+    for (NSIndexPath* indexPath in [self.tableView indexPathsForVisibleRows])
+    {
+        BuyNumberCell* cell = (BuyNumberCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+
+        [self updateCell:cell atIndexPath:indexPath];
+    }
 }
 
 @end

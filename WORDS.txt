@@ -1,0 +1,12 @@
+This file contains the preferred words and terms used in texts 
+shown to the user.  This is important for those withing the
+initial texts in English, as well as for translators.  Translators
+must be instruction keep words and terms consistent in the target
+languages.
+
+The format: Preferred words are in CAPITALS, rejected alternatives
+are in small letters and inside ().
+
+* The time a number lasts: DURATION (period)
+
+* PHONE NUMBER (number, telephone number)

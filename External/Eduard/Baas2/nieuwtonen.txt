@@ -1,0 +1,1178 @@
+Ascension Island		
+Busy tone - 	400	0.384 on 0.384 off
+Congestion tone - 	400	continuous
+Ringing tone - 	400+450	0.384 on 0.192 off 0.384 on 2.016 off
+
+Afghanistan		
+Busy tone - 	400	0.5 on 0.5 off
+Congestion tone - 	400	0.25 on 0.25 off
+Ringing tone - 	400	1.0 on 2.0 off
+
+Åland Islands		
+Busy tone -	425	0.25 on 0.25 off
+Congestion tone - 	425	0.25 on 0.75 off
+Ringing tone -	425	1.0 on 4.0 off
+
+Albania		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.2 on 0.2 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Algeria
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.5 on 3.5 off
+
+American Samoa	
+Busy tone - 	425x25	0.375 on 0.375 off
+Congestion tone - 	425x25	0.375 on 0.375 off
+Ringing tone - 	425x25	0.4 on 0.2 off
+
+Andorra	
+Busy tone - 	425	0.2 on 0.2 off
+Congestion tone - 	425	2x(0.2 on 0.2 off) 0.2 on 0.2 off
+Ringing tone - 	425	1.5 on 3.0 off
+
+Angola	
+Busy tone - 	400	0.5 on 0.5 off
+Congestion tone - 	400	0.5 on 0.5 off
+Ringing tone - 	25	1.0 on 5.0 off
+
+Anguilla		
+Busy tone - 	480+620	0.5 on 0.5 off
+Congestion tone - 	480+620	0.25 on 0.25 off
+Ringing tone - 	440+480	2.0 on 4.0 off
+
+Antigua and Barbuda		
+Busy tone - 	480+620	0.5 on 0.5 off
+Congestion tone - 	480+620	0.25 on 0.25 off
+Ringing tone - 	440+480	2.0 on 4.0 off
+
+Argentina	
+Busy tone - 	425	0.3 on 0.2 off
+Congestion tone - 	425	0.3 on 0.4 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Armenia	
+Busy tone - 	450	0.5 on 0.5 off
+Congestion tone - 	450	3x(0.2 on 0.2 off) 0.6 on 0.2 off
+Ringing tone - 	450	2.0 on 4.0 off
+
+Netherlands Antilles
+Busy tone - 425	0.5 on 0.5 off
+Congestion tone - 425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Sint Maarten (Dutch part)
+Busy tone - 425	0.5 on 0.5 off
+Congestion tone - 425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Saint Martin (French part)
+Busy tone - 425	0.5 on 0.5 off
+Congestion tone - 425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Curaçao
+Busy tone - 425	0.5 on 0.5 off
+Congestion tone - 425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Aruba		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Australia		
+Busy tone - 	425//400	0.375 on 0.375 off
+Congestion tone - 	425//400	0.375 on 0.375 off
+Ringing tone - 	400+450	0.4 on 0.2 off 0.4 on 2.0 off
+
+Christmas Island
+Busy tone - 	425//400	0.375 on 0.375 off
+Congestion tone - 	425//400	0.375 on 0.375 off
+Ringing tone - 	400+450	0.4 on 0.2 off 0.4 on 2.0 off
+
+Cocos (Keeling) Islands
+Busy tone - 	425//400	0.375 on 0.375 off
+Congestion tone - 	425//400	0.375 on 0.375 off
+Ringing tone - 	400+450	0.4 on 0.2 off 0.4 on 2.0 off
+
+Austria		
+Busy tone - 	420	0.4 on 0.4 off
+Congestion tone -	420	0.2 on 0.2 off
+Ringing tone - 	420//450	1.0 on 5.0 off
+
+Azerbaijan
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Bahamas	
+Busy tone - 	480//620/120	0.5 on 0.5 off
+Congestion tone - 	480//620/120	0.25 on 0.2 off
+Ringing tone - 	480//620	2.0 on 4.0 off
+
+Bahrain
+Busy tone - 	425	0.375 on 0.375 off
+Congestion tone - 	425	0.40 on 0.35 off 0.225 on 0.525 off
+Ringing tone - 	425	0.4 on 0.2 off 0.4 on 2.0 off
+
+Bangladesh	
+Busy tone - 	450	0.2 on 0.3 off 0.7 on 0.8 off
+Congestion tone - 	450	0.25 on 0.25 off
+Ringing tone - 	450	1.0 on 4.0 off
+
+Barbados		
+Busy tone - 	480+620	0.5 on 0.5 off
+Congestion tone - 	480+620	0.25 on 0.25 off
+Ringing tone - 	440+480	2.0 on 4.0 off
+
+Belarus	
+Busy tone - 	425	0.4 on 0.4 off
+Congestion tone - 	425	0.15 on 0.15 off
+Ringing tone - 	425	0.8 on 3.2 off
+
+Belgium		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.167 on 0.167 off
+Ringing tone - 	425	1.0 on 3.0 off
+
+Belize	
+Busy tone - 	425	0.25 on 0.25 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Benin		
+Busy tone - 	440//425	0.5 on 0.5 off
+Congestion tone - 		announcement
+Ringing tone - 	440//425	1.7 on 3.3 off
+
+Bermuda		
+Busy tone - 	480+620	0.5 on 0.5 off
+Congestion tone - 	480+620	0.25 on 0.25 off
+Ringing tone - 	440+480	2.0 on 4.0 off
+	
+Bhutan		
+Busy tone - 	400	0.6 on 0.6 off
+Ringing tone - 	400+25	0.4 on 0.2 off 0.4 on 2.6 off
+
+Bolivia
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.2 on 0.2 off 0.2 on 0.2 off 0.2 on 0.6 off
+Ringing tone - 	425	0.15 on 0.30 off
+
+Bonaire, Sint Eustatius and Saba
+Busy tone - 425	0.5 on 0.5 off
+Congestion tone - 425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Bosnia and Herzegovina		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.2 on 0.2 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Botswana	
+Busy tone - 	425	0.38 on 0.38 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	0.4 on 0.2 off 0.4 on 2.0 off
+
+Brazil
+Busy tone - 	425	0.25 on 0.25 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Brunei Darussalam		
+Busy tone - 	400	0.375 on 0.375 off
+Congestion tone - 	400	0.375 on 0.375 off
+Ringing tone - 	400+450	0.4 on 0.2 off 0.4 on 0.2 off
+
+Bulgaria		
+Busy tone -  	425	0.5 on 0.5 off
+Congestion tone -  	425	0.25 on 0.25 off
+Ringing tone -  	425	1.0 on 4.0 off
+
+Burkina Faso		
+Busy tone - 	425//440//620	0.5 on 0.5 off
+Congestion tone - 	425//620	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Burundi	
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.7 on 3.3 off
+
+Cambodia	
+Busy tone - 	425	0.375 on 0.375 off
+Congestion tone - 	425	0.375 on 0.375 off
+Ringing tone - 	425	0.4 on 0.2 off 0.4 on 2.0 off
+
+Vietnam
+Busy tone - 	425	0.375 on 0.375 off
+Congestion tone - 	425	0.375 on 0.375 off
+Ringing tone - 	425	0.4 on 0.2 off 0.4 on 2.0 off
+
+Cameroon	
+Busy tone - 	440	0.5 on 0.5 off
+Congestion tone - 	440	0.25 on 0.25 off
+Ringing tone - 	440	1.7 on 3.3 off
+
+Equatorial Guinea
+Busy tone - 	440	0.5 on 0.5 off
+Congestion tone - 	440	0.25 on 0.25 off
+Ringing tone - 	440	1.7 on 3.3 off
+
+Canada		
+Busy tone - 	480+620	0.5 on 0.5 off
+Congestion tone - 	480+620	0.25 on 0.25 off
+Ringing tone - 	440+480	2.0 on 4.0 off
+
+Cape Verde
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.5 on 0.5 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Cayman Islands		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Central African Republic		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.5 on 0.5 off
+Ringing tone - 	425	1.7 on 3.3 off
+
+Chad	
+Busy tone - 	440	0.5 on 0.5 off
+Congestion tone - 	425	0.375 on 0.375 off
+Ringing tone - 	440	1.7 on 3.3 off
+
+Chagos Islands
+Busy tone - 	480	0.5 on 0.5 off
+Ringing tone - 	440	1.0 on 3.0 off
+
+Chile		
+Busy tone - 	400	0.5 on 0.5 off
+Congestion tone - 	400	0.2 on 0.2 off
+Ringing tone - 	400	1.0 on 3.0 off
+
+China	
+Busy tone - 	450	0.35 on 0.35 off
+Congestion tone - 	450	0.7 on 0.7 off
+Ringing tone - 	450	1.0 on 4.0 off
+
+Taiwan
+Busy tone - 	450	0.35 on 0.35 off
+Congestion tone - 	450	0.7 on 0.7 off
+Ringing tone - 	450	1.0 on 4.0 off
+
+North Korea
+Busy tone - 	450	0.35 on 0.35 off
+Congestion tone - 	450	0.7 on 0.7 off
+Ringing tone - 	450	1.0 on 4.0 off
+
+Colombia	
+Busy tone - 	425	0.25 on 0.25 off
+Congestion tone - 	425	0.10 on 0.25 off 0.35 on 0.25 off 0.65 on 0.25 off
+Ringing tone - 	425	1.0 on 4.5 off
+
+Comoros		
+Busy tone - 	440	0.5 on 0.5 off
+Ringing tone - 	440	1.71 on 0.05 off
+
+Congo	
+Busy tone - 	450	0.5 on 0.5 off
+Congestion tone - 	450	0.5 on 0.5 off
+Ringing tone - 	450	2.0 on 4.0 off
+
+Congo, Democratic Republic of the
+Busy tone - 	450	0.5 on 0.5 off
+Congestion tone - 	450	0.5 on 0.5 off
+Ringing tone - 	450	2.0 on 4.0 off
+
+Cook Islands		
+Busy tone - 	400	0.5 on 0.5 off
+Congestion tone - 	400	0.25 on 0.25 off
+Ringing tone - 	400+450	0.4 on 0.2 off
+
+Costa Rica		
+Busy tone - 	450	0.33 on 0.33 off
+Congestion tone - 	450	0.33 on 0.33 off
+Ringing tone - 	450	1.2 on 4.9 off
+
+Côte d'Ivoire		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 		announcement
+Ringing tone - 	425	1.7 on 3.3 off
+
+Togo
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 		announcement
+Ringing tone - 	425	1.7 on 3.3 off
+
+Croatia	
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Cuba		
+Busy tone - 	620+480//425//400	0.5 on 0.5 off
+Congestion tone - 	425//400	0.25 on 0.25 off
+Ringing tone -	425	1.0 on 4.0 off
+
+Cyprus		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.5 on 3.0 off
+
+Czech Republic		
+Busy tone - 	425	0.33 on 0.33 off
+Congestion tone - 	425	0.165 on 0.165 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Denmark		
+Busy tone -	425	0.25 on 0.25 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Djibouti	
+Busy tone - 	425	0.5 on 0.5 off
+Ringing tone - 	425	1.5 on 3.5 off
+
+Dominica
+Busy tone - 	480+620	0.5 on 0.5 off
+Congestion tone - 	480+620	0.25 on 0.25 off
+Ringing tone - 	440+480	2.0 on 4.0 off
+
+Dominican Republic		
+Busy tone - 	400	0.8 on 0.8 off
+Congestion tone -  	400	0.8 on 0.8 off
+Ringing tone - 	400//450	0.4 on 0.2 off 0.4 on 2.2 off
+
+Haiti		
+Busy tone - 	400	0.8 on 0.8 off
+Congestion tone -  	400	0.8 on 0.8 off
+Ringing tone - 	400//450	0.4 on 0.2 off 0.4 on 2.2 off
+
+Ecuador		
+Busy tone - 	425	0.33 on 0.33 off
+Congestion tone - 	425	0.33 on 0.33 off
+Ringing tone - 	425	1.2 on 4.65 off
+
+Egypt		
+Busy tone - 	425x50	1.0 on 4.0 off
+Congestion tone - 	450	0.5 on 0.5 off
+Ringing tone - 	425x50	2.0 on 1.0 off
+
+Libya
+Busy tone - 	425x50	1.0 on 4.0 off
+Congestion tone - 	450	0.5 on 0.5 off
+Ringing tone - 	425x50	2.0 on 1.0 off
+
+El Salvador
+Busy tone - 	425	0.32 on 0.32 off
+Congestion tone - 	425	0.32 on 0.32 off
+Ringing tone - 	425	1.2 on 4.6 off
+
+Estonia	
+Busy tone - 	425	0.3 on 0.3 off
+Congestion tone - 	425	0.2 on 0.2 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Ethiopia
+Busy tone - 	425	0.4 on 0.4 off
+Congestion tone - 	425	0.4 on 0.4 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Somalia
+Busy tone - 	425	0.4 on 0.4 off
+Congestion tone - 	425	0.4 on 0.4 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Eritrea
+Busy tone - 	425	0.4 on 0.4 off
+Congestion tone - 	425	0.4 on 0.4 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Falkland Islands		
+Busy tone - 	400	0.375 on 0.375 off
+Congestion tone - 	400	0.4 on 0.35 off 0.255 on 0.525 off
+Ringing tone - 	400+450	0.4 on 0.2 off
+
+Faroe Islands		
+Busy tone - 	425	0.25 on 0.25 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Fiji	
+Busy tone - 	425	0.75 on 0.75 off
+Congestion tone - 	425	037 on 0.37 off 0.37 on 0.37 off
+Ringing tone - 	425x25	0.4 on 0.2 off 0.4 on 2.0 off
+
+Finland		
+Busy tone - 	425	0.3 on 0.3 off
+Congestion tone - 	425	0.2 on 0.2 off
+Ringing tone -	425	1.0 on 4.0 off
+
+France		
+Busy tone - 	440	0.5 on 0.5 off
+Ringing tone - 	440	1.5 on 3.5 off
+
+Saint Barthélemy
+Busy tone - 	440	0.5 on 0.5 off
+Ringing tone - 	440	1.5 on 3.5 off
+
+French Guiana	
+Busy tone - 	440	0.5 on 0.5 off
+Congestion tone - 	440	0.5 on 0.5 off
+Ringing tone - 	440	1.5 on 3.5 off
+
+French Polynesia
+Busy tone - 	440	0.5 on 0.5 off
+Congestion tone - 	440	0.5 on 0.5 off
+Ringing tone - 	440	1.7 on 3.3 off
+
+Gabon		
+Busy tone - 	440	0.5 on 0.5 off
+Congestion tone - 	440	0.5 on 0.5 off
+Ringing tone - 	440	1.7 on 3.3 off
+
+Gambia	
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.5 on 0.5 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Georgia		
+Busy tone - 	425	1.0 on 3.0 off
+Congestion tone - 	425	1.0 on 1.0 off
+Ringing tone - 	25	1.0 on 4.0 off
+
+Germany	
+Busy tone - 	425	0.48 on 0.48 off
+Congestion tone - 	425	0.24 on 0.24 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Ghana		
+Busy tone - 	400	0.25 on 0.25 off
+Congestion tone - 	400	0.5 on 0.5 off
+Ringing tone - 	400	1.0 on 4.0 off
+
+Gibraltar		
+Busy tone - 	400	0.375 on 0.375 off
+Congestion tone - 	400	0.4 on 0.35 off 0.225 on 0.525 off
+Ringing tone - 	400+450	0.4 on 0.2 off 0.4 on 2.0 off
+
+Greece		
+Busy tone - 	425	0.3 on 0.3 off
+Congestion tone - 	425	0.15 on 0.15 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Greenland		
+Busy tone - 	445//425	0.25 on 0.25 off
+Congestion tone - 	445//425	0.25 on 0.25 off
+Ringing tone - 	445//425	1.0 on 4.0 off
+
+Grenada		
+Busy tone - 	460+620	0.5 on 0.5 off
+Congestion tone - 		announcement
+Ringing tone - 	440+480	2.0 on 4.0 off
+
+Guadeloupe
+Busy tone - 	440	0.5 on 0.5 off
+Ringing tone - 	440	1.5 on 3.5 off
+
+Guernsey		
+Busy tone - 	400	0.375 on 0.375 off
+Congestion tone - 	400	0.40 on 0.35 off 0.25 on 0.52 off
+Ringing tone - 	400+450	0.4 on 0.2 off
+
+Guinea
+Busy tone - 	450	0.2 on 0.2 off
+Ringing tone - 	450	0.4 on 0.2 off
+
+Guinea-Bissau
+Busy tone - 	450	0.2 on 0.2 off
+Ringing tone - 	450	0.4 on 0.2 off
+
+Guyana		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.5 on 0.5 off
+Ringing tone - 	425	1.75 on 3.25 off
+
+Honduras
+Busy tone - 	440	0.5 on 0.5 off
+Congestion tone - 	440	0.25 on 0.25 off
+Ringing tone - 	440	1.0 on 4.0 off
+
+Nicaragua
+Busy tone - 	440	0.5 on 0.5 off
+Congestion tone - 	440	0.25 on 0.25 off
+Ringing tone - 	440	1.0 on 4.0 off
+
+Hong Kong
+Busy tone - 	480+620	0.5 on 0.5 off
+Congestion tone - 	480+620	0.25 on 0.25 off
+Ringing tone - 	440+480	0.4 on 0.2 off 0.4 on 3.0 off
+
+Hungary	
+Busy tone - 	425	0.3 on 0.3 off
+Congestion tone - 	425	0.3 on 0.3 off
+Ringing tone - 	425	1.25 on 3.75 off
+
+Iceland		
+Busy tone - 	425	0.25 on 0.25 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+India	
+Busy tone - 	400	0.75 on 0.75 off
+Congestion tone - 	400	0.25 on 0.25 off
+Ringing tone - 	400x25	0.4 on 0.2 off 0.4 on 2.0 off
+
+Indonesia	
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Timor-Leste	
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Marshall Islands	
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Norfolk Island	
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Iran
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Iraq
+Busy tone - 	400	1.0 on 1.0 off
+Ringing tone - 	400	continuous
+
+Ireland		
+Busy tone - 	425	0.5 on 0.5 off
+Ringing tone - 	400+450//425	0.4 on 0.2 off 0.4 on 2.0 off
+
+Israel	
+Busy tone - 	400	0.5 on 0.5 off
+Ringing tone - 	400	1.0 on 3.0 off
+
+Palestinian Territories
+Busy tone - 	400	0.5 on 0.5 off
+Ringing tone - 	400	1.0 on 3.0 off
+
+Italy		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.2 on 0.2 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Vatican City	
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.2 on 0.2 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Jamaica		
+Busy tone - 	480+620	0.5 on 0.5 off
+Congestion tone - 	480+620	0.25 on 0.25 off
+Ringing tone - 	440+480	2.0 on 4.0 off
+
+Japan		
+Busy tone - 	400	0.5 on 0.5 off
+Ringing tone  -	400	1.0 on 2.0 off
+
+Jersey		
+Busy tone - 	400	0.375 on 0.375 off
+Congestion tone - 	400	0.4 on 0.35 off 0.225 on 0.525 off
+Ringing tone - 	400+450	0.4 on 0.2 off 0.4 on 2.0 off
+
+Jordan	
+Busy tone - 	420x40	0.5 on 0.5 off
+Congestion tone - 	420x40	0.25 on 0.25 off
+Ringing tone - 	420x40	1.0 on 4.0 off
+
+Kenya
+Busy tone - 	425	0.2 on 0.6 off 0.2 on 0.6 off
+Congestion tone - 	425	0.2 on 0.6 off
+Ringing tone - 	425	0.67 on 3.0 off 1.5 on 5.0 off
+
+Kiribati	
+Busy tone - 	425	0.375 on 0.375 off
+Congestion tone - 	425	0.375 on 0.375 off
+Ringing tone - 	425	0.4 on 0.2 off 0.4 on 2.0 off
+
+Micronesia
+Busy tone - 	425	0.375 on 0.375 off
+Congestion tone - 	425	0.375 on 0.375 off
+Ringing tone - 	425	0.4 on 0.2 off 0.4 on 2.0 off
+
+Palau
+Busy tone - 	425	0.375 on 0.375 off
+Congestion tone - 	425	0.375 on 0.375 off
+Ringing tone - 	425	0.4 on 0.2 off 0.4 on 2.0 off
+
+Northern Mariana Islands
+Busy tone - 	425	0.375 on 0.375 off
+Congestion tone - 	425	0.375 on 0.375 off
+Ringing tone - 	425	0.4 on 0.2 off 0.4 on 2.0 off
+
+Guam
+Busy tone - 	425	0.375 on 0.375 off
+Congestion tone - 	425	0.375 on 0.375 off
+Ringing tone - 	425	0.4 on 0.2 off 0.4 on 2.0 off
+
+South Korea	
+Busy tone - 	480+620	0.5 on 0.5 off
+Congestion tone - 	480+620	0.3 on 0.2 off
+Ringing tone - 	440+480	1.0 on 2.0 off
+
+Kuwait
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Kyrgyzstan
+Busy tone - 	425	0.4 on 0.4 off
+Congestion tone - 	425	0.2 on 0.2 off
+Ringing tone - 	425	0.8 on 3.2 off
+
+Laos		
+Busy tone - 	425	1.0 on 1.0 off
+Congestion tone - 	425	0.375 on 0.375 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Latvia		
+Busy tone - 	425	0.3 on 0.3 off
+Congestion tone - 	425	0.15 on 0.15 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Lebanon		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.24 on 0.24 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Lesotho
+Busy tone - 	425	1.0 on 1.0 off
+Congestion tone - 	425	0.5 on 0.5 off
+Ringing tone - 	400/425	1.0 on 4.0 off
+
+Liberia		
+Busy tone - 	425	0.5 on 0.5 off
+Ringing tone - 	 425//450	1.0 on 4.0 off
+
+Liechtenstein
+Busy tone -	425	0.3 on 0.3 off
+Congestion tone - 	425//420	0.2 on 0.2 off
+Ringing tone -  	425	continuous
+
+Lithuania	
+Busy tone - 	425	0.35 on 0.35 off
+Congestion tone - 	425	0.2 on 0.2 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Luxembourg		
+Busy tone - 	425//2125	0.48 on 0.48 off
+Congestion tone - 	425//2125	0.24 on 0.24 off
+Ringing tone - 	425//2125	1.0 on 4.0 off
+
+Macao	
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Macedonia		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.2 on 0.2 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Madagascar		
+Busy tone - 	440//425	0.5 on 0.5 off
+Congestion tone - 		announcement
+Ringing tone - 	440//425	1.7 on 3.3 off
+
+Malawi		
+Busy tone - 	425	0.5 on 0.5 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Malaysia		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.50 on 0.25 off
+Ringing tone - 	425	0.4 on 0.2 off 0.4 on 2.0 off
+
+Maldives
+Busy tone - 	400	0.5 on 0.5 off
+Congestion tone - 	400	0.25 on 0.25 off
+Ringing tone - 	400	0.4 on 0.2 off 0.4 on 2.0 off
+		
+Mali		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 		announcement
+Ringing tone - 	425	1.5 on 3.0 off
+
+Malta		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.5 on 0.5 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Martinique
+Busy tone - 	440	0.5 on 0.5 off
+Ringing tone - 	440	1.5 on 3.5 off
+
+Mauritania
+Busy tone - 	425	0.5 on 0.5 off
+Ringing tone - 	425	1.5 on 3.5 off
+
+Mauritius
+Busy tone - 	425	0.75 on 0.75 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Mayotte		
+Busy tone - 	440	0.5 on 0.5 off
+Ringing tone - 	440	1.5 on 3.5 off
+
+Mexico		
+Busy tone - 	425	0.25 on 0.25 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Guatemala	
+Busy tone - 	425	0.25 on 0.25 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Moldova	
+Busy tone - 	425	0.35 on 0.35 off
+Congestion tone - 	425	0.2 on 0.2 off
+Ringing tone - 	425	0.8 on 3.2 off
+
+Monaco
+Busy tone - 	440	0.5 on 0.5 off
+Congestion tone - 		announcement
+Ringing tone - 	440	1.7 on 3.3 off
+
+Montserrat		
+Busy tone - 	480+620	0.5 on 0.5 off
+Congestion tone - 	480+620	0.25 on 0.25 off
+Ringing tone - 	440+480	2.0 on 4.0 off
+
+Morocco
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.5 on 0.5 off
+Ringing tone - 	425	1.7 on 3.3 off
+
+Mozambique
+Busy tone - 	400	0.5 on 0.5 off
+Ringing tone - 	400	1.0 on 5.0 off
+
+Myanmar
+Busy tone - 	450	0.25 on 0.25 off
+Congestion tone - 	480	0.5 on 0.5 off
+Ringing tone - 	400	2.0 on 4.0 off
+
+Namibia
+Busy tone - 	400	0.5 on 0.5 off
+Congestion tone - 	400	0.25 on 0.25 off
+Ringing tone - 	400x33	0.4 on 0.2 off 0.4 on 2.0 off
+
+Nauru		
+Busy tone - 	400	0.5 on 0.5 off
+Congestion tone - 	425	0.375 on 0.375 off
+Ringing tone - 	400	1.0 on 4.0 off
+
+Nepal
+Busy tone - 	425	0.25 on 0.25 off
+Congestion tone - 	425	0.175 on 0.175 off
+Ringing tone - 	425	1.1 on 3.1 off
+
+Netherlands
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+New Caledonia	
+Busy tone - 	440	0.5 on 0.5 off
+Congestion tone - 	950/1400/1800	3x (0.333 on 0.333 off)
+Ringing tone - 	440	1.7 on 3.3 off
+
+New Zealand		
+Busy tone - 	400	0.5 on 0.5 off
+Congestion tone - 	400	0.25 on 0.25 off
+Ringing tone - 	400+450	0.4 on 0.2 off 0.4 on 2.0 off
+
+Niue		
+Busy tone - 	400	0.5 on 0.5 off
+Congestion tone - 	400	0.25 on 0.25 off
+Ringing tone - 	400+450	0.4 on 0.2 off 0.4 on 2.0 off
+
+Tonga		
+Busy tone - 	400	0.5 on 0.5 off
+Congestion tone - 	400	0.25 on 0.25 off
+Ringing tone - 	400+450	0.4 on 0.2 off 0.4 on 2.0 off
+
+Niger
+Busy tone - 	440	0.5 on 0.5 off
+Congestion tone - 	440	0.5 on 0.5 off
+Ringing tone - 	440	1.7 on 3.3 off
+
+Nigeria
+Busy tone - 	400	0.5 on 0.5 off
+Congestion tone - 	400	0.25 on 0.25 off
+Ringing tone - 	400//450	2.0 on 4.0 off
+
+Norway		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.2 on 0.2 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Svalbard and Jan Mayen		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.2 on 0.2 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Oman	
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.5 on 0.5 off
+Ringing tone - 	425	0.4 on 0.2 off 0.4 on 2.0 off
+
+Pakistan
+Busy tone - 	400	0.5 on 0.5 off
+Congestion tone - 	400	0.25 on 0.25 off
+Ringing tone - 	400	1.0 on 2.0 off
+
+Panama	
+Busy tone - 	425	0.32 on 0.32 off
+Congestion tone - 	425	0.32 on 0.32 off
+Ringing tone - 	425	1.2 on 4.65 off
+
+Papua New Guinea		
+Busy tone - 	425//400	0.375 on 0.375 off
+Congestion tone - 	425//400	0.375 on 0.375 off
+Ringing tone - 	425//400x25//400x16 2/3//400+450//410x20	0.4 on 0.2 off 0.4 on 2.0 off
+
+Paraguay
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+		
+Peru		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.2 on 0.2 off 0.2 on 0.2 off 0.2 on 0.6 off
+Ringing tone - 	425	0.15 on 0.30 off
+
+Philippines	
+Busy tone - 	480+620	0.5 on 0.5 off
+Congestion tone - 	480+620	0.25 on 0.25 off
+Ringing tone - 	425+480	1.0 on 4.0 off
+
+Poland	
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.5 on 0.5 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Portugal		
+Busy tone - 	400	0.36 on 0.36 off
+Congestion tone - 	425	0.2 on 0.2 off
+Ringing tone - 	425	1.0 on 5.0 off
+
+Qatar	
+Busy tone - 	400+450	0.8 on 0.8 off
+Congestion tone - 	400	0.40 on 0.35 off 0.22 on 0.52 off
+Ringing tone - 	400+450	0.38 on 0.25 off 0.38 on 2.0 off
+
+Romania		
+Busy tone -	450	0.17 on 0.17 off
+Ringing tone - 	450x25	1.85 on 4.15 off
+
+Russia
+Busy tone - 	425	0.4 on 0.4 off
+Ringing tone - 	425	0.8 on 3.2 off
+
+Ukraine
+Busy tone - 	425	0.4 on 0.4 off
+Ringing tone - 	425	0.8 on 3.2 off
+
+Mongolia
+Busy tone - 	425	0.4 on 0.4 off
+Ringing tone - 	425	0.8 on 3.2 off
+
+Kazakhstan
+Busy tone - 	425	0.4 on 0.4 off
+Ringing tone - 	425	0.8 on 3.2 off
+
+Rwanda		
+Busy tone - 	440	0.5 on 0.5 off
+Congestion tone - 		announcement
+Ringing tone - 	440	1.7 on 3.3 off
+
+Saint Helena and Tristan da Cunha
+Busy tone - 	400	0.375 on 0.375 off
+Congestion tone - 	400	0.4 on 0.35 off
+Ringing tone - 	400+450	0.4 on 0.2 off
+
+Saint Kitts and Nevis		
+Busy tone - 	480+620	0.5 on 0.5 off
+Congestion tone - 	480+620	0.25 on 0.25 off
+Ringing tone - 	440+480	2.0 on 4.0 off
+
+Saint Lucia		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	0.375 on 0.25 off 0.375 on 2.0 off
+
+Saint Pierre and Miquelon
+Busy tone - 	440	0.5 on 0.5 off
+Ringing tone - 	440	1.5 on 3.5 off
+
+Saint Vincent and the Grenadines		
+Busy tone - 	400	0.375 on 0.375 off
+Congestion tone - 	400	0.40 on 0.35 off 0.225 on 0.525 off
+Ringing tone - 	400+450	0.4 on 0.2 off 0.4 on 2.0 off
+
+Samoa
+Busy tone - 	425x25	0.375 on 0.375 off
+Congestion tone - 	425x25	0.375 on 0.375 off
+Ringing tone - 	425x25	0.4 on 0.2 off
+
+San Marino
+Busy tone - 	425	0.2 on 0.2 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Sao Tome and Principe	
+Busy tone - 	400	0.5 on 0.5 off
+Congestion tone - 	400	0.2 on 0.2 off
+Ringing tone - 	400	1.0 on 5.0 off
+
+Saudi Arabia
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.2 on 4.6 off
+
+Senegal	
+Busy tone - 	440	0.5 on 0.5 off
+Ringing tone - 	400	1.7 on 3.3 off
+
+Serbia	
+Busy tone - 	425	0.5 on 0.5 off
+Ringing tone - 	450x25	1.0 on 9.0 off
+
+Montenegro
+Busy tone - 	425	0.5 on 0.5 off
+Ringing tone - 	450x25	1.0 on 9.0 off
+
+Seychelles
+Busy tone - 	425	0.375 on 0.375 off
+Congestion tone - 	425	0.4 on 0.2 off 0.225 on 0.525 off
+Ringing tone - 	425	0.4 on 0.2 off 0.4 on 2.0 off
+
+Sierra Leone		
+Busy tone - 	425//450	0.5 on 0.5 off
+Congestion tone - 	425	0.2 on 0.2 off
+Ringing tone - 	425//450	1.0 on 4.0 off
+
+Singapore	
+Busy tone - 	425	0.75 on 0.75 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425x24	0.4 on 0.2 off 0.4 on 2.0 off
+
+Slovakia
+Busy tone - 	425	0.33 on 0.33 off
+Congestion tone - 	425	0.165 on 0.165 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Slovenia
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.2 on 0.2 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Solomon Islands		
+Busy tone - 	400	0.5 on 0.5 off
+Congestion tone - 	400	0.1 on 0.1 off
+Ringing tone - 	400+450	0.4 on 0.2 off
+
+South Africa	
+Busy tone - 	400	0.5 on 0.5 off
+Congestion tone - 	400	0.25 on 0.25 off
+Ringing tone - 	400x33	0.4 on 0.2 off 0.4 on 2.0 off
+
+Spain		
+Busy tone -  	425	0.2 on 0.2 off
+Congestion tone -  	425	0.25 on 0.25 off
+Ringing tone -  	425	1.5 on 3.0 off
+
+Sri Lanka	
+Busy tone - 	425	0.75 on 0.75 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	0.4 on 0.2 off 0.4 on 2.0 off
+
+Sudan
+Busy tone - 	425	1.0 on 1.0 off
+Congestion tone - 	425	0.375 on 0.375 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+South Sudan
+Busy tone - 	425	1.0 on 1.0 off
+Congestion tone - 	425	0.375 on 0.375 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Suriname
+Busy tone - 	425	0.25 on 0.25 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 1.0 off
+
+Swaziland		
+Busy tone - 	400	0.5 on 0.5 off
+Congestion tone - 	400	0.25 on 0.25 off
+Ringing tone - 	400	0.4 on 0.2 off 0.4 on 2.0 off
+
+Sweden		
+Busy tone - 	425	0.25 on 0.25 off
+Congestion tone -  	425	0.25 on 0.75 off
+Ringing tone -  	425	1.0 on 5.0 off
+
+Switzerland	
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.2 on 0.2 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Syria
+Busy tone - 	450	0.5 on 0.5 off
+Congestion tone - 	450	0.25 on 0.25 off
+Ringing tone - 	400//450	1.0 on 0.5 off
+
+Tajikistan	
+Busy tone - 	425	0.4 on 0.4 off
+Congestion tone - 	425	0.4 on 0.4 off
+Ringing tone - 	25	0.8 on 3.2 off
+
+Uzbekistan
+Busy tone - 	425	0.4 on 0.4 off
+Congestion tone - 	425	0.4 on 0.4 off
+Ringing tone - 	25	0.8 on 3.2 off
+		
+Tanzania
+Busy tone - 	425	1.0 on 1.0 off
+Congestion tone - 	425	0.375 on 0.375 off
+Ringing tone -  	425	1.0 on 4.0 off
+
+Thailand		
+Busy tone - 	400	0.5 on 0.5 off
+Congestion tone - 	400	0.3 on 0.3 off
+Ringing tone - 	400	1.0 on 4.0 off
+
+Tokelau		
+Busy tone - 	400	0.5 on 0.5 off
+Congestion tone - 	400	0.5 on 0.5 off
+Ringing tone - 	400+450	0.4 on 0.2 off
+
+Trinidad and Tobago		
+Busy tone - 	480+620	0.5 on 0.5 off
+Ringing tone - 	440+480	2.0 on 4.0 off
+
+Tunisia		
+Busy tone - 	425	0.25 on 0.25 off
+Congestion tone - 	425	0.167 on 0.167 off
+Ringing tone - 	425	1.20 on 4.65 off
+
+Turkey		
+Busy tone - 	450	0.5 on 0.5 off
+Congestion tone - 	450	3x(0.2 on 0.2 off) 0.6 on 0.2 off
+Ringing tone - 	450	2.0 on 4.0 off
+
+Turkmenistan		
+Busy tone - 	425	0.4 on 0.4 off
+Congestion tone - 	425	0.4 on 0.4 off
+Ringing tone - 	25	0.4 on 4.0 off
+
+Turks and Caicos Islands		
+Busy tone - 	480+620	0.5 on 0.5 off
+Congestion tone - 	480+620	0.25 on 0.25 off
+Ringing tone - 	440+480	2.0 on 4.0 off
+
+Tuvalu		
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	2.5 on 7.5 off
+Ringing tone - 	425	1.0 on 0.5 off 1.0 on 10.0 off
+
+Uganda	
+Busy tone -  	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone -  	425	1.0 on 4.0 off
+
+United Arab Emirates		
+Busy tone - 	400//425	0.375 on 0.375 off
+Congestion tone - 	400/425	0.4 on 0.35 off 0.225 on 0.525 off
+Ringing tone - 	400+450//425	0.4 on 0.2 off 0.4 on 2.0 off
+
+United Kingdom
+Busy tone - 	400	0.375 on 0.375 off
+Congestion tone - 	400	0.4 on 0.35 off 0.225 on 0.525 off
+Ringing tone - 	400+450//400x25//400x16 2/3	0.4 on 0.2 off 0.4 on 2.0 off
+
+Isle of Man
+Busy tone - 	400	0.375 on 0.375 off
+Congestion tone - 	400	0.4 on 0.35 off 0.225 on 0.525 off
+Ringing tone - 	400+450//400x25//400x16 2/3	0.4 on 0.2 off 0.4 on 2.0 off
+		
+United States		
+Busy tone - 	600x120//600x133//600x140//600x160//480+620	0.5 on 0.5 off
+Ringing tone - 	420x40//500x40//440+480	2.0 on 4.0 off
+
+Puerto Rico	
+Busy tone - 	600x120//600x133//600x140//600x160//480+620	0.5 on 0.5 off
+Ringing tone - 	420x40//500x40//440+480	2.0 on 4.0 off
+
+Uruguay
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Vanuatu	
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.5 on 0.5 off
+Ringing tone - 	425	1.0 on 4.0 off
+		
+Venezuela
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Virgin Islands, British		
+Busy tone - 	480+620	0.5 on 0.5 off
+Congestion tone - 	480+620	0.25 on 0.25 off
+Ringing tone - 	440+480	2.0 on 4.0 off
+
+Virgin Islands, U.S.
+Busy tone - 	480+620	0.5 on 0.5 off
+Congestion tone - 	480+620	0.25 on 0.25 off
+Ringing tone - 	440+480	2.0 on 4.0 off
+
+Wallis and Futuna	
+Busy tone - 	440	0.5 on 0.5 off
+Ringing tone - 	440	1.5 on 3.5 off
+
+Yemen	
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Zambia	
+Busy tone - 	425	0.5 on 0.5 off
+Congestion tone - 	425	0.25 on 0.25 off
+Ringing tone - 	425	1.0 on 4.0 off
+
+Zimbabwe
+Busy tone - 	400	0.375 on 0.375 off
+Congestion tone - 	425	0.167 on 0.167 off
+Ringing tone - 	450	1.0 on 4.0 off
+
+Réunion
+Busy tone - 	440	0.5 on 0.5 off
+Ringing tone - 	440	1.5 on 3.5 off

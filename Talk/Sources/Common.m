@@ -302,10 +302,10 @@
         NSString*   title;
         NSString*   message;
 
-        title = NSLocalizedStringWithDefaultValue(@"General:AppStatus NoNotificationsTitle", nil,
-                                                  [NSBundle mainBundle], @"Notications Disabled",
-                                                  @"Alert title telling that required notifications are disabled.\n"
-                                                  @"[iOS alert title size - abbreviated: 'Can't Pay'].");
+        title   = NSLocalizedStringWithDefaultValue(@"General:AppStatus NoNotificationsTitle", nil,
+                                                    [NSBundle mainBundle], @"Notications Disabled",
+                                                    @"Alert title telling that required notifications are disabled.\n"
+                                                    @"[iOS alert title size - abbreviated: 'Can't Pay'].");
         message = NSLocalizedStringWithDefaultValue(@"General:AppStatus NoNotificationsMessage", nil,
                                                     [NSBundle mainBundle],
                                                     @"At least alert and badge notifications must be enabled.\n"
@@ -327,10 +327,10 @@
         NSString*   title;
         NSString*   message;
 
-        title = NSLocalizedStringWithDefaultValue(@"General:AppStatus NotificationsUnavailableTitle", nil,
-                                                  [NSBundle mainBundle], @"Notifications Unavailable",
-                                                  @"Alert title telling that app is not ready yet.\n"
-                                                  @"[iOS alert title size - abbreviated: 'Can't Pay'].");
+        title   = NSLocalizedStringWithDefaultValue(@"General:AppStatus NotificationsUnavailableTitle", nil,
+                                                    [NSBundle mainBundle], @"Notifications Unavailable",
+                                                    @"Alert title telling that app is not ready yet.\n"
+                                                    @"[iOS alert title size - abbreviated: 'Can't Pay'].");
         message = NSLocalizedStringWithDefaultValue(@"General:AppStatus NotificationsUnavailableMessage", nil,
                                                     [NSBundle mainBundle],
                                                     @"The app is not ready to receive notifications, "
@@ -371,17 +371,17 @@
             return NO;
         }
         
-        title = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownTitle", nil,
-                                                  [NSBundle mainBundle], @"Country Unknown",
-                                                  @"Alert title informing about home country being unknown\n"
-                                                  @"[iOS alert title size].");
+        title       = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownTitle", nil,
+                                                        [NSBundle mainBundle], @"Country Unknown",
+                                                        @"Alert title informing about home country being unknown\n"
+                                                        @"[iOS alert title size].");
 
-        message = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownMessage", nil,
-                                                    [NSBundle mainBundle],
-                                                    @"The country for this (local) number can't be determined. "
-                                                    @"Select the default country, or enter an international number.",
-                                                    @"Alert message informing about home country being unknown\n"
-                                                    @"[iOS alert message size]");
+        message     = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"The country for this (local) number can't be determined. "
+                                                        @"Select the default country, or enter an international number.",
+                                                        @"Alert message informing about home country being unknown\n"
+                                                        @"[iOS alert message size]");
 
         buttonTitle = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownButton", nil,
                                                         [NSBundle mainBundle], @"Select",

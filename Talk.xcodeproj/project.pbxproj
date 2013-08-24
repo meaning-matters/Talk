@@ -295,18 +295,18 @@
 		485E38A417B7E1960089F0F1 /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485E38A217B7E1960089F0F1 /* HelpView.xib */; };
 		485E38A717C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E38A617C0B7F00089F0F1 /* NumberAreaTitlesViewController.m */; };
 		485E38A817C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E38A617C0B7F00089F0F1 /* NumberAreaTitlesViewController.m */; };
-		485E38C317C40D070089F0F1 /* NumberPeriod1.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BD17C40D070089F0F1 /* NumberPeriod1.png */; };
-		485E38C417C40D070089F0F1 /* NumberPeriod1.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BD17C40D070089F0F1 /* NumberPeriod1.png */; };
-		485E38C517C40D070089F0F1 /* NumberPeriod12.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BE17C40D070089F0F1 /* NumberPeriod12.png */; };
-		485E38C617C40D070089F0F1 /* NumberPeriod12.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BE17C40D070089F0F1 /* NumberPeriod12.png */; };
-		485E38C717C40D070089F0F1 /* NumberPeriod2.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BF17C40D070089F0F1 /* NumberPeriod2.png */; };
-		485E38C817C40D070089F0F1 /* NumberPeriod2.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BF17C40D070089F0F1 /* NumberPeriod2.png */; };
-		485E38C917C40D070089F0F1 /* NumberPeriod3.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38C017C40D070089F0F1 /* NumberPeriod3.png */; };
-		485E38CA17C40D070089F0F1 /* NumberPeriod3.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38C017C40D070089F0F1 /* NumberPeriod3.png */; };
-		485E38CB17C40D070089F0F1 /* NumberPeriod6.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38C117C40D070089F0F1 /* NumberPeriod6.png */; };
-		485E38CC17C40D070089F0F1 /* NumberPeriod6.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38C117C40D070089F0F1 /* NumberPeriod6.png */; };
-		485E38CD17C40D070089F0F1 /* NumberPeriod9.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38C217C40D070089F0F1 /* NumberPeriod9.png */; };
-		485E38CE17C40D070089F0F1 /* NumberPeriod9.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38C217C40D070089F0F1 /* NumberPeriod9.png */; };
+		485E38C317C40D070089F0F1 /* NumberDuration1.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BD17C40D070089F0F1 /* NumberDuration1.png */; };
+		485E38C417C40D070089F0F1 /* NumberDuration1.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BD17C40D070089F0F1 /* NumberDuration1.png */; };
+		485E38C517C40D070089F0F1 /* NumberDuration12.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BE17C40D070089F0F1 /* NumberDuration12.png */; };
+		485E38C617C40D070089F0F1 /* NumberDuration12.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BE17C40D070089F0F1 /* NumberDuration12.png */; };
+		485E38C717C40D070089F0F1 /* NumberDuration2.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BF17C40D070089F0F1 /* NumberDuration2.png */; };
+		485E38C817C40D070089F0F1 /* NumberDuration2.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BF17C40D070089F0F1 /* NumberDuration2.png */; };
+		485E38C917C40D070089F0F1 /* NumberDuration3.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38C017C40D070089F0F1 /* NumberDuration3.png */; };
+		485E38CA17C40D070089F0F1 /* NumberDuration3.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38C017C40D070089F0F1 /* NumberDuration3.png */; };
+		485E38CB17C40D070089F0F1 /* NumberDuration6.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38C117C40D070089F0F1 /* NumberDuration6.png */; };
+		485E38CC17C40D070089F0F1 /* NumberDuration6.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38C117C40D070089F0F1 /* NumberDuration6.png */; };
+		485E38CD17C40D070089F0F1 /* NumberDuration9.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38C217C40D070089F0F1 /* NumberDuration9.png */; };
+		485E38CE17C40D070089F0F1 /* NumberDuration9.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38C217C40D070089F0F1 /* NumberDuration9.png */; };
 		485ECBCC1651642D00364F08 /* CountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBCB1651642D00364F08 /* CountriesView.xib */; };
 		485ECBCD1651642D00364F08 /* CountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBCB1651642D00364F08 /* CountriesView.xib */; };
 		485ECBD01651646700364F08 /* CountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485ECBCF1651646700364F08 /* CountriesViewController.m */; };
@@ -1355,12 +1355,13 @@
 		485E38A217B7E1960089F0F1 /* HelpView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HelpView.xib; sourceTree = "<group>"; };
 		485E38A517C0B7EE0089F0F1 /* NumberAreaTitlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaTitlesViewController.h; sourceTree = "<group>"; };
 		485E38A617C0B7F00089F0F1 /* NumberAreaTitlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaTitlesViewController.m; sourceTree = "<group>"; };
-		485E38BD17C40D070089F0F1 /* NumberPeriod1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberPeriod1.png; sourceTree = "<group>"; };
-		485E38BE17C40D070089F0F1 /* NumberPeriod12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberPeriod12.png; sourceTree = "<group>"; };
-		485E38BF17C40D070089F0F1 /* NumberPeriod2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberPeriod2.png; sourceTree = "<group>"; };
-		485E38C017C40D070089F0F1 /* NumberPeriod3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberPeriod3.png; sourceTree = "<group>"; };
-		485E38C117C40D070089F0F1 /* NumberPeriod6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberPeriod6.png; sourceTree = "<group>"; };
-		485E38C217C40D070089F0F1 /* NumberPeriod9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberPeriod9.png; sourceTree = "<group>"; };
+		485E38BD17C40D070089F0F1 /* NumberDuration1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberDuration1.png; sourceTree = "<group>"; };
+		485E38BE17C40D070089F0F1 /* NumberDuration12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberDuration12.png; sourceTree = "<group>"; };
+		485E38BF17C40D070089F0F1 /* NumberDuration2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberDuration2.png; sourceTree = "<group>"; };
+		485E38C017C40D070089F0F1 /* NumberDuration3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberDuration3.png; sourceTree = "<group>"; };
+		485E38C117C40D070089F0F1 /* NumberDuration6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberDuration6.png; sourceTree = "<group>"; };
+		485E38C217C40D070089F0F1 /* NumberDuration9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberDuration9.png; sourceTree = "<group>"; };
+		485E38CF17C889350089F0F1 /* WORDS.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = WORDS.txt; sourceTree = "<group>"; };
 		485ECBCB1651642D00364F08 /* CountriesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CountriesView.xib; sourceTree = "<group>"; };
 		485ECBCE1651646700364F08 /* CountriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountriesViewController.h; sourceTree = "<group>"; };
 		485ECBCF1651646700364F08 /* CountriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountriesViewController.m; sourceTree = "<group>"; };
@@ -2602,12 +2603,12 @@
 		485E38BC17C40D070089F0F1 /* NumberPeriod */ = {
 			isa = PBXGroup;
 			children = (
-				485E38BD17C40D070089F0F1 /* NumberPeriod1.png */,
-				485E38BE17C40D070089F0F1 /* NumberPeriod12.png */,
-				485E38BF17C40D070089F0F1 /* NumberPeriod2.png */,
-				485E38C017C40D070089F0F1 /* NumberPeriod3.png */,
-				485E38C117C40D070089F0F1 /* NumberPeriod6.png */,
-				485E38C217C40D070089F0F1 /* NumberPeriod9.png */,
+				485E38BD17C40D070089F0F1 /* NumberDuration1.png */,
+				485E38BE17C40D070089F0F1 /* NumberDuration12.png */,
+				485E38BF17C40D070089F0F1 /* NumberDuration2.png */,
+				485E38C017C40D070089F0F1 /* NumberDuration3.png */,
+				485E38C117C40D070089F0F1 /* NumberDuration6.png */,
+				485E38C217C40D070089F0F1 /* NumberDuration9.png */,
 			);
 			path = NumberPeriod;
 			sourceTree = "<group>";
@@ -3152,6 +3153,7 @@
 			isa = PBXGroup;
 			children = (
 				488B8E5B17AFFD8E005C33A2 /* TODO.txt */,
+				485E38CF17C889350089F0F1 /* WORDS.txt */,
 				48884A7A1615CE920005AA79 /* Talk */,
 				48884AAC1615CE920005AA79 /* TalkTests */,
 				48884A731615CE920005AA79 /* Frameworks */,
@@ -4202,12 +4204,12 @@
 				483ED01417A4F6C30032B8FF /* Localizable.strings in Resources */,
 				485E389C17B7DEE60089F0F1 /* Helps.json in Resources */,
 				485E38A317B7E1960089F0F1 /* HelpView.xib in Resources */,
-				485E38C317C40D070089F0F1 /* NumberPeriod1.png in Resources */,
-				485E38C517C40D070089F0F1 /* NumberPeriod12.png in Resources */,
-				485E38C717C40D070089F0F1 /* NumberPeriod2.png in Resources */,
-				485E38C917C40D070089F0F1 /* NumberPeriod3.png in Resources */,
-				485E38CB17C40D070089F0F1 /* NumberPeriod6.png in Resources */,
-				485E38CD17C40D070089F0F1 /* NumberPeriod9.png in Resources */,
+				485E38C317C40D070089F0F1 /* NumberDuration1.png in Resources */,
+				485E38C517C40D070089F0F1 /* NumberDuration12.png in Resources */,
+				485E38C717C40D070089F0F1 /* NumberDuration2.png in Resources */,
+				485E38C917C40D070089F0F1 /* NumberDuration3.png in Resources */,
+				485E38CB17C40D070089F0F1 /* NumberDuration6.png in Resources */,
+				485E38CD17C40D070089F0F1 /* NumberDuration9.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4358,12 +4360,12 @@
 				4865A9DC1792C5550028785F /* BuyNumberCell.xib in Resources */,
 				485E389D17B7DEE60089F0F1 /* Helps.json in Resources */,
 				485E38A417B7E1960089F0F1 /* HelpView.xib in Resources */,
-				485E38C417C40D070089F0F1 /* NumberPeriod1.png in Resources */,
-				485E38C617C40D070089F0F1 /* NumberPeriod12.png in Resources */,
-				485E38C817C40D070089F0F1 /* NumberPeriod2.png in Resources */,
-				485E38CA17C40D070089F0F1 /* NumberPeriod3.png in Resources */,
-				485E38CC17C40D070089F0F1 /* NumberPeriod6.png in Resources */,
-				485E38CE17C40D070089F0F1 /* NumberPeriod9.png in Resources */,
+				485E38C417C40D070089F0F1 /* NumberDuration1.png in Resources */,
+				485E38C617C40D070089F0F1 /* NumberDuration12.png in Resources */,
+				485E38C817C40D070089F0F1 /* NumberDuration2.png in Resources */,
+				485E38CA17C40D070089F0F1 /* NumberDuration3.png in Resources */,
+				485E38CC17C40D070089F0F1 /* NumberDuration6.png in Resources */,
+				485E38CE17C40D070089F0F1 /* NumberDuration9.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

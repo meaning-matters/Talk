@@ -31,9 +31,7 @@
 
 @property (nonatomic, strong) NSMutableSet*         productIdentifiers;
 @property (atomic, strong) SKProductsRequest*       productsRequest;
-@property (nonatomic, copy) void (^accountCompletion)(BOOL success, id object);
-@property (nonatomic, copy) void (^creditCompletion)(BOOL success, id object);
-@property (nonatomic, copy) void (^numberCompletion)(BOOL success, id object);
+@property (nonatomic, copy) void (^buyCompletion)(BOOL success, id object);
 @property (nonatomic, copy) void (^loadCompletion)(BOOL success);
 @property (nonatomic, strong) NSMutableArray*       restoredTransactions;
 @property (nonatomic, strong) NSDate*               loadProductsDate;
@@ -102,8 +100,9 @@
     [self.productIdentifiers addObject:[self productIdentifierForCreditTier:10]];
     [self.productIdentifiers addObject:[self productIdentifierForCreditTier:20]];
     [self.productIdentifiers addObject:[self productIdentifierForCreditTier:50]];
+    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:75]];   // Only used during number purchase.
 
-    for (int tier = 1; tier <= 80; tier++)
+    for (int tier = 1; tier <= 87; tier++)
     {
         [self.productIdentifiers addObject:[self productIdentifierForNumberTier:tier]];
     }
@@ -144,24 +143,10 @@
 }
 
 
-- (void)completeAccountWithSuccess:(BOOL)success object:(id)object
+- (void)completeBuyWithSuccess:(BOOL)success object:(id)object
 {
-    self.accountCompletion ? self.accountCompletion(success, object) : 0;
-    self.accountCompletion = nil;
-}
-
-
-- (void)completeCreditWithSuccess:(BOOL)success object:(id)object
-{
-    self.creditCompletion ? self.creditCompletion(success, object) : 0;
-    self.creditCompletion = nil;
-}
-
-
-- (void)completeNumberWithSuccess:(BOOL)success object:(id)object
-{
-    self.numberCompletion ? self.numberCompletion(success, object) : 0;
-    self.numberCompletion = nil;
+    self.buyCompletion ? self.buyCompletion(success, object) : 0;
+    self.buyCompletion = nil;
 }
 
 
@@ -211,11 +196,11 @@
                     [Settings sharedSettings].sipPassword = ((NSDictionary*)content)[@"sipPassword"];
 
                     [self finishTransaction:transaction];
-                    [self completeAccountWithSuccess:YES object:transaction];
+                    [self completeBuyWithSuccess:YES object:transaction];
                 }
                 else
                 {
-                    if (self.accountCompletion != nil)
+                    if (self.buyCompletion != nil)
                     {
                         NSString* description = NSLocalizedStringWithDefaultValue(@"Purchase:General SipAccountFailed", nil,
                                                                                   [NSBundle mainBundle], @"Could not get VoIP account",
@@ -223,11 +208,11 @@
                                                                                   @"[...].");
                         NSError*  error       = [Common errorWithCode:0 description:description];
 
-                        [self completeAccountWithSuccess:NO object:error];
+                        [self completeBuyWithSuccess:NO object:error];
                     }
                     else
                     {
-                        NSLog(@"//### accountCompletion == nil");
+                        NSLog(@"//### completion == nil");
 #warning Sometimes get here when two different accounts failed and Store retrieves them both at app start.
                     }
                 }
@@ -256,7 +241,7 @@
                                  cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
             
-            [self completeAccountWithSuccess:NO object:nil];  // With nil, no alert will be shown.
+            [self completeBuyWithSuccess:NO object:nil];  // With nil, no alert will be shown.
         }
         else
         {
@@ -266,7 +251,7 @@
                                                                       @"Error message ...\n"
                                                                       @"[...].");
             NSError*        error = [Common errorWithCode:0 description:description];
-            [self completeAccountWithSuccess:NO object:error];
+            [self completeBuyWithSuccess:NO object:error];
         }
     }];
 }
@@ -283,7 +268,7 @@
         if (status == WebClientStatusOk)
         {
             [self finishTransaction:transaction];
-            [self completeCreditWithSuccess:YES object:transaction];
+            [self completeBuyWithSuccess:YES object:transaction];
         }
         else
         {
@@ -293,7 +278,7 @@
                                                                       @"Error message ...\n"
                                                                       @"[...].");
             NSError*        error = [Common errorWithCode:0 description:description];
-            [self completeAccountWithSuccess:NO object:error];
+            [self completeBuyWithSuccess:NO object:error];
         }
     }];
 }
@@ -310,7 +295,7 @@
          if (status == WebClientStatusOk)
          {
              [self finishTransaction:transaction];
-             [self completeCreditWithSuccess:YES object:transaction];
+             [self completeBuyWithSuccess:YES object:transaction];
          }
          else
          {
@@ -320,7 +305,7 @@
                                                                        @"Error message ...\n"
                                                                        @"[...].");
              NSError*        error = [Common errorWithCode:0 description:description];
-             [self completeAccountWithSuccess:NO object:error];
+             [self completeBuyWithSuccess:NO object:error];
          }
      }];
 
@@ -422,7 +407,7 @@
     }
     else
     {
-        [self completeAccountWithSuccess:YES object:nil];
+        [self completeBuyWithSuccess:YES object:nil];
         self.restoredTransactions = nil;
     }
 }
@@ -433,7 +418,7 @@
     NSLog(@"restoreCompletedTransactionsFailedWithError: %@", [error localizedDescription]);
     [Common enableNetworkActivityIndicator:NO];
 
-    [self completeAccountWithSuccess:NO object:error];
+    [self completeBuyWithSuccess:NO object:error];
     self.restoredTransactions = nil;
 }
 
@@ -479,18 +464,8 @@
 
                 NSLog(@"//### %@ transaction failed: %@.", transaction.payment.productIdentifier,
                                                            [transaction.error localizedDescription]);
-                if ([self isAccountProductIdentifier:transaction.payment.productIdentifier])
-                {
-                    [self completeAccountWithSuccess:NO object:transaction.error];
-                }
-                else if ([self isCreditProductIdentifier:transaction.payment.productIdentifier])
-                {
-                    [self completeCreditWithSuccess:NO object:transaction.error];
-                }
-                else if ([self isNumberProductIdentifier:transaction.payment.productIdentifier])
-                {
-                    [self completeNumberWithSuccess:NO object:transaction.error];
-                }
+
+                [self completeBuyWithSuccess:NO object:transaction.error];
                 break;
 
             case SKPaymentTransactionStateRestored:
@@ -622,7 +597,7 @@
 
 - (void)buyAccount:(void (^)(BOOL success, id object))completion
 {
-    if (self.accountCompletion != nil)
+    if (self.buyCompletion != nil)
     {
         completion(NO, nil);
 
@@ -634,15 +609,13 @@
         return;
     }
 
-    self.accountCompletion = completion;
-
     [self buyProductIdentifier:[self productIdentifierForAccountTier:1] completion:nil];
 }
 
 
 - (void)restoreAccount:(void (^)(BOOL success, id object))completion
 {
-    if (self.accountCompletion != nil)
+    if (self.buyCompletion != nil)
     {
         completion(NO, nil);
         
@@ -654,7 +627,7 @@
         return;
     }
 
-    self.accountCompletion = completion;
+    self.buyCompletion = completion;
 
     [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
     [Common enableNetworkActivityIndicator:YES];
@@ -662,6 +635,7 @@
 
 
 - (void)buyNumberForTier:(int)tier
+                  months:(int)months
                     name:(NSString*)name
           isoCountryCode:(NSString*)isoCountryCode
                 areaCode:(int)areaCode
@@ -669,13 +643,23 @@
                     info:(NSDictionary*)info
               completion:(void (^)(BOOL success, id object))completion
 {
+    if (self.buyCompletion != nil)
+    {
+        completion(NO, nil);
 
+        return;
+    }
+
+    [self buyProductIdentifier:[self productIdentifierForNumberTier:tier] completion:^(BOOL success, id object)
+    {
+        completion(success, object);
+    }];
 }
 
 
 - (void)buyProductIdentifier:(NSString*)productIdentifier completion:(void (^)(BOOL success, id object))completion
 {
-    self.numberCompletion = completion;
+    self.buyCompletion = completion;
 
     if ([SKPaymentQueue canMakePayments])
     {
@@ -705,7 +689,7 @@
                                                         @"Message telling that product was not found.\n"
                                                         @"[iOS alert title size - abbreviated: 'Can't Pay'].");
 
-            self.numberCompletion(NO, nil);
+            self.buyCompletion(NO, nil);
         }
     }
     else
@@ -730,7 +714,7 @@
                              cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
 
-        self.numberCompletion(NO, nil);
+        self.buyCompletion(NO, nil);
     }
 }
 
