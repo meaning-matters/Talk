@@ -124,14 +124,8 @@
                                                                    [NSBundle mainBundle],
                                                                    @"Welcome back! Your current credit is %@, with %d numbers...",
                                                                    @"Welcome text for existing user without telephone numbers.");
-    [self.readyCreditButton setTitle:NSLocalizedStringWithDefaultValue(@"Provisioning:Ready CreditButtonTitle", nil,
-                                                                       [NSBundle mainBundle], @"Credit",
-                                                                       @"...")
-                            forState:UIControlStateNormal];
-    [self.readyNumberButton setTitle:NSLocalizedStringWithDefaultValue(@"Provisioning:Ready CreditButtonTitle", nil,
-                                                                       [NSBundle mainBundle], @"Number",
-                                                                       @"...")
-                            forState:UIControlStateNormal];
+    [self.readyCreditButton setTitle:[Strings creditString] forState:UIControlStateNormal];
+    [self.readyNumberButton setTitle:[Strings numberString] forState:UIControlStateNormal];
 
     [Common setCornerRadius:10                     ofView:self.verifyStep1View];
     [Common setCornerRadius:10                     ofView:self.verifyStep2View];

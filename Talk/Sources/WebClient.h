@@ -22,6 +22,7 @@ typedef enum
     WebClientStatusFailNoStatesForCountry,
     WebClientStatusFailInvalidInfo,
     WebClientStatusFailDataTooLarge,
+    WebClientStatusFailInsufficientCredit,
     WebClientStatusFailNetworkProblem,  // Local.
     WebClientStatusFailInvalidResponse, // Local.
     WebClientStatusFailUnspecified,     // Local.
@@ -71,10 +72,11 @@ typedef enum
 
 // 11A. PURCHASE NUMBER
 - (void)purchaseNumberForReceipt:(NSString*)receipt
+                          months:(int)months
                             name:(NSString*)name
                   isoCountryCode:(NSString*)isoCountryCode
                         areaCode:(int)areaCode
-                      numberType:(NumberTypeMask)numberTypeMask
+                      numberType:(NSString*)numberType
                             info:(NSDictionary*)info
                            reply:(void (^)(WebClientStatus status, NSString* e164))reply;
 

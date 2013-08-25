@@ -130,6 +130,15 @@
 }
 
 
++ (NSString*)creditString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Number", nil,
+                                             [NSBundle mainBundle], @"Credit",
+                                             @"Standard string to label a (calling) credit\n"
+                                             @"[iOS standard size].");
+}
+
+
 // Need many more for i18n: http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html
 + (NSString*)monthString
 {

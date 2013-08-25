@@ -40,6 +40,7 @@ NSString* const NumberTypeMaskKey              = @"NumberTypeMask";
 NSString* const ForwardingsSelectionKey        = @"ForwardingsSelection";
 NSString* const CurrencyCodeKey                = @"CurrencyCode";
 NSString* const CreditKey                      = @"Credit";
+NSString* const PendingNumberBuyKey            = @"PendingNumberBuy";
 
 
 @implementation Settings
@@ -428,6 +429,19 @@ static NSUserDefaults*  userDefaults;
 - (void)setCredit:(float)credit
 {
     [userDefaults setFloat:credit forKey:CreditKey];
+}
+
+
+- (NSDictionary*)pendingNumberBuy
+{
+    return [userDefaults objectForKey:PendingNumberBuyKey];
+}
+
+
+- (void)setPendingNumberBuy:(NSDictionary*)pendingNumberBuy
+{
+    [userDefaults setObject:pendingNumberBuy forKey:PendingNumberBuyKey];
+    [userDefaults synchronize]; // We want this extra security, because this data can not be restored!
 }
 
 

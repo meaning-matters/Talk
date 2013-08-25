@@ -44,7 +44,8 @@ static NSDictionary* statuses;
                       @"FAIL_DEVICE_NAME_NOT_UNIQUE": @(WebClientStatusFailDeviceNameNotUnique),
                       @"FAIL_NO_STATES_FOR_COUNTRY":  @(WebClientStatusFailNoStatesForCountry),
                       @"FAIL_INVALID_INFO":           @(WebClientStatusFailInvalidInfo),
-                      @"FAIL_DATA_TOO_LARGE":         @(WebClientStatusFailDataTooLarge) };
+                      @"FAIL_DATA_TOO_LARGE":         @(WebClientStatusFailDataTooLarge),
+                      @"FAIL_INSUFFICIENT_CREDIT":    @(WebClientStatusFailInsufficientCredit) };
     });
 
     return sharedInstance;
@@ -303,19 +304,21 @@ static NSDictionary* statuses;
 
 // 11A. PURCHASE NUMBER
 - (void)purchaseNumberForReceipt:(NSString*)receipt
+                          months:(int)months
                             name:(NSString*)name
                   isoCountryCode:(NSString*)isoCountryCode
-                        areaCode:(int)areaCode
-                      numberType:(NumberTypeMask)numberTypeMask
+                        areaCode:(NSString*)areaCode
+                      numberType:(NSString*)numberType
                             info:(NSDictionary*)info
                            reply:(void (^)(WebClientStatus status, NSString* e164))reply
 {
     NSString* username              = [Settings sharedSettings].webUsername;
     NSMutableDictionary* parameters = [@{@"receipt"        : receipt,
+                                         @"durationMonths" : @(months),
                                          @"name"           : name,
                                          @"isoCountryCode" : isoCountryCode,
-                                         @"areaCode"       : @(areaCode),
-                                         @"numberType"     : [NumberType stringForNumberType:numberTypeMask]} mutableCopy];
+                                         @"areaCode"       : areaCode,
+                                         @"numberType"     : numberType} mutableCopy];
     if (info != nil)
     {
         [parameters setObject:info forKey:@"info"];

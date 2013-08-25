@@ -116,7 +116,6 @@ static const int    CountryCellTag   = 4321;
         area                 = theArea;
         numberTypeMask       = theNumberTypeMask;
         requireProof         = [area[@"requireProof"] boolValue];
-        purchaseInfo         = [NSMutableDictionary dictionary];
 
         if ([area[@"infoType"] isEqualToString:@"NONE"])
         {
@@ -143,6 +142,8 @@ static const int    CountryCellTag   = 4321;
         {
             purchaseInfo[@"isoCountryCode"] = numberIsoCountryCode;
         }
+
+        purchaseInfo = (infoType != InfoTypeNone) ? [NSMutableDictionary dictionary] : nil;
 
         // Mandatory sections.
         sections |= TableSectionArea;

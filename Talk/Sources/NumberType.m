@@ -25,6 +25,10 @@
 
         case NumberTypeInternationalMask:
             return @"INTERNATIONAL";
+
+        default:
+            NSLog(@"Invalid NumberTypeMask.");
+            return @"";
     }
 }
 

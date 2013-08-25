@@ -42,8 +42,8 @@
                   months:(int)months
                     name:(NSString*)name
           isoCountryCode:(NSString*)isoCountryCode
-                areaCode:(int)areaCode
-              numberType:(NumberTypeMask)numberTypeMask
+                areaCode:(NSString*)areaCode
+              numberType:(NSString*)numberType
                     info:(NSDictionary*)info
               completion:(void (^)(BOOL success, id object))completion;
 

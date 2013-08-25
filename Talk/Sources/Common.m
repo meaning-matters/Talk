@@ -190,7 +190,7 @@
 
 + (NSError*)errorWithCode:(NSInteger)code description:(NSString*)description
 {
-    NSDictionary* userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedFailureReasonErrorKey];
+    NSDictionary* userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
     NSError*      error    = [[NSError alloc] initWithDomain:[Settings sharedSettings].errorDomain
                                                         code:code
                                                     userInfo:userInfo];
@@ -308,7 +308,7 @@
                                                     @"[iOS alert title size - abbreviated: 'Can't Pay'].");
         message = NSLocalizedStringWithDefaultValue(@"General:AppStatus NoNotificationsMessage", nil,
                                                     [NSBundle mainBundle],
-                                                    @"At least alert and badge notifications must be enabled.\n"
+                                                    @"At least Alert and Badge notifications must be enabled.\n"
                                                     @"Go to iOS Settings > Notifications > %@.",
                                                     @"Alert message telling that required notifications are disabled.\n"
                                                     @"[iOS alert message size - use correct iOS terms for: Settings "

@@ -36,6 +36,8 @@
 
 + (NSString*)numberString;
 
++ (NSString*)creditString;
+
 + (NSString*)monthString;
 
 + (NSString*)monthsString;
