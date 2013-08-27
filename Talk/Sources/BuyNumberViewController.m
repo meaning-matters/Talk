@@ -396,7 +396,7 @@
     int   tier     = [self tierForMonths:months];
 
     NSString* productIdentifier = [[PurchaseManager sharedManager] productIdentifierForNumberTier:tier];
-    NSString* priceString       = [[PurchaseManager sharedManager]localizedPriceForProductIdentifier:productIdentifier];
+    NSString* priceString       = [[PurchaseManager sharedManager] localizedPriceForProductIdentifier:productIdentifier];
     NSString* text;
     text = NSLocalizedStringWithDefaultValue(@"BuyNumber:... PriceLabel", nil, [NSBundle mainBundle],
                                              @"%d %@ for %@",

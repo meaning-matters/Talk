@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "ViewController.h"
 
-@interface CreditViewController : ViewController
+@interface CreditViewController : ViewController <UITableViewDelegate, UITableViewDataSource>
 
-- (IBAction)buyAction:(id)sender;
+@property (nonatomic, weak) IBOutlet UITableView*   tableView;
 
 @end

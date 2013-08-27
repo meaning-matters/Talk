@@ -87,6 +87,14 @@
 		4805791217A50FBF006923BD /* NSString+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578EF17A4FACF006923BD /* NSString+Common.m */; };
 		4812727316487E2D00534450 /* LibPhoneNumber.js in Resources */ = {isa = PBXBuildFile; fileRef = 4812727216487E2D00534450 /* LibPhoneNumber.js */; };
 		4812727416487E2D00534450 /* LibPhoneNumber.js in Sources */ = {isa = PBXBuildFile; fileRef = 4812727216487E2D00534450 /* LibPhoneNumber.js */; };
+		4814EA3317CA98F4004B7A3C /* CreditBuyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4814EA3217CA98F4004B7A3C /* CreditBuyCell.xib */; };
+		4814EA3417CA98F4004B7A3C /* CreditBuyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4814EA3217CA98F4004B7A3C /* CreditBuyCell.xib */; };
+		4814EA3717CA993F004B7A3C /* CreditBuyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4814EA3617CA993F004B7A3C /* CreditBuyCell.m */; };
+		4814EA3817CA993F004B7A3C /* CreditBuyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4814EA3617CA993F004B7A3C /* CreditBuyCell.m */; };
+		4814EA3A17CB18DB004B7A3C /* CreditAmountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4814EA3917CB18DB004B7A3C /* CreditAmountCell.xib */; };
+		4814EA3B17CB18DB004B7A3C /* CreditAmountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4814EA3917CB18DB004B7A3C /* CreditAmountCell.xib */; };
+		4814EA3E17CB1924004B7A3C /* CreditAmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */; };
+		4814EA3F17CB1924004B7A3C /* CreditAmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */; };
 		48200D1C16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
 		48200D1D16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
 		48206EF41684B0700040B04E /* RingbackTones.m in Sources */ = {isa = PBXBuildFile; fileRef = 48206EF31684B0700040B04E /* RingbackTones.m */; };
@@ -1213,6 +1221,12 @@
 		480578EE17A4FACF006923BD /* NSString+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+Common.h"; path = "../../nbaddressbook/NBAddressBook/NBAddressBook/NSString+Common.h"; sourceTree = "<group>"; };
 		480578EF17A4FACF006923BD /* NSString+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Common.m"; path = "../../nbaddressbook/NBAddressBook/NBAddressBook/NSString+Common.m"; sourceTree = "<group>"; };
 		4812727216487E2D00534450 /* LibPhoneNumber.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = LibPhoneNumber.js; path = External/LibPhoneNumber/LibPhoneNumber.js; sourceTree = SOURCE_ROOT; };
+		4814EA3217CA98F4004B7A3C /* CreditBuyCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreditBuyCell.xib; sourceTree = "<group>"; };
+		4814EA3517CA993F004B7A3C /* CreditBuyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditBuyCell.h; sourceTree = "<group>"; };
+		4814EA3617CA993F004B7A3C /* CreditBuyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditBuyCell.m; sourceTree = "<group>"; };
+		4814EA3917CB18DB004B7A3C /* CreditAmountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreditAmountCell.xib; sourceTree = "<group>"; };
+		4814EA3C17CB1923004B7A3C /* CreditAmountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditAmountCell.h; sourceTree = "<group>"; };
+		4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditAmountCell.m; sourceTree = "<group>"; };
 		48200D1A16EC89BA0069677E /* NumberType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberType.h; sourceTree = "<group>"; };
 		48200D1B16EC89BA0069677E /* NumberType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberType.m; sourceTree = "<group>"; };
 		48206EF21684B0700040B04E /* RingbackTones.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingbackTones.h; sourceTree = "<group>"; };
@@ -2616,6 +2630,8 @@
 		485ECBDF16525D1600364F08 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4865A9DD1792C8B70028785F /* BuyNumberCell.h */,
+				4865A9DE1792C8B70028785F /* BuyNumberCell.m */,
 				48EDD2381667A0A5007B89DA /* CallKeypadButton.h */,
 				48EDD2391667A0A5007B89DA /* CallKeypadButton.m */,
 				48EDD2301667722B007B89DA /* CallKeypadView.h */,
@@ -2626,6 +2642,10 @@
 				48EDD23D1667A0B6007B89DA /* CallOptionButton.m */,
 				48EDD22C16677219007B89DA /* CallOptionsView.h */,
 				48EDD22D16677219007B89DA /* CallOptionsView.m */,
+				4814EA3C17CB1923004B7A3C /* CreditAmountCell.h */,
+				4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */,
+				4814EA3517CA993F004B7A3C /* CreditBuyCell.h */,
+				4814EA3617CA993F004B7A3C /* CreditBuyCell.m */,
 				485ECBE016525D3600364F08 /* KeypadView.h */,
 				485ECBE116525D3600364F08 /* KeypadView.m */,
 				485ECBE41652B9BD00364F08 /* KeypadButton.h */,
@@ -2634,8 +2654,6 @@
 				484A94A9171C518C009E22B9 /* NumberAreaActionCell.m */,
 				484A949F171822D4009E22B9 /* NumberAreasCell.h */,
 				484A94A0171822D4009E22B9 /* NumberAreasCell.m */,
-				4865A9DD1792C8B70028785F /* BuyNumberCell.h */,
-				4865A9DE1792C8B70028785F /* BuyNumberCell.m */,
 				48367A45172552D2001A02AF /* RecordingControlsCell.h */,
 				48367A46172552D2001A02AF /* RecordingControlsCell.m */,
 				4849436B17529DE100E1D5C4 /* ShareButton.h */,
@@ -3281,6 +3299,8 @@
 				48EDD226166770B8007B89DA /* CallOptionsView.xib */,
 				4864B3FE1757C8E80006542F /* ContactUsView.xib */,
 				485ECBCB1651642D00364F08 /* CountriesView.xib */,
+				4814EA3217CA98F4004B7A3C /* CreditBuyCell.xib */,
+				4814EA3917CB18DB004B7A3C /* CreditAmountCell.xib */,
 				48AF4507164948B800DFE3D8 /* CreditView.xib */,
 				48AF450A164948CD00DFE3D8 /* DialerView.xib */,
 				48AF455D1649799F00DFE3D8 /* ForwardingsView.xib */,
@@ -4210,6 +4230,8 @@
 				485E38C917C40D070089F0F1 /* NumberDuration3.png in Resources */,
 				485E38CB17C40D070089F0F1 /* NumberDuration6.png in Resources */,
 				485E38CD17C40D070089F0F1 /* NumberDuration9.png in Resources */,
+				4814EA3317CA98F4004B7A3C /* CreditBuyCell.xib in Resources */,
+				4814EA3A17CB18DB004B7A3C /* CreditAmountCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4366,6 +4388,8 @@
 				485E38CA17C40D070089F0F1 /* NumberDuration3.png in Resources */,
 				485E38CC17C40D070089F0F1 /* NumberDuration6.png in Resources */,
 				485E38CE17C40D070089F0F1 /* NumberDuration9.png in Resources */,
+				4814EA3417CA98F4004B7A3C /* CreditBuyCell.xib in Resources */,
+				4814EA3B17CB18DB004B7A3C /* CreditAmountCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4524,6 +4548,8 @@
 				4877EDBC17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */,
 				485E38A017B7E13C0089F0F1 /* HelpViewController.m in Sources */,
 				485E38A717C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */,
+				4814EA3717CA993F004B7A3C /* CreditBuyCell.m in Sources */,
+				4814EA3E17CB1924004B7A3C /* CreditAmountCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4650,6 +4676,8 @@
 				4877EDBD17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */,
 				485E38A117B7E13C0089F0F1 /* HelpViewController.m in Sources */,
 				485E38A817C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */,
+				4814EA3817CA993F004B7A3C /* CreditBuyCell.m in Sources */,
+				4814EA3F17CB1924004B7A3C /* CreditAmountCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
