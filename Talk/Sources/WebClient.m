@@ -82,27 +82,27 @@ static NSDictionary* statuses;
     [self postPath:path
         parameters:parameters
            success:^(AFHTTPRequestOperation* operation, id responseObject)
-     {
-         [Common enableNetworkActivityIndicator:NO];
+    {
+        [Common enableNetworkActivityIndicator:NO];
 
-         NSDictionary* reponseDictionary = responseObject;
-         if (responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
-         {
-             reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
-         }
-         else
-         {
-             reply(WebClientStatusFailInvalidResponse, nil);
-         }
-     }
+        NSDictionary* reponseDictionary = responseObject;
+        if (responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
+        {
+            reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
+        }
+        else
+        {
+            reply(WebClientStatusFailInvalidResponse, nil);
+        }
+    }
            failure:^(AFHTTPRequestOperation* operation, NSError* error)
-     {
-         [Common enableNetworkActivityIndicator:NO];
-         if (error != nil && error.code != NSURLErrorCancelled)
-         {
-             reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
-         }
-     }];
+    {
+        [Common enableNetworkActivityIndicator:NO];
+        if (error != nil && error.code != NSURLErrorCancelled)
+        {
+            reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
+        }
+    }];
 }
 
 
