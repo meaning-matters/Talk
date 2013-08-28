@@ -10,3 +10,5 @@ are in small letters and inside ().
 * The time a number lasts: DURATION (period)
 
 * PHONE NUMBER (number, telephone number)
+
+* ISSUE, PROBLEM, ... (error)

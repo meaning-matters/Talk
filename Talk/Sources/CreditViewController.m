@@ -11,12 +11,19 @@
 #import "CreditAmountCell.h"
 #import "CreditBuyCell.h"
 #import "Settings.h"
+#import "WebClient.h"
+#import "BlockAlertView.h"
+#import "Strings.h"
 
 
 @interface CreditViewController ()
 
-@property (nonatomic, assign) float CreditAmountCellHeight;
-@property (nonatomic, assign) float CreditBuyCellHeight;
+@property (nonatomic, assign) float         creditAmountCellHeight;
+@property (nonatomic, assign) float         creditBuyCellHeight;
+@property (nonatomic, assign) BOOL          isLoadingCredit;
+@property (nonatomic, assign) BOOL          loadingcreditFailed;
+@property (nonatomic, strong) NSIndexPath*  amountIndexPath;
+@property (nonatomic, strong) NSIndexPath*  buyIndexPath;
 
 @end
 
@@ -39,6 +46,14 @@
 {
     [super viewDidLoad];
 
+    if (self.presentingViewController != nil)
+    {
+        // Shown as modal.
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                               target:self
+                                                                                               action:@selector(cancelAction)];
+    }
+
     [self.tableView registerNib:[UINib nibWithNibName:@"CreditAmountCell" bundle:nil]
          forCellReuseIdentifier:@"CreditAmountCell"];
     [self.tableView registerNib:[UINib nibWithNibName:@"CreditBuyCell" bundle:nil]
@@ -46,9 +61,21 @@
 
     UITableViewCell* cell;
     cell                        = [self.tableView dequeueReusableCellWithIdentifier:@"CreditAmountCell"];
-    self.CreditAmountCellHeight = cell.bounds.size.height;
+    self.creditAmountCellHeight = cell.bounds.size.height;
     cell                        = [self.tableView dequeueReusableCellWithIdentifier:@"CreditBuyCell"];
-    self.CreditBuyCellHeight    = cell.bounds.size.height;
+    self.creditBuyCellHeight    = cell.bounds.size.height;
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self loadCredit];
+    [[PurchaseManager sharedManager] loadProducts:^(BOOL success)
+    {
+        [self updateVisibleBuyCells];
+    }];
 }
 
 
@@ -74,6 +101,7 @@
     {
         cell = [tableView dequeueReusableCellWithIdentifier:@"CreditAmountCell" forIndexPath:indexPath];
         [self updateAmountCell:(CreditAmountCell*)cell];
+        self.amountIndexPath = indexPath;
     }
     else
     {
@@ -114,7 +142,7 @@
     {
         title = NSLocalizedStringWithDefaultValue(@"CreditAmount:... TableFooter", nil, [NSBundle mainBundle],
                                                   @"Credit is used for your outgoing calls, for forwarding incoming "
-                                                  @"calls on your NumberBay numbers to your phone, and for the setup "
+                                                  @"calls on your NumberBay numbers to your phone)s), and for the setup "
                                                   @"fee when buying some of the NumberBay (mostly toll-free) numbers.",
                                                   @"[Multiple lines]");
     }
@@ -135,13 +163,13 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (indexPath.row == 0)
+    if (indexPath.section == 0 && indexPath.row == 0)
     {
-        
+        [self loadCredit];
     }
     else
     {
-
+        [self buyCreditForIndexPath:indexPath];
     }
 }
 
@@ -163,16 +191,120 @@
 {
     if (indexPath.section == 0)
     {
-        return self.CreditAmountCellHeight;
+        return self.creditAmountCellHeight;
     }
     else
     {
-        return self.CreditBuyCellHeight;
+        return self.creditBuyCellHeight;
     }
 }
 
 
+#pragma mark - Actions
+
+- (void)cancelAction
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
 #pragma mark - Helpers
+
+- (void)loadCredit
+{
+    self.isLoadingCredit = YES;
+    [self updateAmountCell:(CreditAmountCell*)[self.tableView cellForRowAtIndexPath:self.amountIndexPath]];
+    
+    [[WebClient sharedClient] retrieveCredit:^(WebClientStatus status, id content)
+    {
+        if (status == WebClientStatusOk)
+        {
+            [Settings sharedSettings].credit = [content[@"credit"] floatValue];
+            self.loadingcreditFailed = NO;
+        }
+        else
+        {
+            NSString* title;
+            NSString* message;
+            NSString* string;
+
+            title   = NSLocalizedStringWithDefaultValue(@"BuyCredit FailedLoadCreditTitle", nil,
+                                                        [NSBundle mainBundle], @"Loading Credit Failed",
+                                                        @"Alert title: Credit could not be loaded.\n"
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"BuyCredit FailedBuyCreditMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Something went wrong while loading your credit: "
+                                                        @"%@.\n\nPlease try again later.",
+                                                        @"Message telling that buying credit failed\n"
+                                                        @"[iOS alert message size]");
+            string = [[WebClient sharedClient] localizedStringForStatus:status];
+            message = [NSString stringWithFormat:message, string];
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+             {
+                 [self dismissViewControllerAnimated:YES completion:nil];
+             }
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+
+            self.loadingcreditFailed = YES;
+        }
+
+        self.isLoadingCredit = NO;
+        [self updateAmountCell:(CreditAmountCell*)[self.tableView cellForRowAtIndexPath:self.amountIndexPath]];
+    }];
+}
+
+
+- (void)buyCreditForIndexPath:(NSIndexPath*)indexPath
+{
+    self.buyIndexPath = indexPath;
+    [self updateVisibleBuyCells];
+
+    [[PurchaseManager sharedManager] buyCreditForTier:[self tierForIndexPath:self.buyIndexPath]
+                                           completion:^(BOOL success, id object)
+    {
+        if (success == YES)
+        {
+            [self loadCredit];
+        }
+        else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
+        {
+            // Do nothing; give user another chance.
+        }
+        else if (object != nil)
+        {
+            NSString* title;
+            NSString* message;
+
+            title   = NSLocalizedStringWithDefaultValue(@"BuyCredit FailedBuyCreditTitle", nil,
+                                                        [NSBundle mainBundle], @"Buying Credit Failed",
+                                                        @"Alert title: Credit could not be bought.\n"
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"BuyCredit FailedBuyCreditMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Something went wrong while buying credit: "
+                                                        @"%@.\n\nPlease try again later.",
+                                                        @"Message telling that buying credit failed\n"
+                                                        @"[iOS alert message size]");
+            message = [NSString stringWithFormat:message, [object localizedDescription]];
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+             {
+                 [self dismissViewControllerAnimated:YES completion:nil];
+             }
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+        }
+
+        self.buyIndexPath = nil;
+        [self updateVisibleBuyCells];
+    }];
+}
+
 
 - (int)tierForIndexPath:(NSIndexPath*)indexPath
 {
@@ -196,7 +328,21 @@
     float     credit = [Settings sharedSettings].credit;
     NSString* amount = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
 
-    cell.amountLabel.text = amount;
+    cell.amountLabel.text  = amount;
+    cell.amountLabel.alpha = self.isLoadingCredit ? 0.5 : 1.0;
+
+    cell.amountLabel.textColor = self.loadingcreditFailed ? [UIColor orangeColor] : [UIColor blackColor];
+    
+    if (self.isLoadingCredit == YES)
+    {
+        [cell.activityIndicator startAnimating];
+        cell.userInteractionEnabled = NO;
+    }
+    else
+    {
+        [cell.activityIndicator stopAnimating];
+        cell.userInteractionEnabled = YES;
+    }
 }
 
 
@@ -211,7 +357,34 @@
                                                     @"A Credit of %@",
                                                     @"Parameter: credit amount local currency.");
 
-    cell.descriptionLabel.text = [NSString stringWithFormat:description, priceString];
+    cell.descriptionLabel.text  = [NSString stringWithFormat:description, priceString];
+    cell.amountImageView.image  = [UIImage imageNamed:[NSString stringWithFormat:@"CreditAmount%d.png", tier]];
+
+    cell.amountImageView.alpha  = self.buyIndexPath ? 0.5 : 1.0;
+    cell.descriptionLabel.alpha = self.buyIndexPath ? 0.5 : 1.0;
+    if (self.buyIndexPath != nil && [self.buyIndexPath compare:indexPath] == NSOrderedSame)
+    {
+        [cell.activityIndicator startAnimating];
+        cell.userInteractionEnabled = NO;
+    }
+    else
+    {
+        [cell.activityIndicator stopAnimating];
+        cell.userInteractionEnabled = YES;
+    }
+}
+
+
+- (void)updateVisibleBuyCells
+{
+    for (NSIndexPath* indexPath in [self.tableView indexPathsForVisibleRows])
+    {
+        if ([indexPath isEqual:self.amountIndexPath] == NO)
+        {
+            CreditBuyCell* cell = (CreditBuyCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+            [self updateBuyCell:cell atIndexPath:indexPath];
+        }
+    }
 }
 
 @end

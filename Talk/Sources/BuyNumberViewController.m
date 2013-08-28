@@ -163,7 +163,6 @@
         float setupFee   = [self.area[@"setupFee"] floatValue];
 
         self.buyIndexPath = indexPath;
-
         [self updateVisibleCells];
 
         void (^buyNumberBlock)(void) = ^

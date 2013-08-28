@@ -180,6 +180,108 @@ static NSDictionary* statuses;
 
 #pragma mark - Public API
 
+- (NSString*)localizedStringForStatus:(WebClientStatus)status
+{
+    NSString* string;
+
+    switch (status)
+    {
+        case WebClientStatusOk:
+            string = NSLocalizedStringWithDefaultValue(@"webClient StatusOk", nil, [NSBundle mainBundle],
+                                                       @"Successful",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailInvalidRequest:
+            string = NSLocalizedStringWithDefaultValue(@"webClient FailInvalidRequest", nil, [NSBundle mainBundle],
+                                                       @"Couldn't communicate with the server",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailServerIternal:
+            string = NSLocalizedStringWithDefaultValue(@"webClient FailServerIternal", nil, [NSBundle mainBundle],
+                                                       @"Internal server issue",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailServiceUnavailable:
+            string = NSLocalizedStringWithDefaultValue(@"webClient FailServiceUnavailable", nil, [NSBundle mainBundle],
+                                                       @"Service is temporatily unavailable",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailInvalidReceipt:
+            string = NSLocalizedStringWithDefaultValue(@"webClient FailInvalidReceipt", nil, [NSBundle mainBundle],
+                                                       @"Electronic receipt is not valid",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailDeviceNameNotUnique:
+            string = NSLocalizedStringWithDefaultValue(@"webClient FailDeviceNameNotUnique", nil, [NSBundle mainBundle],
+                                                       @"All devices you register must have a unique name",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailNoStatesForCountry:
+            string = NSLocalizedStringWithDefaultValue(@"webClient FailNoStatesForCountry", nil, [NSBundle mainBundle],
+                                                       @"This country does not have states",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailInvalidInfo:
+            string = NSLocalizedStringWithDefaultValue(@"webClient FailInvalidInfo", nil, [NSBundle mainBundle],
+                                                       @"Your name and address were not accepted",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailDataTooLarge:
+            string = NSLocalizedStringWithDefaultValue(@"webClient FailDataTooLarge", nil, [NSBundle mainBundle],
+                                                       @"Too much data to load in one go",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailInsufficientCredit:
+            string = NSLocalizedStringWithDefaultValue(@"webClient FailInsufficientCredit", nil, [NSBundle mainBundle],
+                                                       @"You have not enough credit",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailNetworkProblem:
+            string = NSLocalizedStringWithDefaultValue(@"webClient FailNetworkProblem", nil, [NSBundle mainBundle],
+                                                       @"There's a problem with the network",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailInvalidResponse:
+            string = NSLocalizedStringWithDefaultValue(@"webClient FailInvalidResponse", nil, [NSBundle mainBundle],
+                                                       @"Invalid data received from server",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailUnspecified:
+            string = NSLocalizedStringWithDefaultValue(@"webClient FailUnspecified", nil, [NSBundle mainBundle],
+                                                       @"An unspecified issue",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+    }
+
+    return string;
+}
+
+
 #warning replace parameters with argument list and put as much logic of the API request in these methods!
 
 // 1. CREATE/UPDATE ACCOUNT

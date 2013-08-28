@@ -33,6 +33,8 @@ typedef enum
 
 + (WebClient*)sharedClient;
 
+- (NSString*)localizedStringForStatus:(WebClientStatus)status;
+
 // 1. CREATE/UPDATE ACCOUNT
 - (void)retrieveWebAccount:(NSDictionary*)parameters
                      reply:(void (^)(WebClientStatus status, id content))reply;

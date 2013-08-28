@@ -802,7 +802,9 @@
     {
         CreditViewController*   viewController = [[CreditViewController alloc] init];
         viewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        [AppDelegate.appDelegate.tabBarController presentViewController:viewController animated:YES completion:nil];
+        [AppDelegate.appDelegate.tabBarController presentViewController:viewController.navigationController
+                                                               animated:YES
+                                                             completion:nil];
     }];
 }
 
