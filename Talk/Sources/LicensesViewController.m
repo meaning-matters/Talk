@@ -13,7 +13,7 @@
 
 @interface LicensesViewController ()
 {
-    NSArray*    licensesArray;
+    NSMutableArray* licensesArray;
 }
 
 @end
@@ -30,8 +30,17 @@
                                                        @"Title of app screen with licenses info\n"
                                                        @"[1 line larger font].");
 
-        NSData* data = [Common dataForResource:@"Licenses" ofType:@"json"];
-        licensesArray = [Common objectWithJsonData:data];
+        NSData*  data  = [Common dataForResource:@"Licenses" ofType:@"json"];
+        NSArray* array = [Common objectWithJsonData:data];
+
+        licensesArray = [NSMutableArray array];
+        for (NSDictionary* license in array)
+        {
+            if ([[license allKeys][0] hasPrefix:@"__"] == NO)
+            {
+                [licensesArray addObject:license];
+            }
+        }
     }
     
     return self;
