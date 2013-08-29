@@ -71,8 +71,8 @@ typedef enum
 
     self.nameTextField.text = number.name;
     self.numberLabel.text = [[PhoneNumber alloc] initWithNumber:number.e164].internationalFormat;
-    self.flagImageView.image = [UIImage imageNamed:number.isoCountryCode];
-    self.countryLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:number.isoCountryCode];
+    self.flagImageView.image = [UIImage imageNamed:number.numberCountry];
+    self.countryLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:number.numberCountry];
 }
 
 
@@ -332,14 +332,14 @@ typedef enum
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionPurchaseDate Label", nil,
                                                                     [NSBundle mainBundle], @"Purchased",
                                                                     @"....");
-            cell.detailTextLabel.text = [dateFormatter stringFromDate:number.purchaseDateTime];
+            cell.detailTextLabel.text = [dateFormatter stringFromDate:number.purchaseDate];
             break;
 
         case 1:
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionRenewalDate Label", nil,
                                                                     [NSBundle mainBundle], @"Renewal",
                                                                     @"....");
-            cell.detailTextLabel.text = [dateFormatter stringFromDate:number.purchaseDateTime];
+            cell.detailTextLabel.text = [dateFormatter stringFromDate:number.purchaseDate];
             break;
 
         case 2:

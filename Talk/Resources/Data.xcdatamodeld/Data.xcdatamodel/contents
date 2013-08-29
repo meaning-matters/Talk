@@ -17,17 +17,18 @@
         <attribute name="timeZone" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Number" representedClassName="NumberData" syncable="YES">
+        <attribute name="addressCountry" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="areaCode" attributeType="String" syncable="YES"/>
         <attribute name="building" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="company" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="e164" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="isoCountryCode" attributeType="String" minValueString="2" maxValueString="2" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="purchaseDateTime" attributeType="Date" syncable="YES"/>
-        <attribute name="renewalDateTime" attributeType="Date" syncable="YES"/>
+        <attribute name="numberCountry" attributeType="String" minValueString="2" maxValueString="2" syncable="YES"/>
+        <attribute name="purchaseDate" attributeType="Date" syncable="YES"/>
+        <attribute name="renewalDate" attributeType="Date" syncable="YES"/>
         <attribute name="renewalPrice" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="salutation" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="stateCode" optional="YES" attributeType="String" syncable="YES"/>
@@ -44,8 +45,8 @@
     </entity>
     <elements>
         <element name="Forwarding" positionX="268" positionY="-0" width="128" height="105"/>
-        <element name="Number" positionX="43" positionY="-225" width="128" height="315"/>
-        <element name="Recording" positionX="484" positionY="-0" width="128" height="103"/>
         <element name="NBRecentContactEntry" positionX="403" positionY="-432" width="128" height="163"/>
+        <element name="Number" positionX="43" positionY="-225" width="128" height="330"/>
+        <element name="Recording" positionX="484" positionY="-0" width="128" height="103"/>
     </elements>
 </model>

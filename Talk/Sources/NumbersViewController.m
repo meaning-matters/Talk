@@ -47,7 +47,7 @@
         dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-
+/*
 #warning //### Remove this later.
         if ([Settings sharedSettings].runBefore == NO)
         {
@@ -56,9 +56,9 @@
             numberData.name             = @"Business Mobile Number BE";
             numberData.e164             = @"+32499298238";
             numberData.areaCode         = @"499";
-            numberData.isoCountryCode   = @"BE";
-            numberData.purchaseDateTime = [NSDate date];
-            numberData.renewalDateTime  = [NSDate date];
+            numberData.numberCountry    = @"BE";
+            numberData.purchaseDate = [NSDate date];
+            numberData.renewalDate  = [NSDate date];
             numberData.salutation       = @"Mr.";
             numberData.firstName        = @"Cornelis";
             numberData.lastName         = @"van der Bent";
@@ -67,6 +67,7 @@
             numberData.building         = @"12";
             numberData.city             = @"Leuven";
             numberData.zipCode          = @"3000";
+            numberData.addressCountry   = @"BE";
 
             NSError*    error = nil;
             if ([managedObjectContext save:&error] == NO)
@@ -79,6 +80,7 @@
                                      otherButtonTitles:nil];
             }
         }
+       */
     }
 
     return self;
@@ -152,7 +154,7 @@
                                                  inManagedObjectContext:managedObjectContext];
     [request setEntity:entity];
 
-    NSArray*    sortDescriptors = @[ [[NSSortDescriptor alloc] initWithKey:@"isoCountryCode" ascending:NO] ];
+    NSArray*    sortDescriptors = @[ [[NSSortDescriptor alloc] initWithKey:@"numberCountry" ascending:NO] ];
     [request setSortDescriptors:sortDescriptors];
 
     NSError*        error = nil;
@@ -222,7 +224,7 @@
         number = numbersArray[indexPath.row];
     }
 
-    cell.imageView.image = [UIImage imageNamed:number.isoCountryCode];
+    cell.imageView.image = [UIImage imageNamed:number.numberCountry];
     cell.textLabel.text  = number.name;
     cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
 

@@ -141,9 +141,9 @@
     if (section == 0)
     {
         title = NSLocalizedStringWithDefaultValue(@"CreditAmount:... TableFooter", nil, [NSBundle mainBundle],
-                                                  @"Credit is used for your outgoing calls, for forwarding incoming "
-                                                  @"calls on your NumberBay numbers to your phone)s), and for the setup "
-                                                  @"fee when buying some of the NumberBay (mostly toll-free) numbers.",
+                                                  @"Credit is used for outgoing calls, for forwarding incoming "
+                                                  @"calls on NumberBay numbers to your phone(s), and for the setup "
+                                                  @"fee when buying some of the numbers.",
                                                   @"[Multiple lines]");
     }
     else

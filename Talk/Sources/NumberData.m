@@ -13,9 +13,9 @@
 @dynamic name;
 @dynamic e164;
 @dynamic areaCode;
-@dynamic isoCountryCode;
-@dynamic purchaseDateTime;
-@dynamic renewalDateTime;
+@dynamic numberCountry;     // ISO country code.
+@dynamic purchaseDate;
+@dynamic renewalDate;
 @dynamic renewalPrice;
 
 @dynamic salutation;
@@ -28,5 +28,6 @@
 @dynamic zipCode;
 @dynamic stateName;
 @dynamic stateCode;
+@dynamic addressCountry;    // ISO country code.
 
 @end

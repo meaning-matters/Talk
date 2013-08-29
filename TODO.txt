@@ -78,3 +78,4 @@
 
 * Rewrite WebClient status texts. localizedStringForStatus
 
+* Gooi Help teksten in RTFs?
