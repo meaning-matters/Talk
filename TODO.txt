@@ -79,3 +79,5 @@
 * Rewrite WebClient status texts. localizedStringForStatus
 
 * Gooi Help teksten in RTFs?
+
+* PREVENT PuRCHASES WHEN THERE'S NO ACCOUNT!

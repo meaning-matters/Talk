@@ -336,6 +336,7 @@
         if (status == WebClientStatusOk)
         {
             [self finishTransaction:transaction];
+            [Settings sharedSettings].credit = credit;
             [self completeBuyWithSuccess:YES object:transaction];
         }
         else

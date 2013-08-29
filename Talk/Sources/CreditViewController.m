@@ -268,7 +268,7 @@
     {
         if (success == YES)
         {
-            [self loadCredit];
+            [self updateAmountCell:(CreditAmountCell*)[self.tableView cellForRowAtIndexPath:self.amountIndexPath]];
         }
         else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
         {
