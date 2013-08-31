@@ -60,14 +60,14 @@
                                                                                            action:@selector(addAction)];
 
     UIRefreshControl* refreshControl = [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(handleRefresh:) forControlEvents:UIControlEventValueChanged];
+    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:refreshControl];
 
     [self fetchData];
 }
 
 
-- (void)handleRefresh:(id)sender
+- (void)refresh:(id)sender
 {
     [self downloadNumbers:^(BOOL success)
     {
@@ -141,7 +141,7 @@
     if (results != nil)
     {
         numbersArray = results;
-        [self.tableView reloadData];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
     }
     else
     {

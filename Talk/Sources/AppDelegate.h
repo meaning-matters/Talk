@@ -43,4 +43,6 @@
 
 - (void)resetAll;
 
+- (void)refresh;
+
 @end

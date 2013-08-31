@@ -625,12 +625,14 @@ static NSDictionary* statuses;
 
 #pragma mark - Public Utility
 
+// 1.
 - (void)cancelAllRetrieveWebAccount
 {
     [self cancelAllHTTPOperationsWithMethod:@"POST" path:@"users"];
 }
 
 
+// 2.
 - (void)cancelAllRetrieveSipAccount
 {
     [self cancelAllHTTPOperationsWithMethod:@"POST"
@@ -639,6 +641,7 @@ static NSDictionary* statuses;
 }
 
 
+// 6.
 - (void)cancelAllRetrieveNumberCountries
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
@@ -646,6 +649,7 @@ static NSDictionary* statuses;
 }
 
 
+// 7.
 - (void)cancelAllRetrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
@@ -654,6 +658,7 @@ static NSDictionary* statuses;
 }
 
 
+// 8A.
 - (void)cancelAllRetrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode stateCode:(NSString*)stateCode
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
@@ -662,6 +667,7 @@ static NSDictionary* statuses;
 }
 
 
+// 8B.
 - (void)cancelAllRetrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
@@ -670,6 +676,7 @@ static NSDictionary* statuses;
 }
 
 
+// 9.
 - (void)cancelAllRetrieveAreaInfoForIsoCountryCode:(NSString*)isoCountryCode areaCode:(NSString*)areaCode
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
@@ -678,12 +685,14 @@ static NSDictionary* statuses;
 }
 
 
+// 10.
 - (void)cancelAllCheckPurchaseInfo
 {
     [self cancelAllHTTPOperationsWithMethod:@"POST" path:@"numbers/check"];
 }
 
 
+// 11A.
 - (void)cancelAllPurchaseNumber
 {
     [self cancelAllHTTPOperationsWithMethod:@"POST"
@@ -692,6 +701,7 @@ static NSDictionary* statuses;
 }
 
 
+// 12.
 - (void)cancelAllRetrieveNumbers
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
@@ -700,6 +710,25 @@ static NSDictionary* statuses;
 }
 
 
+// 13.
+- (void)cancelAllRetrieveNumberForE164:(NSString*)e164
+{
+    NSString* path = [NSString stringWithFormat:@"users/%@/numbers/%@", [Settings sharedSettings].webUsername,
+                                                                        [e164 substringFromIndex:1]];
+    [self cancelAllHTTPOperationsWithMethod:@"GET" path:path];
+}
+
+
+// 14.
+- (void)cancelAllPurchaseCredit
+{
+ [self cancelAllHTTPOperationsWithMethod:@"POST"
+                                    path:[NSString stringWithFormat:@"users/%@/credit",
+                                          [Settings sharedSettings].webUsername]];
+}
+
+
+// 15.
 - (void)cancelAllRetrieveCredit
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"

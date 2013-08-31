@@ -35,6 +35,9 @@ typedef enum
 
 - (NSString*)localizedStringForStatus:(WebClientStatus)status;
 
+
+#pragma mark - Request Methods
+
 // 1. CREATE/UPDATE ACCOUNT
 - (void)retrieveWebAccount:(NSDictionary*)parameters
                      reply:(void (^)(WebClientStatus status, id content))reply;
@@ -77,7 +80,7 @@ typedef enum
                           months:(int)months
                             name:(NSString*)name
                   isoCountryCode:(NSString*)isoCountryCode
-                        areaCode:(int)areaCode
+                        areaCode:(NSString*)areaCode
                       numberType:(NSString*)numberType
                             info:(NSDictionary*)info
                            reply:(void (^)(WebClientStatus status, NSString* e164))reply;
@@ -112,34 +115,54 @@ typedef enum
                                            reply:(void (^)(WebClientStatus status, BOOL calling, BOOL verified))reply;
 
 
+#pragma mark - Cancel Methods
+
+// 1.
 - (void)cancelAllRetrieveWebAccount;
 
+// 2.
 - (void)cancelAllRetrieveSipAccount;
 
+// 6.
 - (void)cancelAllRetrieveNumberCountries;
 
+// 7.
 - (void)cancelAllRetrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode;
 
+// 8A.
 - (void)cancelAllRetrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode stateCode:(NSString*)stateCode;
 
+// 8B.
 - (void)cancelAllRetrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode;
 
+// 9.
 - (void)cancelAllRetrieveAreaInfoForIsoCountryCode:(NSString*)isoCountryCode areaCode:(NSString*)areaCode;
 
+// 10.
 - (void)cancelAllCheckPurchaseInfo;
 
+// 11A.
 - (void)cancelAllPurchaseNumber;
 
+// 12.
 - (void)cancelAllRetrieveNumbers;
 
+// 13.
+- (void)cancelAllRetrieveNumberForE164:(NSString*)e164;
+
+// 14.
 - (void)cancelAllPurchaseCredit;
 
+// 15.
 - (void)cancelAllRetrieveCredit;
 
+// 30A.
 - (void)cancelAllRetrieveVerificationCode;
 
+// 30B.
 - (void)cancelAllRequestVerificationCall;
 
+// 30C.
 - (void)cancelAllRetrieveVerificationStatus;
 
 @end

@@ -14,4 +14,6 @@
 
 @property (nonatomic, weak) IBOutlet UITableView*   tableView;
 
+- (void)refresh:(id)sender;
+
 @end

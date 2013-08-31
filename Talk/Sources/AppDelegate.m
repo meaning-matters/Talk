@@ -352,6 +352,14 @@
     {
         NSLog(@"//### Failed to remove audio directory: %@", [error localizedDescription]);
     }
+
+    [self refresh];
+}
+
+
+- (void)refresh
+{
+    [self.numbersViewController refresh:nil];
 }
 
 @end
