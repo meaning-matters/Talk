@@ -15,6 +15,8 @@
 #import "NumberData.h"
 #import "BlockAlertView.h"
 #import "Common.h"
+#import "WebClient.h"
+#import "Base64.h"
 
 
 @interface NumbersViewController ()
@@ -24,7 +26,6 @@
     BOOL                    isFiltered;
 
     NSManagedObjectContext* managedObjectContext;
-    NSDateFormatter*        dateFormatter;
 }
 
 @end
@@ -42,45 +43,8 @@
                                                        @"[1 line larger font].");
         self.tabBarItem.image = [UIImage imageNamed:@"NumbersTab.png"];
 
-        numbersArray         = [NSMutableArray array];
-        managedObjectContext = [DataManager sharedManager].managedObjectContext;
-        dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-/*
-#warning //### Remove this later.
-        if ([Settings sharedSettings].runBefore == NO)
-        {
-            NumberData* numberData = (NumberData*)[NSEntityDescription insertNewObjectForEntityForName:@"Number"
-                                                                                inManagedObjectContext:managedObjectContext];
-            numberData.name             = @"Business Mobile Number BE";
-            numberData.e164             = @"+32499298238";
-            numberData.areaCode         = @"499";
-            numberData.numberCountry    = @"BE";
-            numberData.purchaseDate = [NSDate date];
-            numberData.renewalDate  = [NSDate date];
-            numberData.salutation       = @"Mr.";
-            numberData.firstName        = @"Cornelis";
-            numberData.lastName         = @"van der Bent";
-            numberData.company          = @"NumberBay";
-            numberData.street           = @"Craenendonck";
-            numberData.building         = @"12";
-            numberData.city             = @"Leuven";
-            numberData.zipCode          = @"3000";
-            numberData.addressCountry   = @"BE";
-
-            NSError*    error = nil;
-            if ([managedObjectContext save:&error] == NO)
-            {
-                //### Handle error in better way.
-                [BlockAlertView showAlertViewWithTitle:@"Saving Number Failed"
-                                               message:nil
-                                            completion:nil
-                                     cancelButtonTitle:@"Close"
-                                     otherButtonTitles:nil];
-            }
-        }
-       */
+        numbersArray          = [NSMutableArray array];
+        managedObjectContext  = [DataManager sharedManager].managedObjectContext;
     }
 
     return self;
@@ -95,7 +59,21 @@
                                                                                            target:self
                                                                                            action:@selector(addAction)];
 
+    UIRefreshControl* refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(handleRefresh:) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:refreshControl];
+
     [self fetchData];
+}
+
+
+- (void)handleRefresh:(id)sender
+{
+    [self downloadNumbers:^(BOOL success)
+    {
+        [sender endRefreshing];
+        [self fetchData];
+    }];
 }
 
 
@@ -150,23 +128,96 @@
 - (void)fetchData
 {
     NSFetchRequest*         request = [[NSFetchRequest alloc] init];
-    NSEntityDescription*    entity = [NSEntityDescription entityForName:@"Number"
-                                                 inManagedObjectContext:managedObjectContext];
+    NSEntityDescription*    entity  = [NSEntityDescription entityForName:@"Number"
+                                                  inManagedObjectContext:managedObjectContext];
     [request setEntity:entity];
 
-    NSArray*    sortDescriptors = @[ [[NSSortDescriptor alloc] initWithKey:@"numberCountry" ascending:NO] ];
+    NSArray*    sortDescriptors = @[ [[NSSortDescriptor alloc] initWithKey:@"numberCountry" ascending:YES],
+                                     [[NSSortDescriptor alloc] initWithKey:@"name"          ascending:YES] ];
     [request setSortDescriptors:sortDescriptors];
 
-    NSError*        error = nil;
+    NSError*        error   = nil;
     NSMutableArray* results = [[managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
-    if (results == nil)
+    if (results != nil)
     {
-        // Handle the error.
+        numbersArray = results;
+        [self.tableView reloadData];
     }
     else
     {
-        numbersArray = results;
+        //### Handle the error.
     }
+}
+
+
+- (void)downloadNumbers:(void (^)(BOOL success))completion
+{
+    [[WebClient sharedClient] retrieveNumbers:^(WebClientStatus status, NSArray* array)
+    {
+        if (status == WebClientStatusOk)
+        {
+            __block int  count   = array.count;
+            __block BOOL success = YES;
+            for (NSString* e164 in array)
+            {
+                [[WebClient sharedClient] retrieveNumberForE164:e164
+                                                   currencyCode:[Settings sharedSettings].currencyCode
+                                                          reply:^(WebClientStatus status, NSDictionary* dictionary)
+                {                    
+                    if (status == WebClientStatusOk)
+                    {
+                        NSFetchRequest* request = [[NSFetchRequest alloc] init];
+                        [request setPredicate:[NSPredicate predicateWithFormat:@"e164 == %@", dictionary[@"e164"]]];
+                        [request setEntity:[NSEntityDescription entityForName:@"Number"
+                                                       inManagedObjectContext:managedObjectContext]];
+
+                        NSError* error = nil;
+                        NumberData* number = [[managedObjectContext executeFetchRequest:request error:&error] lastObject];
+                        if (number == nil)
+                        {
+                            number = (NumberData*)[NSEntityDescription insertNewObjectForEntityForName:@"Number"
+                                                                                inManagedObjectContext:managedObjectContext];
+                        }
+
+                        number.name           = dictionary[@"name"];
+                        number.e164           = dictionary[@"e164"];
+                        number.areaCode       = dictionary[@"areaCode"];
+                        number.areaName       = dictionary[@"areaName"];
+                        number.numberCountry  = dictionary[@"isoCountryCode"];
+                        [number setPurchaseDateWithString:dictionary[@"purchaseDateTime"]];
+                        [number setRenewalDateWithString:dictionary[@"renewalDateTime"]];
+                        number.salutation     = dictionary[@"info"][@"salutation"];
+                        number.firstName      = dictionary[@"info"][@"firstName"];
+                        number.lastName       = dictionary[@"info"][@"lastName"];
+                        number.company        = dictionary[@"info"][@"company"];
+                        number.street         = dictionary[@"info"][@"street"];
+                        number.building       = dictionary[@"info"][@"building"];
+                        number.city           = dictionary[@"info"][@"city"];
+                        number.zipCode        = dictionary[@"info"][@"zipCode"];
+                        number.stateName      = dictionary[@"info"][@"stateName"];
+                        number.stateCode      = dictionary[@"info"][@"stateCode"];
+                        number.addressCountry = dictionary[@"info"][@"isoCountryCode"];
+                        number.proofImage     = [Base64 decode:dictionary[@"info"][@"proofImage"]];
+
+                        [managedObjectContext save:&error];
+                    }
+                    else
+                    {
+                        success = NO;
+                    }
+
+                    if (--count == 0)
+                    {
+                        completion(success);
+                    }
+                }];
+            }
+        }
+        else
+        {
+            completion(NO);
+        }
+    }];
 }
 
 

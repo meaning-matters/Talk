@@ -35,6 +35,7 @@ static NSDictionary* statuses;
         [sharedInstance setParameterEncoding:AFJSONParameterEncoding];
         [sharedInstance setDefaultHeader:@"Accept" value:@"application/json"];
         [sharedInstance registerHTTPOperationClass:[AFJSONRequestOperation class]];
+        [sharedInstance.operationQueue setMaxConcurrentOperationCount:6];
 
         statuses = @{ @"OK":                          @(WebClientStatusOk),
                       @"FAIL_INVALID_REQUEST":        @(WebClientStatusFailInvalidRequest),
@@ -453,7 +454,7 @@ static NSDictionary* statuses;
 
 
 // 12. GET LIST OF NUMBERS
-- (void)retrieveNumbers:(void (^)(WebClientStatus status, id content))reply
+- (void)retrieveNumbers:(void (^)(WebClientStatus status, NSArray* array))reply
 {
     [self getPath:[NSString stringWithFormat:@"users/%@/numbers", [Settings sharedSettings].webUsername]
        parameters:nil
@@ -462,7 +463,15 @@ static NSDictionary* statuses;
 
 
 // 13. GET NUMBER INFO
-// ...
+- (void)retrieveNumberForE164:(NSString*)e164
+                 currencyCode:(NSString*)currencyCode
+                        reply:(void (^)(WebClientStatus status, NSDictionary* dictionary))reply
+{
+    [self getPath:[NSString stringWithFormat:@"users/%@/numbers/%@", [Settings sharedSettings].webUsername,
+                                                                     [e164 substringFromIndex:1]]
+       parameters:@{@"currencyCode" : currencyCode}
+            reply:reply];
+}
 
 
 // 14. BUY CREDIT

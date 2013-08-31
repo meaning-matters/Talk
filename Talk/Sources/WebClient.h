@@ -83,7 +83,12 @@ typedef enum
                            reply:(void (^)(WebClientStatus status, NSString* e164))reply;
 
 // 12. GET LIST OF NUMBERS
-- (void)retrieveNumbers:(void (^)(WebClientStatus status, id content))reply;
+- (void)retrieveNumbers:(void (^)(WebClientStatus status, NSArray* array))reply;
+
+// 13. GET NUMBER INFO
+- (void)retrieveNumberForE164:(NSString*)e164
+                 currencyCode:(NSString*)currencyCode
+                        reply:(void (^)(WebClientStatus status, NSDictionary* dictionary))reply;
 
 // 14. BUY CREDIT
 - (void)purchaseCreditForReceipt:(NSString*)receipt

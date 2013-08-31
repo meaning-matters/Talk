@@ -2371,10 +2371,10 @@
 			isa = PBXGroup;
 			children = (
 				4814EA4117CE590C004B7A3C /* CreditAmount1.png */,
-				4814EA4217CE590C004B7A3C /* CreditAmount10.png */,
 				4814EA4317CE590C004B7A3C /* CreditAmount2.png */,
-				4814EA4417CE590C004B7A3C /* CreditAmount20.png */,
 				4814EA4517CE590C004B7A3C /* CreditAmount5.png */,
+				4814EA4217CE590C004B7A3C /* CreditAmount10.png */,
+				4814EA4417CE590C004B7A3C /* CreditAmount20.png */,
 				4814EA4617CE590C004B7A3C /* CreditAmount50.png */,
 			);
 			path = CreditAmount;
@@ -2650,11 +2650,11 @@
 			isa = PBXGroup;
 			children = (
 				485E38BD17C40D070089F0F1 /* NumberDuration1.png */,
-				485E38BE17C40D070089F0F1 /* NumberDuration12.png */,
 				485E38BF17C40D070089F0F1 /* NumberDuration2.png */,
 				485E38C017C40D070089F0F1 /* NumberDuration3.png */,
 				485E38C117C40D070089F0F1 /* NumberDuration6.png */,
 				485E38C217C40D070089F0F1 /* NumberDuration9.png */,
+				485E38BE17C40D070089F0F1 /* NumberDuration12.png */,
 			);
 			path = NumberDuration;
 			sourceTree = "<group>";

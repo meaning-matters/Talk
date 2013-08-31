@@ -16,10 +16,10 @@
 @property (nonatomic, retain) NSString* name;           // Default: formatted number.
 @property (nonatomic, retain) NSString* e164;
 @property (nonatomic, retain) NSString* areaCode;
+@property (nonatomic, retain) NSString* areaName;
 @property (nonatomic, retain) NSString* numberCountry;  // ISO country code.
 @property (nonatomic, retain) NSDate*   purchaseDate;
 @property (nonatomic, retain) NSDate*   renewalDate;
-@property (nonatomic, assign) float     renewalPrice;
 
 // Optional.
 @property (nonatomic, retain) NSString* salutation;
@@ -33,5 +33,14 @@
 @property (nonatomic, retain) NSString* stateName;
 @property (nonatomic, retain) NSString* stateCode;
 @property (nonatomic, retain) NSString* addressCountry; // ISO country code.
+@property (nonatomic, retain) NSData*   proofImage;
+
+- (void)setPurchaseDateWithString:(NSString*)dateString;
+
+- (NSString*)stringPurchaseDateTime;
+
+- (void)setRenewalDateWithString:(NSString*)dateString;
+
+- (NSString*)stringRenewalDateTime;
 
 @end

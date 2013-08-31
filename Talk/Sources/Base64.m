@@ -29,7 +29,7 @@ static uint8_t decodingTable[128];
 }
 
 
-+ (NSString*)encode:(const uint8_t*)input length:(NSUInteger)length
++ (NSString*)encode:(const uint8_t*)input length:(size_t)length
 {
     NSMutableData* data   = [NSMutableData dataWithLength:(NSUInteger)((length + 2) / 3) * 4];
     uint8_t*       output = (uint8_t*)data.mutableBytes;
@@ -64,7 +64,7 @@ static uint8_t decodingTable[128];
 }
 
 
-+ (NSData*)decode:(const char*)string length:(NSUInteger)inputLength
++ (NSData*)decode:(const char*)string length:(size_t)inputLength
 {
     if ((string == NULL) || (inputLength % 4 != 0))
     {
@@ -107,7 +107,14 @@ static uint8_t decodingTable[128];
 
 + (NSData*)decode:(NSString*)string
 {
-    return [self decode:[string cStringUsingEncoding:NSASCIIStringEncoding] length:string.length];
+    if ([string isKindOfClass:[NSString class]])
+    {
+        return [self decode:[string cStringUsingEncoding:NSASCIIStringEncoding] length:string.length];
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 @end
