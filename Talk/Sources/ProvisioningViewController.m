@@ -249,7 +249,8 @@
 
 - (void)restoreCreditAndNumbers
 {
-    [[WebClient sharedClient] retrieveCredit:^(WebClientStatus status, id content)
+    [[WebClient sharedClient] retrieveCreditForCurrencyCode:[Settings sharedSettings].currencyCode
+                                                      reply:^(WebClientStatus status, id content)
     {
         if (status == WebClientStatusOk)
         {

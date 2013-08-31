@@ -13,6 +13,7 @@
 #import "Common.h"
 #import "BlockAlertView.h"
 #import "WebClient.h"
+#import "Settings.h"
 
 
 @interface BuyNumberViewController ()
@@ -217,7 +218,8 @@
         
         if (setupFee > 0)
         {
-            [[WebClient sharedClient] retrieveCredit:^(WebClientStatus status, id content)
+            [[WebClient sharedClient] retrieveCreditForCurrencyCode:[Settings sharedSettings].currencyCode
+                                                              reply:^(WebClientStatus status, id content)
             {
                 if (status == WebClientStatusOk)
                 {

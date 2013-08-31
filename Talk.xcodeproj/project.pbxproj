@@ -2493,7 +2493,7 @@
 				48EDD1FC1667652A007B89DA /* Call */,
 				4814EA4017CE590C004B7A3C /* CreditAmount */,
 				485F68461637270100D61365 /* Flags */,
-				485E38BC17C40D070089F0F1 /* NumberPeriod */,
+				485E38BC17C40D070089F0F1 /* NumberDuration */,
 				483679ED1722F2CF001A02AF /* Other */,
 				4849434C17529D1500E1D5C4 /* Share */,
 				48338FA916170CBA0033F4C1 /* Tabs */,
@@ -2646,7 +2646,7 @@
 			path = Share;
 			sourceTree = "<group>";
 		};
-		485E38BC17C40D070089F0F1 /* NumberPeriod */ = {
+		485E38BC17C40D070089F0F1 /* NumberDuration */ = {
 			isa = PBXGroup;
 			children = (
 				485E38BD17C40D070089F0F1 /* NumberDuration1.png */,
@@ -2656,7 +2656,7 @@
 				485E38C117C40D070089F0F1 /* NumberDuration6.png */,
 				485E38C217C40D070089F0F1 /* NumberDuration9.png */,
 			);
-			path = NumberPeriod;
+			path = NumberDuration;
 			sourceTree = "<group>";
 		};
 		485ECBDF16525D1600364F08 /* Views */ = {

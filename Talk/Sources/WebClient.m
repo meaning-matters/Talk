@@ -488,10 +488,11 @@ static NSDictionary* statuses;
 
 
 // 15. GET CURRENT CALLING CREDIT
-- (void)retrieveCredit:(void (^)(WebClientStatus status, id content))reply
+- (void)retrieveCreditForCurrencyCode:(NSString*)currencyCode
+                                reply:(void (^)(WebClientStatus status, id content))reply
 {
     [self getPath:[NSString stringWithFormat:@"users/%@/credit", [Settings sharedSettings].webUsername]
-       parameters:nil
+       parameters:@{@"currencyCode" : currencyCode}
             reply:reply];
 }
 

@@ -215,7 +215,8 @@
     self.isLoadingCredit = YES;
     [self updateAmountCell:(CreditAmountCell*)[self.tableView cellForRowAtIndexPath:self.amountIndexPath]];
     
-    [[WebClient sharedClient] retrieveCredit:^(WebClientStatus status, id content)
+    [[WebClient sharedClient] retrieveCreditForCurrencyCode:[Settings sharedSettings].currencyCode
+                                                      reply:^(WebClientStatus status, id content)
     {
         if (status == WebClientStatusOk)
         {

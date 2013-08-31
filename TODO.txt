@@ -80,4 +80,8 @@
 
 * Gooi Help teksten in RTFs?
 
-* PREVENT PuRCHASES WHEN THERE'S NO ACCOUNT!
+* PREVENT PURCHASES WHEN THERE'S NO ACCOUNT!  CREDIT FOR EXAMPLE
+
+* Add a badge to Credit tab when below tier 5.
+
+* Add warning push notification from server when credit gets below tier 5.

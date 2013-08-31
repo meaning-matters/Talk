@@ -91,7 +91,8 @@ typedef enum
                            reply:(void (^)(WebClientStatus status, float credit))reply;
 
 // 15. GET CURRENT CREDIT
-- (void)retrieveCredit:(void (^)(WebClientStatus status, id content))reply;
+- (void)retrieveCreditForCurrencyCode:(NSString*)currencyCode
+                                reply:(void (^)(WebClientStatus status, id content))reply;
 
 // 30A. DO NUMBER VERIFICATION
 - (void)retrieveVerificationCodeForPhoneNumber:(PhoneNumber*)phoneNumber
