@@ -30,6 +30,7 @@
 @dynamic stateCode;
 @dynamic addressCountry;    // ISO country code.
 @dynamic proofImage;
+@dynamic proofAccepted;
 
 
 - (void)setPurchaseDateWithString:(NSString*)dateString

@@ -85,3 +85,7 @@
 * Add a badge to Credit tab when below tier 5.
 
 * Add warning push notification from server when credit gets below tier 5.
+
+* Order delegate methods in same way accross .m files (e.g. table view delegates).
+
+* Place common methods (textfield & keyboard handling) between NumberAreaVC, NumberVC, ForwardingsVC and others in super class.

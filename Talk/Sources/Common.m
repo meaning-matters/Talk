@@ -493,6 +493,7 @@
 }
 
 
+// Returns the bit-mask of the N-th bit that is set in `value`.
 + (unsigned long)nthBitSet:(unsigned)n inValue:(unsigned long)value
 {
     unsigned long   bit = 1;
@@ -509,6 +510,20 @@
     }
 
     return bit;
+}
+
+
+// Returns the set-bits index (so only counting the bits that are set) of `bit` in `value`.
++ (unsigned)nOfBit:(unsigned long)bit inValue:(unsigned long)value
+{
+    unsigned n = [Common bitsSetCount:value];
+
+    while ([Common nthBitSet:n inValue:value] != bit && n > 0)
+    {
+        n--;
+    }
+
+    return n;
 }
 
 

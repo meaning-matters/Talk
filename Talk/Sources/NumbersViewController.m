@@ -81,7 +81,12 @@
 {
     [super viewWillAppear:animated];
 
-    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+    NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
+    if (selectedIndexPath != nil)
+    {
+        [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
+        [self updateCell:[self.tableView cellForRowAtIndexPath:selectedIndexPath] atIndexPath:selectedIndexPath];
+    }
 
     if (isFiltered == YES)
     {
@@ -221,6 +226,25 @@
 }
 
 
+- (void)updateCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
+{
+    NumberData* number;
+
+    if (isFiltered)
+    {
+        number = filteredNumbersArray[indexPath.row];
+    }
+    else
+    {
+        number = numbersArray[indexPath.row];
+    }
+
+    cell.imageView.image = [UIImage imageNamed:number.numberCountry];
+    cell.textLabel.text  = number.name;
+    cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
+}
+
+
 #pragma mark - Table View Delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
@@ -258,7 +282,6 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell;
-    NumberData*         number;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
@@ -266,20 +289,13 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
-    if (isFiltered)
-    {
-        number = filteredNumbersArray[indexPath.row];
-    }
-    else
-    {
-        number = numbersArray[indexPath.row];
-    }
-
-    cell.imageView.image = [UIImage imageNamed:number.numberCountry];
-    cell.textLabel.text  = number.name;
-    cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
-
     return cell;
+}
+
+
+- (void)tableView:(UITableView*)tableView willDisplayCell:(UITableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    [self updateCell:cell atIndexPath:indexPath];
 }
 
 

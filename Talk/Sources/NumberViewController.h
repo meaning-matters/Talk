@@ -10,16 +10,10 @@
 #import "NumberData.h"
 
 
-@interface NumberViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
+@interface NumberViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate,
+                                                    UIGestureRecognizerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView*   tableView;
-
-// NumberHeaderView outlets.
-@property (nonatomic, weak) IBOutlet UIView*        tableHeaderView;
-@property (nonatomic, weak) IBOutlet UITextField*   nameTextField;
-@property (nonatomic, weak) IBOutlet UILabel*       numberLabel;
-@property (nonatomic, weak) IBOutlet UIImageView*   flagImageView;
-@property (nonatomic, weak) IBOutlet UILabel*       countryLabel;
 
 - (id)initWithNumber:(NumberData*)number;
 

@@ -34,6 +34,8 @@
 @property (nonatomic, retain) NSString* stateCode;
 @property (nonatomic, retain) NSString* addressCountry; // ISO country code.
 @property (nonatomic, retain) NSData*   proofImage;
+@property (nonatomic, retain) NSNumber* proofAccepted;
+
 
 - (void)setPurchaseDateWithString:(NSString*)dateString;
 

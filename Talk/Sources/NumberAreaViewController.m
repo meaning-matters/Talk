@@ -26,11 +26,11 @@
 // Update reloadSections calls when adding/removing sections.
 typedef enum
 {
-    TableSectionArea    = 1UL << 0, // Type, area code, area name, state, country.
-    TableSectionNaming  = 1UL << 1, // Name given by user.
-    TableSectionName    = 1UL << 2, // Salutation, irst, last, company.
-    TableSectionAddress = 1UL << 3, // Street, number, city, zipcode.
-    TableSectionAction  = 1UL << 4, // Check info, or Buy.
+    TableSectionArea           = 1UL << 0, // Type, area code, area name, state, country.
+    TableSectionName           = 1UL << 1, // Name given by user.
+    TableSectionContactName    = 1UL << 2, // Salutation, first, last, company.
+    TableSectionContactAddress = 1UL << 3, // Street, number, city, zipcode.
+    TableSectionAction         = 1UL << 4, // Check info, or Buy.
 } TableSections;
 
 typedef enum
@@ -147,12 +147,12 @@ static const int    CountryCellTag   = 4321;
 
         // Mandatory sections.
         sections |= TableSectionArea;
-        sections |= TableSectionNaming;
+        sections |= TableSectionName;
         sections |= TableSectionAction;
 
         // Optional Sections.
-        sections |= (infoType == InfoTypeNone) ? 0 : TableSectionName;
-        sections |= (infoType == InfoTypeNone) ? 0 : TableSectionAddress;
+        sections |= (infoType == InfoTypeNone) ? 0 : TableSectionContactName;
+        sections |= (infoType == InfoTypeNone) ? 0 : TableSectionContactAddress;
 
         // Always there Area section rows.
         areaRows |= AreaRowType;
@@ -346,28 +346,6 @@ static const int    CountryCellTag   = 4321;
 }
 
 
-- (UITextField*)addTextFieldToCell:(UITableViewCell*)cell
-{
-    UITextField*    textField;
-    CGRect          frame = CGRectMake(83, 6, 198, 30);
-
-    textField = [[UITextField alloc] initWithFrame:frame];
-    [textField setFont:[UIFont boldSystemFontOfSize:15]];
-
-    textField.adjustsFontSizeToFitWidth = NO;
-    textField.autocapitalizationType    = UITextAutocapitalizationTypeWords;
-    textField.autocorrectionType        = UITextAutocorrectionTypeNo;
-    textField.clearButtonMode           = UITextFieldViewModeWhileEditing;
-    textField.contentVerticalAlignment  = UIControlContentVerticalAlignmentCenter;
-
-    textField.delegate                  = self;
-
-    [cell.contentView addSubview:textField];
-
-    return textField;
-}
-
-
 - (NSIndexPath*)nextEmptyIndexPathForKey:(NSString*)currentKey
 {
     unsigned    emptyMask  = 0;
@@ -493,6 +471,28 @@ static const int    CountryCellTag   = 4321;
 }
 
 
+- (UITextField*)addTextFieldToCell:(UITableViewCell*)cell
+{
+    UITextField*    textField;
+    CGRect          frame = CGRectMake(83, 6, 198, 30);
+
+    textField = [[UITextField alloc] initWithFrame:frame];
+    [textField setFont:[UIFont boldSystemFontOfSize:15]];
+
+    textField.adjustsFontSizeToFitWidth = NO;
+    textField.autocapitalizationType    = UITextAutocapitalizationTypeWords;
+    textField.autocorrectionType        = UITextAutocorrectionTypeNo;
+    textField.clearButtonMode           = UITextFieldViewModeWhileEditing;
+    textField.contentVerticalAlignment  = UIControlContentVerticalAlignmentCenter;
+
+    textField.delegate                  = self;
+
+    [cell.contentView addSubview:textField];
+
+    return textField;
+}
+
+
 - (void)addCountryImageToCell:(UITableViewCell*)cell isoCountryCode:(NSString*)isoCountryCode
 {
     UIImage*        image     = [UIImage imageNamed:isoCountryCode];
@@ -504,18 +504,6 @@ static const int    CountryCellTag   = 4321;
     imageView.image = image;
 
     [cell.contentView addSubview:imageView];
-}
-
-
-- (NSIndexPath*)findCellIndexPathForSubview:(UIView*)subview
-{
-    UIView* superview = subview.superview;
-    while ([superview class] != [UITableViewCell class])
-    {
-        superview = superview.superview;
-    }
-
-    return [self.tableView indexPathForCell:(UITableViewCell*)superview];
 }
 
 
@@ -654,19 +642,19 @@ static const int    CountryCellTag   = 4321;
                                                       @"...");
             break;
 
-        case TableSectionNaming:
+        case TableSectionName:
             title = NSLocalizedStringWithDefaultValue(@"NumberArea:Naming SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Number's Name In App",
                                                       @"...");
             break;
 
-        case TableSectionName:
+        case TableSectionContactName:
             title = NSLocalizedStringWithDefaultValue(@"NumberArea:Name SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Contact Name",
                                                       @"Name and company of someone.");
             break;
 
-        case TableSectionAddress:
+        case TableSectionContactAddress:
             switch (infoType)
             {
                 case InfoTypeNone:
@@ -709,14 +697,14 @@ static const int    CountryCellTag   = 4321;
         case TableSectionArea:
             break;
 
-        case TableSectionNaming:
+        case TableSectionName:
             title = [Strings nameFooterString];
             break;
 
-        case TableSectionName:
+        case TableSectionContactName:
             break;
 
-        case TableSectionAddress:
+        case TableSectionContactAddress:
             title = NSLocalizedStringWithDefaultValue(@"NumberArea:Address SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"For a phone number in this area, a contact name and address "
@@ -767,15 +755,15 @@ static const int    CountryCellTag   = 4321;
             numberOfRows = [Common bitsSetCount:areaRows];
             break;
 
-        case TableSectionNaming:
+        case TableSectionName:
             numberOfRows = 1;
             break;
 
-        case TableSectionName:
+        case TableSectionContactName:
             numberOfRows = (infoType == InfoTypeNone) ? 0 : 4;
             break;
 
-        case TableSectionAddress:
+        case TableSectionContactAddress:
             numberOfRows = (infoType == InfoTypeNone) ? 0 : 5;
             break;
 
@@ -805,12 +793,12 @@ static const int    CountryCellTag   = 4321;
     {
         switch ([Common nthBitSet:indexPath.section inValue:sections])
         {
-            case TableSectionName:
+            case TableSectionContactName:
                 titlesViewController = [[NumberAreaTitlesViewController alloc] initWithPurchaseInfo:purchaseInfo];
                 [self.navigationController pushViewController:titlesViewController animated:YES];
                 break;
 
-            case TableSectionAddress:
+            case TableSectionContactAddress:
                 switch (indexPath.row)
                 {
                     case 2:
@@ -986,16 +974,16 @@ static const int    CountryCellTag   = 4321;
             cell = [self areaCellForRowAtIndexPath:indexPath];
             break;
 
-        case TableSectionNaming:
-            cell = [self namingCellForRowAtIndexPath:indexPath];
-            break;
-
         case TableSectionName:
             cell = [self nameCellForRowAtIndexPath:indexPath];
             break;
 
-        case TableSectionAddress:
-            cell = [self addressCellForRowAtIndexPath:indexPath];
+        case TableSectionContactName:
+            cell = [self contactNameCellForRowAtIndexPath:indexPath];
+            break;
+
+        case TableSectionContactAddress:
+            cell = [self contactAddressCellForRowAtIndexPath:indexPath];
             break;
             
         case TableSectionAction:
@@ -1006,6 +994,8 @@ static const int    CountryCellTag   = 4321;
     return cell;
 }
 
+
+#pragma mark - Cell Methods
 
 - (UITableViewCell*)areaCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
@@ -1068,7 +1058,7 @@ static const int    CountryCellTag   = 4321;
 }
 
 
-- (UITableViewCell*)namingCellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)nameCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell;
     UITextField*        textField;
@@ -1100,7 +1090,7 @@ static const int    CountryCellTag   = 4321;
 }
 
 
-- (UITableViewCell*)nameCellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)contactNameCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell;
     UITextField*        textField;
@@ -1176,7 +1166,7 @@ static const int    CountryCellTag   = 4321;
 }
 
 
-- (UITableViewCell*)addressCellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)contactAddressCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell;
     UITextField*        textField;
@@ -1374,9 +1364,21 @@ static const int    CountryCellTag   = 4321;
 }
 
 
+- (NSIndexPath*)findCellIndexPathForSubview:(UIView*)subview
+{
+    UIView* superview = subview.superview;
+    while ([superview class] != [UITableViewCell class])
+    {
+        superview = superview.superview;
+    }
+
+    return [self.tableView indexPathForCell:(UITableViewCell*)superview];
+}
+
+
 - (BOOL)textFieldShouldClear:(UITextField*)textField
 {
-    NSString*   key  = objc_getAssociatedObject(textField, @"TextFieldKey");
+    NSString*   key = objc_getAssociatedObject(textField, @"TextFieldKey");
     
     if ([key isEqualToString:@"name"])
     {
@@ -1393,15 +1395,15 @@ static const int    CountryCellTag   = 4321;
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-    NSString*   key = objc_getAssociatedObject(textField, @"TextFieldKey");
+    NSString* key = objc_getAssociatedObject(textField, @"TextFieldKey");
 
     if ((nextIndexPath = [self nextEmptyIndexPathForKey:key]) != nil)
     {
-        UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
+        UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
 
         if (cell != nil)
         {
-            UITextField*    nextTextField;
+            UITextField* nextTextField;
 
             nextTextField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];
             [nextTextField becomeFirstResponder];
@@ -1422,7 +1424,7 @@ static const int    CountryCellTag   = 4321;
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
 {
-    NSString*   key  = objc_getAssociatedObject(textField, @"TextFieldKey");
+    NSString*   key = objc_getAssociatedObject(textField, @"TextFieldKey");
 
     if ([key isEqualToString:@"name"])
     {
@@ -1443,9 +1445,8 @@ static const int    CountryCellTag   = 4321;
 {
     if (nextIndexPath != nil)
     {
-        UITextField*    nextTextField;
-
-        UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
+        UITextField*     nextTextField;
+        UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
         nextIndexPath = nil;
         
         nextTextField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];

@@ -84,6 +84,8 @@
 
 + (unsigned long)nthBitSet:(unsigned)n inValue:(unsigned long)value;    // With n == 0 return first bit set.
 
++ (unsigned)nOfBit:(unsigned long)bit inValue:(unsigned long)value;     // Converts table section mask to section.
+
 + (unsigned long)bitIndex:(unsigned long)value;                         // Converts table section mask to index.
 
 + (NSString*)capitalizedString:(NSString*)string;

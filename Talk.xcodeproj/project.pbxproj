@@ -884,8 +884,6 @@
 		489387FC17039158005CC795 /* ForwardingData.m in Sources */ = {isa = PBXBuildFile; fileRef = 489387FA17039158005CC795 /* ForwardingData.m */; };
 		489387FF17039165005CC795 /* RecordingData.m in Sources */ = {isa = PBXBuildFile; fileRef = 489387FE17039165005CC795 /* RecordingData.m */; };
 		4893880017039165005CC795 /* RecordingData.m in Sources */ = {isa = PBXBuildFile; fileRef = 489387FE17039165005CC795 /* RecordingData.m */; };
-		4893880217044F59005CC795 /* NumberHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4893880117044F59005CC795 /* NumberHeaderView.xib */; };
-		4893880317044F59005CC795 /* NumberHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4893880117044F59005CC795 /* NumberHeaderView.xib */; };
 		4895D19A16B1BE9200BCA581 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4895D19916B1BE9200BCA581 /* StoreKit.framework */; };
 		4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D19C16B1C4F200BCA581 /* PurchaseManager.m */; };
 		4895D19E16B1C4F200BCA581 /* PurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D19C16B1C4F200BCA581 /* PurchaseManager.m */; };
@@ -1047,6 +1045,10 @@
 		48BD8BE81663E7A400F2CB45 /* CallView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BD8BE71663E7A400F2CB45 /* CallView.xib */; };
 		48BD8BEC1663E87800F2CB45 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BD8BEB1663E87800F2CB45 /* CallViewController.m */; };
 		48BD8BED1663E87800F2CB45 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BD8BEB1663E87800F2CB45 /* CallViewController.m */; };
+		48C1D3C517D31309004F910D /* ProofImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C1D3C417D31309004F910D /* ProofImageViewController.m */; };
+		48C1D3C617D31309004F910D /* ProofImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C1D3C417D31309004F910D /* ProofImageViewController.m */; };
+		48C1D3C817D3132A004F910D /* ProofImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48C1D3C717D3132A004F910D /* ProofImageView.xib */; };
+		48C1D3C917D3132A004F910D /* ProofImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48C1D3C717D3132A004F910D /* ProofImageView.xib */; };
 		48C3446617A7CCA700E385B6 /* NBPeopleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C3446517A7CCA700E385B6 /* NBPeopleTableViewCell.m */; };
 		48C3446717A7CCA700E385B6 /* NBPeopleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C3446517A7CCA700E385B6 /* NBPeopleTableViewCell.m */; };
 		48CA5034172AEEB100CB1B7B /* CueRecordBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CA5032172AEEB100CB1B7B /* CueRecordBlack.png */; };
@@ -1943,7 +1945,6 @@
 		489387FA17039158005CC795 /* ForwardingData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForwardingData.m; sourceTree = "<group>"; };
 		489387FD17039165005CC795 /* RecordingData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingData.h; sourceTree = "<group>"; };
 		489387FE17039165005CC795 /* RecordingData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordingData.m; sourceTree = "<group>"; };
-		4893880117044F59005CC795 /* NumberHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberHeaderView.xib; sourceTree = "<group>"; };
 		4895D19916B1BE9200BCA581 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		4895D19B16B1C4F100BCA581 /* PurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseManager.h; sourceTree = "<group>"; };
 		4895D19C16B1C4F200BCA581 /* PurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseManager.m; sourceTree = "<group>"; };
@@ -2048,6 +2049,9 @@
 		48BD8BE71663E7A400F2CB45 /* CallView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallView.xib; sourceTree = "<group>"; };
 		48BD8BEA1663E87800F2CB45 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallViewController.h; sourceTree = "<group>"; };
 		48BD8BEB1663E87800F2CB45 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallViewController.m; sourceTree = "<group>"; };
+		48C1D3C317D31308004F910D /* ProofImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProofImageViewController.h; sourceTree = "<group>"; };
+		48C1D3C417D31309004F910D /* ProofImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProofImageViewController.m; sourceTree = "<group>"; };
+		48C1D3C717D3132A004F910D /* ProofImageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProofImageView.xib; sourceTree = "<group>"; };
 		48C3446417A7CCA700E385B6 /* NBPeopleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPeopleTableViewCell.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPeopleTableViewCell.h; sourceTree = "<group>"; };
 		48C3446517A7CCA700E385B6 /* NBPeopleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPeopleTableViewCell.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPeopleTableViewCell.m; sourceTree = "<group>"; };
 		48CA5032172AEEB100CB1B7B /* CueRecordBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CueRecordBlack.png; sourceTree = "<group>"; };
@@ -3351,8 +3355,8 @@
 				48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */,
 				488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */,
 				48AF4504164948A300DFE3D8 /* NumbersView.xib */,
-				4893880117044F59005CC795 /* NumberHeaderView.xib */,
 				48BC7F3E1702FE8D006671B5 /* NumberView.xib */,
+				48C1D3C717D3132A004F910D /* ProofImageView.xib */,
 				48AF4560164979CE00DFE3D8 /* RecentsView.xib */,
 				483679FA17246977001A02AF /* RecordingControlsCell.xib */,
 				48AF4510164948F000DFE3D8 /* SettingsView.xib */,
@@ -3414,6 +3418,8 @@
 				48BC7F3B1702FDD1006671B5 /* NumberViewController.m */,
 				48AF44E81649479100DFE3D8 /* NumbersViewController.h */,
 				48AF44E91649479100DFE3D8 /* NumbersViewController.m */,
+				48C1D3C317D31308004F910D /* ProofImageViewController.h */,
+				48C1D3C417D31309004F910D /* ProofImageViewController.m */,
 				482D2DEB16C815BE00E13B91 /* ProvisioningViewController.h */,
 				482D2DEC16C815BE00E13B91 /* ProvisioningViewController.m */,
 				48AF456716497A1B00DFE3D8 /* RecentsViewController.h */,
@@ -4168,7 +4174,6 @@
 				4830462016EE222C000F9B05 /* NumberAreaView.xib in Resources */,
 				48A261C016FDE26100007638 /* CallMessageView.xib in Resources */,
 				48BC7F3F1702FE8D006671B5 /* NumberView.xib in Resources */,
-				4893880217044F59005CC795 /* NumberHeaderView.xib in Resources */,
 				48ADD0F11706551F001515EB /* RetryPhoneSmall.png in Resources */,
 				48ADD0F31706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
 				484D937317132518006FA875 /* NumberAreaCitiesView.xib in Resources */,
@@ -4270,6 +4275,7 @@
 				4814EA4D17CE590C004B7A3C /* CreditAmount20.png in Resources */,
 				4814EA4F17CE590C004B7A3C /* CreditAmount5.png in Resources */,
 				4814EA5117CE590C004B7A3C /* CreditAmount50.png in Resources */,
+				48C1D3C817D3132A004F910D /* ProofImageView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4349,7 +4355,6 @@
 				4830462116EE222C000F9B05 /* NumberAreaView.xib in Resources */,
 				48A261C116FDE26100007638 /* CallMessageView.xib in Resources */,
 				48BC7F401702FE8D006671B5 /* NumberView.xib in Resources */,
-				4893880317044F59005CC795 /* NumberHeaderView.xib in Resources */,
 				48ADD0F21706551F001515EB /* RetryPhoneSmall.png in Resources */,
 				48ADD0F41706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
 				484D937417132518006FA875 /* NumberAreaCitiesView.xib in Resources */,
@@ -4434,6 +4439,7 @@
 				4814EA4E17CE590C004B7A3C /* CreditAmount20.png in Resources */,
 				4814EA5017CE590C004B7A3C /* CreditAmount5.png in Resources */,
 				4814EA5217CE590C004B7A3C /* CreditAmount50.png in Resources */,
+				48C1D3C917D3132A004F910D /* ProofImageView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4594,6 +4600,7 @@
 				485E38A717C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */,
 				4814EA3717CA993F004B7A3C /* CreditBuyCell.m in Sources */,
 				4814EA3E17CB1924004B7A3C /* CreditAmountCell.m in Sources */,
+				48C1D3C517D31309004F910D /* ProofImageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4722,6 +4729,7 @@
 				485E38A817C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */,
 				4814EA3817CA993F004B7A3C /* CreditBuyCell.m in Sources */,
 				4814EA3F17CB1924004B7A3C /* CreditAmountCell.m in Sources */,
+				48C1D3C617D31309004F910D /* ProofImageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
