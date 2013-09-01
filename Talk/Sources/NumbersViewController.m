@@ -86,6 +86,10 @@
     {
         [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
         [self updateCell:[self.tableView cellForRowAtIndexPath:selectedIndexPath] atIndexPath:selectedIndexPath];
+
+        NSError* error= nil;
+        [managedObjectContext save:&error];
+        //### Handle error.
     }
 
     if (isFiltered == YES)
@@ -176,8 +180,9 @@
                         [request setEntity:[NSEntityDescription entityForName:@"Number"
                                                        inManagedObjectContext:managedObjectContext]];
 
-                        NSError* error = nil;
+                        NSError*    error  = nil;
                         NumberData* number = [[managedObjectContext executeFetchRequest:request error:&error] lastObject];
+                        //### Handle error.
                         if (number == nil)
                         {
                             number = (NumberData*)[NSEntityDescription insertNewObjectForEntityForName:@"Number"
@@ -204,7 +209,9 @@
                         number.addressCountry = dictionary[@"info"][@"isoCountryCode"];
                         number.proofImage     = [Base64 decode:dictionary[@"info"][@"proofImage"]];
 
+                        error = nil;
                         [managedObjectContext save:&error];
+                        //### Handle error.
                     }
                     else
                     {
@@ -261,9 +268,7 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    NumberData*         number;
-
+    NumberData* number;
     if (isFiltered)
     {
         number = filteredNumbersArray[indexPath.row];
@@ -273,7 +278,7 @@
         number = numbersArray[indexPath.row];
     }
 
-    NumberViewController*   viewController;
+    NumberViewController* viewController;
     viewController = [[NumberViewController alloc] initWithNumber:number];
     [self.navigationController pushViewController:viewController animated:YES];
 }

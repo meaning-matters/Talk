@@ -446,7 +446,19 @@ static NSDictionary* statuses;
 
 
 // 11B. UPDATE NUMBER'S NAME
-// ...
+- (void)updateNumberForE164:(NSString*)e164
+                   withName:(NSString*)name
+                      reply:(void (^)(WebClientStatus status))reply
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self postPath:[NSString stringWithFormat:@"users/%@/numbers/%@", username, [e164 substringFromIndex:1]]
+        parameters:@{@"name" : name}
+             reply:^(WebClientStatus status, id content)
+    {
+        reply(status);
+    }];
+}
 
 
 // 11C.

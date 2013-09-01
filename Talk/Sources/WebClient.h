@@ -144,6 +144,11 @@ typedef enum
 // 11A.
 - (void)cancelAllPurchaseNumber;
 
+// 11B.
+- (void)updateNumberForE164:(NSString*)e164
+                   withName:(NSString*)name
+                      reply:(void (^)(WebClientStatus status))reply;
+
 // 12.
 - (void)cancelAllRetrieveNumbers;
 

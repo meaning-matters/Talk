@@ -16,6 +16,7 @@
 #import "CountryNames.h"
 #import "Strings.h"
 #import "BlockAlertView.h"
+#import "WebClient.h"
 
 
 typedef enum
@@ -643,7 +644,7 @@ static const int    CountryCellTag   = 4321;
     [[self.tableView superview] endEditing:YES];
 
     name = number.name;
-    // [self ]
+    [self updateNameCell:[self.tableView cellForRowAtIndexPath:nameIndexPath] atIndexPath:nameIndexPath];
 }
 
 
@@ -687,11 +688,11 @@ static const int    CountryCellTag   = 4321;
         NSString* title;
         NSString* message;
 
-        title   = NSLocalizedStringWithDefaultValue(@"Number NameEmptyTitle", nil,
+        title   = NSLocalizedStringWithDefaultValue(@"Number NameMissingTitle", nil,
                                                     [NSBundle mainBundle], @"Name Is Required",
                                                     @"Alert title telling that a name must be supplied.\n"
                                                     @"[iOS alert title size].");
-        message = NSLocalizedStringWithDefaultValue(@"Number NameEmptyMessage", nil,
+        message = NSLocalizedStringWithDefaultValue(@"Number NameMissingMessage", nil,
                                                     [NSBundle mainBundle],
                                                     @"A phone number tag name is required; it can't be empty.",
                                                     @"Alert message telling that a name must be supplied\n"
@@ -707,6 +708,42 @@ static const int    CountryCellTag   = 4321;
     else
     {
         [textField resignFirstResponder];
+
+        [[WebClient sharedClient] updateNumberForE164:number.e164
+                                             withName:name
+                                                reply:^(WebClientStatus status)
+        {
+            if (status == WebClientStatusOk)
+            {
+                number.name = name;
+            }
+            else
+            {
+                NSString* title;
+                NSString* message;
+
+                title   = NSLocalizedStringWithDefaultValue(@"Number NameUpdateFailedTitle", nil,
+                                                            [NSBundle mainBundle], @"Name Not Updated",
+                                                            @"Alert title telling that a name was not saved.\n"
+                                                            @"[iOS alert title size].");
+                message = NSLocalizedStringWithDefaultValue(@"Number NameUpdateFailedMessage", nil,
+                                                            [NSBundle mainBundle],
+                                                            @"Saving the name via the internet failed: %@.\n\n"
+                                                            @"Please try again later.",
+                                                            @"Alert message telling that a name must be supplied\n"
+                                                            @"[iOS alert message size]");
+                message = [NSString stringWithFormat:message, [[WebClient sharedClient] localizedStringForStatus:status]];
+                [BlockAlertView showAlertViewWithTitle:title
+                                               message:message
+                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                {
+                    name = number.name;
+                    [self updateNameCell:[self.tableView cellForRowAtIndexPath:nameIndexPath] atIndexPath:nameIndexPath];
+                }
+                                     cancelButtonTitle:[Strings closeString]
+                                     otherButtonTitles:nil];
+            }
+        }];
 
         return YES;
     }
