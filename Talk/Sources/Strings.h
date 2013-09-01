@@ -50,6 +50,30 @@
 
 + (NSString*)companyString;
 
++ (NSString*)salutationString;
+
++ (NSString*)firstNameString;
+
++ (NSString*)lastNameString;
+
++ (NSString*)streetString;
+
++ (NSString*)buildingString;
+
++ (NSString*)cityString;
+
++ (NSString*)zipCodeString;
+
++ (NSString*)stateString;
+
 + (NSString*)countryString;
+
++ (NSString*)typeString;
+
++ (NSString*)areaCodeString;
+
++ (NSString*)areaString;
+
++ (NSString*)defaultString;
 
 @end

@@ -194,11 +194,119 @@
 }
 
 
++ (NSString*)salutationString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Salutation", nil,
+                                             [NSBundle mainBundle], @"Title",
+                                             @"Standard label for salutation/title.\n"
+                                             @"[One line].");
+}
+
+
++ (NSString*)firstNameString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings FirstName", nil,
+                                             [NSBundle mainBundle], @"First Name",
+                                             @"Standard label for person's first name.\n"
+                                             @"[One line].");
+}
+
+
++ (NSString*)lastNameString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings LastName", nil,
+                                             [NSBundle mainBundle], @"Last Name",
+                                             @"Standard label for person's last name.\n"
+                                             @"[One line].");
+}
+
+
++ (NSString*)streetString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Street", nil,
+                                             [NSBundle mainBundle], @"Street",
+                                             @"Standard label for street name (without building/number).\n"
+                                             @"[One line].");
+}
+
+
++ (NSString*)buildingString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Building", nil,
+                                             [NSBundle mainBundle], @"Building",
+                                             @"Standard label for building/number (in home/company address).\n"
+                                             @"[One line].");
+}
+
+
++ (NSString*)cityString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings City", nil,
+                                             [NSBundle mainBundle], @"City",
+                                             @"Standard label for city.\n"
+                                             @"[One line].");
+}
+
+
++ (NSString*)zipCodeString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings ZIPCode", nil,
+                                             [NSBundle mainBundle], @"ZIP Code",
+                                             @"Standard label for ZIP code.\n"
+                                             @"[One line].");
+}
+
+
++ (NSString*)stateString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings State", nil,
+                                             [NSBundle mainBundle], @"State",
+                                             @"Standard label for state name (in home/company address).\n"
+                                             @"[One line].");
+}
+
+
 + (NSString*)countryString
 {
-    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Company", nil,
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Country", nil,
                                              [NSBundle mainBundle], @"Country",
-                                             @"Standard string as label for a country name.\n"
+                                             @"Standard label for a country name.\n"
+                                             @"[No size contraint].");
+}
+
+
++ (NSString*)typeString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings PhoneNumberType", nil,
+                                             [NSBundle mainBundle], @"Type",
+                                             @"Standard label for the type of phone number (e.g. geographic, toll-free).\n"
+                                             @"[No size contraint].");
+}
+
+
++ (NSString*)areaCodeString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings PhoneNumberAreaCode", nil,
+                                             [NSBundle mainBundle], @"Area Code",
+                                             @"Standard label for a phone number's area code (e.g. 0800).\n"
+                                             @"[No size contraint].");
+}
+
+
++ (NSString*)areaString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings PhoneNumberArea", nil,
+                                             [NSBundle mainBundle], @"Area",
+                                             @"Standard label for a phone number's area (or city) name (e.g. Paris).\n"
+                                             @"[No size contraint].");
+}
+
+
++ (NSString*)defaultString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Default", nil,
+                                             [NSBundle mainBundle], @"Default",
+                                             @"Standard label for a default value/selection/number/....\n"
                                              @"[No size contraint].");
 }
 

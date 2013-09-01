@@ -1013,33 +1013,25 @@ static const int    CountryCellTag   = 4321;
     switch ([Common nthBitSet:indexPath.row inValue:areaRows])
     {
         case AreaRowType:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:NumberType Label", nil,
-                                                                    [NSBundle mainBundle], @"Type",
-                                                                    @"....");
+            cell.textLabel.text = [Strings typeString];
             cell.detailTextLabel.text = [NumberType localizedStringForNumberType:numberTypeMask];
             cell.imageView.image      = nil;
             break;
 
         case AreaRowAreaCode:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:AreaCode Label", nil,
-                                                                    [NSBundle mainBundle], @"Area Code",
-                                                                    @"....");
+            cell.textLabel.text = [Strings areaCodeString];
             cell.detailTextLabel.text = area[@"areaCode"];
             cell.imageView.image      = nil;
             break;
 
         case AreaRowAreaName:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:AreaName Label", nil,
-                                                                    [NSBundle mainBundle], @"Area",
-                                                                    @"....");
+            cell.textLabel.text = [Strings areaString];
             cell.detailTextLabel.text = area[@"areaName"];
             cell.imageView.image      = nil;
             break;
 
         case AreaRowState:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:State Label", nil,
-                                                                    [NSBundle mainBundle], @"State",
-                                                                    @"....");
+            cell.textLabel.text = [Strings stateString];
             cell.detailTextLabel.text = state[@"stateName"];
             cell.imageView.image      = nil;
             break;
@@ -1114,9 +1106,8 @@ static const int    CountryCellTag   = 4321;
             salutationTextField = textField;
             cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Salutation Label", nil,
-                                                                    [NSBundle mainBundle], @"Title",
-                                                                    @"....");
+            cell.textLabel.text = [Strings salutationString];
+            
             textField.placeholder = [Strings requiredString];
             textField.text = [self salutationText];
             textField.userInteractionEnabled = NO;
@@ -1127,9 +1118,8 @@ static const int    CountryCellTag   = 4321;
             firstNameTextField  = textField;
             cell.accessoryType  = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:FirstName Label", nil,
-                                                                    [NSBundle mainBundle], @"Firstname",
-                                                                    @"....");
+            cell.textLabel.text = [Strings firstNameString];
+            
             textField.text = purchaseInfo[@"firstName"];
             objc_setAssociatedObject(textField, @"TextFieldKey", @"firstName", OBJC_ASSOCIATION_RETAIN);
             break;
@@ -1138,9 +1128,8 @@ static const int    CountryCellTag   = 4321;
             lastNameTextField   = textField;
             cell.accessoryType  = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:LastName Label", nil,
-                                                                    [NSBundle mainBundle], @"Lastname",
-                                                                    @"....");
+            cell.textLabel.text = [Strings lastNameString];
+            
             textField.text = purchaseInfo[@"lastName"];
             objc_setAssociatedObject(textField, @"TextFieldKey", @"lastName", OBJC_ASSOCIATION_RETAIN);
             break;
@@ -1149,9 +1138,8 @@ static const int    CountryCellTag   = 4321;
             companyTextField    = textField;
             cell.accessoryType  = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Company Label", nil,
-                                                                    [NSBundle mainBundle], @"Company",
-                                                                    @"....");
+            cell.textLabel.text = [Strings companyString];
+
             textField.text = purchaseInfo[@"company"];
             objc_setAssociatedObject(textField, @"TextFieldKey", @"company", OBJC_ASSOCIATION_RETAIN);
             break;
@@ -1216,18 +1204,14 @@ static const int    CountryCellTag   = 4321;
     switch (indexPath.row)
     {
         case 0:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Street Label", nil,
-                                                                    [NSBundle mainBundle], @"Street",
-                                                                    @"....");
+            cell.textLabel.text = [Strings streetString];
             textField.placeholder = [Strings requiredString];
             textField.text = purchaseInfo[@"street"];
             objc_setAssociatedObject(textField, @"TextFieldKey", @"street", OBJC_ASSOCIATION_RETAIN);
             break;
 
         case 1:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:Building Label", nil,
-                                                                    [NSBundle mainBundle], @"Building",
-                                                                    @"....");
+            cell.textLabel.text = [Strings buildingString];
             textField.placeholder = [Strings requiredString];
             textField.text = purchaseInfo[@"building"];
             textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
@@ -1235,9 +1219,7 @@ static const int    CountryCellTag   = 4321;
             break;
 
         case 2:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:ZipCode Label", nil,
-                                                                    [NSBundle mainBundle], @"ZIP Code",
-                                                                    @"Postalcode, Post Code, ...");
+            cell.textLabel.text = [Strings zipCodeString];
             if (citiesArray.count == 0)
             {
                 textField.placeholder = [Strings requiredString];
@@ -1264,9 +1246,7 @@ static const int    CountryCellTag   = 4321;
             break;
 
         case 3:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea:City Label", nil,
-                                                                    [NSBundle mainBundle], @"City",
-                                                                    @"....");
+            cell.textLabel.text = [Strings cityString];
             if (citiesArray.count == 0)
             {
                 textField.placeholder = [Strings requiredString];

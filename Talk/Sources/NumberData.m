@@ -32,6 +32,8 @@
 @dynamic proofImage;
 @dynamic proofAccepted;
 
+@dynamic forwarding;
+
 
 - (void)setPurchaseDateWithString:(NSString*)dateString
 {

@@ -20,39 +20,43 @@
 
 typedef enum
 {
-    TableSectionName           = 1UL << 0,
-    TableSectionNumber         = 1UL << 1,
-    TableSectionForwarding     = 1UL << 2,
-    TableSectionSubscription   = 1UL << 3,
-    TableSectionArea           = 1UL << 4,    // The optional state will be placed in a row here.
-    TableSectionContactName    = 1UL << 5,
-    TableSectionContactAddress = 1UL << 6,
+    TableSectionName            = 1UL << 0,
+    TableSectionNumber          = 1UL << 1,
+    TableSectionForwarding      = 1UL << 2,
+    TableSectionSubscription    = 1UL << 3,
+    TableSectionArea            = 1UL << 4,    // The optional state will be placed in a row here.
+    TableSectionContactName     = 1UL << 5,
+    TableSectionContactAddress  = 1UL << 6,
 } TableSections;
 
 typedef enum
 {
-    AreaRowType                = 1UL << 0,
-    AreaRowAreaCode            = 1UL << 1,
-    AreaRowAreaName            = 1UL << 2,
-    AreaRowStateName           = 1UL << 3,
-    AreaRowCountry             = 1UL << 4,
+    AreaRowType                 = 1UL << 0,
+    AreaRowAreaCode             = 1UL << 1,
+    AreaRowAreaName             = 1UL << 2,
+    AreaRowStateName            = 1UL << 3,
+    AreaRowCountry              = 1UL << 4,
 } AreaRows;
 
 typedef enum
 {
-    ContactNameRowSalutation   = 1UL << 0,
-    ContactNameRowFirstName    = 1UL << 1,
-    ContactNameRowLastName     = 1UL << 2,
-    ContactNameRowCompany      = 1UL << 3,
+    ContactNameRowSalutation    = 1UL << 0,
+    ContactNameRowFirstName     = 1UL << 1,
+    ContactNameRowLastName      = 1UL << 2,
+    ContactNameRowCompany       = 1UL << 3,
 } ContactNameRows;
 
 typedef enum
 {
-    ContactAddressRowStreet    = 1UL << 0,
-    ContactAddressRowBuilding  = 1UL << 1,
-    ContactAddressRowCity      = 1UL << 2,
-    ContactAddressRowState
+    ContactAddressRowStreet     = 1UL << 0,
+    ContactAddressRowBuilding   = 1UL << 1,
+    ContactAddressRowCity       = 1UL << 2,
+    ContactAddressRowZipCode    = 1UL << 3,
+    ContactAddressRowStateName  = 1UL << 4,
+    ContactAddressRowCountry    = 1UL << 5,
+    ContactAddressRowProofImage = 1UL << 6,
 } ContactAddressRows;
+
 
 static const int    TextFieldCellTag = 1234;
 static const int    CountryCellTag   = 4321;
@@ -60,18 +64,20 @@ static const int    CountryCellTag   = 4321;
 
 @interface NumberViewController ()
 {
-    NumberData*     number;
-    TableSections   sections;
-    AreaRows        areaRows;
-    ContactNameRows contactNameRows;
+    NumberData*        number;
+    
+    TableSections      sections;
+    AreaRows           areaRows;
+    ContactNameRows    contactNameRows;
+    ContactAddressRows contactAddressRows;
 
-    NSIndexPath*    nameIndexPath;
-    NSString*       name;
+    NSIndexPath*       nameIndexPath;
+    NSString*          name;            // Mirror that's only processed when user taps Done.
 
     // Keyboard stuff.
-    BOOL            keyboardShown;
-    CGFloat         keyboardOverlap;
-    NSIndexPath*    activeCellIndexPath;
+    BOOL               keyboardShown;
+    CGFloat            keyboardOverlap;
+    NSIndexPath*       activeCellIndexPath;
 }
 
 @end
@@ -114,6 +120,15 @@ static const int    CountryCellTag   = 4321;
         contactNameRows |= (number.firstName != nil) ? ContactNameRowFirstName : 0;
         contactNameRows |= (number.lastName  != nil) ? ContactNameRowLastName  : 0;
         contactNameRows |= (number.company   != nil) ? ContactNameRowCompany   : 0;
+
+        // Contact Address Rows
+        contactAddressRows |= ContactAddressRowStreet;
+        contactAddressRows |= ContactAddressRowBuilding;
+        contactAddressRows |= ContactAddressRowCity;
+        contactAddressRows |= ContactAddressRowZipCode;
+        contactAddressRows |= (number.stateName != nil)  ? ContactAddressRowStateName  : 0;
+        contactAddressRows |= ContactAddressRowCountry;
+        contactAddressRows |= (number.proofImage != nil) ? ContactAddressRowProofImage : 0;
 
         nameIndexPath = [NSIndexPath indexPathForItem:0 inSection:[Common nOfBit:TableSectionName inValue:sections]];
     }
@@ -437,15 +452,13 @@ static const int    CountryCellTag   = 4321;
 
 - (void)updateForwardingCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
-    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:Name Label", nil,
-                                                            [NSBundle mainBundle], @"Forwarding",
-                                                            @"....");
-    
-    cell.detailTextLabel.text = @"Default";
+    cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number Forwarding", nil,
+                                                                  [NSBundle mainBundle], @"Forwarding",
+                                                                  @"....");
+    cell.detailTextLabel.text = [Strings defaultString];
 
-    cell.selectionStyle  = UITableViewCellSelectionStyleBlue;
-    cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
-    cell.imageView.image = nil;
+    cell.selectionStyle       = UITableViewCellSelectionStyleBlue;
+    cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
 }
 
 
@@ -470,9 +483,9 @@ static const int    CountryCellTag   = 4321;
 
         case 1:
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionRenewalDate Label", nil,
-                                                                    [NSBundle mainBundle], @"Renewal",
+                                                                    [NSBundle mainBundle], @"Expiry",
                                                                     @"....");
-            cell.detailTextLabel.text = [dateFormatter stringFromDate:number.purchaseDate];
+            cell.detailTextLabel.text = [dateFormatter stringFromDate:number.renewalDate];
             cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle       = UITableViewCellSelectionStyleBlue;
             break;
@@ -485,37 +498,27 @@ static const int    CountryCellTag   = 4321;
     switch ([Common nthBitSet:indexPath.row inValue:areaRows])
     {
         case AreaRowType:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:NumberType Label", nil,
-                                                                    [NSBundle mainBundle], @"Type",
-                                                                    @"....");
-            cell.detailTextLabel.text = @"Geographic";
+            cell.textLabel.text       = [Strings typeString];
+            cell.detailTextLabel.text = @"#### TODO";
             break;
 
         case AreaRowAreaCode:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:AreaCode Label", nil,
-                                                                    [NSBundle mainBundle], @"Area Code",
-                                                                    @"....");
+            cell.textLabel.text       = [Strings areaCodeString];
             cell.detailTextLabel.text = number.areaCode;
             break;
 
         case AreaRowAreaName:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:AreaName Label", nil,
-                                                                    [NSBundle mainBundle], @"Area",
-                                                                    @"....");
+            cell.textLabel.text       = [Strings areaString];
             cell.detailTextLabel.text = number.areaName;
             break;
 
         case AreaRowStateName:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:StateName Label", nil,
-                                                                    [NSBundle mainBundle], @"State",
-                                                                    @"....");
+            cell.textLabel.text       = [Strings stateString];
             cell.detailTextLabel.text = number.stateName;
             break;
 
         case AreaRowCountry:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:Country Label", nil,
-                                                                    [NSBundle mainBundle], @"Country",
-                                                                    @"....");
+            cell.textLabel.text = @" ";  // Without this, detailTextLabel is on the left.
             [self addCountryImageToCell:cell isoCountryCode:number.numberCountry];
             cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:number.numberCountry];
             break;
@@ -528,33 +531,25 @@ static const int    CountryCellTag   = 4321;
 
 - (void)updateContactNameCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
-    switch (indexPath.row)
+    switch ([Common nthBitSet:indexPath.row inValue:contactNameRows])
     {
-        case 0:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:NameSalutation Label", nil,
-                                                                    [NSBundle mainBundle], @"Title",
-                                                                    @"....");
+        case ContactNameRowSalutation:
+            cell.textLabel.text       = [Strings salutationString];
             cell.detailTextLabel.text = number.salutation;
             break;
 
-        case 1:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:NameFirst Label", nil,
-                                                                    [NSBundle mainBundle], @"First",
-                                                                    @"....");
+        case ContactNameRowFirstName:
+            cell.textLabel.text       = [Strings firstNameString];
             cell.detailTextLabel.text = number.firstName;
             break;
 
-        case 2:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:NameLast Label", nil,
-                                                                    [NSBundle mainBundle], @"Last",
-                                                                    @"....");
+        case ContactNameRowLastName:
+            cell.textLabel.text       = [Strings lastNameString];
             cell.detailTextLabel.text = number.lastName;
             break;
 
-        case 3:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:NameCompany Label", nil,
-                                                                    [NSBundle mainBundle], @"Company",
-                                                                    @"....");
+        case ContactNameRowCompany:
+            cell.textLabel.text       = [Strings companyString];
             cell.detailTextLabel.text = number.company;
             break;
     }
@@ -566,53 +561,42 @@ static const int    CountryCellTag   = 4321;
 
 - (void)updateContactAddressCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
-
-    //#####    [self addCountryImageToCell:cell isoCountryCode:number.numberCountry];
-
-
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"Value2Cell"];
-    if (cell == nil)
+    switch ([Common nthBitSet:indexPath.row inValue:contactAddressRows])
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"Value2Cell"];
-    }
-
-    switch (indexPath.row)
-    {
-        case 0:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:AddressStreet Label", nil,
-                                                                    [NSBundle mainBundle], @"Street",
-                                                                    @"....");
+        case ContactAddressRowStreet:
+            cell.textLabel.text       = [Strings streetString];
             cell.detailTextLabel.text = number.street;
             break;
 
-        case 1:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:AddressBuilding Label", nil,
-                                                                    [NSBundle mainBundle], @"Number",
-                                                                    @"....");
+        case ContactAddressRowBuilding:
+            cell.textLabel.text       = [Strings buildingString];
             cell.detailTextLabel.text = number.building;
             break;
 
-        case 2:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:AddressCity Label", nil,
-                                                                    [NSBundle mainBundle], @"City",
-                                                                    @"....");
+        case ContactAddressRowCity:
+            cell.textLabel.text       = [Strings cityString];
             cell.detailTextLabel.text = number.city;
             break;
 
-        case 3:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:AddressZip Label", nil,
-                                                                    [NSBundle mainBundle], @"ZIP Code",
-                                                                    @"....");
+        case ContactAddressRowZipCode:
+            cell.textLabel.text       = [Strings zipCodeString];
             cell.detailTextLabel.text = number.zipCode;
+            break;
+
+        case ContactAddressRowStateName:
+            cell.textLabel.text       = [Strings stateString];
+            cell.detailTextLabel.text = number.stateName;
+            break;
+
+        case ContactAddressRowCountry:
+            cell.textLabel.text = @" ";  // Without this, detailTextLabel is on the left.
+            [self addCountryImageToCell:cell isoCountryCode:number.addressCountry];
+            cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:number.addressCountry];
             break;
     }
 
     cell.selectionStyle  = UITableViewCellSelectionStyleNone;
     cell.accessoryType   = UITableViewCellAccessoryNone;
-    cell.imageView.image = nil;
-    
-    return cell;
 }
 
 
@@ -659,7 +643,7 @@ static const int    CountryCellTag   = 4321;
     [[self.tableView superview] endEditing:YES];
 
     name = number.name;
-    [self ]
+    // [self ]
 }
 
 
