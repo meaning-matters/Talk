@@ -1165,6 +1165,7 @@ static const int    CountryCellTag   = 4321;
     switch (indexPath.row)
     {
         case 1:  identifier = @"BuildingCell";         break;
+        case 2:  identifier = @"ZipCodeCell";          break;
         case 4:  identifier = @"CountryTextFieldCell"; break;
         default: identifier = @"TextFieldCell";        break;
     }
@@ -1215,6 +1216,7 @@ static const int    CountryCellTag   = 4321;
             textField.placeholder = [Strings requiredString];
             textField.text = purchaseInfo[@"building"];
             textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+            textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
             objc_setAssociatedObject(textField, @"TextFieldKey", @"building", OBJC_ASSOCIATION_RETAIN);
             break;
 
@@ -1222,7 +1224,9 @@ static const int    CountryCellTag   = 4321;
             cell.textLabel.text = [Strings zipCodeString];
             if (citiesArray.count == 0)
             {
-                textField.placeholder = [Strings requiredString];
+                textField.placeholder  = [Strings requiredString];
+                textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+                textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
             }
             else
             {

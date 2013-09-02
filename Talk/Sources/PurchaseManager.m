@@ -376,9 +376,7 @@
                 }
                 else
                 {
-                    NSString* identifier = [Settings sharedSettings].pendingNumberBuy[@"transactionIdentifier"];
-                    [Settings sharedSettings].pendingNumberBuy = @{@"transactionIdentifier" : identifier,
-                                                                   @"convertedToCredit"     : @(YES)};
+                    NSLog(@"//### Failed to convert number to credit again!");
                 }
             }];
         }
@@ -776,6 +774,8 @@
         return;
     }
 
+    NSDictionary* pending = [Settings sharedSettings].pendingNumberBuy;
+
     if ([Settings sharedSettings].pendingNumberBuy != nil)
     {
         NSString*   title;
@@ -790,7 +790,7 @@
                                                     @"You can't buy a phone number now, because the previous one "
                                                     @"has not been processed yet.\nIf this issue persists, you can "
                                                     @"convert this pending purchase to credit.",
-                                                    @"Alert message telling that in-app purchases are disabled.\n"
+                                                    @"Alert message telling that ....\n"
                                                     @"[iOS alert message size]");
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
@@ -817,9 +817,35 @@
                     else
                     {
                         NSString* identifier = [Settings sharedSettings].pendingNumberBuy[@"transactionIdentifier"];
+                        NSString* receipt    = [Settings sharedSettings].pendingNumberBuy[@"receipt"];
                         [Settings sharedSettings].pendingNumberBuy = @{@"transactionIdentifier" : identifier,
+                                                                       @"receipt"               : receipt,
                                                                        @"convertedToCredit"     : @(YES)};
-                        completion(NO, nil);
+
+                        NSString* title;
+                        NSString* message;
+                        NSString* description;
+
+                        title       = NSLocalizedStringWithDefaultValue(@"Purchase:General BuyingCreditFailedTitle", nil,
+                                                                        [NSBundle mainBundle], @"Buying Credit Failed",
+                                                                        @"Alert title that a purchase of credit failed.\n"
+                                                                        @"[iOS alert title size].");
+                        message     = NSLocalizedStringWithDefaultValue(@"Purchase:General BuyingCreditFailedMessage", nil,
+                                                                        [NSBundle mainBundle],
+                                                                        @"Something went wrong while converting your number "
+                                                                        @"purchase to credit: %@.",
+                                                                        @"Alert message telling that a purchase of credit failed.\n"
+                                                                        @"[iOS alert message size]");
+                        description = [[WebClient sharedClient] localizedStringForStatus:status];
+                        message = [NSString stringWithFormat:message, description];
+                        [BlockAlertView showAlertViewWithTitle:title
+                                                       message:message
+                                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+                        {
+                            completion(NO, nil);
+                        }
+                                             cancelButtonTitle:[Strings closeString]
+                                             otherButtonTitles:nil];
                     }
                 }];
             }
@@ -873,7 +899,7 @@
                     NSString* description = NSLocalizedStringWithDefaultValue(@"Purchase:General ProcessNumberFailed", nil,
                                                                               [NSBundle mainBundle],
                                                                               @"Could not process your new phone number.  "
-                                                                              @"This will be retried later automatically.",
+                                                                              @"This will be retried later automatically",
                                                                               @"Error message ...\n"
                                                                               @"[...].");
                     NSError*  error       = [Common errorWithCode:status description:description];

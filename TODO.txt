@@ -91,3 +91,12 @@
 * Place common methods (textfield & keyboard handling) between NumberAreaVC, NumberVC, ForwardingsVC and others in super class.
 
 * Skip number verif. step when "e164" present in #1 reply.
+
+* Implement Number[s]VC with NSFetchResultsController (see Forwarding[s]VC).
+
+* Als #2 faalt, mislukt Restore silently: zorg dat er een melding komt. kijk ook na voor #1 e.d.
+
+* als je nummer koop cancelt wordt deze toegevoegd als pending!
+
+* verwijder nummers uit lijst als ze niet meer van server komen in update
+

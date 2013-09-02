@@ -165,6 +165,29 @@
     {
         if (status == WebClientStatusOk)
         {
+            // Delete Numbers that are no longer on the server.
+            NSError*        error        = nil;
+            NSFetchRequest* request      = [[NSFetchRequest alloc] init];
+            [request setEntity:[NSEntityDescription entityForName:@"Number"
+                                           inManagedObjectContext:managedObjectContext]];
+            NSPredicate*    predicate    = [NSPredicate predicateWithFormat:@"NOT (e164 IN %@)", array];
+            [request setPredicate:predicate];
+            NSArray*        deleteArray  = [managedObjectContext executeFetchRequest:request error:&error];
+            if (error == nil)
+            {
+                for (NSManagedObject* object in deleteArray)
+                {
+                    [managedObjectContext deleteObject:object];
+                }
+
+                [managedObjectContext save:&error];
+                //### Error handling.
+            }
+            else
+            {
+                //### Error handling.
+            }
+
             __block int  count   = array.count;
             __block BOOL success = YES;
             for (NSString* e164 in array)
@@ -173,6 +196,7 @@
                                                    currencyCode:[Settings sharedSettings].currencyCode
                                                           reply:^(WebClientStatus status, NSDictionary* dictionary)
                 {                    
+                    NSError* error;
                     if (status == WebClientStatusOk)
                     {
                         NSFetchRequest* request = [[NSFetchRequest alloc] init];
@@ -180,7 +204,7 @@
                         [request setEntity:[NSEntityDescription entityForName:@"Number"
                                                        inManagedObjectContext:managedObjectContext]];
 
-                        NSError*    error  = nil;
+                        error = nil;
                         NumberData* number = [[managedObjectContext executeFetchRequest:request error:&error] lastObject];
                         //### Handle error.
                         if (number == nil)
@@ -208,10 +232,6 @@
                         number.stateCode      = dictionary[@"info"][@"stateCode"];
                         number.addressCountry = dictionary[@"info"][@"isoCountryCode"];
                         number.proofImage     = [Base64 decode:dictionary[@"info"][@"proofImage"]];
-
-                        error = nil;
-                        [managedObjectContext save:&error];
-                        //### Handle error.
                     }
                     else
                     {
@@ -220,6 +240,17 @@
 
                     if (--count == 0)
                     {
+                        if (success == YES)
+                        {
+                            error = nil;
+                            [managedObjectContext save:&error];
+                            //### Handle error.
+                        }
+                        else
+                        {
+                            [managedObjectContext rollback];
+                        }
+
                         completion(success);
                     }
                 }];
