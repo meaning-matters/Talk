@@ -42,9 +42,9 @@ typedef enum
 typedef enum
 {
     ContactNameRowSalutation    = 1UL << 0,
-    ContactNameRowFirstName     = 1UL << 1,
-    ContactNameRowLastName      = 1UL << 2,
-    ContactNameRowCompany       = 1UL << 3,
+    ContactNameRowCompany       = 1UL << 1,
+    ContactNameRowFirstName     = 1UL << 2,
+    ContactNameRowLastName      = 1UL << 3,
 } ContactNameRows;
 
 typedef enum
@@ -117,10 +117,10 @@ static const int    CountryCellTag   = 4321;
         areaRows |= AreaRowCountry;
 
         // Contact Name Rows
-        contactNameRows |= ContactNameRowSalutation;
+        contactNameRows |= [number.salutation isEqualToString:@"COMPANY"] ? 0  : ContactNameRowSalutation;
+        contactNameRows |= (number.company   != nil) ? ContactNameRowCompany   : 0;
         contactNameRows |= (number.firstName != nil) ? ContactNameRowFirstName : 0;
         contactNameRows |= (number.lastName  != nil) ? ContactNameRowLastName  : 0;
-        contactNameRows |= (number.company   != nil) ? ContactNameRowCompany   : 0;
 
         // Contact Address Rows
         contactAddressRows |= ContactAddressRowStreet;
@@ -211,13 +211,21 @@ static const int    CountryCellTag   = 4321;
 
     switch ([Common nthBitSet:section inValue:sections])
     {
+        case TableSectionName:
+            title = NSLocalizedStringWithDefaultValue(@"Number:Name SectionFooter", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"Tap to edit.  When done, the change will also be saved "
+                                                      @"online.  Refresh the overview list of Numbers on your other "
+                                                      @"devices to load changes.",
+                                                      @"[* lines]");
+            break;
+
         case TableSectionForwarding:
-            title = NSLocalizedStringWithDefaultValue(@"Number:Forwarding SectionFooter", nil,
+            title = NSLocalizedStringWithDefaultValue(@"Number:ForwardingDefault SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"With 'Default' all devices associated with this number "
                                                       @"will ring when an incoming call is received.",
-                                                      @"Explanation how to cancel a payed subscription for "
-                                                      @"using a phone number\n"
+                                                      @"Explanation about which phone will be called.\n"
                                                       @"[* lines]");
             break;
 
@@ -496,11 +504,13 @@ static const int    CountryCellTag   = 4321;
 
 - (void)updateAreaCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
+    NumberTypeMask numberTypeMask;
     switch ([Common nthBitSet:indexPath.row inValue:areaRows])
     {
         case AreaRowType:
             cell.textLabel.text       = [Strings typeString];
-            cell.detailTextLabel.text = @"#### TODO";
+            numberTypeMask            = [NumberType numberTypeMaskForString:number.numberType];
+            cell.detailTextLabel.text = [NumberType localizedStringForNumberType:numberTypeMask];
             break;
 
         case AreaRowAreaCode:
@@ -536,7 +546,12 @@ static const int    CountryCellTag   = 4321;
     {
         case ContactNameRowSalutation:
             cell.textLabel.text       = [Strings salutationString];
-            cell.detailTextLabel.text = number.salutation;
+            cell.detailTextLabel.text = [Strings localizedSalutation:number.salutation];
+            break;
+
+        case ContactNameRowCompany:
+            cell.textLabel.text       = [Strings companyString];
+            cell.detailTextLabel.text = number.company;
             break;
 
         case ContactNameRowFirstName:
@@ -547,11 +562,6 @@ static const int    CountryCellTag   = 4321;
         case ContactNameRowLastName:
             cell.textLabel.text       = [Strings lastNameString];
             cell.detailTextLabel.text = number.lastName;
-            break;
-
-        case ContactNameRowCompany:
-            cell.textLabel.text       = [Strings companyString];
-            cell.detailTextLabel.text = number.company;
             break;
     }
 

@@ -12,6 +12,7 @@
 
 @dynamic name;
 @dynamic e164;
+@dynamic numberType;
 @dynamic areaCode;
 @dynamic areaName;
 @dynamic numberCountry;     // ISO country code.

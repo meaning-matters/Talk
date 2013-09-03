@@ -43,8 +43,12 @@
                     name:(NSString*)name
           isoCountryCode:(NSString*)isoCountryCode
                 areaCode:(NSString*)areaCode
+                areaName:(NSString*)areaName
+               stateCode:(NSString*)stateCode
+               stateName:(NSString*)stateName
               numberType:(NSString*)numberType
                     info:(NSDictionary*)info
               completion:(void (^)(BOOL success, id object))completion;
+
 
 @end

@@ -388,6 +388,9 @@
                                                           name:pendingNumberBuy[@"name"]
                                                 isoCountryCode:pendingNumberBuy[@"isoCountryCode"]
                                                       areaCode:pendingNumberBuy[@"areaCode"]
+                                                      areaName:pendingNumberBuy[@"areaName"]
+                                                     stateCode:pendingNumberBuy[@"stateCode"]
+                                                     stateName:pendingNumberBuy[@"stateName"]
                                                     numberType:pendingNumberBuy[@"numberType"]
                                                           info:pendingNumberBuy[@"info"]
                                                          reply:^(WebClientStatus status, NSString *e164)
@@ -763,6 +766,9 @@
                     name:(NSString*)name
           isoCountryCode:(NSString*)isoCountryCode
                 areaCode:(NSString*)areaCode
+                areaName:(NSString*)areaName
+               stateCode:(NSString*)stateCode
+               stateName:(NSString*)stateName
               numberType:(NSString*)numberType
                     info:(NSDictionary*)info
               completion:(void (^)(BOOL success, id object))completion
@@ -869,6 +875,9 @@
                                                           name:name
                                                 isoCountryCode:isoCountryCode
                                                       areaCode:areaCode
+                                                      areaName:areaName
+                                                     stateCode:stateCode
+                                                     stateName:stateName
                                                     numberType:numberType
                                                           info:info
                                                          reply:^(WebClientStatus status, NSString *e164)
@@ -887,12 +896,12 @@
                                           @"months"                : @(months),
                                           @"name"                  : name,
                                           @"isoCountryCode"        : isoCountryCode,
-                                          @"areaCode"              : areaCode,
                                           @"numberType"            : numberType} mutableCopy];
-                    if (info != nil)
-                    {
-                        [pendingNumberBuy setObject:info forKey:@"info"];
-                    }
+                    (areaCode  != nil) ? [pendingNumberBuy setObject:areaCode  forKey:@"areaCode"]  : 0;
+                    (areaName  != nil) ? [pendingNumberBuy setObject:areaName  forKey:@"areaName"]  : 0;
+                    (stateCode != nil) ? [pendingNumberBuy setObject:stateCode forKey:@"stateCode"] : 0;
+                    (stateName != nil) ? [pendingNumberBuy setObject:stateName forKey:@"stateName"] : 0;
+                    (info      != nil) ? [pendingNumberBuy setObject:info      forKey:@"info"]      : 0;
 
                     [Settings sharedSettings].pendingNumberBuy = pendingNumberBuy;
 

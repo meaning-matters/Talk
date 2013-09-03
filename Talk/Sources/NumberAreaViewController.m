@@ -28,7 +28,7 @@ typedef enum
 {
     TableSectionArea           = 1UL << 0, // Type, area code, area name, state, country.
     TableSectionName           = 1UL << 1, // Name given by user.
-    TableSectionContactName    = 1UL << 2, // Salutation, first, last, company.
+    TableSectionContactName    = 1UL << 2, // Salutation, company, first, last.
     TableSectionContactAddress = 1UL << 3, // Street, number, city, zipcode.
     TableSectionAction         = 1UL << 4, // Check info, or Buy.
 } TableSections;
@@ -72,18 +72,18 @@ static const int    CountryCellTag   = 4321;
     AreaRows                areaRows;
 
     UITextField*            salutationTextField;
+    UITextField*            companyTextField;
     UITextField*            firstNameTextField;
     UITextField*            lastNameTextField;
-    UITextField*            companyTextField;
     UITextField*            zipCodeTextField;
     UITextField*            cityTextField;
     UITextField*            countryTextField;
 
     NSIndexPath*            nameIndexPath;
     NSIndexPath*            salutationIndexPath;
+    NSIndexPath*            companyIndexPath;
     NSIndexPath*            firstNameIndexPath;
     NSIndexPath*            lastNameIndexPath;
-    NSIndexPath*            companyIndexPath;
     NSIndexPath*            streetIndexPath;
     NSIndexPath*            buildingIndexPath;
     NSIndexPath*            zipCodeIndexPath;
@@ -235,13 +235,13 @@ static const int    CountryCellTag   = 4321;
 {
     [super viewWillAppear:animated];
 
-    salutationTextField.text = [self salutationText];
+    salutationTextField.text = [Strings localizedSalutation:purchaseInfo[@"salutation"]];
     zipCodeTextField.text    = purchaseInfo[@"zipCode"];
     cityTextField.text       = purchaseInfo[@"city"];
 
+    companyTextField.placeholder   = [self placeHolderForTextField:companyTextField];
     firstNameTextField.placeholder = [self placeHolderForTextField:firstNameTextField];
     lastNameTextField.placeholder  = [self placeHolderForTextField:lastNameTextField];
-    companyTextField.placeholder   = [self placeHolderForTextField:companyTextField];
 
     NumberAreaActionCell* cell = (NumberAreaActionCell*)[self.tableView cellForRowAtIndexPath:actionIndexPath];
     cell.label.text            = [self actionCellText];
@@ -358,9 +358,9 @@ static const int    CountryCellTag   = 4321;
     else
     {
         emptyMask |= ([name                        length] == 0) << 0;
-        emptyMask |= ([purchaseInfo[@"firstName"]  length] == 0) << 1;
-        emptyMask |= ([purchaseInfo[@"lastName"]   length] == 0) << 2;
-        emptyMask |= ([purchaseInfo[@"company"]    length] == 0) << 3;
+        emptyMask |= ([purchaseInfo[@"company"]    length] == 0) << 1;
+        emptyMask |= ([purchaseInfo[@"firstName"]  length] == 0) << 2;
+        emptyMask |= ([purchaseInfo[@"lastName"]   length] == 0) << 3;
         emptyMask |= ([purchaseInfo[@"street"]     length] == 0) << 4;
         emptyMask |= ([purchaseInfo[@"building"]   length] == 0) << 5;
         if (citiesArray.count == 0)
@@ -373,9 +373,9 @@ static const int    CountryCellTag   = 4321;
     if (emptyMask != 0)
     {
         currentBit |= [currentKey isEqualToString:@"name"]       << 0;
-        currentBit |= [currentKey isEqualToString:@"firstName"]  << 1;
-        currentBit |= [currentKey isEqualToString:@"lastName"]   << 2;
-        currentBit |= [currentKey isEqualToString:@"company"]    << 3;
+        currentBit |= [currentKey isEqualToString:@"company"]    << 1;
+        currentBit |= [currentKey isEqualToString:@"firstName"]  << 2;
+        currentBit |= [currentKey isEqualToString:@"lastName"]   << 3;
         currentBit |= [currentKey isEqualToString:@"street"]     << 4;
         currentBit |= [currentKey isEqualToString:@"building"]   << 5;
         currentBit |= [currentKey isEqualToString:@"zipCode"]    << 6;
@@ -400,9 +400,9 @@ static const int    CountryCellTag   = 4321;
 
         NSIndexPath*    indexPath = nil;
         indexPath = (nextBit == (1 << 0)) ? nameIndexPath       : indexPath;
-        indexPath = (nextBit == (1 << 1)) ? firstNameIndexPath  : indexPath;
-        indexPath = (nextBit == (1 << 2)) ? lastNameIndexPath   : indexPath;
-        indexPath = (nextBit == (1 << 3)) ? companyIndexPath    : indexPath;
+        indexPath = (nextBit == (1 << 1)) ? companyIndexPath    : indexPath;
+        indexPath = (nextBit == (1 << 2)) ? firstNameIndexPath  : indexPath;
+        indexPath = (nextBit == (1 << 3)) ? lastNameIndexPath   : indexPath;
         indexPath = (nextBit == (1 << 4)) ? streetIndexPath     : indexPath;
         indexPath = (nextBit == (1 << 5)) ? buildingIndexPath   : indexPath;
         indexPath = (nextBit == (1 << 6)) ? zipCodeIndexPath    : indexPath;
@@ -459,9 +459,9 @@ static const int    CountryCellTag   = 4321;
 {
     nameIndexPath       = [NSIndexPath indexPathForItem:0 inSection:1];
     salutationIndexPath = [NSIndexPath indexPathForItem:0 inSection:2];
-    firstNameIndexPath  = [NSIndexPath indexPathForItem:1 inSection:2];
-    lastNameIndexPath   = [NSIndexPath indexPathForItem:2 inSection:2];
-    companyIndexPath    = [NSIndexPath indexPathForItem:3 inSection:2];
+    companyIndexPath    = [NSIndexPath indexPathForItem:1 inSection:2];
+    firstNameIndexPath  = [NSIndexPath indexPathForItem:2 inSection:2];
+    lastNameIndexPath   = [NSIndexPath indexPathForItem:3 inSection:2];
     streetIndexPath     = [NSIndexPath indexPathForItem:0 inSection:3];
     buildingIndexPath   = [NSIndexPath indexPathForItem:1 inSection:3];
     zipCodeIndexPath    = [NSIndexPath indexPathForItem:2 inSection:3];
@@ -514,13 +514,13 @@ static const int    CountryCellTag   = 4321;
     // The default is "Required".
     if ([purchaseInfo[@"salutation"] isEqualToString:@"MS"] || [purchaseInfo[@"salutation"] isEqualToString:@"MR"])
     {
-        if (textField == firstNameTextField || textField == lastNameTextField)
-        {
-            placeHolder = [Strings requiredString];
-        }
-        else if (textField == companyTextField)
+        if (textField == companyTextField)
         {
             placeHolder = [Strings optionalString];
+        }
+        else if (textField == firstNameTextField || textField == lastNameTextField)
+        {
+            placeHolder = [Strings requiredString];
         }
         else
         {
@@ -529,13 +529,13 @@ static const int    CountryCellTag   = 4321;
     }
     else if ([purchaseInfo[@"salutation"] isEqualToString:@"COMPANY"])
     {
-        if (textField == firstNameTextField || textField == lastNameTextField)
-        {
-            placeHolder = [Strings optionalString];
-        }
-        else if (textField == companyTextField)
+        if (textField == companyTextField)
         {
             placeHolder = [Strings requiredString];
+        }
+        else if (textField == firstNameTextField || textField == lastNameTextField)
+        {
+            placeHolder = [Strings optionalString];
         }
         else
         {
@@ -548,31 +548,6 @@ static const int    CountryCellTag   = 4321;
     }
 
     return placeHolder;
-}
-
-
-- (NSString*)salutationText
-{
-    NSString* text;
-
-    if ([purchaseInfo[@"salutation"] isEqualToString:@"MS"])
-    {
-        text = [Strings msString];
-    }
-    else if ([purchaseInfo[@"salutation"] isEqualToString:@"MR"])
-    {
-        text = [Strings mrString];
-    }
-    else if ([purchaseInfo[@"salutation"] isEqualToString:@"COMPANY"])
-    {
-        text = [Strings companyString];
-    }
-    else
-    {
-        text = nil;
-    }
-
-    return text;
 }
 
 
@@ -853,7 +828,7 @@ static const int    CountryCellTag   = 4321;
                         cell.label.alpha = 0.5f;
                         [cell.activityIndicator startAnimating];
 
-                        purchaseInfo[@"numberType"] = area[@"numberType"];
+                        purchaseInfo[@"numberType"] = [NumberType localizedStringForNumberType:numberTypeMask];
                         purchaseInfo[@"areaCode"]   = area[@"areaCode"];
                         [[WebClient sharedClient] checkPurchaseInfo:purchaseInfo
                                                               reply:^(WebClientStatus status, id content)
@@ -903,6 +878,7 @@ static const int    CountryCellTag   = 4321;
                             {
                                 NSString* title;
                                 NSString* message;
+                                NSString* description;
 
                                 title   = NSLocalizedStringWithDefaultValue(@"NumberArea ValidationFailedAlertTitle", nil,
                                                                             [NSBundle mainBundle], @"Validation Failed",
@@ -911,11 +887,12 @@ static const int    CountryCellTag   = 4321;
                                                                             @"[iOS alert title size].");
                                 message = NSLocalizedStringWithDefaultValue(@"NumberArea ValidationFailedAlertMessage", nil,
                                                                             [NSBundle mainBundle],
-                                                                            @"Validating your name and address failed (%d).",
+                                                                            @"Validating your name and address failed (%@).",
                                                                             @"Alert message telling that validating "
                                                                             @"name & address of user failed.\n"
                                                                             @"[iOS alert message size]");
-                                message = [NSString stringWithFormat:message, status];
+                                description = [[WebClient sharedClient] localizedStringForStatus:status];
+                                message = [NSString stringWithFormat:message, description];
                                 [BlockAlertView showAlertViewWithTitle:title
                                                                message:message
                                                             completion:nil
@@ -1109,12 +1086,22 @@ static const int    CountryCellTag   = 4321;
             cell.textLabel.text = [Strings salutationString];
             
             textField.placeholder = [Strings requiredString];
-            textField.text = [self salutationText];
+            textField.text = [Strings localizedSalutation:purchaseInfo[@"salutation"]];
             textField.userInteractionEnabled = NO;
             objc_setAssociatedObject(textField, @"TextFieldKey", @"salutation", OBJC_ASSOCIATION_RETAIN);
             break;
 
         case 1:
+            companyTextField    = textField;
+            cell.accessoryType  = UITableViewCellAccessoryNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.textLabel.text = [Strings companyString];
+
+            textField.text = purchaseInfo[@"company"];
+            objc_setAssociatedObject(textField, @"TextFieldKey", @"company", OBJC_ASSOCIATION_RETAIN);
+            break;
+            
+        case 2:
             firstNameTextField  = textField;
             cell.accessoryType  = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -1124,7 +1111,7 @@ static const int    CountryCellTag   = 4321;
             objc_setAssociatedObject(textField, @"TextFieldKey", @"firstName", OBJC_ASSOCIATION_RETAIN);
             break;
 
-        case 2:
+        case 3:
             lastNameTextField   = textField;
             cell.accessoryType  = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -1132,16 +1119,6 @@ static const int    CountryCellTag   = 4321;
             
             textField.text = purchaseInfo[@"lastName"];
             objc_setAssociatedObject(textField, @"TextFieldKey", @"lastName", OBJC_ASSOCIATION_RETAIN);
-            break;
-
-        case 3:
-            companyTextField    = textField;
-            cell.accessoryType  = UITableViewCellAccessoryNone;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = [Strings companyString];
-
-            textField.text = purchaseInfo[@"company"];
-            objc_setAssociatedObject(textField, @"TextFieldKey", @"company", OBJC_ASSOCIATION_RETAIN);
             break;
     }
 

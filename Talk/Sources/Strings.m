@@ -194,6 +194,32 @@
 }
 
 
+//### Perhaps move elsewhere.
++ (NSString*)localizedSalutation:(NSString*)salutation
+{
+    NSString* localized;
+
+    if ([salutation rangeOfString:@"MS" options:NSCaseInsensitiveSearch].location != NSNotFound)
+    {
+        localized = [Strings msString];
+    }
+    else if ([salutation rangeOfString:@"MR" options:NSCaseInsensitiveSearch].location != NSNotFound)
+    {
+        localized = [Strings mrString];
+    }
+    else if ([salutation rangeOfString:@"COMPANY" options:NSCaseInsensitiveSearch].location != NSNotFound)
+    {
+        localized = [Strings companyString];
+    }
+    else
+    {
+        localized = nil;
+    }
+
+    return localized;
+}
+
+
 + (NSString*)salutationString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Salutation", nil,

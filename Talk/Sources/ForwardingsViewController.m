@@ -110,16 +110,11 @@ typedef enum
 {
     NSFetchedResultsController* resultsController;
     NSFetchRequest*             fetchRequest;
-    NSEntityDescription*        entity;
     NSSortDescriptor*           nameDescriptor;
     NSArray*                    sortDescriptors;
 
-    fetchRequest = [[NSFetchRequest alloc] init];
-    entity = [NSEntityDescription entityForName:entityName
-                         inManagedObjectContext:dataManager.managedObjectContext];
-    [fetchRequest setEntity:entity];
-
-    nameDescriptor = [[NSSortDescriptor alloc] initWithKey:key ascending:YES];
+    fetchRequest    = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    nameDescriptor  = [[NSSortDescriptor alloc] initWithKey:key ascending:YES];
     sortDescriptors = [[NSArray alloc] initWithObjects:nameDescriptor, nil];
     [fetchRequest setSortDescriptors:sortDescriptors];
 

@@ -33,7 +33,7 @@
 }
 
 
-+ (NumberTypeMask)numberTypeForString:(NSString*)string
++ (NumberTypeMask)numberTypeMaskForString:(NSString*)string
 {
     NumberTypeMask mask;
     

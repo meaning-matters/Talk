@@ -50,6 +50,8 @@
 
 + (NSString*)companyString;
 
++ (NSString*)localizedSalutation:(NSString*)salutation;
+
 + (NSString*)salutationString;
 
 + (NSString*)firstNameString;

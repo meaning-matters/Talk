@@ -94,7 +94,7 @@
                     [allCountriesArray addObject:matchedCountry];
                 }
 
-                NumberTypeMask mask = [NumberType numberTypeForString:newCountry[@"numberType"]];
+                NumberTypeMask mask = [NumberType numberTypeMaskForString:newCountry[@"numberType"]];
                 matchedCountry[@"numberTypes"] = @([matchedCountry[@"numberTypes"] intValue] | mask);
             }
 

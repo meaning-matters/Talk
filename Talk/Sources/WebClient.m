@@ -411,6 +411,9 @@ static NSDictionary* statuses;
                             name:(NSString*)name
                   isoCountryCode:(NSString*)isoCountryCode
                         areaCode:(NSString*)areaCode
+                        areaName:(NSString*)areaName
+                       stateCode:(NSString*)stateCode
+                       stateName:(NSString*)stateName
                       numberType:(NSString*)numberType
                             info:(NSDictionary*)info
                            reply:(void (^)(WebClientStatus status, NSString* e164))reply
@@ -420,12 +423,12 @@ static NSDictionary* statuses;
                                          @"durationMonths" : @(months),
                                          @"name"           : name,
                                          @"isoCountryCode" : isoCountryCode,
-                                         @"areaCode"       : areaCode,
                                          @"numberType"     : numberType} mutableCopy];
-    if (info != nil)
-    {
-        [parameters setObject:info forKey:@"info"];
-    }
+    (areaCode  != nil) ? [parameters setObject:areaCode  forKey:@"areaCode"]  : 0;
+    (areaName  != nil) ? [parameters setObject:areaName  forKey:@"areaName"]  : 0;
+    (stateCode != nil) ? [parameters setObject:stateCode forKey:@"stateCode"] : 0;
+    (stateName != nil) ? [parameters setObject:stateName forKey:@"stateName"] : 0;
+    (info      != nil) ? [parameters setObject:info      forKey:@"info"]      : 0;
 
     [parameters setObject:@(true) forKey:@"debug"];
 

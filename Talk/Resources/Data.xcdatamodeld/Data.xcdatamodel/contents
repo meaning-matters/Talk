@@ -28,6 +28,7 @@
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="numberCountry" attributeType="String" minValueString="2" maxValueString="2" syncable="YES"/>
+        <attribute name="numberType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="proofAccepted" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="proofImage" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="purchaseDate" attributeType="Date" syncable="YES"/>
@@ -48,7 +49,7 @@
     <elements>
         <element name="Forwarding" positionX="268" positionY="-0" width="128" height="105"/>
         <element name="NBRecentContactEntry" positionX="403" positionY="-432" width="128" height="163"/>
-        <element name="Number" positionX="43" positionY="-225" width="128" height="360"/>
+        <element name="Number" positionX="43" positionY="-225" width="128" height="375"/>
         <element name="Recording" positionX="484" positionY="-0" width="128" height="103"/>
     </elements>
 </model>

@@ -136,13 +136,9 @@
 
 - (void)fetchData
 {
-    NSFetchRequest*         request = [[NSFetchRequest alloc] init];
-    NSEntityDescription*    entity  = [NSEntityDescription entityForName:@"Number"
-                                                  inManagedObjectContext:managedObjectContext];
-    [request setEntity:entity];
-
-    NSArray*    sortDescriptors = @[ [[NSSortDescriptor alloc] initWithKey:@"numberCountry" ascending:YES],
-                                     [[NSSortDescriptor alloc] initWithKey:@"name"          ascending:YES] ];
+    NSFetchRequest* request         = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
+    NSArray*        sortDescriptors = @[ [[NSSortDescriptor alloc] initWithKey:@"numberCountry" ascending:YES],
+                                         [[NSSortDescriptor alloc] initWithKey:@"name"          ascending:YES] ];
     [request setSortDescriptors:sortDescriptors];
 
     NSError*        error   = nil;
@@ -167,11 +163,8 @@
         {
             // Delete Numbers that are no longer on the server.
             NSError*        error        = nil;
-            NSFetchRequest* request      = [[NSFetchRequest alloc] init];
-            [request setEntity:[NSEntityDescription entityForName:@"Number"
-                                           inManagedObjectContext:managedObjectContext]];
-            NSPredicate*    predicate    = [NSPredicate predicateWithFormat:@"NOT (e164 IN %@)", array];
-            [request setPredicate:predicate];
+            NSFetchRequest* request      = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
+            [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (e164 IN %@)", array]];
             NSArray*        deleteArray  = [managedObjectContext executeFetchRequest:request error:&error];
             if (error == nil)
             {
@@ -180,7 +173,7 @@
                     [managedObjectContext deleteObject:object];
                 }
 
-                [managedObjectContext save:&error];
+                [managedObjectContext save:&error];//### needed this early
                 //### Error handling.
             }
             else
@@ -199,10 +192,8 @@
                     NSError* error;
                     if (status == WebClientStatusOk)
                     {
-                        NSFetchRequest* request = [[NSFetchRequest alloc] init];
+                        NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
                         [request setPredicate:[NSPredicate predicateWithFormat:@"e164 == %@", dictionary[@"e164"]]];
-                        [request setEntity:[NSEntityDescription entityForName:@"Number"
-                                                       inManagedObjectContext:managedObjectContext]];
 
                         error = nil;
                         NumberData* number = [[managedObjectContext executeFetchRequest:request error:&error] lastObject];
@@ -215,6 +206,7 @@
 
                         number.name           = dictionary[@"name"];
                         number.e164           = dictionary[@"e164"];
+                        number.numberType     = dictionary[@"numberType"];
                         number.areaCode       = dictionary[@"areaCode"];
                         number.areaName       = dictionary[@"areaName"];
                         number.numberCountry  = dictionary[@"isoCountryCode"];

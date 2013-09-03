@@ -100,3 +100,8 @@
 
 * verwijder nummers uit lijst als ze niet meer van server komen in update
 
+* Differentiate between real WebClient network problem, and API problem.
+
+* Introduce NumberArea object to encapsulate exceptions of fields yes/no present and other logic (e.g to/from JSON).
+
+* Remove optional fields from Next list in NumberAreaViewCon.

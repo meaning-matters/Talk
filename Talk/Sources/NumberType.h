@@ -22,7 +22,7 @@ typedef enum
 
 + (NSString*)stringForNumberType:(NumberTypeMask)mask;
 
-+ (NumberTypeMask)numberTypeForString:(NSString*)string;
++ (NumberTypeMask)numberTypeMaskForString:(NSString*)string;
 
 + (NSString*)localizedStringForNumberType:(NumberTypeMask)mask;
 

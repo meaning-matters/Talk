@@ -18,12 +18,12 @@
 
 @interface BuyNumberViewController ()
 
-@property (nonatomic, strong) NSString*     name;
-@property (nonatomic, strong) NSString*     isoCountryCode;
-@property (nonatomic, strong) NSDictionary* area;
-@property (nonatomic, strong) NSString*     numberType;
-@property (nonatomic, strong) NSDictionary* info;
-@property (nonatomic, strong) NSIndexPath*  buyIndexPath;
+@property (nonatomic, strong) NSString*       name;
+@property (nonatomic, strong) NSString*       isoCountryCode;
+@property (nonatomic, strong) NSDictionary*   area;
+@property (nonatomic, assign) NumberTypeMask  numberTypeMask;
+@property (nonatomic, strong) NSDictionary*   info;
+@property (nonatomic, strong) NSIndexPath*    buyIndexPath;
 
 @end
 
@@ -46,7 +46,7 @@
         self.name           = name;
         self.isoCountryCode = isoCountryCode;
         self.area           = area;
-        self.numberType     = [NumberType stringForNumberType:numberTypeMask];
+        self.numberTypeMask = numberTypeMask;
         self.info           = info;
     }
 
@@ -168,12 +168,19 @@
 
         void (^buyNumberBlock)(void) = ^
         {
+            BOOL allCities   = [[self.area objectForKey:@"areaName"] caseInsensitiveCompare:@"All cities"] == NSOrderedSame;
+            BOOL hasAreaCode = [self.area[@"areaCode"] length] > 0;
+            BOOL hasAreaName = self.numberTypeMask == NumberTypeGeographicMask && !allCities;
+
             [[PurchaseManager sharedManager] buyNumberForTier:numberTier
                                                        months:months
                                                          name:self.name
                                                isoCountryCode:self.isoCountryCode
-                                                     areaCode:self.area[@"areaCode"]
-                                                   numberType:self.numberType
+                                                     areaCode:hasAreaCode ? self.area[@"areaCode"] : nil
+                                                     areaName:hasAreaName ? self.area[@"areaName"] : nil
+                                                    stateCode:self.area[@"stateCode"]
+                                                    stateName:self.area[@"stateName"]
+                                                   numberType:[NumberType stringForNumberType:self.numberTypeMask]
                                                          info:self.info
                                                    completion:^(BOOL success, id object)
             {
