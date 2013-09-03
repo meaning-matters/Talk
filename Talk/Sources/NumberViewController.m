@@ -452,13 +452,6 @@ static const int    CountryCellTag   = 4321;
 }
 
 
-/* handy for below code
- self.numberLabel.text = ;
- self.flagImageView.image = [UIImage imageNamed:number.numberCountry];
- self.countryLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:number.numberCountry];
- */
-
-
 - (void)updateForwardingCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
     cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number Forwarding", nil,
