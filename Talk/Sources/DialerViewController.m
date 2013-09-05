@@ -85,6 +85,7 @@
     [super viewDidLoad];
 
     [self.numberLabel setFont:[Common phoneFontOfSize:38]];
+    self.numberLabel.hasPaste = YES;
     self.numberLabel.delegate = self;
 
     self.keypadView.delegate = self;

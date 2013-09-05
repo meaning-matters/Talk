@@ -34,6 +34,8 @@
 
 + (NSString*)optionalString;
 
++ (NSString*)detailsString;
+
 + (NSString*)numberString;
 
 + (NSString*)creditString;

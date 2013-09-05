@@ -55,7 +55,7 @@
     {
         return ([self.text length] > 0);
     }
-    else if (action == @selector(paste:))
+    else if (self.hasPaste && action == @selector(paste:))
     {
         UIPasteboard*   pasteboard = [UIPasteboard generalPasteboard];
 
@@ -145,7 +145,7 @@
     else if ([self becomeFirstResponder])
     {
         UIMenuController*   menu = [UIMenuController sharedMenuController];
-        [menu setTargetRect:self.bounds inView:self];
+        [menu setTargetRect:self.menuTargetRect inView:self];
         [menu setMenuVisible:YES animated:YES];
     }
 }

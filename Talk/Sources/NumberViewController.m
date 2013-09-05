@@ -17,6 +17,7 @@
 #import "Strings.h"
 #import "BlockAlertView.h"
 #import "WebClient.h"
+#import "NumberLabel.h"
 
 
 typedef enum
@@ -185,7 +186,7 @@ static const int    CountryCellTag   = 4321;
             break;
 
         case TableSectionArea:
-            title = [Strings numberString];
+            title = [Strings detailsString];
             break;
 
         case TableSectionContactName:
@@ -214,8 +215,8 @@ static const int    CountryCellTag   = 4321;
         case TableSectionName:
             title = NSLocalizedStringWithDefaultValue(@"Number:Name SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"Tap to edit.  When done, the change will also be saved "
-                                                      @"online.  Refresh the overview list of Numbers on your other "
+                                                      @"Tap to edit.  A change will also be saved "
+                                                      @"online.  Refresh the overview Numbers list on other "
                                                       @"devices to load changes.",
                                                       @"[* lines]");
             break;
@@ -344,7 +345,7 @@ static const int    CountryCellTag   = 4321;
             break;
 
         case TableSectionNumber:
-            identifier = @"Value2Cell";
+            identifier = @"NumberCell";
             break;
 
         case TableSectionForwarding:
@@ -446,8 +447,11 @@ static const int    CountryCellTag   = 4321;
 
 - (void)updateNumberCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
+    NumberLabel* numberLabel = [self addNumberLabelToCell:cell];
+
+    numberLabel.text = [[PhoneNumber alloc] initWithNumber:number.e164].internationalFormat;
+
     cell.textLabel.text       = [Strings numberString];
-    cell.detailTextLabel.text = [[PhoneNumber alloc] initWithNumber:number.e164].internationalFormat;
     cell.selectionStyle       = UITableViewCellSelectionStyleNone;
 }
 
@@ -608,8 +612,8 @@ static const int    CountryCellTag   = 4321;
 
 - (UITextField*)addTextFieldToCell:(UITableViewCell*)cell
 {
-    UITextField*    textField;
-    CGRect          frame = CGRectMake(83, 6, 198, 30);
+    UITextField* textField;
+    CGRect       frame = CGRectMake(83, 6, 198, 30);
 
     textField = [[UITextField alloc] initWithFrame:frame];
     [textField setFont:[UIFont boldSystemFontOfSize:15]];
@@ -625,6 +629,23 @@ static const int    CountryCellTag   = 4321;
     [cell.contentView addSubview:textField];
 
     return textField;
+}
+
+
+- (NumberLabel*)addNumberLabelToCell:(UITableViewCell*)cell
+{
+    NumberLabel* label;
+    CGRect       frame = CGRectMake(83, 6, 198, 30);
+
+    label = [[NumberLabel alloc] initWithFrame:frame];
+    [label setFont:[UIFont boldSystemFontOfSize:15]];
+    label.backgroundColor = [UIColor clearColor];
+    label.userInteractionEnabled = YES;
+    label.menuTargetRect = CGRectMake(-31, 9, 198, 11);
+
+    [cell.contentView addSubview:label];
+
+    return label;
 }
 
 

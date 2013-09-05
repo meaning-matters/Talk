@@ -105,3 +105,5 @@
 * Introduce NumberArea object to encapsulate exceptions of fields yes/no present and other logic (e.g to/from JSON).
 
 * Remove optional fields from Next list in NumberAreaViewCon.
+
+* Support Copy for the Number's E164 in NumberVC
