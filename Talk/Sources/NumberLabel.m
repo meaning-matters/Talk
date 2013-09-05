@@ -137,15 +137,23 @@
     if ([self isFirstResponder])
     {
         self.highlighted = NO;
-        UIMenuController*   menu = [UIMenuController sharedMenuController];
+        UIMenuController* menu = [UIMenuController sharedMenuController];
         [menu setMenuVisible:NO animated:YES];
         [menu update];
         [self resignFirstResponder];
     }
     else if ([self becomeFirstResponder])
     {
-        UIMenuController*   menu = [UIMenuController sharedMenuController];
-        [menu setTargetRect:self.menuTargetRect inView:self];
+        UIMenuController* menu = [UIMenuController sharedMenuController];
+        if (CGRectIsEmpty(self.menuTargetRect) == YES)
+        {
+            [menu setTargetRect:self.bounds inView:self];
+        }
+        else
+        {
+            [menu setTargetRect:self.menuTargetRect inView:self];
+        }
+        
         [menu setMenuVisible:YES animated:YES];
     }
 }
