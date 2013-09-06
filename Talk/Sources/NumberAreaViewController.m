@@ -512,7 +512,7 @@ static const int    CountryCellTag   = 4321;
     NSString* placeHolder;
 
     // The default is "Required".
-    if ([purchaseInfo[@"salutation"] isEqualToString:@"MS"] || [purchaseInfo[@"salutation"] isEqualToString:@"MR"])
+    if ([purchaseInfo[@"salutation"] isEqualToString:@"MR"] || [purchaseInfo[@"salutation"] isEqualToString:@"MS"])
     {
         if (textField == companyTextField)
         {

@@ -46,9 +46,9 @@
 
 + (NSString*)callString;
 
-+ (NSString*)msString;
-
 + (NSString*)mrString;
+
++ (NSString*)msString;
 
 + (NSString*)companyString;
 
