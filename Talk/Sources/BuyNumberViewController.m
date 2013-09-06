@@ -193,7 +193,7 @@
                 }
                 else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
                 {
-                    [self dismissViewControllerAnimated:YES completion:nil];
+                    // Do nothing; give user another chance.
                 }
                 else if (object != nil)
                 {
@@ -438,15 +438,14 @@
     cell.durationImageView.alpha = self.buyIndexPath ? 0.5 : 1.0;
     cell.monthsLabel.alpha       = self.buyIndexPath ? 0.5 : 1.0;
     cell.setupLabel.alpha        = self.buyIndexPath ? 0.5 : 1.0;
+    cell.userInteractionEnabled  = self.buyIndexPath ? NO  : YES;
     if (self.buyIndexPath != nil && [self.buyIndexPath compare:indexPath] == NSOrderedSame)
     {
         [cell.activityIndicator startAnimating];
-        cell.userInteractionEnabled = NO;
     }
     else
     {
         [cell.activityIndicator stopAnimating];
-        cell.userInteractionEnabled = YES;
     }
 }
 

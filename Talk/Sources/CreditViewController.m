@@ -363,15 +363,14 @@
 
     cell.amountImageView.alpha  = self.buyIndexPath ? 0.5 : 1.0;
     cell.descriptionLabel.alpha = self.buyIndexPath ? 0.5 : 1.0;
+    cell.userInteractionEnabled = self.buyIndexPath ? NO  : YES;
     if (self.buyIndexPath != nil && [self.buyIndexPath compare:indexPath] == NSOrderedSame)
     {
         [cell.activityIndicator startAnimating];
-        cell.userInteractionEnabled = NO;
     }
     else
     {
         [cell.activityIndicator stopAnimating];
-        cell.userInteractionEnabled = YES;
     }
 }
 
