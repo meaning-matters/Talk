@@ -100,6 +100,6 @@
 
 * Introduce NumberArea object to encapsulate exceptions of fields yes/no present and other logic (e.g to/from JSON).
 
-* Remove optional fields from Next list in NumberAreaViewCon.
-
 * Warn users about expiring numbers.  Warn when number has expired. (Warn user when refresh from server returns less numbers.)
+
+* "Validate" is deselected after Closing alert, in other parts of the UI the button is immediately deselected when there's an alert; make same
