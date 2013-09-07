@@ -89,7 +89,7 @@ typedef enum
                            reply:(void (^)(WebClientStatus status, NSString* e164))reply;
 
 // 12. GET LIST OF NUMBERS
-- (void)retrieveNumbers:(void (^)(WebClientStatus status, NSArray* array))reply;
+- (void)retrieveNumberList:(void (^)(WebClientStatus status, NSArray* list))reply;
 
 // 13. GET NUMBER INFO
 - (void)retrieveNumberForE164:(NSString*)e164
@@ -104,6 +104,39 @@ typedef enum
 // 15. GET CURRENT CREDIT
 - (void)retrieveCreditForCurrencyCode:(NSString*)currencyCode
                                 reply:(void (^)(WebClientStatus status, id content))reply;
+
+// 19A. CREATE IVR
+- (void)createIvrForUuid:(NSString*)uuid
+                    name:(NSString*)name
+              statements:(NSArray*)statements
+                   reply:(void (^)(WebClientStatus status))reply;
+
+// 19B. UPDATE IVR
+- (void)updateIvrForUuid:(NSString*)uuid
+                    name:(NSString*)name
+              statements:(NSArray*)statements
+                   reply:(void (^)(WebClientStatus status))reply;
+
+// 20. DELETE IVR
+- (void)deleteIvrForUuid:(NSString*)uuid
+                   reply:(void (^)(WebClientStatus status))reply;
+
+// 21. GET LIST OF IVRS
+- (void)retrieveIvrList:(void (^)(WebClientStatus status, NSArray* list))reply;
+
+// 22. DOWNLOAD IVR
+- (void)retrieveIvrForUuid:(NSString*)uuid
+                     reply:(void (^)(WebClientStatus status, NSString* name, NSArray* statements))reply;
+
+// 23. SET/CLEAR IVR FOR A NUMBER
+- (void)setIvrOfE164:(NSString*)e164
+                uuid:(NSString*)uuid
+               reply:(void (^)(WebClientStatus status))reply;
+
+// 24. RETRIEVE IVR FOR A NUMBER
+- (void)retrieveIvrOfE164:(NSString*)e164
+                    reply:(void (^)(WebClientStatus status, NSString* uuid))reply;
+
 
 // 30A. DO NUMBER VERIFICATION
 - (void)retrieveVerificationCodeForPhoneNumber:(PhoneNumber*)phoneNumber
@@ -153,7 +186,7 @@ typedef enum
                       reply:(void (^)(WebClientStatus status))reply;
 
 // 12.
-- (void)cancelAllRetrieveNumbers;
+- (void)cancelAllRetrieveNumberList;
 
 // 13.
 - (void)cancelAllRetrieveNumberForE164:(NSString*)e164;

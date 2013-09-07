@@ -179,6 +179,42 @@ static NSDictionary* statuses;
 }
 
 
+- (void)deletePath:(NSString*)path
+        parameters:(NSDictionary*)parameters
+             reply:(void (^)(WebClientStatus status, id content))reply
+{
+    [Common enableNetworkActivityIndicator:YES];
+
+    [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
+                                    password:[Settings sharedSettings].webPassword];
+
+    [self deletePath:path
+          parameters:parameters
+             success:^(AFHTTPRequestOperation* operation, id responseObject)
+    {
+        [Common enableNetworkActivityIndicator:NO];
+
+        NSDictionary* reponseDictionary = responseObject;
+        if (responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
+        {
+            reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
+        }
+        else
+        {
+            reply(WebClientStatusFailInvalidResponse, nil);
+        }
+    }
+             failure:^(AFHTTPRequestOperation* operation, NSError* error)
+    {
+        [Common enableNetworkActivityIndicator:NO];
+        if (error != nil && error.code != NSURLErrorCancelled)
+        {
+            reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
+        }
+    }];
+}
+
+
 #pragma mark - Public API
 
 - (NSString*)localizedStringForStatus:(WebClientStatus)status
@@ -418,7 +454,7 @@ static NSDictionary* statuses;
                             info:(NSDictionary*)info
                            reply:(void (^)(WebClientStatus status, NSString* e164))reply
 {
-    NSString* username              = [Settings sharedSettings].webUsername;
+    NSString*            username   = [Settings sharedSettings].webUsername;
     NSMutableDictionary* parameters = [@{@"receipt"        : receipt,
                                          @"durationMonths" : @(months),
                                          @"name"           : name,
@@ -469,7 +505,7 @@ static NSDictionary* statuses;
 
 
 // 12. GET LIST OF NUMBERS
-- (void)retrieveNumbers:(void (^)(WebClientStatus status, NSArray* array))reply
+- (void)retrieveNumberList:(void (^)(WebClientStatus status, NSArray* list))reply
 {
     [self getPath:[NSString stringWithFormat:@"users/%@/numbers", [Settings sharedSettings].webUsername]
        parameters:nil
@@ -533,27 +569,124 @@ static NSDictionary* statuses;
 // ...
 
 
-// 19. UPLOAD IVR OR UPDATE IVR
-// ...
+// 19A. UPLOAD IVR
+- (void)createIvrForUuid:(NSString*)uuid
+                    name:(NSString*)name
+              statements:(NSArray*)statements
+                   reply:(void (^)(WebClientStatus status))reply
+{
+    NSString*     username   = [Settings sharedSettings].webUsername;
+    NSDictionary* parameters = @{@"name"       : name,
+                                 @"statements" : statements};
+
+    [self putPath:[NSString stringWithFormat:@"users/%@/ivr/%@", username, uuid]
+       parameters:parameters
+            reply:^(WebClientStatus status, id content)
+    {
+        reply(status);
+    }];
+}
+
+
+// 19B. UPDATE IVR
+- (void)updateIvrForUuid:(NSString*)uuid
+                    name:(NSString*)name
+              statements:(NSArray*)statements
+                   reply:(void (^)(WebClientStatus status))reply
+{
+    NSString*     username   = [Settings sharedSettings].webUsername;
+    NSDictionary* parameters = @{@"name"       : name,
+                                 @"statements" : statements};
+
+    [self postPath:[NSString stringWithFormat:@"users/%@/ivr/%@", username, uuid]
+        parameters:parameters
+             reply:^(WebClientStatus status, id content)
+    {
+        reply(status);
+    }];
+}
+
 
 // 20. DELETE IVR
-// ...
+- (void)deleteIvrForUuid:(NSString*)uuid
+                   reply:(void (^)(WebClientStatus status))reply
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self deletePath:[NSString stringWithFormat:@"users/%@/ivr/%@", username, uuid]
+          parameters:nil
+               reply:^(WebClientStatus status, id content)
+    {
+        reply(status);
+    }];
+}
 
 
-// 21. GET LIST IVR UUID'S ON SERVER
-// ...
+// 21. GET LIST OF IVRS
+- (void)retrieveIvrList:(void (^)(WebClientStatus status, NSArray* list))reply
+{
+    [self getPath:[NSString stringWithFormat:@"users/%@/ivr", [Settings sharedSettings].webUsername]
+       parameters:nil
+            reply:reply];
+}
 
 
-// 22. DOWNLOAD IVR
-// ...
+// 22. Download IVR
+- (void)retrieveIvrForUuid:(NSString*)uuid
+                     reply:(void (^)(WebClientStatus status, NSString* name, NSArray* statements))reply
+{
+    [self getPath:[NSString stringWithFormat:@"users/%@/ivr/%@", [Settings sharedSettings].webUsername, uuid]
+       parameters:nil
+            reply:^(WebClientStatus status, id content)
+     {
+         if (status == WebClientStatusOk)
+         {
+             reply(status, content[@"name"], content[@"statements"]);
+         }
+         else
+         {
+             reply(status, nil, nil);
+         }
+     }];
+}
 
 
 // 23. SET/CLEAR IVR FOR A NUMBER
-// ...
+- (void)setIvrOfE164:(NSString*)e164
+                uuid:(NSString*)uuid
+               reply:(void (^)(WebClientStatus status))reply
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self putPath:[NSString stringWithFormat:@"users/%@/numbers/%@/ivr", username, [e164 substringFromIndex:1]]
+       parameters:@{@"uuid" : uuid}
+            reply:^(WebClientStatus status, id content)
+    {
+        reply(status);
+    }];
+}
 
 
 // 24. RETRIEVE IVR FOR A NUMBER
-// ...
+- (void)retrieveIvrOfE164:(NSString*)e164
+                    reply:(void (^)(WebClientStatus status, NSString* uuid))reply
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self getPath:[NSString stringWithFormat:@"users/%@/numbers/%@/ivr", username, [e164 substringFromIndex:1]]
+       parameters:nil
+            reply:^(WebClientStatus status, id content)
+    {
+        if (status == WebClientStatusOk)
+        {
+            reply(status, content[@"uuid"]);
+        }
+        else
+        {
+            reply(status, nil);
+        }
+    }];
+}
 
 
 // 25. UPLOAD AUDIO OR RENAME AUDIO FILE
@@ -717,7 +850,7 @@ static NSDictionary* statuses;
 
 
 // 12.
-- (void)cancelAllRetrieveNumbers
+- (void)cancelAllRetrieveNumberList
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
                                        path:[NSString stringWithFormat:@"users/%@/numbers",

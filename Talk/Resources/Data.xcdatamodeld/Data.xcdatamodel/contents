@@ -2,7 +2,8 @@
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Forwarding" representedClassName="ForwardingData" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="statements" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="statements" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="numbers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Number" inverseName="forwarding" inverseEntity="Number" syncable="YES"/>
         <relationship name="recordings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Recording" inverseName="forwardings" inverseEntity="Recording" syncable="YES"/>
     </entity>
@@ -47,7 +48,7 @@
         <relationship name="forwardings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Forwarding" inverseName="recordings" inverseEntity="Forwarding" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Forwarding" positionX="268" positionY="-0" width="128" height="105"/>
+        <element name="Forwarding" positionX="268" positionY="-0" width="128" height="118"/>
         <element name="NBRecentContactEntry" positionX="403" positionY="-432" width="128" height="163"/>
         <element name="Number" positionX="43" positionY="-225" width="128" height="375"/>
         <element name="Recording" positionX="484" positionY="-0" width="128" height="103"/>

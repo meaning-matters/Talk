@@ -103,3 +103,7 @@
 * Warn users about expiring numbers.  Warn when number has expired. (Warn user when refresh from server returns less numbers.)
 
 * "Validate" is deselected after Closing alert, in other parts of the UI the button is immediately deselected when there's an alert; make same
+
+* Make sure all cancelAll WebClient methods are used when cancelling stuff in the UI or otherwise appropriately.
+
+* Wait for Store products to have loaded, because otherwise Currency is not available, and #1 fails.

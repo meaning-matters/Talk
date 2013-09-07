@@ -13,8 +13,9 @@
 
 @interface ForwardingData : NSManagedObject
 
+@property (nonatomic, retain) NSString* uuid;
 @property (nonatomic, retain) NSString* name;
-@property (nonatomic, retain) NSData*   statements;
+@property (nonatomic, retain) NSString* statements; // JSON formatted string.
 @property (nonatomic, retain) NSSet*    numbers;
 @property (nonatomic, retain) NSSet*    recordings;
 

@@ -157,12 +157,12 @@
 
 - (void)downloadNumbers:(void (^)(BOOL success))completion
 {
-    [[WebClient sharedClient] retrieveNumbers:^(WebClientStatus status, NSArray* array)
+    [[WebClient sharedClient] retrieveNumberList:^(WebClientStatus status, NSArray* array)
     {
         if (status == WebClientStatusOk)
         {
             // Delete Numbers that are no longer on the server.
-            NSError*        error        = nil;
+            NSError*        error;
             NSFetchRequest* request      = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
             [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (e164 IN %@)", array]];
             NSArray*        deleteArray  = [managedObjectContext executeFetchRequest:request error:&error];
@@ -195,7 +195,6 @@
                         NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
                         [request setPredicate:[NSPredicate predicateWithFormat:@"e164 == %@", dictionary[@"e164"]]];
 
-                        error = nil;
                         NumberData* number = [[managedObjectContext executeFetchRequest:request error:&error] lastObject];
                         //### Handle error.
                         if (number == nil)

@@ -82,6 +82,7 @@
 								<string key="NSFrame">{{59, 31}, {244, 21}}</string>
 								<reference key="NSSuperview" ref="842971441"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -119,7 +120,7 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">NumberPeriod1.png</string>
+									<string key="NSResourceName">NumberDuration1.png</string>
 								</object>
 							</object>
 							<object class="IBUIActivityIndicatorView" id="920436716">
@@ -310,8 +311,8 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">NumberPeriod1.png</string>
-			<string key="NS.object.0">{16, 16}</string>
+			<string key="NS.key.0">NumberDuration1.png</string>
+			<string key="NS.object.0">{74, 74}</string>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

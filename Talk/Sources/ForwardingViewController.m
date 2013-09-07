@@ -13,6 +13,7 @@
 #import "RecordingData.h"
 #import "PhoneNumber.h"
 #import "Settings.h"
+#import "WebClient.h"
 
 
 typedef enum
@@ -92,10 +93,10 @@ static const int    TextFieldCellTag = 1111;
                                                                          inManagedObjectContext:managedObjectContext];
 
         // Default is call all user's devices without timeout.
-        self.forwarding.statements = [Common jsonDataWithObject: @[ @{ @"call" : @{ @"e164" : @[ @"" ] } } ] ];
+        self.forwarding.statements = [Common jsonStringWithObject: @[ @{ @"call" : @{ @"e164" : @[ @"" ] } } ] ];
     }
 
-    statementsArray = [Common mutableObjectWithJsonData:self.forwarding.statements];
+    statementsArray = [Common mutableObjectWithJsonString:self.forwarding.statements];
     phoneNumber.number = statementsArray[0][@"call"][@"e164"][0];
 
     UIBarButtonItem*    buttonItem;
@@ -127,11 +128,11 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)saveAction
 {
-    NSError*    error;
+    NSError* error;
 
     self.forwarding.name = name;
     statementsArray[0][@"call"][@"e164"][0] = phoneNumber.e164Format;
-    self.forwarding.statements = [Common jsonDataWithObject:statementsArray];
+    self.forwarding.statements = [Common jsonStringWithObject:statementsArray];
 
     if (managedObjectContext != nil)
     {
@@ -151,6 +152,15 @@ static const int    TextFieldCellTag = 1111;
 
     if (isNew)
     {
+        NSString* uuid = [[NSUUID UUID] UUIDString];
+        [[WebClient sharedClient] createIvrForUuid:uuid
+                                              name:name
+                                        statements:statementsArray
+                                             reply:^(WebClientStatus status)
+        {
+            NSLog(@"");
+        }];
+
         [self dismissViewControllerAnimated:YES completion:nil];
     }
     else

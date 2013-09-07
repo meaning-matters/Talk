@@ -255,7 +255,7 @@
         if (status == WebClientStatusOk)
         {
             [Settings sharedSettings].credit = [[content objectForKey:@"credit"] floatValue];
-            [[WebClient sharedClient] retrieveNumbers:^(WebClientStatus status, id content)
+            [[WebClient sharedClient] retrieveNumberList:^(WebClientStatus status, id content)
             {
                 if (status == WebClientStatusOk)
                 {

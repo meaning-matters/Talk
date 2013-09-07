@@ -115,7 +115,7 @@
     NSString*   string;
     
     data   = [Common jsonDataWithObject:object];
-    string = [NSString stringWithUTF8String:[data bytes]];
+    string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     
     return string;
 }

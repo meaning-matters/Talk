@@ -13,6 +13,7 @@
 
 @implementation ForwardingData
 
+@dynamic uuid;
 @dynamic name;
 @dynamic statements;
 @dynamic numbers;

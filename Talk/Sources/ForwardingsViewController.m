@@ -14,6 +14,7 @@
 #import "Settings.h"
 #import "ForwardingData.h"
 #import "RecordingData.h"
+#import "WebClient.h"
 
 
 typedef enum
@@ -28,9 +29,13 @@ typedef enum
     UISegmentedControl*         selectionSegmentedControl;
 
     DataManager*                dataManager;
+    NSManagedObjectContext*     managedObjectContext;
+
     NSFetchedResultsController* fetchedForwardingsController;
     NSFetchedResultsController* fetchedRecordingsController;
+
     Selection                   selection;
+
     BOOL                        isUpdatingForwardings;
     BOOL                        isUpdatingRecordings;
 }
@@ -47,7 +52,8 @@ typedef enum
         self.title = NSLocalizedString(@"Forwardings", @"Forwardings tab title");
         self.tabBarItem.image = [UIImage imageNamed:@"ForwardingsTab.png"];
 
-        dataManager = [DataManager sharedManager];
+        dataManager          = [DataManager sharedManager];
+        managedObjectContext = dataManager.managedObjectContext;
     }
     
     return self;
@@ -86,6 +92,24 @@ typedef enum
 #if FULL_FORWARDINGS
     fetchedRecordingsController  = [self fetchResultsForEntityName:@"Recording"  withSortKey:@"name"];
 #endif
+
+    UIRefreshControl* refreshControl;
+    refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    [self.forwardingsTableView addSubview:refreshControl];
+    refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    [self.recordingsTableView addSubview:refreshControl];
+}
+
+
+- (void)refresh:(id)sender
+{
+    [self downloadForwardings:^(BOOL success)
+     {
+         [sender endRefreshing];
+         //###Copied from NumbersVC [self fetchData];
+     }];
 }
 
 
@@ -512,6 +536,89 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     viewController = [[RecordingViewController alloc] initWithFetchedResultsController:fetchedRecordingsController
                                                                              recording:nil];
     [self.navigationController pushViewController:viewController animated:YES];
+}
+
+
+#pragma mark - Server Connections
+
+- (void)downloadForwardings:(void (^)(BOOL success))completion
+{
+    [[WebClient sharedClient] retrieveIvrList:^(WebClientStatus status, NSArray* array)
+    {
+        if (status == WebClientStatusOk)
+        {
+            // Delete IVRs that are no longer on the server.
+            NSError*        error;
+            NSFetchRequest* request      = [NSFetchRequest fetchRequestWithEntityName:@"Forwarding"];
+            [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (uuid IN %@)", array]];
+            NSArray*        deleteArray  = [managedObjectContext executeFetchRequest:request error:&error];
+            if (error == nil)
+            {
+                for (NSManagedObject* object in deleteArray)
+                {
+                    [managedObjectContext deleteObject:object];
+                }
+
+                [managedObjectContext save:&error];//### needed this early
+                                                    //### Error handling.
+            }
+            else
+            {
+                //### Error handling.
+            }
+
+            __block int  count   = array.count;
+            __block BOOL success = YES;
+            for (NSString* uuid in array)
+            {
+                [[WebClient sharedClient] retrieveIvrForUuid:uuid
+                                                        reply:^(WebClientStatus status, NSString* name, NSArray* statements)
+                {
+                    NSError* error;
+                    if (status == WebClientStatusOk)
+                    {
+                        NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Forwarding"];
+                        [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
+
+                        ForwardingData* forwarding;
+                        forwarding = [[managedObjectContext executeFetchRequest:request error:&error] lastObject];
+                        //### Handle error.
+                        if (forwarding == nil)
+                        {
+                            forwarding = (ForwardingData*)[NSEntityDescription insertNewObjectForEntityForName:@"Forwarding"
+                                                                                        inManagedObjectContext:managedObjectContext];
+                        }
+
+                        forwarding.name = name;
+                    }
+                    else
+                    {
+                        success = NO;
+                    }
+
+                    if (--count == 0)
+                    {
+                        if (success == YES)
+                        {
+                            error = nil;
+                            [managedObjectContext save:&error];
+                            //### Handle error.
+                        }
+                        else
+                        {
+                            [managedObjectContext rollback];
+                        }
+                          
+                        completion(success);
+                    }
+                }];
+            }
+        }
+        else
+        {
+            completion(NO);
+        }
+    }];
 }
 
 
