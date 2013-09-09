@@ -139,6 +139,15 @@
 }
 
 
++ (NSString*)numbersString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Numbers", nil,
+                                             [NSBundle mainBundle], @"Numbers",
+                                             @"Standard string to label phone numbers\n"
+                                             @"[iOS standard size].");
+}
+
+
 + (NSString*)creditString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Number", nil,
@@ -342,6 +351,15 @@
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Default", nil,
                                              [NSBundle mainBundle], @"Default",
                                              @"Standard label for a default value/selection/number/....\n"
+                                             @"[No size contraint].");
+}
+
+
++ (NSString*)refreshFromServerString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings RefreshFromServer", nil,
+                                             [NSBundle mainBundle], @"Refresh From Server",
+                                             @"Standard label to indicate things being loaded from internet server\n"
                                              @"[No size contraint].");
 }
 

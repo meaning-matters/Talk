@@ -15,6 +15,8 @@
 #import "ForwardingData.h"
 #import "RecordingData.h"
 #import "WebClient.h"
+#import "BlockAlertView.h"
+#import "Strings.h"
 
 
 typedef enum
@@ -94,10 +96,14 @@ typedef enum
 #endif
 
     UIRefreshControl* refreshControl;
+
     refreshControl = [[UIRefreshControl alloc] init];
+    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings refreshFromServerString]];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
-    [self.forwardingsTableView addSubview:refreshControl];
+    [self.forwardingsTableView  addSubview:refreshControl];
+
     refreshControl = [[UIRefreshControl alloc] init];
+    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings refreshFromServerString]];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     [self.recordingsTableView addSubview:refreshControl];
 }
@@ -107,7 +113,12 @@ typedef enum
 {
     [self downloadForwardings:^(BOOL success)
      {
-         [sender endRefreshing];
+         [Common dispatchAfterInterval:0.1 onMain:^
+         {
+             // Calling this after a short delay solves the stutter.
+             [sender endRefreshing];
+         }];
+         
          //###Copied from NumbersVC [self fetchData];
      }];
 }
@@ -255,6 +266,21 @@ typedef enum
 }
 
 
+- (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView == self.forwardingsTableView)
+    {
+        ForwardingData* forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
+
+        return (forwarding.numbers.count == 0);
+    }
+    else
+    {
+        
+    }
+}
+
+
 - (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
 forRowAtIndexPath:(NSIndexPath*)indexPath
 {
@@ -264,26 +290,15 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
         {
             NSManagedObjectContext* context = [fetchedForwardingsController managedObjectContext];
             ForwardingData*         forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
-            NSError*                error;
 
-            if (forwarding.numbers.count > 0)
+            [forwarding deleteFromManagedObjectContext:context completion:^(BOOL succeeded)
             {
-
-            }
-            else
-            {
-                [context deleteObject:forwarding];
-            }
-
-            if (![context save:&error])
-            {
-                [self handleError:error];
-            }
-
-            if (fetchedForwardingsController.fetchedObjects.count == 0)
-            {
-                [self doneForwardingsAction];
-            }
+                NSError* error;
+                if (succeeded == YES && ![context save:&error])
+                {
+                    [self handleError:error];
+                }
+            }];
         }
         else
         {
@@ -416,30 +431,9 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     switch (selection)
     {
         case SelectionForwardings:
-            if (self.forwardingsTableView.isEditing == YES)
-            {
-                leftItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                         target:self
-                                                                         action:@selector(doneForwardingsAction)];
-                rightItem = nil;
-            }
-            else
-            {
-                if (fetchedForwardingsController.fetchedObjects.count > 0)
-                {
-                    leftItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                              target:self
-                                                                              action:@selector(editForwardingsAction)];
-                }
-                else
-                {
-                    rightItem = nil;
-                }
-
-                rightItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                          target:self
-                                                                          action:@selector(addForwardingAction)];
-            }
+            rightItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                      target:self
+                                                                      action:@selector(addForwardingAction)];
 
             self.forwardingsTableView.hidden = NO;
             self.recordingsTableView.hidden  = YES;
@@ -481,25 +475,9 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 }
 
 
-- (void)editForwardingsAction
-{
-    [self.forwardingsTableView setEditing:YES animated:YES];
-
-    [self selectionUpdateAction];
-}
-
-
 - (void)editRecordingsAction
 {
     [self.recordingsTableView setEditing:YES animated:YES];
-
-    [self selectionUpdateAction];
-}
-
-
-- (void)doneForwardingsAction
-{
-    [self.forwardingsTableView setEditing:NO animated:YES];
 
     [self selectionUpdateAction];
 }
@@ -589,7 +567,9 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                                                                                         inManagedObjectContext:managedObjectContext];
                         }
 
+                        forwarding.uuid = uuid;
                         forwarding.name = name;
+                        forwarding.statements = [Common jsonStringWithObject:statements];
                     }
                     else
                     {

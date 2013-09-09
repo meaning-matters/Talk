@@ -646,11 +646,10 @@
         if (status == WebClientStatusOk)
         {
             // We get here when the user either answered or declined the call.
-            dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
-            dispatch_after(when, dispatch_get_main_queue(), ^(void)
+            [Common dispatchAfterInterval:1.0 onMain:^
             {
                 [self checkVerifyStatusWithRepeatCount:12];
-            });
+            }];
         }
         else
         {
@@ -755,11 +754,10 @@
             }
             else
             {
-                dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
-                dispatch_after(when, dispatch_get_main_queue(), ^
+                [Common dispatchAfterInterval:1.0 onMain:^
                 {
                     [self checkVerifyStatusWithRepeatCount:count];
-                });
+                }];
             }
         }
         else

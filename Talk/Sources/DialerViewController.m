@@ -276,12 +276,12 @@
             [Settings sharedSettings].lastDialedNumber = phoneNumber.number;
             phoneNumber = [[PhoneNumber alloc] init];
 
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
+            [Common dispatchAfterInterval:0.5 onMain:^
             {
                 // Clears UI fields.  This is done after a delay to make sure that
                 // a call related view is on screen; keeping it out of sight.
                 [self update];
-            });
+            }];
         }
     }
 }

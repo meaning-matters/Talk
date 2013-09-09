@@ -560,4 +560,13 @@
                                                          completion:nil];
 }
 
+
++ (void)dispatchAfterInterval:(NSTimeInterval)interval onMain:(void (^)(void))block
+{
+    double          delayInSeconds = interval;
+    dispatch_time_t when           = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+
+    dispatch_after(when, dispatch_get_main_queue(), block);
+}
+
 @end

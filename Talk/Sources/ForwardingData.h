@@ -34,4 +34,7 @@
 - (void)addRecordings:(NSSet*)values;
 - (void)removeRecordings:(NSSet*)values;
 
+- (void)deleteFromManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
+                            completion:(void (^)(BOOL succeeded))completion;
+
 @end

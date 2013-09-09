@@ -92,8 +92,7 @@ static const int    TextFieldCellTag = 1111;
         self.forwarding = (ForwardingData*)[NSEntityDescription insertNewObjectForEntityForName:@"Forwarding"
                                                                          inManagedObjectContext:managedObjectContext];
 
-        // Default is call all user's devices without timeout.
-        self.forwarding.statements = [Common jsonStringWithObject: @[ @{ @"call" : @{ @"e164" : @[ @"" ] } } ] ];
+        self.forwarding.statements = [Common jsonStringWithObject:@[@{@"call" : @{@"e164" : @[@""]}}]];
     }
 
     statementsArray = [Common mutableObjectWithJsonString:self.forwarding.statements];

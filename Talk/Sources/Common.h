@@ -92,4 +92,6 @@
 
 + (void)showProvisioningViewController;
 
++ (void)dispatchAfterInterval:(NSTimeInterval)interval onMain:(void (^)(void))block;
+
 @end

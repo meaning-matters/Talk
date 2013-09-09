@@ -38,6 +38,8 @@
 
 + (NSString*)numberString;
 
++ (NSString*)numbersString;
+
 + (NSString*)creditString;
 
 + (NSString*)monthString;
@@ -79,5 +81,7 @@
 + (NSString*)areaString;
 
 + (NSString*)defaultString;
+
++ (NSString*)refreshFromServerString;
 
 @end

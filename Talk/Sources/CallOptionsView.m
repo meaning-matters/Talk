@@ -8,6 +8,7 @@
 
 #import "CallOptionsView.h"
 #import "NSTimer+Blocks.h"
+#import "Common.h"
 
 
 // These delays are used to limit the frequency at which mute, speaker and hold can be changed.
@@ -157,10 +158,10 @@
             muteTimer = nil;
         }];
 
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
+        [Common dispatchAfterInterval:0.1 onMain:^
         {
             [self.delegate callOptionsViewPressedMuteKey:self];
-        });
+        }];
     }
 }
 
@@ -182,10 +183,10 @@
 
         // Add short delay to allow redraw of button (also on main thread).  This was only
         // required for speaker button but was, for symmetry, also added for mute and hold.
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
+        [Common dispatchAfterInterval:0.1 onMain:^
         {
             [self.delegate callOptionsViewPressedSpeakerKey:self];
-        });
+        }];
     }
 }
 
@@ -205,10 +206,10 @@
             holdTimer = nil;
         }];
 
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
+        [Common dispatchAfterInterval:0.1 onMain:^
         {
             [self.delegate callOptionsViewPressedHoldKey:self];
-        });
+        }];
     }
 }
 

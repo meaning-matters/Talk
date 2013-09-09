@@ -595,13 +595,13 @@ const NSTimeInterval    TransitionDuration = 0.5;
     [UIApplication sharedApplication].idleTimerDisabled = NO;
 
 #warning Move this to SipInterface, and do when last call in array has been ended.
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
+    [Common dispatchAfterInterval:0.5 onMain:^
     {
         // Delay this (which route backs to speaker) to prevent 'noisy click' during brief moment
         // that PISIP has not shutdown audio yet.  Also prevents Speaker option button to light up
         // on CallView just before it disappears.
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
-    });
+    }];
 
     [self.calls removeObject:call];
 }

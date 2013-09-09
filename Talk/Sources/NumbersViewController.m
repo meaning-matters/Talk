@@ -17,6 +17,7 @@
 #import "Common.h"
 #import "WebClient.h"
 #import "Base64.h"
+#import "Strings.h"
 
 
 @interface NumbersViewController ()
@@ -60,6 +61,7 @@
                                                                                            action:@selector(addAction)];
 
     UIRefreshControl* refreshControl = [[UIRefreshControl alloc] init];
+    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings refreshFromServerString]];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:refreshControl];
 
@@ -71,7 +73,12 @@
 {
     [self downloadNumbers:^(BOOL success)
     {
-        [sender endRefreshing];
+        [Common dispatchAfterInterval:0.1 onMain:^
+        {
+            // Calling this after a short delay solves the stutter.
+            [sender endRefreshing];
+        }];
+
         [self fetchData];
     }];
 }

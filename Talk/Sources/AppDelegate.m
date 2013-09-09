@@ -75,10 +75,10 @@
         {
             if ([MPMusicPlayerController applicationMusicPlayer].volume < 0.1)
             {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.05f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
+                [Common dispatchAfterInterval:0.05 onMain:^
                 {
                     [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.1];
-                });
+                }];
             }
         }];
     });
