@@ -71,15 +71,18 @@
 
 - (void)refresh:(id)sender
 {
-    [self downloadNumbers:^(BOOL success)
+    // Add delays to allow uninterrupted animations of UIRefreshControl
+    [Common dispatchAfterInterval:0.5 onMain:^
     {
-        [Common dispatchAfterInterval:0.1 onMain:^
+        [self downloadNumbers:^(BOOL success)
         {
-            // Calling this after a short delay solves the stutter.
-            [sender endRefreshing];
+            [Common dispatchAfterInterval:0.1 onMain:^
+            {
+                [sender endRefreshing];
+            }];
+             
+            [self fetchData];
         }];
-
-        [self fetchData];
     }];
 }
 

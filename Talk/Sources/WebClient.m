@@ -711,11 +711,13 @@ static NSDictionary* statuses;
 
 // 30A.
 - (void)retrieveVerificationCodeForPhoneNumber:(PhoneNumber*)phoneNumber
-                                        reply:(void (^)(WebClientStatus status, NSString* code))reply
+                                    deviceName:(NSString*)deviceName
+                                         reply:(void (^)(WebClientStatus status, NSString* code))reply
 {
     [self postPath:[NSString stringWithFormat:@"users/%@/verification?number=%@",
-                    [Settings sharedSettings].webUsername, [phoneNumber e164FormatWithoutPlus]]
-        parameters:nil
+                                              [Settings sharedSettings].webUsername,
+                                              [phoneNumber e164FormatWithoutPlus]]
+        parameters:@{@"deviceName" : deviceName}
              reply:^(WebClientStatus status, id content)
     {
         if (status == WebClientStatusOk)

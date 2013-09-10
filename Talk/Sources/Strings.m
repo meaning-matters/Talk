@@ -358,7 +358,7 @@
 + (NSString*)refreshFromServerString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings RefreshFromServer", nil,
-                                             [NSBundle mainBundle], @"Refresh From Server",
+                                             [NSBundle mainBundle], @"Refresh from server",
                                              @"Standard label to indicate things being loaded from internet server\n"
                                              @"[No size contraint].");
 }

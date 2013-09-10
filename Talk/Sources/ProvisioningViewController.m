@@ -568,7 +568,8 @@
                 [self.verifyCodeActivityIndicator startAnimating];
                 WebClient* webClient = [WebClient sharedClient];
                 [webClient retrieveVerificationCodeForPhoneNumber:phoneNumber
-                                                           reply:^(WebClientStatus status, NSString* code)
+                                                       deviceName:[UIDevice currentDevice].name
+                                                            reply:^(WebClientStatus status, NSString* code)
                 {
                     [self.verifyCodeActivityIndicator stopAnimating];
                     if (status == WebClientStatusOk)

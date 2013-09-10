@@ -43,6 +43,9 @@ static const int    TextFieldCellTag = 1111;
 
     UITextField*                nameTextField;
     UITextField*                numberTextField;
+
+    UIBarButtonItem*            saveButtonItem;
+    UIBarButtonItem*            deleteButtonItem;
 }
 
 @end
@@ -98,21 +101,15 @@ static const int    TextFieldCellTag = 1111;
     statementsArray = [Common mutableObjectWithJsonString:self.forwarding.statements];
     phoneNumber.number = statementsArray[0][@"call"][@"e164"][0];
 
-    UIBarButtonItem*    buttonItem;
-
+    [self updateRightBarButtonItem];
     if (isNew)
     {
+        UIBarButtonItem* buttonItem;
         buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                    target:self
                                                                    action:@selector(cancel)];
         self.navigationItem.leftBarButtonItem = buttonItem;
     }
-
-    buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                               target:self
-                                                               action:@selector(saveAction)];
-    self.navigationItem.rightBarButtonItem = buttonItem;
-    [self enableSaveButton];
 
     // Let keyboard be hidden when user taps outside text fields.
     UITapGestureRecognizer* gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -124,6 +121,19 @@ static const int    TextFieldCellTag = 1111;
 
 
 #pragma mark - Actions
+
+- (void)deleteAction
+{
+    [self.forwarding deleteFromManagedObjectContext:fetchedResultsController.managedObjectContext
+                                         completion:^(BOOL succeeded)
+    {
+        if (succeeded)
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }];
+}
+
 
 - (void)saveAction
 {
@@ -225,6 +235,11 @@ static const int    TextFieldCellTag = 1111;
             break;
 
         case TableSectionNumbers:
+            title = NSLocalizedStringWithDefaultValue(@"ForwardingView CanNotDeleteFooter", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"This Forwarding can't be deleted because it's in use.",
+                                                      @"Table footer that app can't be deleted\n"
+                                                      @"[1 line larger font].");
             break;
 
         case TableSectionRecordings:
@@ -442,7 +457,7 @@ static const int    TextFieldCellTag = 1111;
         phoneNumber.number = @"";
     }
 
-    [self enableSaveButton];
+    [self updateRightBarButtonItem];
 
     return YES;
 }
@@ -469,7 +484,7 @@ static const int    TextFieldCellTag = 1111;
         phoneNumber.number = text;
     }
 
-    [self enableSaveButton];
+    [self updateRightBarButtonItem];
 
     return YES;
 }
@@ -484,17 +499,50 @@ static const int    TextFieldCellTag = 1111;
 
 #pragma mark - Helper Methods
 
-- (void)enableSaveButton
+- (void)updateRightBarButtonItem
 {
-    if ([name stringByReplacingOccurrencesOfString:@" " withString:@""].length > 0 &&
-        ((phoneNumber.isValid && [Settings sharedSettings].homeCountry.length > 0) || phoneNumber.isInternational))
+    UIBarButtonItem* buttonItem;
+    BOOL             changed;
+    BOOL             valid;
+
+    changed = [name isEqualToString:self.forwarding.name] == NO ||
+              [[Common jsonStringWithObject:statementsArray] isEqualToString:self.forwarding.statements] == NO;
+    valid   = [name stringByReplacingOccurrencesOfString:@" " withString:@""].length > 0 &&
+              ((phoneNumber.isValid && [Settings sharedSettings].homeCountry.length > 0) || phoneNumber.isInternational);
+
+    if (saveButtonItem == nil)
     {
-        self.navigationItem.rightBarButtonItem.enabled = YES;
+        saveButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                                       target:self
+                                                                       action:@selector(saveAction)];
+    }
+
+    if (deleteButtonItem == nil)
+    {
+        deleteButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
+                                                                         target:self
+                                                                         action:@selector(deleteAction)];
+    }
+
+    if (isNew)
+    {
+        buttonItem = saveButtonItem;
+        buttonItem.enabled = valid;
     }
     else
     {
-        self.navigationItem.rightBarButtonItem.enabled = NO;
+        if (self.forwarding.numbers.count == 0 && changed == NO)
+        {
+            buttonItem = deleteButtonItem;
+        }
+        else
+        {
+            buttonItem = saveButtonItem;
+            buttonItem.enabled = (valid && changed);
+        }
     }
+
+    [self.navigationItem setRightBarButtonItem:buttonItem animated:YES];
 }
 
 

@@ -140,6 +140,7 @@ typedef enum
 
 // 30A. DO NUMBER VERIFICATION
 - (void)retrieveVerificationCodeForPhoneNumber:(PhoneNumber*)phoneNumber
+                                    deviceName:(NSString*)deviceName
                                          reply:(void (^)(WebClientStatus status, NSString* code))reply;
 
 // 30B. DO NUMBER VERIFICATION

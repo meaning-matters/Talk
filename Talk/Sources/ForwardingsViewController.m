@@ -111,16 +111,19 @@ typedef enum
 
 - (void)refresh:(id)sender
 {
-    [self downloadForwardings:^(BOOL success)
-     {
-         [Common dispatchAfterInterval:0.1 onMain:^
-         {
-             // Calling this after a short delay solves the stutter.
-             [sender endRefreshing];
-         }];
-         
-         //###Copied from NumbersVC [self fetchData];
-     }];
+    // Add delays to allow uninterrupted animations of UIRefreshControl
+    [Common dispatchAfterInterval:0.5 onMain:^
+    {
+        [self downloadForwardings:^(BOOL success)
+        {
+            //###Copied from NumbersVC [self fetchData];
+
+            [Common dispatchAfterInterval:0.1 onMain:^
+            {
+                [sender endRefreshing];
+            }];
+        }];
+    }];
 }
 
 
