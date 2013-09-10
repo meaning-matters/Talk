@@ -496,18 +496,25 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
 - (void)addForwardingAction
 {
-    UINavigationController*     modalViewController;
-    ForwardingViewController*   viewController;
+    if ([Settings sharedSettings].hasAccount == YES)
+    {
+        UINavigationController*   modalViewController;
+        ForwardingViewController* viewController;
 
-    viewController = [[ForwardingViewController alloc] initWithFetchedResultsController:fetchedForwardingsController
-                                                                             forwarding:nil];
+        viewController = [[ForwardingViewController alloc] initWithFetchedResultsController:fetchedForwardingsController
+                                                                                 forwarding:nil];
 
-    modalViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
-    modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        modalViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
+        modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 
-    [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
-                                                           animated:YES
-                                                         completion:nil];
+        [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
+                                                               animated:YES
+                                                             completion:nil];
+    }
+    else
+    {
+        [Common showProvisioningViewController];
+    }
 }
 
 

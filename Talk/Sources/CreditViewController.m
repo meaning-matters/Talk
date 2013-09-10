@@ -14,6 +14,7 @@
 #import "WebClient.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
+#import "Common.h"
 
 
 @interface CreditViewController ()
@@ -71,7 +72,11 @@
 {
     [super viewWillAppear:animated];
 
-    [self loadCredit];
+    if ([Settings sharedSettings].hasAccount == YES)
+    {
+        [self loadCredit];
+    }
+
     [[PurchaseManager sharedManager] loadProducts:^(BOOL success)
     {
         [self updateVisibleBuyCells];
@@ -165,11 +170,21 @@
 
     if (indexPath.section == 0 && indexPath.row == 0)
     {
-        [self loadCredit];
+        if ([Settings sharedSettings].hasAccount == YES)
+        {
+            [self loadCredit];
+        }
     }
     else
     {
-        [self buyCreditForIndexPath:indexPath];
+        if ([Settings sharedSettings].hasAccount == YES)
+        {
+            [self buyCreditForIndexPath:indexPath];
+        }
+        else
+        {
+            [Common showProvisioningViewController];
+        }
     }
 }
 
