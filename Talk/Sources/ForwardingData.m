@@ -77,7 +77,7 @@
                                                             @"\n\nPlease try again later.",
                                                             @"Alert message telling that an online service is not available.\n"
                                                             @"[iOS alert message size]");
-                message = [NSString stringWithFormat:message, [[WebClient sharedClient] localizedStringForStatus:status]];
+                message = [NSString stringWithFormat:message, [WebClient localizedStringForStatus:status]];
                 [BlockAlertView showAlertViewWithTitle:title
                                                message:message
                                             completion:^(BOOL cancelled, NSInteger buttonIndex)

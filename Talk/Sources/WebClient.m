@@ -217,7 +217,7 @@ static NSDictionary* statuses;
 
 #pragma mark - Public API
 
-- (NSString*)localizedStringForStatus:(WebClientStatus)status
++ (NSString*)localizedStringForStatus:(WebClientStatus)status
 {
     NSString* string;
 

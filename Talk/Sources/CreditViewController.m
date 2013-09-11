@@ -254,7 +254,7 @@
                                                         @"%@.\n\nPlease try again later.",
                                                         @"Message telling that buying credit failed\n"
                                                         @"[iOS alert message size]");
-            string = [[WebClient sharedClient] localizedStringForStatus:status];
+            string = [WebClient localizedStringForStatus:status];
             message = [NSString stringWithFormat:message, string];
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message

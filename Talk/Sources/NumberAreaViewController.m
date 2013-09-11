@@ -891,7 +891,7 @@ static const int    CountryCellTag   = 4321;
                                                                             @"Alert message telling that validating "
                                                                             @"name & address of user failed.\n"
                                                                             @"[iOS alert message size]");
-                                description = [[WebClient sharedClient] localizedStringForStatus:status];
+                                description = [WebClient localizedStringForStatus:status];
                                 message = [NSString stringWithFormat:message, description];
                                 [BlockAlertView showAlertViewWithTitle:title
                                                                message:message

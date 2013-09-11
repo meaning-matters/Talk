@@ -33,7 +33,7 @@ typedef enum
 
 + (WebClient*)sharedClient;
 
-- (NSString*)localizedStringForStatus:(WebClientStatus)status;
++ (NSString*)localizedStringForStatus:(WebClientStatus)status;
 
 
 #pragma mark - Request Methods

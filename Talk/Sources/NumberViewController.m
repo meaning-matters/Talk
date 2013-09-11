@@ -756,7 +756,7 @@ static const int    CountryCellTag   = 4321;
                                                             @"Please try again later.",
                                                             @"Alert message telling that a name must be supplied\n"
                                                             @"[iOS alert message size]");
-                message = [NSString stringWithFormat:message, [[WebClient sharedClient] localizedStringForStatus:status]];
+                message = [NSString stringWithFormat:message, [WebClient localizedStringForStatus:status]];
                 [BlockAlertView showAlertViewWithTitle:title
                                                message:message
                                             completion:^(BOOL cancelled, NSInteger buttonIndex)

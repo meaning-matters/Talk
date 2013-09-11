@@ -99,31 +99,68 @@ typedef enum
 
     refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings refreshFromServerString]];
-    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    [refreshControl addTarget:self action:@selector(refreshForwardings:) forControlEvents:UIControlEventValueChanged];
     [self.forwardingsTableView  addSubview:refreshControl];
 
     refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings refreshFromServerString]];
-    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    [refreshControl addTarget:self action:@selector(refreshRecordings:) forControlEvents:UIControlEventValueChanged];
     [self.recordingsTableView addSubview:refreshControl];
 }
 
 
-- (void)refresh:(id)sender
+- (void)refreshForwardings:(id)sender
 {
-    // Add delays to allow uninterrupted animations of UIRefreshControl
-    [Common dispatchAfterInterval:0.5 onMain:^
+    if ([Settings sharedSettings].hasAccount == YES)
     {
-        [self downloadForwardings:^(BOOL success)
+        // Add delays to allow uninterrupted animations of UIRefreshControl
+        [Common dispatchAfterInterval:0.5 onMain:^
         {
-            //###Copied from NumbersVC [self fetchData];
-
-            [Common dispatchAfterInterval:0.1 onMain:^
+            [self downloadForwardings:^(NSError* error)
             {
-                [sender endRefreshing];
+                [Common dispatchAfterInterval:0.1 onMain:^
+                {
+                    [sender endRefreshing];
+                }];
+
+                if (error != nil)
+                {
+                    NSString* title;
+                    NSString* message;
+
+                    title   = NSLocalizedStringWithDefaultValue(@"Numbers FailedLoadForwardingTitle", nil,
+                                                                [NSBundle mainBundle], @"Updating Forwardings Failed",
+                                                                @"Alert title: Forwardings could not be loaded.\n"
+                                                                @"[iOS alert title size].");
+                    message = NSLocalizedStringWithDefaultValue(@"BuyCredit FailedLoadNumbersMessage", nil,
+                                                                [NSBundle mainBundle],
+                                                                @"Something went wrong while loading your Forwardings: "
+                                                                @"%@.\n\nPlease try again later.",
+                                                                @"Message telling that loading number forwardings failed\n"
+                                                                @"[iOS alert message size]");
+                    message = [NSString stringWithFormat:message, [error localizedDescription]];
+                    [BlockAlertView showAlertViewWithTitle:title
+                                                   message:message
+                                                completion:nil
+                                         cancelButtonTitle:[Strings closeString]
+                                         otherButtonTitles:nil];
+                }
             }];
         }];
-    }];
+    }
+    else
+    {
+        [Common dispatchAfterInterval:1.0 onMain:^
+        {
+            [sender endRefreshing];
+        }];
+    }
+}
+
+
+- (void)refreshRecordings:(id)sender
+{
+
 }
 
 
@@ -529,14 +566,14 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
 #pragma mark - Server Connections
 
-- (void)downloadForwardings:(void (^)(BOOL success))completion
+- (void)downloadForwardings:(void (^)(NSError* error))completion
 {
     [[WebClient sharedClient] retrieveIvrList:^(WebClientStatus status, NSArray* array)
     {
         if (status == WebClientStatusOk)
         {
             // Delete IVRs that are no longer on the server.
-            NSError*        error;
+            __block NSError* error       = nil;
             NSFetchRequest* request      = [NSFetchRequest fetchRequestWithEntityName:@"Forwarding"];
             [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (uuid IN %@)", array]];
             NSArray*        deleteArray  = [managedObjectContext executeFetchRequest:request error:&error];
@@ -550,20 +587,20 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                 [managedObjectContext save:&error];//### needed this early
                                                     //### Error handling.
             }
-            else
+
+            if (error != nil)
             {
-                //### Error handling.
+                completion(error);
+                return;
             }
 
             __block int  count   = array.count;
-            __block BOOL success = YES;
             for (NSString* uuid in array)
             {
                 [[WebClient sharedClient] retrieveIvrForUuid:uuid
                                                         reply:^(WebClientStatus status, NSString* name, NSArray* statements)
                 {
-                    NSError* error;
-                    if (status == WebClientStatusOk)
+                    if (error == nil && status == WebClientStatusOk)
                     {
                         NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Forwarding"];
                         [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
@@ -583,30 +620,28 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                     }
                     else
                     {
-                        success = NO;
+                        error = [Common errorWithCode:status description:[WebClient localizedStringForStatus:status]];
                     }
 
                     if (--count == 0)
                     {
-                        if (success == YES)
+                        if (error == nil)
                         {
-                            error = nil;
                             [managedObjectContext save:&error];
-                            //### Handle error.
                         }
                         else
                         {
                             [managedObjectContext rollback];
                         }
-                          
-                        completion(success);
+
+                        completion(error);
                     }
                 }];
             }
         }
         else
         {
-            completion(NO);
+            completion([Common errorWithCode:status description:[WebClient localizedStringForStatus:status]]);
         }
     }];
 }

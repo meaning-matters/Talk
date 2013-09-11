@@ -107,3 +107,7 @@
 * Make sure all cancelAll WebClient methods are used when cancelling stuff in the UI or otherwise appropriately.
 
 * Wait for Store products to have loaded, because otherwise Currency is not available, and #1 fails.
+
+* Use NSError everywhere, instead of WebClientStatus values here and there.
+
+* Use capitalized Forwardings and Numbers, .... in texts?  currently use "Forwardings" & "numbers" -> inconsistent

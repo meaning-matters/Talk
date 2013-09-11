@@ -11,9 +11,18 @@
 #import "Common.h"
 
 
+typedef enum
+{
+    TableSectionTexts   = 1UL << 0,
+    TableSectionMessage = 1UL << 1,
+    TableSectionCall    = 1UL << 2,
+} TableSections;
+
+
 @interface HelpsViewController ()
 {
-    NSArray* helpsArray;
+    NSArray*      helpsArray;
+    TableSections sections;
 }
 
 @end
@@ -33,6 +42,10 @@
 
         NSData* data = [Common dataForResource:@"Helps" ofType:@"json"];
         helpsArray   = [Common objectWithJsonData:data];
+
+        sections |= TableSectionTexts;
+        sections |= TableSectionMessage;
+        sections |= TableSectionCall;
     }
 
     return self;
@@ -58,26 +71,43 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return helpsArray.count;
+    return [Common bitsSetCount:sections];
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    NSInteger numberOfRows = 0;
+
+    switch ([Common nthBitSet:section inValue:sections])
+    {
+        case TableSectionTexts:
+            numberOfRows = helpsArray.count;
+            break;
+
+        case TableSectionMessage:
+            numberOfRows = 1;
+            break;
+
+        case TableSectionCall:
+            numberOfRows = 1;
+            break;
+    }
+    
+    return numberOfRows;
 }
 
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
+    UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
 
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
-    cell.textLabel.text = [helpsArray[indexPath.section] allKeys][0];
+    cell.textLabel.text = [helpsArray[indexPath.row] allKeys][0];
     cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
@@ -90,7 +120,7 @@
 {
     HelpViewController* helpViewController;
 
-    helpViewController = [[HelpViewController alloc] initWithDictionary:helpsArray[indexPath.section]];
+    helpViewController = [[HelpViewController alloc] initWithDictionary:helpsArray[indexPath.row]];
     [self.navigationController pushViewController:helpViewController animated:YES];
 }
 

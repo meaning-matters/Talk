@@ -842,7 +842,7 @@
                                                                         @"purchase to credit: %@.",
                                                                         @"Alert message telling that a purchase of credit failed.\n"
                                                                         @"[iOS alert message size]");
-                        description = [[WebClient sharedClient] localizedStringForStatus:status];
+                        description = [WebClient localizedStringForStatus:status];
                         message = [NSString stringWithFormat:message, description];
                         [BlockAlertView showAlertViewWithTitle:title
                                                        message:message

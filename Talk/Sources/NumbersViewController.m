@@ -71,19 +71,55 @@
 
 - (void)refresh:(id)sender
 {
-    // Add delays to allow uninterrupted animations of UIRefreshControl
-    [Common dispatchAfterInterval:0.5 onMain:^
+    if ([Settings sharedSettings].hasAccount == YES)
     {
-        [self downloadNumbers:^(BOOL success)
+        // Add delays to allow uninterrupted animations of UIRefreshControl
+        [Common dispatchAfterInterval:0.5 onMain:^
         {
-            [Common dispatchAfterInterval:0.1 onMain:^
+            [self downloadNumbers:^(NSError* error)
             {
-                [sender endRefreshing];
+                [Common dispatchAfterInterval:0.1 onMain:^
+                {
+                    [sender endRefreshing];
+                }];
+
+                if (error == nil)
+                {
+                    error = [self fetchData];
+                }
+
+                if (error != nil)
+                {
+                    NSString* title;
+                    NSString* message;
+
+                    title   = NSLocalizedStringWithDefaultValue(@"Numbers FailedUpdateNumbersTitle", nil,
+                                                                [NSBundle mainBundle], @"Updating Numbers Failed",
+                                                                @"Alert title: Numbers could not be loaded.\n"
+                                                                @"[iOS alert title size].");
+                    message = NSLocalizedStringWithDefaultValue(@"BuyCredit FailedLoadNumbersMessage", nil,
+                                                                [NSBundle mainBundle],
+                                                                @"Something went wrong while loading your numbers: "
+                                                                @"%@.\n\nPlease try again later.",
+                                                                @"Message telling that loading phone numbers failed\n"
+                                                                @"[iOS alert message size]");
+                    message = [NSString stringWithFormat:message, [error localizedDescription]];
+                    [BlockAlertView showAlertViewWithTitle:title
+                                                   message:message
+                                                completion:nil
+                                         cancelButtonTitle:[Strings closeString]
+                                         otherButtonTitles:nil];
+                }
             }];
-             
-            [self fetchData];
         }];
-    }];
+    }
+    else
+    {
+        [Common dispatchAfterInterval:1.0 onMain:^
+        {
+            [sender endRefreshing];
+        }];
+    }
 }
 
 
@@ -144,7 +180,7 @@
 }
 
 
-- (void)fetchData
+- (NSError*)fetchData
 {
     NSFetchRequest* request         = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
     NSArray*        sortDescriptors = @[ [[NSSortDescriptor alloc] initWithKey:@"numberCountry" ascending:YES],
@@ -158,24 +194,22 @@
         numbersArray = results;
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
     }
-    else
-    {
-        //### Handle the error.
-    }
+
+    return error;
 }
 
 
-- (void)downloadNumbers:(void (^)(BOOL success))completion
+- (void)downloadNumbers:(void (^)(NSError* error))completion
 {
     [[WebClient sharedClient] retrieveNumberList:^(WebClientStatus status, NSArray* array)
     {
         if (status == WebClientStatusOk)
         {
             // Delete Numbers that are no longer on the server.
-            NSError*        error;
-            NSFetchRequest* request      = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
+            __block NSError* error        = nil;
+            NSFetchRequest*  request      = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
             [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (e164 IN %@)", array]];
-            NSArray*        deleteArray  = [managedObjectContext executeFetchRequest:request error:&error];
+            NSArray*         deleteArray  = [managedObjectContext executeFetchRequest:request error:&error];
             if (error == nil)
             {
                 for (NSManagedObject* object in deleteArray)
@@ -183,30 +217,28 @@
                     [managedObjectContext deleteObject:object];
                 }
 
-                [managedObjectContext save:&error];//### needed this early
-                //### Error handling.
-            }
-            else
-            {
-                //### Error handling.
+                [managedObjectContext save:&error];
             }
 
-            __block int  count   = array.count;
-            __block BOOL success = YES;
+            if (error != nil)
+            {
+                completion(error);
+                return;
+            }
+
+            __block int count = array.count;
             for (NSString* e164 in array)
             {
                 [[WebClient sharedClient] retrieveNumberForE164:e164
                                                    currencyCode:[Settings sharedSettings].currencyCode
                                                           reply:^(WebClientStatus status, NSDictionary* dictionary)
                 {                    
-                    NSError* error;
-                    if (status == WebClientStatusOk)
+                    if (error == nil && status == WebClientStatusOk)
                     {
                         NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
                         [request setPredicate:[NSPredicate predicateWithFormat:@"e164 == %@", dictionary[@"e164"]]];
 
                         NumberData* number = [[managedObjectContext executeFetchRequest:request error:&error] lastObject];
-                        //### Handle error.
                         if (number == nil)
                         {
                             number = (NumberData*)[NSEntityDescription insertNewObjectForEntityForName:@"Number"
@@ -236,30 +268,28 @@
                     }
                     else
                     {
-                        success = NO;
+                        error = [Common errorWithCode:status description:[WebClient localizedStringForStatus:status]];
                     }
 
                     if (--count == 0)
                     {
-                        if (success == YES)
+                        if (error == nil)
                         {
-                            error = nil;
                             [managedObjectContext save:&error];
-                            //### Handle error.
                         }
                         else
                         {
                             [managedObjectContext rollback];
                         }
 
-                        completion(success);
+                        completion(error);
                     }
                 }];
             }
         }
         else
         {
-            completion(NO);
+            completion([Common errorWithCode:status description:[WebClient localizedStringForStatus:status]]);
         }
     }];
 }
