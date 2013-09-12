@@ -167,13 +167,21 @@ static const int    TextFieldCellTag = 1111;
                                         statements:statementsArray
                                              reply:^(WebClientStatus status)
         {
-            NSLog(@"");
+            NSLog(@"%d", status);
         }];
 
         [self dismissViewControllerAnimated:YES completion:nil];
     }
     else
     {
+        [[WebClient sharedClient] updateIvrForUuid:self.forwarding.uuid
+                                              name:name
+                                        statements:statementsArray
+                                             reply:^(WebClientStatus status)
+        {
+            NSLog(@"%d", status);
+        }];
+
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

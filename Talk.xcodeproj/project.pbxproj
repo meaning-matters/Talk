@@ -2158,6 +2158,7 @@
 				48884A751615CE920005AA79 /* UIKit.framework in Frameworks */,
 				48884A771615CE920005AA79 /* Foundation.framework in Frameworks */,
 				48884A791615CE920005AA79 /* CoreGraphics.framework in Frameworks */,
+				488D7754178076E300099470 /* HockeySDK.framework in Frameworks */,
 				48338F8E161628BA0033F4C1 /* libcrypto.a in Frameworks */,
 				48338F90161628BA0033F4C1 /* libssl.a in Frameworks */,
 				48EE399916777EEC00823E09 /* libWebRTC.a in Frameworks */,
@@ -2180,7 +2181,6 @@
 				48A2621C16FE4F9700007638 /* libspeex-arm-apple-darwin9.a in Frameworks */,
 				48A2621E16FE4F9700007638 /* libsrtp-arm-apple-darwin9.a in Frameworks */,
 				48E4AB8C170DCFCF00A4B236 /* libOpenZRTP.a in Frameworks */,
-				488D7754178076E300099470 /* HockeySDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4874,7 +4874,8 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/External/HockeySDK-iOS/HockeySDK.embeddedframework\"",
+					"\\\"$(SRCROOT)/External/HockeySDK-iOS/HockeySDK.embeddedframework\\\"",
+					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/HockeySDK.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
@@ -4888,6 +4889,7 @@
 					External/WebRTC/GlueLogic,
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
@@ -4898,6 +4900,7 @@
 				PRODUCT_NAME = NumberBay;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos6.1;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -4911,7 +4914,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/External/HockeySDK-iOS/HockeySDK.embeddedframework\"",
+					"\\\"$(SRCROOT)/External/HockeySDK-iOS/HockeySDK.embeddedframework\\\"",
+					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/HockeySDK.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
@@ -4920,6 +4924,7 @@
 					External/WebRTC/GlueLogic,
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
@@ -4930,6 +4935,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = NumberBay;
 				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos6.1;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -5028,7 +5034,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/External/HockeySDK-iOS/HockeySDK.embeddedframework\"",
+					"\\\"$(SRCROOT)/External/HockeySDK-iOS/HockeySDK.embeddedframework\\\"",
+					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/HockeySDK.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
@@ -5037,6 +5044,7 @@
 					External/WebRTC/GlueLogic,
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
@@ -5047,6 +5055,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = NumberBay;
 				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos6.1;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
