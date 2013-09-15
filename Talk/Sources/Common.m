@@ -17,6 +17,7 @@
 #import "AppDelegate.h"
 #import "CountriesViewController.h"
 #import "ProvisioningViewController.h"
+#import "AFNetworkActivityIndicatorManager.h"
 
 
 @implementation Common
@@ -453,13 +454,13 @@
 
 + (void)enableNetworkActivityIndicator:(BOOL)enable
 {
-    static int  count;
-
-    @synchronized(self)
+    if (enable == YES)
     {
-        enable ? count++ : (count == 0 ? count : count--);
-
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = count > 0;
+        [[AFNetworkActivityIndicatorManager sharedManager] incrementActivityCount];
+    }
+    else
+    {
+        [[AFNetworkActivityIndicatorManager sharedManager] decrementActivityCount];
     }
 }
 

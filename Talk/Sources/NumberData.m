@@ -7,6 +7,7 @@
 //
 
 #import "NumberData.h"
+#import "WebClient.h"
 
 @implementation NumberData
 

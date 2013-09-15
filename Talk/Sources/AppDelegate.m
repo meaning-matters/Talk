@@ -22,6 +22,8 @@
 #import "PurchaseManager.h"
 #import "DataManager.h"
 #import "Common.h"
+#import "BlockAlertView.h"
+#import "Strings.h"
 
 
 @interface AppDelegate ()
@@ -359,7 +361,28 @@
 
 - (void)refresh
 {
-    [self.numbersViewController refresh:nil];
+    [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
+    {
+        NSString* title;
+        NSString* message;
+
+        title   = NSLocalizedStringWithDefaultValue(@"AppDelegate FailedUpdateNumbersTitle", nil,
+                                                    [NSBundle mainBundle], @"Updating Numbers Failed",
+                                                    @"Alert title: Numbers could not be loaded.\n"
+                                                    @"[iOS alert title size].");
+        message = NSLocalizedStringWithDefaultValue(@"BuyCredit FailedLoadNumbersMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"Something went wrong while loading your numbers: "
+                                                    @"%@.\n\nPlease try again later.",
+                                                    @"Message telling that loading phone numbers failed\n"
+                                                    @"[iOS alert message size]");
+        message = [NSString stringWithFormat:message, [error localizedDescription]];
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+    }];
 }
 
 @end

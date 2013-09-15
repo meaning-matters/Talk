@@ -10,7 +10,7 @@
 #import "NumberViewController.h"
 #import "BuyNumberViewController.h"
 #import "ProofImageViewController.h"
-#import "ForwardingsViewController.h"
+#import "NumberForwardingsViewController.h"
 #import "Common.h"
 #import "PhoneNumber.h"
 #import "CountryNames.h"
@@ -18,6 +18,7 @@
 #import "BlockAlertView.h"
 #import "WebClient.h"
 #import "NumberLabel.h"
+#import "ForwardingData.h"
 
 
 typedef enum
@@ -132,7 +133,7 @@ static const int    CountryCellTag   = 4321;
         contactAddressRows |= ContactAddressRowCountry;
         contactAddressRows |= (number.proofImage != nil) ? ContactAddressRowProofImage : 0;
 
-        nameIndexPath = [NSIndexPath indexPathForItem:0 inSection:[Common nOfBit:TableSectionName inValue:sections]];
+        nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:[Common nOfBit:TableSectionName inValue:sections]];
     }
 
     return self;
@@ -292,8 +293,8 @@ static const int    CountryCellTag   = 4321;
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    ProofImageViewController*   proofImageviewController;
-    ForwardingsViewController*  forwardingsViewController;
+    ProofImageViewController*        proofImageviewController;
+    NumberForwardingsViewController* forwardingsViewController;
 
     if ([self.tableView cellForRowAtIndexPath:indexPath].selectionStyle == UITableViewCellSelectionStyleNone)
     {
@@ -309,7 +310,7 @@ static const int    CountryCellTag   = 4321;
             break;
 
         case TableSectionForwarding:
-            forwardingsViewController = [[ForwardingsViewController alloc] init];
+            forwardingsViewController = [[NumberForwardingsViewController alloc] initWithNumber:number];
             [self.navigationController pushViewController:forwardingsViewController animated:YES];
             break;
 
@@ -461,7 +462,7 @@ static const int    CountryCellTag   = 4321;
     cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number Forwarding", nil,
                                                                   [NSBundle mainBundle], @"Forwarding",
                                                                   @"....");
-    cell.detailTextLabel.text = [Strings defaultString];
+    cell.detailTextLabel.text = (number.forwarding == nil) ? [Strings defaultString] : number.forwarding.name;
 
     cell.selectionStyle       = UITableViewCellSelectionStyleBlue;
     cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;

@@ -62,10 +62,7 @@ static const int    TextFieldCellTag = 1111;
 
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
-        self.title = NSLocalizedStringWithDefaultValue(@"ForwardingView ScreenTitle", nil,
-                                                       [NSBundle mainBundle], @"Forwarding",
-                                                       @"Title of app screen with details of a call forwarding\n"
-                                                       @"[1 line larger font].");
+        self.title = [Strings forwardingString];
 
         sections |= TableSectionName;
         sections |= TableSectionNumber;
@@ -137,37 +134,33 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)saveAction
 {
-    NSError* error;
-
     self.forwarding.name = name;
     statementsArray[0][@"call"][@"e164"][0] = phoneNumber.e164Format;
     self.forwarding.statements = [Common jsonStringWithObject:statementsArray];
 
-    if (managedObjectContext != nil)
-    {
-        if ([managedObjectContext save:&error] == NO ||
-            [[fetchedResultsController managedObjectContext] save:&error] == NO)
-        {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        }
-    }
-
-    if ([[fetchedResultsController managedObjectContext] save:&error] == NO)
-    {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-
     if (isNew)
     {
         NSString* uuid = [[NSUUID UUID] UUIDString];
+        self.forwarding.uuid = uuid;
         [[WebClient sharedClient] createIvrForUuid:uuid
                                               name:name
                                         statements:statementsArray
                                              reply:^(WebClientStatus status)
         {
-            NSLog(@"%d", status);
+            if (status == WebClientStatusOk)
+            {
+                NSError* error;
+
+                if ([managedObjectContext save:&error] == NO ||
+                    [[fetchedResultsController managedObjectContext] save:&error] == NO)
+                {
+                    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                }
+            }
+            else
+            {
+                NSLog(@"%d", status);
+            }
         }];
 
         [self dismissViewControllerAnimated:YES completion:nil];
@@ -179,7 +172,20 @@ static const int    TextFieldCellTag = 1111;
                                         statements:statementsArray
                                              reply:^(WebClientStatus status)
         {
-            NSLog(@"%d", status);
+            if (status == WebClientStatusOk)
+            {
+                NSError* error;
+
+                if ([[fetchedResultsController managedObjectContext] save:&error] == NO)
+                {
+                    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                }
+            }
+            else
+            {
+                //### Is rollback mogelijk?
+                NSLog(@"%d", status);
+            }
         }];
 
         [self.navigationController popViewControllerAnimated:YES];
@@ -492,7 +498,10 @@ static const int    TextFieldCellTag = 1111;
         phoneNumber.number = text;
     }
 
-    [self updateRightBarButtonItem];
+    if (textField == nameTextField)
+    {
+        [self updateRightBarButtonItem];
+    }
 
     return YES;
 }
@@ -502,6 +511,10 @@ static const int    TextFieldCellTag = 1111;
 - (void)textFieldDidChange:(UITextField*)textField
 {
     textField.text = phoneNumber.asYouTypeFormat;
+
+    statementsArray[0][@"call"][@"e164"][0] = (phoneNumber.e164Format == nil) ? @"0" : phoneNumber.e164Format;
+
+    [self updateRightBarButtonItem];
 }
 
 

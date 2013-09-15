@@ -148,6 +148,24 @@
 }
 
 
++ (NSString*)forwardingString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Forwarding", nil,
+                                             [NSBundle mainBundle], @"Forwarding",
+                                             @"Standard string to label a phone call forwarding\n"
+                                             @"[iOS standard size].");
+}
+
+
++ (NSString*)forwardingsString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Forwardings", nil,
+                                             [NSBundle mainBundle], @"Forwardings",
+                                             @"Standard string to label phone call forwardings\n"
+                                             @"[iOS standard size].");
+}
+
+
 + (NSString*)creditString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Number", nil,
@@ -355,10 +373,10 @@
 }
 
 
-+ (NSString*)refreshFromServerString
++ (NSString*)synchronizeWithServerString
 {
-    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings RefreshFromServer", nil,
-                                             [NSBundle mainBundle], @"Refresh from server",
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings SynchronizeWithServer", nil,
+                                             [NSBundle mainBundle], @"Synchronize with server",
                                              @"Standard label to indicate things being loaded from internet server\n"
                                              @"[No size contraint].");
 }

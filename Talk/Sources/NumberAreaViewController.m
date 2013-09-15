@@ -457,17 +457,17 @@ static const int    CountryCellTag   = 4321;
 
 - (void)initializeIndexPaths
 {
-    nameIndexPath       = [NSIndexPath indexPathForItem:0 inSection:1];
-    salutationIndexPath = [NSIndexPath indexPathForItem:0 inSection:2];
-    companyIndexPath    = [NSIndexPath indexPathForItem:1 inSection:2];
-    firstNameIndexPath  = [NSIndexPath indexPathForItem:2 inSection:2];
-    lastNameIndexPath   = [NSIndexPath indexPathForItem:3 inSection:2];
-    streetIndexPath     = [NSIndexPath indexPathForItem:0 inSection:3];
-    buildingIndexPath   = [NSIndexPath indexPathForItem:1 inSection:3];
-    zipCodeIndexPath    = [NSIndexPath indexPathForItem:2 inSection:3];
-    cityIndexPath       = [NSIndexPath indexPathForItem:3 inSection:3];
-    countryIndexPath    = [NSIndexPath indexPathForItem:4 inSection:3];
-    actionIndexPath     = [NSIndexPath indexPathForItem:0 inSection:4];
+    nameIndexPath       = [NSIndexPath indexPathForRow:0 inSection:1];
+    salutationIndexPath = [NSIndexPath indexPathForRow:0 inSection:2];
+    companyIndexPath    = [NSIndexPath indexPathForRow:1 inSection:2];
+    firstNameIndexPath  = [NSIndexPath indexPathForRow:2 inSection:2];
+    lastNameIndexPath   = [NSIndexPath indexPathForRow:3 inSection:2];
+    streetIndexPath     = [NSIndexPath indexPathForRow:0 inSection:3];
+    buildingIndexPath   = [NSIndexPath indexPathForRow:1 inSection:3];
+    zipCodeIndexPath    = [NSIndexPath indexPathForRow:2 inSection:3];
+    cityIndexPath       = [NSIndexPath indexPathForRow:3 inSection:3];
+    countryIndexPath    = [NSIndexPath indexPathForRow:4 inSection:3];
+    actionIndexPath     = [NSIndexPath indexPathForRow:0 inSection:4];
 }
 
 

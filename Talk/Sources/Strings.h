@@ -40,6 +40,10 @@
 
 + (NSString*)numbersString;
 
++ (NSString*)forwardingString;
+
++ (NSString*)forwardingsString;
+
 + (NSString*)creditString;
 
 + (NSString*)monthString;
@@ -82,6 +86,6 @@
 
 + (NSString*)defaultString;
 
-+ (NSString*)refreshFromServerString;
++ (NSString*)synchronizeWithServerString;
 
 @end

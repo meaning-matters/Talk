@@ -23,6 +23,7 @@ typedef enum
     WebClientStatusFailInvalidInfo,
     WebClientStatusFailDataTooLarge,
     WebClientStatusFailInsufficientCredit,
+    WebClientStatusFailIvrInUse,
     WebClientStatusFailNetworkProblem,  // Local.
     WebClientStatusFailInvalidResponse, // Local.
     WebClientStatusFailUnspecified,     // Local.

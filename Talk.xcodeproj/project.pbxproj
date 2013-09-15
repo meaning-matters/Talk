@@ -1060,6 +1060,10 @@
 		48CA5042172FC6C800CB1B7B /* ForwardingSequenceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CA5041172FC6C800CB1B7B /* ForwardingSequenceViewController.m */; };
 		48CA5043172FC6C800CB1B7B /* ForwardingSequenceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CA5041172FC6C800CB1B7B /* ForwardingSequenceViewController.m */; };
 		48CB0775163D76C300B07199 /* PhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CB0774163D76C300B07199 /* PhoneNumber.m */; };
+		48CB2C4417E6539000E19C3D /* Target.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4217E6539000E19C3D /* Target.png */; };
+		48CB2C4517E6539000E19C3D /* Target.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4217E6539000E19C3D /* Target.png */; };
+		48CB2C4617E6539000E19C3D /* Target@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4317E6539000E19C3D /* Target@2x.png */; };
+		48CB2C4717E6539000E19C3D /* Target@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4317E6539000E19C3D /* Target@2x.png */; };
 		48D0A6E61654D65200FA2D98 /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E51654D65200FA2D98 /* SipConfig.cfg */; };
 		48D0A6E71654D65200FA2D98 /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E51654D65200FA2D98 /* SipConfig.cfg */; };
 		48D0A6EA1654D66200FA2D98 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E81654D66200FA2D98 /* InfoPlist.strings */; };
@@ -1142,6 +1146,8 @@
 		48EDD23F1667A0B6007B89DA /* CallOptionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 48EDD23D1667A0B6007B89DA /* CallOptionButton.m */; };
 		48EE399916777EEC00823E09 /* libWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48EE399816777EEC00823E09 /* libWebRTC.a */; };
 		48EE399A16777EEC00823E09 /* libWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48EE399816777EEC00823E09 /* libWebRTC.a */; };
+		48F1B7E117E63819003A3933 /* NumberForwardingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F1B7E017E63819003A3933 /* NumberForwardingsViewController.m */; };
+		48F1B7E217E63819003A3933 /* NumberForwardingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F1B7E017E63819003A3933 /* NumberForwardingsViewController.m */; };
 		48F5D2ED16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
 		48F5D2EE16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
 		48FD99D5161855D30061191B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D4161855D30061191B /* CoreMedia.framework */; };
@@ -2062,6 +2068,8 @@
 		48CA5041172FC6C800CB1B7B /* ForwardingSequenceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForwardingSequenceViewController.m; sourceTree = "<group>"; };
 		48CB0773163D76C300B07199 /* PhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumber.h; sourceTree = "<group>"; };
 		48CB0774163D76C300B07199 /* PhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneNumber.m; sourceTree = "<group>"; };
+		48CB2C4217E6539000E19C3D /* Target.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Target.png; path = Talk/Images/Other/Target.png; sourceTree = SOURCE_ROOT; };
+		48CB2C4317E6539000E19C3D /* Target@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Target@2x.png"; path = "Talk/Images/Other/Target@2x.png"; sourceTree = SOURCE_ROOT; };
 		48D0A6E51654D65200FA2D98 /* SipConfig.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SipConfig.cfg; path = Resources/SipConfig.cfg; sourceTree = "<group>"; };
 		48D0A6E91654D66200FA2D98 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		48D0A6ED1654D66E00FA2D98 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = en; path = Resources/en.lproj/CountryNames.json; sourceTree = "<group>"; };
@@ -2121,6 +2129,8 @@
 		48EDD23C1667A0B6007B89DA /* CallOptionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallOptionButton.h; sourceTree = "<group>"; };
 		48EDD23D1667A0B6007B89DA /* CallOptionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallOptionButton.m; sourceTree = "<group>"; };
 		48EE399816777EEC00823E09 /* libWebRTC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWebRTC.a; path = External/WebRTC/libWebRTC.a; sourceTree = "<group>"; };
+		48F1B7DF17E63819003A3933 /* NumberForwardingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberForwardingsViewController.h; sourceTree = "<group>"; };
+		48F1B7E017E63819003A3933 /* NumberForwardingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberForwardingsViewController.m; sourceTree = "<group>"; };
 		48F5D2EB16B9A380001576E1 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
 		48F5D2EC16B9A380001576E1 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
 		48FD99D4161855D30061191B /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -2579,6 +2589,8 @@
 				483679EF1722F2CF001A02AF /* List@2x.png */,
 				483679F01722F2CF001A02AF /* Microphone.png */,
 				483679F11722F2CF001A02AF /* Microphone@2x.png */,
+				48CB2C4217E6539000E19C3D /* Target.png */,
+				48CB2C4317E6539000E19C3D /* Target@2x.png */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -3412,6 +3424,8 @@
 				484D936F17131E97006FA875 /* NumberAreaZipsViewController.m */,
 				48B5AAF016E6A58400BA4084 /* NumberCountriesViewController.h */,
 				48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */,
+				48F1B7DF17E63819003A3933 /* NumberForwardingsViewController.h */,
+				48F1B7E017E63819003A3933 /* NumberForwardingsViewController.m */,
 				488AD1E816E799C3004D3A2A /* NumberStatesViewController.h */,
 				488AD1E916E799C3004D3A2A /* NumberStatesViewController.m */,
 				48BC7F3A1702FDD1006671B5 /* NumberViewController.h */,
@@ -4129,6 +4143,7 @@
 				48AF454F1649788A00DFE3D8 /* SettingsTab@2x.png in Resources */,
 				48AF45511649788A00DFE3D8 /* ShareTab.png in Resources */,
 				48AF45531649788A00DFE3D8 /* ShareTab@2x.png in Resources */,
+				48CB2C4417E6539000E19C3D /* Target.png in Resources */,
 				48AF455B1649794B00DFE3D8 /* ShareView.xib in Resources */,
 				48AF455E1649799F00DFE3D8 /* ForwardingsView.xib in Resources */,
 				48AF4561164979CE00DFE3D8 /* RecentsView.xib in Resources */,
@@ -4196,6 +4211,7 @@
 				48367A2517247B2D001A02AF /* CuePlayBlack.png in Resources */,
 				48367A2717247B2D001A02AF /* CuePlayBlack@2x.png in Resources */,
 				48367A2917247B2D001A02AF /* CuePlayWhite.png in Resources */,
+				48CB2C4617E6539000E19C3D /* Target@2x.png in Resources */,
 				48367A2B17247B2D001A02AF /* CuePlayWhite@2x.png in Resources */,
 				48367A2D17247B2D001A02AF /* CueRecordRed.png in Resources */,
 				48367A2F17247B2D001A02AF /* CueRecordRed@2x.png in Resources */,
@@ -4363,6 +4379,7 @@
 				484A94A7171C5065009E22B9 /* NumberAreaActionCell.xib in Resources */,
 				483679F31722F2CF001A02AF /* List.png in Resources */,
 				483679F51722F2CF001A02AF /* List@2x.png in Resources */,
+				48CB2C4517E6539000E19C3D /* Target.png in Resources */,
 				483679F71722F2CF001A02AF /* Microphone.png in Resources */,
 				483679F91722F2CF001A02AF /* Microphone@2x.png in Resources */,
 				483679FC17246977001A02AF /* RecordingControlsCell.xib in Resources */,
@@ -4376,6 +4393,7 @@
 				48367A2417247B2D001A02AF /* CuePauseWhite@2x.png in Resources */,
 				48367A2617247B2D001A02AF /* CuePlayBlack.png in Resources */,
 				48367A2817247B2D001A02AF /* CuePlayBlack@2x.png in Resources */,
+				48CB2C4717E6539000E19C3D /* Target@2x.png in Resources */,
 				48367A2A17247B2D001A02AF /* CuePlayWhite.png in Resources */,
 				48367A2C17247B2D001A02AF /* CuePlayWhite@2x.png in Resources */,
 				48367A2E17247B2D001A02AF /* CueRecordRed.png in Resources */,
@@ -4524,6 +4542,7 @@
 				48DD72C5169F56F000CD7080 /* AFImageRequestOperation.m in Sources */,
 				48DD72C7169F56F000CD7080 /* AFJSONRequestOperation.m in Sources */,
 				48DD72C9169F56F000CD7080 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				48F1B7E117E63819003A3933 /* NumberForwardingsViewController.m in Sources */,
 				48DD72CB169F56F000CD7080 /* AFPropertyListRequestOperation.m in Sources */,
 				48DD72CD169F56F000CD7080 /* AFURLConnectionOperation.m in Sources */,
 				48DD72CF169F56F000CD7080 /* AFXMLRequestOperation.m in Sources */,
@@ -4653,6 +4672,7 @@
 				48DD72C6169F56F000CD7080 /* AFImageRequestOperation.m in Sources */,
 				48DD72C8169F56F000CD7080 /* AFJSONRequestOperation.m in Sources */,
 				48DD72CA169F56F000CD7080 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				48F1B7E217E63819003A3933 /* NumberForwardingsViewController.m in Sources */,
 				48DD72CC169F56F000CD7080 /* AFPropertyListRequestOperation.m in Sources */,
 				48DD72CE169F56F000CD7080 /* AFURLConnectionOperation.m in Sources */,
 				48DD72D0169F56F000CD7080 /* AFXMLRequestOperation.m in Sources */,

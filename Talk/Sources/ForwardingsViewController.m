@@ -51,7 +51,7 @@ typedef enum
 {
     if (self = [super initWithNibName:@"ForwardingsView" bundle:nil])
     {
-        self.title = NSLocalizedString(@"Forwardings", @"Forwardings tab title");
+        self.title = [Strings forwardingsString];
         self.tabBarItem.image = [UIImage imageNamed:@"ForwardingsTab.png"];
 
         dataManager          = [DataManager sharedManager];
@@ -90,20 +90,41 @@ typedef enum
     self.navigationItem.titleView = selectionSegmentedControl;
 #endif
 
-    fetchedForwardingsController = [self fetchResultsForEntityName:@"Forwarding" withSortKey:@"name"];
+    NSError* error;
+    fetchedForwardingsController = [[DataManager sharedManager] fetchResultsForEntityName:@"Forwarding"
+                                                                              withSortKey:@"name"
+                                                                                    error:&error];
+    if (fetchedForwardingsController != nil)
+    {
+        fetchedForwardingsController.delegate = self;
+    }
+    else
+    {
+        NSLog(@"//### Error: %@", [error localizedDescription]);
+    }
 #if FULL_FORWARDINGS
-    fetchedRecordingsController  = [self fetchResultsForEntityName:@"Recording"  withSortKey:@"name"];
+    fetchedRecordingsController  = [[DataManager sharedManager] fetchResultsForEntityName:@"Recording"
+                                                                              withSortKey:@"name"
+                                                                                    error:&error];
+    if (fetchedRecordingsController != nil)
+    {
+        fetchedRecordingsController.delegate = self;
+    }
+    else
+    {
+        NSLog(@"//### Error: %@", [error localizedDescription]);
+    }
 #endif
 
     UIRefreshControl* refreshControl;
 
     refreshControl = [[UIRefreshControl alloc] init];
-    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings refreshFromServerString]];
+    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings synchronizeWithServerString]];
     [refreshControl addTarget:self action:@selector(refreshForwardings:) forControlEvents:UIControlEventValueChanged];
     [self.forwardingsTableView  addSubview:refreshControl];
 
     refreshControl = [[UIRefreshControl alloc] init];
-    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings refreshFromServerString]];
+    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings synchronizeWithServerString]];
     [refreshControl addTarget:self action:@selector(refreshRecordings:) forControlEvents:UIControlEventValueChanged];
     [self.recordingsTableView addSubview:refreshControl];
 }
@@ -116,34 +137,16 @@ typedef enum
         // Add delays to allow uninterrupted animations of UIRefreshControl
         [Common dispatchAfterInterval:0.5 onMain:^
         {
-            [self downloadForwardings:^(NSError* error)
+            [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
             {
                 [Common dispatchAfterInterval:0.1 onMain:^
                 {
                     [sender endRefreshing];
                 }];
 
-                if (error != nil)
+                if (error == nil)
                 {
-                    NSString* title;
-                    NSString* message;
-
-                    title   = NSLocalizedStringWithDefaultValue(@"Numbers FailedLoadForwardingTitle", nil,
-                                                                [NSBundle mainBundle], @"Updating Forwardings Failed",
-                                                                @"Alert title: Forwardings could not be loaded.\n"
-                                                                @"[iOS alert title size].");
-                    message = NSLocalizedStringWithDefaultValue(@"BuyCredit FailedLoadNumbersMessage", nil,
-                                                                [NSBundle mainBundle],
-                                                                @"Something went wrong while loading your Forwardings: "
-                                                                @"%@.\n\nPlease try again later.",
-                                                                @"Message telling that loading number forwardings failed\n"
-                                                                @"[iOS alert message size]");
-                    message = [NSString stringWithFormat:message, [error localizedDescription]];
-                    [BlockAlertView showAlertViewWithTitle:title
-                                                   message:message
-                                                completion:nil
-                                         cancelButtonTitle:[Strings closeString]
-                                         otherButtonTitles:nil];
+                    //### Need some fetch data here like in NumbersVC?
                 }
             }];
         }];
@@ -181,39 +184,11 @@ typedef enum
 }
 
 
-- (NSFetchedResultsController*)fetchResultsForEntityName:(NSString*)entityName withSortKey:(NSString*)key
-{
-    NSFetchedResultsController* resultsController;
-    NSFetchRequest*             fetchRequest;
-    NSSortDescriptor*           nameDescriptor;
-    NSArray*                    sortDescriptors;
-
-    fetchRequest    = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    nameDescriptor  = [[NSSortDescriptor alloc] initWithKey:key ascending:YES];
-    sortDescriptors = [[NSArray alloc] initWithObjects:nameDescriptor, nil];
-    [fetchRequest setSortDescriptors:sortDescriptors];
-
-    resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                            managedObjectContext:dataManager.managedObjectContext
-                                                              sectionNameKeyPath:nil
-                                                                       cacheName:nil];
-    resultsController.delegate = self;
-
-    NSError*    error = nil;
-    if ([resultsController performFetch:&error] == NO)
-    {
-        [self handleError:error];
-    }
-
-    return resultsController;
-}
-
-
 #pragma mark - Table View Delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return [[[self resultsControllerForTableView:tableView] sections] count];
+    return 1;
 }
 
 
@@ -316,7 +291,8 @@ typedef enum
     }
     else
     {
-        
+        //###
+        return NO;
     }
 }
 
@@ -373,7 +349,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController*)controller
 {
-    UITableView*    tableView = [self tableViewForResultsController:controller];
+    UITableView* tableView = [self tableViewForResultsController:controller];
 
     [tableView beginUpdates];
 }
@@ -561,89 +537,6 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     viewController = [[RecordingViewController alloc] initWithFetchedResultsController:fetchedRecordingsController
                                                                              recording:nil];
     [self.navigationController pushViewController:viewController animated:YES];
-}
-
-
-#pragma mark - Server Connections
-
-- (void)downloadForwardings:(void (^)(NSError* error))completion
-{
-    [[WebClient sharedClient] retrieveIvrList:^(WebClientStatus status, NSArray* array)
-    {
-        if (status == WebClientStatusOk)
-        {
-            // Delete IVRs that are no longer on the server.
-            __block NSError* error       = nil;
-            NSFetchRequest* request      = [NSFetchRequest fetchRequestWithEntityName:@"Forwarding"];
-            [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (uuid IN %@)", array]];
-            NSArray*        deleteArray  = [managedObjectContext executeFetchRequest:request error:&error];
-            if (error == nil)
-            {
-                for (NSManagedObject* object in deleteArray)
-                {
-                    [managedObjectContext deleteObject:object];
-                }
-
-                [managedObjectContext save:&error];//### needed this early
-                                                    //### Error handling.
-            }
-
-            if (error != nil)
-            {
-                completion(error);
-                return;
-            }
-
-            __block int  count   = array.count;
-            for (NSString* uuid in array)
-            {
-                [[WebClient sharedClient] retrieveIvrForUuid:uuid
-                                                        reply:^(WebClientStatus status, NSString* name, NSArray* statements)
-                {
-                    if (error == nil && status == WebClientStatusOk)
-                    {
-                        NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Forwarding"];
-                        [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
-
-                        ForwardingData* forwarding;
-                        forwarding = [[managedObjectContext executeFetchRequest:request error:&error] lastObject];
-                        //### Handle error.
-                        if (forwarding == nil)
-                        {
-                            forwarding = (ForwardingData*)[NSEntityDescription insertNewObjectForEntityForName:@"Forwarding"
-                                                                                        inManagedObjectContext:managedObjectContext];
-                        }
-
-                        forwarding.uuid = uuid;
-                        forwarding.name = name;
-                        forwarding.statements = [Common jsonStringWithObject:statements];
-                    }
-                    else
-                    {
-                        error = [Common errorWithCode:status description:[WebClient localizedStringForStatus:status]];
-                    }
-
-                    if (--count == 0)
-                    {
-                        if (error == nil)
-                        {
-                            [managedObjectContext save:&error];
-                        }
-                        else
-                        {
-                            [managedObjectContext rollback];
-                        }
-
-                        completion(error);
-                    }
-                }];
-            }
-        }
-        else
-        {
-            completion([Common errorWithCode:status description:[WebClient localizedStringForStatus:status]]);
-        }
-    }];
 }
 
 

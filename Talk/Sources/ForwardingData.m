@@ -62,6 +62,31 @@
                 [managedObjectContext deleteObject:self];
                 completion ? completion(YES) : 0;
             }
+            else if (status == WebClientStatusFailIvrInUse)
+            {
+                NSString*   title;
+                NSString*   message;
+
+                title   = NSLocalizedStringWithDefaultValue(@"Forwarding InUseTitle", nil,
+                                                            [NSBundle mainBundle], @"Forwarding Not Deleted",
+                                                            @"Alert title telling that something could not be deleted.\n"
+                                                            @"[iOS alert title size].");
+                message = NSLocalizedStringWithDefaultValue(@"Forwarding InUseMessage", nil,
+                                                            [NSBundle mainBundle],
+                                                            @"Deleting this Forwarding failed: %@."
+                                                            @"\n\nChoose another Forwarding for each number that uses this one.",
+                                                            @"Alert message telling that an online service is not available.\n"
+                                                            @"[iOS alert message size]");
+                message = [NSString stringWithFormat:message, [WebClient localizedStringForStatus:status]];
+                [BlockAlertView showAlertViewWithTitle:title
+                                               message:message
+                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                 {
+                     completion ? completion(NO) : 0;
+                 }
+                                     cancelButtonTitle:[Strings cancelString]
+                                     otherButtonTitles:nil];
+            }
             else
             {
                 NSString*   title;

@@ -11,6 +11,7 @@
 
 #import "WebClient.h"
 #import "AFJSONRequestOperation.h"
+#import "AFNetworkActivityIndicatorManager.h"
 #import "Settings.h"
 #import "Common.h"
 #import "PurchaseManager.h"
@@ -46,7 +47,10 @@ static NSDictionary* statuses;
                       @"FAIL_NO_STATES_FOR_COUNTRY":  @(WebClientStatusFailNoStatesForCountry),
                       @"FAIL_INVALID_INFO":           @(WebClientStatusFailInvalidInfo),
                       @"FAIL_DATA_TOO_LARGE":         @(WebClientStatusFailDataTooLarge),
-                      @"FAIL_INSUFFICIENT_CREDIT":    @(WebClientStatusFailInsufficientCredit) };
+                      @"FAIL_INSUFFICIENT_CREDIT":    @(WebClientStatusFailInsufficientCredit),
+                      @"FAIL_IVR_IN_USE" :            @(WebClientStatusFailIvrInUse) };
+
+        [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     });
 
     return sharedInstance;
@@ -75,8 +79,6 @@ static NSDictionary* statuses;
       parameters:(NSDictionary*)parameters
            reply:(void (^)(WebClientStatus status, id content))reply
 {
-    [Common enableNetworkActivityIndicator:YES];
-
     [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
                                     password:[Settings sharedSettings].webPassword];
 
@@ -84,8 +86,6 @@ static NSDictionary* statuses;
         parameters:parameters
            success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
-        [Common enableNetworkActivityIndicator:NO];
-
         NSDictionary* reponseDictionary = responseObject;
         if (responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
         {
@@ -98,7 +98,6 @@ static NSDictionary* statuses;
     }
            failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
-        [Common enableNetworkActivityIndicator:NO];
         if (error != nil && error.code != NSURLErrorCancelled)
         {
             reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
@@ -111,8 +110,6 @@ static NSDictionary* statuses;
      parameters:(NSDictionary*)parameters
           reply:(void (^)(WebClientStatus status, id content))reply
 {
-    [Common enableNetworkActivityIndicator:YES];
-
     [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
                                     password:[Settings sharedSettings].webPassword];
 
@@ -120,8 +117,6 @@ static NSDictionary* statuses;
        parameters:parameters
           success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
-        [Common enableNetworkActivityIndicator:NO];
-
         NSDictionary* reponseDictionary = responseObject;
         if (responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
         {
@@ -134,7 +129,6 @@ static NSDictionary* statuses;
     }
           failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
-        [Common enableNetworkActivityIndicator:NO];
         if (error != nil && error.code != NSURLErrorCancelled)
         {
             reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
@@ -147,8 +141,6 @@ static NSDictionary* statuses;
      parameters:(NSDictionary*)parameters
           reply:(void (^)(WebClientStatus status, id content))reply
 {
-    [Common enableNetworkActivityIndicator:YES];
-
     [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
                                     password:[Settings sharedSettings].webPassword];
 
@@ -156,8 +148,6 @@ static NSDictionary* statuses;
        parameters:parameters
           success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
-        [Common enableNetworkActivityIndicator:NO];
-
         NSDictionary* reponseDictionary = responseObject;
         if (responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
         {
@@ -170,7 +160,6 @@ static NSDictionary* statuses;
     }
           failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
-        [Common enableNetworkActivityIndicator:NO];
         if (error != nil && error.code != NSURLErrorCancelled)
         {
             reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
@@ -183,8 +172,6 @@ static NSDictionary* statuses;
         parameters:(NSDictionary*)parameters
              reply:(void (^)(WebClientStatus status, id content))reply
 {
-    [Common enableNetworkActivityIndicator:YES];
-
     [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
                                     password:[Settings sharedSettings].webPassword];
 
@@ -192,8 +179,6 @@ static NSDictionary* statuses;
           parameters:parameters
              success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
-        [Common enableNetworkActivityIndicator:NO];
-
         NSDictionary* reponseDictionary = responseObject;
         if (responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
         {
@@ -206,7 +191,6 @@ static NSDictionary* statuses;
     }
              failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
-        [Common enableNetworkActivityIndicator:NO];
         if (error != nil && error.code != NSURLErrorCancelled)
         {
             reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
@@ -293,6 +277,13 @@ static NSDictionary* statuses;
                                                        @"[].");
             break;
 
+        case WebClientStatusFailIvrInUse:
+            string = NSLocalizedStringWithDefaultValue(@"webClient FailIvrInUse", nil, [NSBundle mainBundle],
+                                                       @"This Forwarding is still being used",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
         case WebClientStatusFailNetworkProblem:
             string = NSLocalizedStringWithDefaultValue(@"webClient FailNetworkProblem", nil, [NSBundle mainBundle],
                                                        @"There's a problem with the network",
@@ -325,15 +316,12 @@ static NSDictionary* statuses;
 - (void)retrieveWebAccount:(NSDictionary*)parameters
                      reply:(void (^)(WebClientStatus status, id content))reply
 {
-    [Common enableNetworkActivityIndicator:YES];
-
     NSString* currencyCode = [Settings sharedSettings].currencyCode;
     [self postPath:[NSString stringWithFormat:@"users?currencyCode=%@", currencyCode]
         parameters:parameters
            success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
         NSLog(@"postPath request: %@", operation.request.URL);
-        [Common enableNetworkActivityIndicator:NO];
 
         NSDictionary* reponseDictionary = responseObject;
         if (responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
@@ -347,7 +335,6 @@ static NSDictionary* statuses;
     }
            failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
-        [Common enableNetworkActivityIndicator:NO];
         if (error != nil && error.code != NSURLErrorCancelled)
         {
             reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
@@ -679,7 +666,7 @@ static NSDictionary* statuses;
     {
         if (status == WebClientStatusOk)
         {
-            reply(status, content[@"uuid"]);
+            reply(status, ([content[@"uuid"] length] > 0) ? content[@"uuid"] : nil);
         }
         else
         {

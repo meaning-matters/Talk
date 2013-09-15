@@ -61,7 +61,7 @@
                                                                                            action:@selector(addAction)];
 
     UIRefreshControl* refreshControl = [[UIRefreshControl alloc] init];
-    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings refreshFromServerString]];
+    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings synchronizeWithServerString]];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:refreshControl];
 
@@ -76,7 +76,7 @@
         // Add delays to allow uninterrupted animations of UIRefreshControl
         [Common dispatchAfterInterval:0.5 onMain:^
         {
-            [self downloadNumbers:^(NSError* error)
+            [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
             {
                 [Common dispatchAfterInterval:0.1 onMain:^
                 {
@@ -86,29 +86,6 @@
                 if (error == nil)
                 {
                     error = [self fetchData];
-                }
-
-                if (error != nil)
-                {
-                    NSString* title;
-                    NSString* message;
-
-                    title   = NSLocalizedStringWithDefaultValue(@"Numbers FailedUpdateNumbersTitle", nil,
-                                                                [NSBundle mainBundle], @"Updating Numbers Failed",
-                                                                @"Alert title: Numbers could not be loaded.\n"
-                                                                @"[iOS alert title size].");
-                    message = NSLocalizedStringWithDefaultValue(@"BuyCredit FailedLoadNumbersMessage", nil,
-                                                                [NSBundle mainBundle],
-                                                                @"Something went wrong while loading your numbers: "
-                                                                @"%@.\n\nPlease try again later.",
-                                                                @"Message telling that loading phone numbers failed\n"
-                                                                @"[iOS alert message size]");
-                    message = [NSString stringWithFormat:message, [error localizedDescription]];
-                    [BlockAlertView showAlertViewWithTitle:title
-                                                   message:message
-                                                completion:nil
-                                         cancelButtonTitle:[Strings closeString]
-                                         otherButtonTitles:nil];
                 }
             }];
         }];
@@ -196,102 +173,6 @@
     }
 
     return error;
-}
-
-
-- (void)downloadNumbers:(void (^)(NSError* error))completion
-{
-    [[WebClient sharedClient] retrieveNumberList:^(WebClientStatus status, NSArray* array)
-    {
-        if (status == WebClientStatusOk)
-        {
-            // Delete Numbers that are no longer on the server.
-            __block NSError* error        = nil;
-            NSFetchRequest*  request      = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
-            [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (e164 IN %@)", array]];
-            NSArray*         deleteArray  = [managedObjectContext executeFetchRequest:request error:&error];
-            if (error == nil)
-            {
-                for (NSManagedObject* object in deleteArray)
-                {
-                    [managedObjectContext deleteObject:object];
-                }
-
-                [managedObjectContext save:&error];
-            }
-
-            if (error != nil)
-            {
-                completion(error);
-                return;
-            }
-
-            __block int count = array.count;
-            for (NSString* e164 in array)
-            {
-                [[WebClient sharedClient] retrieveNumberForE164:e164
-                                                   currencyCode:[Settings sharedSettings].currencyCode
-                                                          reply:^(WebClientStatus status, NSDictionary* dictionary)
-                {                    
-                    if (error == nil && status == WebClientStatusOk)
-                    {
-                        NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
-                        [request setPredicate:[NSPredicate predicateWithFormat:@"e164 == %@", dictionary[@"e164"]]];
-
-                        NumberData* number = [[managedObjectContext executeFetchRequest:request error:&error] lastObject];
-                        if (number == nil)
-                        {
-                            number = (NumberData*)[NSEntityDescription insertNewObjectForEntityForName:@"Number"
-                                                                                inManagedObjectContext:managedObjectContext];
-                        }
-
-                        number.name           = dictionary[@"name"];
-                        number.e164           = dictionary[@"e164"];
-                        number.numberType     = dictionary[@"numberType"];
-                        number.areaCode       = dictionary[@"areaCode"];
-                        number.areaName       = dictionary[@"areaName"];
-                        number.numberCountry  = dictionary[@"isoCountryCode"];
-                        [number setPurchaseDateWithString:dictionary[@"purchaseDateTime"]];
-                        [number setRenewalDateWithString:dictionary[@"renewalDateTime"]];
-                        number.salutation     = dictionary[@"info"][@"salutation"];
-                        number.firstName      = dictionary[@"info"][@"firstName"];
-                        number.lastName       = dictionary[@"info"][@"lastName"];
-                        number.company        = dictionary[@"info"][@"company"];
-                        number.street         = dictionary[@"info"][@"street"];
-                        number.building       = dictionary[@"info"][@"building"];
-                        number.city           = dictionary[@"info"][@"city"];
-                        number.zipCode        = dictionary[@"info"][@"zipCode"];
-                        number.stateName      = dictionary[@"info"][@"stateName"];
-                        number.stateCode      = dictionary[@"info"][@"stateCode"];
-                        number.addressCountry = dictionary[@"info"][@"isoCountryCode"];
-                        number.proofImage     = [Base64 decode:dictionary[@"info"][@"proofImage"]];
-                    }
-                    else
-                    {
-                        error = [Common errorWithCode:status description:[WebClient localizedStringForStatus:status]];
-                    }
-
-                    if (--count == 0)
-                    {
-                        if (error == nil)
-                        {
-                            [managedObjectContext save:&error];
-                        }
-                        else
-                        {
-                            [managedObjectContext rollback];
-                        }
-
-                        completion(error);
-                    }
-                }];
-            }
-        }
-        else
-        {
-            completion([Common errorWithCode:status description:[WebClient localizedStringForStatus:status]]);
-        }
-    }];
 }
 
 
