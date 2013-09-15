@@ -111,7 +111,8 @@
     UITextField* textField             = [alert textFieldAtIndex:0];
     textField.textAlignment            = NSTextAlignmentCenter;
     textField.autocorrectionType       = UITextAutocorrectionTypeNo;
-    textField.text                     = [phoneNumber asYouTypeFormat];
+    textField.text                     = [phoneNumber asYouTypeFormat];         // Note, can't use this to init a string; can be nil.
+    textField.font                     = [UIFont boldSystemFontOfSize:17.0f];   //### Does not work.
     [textField setKeyboardType:UIKeyboardTypePhonePad];
 
     alert->_phoneNumberCompletion      = completion;
