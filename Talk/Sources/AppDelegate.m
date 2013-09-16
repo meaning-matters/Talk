@@ -184,17 +184,20 @@
 
 - (void)addViewControllersToTabBar
 {
-    NSArray* viewControllerClasses = @[ NSStringFromClass([NumbersViewController     class]),
-                                        NSStringFromClass([RecentsViewController     class]),
-                                        //NSStringFromClass([GroupsViewController      class]),
-                                        NSStringFromClass([DialerViewController      class]),
-                                        NSStringFromClass([ForwardingsViewController class]),
-                                        NSStringFromClass([CreditViewController      class]),
-                                        NSStringFromClass([HelpsViewController       class]),
-                                        NSStringFromClass([AboutViewController       class]),
-                                        NSStringFromClass([SettingsViewController    class]),
-                                        NSStringFromClass([ShareViewController       class]),
-                                        NSStringFromClass([NBPeoplePickerNavigationController class])];
+    NSArray* viewControllerClasses =
+    @[
+        NSStringFromClass([NumbersViewController              class]),
+        NSStringFromClass([RecentsViewController              class]),
+        NSStringFromClass([NBPeoplePickerNavigationController class]),
+        //NSStringFromClass([GroupsViewController               class]),
+        NSStringFromClass([DialerViewController               class]),
+        NSStringFromClass([ForwardingsViewController          class]),
+        NSStringFromClass([CreditViewController               class]),
+        NSStringFromClass([HelpsViewController                class]),
+        NSStringFromClass([AboutViewController                class]),
+        NSStringFromClass([SettingsViewController             class]),
+        NSStringFromClass([ShareViewController                class]),
+    ];
 
     NSSet*  preferredSet = [NSSet setWithArray:[Settings sharedSettings].tabBarViewControllerClasses];
     NSSet*  defaultSet   = [NSSet setWithArray:viewControllerClasses];

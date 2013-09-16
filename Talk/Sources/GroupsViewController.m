@@ -8,7 +8,7 @@
 
 //### Have a look at this (http://stackoverflow.com/questions/9859639/ios-bridge-vs-bridge-transfer):
 /*
--(void)getData{
+- (void)getData{
     ABAddressBookRef addressBook = ABAddressBookCreate();
     NSArray *allPeople = (__bridge_transfer NSArray*)ABAddressBookCopyArrayOfAllPeople(addressBook);
 

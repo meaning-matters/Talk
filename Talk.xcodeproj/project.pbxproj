@@ -1064,6 +1064,10 @@
 		48CB2C4517E6539000E19C3D /* Target.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4217E6539000E19C3D /* Target.png */; };
 		48CB2C4617E6539000E19C3D /* Target@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4317E6539000E19C3D /* Target@2x.png */; };
 		48CB2C4717E6539000E19C3D /* Target@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4317E6539000E19C3D /* Target@2x.png */; };
+		48CB2C4A17E6DB7700E19C3D /* ContactsTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4817E6DB7700E19C3D /* ContactsTab.png */; };
+		48CB2C4B17E6DB7700E19C3D /* ContactsTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4817E6DB7700E19C3D /* ContactsTab.png */; };
+		48CB2C4C17E6DB7700E19C3D /* ContactsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4917E6DB7700E19C3D /* ContactsTab@2x.png */; };
+		48CB2C4D17E6DB7700E19C3D /* ContactsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4917E6DB7700E19C3D /* ContactsTab@2x.png */; };
 		48D0A6E61654D65200FA2D98 /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E51654D65200FA2D98 /* SipConfig.cfg */; };
 		48D0A6E71654D65200FA2D98 /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E51654D65200FA2D98 /* SipConfig.cfg */; };
 		48D0A6EA1654D66200FA2D98 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E81654D66200FA2D98 /* InfoPlist.strings */; };
@@ -2070,6 +2074,8 @@
 		48CB0774163D76C300B07199 /* PhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneNumber.m; sourceTree = "<group>"; };
 		48CB2C4217E6539000E19C3D /* Target.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Target.png; path = Talk/Images/Other/Target.png; sourceTree = SOURCE_ROOT; };
 		48CB2C4317E6539000E19C3D /* Target@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Target@2x.png"; path = "Talk/Images/Other/Target@2x.png"; sourceTree = SOURCE_ROOT; };
+		48CB2C4817E6DB7700E19C3D /* ContactsTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ContactsTab.png; sourceTree = "<group>"; };
+		48CB2C4917E6DB7700E19C3D /* ContactsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ContactsTab@2x.png"; sourceTree = "<group>"; };
 		48D0A6E51654D65200FA2D98 /* SipConfig.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SipConfig.cfg; path = Resources/SipConfig.cfg; sourceTree = "<group>"; };
 		48D0A6E91654D66200FA2D98 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		48D0A6ED1654D66E00FA2D98 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = en; path = Resources/en.lproj/CountryNames.json; sourceTree = "<group>"; };
@@ -2520,6 +2526,8 @@
 			children = (
 				48AF45191649788A00DFE3D8 /* AboutTab.png */,
 				48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */,
+				48CB2C4817E6DB7700E19C3D /* ContactsTab.png */,
+				48CB2C4917E6DB7700E19C3D /* ContactsTab@2x.png */,
 				48AF451B1649788A00DFE3D8 /* CreditTab.png */,
 				48AF451C1649788A00DFE3D8 /* CreditTab@2x.png */,
 				48AF451D1649788A00DFE3D8 /* DialerTab.png */,
@@ -4037,6 +4045,7 @@
 				485F6BD41637270100D61365 /* SO@2x.png in Resources */,
 				485F6BD51637270100D61365 /* SR.png in Resources */,
 				485F6BD61637270100D61365 /* SR@2x.png in Resources */,
+				48CB2C4C17E6DB7700E19C3D /* ContactsTab@2x.png in Resources */,
 				485F6BD71637270100D61365 /* SS.png in Resources */,
 				485F6BD81637270100D61365 /* SS@2x.png in Resources */,
 				485F6BD91637270100D61365 /* ST.png in Resources */,
@@ -4225,6 +4234,7 @@
 				48367A3F17247B2D001A02AF /* CueStopBlack@2x.png in Resources */,
 				48367A4117247B2D001A02AF /* CueStopWhite.png in Resources */,
 				48367A4317247B2D001A02AF /* CueStopWhite@2x.png in Resources */,
+				48CB2C4A17E6DB7700E19C3D /* ContactsTab.png in Resources */,
 				48CA5034172AEEB100CB1B7B /* CueRecordBlack.png in Resources */,
 				48CA5036172AEEB100CB1B7B /* CueRecordBlack@2x.png in Resources */,
 				4846D8A3174170CF00C40713 /* Branding.png in Resources */,
@@ -4342,6 +4352,7 @@
 				48EDD20C1667652A007B89DA /* AddCall.png in Resources */,
 				48EDD20E1667652A007B89DA /* AddCall@2x.png in Resources */,
 				48EDD2101667652A007B89DA /* ColorCurves.png in Resources */,
+				48CB2C4D17E6DB7700E19C3D /* ContactsTab@2x.png in Resources */,
 				48EDD2121667652A007B89DA /* GroupsCall.png in Resources */,
 				48EDD2141667652A007B89DA /* GroupsCall@2x.png in Resources */,
 				48EDD2161667652A007B89DA /* HoldCall.png in Resources */,
@@ -4355,6 +4366,7 @@
 				48EDD228166770B8007B89DA /* CallOptionsView.xib in Resources */,
 				48EDD22B166771B8007B89DA /* CallKeypadView.xib in Resources */,
 				4888D51B166D1AEE00572566 /* Flip.png in Resources */,
+				48CB2C4B17E6DB7700E19C3D /* ContactsTab.png in Resources */,
 				4888D51D166D1AEE00572566 /* Flip@2x.png in Resources */,
 				4888D51F166D1AEE00572566 /* HangupPhone.png in Resources */,
 				4888D521166D1AEE00572566 /* HangupPhone@2x.png in Resources */,
