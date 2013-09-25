@@ -203,9 +203,9 @@
             [Common setY:0       ofView:self.verifyStep3Label];
             [Common setY:37      ofView:self.verifyNumberButton];
             [Common setY:37      ofView:self.verifyCallButton];
-            [Common setY:39      ofView:self.verifyCallActivityIndicator];
+            [Common setY:40      ofView:self.verifyCallActivityIndicator];
             [Common setY:37      ofView:self.verifyCodeLabel];
-            [Common setY:39      ofView:self.verifyCodeActivityIndicator];
+            [Common setY:40      ofView:self.verifyCodeActivityIndicator];
             [Common setHeight:41 ofView:self.verifyNumberButton];
             [Common setHeight:41 ofView:self.verifyCallButton];
             [Common setHeight:41 ofView:self.verifyCodeLabel];

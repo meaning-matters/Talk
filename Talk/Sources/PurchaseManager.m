@@ -33,7 +33,7 @@
 @property (atomic, strong) SKProductsRequest*       productsRequest;
 @property (nonatomic, copy) void (^buyCompletion)(BOOL success, id object);
 @property (nonatomic, copy) void (^loadCompletion)(BOOL success);
-@property (nonatomic, strong) NSMutableArray*       restoredTransactions;
+@property (nonatomic, strong) SKPaymentTransaction* restoredAccountTransaction;
 @property (nonatomic, strong) NSDate*               loadProductsDate;
 
 @end
@@ -409,8 +409,6 @@
     }
     else
     {
-        [self finishTransaction:transaction]; NSLog(@"//####### remove <<<<this<<<< line!!!!!!!!!!");
-        
         [self completeBuyWithSuccess:YES object:transaction];
     }
 }
@@ -489,29 +487,24 @@
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue*)queue
 {
     NSLog(@"paymentQueueRestoreCompletedTransactionsFinished");
-    SKPaymentTransaction*   accountTransaction = nil;
     [Common enableNetworkActivityIndicator:NO];
 
-    for (SKPaymentTransaction* transaction in self.restoredTransactions)
+
+    if (self.restoredAccountTransaction != nil)
     {
-        if ([self isAccountProductIdentifier:transaction.payment.productIdentifier])
+        if ([self isAccountProductIdentifier:self.restoredAccountTransaction.payment.productIdentifier])
         {
-            accountTransaction = transaction;
+            [self processAccountTransaction:self.restoredAccountTransaction];
         }
         else
         {
-            NSLog(@"//### Encountered unexpected restored transaction: %@.", transaction.payment.productIdentifier);
+            NSLog(@"//### Unexpected restored transaction: %@.", self.restoredAccountTransaction.payment.productIdentifier);
         }
-    }
-
-    if (accountTransaction != nil)
-    {
-        [self processAccountTransaction:accountTransaction];
     }
     else
     {
         [self completeBuyWithSuccess:YES object:nil];
-        self.restoredTransactions = nil;
+        self.restoredAccountTransaction = nil;
     }
 }
 
@@ -522,7 +515,7 @@
     [Common enableNetworkActivityIndicator:NO];
 
     [self completeBuyWithSuccess:NO object:error];
-    self.restoredTransactions = nil;
+    self.restoredAccountTransaction = nil;
 }
 
 
@@ -573,12 +566,7 @@
 
             case SKPaymentTransactionStateRestored:
                 [self finishTransaction:transaction];  // Finish multiple times is allowed.
-                if (self.restoredTransactions == nil)
-                {
-                    self.restoredTransactions = [NSMutableArray array];
-                }
-                
-                [self.restoredTransactions addObject:transaction];
+                self.restoredAccountTransaction = transaction;
                 break;
         }
     };
@@ -779,8 +767,6 @@
 
         return;
     }
-
-    NSDictionary* pending = [Settings sharedSettings].pendingNumberBuy;
 
     if ([Settings sharedSettings].pendingNumberBuy != nil)
     {
