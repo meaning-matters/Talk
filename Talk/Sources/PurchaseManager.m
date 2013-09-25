@@ -222,7 +222,7 @@
 
 - (void)processAccountTransaction:(SKPaymentTransaction*)transaction
 {
-    NSMutableDictionary*    parameters = [NSMutableDictionary dictionary];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     parameters[@"receipt"] = [Base64 encode:transaction.transactionReceipt];
 
     [[WebClient sharedClient] retrieveWebAccount:parameters
@@ -489,7 +489,6 @@
     NSLog(@"paymentQueueRestoreCompletedTransactionsFinished");
     [Common enableNetworkActivityIndicator:NO];
 
-
     if (self.restoredAccountTransaction != nil)
     {
         if ([self isAccountProductIdentifier:self.restoredAccountTransaction.payment.productIdentifier])
@@ -558,8 +557,9 @@
                 [Common enableNetworkActivityIndicator:NO];
                 [self finishTransaction:transaction];
 
-                NSLog(@"//### %@ transaction failed: %@.", transaction.payment.productIdentifier,
-                                                           [transaction.error localizedDescription]);
+                NSLog(@"//### %@ transaction failed: %@ %d.", transaction.payment.productIdentifier,
+                                                              [transaction.error localizedDescription],
+                                                              transaction.error.code);
 
                 [self completeBuyWithSuccess:NO object:transaction.error];
                 break;
