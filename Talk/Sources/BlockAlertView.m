@@ -112,7 +112,6 @@
     textField.textAlignment            = NSTextAlignmentCenter;
     textField.autocorrectionType       = UITextAutocorrectionTypeNo;
     textField.text                     = [phoneNumber asYouTypeFormat];         // Note, can't use this to init a string; can be nil.
-    textField.font                     = [UIFont boldSystemFontOfSize:17.0f];   //### Does not work.
     [textField setKeyboardType:UIKeyboardTypePhonePad];
 
     alert->_phoneNumberCompletion      = completion;
@@ -120,6 +119,7 @@
     textField.delegate                 = alert.phoneNumberTextFieldDelegate;
                           
     [alert show];
+    textField.font                     = [UIFont boldSystemFontOfSize:18.0f];   // Needs to be placed after `show` to work.
 
     va_end(arguments);
     

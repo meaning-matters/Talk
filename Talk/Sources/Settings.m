@@ -18,7 +18,6 @@
 #import "Common.h"
 
 
-NSString* const RunBeforeKey                   = @"RunBefore";
 NSString* const TabBarViewControllerClassesKey = @"TabBarViewControllerClasses";
 NSString* const TabBarSelectedIndexKey         = @"TabBarSelectedIndex";
 NSString* const ErrorDomainKey                 = @"ErrorDomain";
@@ -45,7 +44,6 @@ NSString* const PendingNumberBuyKey            = @"PendingNumberBuy";
 
 @implementation Settings
 
-static BOOL             runBefore;
 static NSUserDefaults*  userDefaults;
 
 
@@ -61,24 +59,6 @@ static NSUserDefaults*  userDefaults;
         sharedInstance = [[Settings alloc] init];
 
         userDefaults = [NSUserDefaults standardUserDefaults];
-
-#warning See if looking "AppleLanguages" item in NSUIserDefaults helps fixing the data loss problem.
-        if ((runBefore = [userDefaults boolForKey:RunBeforeKey]) == NO)
-        {
-            [userDefaults setBool:YES forKey:RunBeforeKey];
-            if ([userDefaults synchronize] == NO)
-            {
-                NSLog(@"//### Failed to synchronize user-defaults!");
-            }
-
-            [Keychain deleteStringForKey:WebUsernameKey];
-            [Keychain deleteStringForKey:WebPasswordKey];
-            [Keychain deleteStringForKey:VerifiedE164Key];
-            [Keychain deleteStringForKey:SipServerKey];
-            [Keychain deleteStringForKey:SipRealmKey];
-            [Keychain deleteStringForKey:SipUsernameKey];
-            [Keychain deleteStringForKey:SipPasswordKey];
-        }
 
         [userDefaults registerDefaults:[sharedInstance defaults]];
     });
@@ -153,14 +133,6 @@ static NSUserDefaults*  userDefaults;
     });
 
     return dictionary;
-}
-
-
-#pragma mark - Getter
-
-- (BOOL)runBefore
-{
-    return runBefore;
 }
 
 

@@ -14,19 +14,19 @@
 typedef enum
 {
     WebClientStatusOk,
-    WebClientStatusFailInvalidRequest,
-    WebClientStatusFailServerIternal,
-    WebClientStatusFailServiceUnavailable,
-    WebClientStatusFailInvalidReceipt,
-    WebClientStatusFailDeviceNameNotUnique,
-    WebClientStatusFailNoStatesForCountry,
-    WebClientStatusFailInvalidInfo,
-    WebClientStatusFailDataTooLarge,
-    WebClientStatusFailInsufficientCredit,
-    WebClientStatusFailIvrInUse,
-    WebClientStatusFailNetworkProblem,  // Local.
-    WebClientStatusFailInvalidResponse, // Local.
-    WebClientStatusFailUnspecified,     // Local.
+    WebClientStatusFailInvalidRequest      = 1001,
+    WebClientStatusFailServerIternal       = 1002,
+    WebClientStatusFailServiceUnavailable  = 1003,
+    WebClientStatusFailInvalidReceipt      = 1004,
+    WebClientStatusFailDeviceNameNotUnique = 1005,
+    WebClientStatusFailNoStatesForCountry  = 1006,
+    WebClientStatusFailInvalidInfo         = 1007,
+    WebClientStatusFailDataTooLarge        = 1008,
+    WebClientStatusFailInsufficientCredit  = 1009,
+    WebClientStatusFailIvrInUse            = 1010,
+    WebClientStatusFailNetworkProblem      = 1021, // Local.
+    WebClientStatusFailInvalidResponse     = 1022, // Local.
+    WebClientStatusFailUnspecified         = 1023, // Local.
 } WebClientStatus;
 
 

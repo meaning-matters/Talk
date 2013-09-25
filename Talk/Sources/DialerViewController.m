@@ -74,6 +74,28 @@
          {
              [self updateReachable];
          }];
+
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification
+                                                          object:nil
+                                                           queue:[NSOperationQueue mainQueue]
+                                                      usingBlock:^(NSNotification* note)
+        {
+            if (self.isViewLoaded && self.view.window)
+            {
+                [[DtmfPlayer sharedPlayer] startKeepAlive];  // See DtmfPlayer.m why this is needed.
+            }
+        }];
+
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification
+                                                          object:nil
+                                                           queue:[NSOperationQueue mainQueue]
+                                                      usingBlock:^(NSNotification* note)
+        {
+            if (self.isViewLoaded && self.view.window)
+            {
+                [[DtmfPlayer sharedPlayer] stopKeepAlive]; // See DtmfPlayer.m why this is needed.
+            }
+        }];
     }
     
     return self;
