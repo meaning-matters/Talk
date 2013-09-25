@@ -25,8 +25,6 @@
     NSMutableArray*         numbersArray;
     NSMutableArray*         filteredNumbersArray;
     BOOL                    isFiltered;
-
-    NSManagedObjectContext* managedObjectContext;
 }
 
 @end
@@ -45,7 +43,6 @@
         self.tabBarItem.image = [UIImage imageNamed:@"NumbersTab.png"];
 
         numbersArray          = [NSMutableArray array];
-        managedObjectContext  = [DataManager sharedManager].managedObjectContext;
     }
 
     return self;
@@ -111,7 +108,7 @@
         [self updateCell:[self.tableView cellForRowAtIndexPath:selectedIndexPath] atIndexPath:selectedIndexPath];
 
         NSError* error= nil;
-        [managedObjectContext save:&error];
+        [[DataManager sharedManager].managedObjectContext save:&error];
         //### Handle error.
     }
 
@@ -160,12 +157,13 @@
 - (NSError*)fetchData
 {
     NSFetchRequest* request         = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
-    NSArray*        sortDescriptors = @[ [[NSSortDescriptor alloc] initWithKey:@"numberCountry" ascending:YES],
-                                         [[NSSortDescriptor alloc] initWithKey:@"name"          ascending:YES] ];
+    NSArray*        sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"numberCountry" ascending:YES],
+                                        [[NSSortDescriptor alloc] initWithKey:@"name"          ascending:YES]];
     [request setSortDescriptors:sortDescriptors];
 
     NSError*        error   = nil;
-    NSMutableArray* results = [[managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
+    NSMutableArray* results = [[[DataManager sharedManager].managedObjectContext executeFetchRequest:request
+                                                                                               error:&error] mutableCopy];
     if (results != nil)
     {
         numbersArray = results;

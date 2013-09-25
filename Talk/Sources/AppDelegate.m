@@ -347,6 +347,10 @@
 {
 #warning Stop things in background, like audio downloads. Especially for conflicts with CoreData being cleared.
 
+    [self.numbersViewController.navigationController     popToRootViewControllerAnimated:NO];
+    //###NBRecents....
+    [self.forwardingsViewController.navigationController popToRootViewControllerAnimated:NO];
+
     [[DataManager sharedManager] removeAll];
     [[Settings sharedSettings]   resetAll];
     [[CallManager sharedManager] resetSipAccount];
@@ -357,6 +361,13 @@
     {
         NSLog(@"//### Failed to remove audio directory: %@", [error localizedDescription]);
     }
+
+    [self.numbersViewController                          fetchData];
+    //###NBRecents....
+    [self.forwardingsViewController.forwardingsTableView reloadData];
+    [self.forwardingsViewController.recordingsTableView  reloadData];
+    [self.creditViewController.tableView                 reloadData];
+    [self.settingsViewController.tableView               reloadData];
 }
 
 

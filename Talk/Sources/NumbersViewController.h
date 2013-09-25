@@ -16,4 +16,6 @@
 
 - (void)refresh:(id)sender;
 
+- (NSError*)fetchData;
+
 @end

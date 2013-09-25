@@ -30,9 +30,6 @@ typedef enum
 {
     UISegmentedControl*         selectionSegmentedControl;
 
-    DataManager*                dataManager;
-    NSManagedObjectContext*     managedObjectContext;
-
     NSFetchedResultsController* fetchedForwardingsController;
     NSFetchedResultsController* fetchedRecordingsController;
 
@@ -51,11 +48,8 @@ typedef enum
 {
     if (self = [super initWithNibName:@"ForwardingsView" bundle:nil])
     {
-        self.title = [Strings forwardingsString];
+        self.title            = [Strings forwardingsString];
         self.tabBarItem.image = [UIImage imageNamed:@"ForwardingsTab.png"];
-
-        dataManager          = [DataManager sharedManager];
-        managedObjectContext = dataManager.managedObjectContext;
     }
     
     return self;
@@ -304,7 +298,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     {
         if (tableView == self.forwardingsTableView)
         {
-            NSManagedObjectContext* context = [fetchedForwardingsController managedObjectContext];
+            NSManagedObjectContext* context    = [fetchedForwardingsController managedObjectContext];
             ForwardingData*         forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
 
             [forwarding deleteFromManagedObjectContext:context completion:^(BOOL succeeded)
