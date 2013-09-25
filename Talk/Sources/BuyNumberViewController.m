@@ -189,6 +189,7 @@
 
                 if (success == YES)
                 {
+                    [[AppDelegate appDelegate].numbersViewController refresh:nil];
                     [self dismissViewControllerAnimated:YES completion:nil];
                 }
                 else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
