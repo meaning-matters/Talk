@@ -294,7 +294,7 @@
                     else
                     {
                         [self showView:self.readyView];
-                        [[AppDelegate appDelegate] refresh];
+                        [[AppDelegate appDelegate] restore];
                     }
                 }
                 else
@@ -726,7 +726,7 @@
                 [[CallManager sharedManager] resetSipAccount];
 
                 [self showView:self.readyView];
-                [[AppDelegate appDelegate] refresh];
+                [[AppDelegate appDelegate] restore];
             }
             else if (calling == NO)
             {
