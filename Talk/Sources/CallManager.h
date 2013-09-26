@@ -32,7 +32,7 @@
 
 - (void)endCall:(Call*)call;
 
-- (void)retryCall:(Call*)call;
+- (BOOL)retryCall:(Call*)call;
 
 - (BOOL)callMobilePhoneNumber:(PhoneNumber*)phoneNumber;
 

@@ -58,7 +58,6 @@ typedef enum
 @property (nonatomic, assign) CallNetwork               network;
 @property (nonatomic, assign) BOOL                      readyForCleanup;
 @property (nonatomic, assign) BOOL                      userInformedAboutFailure;
-@property (nonatomic, assign) BOOL                      mustBeRetried;
 
 // SipInterface specifics.
 @property (nonatomic, assign) int                       callId;

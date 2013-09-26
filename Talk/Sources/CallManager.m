@@ -481,7 +481,7 @@ static SipInterface*    sipInterface;
 
 - (void)endCall:(Call*)call
 {
-    if (call != nil)
+    if (call != nil && call.state != CallStateEnded)
     {
         [sipInterface hangupCall:call reason:nil];
     }
@@ -493,17 +493,28 @@ static SipInterface*    sipInterface;
 }
 
 
-- (void)retryCall:(Call*)call
+- (BOOL)retryCall:(Call*)call
 {
     if (call != nil)
     {
-        call.mustBeRetried = YES;
-        [sipInterface hangupCall:call reason:nil];
+        NSDictionary* tones = [[Tones sharedTones] tonesForIsoCountryCode:[call.phoneNumber isoCountryCode]];
+        if ([sipInterface makeCall:call tones:tones] == YES)
+        {
+            return YES;
+        }
+        else
+        {
+            [callViewController dismissViewControllerAnimated:YES completion:nil];
+
+            return NO;
+        }
     }
     else
     {
         // Call must have been ended earlier.
         [callViewController dismissViewControllerAnimated:YES completion:nil];
+
+        return NO;
     }
 }
 

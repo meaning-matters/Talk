@@ -430,15 +430,7 @@ const NSTimeInterval    TransitionDuration = 0.5;
                        options:UIViewAnimationOptionTransitionFlipFromRight
                     completion:nil];
     
-    [self.endButton setHiddenAnimated:YES withDuration:TransitionDuration / 2 completion:^
-    {
-        [Common setWidth:130 ofView:self.endButton];
-        [self drawEndButton];
-        [self.endButton setImage:[UIImage imageNamed:@"HangupPhoneSmall"] forState:UIControlStateNormal];
-        [self.endButton setImage:[UIImage imageNamed:@"HangupPhoneSmall"] forState:UIControlStateHighlighted];
-        
-        [self.endButton setHiddenAnimated:NO withDuration:TransitionDuration / 2 completion:nil];
-    }];
+    [self showSmallEndButton];
     
     [self animateView:self.hideButton  fromHidden:YES toHidden:NO];
     [self animateView:self.retryButton fromHidden:YES toHidden:YES];
@@ -505,15 +497,7 @@ const NSTimeInterval    TransitionDuration = 0.5;
 
     callMessageView.label.text = text;
 
-    [self.endButton setHiddenAnimated:YES withDuration:TransitionDuration / 2 completion:^
-    {
-        [Common setWidth:130 ofView:self.endButton];
-        [self drawEndButton];
-        [self.endButton setImage:[UIImage imageNamed:@"HangupPhoneSmall"] forState:UIControlStateNormal];
-        [self.endButton setImage:[UIImage imageNamed:@"HangupPhoneSmall"] forState:UIControlStateHighlighted];
-
-        [self.endButton setHiddenAnimated:NO withDuration:TransitionDuration / 2 completion:nil];
-    }];
+    [self showSmallEndButton];
 
     [self animateView:self.hideButton  fromHidden:YES toHidden:YES];
     [self animateView:self.retryButton fromHidden:YES toHidden:NO];
@@ -528,10 +512,10 @@ const NSTimeInterval    TransitionDuration = 0.5;
 
 - (IBAction)endAction:(id)sender
 {
-    Call*   call = [self.calls lastObject];
+    Call* call = [self.calls lastObject];   //### Should be active call.
 
     call.readyForCleanup = YES;
-    [[CallManager sharedManager] endCall:call];  //### Should be active call.
+    [[CallManager sharedManager] endCall:call];
 }
 
 
@@ -543,15 +527,7 @@ const NSTimeInterval    TransitionDuration = 0.5;
                        options:UIViewAnimationOptionTransitionFlipFromLeft
                     completion:nil];
 
-    [self.endButton setHiddenAnimated:YES withDuration:TransitionDuration / 2 completion:^
-    {
-        [Common setWidth:280 ofView:self.endButton];
-        [self drawEndButton];
-        [self.endButton setImage:[UIImage imageNamed:@"HangupPhone"] forState:UIControlStateNormal];
-        [self.endButton setImage:[UIImage imageNamed:@"HangupPhone"] forState:UIControlStateHighlighted];
-
-        [self.endButton setHiddenAnimated:NO withDuration:TransitionDuration / 2 completion:nil];
-    }];
+    [self showLargeEndButton];
 
     [self animateView:self.hideButton  fromHidden:YES toHidden:YES];
     [self animateView:self.retryButton fromHidden:YES toHidden:YES];
@@ -564,7 +540,23 @@ const NSTimeInterval    TransitionDuration = 0.5;
 
 - (IBAction)retryAction:(id)sender
 {
-    [[CallManager sharedManager] retryCall:[self.calls lastObject]];
+    if ([[CallManager sharedManager] retryCall:[self.calls lastObject]] == YES)
+    {
+        [UIView transitionFromView:callMessageView
+                            toView:callOptionsView
+                          duration:TransitionDuration
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        completion:nil];
+
+        [self showLargeEndButton];
+
+        [self animateView:self.hideButton  fromHidden:YES toHidden:YES];
+        [self animateView:self.retryButton fromHidden:NO  toHidden:YES];
+        [self animateView:self.infoLabel   fromHidden:NO  toHidden:NO];
+        [self animateView:self.calleeLabel fromHidden:NO  toHidden:NO];
+        [self animateView:self.statusLabel fromHidden:NO  toHidden:NO];
+        [self animateView:self.dtmfLabel   fromHidden:YES toHidden:YES];
+    }
 }
 
 
@@ -574,10 +566,36 @@ const NSTimeInterval    TransitionDuration = 0.5;
 {
     __weak UIView*  weakView = view;
 
-    [weakView setHiddenAnimated:fromHide withDuration:TransitionDuration / 2 completion:^
+    [weakView setHiddenAnimated:fromHide withDuration:(TransitionDuration / 2) completion:^
     {
-        [weakView setHiddenAnimated:toHide withDuration:TransitionDuration / 2 completion:nil];
+        [weakView setHiddenAnimated:toHide withDuration:(TransitionDuration / 2) completion:nil];
     }];
+}
+
+
+- (void)showLargeEndButton
+{
+    [self showEndButtonWithWidth:280 imageName:@"HangupPhone"];
+}
+
+
+- (void)showSmallEndButton
+{
+    [self showEndButtonWithWidth:130 imageName:@"HangupPhoneSmall"];
+}
+
+
+- (void)showEndButtonWithWidth:(CGFloat)width imageName:(NSString*)imageName
+{
+    [self.endButton setHiddenAnimated:YES withDuration:(TransitionDuration / 2) completion:^
+     {
+         [Common setWidth:width ofView:self.endButton];
+         [self drawEndButton];
+         [self.endButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+         [self.endButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateHighlighted];
+
+         [self.endButton setHiddenAnimated:NO withDuration:(TransitionDuration / 2) completion:nil];
+     }];
 }
 
 
@@ -603,7 +621,7 @@ const NSTimeInterval    TransitionDuration = 0.5;
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
     }];
 
-    [self.calls removeObject:call];
+    //KEES [self.calls removeObject:call];
 }
 
 
