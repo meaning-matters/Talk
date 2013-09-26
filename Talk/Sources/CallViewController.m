@@ -629,6 +629,8 @@ const NSTimeInterval    TransitionDuration = 0.5;
 {
     self.statusLabel.text = [call stateString];
 
+    call.readyForCleanup = YES;
+
     callOptionsView.muteButton.enabled   = YES;
     callOptionsView.keypadButton.enabled = YES;
     callOptionsView.addButton.enabled    = NO;
