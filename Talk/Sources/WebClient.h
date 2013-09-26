@@ -26,7 +26,8 @@ typedef enum
     WebClientStatusFailIvrInUse            = 1010,
     WebClientStatusFailNetworkProblem      = 1021, // Local.
     WebClientStatusFailInvalidResponse     = 1022, // Local.
-    WebClientStatusFailUnspecified         = 1023, // Local.
+    WebClientStatusFailNoAccount           = 1023, // Local.
+    WebClientStatusFailUnspecified         = 1024, // Local.
 } WebClientStatus;
 
 

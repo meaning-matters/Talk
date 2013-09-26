@@ -590,6 +590,12 @@
 
 #pragma mark - Public API
 
+- (void)reset
+{
+    self.loadProductsDate = nil;    // Makes sure reload of products is done
+}
+
+
 - (void)loadProducts:(void (^)(BOOL success))completion
 {
     if ((self.loadProductsDate == nil || -[self.loadProductsDate timeIntervalSinceNow] > LOAD_PRODUCTS_INTERVAL) &&
@@ -638,7 +644,7 @@
 
 - (NSString*)localizedFormattedPrice:(float)price
 {
-    NSString*   formattedString;
+    NSString* formattedString;
 
     if (self.products != nil || _currencyCode.length > 0)
     {

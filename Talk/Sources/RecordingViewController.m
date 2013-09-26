@@ -12,6 +12,7 @@
 #import "NSTimer+Blocks.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
+#import "DataManager.h"
 
 
 typedef enum
@@ -56,6 +57,7 @@ static const int    TextFieldCellTag = 1111;
 @end
 
 
+//### Use DataManager!
 @implementation RecordingViewController
 
 - (id)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
@@ -395,15 +397,17 @@ static const int    TextFieldCellTag = 1111;
     {
         if ([managedObjectContext save:&error] == NO || [[fetchedResultsController managedObjectContext] save:&error] == NO)
         {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
+            [self handleError:error];
+
+            return;
         }
     }
 
     if ([[fetchedResultsController managedObjectContext] save:&error] == NO)
     {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+        [self handleError:error];
+
+        return;
     }
 
     tappedSave = YES;   // Prevents removal of file in viewWillDisappear.
@@ -949,6 +953,14 @@ static void audioRouteChangeListener(
 - (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
 {
     [[self.tableView superview] endEditing:YES];
+}
+
+
+- (void)handleError:(NSError*)error
+{
+    NSLog(@"Fetch from CoreData error %@, %@", error, [error userInfo]);
+
+    [[DataManager sharedManager] handleError];
 }
 
 @end

@@ -113,43 +113,28 @@
         return _persistentStoreCoordinator;
     }
 
-    NSError*    error = nil;
+    // Performing automatic lightweight migration by passing the following dictionary as the options parameter.
+    // But, lightweight migration will only work for a limited set of schema changes; consult the
+    // "Core Data Model Versioning and Data Migration Programming Guide" for details.
+    // See also: https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CoreDataVersioning/Articles/Introduction.html#//apple_ref/doc/uid/TP40004399-CH1-SW1
+    NSDictionary* options = @{NSMigratePersistentStoresAutomaticallyOption:@YES, NSInferMappingModelAutomaticallyOption:@YES};
+    NSError*      error   = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
                                                    configuration:nil
                                                              URL:storeUrl
-                                                         options:nil
+                                                         options:options
                                                            error:&error])
     {
-        /* abort() causes the application to generate a crash log and terminate. You should not use this
-         function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved CoreData error %@, %@", error, [error userInfo]);
+        [self handleError];
 
-         Typical reasons for an error here include:
-         * The persistent store is not accessible;
-         * The schema for the persistent store is incompatible with current managed object model.
-         Check the error message to determine what the actual problem was.
-
-
-         If the persistent store is not accessible, there is typically something wrong with the file path.
-         Often, a file URL is pointing into the application's resources directory instead of a writeable directory.
-
-         If you encounter schema incompatibility errors during development, you can reduce their frequency by:
-         * Simply deleting the existing store:
-         [[NSFileManager defaultManager] removeItemAtURL:storeUrl error:nil]
-
-         * Performing automatic lightweight migration by passing the following dictionary as the options parameter:
-         @{NSMigratePersistentStoresAutomaticallyOption:@YES, NSInferMappingModelAutomaticallyOption:@YES}
-
-         Lightweight migration will only work for a limited set of schema changes; consult
-         "Core Data Model Versioning and Data Migration Programming Guide" for details.
-         */
-#warning //### Implement migration https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CoreDataVersioning/Articles/Introduction.html#//apple_ref/doc/uid/TP40004399-CH1-SW1
-
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+        return nil;
     }
-
-    return _persistentStoreCoordinator;
+    else
+    {
+        return _persistentStoreCoordinator;
+    }
 }
 
 
@@ -157,19 +142,14 @@
 
 - (void)saveContext
 {
-    NSError*                error = nil;
-    NSManagedObjectContext* managedObjectContext = self.managedObjectContext;
+    NSError* error = nil;
 
-    if (managedObjectContext != nil)
+    if (self.managedObjectContext != nil)
     {
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
+        if ([self.managedObjectContext hasChanges] && ![self.managedObjectContext save:&error])
         {
-#warning    //### Replace this implementation with code to handle the error appropriately.
-            //    abort() causes the application to generate a crash log and terminate.
-            //    You should not use this function in a shipping application, although it
-            //    may be useful during development.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
+            NSLog(@"Unresolved CoreData error %@, %@", error, [error userInfo]);
+            [self handleError];
         }
     }
 }
@@ -177,16 +157,12 @@
 
 - (void)removeAll
 {
-    [[NSFileManager defaultManager] removeItemAtURL:storeUrl error:nil];
-
     for (NSManagedObject* object in [self.managedObjectContext registeredObjects])
     {
         [self.managedObjectContext deleteObject:object];
     }
 
-    _managedObjectModel         = nil;
-    _managedObjectContext       = nil;
-    _persistentStoreCoordinator = nil;
+    [self saveContext];
 }
 
 
@@ -232,7 +208,7 @@
                                                         [NSBundle mainBundle], @"Synchronization Failed",
                                                         @"Alert title: Data could not be loaded.\n"
                                                         @"[iOS alert title size].");
-            message = NSLocalizedStringWithDefaultValue(@"BuyCredit SynchronizeFailedMessage", nil,
+            message = NSLocalizedStringWithDefaultValue(@"DataManager SynchronizeFailedMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"Something went wrong while synchronizing over internet: "
                                                         @"%@.\n\nPlease try again later.",
@@ -253,6 +229,63 @@
             completion(error);
         }
     }];
+}
+
+
+- (void)handleError
+{
+    [[NSFileManager defaultManager] removeItemAtURL:storeUrl error:nil];
+
+    NSString* title;
+    NSString* message;
+    NSString* button;
+
+    title   = NSLocalizedStringWithDefaultValue(@"DataManager DatabaseErrorTitle", nil,
+                                                [NSBundle mainBundle], @"Database Problem",
+                                                @"Alert title: App's internal database has problem.\n"
+                                                @"[iOS alert title size].");
+    message = NSLocalizedStringWithDefaultValue(@"DataManager DatabaseErrorMessage", nil,
+                                                [NSBundle mainBundle],
+                                                @"Due to a problem, the internal database will be recreated.  "
+                                                @"Your call history and favorites will be lost."
+                                                @"\nSynchronize to reload your numbers and forwardings.",
+                                                @"Message telling that App's internal database has problem\n"
+                                                @"[iOS alert message size]");
+    button  = NSLocalizedStringWithDefaultValue(@"DataManager DatabaseErrorButtonTitle", nil,
+                                                [NSBundle mainBundle],
+                                                @"Exit App",
+                                                @"Exit app button title\n"
+                                                @"[iOS button title size]");
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        UILocalNotification* notification = [[UILocalNotification alloc] init];
+        NSString*            body;
+        NSString*            action;
+
+        body   = NSLocalizedStringWithDefaultValue(@"DataManager DatabaseErrorNotificationMessage",
+                                                   nil, [NSBundle mainBundle],
+                                                   @"Open the app, and your numbers and forwardings will be "
+                                                   @"reloaded.",
+                                                   @"Message telling ...\n"
+                                                   @"[iOS alert message size]");
+        action = NSLocalizedStringWithDefaultValue(@"DataManager DatabaseErrorNotificationButton",
+                                                   nil, [NSBundle mainBundle],
+                                                   @"Open",
+                                                   @"Message telling ...\n"
+                                                   @"[iOS alert message size]");
+
+        notification.fireDate    = [NSDate dateWithTimeIntervalSinceNow:1.0];
+        notification.alertBody   = body;
+        notification.alertAction = action;
+        notification.userInfo    = @{@"source" : @"databaseError"};
+        [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+
+        abort();
+    }
+                         cancelButtonTitle:button
+                         otherButtonTitles:nil];
 }
 
 

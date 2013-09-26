@@ -20,6 +20,8 @@
 
 + (PurchaseManager*)sharedManager;
 
+- (void)reset;
+
 - (void)loadProducts:(void (^)(BOOL success))completion;
 
 - (NSString*)productIdentifierForCreditTier:(int)tier;

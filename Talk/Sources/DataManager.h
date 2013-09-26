@@ -24,4 +24,6 @@
 
 - (void)synchronizeWithServer:(void (^)(NSError* error))completion;
 
+- (void)handleError;
+
 @end

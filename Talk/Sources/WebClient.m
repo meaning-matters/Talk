@@ -79,6 +79,14 @@ static NSDictionary* statuses;
       parameters:(NSDictionary*)parameters
            reply:(void (^)(WebClientStatus status, id content))reply
 {
+    NSLog(@"POST %@ : %@", path, parameters);
+
+    if ([Settings sharedSettings].hasAccount == NO)
+    {
+        reply(WebClientStatusFailNoAccount, nil);
+        return;
+    }
+
     [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
                                     password:[Settings sharedSettings].webPassword];
 
@@ -110,6 +118,14 @@ static NSDictionary* statuses;
      parameters:(NSDictionary*)parameters
           reply:(void (^)(WebClientStatus status, id content))reply
 {
+    NSLog(@" PUT %@ : %@", path, parameters);
+
+    if ([Settings sharedSettings].hasAccount == NO)
+    {
+        reply(WebClientStatusFailNoAccount, nil);
+        return;
+    }
+
     [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
                                     password:[Settings sharedSettings].webPassword];
 
@@ -141,6 +157,14 @@ static NSDictionary* statuses;
      parameters:(NSDictionary*)parameters
           reply:(void (^)(WebClientStatus status, id content))reply
 {
+    NSLog(@" GET %@ : %@", path, parameters);
+
+    if ([Settings sharedSettings].hasAccount == NO)
+    {
+        reply(WebClientStatusFailNoAccount, nil);
+        return;
+    }
+
     [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
                                     password:[Settings sharedSettings].webPassword];
 
@@ -172,6 +196,14 @@ static NSDictionary* statuses;
         parameters:(NSDictionary*)parameters
              reply:(void (^)(WebClientStatus status, id content))reply
 {
+    NSLog(@" DEL %@ : %@", path, parameters);
+
+    if ([Settings sharedSettings].hasAccount == NO)
+    {
+        reply(WebClientStatusFailNoAccount, nil);
+        return;
+    }
+
     [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
                                     password:[Settings sharedSettings].webPassword];
 
@@ -294,6 +326,13 @@ static NSDictionary* statuses;
         case WebClientStatusFailInvalidResponse:
             string = NSLocalizedStringWithDefaultValue(@"webClient FailInvalidResponse", nil, [NSBundle mainBundle],
                                                        @"Invalid data received from server",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailNoAccount:
+            string = NSLocalizedStringWithDefaultValue(@"webClient FailNoAccount", nil, [NSBundle mainBundle],
+                                                       @"There's no active account",
                                                        @"Status text.\n"
                                                        @"[].");
             break;

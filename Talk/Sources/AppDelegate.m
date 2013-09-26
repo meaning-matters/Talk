@@ -171,7 +171,14 @@
 
 - (void)application:(UIApplication*)application didReceiveLocalNotification:(UILocalNotification*)notification
 {
-    [self performSelectorOnMainThread:@selector(answer_call) withObject:nil waitUntilDone:YES];
+    if (notification.userInfo != nil)
+    {
+        NSString*   source = [notification.userInfo objectForKey:@"source"];
+        if (source != nil && [source isEqualToString:@"databaseError"])
+        {
+            [self restore];
+        }
+    }
 }
 
 
@@ -351,9 +358,10 @@
     //###NBRecents....
     [self.forwardingsViewController.navigationController popToRootViewControllerAnimated:NO];
 
-    [[DataManager sharedManager] removeAll];
-    [[Settings sharedSettings]   resetAll];
-    [[CallManager sharedManager] resetSipAccount];
+    [[DataManager     sharedManager]  removeAll];
+    [[Settings        sharedSettings] resetAll];
+    [[CallManager     sharedManager]  resetSipAccount];
+    [[PurchaseManager sharedManager]  reset];
 
     NSError*    error;
     [[NSFileManager defaultManager] removeItemAtURL:[Common audioDirectoryUrl] error:&error];
@@ -367,7 +375,6 @@
     [self.forwardingsViewController.forwardingsTableView reloadData];
     [self.forwardingsViewController.recordingsTableView  reloadData];
     [self.creditViewController.tableView                 reloadData];
-    [self.settingsViewController.tableView               reloadData];
 }
 
 
@@ -375,7 +382,7 @@
 {
     [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
     {
-        // Alert already shown on error.
+        [self.numbersViewController fetchData];
     }];
 }
 

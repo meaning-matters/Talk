@@ -566,8 +566,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     NSLog(@"Fetch from CoreData error %@, %@", error, [error userInfo]);
 
-#warning //### Replace with code to fix this and/or inform user!!!
-    abort();
+    [[DataManager sharedManager] handleError];
 }
 
 @end
