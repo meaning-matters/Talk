@@ -79,11 +79,21 @@ static NSDictionary* statuses;
       parameters:(NSDictionary*)parameters
            reply:(void (^)(WebClientStatus status, id content))reply
 {
+    [self postPath:path parameters:parameters reply:reply checkAccount:YES];
+}
+
+
+- (void)postPath:(NSString*)path
+      parameters:(NSDictionary*)parameters
+           reply:(void (^)(WebClientStatus status, id content))reply
+    checkAccount:(BOOL)checkAccount
+{
     NSLog(@"POST %@ : %@", path, parameters);
 
-    if ([Settings sharedSettings].hasAccount == NO)
+    if (checkAccount == YES && [Settings sharedSettings].haveAccount == NO)
     {
         reply(WebClientStatusFailNoAccount, nil);
+
         return;
     }
 
@@ -120,9 +130,10 @@ static NSDictionary* statuses;
 {
     NSLog(@" PUT %@ : %@", path, parameters);
 
-    if ([Settings sharedSettings].hasAccount == NO)
+    if ([Settings sharedSettings].haveAccount == NO)
     {
         reply(WebClientStatusFailNoAccount, nil);
+
         return;
     }
 
@@ -159,9 +170,10 @@ static NSDictionary* statuses;
 {
     NSLog(@" GET %@ : %@", path, parameters);
 
-    if ([Settings sharedSettings].hasAccount == NO)
+    if ([Settings sharedSettings].haveAccount == NO)
     {
         reply(WebClientStatusFailNoAccount, nil);
+
         return;
     }
 
@@ -198,9 +210,10 @@ static NSDictionary* statuses;
 {
     NSLog(@" DEL %@ : %@", path, parameters);
 
-    if ([Settings sharedSettings].hasAccount == NO)
+    if ([Settings sharedSettings].haveAccount == NO)
     {
         reply(WebClientStatusFailNoAccount, nil);
+
         return;
     }
 
@@ -388,7 +401,8 @@ static NSDictionary* statuses;
 {
     [self postPath:[NSString stringWithFormat:@"users/%@/devices", [Settings sharedSettings].webUsername]
         parameters:parameters
-             reply:reply];
+             reply:reply
+      checkAccount:NO];
 }
 
 

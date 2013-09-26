@@ -220,7 +220,7 @@
 
 - (void)updateReachable
 {
-    BOOL    hasAccount = [[Settings sharedSettings] hasAccount];
+    BOOL haveAccount = [Settings sharedSettings].haveVerifiedAccount;
 
     switch ([NetworkStatus sharedStatus].reachableStatus)
     {
@@ -229,11 +229,11 @@
             break;
 
         case NetworkStatusReachableCellular:
-            self.keypadView.keyCallButton.selected = hasAccount && [Settings sharedSettings].allowCellularDataCalls;
+            self.keypadView.keyCallButton.selected = haveAccount && [Settings sharedSettings].allowCellularDataCalls;
             break;
 
         case NetworkStatusReachableWifi:
-            self.keypadView.keyCallButton.selected = hasAccount;
+            self.keypadView.keyCallButton.selected = haveAccount;
             break;
 
         case NetworkStatusReachableCaptivePortal:

@@ -72,7 +72,7 @@
 {
     [super viewWillAppear:animated];
 
-    if ([Settings sharedSettings].hasAccount == YES)
+    if ([Settings sharedSettings].haveVerifiedAccount == YES)
     {
         [self loadCredit];
     }
@@ -170,14 +170,14 @@
 
     if (indexPath.section == 0 && indexPath.row == 0)
     {
-        if ([Settings sharedSettings].hasAccount == YES)
+        if ([Settings sharedSettings].haveVerifiedAccount == YES)
         {
             [self loadCredit];
         }
     }
     else
     {
-        if ([Settings sharedSettings].hasAccount == YES)
+        if ([Settings sharedSettings].haveVerifiedAccount == YES)
         {
             [self buyCreditForIndexPath:indexPath];
         }

@@ -126,7 +126,7 @@ typedef enum
 
 - (void)refreshForwardings:(id)sender
 {
-    if ([Settings sharedSettings].hasAccount == YES)
+    if ([Settings sharedSettings].haveVerifiedAccount == YES)
     {
         // Add delays to allow uninterrupted animations of UIRefreshControl
         [Common dispatchAfterInterval:0.5 onMain:^
@@ -503,7 +503,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
 - (void)addForwardingAction
 {
-    if ([Settings sharedSettings].hasAccount == YES)
+    if ([Settings sharedSettings].haveVerifiedAccount == YES)
     {
         UINavigationController*   modalViewController;
         ForwardingViewController* viewController;

@@ -86,11 +86,16 @@ static NSUserDefaults*  userDefaults;
 }
 
 
-- (BOOL)hasAccount
+- (BOOL)haveAccount
 {
-    return (self.webUsername.length  > 0 && self.webPassword.length > 0 &&
-            self.sipUsername.length  > 0 && self.sipPassword.length > 0 &&
-            self.verifiedE164.length > 0);
+    return (self.webUsername.length > 0 && self.webPassword.length > 0 &&
+            self.sipUsername.length > 0 && self.sipPassword.length > 0);
+}
+
+
+- (BOOL)haveVerifiedAccount
+{
+    return (self.haveAccount && self.verifiedE164.length > 0);
 }
 
 
