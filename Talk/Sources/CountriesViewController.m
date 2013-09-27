@@ -76,10 +76,7 @@
 {
     [self dismissViewControllerAnimated:YES completion:^
     {
-        if (self.completion != nil)
-        {
-            self.completion(YES, nil);
-        }
+        self.completion ? self.completion(YES, nil) : 0;
     }];
 }
 
@@ -159,10 +156,7 @@
         // Shown as modal.
         [self dismissViewControllerAnimated:YES completion:^
         {
-            if (self.completion != nil)
-            {
-                self.completion(NO, [[CountryNames sharedNames] isoCountryCodeForName:name]);
-            }
+            self.completion ? self.completion(NO, [[CountryNames sharedNames] isoCountryCodeForName:name]) : 0;
         }];
     }
     else

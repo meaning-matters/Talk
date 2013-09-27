@@ -160,9 +160,9 @@ static const int    CountryCellTag   = 4321;
         
         // Conditionally there Area section rows.
         BOOL    allCities = [[area objectForKey:@"areaName"] caseInsensitiveCompare:@"All cities"] == NSOrderedSame;
-        areaRows |= ([area[@"areaCode"] length] > 0) ?                           AreaRowAreaCode : 0;
+        areaRows |= ([area[@"areaCode"] length] > 0)                           ? AreaRowAreaCode : 0;
         areaRows |= (numberTypeMask == NumberTypeGeographicMask && !allCities) ? AreaRowAreaName : 0;
-        areaRows |= (state != nil) ?                                             AreaRowState    : 0;
+        areaRows |= (state != nil)                                             ? AreaRowState    : 0;
 
         // Default naming.
         NSString* city;
