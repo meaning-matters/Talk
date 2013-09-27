@@ -194,16 +194,16 @@
     NSArray* viewControllerClasses =
     @[
         NSStringFromClass([NumbersViewController              class]),
-        NSStringFromClass([RecentsViewController              class]),
-        NSStringFromClass([NBPeoplePickerNavigationController class]),
-        //NSStringFromClass([GroupsViewController               class]),
-        NSStringFromClass([DialerViewController               class]),
         NSStringFromClass([ForwardingsViewController          class]),
+        NSStringFromClass([NBPeoplePickerNavigationController class]),
+        NSStringFromClass([DialerViewController               class]),
         NSStringFromClass([CreditViewController               class]),
         NSStringFromClass([HelpsViewController                class]),
         NSStringFromClass([AboutViewController                class]),
         NSStringFromClass([SettingsViewController             class]),
         NSStringFromClass([ShareViewController                class]),
+        NSStringFromClass([RecentsViewController              class]),
+        //NSStringFromClass([GroupsViewController               class]),
     ];
 
     NSSet*  preferredSet = [NSSet setWithArray:[Settings sharedSettings].tabBarViewControllerClasses];

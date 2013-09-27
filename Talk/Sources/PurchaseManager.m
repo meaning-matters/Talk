@@ -168,8 +168,8 @@
         }
         else
         {
-            NSString*   title;
-            NSString*   message;
+            NSString* title;
+            NSString* message;
 
             title   = NSLocalizedStringWithDefaultValue(@"Purchase:General NoProductTitle", nil,
                                                         [NSBundle mainBundle], @"Product Not Available",
@@ -187,8 +187,8 @@
     }
     else
     {
-        NSString*   title;
-        NSString*   message;
+        NSString* title;
+        NSString* message;
 
         title   = NSLocalizedStringWithDefaultValue(@"Purchase:General CantPurchaseTitle", nil,
                                                     [NSBundle mainBundle], @"Can't Make Purchases",
@@ -288,8 +288,8 @@
         }
         else if (status == WebClientStatusFailDeviceNameNotUnique)
         {
-            NSString*   title;
-            NSString*   message;
+            NSString* title;
+            NSString* message;
 
             title = NSLocalizedStringWithDefaultValue(@"Purchase:General DeviceNameNotUniqueTitle", nil,
                                                       [NSBundle mainBundle], @"Device Name Not Unique",
@@ -440,8 +440,8 @@
 
 - (void)request:(SKRequest*)request didFailWithError:(NSError*)error
 {
-    NSString*   title;
-    NSString*   message;
+    NSString* title;
+    NSString* message;
 
     title   = NSLocalizedStringWithDefaultValue(@"Purchase:General ProductLoadFailAlertTitle", nil,
                                                 [NSBundle mainBundle], @"Loading Products Failed",
@@ -668,8 +668,8 @@
 
 - (NSString*)localizedPriceForProductIdentifier:(NSString*)identifier;
 {
-    SKProduct*  product = [self productForProductIdentifier:identifier];
-    NSString*   priceString;
+    SKProduct* product = [self productForProductIdentifier:identifier];
+    NSString*  priceString;
 
     if (product != nil)
     {
@@ -776,8 +776,8 @@
 
     if ([Settings sharedSettings].pendingNumberBuy != nil)
     {
-        NSString*   title;
-        NSString*   message;
+        NSString* title;
+        NSString* message;
 
         title   = NSLocalizedStringWithDefaultValue(@"Purchase:General PendingNumberBuyTitle", nil,
                                                     [NSBundle mainBundle], @"Pending Number Purchase",

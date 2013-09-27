@@ -232,6 +232,33 @@ static const int    TextFieldCellTag = 1111;
 }
 
 
+- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSString*   title = nil;
+
+    switch ([Common nthBitSet:section inValue:sections])
+    {
+        case TableSectionNumber:
+            title = NSLocalizedStringWithDefaultValue(@"ForwardingView StatementsHeader", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"Calls Go To",
+                                                      @"Table header above phone numbers\n"
+                                                      @"[1 line larger font].");
+            break;
+
+        case TableSectionNumbers:
+            title = NSLocalizedStringWithDefaultValue(@"ForwardingView NumbersHeader", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"Used By Numbers",
+                                                      @"Table header above phone numbers\n"
+                                                      @"[1 line larger font].");
+            break;
+    }
+    
+    return title;
+}
+
+
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
     NSString*   title = nil;
@@ -393,8 +420,8 @@ static const int    TextFieldCellTag = 1111;
 
     cell.textLabel.text  = number.name;
     cell.imageView.image = nil;
-    cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
-    cell.selectionStyle  = UITableViewCellSelectionStyleBlue;
+    cell.accessoryType   = UITableViewCellAccessoryNone;
+    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
 
     return cell;
 }

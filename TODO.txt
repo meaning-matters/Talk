@@ -78,8 +78,6 @@
 
 * Gooi Help teksten in RTFs?
 
-* PREVENT PURCHASES WHEN THERE'S NO ACCOUNT!  CREDIT FOR EXAMPLE
-
 * Add a badge to Credit tab when below tier 5. 
 
 * Add warning push notification from server when credit gets below tier 5.
@@ -107,11 +105,10 @@
 * Wait for Store products to have loaded, because otherwise Currency is not available, and #1 fails.
 
 * Use NSError everywhere, instead of WebClientStatus values here and there.
+* Use NSError's localizedRecoverySuggestion instead of "Please try again later."
+* Do: [NSError errorWithDomain:FSMyAppErrorDomain code:FSProfileParsingFailedError userInfo:@{NSLocalizedDescriptionKey : FS_ERROR_LOCALIZED_DESCRIPTION(error.code)}]; –
+  en haal message uit error met userInfo[NSLocalizedDescriptionKey];
 
 * Use capitalized Forwardings and Numbers, .... in texts?  currently use "Forwardings" & "numbers" -> inconsistent
-
-* Larger font for Enter Your Number alert during provisoning (see my StackOverflow Q).
-
-* Something goes wrong when DTMF-ing ##### during call with 015333333.  App goes to speaker, but call is not ended.  Perhaps because keypad is shown during call end by Telenet.
 
 * Replace DTMF keepalive with something else that always works.
