@@ -415,13 +415,15 @@ static const int    TextFieldCellTag = 1111;
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumbersCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NumbersCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NumbersCell"];
     }
 
-    cell.textLabel.text  = number.name;
-    cell.imageView.image = nil;
-    cell.accessoryType   = UITableViewCellAccessoryNone;
-    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
+    cell.textLabel.text = @" ";  // Without this, detailTextLabel is on the left.
+    [Common addCountryImageToCell:cell isoCountryCode:number.numberCountry];
+
+    cell.detailTextLabel.text = number.name;
+    cell.accessoryType        = UITableViewCellAccessoryNone;
+    cell.selectionStyle       = UITableViewCellSelectionStyleNone;
 
     return cell;
 }

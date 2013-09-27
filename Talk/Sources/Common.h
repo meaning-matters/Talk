@@ -94,4 +94,6 @@
 
 + (void)dispatchAfterInterval:(NSTimeInterval)interval onMain:(void (^)(void))block;
 
++ (void)addCountryImageToCell:(UITableViewCell*)cell isoCountryCode:(NSString*)isoCountryCode;
+
 @end

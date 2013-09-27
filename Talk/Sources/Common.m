@@ -570,4 +570,21 @@
     dispatch_after(when, dispatch_get_main_queue(), block);
 }
 
+
++ (void)addCountryImageToCell:(UITableViewCell*)cell isoCountryCode:(NSString*)isoCountryCode
+{
+    static const int CountryCellTag = 4321;
+
+    UIImage*     image     = [UIImage imageNamed:isoCountryCode];
+    UIImageView* imageView = (UIImageView*)[cell viewWithTag:CountryCellTag];
+    CGRect       frame     = CGRectMake(33, 4, image.size.width, image.size.height);
+
+    imageView       = (imageView == nil) ? [[UIImageView alloc] initWithFrame:frame] : imageView;
+    imageView.tag   = CountryCellTag;
+    imageView.image = image;
+
+    [cell.contentView addSubview:imageView];
+}
+
+
 @end

@@ -52,7 +52,6 @@ typedef enum
 
 
 static const int    TextFieldCellTag = 1234;
-static const int    CountryCellTag   = 4321;
 
 
 @interface NumberAreaViewController ()
@@ -497,20 +496,6 @@ static const int    CountryCellTag   = 4321;
 }
 
 
-- (void)addCountryImageToCell:(UITableViewCell*)cell isoCountryCode:(NSString*)isoCountryCode
-{
-    UIImage*        image     = [UIImage imageNamed:isoCountryCode];
-    UIImageView*    imageView = (UIImageView*)[cell viewWithTag:CountryCellTag];
-    CGRect          frame     = CGRectMake(33, 4, image.size.width, image.size.height);
-
-    imageView       = (imageView == nil) ? [[UIImageView alloc] initWithFrame:frame] : imageView;
-    imageView.tag   = CountryCellTag;
-    imageView.image = image;
-
-    [cell.contentView addSubview:imageView];
-}
-
-
 - (NSString*)placeHolderForTextField:(UITextField*)textField
 {
     NSString* placeHolder;
@@ -803,7 +788,7 @@ static const int    CountryCellTag   = 4321;
                                 // Update the cell.
                                 UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
                                 cell.textLabel.text   = nil;
-                                [self addCountryImageToCell:cell isoCountryCode:isoCountryCode];
+                                [Common addCountryImageToCell:cell isoCountryCode:isoCountryCode];
                                 countryTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:isoCountryCode];
                             }
                         };
@@ -1020,7 +1005,7 @@ static const int    CountryCellTag   = 4321;
         case AreaRowCountry:
             cell.textLabel.text       = @" ";     // Without this, the detailTextLabel is on the left.
             cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:numberIsoCountryCode];
-            [self addCountryImageToCell:cell isoCountryCode:numberIsoCountryCode];
+            [Common addCountryImageToCell:cell isoCountryCode:numberIsoCountryCode];
             break;
     }
 
@@ -1283,7 +1268,7 @@ static const int    CountryCellTag   = 4321;
             {
                 cell.textLabel.text = @" ";  // Without this, detailTextLabel is on the left.
                 countryTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:purchaseInfo[@"isoCountryCode"]];
-                [self addCountryImageToCell:cell isoCountryCode:purchaseInfo[@"isoCountryCode"]];
+                [Common addCountryImageToCell:cell isoCountryCode:purchaseInfo[@"isoCountryCode"]];
             }
             break;
     }

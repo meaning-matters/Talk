@@ -124,6 +124,8 @@
     ForwardingData*  selectedForwarding;
     UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];    // Get here because indexPath is overwritten.
 
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
     if (indexPath.row == 0)
     {
         selectedForwarding = nil;
@@ -170,10 +172,7 @@
                 message = [NSString stringWithFormat:message, [WebClient localizedStringForStatus:status]];
                 [BlockAlertView showAlertViewWithTitle:title
                                                message:message
-                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
-                {
-                    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-                }
+                                            completion:nil
                                      cancelButtonTitle:[Strings closeString]
                                      otherButtonTitles:nil];
             }

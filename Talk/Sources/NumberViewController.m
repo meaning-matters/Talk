@@ -62,7 +62,6 @@ typedef enum
 
 
 static const int    TextFieldCellTag = 1234;
-static const int    CountryCellTag   = 4321;
 
 
 @interface NumberViewController ()
@@ -528,7 +527,7 @@ static const int    CountryCellTag   = 4321;
 
         case AreaRowCountry:
             cell.textLabel.text = @" ";  // Without this, detailTextLabel is on the left.
-            [self addCountryImageToCell:cell isoCountryCode:number.numberCountry];
+            [Common addCountryImageToCell:cell isoCountryCode:number.numberCountry];
             cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:number.numberCountry];
             break;
     }
@@ -599,7 +598,7 @@ static const int    CountryCellTag   = 4321;
 
         case ContactAddressRowCountry:
             cell.textLabel.text = @" ";  // Without this, detailTextLabel is on the left.
-            [self addCountryImageToCell:cell isoCountryCode:number.addressCountry];
+            [Common addCountryImageToCell:cell isoCountryCode:number.addressCountry];
             cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:number.addressCountry];
             break;
     }
@@ -647,20 +646,6 @@ static const int    CountryCellTag   = 4321;
     [cell.contentView addSubview:label];
 
     return label;
-}
-
-
-- (void)addCountryImageToCell:(UITableViewCell*)cell isoCountryCode:(NSString*)isoCountryCode
-{
-    UIImage*        image     = [UIImage imageNamed:isoCountryCode];
-    UIImageView*    imageView = (UIImageView*)[cell viewWithTag:CountryCellTag];
-    CGRect          frame     = CGRectMake(33, 4, image.size.width, image.size.height);
-
-    imageView       = (imageView == nil) ? [[UIImageView alloc] initWithFrame:frame] : imageView;
-    imageView.tag   = CountryCellTag;
-    imageView.image = image;
-
-    [cell.contentView addSubview:imageView];
 }
 
 
