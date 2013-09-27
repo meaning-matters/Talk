@@ -138,8 +138,12 @@ static const int    CountryCellTag   = 4321;
             infoType = InfoTypeNone;
         }
 
-        purchaseInfo = (infoType != InfoTypeNone) ? [NSMutableDictionary dictionary] : nil;
-        
+        if (infoType != InfoTypeNone)
+        {
+            purchaseInfo = [NSMutableDictionary dictionary];
+            purchaseInfo[@"salutation"] = @"MR";
+        }
+
         if (infoType == InfoTypeLocal || infoType == InfoTypeNational)
         {
             purchaseInfo[@"isoCountryCode"] = numberIsoCountryCode;
