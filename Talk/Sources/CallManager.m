@@ -22,6 +22,9 @@
 #import "AppDelegate.h"
 
 
+#define ALLOW_CALLS_WHEN_REACHABLE_DISCONNECTED 1
+
+
 @interface CallManager ()
 {
     CallViewController*         callViewController;
@@ -214,7 +217,7 @@ static SipInterface*    sipInterface;
         case SipInterfaceCallFailedServiceUnavailable:
             message = NSLocalizedStringWithDefaultValue(@"Call:Failed ServiceUnavailableMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"Service unavailable ...",
+                                                        @"No internet connection, or telephony service unavailable ...",
                                                         @"Alert message informing that a call could not be made because "
                                                         @"...."
                                                         @"[iOS alert message size].");
@@ -223,7 +226,7 @@ static SipInterface*    sipInterface;
         case SipInterfaceCallFailedPstnTerminationFail:
             message = NSLocalizedStringWithDefaultValue(@"Call:Failed PstnTerminationFailMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"Pstn termination fail ...",
+                                                        @"PSTN termination fail ...",
                                                         @"Alert message informing that a call could not be made because "
                                                         @"...."
                                                         @"[iOS alert message size].");
@@ -283,18 +286,23 @@ static SipInterface*    sipInterface;
 
 - (BOOL)checkNetwork
 {
-    BOOL        result;
-    NSString*   title;
-    NSString*   message;
+    BOOL                   result;
+    NSString*              title;
+    NSString*              message;
+    NetworkStatusReachable reachable = [NetworkStatus sharedStatus].reachableStatus;
 
-    if ([NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableDisconnected)
+    if (reachable == NetworkStatusReachableDisconnected && ALLOW_CALLS_WHEN_REACHABLE_DISCONNECTED)
     {
-        title = NSLocalizedStringWithDefaultValue(@"Call:Voip NotConnectedTitle", nil,
-                                                  [NSBundle mainBundle], @"No Internet Connection",
-                                                  @"Alert title informing about not being able to make a "
-                                                  @"call because not connected to internet\n"
-                                                  @"[iOS alert title size - abbreviated: 'No Internet' or "
-                                                  @"'Not Connected'].");
+        result = YES;
+    }
+    else if (reachable == NetworkStatusReachableDisconnected)
+    {
+        title   = NSLocalizedStringWithDefaultValue(@"Call:Voip NotConnectedTitle", nil,
+                                                    [NSBundle mainBundle], @"No Internet Connection",
+                                                    @"Alert title informing about not being able to make a "
+                                                    @"call because not connected to internet\n"
+                                                    @"[iOS alert title size - abbreviated: 'No Internet' or "
+                                                    @"'Not Connected'].");
 
         message = NSLocalizedStringWithDefaultValue(@"Call:Voip NotConnectedMessage", nil,
                                                     [NSBundle mainBundle],
@@ -312,14 +320,13 @@ static SipInterface*    sipInterface;
 
         result = NO;
     }
-    else if ([NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableCellular &&
-             [Settings sharedSettings].allowCellularDataCalls == NO)
+    else if (reachable == NetworkStatusReachableCellular && [Settings sharedSettings].allowCellularDataCalls == NO)
     {
-        title = NSLocalizedStringWithDefaultValue(@"Call:Voip DisallowCellularTitle", nil,
-                                                  [NSBundle mainBundle], @"No Cellular Data Calls",
-                                                  @"Alert title informing about not being able to make a "
-                                                  @"call over cellular data, because that's not allowed\n"
-                                                  @"[iOS alert title size - abbreviated: 'No Data Calls'].");
+        title   = NSLocalizedStringWithDefaultValue(@"Call:Voip DisallowCellularTitle", nil,
+                                                    [NSBundle mainBundle], @"No Cellular Data Calls",
+                                                    @"Alert title informing about not being able to make a "
+                                                    @"call over cellular data, because that's not allowed\n"
+                                                    @"[iOS alert title size - abbreviated: 'No Data Calls'].");
 
         message = NSLocalizedStringWithDefaultValue(@"Call:Voip DisallowCellularMessage", nil,
                                                     [NSBundle mainBundle],
@@ -343,13 +350,13 @@ static SipInterface*    sipInterface;
 
         result = NO;
     }
-    else if ([NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableCaptivePortal)
+    else if (reachable == NetworkStatusReachableCaptivePortal)
     {
-        title = NSLocalizedStringWithDefaultValue(@"Call:Voip CaptivePortalTitle", nil,
-                                                  [NSBundle mainBundle], @"Behind Captive Portal",
-                                                  @"Alert title informing about not being able to make a "
-                                                  @"call because behind a Wi-Fi captive portal\n"
-                                                  @"[iOS alert title size - abbreviated: 'Captive Portal'].");
+        title   = NSLocalizedStringWithDefaultValue(@"Call:Voip CaptivePortalTitle", nil,
+                                                    [NSBundle mainBundle], @"Behind Captive Portal",
+                                                    @"Alert title informing about not being able to make a "
+                                                    @"call because behind a Wi-Fi captive portal\n"
+                                                    @"[iOS alert title size - abbreviated: 'Captive Portal'].");
 
         message = NSLocalizedStringWithDefaultValue(@"Call:Voip CaptivePortalMessage", nil,
                                                     [NSBundle mainBundle],
@@ -481,7 +488,7 @@ static SipInterface*    sipInterface;
 
 - (void)endCall:(Call*)call
 {
-    if (call != nil && call.state != CallStateEnded)
+    if (call != nil && call.state != CallStateEnded && call.state != CallStateFailed)
     {
         [sipInterface hangupCall:call reason:nil];
     }
@@ -497,6 +504,8 @@ static SipInterface*    sipInterface;
 {
     if (call != nil)
     {
+        call.userInformedAboutFailure = NO;
+
         NSDictionary* tones = [[Tones sharedTones] tonesForIsoCountryCode:[call.phoneNumber isoCountryCode]];
         if ([sipInterface makeCall:call tones:tones] == YES)
         {

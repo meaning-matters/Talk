@@ -116,9 +116,9 @@ const NSTimeInterval    TransitionDuration = 0.5;
             [Common setY:367 ofView:self.bottomView];
             break;
 
-        case 420:   // 320x480 screen with in-call iOS flasher at top.
+        case 440:   // 320x480 screen with in-call iOS flasher at top.
             [Common setY:96  ofView:self.centerRootView];
-            [Common setY:357 ofView:self.bottomView];
+            [Common setY:347 ofView:self.bottomView];
             break;
 
         case 548:   // 320x568 screen.
@@ -514,6 +514,10 @@ const NSTimeInterval    TransitionDuration = 0.5;
 {
     Call* call = [self.calls lastObject];   //### Should be active call.
 
+    self.endButton.enabled   = NO;
+    self.retryButton.enabled = NO;
+    self.hideButton.enabled  = NO;
+
     call.readyForCleanup = YES;
     [[CallManager sharedManager] endCall:call];
 }
@@ -551,7 +555,7 @@ const NSTimeInterval    TransitionDuration = 0.5;
         [self showLargeEndButton];
 
         [self animateView:self.hideButton  fromHidden:YES toHidden:YES];
-        [self animateView:self.retryButton fromHidden:NO  toHidden:YES];
+        [self animateView:self.retryButton fromHidden:YES toHidden:YES];
         [self animateView:self.infoLabel   fromHidden:NO  toHidden:NO];
         [self animateView:self.calleeLabel fromHidden:NO  toHidden:NO];
         [self animateView:self.statusLabel fromHidden:NO  toHidden:NO];
@@ -620,8 +624,6 @@ const NSTimeInterval    TransitionDuration = 0.5;
         // on CallView just before it disappears.
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
     }];
-
-    //KEES [self.calls removeObject:call];
 }
 
 
@@ -682,6 +684,13 @@ const NSTimeInterval    TransitionDuration = 0.5;
     durationTimer = nil;
 
     self.statusLabel.text = [call stateString];
+
+    callOptionsView.muteButton.enabled    = NO;
+    callOptionsView.keypadButton.enabled  = NO;
+    callOptionsView.speakerButton.enabled = NO;
+    callOptionsView.addButton.enabled     = NO;
+    callOptionsView.holdButton.enabled    = NO;
+    callOptionsView.groupsButton.enabled  = NO;
 }
 
 

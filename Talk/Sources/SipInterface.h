@@ -22,6 +22,7 @@ typedef enum
 
 typedef enum
 {
+    SipInterfaceCallFailedNone = 0,
     SipInterfaceCallFailedNotAllowedCountry,    // Unsupported country (custom SIP state).
     SipInterfaceCallFailedNotAllowedNumber,     // For premium number for example (custom SIP state).
     SipInterfaceCallFailedNoCredit,             // No credit on server (custom SIP state).

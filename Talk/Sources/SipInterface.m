@@ -15,10 +15,11 @@
 #import "webrtc.h"      // Glue-logic with libWebRTC.a.
 #import "Call.h"
 
-
 #define THIS_FILE	"SipInterface"
-#define KEEP_ALIVE_INTERVAL             600     // The shortest that iOS allows.
-#define FORCE_HANGUP_TIMEOUT            4.0f    // Seconds after which PJSIP is restarted if no disconnect received.
+#define KEEP_ALIVE_INTERVAL            600      // The shortest that iOS allows.
+#define FORCE_HANGUP_TIMEOUT           4.0f     // Seconds after which PJSIP is restarted if no disconnect received.
+
+#define HAS_REGISTRATION               0        // Determines if we do SIP registration.
 
 // Volume Levels.  Note that these are linear values, so 2.0 is only a bit louder.
 #define OUTPUT_LEVEL_RECEIVER          3.2f
@@ -88,8 +89,6 @@
     pjmedia_port*           congestion_port;
     int                     ring_slot;
     pjmedia_port*           ring_port;
-
-    BOOL                    isRestarting;
 }
 
 @end
@@ -176,6 +175,7 @@ void showLog(int level, const char* data, int len)
 
         [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 
+#if HAS_REGISTRATION
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
@@ -189,6 +189,7 @@ void showLog(int level, const char* data, int len)
         {
              [self keepAlive];
         }];
+#endif
 
         [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusMobileCallStateChangedNotification
                                                           object:nil
@@ -255,7 +256,7 @@ void showLog(int level, const char* data, int len)
         return status;
     }
 
-    /* Add account */
+    /* Add account - registration parameters only used when reg_uri is specified. stop*/
     account_config.rtp_cfg                  = rtp_cfg;
     account_config.reg_retry_interval       = 300;
     account_config.reg_first_retry_interval = 60;
@@ -318,7 +319,9 @@ void showLog(int level, const char* data, int len)
 
     media_cfg.no_vad = PJ_TRUE;
 
+#if HAS_REGISTRATION
     account_config.reg_uri = pj_str((char*)[[NSString stringWithFormat:@"sip:%@;transport=tls", self.server] UTF8String]);
+#endif
     account_config.id = pj_str((char*)[[NSString stringWithFormat:@"sip:%@@%@;transport=tls", self.username, self.server] UTF8String]);
     account_config.cred_info[0].username = pj_str((char*)[self.username UTF8String]);
     account_config.cred_info[0].scheme   = pj_str("Digest");
@@ -542,26 +545,24 @@ void showLog(int level, const char* data, int len)
         [self destroy];
         [self destroy];  // On purpose (copied from PJSUA).
 
-        if ([self initialize] == PJ_SUCCESS)
-        {
-            pj_status_t status;
+        pj_status_t status;
 
-            if ((status = pjsua_start()) != PJ_SUCCESS)
-            {
-                NSLog(@"//### pjsua_start() failed: %d.", status);
-
-#warning Add another restart here after some time, we can't just give up forever!!!
-                [self destroy];
-            }
-            else
-            {
-                isRestarting = NO;
-            }
-        }
-        else
+        if ((status = [self initialize]) != PJ_SUCCESS || (status = pjsua_start()) != PJ_SUCCESS)
         {
-#warning Add another restart here after some time, we can't just give up forever!!!
-            NSLog(@"//### Failed to initialize PJSUA.");
+            NSLog(@"Initializing SIP stack failed: %d.", status);
+
+            static BOOL pendingRestart;
+
+            if (pendingRestart == NO)
+            {
+                pendingRestart = YES;
+                dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10.0 * NSEC_PER_SEC));
+                dispatch_after(when, dispatch_get_main_queue(), ^(void)
+                {
+                    [self restart];
+                    pendingRestart = NO;
+                });
+            }
         }
     });
 }
@@ -570,8 +571,6 @@ void showLog(int level, const char* data, int len)
 #warning The methdod is called in many places, but it basically kills the app/PJSIP.  Some restart must be added.
 - (pj_status_t)destroy
 {
-    isRestarting = YES;
-
     pj_status_t status;
     unsigned    i;
 
@@ -616,6 +615,9 @@ void showLog(int level, const char* data, int len)
                 call.state = CallStateEnded;
                 [self.delegate sipInterface:self callEnded:call];
                 pjsua_call_set_user_data(call.callId, NULL);
+
+                NSLog(@"//### RESTART PJSIP");
+                [self restart];
             }
         }
 
@@ -1625,23 +1627,31 @@ void showLog(int level, const char* data, int len)
             dispatch_async(dispatch_get_main_queue(), ^
             {
                 call.state = CallStateEnded;
-                [self.delegate sipInterface:self callEnded:call];
                 [calls removeObject:call];
                 pjsua_call_set_user_data(call.callId, NULL);    //### Added at MON 15 APR insearch for crash bug.  Gave problems?
+
+                [self restart];
+
+                // Give restart some time.  This prevents users from making call right after (which would fail).
+                dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC));
+                dispatch_after(when, dispatch_get_main_queue(), ^(void)
+                {
+                    [self.delegate sipInterface:self callEnded:call];
+                });
             });
             break;
         }
     }
 
-    [self checkCallStatus:call_info.last_status callId:call_id];
+    [self checkCallStatus:call_info.last_status call:call];
 }
 
 
-- (void)checkCallStatus:(pjsip_status_code)status callId:(pjsua_call_id)callId
+- (void)checkCallStatus:(pjsip_status_code)status call:(Call*)call
 {
-    SipInterfaceCallFailed  failed = -1;
-    Call*                   call = [self findCallForCallId:callId];
-    
+    SipInterfaceCallFailed  failed = SipInterfaceCallFailedNone;
+    pjsua_call_id           callId = call.callId;
+
     switch ((int)status)    // Cast to avoid compile warning about values not in pjsip_status_code enum.
     {
         //### Is stopTones call needed below?
@@ -1760,13 +1770,13 @@ void showLog(int level, const char* data, int len)
             {
                 [self stopTones:callId];
                 failed = SipInterfaceCallFailedOtherSipError;
-                NSLog(@"//### Other SP error: %d.", status);
+                NSLog(@"//### Other SIP error: %d.", status);
                 //### Store last error code in Settings, to be printed with Easter Egg dial code.
             }
             break;
     }
 
-    if (failed != -1)
+    if (failed != SipInterfaceCallFailedNone)
     {
         dispatch_async(dispatch_get_main_queue(), ^
         {
@@ -1926,6 +1936,8 @@ void showLog(int level, const char* data, int len)
 /* General processing for media state. "mi" is the media index */
 - (void)onCallGenericMediaState:(pjsua_call_info*)ci state:(unsigned)mi hasError:(pj_bool_t*)has_error
 {
+    NSLog(@"MediaState ###############");
+
     const char *status_name[] =
     {
         "None",
@@ -1941,7 +1953,7 @@ void showLog(int level, const char* data, int len)
     pj_assert(PJSUA_CALL_MEDIA_ERROR == 4);
 
     PJ_LOG(4, (THIS_FILE, "Call %d media %d [type=%s], status is %s",
-	       ci->id, mi, pjmedia_type_name(ci->media[mi].type), status_name[ci->media[mi].status]));
+               ci->id, mi, pjmedia_type_name(ci->media[mi].type), status_name[ci->media[mi].status]));
 
     if (ci->media[mi].status == PJSUA_CALL_MEDIA_LOCAL_HOLD)
     {
@@ -1972,9 +1984,9 @@ void showLog(int level, const char* data, int len)
      */
     if (ci->media[mi].status == PJSUA_CALL_MEDIA_ACTIVE || ci->media[mi].status == PJSUA_CALL_MEDIA_REMOTE_HOLD)
     {
-	pjsua_conf_port_id call_conf_slot;
+        pjsua_conf_port_id call_conf_slot;
 
-	call_conf_slot = ci->media[mi].stream.aud.conf_slot;
+        call_conf_slot = ci->media[mi].stream.aud.conf_slot;
 
         pjsua_conf_connect(call_conf_slot, 0);
         pjsua_conf_connect(0, call_conf_slot);
@@ -2002,18 +2014,18 @@ void showLog(int level, const char* data, int len)
 
     for (mi = 0; mi < call_info.media_cnt; ++mi)
     {
-	on_call_generic_media_state(&call_info, mi, &has_error);
+        on_call_generic_media_state(&call_info, mi, &has_error);
 
-	if (call_info.media[mi].type == PJMEDIA_TYPE_AUDIO)
+        if (call_info.media[mi].type == PJMEDIA_TYPE_AUDIO)
         {
             on_call_audio_state(&call_info, mi, &has_error);
-	}
+        }
     }
 
     if (has_error)
     {
-	pj_str_t reason = pj_str("Media failed");
-	pjsua_call_hangup(call_id, 500, &reason, NULL);
+        pj_str_t reason = pj_str("Media failed");
+        pjsua_call_hangup(call_id, 500, &reason, NULL);
     }
 }
 
@@ -2027,20 +2039,20 @@ void showLog(int level, const char* data, int len)
 
     if (redir_op == PJSIP_REDIRECT_PENDING)
     {
-	char    uristr[PJSIP_MAX_URL_SIZE];
-	int     len;
+        char    uristr[PJSIP_MAX_URL_SIZE];
+        int     len;
 
-	len = pjsip_uri_print(PJSIP_URI_IN_FROMTO_HDR, target, uristr, sizeof(uristr));
-	if (len < 1)
+        len = pjsip_uri_print(PJSIP_URI_IN_FROMTO_HDR, target, uristr, sizeof(uristr));
+        if (len < 1)
         {
-	    pj_ansi_strcpy(uristr, "--URI too long--");
-	}
+            pj_ansi_strcpy(uristr, "--URI too long--");
+        }
 
-	PJ_LOG(3, (THIS_FILE, "Call %d is being redirected to %.*s. Press 'Ra' to accept, 'Rr' to reject, or 'Rd' to "
+        PJ_LOG(3, (THIS_FILE, "Call %d is being redirected to %.*s. Press 'Ra' to accept, 'Rr' to reject, or 'Rd' to "
                    "disconnect.",
                    call_id, len, uristr));
     }
-
+    
     return redir_op;
 }
 
@@ -2085,15 +2097,15 @@ void showLog(int level, const char* data, int len)
                        final:(pj_bool_t)final
                     continue:(pj_bool_t*)p_cont
 {
-    PJ_LOG(3,(THIS_FILE, "Call %d: transfer status=%d (%.*s) %s",
-	      call_id, status_code, (int)status_text->slen, status_text->ptr, (final ? "[final]" : "")));
+    PJ_LOG(3, (THIS_FILE, "Call %d: transfer status=%d (%.*s) %s",
+               call_id, status_code, (int)status_text->slen, status_text->ptr, (final ? "[final]" : "")));
 
     if (status_code / 100 == 2)
     {
-	PJ_LOG(3, (THIS_FILE, "Call %d: call transfered successfully, disconnecting call", call_id));
+        PJ_LOG(3, (THIS_FILE, "Call %d: call transfered successfully, disconnecting call", call_id));
 
-	pjsua_call_hangup(call_id, PJSIP_SC_GONE, NULL, NULL);
-	*p_cont = PJ_FALSE;
+        pjsua_call_hangup(call_id, PJSIP_SC_GONE, NULL, NULL);
+        *p_cont = PJ_FALSE;
     }
 }
 
@@ -2122,11 +2134,11 @@ void showLog(int level, const char* data, int len)
 {
     if (res->status != PJ_SUCCESS)
     {
-	pjsua_perror(THIS_FILE, "NAT detection failed", res->status);
+        pjsua_perror(THIS_FILE, "NAT detection failed", res->status);
     }
     else
     {
-	PJ_LOG(3, (THIS_FILE, "NAT detected as %s", res->nat_type_name));
+        PJ_LOG(3, (THIS_FILE, "NAT detected as %s", res->nat_type_name));
     }
 }
 
@@ -2142,17 +2154,17 @@ void showLog(int level, const char* data, int len)
 
     if (mwi_info->rdata->msg_info.ctype)
     {
-	const pjsip_ctype_hdr *ctype = mwi_info->rdata->msg_info.ctype;
+        const pjsip_ctype_hdr *ctype = mwi_info->rdata->msg_info.ctype;
 
-	PJ_LOG(3, (THIS_FILE, " Content-Type: %.*s/%.*s",
+        PJ_LOG(3, (THIS_FILE, " Content-Type: %.*s/%.*s",
                    (int)ctype->media.type.slen, ctype->media.type.ptr,
                    (int)ctype->media.subtype.slen, ctype->media.subtype.ptr));
     }
 
     if (!mwi_info->rdata->msg_info.msg->body)
     {
-	PJ_LOG(3,(THIS_FILE, "  no message body"));
-	return;
+        PJ_LOG(3,(THIS_FILE, "  no message body"));
+        return;
     }
 
     body.ptr  = mwi_info->rdata->msg_info.msg->body->data;
@@ -2174,7 +2186,7 @@ void showLog(int level, const char* data, int len)
 
 
     pj_ansi_snprintf(host_port, sizeof(host_port), "[%.*s:%d]",
-		     (int)tp->remote_name.host.slen, tp->remote_name.host.ptr, tp->remote_name.port);
+                     (int)tp->remote_name.host.slen, tp->remote_name.host.ptr, tp->remote_name.port);
 
     switch (state)
     {
@@ -2190,45 +2202,45 @@ void showLog(int level, const char* data, int len)
         default:
             break;
     }
-
+    
 #if !defined(PJSIP_HAS_TLS_TRANSPORT) || PJSIP_HAS_TLS_TRANSPORT == 0
 #error TLS is required.
 #endif
     if (!pj_ansi_stricmp(tp->type_name, "tls") && stateInfo->ext_info &&
         (state == PJSIP_TP_STATE_CONNECTED ||
-	 ((pjsip_tls_state_info*)stateInfo->ext_info)->ssl_sock_info->verify_status != PJ_SUCCESS))
+         ((pjsip_tls_state_info*)stateInfo->ext_info)->ssl_sock_info->verify_status != PJ_SUCCESS))
     {
-	const char* verif_msgs[32];
-	unsigned    verif_msg_cnt;
+        const char* verif_msgs[32];
+        unsigned    verif_msg_cnt;
 
-	pjsip_tls_state_info *tls_info  = (pjsip_tls_state_info*)stateInfo->ext_info;
-	pj_ssl_sock_info *ssl_sock_info = tls_info->ssl_sock_info;
+        pjsip_tls_state_info *tls_info  = (pjsip_tls_state_info*)stateInfo->ext_info;
+        pj_ssl_sock_info *ssl_sock_info = tls_info->ssl_sock_info;
 
-	/* Dump server TLS cipher */
-	PJ_LOG(4, (THIS_FILE, "TLS cipher: 0x%06X/%s", ssl_sock_info->cipher, pj_ssl_cipher_name(ssl_sock_info->cipher)));
+        /* Dump server TLS cipher */
+        PJ_LOG(4, (THIS_FILE, "TLS cipher: 0x%06X/%s", ssl_sock_info->cipher, pj_ssl_cipher_name(ssl_sock_info->cipher)));
 
-	/* Dump server TLS certificate */
-	pj_ssl_cert_info_dump(ssl_sock_info->remote_cert_info, "  ", buf, sizeof(buf));
-	PJ_LOG(4, (THIS_FILE, "TLS cert info of %s:\n%s", host_port, buf));
+        /* Dump server TLS certificate */
+        pj_ssl_cert_info_dump(ssl_sock_info->remote_cert_info, "  ", buf, sizeof(buf));
+        PJ_LOG(4, (THIS_FILE, "TLS cert info of %s:\n%s", host_port, buf));
 
-	/* Dump server TLS certificate verification result */
-	verif_msg_cnt = PJ_ARRAY_SIZE(verif_msgs);
-	pj_ssl_cert_get_verify_status_strings(ssl_sock_info->verify_status, verif_msgs, &verif_msg_cnt);
-	PJ_LOG(3, (THIS_FILE, "TLS cert verification result of %s : %s",
+        /* Dump server TLS certificate verification result */
+        verif_msg_cnt = PJ_ARRAY_SIZE(verif_msgs);
+        pj_ssl_cert_get_verify_status_strings(ssl_sock_info->verify_status, verif_msgs, &verif_msg_cnt);
+        PJ_LOG(3, (THIS_FILE, "TLS cert verification result of %s : %s",
                    host_port, (verif_msg_cnt == 1 ? verif_msgs[0] : "")));
 
-	if (verif_msg_cnt > 1)
+        if (verif_msg_cnt > 1)
         {
-	    for (unsigned i = 0; i < verif_msg_cnt; ++i)
+            for (unsigned i = 0; i < verif_msg_cnt; ++i)
             {
-		PJ_LOG(3,(THIS_FILE, "- %s", verif_msgs[i]));
+                PJ_LOG(3,(THIS_FILE, "- %s", verif_msgs[i]));
             }
-	}
+        }
         
-	if (ssl_sock_info->verify_status && !udp_cfg.tls_setting.verify_server)
-	{
-	    PJ_LOG(3, (THIS_FILE, "PJSUA is configured to ignore TLS cert verification errors"));
-	}
+        if (ssl_sock_info->verify_status && !udp_cfg.tls_setting.verify_server)
+        {
+            PJ_LOG(3, (THIS_FILE, "PJSUA is configured to ignore TLS cert verification errors"));
+        }
     }
 }
 
