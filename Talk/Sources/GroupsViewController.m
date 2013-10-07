@@ -13,7 +13,7 @@
     NSArray *allPeople = (__bridge_transfer NSArray*)ABAddressBookCopyArrayOfAllPeople(addressBook);
 
     NSString *name;
-    for ( int i = 0; i < [allPeople count]; i++ )
+    for (int i = 0; i < [allPeople count]; i++)
     {
         name = (__bridge_transfer NSString*) ABRecordCopyValue((__bridge ABRecordRef)allPeople[i], kABPersonFirstNameProperty);
     }

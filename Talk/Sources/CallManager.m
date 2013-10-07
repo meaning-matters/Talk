@@ -49,11 +49,10 @@ static SipInterface*    sipInterface;
     {
         sharedInstance = [[CallManager alloc] init];
 
-        Settings*   settings = [Settings sharedSettings];
-        sipInterface = [[SipInterface alloc] initWithRealm:settings.sipRealm
-                                                    server:settings.sipServer
-                                                  username:settings.sipUsername
-                                                  password:settings.sipPassword];
+        sipInterface   = [[SipInterface alloc] initWithRealm:[Settings sharedSettings].sipRealm
+                                                      server:[Settings sharedSettings].sipServer
+                                                    username:[Settings sharedSettings].sipUsername
+                                                    password:[Settings sharedSettings].sipPassword];
         sipInterface.delegate = sharedInstance;
     });
     
@@ -426,11 +425,10 @@ static SipInterface*    sipInterface;
 
 - (void)resetSipAccount
 {
-    Settings*   settings = [Settings sharedSettings];
-    sipInterface.realm    = settings.sipRealm;
-    sipInterface.server   = settings.sipServer;
-    sipInterface.username = settings.sipUsername;
-    sipInterface.password = settings.sipPassword;
+    sipInterface.realm    = [Settings sharedSettings].sipRealm;
+    sipInterface.server   = [Settings sharedSettings].sipServer;
+    sipInterface.username = [Settings sharedSettings].sipUsername;
+    sipInterface.password = [Settings sharedSettings].sipPassword;
 
     [sipInterface restart];
 }

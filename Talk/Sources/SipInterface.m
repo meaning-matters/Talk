@@ -69,7 +69,6 @@
 
     pjsip_redirect_op	    redir_op;
 
-    pj_bool_t               speaker_on;      // Speaker button on UI.
     float                   inputLevel;
     float                   outputLevel;
 

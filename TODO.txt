@@ -112,3 +112,5 @@
 * Use capitalized Forwardings and Numbers, .... in texts?  currently use "Forwardings" & "numbers" -> inconsistent
 
 * Replace DTMF keepalive with something else that always works.
+
+* Only start sip when account, check restarts

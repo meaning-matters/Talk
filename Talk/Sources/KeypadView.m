@@ -65,7 +65,6 @@
     [super layoutSubviews];
 
     // Check requirement that height is fivefold.
-    NSLog(@"self.frame.size.height %f", self.frame.size.height);
     // assert((int)self.frame.size.height % 5 == 0);
 
     CGFloat keyHeight = self.frame.size.height / 5;
