@@ -813,6 +813,52 @@ static NSDictionary* statuses;
 }
 
 
+// 32A. INITIATE CALLBACK
+- (void)initiateCallbackForCallee:(PhoneNumber*)calleePhoneNumber
+                           caller:(PhoneNumber*)callerPhoneNumber
+                         identity:(PhoneNumber*)identityPhoneNumber
+                          privacy:(BOOL)privacy
+                            reply:(void (^)(WebClientStatus status, NSString* uuid))reply
+{
+    [self postPath:[NSString stringWithFormat:@"users/%@/2stage", [Settings sharedSettings].webUsername]
+        parameters:@{@"callee"   : [calleePhoneNumber   e164Format],
+                     @"caller"   : [callerPhoneNumber   e164Format],
+                     @"callerId" : [identityPhoneNumber e164Format],
+                     @"privacy"  : privacy ? @"true" : @"false"}
+             reply:^(WebClientStatus status, id content)
+    {
+        if (status == WebClientStatusOk)
+        {
+            reply(status, content[@"uuid"]);
+        }
+        else
+        {
+            reply(status, nil);
+        }
+    }];
+}
+
+
+// 32B. STOP CALLBACK
+- (void)cancelCallbackForUuid:(NSString*)uuid
+                        reply:(void (^)(WebClientStatus status))reply
+{
+    [self postPath:[NSString stringWithFormat:@"users/%@/2stage/cancel", [Settings sharedSettings].webUsername]
+        parameters:@{@"uuid"   : uuid}
+             reply:^(WebClientStatus status, id content)
+    {
+        if (status == WebClientStatusOk)
+        {
+            reply(status);
+        }
+        else
+        {
+            reply(status);
+        }
+    }];
+}
+
+
 #pragma mark - Public Utility
 
 // 1.
@@ -947,6 +993,24 @@ static NSDictionary* statuses;
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
                                        path:[NSString stringWithFormat:@"users/%@/verification",
+                                             [Settings sharedSettings].webUsername]];
+}
+
+
+// 32A.
+- (void)cancelAllInitiateCallback
+{
+    [self cancelAllHTTPOperationsWithMethod:@"POST"
+                                       path:[NSString stringWithFormat:@"users/%@/2stage",
+                                             [Settings sharedSettings].webUsername]];
+}
+
+
+// 32B.
+- (void)cancelAllCancelCallback
+{
+    [self cancelAllHTTPOperationsWithMethod:@"POST"
+                                       path:[NSString stringWithFormat:@"users/%@/2stage/cancel",
                                              [Settings sharedSettings].webUsername]];
 }
 

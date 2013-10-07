@@ -153,6 +153,16 @@ typedef enum
 - (void)retrieveVerificationStatusForPhoneNumber:(PhoneNumber*)phoneNumber
                                            reply:(void (^)(WebClientStatus status, BOOL calling, BOOL verified))reply;
 
+// 32A. INITIATE CALLBACK
+- (void)initiateCallbackForCallee:(PhoneNumber*)calleePhoneNumber
+                           caller:(PhoneNumber*)callerPhoneNumber
+                         identity:(PhoneNumber*)identityPhoneNumber
+                          privacy:(BOOL)privacy
+                            reply:(void (^)(WebClientStatus status, NSString* uuid))reply;
+
+// 32B. STOP CALLBACK
+- (void)cancelCallbackForUuid:(NSString*)uuid
+                        reply:(void (^)(WebClientStatus status))reply;
 
 #pragma mark - Cancel Methods
 
@@ -208,5 +218,11 @@ typedef enum
 
 // 30C.
 - (void)cancelAllRetrieveVerificationStatus;
+
+// 32A.
+- (void)cancelAllInitiateCallback;
+
+// 32B.
+- (void)cancelAllCancelCallback;
 
 @end

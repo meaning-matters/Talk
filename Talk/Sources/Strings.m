@@ -381,4 +381,13 @@
                                              @"[No size contraint].");
 }
 
+
++ (NSString*)endString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings End", nil,
+                                             [NSBundle mainBundle], @"End",
+                                             @"Standard string for ending phone call\n"
+                                             @"[No size contraint].");
+}
+
 @end

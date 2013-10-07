@@ -35,6 +35,7 @@ NSString* const SipUsernameKey                 = @"SipUsername";            // U
 NSString* const SipPasswordKey                 = @"SipPassword";            // Used as keychain 'username'.
 NSString* const AllowCellularDataCallsKey      = @"AllowCellularDataCalls";
 NSString* const ShowCallerIdKey                = @"ShowCallerId";
+NSString* const CallbackModeKey                = @"CallbackMode";
 NSString* const NumberTypeMaskKey              = @"NumberTypeMask";
 NSString* const ForwardingsSelectionKey        = @"ForwardingsSelection";
 NSString* const CurrencyCodeKey                = @"CurrencyCode";
@@ -131,6 +132,7 @@ static NSUserDefaults*  userDefaults;
         [dictionary setObject:@"https://api2.numberbay.com/"                     forKey:WebBaseUrlKey];
         [dictionary setObject:@(NO)                                              forKey:AllowCellularDataCallsKey];
         [dictionary setObject:@(YES)                                             forKey:ShowCallerIdKey];
+        [dictionary setObject:@(NO)                                              forKey:CallbackModeKey];
         [dictionary setObject:@(NumberTypeGeographicMask)                        forKey:NumberTypeMaskKey];
         [dictionary setObject:@(0)                                               forKey:ForwardingsSelectionKey];
         [dictionary setObject:@""                                                forKey:CurrencyCodeKey];
@@ -358,6 +360,18 @@ static NSUserDefaults*  userDefaults;
 - (void)setShowCallerId:(BOOL)showCallerId
 {
     [userDefaults setBool:showCallerId forKey:ShowCallerIdKey];
+}
+
+
+- (BOOL)callbackMode
+{
+    return [userDefaults boolForKey:CallbackModeKey];
+}
+
+
+- (void)setCallbackMode:(BOOL)callbackMode
+{
+    [userDefaults setBool:callbackMode forKey:CallbackModeKey];
 }
 
 

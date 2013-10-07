@@ -153,6 +153,14 @@ typedef enum
             break;
 
         case TableSectionCallOptions:
+            title = NSLocalizedStringWithDefaultValue(@"Settings:CallOptionInfo SectionFooter", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"In Callback Mode our server calls your verified number.  "
+                                                      @"Then, when you accept that call, the person you're tying to "
+                                                      @"reach is being called.  It's an alternative when your internet "
+                                                      @"speed/connection is not optimal.",
+                                                      @"Explanation what the last Call Option setting is doing\n"
+                                                      @"[* lines]");
             break;
 
         case TableSectionAccountData:
@@ -180,7 +188,7 @@ typedef enum
             break;
 
         case TableSectionCallOptions:
-            numberOfRows = [NetworkStatus sharedStatus].simAvailable ? 2 : 1;
+            numberOfRows = [NetworkStatus sharedStatus].simAvailable ? 3 : 2;
             break;
 
         case TableSectionAccountData:
@@ -377,45 +385,34 @@ typedef enum
     UITableViewCell*    cell;
     UISwitch*           switchView;
 
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
+        switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+        cell.accessoryView = switchView;
+    }
+    else
+    {
+        switchView = (UISwitch*)cell.accessoryView;
+    }
+
     if ([NetworkStatus sharedStatus].simAvailable == YES && indexPath.row == 0)
     {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
-        if (cell == nil)
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
-            switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-            cell.accessoryView = switchView;
-        }
-        else
-        {
-            switchView = (UISwitch*)cell.accessoryView;
-        }
-
         cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:AllowDataCalls CellText", nil,
                                                                 [NSBundle mainBundle], @"Cellular Data Calls",
                                                                 @"Title of switch if calls over cellular data (3G/EDGE/...) are allowed\n"
                                                                 @"[2/3 line - abbreviated: 'Data Calls'].");
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         switchView.on = settings.allowCellularDataCalls;
-        [switchView addTarget:self action:@selector(allowDataCallsSwitchAction:)
+        [switchView addTarget:self
+                       action:@selector(allowDataCallsSwitchAction:)
              forControlEvents:UIControlEventValueChanged];
     }
 
     if (([NetworkStatus sharedStatus].simAvailable == YES && indexPath.row == 1) ||
-        [NetworkStatus sharedStatus].simAvailable == NO)
+        ([NetworkStatus sharedStatus].simAvailable == NO  && indexPath.row == 0))
     {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
-        if (cell == nil)
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
-            switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-            cell.accessoryView = switchView;
-        }
-        else
-        {
-            switchView = (UISwitch*)cell.accessoryView;
-        }
-
         cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:ShowCallId CellText", nil,
                                                                 [NSBundle mainBundle], @"Show My Caller ID",
                                                                 @"Title of switch if people called see my number\n"
@@ -423,7 +420,22 @@ typedef enum
                                                                 @"exact same term as in iOS].");
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         switchView.on = settings.showCallerId;
-        [switchView addTarget:self action:@selector(showCallerIdSwitchAction:)
+        [switchView addTarget:self
+                       action:@selector(showCallerIdSwitchAction:)
+             forControlEvents:UIControlEventValueChanged];
+    }
+
+    if (([NetworkStatus sharedStatus].simAvailable == YES && indexPath.row == 2) ||
+        ([NetworkStatus sharedStatus].simAvailable == NO  && indexPath.row == 1))
+    {
+        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:CallbackMode CellText", nil,
+                                                                [NSBundle mainBundle], @"Callback Mode",
+                                                                @"Title of switch if app is in 'callback mode'\n"
+                                                                @"[2/3 line - abbreviated: 'Data Calls'].");
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        switchView.on = settings.callbackMode;
+        [switchView addTarget:self
+                       action:@selector(callbackModeSwitchAction:)
              forControlEvents:UIControlEventValueChanged];
     }
 
@@ -532,9 +544,13 @@ typedef enum
 
 - (void)showCallerIdSwitchAction:(id)sender
 {
-    UISwitch*   showCallerIdSwitch = sender;
+    settings.showCallerId = ((UISwitch*)sender).on;
+}
 
-    settings.showCallerId = showCallerIdSwitch.on;
+
+- (void)callbackModeSwitchAction:(id)sender
+{
+    settings.callbackMode = ((UISwitch*)sender).on;
 }
 
 @end

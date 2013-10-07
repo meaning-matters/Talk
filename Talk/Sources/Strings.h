@@ -88,4 +88,6 @@
 
 + (NSString*)synchronizeWithServerString;
 
++ (NSString*)endString;
+
 @end
