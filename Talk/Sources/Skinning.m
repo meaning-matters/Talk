@@ -7,6 +7,9 @@
 //
 
 #import "Skinning.h"
+#import "AppDelegate.h"
+#import "Settings.h"
+
 
 @implementation Skinning
 
@@ -20,12 +23,36 @@
     dispatch_once(&onceToken, ^
     {
         sharedInstance = [[Skinning alloc] init];
+        [sharedInstance update];
 
-        // Place app-wide skinning/appearance commands here.
-        [[UINavigationBar appearance] setBarStyle:UIBarStyleBlackOpaque];
+        [[Settings sharedSettings] addObserver:sharedInstance
+                                    forKeyPath:@"callbackMode"
+                                       options:NSKeyValueChangeOldKey
+                                       context:nil];
     });
     
     return sharedInstance;
+}
+
+
+-(void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
+{
+    [self update];
+}
+
+
+- (void)update
+{
+    if ([Settings sharedSettings].callbackMode == NO)
+    {
+        [[AppDelegate appDelegate].tabBarController.tabBar setSelectedImageTintColor:nil];
+    }
+    else
+    {
+        [[AppDelegate appDelegate].tabBarController.tabBar setSelectedImageTintColor:[UIColor colorWithHue:0.4 saturation:0.9 brightness:0.85 alpha:1.0]];
+    }
+
+    [[UINavigationBar appearance] setBarStyle:UIBarStyleBlackOpaque];
 }
 
 @end

@@ -45,7 +45,6 @@
     dispatch_once(&onceToken, ^
     {
         // Trigger singletons.
-        [Skinning      sharedSkinning];
         [NetworkStatus sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.
         [CallManager   sharedManager];
         [DataManager   sharedManager];
@@ -66,6 +65,9 @@
         [self addViewControllersToTabBar];
         self.window.rootViewController = self.tabBarController;
         [self.window makeKeyAndVisible];
+
+        // Apply skinning.
+        [Skinning sharedSkinning];
 
         [self showDefaultImage];
 
