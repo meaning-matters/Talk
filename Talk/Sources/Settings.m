@@ -36,6 +36,7 @@ NSString* const SipPasswordKey                 = @"SipPassword";            // U
 NSString* const AllowCellularDataCallsKey      = @"AllowCellularDataCalls";
 NSString* const ShowCallerIdKey                = @"ShowCallerId";
 NSString* const CallbackModeKey                = @"CallbackMode";
+NSString* const CallbackCallerIdKey            = @"CallbackCallerId";
 NSString* const NumberTypeMaskKey              = @"NumberTypeMask";
 NSString* const ForwardingsSelectionKey        = @"ForwardingsSelection";
 NSString* const CurrencyCodeKey                = @"CurrencyCode";
@@ -133,6 +134,7 @@ static NSUserDefaults*  userDefaults;
         [dictionary setObject:@(NO)                                              forKey:AllowCellularDataCallsKey];
         [dictionary setObject:@(YES)                                             forKey:ShowCallerIdKey];
         [dictionary setObject:@(NO)                                              forKey:CallbackModeKey];
+        [dictionary setObject:[self verifiedE164] ? [self verifiedE164] : @""    forKey:CallbackCallerIdKey];
         [dictionary setObject:@(NumberTypeGeographicMask)                        forKey:NumberTypeMaskKey];
         [dictionary setObject:@(0)                                               forKey:ForwardingsSelectionKey];
         [dictionary setObject:@""                                                forKey:CurrencyCodeKey];
@@ -372,6 +374,18 @@ static NSUserDefaults*  userDefaults;
 - (void)setCallbackMode:(BOOL)callbackMode
 {
     [userDefaults setBool:callbackMode forKey:CallbackModeKey];
+}
+
+
+- (NSString*)callbackCallerId
+{
+    return [userDefaults objectForKey:CallbackCallerIdKey];
+}
+
+
+- (void)setCallbackCallerId:(NSString *)callbackCallerId
+{
+    [userDefaults setObject:callbackCallerId forKey:CallbackCallerIdKey];
 }
 
 

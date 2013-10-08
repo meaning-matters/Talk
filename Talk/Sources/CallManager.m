@@ -456,6 +456,32 @@ static SipInterface*    sipInterface;
     {
         if ([Settings sharedSettings].callbackMode == YES)
         {
+            if ([phoneNumber isValid] == NO)
+            {
+                NSString*         title;
+                NSString*         message;
+
+                title   = NSLocalizedStringWithDefaultValue(@"Callback InvalidTitle", nil,
+                                                            [NSBundle mainBundle], @"Invalid Number",
+                                                            @"Alert title: Invalid phone number\n"
+                                                            @"[iOS alert title size]");
+
+                message = NSLocalizedStringWithDefaultValue(@"Callback InvalidMessage", nil,
+                                                            [NSBundle mainBundle],
+                                                            @"The number you're trying to call does not seem to be "
+                                                            @"valid.",
+                                                            @"Alert message: ...\n"
+                                                            @"[iOS alert message size]");
+
+                [BlockAlertView showAlertViewWithTitle:title
+                                               message:message
+                                            completion:nil
+                                     cancelButtonTitle:[Strings closeString]
+                                     otherButtonTitles:nil];
+
+                return call;
+            }
+
             __block NSString* activeUuid;
             NSString*         title;
             NSString*         message;
@@ -496,7 +522,7 @@ static SipInterface*    sipInterface;
 
             [[WebClient sharedClient] initiateCallbackForCallee:phoneNumber
                                                          caller:[[PhoneNumber alloc] initWithNumber:identity]
-                                                       identity:[[PhoneNumber alloc] initWithNumber:identity]
+                                                       identity:[[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].callbackCallerId]
                                                         privacy:![Settings sharedSettings].showCallerId
                                                           reply:^(WebClientStatus status, NSString* uuid)
             {

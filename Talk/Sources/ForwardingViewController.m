@@ -369,6 +369,8 @@ static const int    TextFieldCellTag = 1111;
     numberTextField.placeholder  = [Strings requiredString];
     numberTextField.text         = phoneNumber.asYouTypeFormat;
     numberTextField.keyboardType = UIKeyboardTypePhonePad;
+
+    [numberTextField removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
     [numberTextField addTarget:self
                         action:@selector(textFieldDidChange:)
               forControlEvents:UIControlEventEditingChanged];

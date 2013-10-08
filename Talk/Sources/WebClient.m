@@ -813,7 +813,7 @@ static NSDictionary* statuses;
 }
 
 
-// 32A. INITIATE CALLBACK
+// 32. INITIATE CALLBACK
 - (void)initiateCallbackForCallee:(PhoneNumber*)calleePhoneNumber
                            caller:(PhoneNumber*)callerPhoneNumber
                          identity:(PhoneNumber*)identityPhoneNumber
@@ -839,7 +839,7 @@ static NSDictionary* statuses;
 }
 
 
-// 32B. STOP CALLBACK
+// 33. STOP CALLBACK
 - (void)cancelCallbackForUuid:(NSString*)uuid
                         reply:(void (^)(WebClientStatus status))reply
 {
@@ -854,6 +854,50 @@ static NSDictionary* statuses;
         else
         {
             reply(status);
+        }
+    }];
+}
+
+
+// 34. GET CALLBACK STATE
+- (void)retrieveCallbackStateForUuid:(NSString*)uuid
+                               reply:(void (^)(WebClientStatus status, CallState state))reply
+{
+    [self getPath:[NSString stringWithFormat:@"users/%@/2stage/state", [Settings sharedSettings].webUsername]
+       parameters:@{@"uuid" : uuid}
+            reply:^(WebClientStatus status, id content)
+    {
+        if (status == WebClientStatusOk)
+        {
+            NSString* stateString = content[@"state"];
+            CallState state;
+
+            if ([stateString isEqualToString:@"ringing"])
+            {
+                state = CallStateRinging;
+            }
+            else if ([stateString isEqualToString:@"early"])
+            {
+                state = CallStateRinging;
+            }
+            else if ([stateString isEqualToString:@"answered"])
+            {
+                state = CallStateRinging;
+            }
+            else if ([stateString isEqualToString:@"hangup"])
+            {
+                state = CallStateEnded;
+            }
+            else
+            {
+                state = CallStateNone;
+            }
+
+            reply(status, state);
+        }
+        else
+        {
+            reply(status, CallStateFailed);
         }
     }];
 }
@@ -997,7 +1041,7 @@ static NSDictionary* statuses;
 }
 
 
-// 32A.
+// 32.
 - (void)cancelAllInitiateCallback
 {
     [self cancelAllHTTPOperationsWithMethod:@"POST"
@@ -1006,11 +1050,20 @@ static NSDictionary* statuses;
 }
 
 
-// 32B.
+// 33.
 - (void)cancelAllCancelCallback
 {
     [self cancelAllHTTPOperationsWithMethod:@"POST"
                                        path:[NSString stringWithFormat:@"users/%@/2stage/cancel",
+                                             [Settings sharedSettings].webUsername]];
+}
+
+
+// 34.
+- (void)cancelAllretrieveCallbackState
+{
+    [self cancelAllHTTPOperationsWithMethod:@"POST"
+                                       path:[NSString stringWithFormat:@"users/%@/2stage/state",
                                              [Settings sharedSettings].webUsername]];
 }
 

@@ -9,6 +9,7 @@
 #import "AFHTTPClient.h"
 #import "NumberType.h"
 #import "PhoneNumber.h"
+#import "Call.h"
 
 
 typedef enum
@@ -153,16 +154,20 @@ typedef enum
 - (void)retrieveVerificationStatusForPhoneNumber:(PhoneNumber*)phoneNumber
                                            reply:(void (^)(WebClientStatus status, BOOL calling, BOOL verified))reply;
 
-// 32A. INITIATE CALLBACK
+// 32. INITIATE CALLBACK
 - (void)initiateCallbackForCallee:(PhoneNumber*)calleePhoneNumber
                            caller:(PhoneNumber*)callerPhoneNumber
                          identity:(PhoneNumber*)identityPhoneNumber
                           privacy:(BOOL)privacy
                             reply:(void (^)(WebClientStatus status, NSString* uuid))reply;
 
-// 32B. STOP CALLBACK
+// 33. STOP CALLBACK
 - (void)cancelCallbackForUuid:(NSString*)uuid
                         reply:(void (^)(WebClientStatus status))reply;
+
+// 34. GET CALLBACK STATE
+- (void)retrieveCallbackStateForUuid:(NSString*)uuid
+                               reply:(void (^)(WebClientStatus status, CallState state))reply;
 
 #pragma mark - Cancel Methods
 
@@ -219,10 +224,13 @@ typedef enum
 // 30C.
 - (void)cancelAllRetrieveVerificationStatus;
 
-// 32A.
+// 32.
 - (void)cancelAllInitiateCallback;
 
-// 32B.
+// 33.
 - (void)cancelAllCancelCallback;
+
+// 34.
+- (void)cancelAllretrieveCallbackState;
 
 @end

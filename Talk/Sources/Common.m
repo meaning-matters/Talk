@@ -586,5 +586,4 @@
     [cell.contentView addSubview:imageView];
 }
 
-
 @end
