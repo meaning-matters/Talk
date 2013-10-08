@@ -320,6 +320,7 @@ static NSString*    defaultIsoCountryCode = @"";
     if ([format isEqualToString:@"invalid"])
     {
         format = nil;
+        NSLog(@"Invalid E164: %@.", self.number);
     }
 
     return format;

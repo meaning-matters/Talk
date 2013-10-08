@@ -454,7 +454,7 @@ static SipInterface*    sipInterface;
              [Common checkCountryOfPhoneNumber:phoneNumber completion:nil] &&
              [self checkWarnedAboutDefaultCli:identity])
     {
-        if ([Settings sharedSettings].callbackMode == YES)
+        if ([Settings sharedSettings].callbackMode == YES && [phoneNumber.originalFormat isEqualToString:@"200"] == NO)
         {
             if ([phoneNumber isValid] == NO)
             {
