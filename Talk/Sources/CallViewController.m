@@ -40,9 +40,6 @@ const NSTimeInterval    TransitionDuration = 0.5;
     {
         _calls = [NSMutableArray array];
 
-        callOptionsView.delegate = self;
-        callKeypadView.delegate = self;
-
         [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
         [UIApplication sharedApplication].idleTimerDisabled = YES;
     }

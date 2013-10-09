@@ -114,3 +114,5 @@
 * Replace DTMF keepalive with something else that always works.
 
 * Only start sip when account, check restarts
+
+* Do simIsoCountryCode in Settings VC en elders. niet met ==/!= nil maar met length.

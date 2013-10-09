@@ -304,14 +304,13 @@ typedef enum
                 }
                                                           cancelButtonTitle:[Strings cancelString]
                                                           otherButtonTitles:[Strings okString], nil];
-
             }
             else if (indexPath.row == 2)
             {
                 __block BlockAlertView*  alert;
                 NSString*                title;
                 NSString*                message;
-                PhoneNumber*             verifiedPhoneNumber = [[PhoneNumber alloc] initWithNumber:settings.verifiedE164];
+                PhoneNumber*             verifiedPhoneNumber = [[PhoneNumber alloc] initWithNumber:settings.callbackCallerId];
 
                 title   = NSLocalizedStringWithDefaultValue(@"Setting EnterNumberTitle", nil,
                                                             [NSBundle mainBundle], @"Enter Shown Number",
@@ -446,8 +445,8 @@ typedef enum
 
 - (UITableViewCell*)homeCountryCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
-    UISwitch*           switchView;
+    UITableViewCell* cell;
+    UISwitch*        switchView;
 
     if ([NetworkStatus sharedStatus].simIsoCountryCode != nil && indexPath.row == 0)
     {
