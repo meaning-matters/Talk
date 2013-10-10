@@ -38,17 +38,19 @@ static NSDictionary* statuses;
         [sharedInstance registerHTTPOperationClass:[AFJSONRequestOperation class]];
         [sharedInstance.operationQueue setMaxConcurrentOperationCount:6];
 
-        statuses = @{ @"OK":                          @(WebClientStatusOk),
-                      @"FAIL_INVALID_REQUEST":        @(WebClientStatusFailInvalidRequest),
-                      @"FAIL_SERVER_INTERNAL":        @(WebClientStatusFailServerIternal),
-                      @"FAIL_SERVICE_UNAVAILABLE":    @(WebClientStatusFailServiceUnavailable),
-                      @"FAIL_INVALID_RECEIPT":        @(WebClientStatusFailInvalidReceipt),
-                      @"FAIL_DEVICE_NAME_NOT_UNIQUE": @(WebClientStatusFailDeviceNameNotUnique),
-                      @"FAIL_NO_STATES_FOR_COUNTRY":  @(WebClientStatusFailNoStatesForCountry),
-                      @"FAIL_INVALID_INFO":           @(WebClientStatusFailInvalidInfo),
-                      @"FAIL_DATA_TOO_LARGE":         @(WebClientStatusFailDataTooLarge),
-                      @"FAIL_INSUFFICIENT_CREDIT":    @(WebClientStatusFailInsufficientCredit),
-                      @"FAIL_IVR_IN_USE" :            @(WebClientStatusFailIvrInUse) };
+        statuses = @{ @"OK"                           : @(WebClientStatusOk),
+                      @"FAIL_INVALID_REQUEST"         : @(WebClientStatusFailInvalidRequest),
+                      @"FAIL_SERVER_INTERNAL"         : @(WebClientStatusFailServerIternal),
+                      @"FAIL_SERVICE_UNAVAILABLE"     : @(WebClientStatusFailServiceUnavailable),
+                      @"FAIL_INVALID_RECEIPT"         : @(WebClientStatusFailInvalidReceipt),
+                      @"FAIL_DEVICE_NAME_NOT_UNIQUE"  : @(WebClientStatusFailDeviceNameNotUnique),
+                      @"FAIL_NO_STATES_FOR_COUNTRY"   : @(WebClientStatusFailNoStatesForCountry),
+                      @"FAIL_INVALID_INFO"            : @(WebClientStatusFailInvalidInfo),
+                      @"FAIL_DATA_TOO_LARGE"          : @(WebClientStatusFailDataTooLarge),
+                      @"FAIL_INSUFFICIENT_CREDIT"     : @(WebClientStatusFailInsufficientCredit),
+                      @"FAIL_IVR_IN_USE"              : @(WebClientStatusFailIvrInUse),
+                      @"FAIL_CALLBACK_ALREADY_ACTIVE" : @(WebClientStatusFailCallbackAlreadyActive),
+                      @"FAIL_NO_CALLBACK_FOUND"       : @(WebClientStatusFailNoCallbackFound) };
 
         [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     });
@@ -253,105 +255,119 @@ static NSDictionary* statuses;
     switch (status)
     {
         case WebClientStatusOk:
-            string = NSLocalizedStringWithDefaultValue(@"webClient StatusOk", nil, [NSBundle mainBundle],
+            string = NSLocalizedStringWithDefaultValue(@"WebClient StatusOk", nil, [NSBundle mainBundle],
                                                        @"Successful",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailInvalidRequest:
-            string = NSLocalizedStringWithDefaultValue(@"webClient FailInvalidRequest", nil, [NSBundle mainBundle],
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailInvalidRequest", nil, [NSBundle mainBundle],
                                                        @"Couldn't communicate with the server",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailServerIternal:
-            string = NSLocalizedStringWithDefaultValue(@"webClient FailServerIternal", nil, [NSBundle mainBundle],
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailServerIternal", nil, [NSBundle mainBundle],
                                                        @"Internal server issue",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailServiceUnavailable:
-            string = NSLocalizedStringWithDefaultValue(@"webClient FailServiceUnavailable", nil, [NSBundle mainBundle],
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailServiceUnavailable", nil, [NSBundle mainBundle],
                                                        @"Service is temporatily unavailable",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailInvalidReceipt:
-            string = NSLocalizedStringWithDefaultValue(@"webClient FailInvalidReceipt", nil, [NSBundle mainBundle],
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailInvalidReceipt", nil, [NSBundle mainBundle],
                                                        @"Electronic receipt is not valid",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailDeviceNameNotUnique:
-            string = NSLocalizedStringWithDefaultValue(@"webClient FailDeviceNameNotUnique", nil, [NSBundle mainBundle],
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailDeviceNameNotUnique", nil, [NSBundle mainBundle],
                                                        @"All devices you register must have a unique name",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailNoStatesForCountry:
-            string = NSLocalizedStringWithDefaultValue(@"webClient FailNoStatesForCountry", nil, [NSBundle mainBundle],
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailNoStatesForCountry", nil, [NSBundle mainBundle],
                                                        @"This country does not have states",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailInvalidInfo:
-            string = NSLocalizedStringWithDefaultValue(@"webClient FailInvalidInfo", nil, [NSBundle mainBundle],
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailInvalidInfo", nil, [NSBundle mainBundle],
                                                        @"Your name and address were not accepted",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailDataTooLarge:
-            string = NSLocalizedStringWithDefaultValue(@"webClient FailDataTooLarge", nil, [NSBundle mainBundle],
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailDataTooLarge", nil, [NSBundle mainBundle],
                                                        @"Too much data to load in one go",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailInsufficientCredit:
-            string = NSLocalizedStringWithDefaultValue(@"webClient FailInsufficientCredit", nil, [NSBundle mainBundle],
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailInsufficientCredit", nil, [NSBundle mainBundle],
                                                        @"You have not enough credit",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailIvrInUse:
-            string = NSLocalizedStringWithDefaultValue(@"webClient FailIvrInUse", nil, [NSBundle mainBundle],
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailIvrInUse", nil, [NSBundle mainBundle],
                                                        @"This Forwarding is still being used",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
+        case WebClientStatusFailCallbackAlreadyActive:
+            string = NSLocalizedStringWithDefaultValue(@"WebClient CallbackAlreadyActive", nil, [NSBundle mainBundle],
+                                                       @"There's already a callback request active",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailNoCallbackFound:
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailIvrInUse", nil, [NSBundle mainBundle],
+                                                       @"No callback request found",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
         case WebClientStatusFailNetworkProblem:
-            string = NSLocalizedStringWithDefaultValue(@"webClient FailNetworkProblem", nil, [NSBundle mainBundle],
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailNetworkProblem", nil, [NSBundle mainBundle],
                                                        @"There's a problem with the network",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailInvalidResponse:
-            string = NSLocalizedStringWithDefaultValue(@"webClient FailInvalidResponse", nil, [NSBundle mainBundle],
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailInvalidResponse", nil, [NSBundle mainBundle],
                                                        @"Invalid data received from server",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailNoAccount:
-            string = NSLocalizedStringWithDefaultValue(@"webClient FailNoAccount", nil, [NSBundle mainBundle],
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailNoAccount", nil, [NSBundle mainBundle],
                                                        @"There's no active account",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailUnspecified:
-            string = NSLocalizedStringWithDefaultValue(@"webClient FailUnspecified", nil, [NSBundle mainBundle],
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailUnspecified", nil, [NSBundle mainBundle],
                                                        @"An unspecified issue",
                                                        @"Status text.\n"
                                                        @"[].");
@@ -818,53 +834,41 @@ static NSDictionary* statuses;
                            caller:(PhoneNumber*)callerPhoneNumber
                          identity:(PhoneNumber*)identityPhoneNumber
                           privacy:(BOOL)privacy
-                            reply:(void (^)(WebClientStatus status, NSString* uuid))reply
+                            reply:(void (^)(WebClientStatus status))reply
 {
-    [self postPath:[NSString stringWithFormat:@"users/%@/2stage", [Settings sharedSettings].webUsername]
+    [self postPath:[NSString stringWithFormat:@"users/%@/callback", [Settings sharedSettings].webUsername]
         parameters:@{@"callee"   : [calleePhoneNumber   e164Format],
                      @"caller"   : [callerPhoneNumber   e164Format],
                      @"callerId" : [identityPhoneNumber e164Format],
                      @"privacy"  : privacy ? @"true" : @"false"}
              reply:^(WebClientStatus status, id content)
     {
-        if (status == WebClientStatusOk)
-        {
-            reply(status, content[@"uuid"]);
-        }
-        else
-        {
-            reply(status, nil);
-        }
+        reply(status);
     }];
 }
 
 
 // 33. STOP CALLBACK
-- (void)cancelCallbackForUuid:(NSString*)uuid
+- (void)stopCallbackForCaller:(PhoneNumber*)callerPhoneNumber
                         reply:(void (^)(WebClientStatus status))reply
 {
-    [self postPath:[NSString stringWithFormat:@"users/%@/2stage/cancel", [Settings sharedSettings].webUsername]
-        parameters:@{@"uuid"   : uuid}
-             reply:^(WebClientStatus status, id content)
+    [self deletePath:[NSString stringWithFormat:@"users/%@/callback/%@",
+                      [Settings sharedSettings].webUsername, [callerPhoneNumber e164FormatWithoutPlus]]
+          parameters:nil
+               reply:^(WebClientStatus status, id content)
     {
-        if (status == WebClientStatusOk)
-        {
-            reply(status);
-        }
-        else
-        {
-            reply(status);
-        }
+        reply ? reply(status) : 0;
     }];
 }
 
 
 // 34. GET CALLBACK STATE
-- (void)retrieveCallbackStateForUuid:(NSString*)uuid
-                               reply:(void (^)(WebClientStatus status, CallState state))reply
+- (void)retrieveCallbackStateForCaller:(PhoneNumber*)callerPhoneNumber
+                                 reply:(void (^)(WebClientStatus status, CallState state))reply
 {
-    [self getPath:[NSString stringWithFormat:@"users/%@/2stage/state", [Settings sharedSettings].webUsername]
-       parameters:@{@"uuid" : uuid}
+    [self getPath:[NSString stringWithFormat:@"users/%@/callback/%@",
+                   [Settings sharedSettings].webUsername, [callerPhoneNumber e164FormatWithoutPlus]]
+       parameters:nil
             reply:^(WebClientStatus status, id content)
     {
         if (status == WebClientStatusOk)
@@ -874,7 +878,7 @@ static NSDictionary* statuses;
 
             if ([stateString isEqualToString:@"ringing"])
             {
-                state = CallStateRinging;
+                state = CallStateCalling;
             }
             else if ([stateString isEqualToString:@"early"])
             {
@@ -882,7 +886,7 @@ static NSDictionary* statuses;
             }
             else if ([stateString isEqualToString:@"answered"])
             {
-                state = CallStateRinging;
+                state = CallStateConnected;
             }
             else if ([stateString isEqualToString:@"hangup"])
             {
@@ -897,6 +901,7 @@ static NSDictionary* statuses;
         }
         else
         {
+            NSLog(@"%@", content);
             reply(status, CallStateFailed);
         }
     }];
@@ -1045,26 +1050,26 @@ static NSDictionary* statuses;
 - (void)cancelAllInitiateCallback
 {
     [self cancelAllHTTPOperationsWithMethod:@"POST"
-                                       path:[NSString stringWithFormat:@"users/%@/2stage",
+                                       path:[NSString stringWithFormat:@"users/%@/callback",
                                              [Settings sharedSettings].webUsername]];
 }
 
 
 // 33.
-- (void)cancelAllCancelCallback
+- (void)cancelAllStopCallbackForCaller:(PhoneNumber*)callerPhoneNumber
 {
-    [self cancelAllHTTPOperationsWithMethod:@"POST"
-                                       path:[NSString stringWithFormat:@"users/%@/2stage/cancel",
-                                             [Settings sharedSettings].webUsername]];
+    [self cancelAllHTTPOperationsWithMethod:@"DELETE"
+                                       path:[NSString stringWithFormat:@"users/%@/callback/%@",
+                                             [Settings sharedSettings].webUsername, [callerPhoneNumber e164FormatWithoutPlus]]];
 }
 
 
 // 34.
-- (void)cancelAllretrieveCallbackState
+- (void)cancelAllretrieveCallbackStateForCaller:(PhoneNumber*)callerPhoneNumber
 {
-    [self cancelAllHTTPOperationsWithMethod:@"POST"
-                                       path:[NSString stringWithFormat:@"users/%@/2stage/state",
-                                             [Settings sharedSettings].webUsername]];
+    [self cancelAllHTTPOperationsWithMethod:@"GET"
+                                       path:[NSString stringWithFormat:@"users/%@/callback/%@",
+                                             [Settings sharedSettings].webUsername, [callerPhoneNumber e164FormatWithoutPlus]]];
 }
 
 @end

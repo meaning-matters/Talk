@@ -681,35 +681,41 @@
 }
 
 
+- (void)showNumberNotVerifiedAlert
+{
+    NSString*   title;
+    NSString*   message;
+
+    title   = NSLocalizedStringWithDefaultValue(@"Provisioning NotVerifiedTitle", nil,
+                                                [NSBundle mainBundle], @"Number Not Verified",
+                                                @"The user's phone number was not verified.\n"
+                                                @"[iOS alert title size].");
+    message = NSLocalizedStringWithDefaultValue(@"Provisioning NotVerifiedMessage", nil,
+                                                [NSBundle mainBundle],
+                                                @"Your number has not been verified.\n\n"
+                                                @"Make sure the phone number is correct, and that you "
+                                                @"entered the correct code.",
+                                                @"Alert message verifying the user's number failed.\n"
+                                                @"[iOS alert message size]");
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        [self setVerifyStep:2];
+    }
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
+
+}
+
+
 - (void)checkVerifyStatusWithRepeatCount:(int)count
 {
     WebClient* webClient = [WebClient sharedClient];
 
     if (--count == 0)
     {
-        NSString*   title;
-        NSString*   message;
-
-        //### This is a duplicate of the alert below.
-        title   = NSLocalizedStringWithDefaultValue(@"Provisioning NotVerifiedTitle", nil,
-                                                    [NSBundle mainBundle], @"Number Not Verified",
-                                                    @"The user's phone number was not verified.\n"
-                                                    @"[iOS alert title size].");
-        message = NSLocalizedStringWithDefaultValue(@"Provisioning NotVerifiedMessage", nil,
-                                                    [NSBundle mainBundle],
-                                                    @"Your number has not been verified.\n\n"
-                                                    @"Make sure the phone number is correct, and that you "
-                                                    @"entered the correct code.",
-                                                    @"Alert message verifying the user's number failed.\n"
-                                                    @"[iOS alert message size]");
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-         {
-             [self setVerifyStep:2];
-         }
-                             cancelButtonTitle:[Strings closeString]
-                             otherButtonTitles:nil];
+        [self showNumberNotVerifiedAlert];
 
         return;
     }
@@ -730,28 +736,7 @@
             }
             else if (calling == NO)
             {
-                NSString*   title;
-                NSString*   message;
-
-                title   = NSLocalizedStringWithDefaultValue(@"Provisioning NotVerifiedTitle", nil,
-                                                            [NSBundle mainBundle], @"Number Not Verified",
-                                                            @"The user's phone number was not verified.\n"
-                                                            @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"Provisioning NotVerifiedMessage", nil,
-                                                            [NSBundle mainBundle],
-                                                            @"Your number has not been verified.\n\n"
-                                                            @"Make sure the phone number is correct, and that you "
-                                                            @"entered the correct code.",
-                                                            @"Alert message verifying the user's number failed.\n"
-                                                            @"[iOS alert message size]");
-                [BlockAlertView showAlertViewWithTitle:title
-                                               message:message
-                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
-                {
-                    [self setVerifyStep:2];
-                }
-                                     cancelButtonTitle:[Strings closeString]
-                                     otherButtonTitles:nil];
+                [self showNumberNotVerifiedAlert];
             }
             else
             {

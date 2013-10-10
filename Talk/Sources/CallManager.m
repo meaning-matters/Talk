@@ -459,7 +459,7 @@ static SipInterface*    sipInterface;
             call.showCallerId   = [Settings sharedSettings].showCallerId;
 
             callbackViewController = [[CallbackViewController alloc] initWithCall:call];
-            callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            callbackViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             [AppDelegate.appDelegate.tabBarController presentViewController:callbackViewController
                                                                    animated:YES
                                                                  completion:^
@@ -529,7 +529,7 @@ static SipInterface*    sipInterface;
 
 - (void)endCall:(Call*)call
 {
-    if ([Settings sharedSettings].callbackMode == NO)
+    if ([Settings sharedSettings].callbackMode == NO || [call.calledNumber isEqualToString:@"200"] == YES)
     {
         if (call != nil && call.state != CallStateEnded && call.state != CallStateFailed)
         {

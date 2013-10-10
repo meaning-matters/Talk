@@ -15,20 +15,22 @@
 typedef enum
 {
     WebClientStatusOk,
-    WebClientStatusFailInvalidRequest      = 1001,
-    WebClientStatusFailServerIternal       = 1002,
-    WebClientStatusFailServiceUnavailable  = 1003,
-    WebClientStatusFailInvalidReceipt      = 1004,
-    WebClientStatusFailDeviceNameNotUnique = 1005,
-    WebClientStatusFailNoStatesForCountry  = 1006,
-    WebClientStatusFailInvalidInfo         = 1007,
-    WebClientStatusFailDataTooLarge        = 1008,
-    WebClientStatusFailInsufficientCredit  = 1009,
-    WebClientStatusFailIvrInUse            = 1010,
-    WebClientStatusFailNetworkProblem      = 1021, // Local.
-    WebClientStatusFailInvalidResponse     = 1022, // Local.
-    WebClientStatusFailNoAccount           = 1023, // Local.
-    WebClientStatusFailUnspecified         = 1024, // Local.
+    WebClientStatusFailInvalidRequest        = 1001,
+    WebClientStatusFailServerIternal         = 1002,
+    WebClientStatusFailServiceUnavailable    = 1003,
+    WebClientStatusFailInvalidReceipt        = 1004,
+    WebClientStatusFailDeviceNameNotUnique   = 1005,
+    WebClientStatusFailNoStatesForCountry    = 1006,
+    WebClientStatusFailInvalidInfo           = 1007,
+    WebClientStatusFailDataTooLarge          = 1008,
+    WebClientStatusFailInsufficientCredit    = 1009,
+    WebClientStatusFailIvrInUse              = 1010,
+    WebClientStatusFailCallbackAlreadyActive = 1011,
+    WebClientStatusFailNoCallbackFound       = 1012,
+    WebClientStatusFailNetworkProblem        = 1021, // Local.
+    WebClientStatusFailInvalidResponse       = 1022, // Local.
+    WebClientStatusFailNoAccount             = 1023, // Local.
+    WebClientStatusFailUnspecified           = 1024, // Local.
 } WebClientStatus;
 
 
@@ -162,12 +164,12 @@ typedef enum
                             reply:(void (^)(WebClientStatus status, NSString* uuid))reply;
 
 // 33. STOP CALLBACK
-- (void)cancelCallbackForUuid:(NSString*)uuid
+- (void)stopCallbackForCaller:(PhoneNumber*)callerPhoneNumber
                         reply:(void (^)(WebClientStatus status))reply;
 
 // 34. GET CALLBACK STATE
-- (void)retrieveCallbackStateForUuid:(NSString*)uuid
-                               reply:(void (^)(WebClientStatus status, CallState state))reply;
+- (void)retrieveCallbackStateForCaller:(PhoneNumber*)callerPhoneNumber
+                                 reply:(void (^)(WebClientStatus status, CallState state))reply;
 
 #pragma mark - Cancel Methods
 
@@ -228,9 +230,9 @@ typedef enum
 - (void)cancelAllInitiateCallback;
 
 // 33.
-- (void)cancelAllCancelCallback;
+- (void)cancelAllStopCallbackForCaller:(PhoneNumber*)callerPhoneNumber;
 
 // 34.
-- (void)cancelAllretrieveCallbackState;
+- (void)cancelAllretrieveCallbackStateForCaller:(PhoneNumber*)callerPhoneNumber;
 
 @end

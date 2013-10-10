@@ -27,7 +27,7 @@ const NSTimeInterval    TransitionDuration = 0.5;
     CallMessageView* callMessageView;
     NSTimer*         durationTimer;
     int              duration;
-    NSString*        callUuid;
+    PhoneNumber*     callerPhoneNumber;
 }
 
 @end
@@ -88,20 +88,28 @@ const NSTimeInterval    TransitionDuration = 0.5;
 
 - (void)startCallback
 {
+    self.statusLabel.text      = NSLocalizedStringWithDefaultValue(@"Callback TryingText", nil, [NSBundle mainBundle],
+                                                                   @"trying...",
+                                                                   @"Text ...\n"
+                                                                   @"[N lines]");
     callMessageView.label.text = NSLocalizedStringWithDefaultValue(@"Callback StartMessage", nil, [NSBundle mainBundle],
                                                                    @"A request to call you back is being sent to our "
                                                                    @"server via internet.\n\nPlease wait.",
                                                                    @"Alert message: ...\n"
                                                                    @"[N lines]");
 
+    callerPhoneNumber = [[PhoneNumber alloc] initWithNumber:self.call.identityNumber];
     [[WebClient sharedClient] initiateCallbackForCallee:self.call.phoneNumber
-                                                 caller:[[PhoneNumber alloc] initWithNumber:self.call.identityNumber]
+                                                 caller:callerPhoneNumber
                                                identity:[[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].callbackCallerId]
                                                 privacy:![Settings sharedSettings].showCallerId
                                                   reply:^(WebClientStatus status, NSString* uuid)
     {
         if (status == WebClientStatusOk)
         {
+            self.call.state       = CallStateCalling;
+            self.statusLabel.text = [self.call stateString];
+
             callMessageView.label.text = NSLocalizedStringWithDefaultValue(@"Callback ProgressMessage", nil, [NSBundle mainBundle],
                                                                            @"Your number is being called.\n\nAfter you answer, "
                                                                            @"the person you're trying to reach will be "
@@ -109,12 +117,118 @@ const NSTimeInterval    TransitionDuration = 0.5;
                                                                            @"Then, wait until you're connected.",
                                                                            @"Alert message: ...\n"
                                                                            @"[N lines]");
-            callUuid = uuid;
-            NSLog(@"%@", uuid);
+
+            [self checkCallbackState];
+        }
+        else
+        {
+            NSString* format = NSLocalizedStringWithDefaultValue(@"Callback FailedMessage", nil, [NSBundle mainBundle],
+                                                                 @"Sending the callback request failed: %@.",
+                                                                 @"Alert message: ...\n"
+                                                                 @"[N lines]");
+            callMessageView.label.text = [NSString stringWithFormat:format, [WebClient localizedStringForStatus:status]];
         }
     }];
 }
 
+
+- (void)checkCallbackState
+{
+    WebClient* webClient = [WebClient sharedClient];
+
+    if (self.call.readyForCleanup == YES)
+    {
+        return;
+    }
+
+    [webClient retrieveCallbackStateForCaller:callerPhoneNumber
+                                        reply:^(WebClientStatus status, CallState state)
+    {
+        NSLog(@"CallState = %d", state);
+
+        if (status == WebClientStatusOk)
+        {
+            self.call.state       = state;
+            self.statusLabel.text = [self.call stateString];
+
+            BOOL            checkState;
+            switch (state)
+            {
+                case CallStateCalling:
+                    checkState = YES;
+                    break;
+
+                case CallStateRinging:
+                    checkState = YES;
+                    break;
+
+                case CallStateConnected:
+                    checkState = YES;
+                    callMessageView.label.text = NSLocalizedStringWithDefaultValue(@"Callback ConnectedMessage", nil, [NSBundle mainBundle],
+                                                                                   @"The party you were trying to reach "
+                                                                                   @"picked up the phone.\n\nIf you declined our call, or "
+                                                                                   @"answered another call, your callee got connected to "
+                                                                                   @"your voicemail.",
+                                                                                   @"Alert message: ...\n"
+                                                                                   @"[N lines]");
+                    break;
+
+                case CallStateEnded:
+                {
+                    callMessageView.label.text = @"";
+                    dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
+                    dispatch_after(when, dispatch_get_main_queue(), ^
+                    {
+                        [self endAction:nil];
+                    });
+
+                    checkState = NO;
+                    break;
+                }
+
+                case CallStateNone:
+                    checkState = YES;
+                    NSLog(@"Got spurious CallStateNone!");
+                    break;
+
+                default:
+                    checkState = YES;
+                    break;
+            }
+
+            if (checkState == YES)
+            {
+                [Common dispatchAfterInterval:1.0 onMain:^
+                {
+                    [self checkCallbackState];
+                }];
+            }
+         }
+         else
+         {
+
+         }
+    }];
+}
+
+
+#pragma mark - Button Actions
+
+- (IBAction)endAction:(id)sender
+{
+    self.endButton.enabled    = NO;
+    self.call.readyForCleanup = YES;
+
+    [[WebClient sharedClient] cancelAllInitiateCallback];
+    [[WebClient sharedClient] cancelAllretrieveCallbackStateForCaller:callerPhoneNumber];
+
+    [[WebClient sharedClient] stopCallbackForCaller:callerPhoneNumber reply:nil];
+
+    [[CallManager sharedManager] endCall:self.call];
+}
+
+
+#pragma mark - Layout
 
 - (void)viewWillLayoutSubviews
 {
@@ -352,17 +466,6 @@ const NSTimeInterval    TransitionDuration = 0.5;
     UIGraphicsEndImageContext();
     
     return image;
-}
-
-
-#pragma mark - Button Actions
-
-- (IBAction)endAction:(id)sender
-{
-    self.endButton.enabled   = NO;
-
-    self.call.readyForCleanup = YES;
-    [[CallManager sharedManager] endCall:self.call];
 }
 
 @end

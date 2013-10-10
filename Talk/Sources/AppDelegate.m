@@ -8,7 +8,6 @@
 //
 //### Want to remove CoreData? http://www.gravitywell.co.uk/blog/post/how-to-quickly-add-core-data-to-an-app-in-xcode-4
 
-#import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <HockeySDK/HockeySDK.h>
 #import "AppDelegate.h"
@@ -31,6 +30,7 @@
     NSMutableArray* defaultTabBarViewControllers;
     UIImageView*    defaultFadeImage;
     BOOL            hasFadedDefaultImage;
+    AVAudioPlayer*  welcomePlayer;
 }
 
 @end
@@ -93,6 +93,8 @@
 {
 #warning Don't forget to remove, and to switch to NO 'Application supports iTunes file sharing' in .plist.
     // [Common redirectStderrToFile];
+
+    [self playWelcome];
 
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
      UIRemoteNotificationTypeBadge |
@@ -197,8 +199,8 @@
     @[
         NSStringFromClass([NumbersViewController              class]),
         NSStringFromClass([ForwardingsViewController          class]),
-        NSStringFromClass([NBPeoplePickerNavigationController class]),
         NSStringFromClass([DialerViewController               class]),
+        NSStringFromClass([NBPeoplePickerNavigationController class]),
         NSStringFromClass([CreditViewController               class]),
         NSStringFromClass([HelpsViewController                class]),
         NSStringFromClass([AboutViewController                class]),
@@ -386,6 +388,24 @@
     {
         [self.numbersViewController fetchData];
     }];
+}
+
+
+- (void)playWelcome
+{
+    NSURL* url;
+
+    url                    = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Welcome" ofType:@"mp3"]];
+    welcomePlayer          = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
+    welcomePlayer.delegate = self;
+
+    [welcomePlayer play];
+}
+
+
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer*)player successfully:(BOOL)flag
+{
+    welcomePlayer = nil;
 }
 
 @end

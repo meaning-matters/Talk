@@ -899,6 +899,8 @@
 		48A0CE6B1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */; };
 		48A0CE6D1805D4B800B8A9F8 /* CallbackView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE6C1805D4B800B8A9F8 /* CallbackView.xib */; };
 		48A0CE6E1805D4B800B8A9F8 /* CallbackView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE6C1805D4B800B8A9F8 /* CallbackView.xib */; };
+		48A0CE70180740F300B8A9F8 /* Welcome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */; };
+		48A0CE71180740F300B8A9F8 /* Welcome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */; };
 		48A261C016FDE26100007638 /* CallMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A261BF16FDE26100007638 /* CallMessageView.xib */; };
 		48A261C116FDE26100007638 /* CallMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A261BF16FDE26100007638 /* CallMessageView.xib */; };
 		48A261C416FDE32400007638 /* CallMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A261C316FDE32400007638 /* CallMessageView.m */; };
@@ -1970,6 +1972,7 @@
 		48A0CE681805CFDC00B8A9F8 /* CallbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallbackViewController.h; sourceTree = "<group>"; };
 		48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallbackViewController.m; sourceTree = "<group>"; };
 		48A0CE6C1805D4B800B8A9F8 /* CallbackView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallbackView.xib; sourceTree = "<group>"; };
+		48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Welcome.mp3; path = Resources/Welcome.mp3; sourceTree = "<group>"; };
 		48A261BF16FDE26100007638 /* CallMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallMessageView.xib; sourceTree = "<group>"; };
 		48A261C216FDE32400007638 /* CallMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallMessageView.h; sourceTree = "<group>"; };
 		48A261C316FDE32400007638 /* CallMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallMessageView.m; sourceTree = "<group>"; };
@@ -3473,6 +3476,7 @@
 		48CB076F163D5E3500B07199 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */,
 				48D0A6EC1654D66E00FA2D98 /* CountryNames.json */,
 				48DD727F169CD4A200CD7080 /* Data.xcdatamodeld */,
 				485E389B17B7DEE60089F0F1 /* Helps.json */,
@@ -3741,6 +3745,7 @@
 				485F6A911637270100D61365 /* CK.png in Resources */,
 				485F6A921637270100D61365 /* CK@2x.png in Resources */,
 				485F6A931637270100D61365 /* CL.png in Resources */,
+				48A0CE70180740F300B8A9F8 /* Welcome.mp3 in Resources */,
 				485F6A941637270100D61365 /* CL@2x.png in Resources */,
 				485F6A951637270100D61365 /* CM.png in Resources */,
 				485F6A961637270100D61365 /* CM@2x.png in Resources */,
@@ -4456,6 +4461,7 @@
 				4849439E1753252800E1D5C4 /* MessageBlack@2x.png in Resources */,
 				484943A01753252800E1D5C4 /* MessageWhite.png in Resources */,
 				484943A21753252800E1D5C4 /* MessageWhite@2x.png in Resources */,
+				48A0CE71180740F300B8A9F8 /* Welcome.mp3 in Resources */,
 				484943A41753252800E1D5C4 /* TwitterBlack.png in Resources */,
 				484943A61753252800E1D5C4 /* TwitterBlack@2x.png in Resources */,
 				484943A81753252800E1D5C4 /* TwitterWhite.png in Resources */,

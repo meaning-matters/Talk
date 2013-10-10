@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 #import "AboutViewController.h"
 #import "CreditViewController.h"
 #import "DialerViewController.h"
@@ -20,7 +21,7 @@
 #import "NBPeoplePickerNavigationController.h"
 
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, AVAudioPlayerDelegate>
 
 @property (nonatomic, strong) UIWindow*                                 window;
 @property (nonatomic, strong) UITabBarController*                       tabBarController;

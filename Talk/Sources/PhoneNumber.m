@@ -283,8 +283,8 @@ static NSString*    defaultIsoCountryCode = @"";
 
         if (self.isPossible == NO)
         {
-            impossible = NSLocalizedStringWithDefaultValue(@"General:Number Impossible", nil,
-                                                           [NSBundle mainBundle], @"impossible",
+            impossible = NSLocalizedStringWithDefaultValue(@"General:Number Impossible", nil, [NSBundle mainBundle],
+                                                           @"impossible",
                                                            @"Indicates that the phone number is impossible (i.e. can't exist)\n"
                                                            @"[0.5 line small font].");
 
@@ -294,6 +294,15 @@ static NSString*    defaultIsoCountryCode = @"";
         {
             string = [NSString stringWithFormat:@"%@%@", country, [self typeString]];
         }
+    }
+    else if ([self.number isEqualToString:@"200"])
+    {
+        NSString* test;
+        test = NSLocalizedStringWithDefaultValue(@"General:Number Test", nil, [NSBundle mainBundle],
+                                                 @"test",
+                                                 @"Indicator of test phone number\n"
+                                                 @"[0.5 line small font].");
+        string = [NSString stringWithFormat:@"NumberBay - %@", test];
     }
     else
     {
