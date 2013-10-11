@@ -144,8 +144,6 @@ const NSTimeInterval    TransitionDuration = 0.5;
     [webClient retrieveCallbackStateForCaller:callerPhoneNumber
                                         reply:^(WebClientStatus status, CallState state)
     {
-        NSLog(@"CallState = %d", state);
-
         if (status == WebClientStatusOk)
         {
             self.call.state       = state;
@@ -178,9 +176,9 @@ const NSTimeInterval    TransitionDuration = 0.5;
                     callMessageView.label.text = @"";
                     dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
                     dispatch_after(when, dispatch_get_main_queue(), ^
-                    {
-                        [self endAction:nil];
-                    });
+                                   {
+                                       [self endAction:nil];
+                                   });
 
                     checkState = NO;
                     break;
@@ -196,18 +194,24 @@ const NSTimeInterval    TransitionDuration = 0.5;
                     break;
             }
 
+            NSLog(@"CallState = %d", state);
+
             if (checkState == YES)
             {
                 [Common dispatchAfterInterval:1.0 onMain:^
-                {
-                    [self checkCallbackState];
-                }];
+                 {
+                     [self checkCallbackState];
+                 }];
             }
-         }
-         else
-         {
-
-         }
+        }
+        else
+        {
+            // Keep trying.
+            [Common dispatchAfterInterval:1.0 onMain:^
+            {
+                [self checkCallbackState];
+            }];
+        }
     }];
 }
 
