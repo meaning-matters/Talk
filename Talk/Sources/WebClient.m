@@ -1065,7 +1065,7 @@ static NSDictionary* statuses;
 
 
 // 34.
-- (void)cancelAllretrieveCallbackStateForCaller:(PhoneNumber*)callerPhoneNumber
+- (void)cancelAllRetrieveCallbackStateForCaller:(PhoneNumber*)callerPhoneNumber
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
                                        path:[NSString stringWithFormat:@"users/%@/callback/%@",

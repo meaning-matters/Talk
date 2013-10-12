@@ -26,6 +26,7 @@
     int              duration;
     PhoneNumber*     callerPhoneNumber;
     NSMutableArray*  notificationObservers;
+    BOOL             callbackPending;
 }
 
 @end
@@ -41,6 +42,8 @@
 
         notificationObservers = [NSMutableArray array];
         [self addNotificationObservers];
+
+        [UIApplication sharedApplication].idleTimerDisabled = YES;
     }
 
     return self;
@@ -50,6 +53,8 @@
 - (void)dealloc
 {
     [self removeNotificationObservers];
+
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
 }
 
 
@@ -74,8 +79,8 @@
 
 - (void)startCallback
 {
-    self.statusLabel.text      = NSLocalizedStringWithDefaultValue(@"Callback TryingText", nil, [NSBundle mainBundle],
-                                                                   @"trying...",
+    self.statusLabel.text      = NSLocalizedStringWithDefaultValue(@"Callback RequestingText", nil, [NSBundle mainBundle],
+                                                                   @"requesting...",
                                                                    @"Text ...\n"
                                                                    @"[N lines]");
     callMessageView.label.text = NSLocalizedStringWithDefaultValue(@"Callback StartMessage", nil, [NSBundle mainBundle],
@@ -85,6 +90,7 @@
                                                                    @"[N lines]");
 
     callerPhoneNumber = [[PhoneNumber alloc] initWithNumber:self.call.identityNumber];
+    callbackPending   = YES;
     [[WebClient sharedClient] initiateCallbackForCallee:self.call.phoneNumber
                                                  caller:callerPhoneNumber
                                                identity:[[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].callbackCallerId]
@@ -108,11 +114,19 @@
         }
         else
         {
-            NSString* format = NSLocalizedStringWithDefaultValue(@"Callback FailedMessage", nil, [NSBundle mainBundle],
-                                                                 @"Sending the callback request failed: %@.",
+            callbackPending = NO;
+
+            self.call.state       = CallStateFailed;
+            self.statusLabel.text = [self.call stateString];
+
+            NSString* format = NSLocalizedStringWithDefaultValue(@"Callback RequestFailedMessage", nil, [NSBundle mainBundle],
+                                                                 @"Sending the callback request failed: %@.\n\n"
+                                                                 @"You can end this callback, or retry.",
                                                                  @"Alert message: ...\n"
                                                                  @"[N lines]");
             callMessageView.label.text = [NSString stringWithFormat:format, [WebClient localizedStringForStatus:status]];
+
+            [self showRetry];
         }
     }];
 }
@@ -120,15 +134,13 @@
 
 - (void)checkCallbackState
 {
-    WebClient* webClient = [WebClient sharedClient];
-
     if (self.call.readyForCleanup == YES)
     {
         return;
     }
 
-    [webClient retrieveCallbackStateForCaller:callerPhoneNumber
-                                        reply:^(WebClientStatus status, CallState state)
+    [[WebClient sharedClient] retrieveCallbackStateForCaller:callerPhoneNumber
+                                                       reply:^(WebClientStatus status, CallState state)
     {
         if (status == WebClientStatusOk)
         {
@@ -139,15 +151,18 @@
             switch (state)
             {
                 case CallStateCalling:
-                    checkState = YES;
+                    callbackPending = YES;
+                    checkState      = YES;
                     break;
 
                 case CallStateRinging:
-                    checkState = YES;
+                    callbackPending = YES;
+                    checkState      = YES;
                     break;
 
                 case CallStateConnected:
-                    checkState = YES;
+                    callbackPending = YES;
+                    checkState      = YES;
                     callMessageView.label.text = NSLocalizedStringWithDefaultValue(@"Callback ConnectedMessage", nil, [NSBundle mainBundle],
                                                                                    @"The party you were trying to reach "
                                                                                    @"picked up the phone.\n\nIf you declined our call, or "
@@ -159,14 +174,18 @@
 
                 case CallStateEnded:
                 {
-                    callMessageView.label.text = @"";
+                    callMessageView.label.text = NSLocalizedStringWithDefaultValue(@"Callback EndedMessage", nil, [NSBundle mainBundle],
+                                                                                   @"The call has ended.",
+                                                                                   @"Alert message: ...\n"
+                                                                                   @"[N lines]");
                     dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
                     dispatch_after(when, dispatch_get_main_queue(), ^
-                                   {
-                                       [self endAction:nil];
-                                   });
+                    {
+                        [self endAction:nil];
+                    });
 
-                    checkState = NO;
+                    callbackPending = NO;
+                    checkState      = NO;
                     break;
                 }
 
@@ -185,9 +204,9 @@
             if (checkState == YES)
             {
                 [Common dispatchAfterInterval:1.0 onMain:^
-                 {
-                     [self checkCallbackState];
-                 }];
+                {
+                    [self checkCallbackState];
+                }];
             }
         }
         else
@@ -210,11 +229,61 @@
     self.call.readyForCleanup = YES;
 
     [[WebClient sharedClient] cancelAllInitiateCallback];
-    [[WebClient sharedClient] cancelAllretrieveCallbackStateForCaller:callerPhoneNumber];
+    [[WebClient sharedClient] cancelAllRetrieveCallbackStateForCaller:callerPhoneNumber];
+    [[WebClient sharedClient] stopCallbackForCaller:callerPhoneNumber reply:^(WebClientStatus status)
+    {
+        if (status != WebClientStatusOk && callbackPending == YES)
+        {
+            NSString* title   = NSLocalizedStringWithDefaultValue(@"Callback EndFailedTitle", nil, [NSBundle mainBundle],
+                                                                  @"Ending Callback Failed",
+                                                                  @"Alert title: ...\n"
+                                                                  @"[1 line]");
+            NSString* message = NSLocalizedStringWithDefaultValue(@"Callback EndFailedMessage", nil, [NSBundle mainBundle],
+                                                                  @"There seems to be a callback pending, but ending "
+                                                                  @"it failed: %@.\n\n"
+                                                                  @"This may mean that your callee got connected to "
+                                                                  @"your voicemail.",
+                                                                  @"Alert message: ...\n"
+                                                                  @"[N lines]");
+            message = [NSString stringWithFormat:message, [WebClient localizedStringForStatus:status]];
 
-    [[WebClient sharedClient] stopCallbackForCaller:callerPhoneNumber reply:nil];
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:nil
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+        }
+    }];
 
     [[CallManager sharedManager] endCall:self.call];
+}
+
+
+- (IBAction)retryAction:(id)sender
+{
+    [self showLargeEndButton];
+
+    [self animateView:self.retryButton fromHidden:YES toHidden:YES];
+    [self animateView:self.infoLabel   fromHidden:NO  toHidden:NO];
+    [self animateView:self.calleeLabel fromHidden:NO  toHidden:NO];
+    [self animateView:self.statusLabel fromHidden:NO  toHidden:NO];
+
+    dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(TransitionDuration * NSEC_PER_SEC));
+    dispatch_after(when, dispatch_get_main_queue(), ^
+    {
+        [self startCallback];
+    });
+}
+
+
+- (void)showRetry
+{
+    [self showSmallEndButton];
+
+    [self animateView:self.retryButton fromHidden:YES toHidden:NO];
+    [self animateView:self.infoLabel   fromHidden:YES toHidden:NO];
+    [self animateView:self.calleeLabel fromHidden:YES toHidden:NO];
+    [self animateView:self.statusLabel fromHidden:YES toHidden:NO];
 }
 
 
@@ -245,10 +314,37 @@
             // Decline detected.
             NSLog(@">>>>>>>>>>>>>>>>>>>>>>>>> DECLINE");
 
+            self.statusLabel.text      = NSLocalizedStringWithDefaultValue(@"Callback DeclinedText", nil, [NSBundle mainBundle],
+                                                                           @"declined",
+                                                                           @"Text ...\n"
+                                                                           @"[N lines]");
+            callMessageView.label.text = NSLocalizedStringWithDefaultValue(@"Callback DeclinedMessage", nil, [NSBundle mainBundle],
+                                                                           @"You declined an incoming call.\n\nPlease end "
+                                                                           @"if you meant to decline our callback.  Or "
+                                                                           @"otherwise, please retry.",
+                                                                           @"Alert message: ...\n"
+                                                                           @"[N lines]");
+
+            [[WebClient sharedClient] cancelAllInitiateCallback];
+            [[WebClient sharedClient] cancelAllRetrieveCallbackStateForCaller:callerPhoneNumber];
             [[WebClient sharedClient] stopCallbackForCaller:callerPhoneNumber reply:^(WebClientStatus status)
             {
-                NSLog(@">>>> Stop status: %@", [WebClient localizedStringForStatus:status]);
+                if (status != WebClientStatusOk && callbackPending == YES)
+                {
+                    NSString* format = NSLocalizedStringWithDefaultValue(@"Callback StopFailedMessage", nil, [NSBundle mainBundle],
+                                                                         @"You declined an incoming call.  This resulted in an "
+                                                                         @"automatic attempt to stop the callback.  But "
+                                                                         @"this attempt failed: %@.\n\nThis may mean that "
+                                                                         @"your callee got connected to your voicemail.",
+                                                                         @"Alert message: ...\n"
+                                                                         @"[N lines]");
+                    callMessageView.label.text = [NSString stringWithFormat:format, [WebClient localizedStringForStatus:status]];
+
+                    // Reset flag because user is now aware of issue.  (Would otherwise result in alert on tapping End button.)
+                    callbackPending = NO;}
             }];
+
+            [self showRetry];
         }
 
         previousStatus = status;

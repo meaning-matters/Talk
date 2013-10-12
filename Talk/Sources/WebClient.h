@@ -233,6 +233,6 @@ typedef enum
 - (void)cancelAllStopCallbackForCaller:(PhoneNumber*)callerPhoneNumber;
 
 // 34.
-- (void)cancelAllretrieveCallbackStateForCaller:(PhoneNumber*)callerPhoneNumber;
+- (void)cancelAllRetrieveCallbackStateForCaller:(PhoneNumber*)callerPhoneNumber;
 
 @end

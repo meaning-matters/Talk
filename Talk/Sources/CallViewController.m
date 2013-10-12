@@ -45,6 +45,13 @@
 }
 
 
+- (void)dealloc
+{
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -233,9 +240,6 @@
 
 - (void)endCall:(Call*)call
 {
-    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
-    [UIApplication sharedApplication].idleTimerDisabled = NO;
-
 #warning Move this to SipInterface, and do when last call in array has been ended.
     [Common dispatchAfterInterval:0.5 onMain:^
     {
