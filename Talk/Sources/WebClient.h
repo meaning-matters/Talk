@@ -161,7 +161,7 @@ typedef enum
                            caller:(PhoneNumber*)callerPhoneNumber
                          identity:(PhoneNumber*)identityPhoneNumber
                           privacy:(BOOL)privacy
-                            reply:(void (^)(WebClientStatus status, NSString* uuid))reply;
+                            reply:(void (^)(WebClientStatus status))reply;
 
 // 33. STOP CALLBACK
 - (void)stopCallbackForCaller:(PhoneNumber*)callerPhoneNumber

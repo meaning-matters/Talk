@@ -538,12 +538,18 @@ static SipInterface*    sipInterface;
         else
         {
             // Call must have been ended earlier.
-            [callViewController dismissViewControllerAnimated:YES completion:nil];
+            [callViewController dismissViewControllerAnimated:YES completion:^
+            {
+                callViewController = nil;
+            }];
         }
     }
     else
     {
-        [callbackViewController dismissViewControllerAnimated:YES completion:nil];
+        [callbackViewController dismissViewControllerAnimated:YES completion:^
+        {
+            callbackViewController = nil;
+        }];
     }
 }
 
@@ -561,7 +567,10 @@ static SipInterface*    sipInterface;
         }
         else
         {
-            [callViewController dismissViewControllerAnimated:YES completion:nil];
+            [callViewController dismissViewControllerAnimated:YES completion:^
+            {
+                callViewController = nil;
+            }];
 
             return NO;
         }
@@ -569,7 +578,10 @@ static SipInterface*    sipInterface;
     else
     {
         // Call must have been ended earlier.
-        [callViewController dismissViewControllerAnimated:YES completion:nil];
+        [callViewController dismissViewControllerAnimated:YES completion:^
+        {
+            callViewController = nil;
+        }];
 
         return NO;
     }
@@ -718,8 +730,10 @@ static SipInterface*    sipInterface;
 #warning Do only when last call was ended.
     if (call.readyForCleanup)
     {
-        [callViewController dismissViewControllerAnimated:YES completion:nil];
-        callViewController = nil;
+        [callViewController dismissViewControllerAnimated:YES completion:^
+        {
+            callViewController = nil;
+        }];
     }
 }
 
@@ -750,8 +764,10 @@ static SipInterface*    sipInterface;
         if (reason == SipInterfaceCallFailedNoCredit)
         {
             // Get rid of call screen.
-            [callViewController dismissViewControllerAnimated:YES completion:nil];
-            callViewController = nil;
+            [callViewController dismissViewControllerAnimated:YES completion:^
+            {
+                callViewController = nil;
+            }];
 
             NSString*   title;
             title = NSLocalizedStringWithDefaultValue(@"Call:Failed AlertTitle", nil,

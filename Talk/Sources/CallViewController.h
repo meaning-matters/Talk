@@ -7,40 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CallBaseViewController.h"
 #import "CallOptionsView.h"
 #import "CallKeypadView.h"
 #import "Call.h"
 
 
-@interface CallViewController : UIViewController <CallOptionsViewDelegate, CallKeypadViewDelegate>
+@interface CallViewController : CallBaseViewController <CallOptionsViewDelegate, CallKeypadViewDelegate>
 
-@property (nonatomic, strong) NSMutableArray*       calls;
-
-@property (nonatomic, weak) IBOutlet UIImageView*   backgroundImageView;
-@property (nonatomic, weak) IBOutlet UIView*        topView;
-@property (nonatomic, weak) IBOutlet UIView*        centerRootView;
-@property (nonatomic, weak) IBOutlet UIView*        bottomView;
-
-@property (nonatomic, weak) IBOutlet UIImageView*   topImageView;
-@property (nonatomic, weak) IBOutlet UIImageView*   bottomImageView;
-
-@property (nonatomic, weak) IBOutlet UILabel*       infoLabel;
-@property (nonatomic, weak) IBOutlet UILabel*       calleeLabel;
-@property (nonatomic, weak) IBOutlet UILabel*       dtmfLabel;
-@property (nonatomic, weak) IBOutlet UILabel*       statusLabel;
-
-@property (nonatomic, weak) IBOutlet UIButton*      endButton;
-@property (nonatomic, weak) IBOutlet UIButton*      hideButton;
-@property (nonatomic, weak) IBOutlet UIButton*      retryButton;
-
+@property (nonatomic, strong) NSMutableArray* calls;
 
 - (id)initWithCall:(Call*)call;
-
-- (IBAction)endAction:(id)sender;
-
-- (IBAction)hideAction:(id)sender;
-
-- (IBAction)retryAction:(id)sender;
 
 - (void)addCall:(Call*)call;
 

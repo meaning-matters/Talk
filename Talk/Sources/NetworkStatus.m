@@ -168,6 +168,8 @@ static NSTimer*                 loadUrlTestTimer;
     callCenter = [[CTCallCenter alloc] init];
     callCenter.callEventHandler = ^(CTCall* call)
     {
+        NSLog(@">>>>>>>>>>>>>>>>>>>>> CallCenter: %d", [self convertCallState:call.callState]);
+
         [[NSNotificationCenter defaultCenter] postNotificationName:NetworkStatusMobileCallStateChangedNotification
                                                             object:nil
                                                           userInfo:@{@"status" : @([self convertCallState:call.callState])}];

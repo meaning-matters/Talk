@@ -897,10 +897,10 @@
 		4896D90116EBE613008A2354 /* NumberAreasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */; };
 		48A0CE6A1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */; };
 		48A0CE6B1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */; };
-		48A0CE6D1805D4B800B8A9F8 /* CallbackView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE6C1805D4B800B8A9F8 /* CallbackView.xib */; };
-		48A0CE6E1805D4B800B8A9F8 /* CallbackView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE6C1805D4B800B8A9F8 /* CallbackView.xib */; };
 		48A0CE70180740F300B8A9F8 /* Welcome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */; };
 		48A0CE71180740F300B8A9F8 /* Welcome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */; };
+		48A0CE781809BE3100B8A9F8 /* CallBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE771809BE3100B8A9F8 /* CallBaseViewController.m */; };
+		48A0CE791809BE3100B8A9F8 /* CallBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE771809BE3100B8A9F8 /* CallBaseViewController.m */; };
 		48A261C016FDE26100007638 /* CallMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A261BF16FDE26100007638 /* CallMessageView.xib */; };
 		48A261C116FDE26100007638 /* CallMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A261BF16FDE26100007638 /* CallMessageView.xib */; };
 		48A261C416FDE32400007638 /* CallMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A261C316FDE32400007638 /* CallMessageView.m */; };
@@ -1048,7 +1048,7 @@
 		48BC7F3D1702FDD1006671B5 /* NumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BC7F3B1702FDD1006671B5 /* NumberViewController.m */; };
 		48BC7F3F1702FE8D006671B5 /* NumberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BC7F3E1702FE8D006671B5 /* NumberView.xib */; };
 		48BC7F401702FE8D006671B5 /* NumberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BC7F3E1702FE8D006671B5 /* NumberView.xib */; };
-		48BD8BE81663E7A400F2CB45 /* CallView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BD8BE71663E7A400F2CB45 /* CallView.xib */; };
+		48BD8BE81663E7A400F2CB45 /* CallBaseView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */; };
 		48BD8BEC1663E87800F2CB45 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BD8BEB1663E87800F2CB45 /* CallViewController.m */; };
 		48BD8BED1663E87800F2CB45 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BD8BEB1663E87800F2CB45 /* CallViewController.m */; };
 		48C1D3C517D31309004F910D /* ProofImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C1D3C417D31309004F910D /* ProofImageViewController.m */; };
@@ -1971,8 +1971,9 @@
 		4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreasViewController.m; sourceTree = "<group>"; };
 		48A0CE681805CFDC00B8A9F8 /* CallbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallbackViewController.h; sourceTree = "<group>"; };
 		48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallbackViewController.m; sourceTree = "<group>"; };
-		48A0CE6C1805D4B800B8A9F8 /* CallbackView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallbackView.xib; sourceTree = "<group>"; };
 		48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Welcome.mp3; path = Resources/Welcome.mp3; sourceTree = "<group>"; };
+		48A0CE761809BE3100B8A9F8 /* CallBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallBaseViewController.h; sourceTree = "<group>"; };
+		48A0CE771809BE3100B8A9F8 /* CallBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallBaseViewController.m; sourceTree = "<group>"; };
 		48A261BF16FDE26100007638 /* CallMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallMessageView.xib; sourceTree = "<group>"; };
 		48A261C216FDE32400007638 /* CallMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallMessageView.h; sourceTree = "<group>"; };
 		48A261C316FDE32400007638 /* CallMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallMessageView.m; sourceTree = "<group>"; };
@@ -2066,7 +2067,7 @@
 		48BC7F3A1702FDD1006671B5 /* NumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberViewController.h; sourceTree = "<group>"; };
 		48BC7F3B1702FDD1006671B5 /* NumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberViewController.m; sourceTree = "<group>"; };
 		48BC7F3E1702FE8D006671B5 /* NumberView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberView.xib; sourceTree = "<group>"; };
-		48BD8BE71663E7A400F2CB45 /* CallView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallView.xib; sourceTree = "<group>"; };
+		48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallBaseView.xib; sourceTree = "<group>"; };
 		48BD8BEA1663E87800F2CB45 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallViewController.h; sourceTree = "<group>"; };
 		48BD8BEB1663E87800F2CB45 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallViewController.m; sourceTree = "<group>"; };
 		48C1D3C317D31308004F910D /* ProofImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProofImageViewController.h; sourceTree = "<group>"; };
@@ -3359,8 +3360,7 @@
 			isa = PBXGroup;
 			children = (
 				48AF45161649494400DFE3D8 /* AboutView.xib */,
-				48A0CE6C1805D4B800B8A9F8 /* CallbackView.xib */,
-				48BD8BE71663E7A400F2CB45 /* CallView.xib */,
+				48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */,
 				48EDD229166771B8007B89DA /* CallKeypadView.xib */,
 				48A261BF16FDE26100007638 /* CallMessageView.xib */,
 				48EDD226166770B8007B89DA /* CallOptionsView.xib */,
@@ -3407,6 +3407,8 @@
 				4865A9D717926CE00028785F /* BuyNumberViewController.m */,
 				48A0CE681805CFDC00B8A9F8 /* CallbackViewController.h */,
 				48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */,
+				48A0CE761809BE3100B8A9F8 /* CallBaseViewController.h */,
+				48A0CE771809BE3100B8A9F8 /* CallBaseViewController.m */,
 				48BD8BEA1663E87800F2CB45 /* CallViewController.h */,
 				48BD8BEB1663E87800F2CB45 /* CallViewController.m */,
 				4864B3FA1757C72F0006542F /* ContactUsViewController.h */,
@@ -3710,7 +3712,6 @@
 				485F6A6D1637270100D61365 /* BL.png in Resources */,
 				485F6A6E1637270100D61365 /* BL@2x.png in Resources */,
 				485F6A6F1637270100D61365 /* BM.png in Resources */,
-				48A0CE6D1805D4B800B8A9F8 /* CallbackView.xib in Resources */,
 				485F6A701637270100D61365 /* BM@2x.png in Resources */,
 				485F6A711637270100D61365 /* BN.png in Resources */,
 				485F6A721637270100D61365 /* BN@2x.png in Resources */,
@@ -4181,7 +4182,7 @@
 				48D0A6EA1654D66200FA2D98 /* InfoPlist.strings in Resources */,
 				48D0A6EE1654D66E00FA2D98 /* CountryNames.json in Resources */,
 				48D0A6FA1655E2C600FA2D98 /* KeypadView.xib in Resources */,
-				48BD8BE81663E7A400F2CB45 /* CallView.xib in Resources */,
+				48BD8BE81663E7A400F2CB45 /* CallBaseView.xib in Resources */,
 				48EDD20B1667652A007B89DA /* AddCall.png in Resources */,
 				48EDD20D1667652A007B89DA /* AddCall@2x.png in Resources */,
 				48EDD20F1667652A007B89DA /* ColorCurves.png in Resources */,
@@ -4418,7 +4419,6 @@
 				48367A1E17247B2D001A02AF /* CuePauseBlack.png in Resources */,
 				48367A2017247B2D001A02AF /* CuePauseBlack@2x.png in Resources */,
 				48367A2217247B2D001A02AF /* CuePauseWhite.png in Resources */,
-				48A0CE6E1805D4B800B8A9F8 /* CallbackView.xib in Resources */,
 				48367A2417247B2D001A02AF /* CuePauseWhite@2x.png in Resources */,
 				48367A2617247B2D001A02AF /* CuePlayBlack.png in Resources */,
 				48367A2817247B2D001A02AF /* CuePlayBlack@2x.png in Resources */,
@@ -4604,6 +4604,7 @@
 				48CA503D172C5EB400CB1B7B /* ForwardingViewController.m in Sources */,
 				48CA5042172FC6C800CB1B7B /* ForwardingSequenceViewController.m in Sources */,
 				48B0C3F9174989F500DAB3BD /* Keychain.m in Sources */,
+				48A0CE781809BE3100B8A9F8 /* CallBaseViewController.m in Sources */,
 				4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */,
 				4849433C175240EB00E1D5C4 /* LicenseViewController.m in Sources */,
 				4849436D17529DE100E1D5C4 /* ShareButton.m in Sources */,
@@ -4735,6 +4736,7 @@
 				48CA503E172C5EB400CB1B7B /* ForwardingViewController.m in Sources */,
 				48CA5043172FC6C800CB1B7B /* ForwardingSequenceViewController.m in Sources */,
 				48B0C3FA174989F500DAB3BD /* Keychain.m in Sources */,
+				48A0CE791809BE3100B8A9F8 /* CallBaseViewController.m in Sources */,
 				484943301752263600E1D5C4 /* LicensesViewController.m in Sources */,
 				4849433D175240EB00E1D5C4 /* LicenseViewController.m in Sources */,
 				4849436E17529DE100E1D5C4 /* ShareButton.m in Sources */,
