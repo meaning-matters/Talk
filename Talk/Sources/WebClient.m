@@ -522,7 +522,7 @@ static NSDictionary* statuses;
     (stateName != nil) ? [parameters setObject:stateName forKey:@"stateName"] : 0;
     (info      != nil) ? [parameters setObject:info      forKey:@"info"]      : 0;
 
-    [parameters setObject:@(true) forKey:@"debug"];
+    //[parameters setObject:@(true) forKey:@"debug"];
 
     [self postPath:[NSString stringWithFormat:@"users/%@/numbers", username]
         parameters:parameters
