@@ -18,11 +18,11 @@
 
 @interface CallViewController ()
 {
-    CallOptionsView*    callOptionsView;
-    CallKeypadView*     callKeypadView;
-    CallMessageView*    callMessageView;
-    NSTimer*            durationTimer;
-    int                 duration;
+    CallOptionsView* callOptionsView;
+    CallKeypadView*  callKeypadView;
+    CallMessageView* callMessageView;
+    NSTimer*         durationTimer;
+    int              duration;
 }
 
 @end

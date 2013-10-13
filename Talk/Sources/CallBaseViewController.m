@@ -18,7 +18,7 @@
 
 @implementation CallBaseViewController
 
-- (instancetype)init
+- (id)init
 {
     if (self = [super initWithNibName:@"CallView" bundle:nil])
     {
@@ -64,6 +64,7 @@
 - (IBAction)retryAction:(id)sender
 {
 }
+
 
 #pragma mark - Utility
 

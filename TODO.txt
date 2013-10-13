@@ -120,3 +120,5 @@
 * Make NSString properties copy, instead of strong:http://stackoverflow.com/questions/387959/nsstring-property-copy-or-retain
 
 * Use instancetype instead of id for all initXyz methods.
+
+* Make sure that CallbackVC's dealloc is called!  Moved its stuff to viewWillDisappear temporarily.

@@ -462,9 +462,7 @@ static SipInterface*    sipInterface;
             callbackViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             [AppDelegate.appDelegate.tabBarController presentViewController:callbackViewController
                                                                    animated:YES
-                                                                 completion:^
-            {
-            }];
+                                                                 completion:nil];
         }
         else
         {
