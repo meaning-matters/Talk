@@ -210,7 +210,7 @@ static NSDictionary* statuses;
         parameters:(NSDictionary*)parameters
              reply:(void (^)(WebClientStatus status, id content))reply
 {
-    NSLog(@" DEL %@ : %@", path, parameters);
+    NSLog(@" DELETE %@ : %@", path, parameters);
 
     if ([Settings sharedSettings].haveAccount == NO)
     {

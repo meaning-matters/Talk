@@ -209,8 +209,6 @@
                     break;
             }
 
-            NSLog(@"CallState = %d", state);
-
             if (checkState == YES)
             {
                 [Common dispatchAfterInterval:1.0 onMain:^
@@ -325,8 +323,6 @@
             didBecomeActive == YES)
         {
             // Decline detected.
-            NSLog(@">>>>>>>>>>>>>>>>>>>>>>>>> DECLINE");
-
             self.statusLabel.text      = NSLocalizedStringWithDefaultValue(@"Callback DeclinedText", nil, [NSBundle mainBundle],
                                                                            @"declined",
                                                                            @"Text ...\n"
@@ -383,7 +379,6 @@
                                                                   queue:[NSOperationQueue mainQueue]
                                                              usingBlock:^(NSNotification* note)
     {
-        NSLog(@"--- UIApplicationWillResignActiveNotification");
         didBecomeActive = NO;
     }];
 
@@ -394,7 +389,6 @@
                                                                   queue:[NSOperationQueue mainQueue]
                                                              usingBlock:^(NSNotification* note)
     {
-        NSLog(@"+++ UIApplicationDidBecomeActiveNotification");
         didBecomeActive = YES;
     }];
 
