@@ -50,12 +50,6 @@
 }
 
 
-- (void)dealloc
-{
-    NSLog(@"//### Never called, that's why we use viewWillDisappear for now.");
-}
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -80,7 +74,7 @@
     [super viewWillDisappear:animated];
 
     [UIApplication sharedApplication].idleTimerDisabled = NO;
-    [self removeNotificationObservers];
+    [self removeNotificationObservers]; // Can't be done in dealloc, because the observers prevent dealloc from being called.
 }
 
 
@@ -402,6 +396,8 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:observer];
     }
+
+    [notificationObservers removeAllObjects];   // Without this, dealloc will not be called.
 }
 
 @end
