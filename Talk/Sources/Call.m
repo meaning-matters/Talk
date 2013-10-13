@@ -10,7 +10,7 @@
 
 @implementation Call
 
-- (id)initWithPhoneNumber:(PhoneNumber*)phoneNumber direction:(CallDirection)direction
+- (instancetype)initWithPhoneNumber:(PhoneNumber*)phoneNumber direction:(CallDirection)direction
 {
     if (self = [super init])
     {

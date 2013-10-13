@@ -21,7 +21,7 @@
 
 @implementation LicensesViewController
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {

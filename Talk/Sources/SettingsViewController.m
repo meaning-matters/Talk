@@ -39,7 +39,7 @@ typedef enum
 
 #pragma mark - Basic Stuff
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super initWithNibName:@"SettingsView" bundle:nil])
     {

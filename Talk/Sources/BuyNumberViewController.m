@@ -30,11 +30,11 @@
 
 @implementation BuyNumberViewController
 
-- (id)initWithName:(NSString*)name
-    isoCountryCode:(NSString*)isoCountryCode
-              area:(NSDictionary*)area
-    numberTypeMask:(NumberTypeMask)numberTypeMask
-              info:(NSDictionary*)info
+- (instancetype)initWithName:(NSString*)name
+              isoCountryCode:(NSString*)isoCountryCode
+                        area:(NSDictionary*)area
+              numberTypeMask:(NumberTypeMask)numberTypeMask
+                        info:(NSDictionary*)info
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {

@@ -51,7 +51,7 @@
 
 @implementation ProvisioningViewController
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super initWithNibName:@"ProvisioningView" bundle:nil])
     {

@@ -11,10 +11,10 @@
 
 @interface BuyNumberViewController : UITableViewController
 
-- (id)initWithName:(NSString*)name
-    isoCountryCode:(NSString*)isoCountryCode
-              area:(NSDictionary*)area
-    numberTypeMask:(NumberTypeMask)numberTypeMask
-              info:(NSDictionary*)info;
+- (instancetype)initWithName:(NSString*)name
+              isoCountryCode:(NSString*)isoCountryCode
+                        area:(NSDictionary*)area
+              numberTypeMask:(NumberTypeMask)numberTypeMask
+                        info:(NSDictionary*)info;
 
 @end

@@ -19,7 +19,7 @@
 
 @implementation LicenseViewController
 
-- (id)initWithDictionary:(NSDictionary*)dictionary
+- (instancetype)initWithDictionary:(NSDictionary*)dictionary
 {
     if (self = [super initWithNibName:@"LicenseView" bundle:nil])
     {

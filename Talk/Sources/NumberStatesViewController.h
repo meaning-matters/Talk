@@ -12,8 +12,8 @@
 @interface NumberStatesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
                                                           UISearchBarDelegate, UISearchDisplayDelegate>
 
-- (id)initWithIsoCountryCode:(NSString*)isoCountryCode
-              numberTypeMask:(NumberTypeMask)numberTypeMask;
+- (instancetype)initWithIsoCountryCode:(NSString*)isoCountryCode
+                        numberTypeMask:(NumberTypeMask)numberTypeMask;
 
 
 @property (nonatomic, weak) IBOutlet UITableView*   tableView;

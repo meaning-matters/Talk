@@ -34,7 +34,7 @@
 
 @implementation NumberCountriesViewController
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super initWithNibName:@"NumberCountriesView" bundle:nil])
     {

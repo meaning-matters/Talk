@@ -44,7 +44,7 @@ typedef enum
 
 @implementation ForwardingsViewController
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super initWithNibName:@"ForwardingsView" bundle:nil])
     {

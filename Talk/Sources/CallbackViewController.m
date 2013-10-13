@@ -34,7 +34,7 @@
 
 @implementation CallbackViewController
 
-- (id)initWithCall:(Call*)call
+- (instancetype)initWithCall:(Call*)call
 {
     if (self = [super init])
     {

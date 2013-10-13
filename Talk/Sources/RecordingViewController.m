@@ -60,8 +60,8 @@ static const int    TextFieldCellTag = 1111;
 //### Use DataManager!
 @implementation RecordingViewController
 
-- (id)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
-                             recording:(RecordingData*)recording
+- (instancetype)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
+                                       recording:(RecordingData*)recording
 {
     fetchedResultsController = resultsController;
     self.recording           = recording;

@@ -21,7 +21,7 @@
 
 @implementation NumberAreaTitlesViewController
 
-- (id)initWithPurchaseInfo:(NSMutableDictionary*)info
+- (instancetype)initWithPurchaseInfo:(NSMutableDictionary*)info
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {

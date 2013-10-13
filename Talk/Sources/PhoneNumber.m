@@ -51,7 +51,7 @@ static NSString*    defaultIsoCountryCode = @"";
 
 #pragma mark - Creation
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super init])
     {
@@ -63,7 +63,7 @@ static NSString*    defaultIsoCountryCode = @"";
 }
 
 
-- (id)initWithNumber:(NSString*)number
+- (instancetype)initWithNumber:(NSString*)number
 {
     if (self = [super init])
     {
@@ -74,7 +74,7 @@ static NSString*    defaultIsoCountryCode = @"";
 }
 
 
-- (id)initWithNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode;
+- (instancetype)initWithNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode;
 {
     if (self = [super init])
     {

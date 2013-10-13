@@ -11,6 +11,6 @@
 
 @interface NumberForwardingsViewController : UITableViewController
 
-- (id)initWithNumber:(NumberData*)theNumber;
+- (instancetype)initWithNumber:(NumberData*)theNumber;
 
 @end

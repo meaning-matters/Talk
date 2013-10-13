@@ -18,7 +18,7 @@
 
 @implementation CallBaseViewController
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super initWithNibName:@"CallView" bundle:nil])
     {

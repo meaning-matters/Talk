@@ -31,7 +31,7 @@
 
 @implementation NumberAreaCitiesViewController
 
-- (id)initWithCitiesArray:(NSArray*)array purchaseInfo:(NSMutableDictionary*)info;
+- (instancetype)initWithCitiesArray:(NSArray*)array purchaseInfo:(NSMutableDictionary*)info;
 {
     if (self = [super initWithNibName:@"NumberAreaCitiesView" bundle:nil])
     {

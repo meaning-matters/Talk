@@ -15,6 +15,6 @@
 
 @property (nonatomic, weak) IBOutlet UITableView*   tableView;
 
-- (id)initWithNumber:(NumberData*)number;
+- (instancetype)initWithNumber:(NumberData*)number;
 
 @end

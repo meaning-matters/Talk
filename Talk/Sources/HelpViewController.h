@@ -12,6 +12,6 @@
 
 @property (nonatomic, weak) IBOutlet UITextView*    textView;
 
-- (id)initWithDictionary:(NSDictionary*)dictionary;
+- (instancetype)initWithDictionary:(NSDictionary*)dictionary;
 
 @end

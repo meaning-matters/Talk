@@ -31,7 +31,7 @@
 
 @implementation CreditViewController
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super initWithNibName:@"CreditView" bundle:nil])
     {

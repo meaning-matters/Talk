@@ -28,7 +28,7 @@
 
 @synthesize keypadView  = _keypadView;
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super initWithNibName:@"DialerView" bundle:nil])
     {

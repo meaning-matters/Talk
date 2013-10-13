@@ -16,7 +16,7 @@
 @property (nonatomic, strong) ForwardingData*   forwarding;
 @property (nonatomic, strong) NSMutableArray*   sequenceArray;
 
-- (id)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
-                            forwarding:(ForwardingData*)forwarding;
+- (instancetype)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
+                                      forwarding:(ForwardingData*)forwarding;
 
 @end

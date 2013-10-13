@@ -15,7 +15,7 @@
 
 @implementation ContactUsViewController
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super initWithNibName:@"ContactUsView" bundle:nil])
     {

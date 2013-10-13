@@ -12,8 +12,8 @@
 
 @interface ForwardingSequenceViewController : UITableViewController
 
-- (id)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
-                            forwarding:(ForwardingData*)theForwarding
-                          rootSequence:(NSMutableArray*)theRootSequence
-                              sequence:(NSMutableArray*)theSequence;
+- (instancetype)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
+                                      forwarding:(ForwardingData*)theForwarding
+                                    rootSequence:(NSMutableArray*)theRootSequence
+                                        sequence:(NSMutableArray*)theSequence;
 @end

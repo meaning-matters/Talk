@@ -31,8 +31,8 @@
 
 @implementation NumberStatesViewController
 
-- (id)initWithIsoCountryCode:(NSString*)theIsoCountryCode
-              numberTypeMask:(NumberTypeMask)theNumberTypeMask
+- (instancetype)initWithIsoCountryCode:(NSString*)theIsoCountryCode
+                        numberTypeMask:(NumberTypeMask)theNumberTypeMask
 {
     if (self = [super initWithNibName:@"NumberStatesView" bundle:nil])
     {

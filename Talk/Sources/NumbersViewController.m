@@ -32,7 +32,7 @@
 
 @implementation NumbersViewController
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super initWithNibName:@"NumbersView" bundle:nil])
     {

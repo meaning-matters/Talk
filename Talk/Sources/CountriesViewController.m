@@ -30,8 +30,8 @@
 
 @implementation CountriesViewController
 
-- (id)initWithIsoCountryCode:(NSString*)isoCountryCode
-                  completion:(void (^)(BOOL cancelled, NSString* isoCountryCode))completion;
+- (instancetype)initWithIsoCountryCode:(NSString*)isoCountryCode
+                            completion:(void (^)(BOOL cancelled, NSString* isoCountryCode))completion;
 {
     if (self = [super initWithNibName:@"CountriesView" bundle:nil])
     {

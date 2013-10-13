@@ -18,7 +18,7 @@
 
 @implementation ProofImageViewController
 
-- (id)initWithImageData:(NSData*)imageData
+- (instancetype)initWithImageData:(NSData*)imageData
 {
     if (self = [super initWithNibName:@"ProofImageView" bundle:nil])
     {

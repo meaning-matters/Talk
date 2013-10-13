@@ -10,6 +10,6 @@
 
 @interface NumberAreaTitlesViewController : UITableViewController
 
-- (id)initWithPurchaseInfo:(NSMutableDictionary*)info;
+- (instancetype)initWithPurchaseInfo:(NSMutableDictionary*)info;
 
 @end

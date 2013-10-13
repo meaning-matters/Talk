@@ -102,7 +102,10 @@ typedef enum
 @property (nonatomic, readonly) SipInterfaceRegistered  registered;
 
 
-- (id)initWithRealm:(NSString*)realm server:(NSString*)server username:(NSString*)username password:(NSString*)password;
+- (instancetype)initWithRealm:(NSString*)realm
+                       server:(NSString*)server
+                     username:(NSString*)username
+                     password:(NSString*)password;
 
 - (void)restart;
 

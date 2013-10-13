@@ -17,7 +17,7 @@
 
 @property (nonatomic, strong) NSMutableArray* calls;
 
-- (id)initWithCall:(Call*)call;
+- (instancetype)initWithCall:(Call*)call;
 
 - (void)addCall:(Call*)call;
 

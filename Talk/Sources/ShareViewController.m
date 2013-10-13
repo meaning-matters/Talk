@@ -21,7 +21,7 @@
 
 @implementation ShareViewController
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super initWithNibName:@"ShareView" bundle:nil])
     {

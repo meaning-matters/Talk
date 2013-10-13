@@ -87,7 +87,7 @@ static const int    TextFieldCellTag = 1234;
 
 @implementation NumberViewController
 
-- (id)initWithNumber:(NumberData*)theNumber
+- (instancetype)initWithNumber:(NumberData*)theNumber
 {
     if (self = [super initWithNibName:@"NumberView" bundle:nil])
     {

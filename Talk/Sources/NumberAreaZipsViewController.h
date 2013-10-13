@@ -13,6 +13,6 @@
 @property (nonatomic, weak) IBOutlet UITableView*   tableView;
 
 
-- (id)initWithCitiesArray:(NSArray*)array purchaseInfo:(NSMutableDictionary*)info;
+- (instancetype)initWithCitiesArray:(NSArray*)array purchaseInfo:(NSMutableDictionary*)info;
 
 @end

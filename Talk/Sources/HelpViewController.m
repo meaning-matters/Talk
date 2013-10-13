@@ -19,7 +19,7 @@
 
 @implementation HelpViewController
 
-- (id)initWithDictionary:(NSDictionary*)dictionary
+- (instancetype)initWithDictionary:(NSDictionary*)dictionary
 {
     if (self = [super initWithNibName:@"HelpView" bundle:nil])
     {

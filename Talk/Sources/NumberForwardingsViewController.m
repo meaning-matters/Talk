@@ -26,7 +26,7 @@
 
 @implementation NumberForwardingsViewController
 
-- (id)initWithNumber:(NumberData*)theNumber
+- (instancetype)initWithNumber:(NumberData*)theNumber
 {
     if (self = [super initWithStyle:UITableViewStylePlain])
     {

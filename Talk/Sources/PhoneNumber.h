@@ -40,11 +40,11 @@ typedef enum
 
 + (NSString*)defaultIsoCountryCode;
 
-- (id)init;
+- (instancetype)init;
 
-- (id)initWithNumber:(NSString*)number;
+- (instancetype)initWithNumber:(NSString*)number;
 
-- (id)initWithNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode;
+- (instancetype)initWithNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode;
 
 - (NSString*)callCountryCode;
 

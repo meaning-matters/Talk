@@ -15,7 +15,7 @@
 
 @implementation RecentsViewController
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super initWithNibName:@"RecentsView" bundle:nil])
     {

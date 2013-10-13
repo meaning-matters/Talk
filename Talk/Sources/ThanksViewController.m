@@ -12,7 +12,7 @@
 
 @implementation ThanksViewController
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super initWithNibName:@"ThanksView" bundle:nil])
     {

@@ -37,9 +37,9 @@
 
 @implementation NumberAreasViewController
 
-- (id)initWithIsoCountryCode:(NSString*)theIsoCountryCode
-                       state:(NSDictionary*)theState
-              numberTypeMask:(NumberTypeMask)theNumberTypeMask
+- (instancetype)initWithIsoCountryCode:(NSString*)theIsoCountryCode
+                                 state:(NSDictionary*)theState
+                        numberTypeMask:(NumberTypeMask)theNumberTypeMask
 {
     if (self = [super initWithNibName:@"NumberAreasView" bundle:nil])
     {

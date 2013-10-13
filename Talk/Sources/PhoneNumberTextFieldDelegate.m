@@ -11,7 +11,7 @@
 
 @implementation PhoneNumberTextFieldDelegate
 
-- (id)initWithTextField:(UITextField*)textField
+- (instancetype)initWithTextField:(UITextField*)textField
 {
     if (self = [super init])
     {

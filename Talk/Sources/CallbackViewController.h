@@ -15,6 +15,6 @@
 
 @property (nonatomic, strong) Call* call;
 
-- (id)initWithCall:(Call*)call;
+- (instancetype)initWithCall:(Call*)call;
 
 @end

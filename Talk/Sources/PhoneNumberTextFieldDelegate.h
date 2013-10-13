@@ -16,6 +16,6 @@
 @property (nonatomic, strong) UITextField*  textField;
 
 
-- (id)initWithTextField:(UITextField*)textField;
+- (instancetype)initWithTextField:(UITextField*)textField;
 
 @end

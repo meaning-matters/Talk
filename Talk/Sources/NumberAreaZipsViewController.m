@@ -32,7 +32,7 @@
 
 @implementation NumberAreaZipsViewController
 
-- (id)initWithCitiesArray:(NSArray*)array purchaseInfo:(NSMutableDictionary*)info
+- (instancetype)initWithCitiesArray:(NSArray*)array purchaseInfo:(NSMutableDictionary*)info
 {
     if (self = [super initWithNibName:@"NumberAreaZipsView" bundle:nil])
     {

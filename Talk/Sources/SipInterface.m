@@ -153,7 +153,10 @@ void showLog(int level, const char* data, int len)
 
 #pragma mark - Initialization
 
-- (id)initWithRealm:(NSString*)realm server:(NSString*)server username:(NSString*)username password:(NSString*)password;
+- (instancetype)initWithRealm:(NSString*)realm
+                       server:(NSString*)server
+                     username:(NSString*)username
+                     password:(NSString*)password;
 {
     if (self = [super init])
     {

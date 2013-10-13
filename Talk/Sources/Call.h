@@ -69,7 +69,7 @@ typedef enum
 @property (nonatomic, assign) int                       sipFailedStatus;
 
 
-- (id)initWithPhoneNumber:(PhoneNumber*)phoneNumber direction:(CallDirection)direction;
+- (instancetype)initWithPhoneNumber:(PhoneNumber*)phoneNumber direction:(CallDirection)direction;
 
 - (void)end;
 

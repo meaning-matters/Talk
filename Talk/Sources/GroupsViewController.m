@@ -32,7 +32,7 @@
 
 @implementation GroupsViewController
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super initWithNibName:@"GroupsView" bundle:nil])
     {

@@ -19,7 +19,7 @@
 
 @implementation AboutViewController
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super initWithNibName:@"AboutView" bundle:nil])
     {

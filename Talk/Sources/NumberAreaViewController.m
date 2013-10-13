@@ -103,10 +103,10 @@ static const int    TextFieldCellTag = 1234;
 
 @implementation NumberAreaViewController
 
-- (id)initWithIsoCountryCode:(NSString*)isoCountryCode
-                       state:(NSDictionary*)theState
-                        area:(NSDictionary*)theArea
-              numberTypeMask:(NumberTypeMask)theNumberTypeMask
+- (instancetype)initWithIsoCountryCode:(NSString*)isoCountryCode
+                                 state:(NSDictionary*)theState
+                                  area:(NSDictionary*)theArea
+                        numberTypeMask:(NumberTypeMask)theNumberTypeMask
 {    
     if (self = [super initWithNibName:@"NumberAreaView" bundle:nil])
     {

@@ -53,8 +53,8 @@ static const int    TextFieldCellTag = 1111;
 
 @implementation ForwardingViewController
 
-- (id)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
-                            forwarding:(ForwardingData*)forwarding
+- (instancetype)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
+                                      forwarding:(ForwardingData*)forwarding
 {
     fetchedResultsController = resultsController;
     self.forwarding          = forwarding;

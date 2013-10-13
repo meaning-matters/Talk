@@ -13,6 +13,6 @@
 @property (nonatomic, weak) IBOutlet UIImageView*   imageView;
 
 
-- (id)initWithImageData:(NSData*)imageData;
+- (instancetype)initWithImageData:(NSData*)imageData;
 
 @end

@@ -35,10 +35,10 @@ static const int    TextFieldCellTag = 1111;
 
 @implementation ForwardingSequenceViewController
 
-- (id)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
-                            forwarding:(ForwardingData*)theForwarding
-                          rootSequence:(NSMutableArray*)theRootSequence
-                              sequence:(NSMutableArray*)theSequence
+- (instancetype)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
+                                      forwarding:(ForwardingData*)theForwarding
+                                    rootSequence:(NSMutableArray*)theRootSequence
+                                        sequence:(NSMutableArray*)theSequence
 {
     fetchedResultsController = resultsController;
     forwarding               = theForwarding;
