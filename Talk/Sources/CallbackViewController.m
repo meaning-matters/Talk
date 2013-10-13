@@ -329,7 +329,12 @@
             [[WebClient sharedClient] cancelAllRetrieveCallbackStateForCaller:callerPhoneNumber];
             [[WebClient sharedClient] stopCallbackForCaller:callerPhoneNumber reply:^(WebClientStatus status)
             {
-                if (status != WebClientStatusOk && callbackPending == YES)
+                if (status == WebClientStatusOk)
+                {
+                    // Reset flag because user is now aware of issue.  (Would otherwise result in alert on tapping End button.)
+                    callbackPending = NO;
+                }
+                else if (callbackPending == YES)
                 {
                     NSString* format = NSLocalizedStringWithDefaultValue(@"Callback StopFailedMessage", nil, [NSBundle mainBundle],
                                                                          @"You declined an incoming call.  This resulted in an "
@@ -339,9 +344,7 @@
                                                                          @"Alert message: ...\n"
                                                                          @"[N lines]");
                     callMessageView.label.text = [NSString stringWithFormat:format, [WebClient localizedStringForStatus:status]];
-
-                    // Reset flag because user is now aware of issue.  (Would otherwise result in alert on tapping End button.)
-                    callbackPending = NO;}
+                }
             }];
 
             [self showRetry];
