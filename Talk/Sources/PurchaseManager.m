@@ -226,9 +226,9 @@
     parameters[@"receipt"] = [Base64 encode:transaction.transactionReceipt];
 
     [[WebClient sharedClient] retrieveWebAccount:parameters
-                                           reply:^(WebClientStatus status, id content)
+                                           reply:^(NSError* error, id content)
     {
-        if (status == WebClientStatusOk)
+        if (error == nil)
         {
             [Settings sharedSettings].webUsername  = ((NSDictionary*)content)[@"username"];
             [Settings sharedSettings].webPassword  = ((NSDictionary*)content)[@"password"];
@@ -254,9 +254,9 @@
             }
 
             [[WebClient sharedClient] retrieveSipAccount:parameters
-                                                   reply:^(WebClientStatus status, id content)
+                                                   reply:^(NSError* error, id content)
             {
-                if (status == WebClientStatusOk)
+                if (error == nil)
                 {
                     [Settings sharedSettings].sipServer   = ((NSDictionary*)content)[@"sipRealm"];
                     [Settings sharedSettings].sipRealm    = ((NSDictionary*)content)[@"sipRealm"];
@@ -274,9 +274,7 @@
                                                                                   [NSBundle mainBundle], @"Could not get VoIP account",
                                                                                   @"Error message ...\n"
                                                                                   @"[...].");
-                        NSError*  error       = [Common errorWithCode:status description:description];
-
-                        [self completeBuyWithSuccess:NO object:error];
+                        [self completeBuyWithSuccess:NO object:[Common errorWithCode:error.code description:description]];
                     }
                     else
                     {
@@ -286,7 +284,7 @@
                 }
             }];
         }
-        else if (status == WebClientStatusFailDeviceNameNotUnique)
+        else if (error.code == WebClientStatusFailDeviceNameNotUnique)
         {
             NSString* title;
             NSString* message;
@@ -318,8 +316,7 @@
                                                                       [NSBundle mainBundle], @"Could not get web account",
                                                                       @"Error message ...\n"
                                                                       @"[...].");
-            NSError*        error = [Common errorWithCode:status description:description];
-            [self completeBuyWithSuccess:NO object:error];
+            [self completeBuyWithSuccess:NO object:[Common errorWithCode:error.code description:description]];
         }
     }];
 }
@@ -331,9 +328,9 @@
 
     [[WebClient sharedClient] purchaseCreditForReceipt:receipt
                                           currencyCode:self.currencyCode
-                                                 reply:^(WebClientStatus status, float credit)
+                                                 reply:^(NSError* error, float credit)
     {
-        if (status == WebClientStatusOk)
+        if (error == nil)
         {
             [self finishTransaction:transaction];
             [Settings sharedSettings].credit = credit;
@@ -347,9 +344,7 @@
                                                                       @"later automatically",
                                                                       @"Error message ...\n"
                                                                       @"[...].");
-            NSError*        error = [Common errorWithCode:status description:description];
-            
-            [self completeBuyWithSuccess:NO object:error];
+            [self completeBuyWithSuccess:NO object:[Common errorWithCode:error.code description:description]];
         }
     }];
 }
@@ -367,9 +362,9 @@
             NSString* receipt = [Base64 encode:transaction.transactionReceipt];
             [[WebClient sharedClient] purchaseCreditForReceipt:receipt
                                                   currencyCode:self.currencyCode
-                                                         reply:^(WebClientStatus status, float credit)
+                                                         reply:^(NSError* error, float credit)
             {
-                if (status == WebClientStatusOk)
+                if (error == nil)
                 {
                     [Settings sharedSettings].pendingNumberBuy = nil;
                     [Settings sharedSettings].credit           = credit;
@@ -393,18 +388,18 @@
                                                      stateName:pendingNumberBuy[@"stateName"]
                                                     numberType:pendingNumberBuy[@"numberType"]
                                                           info:pendingNumberBuy[@"info"]
-                                                         reply:^(WebClientStatus status, NSString *e164)
-             {
-                 if (status == WebClientStatusOk)
-                 {
-                     [self finishTransaction:transaction];
-                 }
-                 else
-                 {
-                     NSLog(@"Retry processing of phone number failed.");
-                     //### Show alert?
-                 }
-             }];
+                                                         reply:^(NSError* error, NSString *e164)
+            {
+                if (error == nil)
+                {
+                    [self finishTransaction:transaction];
+                }
+                else
+                {
+                    NSLog(@"Retry processing of phone number failed.");
+                    //### Show alert?
+                }
+            }];
         }
     }
     else
@@ -449,12 +444,12 @@
                                                 @"[iOS alert title size - abbreviated: 'Can't Pay'].");
     message = NSLocalizedStringWithDefaultValue(@"Purchase:General ProductLoadFailAlertMessage", nil,
                                                 [NSBundle mainBundle],
-                                                @"Loading iTunes Store products failed: %@.\nPlease try again later.",
+                                                @"Loading iTunes Store products failed: %@\n\nPlease try again later.",
                                                 @"Alert message: Information could not be loaded over internet.\n"
                                                 @"[iOS alert message size]");
     if (error != nil)
     {
-        message = [NSString stringWithFormat:message, [error localizedDescription]];
+        message = [NSString stringWithFormat:message, error.localizedDescription];
     }
     else
     {
@@ -510,7 +505,7 @@
 
 - (void)paymentQueue:(SKPaymentQueue*)queue restoreCompletedTransactionsFailedWithError:(NSError*)error
 {
-    NSLog(@"restoreCompletedTransactionsFailedWithError: %@", [error localizedDescription]);
+    NSLog(@"restoreCompletedTransactionsFailedWithError: %@", error.localizedDescription);
     [Common enableNetworkActivityIndicator:NO];
 
     [self completeBuyWithSuccess:NO object:error];
@@ -803,9 +798,9 @@
                 NSString* receipt = [Settings sharedSettings].pendingNumberBuy[@"receipt"];
                 [[WebClient sharedClient] purchaseCreditForReceipt:receipt
                                                       currencyCode:self.currencyCode
-                                                             reply:^(WebClientStatus status, float credit)
+                                                             reply:^(NSError* error, float credit)
                 {
-                    if (status == WebClientStatusOk)
+                    if (error == nil)
                     {
                         [Settings sharedSettings].pendingNumberBuy = nil;
                         [Settings sharedSettings].credit           = credit;
@@ -831,11 +826,11 @@
                         message     = NSLocalizedStringWithDefaultValue(@"Purchase:General BuyingCreditFailedMessage", nil,
                                                                         [NSBundle mainBundle],
                                                                         @"Something went wrong while converting your number "
-                                                                        @"purchase to credit: %@.",
+                                                                        @"purchase to credit: %@",
                                                                         @"Alert message telling that a purchase of credit failed.\n"
                                                                         @"[iOS alert message size]");
-                        description = [WebClient localizedStringForStatus:status];
-                        message = [NSString stringWithFormat:message, description];
+                        description = error.localizedDescription;
+                        message     = [NSString stringWithFormat:message, description];
                         [BlockAlertView showAlertViewWithTitle:title
                                                        message:message
                                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
@@ -872,9 +867,9 @@
                                                      stateName:stateName
                                                     numberType:numberType
                                                           info:info
-                                                         reply:^(WebClientStatus status, NSString *e164)
+                                                         reply:^(NSError* error, NSString *e164)
             {
-                if (status == WebClientStatusOk)
+                if (error == nil)
                 {
                     [self finishTransaction:transaction];
                     completion ? completion(YES, transaction) : 0;
@@ -903,9 +898,7 @@
                                                                               @"This will be retried later automatically",
                                                                               @"Error message ...\n"
                                                                               @"[...].");
-                    NSError*  error       = [Common errorWithCode:status description:description];
-                    
-                    completion ? completion(NO, error) : 0;
+                    completion ? completion(NO, [Common errorWithCode:error.code description:description]) : 0;
                     self.buyCompletion = nil;
                 }
             }];

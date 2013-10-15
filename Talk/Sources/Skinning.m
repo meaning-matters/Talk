@@ -35,7 +35,13 @@
 }
 
 
--(void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
++ (UIColor*)callbackModeTintColor
+{
+    return [UIColor colorWithHue:0.4 saturation:0.9 brightness:0.85 alpha:1.0];
+}
+
+
+- (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
 {
     [self update];
 }
@@ -49,7 +55,7 @@
     }
     else
     {
-        [[AppDelegate appDelegate].tabBarController.tabBar setSelectedImageTintColor:[UIColor colorWithHue:0.4 saturation:0.9 brightness:0.85 alpha:1.0]];
+        [[AppDelegate appDelegate].tabBarController.tabBar setSelectedImageTintColor:[Skinning callbackModeTintColor]];
     }
 
     [[UINavigationBar appearance] setBarStyle:UIBarStyleBlackOpaque];

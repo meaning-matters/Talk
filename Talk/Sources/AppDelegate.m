@@ -96,10 +96,9 @@
 
     [self playWelcome];
 
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-     UIRemoteNotificationTypeBadge |
-     UIRemoteNotificationTypeSound |
-     UIRemoteNotificationTypeAlert];
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge |
+                                                                          UIRemoteNotificationTypeSound |
+                                                                          UIRemoteNotificationTypeAlert];
 
     if ([UIApplication sharedApplication].protectedDataAvailable)
     {
@@ -371,7 +370,7 @@
     [[NSFileManager defaultManager] removeItemAtURL:[Common audioDirectoryUrl] error:&error];
     if (error != nil)
     {
-        NSLog(@"//### Failed to remove audio directory: %@", [error localizedDescription]);
+        NSLog(@"//### Failed to remove audio directory: %@", error.localizedDescription);
     }
 
     [self.numbersViewController                          fetchData];

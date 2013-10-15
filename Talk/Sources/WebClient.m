@@ -61,25 +61,69 @@ static NSDictionary* statuses;
 
 #pragma mark - Helper Methods
 
-- (WebClientStatus)getResponseStatus:(NSDictionary*)response
+- (void)handleSuccess:(NSDictionary*)responseDictionary reply:(void (^)(NSError* error, id content))reply
 {
-    NSString*   string = response[@"status"];
-    NSNumber*   number = statuses[string];
+    NSInteger code;
+    id        content = responseDictionary[@"content"];
 
-    if (number != nil)
+    if (responseDictionary != nil && [responseDictionary isKindOfClass:[NSDictionary class]] && content != nil)
     {
-        return [number intValue];
+        NSString* string = responseDictionary[@"status"];
+        NSNumber* number = statuses[string];
+
+        code = (number != nil) ? [number intValue] : WebClientStatusFailUnspecified;
     }
     else
     {
-        return WebClientStatusFailUnspecified;
+        code = WebClientStatusFailInvalidResponse;
     }
+
+    if (code == WebClientStatusOk)
+    {
+        reply(nil, content);
+    }
+    else
+    {
+        reply([Common errorWithCode:code description:[WebClient localizedStringForStatus:code]], nil);
+    }
+}
+
+
+- (void)handleFailure:(NSError*)error reply:(void (^)(NSError* error, id content))reply
+{
+    if (error != nil && error.code != NSURLErrorCancelled)
+    {
+        reply(error, nil);
+    }
+    else
+    {
+        // Very unlikely that AFNetworking fails without error being set.
+        NSInteger code = WebClientStatusFailUnknown;
+        reply([Common errorWithCode:code description:[WebClient localizedStringForStatus:code]], nil);
+    }
+}
+
+
+- (BOOL)handleAccount:(void (^)(NSError* error, id content))reply
+{
+    if ([Settings sharedSettings].haveAccount == NO)
+    {
+        NSInteger code = WebClientStatusFailNoAccount;
+        reply([Common errorWithCode:code description:[WebClient localizedStringForStatus:code]], nil);
+    }
+    else
+    {
+        [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
+                                        password:[Settings sharedSettings].webPassword];
+    }
+
+    return [Settings sharedSettings].haveAccount;
 }
 
 
 - (void)postPath:(NSString*)path
       parameters:(NSDictionary*)parameters
-           reply:(void (^)(WebClientStatus status, id content))reply
+           reply:(void (^)(NSError* error, id content))reply
 {
     [self postPath:path parameters:parameters reply:reply checkAccount:YES];
 }
@@ -87,161 +131,97 @@ static NSDictionary* statuses;
 
 - (void)postPath:(NSString*)path
       parameters:(NSDictionary*)parameters
-           reply:(void (^)(WebClientStatus status, id content))reply
+           reply:(void (^)(NSError* error, id content))reply
     checkAccount:(BOOL)checkAccount
 {
     NSLog(@"POST %@ : %@", path, parameters);
 
-    if (checkAccount == YES && [Settings sharedSettings].haveAccount == NO)
+    if (checkAccount == YES && [self handleAccount:reply] == NO)
     {
-        reply(WebClientStatusFailNoAccount, nil);
-
         return;
     }
-
-    [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
-                                    password:[Settings sharedSettings].webPassword];
 
     [self postPath:path
         parameters:parameters
            success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
-        NSDictionary* reponseDictionary = responseObject;
-        if (responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
-        {
-            reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
-        }
-        else
-        {
-            reply(WebClientStatusFailInvalidResponse, nil);
-        }
+        [self handleSuccess:responseObject reply:reply];
     }
            failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
-        if (error != nil && error.code != NSURLErrorCancelled)
-        {
-            reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
-        }
+        [self handleFailure:error reply:reply];
     }];
 }
 
 
 - (void)putPath:(NSString*)path
      parameters:(NSDictionary*)parameters
-          reply:(void (^)(WebClientStatus status, id content))reply
+          reply:(void (^)(NSError* error, id content))reply
 {
     NSLog(@" PUT %@ : %@", path, parameters);
 
-    if ([Settings sharedSettings].haveAccount == NO)
+    if ([self handleAccount:reply] == NO)
     {
-        reply(WebClientStatusFailNoAccount, nil);
-
         return;
     }
-
-    [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
-                                    password:[Settings sharedSettings].webPassword];
 
     [self putPath:path
        parameters:parameters
           success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
-        NSDictionary* reponseDictionary = responseObject;
-        if (responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
-        {
-            reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
-        }
-        else
-        {
-            reply(WebClientStatusFailInvalidResponse, nil);
-        }
+        [self handleSuccess:responseObject reply:reply];
     }
           failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
-        if (error != nil && error.code != NSURLErrorCancelled)
-        {
-            reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
-        }
+        [self handleFailure:error reply:reply];
     }];
 }
 
 
 - (void)getPath:(NSString*)path
      parameters:(NSDictionary*)parameters
-          reply:(void (^)(WebClientStatus status, id content))reply
+          reply:(void (^)(NSError* error, id content))reply
 {
     NSLog(@" GET %@ : %@", path, parameters);
 
-    if ([Settings sharedSettings].haveAccount == NO)
+    if ([self handleAccount:reply] == NO)
     {
-        reply(WebClientStatusFailNoAccount, nil);
-
         return;
     }
-
-    [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
-                                    password:[Settings sharedSettings].webPassword];
 
     [self getPath:path
        parameters:parameters
           success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
-        NSDictionary* reponseDictionary = responseObject;
-        if (responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
-        {
-            reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
-        }
-        else
-        {
-            reply(WebClientStatusFailInvalidResponse, nil);
-        }
+        [self handleSuccess:responseObject reply:reply];
     }
           failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
-        if (error != nil && error.code != NSURLErrorCancelled)
-        {
-            reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
-        }
+        [self handleFailure:error reply:reply];
     }];
 }
 
 
 - (void)deletePath:(NSString*)path
         parameters:(NSDictionary*)parameters
-             reply:(void (^)(WebClientStatus status, id content))reply
+             reply:(void (^)(NSError* error, id content))reply
 {
     NSLog(@" DELETE %@ : %@", path, parameters);
 
-    if ([Settings sharedSettings].haveAccount == NO)
+    if ([self handleAccount:reply] == NO)
     {
-        reply(WebClientStatusFailNoAccount, nil);
-
         return;
     }
-
-    [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
-                                    password:[Settings sharedSettings].webPassword];
 
     [self deletePath:path
           parameters:parameters
              success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
-        NSDictionary* reponseDictionary = responseObject;
-        if (responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
-        {
-            reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
-        }
-        else
-        {
-            reply(WebClientStatusFailInvalidResponse, nil);
-        }
+        [self handleSuccess:responseObject reply:reply];
     }
              failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
-        if (error != nil && error.code != NSURLErrorCancelled)
-        {
-            reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
-        }
+        [self handleFailure:error reply:reply];
     }];
 }
 
@@ -256,119 +236,119 @@ static NSDictionary* statuses;
     {
         case WebClientStatusOk:
             string = NSLocalizedStringWithDefaultValue(@"WebClient StatusOk", nil, [NSBundle mainBundle],
-                                                       @"Successful",
+                                                       @"Successful.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailInvalidRequest:
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailInvalidRequest", nil, [NSBundle mainBundle],
-                                                       @"Couldn't communicate with the server",
+                                                       @"Couldn't communicate with the server.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailServerIternal:
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailServerIternal", nil, [NSBundle mainBundle],
-                                                       @"Internal server issue",
+                                                       @"Internal server issue.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailServiceUnavailable:
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailServiceUnavailable", nil, [NSBundle mainBundle],
-                                                       @"Service is temporatily unavailable",
+                                                       @"Service is temporatily unavailable.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailInvalidReceipt:
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailInvalidReceipt", nil, [NSBundle mainBundle],
-                                                       @"Electronic receipt is not valid",
+                                                       @"Electronic receipt is not valid.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailDeviceNameNotUnique:
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailDeviceNameNotUnique", nil, [NSBundle mainBundle],
-                                                       @"All devices you register must have a unique name",
+                                                       @"All devices you register must have a unique name.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailNoStatesForCountry:
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailNoStatesForCountry", nil, [NSBundle mainBundle],
-                                                       @"This country does not have states",
+                                                       @"This country does not have states.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailInvalidInfo:
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailInvalidInfo", nil, [NSBundle mainBundle],
-                                                       @"Your name and address were not accepted",
+                                                       @"Your name and address were not accepted.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailDataTooLarge:
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailDataTooLarge", nil, [NSBundle mainBundle],
-                                                       @"Too much data to load in one go",
+                                                       @"Too much data to load in one go.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailInsufficientCredit:
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailInsufficientCredit", nil, [NSBundle mainBundle],
-                                                       @"You have not enough credit",
+                                                       @"You have not enough credit.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailIvrInUse:
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailIvrInUse", nil, [NSBundle mainBundle],
-                                                       @"This Forwarding is still being used",
+                                                       @"This Forwarding is still being used.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailCallbackAlreadyActive:
             string = NSLocalizedStringWithDefaultValue(@"WebClient CallbackAlreadyActive", nil, [NSBundle mainBundle],
-                                                       @"There's already a callback request active",
+                                                       @"There's already a callback request active.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailNoCallbackFound:
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailIvrInUse", nil, [NSBundle mainBundle],
-                                                       @"No callback request found",
-                                                       @"Status text.\n"
-                                                       @"[].");
-            break;
-
-        case WebClientStatusFailNetworkProblem:
-            string = NSLocalizedStringWithDefaultValue(@"WebClient FailNetworkProblem", nil, [NSBundle mainBundle],
-                                                       @"There's a problem with the network",
-                                                       @"Status text.\n"
-                                                       @"[].");
-            break;
-
-        case WebClientStatusFailInvalidResponse:
-            string = NSLocalizedStringWithDefaultValue(@"WebClient FailInvalidResponse", nil, [NSBundle mainBundle],
-                                                       @"Invalid data received from server",
+                                                       @"No callback request found.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailNoAccount:
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailNoAccount", nil, [NSBundle mainBundle],
-                                                       @"There's no active account",
+                                                       @"There's no active account.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
 
         case WebClientStatusFailUnspecified:
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailUnspecified", nil, [NSBundle mainBundle],
-                                                       @"An unspecified issue",
+                                                       @"An unspecified issue.",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailInvalidResponse:
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailInvalidResponse", nil, [NSBundle mainBundle],
+                                                       @"Invalid data received from server.",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailUnknown:
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailInvalidResponse", nil, [NSBundle mainBundle],
+                                                       @"Unknown error received from server.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
@@ -382,7 +362,7 @@ static NSDictionary* statuses;
 
 // 1. CREATE/UPDATE ACCOUNT
 - (void)retrieveWebAccount:(NSDictionary*)parameters
-                     reply:(void (^)(WebClientStatus status, id content))reply
+                     reply:(void (^)(NSError* error, id content))reply
 {
     NSString* currencyCode = [Settings sharedSettings].currencyCode;
     [self postPath:[NSString stringWithFormat:@"users?currencyCode=%@", currencyCode]
@@ -391,29 +371,18 @@ static NSDictionary* statuses;
     {
         NSLog(@"postPath request: %@", operation.request.URL);
 
-        NSDictionary* reponseDictionary = responseObject;
-        if (responseObject && [reponseDictionary isKindOfClass:[NSDictionary class]])
-        {
-            reply([self getResponseStatus:reponseDictionary], reponseDictionary[@"content"]);
-        }
-        else
-        {
-            reply(WebClientStatusFailInvalidResponse, nil);
-        }
+        [self handleSuccess:responseObject reply:reply];
     }
            failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
-        if (error != nil && error.code != NSURLErrorCancelled)
-        {
-            reply(WebClientStatusFailNetworkProblem, nil); // Assumes server responds properly, or can be other problem.
-        }
+        [self handleFailure:error reply:reply];
     }];
 }
 
 
 // 2. ADD/UPDATE DEVICE
 - (void)retrieveSipAccount:(NSDictionary*)parameters
-                    reply:(void (^)(WebClientStatus status, id content))reply
+                    reply:(void (^)(NSError* error, id content))reply
 {
     [self postPath:[NSString stringWithFormat:@"users/%@/devices", [Settings sharedSettings].webUsername]
         parameters:parameters
@@ -435,7 +404,7 @@ static NSDictionary* statuses;
 
 
 // 6. GET LIST OF ALL AVAILABLE NUMBER COUNTRIES
-- (void)retrieveNumberCountries:(void (^)(WebClientStatus status, id content))reply
+- (void)retrieveNumberCountries:(void (^)(NSError* error, id content))reply
 {
     [self getPath:@"numbers/countries" parameters:nil reply:reply];
 }
@@ -443,7 +412,7 @@ static NSDictionary* statuses;
 
 // 7. GET LIST OF ALL AVAILABLE NUMBER STATES
 - (void)retrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode
-                                        reply:(void (^)(WebClientStatus status, id content))reply
+                                        reply:(void (^)(NSError* error, id content))reply
 {
     [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/states", isoCountryCode]
        parameters:nil
@@ -456,7 +425,7 @@ static NSDictionary* statuses;
                                    stateCode:(NSString*)stateCode
                               numberTypeMask:(NumberTypeMask)numberTypeMask
                                 currencyCode:(NSString*)currencyCode
-                                       reply:(void (^)(WebClientStatus status, id content))reply
+                                       reply:(void (^)(NSError* error, id content))reply
 {
     [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/states/%@/areas", isoCountryCode, stateCode]
        parameters:@{ @"numberType"   : [NumberType stringForNumberType:numberTypeMask],
@@ -469,7 +438,7 @@ static NSDictionary* statuses;
 - (void)retrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
                               numberTypeMask:(NumberTypeMask)numberTypeMask
                                 currencyCode:(NSString*)currencyCode
-                                       reply:(void (^)(WebClientStatus status, id content))reply
+                                       reply:(void (^)(NSError* error, id content))reply
 {
     [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/areas", isoCountryCode]
        parameters:@{ @"numberType"   : [NumberType stringForNumberType:numberTypeMask],
@@ -481,7 +450,7 @@ static NSDictionary* statuses;
 // 9. GET PURCHASE INFO DATA
 - (void)retrieveNumberAreaInfoForIsoCountryCode:(NSString*)isoCountryCode
                                        areaCode:(NSString*)areaCode
-                                          reply:(void (^)(WebClientStatus status, id content))reply;
+                                          reply:(void (^)(NSError* error, id content))reply;
 {
     [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/areas/%@", isoCountryCode, areaCode]
        parameters:nil
@@ -491,7 +460,7 @@ static NSDictionary* statuses;
 
 // 10. CHECK IF PURCHASE INFO IS VALID
 - (void)checkPurchaseInfo:(NSDictionary*)parameters
-                    reply:(void (^)(WebClientStatus status, id content))reply
+                    reply:(void (^)(NSError* error, id content))reply
 {
     [self postPath:@"numbers/check" parameters:parameters reply:reply];
 }
@@ -508,7 +477,7 @@ static NSDictionary* statuses;
                        stateName:(NSString*)stateName
                       numberType:(NSString*)numberType
                             info:(NSDictionary*)info
-                           reply:(void (^)(WebClientStatus status, NSString* e164))reply
+                           reply:(void (^)(NSError* error, NSString* e164))reply
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
     NSMutableDictionary* parameters = [@{@"receipt"        : receipt,
@@ -526,42 +495,40 @@ static NSDictionary* statuses;
 
     [self postPath:[NSString stringWithFormat:@"users/%@/numbers", username]
         parameters:parameters
-             reply:^(WebClientStatus status, id content)
+             reply:^(NSError* error, id content)
      {
-         if (status == WebClientStatusOk)
+         if (error == nil)
          {
-             reply(status, content[@"e164"]);
+             reply(nil, content[@"e164"]);
          }
          else
          {
-             reply(status, nil);
+             reply(error, nil);
          }
      }];
 }
 
 
 // 11B. UPDATE NUMBER'S NAME
-- (void)updateNumberForE164:(NSString*)e164
-                   withName:(NSString*)name
-                      reply:(void (^)(WebClientStatus status))reply
+- (void)updateNumberForE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self postPath:[NSString stringWithFormat:@"users/%@/numbers/%@", username, [e164 substringFromIndex:1]]
         parameters:@{@"name" : name}
-             reply:^(WebClientStatus status, id content)
+             reply:^(NSError* error, id content)
     {
-        reply(status);
+        reply(error);
     }];
 }
 
 
-// 11C.
+// 11C. EXTEND NUMBER
 
 
 
 // 12. GET LIST OF NUMBERS
-- (void)retrieveNumberList:(void (^)(WebClientStatus status, NSArray* list))reply
+- (void)retrieveNumberList:(void (^)(NSError* error, NSArray* list))reply
 {
     [self getPath:[NSString stringWithFormat:@"users/%@/numbers", [Settings sharedSettings].webUsername]
        parameters:nil
@@ -572,7 +539,7 @@ static NSDictionary* statuses;
 // 13. GET NUMBER INFO
 - (void)retrieveNumberForE164:(NSString*)e164
                  currencyCode:(NSString*)currencyCode
-                        reply:(void (^)(WebClientStatus status, NSDictionary* dictionary))reply
+                        reply:(void (^)(NSError* error, NSDictionary* dictionary))reply
 {
     [self getPath:[NSString stringWithFormat:@"users/%@/numbers/%@", [Settings sharedSettings].webUsername,
                                                                      [e164 substringFromIndex:1]]
@@ -583,21 +550,21 @@ static NSDictionary* statuses;
 
 // 14. BUY CREDIT
 - (void)purchaseCreditForReceipt:(NSString*)receipt currencyCode:(NSString*)currencyCode
-                           reply:(void (^)(WebClientStatus status, float credit))reply
+                           reply:(void (^)(NSError* error, float credit))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self postPath:[NSString stringWithFormat:@"users/%@/credit?currencyCode=%@", username, currencyCode]
         parameters:@{@"receipt" : receipt}
-             reply:^(WebClientStatus status, id content)
+             reply:^(NSError* error, id content)
     {
-        if (status == WebClientStatusOk)
+        if (error == nil)
         {
-            reply(status, [content[@"credit"] floatValue]);
+            reply(nil, [content[@"credit"] floatValue]);
         }
         else
         {
-            reply(status, 0.0f);
+            reply(error, 0.0f);
         }
     }];
 }
@@ -605,7 +572,7 @@ static NSDictionary* statuses;
 
 // 15. GET CURRENT CALLING CREDIT
 - (void)retrieveCreditForCurrencyCode:(NSString*)currencyCode
-                                reply:(void (^)(WebClientStatus status, id content))reply
+                                reply:(void (^)(NSError* error, id content))reply
 {
     [self getPath:[NSString stringWithFormat:@"users/%@/credit", [Settings sharedSettings].webUsername]
        parameters:@{@"currencyCode" : currencyCode}
@@ -629,7 +596,7 @@ static NSDictionary* statuses;
 - (void)createIvrForUuid:(NSString*)uuid
                     name:(NSString*)name
               statements:(NSArray*)statements
-                   reply:(void (^)(WebClientStatus status))reply
+                   reply:(void (^)(NSError* error))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"name"       : name,
@@ -637,9 +604,9 @@ static NSDictionary* statuses;
 
     [self putPath:[NSString stringWithFormat:@"users/%@/ivr/%@", username, uuid]
        parameters:parameters
-            reply:^(WebClientStatus status, id content)
+            reply:^(NSError* error, id content)
     {
-        reply(status);
+        reply(error);
     }];
 }
 
@@ -648,7 +615,7 @@ static NSDictionary* statuses;
 - (void)updateIvrForUuid:(NSString*)uuid
                     name:(NSString*)name
               statements:(NSArray*)statements
-                   reply:(void (^)(WebClientStatus status))reply
+                   reply:(void (^)(NSError* error))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"name"       : name,
@@ -656,30 +623,30 @@ static NSDictionary* statuses;
 
     [self postPath:[NSString stringWithFormat:@"users/%@/ivr/%@", username, uuid]
         parameters:parameters
-             reply:^(WebClientStatus status, id content)
+             reply:^(NSError* error, id content)
     {
-        reply(status);
+        reply(error);
     }];
 }
 
 
 // 20. DELETE IVR
 - (void)deleteIvrForUuid:(NSString*)uuid
-                   reply:(void (^)(WebClientStatus status))reply
+                   reply:(void (^)(NSError* error))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self deletePath:[NSString stringWithFormat:@"users/%@/ivr/%@", username, uuid]
           parameters:nil
-               reply:^(WebClientStatus status, id content)
+               reply:^(NSError* error, id content)
     {
-        reply(status);
+        reply(error);
     }];
 }
 
 
 // 21. GET LIST OF IVRS
-- (void)retrieveIvrList:(void (^)(WebClientStatus status, NSArray* list))reply
+- (void)retrieveIvrList:(void (^)(NSError* error, NSArray* list))reply
 {
     [self getPath:[NSString stringWithFormat:@"users/%@/ivr", [Settings sharedSettings].webUsername]
        parameters:nil
@@ -689,19 +656,19 @@ static NSDictionary* statuses;
 
 // 22. Download IVR
 - (void)retrieveIvrForUuid:(NSString*)uuid
-                     reply:(void (^)(WebClientStatus status, NSString* name, NSArray* statements))reply
+                     reply:(void (^)(NSError* error, NSString* name, NSArray* statements))reply
 {
     [self getPath:[NSString stringWithFormat:@"users/%@/ivr/%@", [Settings sharedSettings].webUsername, uuid]
        parameters:nil
-            reply:^(WebClientStatus status, id content)
+            reply:^(NSError* error, id content)
      {
-         if (status == WebClientStatusOk)
+         if (error == nil)
          {
-             reply(status, content[@"name"], content[@"statements"]);
+             reply(nil, content[@"name"], content[@"statements"]);
          }
          else
          {
-             reply(status, nil, nil);
+             reply(error, nil, nil);
          }
      }];
 }
@@ -710,36 +677,36 @@ static NSDictionary* statuses;
 // 23. SET/CLEAR IVR FOR A NUMBER
 - (void)setIvrOfE164:(NSString*)e164
                 uuid:(NSString*)uuid
-               reply:(void (^)(WebClientStatus status))reply
+               reply:(void (^)(NSError* error))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self putPath:[NSString stringWithFormat:@"users/%@/numbers/%@/ivr", username, [e164 substringFromIndex:1]]
        parameters:@{@"uuid" : uuid}
-            reply:^(WebClientStatus status, id content)
+            reply:^(NSError* error, id content)
     {
-        reply(status);
+        reply(error);
     }];
 }
 
 
 // 24. RETRIEVE IVR FOR A NUMBER
 - (void)retrieveIvrOfE164:(NSString*)e164
-                    reply:(void (^)(WebClientStatus status, NSString* uuid))reply
+                    reply:(void (^)(NSError* error, NSString* uuid))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self getPath:[NSString stringWithFormat:@"users/%@/numbers/%@/ivr", username, [e164 substringFromIndex:1]]
        parameters:nil
-            reply:^(WebClientStatus status, id content)
+            reply:^(NSError* error, id content)
     {
-        if (status == WebClientStatusOk)
+        if (error == nil)
         {
-            reply(status, ([content[@"uuid"] length] > 0) ? content[@"uuid"] : nil);
+            reply(nil, ([content[@"uuid"] length] > 0) ? content[@"uuid"] : nil);
         }
         else
         {
-            reply(status, nil);
+            reply(error, nil);
         }
     }];
 }
@@ -768,21 +735,21 @@ static NSDictionary* statuses;
 // 30A.
 - (void)retrieveVerificationCodeForPhoneNumber:(PhoneNumber*)phoneNumber
                                     deviceName:(NSString*)deviceName
-                                         reply:(void (^)(WebClientStatus status, NSString* code))reply
+                                         reply:(void (^)(NSError* error, NSString* code))reply
 {
     [self postPath:[NSString stringWithFormat:@"users/%@/verification?number=%@",
                                               [Settings sharedSettings].webUsername,
                                               [phoneNumber e164FormatWithoutPlus]]
         parameters:@{@"deviceName" : deviceName}
-             reply:^(WebClientStatus status, id content)
+             reply:^(NSError* error, id content)
     {
-        if (status == WebClientStatusOk)
+        if (error == nil)
         {
-            reply(status, content[@"code"]);
+            reply(nil, content[@"code"]);
         }
         else
         {
-            reply(status, nil);
+            reply(error, nil);
         }
     }];
 }
@@ -790,40 +757,33 @@ static NSDictionary* statuses;
 
 // 30B.
 - (void)requestVerificationCallForPhoneNumber:(PhoneNumber*)phoneNumber
-                                        reply:(void (^)(WebClientStatus status))reply
+                                        reply:(void (^)(NSError* error))reply
 {
     [self putPath:[NSString stringWithFormat:@"users/%@/verification?number=%@",
                     [Settings sharedSettings].webUsername, [phoneNumber e164FormatWithoutPlus]]
         parameters:nil
-             reply:^(WebClientStatus status, id content)
+             reply:^(NSError* error, id content)
      {
-         if (status == WebClientStatusOk)
-         {
-             reply(status);
-         }
-         else
-         {
-             reply(status);
-         }
+         reply(error);
      }];
 }
 
 
 // 30C.
 - (void)retrieveVerificationStatusForPhoneNumber:(PhoneNumber*)phoneNumber
-                                           reply:(void (^)(WebClientStatus status, BOOL calling, BOOL verified))reply
+                                           reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply
 {
     [self getPath:[NSString stringWithFormat:@"users/%@/verification", [Settings sharedSettings].webUsername]
        parameters:@{@"number" : [phoneNumber e164FormatWithoutPlus]}
-            reply:^(WebClientStatus status, id content)
+            reply:^(NSError* error, id content)
      {
-         if (status == WebClientStatusOk)
+         if (error == nil)
          {
-             reply(status, [content[@"calling"] boolValue], [content[@"verified"] boolValue]);
+             reply(nil, [content[@"calling"] boolValue], [content[@"verified"] boolValue]);
          }
          else
          {
-             reply(status, NO, NO);
+             reply(error, NO, NO);
          }
      }];
 }
@@ -834,47 +794,49 @@ static NSDictionary* statuses;
                            caller:(PhoneNumber*)callerPhoneNumber
                          identity:(PhoneNumber*)identityPhoneNumber
                           privacy:(BOOL)privacy
-                            reply:(void (^)(WebClientStatus status))reply
+                            reply:(void (^)(NSError* error))reply
 {
     [self postPath:[NSString stringWithFormat:@"users/%@/callback", [Settings sharedSettings].webUsername]
         parameters:@{@"callee"   : [calleePhoneNumber   e164Format],
                      @"caller"   : [callerPhoneNumber   e164Format],
                      @"callerId" : [identityPhoneNumber e164Format],
                      @"privacy"  : privacy ? @"true" : @"false"}
-             reply:^(WebClientStatus status, id content)
+             reply:^(NSError* error, id content)
     {
-        reply(status);
+        reply(error);
     }];
 }
 
 
 // 33. STOP CALLBACK
 - (void)stopCallbackForCaller:(PhoneNumber*)callerPhoneNumber
-                        reply:(void (^)(WebClientStatus status))reply
+                        reply:(void (^)(NSError* error))reply
 {
     [self deletePath:[NSString stringWithFormat:@"users/%@/callback/%@",
                       [Settings sharedSettings].webUsername, [callerPhoneNumber e164FormatWithoutPlus]]
           parameters:nil
-               reply:^(WebClientStatus status, id content)
+               reply:^(NSError* error, id content)
     {
-        reply ? reply(status) : 0;
+        reply ? reply(error) : 0;
     }];
 }
 
 
 // 34. GET CALLBACK STATE
 - (void)retrieveCallbackStateForCaller:(PhoneNumber*)callerPhoneNumber
-                                 reply:(void (^)(WebClientStatus status, CallState state))reply
+                                 reply:(void (^)(NSError* error, CallState state))reply
 {
     [self getPath:[NSString stringWithFormat:@"users/%@/callback/%@",
                    [Settings sharedSettings].webUsername, [callerPhoneNumber e164FormatWithoutPlus]]
        parameters:nil
-            reply:^(WebClientStatus status, id content)
+            reply:^(NSError* error, id content)
     {
-        if (status == WebClientStatusOk)
+        if (error == nil)
         {
             NSString* stateString = content[@"state"];
             CallState state;
+
+            NSLog(@"Callback State: %@", stateString);
 
             if ([stateString isEqualToString:@"ringing"])
             {
@@ -897,12 +859,12 @@ static NSDictionary* statuses;
                 state = CallStateNone;
             }
 
-            reply(status, state);
+            reply(nil, state);
         }
         else
         {
             NSLog(@"%@", content);
-            reply(status, CallStateFailed);
+            reply(error, CallStateFailed);
         }
     }];
 }
@@ -983,6 +945,15 @@ static NSDictionary* statuses;
     [self cancelAllHTTPOperationsWithMethod:@"POST"
                                        path:[NSString stringWithFormat:@"users/%@/numbers",
                                              [Settings sharedSettings].webUsername]];
+}
+
+
+// 11B.
+- (void)cancelAllUpdateNumberForE164:(NSString *)e164
+{
+    [self cancelAllHTTPOperationsWithMethod:@"POST"
+                                       path:[NSString stringWithFormat:@"users/%@/numbers/%@",
+                                             [Settings sharedSettings].webUsername, [e164 substringFromIndex:1]]];
 }
 
 

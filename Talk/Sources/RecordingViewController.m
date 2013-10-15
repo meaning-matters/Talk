@@ -116,7 +116,7 @@ static const int    TextFieldCellTag = 1111;
         }
         else
         {
-            NSLog(@"//### Failed to create audio recorder: %@", [error localizedDescription]);
+            NSLog(@"//### Failed to create audio recorder: %@", error.localizedDescription);
         }
 
         // Create a new managed object context for the new recording; set its parent to the fetched results controller's context.
@@ -138,7 +138,7 @@ static const int    TextFieldCellTag = 1111;
         }
         else
         {
-            NSLog(@"//### Failed to create audio player: %@", [error localizedDescription]);
+            NSLog(@"//### Failed to create audio player: %@", error.localizedDescription);
         }
 
         [audioPlayer prepareToPlay];
@@ -238,7 +238,7 @@ static const int    TextFieldCellTag = 1111;
             [[NSFileManager defaultManager] removeItemAtURL:audioRecorder.url error:&error];
             if (error != nil)
             {
-                NSLog(@"//### Failed to remove unused audio file: %@.", [error localizedDescription]);
+                NSLog(@"//### Failed to remove unused audio file: %@", error.localizedDescription);
             }
         }
     }
@@ -448,14 +448,14 @@ static const int    TextFieldCellTag = 1111;
 {
     if ([audioRecorder.url checkResourceIsReachableAndReturnError:nil] == YES)
     {
-        NSString*   title;
-        NSString*   message;
-        NSString*   buttonTitle;
+        NSString* title;
+        NSString* message;
+        NSString* button;
 
-        title = NSLocalizedStringWithDefaultValue(@"RecordingView OverwriteTitle", nil,
-                                                  [NSBundle mainBundle], @"Discard Recording",
-                                                  @"Alert title asking if existing audio recording can be overwritten\n"
-                                                  @"[iOS alert title size].");
+        title   = NSLocalizedStringWithDefaultValue(@"RecordingView OverwriteTitle", nil,
+                                                    [NSBundle mainBundle], @"Discard Recording",
+                                                    @"Alert title asking if existing audio recording can be overwritten\n"
+                                                    @"[iOS alert title size].");
 
         message = NSLocalizedStringWithDefaultValue(@"RecordingView OverwriteMessage", nil,
                                                     [NSBundle mainBundle],
@@ -464,10 +464,10 @@ static const int    TextFieldCellTag = 1111;
                                                     @"Alert message explaing that existing recording will be overwritten\n"
                                                     @"[iOS alert message size]");
 
-        buttonTitle = NSLocalizedStringWithDefaultValue(@"RecordingView RecordButtonTitle", nil,
-                                                        [NSBundle mainBundle], @"Record",
-                                                        @"Button title for starting an audio recording\n"
-                                                        @"[iOS alert button size 1/2 alert width].");
+        button  = NSLocalizedStringWithDefaultValue(@"RecordingView RecordButtonTitle", nil,
+                                                    [NSBundle mainBundle], @"Record",
+                                                    @"Button title for starting an audio recording\n"
+                                                    @"[iOS alert button size 1/2 alert width].");
 
         [BlockAlertView showAlertViewWithTitle:title message:message completion:^(BOOL cancelled, NSInteger buttonIndex)
         {
@@ -477,7 +477,7 @@ static const int    TextFieldCellTag = 1111;
             }
         }
                              cancelButtonTitle:[Strings cancelString]
-                             otherButtonTitles:buttonTitle, nil];
+                             otherButtonTitles:button, nil];
     }
     else
     {
@@ -527,7 +527,7 @@ static const int    TextFieldCellTag = 1111;
         }
         else
         {
-            NSLog(@"//### Failed to create audio player: %@", [error localizedDescription]);
+            NSLog(@"//### Failed to create audio player: %@", error.localizedDescription);
         }
     }
 
@@ -568,13 +568,13 @@ static const int    TextFieldCellTag = 1111;
 {
     if ([audioRecorder record] == NO)
     {
-        NSString*   title;
-        NSString*   message;
+        NSString* title;
+        NSString* message;
 
-        title = NSLocalizedStringWithDefaultValue(@"RecordingView CantContinueTitle", nil,
-                                                  [NSBundle mainBundle], @"Recording Stopped",
-                                                  @"A recording could not be continued after a pause\n"
-                                                  @"[iOS alert title size].");
+        title   = NSLocalizedStringWithDefaultValue(@"RecordingView CantContinueTitle", nil,
+                                                    [NSBundle mainBundle], @"Recording Stopped",
+                                                    @"A recording could not be continued after a pause\n"
+                                                    @"[iOS alert title size].");
 
         message = NSLocalizedStringWithDefaultValue(@"RecordingView OverwriteMessage", nil,
                                                     [NSBundle mainBundle],
@@ -625,7 +625,7 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)audioRecorderEncodeErrorDidOccur:(AVAudioRecorder*)recorder error:(NSError*)error
 {
-    NSLog(@"//### Audio recorder encoding error: %@.", [error localizedDescription]);
+    NSLog(@"//### Audio recorder encoding error: %@", error.localizedDescription);
 }
 
 
@@ -651,7 +651,7 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer*)player error:(NSError*)error
 {
-    NSLog(@"//### Audio player decoding error: %@.", [error localizedDescription]);
+    NSLog(@"//### Audio player decoding error: %@", error.localizedDescription);
 }
 
 
@@ -721,7 +721,7 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)enableSaveButton
 {
-    BOOL    hasRecording = ([audioRecorder.url checkResourceIsReachableAndReturnError:nil] == YES);
+    BOOL hasRecording = ([audioRecorder.url checkResourceIsReachableAndReturnError:nil] == YES);
 
     self.navigationItem.rightBarButtonItem.enabled = (name.length > 0) && ((hasRecording && !isPausedRecording) || !isNew);
 }
@@ -735,7 +735,7 @@ static const int    TextFieldCellTag = 1111;
     [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
     if (error != nil)
     {
-        NSLog(@"//### Failed to set audio-session category: %@.", [error localizedDescription]);
+        NSLog(@"//### Failed to set audio-session category: %@", error.localizedDescription);
 
         return;
     }

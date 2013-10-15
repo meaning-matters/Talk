@@ -231,9 +231,9 @@
     [self updateAmountCell:(CreditAmountCell*)[self.tableView cellForRowAtIndexPath:self.amountIndexPath]];
     
     [[WebClient sharedClient] retrieveCreditForCurrencyCode:[Settings sharedSettings].currencyCode
-                                                      reply:^(WebClientStatus status, id content)
+                                                      reply:^(NSError* error, id content)
     {
-        if (status == WebClientStatusOk)
+        if (error == nil)
         {
             [Settings sharedSettings].credit = [content[@"credit"] floatValue];
             self.loadingcreditFailed = NO;
@@ -251,10 +251,10 @@
             message = NSLocalizedStringWithDefaultValue(@"BuyCredit FailedBuyCreditMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"Something went wrong while loading your credit: "
-                                                        @"%@.\n\nPlease try again later.",
+                                                        @"%@\n\nPlease try again later.",
                                                         @"Message telling that buying credit failed\n"
                                                         @"[iOS alert message size]");
-            string = [WebClient localizedStringForStatus:status];
+            string  = error.localizedDescription;
             message = [NSString stringWithFormat:message, string];
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message

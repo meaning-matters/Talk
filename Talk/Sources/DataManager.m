@@ -211,10 +211,10 @@
             message = NSLocalizedStringWithDefaultValue(@"DataManager SynchronizeFailedMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"Something went wrong while synchronizing over internet: "
-                                                        @"%@.\n\nPlease try again later.",
+                                                        @"%@\n\nPlease try again later.",
                                                         @"Message telling that loading data over internet failed\n"
                                                         @"[iOS alert message size]");
-            message = [NSString stringWithFormat:message, [error localizedDescription]];
+            message = [NSString stringWithFormat:message, error.localizedDescription];
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
@@ -334,9 +334,9 @@
 
 - (void)synchronizeNumbers:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] retrieveNumberList:^(WebClientStatus status, NSArray* array)
+    [[WebClient sharedClient] retrieveNumberList:^(NSError* webError, NSArray* array)
     {
-        if (status == WebClientStatusOk)
+        if (webError == nil)
         {
             // Delete Numbers that are no longer on the server.
             __block NSError* error        = nil;
@@ -350,10 +350,10 @@
                     [self.managedObjectContext deleteObject:object];
                 }
             }
-
-            if (error != nil)
+            else
             {
                 completion(error);
+
                 return;
             }
 
@@ -362,9 +362,9 @@
             {
                 [[WebClient sharedClient] retrieveNumberForE164:e164
                                                    currencyCode:[Settings sharedSettings].currencyCode
-                                                          reply:^(WebClientStatus status, NSDictionary* dictionary)
+                                                          reply:^(NSError* webError, NSDictionary* dictionary)
                 {
-                    if (error == nil && status == WebClientStatusOk)
+                    if (error == nil && webError == nil)
                     {
                         NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
                         [request setPredicate:[NSPredicate predicateWithFormat:@"e164 == %@", dictionary[@"e164"]]];
@@ -399,7 +399,7 @@
                     }
                     else if (error == nil)
                     {
-                        error = [Common errorWithCode:status description:[WebClient localizedStringForStatus:status]];
+                        error = webError;
                     }
 
                     if (--count == 0)
@@ -411,7 +411,7 @@
         }
         else
         {
-            completion([Common errorWithCode:status description:[WebClient localizedStringForStatus:status]]);
+            completion(webError);
         }
     }];
 }
@@ -419,9 +419,9 @@
 
 - (void)synchronizeForwardings:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] retrieveIvrList:^(WebClientStatus status, NSArray* array)
+    [[WebClient sharedClient] retrieveIvrList:^(NSError* webError, NSArray* array)
     {
-        if (status == WebClientStatusOk)
+        if (webError == nil)
         {
             // Delete IVRs that are no longer on the server.
             __block NSError* error       = nil;
@@ -435,10 +435,10 @@
                     [self.managedObjectContext deleteObject:object];
                 }
             }
-
-            if (error != nil)
+            else
             {
                 completion(error);
+
                 return;
             }
 
@@ -446,9 +446,9 @@
             for (NSString* uuid in array)
             {
                 [[WebClient sharedClient] retrieveIvrForUuid:uuid
-                                                       reply:^(WebClientStatus status, NSString* name, NSArray* statements)
+                                                       reply:^(NSError* webError, NSString* name, NSArray* statements)
                 {
-                    if (error == nil && status == WebClientStatusOk)
+                    if (error == nil && webError == nil)
                     {
                         NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Forwarding"];
                         [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
@@ -462,13 +462,13 @@
                                                                                         inManagedObjectContext:self.managedObjectContext];
                         }
 
-                        forwarding.uuid = uuid;
-                        forwarding.name = name;
+                        forwarding.uuid       = uuid;
+                        forwarding.name       = name;
                         forwarding.statements = [Common jsonStringWithObject:statements];
                     }
                     else if (error == nil)
                     {
-                        error = [Common errorWithCode:status description:[WebClient localizedStringForStatus:status]];
+                        error = webError;
                     }
 
                     if (--count == 0)
@@ -480,7 +480,7 @@
         }
         else
         {
-            completion([Common errorWithCode:status description:[WebClient localizedStringForStatus:status]]);
+            completion(webError);
         }
     }];
 }
@@ -495,16 +495,16 @@
     if (error != nil)
     {
         completion(error);
+
         return;
     }
 
     __block int count = array.count;
     for (NumberData* number in array)
     {
-        [[WebClient sharedClient] retrieveIvrOfE164:number.e164
-                                              reply:^(WebClientStatus status, NSString* uuid)
+        [[WebClient sharedClient] retrieveIvrOfE164:number.e164 reply:^(NSError* webError, NSString* uuid)
         {
-            if (error == nil && status == WebClientStatusOk)
+            if (error == nil && webError == nil)
             {
                 if (uuid == nil)
                 {
@@ -525,7 +525,7 @@
             }
             else if (error == nil)
             {
-                error = [Common errorWithCode:status description:[WebClient localizedStringForStatus:status]];
+                error = webError;
             }
 
             if (--count == 0)

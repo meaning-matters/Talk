@@ -75,6 +75,10 @@ static SipInterface*    sipInterface;
 
     switch (failed)
     {
+        case SipInterfaceCallFailedNone:
+            message = @"";
+            break;
+
         case SipInterfaceCallFailedNotAllowedCountry:
             message = NSLocalizedStringWithDefaultValue(@"Call:Failed NotAllowedCountryMessage", nil,
                                                         [NSBundle mainBundle],
@@ -450,7 +454,8 @@ static SipInterface*    sipInterface;
             call.network = CallNetworkMobile;
         }
     }
-    else if ([Settings sharedSettings].callbackMode == YES && [phoneNumber.originalFormat isEqualToString:@"200"] == NO)
+    else if ([Settings sharedSettings].callbackMode == YES &&
+             [phoneNumber.originalFormat isEqualToString:[Settings sharedSettings].testNumber] == NO)
     {
         if ([phoneNumber isValid] == YES)
         {
@@ -499,7 +504,7 @@ static SipInterface*    sipInterface;
         call.identityNumber = identity;
         call.showCallerId   = [Settings sharedSettings].showCallerId;
 
-        NSDictionary*   tones = [[Tones sharedTones] tonesForIsoCountryCode:[phoneNumber isoCountryCode]];
+        NSDictionary* tones = [[Tones sharedTones] tonesForIsoCountryCode:[phoneNumber isoCountryCode]];
         if ([sipInterface makeCall:call tones:tones] == YES)
         {
             callViewController = [[CallViewController alloc] initWithCall:call];
@@ -527,7 +532,8 @@ static SipInterface*    sipInterface;
 
 - (void)endCall:(Call*)call
 {
-    if ([Settings sharedSettings].callbackMode == NO || [call.calledNumber isEqualToString:@"200"] == YES)
+    if ([Settings sharedSettings].callbackMode == NO ||
+        [call.calledNumber isEqualToString:[Settings sharedSettings].testNumber] == YES)
     {
         if (call != nil && call.state != CallStateEnded && call.state != CallStateFailed)
         {

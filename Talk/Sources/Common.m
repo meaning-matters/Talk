@@ -99,7 +99,7 @@
     if (error != nil)
     {
         //### Replace.
-        NSLog(@"Error serializing to JSON data: %@.", [error localizedDescription]);
+        NSLog(@"Error serializing to JSON data: %@", error.localizedDescription);
         
         return nil;
     }
@@ -132,7 +132,7 @@
     if (error != nil)
     {
         //### Replace.
-        NSLog(@"Error serializing from JSON data: %@.", [error localizedDescription]);
+        NSLog(@"Error serializing from JSON data: %@", error.localizedDescription);
         
         return nil;
     }
@@ -166,7 +166,7 @@
     if (error != nil)
     {
         //### Replace.
-        NSLog(@"Error serializing from JSON data: %@.", [error localizedDescription]);
+        NSLog(@"Error serializing from JSON data: %@", error.localizedDescription);
 
         return nil;
     }

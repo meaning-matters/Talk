@@ -278,9 +278,9 @@ static const int    TextFieldCellTag = 1234;
 
     [[WebClient sharedClient] retrieveNumberAreaInfoForIsoCountryCode:numberIsoCountryCode
                                                              areaCode:areaCode
-                                                                reply:^(WebClientStatus status, id content)
+                                                                reply:^(NSError* error, id content)
     {
-        if (status == WebClientStatusOk)
+        if (error == nil)
         {
             self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberArea ScreenTitle", nil,
                                                                           [NSBundle mainBundle], @"Area",
@@ -292,10 +292,10 @@ static const int    TextFieldCellTag = 1234;
 
             [self.tableView reloadData];
         }
-        else if (status == WebClientStatusFailServiceUnavailable)
+        else if (error.code == WebClientStatusFailServiceUnavailable)
         {
-            NSString*   title;
-            NSString*   message;
+            NSString* title;
+            NSString* message;
 
             title   = NSLocalizedStringWithDefaultValue(@"NumberArea UnavailableAlertTitle", nil,
                                                         [NSBundle mainBundle], @"Service Unavailable",
@@ -318,8 +318,8 @@ static const int    TextFieldCellTag = 1234;
         }
         else
         {
-            NSString*   title;
-            NSString*   message;
+            NSString* title;
+            NSString* message;
 
             title   = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertTitle", nil,
                                                         [NSBundle mainBundle], @"Loading Failed",
@@ -327,9 +327,10 @@ static const int    TextFieldCellTag = 1234;
                                                         @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"Loading the list of cities and ZIP codes failed.\n\nPlease try again later.",
+                                                        @"Loading the list of cities and ZIP codes failed: %@\n\nPlease try again later.",
                                                         @"Alert message telling that loading information over internet failed.\n"
                                                         @"[iOS alert message size - use correct term for ZIP code]");
+            message = [NSString stringWithFormat:message, error.localizedDescription];
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
@@ -820,7 +821,7 @@ static const int    TextFieldCellTag = 1234;
                         purchaseInfo[@"numberType"] = [NumberType localizedStringForNumberType:numberTypeMask];
                         purchaseInfo[@"areaCode"]   = area[@"areaCode"];
                         [[WebClient sharedClient] checkPurchaseInfo:purchaseInfo
-                                                              reply:^(WebClientStatus status, id content)
+                                                              reply:^(NSError* error, id content)
                         {
                             NumberAreaActionCell* cell;
                             cell = (NumberAreaActionCell*)[self.tableView cellForRowAtIndexPath:indexPath];
@@ -828,7 +829,7 @@ static const int    TextFieldCellTag = 1234;
                             cell.label.alpha = 1.0f;
                             [cell.activityIndicator stopAnimating];
 
-                            if (status == WebClientStatusOk)
+                            if (error == nil)
                             {
                                 isChecked = YES;
                                 [self.tableView beginUpdates];
@@ -836,7 +837,7 @@ static const int    TextFieldCellTag = 1234;
                                               withRowAnimation:UITableViewRowAnimationFade];
                                 [self.tableView endUpdates];
                             }
-                            else if (status == WebClientStatusFailNetworkProblem)
+                            else if (error.code == NSURLErrorNotConnectedToInternet)
                             {
                                 NSString* title;
                                 NSString* message;
@@ -863,7 +864,7 @@ static const int    TextFieldCellTag = 1234;
                                                      cancelButtonTitle:[Strings closeString]
                                                      otherButtonTitles:nil];
                             }
-                            else
+                            else //TODO Check with WebClientStatusFailInvalidInfo, check if server generates this.
                             {
                                 NSString* title;
                                 NSString* message;
@@ -876,11 +877,11 @@ static const int    TextFieldCellTag = 1234;
                                                                             @"[iOS alert title size].");
                                 message = NSLocalizedStringWithDefaultValue(@"NumberArea ValidationFailedAlertMessage", nil,
                                                                             [NSBundle mainBundle],
-                                                                            @"Validating your name and address failed (%@).",
+                                                                            @"Validating your name and address failed: %@",
                                                                             @"Alert message telling that validating "
                                                                             @"name & address of user failed.\n"
                                                                             @"[iOS alert message size]");
-                                description = [WebClient localizedStringForStatus:status];
+                                description = error.localizedDescription;
                                 message = [NSString stringWithFormat:message, description];
                                 [BlockAlertView showAlertViewWithTitle:title
                                                                message:message

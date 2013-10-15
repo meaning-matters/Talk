@@ -49,7 +49,7 @@
                                                                                     error:&error];
     if (fetchedResultsController == nil)
     {
-        NSLog(@"//### Error: %@", [error localizedDescription]);
+        NSLog(@"//### Error: %@", error.localizedDescription);
     }
 }
 
@@ -140,9 +140,9 @@
     {
         [[WebClient sharedClient] setIvrOfE164:number.e164
                                           uuid:(selectedForwarding == nil) ? @"" : selectedForwarding.uuid
-                                         reply:^(WebClientStatus status)
+                                         reply:^(NSError* error)
         {
-            if (status == WebClientStatusOk)
+            if (error == nil)
             {
                 number.forwarding = selectedForwarding;
                 [[DataManager sharedManager] saveContext];
@@ -166,10 +166,10 @@
                 message = NSLocalizedStringWithDefaultValue(@"BuyCredit SetForwardingFailedMessage", nil,
                                                             [NSBundle mainBundle],
                                                             @"Something went wrong while setting the Forwarding: "
-                                                            @"%@.\n\nPlease try again later.",
+                                                            @"%@\n\nPlease try again later.",
                                                             @"Message telling that ... failed\n"
                                                             @"[iOS alert message size]");
-                message = [NSString stringWithFormat:message, [WebClient localizedStringForStatus:status]];
+                message = [NSString stringWithFormat:message, error.localizedDescription];
                 [BlockAlertView showAlertViewWithTitle:title
                                                message:message
                                             completion:nil

@@ -719,11 +719,9 @@ static const int    TextFieldCellTag = 1234;
     {
         [textField resignFirstResponder];
 
-        [[WebClient sharedClient] updateNumberForE164:number.e164
-                                             withName:name
-                                                reply:^(WebClientStatus status)
+        [[WebClient sharedClient] updateNumberForE164:number.e164 withName:name reply:^(NSError* error)
         {
-            if (status == WebClientStatusOk)
+            if (error == nil)
             {
                 number.name = name;
             }
@@ -738,11 +736,11 @@ static const int    TextFieldCellTag = 1234;
                                                             @"[iOS alert title size].");
                 message = NSLocalizedStringWithDefaultValue(@"Number NameUpdateFailedMessage", nil,
                                                             [NSBundle mainBundle],
-                                                            @"Saving the name via the internet failed: %@.\n\n"
+                                                            @"Saving the name via the internet failed: %@\n\n"
                                                             @"Please try again later.",
                                                             @"Alert message telling that a name must be supplied\n"
                                                             @"[iOS alert message size]");
-                message = [NSString stringWithFormat:message, [WebClient localizedStringForStatus:status]];
+                message = [NSString stringWithFormat:message, error.localizedDescription];
                 [BlockAlertView showAlertViewWithTitle:title
                                                message:message
                                             completion:^(BOOL cancelled, NSInteger buttonIndex)

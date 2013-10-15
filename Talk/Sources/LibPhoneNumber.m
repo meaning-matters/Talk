@@ -73,7 +73,7 @@
     // Stop the Javascript loading run-loop.
     CFRunLoopStop([[NSRunLoop currentRunLoop] getCFRunLoop]);
     
-    NSLog(@"Loading Javascript error: %@", [error localizedDescription]);
+    NSLog(@"Loading Javascript error: %@", error.localizedDescription);
 }
 
 

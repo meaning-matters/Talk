@@ -65,9 +65,9 @@
     NSInteger   index = [NumberType numberTypeMaskToIndex:[Settings sharedSettings].numberTypeMask];
     [self.numberTypeSegmentedControl setSelectedSegmentIndex:index];
 
-    [[WebClient sharedClient] retrieveNumberCountries:^(WebClientStatus status, id content)
+    [[WebClient sharedClient] retrieveNumberCountries:^(NSError* error, id content)
     {
-        if (status == WebClientStatusOk)
+        if (error == nil)
         {
             self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries:Done ScreenTitle", nil,
                                                                           [NSBundle mainBundle], @"Countries",
@@ -100,15 +100,15 @@
 
             [self sortOutArrays];
         }
-        else if (status == WebClientStatusFailServiceUnavailable)
+        else if (error.code == WebClientStatusFailServiceUnavailable)
         {
-            NSString*   title;
-            NSString*   message;
+            NSString* title;
+            NSString* message;
 
-            title = NSLocalizedStringWithDefaultValue(@"NumberCountries UnavailableAlertTitle", nil,
-                                                      [NSBundle mainBundle], @"Service Unavailable",
-                                                      @"Alert title telling that loading countries over internet failed.\n"
-                                                      @"[iOS alert title size].");
+            title   = NSLocalizedStringWithDefaultValue(@"NumberCountries UnavailableAlertTitle", nil,
+                                                        [NSBundle mainBundle], @"Service Unavailable",
+                                                        @"Alert title telling that loading countries over internet failed.\n"
+                                                        @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"NumberCountries UnavailableAlertMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"The service for buying numbers is temporarily offline."
@@ -126,18 +126,19 @@
         }
         else
         {
-            NSString*   title;
-            NSString*   message;
+            NSString* title;
+            NSString* message;
 
-            title = NSLocalizedStringWithDefaultValue(@"NumberCountries LoadFailAlertTitle", nil,
-                                                      [NSBundle mainBundle], @"Loading Failed",
-                                                      @"Alert title telling that loading countries over internet failed.\n"
-                                                      @"[iOS alert title size].");
+            title   = NSLocalizedStringWithDefaultValue(@"NumberCountries LoadFailAlertTitle", nil,
+                                                        [NSBundle mainBundle], @"Loading Failed",
+                                                        @"Alert title telling that loading countries over internet failed.\n"
+                                                        @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"NumberCountries LoadFailAlertMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"Loading the list of countries failed.\n\nPlease try again later.",
+                                                        @"Loading the list of countries failed: %@\n\nPlease try again later.",
                                                         @"Alert message telling that loading countries over internet failed.\n"
                                                         @"[iOS alert message size]");
+            message = [NSString stringWithFormat:message, error.localizedDescription];
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)

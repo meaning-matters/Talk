@@ -145,9 +145,9 @@ static const int    TextFieldCellTag = 1111;
         [[WebClient sharedClient] createIvrForUuid:uuid
                                               name:name
                                         statements:statementsArray
-                                             reply:^(WebClientStatus status)
+                                             reply:^(NSError* error)
         {
-            if (status == WebClientStatusOk)
+            if (error == nil)
             {
                 NSError* error;
 
@@ -159,7 +159,7 @@ static const int    TextFieldCellTag = 1111;
             }
             else
             {
-                NSLog(@"%d", status);
+                NSLog(@"%@", error);
             }
         }];
 
@@ -170,9 +170,9 @@ static const int    TextFieldCellTag = 1111;
         [[WebClient sharedClient] updateIvrForUuid:self.forwarding.uuid
                                               name:name
                                         statements:statementsArray
-                                             reply:^(WebClientStatus status)
+                                             reply:^(NSError* error)
         {
-            if (status == WebClientStatusOk)
+            if (error == nil)
             {
                 NSError* error;
 
@@ -184,7 +184,7 @@ static const int    TextFieldCellTag = 1111;
             else
             {
                 //### Is rollback mogelijk?
-                NSLog(@"%d", status);
+                NSLog(@"%@", error);
             }
         }];
 

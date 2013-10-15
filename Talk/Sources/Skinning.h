@@ -12,4 +12,6 @@
 
 + (Skinning*)sharedSkinning;
 
++ (UIColor*)callbackModeTintColor;
+
 @end

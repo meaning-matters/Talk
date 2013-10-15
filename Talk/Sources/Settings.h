@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "NumberType.h"
 
+
 @interface Settings : NSObject
 
 + (Settings*)sharedSettings;
@@ -57,5 +58,8 @@
 @property (nonatomic, readonly) NSString*       appVersion;
 @property (nonatomic, readonly) NSString*       appDisplayName;
 @property (nonatomic, readonly) NSString*       companyNameAddress;     // Used on About.
+
+@property (nonatomic, readonly) NSString*       testNumber;             // The short number for doing VoIP test calls.
+@property (nonatomic, readonly) NSString*       supportNumber;          // NumberBay telephone support number.
 
 @end

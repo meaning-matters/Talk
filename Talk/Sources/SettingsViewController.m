@@ -14,6 +14,7 @@
 #import "Strings.h"
 #import "BlockAlertView.h"
 #import "Common.h"
+#import "Skinning.h"
 
 
 // Update reloadSections calls when adding/removing sections.
@@ -28,8 +29,8 @@ typedef enum
 
 @interface SettingsViewController ()
 {
-    TableSections   sections;
-    Settings*       settings;
+    TableSections sections;
+    Settings*     settings;
 }
 
 @end
@@ -113,7 +114,7 @@ typedef enum
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString*   title = nil;
+    NSString* title = nil;
 
     switch ([Common nthBitSet:section inValue:sections])
     {
@@ -148,7 +149,7 @@ typedef enum
 
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
-    NSString*   title = nil;
+    NSString* title = nil;
 
     switch ([Common nthBitSet:section inValue:sections])
     {
@@ -186,7 +187,7 @@ typedef enum
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger   numberOfRows = 0;
+    NSInteger numberOfRows = 0;
 
     switch ([Common nthBitSet:section inValue:sections])
     {
@@ -281,8 +282,8 @@ typedef enum
                         }
                         else
                         {
-                            NSString*   title;
-                            NSString*   message;
+                            NSString* title;
+                            NSString* message;
 
                             title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidTitle", nil,
                                                                         [NSBundle mainBundle], @"Invalid Number",
@@ -338,8 +339,8 @@ typedef enum
                         }
                         else
                         {
-                            NSString*   title;
-                            NSString*   message;
+                            NSString* title;
+                            NSString* message;
 
                             title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidTitle", nil,
                                                                         [NSBundle mainBundle], @"Invalid Number",
@@ -523,10 +524,10 @@ typedef enum
 
     if (indexPath.row == 0)
     {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"CallModeSwitchCell"];
         if (cell == nil)
         {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallModeSwitchCell"];
             switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
             cell.accessoryView = switchView;
         }
@@ -539,8 +540,9 @@ typedef enum
                                                                 [NSBundle mainBundle], @"Callback Mode",
                                                                 @"Title of switch if app is in 'callback mode'\n"
                                                                 @"[2/3 line].");
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        switchView.on = settings.callbackMode;
+        cell.selectionStyle    = UITableViewCellSelectionStyleNone;
+        switchView.on          = settings.callbackMode;
+        switchView.onTintColor = [Skinning callbackModeTintColor];
 
         [switchView removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
         [switchView addTarget:self

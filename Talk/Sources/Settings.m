@@ -477,4 +477,16 @@ static NSUserDefaults*  userDefaults;
     return @"NumberBay Ltd.\n100 Barbirolli Square\nManchester M2 3AB\nUnited Kingdom";
 }
 
+
+- (NSString*)testNumber
+{
+    return @"200";
+}
+
+
+- (NSString*)supportNumber
+{
+    return @"+441617680224";
+}
+
 @end

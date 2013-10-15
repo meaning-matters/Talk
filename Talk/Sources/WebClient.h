@@ -5,6 +5,7 @@
 //  Created by Cornelis van der Bent on 10/01/13.
 //  Copyright (c) 2013 Cornelis van der Bent. All rights reserved.
 //
+//  List of errors: https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Miscellaneous/Foundation_Constants/Reference/reference.html#//apple_ref/doc/uid/TP40003793-CH3g-SW40
 
 #import "AFHTTPClient.h"
 #import "NumberType.h"
@@ -15,22 +16,22 @@
 typedef enum
 {
     WebClientStatusOk,
-    WebClientStatusFailInvalidRequest        = 1001,
-    WebClientStatusFailServerIternal         = 1002,
-    WebClientStatusFailServiceUnavailable    = 1003,
-    WebClientStatusFailInvalidReceipt        = 1004,
-    WebClientStatusFailDeviceNameNotUnique   = 1005,
-    WebClientStatusFailNoStatesForCountry    = 1006,
-    WebClientStatusFailInvalidInfo           = 1007,
-    WebClientStatusFailDataTooLarge          = 1008,
-    WebClientStatusFailInsufficientCredit    = 1009,
-    WebClientStatusFailIvrInUse              = 1010,
-    WebClientStatusFailCallbackAlreadyActive = 1011,
-    WebClientStatusFailNoCallbackFound       = 1012,
-    WebClientStatusFailNetworkProblem        = 1021, // Local.
-    WebClientStatusFailInvalidResponse       = 1022, // Local.
-    WebClientStatusFailNoAccount             = 1023, // Local.
-    WebClientStatusFailUnspecified           = 1024, // Local.
+    WebClientStatusFailInvalidRequest        = 911001,
+    WebClientStatusFailServerIternal         = 911002,
+    WebClientStatusFailServiceUnavailable    = 911003,
+    WebClientStatusFailInvalidReceipt        = 911004,
+    WebClientStatusFailDeviceNameNotUnique   = 911005,
+    WebClientStatusFailNoStatesForCountry    = 911006,
+    WebClientStatusFailInvalidInfo           = 911007,
+    WebClientStatusFailDataTooLarge          = 911008,
+    WebClientStatusFailInsufficientCredit    = 911009,
+    WebClientStatusFailIvrInUse              = 911010,
+    WebClientStatusFailCallbackAlreadyActive = 911011,
+    WebClientStatusFailNoCallbackFound       = 911012,
+    WebClientStatusFailNoAccount             = 911051, // Indirect: not sent by server.
+    WebClientStatusFailUnspecified           = 911052, // Indirect: not sent by server.
+    WebClientStatusFailInvalidResponse       = 911053, // Indirect: not sent by server.
+    WebClientStatusFailUnknown               = 911054, // Extreme unlikely situation where AFNetworking gives failure with error == nil.
 } WebClientStatus;
 
 
@@ -38,47 +39,45 @@ typedef enum
 
 + (WebClient*)sharedClient;
 
-+ (NSString*)localizedStringForStatus:(WebClientStatus)status;
-
 
 #pragma mark - Request Methods
 
 // 1. CREATE/UPDATE ACCOUNT
 - (void)retrieveWebAccount:(NSDictionary*)parameters
-                     reply:(void (^)(WebClientStatus status, id content))reply;
+                     reply:(void (^)(NSError* error, id content))reply;
 
 // 2. ADD/UPDATE DEVICE
 - (void)retrieveSipAccount:(NSDictionary*)parameters
-                     reply:(void (^)(WebClientStatus status, id content))reply;
+                     reply:(void (^)(NSError* error, id content))reply;
 
 // 6. GET LIST OF ALL AVAILABLE NUMBER COUNTRIES
-- (void)retrieveNumberCountries:(void (^)(WebClientStatus status, id content))reply;
+- (void)retrieveNumberCountries:(void (^)(NSError* error, id content))reply;
 
 // 7. GET LIST OF ALL AVAILABLE NUMBER STATES
 - (void)retrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode
-                                        reply:(void (^)(WebClientStatus status, id content))reply;
+                                        reply:(void (^)(NSError* error, id content))reply;
 
 // 8A. GET LIST OF ALL AVAILABLE NUMBER AREAS (WITH STATES)
 - (void)retrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
                                    stateCode:(NSString*)stateCode
                               numberTypeMask:(NumberTypeMask)numberTypeMask
                                 currencyCode:(NSString*)currencyCode
-                                       reply:(void (^)(WebClientStatus status, id content))reply;
+                                       reply:(void (^)(NSError* error, id content))reply;
 
 // 8B. GET LIST OF ALL AVAILABLE NUMBER AREAS
 - (void)retrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
                               numberTypeMask:(NumberTypeMask)numberTypeMask
                                 currencyCode:(NSString*)currencyCode
-                                       reply:(void (^)(WebClientStatus status, id content))reply;
+                                       reply:(void (^)(NSError* error, id content))reply;
 
 //  9. GET PURCHASE INFO DATA
 - (void)retrieveNumberAreaInfoForIsoCountryCode:(NSString*)isoCountryCode
                                        areaCode:(NSString*)areaCode
-                                          reply:(void (^)(WebClientStatus status, id content))reply;
+                                          reply:(void (^)(NSError* error, id content))reply;
 
 // 10. CHECK IF PURCHASE INFO IS VALID
 - (void)checkPurchaseInfo:(NSDictionary*)parameters
-                    reply:(void (^)(WebClientStatus status, id content))reply;
+                    reply:(void (^)(NSError* error, id content))reply;
 
 // 11A. PURCHASE NUMBER
 - (void)purchaseNumberForReceipt:(NSString*)receipt
@@ -91,85 +90,88 @@ typedef enum
                        stateName:(NSString*)stateName
                       numberType:(NSString*)numberType
                             info:(NSDictionary*)info
-                           reply:(void (^)(WebClientStatus status, NSString* e164))reply;
+                           reply:(void (^)(NSError* error, NSString* e164))reply;
+
+// 11B.
+- (void)updateNumberForE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply;
 
 // 12. GET LIST OF NUMBERS
-- (void)retrieveNumberList:(void (^)(WebClientStatus status, NSArray* list))reply;
+- (void)retrieveNumberList:(void (^)(NSError* error, NSArray* list))reply;
 
 // 13. GET NUMBER INFO
 - (void)retrieveNumberForE164:(NSString*)e164
                  currencyCode:(NSString*)currencyCode
-                        reply:(void (^)(WebClientStatus status, NSDictionary* dictionary))reply;
+                        reply:(void (^)(NSError* error, NSDictionary* dictionary))reply;
 
 // 14. BUY CREDIT
 - (void)purchaseCreditForReceipt:(NSString*)receipt
                     currencyCode:(NSString*)currencyCode
-                           reply:(void (^)(WebClientStatus status, float credit))reply;
+                           reply:(void (^)(NSError* error, float credit))reply;
 
 // 15. GET CURRENT CREDIT
 - (void)retrieveCreditForCurrencyCode:(NSString*)currencyCode
-                                reply:(void (^)(WebClientStatus status, id content))reply;
+                                reply:(void (^)(NSError* error, id content))reply;
 
 // 19A. CREATE IVR
 - (void)createIvrForUuid:(NSString*)uuid
                     name:(NSString*)name
               statements:(NSArray*)statements
-                   reply:(void (^)(WebClientStatus status))reply;
+                   reply:(void (^)(NSError* error))reply;
 
 // 19B. UPDATE IVR
 - (void)updateIvrForUuid:(NSString*)uuid
                     name:(NSString*)name
               statements:(NSArray*)statements
-                   reply:(void (^)(WebClientStatus status))reply;
+                   reply:(void (^)(NSError* error))reply;
 
 // 20. DELETE IVR
 - (void)deleteIvrForUuid:(NSString*)uuid
-                   reply:(void (^)(WebClientStatus status))reply;
+                   reply:(void (^)(NSError* error))reply;
 
 // 21. GET LIST OF IVRS
-- (void)retrieveIvrList:(void (^)(WebClientStatus status, NSArray* list))reply;
+- (void)retrieveIvrList:(void (^)(NSError* error, NSArray* list))reply;
 
 // 22. DOWNLOAD IVR
 - (void)retrieveIvrForUuid:(NSString*)uuid
-                     reply:(void (^)(WebClientStatus status, NSString* name, NSArray* statements))reply;
+                     reply:(void (^)(NSError* error, NSString* name, NSArray* statements))reply;
 
 // 23. SET/CLEAR IVR FOR A NUMBER
 - (void)setIvrOfE164:(NSString*)e164
                 uuid:(NSString*)uuid
-               reply:(void (^)(WebClientStatus status))reply;
+               reply:(void (^)(NSError* error))reply;
 
 // 24. RETRIEVE IVR FOR A NUMBER
 - (void)retrieveIvrOfE164:(NSString*)e164
-                    reply:(void (^)(WebClientStatus status, NSString* uuid))reply;
+                    reply:(void (^)(NSError* error, NSString* uuid))reply;
 
 
 // 30A. DO NUMBER VERIFICATION
 - (void)retrieveVerificationCodeForPhoneNumber:(PhoneNumber*)phoneNumber
                                     deviceName:(NSString*)deviceName
-                                         reply:(void (^)(WebClientStatus status, NSString* code))reply;
+                                         reply:(void (^)(NSError* error, NSString* code))reply;
 
 // 30B. DO NUMBER VERIFICATION
 - (void)requestVerificationCallForPhoneNumber:(PhoneNumber*)phoneNumber
-                                        reply:(void (^)(WebClientStatus status))reply;
+                                        reply:(void (^)(NSError* error))reply;
 
 // 30C. DO NUMBER VERIFICATION
 - (void)retrieveVerificationStatusForPhoneNumber:(PhoneNumber*)phoneNumber
-                                           reply:(void (^)(WebClientStatus status, BOOL calling, BOOL verified))reply;
+                                           reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply;
 
 // 32. INITIATE CALLBACK
 - (void)initiateCallbackForCallee:(PhoneNumber*)calleePhoneNumber
                            caller:(PhoneNumber*)callerPhoneNumber
                          identity:(PhoneNumber*)identityPhoneNumber
                           privacy:(BOOL)privacy
-                            reply:(void (^)(WebClientStatus status))reply;
+                            reply:(void (^)(NSError* error))reply;
 
 // 33. STOP CALLBACK
 - (void)stopCallbackForCaller:(PhoneNumber*)callerPhoneNumber
-                        reply:(void (^)(WebClientStatus status))reply;
+                        reply:(void (^)(NSError* error))reply;
 
 // 34. GET CALLBACK STATE
 - (void)retrieveCallbackStateForCaller:(PhoneNumber*)callerPhoneNumber
-                                 reply:(void (^)(WebClientStatus status, CallState state))reply;
+                                 reply:(void (^)(NSError* error, CallState state))reply;
 
 #pragma mark - Cancel Methods
 
@@ -201,9 +203,7 @@ typedef enum
 - (void)cancelAllPurchaseNumber;
 
 // 11B.
-- (void)updateNumberForE164:(NSString*)e164
-                   withName:(NSString*)name
-                      reply:(void (^)(WebClientStatus status))reply;
+- (void)cancelAllUpdateNumberForE164:(NSString*)e164;
 
 // 12.
 - (void)cancelAllRetrieveNumberList;

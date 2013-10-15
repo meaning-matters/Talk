@@ -96,9 +96,9 @@
                                                  caller:callerPhoneNumber
                                                identity:[[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].callbackCallerId]
                                                 privacy:![Settings sharedSettings].showCallerId
-                                                  reply:^(WebClientStatus status)
+                                                  reply:^(NSError* error)
     {
-        if (status == WebClientStatusOk)
+        if (error == nil)
         {
             self.call.state       = CallStateCalling;
             self.statusLabel.text = [self.call stateString];
@@ -121,11 +121,11 @@
             self.statusLabel.text = [self.call stateString];
 
             NSString* format = NSLocalizedStringWithDefaultValue(@"Callback RequestFailedMessage", nil, [NSBundle mainBundle],
-                                                                 @"Sending the callback request failed: %@.\n\n"
+                                                                 @"Sending the callback request failed: %@\n\n"
                                                                  @"You can end this callback, or retry.",
                                                                  @"Alert message: ...\n"
                                                                  @"[N lines]");
-            callMessageView.label.text = [NSString stringWithFormat:format, [WebClient localizedStringForStatus:status]];
+            callMessageView.label.text = [NSString stringWithFormat:format, error.localizedDescription];
 
             [self showRetry];
         }
@@ -141,9 +141,9 @@
     }
 
     [[WebClient sharedClient] retrieveCallbackStateForCaller:callerPhoneNumber
-                                                       reply:^(WebClientStatus status, CallState state)
+                                                       reply:^(NSError* error, CallState state)
     {
-        if (status == WebClientStatusOk)
+        if (error == nil)
         {
             self.call.state       = state;
             self.statusLabel.text = [self.call stateString];
@@ -234,9 +234,9 @@
     [[WebClient sharedClient] cancelAllRetrieveCallbackStateForCaller:callerPhoneNumber];
     if (callbackPending == YES)
     {
-        [[WebClient sharedClient] stopCallbackForCaller:callerPhoneNumber reply:^(WebClientStatus status)
+        [[WebClient sharedClient] stopCallbackForCaller:callerPhoneNumber reply:^(NSError* error)
         {
-            if (status != WebClientStatusOk && callbackPending == YES)
+            if (error != nil && callbackPending == YES)
             {
                 NSString* title   = NSLocalizedStringWithDefaultValue(@"Callback EndFailedTitle", nil, [NSBundle mainBundle],
                                                                       @"Ending Callback Failed",
@@ -244,12 +244,12 @@
                                                                       @"[1 line]");
                 NSString* message = NSLocalizedStringWithDefaultValue(@"Callback EndFailedMessage", nil, [NSBundle mainBundle],
                                                                       @"There seems to be a callback pending, but ending "
-                                                                      @"it failed: %@.\n\n"
+                                                                      @"it failed: %@\n\n"
                                                                       @"This may mean that your callee got connected to "
                                                                       @"your voicemail.",
                                                                       @"Alert message: ...\n"
                                                                       @"[N lines]");
-                message = [NSString stringWithFormat:message, [WebClient localizedStringForStatus:status]];
+                message = [NSString stringWithFormat:message, error.localizedDescription];
 
                 [BlockAlertView showAlertViewWithTitle:title
                                                message:message
@@ -332,9 +332,9 @@
             [[WebClient sharedClient] cancelAllRetrieveCallbackStateForCaller:callerPhoneNumber];
             if (callbackPending == YES)
             {
-                [[WebClient sharedClient] stopCallbackForCaller:callerPhoneNumber reply:^(WebClientStatus status)
+                [[WebClient sharedClient] stopCallbackForCaller:callerPhoneNumber reply:^(NSError* error)
                 {
-                    if (status == WebClientStatusOk)
+                    if (error == nil)
                     {
                         // Reset flag because user is now aware of issue.  (Would otherwise result in alert on tapping End button.)
                         callbackPending = NO;
@@ -347,11 +347,11 @@
                         format = NSLocalizedStringWithDefaultValue(@"Callback StopFailedMessage", nil, [NSBundle mainBundle],
                                                                    @"You declined an incoming call.  This resulted in an "
                                                                    @"automatic attempt to stop the callback.  But "
-                                                                   @"this attempt failed: %@.\n\nThis may mean that "
+                                                                   @"this attempt failed: %@\n\nThis may mean that "
                                                                    @"your callee got connected to your voicemail.",
                                                                    @"Alert message: ...\n"
                                                                    @"[N lines]");
-                        callMessageView.label.text = [NSString stringWithFormat:format, [WebClient localizedStringForStatus:status]];
+                        callMessageView.label.text = [NSString stringWithFormat:format, error.localizedDescription];
 
                         // Don't show Retry here, because something failed; may otherwise cause multiple Callbacks.
                     }

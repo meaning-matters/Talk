@@ -89,10 +89,10 @@
     }
     else
     {
-        NSString*   title;
-        NSString*   message;
+        NSString* title;
+        NSString* message;
 
-        title = NSLocalizedStringWithDefaultValue(@"Share NoMailAccountTitle", nil,
+        title   = NSLocalizedStringWithDefaultValue(@"Share NoMailAccountTitle", nil,
                                                   [NSBundle mainBundle], @"No Email Accounts",
                                                   @"Alert title that no text message (SMS) can be send\n"
                                                   @"[iOS alert title size].");
@@ -124,13 +124,13 @@
     }
     else
     {
-        NSString*   title;
-        NSString*   message;
+        NSString* title;
+        NSString* message;
         
-        title = NSLocalizedStringWithDefaultValue(@"Share NoTextMessageTitle", nil,
-                                                  [NSBundle mainBundle], @"Can't Send Message",
-                                                  @"Alert title that no text message (SMS) can be send\n"
-                                                  @"[iOS alert title size].");
+        title   = NSLocalizedStringWithDefaultValue(@"Share NoTextMessageTitle", nil,
+                                                    [NSBundle mainBundle], @"Can't Send Message",
+                                                    @"Alert title that no text message (SMS) can be send\n"
+                                                    @"[iOS alert title size].");
 
         message = NSLocalizedStringWithDefaultValue(@"Share NoTextMessageMessage", nil,
                                                     [NSBundle mainBundle],
@@ -157,13 +157,13 @@
 {
     if (result == MFMailComposeResultFailed)
     {
-        NSString*   title;
-        NSString*   message;
+        NSString* title;
+        NSString* message;
 
-        title = NSLocalizedStringWithDefaultValue(@"Share EmailFailedTitle", nil,
-                                                  [NSBundle mainBundle], @"Failed To Send Email",
-                                                  @"Alert title that sending an email failed\n"
-                                                  @"[iOS alert title size].");
+        title   = NSLocalizedStringWithDefaultValue(@"Share EmailFailedTitle", nil,
+                                                    [NSBundle mainBundle], @"Failed To Send Email",
+                                                    @"Alert title that sending an email failed\n"
+                                                    @"[iOS alert title size].");
 
         message = NSLocalizedStringWithDefaultValue(@"Share EmailFailedMessage", nil,
                                                     [NSBundle mainBundle],
@@ -192,13 +192,13 @@
 {
     if (result == MessageComposeResultFailed)
     {
-        NSString*   title;
-        NSString*   message;
+        NSString* title;
+        NSString* message;
 
-        title = NSLocalizedStringWithDefaultValue(@"Share MessageFailedTitle", nil,
-                                                  [NSBundle mainBundle], @"Failed To Send Message",
-                                                  @"Alert title that sending a text message (SMS) failed\n"
-                                                  @"[iOS alert title size].");
+        title   = NSLocalizedStringWithDefaultValue(@"Share MessageFailedTitle", nil,
+                                                    [NSBundle mainBundle], @"Failed To Send Message",
+                                                    @"Alert title that sending a text message (SMS) failed\n"
+                                                    @"[iOS alert title size].");
 
         message = NSLocalizedStringWithDefaultValue(@"Share MessageFailedMessage", nil,
                                                     [NSBundle mainBundle],
@@ -226,7 +226,7 @@
 
 - (NSString*)initialText
 {
-    NSString*   text;
+    NSString* text;
 
     text = NSLocalizedStringWithDefaultValue(@"Share BosyText", nil,
                                              [NSBundle mainBundle],

@@ -55,17 +55,17 @@
     }
     else
     {
-        [[WebClient sharedClient] deleteIvrForUuid:self.uuid reply:^(WebClientStatus status)
+        [[WebClient sharedClient] deleteIvrForUuid:self.uuid reply:^(NSError* error)
         {
-            if (status == WebClientStatusOk)
+            if (error == nil)
             {
                 [managedObjectContext deleteObject:self];
                 completion ? completion(YES) : 0;
             }
-            else if (status == WebClientStatusFailIvrInUse)
+            else if (error.code == WebClientStatusFailIvrInUse)
             {
-                NSString*   title;
-                NSString*   message;
+                NSString* title;
+                NSString* message;
 
                 title   = NSLocalizedStringWithDefaultValue(@"Forwarding InUseTitle", nil,
                                                             [NSBundle mainBundle], @"Forwarding Not Deleted",
@@ -73,24 +73,24 @@
                                                             @"[iOS alert title size].");
                 message = NSLocalizedStringWithDefaultValue(@"Forwarding InUseMessage", nil,
                                                             [NSBundle mainBundle],
-                                                            @"Deleting this Forwarding failed: %@."
+                                                            @"Deleting this Forwarding failed: %@"
                                                             @"\n\nChoose another Forwarding for each number that uses this one.",
                                                             @"Alert message telling that an online service is not available.\n"
                                                             @"[iOS alert message size]");
-                message = [NSString stringWithFormat:message, [WebClient localizedStringForStatus:status]];
+                message = [NSString stringWithFormat:message, error.localizedDescription];
                 [BlockAlertView showAlertViewWithTitle:title
                                                message:message
                                             completion:^(BOOL cancelled, NSInteger buttonIndex)
-                 {
-                     completion ? completion(NO) : 0;
-                 }
+                {
+                    completion ? completion(NO) : 0;
+                }
                                      cancelButtonTitle:[Strings cancelString]
                                      otherButtonTitles:nil];
             }
             else
             {
-                NSString*   title;
-                NSString*   message;
+                NSString* title;
+                NSString* message;
 
                 title   = NSLocalizedStringWithDefaultValue(@"Forwarding DeleteFailedTitle", nil,
                                                             [NSBundle mainBundle], @"Forwarding Not Deleted",
@@ -98,11 +98,11 @@
                                                             @"[iOS alert title size].");
                 message = NSLocalizedStringWithDefaultValue(@"Forwarding DeleteFailedMessage", nil,
                                                             [NSBundle mainBundle],
-                                                            @"Deleting this Forwarding from our server failed: %@."
+                                                            @"Deleting this Forwarding from our server failed: %@"
                                                             @"\n\nPlease try again later.",
                                                             @"Alert message telling that an online service is not available.\n"
                                                             @"[iOS alert message size]");
-                message = [NSString stringWithFormat:message, [WebClient localizedStringForStatus:status]];
+                message = [NSString stringWithFormat:message, error.localizedDescription];
                 [BlockAlertView showAlertViewWithTitle:title
                                                message:message
                                             completion:^(BOOL cancelled, NSInteger buttonIndex)

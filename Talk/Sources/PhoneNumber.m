@@ -8,6 +8,7 @@
 
 #import "PhoneNumber.h"
 #import "Common.h"
+#import "Settings.h"
 #import "LibPhoneNumber.h"
 #import "CountryNames.h"
 
@@ -295,7 +296,7 @@ static NSString*    defaultIsoCountryCode = @"";
             string = [NSString stringWithFormat:@"%@%@", country, [self typeString]];
         }
     }
-    else if ([self.number isEqualToString:@"200"])
+    else if ([self.number isEqualToString:[Settings sharedSettings].testNumber])
     {
         NSString* test;
         test = NSLocalizedStringWithDefaultValue(@"General:Number Test", nil, [NSBundle mainBundle],

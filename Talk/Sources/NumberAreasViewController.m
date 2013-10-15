@@ -75,15 +75,15 @@
                                                              stateCode:state[@"stateCode"]
                                                         numberTypeMask:numberTypeMask
                                                           currencyCode:[Settings sharedSettings].currencyCode
-                                                                 reply:^(WebClientStatus status, id content)
+                                                                 reply:^(NSError* error, id content)
         {
-            if (status == WebClientStatusOk)
+            if (error == nil)
             {
                 [self processContent:content];
             }
             else
             {
-                [self handleWebClientStatus:status];
+                [self handleError:error];
             }
         }];
     }
@@ -92,15 +92,15 @@
         [[WebClient sharedClient] retrieveNumberAreasForIsoCountryCode:isoCountryCode
                                                         numberTypeMask:numberTypeMask
                                                           currencyCode:[Settings sharedSettings].currencyCode
-                                                                 reply:^(WebClientStatus status, id content)
+                                                                 reply:^(NSError* error, id content)
         {
-            if (status == WebClientStatusOk)
+            if (error == nil)
             {
                 [self processContent:content];
             }
             else
             {
-                [self handleWebClientStatus:status];
+                [self handleError:error];
             }
         }];
     }
@@ -193,13 +193,13 @@
     }
     else
     {
-        NSString*   title;
-        NSString*   message;
+        NSString* title;
+        NSString* message;
 
-        title = NSLocalizedStringWithDefaultValue(@"NumberAreas NoNumbersAlertTitle", nil,
-                                                  [NSBundle mainBundle], @"Numbers Unavailable",
-                                                  @"Alert title telling that phone numbers are not available.\n"
-                                                  @"[iOS alert title size].");
+        title   = NSLocalizedStringWithDefaultValue(@"NumberAreas NoNumbersAlertTitle", nil,
+                                                    [NSBundle mainBundle], @"Numbers Unavailable",
+                                                    @"Alert title telling that phone numbers are not available.\n"
+                                                    @"[iOS alert title size].");
         message = NSLocalizedStringWithDefaultValue(@"NumberAreas NoNumbersAlertMessage", nil,
                                                     [NSBundle mainBundle],
                                                     @"These numbers are not available for purchase at the moment."
@@ -218,17 +218,17 @@
 }
 
 
-- (void)handleWebClientStatus:(WebClientStatus)status
+- (void)handleError:(NSError*)error
 {
-    if (status == WebClientStatusFailServiceUnavailable)
+    if (error.code == WebClientStatusFailServiceUnavailable)
     {
-        NSString*   title;
-        NSString*   message;
+        NSString* title;
+        NSString* message;
 
-        title = NSLocalizedStringWithDefaultValue(@"NumberAreas UnavailableAlertTitle", nil,
-                                                  [NSBundle mainBundle], @"Service Unavailable",
-                                                  @"Alert title telling that loading areas over internet failed.\n"
-                                                  @"[iOS alert title size].");
+        title   = NSLocalizedStringWithDefaultValue(@"NumberAreas UnavailableAlertTitle", nil,
+                                                    [NSBundle mainBundle], @"Service Unavailable",
+                                                    @"Alert title telling that loading areas over internet failed.\n"
+                                                    @"[iOS alert title size].");
         message = NSLocalizedStringWithDefaultValue(@"NumberAreas UnavailableAlertMessage", nil,
                                                     [NSBundle mainBundle],
                                                     @"The service for buying numbers is temporarily offline."
@@ -246,18 +246,19 @@
     }
     else
     {
-        NSString*   title;
-        NSString*   message;
+        NSString* title;
+        NSString* message;
 
-        title = NSLocalizedStringWithDefaultValue(@"NumberAreas LoadFailAlertTitle", nil,
-                                                  [NSBundle mainBundle], @"Loading Failed",
-                                                  @"Alert title telling that loading countries over internet failed.\n"
-                                                  @"[iOS alert title size].");
+        title   = NSLocalizedStringWithDefaultValue(@"NumberAreas LoadFailAlertTitle", nil,
+                                                    [NSBundle mainBundle], @"Loading Failed",
+                                                    @"Alert title telling that loading countries over internet failed.\n"
+                                                    @"[iOS alert title size].");
         message = NSLocalizedStringWithDefaultValue(@"NumberAreas LoadFailAlertMessage", nil,
                                                     [NSBundle mainBundle],
-                                                    @"Loading the list of areas failed.\n\nPlease try again later.",
+                                                    @"Loading the list of areas failed: %@\n\nPlease try again later.",
                                                     @"Alert message telling that loading areas over internet failed.\n"
                                                     @"[iOS alert message size!]");
+        message = [NSString stringWithFormat:message, error.localizedDescription];
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)

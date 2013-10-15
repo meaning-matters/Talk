@@ -94,7 +94,7 @@ typedef enum
     }
     else
     {
-        NSLog(@"//### Error: %@", [error localizedDescription]);
+        NSLog(@"//### Error: %@", error.localizedDescription);
     }
 #if FULL_FORWARDINGS
     fetchedRecordingsController  = [[DataManager sharedManager] fetchResultsForEntityName:@"Recording"
@@ -106,7 +106,7 @@ typedef enum
     }
     else
     {
-        NSLog(@"//### Error: %@", [error localizedDescription]);
+        NSLog(@"//### Error: %@", error.localizedDescription);
     }
 #endif
 

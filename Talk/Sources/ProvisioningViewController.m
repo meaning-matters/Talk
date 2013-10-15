@@ -250,14 +250,14 @@
 - (void)restoreCreditAndNumbers
 {
     [[WebClient sharedClient] retrieveCreditForCurrencyCode:[Settings sharedSettings].currencyCode
-                                                      reply:^(WebClientStatus status, id content)
+                                                      reply:^(NSError* error, id content)
     {
-        if (status == WebClientStatusOk)
+        if (error == nil)
         {
             [Settings sharedSettings].credit = [[content objectForKey:@"credit"] floatValue];
-            [[WebClient sharedClient] retrieveNumberList:^(WebClientStatus status, id content)
+            [[WebClient sharedClient] retrieveNumberList:^(NSError* error, id content)
             {
-                if (status == WebClientStatusOk)
+                if (error == nil)
                 {
                     //### Process & Store numbers array!
                     
@@ -299,8 +299,8 @@
                 }
                 else
                 {
-                    NSString*   title;
-                    NSString*   message;
+                    NSString* title;
+                    NSString* message;
 
                     title   = NSLocalizedStringWithDefaultValue(@"Provisioning FailedNumbersTitle", nil,
                                                                 [NSBundle mainBundle], @"Loading Numbers Failed",
@@ -308,10 +308,11 @@
                                                                 @"[iOS alert title size].");
                     message = NSLocalizedStringWithDefaultValue(@"Provisioning FailedNumbersMessage", nil,
                                                                 [NSBundle mainBundle],
-                                                                @"Your phone numbers could not be restored.\n\n"
+                                                                @"Your phone numbers could not be restored: %@\n\n"
                                                                 @"Please try again later.",
                                                                 @"Alert message: Phone numbers could not be downloaded.\n"
                                                                 @"[iOS alert message size]");
+                    message = [NSString stringWithFormat:message, error.localizedDescription];
                     [BlockAlertView showAlertViewWithTitle:title
                                                    message:message
                                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
@@ -326,8 +327,8 @@
         }
         else
         {
-            NSString*   title;
-            NSString*   message;
+            NSString* title;
+            NSString* message;
 
             title   = NSLocalizedStringWithDefaultValue(@"Provisioning FailedCreditTitle", nil,
                                                         [NSBundle mainBundle], @"Loading Credit Failed",
@@ -335,10 +336,11 @@
                                                         @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"Provisioning FailedCreditMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"Your credit could not be loaded.\n\n"
+                                                        @"Your credit could not be loaded: %@\n\n"
                                                         @"Please try again later.",
                                                         @"Alert message: Calling credit could not be loaded.\n"
                                                         @"[iOS alert message size]");
+            message = [NSString stringWithFormat:message, error.localizedDescription];
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
@@ -444,8 +446,8 @@
         {
             [self setIntroBusy:NO];
 
-            NSString*   title;
-            NSString*   message;
+            NSString* title;
+            NSString* message;
 
             title   = NSLocalizedStringWithDefaultValue(@"Provisioning NothingToRestoreTitle", nil,
                                                         [NSBundle mainBundle], @"Nothing To Restore",
@@ -505,8 +507,8 @@
 
 - (IBAction)verifyCancelAction:(id)sender
 {
-    NSString*   title;
-    NSString*   message;
+    NSString* title;
+    NSString* message;
     
     title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyCancelTitle", nil,
                                                 [NSBundle mainBundle], @"Cancel Account Activation",
@@ -569,18 +571,18 @@
                 WebClient* webClient = [WebClient sharedClient];
                 [webClient retrieveVerificationCodeForPhoneNumber:phoneNumber
                                                        deviceName:[UIDevice currentDevice].name
-                                                            reply:^(WebClientStatus status, NSString* code)
+                                                            reply:^(NSError* error, NSString* code)
                 {
                     [self.verifyCodeActivityIndicator stopAnimating];
-                    if (status == WebClientStatusOk)
+                    if (error == nil)
                     {
                         self.verifyCodeLabel.text = code;
                         [self setVerifyStep:2];
                     }
                     else
                     {
-                        NSString*   title;
-                        NSString*   message;
+                        NSString* title;
+                        NSString* message;
         
                         title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyCodeErrorTitle", nil,
                                                                     [NSBundle mainBundle], @"Couldn't Get Code",
@@ -606,8 +608,8 @@
             }
             else
             {
-                NSString*   title;
-                NSString*   message;
+                NSString* title;
+                NSString* message;
 
                 title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidTitle", nil,
                                                             [NSBundle mainBundle], @"Invalid Number",
@@ -641,10 +643,9 @@
     [self setVerifyStep:3];
 
     // Initiate call.
-    [webClient requestVerificationCallForPhoneNumber:verifyPhoneNumber
-                                               reply:^(WebClientStatus status)
+    [webClient requestVerificationCallForPhoneNumber:verifyPhoneNumber reply:^(NSError* error)
     {
-        if (status == WebClientStatusOk)
+        if (error == nil)
         {
             // We get here when the user either answered or declined the call.
             [Common dispatchAfterInterval:1.0 onMain:^
@@ -721,9 +722,9 @@
     }
 
     [webClient retrieveVerificationStatusForPhoneNumber:verifyPhoneNumber
-                                                  reply:^(WebClientStatus status, BOOL calling, BOOL verified)
+                                                  reply:^(NSError* error, BOOL calling, BOOL verified)
     {
-        if (status == WebClientStatusOk)
+        if (error == nil)
         {
             if (verified == YES)
             {

@@ -227,9 +227,9 @@
         if (setupFee > 0)
         {
             [[WebClient sharedClient] retrieveCreditForCurrencyCode:[Settings sharedSettings].currencyCode
-                                                              reply:^(WebClientStatus status, id content)
+                                                              reply:^(NSError* error, id content)
             {
-                if (status == WebClientStatusOk)
+                if (error == nil)
                 {
                     float credit = [content[@"credit"] floatValue];
 
