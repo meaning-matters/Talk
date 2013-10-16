@@ -873,7 +873,6 @@
 		488AD1EE16E799F4004D3A2A /* NumberStatesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */; };
 		488AD1F116E80A60004D3A2A /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */; };
 		488AD1F216E80A60004D3A2A /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */; };
-		488D7754178076E300099470 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488D7753178076E300099470 /* HockeySDK.framework */; };
 		488D77561780773800099470 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488D77551780773800099470 /* CoreText.framework */; };
 		488D7759178078CC00099470 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488D7758178078CC00099470 /* QuartzCore.framework */; };
 		488FBBDA17007CC6000ECC71 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBD917007CC6000ECC71 /* DataManager.m */; };
@@ -901,6 +900,12 @@
 		48A0CE71180740F300B8A9F8 /* Welcome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */; };
 		48A0CE781809BE3100B8A9F8 /* CallBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE771809BE3100B8A9F8 /* CallBaseViewController.m */; };
 		48A0CE791809BE3100B8A9F8 /* CallBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE771809BE3100B8A9F8 /* CallBaseViewController.m */; };
+		48A0CE96180F24E100B8A9F8 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48A0CE91180F24E100B8A9F8 /* HockeySDK.framework */; };
+		48A0CE97180F24E100B8A9F8 /* HockeySDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE93180F24E100B8A9F8 /* HockeySDK.xcconfig */; };
+		48A0CE98180F24E100B8A9F8 /* HockeySDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE93180F24E100B8A9F8 /* HockeySDK.xcconfig */; };
+		48A0CE99180F24E100B8A9F8 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE94180F24E100B8A9F8 /* HockeySDKResources.bundle */; };
+		48A0CE9A180F24E100B8A9F8 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE94180F24E100B8A9F8 /* HockeySDKResources.bundle */; };
+		48A0CE9B180F2C1100B8A9F8 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48A0CE91180F24E100B8A9F8 /* HockeySDK.framework */; };
 		48A261C016FDE26100007638 /* CallMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A261BF16FDE26100007638 /* CallMessageView.xib */; };
 		48A261C116FDE26100007638 /* CallMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A261BF16FDE26100007638 /* CallMessageView.xib */; };
 		48A261C416FDE32400007638 /* CallMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A261C316FDE32400007638 /* CallMessageView.m */; };
@@ -1974,6 +1979,9 @@
 		48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Welcome.mp3; path = Resources/Welcome.mp3; sourceTree = "<group>"; };
 		48A0CE761809BE3100B8A9F8 /* CallBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallBaseViewController.h; sourceTree = "<group>"; };
 		48A0CE771809BE3100B8A9F8 /* CallBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallBaseViewController.m; sourceTree = "<group>"; };
+		48A0CE91180F24E100B8A9F8 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
+		48A0CE93180F24E100B8A9F8 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
+		48A0CE94180F24E100B8A9F8 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
 		48A261BF16FDE26100007638 /* CallMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallMessageView.xib; sourceTree = "<group>"; };
 		48A261C216FDE32400007638 /* CallMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallMessageView.h; sourceTree = "<group>"; };
 		48A261C316FDE32400007638 /* CallMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallMessageView.m; sourceTree = "<group>"; };
@@ -2185,7 +2193,7 @@
 				48884A751615CE920005AA79 /* UIKit.framework in Frameworks */,
 				48884A771615CE920005AA79 /* Foundation.framework in Frameworks */,
 				48884A791615CE920005AA79 /* CoreGraphics.framework in Frameworks */,
-				488D7754178076E300099470 /* HockeySDK.framework in Frameworks */,
+				48A0CE9B180F2C1100B8A9F8 /* HockeySDK.framework in Frameworks */,
 				48338F8E161628BA0033F4C1 /* libcrypto.a in Frameworks */,
 				48338F90161628BA0033F4C1 /* libssl.a in Frameworks */,
 				48EE399916777EEC00823E09 /* libWebRTC.a in Frameworks */,
@@ -2227,6 +2235,7 @@
 				48A2620316FE4F9700007638 /* libmilenage-arm-apple-darwin9.a in Frameworks */,
 				48A2620516FE4F9700007638 /* libpj-arm-apple-darwin9.a in Frameworks */,
 				48A2620716FE4F9700007638 /* libpjlib-util-arm-apple-darwin9.a in Frameworks */,
+				48A0CE96180F24E100B8A9F8 /* HockeySDK.framework in Frameworks */,
 				48A2620916FE4F9700007638 /* libpjmedia-arm-apple-darwin9.a in Frameworks */,
 				48A2620B16FE4F9700007638 /* libpjmedia-audiodev-arm-apple-darwin9.a in Frameworks */,
 				48A2620D16FE4F9700007638 /* libpjmedia-codec-arm-apple-darwin9.a in Frameworks */,
@@ -3356,6 +3365,25 @@
 			name = CoreData;
 			sourceTree = "<group>";
 		};
+		48A0CE90180F24E100B8A9F8 /* HockeySDK.embeddedframework */ = {
+			isa = PBXGroup;
+			children = (
+				48A0CE91180F24E100B8A9F8 /* HockeySDK.framework */,
+				48A0CE92180F24E100B8A9F8 /* Resources */,
+			);
+			name = HockeySDK.embeddedframework;
+			path = "External/HockeySDK-iOS-3/HockeySDK.embeddedframework";
+			sourceTree = SOURCE_ROOT;
+		};
+		48A0CE92180F24E100B8A9F8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				48A0CE93180F24E100B8A9F8 /* HockeySDK.xcconfig */,
+				48A0CE94180F24E100B8A9F8 /* HockeySDKResources.bundle */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		48AF44E116490FF200DFE3D8 /* XIBs */ = {
 			isa = PBXGroup;
 			children = (
@@ -3496,6 +3524,7 @@
 		48DD7284169F548600CD7080 /* External */ = {
 			isa = PBXGroup;
 			children = (
+				48A0CE90180F24E100B8A9F8 /* HockeySDK.embeddedframework */,
 				48DD72AD169F56F000CD7080 /* AFNetworking */,
 			);
 			name = External;
@@ -3871,6 +3900,7 @@
 				485F6B131637270100D61365 /* IT.png in Resources */,
 				485F6B141637270100D61365 /* IT@2x.png in Resources */,
 				485F6B151637270100D61365 /* JE.png in Resources */,
+				48A0CE97180F24E100B8A9F8 /* HockeySDK.xcconfig in Resources */,
 				485F6B161637270100D61365 /* JE@2x.png in Resources */,
 				485F6B171637270100D61365 /* JM.png in Resources */,
 				485F6B181637270100D61365 /* JM@2x.png in Resources */,
@@ -3977,6 +4007,7 @@
 				485F6B7D1637270100D61365 /* NF.png in Resources */,
 				485F6B7E1637270100D61365 /* NF@2x.png in Resources */,
 				485F6B7F1637270100D61365 /* NG.png in Resources */,
+				48A0CE99180F24E100B8A9F8 /* HockeySDKResources.bundle in Resources */,
 				485F6B801637270100D61365 /* NG@2x.png in Resources */,
 				485F6B811637270100D61365 /* NI.png in Resources */,
 				485F6B821637270100D61365 /* NI@2x.png in Resources */,
@@ -4408,8 +4439,10 @@
 				484A94A7171C5065009E22B9 /* NumberAreaActionCell.xib in Resources */,
 				483679F31722F2CF001A02AF /* List.png in Resources */,
 				483679F51722F2CF001A02AF /* List@2x.png in Resources */,
+				48A0CE98180F24E100B8A9F8 /* HockeySDK.xcconfig in Resources */,
 				48CB2C4517E6539000E19C3D /* Target.png in Resources */,
 				483679F71722F2CF001A02AF /* Microphone.png in Resources */,
+				48A0CE9A180F24E100B8A9F8 /* HockeySDKResources.bundle in Resources */,
 				483679F91722F2CF001A02AF /* Microphone@2x.png in Resources */,
 				483679FC17246977001A02AF /* RecordingControlsCell.xib in Resources */,
 				48367A1617247B2D001A02AF /* CueForwardBlack.png in Resources */,
@@ -4928,8 +4961,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\\\"$(SRCROOT)/External/HockeySDK-iOS/HockeySDK.embeddedframework\\\"",
-					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/HockeySDK.embeddedframework",
+					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3/HockeySDK.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
@@ -4968,8 +5000,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\\\"$(SRCROOT)/External/HockeySDK-iOS/HockeySDK.embeddedframework\\\"",
-					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/HockeySDK.embeddedframework",
+					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3/HockeySDK.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
@@ -5000,8 +5031,10 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Talk.app/Talk";
 				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"\\\"$(SDKROOT)/Developer/Library/Frameworks\\\"",
+					"\\\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\\\"",
+					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/HockeySDK.embeddedframework",
+					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3/HockeySDK.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
@@ -5025,8 +5058,10 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Talk.app/Talk";
 				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"\\\"$(SDKROOT)/Developer/Library/Frameworks\\\"",
+					"\\\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\\\"",
+					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/HockeySDK.embeddedframework",
+					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3/HockeySDK.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
@@ -5088,8 +5123,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\\\"$(SRCROOT)/External/HockeySDK-iOS/HockeySDK.embeddedframework\\\"",
-					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/HockeySDK.embeddedframework",
+					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3/HockeySDK.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
@@ -5120,8 +5154,10 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Talk.app/Talk";
 				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"\\\"$(SDKROOT)/Developer/Library/Frameworks\\\"",
+					"\\\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\\\"",
+					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/HockeySDK.embeddedframework",
+					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3/HockeySDK.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";

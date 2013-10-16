@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
 //
 
+#import <HockeySDK/HockeySDK.h>
 #import "HelpsViewController.h"
 #import "HelpViewController.h"
 #import "Common.h"
@@ -154,7 +155,7 @@ typedef enum
             {
                 case 0:
                     text = NSLocalizedStringWithDefaultValue(@"Helps MessageContactUsText", nil, [NSBundle mainBundle],
-                                                             @"Send Direct Message",
+                                                             @"Give & Receive Feedback",
                                                              @"....\n"
                                                              @"[1 line larger font].");
                     cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
@@ -213,9 +214,13 @@ typedef enum
             switch (indexPath.row)
             {
                 case 0:
+                {
                     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-                    // Open HockeyApp's message screen
+
+                    BITFeedbackListViewController* controller = [[BITFeedbackListViewController alloc] init];
+                    [self.navigationController pushViewController:controller animated:YES];
                     break;
+                }
 
                 case 1:
                     [tableView deselectRowAtIndexPath:indexPath animated:YES];

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import <HockeySDK/HockeySDK.h>
 #import "AboutViewController.h"
 #import "CreditViewController.h"
 #import "DialerViewController.h"
@@ -20,8 +21,8 @@
 #import "SettingsViewController.h"
 #import "NBPeoplePickerNavigationController.h"
 
-
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, AVAudioPlayerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, AVAudioPlayerDelegate,
+                                      BITHockeyManagerDelegate, BITUpdateManagerDelegate, BITCrashManagerDelegate>
 
 @property (nonatomic, strong) UIWindow*                                 window;
 @property (nonatomic, strong) UITabBarController*                       tabBarController;
