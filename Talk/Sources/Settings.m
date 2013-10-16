@@ -489,4 +489,10 @@ static NSUserDefaults*  userDefaults;
     return @"+441617680224";
 }
 
+
+- (NSString*)supportEmail
+{
+    return @"info@numberbay.com";
+}
+
 @end

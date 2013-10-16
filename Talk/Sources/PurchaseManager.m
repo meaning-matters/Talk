@@ -426,10 +426,11 @@
     }
 
     [Common enableNetworkActivityIndicator:NO];
-    self.loadCompletion ? self.loadCompletion(YES) : 0;
-    self.loadCompletion = nil;
     self.loadProductsDate = [NSDate date];
-    self.productsRequest = nil;
+    self.productsRequest  = nil;
+
+    self.loadCompletion ? self.loadCompletion(YES) : 0;
+    self.loadCompletion   = nil;
 }
 
 
@@ -466,12 +467,16 @@
                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
     {
         [Common enableNetworkActivityIndicator:NO];
-        self.loadCompletion ? self.loadCompletion(NO) : 0;
-        self.loadCompletion = nil;
         self.productsRequest = nil;
+
+        self.loadCompletion ? self.loadCompletion(NO) : 0;
+        self.loadCompletion  = nil;
     }
                          cancelButtonTitle:[Strings closeString]
                          otherButtonTitles:nil];
+
+    // Force a load.
+    self.loadProductsDate = nil;
 
     NSLog(@"//### Failed to load list of products.");
 }
@@ -614,7 +619,7 @@
     }
     else
     {
-        completion ? completion(YES) : 0;
+        completion ? completion(_currencyCode.length > 0) : 0;
     }
 }
 
@@ -691,7 +696,7 @@
 {
     if (self.buyCompletion != nil || [Common checkRemoteNotifications] == NO)
     {
-        completion(NO, nil);
+        completion ? completion(NO, nil) : 0;
 
         return;
     }
@@ -704,8 +709,8 @@
 {
     if (self.buyCompletion != nil || [Common checkRemoteNotifications] == NO)
     {
-        completion(NO, nil);
-        
+        completion ? completion(NO, nil) : 0;
+
         return;
     }
 
@@ -720,7 +725,7 @@
 {
     if (self.buyCompletion != nil)
     {
-        completion(NO, nil);
+        completion ? completion(NO, nil) : 0;
 
         return;
     }
@@ -764,7 +769,7 @@
 {
     if (self.buyCompletion != nil)
     {
-        completion(NO, nil);
+        completion ? completion(NO, nil) : 0;
 
         return;
     }
@@ -791,7 +796,7 @@
         {
             if (cancelled == YES)
             {
-                completion(NO, nil);
+                completion ? completion(NO, nil) : 0;
             }
             else
             {
@@ -805,7 +810,7 @@
                         [Settings sharedSettings].pendingNumberBuy = nil;
                         [Settings sharedSettings].credit           = credit;
 
-                        completion(YES, nil);
+                        completion ? completion(YES, nil) : 0;
                     }
                     else
                     {
@@ -835,7 +840,7 @@
                                                        message:message
                                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
                         {
-                            completion(NO, nil);
+                            completion ? completion(NO, nil) : 0;
                         }
                                              cancelButtonTitle:[Strings closeString]
                                              otherButtonTitles:nil];

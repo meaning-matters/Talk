@@ -51,8 +51,6 @@ static NSDictionary* statuses;
                       @"FAIL_IVR_IN_USE"              : @(WebClientStatusFailIvrInUse),
                       @"FAIL_CALLBACK_ALREADY_ACTIVE" : @(WebClientStatusFailCallbackAlreadyActive),
                       @"FAIL_NO_CALLBACK_FOUND"       : @(WebClientStatusFailNoCallbackFound) };
-
-        [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     });
 
     return sharedInstance;
@@ -125,18 +123,9 @@ static NSDictionary* statuses;
       parameters:(NSDictionary*)parameters
            reply:(void (^)(NSError* error, id content))reply
 {
-    [self postPath:path parameters:parameters reply:reply checkAccount:YES];
-}
-
-
-- (void)postPath:(NSString*)path
-      parameters:(NSDictionary*)parameters
-           reply:(void (^)(NSError* error, id content))reply
-    checkAccount:(BOOL)checkAccount
-{
     NSLog(@"POST %@ : %@", path, parameters);
 
-    if (checkAccount == YES && [self handleAccount:reply] == NO)
+    if ([self handleAccount:reply] == NO)
     {
         return;
     }
@@ -384,10 +373,21 @@ static NSDictionary* statuses;
 - (void)retrieveSipAccount:(NSDictionary*)parameters
                     reply:(void (^)(NSError* error, id content))reply
 {
+    [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
+                                    password:[Settings sharedSettings].webPassword];
+
     [self postPath:[NSString stringWithFormat:@"users/%@/devices", [Settings sharedSettings].webUsername]
         parameters:parameters
-             reply:reply
-      checkAccount:NO];
+           success:^(AFHTTPRequestOperation* operation, id responseObject)
+     {
+         NSLog(@"postPath request: %@", operation.request.URL);
+
+         [self handleSuccess:responseObject reply:reply];
+     }
+           failure:^(AFHTTPRequestOperation* operation, NSError* error)
+     {
+         [self handleFailure:error reply:reply];
+     }];
 }
 
 
@@ -863,7 +863,7 @@ static NSDictionary* statuses;
         }
         else
         {
-            NSLog(@"%@", content);
+            NSLog(@"%@", error);
             reply(error, CallStateFailed);
         }
     }];

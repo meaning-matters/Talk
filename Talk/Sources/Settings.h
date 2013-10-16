@@ -61,5 +61,6 @@
 
 @property (nonatomic, readonly) NSString*       testNumber;             // The short number for doing VoIP test calls.
 @property (nonatomic, readonly) NSString*       supportNumber;          // NumberBay telephone support number.
+@property (nonatomic, readonly) NSString*       supportEmail;           // NumberBay email support address.
 
 @end

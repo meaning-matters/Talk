@@ -72,6 +72,10 @@
 
 + (BOOL)checkRemoteNotifications;
 
++ (BOOL)checkSendingEmail;
+
++ (BOOL)checkSendingTextMessage;
+
 // Works only for non-emergency numbers.
 + (BOOL)checkCountryOfPhoneNumber:(PhoneNumber*)phoneNumber
                        completion:(void (^)(BOOL cancelled, PhoneNumber* phoneNumber))completion;

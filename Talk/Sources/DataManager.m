@@ -219,14 +219,14 @@
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
             {
-                completion(error);
+                completion ? completion(error) : 0;
             }
                                  cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
         }
         else
         {
-            completion(error);
+            completion ? completion(error) : 0;
         }
     }];
 }
@@ -307,26 +307,26 @@
                         {
                             error = nil;
                             [self.managedObjectContext save:&error];
-                            completion(error);
+                            completion ? completion(error) : 0;
                         }
                         else
                         {
                             [self.managedObjectContext rollback];
-                            completion(error);
+                            completion ? completion(error) : 0;
                         }
                     }];
                 }
                 else
                 {
                     [self.managedObjectContext rollback];
-                    completion(error);
+                    completion ? completion(error) : 0;
                 }
             }];
         }
         else
         {
             [self.managedObjectContext rollback];
-            completion(error);
+            completion ? completion(error) : 0;
         }
     }];
 }
@@ -352,7 +352,7 @@
             }
             else
             {
-                completion(error);
+                completion ? completion(error) : 0;
 
                 return;
             }
@@ -404,14 +404,14 @@
 
                     if (--count == 0)
                     {
-                        completion(error);
+                        completion ? completion(error) : 0;
                     }
                 }];
             }
         }
         else
         {
-            completion(webError);
+            completion ? completion(webError) : 0;
         }
     }];
 }
@@ -437,7 +437,7 @@
             }
             else
             {
-                completion(error);
+                completion ? completion(error) : 0;
 
                 return;
             }
@@ -473,14 +473,14 @@
 
                     if (--count == 0)
                     {
-                        completion(error);
+                        completion ? completion(error) : 0;
                     }
                 }];
             }
         }
         else
         {
-            completion(webError);
+            completion ? completion(webError) : 0;
         }
     }];
 }
@@ -494,7 +494,7 @@
 
     if (error != nil)
     {
-        completion(error);
+        completion ? completion(error) : 0;
 
         return;
     }
@@ -530,7 +530,7 @@
 
             if (--count == 0)
             {
-                completion(error);
+                completion ? completion(error) : 0;
             }
         }];
     }

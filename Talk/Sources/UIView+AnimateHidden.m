@@ -32,10 +32,7 @@
         // For interoperability with hidden property: alpha must end at 1.
         self.alpha = 1;
 
-        if (completion != nil)
-        {
-            completion();
-        }
+        completion ? completion() : 0;
     }];
 }
 

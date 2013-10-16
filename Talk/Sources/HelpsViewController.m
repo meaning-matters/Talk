@@ -142,7 +142,7 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
-    switch (indexPath.section)
+    switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionTexts:
             cell.textLabel.text = [helpsArray[indexPath.row] allKeys][0];
@@ -202,7 +202,7 @@ typedef enum
     NSString*            title;
     NSString*            message;
 
-    switch (indexPath.section)
+    switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionTexts:
             helpViewController = [[HelpViewController alloc] initWithDictionary:helpsArray[indexPath.row]];
@@ -213,22 +213,35 @@ typedef enum
             switch (indexPath.row)
             {
                 case 0:
+                    [tableView deselectRowAtIndexPath:indexPath animated:YES];
                     // Open HockeyApp's message screen
                     break;
 
                 case 1:
-                    // Open email screen
+                    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+                    if ([Common checkSendingEmail] == YES)
+                    {
+                        MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+                        controller.mailComposeDelegate = self;
+                        [controller setSubject:[Settings sharedSettings].verifiedE164];
+                        [controller setToRecipients:@[[Settings sharedSettings].supportEmail]];
+                        [self presentViewController:controller animated:YES completion:nil];
+                    }
                     break;
 
                 case 2:
-                    title   = NSLocalizedStringWithDefaultValue(@"Helps TestCallText", nil, [NSBundle mainBundle],
-                                                                @"Make Test Call",
+                    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+                    title   = NSLocalizedStringWithDefaultValue(@"Helps MobileCallText", nil, [NSBundle mainBundle],
+                                                                @"Make Mobile Call...",
                                                                 @"...\n"
                                                                 @"[1 line larger font].");
                     message = NSLocalizedStringWithDefaultValue(@"Helps TestCallText", nil, [NSBundle mainBundle],
-                                                                @"You're about to call our United Kingdom number "
-                                                                @"using iOS' mobile Phone app.  Normal mobile call "
-                                                                @"charges, of your operator, apply.",
+                                                                @"When you're in serious trouble, call us on our "
+                                                                @"United Kingdom number using iOS' mobile Phone app.\n\n"
+                                                                @"Normal (international) call charges, of your mobile "
+                                                                @"operator, apply.",
                                                                 @"...\n"
                                                                 @"[1 line larger font].");
                     [BlockAlertView showAlertViewWithTitle:title
@@ -251,6 +264,44 @@ typedef enum
             phoneNumber = [[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].testNumber];
             [[CallManager sharedManager] callPhoneNumber:phoneNumber fromIdentity:[Settings sharedSettings].verifiedE164];
             break;
+    }
+}
+
+
+#pragma mark - Mail Compose Delegate
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError*)error
+{
+    if (result == MFMailComposeResultFailed)
+    {
+        NSString* title;
+        NSString* message;
+
+        title   = NSLocalizedStringWithDefaultValue(@"Helps EmailFailedTitle", nil,
+                                                    [NSBundle mainBundle], @"Failed To Send Email",
+                                                    @"Alert title that sending an email failed\n"
+                                                    @"[iOS alert title size].");
+
+        message = NSLocalizedStringWithDefaultValue(@"Helps EmailFailedMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"Sending the text message failed.",
+                                                    @"Alert message that sending an email failed\n"
+                                                    @"[iOS alert message size]");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+         {
+             [self dismissViewControllerAnimated:YES completion:nil];
+         }
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

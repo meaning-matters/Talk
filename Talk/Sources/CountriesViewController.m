@@ -161,7 +161,7 @@
     }
     else
     {
-        self.completion(NO, [[CountryNames sharedNames] isoCountryCodeForName:name]);
+        self.completion ? self.completion(NO, [[CountryNames sharedNames] isoCountryCodeForName:name]) : 0;
 
         [self.navigationController popViewControllerAnimated:YES];
     }

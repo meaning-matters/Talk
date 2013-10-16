@@ -696,6 +696,11 @@ typedef enum
 {
     settings.callbackMode = ((UISwitch*)sender).on;
 
+    if (settings.callbackMode == YES && settings.callbackCallerId.length == 0)
+    {
+        settings.callbackCallerId = settings.verifiedE164;
+    }
+
     [self reloadCallModeSection];
 }
 

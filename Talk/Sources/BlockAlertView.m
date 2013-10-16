@@ -99,7 +99,7 @@
         // Only the cancel must be handled here.
         if (cancelled == YES)
         {
-            alert->_phoneNumberCompletion(cancelled, phoneNumber);
+            alert->_phoneNumberCompletion ? alert->_phoneNumberCompletion(cancelled, phoneNumber) : 0;
         }
     }
                                                         cancelButtonTitle:cancelButtonTitle
@@ -134,11 +134,11 @@
         if ([Common checkCountryOfPhoneNumber:self.phoneNumberTextFieldDelegate.phoneNumber
                                    completion:^(BOOL cancelled, PhoneNumber* phoneNumber)
         {
-            self.phoneNumberCompletion(cancelled, phoneNumber);
+            self.phoneNumberCompletion ? self.phoneNumberCompletion(cancelled, phoneNumber) : 0;
         }] == YES)
         {
             // Number already has ISO country code; call completion now.
-            self.phoneNumberCompletion(NO, self.phoneNumberTextFieldDelegate.phoneNumber);
+            self.phoneNumberCompletion ? self.phoneNumberCompletion(NO, self.phoneNumberTextFieldDelegate.phoneNumber) : 0;
         }
         else
         {

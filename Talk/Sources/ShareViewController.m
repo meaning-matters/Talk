@@ -79,7 +79,7 @@
 
 - (IBAction)emailAction:(id)sender
 {
-    if ([MFMailComposeViewController canSendMail])
+    if ([Common checkSendingEmail] == YES)
     {
         MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
         controller.mailComposeDelegate = self;
@@ -87,64 +87,17 @@
         [controller setMessageBody:[self initialText] isHTML:NO];
         [self presentViewController:controller animated:YES completion:nil];
     }
-    else
-    {
-        NSString* title;
-        NSString* message;
-
-        title   = NSLocalizedStringWithDefaultValue(@"Share NoMailAccountTitle", nil,
-                                                  [NSBundle mainBundle], @"No Email Accounts",
-                                                  @"Alert title that no text message (SMS) can be send\n"
-                                                  @"[iOS alert title size].");
-
-        message = NSLocalizedStringWithDefaultValue(@"Share NoEmailAccountMessage", nil,
-                                                    [NSBundle mainBundle],
-                                                    @"There are no email accounts configured. You can add an email "
-                                                    @"account in iOS Settings > Mail, ....",
-                                                    @"Alert message that no email can be send\n"
-                                                    @"[iOS alert message size]");
-
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:nil
-                             cancelButtonTitle:[Strings closeString]
-                             otherButtonTitles:nil];
-    }
 }
 
 
 - (IBAction)messageAction:(id)sender
 {
-    if ([MFMessageComposeViewController canSendText])
+    if ([Common checkSendingTextMessage] == YES)
     {
         MFMessageComposeViewController* controller = [[MFMessageComposeViewController alloc] init];
         controller.messageComposeDelegate = self;
         controller.body = [self initialText];
         [self presentViewController:controller animated:YES completion:nil];
-    }
-    else
-    {
-        NSString* title;
-        NSString* message;
-        
-        title   = NSLocalizedStringWithDefaultValue(@"Share NoTextMessageTitle", nil,
-                                                    [NSBundle mainBundle], @"Can't Send Message",
-                                                    @"Alert title that no text message (SMS) can be send\n"
-                                                    @"[iOS alert title size].");
-
-        message = NSLocalizedStringWithDefaultValue(@"Share NoTextMessageMessage", nil,
-                                                    [NSBundle mainBundle],
-                                                    @"You can't send a text message now. You can enable iMessage in "
-                                                    @"iOS Settings > Messages.",
-                                                    @"Alert message that no text message (SMS) can be send\n"
-                                                    @"[iOS alert message size - Settings, iMessage and Message are "
-                                                    @"iOS terms]");
-
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:nil
-                             cancelButtonTitle:[Strings closeString]
-                             otherButtonTitles:nil];
     }
 }
 

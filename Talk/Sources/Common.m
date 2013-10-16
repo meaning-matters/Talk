@@ -354,6 +354,75 @@
 }
 
 
++ (BOOL)checkSendingEmail
+{
+    if ([MFMailComposeViewController canSendMail] == YES)
+    {
+        return YES;
+    }
+    else
+    {
+        NSString* title;
+        NSString* message;
+
+        title   = NSLocalizedStringWithDefaultValue(@"General NoMailAccountTitle", nil,
+                                                    [NSBundle mainBundle], @"No Email Accounts",
+                                                    @"Alert title that no text message (SMS) can be send\n"
+                                                    @"[iOS alert title size].");
+
+        message = NSLocalizedStringWithDefaultValue(@"General NoEmailAccountMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"There are no email accounts configured. You can add an email "
+                                                    @"account in iOS Settings > Mail > Add Account.",
+                                                    @"Alert message that no email can be send\n"
+                                                    @"[iOS alert message size]");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+
+        return NO;
+    }
+}
+
+
++ (BOOL)checkSendingTextMessage
+{
+    if ([MFMessageComposeViewController canSendText])
+    {
+        return YES;
+    }
+    else
+    {
+        NSString* title;
+        NSString* message;
+
+        title   = NSLocalizedStringWithDefaultValue(@"General NoTextMessageTitle", nil,
+                                                    [NSBundle mainBundle], @"Can't Send Message",
+                                                    @"Alert title that no text message (SMS) can be send\n"
+                                                    @"[iOS alert title size].");
+
+        message = NSLocalizedStringWithDefaultValue(@"General NoTextMessageMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"You can't send a text message now. You can enable iMessage in "
+                                                    @"iOS Settings > Messages.",
+                                                    @"Alert message that no text message (SMS) can be send\n"
+                                                    @"[iOS alert message size - Settings, iMessage and Message are "
+                                                    @"iOS terms]");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+
+        return NO;
+    }
+}
+
+
 // Checks only non-emergency number.
 + (BOOL)checkCountryOfPhoneNumber:(PhoneNumber*)phoneNumber
                        completion:(void (^)(BOOL cancelled, PhoneNumber* phoneNumber))completion
@@ -409,7 +478,7 @@
                         [Settings sharedSettings].homeCountry = isoCountryCode;
                     }
 
-                    completion(cancelled, phoneNumber);
+                    completion ? completion(cancelled, phoneNumber) : 0;
                 }];
 
                 countriesViewController.isModal = YES;
@@ -435,7 +504,7 @@
             {
                 alertView = nil;
                 
-                completion(YES, phoneNumber);
+                completion ? completion(YES, phoneNumber) : 0;
             }
         }
                                          cancelButtonTitle:[Strings cancelString]
@@ -454,6 +523,8 @@
 
 + (void)enableNetworkActivityIndicator:(BOOL)enable
 {
+    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+
     if (enable == YES)
     {
         [[AFNetworkActivityIndicatorManager sharedManager] incrementActivityCount];
