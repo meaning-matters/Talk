@@ -29,26 +29,21 @@
  */
 
 
+#import <UIKit/UIKit.h>
 #import "BITHockeyBaseManager.h"
 
 
-/**
- *  Update check interval
- */
-typedef NS_ENUM (NSUInteger, BITUpdateSetting) {
-  /**
-   *  On every startup or or when the app comes to the foreground
-   */
+typedef enum {
+	BITUpdateAuthorizationDenied,
+	BITUpdateAuthorizationAllowed,
+	BITUpdateAuthorizationPending
+} BITUpdateAuthorizationState;
+
+typedef enum {
   BITUpdateCheckStartup = 0,
-  /**
-   *  Once a day
-   */
   BITUpdateCheckDaily = 1,
-  /**
-   *  Manually
-   */
   BITUpdateCheckManually = 2
-};
+} BITUpdateSetting;
 
 @protocol BITUpdateManagerDelegate;
 
@@ -65,6 +60,21 @@ typedef NS_ENUM (NSUInteger, BITUpdateSetting) {
  This module automatically disables itself when running in an App Store build by default! If you integrate the
  Atlassian JMC client this module is used to automatically configure JMC, but will not do anything else.
  
+ To use this module, it is important to implement set the `delegate` property and implement
+ `[BITUpdateManagerDelegate customDeviceIdentifierForUpdateManager:]`.
+ 
+ Example implementation if your Xcode configuration for the App Store is called "AppStore":
+    - (NSString *)customDeviceIdentifierForUpdateManager:(BITUpdateManager *)updateManager {
+    #ifndef (CONFIGURATION_AppStore)
+      if ([[UIDevice currentDevice] respondsToSelector:@selector(uniqueIdentifier)])
+        return [[UIDevice currentDevice] performSelector:@selector(uniqueIdentifier)];
+    #endif
+    
+      return nil;
+    }
+  
+    [[BITHockeyManager sharedHockeyManager].updateManager setDelegate:self];
+ 
  */
 
 @interface BITUpdateManager : BITHockeyBaseManager <UIAlertViewDelegate>
@@ -75,7 +85,11 @@ typedef NS_ENUM (NSUInteger, BITUpdateSetting) {
 ///-----------------------------------------------------------------------------
 
 /**
- Sets the `BITUpdateManagerDelegate` delegate. 
+ Sets the `BITUpdateManagerDelegate` delegate.
+ 
+ When using `BITUpdateManager` to distribute updates of your beta or enterprise
+ application, it is _REQUIRED_ to set this delegate and implement
+ `[BITUpdateManagerDelegate customDeviceIdentifierForUpdateManager:]`!
  */
 @property (nonatomic, weak) id delegate;
 
@@ -90,7 +104,7 @@ typedef NS_ENUM (NSUInteger, BITUpdateSetting) {
  When to check for new updates.
  
  Defines when a the SDK should check if there is a new update available on the
- server. This must be assigned one of the following, see `BITUpdateSetting`:
+ server. This must be assigned one of the following:
  
  - `BITUpdateCheckStartup`: On every startup or or when the app comes to the foreground
  - `BITUpdateCheckDaily`: Once a day
@@ -104,7 +118,6 @@ typedef NS_ENUM (NSUInteger, BITUpdateSetting) {
  invoke the update checking process yourself with `checkForUpdate` somehow, e.g. by
  proving an update check button for the user or integrating the Update View into your
  user interface.
- @see BITUpdateSetting
  @see checkForUpdateOnLaunch
  @see checkForUpdate
  */
@@ -174,6 +187,39 @@ typedef NS_ENUM (NSUInteger, BITUpdateSetting) {
  *Default*: _NO_
  */
 @property (nonatomic, assign, getter=isShowingDirectInstallOption) BOOL showDirectInstallOption;
+
+
+///-----------------------------------------------------------------------------
+/// @name Authorization
+///-----------------------------------------------------------------------------
+
+/**
+ Flag that determines if each update should be authenticated
+ 
+ If enabled each update will be authenticated on startup against the HockeyApp servers.
+ The process will basically validate if the current device is part of the provisioning
+ profile on the server. If not, it will present a blocking view on top of the apps UI
+ so that no interaction is possible.
+ 
+ When running the app from the App Store, this setting is ignored.
+ 
+ *Default*: _NO_
+ @see authenticationSecret
+ @warning This only works when using Ad-Hoc provisioning profiles!
+ */
+@property (nonatomic, assign, getter=isRequireAuthorization) BOOL requireAuthorization;
+
+
+/**
+ The authentication token from HockeyApp.
+ 
+ Set the token to the `Secret ID` which HockeyApp provides for every app.
+ 
+ When running the app from the App Store, this setting is ignored.
+ 
+ @see requireAuthorization
+ */
+@property (nonatomic, strong) NSString *authenticationSecret;
 
 
 ///-----------------------------------------------------------------------------

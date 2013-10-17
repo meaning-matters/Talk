@@ -27,20 +27,17 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "BITCrashManagerDelegate.h"
-#import "BITUpdateManagerDelegate.h"
-#import "BITFeedbackManagerDelegate.h"
-#import "BITAuthenticator.h"
+
 
 @class BITHockeyManager;
 @class BITHockeyBaseManager;
 
 /**
  The `BITHockeyManagerDelegate` formal protocol defines methods further configuring
-  the behaviour of `BITHockeyManager`, as well as the delegate of the modules it manages.
+  the behaviour of `BITHockeyManager`.
  */
 
-@protocol BITHockeyManagerDelegate <NSObject, BITCrashManagerDelegate, BITUpdateManagerDelegate, BITFeedbackManagerDelegate, BITAuthenticatorDelegate>
+@protocol BITHockeyManagerDelegate <NSObject>
 
 @optional
 
@@ -50,21 +47,19 @@
 ///-----------------------------------------------------------------------------
 
 /**
- * Implement to force the usage of the live identifier
- *
- * This is useful if you are e.g. distributing an enterprise app inside your company
- * and want to use the `liveIdentifier` for that even though it is not running from
- * the App Store.
- *
- * Example:
- *    - (BOOL)shouldUseLiveIdentifierForHockeyManager:(BITHockeyManager *)hockeyManager {
- *    #ifdef (CONFIGURATION_AppStore)
- *      return YES;
- *    #endif
- *      return NO;
- *    }
- *
- * @param hockeyManager BITHockeyManager instance
+ Implement to force the usage of the live identifier
+ 
+ This is useful if you are e.g. distributing an enterprise app inside your company
+ and want to use the `liveIdentifier` for that even though it is not running from
+ the App Store.
+ 
+ Example:
+    - (BOOL)shouldUseLiveIdentifierForHockeyManager:(BITHockeyManager *)hockeyManager {
+    #ifdef (CONFIGURATION_Release)
+      return YES;
+    #endif
+      return NO;
+    }
  */
 - (BOOL)shouldUseLiveIdentifierForHockeyManager:(BITHockeyManager *)hockeyManager;
 
@@ -101,12 +96,12 @@
  In addition, if this returns not nil for `BITFeedbackManager` the user will
  not be asked for any user details by the component, including useerName or userEmail.
  
- You can find out the component requesting the userID like this:
-    - (NSString *)userIDForHockeyManager:(BITHockeyManager *)hockeyManager componentManager:(BITHockeyBaseManager *)componentManager {
+ You can find out the component requesting the user name like this:
+    - (NSString *)userNameForHockeyManager:(BITHockeyManager *)hockeyManager componentManager:(BITHockeyBaseManager *)componentManager {
       if (componentManager == hockeyManager.feedbackManager) {
-        return UserIDForFeedback;
+        return UserNameForFeedback;
       } else if (componentManager == hockeyManager.crashManager) {
-        return UserIDForCrashReports;
+        return UserNameForCrashReports;
       } else {
         return nil;
       }
@@ -162,12 +157,12 @@
  In addition, if this returns not nil for `BITFeedbackManager` the user will
  not be asked for any user details by the component, including useerName or userEmail.
  
- You can find out the component requesting the user email like this:
-    - (NSString *)userEmailForHockeyManager:(BITHockeyManager *)hockeyManager componentManager:(BITHockeyBaseManager *)componentManager {
+ You can find out the component requesting the user name like this:
+    - (NSString *)userNameForHockeyManager:(BITHockeyManager *)hockeyManager componentManager:(BITHockeyBaseManager *)componentManager {
       if (componentManager == hockeyManager.feedbackManager) {
-        return UserEmailForFeedback;
+        return UserNameForFeedback;
       } else if (componentManager == hockeyManager.crashManager) {
-        return UserEmailForCrashReports;
+        return UserNameForCrashReports;
        } else {
         return nil;
        }

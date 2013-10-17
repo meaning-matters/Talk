@@ -44,7 +44,11 @@
 
 
 /**
- Sets the `BITFeedbackComposeViewControllerDelegate` delegate.
+ Sets the `BITUpdateManagerDelegate` delegate.
+ 
+ When using `BITUpdateManager` to distribute updates of your beta or enterprise
+ application, it is _REQUIRED_ to set this delegate and implement
+ `[BITUpdateManagerDelegate customDeviceIdentifierForUpdateManager:]`!
  */
 @property (nonatomic, weak) id<BITFeedbackComposeViewControllerDelegate> delegate;
 

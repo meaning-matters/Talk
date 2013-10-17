@@ -41,27 +41,15 @@
 #define BITHockeyFeedbackMessagesLoadingFinished @"BITHockeyFeedbackMessagesLoadingFinished"
 
 
-/**
- *  Defines if behavior of the user data field
- */
-typedef NS_ENUM(NSInteger, BITFeedbackUserDataElement) {
-  /**
-   *  don't ask for this user data element at all
-   */
-  BITFeedbackUserDataElementDontShow = 0,
-  /**
-   *  the user may provide it, but does not have to
-   */
-  BITFeedbackUserDataElementOptional = 1,
-  /**
-   *  the user has to provide this to continue
-   */
-  BITFeedbackUserDataElementRequired = 2
-};
+typedef enum {
+  BITFeedbackUserDataElementDontShow = 0, // don't ask for this user data element at all
+  BITFeedbackUserDataElementOptional = 1, // the user may provide it, but does not have to
+  BITFeedbackUserDataElementRequired = 2 // the user has to provide this to continue
+} BITFeedbackUserDataElement;
 
 
 @class BITFeedbackMessage;
-@class BITFeedbackManagerDelegate;
+
 
 /**
  The feedback module.
@@ -106,19 +94,7 @@ typedef NS_ENUM(NSInteger, BITFeedbackUserDataElement) {
  feedback message.
  */
 
-@interface BITFeedbackManager : BITHockeyBaseManager
-
-///-----------------------------------------------------------------------------
-/// @name Delegate
-///-----------------------------------------------------------------------------
-
-/**
- Sets the `BITFeedbackManagerDelegate` delegate.
-
- Can be set to be notified when new feedback is received from the server.
- */
-@property (nonatomic, weak) id<BITFeedbackManagerDelegate> delegate;
-
+@interface BITFeedbackManager : BITHockeyBaseManager <UIAlertViewDelegate>
 
 ///-----------------------------------------------------------------------------
 /// @name General settings
@@ -138,7 +114,6 @@ typedef NS_ENUM(NSInteger, BITFeedbackUserDataElement) {
  `[BITHockeyManagerDelegate userNameForHockeyManager:componentManager:]` then this
  property will automatically be set to `BITFeedbackUserDataElementDontShow`
 
- @see BITFeedbackUserDataElement
  @see requireUserEmail
  @see `[BITHockeyManagerDelegate userNameForHockeyManager:componentManager:]`
  */
@@ -161,7 +136,6 @@ typedef NS_ENUM(NSInteger, BITFeedbackUserDataElement) {
  `[BITHockeyManagerDelegate userEmailForHockeyManager:componentManager:]` then this
  property will automatically be set to `BITFeedbackUserDataElementDontShow`
  
- @see BITFeedbackUserDataElement
  @see requireUserName
  @see `[BITHockeyManagerDelegate userEmailForHockeyManager:componentManager:]`
  */
@@ -191,29 +165,6 @@ typedef NS_ENUM(NSInteger, BITFeedbackUserDataElement) {
 /// @name User Interface
 ///-----------------------------------------------------------------------------
 
-
-/**
- Indicates if an forced user data UI presentation is shown modal
- 
- If `requireUserName` and/or `requireUserEmail` are enabled, the first presentation
- of `feedbackListViewController:` and subsequent `feedbackComposeViewController:`
- will automatically present a UI that lets the user provide this data and compose
- a message. By default this is shown (since SDK 3.1) as a modal sheet.
- 
- If you want the SDK to push this UI onto the navigation stack in this specific scenario,
- then change the property to `NO`.
- 
- @warning If you presenting the `BITFeedbackListViewController` in a popover, this property should not be changed!
- 
- Default is `YES`
- @see requireUserName
- @see requireUserEmail
- @see showFeedbackComposeView
- @see feedbackComposeViewController
- @see showFeedbackListView
- @see feedbackListViewController:
- */
-@property (nonatomic, readwrite) BOOL showFirstRequiredPresentationModal;
 
 /**
  Present the modal feedback list user interface.

@@ -217,7 +217,7 @@ typedef enum
                 {
                     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-                    BITFeedbackListViewController* controller = [[BITFeedbackListViewController alloc] init];
+                    BITFeedbackListViewController* controller = [[BITHockeyManager sharedHockeyManager].feedbackManager feedbackListViewController:NO];
                     [self.navigationController pushViewController:controller animated:YES];
                     break;
                 }
