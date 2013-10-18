@@ -900,12 +900,9 @@
 		48A0CE71180740F300B8A9F8 /* Welcome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */; };
 		48A0CE781809BE3100B8A9F8 /* CallBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE771809BE3100B8A9F8 /* CallBaseViewController.m */; };
 		48A0CE791809BE3100B8A9F8 /* CallBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE771809BE3100B8A9F8 /* CallBaseViewController.m */; };
-		48A0CEA1180F510600B8A9F8 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48A0CE9D180F510600B8A9F8 /* HockeySDK.framework */; };
-		48A0CEA2180F510600B8A9F8 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48A0CE9D180F510600B8A9F8 /* HockeySDK.framework */; };
-		48A0CEA3180F510600B8A9F8 /* HockeySDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE9F180F510600B8A9F8 /* HockeySDK.xcconfig */; };
-		48A0CEA4180F510600B8A9F8 /* HockeySDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE9F180F510600B8A9F8 /* HockeySDK.xcconfig */; };
-		48A0CEA5180F510600B8A9F8 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CEA0180F510600B8A9F8 /* HockeySDKResources.bundle */; };
-		48A0CEA6180F510600B8A9F8 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CEA0180F510600B8A9F8 /* HockeySDKResources.bundle */; };
+		48A0CEBD181142CD00B8A9F8 /* libHockeySDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48A0CEBA181141D200B8A9F8 /* libHockeySDK.a */; };
+		48A0CEBF1811430A00B8A9F8 /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48A0CEBE1811430A00B8A9F8 /* CrashReporter.framework */; };
+		48A0CEC01811436400B8A9F8 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CEBC181141D200B8A9F8 /* HockeySDKResources.bundle */; };
 		48A261C016FDE26100007638 /* CallMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A261BF16FDE26100007638 /* CallMessageView.xib */; };
 		48A261C116FDE26100007638 /* CallMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A261BF16FDE26100007638 /* CallMessageView.xib */; };
 		48A261C416FDE32400007638 /* CallMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A261C316FDE32400007638 /* CallMessageView.m */; };
@@ -1180,6 +1177,48 @@
 			proxyType = 1;
 			remoteGlobalIDString = 48884A6F1615CE920005AA79;
 			remoteInfo = Talk;
+		};
+		48A0CEB9181141D200B8A9F8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 48A0CEA7181141A700B8A9F8 /* HockeySDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1E5954F215B6F24A00A03429;
+			remoteInfo = HockeySDK;
+		};
+		48A0CEBB181141D200B8A9F8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 48A0CEA7181141A700B8A9F8 /* HockeySDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1E59550A15B6F45800A03429;
+			remoteInfo = HockeySDKResources;
+		};
+		48A0CEC1181143B400B8A9F8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 48A0CEA7181141A700B8A9F8 /* HockeySDK.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 1E5954CB15B6F24A00A03429;
+			remoteInfo = HockeySDK;
+		};
+		48A0CEC3181143B400B8A9F8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 48A0CEA7181141A700B8A9F8 /* HockeySDK.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 1E59550915B6F45800A03429;
+			remoteInfo = HockeySDKResources;
+		};
+		48A0CEC5181143B400B8A9F8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 48A0CEA7181141A700B8A9F8 /* HockeySDK.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 1E8E66AD15BC3D7700632A2E;
+			remoteInfo = "HockeySDK Documentation";
+		};
+		48A0CEC7181143B400B8A9F8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 48A0CEA7181141A700B8A9F8 /* HockeySDK.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 1E4F61E91621AD970033EFC5;
+			remoteInfo = "HockeySDK Framework";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1979,9 +2018,8 @@
 		48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Welcome.mp3; path = Resources/Welcome.mp3; sourceTree = "<group>"; };
 		48A0CE761809BE3100B8A9F8 /* CallBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallBaseViewController.h; sourceTree = "<group>"; };
 		48A0CE771809BE3100B8A9F8 /* CallBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallBaseViewController.m; sourceTree = "<group>"; };
-		48A0CE9D180F510600B8A9F8 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
-		48A0CE9F180F510600B8A9F8 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
-		48A0CEA0180F510600B8A9F8 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
+		48A0CEA7181141A700B8A9F8 /* HockeySDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HockeySDK.xcodeproj; path = "../External/HockeySDK-iOS-3.0.0/Support/HockeySDK.xcodeproj"; sourceTree = "<group>"; };
+		48A0CEBE1811430A00B8A9F8 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CrashReporter.framework; path = "External/HockeySDK-iOS-3.0.0/Vendor/CrashReporter.framework"; sourceTree = "<group>"; };
 		48A261BF16FDE26100007638 /* CallMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallMessageView.xib; sourceTree = "<group>"; };
 		48A261C216FDE32400007638 /* CallMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallMessageView.h; sourceTree = "<group>"; };
 		48A261C316FDE32400007638 /* CallMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallMessageView.m; sourceTree = "<group>"; };
@@ -2172,6 +2210,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48A0CEBF1811430A00B8A9F8 /* CrashReporter.framework in Frameworks */,
+				48A0CEBD181142CD00B8A9F8 /* libHockeySDK.a in Frameworks */,
 				488D7759178078CC00099470 /* QuartzCore.framework in Frameworks */,
 				488D77561780773800099470 /* CoreText.framework in Frameworks */,
 				4864B3F917566E950006542F /* MessageUI.framework in Frameworks */,
@@ -2192,7 +2232,6 @@
 				48FD99D5161855D30061191B /* CoreMedia.framework in Frameworks */,
 				48884A751615CE920005AA79 /* UIKit.framework in Frameworks */,
 				48884A771615CE920005AA79 /* Foundation.framework in Frameworks */,
-				48A0CEA1180F510600B8A9F8 /* HockeySDK.framework in Frameworks */,
 				48884A791615CE920005AA79 /* CoreGraphics.framework in Frameworks */,
 				48338F8E161628BA0033F4C1 /* libcrypto.a in Frameworks */,
 				48338F90161628BA0033F4C1 /* libssl.a in Frameworks */,
@@ -2235,7 +2274,6 @@
 				48A2620316FE4F9700007638 /* libmilenage-arm-apple-darwin9.a in Frameworks */,
 				48A2620516FE4F9700007638 /* libpj-arm-apple-darwin9.a in Frameworks */,
 				48A2620716FE4F9700007638 /* libpjlib-util-arm-apple-darwin9.a in Frameworks */,
-				48A0CEA2180F510600B8A9F8 /* HockeySDK.framework in Frameworks */,
 				48A2620916FE4F9700007638 /* libpjmedia-arm-apple-darwin9.a in Frameworks */,
 				48A2620B16FE4F9700007638 /* libpjmedia-audiodev-arm-apple-darwin9.a in Frameworks */,
 				48A2620D16FE4F9700007638 /* libpjmedia-codec-arm-apple-darwin9.a in Frameworks */,
@@ -3267,6 +3305,7 @@
 		48884A731615CE920005AA79 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				48A0CEBE1811430A00B8A9F8 /* CrashReporter.framework */,
 				488D7757178077A900099470 /* External */,
 				48ADD0FB170C12CC001515EB /* AddressBook.framework */,
 				48ADD0F9170C12C1001515EB /* AddressBookUI.framework */,
@@ -3365,23 +3404,21 @@
 			name = CoreData;
 			sourceTree = "<group>";
 		};
-		48A0CE9C180F510600B8A9F8 /* HockeySDK.embeddedframework */ = {
+		48A0CEB2181141C200B8A9F8 /* HockeySDK */ = {
 			isa = PBXGroup;
 			children = (
-				48A0CE9D180F510600B8A9F8 /* HockeySDK.framework */,
-				48A0CE9E180F510600B8A9F8 /* Resources */,
+				48A0CEA7181141A700B8A9F8 /* HockeySDK.xcodeproj */,
 			);
-			name = HockeySDK.embeddedframework;
-			path = "External/HockeySDK-iOS-3/HockeySDK.embeddedframework";
-			sourceTree = SOURCE_ROOT;
+			name = HockeySDK;
+			sourceTree = "<group>";
 		};
-		48A0CE9E180F510600B8A9F8 /* Resources */ = {
+		48A0CEB3181141D200B8A9F8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				48A0CE9F180F510600B8A9F8 /* HockeySDK.xcconfig */,
-				48A0CEA0180F510600B8A9F8 /* HockeySDKResources.bundle */,
+				48A0CEBA181141D200B8A9F8 /* libHockeySDK.a */,
+				48A0CEBC181141D200B8A9F8 /* HockeySDKResources.bundle */,
 			);
-			path = Resources;
+			name = Products;
 			sourceTree = "<group>";
 		};
 		48AF44E116490FF200DFE3D8 /* XIBs */ = {
@@ -3524,7 +3561,7 @@
 		48DD7284169F548600CD7080 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				48A0CE9C180F510600B8A9F8 /* HockeySDK.embeddedframework */,
+				48A0CEB2181141C200B8A9F8 /* HockeySDK */,
 				48DD72AD169F56F000CD7080 /* AFNetworking */,
 			);
 			name = External;
@@ -3625,6 +3662,10 @@
 			buildRules = (
 			);
 			dependencies = (
+				48A0CEC2181143B400B8A9F8 /* PBXTargetDependency */,
+				48A0CEC4181143B400B8A9F8 /* PBXTargetDependency */,
+				48A0CEC6181143B400B8A9F8 /* PBXTargetDependency */,
+				48A0CEC8181143B400B8A9F8 /* PBXTargetDependency */,
 			);
 			name = Talk;
 			productName = Talk;
@@ -3670,6 +3711,12 @@
 			mainGroup = 48884A651615CE920005AA79;
 			productRefGroup = 48884A711615CE920005AA79 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 48A0CEB3181141D200B8A9F8 /* Products */;
+					ProjectRef = 48A0CEA7181141A700B8A9F8 /* HockeySDK.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				48884A6F1615CE920005AA79 /* Talk */,
@@ -3679,11 +3726,29 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		48A0CEBA181141D200B8A9F8 /* libHockeySDK.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libHockeySDK.a;
+			remoteRef = 48A0CEB9181141D200B8A9F8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		48A0CEBC181141D200B8A9F8 /* HockeySDKResources.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = HockeySDKResources.bundle;
+			remoteRef = 48A0CEBB181141D200B8A9F8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
 		48884A6E1615CE920005AA79 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48A0CEC01811436400B8A9F8 /* HockeySDKResources.bundle in Resources */,
 				4812727316487E2D00534450 /* LibPhoneNumber.js in Resources */,
 				48338FB716170D8C0033F4C1 /* Default-568h@2x.png in Resources */,
 				48338FB816170D8C0033F4C1 /* Default.png in Resources */,
@@ -3900,7 +3965,6 @@
 				485F6B131637270100D61365 /* IT.png in Resources */,
 				485F6B141637270100D61365 /* IT@2x.png in Resources */,
 				485F6B151637270100D61365 /* JE.png in Resources */,
-				48A0CEA3180F510600B8A9F8 /* HockeySDK.xcconfig in Resources */,
 				485F6B161637270100D61365 /* JE@2x.png in Resources */,
 				485F6B171637270100D61365 /* JM.png in Resources */,
 				485F6B181637270100D61365 /* JM@2x.png in Resources */,
@@ -4007,7 +4071,6 @@
 				485F6B7D1637270100D61365 /* NF.png in Resources */,
 				485F6B7E1637270100D61365 /* NF@2x.png in Resources */,
 				485F6B7F1637270100D61365 /* NG.png in Resources */,
-				48A0CEA5180F510600B8A9F8 /* HockeySDKResources.bundle in Resources */,
 				485F6B801637270100D61365 /* NG@2x.png in Resources */,
 				485F6B811637270100D61365 /* NI.png in Resources */,
 				485F6B821637270100D61365 /* NI@2x.png in Resources */,
@@ -4439,10 +4502,8 @@
 				484A94A7171C5065009E22B9 /* NumberAreaActionCell.xib in Resources */,
 				483679F31722F2CF001A02AF /* List.png in Resources */,
 				483679F51722F2CF001A02AF /* List@2x.png in Resources */,
-				48A0CEA4180F510600B8A9F8 /* HockeySDK.xcconfig in Resources */,
 				48CB2C4517E6539000E19C3D /* Target.png in Resources */,
 				483679F71722F2CF001A02AF /* Microphone.png in Resources */,
-				48A0CEA6180F510600B8A9F8 /* HockeySDKResources.bundle in Resources */,
 				483679F91722F2CF001A02AF /* Microphone@2x.png in Resources */,
 				483679FC17246977001A02AF /* RecordingControlsCell.xib in Resources */,
 				48367A1617247B2D001A02AF /* CueForwardBlack.png in Resources */,
@@ -4828,6 +4889,26 @@
 			target = 48884A6F1615CE920005AA79 /* Talk */;
 			targetProxy = 48884AAA1615CE920005AA79 /* PBXContainerItemProxy */;
 		};
+		48A0CEC2181143B400B8A9F8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = HockeySDK;
+			targetProxy = 48A0CEC1181143B400B8A9F8 /* PBXContainerItemProxy */;
+		};
+		48A0CEC4181143B400B8A9F8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = HockeySDKResources;
+			targetProxy = 48A0CEC3181143B400B8A9F8 /* PBXContainerItemProxy */;
+		};
+		48A0CEC6181143B400B8A9F8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "HockeySDK Documentation";
+			targetProxy = 48A0CEC5181143B400B8A9F8 /* PBXContainerItemProxy */;
+		};
+		48A0CEC8181143B400B8A9F8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "HockeySDK Framework";
+			targetProxy = 48A0CEC7181143B400B8A9F8 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -4885,6 +4966,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -4915,6 +4997,7 @@
 				PRODUCT_NAME = "";
 				SDKROOT = iphoneos6.1;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -4922,6 +5005,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -4949,6 +5033,7 @@
 				SDKROOT = iphoneos6.1;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -4962,6 +5047,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3/HockeySDK.embeddedframework",
+					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3.0.0/Vendor",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
@@ -4973,6 +5059,7 @@
 				HEADER_SEARCH_PATHS = (
 					"External/pjproject-2.1.0/install/include/",
 					External/WebRTC/GlueLogic,
+					"External/HockeySDK-iOS-3.0.0/Vendor/HockeySDK/Classes",
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
@@ -4988,6 +5075,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos6.1;
 				TARGETED_DEVICE_FAMILY = 1;
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -5001,12 +5089,14 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3/HockeySDK.embeddedframework",
+					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3.0.0/Vendor",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"External/pjproject-2.1.0/install/include/",
 					External/WebRTC/GlueLogic,
+					"External/HockeySDK-iOS-3.0.0/Vendor/HockeySDK/Classes",
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
@@ -5022,6 +5112,7 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos6.1;
 				TARGETED_DEVICE_FAMILY = 1;
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -5084,6 +5175,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -5112,6 +5204,7 @@
 				SDKROOT = iphoneos6.1;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = AdHoc;
 		};
@@ -5124,12 +5217,14 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3/HockeySDK.embeddedframework",
+					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3.0.0/Vendor",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"External/pjproject-2.1.0/install/include/",
 					External/WebRTC/GlueLogic,
+					"External/HockeySDK-iOS-3.0.0/Vendor/HockeySDK/Classes",
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
@@ -5145,6 +5240,7 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos6.1;
 				TARGETED_DEVICE_FAMILY = 1;
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = AdHoc;
