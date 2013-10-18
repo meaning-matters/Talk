@@ -93,6 +93,11 @@ External/pjproject-2.1.0/third_party/build/resample/.libresample-arm-apple-darwi
 External/pjproject-2.1.0/third_party/build/speex/.libspeex-arm-apple-darwin9.depend
 External/pjproject-2.1.0/third_party/build/srtp/.libsrtp-arm-apple-darwin9.depend
 
+# OS X noise
+*.ipa
+*.swp
+*~.nib
+
 # System and Xcode stuff
 .svn
 .DS_Store
@@ -109,3 +114,14 @@ build/*
 *.pbxuser
 *.xcworkspace
 xcuserdata
+build
+*.pbxuser
+!default.pbxuser
+*.mode?v3
+!default.mode?v3
+*.perspective
+*.perspectivev3
+!default.perspectivev3
+!default.xcworkspace
+*.moved-aside
+
