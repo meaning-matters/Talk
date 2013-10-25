@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
-#import <HockeySDK/HockeySDK.h>
+#import "HockeySDK.h"
 #import "AboutViewController.h"
 #import "CreditViewController.h"
 #import "DialerViewController.h"
