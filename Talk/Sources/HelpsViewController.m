@@ -243,8 +243,8 @@ typedef enum
                                                                 @"...\n"
                                                                 @"[1 line larger font].");
                     message = NSLocalizedStringWithDefaultValue(@"Helps TestCallText", nil, [NSBundle mainBundle],
-                                                                @"When you're in serious trouble, call us on our "
-                                                                @"United Kingdom number using iOS' mobile Phone app.\n\n"
+                                                                @"You're about to call us on our United Kingdom number "
+                                                                @"using iOS' mobile Phone app.\n\n"
                                                                 @"Normal (international) call charges, of your mobile "
                                                                 @"operator, apply.",
                                                                 @"...\n"
