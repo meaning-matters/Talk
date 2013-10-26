@@ -22,15 +22,9 @@
 #define HAS_REGISTRATION               0        // Determines if we do SIP registration.
 
 // Volume Levels.  Note that these are linear values, so 2.0 is only a bit louder.
-#ifdef ADAPTED_AUDIO_LEVELS
-#define OUTPUT_LEVEL_RECEIVER          3.2f
-#define OUTPUT_LEVEL_SPEAKER           2.0f
-#define OUTPUT_LEVEL_HEADSET           0.8f
-#else
 #define OUTPUT_LEVEL_RECEIVER          1.0f
 #define OUTPUT_LEVEL_SPEAKER           1.0f
 #define OUTPUT_LEVEL_HEADSET           1.0f
-#endif
 #define OUTPUT_LEVEL_HEADPHONE         1.0f
 #define OUTPUT_LEVEL_BLUETOOTH         1.0f
 #define OUTPUT_LEVEL_LINE              1.0f
