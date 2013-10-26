@@ -308,7 +308,7 @@ static NSDictionary* statuses;
             break;
 
         case WebClientStatusFailNoCallbackFound:
-            string = NSLocalizedStringWithDefaultValue(@"WebClient FailIvrInUse", nil, [NSBundle mainBundle],
+            string = NSLocalizedStringWithDefaultValue(@"WebClient CallbackNotFound", nil, [NSBundle mainBundle],
                                                        @"No callback request found.",
                                                        @"Status text.\n"
                                                        @"[].");

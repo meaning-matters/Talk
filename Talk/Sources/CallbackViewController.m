@@ -137,6 +137,8 @@
 {
     if (self.call.readyForCleanup == YES || callbackPending == NO)
     {
+        NSLog(@"Callback State: ReadyForCleanup || !CallbackPending");
+
         return;
     }
 
@@ -213,6 +215,8 @@
         }
         else
         {
+            NSLog(@"Callback State: %@.", [error localizedDescription]);
+
             // Keep trying.
             [Common dispatchAfterInterval:1.0 onMain:^
             {
