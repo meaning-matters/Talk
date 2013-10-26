@@ -21,8 +21,9 @@
 #import "SettingsViewController.h"
 #import "NBPeoplePickerNavigationController.h"
 
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, AVAudioPlayerDelegate,
-                                      BITHockeyManagerDelegate, BITUpdateManagerDelegate, BITCrashManagerDelegate>
+                                      BITHockeyManagerDelegate, BITCrashManagerDelegate>
 
 @property (nonatomic, strong) UIWindow*                                 window;
 @property (nonatomic, strong) UITabBarController*                       tabBarController;
