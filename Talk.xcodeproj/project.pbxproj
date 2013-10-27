@@ -107,6 +107,8 @@
 		4814EA5017CE590C004B7A3C /* CreditAmount5.png in Resources */ = {isa = PBXBuildFile; fileRef = 4814EA4517CE590C004B7A3C /* CreditAmount5.png */; };
 		4814EA5117CE590C004B7A3C /* CreditAmount50.png in Resources */ = {isa = PBXBuildFile; fileRef = 4814EA4617CE590C004B7A3C /* CreditAmount50.png */; };
 		4814EA5217CE590C004B7A3C /* CreditAmount50.png in Resources */ = {isa = PBXBuildFile; fileRef = 4814EA4617CE590C004B7A3C /* CreditAmount50.png */; };
+		481F0BC7181C412400FA03D8 /* outgoingCallInverted.png in Resources */ = {isa = PBXBuildFile; fileRef = 481F0BC6181C412400FA03D8 /* outgoingCallInverted.png */; };
+		481F0BC8181C412400FA03D8 /* outgoingCallInverted.png in Resources */ = {isa = PBXBuildFile; fileRef = 481F0BC6181C412400FA03D8 /* outgoingCallInverted.png */; };
 		48200D1C16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
 		48200D1D16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
 		48206EF41684B0700040B04E /* RingbackTones.m in Sources */ = {isa = PBXBuildFile; fileRef = 48206EF31684B0700040B04E /* RingbackTones.m */; };
@@ -1035,8 +1037,6 @@
 		48AF4562164979CE00DFE3D8 /* RecentsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF4560164979CE00DFE3D8 /* RecentsView.xib */; };
 		48AF4565164979F400DFE3D8 /* ForwardingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4564164979F400DFE3D8 /* ForwardingsViewController.m */; };
 		48AF4566164979F400DFE3D8 /* ForwardingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4564164979F400DFE3D8 /* ForwardingsViewController.m */; };
-		48AF456916497A1B00DFE3D8 /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF456816497A1B00DFE3D8 /* RecentsViewController.m */; };
-		48AF456A16497A1B00DFE3D8 /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF456816497A1B00DFE3D8 /* RecentsViewController.m */; };
 		48AF4581164A45A100DFE3D8 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4580164A45A100DFE3D8 /* Settings.m */; };
 		48AF4582164A45A100DFE3D8 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4580164A45A100DFE3D8 /* Settings.m */; };
 		48B0C3F9174989F500DAB3BD /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C3F8174989F400DAB3BD /* Keychain.m */; };
@@ -1253,7 +1253,7 @@
 		480578AF17A4FABD006923BD /* NBNameTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBNameTableViewCell.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNameTableViewCell.h; sourceTree = "<group>"; };
 		480578B017A4FABD006923BD /* NBNameTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBNameTableViewCell.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNameTableViewCell.m; sourceTree = "<group>"; };
 		480578B117A4FABD006923BD /* NBNewFieldTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBNewFieldTableViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNewFieldTableViewController.h; sourceTree = "<group>"; };
-		480578B217A4FABD006923BD /* NBNewFieldTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBNewFieldTableViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNewFieldTableViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		480578B217A4FABD006923BD /* NBNewFieldTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBNewFieldTableViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNewFieldTableViewController.m; sourceTree = "<group>"; };
 		480578B317A4FABD006923BD /* NBNewPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBNewPersonViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNewPersonViewController.h; sourceTree = "<group>"; };
 		480578B417A4FABD006923BD /* NBNewPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBNewPersonViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNewPersonViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		480578B517A4FABD006923BD /* NBNotesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBNotesCell.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNotesCell.h; sourceTree = "<group>"; };
@@ -1261,7 +1261,7 @@
 		480578B717A4FABD006923BD /* NBPeopleListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPeopleListViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPeopleListViewController.h; sourceTree = "<group>"; };
 		480578B817A4FABD006923BD /* NBPeopleListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBPeopleListViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPeopleListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		480578B917A4FABD006923BD /* NBPeoplePickerNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPeoplePickerNavigationController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPeoplePickerNavigationController.h; sourceTree = "<group>"; };
-		480578BA17A4FABD006923BD /* NBPeoplePickerNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBPeoplePickerNavigationController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPeoplePickerNavigationController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		480578BA17A4FABD006923BD /* NBPeoplePickerNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBPeoplePickerNavigationController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPeoplePickerNavigationController.m; sourceTree = "<group>"; };
 		480578BB17A4FABD006923BD /* NBPersonCellAddressInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPersonCellAddressInfo.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPersonCellAddressInfo.h; sourceTree = "<group>"; };
 		480578BC17A4FABD006923BD /* NBPersonCellAddressInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPersonCellAddressInfo.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPersonCellAddressInfo.m; sourceTree = "<group>"; };
 		480578BD17A4FABD006923BD /* NBPersonCellInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPersonCellInfo.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPersonCellInfo.h; sourceTree = "<group>"; };
@@ -1271,7 +1271,7 @@
 		480578C117A4FABD006923BD /* NBPersonIMCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPersonIMCell.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPersonIMCell.h; sourceTree = "<group>"; };
 		480578C217A4FABD006923BD /* NBPersonIMCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPersonIMCell.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPersonIMCell.m; sourceTree = "<group>"; };
 		480578C317A4FABD006923BD /* NBPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPersonViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPersonViewController.h; sourceTree = "<group>"; };
-		480578C417A4FABD006923BD /* NBPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBPersonViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPersonViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		480578C417A4FABD006923BD /* NBPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBPersonViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPersonViewController.m; sourceTree = "<group>"; };
 		480578C517A4FABD006923BD /* NBPersonViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPersonViewDelegate.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPersonViewDelegate.h; sourceTree = "<group>"; };
 		480578C617A4FABD006923BD /* NBPhotoDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPhotoDelegate.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPhotoDelegate.h; sourceTree = "<group>"; };
 		480578C717A4FABD006923BD /* NBRecentContactEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBRecentContactEntry.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentContactEntry.h; sourceTree = "<group>"; };
@@ -1307,6 +1307,7 @@
 		4814EA4417CE590C004B7A3C /* CreditAmount20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CreditAmount20.png; sourceTree = "<group>"; };
 		4814EA4517CE590C004B7A3C /* CreditAmount5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CreditAmount5.png; sourceTree = "<group>"; };
 		4814EA4617CE590C004B7A3C /* CreditAmount50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CreditAmount50.png; sourceTree = "<group>"; };
+		481F0BC6181C412400FA03D8 /* outgoingCallInverted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = outgoingCallInverted.png; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/outgoingCallInverted.png; sourceTree = "<group>"; };
 		48200D1A16EC89BA0069677E /* NumberType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberType.h; sourceTree = "<group>"; };
 		48200D1B16EC89BA0069677E /* NumberType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberType.m; sourceTree = "<group>"; };
 		48206EF21684B0700040B04E /* RingbackTones.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingbackTones.h; sourceTree = "<group>"; };
@@ -2100,8 +2101,6 @@
 		48AF4560164979CE00DFE3D8 /* RecentsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecentsView.xib; sourceTree = "<group>"; };
 		48AF4563164979F300DFE3D8 /* ForwardingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForwardingsViewController.h; sourceTree = "<group>"; };
 		48AF4564164979F400DFE3D8 /* ForwardingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForwardingsViewController.m; sourceTree = "<group>"; };
-		48AF456716497A1B00DFE3D8 /* RecentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentsViewController.h; sourceTree = "<group>"; };
-		48AF456816497A1B00DFE3D8 /* RecentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentsViewController.m; sourceTree = "<group>"; };
 		48AF457F164A45A000DFE3D8 /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
 		48AF4580164A45A100DFE3D8 /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
 		48B0C3F7174989F400DAB3BD /* Keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keychain.h; sourceTree = "<group>"; };
@@ -2677,6 +2676,7 @@
 				483ED00017A4F6650032B8FF /* noPictureCompanyImage.png */,
 				483ED00117A4F6650032B8FF /* noPictureImage.png */,
 				483ECFFA17A4F65D0032B8FF /* outgoingCall.png */,
+				481F0BC6181C412400FA03D8 /* outgoingCallInverted.png */,
 				483ECFFB17A4F65D0032B8FF /* portraitBackground.png */,
 				483ECFFC17A4F65D0032B8FF /* portraitLine.png */,
 				483ECFEA17A4F60B0032B8FF /* deleteButton.png */,
@@ -3524,8 +3524,6 @@
 				48C1D3C417D31309004F910D /* ProofImageViewController.m */,
 				482D2DEB16C815BE00E13B91 /* ProvisioningViewController.h */,
 				482D2DEC16C815BE00E13B91 /* ProvisioningViewController.m */,
-				48AF456716497A1B00DFE3D8 /* RecentsViewController.h */,
-				48AF456816497A1B00DFE3D8 /* RecentsViewController.m */,
 				483679DC1721F2DF001A02AF /* RecordingViewController.h */,
 				483679DD1721F2E0001A02AF /* RecordingViewController.m */,
 				48AF4555164978BE00DFE3D8 /* ShareViewController.h */,
@@ -3824,6 +3822,7 @@
 				485F6A811637270100D61365 /* BZ.png in Resources */,
 				485F6A821637270100D61365 /* BZ@2x.png in Resources */,
 				485F6A831637270100D61365 /* CA.png in Resources */,
+				481F0BC7181C412400FA03D8 /* outgoingCallInverted.png in Resources */,
 				485F6A841637270100D61365 /* CA@2x.png in Resources */,
 				485F6A851637270100D61365 /* CC.png in Resources */,
 				485F6A861637270100D61365 /* CC@2x.png in Resources */,
@@ -4581,6 +4580,7 @@
 				4814EA4E17CE590C004B7A3C /* CreditAmount20.png in Resources */,
 				4814EA5017CE590C004B7A3C /* CreditAmount5.png in Resources */,
 				4814EA5217CE590C004B7A3C /* CreditAmount50.png in Resources */,
+				481F0BC8181C412400FA03D8 /* outgoingCallInverted.png in Resources */,
 				48C1D3C917D3132A004F910D /* ProofImageView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4634,7 +4634,6 @@
 				48AF45021649484600DFE3D8 /* AboutViewController.m in Sources */,
 				48AF4557164978BF00DFE3D8 /* ShareViewController.m in Sources */,
 				48AF4565164979F400DFE3D8 /* ForwardingsViewController.m in Sources */,
-				48AF456916497A1B00DFE3D8 /* RecentsViewController.m in Sources */,
 				48AF4581164A45A100DFE3D8 /* Settings.m in Sources */,
 				48AD95DA164AC4FE006178E6 /* ViewController.m in Sources */,
 				48AD95DF164AE582006178E6 /* Skinning.m in Sources */,
@@ -4766,7 +4765,6 @@
 				48AF45031649484600DFE3D8 /* AboutViewController.m in Sources */,
 				48AF4558164978BF00DFE3D8 /* ShareViewController.m in Sources */,
 				48AF4566164979F400DFE3D8 /* ForwardingsViewController.m in Sources */,
-				48AF456A16497A1B00DFE3D8 /* RecentsViewController.m in Sources */,
 				48AF4582164A45A100DFE3D8 /* Settings.m in Sources */,
 				48AD95DB164AC4FE006178E6 /* ViewController.m in Sources */,
 				48AD95E0164AE582006178E6 /* Skinning.m in Sources */,

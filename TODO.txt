@@ -125,3 +125,4 @@
 
 * NumberAreaViewController.m #876 check with WebClientStatusFailInvalidInfo ...
 
+* Groot probleem in PurchaseManager zie "We can get here when app did not process purchase previous time ..."

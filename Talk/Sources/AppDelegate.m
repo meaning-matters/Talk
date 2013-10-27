@@ -201,11 +201,11 @@
         NSStringFromClass([DialerViewController               class]),
         NSStringFromClass([NBPeoplePickerNavigationController class]),
         NSStringFromClass([CreditViewController               class]),
+        NSStringFromClass([NBRecentsNavigationController      class]),
         NSStringFromClass([HelpsViewController                class]),
         NSStringFromClass([AboutViewController                class]),
         NSStringFromClass([SettingsViewController             class]),
         NSStringFromClass([ShareViewController                class]),
-        NSStringFromClass([RecentsViewController              class]),
         //NSStringFromClass([GroupsViewController               class]),
     ];
 
@@ -229,11 +229,15 @@
         // All view controllers are embedded in a navigation controller.
         UIViewController*   viewController = [[NSClassFromString(class) alloc] init];
 
-        if (viewController.navigationController == nil)
+        if ([class isEqualToString:NSStringFromClass([NBPeoplePickerNavigationController class])])
         {
-            //### For NBPeoplePickerNavigationController.
             [viewControllers addObject:viewController];
             [self setPeoplePickerViewController:[viewControllers lastObject]];
+        }
+        else if ([class isEqualToString:NSStringFromClass([NBRecentsNavigationController class])])
+        {
+            [viewControllers addObject:viewController];
+            [self setRecentsViewController:[viewControllers lastObject]];
         }
         else
         {

@@ -549,19 +549,28 @@
                 }
                 else if ([self isNumberProductIdentifier:transaction.payment.productIdentifier])
                 {
+                    [self finishTransaction:transaction];
+#warning We can get here when app did not process purchase previous time.  But now we have no Number so completeBuyWithSuccess does nothing.  Need to fix this
                     [self processNumberTransaction:transaction];
                 }
                 break;
 
             case SKPaymentTransactionStateFailed:
-                [Common enableNetworkActivityIndicator:NO];
-                [self finishTransaction:transaction];
+                if (transaction.error.code == 2)
+                {
+                    NSLog(@"Did we see Already Purchaesed?");
+                }
+                else
+                {
+                    [Common enableNetworkActivityIndicator:NO];
+                    [self finishTransaction:transaction];
 
-                NSLog(@"//### %@ transaction failed: %@ %d.", transaction.payment.productIdentifier,
-                                                              [transaction.error localizedDescription],
-                                                              transaction.error.code);
+                    NSLog(@"//### %@ transaction failed: %@ %d.", transaction.payment.productIdentifier,
+                          [transaction.error localizedDescription],
+                          transaction.error.code);
 
-                [self completeBuyWithSuccess:NO object:transaction.error];
+                    [self completeBuyWithSuccess:NO object:transaction.error];
+                }
                 break;
 
             case SKPaymentTransactionStateRestored:

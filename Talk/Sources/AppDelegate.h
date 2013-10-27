@@ -16,10 +16,10 @@
 #import "GroupsViewController.h"
 #import "HelpsViewController.h"
 #import "NumbersViewController.h"
-#import "RecentsViewController.h"
 #import "ShareViewController.h"
 #import "SettingsViewController.h"
 #import "NBPeoplePickerNavigationController.h"
+#import "NBRecentsNavigationController.h"
 
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, AVAudioPlayerDelegate,
@@ -37,10 +37,10 @@
 @property (nonatomic, strong) GroupsViewController*                     groupsViewController;
 @property (nonatomic, strong) HelpsViewController*                      helpsViewController;
 @property (nonatomic, strong) NumbersViewController*                    numbersViewController;
-@property (nonatomic, strong) RecentsViewController*                    recentsViewController;
 @property (nonatomic, strong) ShareViewController*                      shareViewController;
 @property (nonatomic, strong) SettingsViewController*                   settingsViewController;
 @property (nonatomic, strong) NBPeoplePickerNavigationController*       peoplePickerViewController;
+@property (nonatomic, strong) NBRecentsNavigationController*            recentsViewController;
 
 + (AppDelegate*)appDelegate;
 
