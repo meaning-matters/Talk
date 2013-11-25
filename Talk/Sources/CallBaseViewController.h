@@ -58,5 +58,4 @@ const NSTimeInterval    TransitionDuration = 0.5;
 
 - (void)drawRetryButton;
 
-
 @end

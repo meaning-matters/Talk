@@ -163,15 +163,15 @@ typedef enum
                            caller:(PhoneNumber*)callerPhoneNumber
                          identity:(PhoneNumber*)identityPhoneNumber
                           privacy:(BOOL)privacy
-                            reply:(void (^)(NSError* error))reply;
+                            reply:(void (^)(NSError* error, NSString* uuid))reply;
 
 // 33. STOP CALLBACK
-- (void)stopCallbackForCaller:(PhoneNumber*)callerPhoneNumber
-                        reply:(void (^)(NSError* error))reply;
+- (void)stopCallbackForUuid:(NSString*)uuid
+                      reply:(void (^)(NSError* error))reply;
 
 // 34. GET CALLBACK STATE
-- (void)retrieveCallbackStateForCaller:(PhoneNumber*)callerPhoneNumber
-                                 reply:(void (^)(NSError* error, CallState state))reply;
+- (void)retrieveCallbackStateForUuid:(NSString*)uuid
+                               reply:(void (^)(NSError* error, CallState state))reply;
 
 #pragma mark - Cancel Methods
 
@@ -230,9 +230,9 @@ typedef enum
 - (void)cancelAllInitiateCallback;
 
 // 33.
-- (void)cancelAllStopCallbackForCaller:(PhoneNumber*)callerPhoneNumber;
+- (void)cancelAllStopCallbackForUuid:(NSString*)uuid;
 
 // 34.
-- (void)cancelAllRetrieveCallbackStateForCaller:(PhoneNumber*)callerPhoneNumber;
+- (void)cancelAllRetrieveCallbackStateForUuid:(NSString*)uuid;
 
 @end

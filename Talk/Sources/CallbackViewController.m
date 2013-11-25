@@ -27,6 +27,7 @@
     PhoneNumber*     callerPhoneNumber;
     NSMutableArray*  notificationObservers;
     BOOL             callbackPending;
+    NSString*        uuid;
 }
 
 @end
@@ -94,14 +95,15 @@
     callbackPending   = YES;
     [[WebClient sharedClient] initiateCallbackForCallee:self.call.phoneNumber
                                                  caller:callerPhoneNumber
-                                               identity:[[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].callbackCallerId]
+                                               identity:[[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].callerId]
                                                 privacy:![Settings sharedSettings].showCallerId
-                                                  reply:^(NSError* error)
+                                                  reply:^(NSError* error, NSString* theUuid)
     {
         if (error == nil)
         {
             self.call.state       = CallStateCalling;
             self.statusLabel.text = [self.call stateString];
+            uuid                  = theUuid;
 
             callMessageView.label.text = NSLocalizedStringWithDefaultValue(@"Callback ProgressMessage", nil, [NSBundle mainBundle],
                                                                            @"Your number is being called.\n\nAfter you answer, "
@@ -142,8 +144,8 @@
         return;
     }
 
-    [[WebClient sharedClient] retrieveCallbackStateForCaller:callerPhoneNumber
-                                                       reply:^(NSError* error, CallState state)
+    [[WebClient sharedClient] retrieveCallbackStateForUuid:uuid
+                                                     reply:^(NSError* error, CallState state)
     {
         if (error == nil)
         {
@@ -235,10 +237,14 @@
     self.call.readyForCleanup = YES;
 
     [[WebClient sharedClient] cancelAllInitiateCallback];
-    [[WebClient sharedClient] cancelAllRetrieveCallbackStateForCaller:callerPhoneNumber];
+    if (uuid != nil)
+    {
+        [[WebClient sharedClient] cancelAllRetrieveCallbackStateForUuid:uuid];
+    }
+
     if (callbackPending == YES)
     {
-        [[WebClient sharedClient] stopCallbackForCaller:callerPhoneNumber reply:^(NSError* error)
+        [[WebClient sharedClient] stopCallbackForUuid:uuid reply:^(NSError* error)
         {
             if (error != nil && callbackPending == YES)
             {
@@ -333,10 +339,14 @@
                                                                            @"[N lines]");
 
             [[WebClient sharedClient] cancelAllInitiateCallback];
-            [[WebClient sharedClient] cancelAllRetrieveCallbackStateForCaller:callerPhoneNumber];
+            if (uuid != nil)
+            {
+                [[WebClient sharedClient] cancelAllRetrieveCallbackStateForUuid:uuid];
+            }
+
             if (callbackPending == YES)
             {
-                [[WebClient sharedClient] stopCallbackForCaller:callerPhoneNumber reply:^(NSError* error)
+                [[WebClient sharedClient] stopCallbackForUuid:uuid reply:^(NSError* error)
                 {
                     if (error == nil)
                     {

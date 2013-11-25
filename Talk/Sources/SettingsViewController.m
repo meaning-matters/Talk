@@ -311,7 +311,7 @@ typedef enum
                 __block BlockAlertView*  alert;
                 NSString*                title;
                 NSString*                message;
-                PhoneNumber*             verifiedPhoneNumber = [[PhoneNumber alloc] initWithNumber:settings.callbackCallerId];
+                PhoneNumber*             verifiedPhoneNumber = [[PhoneNumber alloc] initWithNumber:settings.callerId];
 
                 title   = NSLocalizedStringWithDefaultValue(@"Setting EnterNumberTitle", nil,
                                                             [NSBundle mainBundle], @"Enter Shown Number",
@@ -333,7 +333,7 @@ typedef enum
                     {
                         if ([phoneNumber isValid])
                         {
-                            settings.callbackCallerId = [phoneNumber e164Format];
+                            settings.callerId = [phoneNumber e164Format];
 
                             [self reloadCallModeSection];
                         }
@@ -579,7 +579,7 @@ typedef enum
                                                                      [NSBundle mainBundle], @"Shown Number: %@",
                                                                      @"Format string showing shown number.\n"
                                                                      @"[1 line].");
-        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:settings.callbackCallerId];
+        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:settings.callerId];
 
         cell.textLabel.text = [NSString stringWithFormat:format, [phoneNumber internationalFormat]];
         cell.accessoryType  = UITableViewCellAccessoryNone;
@@ -696,9 +696,9 @@ typedef enum
 {
     settings.callbackMode = ((UISwitch*)sender).on;
 
-    if (settings.callbackMode == YES && settings.callbackCallerId.length == 0)
+    if (settings.callbackMode == YES && settings.callerId.length == 0)
     {
-        settings.callbackCallerId = settings.verifiedE164;
+        settings.callerId = settings.verifiedE164;
     }
 
     [self reloadCallModeSection];

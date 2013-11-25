@@ -44,9 +44,10 @@
 @property (nonatomic, assign) BOOL              allowCellularDataCalls;
 @property (nonatomic, assign) BOOL              showCallerId;
 @property (nonatomic, assign) BOOL              callbackMode;
-@property (nonatomic, strong) NSString*         callbackCallerId;       // Caller ID used in Callback mode.
+@property (nonatomic, strong) NSString*         callerId;               // Caller ID used until Groups are implemented.
 
 @property (nonatomic, assign) NumberTypeMask    numberTypeMask;         // Selected numberType in NumberView.
+@property (nonatomic, assign) NSInteger         numbersSortSegment;     // Selected numbers sort segmented control index.
 @property (nonatomic, assign) NSInteger         forwardingsSelection;   // Selected segment/table in ForwardingsView.
 
 @property (nonatomic, strong) NSString*         currencyCode;           // Backup until Store products are received.

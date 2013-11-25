@@ -36,8 +36,9 @@ NSString* const SipPasswordKey                 = @"SipPassword";            // U
 NSString* const AllowCellularDataCallsKey      = @"AllowCellularDataCalls";
 NSString* const ShowCallerIdKey                = @"ShowCallerId";
 NSString* const CallbackModeKey                = @"CallbackMode";
-NSString* const CallbackCallerIdKey            = @"CallbackCallerId";
+NSString* const CallerIdKey                    = @"CallerId";
 NSString* const NumberTypeMaskKey              = @"NumberTypeMask";
+NSString* const NumbersSortSegmentKey          = @"NumbersSortSegment";
 NSString* const ForwardingsSelectionKey        = @"ForwardingsSelection";
 NSString* const CurrencyCodeKey                = @"CurrencyCode";
 NSString* const CreditKey                      = @"Credit";
@@ -134,8 +135,9 @@ static NSUserDefaults*  userDefaults;
         [dictionary setObject:@(NO)                                              forKey:AllowCellularDataCallsKey];
         [dictionary setObject:@(YES)                                             forKey:ShowCallerIdKey];
         [dictionary setObject:@(NO)                                              forKey:CallbackModeKey];
-        [dictionary setObject:[self verifiedE164] ? [self verifiedE164] : @""    forKey:CallbackCallerIdKey];
+        [dictionary setObject:[self verifiedE164] ? [self verifiedE164] : @""    forKey:CallerIdKey];
         [dictionary setObject:@(NumberTypeGeographicMask)                        forKey:NumberTypeMaskKey];
+        [dictionary setObject:@(0)                                               forKey:NumbersSortSegmentKey];
         [dictionary setObject:@(0)                                               forKey:ForwardingsSelectionKey];
         [dictionary setObject:@""                                                forKey:CurrencyCodeKey];
         [dictionary setObject:@(0.0f)                                            forKey:CreditKey];
@@ -377,15 +379,15 @@ static NSUserDefaults*  userDefaults;
 }
 
 
-- (NSString*)callbackCallerId
+- (NSString*)callerId
 {
-    return [userDefaults objectForKey:CallbackCallerIdKey];
+    return [userDefaults objectForKey:CallerIdKey];
 }
 
 
-- (void)setCallbackCallerId:(NSString *)callbackCallerId
+- (void)setCallerId:(NSString *)callerId
 {
-    [userDefaults setObject:callbackCallerId forKey:CallbackCallerIdKey];
+    [userDefaults setObject:callerId forKey:CallerIdKey];
 }
 
 
@@ -398,6 +400,18 @@ static NSUserDefaults*  userDefaults;
 - (void)setNumberTypeMask:(NumberTypeMask)numberTypeMask
 {
     [userDefaults setInteger:numberTypeMask forKey:NumberTypeMaskKey];
+}
+
+
+- (NSInteger)NumbersSortSegment
+{
+    return [userDefaults integerForKey:NumbersSortSegmentKey];
+}
+
+
+- (void)setNumbersSortSegment:(NSInteger)numbersSortSegment
+{
+    [userDefaults setInteger:numbersSortSegment forKey:NumbersSortSegmentKey];
 }
 
 

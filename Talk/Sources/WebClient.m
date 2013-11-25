@@ -794,7 +794,7 @@ static NSDictionary* statuses;
                            caller:(PhoneNumber*)callerPhoneNumber
                          identity:(PhoneNumber*)identityPhoneNumber
                           privacy:(BOOL)privacy
-                            reply:(void (^)(NSError* error))reply
+                            reply:(void (^)(NSError* error, NSString* uuid))reply
 {
     [self postPath:[NSString stringWithFormat:@"users/%@/callback", [Settings sharedSettings].webUsername]
         parameters:@{@"callee"   : [calleePhoneNumber   e164Format],
@@ -803,17 +803,23 @@ static NSDictionary* statuses;
                      @"privacy"  : privacy ? @"true" : @"false"}
              reply:^(NSError* error, id content)
     {
-        reply(error);
+        if (error == nil)
+        {
+            reply(nil, content[@"uuid"]);
+        }
+        else
+        {
+            reply(error, nil);
+        }
     }];
 }
 
 
 // 33. STOP CALLBACK
-- (void)stopCallbackForCaller:(PhoneNumber*)callerPhoneNumber
-                        reply:(void (^)(NSError* error))reply
+- (void)stopCallbackForUuid:(NSString*)uuid
+                      reply:(void (^)(NSError* error))reply
 {
-    [self deletePath:[NSString stringWithFormat:@"users/%@/callback/%@",
-                      [Settings sharedSettings].webUsername, [callerPhoneNumber e164FormatWithoutPlus]]
+    [self deletePath:[NSString stringWithFormat:@"users/%@/callback/%@", [Settings sharedSettings].webUsername, uuid]
           parameters:nil
                reply:^(NSError* error, id content)
     {
@@ -823,11 +829,10 @@ static NSDictionary* statuses;
 
 
 // 34. GET CALLBACK STATE
-- (void)retrieveCallbackStateForCaller:(PhoneNumber*)callerPhoneNumber
-                                 reply:(void (^)(NSError* error, CallState state))reply
+- (void)retrieveCallbackStateForUuid:(NSString*)uuid
+                               reply:(void (^)(NSError* error, CallState state))reply
 {
-    [self getPath:[NSString stringWithFormat:@"users/%@/callback/%@",
-                   [Settings sharedSettings].webUsername, [callerPhoneNumber e164FormatWithoutPlus]]
+    [self getPath:[NSString stringWithFormat:@"users/%@/callback/%@", [Settings sharedSettings].webUsername, uuid]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -1027,20 +1032,20 @@ static NSDictionary* statuses;
 
 
 // 33.
-- (void)cancelAllStopCallbackForCaller:(PhoneNumber*)callerPhoneNumber
+- (void)cancelAllStopCallbackForUuid:(NSString*)uuid
 {
     [self cancelAllHTTPOperationsWithMethod:@"DELETE"
                                        path:[NSString stringWithFormat:@"users/%@/callback/%@",
-                                             [Settings sharedSettings].webUsername, [callerPhoneNumber e164FormatWithoutPlus]]];
+                                             [Settings sharedSettings].webUsername, uuid]];
 }
 
 
 // 34.
-- (void)cancelAllRetrieveCallbackStateForCaller:(PhoneNumber*)callerPhoneNumber
+- (void)cancelAllRetrieveCallbackStateForUuid:(NSString*)uuid
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
                                        path:[NSString stringWithFormat:@"users/%@/callback/%@",
-                                             [Settings sharedSettings].webUsername, [callerPhoneNumber e164FormatWithoutPlus]]];
+                                             [Settings sharedSettings].webUsername, uuid]];
 }
 
 @end

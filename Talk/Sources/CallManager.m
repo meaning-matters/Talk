@@ -21,6 +21,7 @@
 #import "Base64.h"
 #import "SettingsViewController.h"
 #import "AppDelegate.h"
+#import "DataManager.h"
 
 
 #define ALLOW_CALLS_WHEN_REACHABLE_DISCONNECTED 1
@@ -427,6 +428,23 @@ static SipInterface*    sipInterface;
 }
 
 
+- (void)addCallToRecents:(Call*)call
+{
+    NSManagedObjectContext* context = [DataManager sharedManager].managedObjectContext;
+    NBRecentContactEntry*   recent  = [NSEntityDescription insertNewObjectForEntityForName:@"NBRecentContactEntry"
+                                                                    inManagedObjectContext:context];
+
+    recent.status    = [NSNumber numberWithInt:CallStatusSuccess];
+    recent.number    = call.phoneNumber.number;
+    recent.date      = [NSDate date];
+    recent.timeZone  = [[NSTimeZone defaultTimeZone] abbreviation];
+    recent.contactID = call.contactId;
+    recent.direction = [NSNumber numberWithInt:CallDirectionOutgoing];
+
+    [context save:nil];
+}
+
+
 #pragma mark - Public API
 
 - (void)resetSipAccount
@@ -532,6 +550,7 @@ static SipInterface*    sipInterface;
 
 - (void)endCall:(Call*)call
 {
+    NSLog(@"################## endCall ##################");
     if ([Settings sharedSettings].callbackMode == NO ||
         [call.calledNumber isEqualToString:[Settings sharedSettings].testNumber] == YES)
     {
@@ -544,6 +563,7 @@ static SipInterface*    sipInterface;
             // Call must have been ended earlier.
             [callViewController dismissViewControllerAnimated:YES completion:^
             {
+                [self addCallToRecents:call];
                 callViewController = nil;
             }];
         }
@@ -552,6 +572,7 @@ static SipInterface*    sipInterface;
     {
         [callbackViewController dismissViewControllerAnimated:YES completion:^
         {
+            [self addCallToRecents:call];
             callbackViewController = nil;
         }];
     }
@@ -573,6 +594,7 @@ static SipInterface*    sipInterface;
         {
             [callViewController dismissViewControllerAnimated:YES completion:^
             {
+                [self addCallToRecents:call];
                 callViewController = nil;
             }];
 
@@ -584,6 +606,7 @@ static SipInterface*    sipInterface;
         // Call must have been ended earlier.
         [callViewController dismissViewControllerAnimated:YES completion:^
         {
+            [self addCallToRecents:call];
             callViewController = nil;
         }];
 
@@ -736,6 +759,7 @@ static SipInterface*    sipInterface;
     {
         [callViewController dismissViewControllerAnimated:YES completion:^
         {
+            [self addCallToRecents:call];
             callViewController = nil;
         }];
     }
@@ -770,6 +794,7 @@ static SipInterface*    sipInterface;
             // Get rid of call screen.
             [callViewController dismissViewControllerAnimated:YES completion:^
             {
+                [self addCallToRecents:call];
                 callViewController = nil;
             }];
 

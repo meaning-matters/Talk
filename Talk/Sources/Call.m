@@ -25,25 +25,37 @@
 }
 
 
-- (void)end
+- (void)setState:(CallState)state
 {
-    if (self.state == CallStateConnected)
-    {
-        //### send hangup to SIP
-        _state = CallStateEnded;
-    }
-    else
-    {
-        //###
-    }
+    _state = state;
 
-    _endDate = [NSDate date];
+    switch (state)
+    {
+        case CallStateConnected:
+            _connectDate = [NSDate date];
+            break;
+
+        case CallStateEnded:
+            _endDate = [NSDate date];
+            break;
+
+        case CallStateCancelled:
+        case CallStateBusy:
+        case CallStateDeclined:
+        case CallStateNotAllowed:
+        case CallStateFailed:
+            _endDate = [NSDate date];
+            break;
+
+        default:
+            break;
+    }
 }
 
 
 - (NSString*)stateString
 {
-    NSString*   string;
+    NSString* string;
 
     switch (self.state)
     {

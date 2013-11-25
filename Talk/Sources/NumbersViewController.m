@@ -22,9 +22,8 @@
 
 @interface NumbersViewController ()
 {
-    NSMutableArray*         numbersArray;
-    NSMutableArray*         filteredNumbersArray;
-    BOOL                    isFiltered;
+    NSMutableArray*     numbersArray;
+    UISegmentedControl* sortSegmentedControl;
 }
 
 @end
@@ -36,6 +35,7 @@
 {
     if (self = [super initWithNibName:@"NumbersView" bundle:nil])
     {
+        // Not used, because we're having a segmented control.
         self.title = NSLocalizedStringWithDefaultValue(@"Numbers:NumbersList ScreenTitle", nil,
                                                        [NSBundle mainBundle], @"Numbers",
                                                        @"Title of app screen with list of phone numbers\n"
@@ -53,6 +53,22 @@
 {
     [super viewDidLoad];
 
+    NSString*           byCountries = NSLocalizedStringWithDefaultValue(@"Numbers SortByCountries", nil,
+                                                                        [NSBundle mainBundle], @"Countries",
+                                                                        @"\n"
+                                                                        @"[1/4 line larger font].");
+    NSString*           byNames     = NSLocalizedStringWithDefaultValue(@"Numbers SortByNames", nil,
+                                                                        [NSBundle mainBundle], @"Names",
+                                                                        @"\n"
+                                                                        @"[1/4 line larger font].");
+    sortSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[byCountries, byNames]];
+    sortSegmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
+    sortSegmentedControl.selectedSegmentIndex  = [Settings sharedSettings].numbersSortSegment;
+    [sortSegmentedControl addTarget:self
+                             action:@selector(sortOrderChangedAction)
+                   forControlEvents:UIControlEventValueChanged];
+
+    self.navigationItem.titleView = sortSegmentedControl;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                            target:self
                                                                                            action:@selector(addAction)];
@@ -111,12 +127,6 @@
         [[DataManager sharedManager].managedObjectContext save:&error];
         //### Handle error.
     }
-
-    if (isFiltered == YES)
-    {
-        isFiltered = NO;
-        [self.tableView reloadData];
-    }
 }
 
 
@@ -130,6 +140,14 @@
 
 
 #pragma mark - Utility Methods
+
+- (void)sortOrderChangedAction
+{
+    [Settings sharedSettings].numbersSortSegment = sortSegmentedControl.selectedSegmentIndex;
+
+    [self fetchData];
+}
+
 
 - (void)addAction
 {
@@ -157,8 +175,18 @@
 - (NSError*)fetchData
 {
     NSFetchRequest* request         = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
-    NSArray*        sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"numberCountry" ascending:YES],
-                                        [[NSSortDescriptor alloc] initWithKey:@"name"          ascending:YES]];
+    NSArray*        sortDescriptors;
+    if (sortSegmentedControl.selectedSegmentIndex == 0)
+    {
+        sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"numberCountry" ascending:YES],
+                            [[NSSortDescriptor alloc] initWithKey:@"name"          ascending:YES]];
+    }
+    else
+    {
+        sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"name"          ascending:YES],
+                            [[NSSortDescriptor alloc] initWithKey:@"numberCountry" ascending:YES]];
+    }
+
     [request setSortDescriptors:sortDescriptors];
 
     NSError*        error   = nil;
@@ -176,16 +204,7 @@
 
 - (void)updateCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
-    NumberData* number;
-
-    if (isFiltered)
-    {
-        number = filteredNumbersArray[indexPath.row];
-    }
-    else
-    {
-        number = numbersArray[indexPath.row];
-    }
+    NumberData* number = numbersArray[indexPath.row];
 
     cell.imageView.image = [UIImage imageNamed:number.numberCountry];
     cell.textLabel.text  = number.name;
@@ -203,21 +222,13 @@
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return isFiltered ? filteredNumbersArray.count : numbersArray.count;
+    return numbersArray.count;
 }
 
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NumberData* number;
-    if (isFiltered)
-    {
-        number = filteredNumbersArray[indexPath.row];
-    }
-    else
-    {
-        number = numbersArray[indexPath.row];
-    }
+    NumberData* number = numbersArray[indexPath.row];
 
     NumberViewController* viewController;
     viewController = [[NumberViewController alloc] initWithNumber:number];
@@ -227,7 +238,7 @@
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
+    UITableViewCell* cell;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
@@ -242,53 +253,6 @@
 - (void)tableView:(UITableView*)tableView willDisplayCell:(UITableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     [self updateCell:cell atIndexPath:indexPath];
-}
-
-
-#pragma mark - Search Bar Delegate
-
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController*)controller
-{
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-}
-
-
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController*)controller
-{
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-}
-
-
-- (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
-{
-    if (searchText.length == 0)
-    {
-        isFiltered = NO;
-    }
-    else
-    {
-        isFiltered = YES;
-        filteredNumbersArray = [NSMutableArray array];
-
-        for (NumberData* number in numbersArray)
-        {
-            NSRange range = [number.name rangeOfString:searchText options:NSCaseInsensitiveSearch];
-            if (range.location != NSNotFound)
-            {
-                [filteredNumbersArray addObject:number];
-            }
-        }
-    }
-
-    [self.tableView reloadData];
-}
-
-
-- (void)searchBarCancelButtonClicked:(UISearchBar*)searchBar
-{
-    isFiltered = NO;
-    [self.tableView reloadData];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 @end

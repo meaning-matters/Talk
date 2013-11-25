@@ -126,3 +126,5 @@
 * NumberAreaViewController.m #876 check with WebClientStatusFailInvalidInfo ...
 
 * Groot probleem in PurchaseManager zie "We can get here when app did not process purchase previous time ..."
+
+* Check is "calling" label in CallbackVC is done on main thread; saw some delays in setting it.
