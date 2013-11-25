@@ -540,6 +540,7 @@ void showLog(int level, const char* data, int len)
 
 - (void)restart
 {
+#if HAS_VOIP
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
     {
         [self registerThread];
@@ -567,6 +568,7 @@ void showLog(int level, const char* data, int len)
             }
         }
     });
+#endif
 }
 
 

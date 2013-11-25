@@ -186,3 +186,4 @@ typedef enum
 #endif
 
 #define FULL_FORWARDINGS  0
+#define HAS_VOIP          0

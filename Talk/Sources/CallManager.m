@@ -51,12 +51,13 @@ static SipInterface*    sipInterface;
     dispatch_once(&onceToken, ^
     {
         sharedInstance = [[CallManager alloc] init];
-
+#if HAS_VOIP
         sipInterface   = [[SipInterface alloc] initWithRealm:[Settings sharedSettings].sipRealm
                                                       server:[Settings sharedSettings].sipServer
                                                     username:[Settings sharedSettings].sipUsername
                                                     password:[Settings sharedSettings].sipPassword];
         sipInterface.delegate = sharedInstance;
+#endif
     });
     
     return sharedInstance;

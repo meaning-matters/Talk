@@ -49,7 +49,7 @@
 
 - (void)update
 {
-    if ([Settings sharedSettings].callbackMode == NO)
+    if ([Settings sharedSettings].callbackMode == NO || HAS_VOIP == NO)
     {
         [[AppDelegate appDelegate].tabBarController.tabBar setSelectedImageTintColor:nil];
     }
