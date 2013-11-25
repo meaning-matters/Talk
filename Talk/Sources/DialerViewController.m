@@ -230,7 +230,7 @@
             break;
 
         case NetworkStatusReachableCellular:
-            self.keypadView.keyCallButton.selected = haveAccount && allowCellular;
+            self.keypadView.keyCallButton.selected = haveAccount && (allowCellular || HAS_VOIP == NO);
             break;
 
         case NetworkStatusReachableWifi:

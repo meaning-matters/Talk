@@ -634,7 +634,8 @@ typedef enum
 
         cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:AllowDataCalls CellText", nil,
                                                                 [NSBundle mainBundle], @"Cellular Data Calls",
-                                                                @"Title of switch if calls over cellular data (3G/EDGE/...) are allowed\n"
+                                                                @"Title of switch if calls over cellular data "
+                                                                @"(3G/EDGE/...) are allowed\n"
                                                                 @"[2/3 line - abbreviated: 'Data Calls'].");
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         switchView.on = settings.allowCellularDataCalls;
