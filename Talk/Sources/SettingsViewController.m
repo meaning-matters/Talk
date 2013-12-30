@@ -8,6 +8,7 @@
 
 #import "SettingsViewController.h"
 #import "CountriesViewController.h"
+#import "PhonesViewController.h"
 #import "Settings.h"
 #import "NetworkStatus.h"
 #import "CountryNames.h"
@@ -20,8 +21,8 @@
 // Update reloadSections calls when adding/removing sections.
 typedef enum
 {
-    TableSectionHomeCountry = 1UL << 0,
-    TableSectionCallMode    = 1UL << 1,
+    TableSectionCallMode    = 1UL << 0,
+    TableSectionHomeCountry = 1UL << 1,
     TableSectionCallOptions = 1UL << 2,
     TableSectionAccountData = 1UL << 3,
 } TableSections;
@@ -48,8 +49,8 @@ typedef enum
         self.tabBarItem.image = [UIImage imageNamed:@"SettingsTab.png"];
 
         // Mandatory sections.
-        sections |= TableSectionHomeCountry;
         sections |= TableSectionCallMode;
+        sections |= TableSectionHomeCountry;
         sections |= TableSectionAccountData;
 
         // Optional sections.
@@ -62,7 +63,7 @@ typedef enum
 }
 
 
-- (void)viewDidLoad
+- (void)viewDidL
 {
     [super viewDidLoad];
 
@@ -120,16 +121,16 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionHomeCountry:
-            title = NSLocalizedStringWithDefaultValue(@"Settings:HomeCountry SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Home Country",
-                                                      @"Country where user lives (used to interpret dialed phone numbers).");
-            break;
-
         case TableSectionCallMode:
             title = NSLocalizedStringWithDefaultValue(@"Settings:CallMode SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Call Mode",
                                                       @"The way calls are being made.");
+            break;
+
+        case TableSectionHomeCountry:
+            title = NSLocalizedStringWithDefaultValue(@"Settings:HomeCountry SectionHeader", nil,
+                                                      [NSBundle mainBundle], @"Home Country",
+                                                      @"Country where user lives (used to interpret dialed phone numbers).");
             break;
 
         case TableSectionCallOptions:
@@ -155,19 +156,11 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionHomeCountry:
-            title = NSLocalizedStringWithDefaultValue(@"Settings:HomeCountryInfo SectionFooter", nil,
-                                                      [NSBundle mainBundle],
-                                                      @"Determines how phone numbers without country code are interpreted.",
-                                                      @"Explanation what the Home Country setting is doing\n"
-                                                      @"[* lines]");
-            break;
-
         case TableSectionCallMode:
 #if HAS_VOIP
             title = NSLocalizedStringWithDefaultValue(@"Settings:CallModeInfo SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"In Callback Mode, our server first calls your Called Number.  "
+                                                      @"In Callback Mode, our server first calls your Called Back number.  "
                                                       @"Then, when you accept that call, the person you're tying to "
                                                       @"reach is being called; the Caller ID is used as caller ID.",
                                                       @"Explanation what Call Mode setting is doing\n"
@@ -175,13 +168,21 @@ typedef enum
 #else
             title = NSLocalizedStringWithDefaultValue(@"Settings:CallbackInfo SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"Our server first calls your Called Number.  Then, when you "
+                                                      @"Our server first calls the Called Back number.  Then, when you "
                                                       @"accept that call, the party you're tying to reach is being "
                                                       @"called, and is show My Caller ID (when the Show My Caller "
                                                       @"ID setting is on).",
                                                       @"Explanation how Callback settings work\n"
                                                       @"[* lines]");
 #endif
+            break;
+
+        case TableSectionHomeCountry:
+            title = NSLocalizedStringWithDefaultValue(@"Settings:HomeCountryInfo SectionFooter", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"Determines how phone numbers without country code are interpreted.",
+                                                      @"Explanation what the Home Country setting is doing\n"
+                                                      @"[* lines]");
             break;
 
         case TableSectionAccountData:
@@ -204,12 +205,12 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionHomeCountry:
-            numberOfRows = ([NetworkStatus sharedStatus].simIsoCountryCode != nil) ? 2 : 1;
-            break;
-
         case TableSectionCallMode:
             numberOfRows = HAS_VOIP ? (settings.callbackMode ? 3 : 1) : 3;
+            break;
+
+        case TableSectionHomeCountry:
+            numberOfRows = ([NetworkStatus sharedStatus].simIsoCountryCode != nil) ? 2 : 1;
             break;
 
         case TableSectionCallOptions:
@@ -235,36 +236,20 @@ typedef enum
     NSString*                title;
     NSString*                message;
     NSString*                homeCountry = settings.homeCountry;
+    PhonesViewController*   phonesViewController;
     CountriesViewController* countriesViewController;
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
-        case TableSectionHomeCountry:
-        {
-            countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:homeCountry
-                                                                                   completion:^(BOOL      cancelled,
-                                                                                                NSString* isoCountryCode)
-            {
-                if (cancelled == NO)
-                {
-                    settings.homeCountry = isoCountryCode;
-
-                    // Set the cell to prevent quick update right after animations.
-                    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-                    cell.imageView.image  = [UIImage imageNamed:settings.homeCountry];
-                    cell.textLabel.text   = [[CountryNames sharedNames] nameForIsoCountryCode:settings.homeCountry];
-                }
-            }];
-            
-            [self.navigationController pushViewController:countriesViewController animated:YES];
-            break;
-        }
-
         case TableSectionCallMode:
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-            if (indexPath.row == 1)
+            if (indexPath.row == 1 - !HAS_VOIP)
             {
+                phonesViewController = [[PhonesViewController alloc] init];
+                [self.navigationController pushViewController:phonesViewController animated:YES];
+                break;
+
                 __block BlockAlertView*  alert;
                 NSString*                title;
                 NSString*                message;
@@ -284,42 +269,42 @@ typedef enum
                                                                 phoneNumber:verifiedPhoneNumber
                                                                  completion:^(BOOL         cancelled,
                                                                               PhoneNumber* phoneNumber)
-                {
-                    if (cancelled == NO)
-                    {
-                        if ([phoneNumber isValid])
-                        {
-                            settings.verifiedE164 = [phoneNumber e164Format];
+                           {
+                               if (cancelled == NO)
+                               {
+                                   if ([phoneNumber isValid])
+                                   {
+                                       settings.verifiedE164 = [phoneNumber e164Format];
 
-                            [self reloadCallModeSection];
-                        }
-                        else
-                        {
-                            NSString* title;
-                            NSString* message;
+                                       [self reloadCallModeSection];
+                                   }
+                                   else
+                                   {
+                                       NSString* title;
+                                       NSString* message;
 
-                            title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidTitle", nil,
-                                                                        [NSBundle mainBundle], @"Invalid Number",
-                                                                        @"Phone number is not correct.\n"
-                                                                        @"[iOS alert title size].");
-                            message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidMessage", nil,
-                                                                        [NSBundle mainBundle],
-                                                                        @"The phone number you entered is invalid, "
-                                                                        @"please correct.",
-                                                                        @"Alert message that entered phone number is invalid.\n"
-                                                                        @"[iOS alert message size]");
-                            [BlockAlertView showAlertViewWithTitle:title
-                                                           message:message
-                                                        completion:nil
-                                                 cancelButtonTitle:[Strings closeString]
-                                                 otherButtonTitles:nil];
-                        }
-                    }
-                }
+                                       title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidTitle", nil,
+                                                                                   [NSBundle mainBundle], @"Invalid Number",
+                                                                                   @"Phone number is not correct.\n"
+                                                                                   @"[iOS alert title size].");
+                                       message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidMessage", nil,
+                                                                                   [NSBundle mainBundle],
+                                                                                   @"The phone number you entered is invalid, "
+                                                                                   @"please correct.",
+                                                                                   @"Alert message that entered phone number is invalid.\n"
+                                                                                   @"[iOS alert message size]");
+                                       [BlockAlertView showAlertViewWithTitle:title
+                                                                      message:message
+                                                                   completion:nil
+                                                            cancelButtonTitle:[Strings closeString]
+                                                            otherButtonTitles:nil];
+                                   }
+                               }
+                           }
                                                           cancelButtonTitle:[Strings cancelString]
                                                           otherButtonTitles:[Strings okString], nil];
             }
-            else if (indexPath.row == 2)
+            else if (indexPath.row == 2 - !HAS_VOIP)
             {
                 __block BlockAlertView*  alert;
                 NSString*                title;
@@ -341,43 +326,63 @@ typedef enum
                                                                 phoneNumber:verifiedPhoneNumber
                                                                  completion:^(BOOL         cancelled,
                                                                               PhoneNumber* phoneNumber)
-                {
-                    if (cancelled == NO)
-                    {
-                        if ([phoneNumber isValid])
-                        {
-                            settings.callerId = [phoneNumber e164Format];
+                           {
+                               if (cancelled == NO)
+                               {
+                                   if ([phoneNumber isValid])
+                                   {
+                                       settings.callerId = [phoneNumber e164Format];
 
-                            [self reloadCallModeSection];
-                        }
-                        else
-                        {
-                            NSString* title;
-                            NSString* message;
+                                       [self reloadCallModeSection];
+                                   }
+                                   else
+                                   {
+                                       NSString* title;
+                                       NSString* message;
 
-                            title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidTitle", nil,
-                                                                        [NSBundle mainBundle], @"Invalid Number",
-                                                                        @"Phone number is not correct.\n"
-                                                                        @"[iOS alert title size].");
-                            message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidMessage", nil,
-                                                                        [NSBundle mainBundle],
-                                                                        @"The phone number you entered is invalid, "
-                                                                        @"please correct.",
-                                                                        @"Alert message that entered phone number is invalid.\n"
-                                                                        @"[iOS alert message size]");
-                            [BlockAlertView showAlertViewWithTitle:title
-                                                           message:message
-                                                        completion:nil
-                                                 cancelButtonTitle:[Strings closeString]
-                                                 otherButtonTitles:nil];
-                        }
-                    }
-                }
+                                       title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidTitle", nil,
+                                                                                   [NSBundle mainBundle], @"Invalid Number",
+                                                                                   @"Phone number is not correct.\n"
+                                                                                   @"[iOS alert title size].");
+                                       message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidMessage", nil,
+                                                                                   [NSBundle mainBundle],
+                                                                                   @"The phone number you entered is invalid, "
+                                                                                   @"please correct.",
+                                                                                   @"Alert message that entered phone number is invalid.\n"
+                                                                                   @"[iOS alert message size]");
+                                       [BlockAlertView showAlertViewWithTitle:title
+                                                                      message:message
+                                                                   completion:nil
+                                                            cancelButtonTitle:[Strings closeString]
+                                                            otherButtonTitles:nil];
+                                   }
+                               }
+                           }
                                                           cancelButtonTitle:[Strings cancelString]
                                                           otherButtonTitles:[Strings okString], nil];
-
             }
             break;
+            
+        case TableSectionHomeCountry:
+        {
+            countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:homeCountry
+                                                                                   completion:^(BOOL      cancelled,
+                                                                                                NSString* isoCountryCode)
+            {
+                if (cancelled == NO)
+                {
+                    settings.homeCountry = isoCountryCode;
+
+                    // Set the cell to prevent quick update right after animations.
+                    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                    cell.imageView.image  = [UIImage imageNamed:settings.homeCountry];
+                    cell.textLabel.text   = [[CountryNames sharedNames] nameForIsoCountryCode:settings.homeCountry];
+                }
+            }];
+            
+            [self.navigationController pushViewController:countriesViewController animated:YES];
+            break;
+        }
 
         case TableSectionAccountData:
             if (settings.haveVerifiedAccount == NO && indexPath.row == 0)
@@ -433,12 +438,12 @@ typedef enum
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
-        case TableSectionHomeCountry:
-            cell = [self homeCountryCellForRowAtIndexPath:indexPath];
-            break;
-
         case TableSectionCallMode:
             cell = [self callModeCellForRowAtIndexPath:indexPath];
+            break;
+
+        case TableSectionHomeCountry:
+            cell = [self homeCountryCellForRowAtIndexPath:indexPath];
             break;
 
         case TableSectionCallOptions:
@@ -570,15 +575,14 @@ typedef enum
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallerCell"];
         }
 
-        NSString*    format      = NSLocalizedStringWithDefaultValue(@"Setting Called Format", nil,
-                                                                     [NSBundle mainBundle], @"Called Number: %@",
-                                                                     @"Format string showing called number.\n"
-                                                                     @"[1 line].");
-        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:settings.verifiedE164];
-
-        cell.textLabel.text = [NSString stringWithFormat:format, [phoneNumber internationalFormat]];
-        cell.accessoryType  = UITableViewCellAccessoryNone;
-        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:settings.verifiedE164];
+        cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Settings Called Back Number", nil,
+                                                                      [NSBundle mainBundle], @"Called Back",
+                                                                      @"Phone number on which user is reachable.\n"
+                                                                      @"[1/2 line, abbreviated: Called].");
+        cell.detailTextLabel.text = [phoneNumber internationalFormat];
+        cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle       = UITableViewCellSelectionStyleBlue;
     }
     else if (indexPath.row == 2 - !HAS_VOIP)
     {
@@ -588,15 +592,14 @@ typedef enum
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallerIDCell"];
         }
 
-        NSString*    format      = NSLocalizedStringWithDefaultValue(@"Setting Shown Number Format", nil,
-                                                                     [NSBundle mainBundle], @"Shown Number: %@",
-                                                                     @"Format string showing shown number.\n"
-                                                                     @"[1 line].");
-        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:settings.callerId];
-
-        cell.textLabel.text = [NSString stringWithFormat:format, [phoneNumber internationalFormat]];
-        cell.accessoryType  = UITableViewCellAccessoryNone;
-        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:settings.callerId];
+        cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Setting Shown Number Format", nil,
+                                                                      [NSBundle mainBundle], @"Caller ID",
+                                                                      @"Format string showing shown number.\n"
+                                                                      @"[1 line].");
+        cell.detailTextLabel.text = [phoneNumber internationalFormat];
+        cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle       = UITableViewCellSelectionStyleBlue;
     }
     else if (indexPath.row == 2)
     {

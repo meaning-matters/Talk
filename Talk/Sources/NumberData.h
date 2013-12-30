@@ -41,13 +41,4 @@
 // Relationships.
 @property (nonatomic, retain) ForwardingData* forwarding;
 
-
-- (void)setPurchaseDateWithString:(NSString*)dateString;
-
-- (NSString*)stringPurchaseDateTime;
-
-- (void)setRenewalDateWithString:(NSString*)dateString;
-
-- (NSString*)stringRenewalDateTime;
-
 @end

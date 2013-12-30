@@ -20,9 +20,13 @@
 
 - (void)removeAll;
 
-- (NSFetchedResultsController*)fetchResultsForEntityName:(NSString*)entityName withSortKey:(NSString*)key error:(NSError**)error;
+- (NSFetchedResultsController*)fetchResultsForEntityName:(NSString*)entityName
+                                             withSortKey:(NSString*)key
+                                                   error:(NSError**)error;
 
 - (void)synchronizeWithServer:(void (^)(NSError* error))completion;
+
+- (void)synchronizePhones:(void (^)(NSError* error))completion;
 
 - (void)handleError;
 

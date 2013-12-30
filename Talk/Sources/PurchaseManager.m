@@ -222,98 +222,34 @@
 
 - (void)processAccountTransaction:(SKPaymentTransaction*)transaction
 {
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
-    parameters[@"receipt"] = [Base64 encode:transaction.transactionReceipt];
-
-    [[WebClient sharedClient] retrieveWebAccount:parameters
-                                           reply:^(NSError* error, id content)
+    [[WebClient sharedClient] retrieveAccountsForReceipt:[Base64 encode:transaction.transactionReceipt]
+                                                language:[[NSLocale preferredLanguages] objectAtIndex:0]
+                                       notificationToken:[AppDelegate appDelegate].deviceToken
+                                       mobileCountryCode:[NetworkStatus sharedStatus].simMobileCountryCode
+                                       mobileNetworkCode:[NetworkStatus sharedStatus].simMobileNetworkCode
+                                                   reply:^(NSError*  error,
+                                                           NSString* webUsername,
+                                                           NSString* webPassword,
+                                                           NSString* sipUsername,
+                                                           NSString* sipPassword,
+                                                           NSString* sipRealm)
     {
         if (error == nil)
         {
-            [Settings sharedSettings].webUsername  = ((NSDictionary*)content)[@"username"];
-            [Settings sharedSettings].webPassword  = ((NSDictionary*)content)[@"password"];
-            [Settings sharedSettings].verifiedE164 = ((NSDictionary*)content)[@"e164"];
+            [Settings sharedSettings].webUsername = webUsername;
+            [Settings sharedSettings].webPassword = webPassword;
+            [Settings sharedSettings].sipUsername = sipUsername;
+            [Settings sharedSettings].sipPassword = sipPassword;
+            [Settings sharedSettings].sipRealm    = sipRealm;
 
-            NSMutableDictionary*  parameters = [NSMutableDictionary dictionary];
-            parameters[@"deviceName"]        = [UIDevice currentDevice].name;
-            parameters[@"notificationToken"] = [AppDelegate appDelegate].deviceToken;
-            parameters[@"deviceOs"]          = [NSString stringWithFormat:@"%@ %@",
-                                                [UIDevice currentDevice].systemName,
-                                                [UIDevice currentDevice].systemVersion];
-            parameters[@"deviceModel"]       = [Common deviceModel];
-            parameters[@"appVersion"]        = [Common bundleVersion];
-
-            if ([NetworkStatus sharedStatus].simMobileCountryCode != nil)
-            {
-                parameters[@"mobileCountryCode"] = [NetworkStatus sharedStatus].simMobileCountryCode;
-            }
-
-            if ([NetworkStatus sharedStatus].simMobileNetworkCode != nil)
-            {
-                parameters[@"mobileNetworkCode"] = [NetworkStatus sharedStatus].simMobileNetworkCode;
-            }
-
-            [[WebClient sharedClient] retrieveSipAccount:parameters
-                                                   reply:^(NSError* error, id content)
-            {
-                if (error == nil)
-                {
-                    [Settings sharedSettings].sipServer   = ((NSDictionary*)content)[@"sipRealm"];
-                    [Settings sharedSettings].sipRealm    = ((NSDictionary*)content)[@"sipRealm"];
-                    [Settings sharedSettings].sipUsername = ((NSDictionary*)content)[@"sipUsername"];
-                    [Settings sharedSettings].sipPassword = ((NSDictionary*)content)[@"sipPassword"];
-
-                    [self finishTransaction:transaction];
-                    [self completeBuyWithSuccess:YES object:transaction];
-                }
-                else
-                {
-                    if (self.buyCompletion != nil)
-                    {
-                        NSString* description = NSLocalizedStringWithDefaultValue(@"Purchase:General SipAccountFailed", nil,
-                                                                                  [NSBundle mainBundle], @"Could not get VoIP account",
-                                                                                  @"Error message ...\n"
-                                                                                  @"[...].");
-                        [self completeBuyWithSuccess:NO object:[Common errorWithCode:error.code description:description]];
-                    }
-                    else
-                    {
-                        NSLog(@"//### completion == nil");
-#warning Sometimes get here when two different accounts failed and Store retrieves them both at app start.
-                    }
-                }
-            }];
-        }
-        else if (error.code == WebClientStatusFailDeviceNameNotUnique)
-        {
-            NSString* title;
-            NSString* message;
-
-            title = NSLocalizedStringWithDefaultValue(@"Purchase:General DeviceNameNotUniqueTitle", nil,
-                                                      [NSBundle mainBundle], @"Device Name Not Unique",
-                                                      @"Alert title telling that the name of the device is already in "
-                                                      @"use\n[iOS alert title size - abbreviated: 'Can't Pay'].");
-            message = NSLocalizedStringWithDefaultValue(@"Purchase:General DeviceNameNotUniqueMessage", nil,
-                                                        [NSBundle mainBundle],
-                                                        @"The name of this device '%@' is already in use.\n"
-                                                        @"Connect the device to your computer, go to its "
-                                                        @"Summary in iTunes, and tap on the name to change it.",
-                                                        @"Alert message telling that name of device is already in use.\n"
-                                                        @"[iOS alert message size - use correct terms for: iTunes and "
-                                                        @"Summary!]");
-            [BlockAlertView showAlertViewWithTitle:title
-                                           message:message
-                                        completion:nil
-                                 cancelButtonTitle:[Strings closeString]
-                                 otherButtonTitles:nil];
-            
-            [self completeBuyWithSuccess:NO object:nil];  // With nil, no alert will be shown.
+            [self finishTransaction:transaction];
+            [self completeBuyWithSuccess:YES object:transaction];
         }
         else
         {
             // If this was a restored transaction, it already been 'finished' in updatedTransactions:.
             NSString* description = NSLocalizedStringWithDefaultValue(@"Purchase:General WebAccountFailed", nil,
-                                                                      [NSBundle mainBundle], @"Could not get web account",
+                                                                      [NSBundle mainBundle], @"Could not get account",
                                                                       @"Error message ...\n"
                                                                       @"[...].");
             [self completeBuyWithSuccess:NO object:[Common errorWithCode:error.code description:description]];
@@ -558,7 +494,10 @@
             case SKPaymentTransactionStateFailed:
                 if (transaction.error.code == 2)
                 {
-                    NSLog(@"Did we see Already Purchaesed?");
+                    NSLog(@"Did we see Already Purchased?");
+                    [Common enableNetworkActivityIndicator:NO];
+                    [self finishTransaction:transaction];
+                    [self completeBuyWithSuccess:NO object:transaction.error];
                 }
                 else
                 {

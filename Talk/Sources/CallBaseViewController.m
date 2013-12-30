@@ -20,7 +20,7 @@
 
 - (instancetype)init
 {
-    if (self = [super initWithNibName:@"CallView" bundle:nil])
+    if (self = [super initWithNibName:@"CallBaseView" bundle:nil])
     {
     }
 

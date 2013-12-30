@@ -80,7 +80,7 @@ static NSUserDefaults*  userDefaults;
     [Keychain deleteStringForKey:SipUsernameKey];
     [Keychain deleteStringForKey:SipPasswordKey];
 
-    for (NSString* key in [[self defaults] allKeys])
+    for (NSString* key in [self defaults])
     {
         [userDefaults setObject:[[self defaults] objectForKey:key] forKey:key];
     }
@@ -91,8 +91,12 @@ static NSUserDefaults*  userDefaults;
 
 - (BOOL)haveAccount
 {
+#if HAS_VOIP
     return (self.webUsername.length > 0 && self.webPassword.length > 0 &&
             self.sipUsername.length > 0 && self.sipPassword.length > 0);
+#else
+    return (self.webUsername.length > 0 && self.webPassword.length > 0);
+#endif
 }
 
 
@@ -131,11 +135,11 @@ static NSUserDefaults*  userDefaults;
 
         [dictionary setObject:@""                                                forKey:LastDialedNumberKey];
         [dictionary setObject:@(NO)                                              forKey:WarnedAboutDefaultCliKey];
-        [dictionary setObject:@"https://api2.numberbay.com/"                     forKey:WebBaseUrlKey];
+        [dictionary setObject:@"https://api2.numberbay.com/"                      forKey:WebBaseUrlKey];
         [dictionary setObject:@(NO)                                              forKey:AllowCellularDataCallsKey];
         [dictionary setObject:@(YES)                                             forKey:ShowCallerIdKey];
         [dictionary setObject:@(NO)                                              forKey:CallbackModeKey];
-        [dictionary setObject:[self verifiedE164] ? [self verifiedE164] : @""    forKey:CallerIdKey];
+        [dictionary setObject:@""                                                forKey:CallerIdKey];
         [dictionary setObject:@(NumberTypeGeographicMask)                        forKey:NumberTypeMaskKey];
         [dictionary setObject:@(0)                                               forKey:NumbersSortSegmentKey];
         [dictionary setObject:@(0)                                               forKey:ForwardingsSelectionKey];

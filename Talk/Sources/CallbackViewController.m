@@ -139,13 +139,11 @@
 {
     if (self.call.readyForCleanup == YES || callbackPending == NO)
     {
-        NSLog(@"Callback State: ReadyForCleanup || !CallbackPending");
-
         return;
     }
 
     [[WebClient sharedClient] retrieveCallbackStateForUuid:uuid
-                                                     reply:^(NSError* error, CallState state)
+                                                     reply:^(NSError* error, CallState state, int duration)
     {
         if (error == nil)
         {

@@ -9,7 +9,6 @@
 
 #import "AFHTTPClient.h"
 #import "NumberType.h"
-#import "PhoneNumber.h"
 #import "Call.h"
 
 
@@ -43,41 +42,73 @@ typedef enum
 #pragma mark - Request Methods
 
 // 1. CREATE/UPDATE ACCOUNT
-- (void)retrieveWebAccount:(NSDictionary*)parameters
-                     reply:(void (^)(NSError* error, id content))reply;
+- (void)retrieveAccountsForReceipt:(NSString*)receipt
+                          language:(NSString*)language
+                 notificationToken:(NSString*)notificationToken
+                 mobileCountryCode:(NSString*)mobileCountryCode
+                 mobileNetworkCode:(NSString*)mobileNetworkCode
+                             reply:(void (^)(NSError*  error,
+                                             NSString* webUsername,
+                                             NSString* webPassword,
+                                             NSString* sipUsername,
+                                             NSString* sipPassword,
+                                             NSString* sipRealm))reply;
 
-// 2. ADD/UPDATE DEVICE
-- (void)retrieveSipAccount:(NSDictionary*)parameters
-                     reply:(void (^)(NSError* error, id content))reply;
+// 2A. DO NUMBER VERIFICATION
+- (void)retrieveVerificationCodeForE164:(NSString*)e164
+                              phoneName:(NSString*)phoneName
+                                  reply:(void (^)(NSError* error, NSString* code))reply;
+
+// 2B. DO NUMBER VERIFICATION
+- (void)requestVerificationCallForE164:(NSString*)e164
+                                 reply:(void (^)(NSError* error))reply;
+
+// 2C. DO NUMBER VERIFICATION
+- (void)retrieveVerificationStatusForE164:(NSString*)e164
+                                    reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply;
+
+// 2D. UPDATE VERIFIED NUMBER
+- (void)updateVerifiedE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply;
+
+// 3. GET VERIFIED NUMBER LIST
+- (void)retrieveVerifiedE164List:(void (^)(NSError* error, NSArray* e164s))reply;
+
+// 4. GET VERIFIED NUMBER INFO
+- (void)retrieveVerifiedE164:(NSString*)e164
+                       reply:(void (^)(NSError* error, NSString* name))reply;
+
+// 5. DELETE VERIFIED NUMBER
+- (void)deleteVerifiedE164:(NSString*)e164
+                     reply:(void (^)(NSError*))reply;
 
 // 6. GET LIST OF ALL AVAILABLE NUMBER COUNTRIES
-- (void)retrieveNumberCountries:(void (^)(NSError* error, id content))reply;
+- (void)retrieveNumberCountries:(void (^)(NSError* error, NSArray* countries))reply;
 
 // 7. GET LIST OF ALL AVAILABLE NUMBER STATES
 - (void)retrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode
-                                        reply:(void (^)(NSError* error, id content))reply;
+                                        reply:(void (^)(NSError* error, NSArray* states))reply;
 
 // 8A. GET LIST OF ALL AVAILABLE NUMBER AREAS (WITH STATES)
 - (void)retrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
                                    stateCode:(NSString*)stateCode
                               numberTypeMask:(NumberTypeMask)numberTypeMask
                                 currencyCode:(NSString*)currencyCode
-                                       reply:(void (^)(NSError* error, id content))reply;
+                                       reply:(void (^)(NSError* error, NSArray* areas))reply;
 
 // 8B. GET LIST OF ALL AVAILABLE NUMBER AREAS
 - (void)retrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
                               numberTypeMask:(NumberTypeMask)numberTypeMask
                                 currencyCode:(NSString*)currencyCode
-                                       reply:(void (^)(NSError* error, id content))reply;
+                                       reply:(void (^)(NSError* error, NSArray* areas))reply;
 
 //  9. GET PURCHASE INFO DATA
 - (void)retrieveNumberAreaInfoForIsoCountryCode:(NSString*)isoCountryCode
                                        areaCode:(NSString*)areaCode
-                                          reply:(void (^)(NSError* error, id content))reply;
+                                          reply:(void (^)(NSError* error, NSArray* areaInfo))reply;
 
 // 10. CHECK IF PURCHASE INFO IS VALID
-- (void)checkPurchaseInfo:(NSDictionary*)parameters
-                    reply:(void (^)(NSError* error, id content))reply;
+- (void)checkPurchaseInfo:(NSDictionary*)info
+                    reply:(void (^)(NSError* error, BOOL isValid))reply;
 
 // 11A. PURCHASE NUMBER
 - (void)purchaseNumberForReceipt:(NSString*)receipt
@@ -93,15 +124,35 @@ typedef enum
                            reply:(void (^)(NSError* error, NSString* e164))reply;
 
 // 11B.
-- (void)updateNumberForE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply;
+- (void)updateNumberE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply;
 
 // 12. GET LIST OF NUMBERS
-- (void)retrieveNumberList:(void (^)(NSError* error, NSArray* list))reply;
+- (void)retrieveNumberE164List:(void (^)(NSError* error, NSArray* e164s))reply;
 
 // 13. GET NUMBER INFO
-- (void)retrieveNumberForE164:(NSString*)e164
-                 currencyCode:(NSString*)currencyCode
-                        reply:(void (^)(NSError* error, NSDictionary* dictionary))reply;
+- (void)retrieveNumberE164:(NSString*)e164
+              currencyCode:(NSString*)currencyCode
+                     reply:(void (^)(NSError* error,
+                                     NSString* name,
+                                     NSString* numberType,
+                                     NSString* areaCode,
+                                     NSString* areaName,
+                                     NSString* numberCountry,
+                                     NSDate*   purchaseDate,
+                                     NSDate*   renewalDate,
+                                     NSString* salutation,
+                                     NSString* firstName,
+                                     NSString* lastName,
+                                     NSString* company,
+                                     NSString* street,
+                                     NSString* building,
+                                     NSString* city,
+                                     NSString* zipCode,
+                                     NSString* stateName,
+                                     NSString* stateCode,
+                                     NSString* addressCountry,
+                                     NSData*   proofImage,
+                                     BOOL      proofAccepted))reply;
 
 // 14. BUY CREDIT
 - (void)purchaseCreditForReceipt:(NSString*)receipt
@@ -110,7 +161,11 @@ typedef enum
 
 // 15. GET CURRENT CREDIT
 - (void)retrieveCreditForCurrencyCode:(NSString*)currencyCode
-                                reply:(void (^)(NSError* error, id content))reply;
+                                reply:(void (^)(NSError* error, float credit))reply;
+
+// 16. GET CALL RATE (PER MINUTE)
+- (void)retrieveCallRateForE164:(NSString*)e164 currencyCode:(NSString*)currencyCode
+                          reply:(void (^)(NSError* error, float ratePerMinute))reply;
 
 // 19A. CREATE IVR
 - (void)createIvrForUuid:(NSString*)uuid
@@ -129,7 +184,7 @@ typedef enum
                    reply:(void (^)(NSError* error))reply;
 
 // 21. GET LIST OF IVRS
-- (void)retrieveIvrList:(void (^)(NSError* error, NSArray* list))reply;
+- (void)retrieveIvrList:(void (^)(NSError* error, NSArray* uuids))reply;
 
 // 22. DOWNLOAD IVR
 - (void)retrieveIvrForUuid:(NSString*)uuid
@@ -145,19 +200,6 @@ typedef enum
                     reply:(void (^)(NSError* error, NSString* uuid))reply;
 
 
-// 30A. DO NUMBER VERIFICATION
-- (void)retrieveVerificationCodeForPhoneNumber:(PhoneNumber*)phoneNumber
-                                    deviceName:(NSString*)deviceName
-                                         reply:(void (^)(NSError* error, NSString* code))reply;
-
-// 30B. DO NUMBER VERIFICATION
-- (void)requestVerificationCallForPhoneNumber:(PhoneNumber*)phoneNumber
-                                        reply:(void (^)(NSError* error))reply;
-
-// 30C. DO NUMBER VERIFICATION
-- (void)retrieveVerificationStatusForPhoneNumber:(PhoneNumber*)phoneNumber
-                                           reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply;
-
 // 32. INITIATE CALLBACK
 - (void)initiateCallbackForCallee:(PhoneNumber*)calleePhoneNumber
                            caller:(PhoneNumber*)callerPhoneNumber
@@ -171,15 +213,34 @@ typedef enum
 
 // 34. GET CALLBACK STATE
 - (void)retrieveCallbackStateForUuid:(NSString*)uuid
-                               reply:(void (^)(NSError* error, CallState state))reply;
+                               reply:(void (^)(NSError* error, CallState state, int duration))reply;
+
 
 #pragma mark - Cancel Methods
 
 // 1.
 - (void)cancelAllRetrieveWebAccount;
 
-// 2.
-- (void)cancelAllRetrieveSipAccount;
+// 2A.
+- (void)cancelAllRetrieveVerificationCode;
+
+// 2B.
+- (void)cancelAllRequestVerificationCall;
+
+// 2C.
+- (void)cancelAllRetrieveVerificationStatus;
+
+// 2D.
+- (void)cancelAllUpdateVerifiedE164:(NSString*)e164;
+
+// 3.
+- (void)cancelAllRetrieveVerifiedE164List;
+
+// 4.
+- (void)cancelAllRetrieveVerifiedE164:(NSString*)e164;
+
+// 5.
+- (void)cancelAllDeleteVerifiedE164:(NSString*)e164;
 
 // 6.
 - (void)cancelAllRetrieveNumberCountries;
@@ -206,10 +267,10 @@ typedef enum
 - (void)cancelAllUpdateNumberForE164:(NSString*)e164;
 
 // 12.
-- (void)cancelAllRetrieveNumberList;
+- (void)cancelAllRetrieveNumberE164List;
 
 // 13.
-- (void)cancelAllRetrieveNumberForE164:(NSString*)e164;
+- (void)cancelAllRetrieveNumberE164:(NSString*)e164;
 
 // 14.
 - (void)cancelAllPurchaseCredit;
@@ -217,14 +278,8 @@ typedef enum
 // 15.
 - (void)cancelAllRetrieveCredit;
 
-// 30A.
-- (void)cancelAllRetrieveVerificationCode;
-
-// 30B.
-- (void)cancelAllRequestVerificationCall;
-
-// 30C.
-- (void)cancelAllRetrieveVerificationStatus;
+// 16.
+- (void)cancelAllRetrieveCallRateForE164:(NSString*)e164;
 
 // 32.
 - (void)cancelAllInitiateCallback;

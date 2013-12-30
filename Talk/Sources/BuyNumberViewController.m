@@ -227,12 +227,10 @@
         if (setupFee > 0)
         {
             [[WebClient sharedClient] retrieveCreditForCurrencyCode:[Settings sharedSettings].currencyCode
-                                                              reply:^(NSError* error, id content)
+                                                              reply:^(NSError* error, float credit)
             {
                 if (error == nil)
                 {
-                    float credit = [content[@"credit"] floatValue];
-
                     if (setupFee < credit)
                     {
                         buyNumberBlock();

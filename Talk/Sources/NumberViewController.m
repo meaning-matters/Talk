@@ -719,7 +719,7 @@ static const int    TextFieldCellTag = 1234;
     {
         [textField resignFirstResponder];
 
-        [[WebClient sharedClient] updateNumberForE164:number.e164 withName:name reply:^(NSError* error)
+        [[WebClient sharedClient] updateNumberE164:number.e164 withName:name reply:^(NSError* error)
         {
             if (error == nil)
             {

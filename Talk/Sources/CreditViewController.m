@@ -231,11 +231,11 @@
     [self updateAmountCell:(CreditAmountCell*)[self.tableView cellForRowAtIndexPath:self.amountIndexPath]];
     
     [[WebClient sharedClient] retrieveCreditForCurrencyCode:[Settings sharedSettings].currencyCode
-                                                      reply:^(NSError* error, id content)
+                                                      reply:^(NSError* error, float credit)
     {
         if (error == nil)
         {
-            [Settings sharedSettings].credit = [content[@"credit"] floatValue];
+            [Settings sharedSettings].credit = credit;
             self.loadingcreditFailed = NO;
         }
         else

@@ -44,7 +44,14 @@
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
 {
+    NSString* text          = textField.text;
     self.phoneNumber.number = [textField.text stringByReplacingCharactersInRange:range withString:string];
+
+    if ([text isEqualToString:self.phoneNumber.asYouTypeFormat])
+    {
+        textField.text          = @"";
+        self.phoneNumber.number = @"";
+    }
 
     return YES;
 }

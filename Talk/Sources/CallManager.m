@@ -551,7 +551,6 @@ static SipInterface*    sipInterface;
 
 - (void)endCall:(Call*)call
 {
-    NSLog(@"################## endCall ##################");
     if ([Settings sharedSettings].callbackMode == NO ||
         [call.calledNumber isEqualToString:[Settings sharedSettings].testNumber] == YES)
     {

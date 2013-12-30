@@ -53,6 +53,9 @@
         [PhoneNumber setDefaultIsoCountryCode:[Settings sharedSettings].homeCountry];
         [LibPhoneNumber sharedInstance];    // This loads the JavaScript library.
 
+        // Set callback mode on, when there's no VoIP support.
+        !HAS_VOIP ? [Settings sharedSettings].callbackMode = YES : 0;
+
         // Basic UI.
         self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         self.tabBarController = [[UITabBarController alloc] init];

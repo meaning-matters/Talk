@@ -166,6 +166,24 @@
 }
 
 
++ (NSString*)deviceString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Device", nil,
+                                             [NSBundle mainBundle], @"Device",
+                                             @"Standard string to label a telephone device\n"
+                                             @"[iOS standard size].");
+}
+
+
++ (NSString*)devicesString;
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Devices", nil,
+                                             [NSBundle mainBundle], @"Devices",
+                                             @"Standard string to label telephone devices\n"
+                                             @"[iOS standard size].");
+}
+
+
 + (NSString*)creditString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Number", nil,

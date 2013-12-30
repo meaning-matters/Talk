@@ -821,7 +821,7 @@ static const int    TextFieldCellTag = 1234;
                         purchaseInfo[@"numberType"] = [NumberType localizedStringForNumberType:numberTypeMask];
                         purchaseInfo[@"areaCode"]   = area[@"areaCode"];
                         [[WebClient sharedClient] checkPurchaseInfo:purchaseInfo
-                                                              reply:^(NSError* error, id content)
+                                                              reply:^(NSError* error, BOOL isValid)
                         {
                             NumberAreaActionCell* cell;
                             cell = (NumberAreaActionCell*)[self.tableView cellForRowAtIndexPath:indexPath];
@@ -831,6 +831,7 @@ static const int    TextFieldCellTag = 1234;
 
                             if (error == nil)
                             {
+                                NSLog(@"########################### do something with isValid");
                                 isChecked = YES;
                                 [self.tableView beginUpdates];
                                 [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section]

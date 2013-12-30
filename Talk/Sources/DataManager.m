@@ -9,6 +9,7 @@
 #import "DataManager.h"
 #import "NumberData.h"
 #import "ForwardingData.h"
+#import "PhoneData.h"
 #import "Common.h"
 #import "WebClient.h"
 #import "Settings.h"
@@ -166,7 +167,9 @@
 }
 
 
-- (NSFetchedResultsController*)fetchResultsForEntityName:(NSString*)entityName withSortKey:(NSString*)key error:(NSError**)error
+- (NSFetchedResultsController*)fetchResultsForEntityName:(NSString*)entityName
+                                             withSortKey:(NSString*)key
+                                                   error:(NSError**)error
 {
     NSFetchedResultsController* resultsController;
     NSFetchRequest*             fetchRequest;
@@ -305,9 +308,20 @@
                     {
                         if (error == nil)
                         {
-                            error = nil;
-                            [self.managedObjectContext save:&error];
-                            completion ? completion(error) : 0;
+                            [self synchronizePhones:^(NSError* error)
+                            {
+                                if (error == nil)
+                                {
+                                    error = nil;
+                                    [self.managedObjectContext save:&error];
+                                    completion ? completion(error) : 0;
+                                }
+                                else
+                                {
+                                    [self.managedObjectContext rollback];
+                                    completion ? completion(error) : 0;
+                                }
+                            }];
                         }
                         else
                         {
@@ -334,15 +348,15 @@
 
 - (void)synchronizeNumbers:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] retrieveNumberList:^(NSError* webError, NSArray* array)
+    [[WebClient sharedClient] retrieveNumberE164List:^(NSError* webError, NSArray* e164s)
     {
         if (webError == nil)
         {
             // Delete Numbers that are no longer on the server.
-            __block NSError* error        = nil;
-            NSFetchRequest*  request      = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
-            [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (e164 IN %@)", array]];
-            NSArray*         deleteArray  = [self.managedObjectContext executeFetchRequest:request error:&error];
+            __block NSError* error       = nil;
+            NSFetchRequest*  request     = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
+            [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (e164 IN %@)", e164s]];
+            NSArray*         deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
             if (error == nil)
             {
                 for (NSManagedObject* object in deleteArray)
@@ -357,17 +371,37 @@
                 return;
             }
 
-            __block int count = array.count;
-            for (NSString* e164 in array)
+            __block int count = e164s.count;
+            for (NSString* e164 in e164s)
             {
-                [[WebClient sharedClient] retrieveNumberForE164:e164
-                                                   currencyCode:[Settings sharedSettings].currencyCode
-                                                          reply:^(NSError* webError, NSDictionary* dictionary)
+                [[WebClient sharedClient] retrieveNumberE164:e164
+                                                currencyCode:[Settings sharedSettings].currencyCode
+                                                       reply:^(NSError*  error,
+                                                               NSString* name,
+                                                               NSString* numberType,
+                                                               NSString* areaCode,
+                                                               NSString* areaName,
+                                                               NSString* numberCountry,
+                                                               NSDate*   purchaseDate,
+                                                               NSDate*   renewalDate,
+                                                               NSString* salutation,
+                                                               NSString* firstName,
+                                                               NSString* lastName,
+                                                               NSString* company,
+                                                               NSString* street,
+                                                               NSString* building,
+                                                               NSString* city,
+                                                               NSString* zipCode,
+                                                               NSString* stateName,
+                                                               NSString* stateCode,
+                                                               NSString* addressCountry,
+                                                               NSData*   proofImage,
+                                                               BOOL      proofAccepted)
                 {
                     if (error == nil && webError == nil)
                     {
                         NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
-                        [request setPredicate:[NSPredicate predicateWithFormat:@"e164 == %@", dictionary[@"e164"]]];
+                        [request setPredicate:[NSPredicate predicateWithFormat:@"e164 == %@", e164]];
 
                         NumberData* number = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
                         if (number == nil)
@@ -376,26 +410,27 @@
                                                                                 inManagedObjectContext:self.managedObjectContext];
                         }
 
-                        number.name           = dictionary[@"name"];
-                        number.e164           = dictionary[@"e164"];
-                        number.numberType     = dictionary[@"numberType"];
-                        number.areaCode       = dictionary[@"areaCode"];
-                        number.areaName       = dictionary[@"areaName"];
-                        number.numberCountry  = dictionary[@"isoCountryCode"];
-                        [number setPurchaseDateWithString:dictionary[@"purchaseDateTime"]];
-                        [number setRenewalDateWithString:dictionary[@"renewalDateTime"]];
-                        number.salutation     = dictionary[@"info"][@"salutation"];
-                        number.firstName      = dictionary[@"info"][@"firstName"];
-                        number.lastName       = dictionary[@"info"][@"lastName"];
-                        number.company        = dictionary[@"info"][@"company"];
-                        number.street         = dictionary[@"info"][@"street"];
-                        number.building       = dictionary[@"info"][@"building"];
-                        number.city           = dictionary[@"info"][@"city"];
-                        number.zipCode        = dictionary[@"info"][@"zipCode"];
-                        number.stateName      = dictionary[@"info"][@"stateName"];
-                        number.stateCode      = dictionary[@"info"][@"stateCode"];
-                        number.addressCountry = dictionary[@"info"][@"isoCountryCode"];
-                        number.proofImage     = [Base64 decode:dictionary[@"info"][@"proofImage"]];
+                        number.name           = name;
+                        number.e164           = e164;
+                        number.numberType     = numberType;
+                        number.areaCode       = areaCode;
+                        number.areaName       = areaName;
+                        number.numberCountry  = numberCountry;
+                        number.purchaseDate   = purchaseDate;
+                        number.renewalDate    = renewalDate;
+                        number.salutation     = salutation;
+                        number.firstName      = firstName;
+                        number.lastName       = lastName;
+                        number.company        = company;
+                        number.street         = street;
+                        number.building       = building;
+                        number.city           = city;
+                        number.zipCode        = zipCode;
+                        number.stateName      = stateName;
+                        number.stateCode      = stateCode;
+                        number.addressCountry = addressCountry;
+                        number.proofImage     = proofImage;
+                        number.proofAccepted  = @(proofAccepted);
                     }
                     else if (error == nil)
                     {
@@ -419,15 +454,15 @@
 
 - (void)synchronizeForwardings:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] retrieveIvrList:^(NSError* webError, NSArray* array)
+    [[WebClient sharedClient] retrieveIvrList:^(NSError* webError, NSArray* list)
     {
         if (webError == nil)
         {
             // Delete IVRs that are no longer on the server.
-            __block NSError* error       = nil;
-            NSFetchRequest* request      = [NSFetchRequest fetchRequestWithEntityName:@"Forwarding"];
-            [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (uuid IN %@)", array]];
-            NSArray*        deleteArray  = [self.managedObjectContext executeFetchRequest:request error:&error];
+            __block NSError* error      = nil;
+            NSFetchRequest* request     = [NSFetchRequest fetchRequestWithEntityName:@"Forwarding"];
+            [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (uuid IN %@)", list]];
+            NSArray*        deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
             if (error == nil)
             {
                 for (NSManagedObject* object in deleteArray)
@@ -442,8 +477,8 @@
                 return;
             }
 
-            __block int  count   = array.count;
-            for (NSString* uuid in array)
+            __block int  count   = list.count;
+            for (NSString* uuid in list)
             {
                 [[WebClient sharedClient] retrieveIvrForUuid:uuid
                                                        reply:^(NSError* webError, NSString* name, NSArray* statements)
@@ -534,6 +569,82 @@
             }
         }];
     }
+}
+
+
+- (void)synchronizePhones:(void (^)(NSError* error))completion
+{
+    [[WebClient sharedClient] retrieveVerifiedE164List:^(NSError* webError, NSArray* e164s)
+    {
+        if (webError == nil)
+        {
+            // Delete Devices that are no longer on the server.
+            __block NSError* error       = nil;
+            NSFetchRequest*  request     = [NSFetchRequest fetchRequestWithEntityName:@"Device"];
+            [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (uuid IN %@)", e164s]];
+            NSArray*         deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
+            if (error == nil)
+            {
+                for (NSManagedObject* object in deleteArray)
+                {
+                    [self.managedObjectContext deleteObject:object];
+                }
+            }
+            else
+            {
+                completion ? completion(error) : 0;
+
+                return;
+            }
+
+            __block int  count   = e164s.count;
+            for (NSString* e164 in e164s)
+            {
+                if ((NSObject*)e164s == [NSNull null])
+                {
+                    NSLog(@"Invalid E164.");
+                    count--;
+
+                    continue;
+                }
+
+                [[WebClient sharedClient] retrieveVerifiedE164:e164
+                                                         reply:^(NSError* error, NSString* name)
+                {
+                    if (error == nil && webError == nil)
+                    {
+                        NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Phone"];
+                        [request setPredicate:[NSPredicate predicateWithFormat:@"e164 == %@", e164]];
+
+                        PhoneData* phone;
+                        phone = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
+                        //### Handle error.
+                        if (phone == nil)
+                        {
+                            phone = (PhoneData*)[NSEntityDescription insertNewObjectForEntityForName:@"Phone"
+                                                                              inManagedObjectContext:self.managedObjectContext];
+                        }
+
+                        phone.e164 = e164;
+                        phone.name = name;
+                    }
+                    else if (error == nil)
+                    {
+                        error = webError;
+                    }
+
+                    if (--count == 0)
+                    {
+                        completion ? completion(error) : 0;
+                    }
+                }];
+            }
+        }
+        else
+        {
+            completion ? completion(webError) : 0;
+        }
+    }];
 }
 
 @end

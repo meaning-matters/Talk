@@ -44,6 +44,10 @@
 
 + (NSString*)forwardingsString;
 
++ (NSString*)deviceString;
+
++ (NSString*)devicesString;
+
 + (NSString*)creditString;
 
 + (NSString*)monthString;

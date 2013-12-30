@@ -33,17 +33,17 @@
 
 @interface ProvisioningViewController ()
 {
-    UIView*         currentView;
+    UIView*      currentView;
 
-    NSString*       readyBuyText;                   // New user.
-    NSString*       readyRestoreNoNumbersText;      // Existing user with no numbers yet.
-    NSString*       readyRestoreHasNumberText;      // Existing user with only one number.
-    NSString*       readyRestoreHasNumbersText;     // Existing user with multiple numbers.
+    NSString*    readyBuyText;                   // New user.
+    NSString*    readyRestoreNoNumbersText;      // Existing user with no numbers yet.
+    NSString*    readyRestoreHasNumberText;      // Existing user with only one number.
+    NSString*    readyRestoreHasNumbersText;     // Existing user with multiple numbers.
 
-    PhoneNumber*    verifyPhoneNumber;
-    NSString*       verifyNumberButtonTitle;
+    PhoneNumber* verifyPhoneNumber;
+    NSString*    verifyNumberButtonTitle;
 
-    BOOL            isNewUser;
+    BOOL         isNewUser;
 }
 
 @end
@@ -250,40 +250,39 @@
 - (void)restoreCreditAndNumbers
 {
     [[WebClient sharedClient] retrieveCreditForCurrencyCode:[Settings sharedSettings].currencyCode
-                                                      reply:^(NSError* error, id content)
+                                                      reply:^(NSError* error, float credit)
     {
         if (error == nil)
         {
-            [Settings sharedSettings].credit = [[content objectForKey:@"credit"] floatValue];
-            [[WebClient sharedClient] retrieveNumberList:^(NSError* error, id content)
+            [Settings sharedSettings].credit = credit;
+            [[WebClient sharedClient] retrieveNumberE164List:^(NSError* error, NSArray* e164s)
             {
                 if (error == nil)
                 {
                     //### Process & Store numbers array!
                     
-                    NSArray*  numbers = content;
                     float     credit;
                     NSString* creditString;
 
                     credit       = [Settings sharedSettings].credit;
                     creditString = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
 
-                    if ([PurchaseManager sharedManager].isNewAccount == YES && numbers.count == 0)
+                    if ([PurchaseManager sharedManager].isNewAccount == YES && e164s.count == 0)
                     {
                         self.readyTextView.text = [NSString stringWithFormat:readyBuyText, creditString];
                     }
-                    else if (numbers.count == 0)
+                    else if (e164s.count == 0)
                     {
                         self.readyTextView.text = [NSString stringWithFormat:readyRestoreNoNumbersText, creditString];
                     }
-                    else if (numbers.count == 1)
+                    else if (e164s.count == 1)
                     {
                         self.readyTextView.text = [NSString stringWithFormat:readyRestoreHasNumberText, creditString];
                     }
                     else
                     {
                         self.readyTextView.text = [NSString stringWithFormat:readyRestoreHasNumbersText, creditString,
-                                                                                                         numbers.count];
+                                                                                                         e164s.count];
                     }
 
                     if ([Settings sharedSettings].verifiedE164.length == 0)
@@ -569,9 +568,9 @@
 
                 [self.verifyCodeActivityIndicator startAnimating];
                 WebClient* webClient = [WebClient sharedClient];
-                [webClient retrieveVerificationCodeForPhoneNumber:phoneNumber
-                                                       deviceName:[UIDevice currentDevice].name
-                                                            reply:^(NSError* error, NSString* code)
+                [webClient retrieveVerificationCodeForE164:[phoneNumber e164Format]
+                                                 phoneName:[UIDevice currentDevice].name
+                                                     reply:^(NSError* error, NSString* code)
                 {
                     [self.verifyCodeActivityIndicator stopAnimating];
                     if (error == nil)
@@ -643,7 +642,7 @@
     [self setVerifyStep:3];
 
     // Initiate call.
-    [webClient requestVerificationCallForPhoneNumber:verifyPhoneNumber reply:^(NSError* error)
+    [webClient requestVerificationCallForE164:[verifyPhoneNumber e164Format] reply:^(NSError* error)
     {
         if (error == nil)
         {
@@ -721,14 +720,15 @@
         return;
     }
 
-    [webClient retrieveVerificationStatusForPhoneNumber:verifyPhoneNumber
-                                                  reply:^(NSError* error, BOOL calling, BOOL verified)
+    [webClient retrieveVerificationStatusForE164:[verifyPhoneNumber e164Format]
+                                           reply:^(NSError* error, BOOL calling, BOOL verified)
     {
         if (error == nil)
         {
             if (verified == YES)
             {
                 [Settings sharedSettings].verifiedE164 = verifyPhoneNumber.e164Format;
+                [Settings sharedSettings].callerId     = verifyPhoneNumber.e164Format;
 
                 [[CallManager sharedManager] resetSipAccount];
 

@@ -839,6 +839,8 @@
 		4877EDB917AB7ADF0013B18F /* NBRecentCallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDB717AB7ADF0013B18F /* NBRecentCallCell.m */; };
 		4877EDBC17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */; };
 		4877EDBD17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */; };
+		48793369185C6A5800C08C8C /* PhonesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48793368185C6A5800C08C8C /* PhonesViewController.m */; };
+		4879336A185C6A5800C08C8C /* PhonesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48793368185C6A5800C08C8C /* PhonesViewController.m */; };
 		487A7C9A16978DBE007693EE /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 487A7C9916978DBE007693EE /* MediaPlayer.framework */; };
 		488268D9164BCF8600EA58AE /* NetworkStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 488268D8164BCF8600EA58AE /* NetworkStatus.m */; };
 		488268DA164BCF8600EA58AE /* NetworkStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 488268D8164BCF8600EA58AE /* NetworkStatus.m */; };
@@ -959,6 +961,8 @@
 		48ADD0F81706791A001515EB /* UIView+AnimateHidden.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ADD0F61706791A001515EB /* UIView+AnimateHidden.m */; };
 		48ADD0FA170C12C2001515EB /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48ADD0F9170C12C1001515EB /* AddressBookUI.framework */; };
 		48ADD0FC170C12CD001515EB /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48ADD0FB170C12CC001515EB /* AddressBook.framework */; };
+		48ADE7D2185C67EC00E39DA2 /* PhoneData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ADE7D1185C67EC00E39DA2 /* PhoneData.m */; };
+		48ADE7D3185C67EC00E39DA2 /* PhoneData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ADE7D1185C67EC00E39DA2 /* PhoneData.m */; };
 		48AF44EA1649479100DFE3D8 /* NumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44E91649479100DFE3D8 /* NumbersViewController.m */; };
 		48AF44EB1649479100DFE3D8 /* NumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44E91649479100DFE3D8 /* NumbersViewController.m */; };
 		48AF44EE164947B300DFE3D8 /* CreditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44ED164947B300DFE3D8 /* CreditViewController.m */; };
@@ -1961,6 +1965,8 @@
 		4877EDB717AB7ADF0013B18F /* NBRecentCallCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBRecentCallCell.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentCallCell.m; sourceTree = "<group>"; };
 		4877EDBA17AD27700013B18F /* PhoneNumberTextFieldDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumberTextFieldDelegate.h; sourceTree = "<group>"; };
 		4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneNumberTextFieldDelegate.m; sourceTree = "<group>"; };
+		48793367185C6A5800C08C8C /* PhonesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhonesViewController.h; sourceTree = "<group>"; };
+		48793368185C6A5800C08C8C /* PhonesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PhonesViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		487A7C9916978DBE007693EE /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		488268D7164BCF8600EA58AE /* NetworkStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkStatus.h; sourceTree = "<group>"; };
 		488268D8164BCF8600EA58AE /* NetworkStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkStatus.m; sourceTree = "<group>"; };
@@ -1999,7 +2005,7 @@
 		488D77551780773800099470 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		488D7758178078CC00099470 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		488FBBD817007CC6000ECC71 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
-		488FBBD917007CC6000ECC71 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
+		488FBBD917007CC6000ECC71 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DataManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		488FBBE01700852F000ECC71 /* NumberData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberData.h; sourceTree = "<group>"; };
 		488FBBE11700852F000ECC71 /* NumberData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberData.m; sourceTree = "<group>"; };
 		489387F917039158005CC795 /* ForwardingData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForwardingData.h; sourceTree = "<group>"; };
@@ -2053,6 +2059,8 @@
 		48ADD0F61706791A001515EB /* UIView+AnimateHidden.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+AnimateHidden.m"; sourceTree = "<group>"; };
 		48ADD0F9170C12C1001515EB /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		48ADD0FB170C12CC001515EB /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		48ADE7D0185C67EC00E39DA2 /* PhoneData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PhoneData.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		48ADE7D1185C67EC00E39DA2 /* PhoneData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PhoneData.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		48AF44E81649479100DFE3D8 /* NumbersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumbersViewController.h; sourceTree = "<group>"; };
 		48AF44E91649479100DFE3D8 /* NumbersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumbersViewController.m; sourceTree = "<group>"; };
 		48AF44EC164947B300DFE3D8 /* CreditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditViewController.h; sourceTree = "<group>"; };
@@ -3392,6 +3400,8 @@
 		488FBBD717007C39000ECC71 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				48ADE7D0185C67EC00E39DA2 /* PhoneData.h */,
+				48ADE7D1185C67EC00E39DA2 /* PhoneData.m */,
 				488FBBD817007CC6000ECC71 /* DataManager.h */,
 				488FBBD917007CC6000ECC71 /* DataManager.m */,
 				489387F917039158005CC795 /* ForwardingData.h */,
@@ -3534,6 +3544,8 @@
 				484943AC1753C00000E1D5C4 /* ThanksViewController.m */,
 				48AD95D8164AC4FE006178E6 /* ViewController.h */,
 				48AD95D9164AC4FE006178E6 /* ViewController.m */,
+				48793367185C6A5800C08C8C /* PhonesViewController.h */,
+				48793368185C6A5800C08C8C /* PhonesViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -3695,7 +3707,7 @@
 		48884A671615CE920005AA79 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Cornelis van der Bent";
 			};
 			buildConfigurationList = 48884A6A1615CE920005AA79 /* Build configuration list for PBXProject "Talk" */;
@@ -4704,6 +4716,7 @@
 				484943AD1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
 				4864B3FC1757C72F0006542F /* ContactUsViewController.m in Sources */,
 				4865A9D817926CE00028785F /* BuyNumberViewController.m in Sources */,
+				48ADE7D2185C67EC00E39DA2 /* PhoneData.m in Sources */,
 				4865A9DF1792C8B70028785F /* BuyNumberCell.m in Sources */,
 				480578F217A50F37006923BD /* NBPeoplePickerNavigationController.m in Sources */,
 				480578F317A50FB2006923BD /* NBAddressBookManager.m in Sources */,
@@ -4718,6 +4731,7 @@
 				480578FC17A50FB2006923BD /* NBGroup.m in Sources */,
 				480578FD17A50FB2006923BD /* NBGroupsManager.m in Sources */,
 				480578FE17A50FB2006923BD /* NBGroupsTableViewController.m in Sources */,
+				48793369185C6A5800C08C8C /* PhonesViewController.m in Sources */,
 				4805790017A50FB2006923BD /* NBNameTableViewCell.m in Sources */,
 				4805790117A50FB2006923BD /* NBNewFieldTableViewController.m in Sources */,
 				4805790217A50FB2006923BD /* NBNewPersonViewController.m in Sources */,
@@ -4835,6 +4849,7 @@
 				484943AE1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
 				4864B3FD1757C72F0006542F /* ContactUsViewController.m in Sources */,
 				4865A9D917926CE00028785F /* BuyNumberViewController.m in Sources */,
+				48ADE7D3185C67EC00E39DA2 /* PhoneData.m in Sources */,
 				4865A9E01792C8B70028785F /* BuyNumberCell.m in Sources */,
 				480578A117A4FAAA006923BD /* NBAddressBookManager.m in Sources */,
 				480578A217A4FAAA006923BD /* NBAddressCell.m in Sources */,
@@ -4849,6 +4864,7 @@
 				480578AB17A4FAAA006923BD /* NBGroupsManager.m in Sources */,
 				480578AC17A4FAAA006923BD /* NBGroupsTableViewController.m in Sources */,
 				480578D917A4FABD006923BD /* NBNameTableViewCell.m in Sources */,
+				4879336A185C6A5800C08C8C /* PhonesViewController.m in Sources */,
 				480578DA17A4FABD006923BD /* NBNewFieldTableViewController.m in Sources */,
 				480578DB17A4FABD006923BD /* NBNewPersonViewController.m in Sources */,
 				480578DC17A4FABD006923BD /* NBNotesCell.m in Sources */,
@@ -4964,7 +4980,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -4994,7 +5009,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "";
-				SDKROOT = iphoneos6.1;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s";
 			};
@@ -5004,7 +5019,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -5030,7 +5044,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRODUCT_NAME = "";
-				SDKROOT = iphoneos6.1;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv7 armv7s";
@@ -5040,7 +5054,6 @@
 		48884AB81615CE920005AA79 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -5074,7 +5087,7 @@
 				PRODUCT_NAME = NumberBay;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos6.1;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -5084,7 +5097,6 @@
 		48884AB91615CE920005AA79 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -5112,7 +5124,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = NumberBay;
 				PROVISIONING_PROFILE = "";
-				SDKROOT = iphoneos6.1;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -5177,7 +5189,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -5204,7 +5215,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRODUCT_NAME = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos6.1;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv7 armv7s";
@@ -5214,7 +5225,6 @@
 		488FBBD41700604C000ECC71 /* AdHoc */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -5242,7 +5252,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = NumberBay;
 				PROVISIONING_PROFILE = "";
-				SDKROOT = iphoneos6.1;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
