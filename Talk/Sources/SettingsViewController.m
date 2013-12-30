@@ -253,7 +253,7 @@ typedef enum
                 __block BlockAlertView*  alert;
                 NSString*                title;
                 NSString*                message;
-                PhoneNumber*             verifiedPhoneNumber = [[PhoneNumber alloc] initWithNumber:settings.verifiedE164];
+                PhoneNumber*             callbackPhoneNumber = [[PhoneNumber alloc] initWithNumber:settings.callbackE164];
 
                 title   = NSLocalizedStringWithDefaultValue(@"Setting EnterNumberTitle", nil,
                                                             [NSBundle mainBundle], @"Enter Called Number",
@@ -266,41 +266,41 @@ typedef enum
                                                             @"[iOS alert message size]");
                 alert   = [BlockAlertView showPhoneNumberAlertViewWithTitle:title
                                                                     message:message
-                                                                phoneNumber:verifiedPhoneNumber
+                                                                phoneNumber:callbackPhoneNumber
                                                                  completion:^(BOOL         cancelled,
                                                                               PhoneNumber* phoneNumber)
-                           {
-                               if (cancelled == NO)
-                               {
-                                   if ([phoneNumber isValid])
-                                   {
-                                       settings.verifiedE164 = [phoneNumber e164Format];
+                          {
+                              if (cancelled == NO)
+                              {
+                                  if ([phoneNumber isValid])
+                                  {
+                                      settings.callbackE164 = [phoneNumber e164Format];
 
-                                       [self reloadCallModeSection];
-                                   }
-                                   else
-                                   {
-                                       NSString* title;
-                                       NSString* message;
+                                      [self reloadCallModeSection];
+                                  }
+                                  else
+                                  {
+                                      NSString* title;
+                                      NSString* message;
 
-                                       title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidTitle", nil,
-                                                                                   [NSBundle mainBundle], @"Invalid Number",
-                                                                                   @"Phone number is not correct.\n"
-                                                                                   @"[iOS alert title size].");
-                                       message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidMessage", nil,
-                                                                                   [NSBundle mainBundle],
-                                                                                   @"The phone number you entered is invalid, "
-                                                                                   @"please correct.",
-                                                                                   @"Alert message that entered phone number is invalid.\n"
-                                                                                   @"[iOS alert message size]");
-                                       [BlockAlertView showAlertViewWithTitle:title
-                                                                      message:message
-                                                                   completion:nil
-                                                            cancelButtonTitle:[Strings closeString]
-                                                            otherButtonTitles:nil];
-                                   }
-                               }
-                           }
+                                      title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidTitle", nil,
+                                                                                  [NSBundle mainBundle], @"Invalid Number",
+                                                                                  @"Phone number is not correct.\n"
+                                                                                  @"[iOS alert title size].");
+                                      message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidMessage", nil,
+                                                                                  [NSBundle mainBundle],
+                                                                                  @"The phone number you entered is invalid, "
+                                                                                  @"please correct.",
+                                                                                  @"Alert message that entered phone number is invalid.\n"
+                                                                                  @"[iOS alert message size]");
+                                      [BlockAlertView showAlertViewWithTitle:title
+                                                                     message:message
+                                                                  completion:nil
+                                                           cancelButtonTitle:[Strings closeString]
+                                                           otherButtonTitles:nil];
+                                  }
+                              }
+                          }
                                                           cancelButtonTitle:[Strings cancelString]
                                                           otherButtonTitles:[Strings okString], nil];
             }
@@ -309,7 +309,7 @@ typedef enum
                 __block BlockAlertView*  alert;
                 NSString*                title;
                 NSString*                message;
-                PhoneNumber*             verifiedPhoneNumber = [[PhoneNumber alloc] initWithNumber:settings.callerId];
+                PhoneNumber*             callerIdPhoneNumber = [[PhoneNumber alloc] initWithNumber:settings.callerIdE164];
 
                 title   = NSLocalizedStringWithDefaultValue(@"Setting EnterNumberTitle", nil,
                                                             [NSBundle mainBundle], @"Enter Shown Number",
@@ -323,7 +323,7 @@ typedef enum
                                                             @"[iOS alert message size]");
                 alert   = [BlockAlertView showPhoneNumberAlertViewWithTitle:title
                                                                     message:message
-                                                                phoneNumber:verifiedPhoneNumber
+                                                                phoneNumber:callerIdPhoneNumber
                                                                  completion:^(BOOL         cancelled,
                                                                               PhoneNumber* phoneNumber)
                            {
@@ -331,7 +331,7 @@ typedef enum
                                {
                                    if ([phoneNumber isValid])
                                    {
-                                       settings.callerId = [phoneNumber e164Format];
+                                       settings.callerIdE164 = [phoneNumber e164Format];
 
                                        [self reloadCallModeSection];
                                    }
@@ -575,7 +575,7 @@ typedef enum
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallerCell"];
         }
 
-        PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:settings.verifiedE164];
+        PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:settings.callbackE164];
         cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Settings Called Back Number", nil,
                                                                       [NSBundle mainBundle], @"Called Back",
                                                                       @"Phone number on which user is reachable.\n"
@@ -592,7 +592,7 @@ typedef enum
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallerIDCell"];
         }
 
-        PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:settings.callerId];
+        PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:settings.callerIdE164];
         cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Setting Shown Number Format", nil,
                                                                       [NSBundle mainBundle], @"Caller ID",
                                                                       @"Format string showing shown number.\n"
@@ -740,9 +740,9 @@ typedef enum
 {
     settings.callbackMode = ((UISwitch*)sender).on;
 
-    if (settings.callbackMode == YES && settings.callerId.length == 0)
+    if (settings.callbackMode == YES && settings.callerIdE164.length == 0)
     {
-        settings.callerId = settings.verifiedE164;
+        settings.callerIdE164 = settings.callbackE164;
     }
 
     [self reloadCallModeSection];

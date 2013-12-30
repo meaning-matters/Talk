@@ -34,7 +34,6 @@
 @property (nonatomic, strong) NSString*         webBaseUrl;             // Base URL of web API.
 @property (nonatomic, strong) NSString*         webUsername;
 @property (nonatomic, strong) NSString*         webPassword;
-@property (nonatomic, strong) NSString*         verifiedE164;           // Phone number user owns.
 
 @property (nonatomic, strong) NSString*         sipServer;
 @property (nonatomic, strong) NSString*         sipRealm;
@@ -44,7 +43,8 @@
 @property (nonatomic, assign) BOOL              allowCellularDataCalls;
 @property (nonatomic, assign) BOOL              showCallerId;
 @property (nonatomic, assign) BOOL              callbackMode;
-@property (nonatomic, strong) NSString*         callerId;               // Caller ID used until Groups are implemented.
+@property (nonatomic, strong) NSString*         callerIdE164;           // Caller ID E164, used until Groups are implemented.
+@property (nonatomic, strong) NSString*         callbackE164;           // Called back E164, used until Groups are implemented.
 
 @property (nonatomic, assign) NumberTypeMask    numberTypeMask;         // Selected numberType in NumberView.
 @property (nonatomic, assign) NSInteger         numbersSortSegment;     // Selected numbers sort segmented control index.

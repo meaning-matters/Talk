@@ -95,7 +95,7 @@
     callbackPending   = YES;
     [[WebClient sharedClient] initiateCallbackForCallee:self.call.phoneNumber
                                                  caller:callerPhoneNumber
-                                               identity:[[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].callerId]
+                                               identity:[[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].callerIdE164]
                                                 privacy:![Settings sharedSettings].showCallerId
                                                   reply:^(NSError* error, NSString* theUuid)
     {

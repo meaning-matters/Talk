@@ -290,7 +290,7 @@
     }
     else
     {
-        NSString* identity = [Settings sharedSettings].verifiedE164; //### Select identity.
+        NSString* identity = [Settings sharedSettings].callerIdE164; //### Select identity.
         Call*     call     = [[CallManager sharedManager] callPhoneNumber:phoneNumber fromIdentity:identity];
 
         if (call != nil)

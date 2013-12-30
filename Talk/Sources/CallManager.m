@@ -393,7 +393,7 @@ static SipInterface*    sipInterface;
 
 - (BOOL)checkWarnedAboutDefaultCli:(NSString*)identity
 {
-    if ([identity isEqualToString:[Settings sharedSettings].verifiedE164] &&
+    if ([identity isEqualToString:[Settings sharedSettings].callbackE164] &&
         [Settings sharedSettings].showCallerId == YES &&
         [Settings sharedSettings].warnedAboutDefaultCli == NO)
     {

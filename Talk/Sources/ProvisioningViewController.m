@@ -285,7 +285,7 @@
                                                                                                          e164s.count];
                     }
 
-                    if ([Settings sharedSettings].verifiedE164.length == 0)
+                    if ([Settings sharedSettings].callbackE164.length == 0)
                     {
                         [self setVerifyStep:1];
                         [self showView:self.verifyView];
@@ -727,8 +727,8 @@
         {
             if (verified == YES)
             {
-                [Settings sharedSettings].verifiedE164 = verifyPhoneNumber.e164Format;
-                [Settings sharedSettings].callerId     = verifyPhoneNumber.e164Format;
+                [Settings sharedSettings].callbackE164 = verifyPhoneNumber.e164Format;
+                [Settings sharedSettings].callerIdE164 = verifyPhoneNumber.e164Format;
 
                 [[CallManager sharedManager] resetSipAccount];
 

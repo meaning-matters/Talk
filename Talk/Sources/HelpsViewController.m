@@ -229,7 +229,7 @@ typedef enum
                     {
                         MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
                         controller.mailComposeDelegate = self;
-                        [controller setSubject:[Settings sharedSettings].verifiedE164];
+                        [controller setSubject:[Settings sharedSettings].callbackE164];
                         [controller setToRecipients:@[[Settings sharedSettings].supportEmail]];
                         [self presentViewController:controller animated:YES completion:nil];
                     }
@@ -267,7 +267,7 @@ typedef enum
 
         case TableSectionTestCall:
             phoneNumber = [[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].testNumber];
-            [[CallManager sharedManager] callPhoneNumber:phoneNumber fromIdentity:[Settings sharedSettings].verifiedE164];
+            [[CallManager sharedManager] callPhoneNumber:phoneNumber fromIdentity:[Settings sharedSettings].callerIdE164];
             break;
     }
 }

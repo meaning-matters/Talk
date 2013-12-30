@@ -28,7 +28,6 @@ NSString* const WarnedAboutDefaultCliKey       = @"WarnedAboutDefaultCli";
 NSString* const WebBaseUrlKey                  = @"WebBaseUrl";
 NSString* const WebUsernameKey                 = @"WebUsername";            // Used as keychain 'username'.
 NSString* const WebPasswordKey                 = @"WebPassword";            // Used as keychain 'username'.
-NSString* const VerifiedE164Key                = @"VerifiedE164";           // User as keychain 'username'.
 NSString* const SipServerKey                   = @"SipServer";              // Used as keychain 'username'.
 NSString* const SipRealmKey                    = @"SipRealm";               // Used as keychain 'username'.
 NSString* const SipUsernameKey                 = @"SipUsername";            // Used as keychain 'username'.
@@ -36,7 +35,8 @@ NSString* const SipPasswordKey                 = @"SipPassword";            // U
 NSString* const AllowCellularDataCallsKey      = @"AllowCellularDataCalls";
 NSString* const ShowCallerIdKey                = @"ShowCallerId";
 NSString* const CallbackModeKey                = @"CallbackMode";
-NSString* const CallerIdKey                    = @"CallerId";
+NSString* const CallerIdE164Key                = @"CallerIdE164";
+NSString* const CallbackE164Key                = @"CallbackE164";
 NSString* const NumberTypeMaskKey              = @"NumberTypeMask";
 NSString* const NumbersSortSegmentKey          = @"NumbersSortSegment";
 NSString* const ForwardingsSelectionKey        = @"ForwardingsSelection";
@@ -74,7 +74,6 @@ static NSUserDefaults*  userDefaults;
 {
     [Keychain deleteStringForKey:WebUsernameKey];
     [Keychain deleteStringForKey:WebPasswordKey];
-    [Keychain deleteStringForKey:VerifiedE164Key];
     [Keychain deleteStringForKey:SipServerKey];
     [Keychain deleteStringForKey:SipRealmKey];
     [Keychain deleteStringForKey:SipUsernameKey];
@@ -102,7 +101,7 @@ static NSUserDefaults*  userDefaults;
 
 - (BOOL)haveVerifiedAccount
 {
-    return (self.haveAccount && self.verifiedE164.length > 0);
+    return (self.haveAccount && self.callbackE164.length > 0);
 }
 
 
@@ -139,7 +138,7 @@ static NSUserDefaults*  userDefaults;
         [dictionary setObject:@(NO)                                              forKey:AllowCellularDataCallsKey];
         [dictionary setObject:@(YES)                                             forKey:ShowCallerIdKey];
         [dictionary setObject:@(NO)                                              forKey:CallbackModeKey];
-        [dictionary setObject:@""                                                forKey:CallerIdKey];
+        [dictionary setObject:@""                                                forKey:CallerIdE164Key];
         [dictionary setObject:@(NumberTypeGeographicMask)                        forKey:NumberTypeMaskKey];
         [dictionary setObject:@(0)                                               forKey:NumbersSortSegmentKey];
         [dictionary setObject:@(0)                                               forKey:ForwardingsSelectionKey];
@@ -277,20 +276,6 @@ static NSUserDefaults*  userDefaults;
 }
 
 
-- (NSString*)verifiedE164
-{
-    return [Keychain getStringForKey:VerifiedE164Key];
-}
-
-
-- (void)setVerifiedE164:(NSString*)verifiedE164
-{
-    [Keychain saveString:verifiedE164 forKey:VerifiedE164Key];
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:nil];
-}
-
-
 - (NSString*)sipServer
 {
     return [Keychain getStringForKey:SipServerKey];
@@ -383,15 +368,27 @@ static NSUserDefaults*  userDefaults;
 }
 
 
-- (NSString*)callerId
+- (NSString*)callerIdE164
 {
-    return [userDefaults objectForKey:CallerIdKey];
+    return [userDefaults objectForKey:CallerIdE164Key];
 }
 
 
-- (void)setCallerId:(NSString *)callerId
+- (void)setCallerIdE164:(NSString*)callerIdE164
 {
-    [userDefaults setObject:callerId forKey:CallerIdKey];
+    [userDefaults setObject:callerIdE164 forKey:CallerIdE164Key];
+}
+
+
+- (NSString*)callbackE164
+{
+    return [userDefaults objectForKey:CallbackE164Key];
+}
+
+
+- (void)setCallbackE164:(NSString*)callbackE164
+{
+    [userDefaults setObject:callbackE164 forKey:CallbackE164Key];
 }
 
 
