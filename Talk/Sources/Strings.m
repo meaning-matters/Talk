@@ -166,19 +166,19 @@
 }
 
 
-+ (NSString*)deviceString
++ (NSString*)phoneString
 {
-    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Device", nil,
-                                             [NSBundle mainBundle], @"Device",
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Phone", nil,
+                                             [NSBundle mainBundle], @"Phone",
                                              @"Standard string to label a telephone device\n"
                                              @"[iOS standard size].");
 }
 
 
-+ (NSString*)devicesString;
++ (NSString*)phonesString;
 {
-    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Devices", nil,
-                                             [NSBundle mainBundle], @"Devices",
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Phones", nil,
+                                             [NSBundle mainBundle], @"Phones",
                                              @"Standard string to label telephone devices\n"
                                              @"[iOS standard size].");
 }

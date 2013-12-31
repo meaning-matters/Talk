@@ -580,7 +580,7 @@
         {
             // Delete Devices that are no longer on the server.
             __block NSError* error       = nil;
-            NSFetchRequest*  request     = [NSFetchRequest fetchRequestWithEntityName:@"Device"];
+            NSFetchRequest*  request     = [NSFetchRequest fetchRequestWithEntityName:@"Phone"];
             [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (uuid IN %@)", e164s]];
             NSArray*         deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
             if (error == nil)

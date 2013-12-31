@@ -44,9 +44,9 @@
 
 + (NSString*)forwardingsString;
 
-+ (NSString*)deviceString;
++ (NSString*)phoneString;
 
-+ (NSString*)devicesString;
++ (NSString*)phonesString;
 
 + (NSString*)creditString;
 

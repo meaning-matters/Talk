@@ -30,7 +30,7 @@
 {
     if (self = [super initWithStyle:UITableViewStylePlain])
     {
-        self.title = [Strings devicesString];
+        self.title = [Strings phonesString];
     }
 
     return self;
@@ -42,7 +42,7 @@
     [super viewDidLoad];
 
     NSError* error;
-    fetchedPhonesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Device"
+    fetchedPhonesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Phone"
                                                                           withSortKey:@"name"
                                                                                 error:&error];
     if (fetchedPhonesController != nil)
