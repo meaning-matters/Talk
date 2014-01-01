@@ -898,6 +898,10 @@
 		4896D8FD16EBE5A7008A2354 /* NumberAreasView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4896D8FB16EBE5A7008A2354 /* NumberAreasView.xib */; };
 		4896D90016EBE613008A2354 /* NumberAreasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */; };
 		4896D90116EBE613008A2354 /* NumberAreasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */; };
+		48995E0B18739F46001395C2 /* Phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0918739F46001395C2 /* Phone.png */; };
+		48995E0C18739F46001395C2 /* Phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0918739F46001395C2 /* Phone.png */; };
+		48995E0D18739F46001395C2 /* Phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0A18739F46001395C2 /* Phone@2x.png */; };
+		48995E0E18739F46001395C2 /* Phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0A18739F46001395C2 /* Phone@2x.png */; };
 		48A0CE6A1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */; };
 		48A0CE6B1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */; };
 		48A0CE70180740F300B8A9F8 /* Welcome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */; };
@@ -2020,6 +2024,8 @@
 		4896D8FB16EBE5A7008A2354 /* NumberAreasView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreasView.xib; sourceTree = "<group>"; };
 		4896D8FE16EBE612008A2354 /* NumberAreasViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreasViewController.h; sourceTree = "<group>"; };
 		4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreasViewController.m; sourceTree = "<group>"; };
+		48995E0918739F46001395C2 /* Phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Phone.png; sourceTree = "<group>"; };
+		48995E0A18739F46001395C2 /* Phone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Phone@2x.png"; sourceTree = "<group>"; };
 		48A0CE681805CFDC00B8A9F8 /* CallbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallbackViewController.h; sourceTree = "<group>"; };
 		48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallbackViewController.m; sourceTree = "<group>"; };
 		48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Welcome.mp3; path = Resources/Welcome.mp3; sourceTree = "<group>"; };
@@ -2662,6 +2668,8 @@
 				483679EF1722F2CF001A02AF /* List@2x.png */,
 				483679F01722F2CF001A02AF /* Microphone.png */,
 				483679F11722F2CF001A02AF /* Microphone@2x.png */,
+				48995E0918739F46001395C2 /* Phone.png */,
+				48995E0A18739F46001395C2 /* Phone@2x.png */,
 				48CB2C4217E6539000E19C3D /* Target.png */,
 				48CB2C4317E6539000E19C3D /* Target@2x.png */,
 			);
@@ -3880,6 +3888,7 @@
 				485F6AAD1637270100D61365 /* DK.png in Resources */,
 				485F6AAE1637270100D61365 /* DK@2x.png in Resources */,
 				485F6AAF1637270100D61365 /* DM.png in Resources */,
+				48995E0B18739F46001395C2 /* Phone.png in Resources */,
 				485F6AB01637270100D61365 /* DM@2x.png in Resources */,
 				485F6AB11637270100D61365 /* DO.png in Resources */,
 				485F6AB21637270100D61365 /* DO@2x.png in Resources */,
@@ -4200,6 +4209,7 @@
 				485F6BF71637270100D61365 /* TO.png in Resources */,
 				485F6BF81637270100D61365 /* TO@2x.png in Resources */,
 				485F6BF91637270100D61365 /* TR.png in Resources */,
+				48995E0D18739F46001395C2 /* Phone@2x.png in Resources */,
 				485F6BFA1637270100D61365 /* TR@2x.png in Resources */,
 				485F6BFB1637270100D61365 /* TT.png in Resources */,
 				485F6BFC1637270100D61365 /* TT@2x.png in Resources */,
@@ -4509,6 +4519,7 @@
 				48ADD0F41706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
 				484D937417132518006FA875 /* NumberAreaCitiesView.xib in Resources */,
 				484D937717132539006FA875 /* NumberAreaZipsView.xib in Resources */,
+				48995E0C18739F46001395C2 /* Phone.png in Resources */,
 				484A949E171821CB009E22B9 /* NumberAreasCell.xib in Resources */,
 				484A94A7171C5065009E22B9 /* NumberAreaActionCell.xib in Resources */,
 				483679F31722F2CF001A02AF /* List.png in Resources */,
@@ -4551,6 +4562,7 @@
 				48494333175226D800E1D5C4 /* Licenses.json in Resources */,
 				484943401752410500E1D5C4 /* LicenseView.xib in Resources */,
 				484943841753252800E1D5C4 /* AppStoreBlack.png in Resources */,
+				48995E0E18739F46001395C2 /* Phone@2x.png in Resources */,
 				484943861753252800E1D5C4 /* AppStoreBlack@2x.png in Resources */,
 				484943881753252800E1D5C4 /* AppStoreWhite.png in Resources */,
 				4849438A1753252800E1D5C4 /* AppStoreWhite@2x.png in Resources */,

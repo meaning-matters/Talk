@@ -188,7 +188,7 @@
     cell.textLabel.text       = phone.name;
     PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:phone.e164];
     cell.detailTextLabel.text = [phoneNumber internationalFormat];
-    cell.imageView.image      = [UIImage imageNamed:@"List"];
+    cell.imageView.image      = [UIImage imageNamed:@"Phone"];
     cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
 }
 

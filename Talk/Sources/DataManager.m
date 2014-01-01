@@ -372,6 +372,13 @@
             }
 
             __block int count = e164s.count;
+            if (count == 0)
+            {
+                completion ? completion(error) : 0;
+
+                return;
+            }
+
             for (NSString* e164 in e164s)
             {
                 [[WebClient sharedClient] retrieveNumberE164:e164
@@ -478,6 +485,13 @@
             }
 
             __block int  count   = list.count;
+            if (count == 0)
+            {
+                completion ? completion(error) : 0;
+
+                return;
+            }
+
             for (NSString* uuid in list)
             {
                 [[WebClient sharedClient] retrieveIvrForUuid:uuid
@@ -535,6 +549,13 @@
     }
 
     __block int count = array.count;
+    if (count == 0)
+    {
+        completion ? completion(error) : 0;
+
+        return;
+    }
+
     for (NumberData* number in array)
     {
         [[WebClient sharedClient] retrieveIvrOfE164:number.e164 reply:^(NSError* webError, NSString* uuid)
@@ -578,10 +599,10 @@
     {
         if (webError == nil)
         {
-            // Delete Devices that are no longer on the server.
+            // Delete phone E164's that are no longer on the server.
             __block NSError* error       = nil;
             NSFetchRequest*  request     = [NSFetchRequest fetchRequestWithEntityName:@"Phone"];
-            [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (uuid IN %@)", e164s]];
+            [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (e164 IN %@)", e164s]];
             NSArray*         deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
             if (error == nil)
             {
@@ -598,6 +619,13 @@
             }
 
             __block int  count   = e164s.count;
+            if (count == 0)
+            {
+                completion ? completion(error) : 0;
+
+                return;
+            }
+
             for (NSString* e164 in e164s)
             {
                 if ((NSObject*)e164s == [NSNull null])
