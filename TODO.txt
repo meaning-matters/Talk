@@ -130,3 +130,9 @@
 * Check is "calling" label in CallbackVC is done on main thread; saw some delays in setting it.
 
 * NumberAreaViewController #834 do something with isValid!!!
+
+* Kleur highlighted number op dialpad (copy/paste)
+
+* Done button in Number info invullen (laatste veld) moet eigenlijk pas blauw worden als er iets is ingevuld
+
+* Als je bij Germany number bijvoorbeeld een stad kiest, moet ie in lijst met zips eigenlijk naar goeie plek springen in lijst.

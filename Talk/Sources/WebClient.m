@@ -493,14 +493,7 @@ static NSDictionary* statuses;
     {
         if (error == nil)
         {
-            NSLog(@">>>>>>>>>>>>>>>>>>>> HACK");// Add "+" prefix
-            NSMutableArray* e164s = [NSMutableArray array];
-            for (NSString* e164 in content)
-            {
-                [e164s addObject:[@"+" stringByAppendingString:e164]];
-            }
-            reply(nil, e164s);
-            //reply(nil, content);
+            reply(nil, content);
         }
     }];
 }
@@ -519,9 +512,7 @@ static NSDictionary* statuses;
     {
         if (error == nil)
         {
-            NSLog(@">>>>>>>>>>>>>>>>>>>> HACK");// content is just a string now
-            reply(nil, content);
-            //reply(nil, content[@"name"]);
+            reply(nil, content[@"name"]);
         }
         else
         {

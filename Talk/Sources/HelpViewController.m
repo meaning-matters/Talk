@@ -23,9 +23,9 @@
 {
     if (self = [super initWithNibName:@"HelpView" bundle:nil])
     {
-        self.title  = [dictionary allKeys][0];
+        self.title = [dictionary allKeys][0];
 
-        helpText    = [dictionary allValues][0];
+        helpText   = [dictionary allValues][0];
     }
 
     return self;
