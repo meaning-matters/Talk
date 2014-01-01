@@ -39,19 +39,19 @@ static NSDictionary* statuses;
         [sharedInstance registerHTTPOperationClass:[AFJSONRequestOperation class]];
         [sharedInstance.operationQueue setMaxConcurrentOperationCount:6];
 
-        statuses = @{ @"OK"                           : @(WebClientStatusOk),
-                      @"FAIL_INVALID_REQUEST"         : @(WebClientStatusFailInvalidRequest),
-                      @"FAIL_SERVER_INTERNAL"         : @(WebClientStatusFailServerIternal),
-                      @"FAIL_SERVICE_UNAVAILABLE"     : @(WebClientStatusFailServiceUnavailable),
-                      @"FAIL_INVALID_RECEIPT"         : @(WebClientStatusFailInvalidReceipt),
-                      @"FAIL_DEVICE_NAME_NOT_UNIQUE"  : @(WebClientStatusFailDeviceNameNotUnique),
-                      @"FAIL_NO_STATES_FOR_COUNTRY"   : @(WebClientStatusFailNoStatesForCountry),
-                      @"FAIL_INVALID_INFO"            : @(WebClientStatusFailInvalidInfo),
-                      @"FAIL_DATA_TOO_LARGE"          : @(WebClientStatusFailDataTooLarge),
-                      @"FAIL_INSUFFICIENT_CREDIT"     : @(WebClientStatusFailInsufficientCredit),
-                      @"FAIL_IVR_IN_USE"              : @(WebClientStatusFailIvrInUse),
-                      @"FAIL_CALLBACK_ALREADY_ACTIVE" : @(WebClientStatusFailCallbackAlreadyActive),
-                      @"FAIL_NO_CALLBACK_FOUND"       : @(WebClientStatusFailNoCallbackFound) };
+        statuses = @{@"OK"                           : @(WebClientStatusOk),
+                     @"FAIL_INVALID_REQUEST"         : @(WebClientStatusFailInvalidRequest),
+                     @"FAIL_SERVER_INTERNAL"         : @(WebClientStatusFailServerIternal),
+                     @"FAIL_SERVICE_UNAVAILABLE"     : @(WebClientStatusFailServiceUnavailable),
+                     @"FAIL_INVALID_RECEIPT"         : @(WebClientStatusFailInvalidReceipt),
+                     @"FAIL_NO_STATES_FOR_COUNTRY"   : @(WebClientStatusFailNoStatesForCountry),
+                     @"FAIL_INVALID_INFO"            : @(WebClientStatusFailInvalidInfo),
+                     @"FAIL_DATA_TOO_LARGE"          : @(WebClientStatusFailDataTooLarge),
+                     @"FAIL_INSUFFICIENT_CREDIT"     : @(WebClientStatusFailInsufficientCredit),
+                     @"FAIL_IVR_IN_USE"              : @(WebClientStatusFailIvrInUse),
+                     @"FAIL_CALLBACK_ALREADY_ACTIVE" : @(WebClientStatusFailCallbackAlreadyActive),
+                     @"FAIL_NO_CALLBACK_FOUND"       : @(WebClientStatusFailNoCallbackFound),
+                     @"FAIL_NO_CREDIT"               : @(WebClientStatusFailNoCredit)};
     });
 
     return sharedInstance;
@@ -268,13 +268,6 @@ static NSDictionary* statuses;
                                                        @"[].");
             break;
 
-        case WebClientStatusFailDeviceNameNotUnique:
-            string = NSLocalizedStringWithDefaultValue(@"WebClient FailDeviceNameNotUnique", nil, [NSBundle mainBundle],
-                                                       @"All devices you register must have a unique name.",
-                                                       @"Status text.\n"
-                                                       @"[].");
-            break;
-
         case WebClientStatusFailNoStatesForCountry:
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailNoStatesForCountry", nil, [NSBundle mainBundle],
                                                        @"This country does not have states.",
@@ -320,6 +313,13 @@ static NSDictionary* statuses;
         case WebClientStatusFailNoCallbackFound:
             string = NSLocalizedStringWithDefaultValue(@"WebClient CallbackNotFound", nil, [NSBundle mainBundle],
                                                        @"No callback request found.",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailNoCredit:   // Not used at the moment, because we have different failure texts.
+            string = NSLocalizedStringWithDefaultValue(@"WebClient NoCredit", nil, [NSBundle mainBundle],
+                                                       @"You've run out of credit; buy more on the Credit tab.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
