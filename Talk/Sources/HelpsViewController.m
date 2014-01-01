@@ -46,7 +46,7 @@ typedef enum
                                                        @"[1 line larger font].");
         self.tabBarItem.image = [UIImage imageNamed:@"HelpsTab.png"];
 
-        NSData* data = [Common dataForResource:@"Helps" ofType:@"json"];
+        NSData* data = [Common dataForResource:HAS_VOIP ? @"Helps-VoIP" : @"Helps" ofType:@"json"];
         helpsArray   = [Common objectWithJsonData:data];
 
         sections |= TableSectionTexts;

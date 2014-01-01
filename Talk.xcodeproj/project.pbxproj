@@ -902,6 +902,8 @@
 		48995E0C18739F46001395C2 /* Phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0918739F46001395C2 /* Phone.png */; };
 		48995E0D18739F46001395C2 /* Phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0A18739F46001395C2 /* Phone@2x.png */; };
 		48995E0E18739F46001395C2 /* Phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0A18739F46001395C2 /* Phone@2x.png */; };
+		48995E1018742206001395C2 /* AppledocSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0F18742206001395C2 /* AppledocSettings.plist */; };
+		48995E1218742232001395C2 /* Helps-VoIP.json in Resources */ = {isa = PBXBuildFile; fileRef = 48995E1118742232001395C2 /* Helps-VoIP.json */; };
 		48A0CE6A1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */; };
 		48A0CE6B1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */; };
 		48A0CE70180740F300B8A9F8 /* Welcome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */; };
@@ -2026,6 +2028,8 @@
 		4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreasViewController.m; sourceTree = "<group>"; };
 		48995E0918739F46001395C2 /* Phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Phone.png; sourceTree = "<group>"; };
 		48995E0A18739F46001395C2 /* Phone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Phone@2x.png"; sourceTree = "<group>"; };
+		48995E0F18742206001395C2 /* AppledocSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AppledocSettings.plist; sourceTree = "<group>"; };
+		48995E1118742232001395C2 /* Helps-VoIP.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Helps-VoIP.json"; path = "Resources/Helps-VoIP.json"; sourceTree = "<group>"; };
 		48A0CE681805CFDC00B8A9F8 /* CallbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallbackViewController.h; sourceTree = "<group>"; };
 		48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallbackViewController.m; sourceTree = "<group>"; };
 		48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Welcome.mp3; path = Resources/Welcome.mp3; sourceTree = "<group>"; };
@@ -3565,6 +3569,8 @@
 				48D0A6EC1654D66E00FA2D98 /* CountryNames.json */,
 				48DD727F169CD4A200CD7080 /* Data.xcdatamodeld */,
 				485E389B17B7DEE60089F0F1 /* Helps.json */,
+				48995E1118742232001395C2 /* Helps-VoIP.json */,
+				48995E0F18742206001395C2 /* AppledocSettings.plist */,
 				48D0A6E81654D66200FA2D98 /* InfoPlist.strings */,
 				4812727216487E2D00534450 /* LibPhoneNumber.js */,
 				48494331175226D800E1D5C4 /* Licenses.json */,
@@ -3952,6 +3958,7 @@
 				485F6AF01637270100D61365 /* GU@2x.png in Resources */,
 				485F6AF11637270100D61365 /* GW.png in Resources */,
 				485F6AF21637270100D61365 /* GW@2x.png in Resources */,
+				48995E1218742232001395C2 /* Helps-VoIP.json in Resources */,
 				485F6AF31637270100D61365 /* GY.png in Resources */,
 				485F6AF41637270100D61365 /* GY@2x.png in Resources */,
 				485F6AF51637270100D61365 /* HK.png in Resources */,
@@ -4123,6 +4130,7 @@
 				485F6B9D1637270100D61365 /* PL.png in Resources */,
 				485F6B9E1637270100D61365 /* PL@2x.png in Resources */,
 				485F6B9F1637270100D61365 /* PM.png in Resources */,
+				48995E1018742206001395C2 /* AppledocSettings.plist in Resources */,
 				485F6BA01637270100D61365 /* PM@2x.png in Resources */,
 				485F6BA31637270100D61365 /* PR.png in Resources */,
 				485F6BA41637270100D61365 /* PR@2x.png in Resources */,
