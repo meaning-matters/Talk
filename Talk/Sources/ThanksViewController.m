@@ -36,9 +36,10 @@
                                                                action:@selector(cancel)];
     self.navigationItem.leftBarButtonItem = buttonItem;
 
-    NSString*       path = [[NSBundle mainBundle] pathForAuxiliaryExecutable:@"Thanks.rtf"];
-    NSURL*          url = [[NSURL alloc] initFileURLWithPath:path];
+    NSString*       path    = [[NSBundle mainBundle] pathForResource:@"Thanks" ofType:@"html"];
+    NSURL*          url     = [[NSURL alloc] initFileURLWithPath:path];
     NSURLRequest*   request = [NSURLRequest requestWithURL:url];
+
     [self.webView loadRequest:request];
 }
 

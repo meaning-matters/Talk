@@ -11,7 +11,7 @@
 
 @interface LicenseViewController : UIViewController
 
-@property (nonatomic, weak) IBOutlet UITextView*    textView;
+@property (nonatomic, weak) IBOutlet UIWebView* webView;
 
 - (instancetype)initWithDictionary:(NSDictionary*)dictionary;
 

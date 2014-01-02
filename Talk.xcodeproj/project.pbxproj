@@ -236,8 +236,6 @@
 		4849432C1750CFDC00E1D5C4 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4849432A1750CFDC00E1D5C4 /* Icon-72@2x.png */; };
 		4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849432E1752263600E1D5C4 /* LicensesViewController.m */; };
 		484943301752263600E1D5C4 /* LicensesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849432E1752263600E1D5C4 /* LicensesViewController.m */; };
-		48494332175226D800E1D5C4 /* Licenses.json in Resources */ = {isa = PBXBuildFile; fileRef = 48494331175226D800E1D5C4 /* Licenses.json */; };
-		48494333175226D800E1D5C4 /* Licenses.json in Resources */ = {isa = PBXBuildFile; fileRef = 48494331175226D800E1D5C4 /* Licenses.json */; };
 		4849433C175240EB00E1D5C4 /* LicenseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849433B175240EA00E1D5C4 /* LicenseViewController.m */; };
 		4849433D175240EB00E1D5C4 /* LicenseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849433B175240EA00E1D5C4 /* LicenseViewController.m */; };
 		4849433F1752410500E1D5C4 /* LicenseView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4849433E1752410500E1D5C4 /* LicenseView.xib */; };
@@ -288,8 +286,6 @@
 		484943AE1753C00100E1D5C4 /* ThanksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484943AC1753C00000E1D5C4 /* ThanksViewController.m */; };
 		484943B01753C44D00E1D5C4 /* ThanksView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484943AF1753C44D00E1D5C4 /* ThanksView.xib */; };
 		484943B11753C44D00E1D5C4 /* ThanksView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484943AF1753C44D00E1D5C4 /* ThanksView.xib */; };
-		484943B31754762800E1D5C4 /* Thanks.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 484943B21754762800E1D5C4 /* Thanks.rtf */; };
-		484943B41754762800E1D5C4 /* Thanks.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 484943B21754762800E1D5C4 /* Thanks.rtf */; };
 		484943B617551EB100E1D5C4 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484943B517551EB100E1D5C4 /* Social.framework */; };
 		484A949D171821CB009E22B9 /* NumberAreasCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484A949C171821CB009E22B9 /* NumberAreasCell.xib */; };
 		484A949E171821CB009E22B9 /* NumberAreasCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484A949C171821CB009E22B9 /* NumberAreasCell.xib */; };
@@ -309,8 +305,6 @@
 		484D937717132539006FA875 /* NumberAreaZipsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484D937517132539006FA875 /* NumberAreaZipsView.xib */; };
 		484F7C3B164C15770059A5A6 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3A164C15770059A5A6 /* CoreTelephony.framework */; };
 		484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */; };
-		485E389C17B7DEE60089F0F1 /* Helps.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E389B17B7DEE60089F0F1 /* Helps.json */; };
-		485E389D17B7DEE60089F0F1 /* Helps.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E389B17B7DEE60089F0F1 /* Helps.json */; };
 		485E38A017B7E13C0089F0F1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E389F17B7E13B0089F0F1 /* HelpViewController.m */; };
 		485E38A117B7E13C0089F0F1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E389F17B7E13B0089F0F1 /* HelpViewController.m */; };
 		485E38A317B7E1960089F0F1 /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485E38A217B7E1960089F0F1 /* HelpView.xib */; };
@@ -903,7 +897,6 @@
 		48995E0D18739F46001395C2 /* Phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0A18739F46001395C2 /* Phone@2x.png */; };
 		48995E0E18739F46001395C2 /* Phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0A18739F46001395C2 /* Phone@2x.png */; };
 		48995E1018742206001395C2 /* AppledocSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0F18742206001395C2 /* AppledocSettings.plist */; };
-		48995E1218742232001395C2 /* Helps-VoIP.json in Resources */ = {isa = PBXBuildFile; fileRef = 48995E1118742232001395C2 /* Helps-VoIP.json */; };
 		48A0CE6A1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */; };
 		48A0CE6B1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */; };
 		48A0CE70180740F300B8A9F8 /* Welcome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */; };
@@ -1056,6 +1049,10 @@
 		48B5AAEF16E69DE900BA4084 /* NumberCountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */; };
 		48B5AAF216E6A58700BA4084 /* NumberCountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */; };
 		48B5AAF316E6A58700BA4084 /* NumberCountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */; };
+		48BA860518751930007922DF /* Helps.json in Resources */ = {isa = PBXBuildFile; fileRef = 48BA860418751930007922DF /* Helps.json */; };
+		48BA860718751F3B007922DF /* Helps-VoIP.json in Resources */ = {isa = PBXBuildFile; fileRef = 48BA860618751F3B007922DF /* Helps-VoIP.json */; };
+		48BA860918757AC7007922DF /* Thanks.html in Resources */ = {isa = PBXBuildFile; fileRef = 48BA860818757AC7007922DF /* Thanks.html */; };
+		48BA860B187595F1007922DF /* Licenses.json in Resources */ = {isa = PBXBuildFile; fileRef = 48BA860A187595F1007922DF /* Licenses.json */; };
 		48BC7F3C1702FDD1006671B5 /* NumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BC7F3B1702FDD1006671B5 /* NumberViewController.m */; };
 		48BC7F3D1702FDD1006671B5 /* NumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BC7F3B1702FDD1006671B5 /* NumberViewController.m */; };
 		48BC7F3F1702FE8D006671B5 /* NumberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BC7F3E1702FE8D006671B5 /* NumberView.xib */; };
@@ -1409,7 +1406,6 @@
 		4849432A1750CFDC00E1D5C4 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72@2x.png"; sourceTree = "<group>"; };
 		4849432D1752263600E1D5C4 /* LicensesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LicensesViewController.h; sourceTree = "<group>"; };
 		4849432E1752263600E1D5C4 /* LicensesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LicensesViewController.m; sourceTree = "<group>"; };
-		48494331175226D800E1D5C4 /* Licenses.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Licenses.json; path = Resources/Licenses.json; sourceTree = "<group>"; };
 		4849433A175240EA00E1D5C4 /* LicenseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LicenseViewController.h; sourceTree = "<group>"; };
 		4849433B175240EA00E1D5C4 /* LicenseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LicenseViewController.m; sourceTree = "<group>"; };
 		4849433E1752410500E1D5C4 /* LicenseView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LicenseView.xib; sourceTree = "<group>"; };
@@ -1438,7 +1434,6 @@
 		484943AB1753C00000E1D5C4 /* ThanksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThanksViewController.h; sourceTree = "<group>"; };
 		484943AC1753C00000E1D5C4 /* ThanksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThanksViewController.m; sourceTree = "<group>"; };
 		484943AF1753C44D00E1D5C4 /* ThanksView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThanksView.xib; sourceTree = "<group>"; };
-		484943B21754762800E1D5C4 /* Thanks.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; name = Thanks.rtf; path = Resources/Thanks.rtf; sourceTree = "<group>"; };
 		484943B517551EB100E1D5C4 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		484A949C171821CB009E22B9 /* NumberAreasCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreasCell.xib; sourceTree = "<group>"; };
 		484A949F171822D4009E22B9 /* NumberAreasCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreasCell.h; sourceTree = "<group>"; };
@@ -1454,7 +1449,6 @@
 		484D937517132539006FA875 /* NumberAreaZipsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreaZipsView.xib; sourceTree = "<group>"; };
 		484F7C3A164C15770059A5A6 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		485E389B17B7DEE60089F0F1 /* Helps.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Helps.json; path = Resources/Helps.json; sourceTree = "<group>"; };
 		485E389E17B7E1390089F0F1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
 		485E389F17B7E13B0089F0F1 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
 		485E38A217B7E1960089F0F1 /* HelpView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HelpView.xib; sourceTree = "<group>"; };
@@ -2029,7 +2023,6 @@
 		48995E0918739F46001395C2 /* Phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Phone.png; sourceTree = "<group>"; };
 		48995E0A18739F46001395C2 /* Phone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Phone@2x.png"; sourceTree = "<group>"; };
 		48995E0F18742206001395C2 /* AppledocSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AppledocSettings.plist; sourceTree = "<group>"; };
-		48995E1118742232001395C2 /* Helps-VoIP.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Helps-VoIP.json"; path = "Resources/Helps-VoIP.json"; sourceTree = "<group>"; };
 		48A0CE681805CFDC00B8A9F8 /* CallbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallbackViewController.h; sourceTree = "<group>"; };
 		48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallbackViewController.m; sourceTree = "<group>"; };
 		48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Welcome.mp3; path = Resources/Welcome.mp3; sourceTree = "<group>"; };
@@ -2127,6 +2120,10 @@
 		48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberCountriesView.xib; sourceTree = "<group>"; };
 		48B5AAF016E6A58400BA4084 /* NumberCountriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberCountriesViewController.h; sourceTree = "<group>"; };
 		48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberCountriesViewController.m; sourceTree = "<group>"; };
+		48BA860418751930007922DF /* Helps.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Helps.json; sourceTree = "<group>"; };
+		48BA860618751F3B007922DF /* Helps-VoIP.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Helps-VoIP.json"; sourceTree = "<group>"; };
+		48BA860818757AC7007922DF /* Thanks.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Thanks.html; sourceTree = "<group>"; };
+		48BA860A187595F1007922DF /* Licenses.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Licenses.json; sourceTree = "<group>"; };
 		48BC7F3A1702FDD1006671B5 /* NumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberViewController.h; sourceTree = "<group>"; };
 		48BC7F3B1702FDD1006671B5 /* NumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberViewController.m; sourceTree = "<group>"; };
 		48BC7F3E1702FE8D006671B5 /* NumberView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberView.xib; sourceTree = "<group>"; };
@@ -3568,16 +3565,16 @@
 				48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */,
 				48D0A6EC1654D66E00FA2D98 /* CountryNames.json */,
 				48DD727F169CD4A200CD7080 /* Data.xcdatamodeld */,
-				485E389B17B7DEE60089F0F1 /* Helps.json */,
-				48995E1118742232001395C2 /* Helps-VoIP.json */,
 				48995E0F18742206001395C2 /* AppledocSettings.plist */,
 				48D0A6E81654D66200FA2D98 /* InfoPlist.strings */,
 				4812727216487E2D00534450 /* LibPhoneNumber.js */,
-				48494331175226D800E1D5C4 /* Licenses.json */,
 				48A2CDFB16834FC100506A7C /* RingbackTones.json */,
 				48D0A6E51654D65200FA2D98 /* SipConfig.cfg */,
-				484943B21754762800E1D5C4 /* Thanks.rtf */,
 				48206EF7168DD8180040B04E /* Tones.json */,
+				48BA860418751930007922DF /* Helps.json */,
+				48BA860618751F3B007922DF /* Helps-VoIP.json */,
+				48BA860818757AC7007922DF /* Thanks.html */,
+				48BA860A187595F1007922DF /* Licenses.json */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -3958,7 +3955,6 @@
 				485F6AF01637270100D61365 /* GU@2x.png in Resources */,
 				485F6AF11637270100D61365 /* GW.png in Resources */,
 				485F6AF21637270100D61365 /* GW@2x.png in Resources */,
-				48995E1218742232001395C2 /* Helps-VoIP.json in Resources */,
 				485F6AF31637270100D61365 /* GY.png in Resources */,
 				485F6AF41637270100D61365 /* GY@2x.png in Resources */,
 				485F6AF51637270100D61365 /* HK.png in Resources */,
@@ -4039,6 +4035,7 @@
 				485F6B421637270100D61365 /* LT@2x.png in Resources */,
 				485F6B431637270100D61365 /* LU.png in Resources */,
 				485F6B441637270100D61365 /* LU@2x.png in Resources */,
+				48BA860718751F3B007922DF /* Helps-VoIP.json in Resources */,
 				485F6B451637270100D61365 /* LV.png in Resources */,
 				485F6B461637270100D61365 /* LV@2x.png in Resources */,
 				485F6B471637270100D61365 /* LY.png in Resources */,
@@ -4070,6 +4067,7 @@
 				485F6B611637270100D61365 /* MP.png in Resources */,
 				485F6B621637270100D61365 /* MP@2x.png in Resources */,
 				485F6B631637270100D61365 /* MQ.png in Resources */,
+				48BA860918757AC7007922DF /* Thanks.html in Resources */,
 				485F6B641637270100D61365 /* MQ@2x.png in Resources */,
 				485F6B651637270100D61365 /* MR.png in Resources */,
 				485F6B661637270100D61365 /* MR@2x.png in Resources */,
@@ -4189,6 +4187,7 @@
 				485F6BD81637270100D61365 /* SS@2x.png in Resources */,
 				485F6BD91637270100D61365 /* ST.png in Resources */,
 				485F6BDA1637270100D61365 /* ST@2x.png in Resources */,
+				48BA860518751930007922DF /* Helps.json in Resources */,
 				485F6BDB1637270100D61365 /* SV.png in Resources */,
 				485F6BDC1637270100D61365 /* SV@2x.png in Resources */,
 				485F6BDE1637270100D61365 /* SX@2x.png in Resources */,
@@ -4382,8 +4381,8 @@
 				4846D8A91743F47100C40713 /* Logo.png in Resources */,
 				4846D8AB1743F47100C40713 /* Logo@2x.png in Resources */,
 				4849432B1750CFDC00E1D5C4 /* Icon-72.png in Resources */,
+				48BA860B187595F1007922DF /* Licenses.json in Resources */,
 				4849432C1750CFDC00E1D5C4 /* Icon-72@2x.png in Resources */,
-				48494332175226D800E1D5C4 /* Licenses.json in Resources */,
 				4849433F1752410500E1D5C4 /* LicenseView.xib in Resources */,
 				484943831753252800E1D5C4 /* AppStoreBlack.png in Resources */,
 				484943851753252800E1D5C4 /* AppStoreBlack@2x.png in Resources */,
@@ -4406,7 +4405,6 @@
 				484943A71753252800E1D5C4 /* TwitterWhite.png in Resources */,
 				484943A91753252800E1D5C4 /* TwitterWhite@2x.png in Resources */,
 				484943B01753C44D00E1D5C4 /* ThanksView.xib in Resources */,
-				484943B31754762800E1D5C4 /* Thanks.rtf in Resources */,
 				4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */,
 				4864B3FF1757C8E80006542F /* ContactUsView.xib in Resources */,
 				4865A9DB1792C5550028785F /* BuyNumberCell.xib in Resources */,
@@ -4425,7 +4423,6 @@
 				483ED00317A4F6650032B8FF /* noPictureImage.png in Resources */,
 				483ED00617A4F6920032B8FF /* AddressTypeForCountry.plist in Resources */,
 				483ED01417A4F6C30032B8FF /* Localizable.strings in Resources */,
-				485E389C17B7DEE60089F0F1 /* Helps.json in Resources */,
 				485E38A317B7E1960089F0F1 /* HelpView.xib in Resources */,
 				485E38C317C40D070089F0F1 /* NumberDuration1.png in Resources */,
 				485E38C517C40D070089F0F1 /* NumberDuration12.png in Resources */,
@@ -4567,7 +4564,6 @@
 				4846D8A6174170CF00C40713 /* Branding@2x.png in Resources */,
 				4846D8AA1743F47100C40713 /* Logo.png in Resources */,
 				4846D8AC1743F47100C40713 /* Logo@2x.png in Resources */,
-				48494333175226D800E1D5C4 /* Licenses.json in Resources */,
 				484943401752410500E1D5C4 /* LicenseView.xib in Resources */,
 				484943841753252800E1D5C4 /* AppStoreBlack.png in Resources */,
 				48995E0E18739F46001395C2 /* Phone@2x.png in Resources */,
@@ -4592,11 +4588,9 @@
 				484943A81753252800E1D5C4 /* TwitterWhite.png in Resources */,
 				484943AA1753252800E1D5C4 /* TwitterWhite@2x.png in Resources */,
 				484943B11753C44D00E1D5C4 /* ThanksView.xib in Resources */,
-				484943B41754762800E1D5C4 /* Thanks.rtf in Resources */,
 				4864B3F7175668CA0006542F /* LogoFacebook.png in Resources */,
 				4864B4001757C8E80006542F /* ContactUsView.xib in Resources */,
 				4865A9DC1792C5550028785F /* BuyNumberCell.xib in Resources */,
-				485E389D17B7DEE60089F0F1 /* Helps.json in Resources */,
 				485E38A417B7E1960089F0F1 /* HelpView.xib in Resources */,
 				485E38C417C40D070089F0F1 /* NumberDuration1.png in Resources */,
 				485E38C617C40D070089F0F1 /* NumberDuration12.png in Resources */,
