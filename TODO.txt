@@ -136,3 +136,13 @@
 * Done button in Number info invullen (laatste veld) moet eigenlijk pas blauw worden als er iets is ingevuld
 
 * Als je bij Germany number bijvoorbeeld een stad kiest, moet ie in lijst met zips eigenlijk naar goeie plek springen in lijst.
+
+* App crasht zonder account op Credit tab, en als je belt
+
+* Zonder internet krijg je "Loading Products Failed".
+
+* Tijdens splash image kan je nummers intoetsen die erachter staan.
+
+* http://gowalla.com/ bestaat niet in license
+
+
