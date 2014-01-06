@@ -1049,10 +1049,14 @@
 		48B5AAEF16E69DE900BA4084 /* NumberCountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */; };
 		48B5AAF216E6A58700BA4084 /* NumberCountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */; };
 		48B5AAF316E6A58700BA4084 /* NumberCountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */; };
-		48BA860518751930007922DF /* Helps.json in Resources */ = {isa = PBXBuildFile; fileRef = 48BA860418751930007922DF /* Helps.json */; };
-		48BA860718751F3B007922DF /* Helps-VoIP.json in Resources */ = {isa = PBXBuildFile; fileRef = 48BA860618751F3B007922DF /* Helps-VoIP.json */; };
-		48BA860918757AC7007922DF /* Thanks.html in Resources */ = {isa = PBXBuildFile; fileRef = 48BA860818757AC7007922DF /* Thanks.html */; };
-		48BA860B187595F1007922DF /* Licenses.json in Resources */ = {isa = PBXBuildFile; fileRef = 48BA860A187595F1007922DF /* Licenses.json */; };
+		48B9386E187B647F00132535 /* Helps-VoIP.json in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386A187B647F00132535 /* Helps-VoIP.json */; };
+		48B9386F187B647F00132535 /* Helps-VoIP.json in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386A187B647F00132535 /* Helps-VoIP.json */; };
+		48B93870187B647F00132535 /* Helps.json in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386B187B647F00132535 /* Helps.json */; };
+		48B93871187B647F00132535 /* Helps.json in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386B187B647F00132535 /* Helps.json */; };
+		48B93872187B647F00132535 /* Licenses.json in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386C187B647F00132535 /* Licenses.json */; };
+		48B93873187B647F00132535 /* Licenses.json in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386C187B647F00132535 /* Licenses.json */; };
+		48B93874187B647F00132535 /* Thanks.html in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386D187B647F00132535 /* Thanks.html */; };
+		48B93875187B647F00132535 /* Thanks.html in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386D187B647F00132535 /* Thanks.html */; };
 		48BC7F3C1702FDD1006671B5 /* NumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BC7F3B1702FDD1006671B5 /* NumberViewController.m */; };
 		48BC7F3D1702FDD1006671B5 /* NumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BC7F3B1702FDD1006671B5 /* NumberViewController.m */; };
 		48BC7F3F1702FE8D006671B5 /* NumberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BC7F3E1702FE8D006671B5 /* NumberView.xib */; };
@@ -2120,10 +2124,10 @@
 		48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberCountriesView.xib; sourceTree = "<group>"; };
 		48B5AAF016E6A58400BA4084 /* NumberCountriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberCountriesViewController.h; sourceTree = "<group>"; };
 		48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberCountriesViewController.m; sourceTree = "<group>"; };
-		48BA860418751930007922DF /* Helps.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Helps.json; sourceTree = "<group>"; };
-		48BA860618751F3B007922DF /* Helps-VoIP.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Helps-VoIP.json"; sourceTree = "<group>"; };
-		48BA860818757AC7007922DF /* Thanks.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Thanks.html; sourceTree = "<group>"; };
-		48BA860A187595F1007922DF /* Licenses.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Licenses.json; sourceTree = "<group>"; };
+		48B9386A187B647F00132535 /* Helps-VoIP.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Helps-VoIP.json"; path = "Resources/Helps-VoIP.json"; sourceTree = "<group>"; };
+		48B9386B187B647F00132535 /* Helps.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Helps.json; path = Resources/Helps.json; sourceTree = "<group>"; };
+		48B9386C187B647F00132535 /* Licenses.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Licenses.json; path = Resources/Licenses.json; sourceTree = "<group>"; };
+		48B9386D187B647F00132535 /* Thanks.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = Thanks.html; path = Resources/Thanks.html; sourceTree = "<group>"; };
 		48BC7F3A1702FDD1006671B5 /* NumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberViewController.h; sourceTree = "<group>"; };
 		48BC7F3B1702FDD1006671B5 /* NumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberViewController.m; sourceTree = "<group>"; };
 		48BC7F3E1702FE8D006671B5 /* NumberView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberView.xib; sourceTree = "<group>"; };
@@ -3571,10 +3575,10 @@
 				48A2CDFB16834FC100506A7C /* RingbackTones.json */,
 				48D0A6E51654D65200FA2D98 /* SipConfig.cfg */,
 				48206EF7168DD8180040B04E /* Tones.json */,
-				48BA860418751930007922DF /* Helps.json */,
-				48BA860618751F3B007922DF /* Helps-VoIP.json */,
-				48BA860818757AC7007922DF /* Thanks.html */,
-				48BA860A187595F1007922DF /* Licenses.json */,
+				48B9386A187B647F00132535 /* Helps-VoIP.json */,
+				48B9386B187B647F00132535 /* Helps.json */,
+				48B9386C187B647F00132535 /* Licenses.json */,
+				48B9386D187B647F00132535 /* Thanks.html */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -3791,6 +3795,7 @@
 				485F6A471637270100D61365 /* AN.png in Resources */,
 				485F6A481637270100D61365 /* AN@2x.png in Resources */,
 				485F6A491637270100D61365 /* AO.png in Resources */,
+				48B93872187B647F00132535 /* Licenses.json in Resources */,
 				485F6A4A1637270100D61365 /* AO@2x.png in Resources */,
 				485F6A4D1637270100D61365 /* AR.png in Resources */,
 				485F6A4E1637270100D61365 /* AR@2x.png in Resources */,
@@ -4035,7 +4040,6 @@
 				485F6B421637270100D61365 /* LT@2x.png in Resources */,
 				485F6B431637270100D61365 /* LU.png in Resources */,
 				485F6B441637270100D61365 /* LU@2x.png in Resources */,
-				48BA860718751F3B007922DF /* Helps-VoIP.json in Resources */,
 				485F6B451637270100D61365 /* LV.png in Resources */,
 				485F6B461637270100D61365 /* LV@2x.png in Resources */,
 				485F6B471637270100D61365 /* LY.png in Resources */,
@@ -4067,7 +4071,7 @@
 				485F6B611637270100D61365 /* MP.png in Resources */,
 				485F6B621637270100D61365 /* MP@2x.png in Resources */,
 				485F6B631637270100D61365 /* MQ.png in Resources */,
-				48BA860918757AC7007922DF /* Thanks.html in Resources */,
+				48B93874187B647F00132535 /* Thanks.html in Resources */,
 				485F6B641637270100D61365 /* MQ@2x.png in Resources */,
 				485F6B651637270100D61365 /* MR.png in Resources */,
 				485F6B661637270100D61365 /* MR@2x.png in Resources */,
@@ -4187,7 +4191,6 @@
 				485F6BD81637270100D61365 /* SS@2x.png in Resources */,
 				485F6BD91637270100D61365 /* ST.png in Resources */,
 				485F6BDA1637270100D61365 /* ST@2x.png in Resources */,
-				48BA860518751930007922DF /* Helps.json in Resources */,
 				485F6BDB1637270100D61365 /* SV.png in Resources */,
 				485F6BDC1637270100D61365 /* SV@2x.png in Resources */,
 				485F6BDE1637270100D61365 /* SX@2x.png in Resources */,
@@ -4231,12 +4234,14 @@
 				485F6C051637270100D61365 /* UG.png in Resources */,
 				485F6C061637270100D61365 /* UG@2x.png in Resources */,
 				485F6C091637270100D61365 /* US.png in Resources */,
+				48B93870187B647F00132535 /* Helps.json in Resources */,
 				485F6C0A1637270100D61365 /* US@2x.png in Resources */,
 				485F6C0B1637270100D61365 /* UY.png in Resources */,
 				485F6C0C1637270100D61365 /* UY@2x.png in Resources */,
 				485F6C0D1637270100D61365 /* UZ.png in Resources */,
 				485F6C0E1637270100D61365 /* UZ@2x.png in Resources */,
 				485F6C0F1637270100D61365 /* VA.png in Resources */,
+				48B9386E187B647F00132535 /* Helps-VoIP.json in Resources */,
 				485F6C101637270100D61365 /* VA@2x.png in Resources */,
 				485F6C111637270100D61365 /* VC.png in Resources */,
 				485F6C121637270100D61365 /* VC@2x.png in Resources */,
@@ -4381,7 +4386,6 @@
 				4846D8A91743F47100C40713 /* Logo.png in Resources */,
 				4846D8AB1743F47100C40713 /* Logo@2x.png in Resources */,
 				4849432B1750CFDC00E1D5C4 /* Icon-72.png in Resources */,
-				48BA860B187595F1007922DF /* Licenses.json in Resources */,
 				4849432C1750CFDC00E1D5C4 /* Icon-72@2x.png in Resources */,
 				4849433F1752410500E1D5C4 /* LicenseView.xib in Resources */,
 				484943831753252800E1D5C4 /* AppStoreBlack.png in Resources */,
@@ -4451,6 +4455,7 @@
 				48AF4509164948B800DFE3D8 /* CreditView.xib in Resources */,
 				48AF450C164948CD00DFE3D8 /* DialerView.xib in Resources */,
 				48AF450F164948DC00DFE3D8 /* GroupsView.xib in Resources */,
+				48B9386F187B647F00132535 /* Helps-VoIP.json in Resources */,
 				48AF4512164948F000DFE3D8 /* SettingsView.xib in Resources */,
 				48AF45151649490100DFE3D8 /* HelpsView.xib in Resources */,
 				48AF45181649494400DFE3D8 /* AboutView.xib in Resources */,
@@ -4504,6 +4509,7 @@
 				48EDD22B166771B8007B89DA /* CallKeypadView.xib in Resources */,
 				4888D51B166D1AEE00572566 /* Flip.png in Resources */,
 				48CB2C4B17E6DB7700E19C3D /* ContactsTab.png in Resources */,
+				48B93873187B647F00132535 /* Licenses.json in Resources */,
 				4888D51D166D1AEE00572566 /* Flip@2x.png in Resources */,
 				4888D51F166D1AEE00572566 /* HangupPhone.png in Resources */,
 				4888D521166D1AEE00572566 /* HangupPhone@2x.png in Resources */,
@@ -4557,6 +4563,7 @@
 				48367A3E17247B2D001A02AF /* CueStopBlack.png in Resources */,
 				48367A4017247B2D001A02AF /* CueStopBlack@2x.png in Resources */,
 				48367A4217247B2D001A02AF /* CueStopWhite.png in Resources */,
+				48B93875187B647F00132535 /* Thanks.html in Resources */,
 				48367A4417247B2D001A02AF /* CueStopWhite@2x.png in Resources */,
 				48CA5035172AEEB100CB1B7B /* CueRecordBlack.png in Resources */,
 				48CA5037172AEEB100CB1B7B /* CueRecordBlack@2x.png in Resources */,
@@ -4595,6 +4602,7 @@
 				485E38C417C40D070089F0F1 /* NumberDuration1.png in Resources */,
 				485E38C617C40D070089F0F1 /* NumberDuration12.png in Resources */,
 				485E38C817C40D070089F0F1 /* NumberDuration2.png in Resources */,
+				48B93871187B647F00132535 /* Helps.json in Resources */,
 				485E38CA17C40D070089F0F1 /* NumberDuration3.png in Resources */,
 				485E38CC17C40D070089F0F1 /* NumberDuration6.png in Resources */,
 				485E38CE17C40D070089F0F1 /* NumberDuration9.png in Resources */,
