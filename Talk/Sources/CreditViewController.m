@@ -33,7 +33,7 @@
 
 - (instancetype)init
 {
-    if (self = [super initWithNibName:@"CreditView" bundle:nil])
+    if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
         self.title = NSLocalizedString(@"Credit", @"Credit tab title");
         self.tabBarItem.image = [UIImage imageNamed:@"CreditTab.png"];
@@ -392,12 +392,20 @@
 
 - (void)updateVisibleBuyCells
 {
+    NSLog(@"updateVisibleBuyCells");
+    //return;
     for (NSIndexPath* indexPath in [self.tableView indexPathsForVisibleRows])
     {
-        if ([indexPath isEqual:self.amountIndexPath] == NO)
+        NSLog(@"A %d", [indexPath compare:self.amountIndexPath]);
+        if (indexPath.row != 0)
         {
+            NSLog(@"B %d", [indexPath compare:self.amountIndexPath]);
             CreditBuyCell* cell = (CreditBuyCell*)[self.tableView cellForRowAtIndexPath:indexPath];
             [self updateBuyCell:cell atIndexPath:indexPath];
+        }
+        else
+        {
+
         }
     }
 }

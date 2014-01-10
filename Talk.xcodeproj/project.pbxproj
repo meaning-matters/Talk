@@ -117,6 +117,8 @@
 		48206EF9168DD8180040B04E /* Tones.json in Resources */ = {isa = PBXBuildFile; fileRef = 48206EF7168DD8180040B04E /* Tones.json */; };
 		48206EFC168DD8D30040B04E /* Tones.m in Sources */ = {isa = PBXBuildFile; fileRef = 48206EFB168DD8D30040B04E /* Tones.m */; };
 		48206EFD168DD8D30040B04E /* Tones.m in Sources */ = {isa = PBXBuildFile; fileRef = 48206EFB168DD8D30040B04E /* Tones.m */; };
+		48251B9B187F4A8A00E69C3A /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48251B9A187F4A8A00E69C3A /* SettingsViewController.m */; };
+		48251B9C187F4A8A00E69C3A /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48251B9A187F4A8A00E69C3A /* SettingsViewController.m */; };
 		482608EE166A4707007F0844 /* NSTimer+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 482608ED166A4706007F0844 /* NSTimer+Blocks.m */; };
 		482608EF166A4707007F0844 /* NSTimer+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 482608ED166A4706007F0844 /* NSTimer+Blocks.m */; };
 		482A6397165F903900325B3F /* Strings.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A6396165F903900325B3F /* Strings.m */; };
@@ -129,8 +131,6 @@
 		482D2DEE16C815BE00E13B91 /* ProvisioningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 482D2DEC16C815BE00E13B91 /* ProvisioningViewController.m */; };
 		482D2DF016C8172900E13B91 /* ProvisioningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482D2DEF16C8172900E13B91 /* ProvisioningView.xib */; };
 		482D2DF116C8172900E13B91 /* ProvisioningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482D2DEF16C8172900E13B91 /* ProvisioningView.xib */; };
-		4830462016EE222C000F9B05 /* NumberAreaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4830461F16EE222C000F9B05 /* NumberAreaView.xib */; };
-		4830462116EE222C000F9B05 /* NumberAreaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4830461F16EE222C000F9B05 /* NumberAreaView.xib */; };
 		4830462416EE269D000F9B05 /* NumberAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4830462316EE269D000F9B05 /* NumberAreaViewController.m */; };
 		4830462516EE269D000F9B05 /* NumberAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4830462316EE269D000F9B05 /* NumberAreaViewController.m */; };
 		48338F8E161628BA0033F4C1 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F8C161628BA0033F4C1 /* libcrypto.a */; };
@@ -819,10 +819,6 @@
 		4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3F5175668CA0006542F /* LogoFacebook.png */; };
 		4864B3F7175668CA0006542F /* LogoFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3F5175668CA0006542F /* LogoFacebook.png */; };
 		4864B3F917566E950006542F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4864B3F817566E950006542F /* MessageUI.framework */; };
-		4864B3FC1757C72F0006542F /* ContactUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4864B3FB1757C72F0006542F /* ContactUsViewController.m */; };
-		4864B3FD1757C72F0006542F /* ContactUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4864B3FB1757C72F0006542F /* ContactUsViewController.m */; };
-		4864B3FF1757C8E80006542F /* ContactUsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3FE1757C8E80006542F /* ContactUsView.xib */; };
-		4864B4001757C8E80006542F /* ContactUsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3FE1757C8E80006542F /* ContactUsView.xib */; };
 		4865A9D817926CE00028785F /* BuyNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9D717926CE00028785F /* BuyNumberViewController.m */; };
 		4865A9D917926CE00028785F /* BuyNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9D717926CE00028785F /* BuyNumberViewController.m */; };
 		4865A9DB1792C5550028785F /* BuyNumberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4865A9DA1792C5550028785F /* BuyNumberCell.xib */; };
@@ -948,8 +944,6 @@
 		48A2621F16FE4F9700007638 /* libsrtp-arm-apple-darwin9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48A261FB16FE4F9700007638 /* libsrtp-arm-apple-darwin9.a */; };
 		48A2CDFC16834FC100506A7C /* RingbackTones.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A2CDFB16834FC100506A7C /* RingbackTones.json */; };
 		48A2CDFD16834FC100506A7C /* RingbackTones.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A2CDFB16834FC100506A7C /* RingbackTones.json */; };
-		48AD95DA164AC4FE006178E6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95D9164AC4FE006178E6 /* ViewController.m */; };
-		48AD95DB164AC4FE006178E6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95D9164AC4FE006178E6 /* ViewController.m */; };
 		48AD95DF164AE582006178E6 /* Skinning.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95DE164AE582006178E6 /* Skinning.m */; };
 		48AD95E0164AE582006178E6 /* Skinning.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95DE164AE582006178E6 /* Skinning.m */; };
 		48ADD0F11706551F001515EB /* RetryPhoneSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 48ADD0EF1706551D001515EB /* RetryPhoneSmall.png */; };
@@ -970,24 +964,14 @@
 		48AF44F3164947CE00DFE3D8 /* DialerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F1164947CE00DFE3D8 /* DialerViewController.m */; };
 		48AF44F6164947E600DFE3D8 /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F5164947E600DFE3D8 /* GroupsViewController.m */; };
 		48AF44F7164947E600DFE3D8 /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F5164947E600DFE3D8 /* GroupsViewController.m */; };
-		48AF44FA164947FA00DFE3D8 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F9164947FA00DFE3D8 /* SettingsViewController.m */; };
-		48AF44FB164947FA00DFE3D8 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F9164947FA00DFE3D8 /* SettingsViewController.m */; };
 		48AF44FE1649483600DFE3D8 /* HelpsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44FD1649483600DFE3D8 /* HelpsViewController.m */; };
 		48AF44FF1649483600DFE3D8 /* HelpsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44FD1649483600DFE3D8 /* HelpsViewController.m */; };
 		48AF45021649484600DFE3D8 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF45011649484600DFE3D8 /* AboutViewController.m */; };
 		48AF45031649484600DFE3D8 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF45011649484600DFE3D8 /* AboutViewController.m */; };
-		48AF4505164948A300DFE3D8 /* NumbersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF4504164948A300DFE3D8 /* NumbersView.xib */; };
-		48AF4506164948A300DFE3D8 /* NumbersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF4504164948A300DFE3D8 /* NumbersView.xib */; };
-		48AF4508164948B800DFE3D8 /* CreditView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF4507164948B800DFE3D8 /* CreditView.xib */; };
-		48AF4509164948B800DFE3D8 /* CreditView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF4507164948B800DFE3D8 /* CreditView.xib */; };
 		48AF450B164948CD00DFE3D8 /* DialerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450A164948CD00DFE3D8 /* DialerView.xib */; };
 		48AF450C164948CD00DFE3D8 /* DialerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450A164948CD00DFE3D8 /* DialerView.xib */; };
 		48AF450E164948DC00DFE3D8 /* GroupsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450D164948DC00DFE3D8 /* GroupsView.xib */; };
 		48AF450F164948DC00DFE3D8 /* GroupsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450D164948DC00DFE3D8 /* GroupsView.xib */; };
-		48AF4511164948F000DFE3D8 /* SettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF4510164948F000DFE3D8 /* SettingsView.xib */; };
-		48AF4512164948F000DFE3D8 /* SettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF4510164948F000DFE3D8 /* SettingsView.xib */; };
-		48AF45141649490100DFE3D8 /* HelpsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45131649490100DFE3D8 /* HelpsView.xib */; };
-		48AF45151649490100DFE3D8 /* HelpsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45131649490100DFE3D8 /* HelpsView.xib */; };
 		48AF45171649494400DFE3D8 /* AboutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45161649494400DFE3D8 /* AboutView.xib */; };
 		48AF45181649494400DFE3D8 /* AboutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45161649494400DFE3D8 /* AboutView.xib */; };
 		48AF452D1649788A00DFE3D8 /* AboutTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45191649788A00DFE3D8 /* AboutTab.png */; };
@@ -1034,10 +1018,6 @@
 		48AF4558164978BF00DFE3D8 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4556164978BE00DFE3D8 /* ShareViewController.m */; };
 		48AF455B1649794B00DFE3D8 /* ShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF455A1649794B00DFE3D8 /* ShareView.xib */; };
 		48AF455C1649794B00DFE3D8 /* ShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF455A1649794B00DFE3D8 /* ShareView.xib */; };
-		48AF455E1649799F00DFE3D8 /* ForwardingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF455D1649799F00DFE3D8 /* ForwardingsView.xib */; };
-		48AF455F1649799F00DFE3D8 /* ForwardingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF455D1649799F00DFE3D8 /* ForwardingsView.xib */; };
-		48AF4561164979CE00DFE3D8 /* RecentsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF4560164979CE00DFE3D8 /* RecentsView.xib */; };
-		48AF4562164979CE00DFE3D8 /* RecentsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF4560164979CE00DFE3D8 /* RecentsView.xib */; };
 		48AF4565164979F400DFE3D8 /* ForwardingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4564164979F400DFE3D8 /* ForwardingsViewController.m */; };
 		48AF4566164979F400DFE3D8 /* ForwardingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4564164979F400DFE3D8 /* ForwardingsViewController.m */; };
 		48AF4581164A45A100DFE3D8 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4580164A45A100DFE3D8 /* Settings.m */; };
@@ -1057,10 +1037,12 @@
 		48B93873187B647F00132535 /* Licenses.json in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386C187B647F00132535 /* Licenses.json */; };
 		48B93874187B647F00132535 /* Thanks.html in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386D187B647F00132535 /* Thanks.html */; };
 		48B93875187B647F00132535 /* Thanks.html in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386D187B647F00132535 /* Thanks.html */; };
+		48B93878187E1E0E00132535 /* PhonesTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B93876187E1E0E00132535 /* PhonesTab.png */; };
+		48B93879187E1E0E00132535 /* PhonesTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B93876187E1E0E00132535 /* PhonesTab.png */; };
+		48B9387A187E1E0E00132535 /* PhonesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B93877187E1E0E00132535 /* PhonesTab@2x.png */; };
+		48B9387B187E1E0E00132535 /* PhonesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B93877187E1E0E00132535 /* PhonesTab@2x.png */; };
 		48BC7F3C1702FDD1006671B5 /* NumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BC7F3B1702FDD1006671B5 /* NumberViewController.m */; };
 		48BC7F3D1702FDD1006671B5 /* NumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BC7F3B1702FDD1006671B5 /* NumberViewController.m */; };
-		48BC7F3F1702FE8D006671B5 /* NumberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BC7F3E1702FE8D006671B5 /* NumberView.xib */; };
-		48BC7F401702FE8D006671B5 /* NumberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BC7F3E1702FE8D006671B5 /* NumberView.xib */; };
 		48BD8BE81663E7A400F2CB45 /* CallBaseView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */; };
 		48BD8BEC1663E87800F2CB45 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BD8BEB1663E87800F2CB45 /* CallViewController.m */; };
 		48BD8BED1663E87800F2CB45 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BD8BEB1663E87800F2CB45 /* CallViewController.m */; };
@@ -1326,6 +1308,8 @@
 		48206EF7168DD8180040B04E /* Tones.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Tones.json; path = Resources/Tones.json; sourceTree = "<group>"; };
 		48206EFA168DD8D30040B04E /* Tones.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tones.h; sourceTree = "<group>"; };
 		48206EFB168DD8D30040B04E /* Tones.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tones.m; sourceTree = "<group>"; };
+		48251B99187F4A8A00E69C3A /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		48251B9A187F4A8A00E69C3A /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		482608EC166A4706007F0844 /* NSTimer+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Blocks.h"; sourceTree = "<group>"; };
 		482608ED166A4706007F0844 /* NSTimer+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Blocks.m"; sourceTree = "<group>"; };
 		482A6395165F903900325B3F /* Strings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Strings.h; sourceTree = "<group>"; };
@@ -1337,7 +1321,6 @@
 		482D2DEB16C815BE00E13B91 /* ProvisioningViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProvisioningViewController.h; sourceTree = "<group>"; };
 		482D2DEC16C815BE00E13B91 /* ProvisioningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProvisioningViewController.m; sourceTree = "<group>"; };
 		482D2DEF16C8172900E13B91 /* ProvisioningView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProvisioningView.xib; sourceTree = "<group>"; };
-		4830461F16EE222C000F9B05 /* NumberAreaView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreaView.xib; sourceTree = "<group>"; };
 		4830462216EE269D000F9B05 /* NumberAreaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaViewController.h; sourceTree = "<group>"; };
 		4830462316EE269D000F9B05 /* NumberAreaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaViewController.m; sourceTree = "<group>"; };
 		48338F8C161628BA0033F4C1 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "External/OpenSSL-for-iPhone/lib/libcrypto.a"; sourceTree = "<group>"; };
@@ -1957,9 +1940,6 @@
 		485F6A381637270100D61365 /* ZW@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ZW@2x.png"; sourceTree = "<group>"; };
 		4864B3F5175668CA0006542F /* LogoFacebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LogoFacebook.png; sourceTree = "<group>"; };
 		4864B3F817566E950006542F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		4864B3FA1757C72F0006542F /* ContactUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsViewController.h; sourceTree = "<group>"; };
-		4864B3FB1757C72F0006542F /* ContactUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsViewController.m; sourceTree = "<group>"; };
-		4864B3FE1757C8E80006542F /* ContactUsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactUsView.xib; sourceTree = "<group>"; };
 		4865A9D617926CE00028785F /* BuyNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyNumberViewController.h; sourceTree = "<group>"; };
 		4865A9D717926CE00028785F /* BuyNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyNumberViewController.m; sourceTree = "<group>"; };
 		4865A9DA1792C5550028785F /* BuyNumberCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BuyNumberCell.xib; sourceTree = "<group>"; };
@@ -2056,8 +2036,6 @@
 		48A261FA16FE4F9700007638 /* libspeex-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libspeex-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libspeex-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48A261FB16FE4F9700007638 /* libsrtp-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsrtp-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libsrtp-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48A2CDFB16834FC100506A7C /* RingbackTones.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = RingbackTones.json; path = Resources/RingbackTones.json; sourceTree = "<group>"; };
-		48AD95D8164AC4FE006178E6 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		48AD95D9164AC4FE006178E6 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		48AD95DD164AE581006178E6 /* Skinning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skinning.h; sourceTree = "<group>"; };
 		48AD95DE164AE582006178E6 /* Skinning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Skinning.m; sourceTree = "<group>"; };
 		48ADD0EF1706551D001515EB /* RetryPhoneSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RetryPhoneSmall.png; sourceTree = "<group>"; };
@@ -2076,18 +2054,12 @@
 		48AF44F1164947CE00DFE3D8 /* DialerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DialerViewController.m; sourceTree = "<group>"; };
 		48AF44F4164947E600DFE3D8 /* GroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupsViewController.h; sourceTree = "<group>"; };
 		48AF44F5164947E600DFE3D8 /* GroupsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupsViewController.m; sourceTree = "<group>"; };
-		48AF44F8164947FA00DFE3D8 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
-		48AF44F9164947FA00DFE3D8 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		48AF44FC1649483600DFE3D8 /* HelpsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpsViewController.h; sourceTree = "<group>"; };
 		48AF44FD1649483600DFE3D8 /* HelpsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpsViewController.m; sourceTree = "<group>"; };
 		48AF45001649484600DFE3D8 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		48AF45011649484600DFE3D8 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
-		48AF4504164948A300DFE3D8 /* NumbersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumbersView.xib; sourceTree = "<group>"; };
-		48AF4507164948B800DFE3D8 /* CreditView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreditView.xib; sourceTree = "<group>"; };
 		48AF450A164948CD00DFE3D8 /* DialerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DialerView.xib; sourceTree = "<group>"; };
 		48AF450D164948DC00DFE3D8 /* GroupsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupsView.xib; sourceTree = "<group>"; };
-		48AF4510164948F000DFE3D8 /* SettingsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsView.xib; sourceTree = "<group>"; };
-		48AF45131649490100DFE3D8 /* HelpsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HelpsView.xib; sourceTree = "<group>"; };
 		48AF45161649494400DFE3D8 /* AboutView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutView.xib; sourceTree = "<group>"; };
 		48AF45191649788A00DFE3D8 /* AboutTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AboutTab.png; sourceTree = "<group>"; };
 		48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AboutTab@2x.png"; sourceTree = "<group>"; };
@@ -2112,8 +2084,6 @@
 		48AF4555164978BE00DFE3D8 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
 		48AF4556164978BE00DFE3D8 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
 		48AF455A1649794B00DFE3D8 /* ShareView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareView.xib; sourceTree = "<group>"; };
-		48AF455D1649799F00DFE3D8 /* ForwardingsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForwardingsView.xib; sourceTree = "<group>"; };
-		48AF4560164979CE00DFE3D8 /* RecentsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecentsView.xib; sourceTree = "<group>"; };
 		48AF4563164979F300DFE3D8 /* ForwardingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForwardingsViewController.h; sourceTree = "<group>"; };
 		48AF4564164979F400DFE3D8 /* ForwardingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForwardingsViewController.m; sourceTree = "<group>"; };
 		48AF457F164A45A000DFE3D8 /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
@@ -2128,9 +2098,10 @@
 		48B9386B187B647F00132535 /* Helps.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Helps.json; path = Resources/Helps.json; sourceTree = "<group>"; };
 		48B9386C187B647F00132535 /* Licenses.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Licenses.json; path = Resources/Licenses.json; sourceTree = "<group>"; };
 		48B9386D187B647F00132535 /* Thanks.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = Thanks.html; path = Resources/Thanks.html; sourceTree = "<group>"; };
+		48B93876187E1E0E00132535 /* PhonesTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PhonesTab.png; sourceTree = "<group>"; };
+		48B93877187E1E0E00132535 /* PhonesTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PhonesTab@2x.png"; sourceTree = "<group>"; };
 		48BC7F3A1702FDD1006671B5 /* NumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberViewController.h; sourceTree = "<group>"; };
 		48BC7F3B1702FDD1006671B5 /* NumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberViewController.m; sourceTree = "<group>"; };
-		48BC7F3E1702FE8D006671B5 /* NumberView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberView.xib; sourceTree = "<group>"; };
 		48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallBaseView.xib; sourceTree = "<group>"; };
 		48BD8BEA1663E87800F2CB45 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallViewController.h; sourceTree = "<group>"; };
 		48BD8BEB1663E87800F2CB45 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallViewController.m; sourceTree = "<group>"; };
@@ -2616,6 +2587,8 @@
 				48AF45241649788A00DFE3D8 /* HelpsTab@2x.png */,
 				48AF45251649788A00DFE3D8 /* NumbersTab.png */,
 				48AF45261649788A00DFE3D8 /* NumbersTab@2x.png */,
+				48B93876187E1E0E00132535 /* PhonesTab.png */,
+				48B93877187E1E0E00132535 /* PhonesTab@2x.png */,
 				48AF45271649788A00DFE3D8 /* RecentsTab.png */,
 				48AF45281649788A00DFE3D8 /* RecentsTab@2x.png */,
 				48AF45291649788A00DFE3D8 /* SettingsTab.png */,
@@ -3452,33 +3425,24 @@
 				48EDD229166771B8007B89DA /* CallKeypadView.xib */,
 				48A261BF16FDE26100007638 /* CallMessageView.xib */,
 				48EDD226166770B8007B89DA /* CallOptionsView.xib */,
-				4864B3FE1757C8E80006542F /* ContactUsView.xib */,
 				485ECBCB1651642D00364F08 /* CountriesView.xib */,
 				4814EA3217CA98F4004B7A3C /* CreditBuyCell.xib */,
 				4814EA3917CB18DB004B7A3C /* CreditAmountCell.xib */,
-				48AF4507164948B800DFE3D8 /* CreditView.xib */,
 				48AF450A164948CD00DFE3D8 /* DialerView.xib */,
-				48AF455D1649799F00DFE3D8 /* ForwardingsView.xib */,
 				48AF450D164948DC00DFE3D8 /* GroupsView.xib */,
 				485E38A217B7E1960089F0F1 /* HelpView.xib */,
-				48AF45131649490100DFE3D8 /* HelpsView.xib */,
 				48D0A6F91655E2C600FA2D98 /* KeypadView.xib */,
 				4849433E1752410500E1D5C4 /* LicenseView.xib */,
 				484A94A5171C5065009E22B9 /* NumberAreaActionCell.xib */,
 				484D937217132518006FA875 /* NumberAreaCitiesView.xib */,
-				4830461F16EE222C000F9B05 /* NumberAreaView.xib */,
 				484D937517132539006FA875 /* NumberAreaZipsView.xib */,
 				484A949C171821CB009E22B9 /* NumberAreasCell.xib */,
 				4896D8FB16EBE5A7008A2354 /* NumberAreasView.xib */,
 				4865A9DA1792C5550028785F /* BuyNumberCell.xib */,
 				48B5AAED16E69DE900BA4084 /* NumberCountriesView.xib */,
 				488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */,
-				48AF4504164948A300DFE3D8 /* NumbersView.xib */,
-				48BC7F3E1702FE8D006671B5 /* NumberView.xib */,
 				48C1D3C717D3132A004F910D /* ProofImageView.xib */,
-				48AF4560164979CE00DFE3D8 /* RecentsView.xib */,
 				483679FA17246977001A02AF /* RecordingControlsCell.xib */,
-				48AF4510164948F000DFE3D8 /* SettingsView.xib */,
 				48AF455A1649794B00DFE3D8 /* ShareView.xib */,
 				482D2DEF16C8172900E13B91 /* ProvisioningView.xib */,
 				484943AF1753C44D00E1D5C4 /* ThanksView.xib */,
@@ -3499,8 +3463,6 @@
 				48A0CE771809BE3100B8A9F8 /* CallBaseViewController.m */,
 				48BD8BEA1663E87800F2CB45 /* CallViewController.h */,
 				48BD8BEB1663E87800F2CB45 /* CallViewController.m */,
-				4864B3FA1757C72F0006542F /* ContactUsViewController.h */,
-				4864B3FB1757C72F0006542F /* ContactUsViewController.m */,
 				485ECBCE1651646700364F08 /* CountriesViewController.h */,
 				485ECBCF1651646700364F08 /* CountriesViewController.m */,
 				48AF44EC164947B300DFE3D8 /* CreditViewController.h */,
@@ -3549,14 +3511,12 @@
 				482D2DEC16C815BE00E13B91 /* ProvisioningViewController.m */,
 				483679DC1721F2DF001A02AF /* RecordingViewController.h */,
 				483679DD1721F2E0001A02AF /* RecordingViewController.m */,
+				48251B99187F4A8A00E69C3A /* SettingsViewController.h */,
+				48251B9A187F4A8A00E69C3A /* SettingsViewController.m */,
 				48AF4555164978BE00DFE3D8 /* ShareViewController.h */,
 				48AF4556164978BE00DFE3D8 /* ShareViewController.m */,
-				48AF44F8164947FA00DFE3D8 /* SettingsViewController.h */,
-				48AF44F9164947FA00DFE3D8 /* SettingsViewController.m */,
 				484943AB1753C00000E1D5C4 /* ThanksViewController.h */,
 				484943AC1753C00000E1D5C4 /* ThanksViewController.m */,
-				48AD95D8164AC4FE006178E6 /* ViewController.h */,
-				48AD95D9164AC4FE006178E6 /* ViewController.m */,
 				48793367185C6A5800C08C8C /* PhonesViewController.h */,
 				48793368185C6A5800C08C8C /* PhonesViewController.m */,
 			);
@@ -3787,6 +3747,7 @@
 				485F6A3F1637270100D61365 /* AG.png in Resources */,
 				485F6A401637270100D61365 /* AG@2x.png in Resources */,
 				485F6A411637270100D61365 /* AI.png in Resources */,
+				48B93878187E1E0E00132535 /* PhonesTab.png in Resources */,
 				485F6A421637270100D61365 /* AI@2x.png in Resources */,
 				485F6A431637270100D61365 /* AL.png in Resources */,
 				485F6A441637270100D61365 /* AL@2x.png in Resources */,
@@ -4077,6 +4038,7 @@
 				485F6B661637270100D61365 /* MR@2x.png in Resources */,
 				485F6B671637270100D61365 /* MS.png in Resources */,
 				485F6B681637270100D61365 /* MS@2x.png in Resources */,
+				48B9387A187E1E0E00132535 /* PhonesTab@2x.png in Resources */,
 				485F6B691637270100D61365 /* MT.png in Resources */,
 				485F6B6A1637270100D61365 /* MT@2x.png in Resources */,
 				485F6B6B1637270100D61365 /* MU.png in Resources */,
@@ -4269,12 +4231,8 @@
 				485F6C281637270100D61365 /* ZM@2x.png in Resources */,
 				485F6C291637270100D61365 /* ZW.png in Resources */,
 				485F6C2A1637270100D61365 /* ZW@2x.png in Resources */,
-				48AF4505164948A300DFE3D8 /* NumbersView.xib in Resources */,
-				48AF4508164948B800DFE3D8 /* CreditView.xib in Resources */,
 				48AF450B164948CD00DFE3D8 /* DialerView.xib in Resources */,
 				48AF450E164948DC00DFE3D8 /* GroupsView.xib in Resources */,
-				48AF4511164948F000DFE3D8 /* SettingsView.xib in Resources */,
-				48AF45141649490100DFE3D8 /* HelpsView.xib in Resources */,
 				48AF45171649494400DFE3D8 /* AboutView.xib in Resources */,
 				48AF452D1649788A00DFE3D8 /* AboutTab.png in Resources */,
 				48AF452F1649788A00DFE3D8 /* AboutTab@2x.png in Resources */,
@@ -4298,8 +4256,6 @@
 				48AF45531649788A00DFE3D8 /* ShareTab@2x.png in Resources */,
 				48CB2C4417E6539000E19C3D /* Target.png in Resources */,
 				48AF455B1649794B00DFE3D8 /* ShareView.xib in Resources */,
-				48AF455E1649799F00DFE3D8 /* ForwardingsView.xib in Resources */,
-				48AF4561164979CE00DFE3D8 /* RecentsView.xib in Resources */,
 				485ECBCC1651642D00364F08 /* CountriesView.xib in Resources */,
 				485ECBD81651C3B700364F08 /* BQ.png in Resources */,
 				485ECBDA1651C3B700364F08 /* BQ@2x.png in Resources */,
@@ -4339,9 +4295,7 @@
 				48B5AAEE16E69DE900BA4084 /* NumberCountriesView.xib in Resources */,
 				488AD1ED16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
 				4896D8FC16EBE5A7008A2354 /* NumberAreasView.xib in Resources */,
-				4830462016EE222C000F9B05 /* NumberAreaView.xib in Resources */,
 				48A261C016FDE26100007638 /* CallMessageView.xib in Resources */,
-				48BC7F3F1702FE8D006671B5 /* NumberView.xib in Resources */,
 				48ADD0F11706551F001515EB /* RetryPhoneSmall.png in Resources */,
 				48ADD0F31706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
 				484D937317132518006FA875 /* NumberAreaCitiesView.xib in Resources */,
@@ -4410,7 +4364,6 @@
 				484943A91753252800E1D5C4 /* TwitterWhite@2x.png in Resources */,
 				484943B01753C44D00E1D5C4 /* ThanksView.xib in Resources */,
 				4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */,
-				4864B3FF1757C8E80006542F /* ContactUsView.xib in Resources */,
 				4865A9DB1792C5550028785F /* BuyNumberCell.xib in Resources */,
 				483ECFF217A4F60B0032B8FF /* deleteButton.png in Resources */,
 				483ECFF317A4F60B0032B8FF /* editPhotoBottomBar.png in Resources */,
@@ -4451,13 +4404,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				48884AB11615CE920005AA79 /* InfoPlist.strings in Resources */,
-				48AF4506164948A300DFE3D8 /* NumbersView.xib in Resources */,
-				48AF4509164948B800DFE3D8 /* CreditView.xib in Resources */,
 				48AF450C164948CD00DFE3D8 /* DialerView.xib in Resources */,
 				48AF450F164948DC00DFE3D8 /* GroupsView.xib in Resources */,
 				48B9386F187B647F00132535 /* Helps-VoIP.json in Resources */,
-				48AF4512164948F000DFE3D8 /* SettingsView.xib in Resources */,
-				48AF45151649490100DFE3D8 /* HelpsView.xib in Resources */,
 				48AF45181649494400DFE3D8 /* AboutView.xib in Resources */,
 				48AF452E1649788A00DFE3D8 /* AboutTab.png in Resources */,
 				48AF45301649788A00DFE3D8 /* AboutTab@2x.png in Resources */,
@@ -4480,8 +4429,6 @@
 				48AF45521649788A00DFE3D8 /* ShareTab.png in Resources */,
 				48AF45541649788A00DFE3D8 /* ShareTab@2x.png in Resources */,
 				48AF455C1649794B00DFE3D8 /* ShareView.xib in Resources */,
-				48AF455F1649799F00DFE3D8 /* ForwardingsView.xib in Resources */,
-				48AF4562164979CE00DFE3D8 /* RecentsView.xib in Resources */,
 				485ECBCD1651642D00364F08 /* CountriesView.xib in Resources */,
 				485ECBD91651C3B700364F08 /* BQ.png in Resources */,
 				485ECBDB1651C3B700364F08 /* BQ@2x.png in Resources */,
@@ -4523,9 +4470,7 @@
 				48B5AAEF16E69DE900BA4084 /* NumberCountriesView.xib in Resources */,
 				488AD1EE16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
 				4896D8FD16EBE5A7008A2354 /* NumberAreasView.xib in Resources */,
-				4830462116EE222C000F9B05 /* NumberAreaView.xib in Resources */,
 				48A261C116FDE26100007638 /* CallMessageView.xib in Resources */,
-				48BC7F401702FE8D006671B5 /* NumberView.xib in Resources */,
 				48ADD0F21706551F001515EB /* RetryPhoneSmall.png in Resources */,
 				48ADD0F41706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
 				484D937417132518006FA875 /* NumberAreaCitiesView.xib in Resources */,
@@ -4556,6 +4501,7 @@
 				48367A3017247B2D001A02AF /* CueRecordRed@2x.png in Resources */,
 				48367A3217247B2D001A02AF /* CueRecordWhite.png in Resources */,
 				48367A3417247B2D001A02AF /* CueRecordWhite@2x.png in Resources */,
+				48B93879187E1E0E00132535 /* PhonesTab.png in Resources */,
 				48367A3617247B2D001A02AF /* CueReverseBlack.png in Resources */,
 				48367A3817247B2D001A02AF /* CueReverseBlack@2x.png in Resources */,
 				48367A3A17247B2D001A02AF /* CueReverseWhite.png in Resources */,
@@ -4586,6 +4532,7 @@
 				484943981753252800E1D5C4 /* FacebookWhite.png in Resources */,
 				4849439A1753252800E1D5C4 /* FacebookWhite@2x.png in Resources */,
 				4849439C1753252800E1D5C4 /* MessageBlack.png in Resources */,
+				48B9387B187E1E0E00132535 /* PhonesTab@2x.png in Resources */,
 				4849439E1753252800E1D5C4 /* MessageBlack@2x.png in Resources */,
 				484943A01753252800E1D5C4 /* MessageWhite.png in Resources */,
 				484943A21753252800E1D5C4 /* MessageWhite@2x.png in Resources */,
@@ -4596,7 +4543,6 @@
 				484943AA1753252800E1D5C4 /* TwitterWhite@2x.png in Resources */,
 				484943B11753C44D00E1D5C4 /* ThanksView.xib in Resources */,
 				4864B3F7175668CA0006542F /* LogoFacebook.png in Resources */,
-				4864B4001757C8E80006542F /* ContactUsView.xib in Resources */,
 				4865A9DC1792C5550028785F /* BuyNumberCell.xib in Resources */,
 				485E38A417B7E1960089F0F1 /* HelpView.xib in Resources */,
 				485E38C417C40D070089F0F1 /* NumberDuration1.png in Resources */,
@@ -4663,13 +4609,11 @@
 				48AF44EE164947B300DFE3D8 /* CreditViewController.m in Sources */,
 				48AF44F2164947CE00DFE3D8 /* DialerViewController.m in Sources */,
 				48AF44F6164947E600DFE3D8 /* GroupsViewController.m in Sources */,
-				48AF44FA164947FA00DFE3D8 /* SettingsViewController.m in Sources */,
 				48AF44FE1649483600DFE3D8 /* HelpsViewController.m in Sources */,
 				48AF45021649484600DFE3D8 /* AboutViewController.m in Sources */,
 				48AF4557164978BF00DFE3D8 /* ShareViewController.m in Sources */,
 				48AF4565164979F400DFE3D8 /* ForwardingsViewController.m in Sources */,
 				48AF4581164A45A100DFE3D8 /* Settings.m in Sources */,
-				48AD95DA164AC4FE006178E6 /* ViewController.m in Sources */,
 				48AD95DF164AE582006178E6 /* Skinning.m in Sources */,
 				488268D9164BCF8600EA58AE /* NetworkStatus.m in Sources */,
 				48826909164BDC3400EA58AE /* Reachability.m in Sources */,
@@ -4736,7 +4680,6 @@
 				4849433C175240EB00E1D5C4 /* LicenseViewController.m in Sources */,
 				4849436D17529DE100E1D5C4 /* ShareButton.m in Sources */,
 				484943AD1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
-				4864B3FC1757C72F0006542F /* ContactUsViewController.m in Sources */,
 				4865A9D817926CE00028785F /* BuyNumberViewController.m in Sources */,
 				48ADE7D2185C67EC00E39DA2 /* PhoneData.m in Sources */,
 				4865A9DF1792C8B70028785F /* BuyNumberCell.m in Sources */,
@@ -4767,6 +4710,7 @@
 				4805790A17A50FB2006923BD /* NBRecentContactEntry.m in Sources */,
 				4805790B17A50FB2006923BD /* NBRecentContactViewController.m in Sources */,
 				4805790C17A50FB2006923BD /* NBRecentsListViewController.m in Sources */,
+				48251B9B187F4A8A00E69C3A /* SettingsViewController.m in Sources */,
 				4805790D17A50FB2006923BD /* NBRecentsNavigationController.m in Sources */,
 				4805790E17A50FB2006923BD /* NBRecentUnknownContactViewController.m in Sources */,
 				4805790F17A50FB2006923BD /* NBUnknownPersonViewController.m in Sources */,
@@ -4796,13 +4740,11 @@
 				48AF44EF164947B300DFE3D8 /* CreditViewController.m in Sources */,
 				48AF44F3164947CE00DFE3D8 /* DialerViewController.m in Sources */,
 				48AF44F7164947E600DFE3D8 /* GroupsViewController.m in Sources */,
-				48AF44FB164947FA00DFE3D8 /* SettingsViewController.m in Sources */,
 				48AF44FF1649483600DFE3D8 /* HelpsViewController.m in Sources */,
 				48AF45031649484600DFE3D8 /* AboutViewController.m in Sources */,
 				48AF4558164978BF00DFE3D8 /* ShareViewController.m in Sources */,
 				48AF4566164979F400DFE3D8 /* ForwardingsViewController.m in Sources */,
 				48AF4582164A45A100DFE3D8 /* Settings.m in Sources */,
-				48AD95DB164AC4FE006178E6 /* ViewController.m in Sources */,
 				48AD95E0164AE582006178E6 /* Skinning.m in Sources */,
 				488268DA164BCF8600EA58AE /* NetworkStatus.m in Sources */,
 				4882690A164BDC3400EA58AE /* Reachability.m in Sources */,
@@ -4869,7 +4811,6 @@
 				4849433D175240EB00E1D5C4 /* LicenseViewController.m in Sources */,
 				4849436E17529DE100E1D5C4 /* ShareButton.m in Sources */,
 				484943AE1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
-				4864B3FD1757C72F0006542F /* ContactUsViewController.m in Sources */,
 				4865A9D917926CE00028785F /* BuyNumberViewController.m in Sources */,
 				48ADE7D3185C67EC00E39DA2 /* PhoneData.m in Sources */,
 				4865A9E01792C8B70028785F /* BuyNumberCell.m in Sources */,
@@ -4900,6 +4841,7 @@
 				480578E517A4FABD006923BD /* NBRecentContactViewController.m in Sources */,
 				480578E617A4FABD006923BD /* NBRecents.xcdatamodeld in Sources */,
 				480578E717A4FABD006923BD /* NBRecentsListViewController.m in Sources */,
+				48251B9C187F4A8A00E69C3A /* SettingsViewController.m in Sources */,
 				480578E817A4FABD006923BD /* NBRecentsNavigationController.m in Sources */,
 				480578E917A4FABD006923BD /* NBRecentUnknownContactViewController.m in Sources */,
 				480578EA17A4FABD006923BD /* NBUnknownPersonViewController.m in Sources */,

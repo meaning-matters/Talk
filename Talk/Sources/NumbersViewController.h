@@ -7,11 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ViewController.h"
 
-@interface NumbersViewController : ViewController <UITableViewDataSource, UITableViewDelegate>
-
-@property (nonatomic, weak) IBOutlet UITableView*   tableView;
+@interface NumbersViewController : UITableViewController
 
 - (void)refresh:(id)sender;
 

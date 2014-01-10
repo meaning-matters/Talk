@@ -31,6 +31,8 @@
     if (self = [super initWithStyle:UITableViewStylePlain])
     {
         self.title = [Strings phonesString];
+
+        self.tabBarItem.image = [UIImage imageNamed:@"PhonesTab.png"];
     }
 
     return self;

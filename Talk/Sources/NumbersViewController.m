@@ -33,7 +33,7 @@
 
 - (instancetype)init
 {
-    if (self = [super initWithNibName:@"NumbersView" bundle:nil])
+    if (self = [super initWithStyle:UITableViewStylePlain])
     {
         // Not used, because we're having a segmented control.
         self.title = NSLocalizedStringWithDefaultValue(@"Numbers:NumbersList ScreenTitle", nil,

@@ -108,7 +108,7 @@ static const int    TextFieldCellTag = 1234;
                                   area:(NSDictionary*)theArea
                         numberTypeMask:(NumberTypeMask)theNumberTypeMask
 {    
-    if (self = [super initWithNibName:@"NumberAreaView" bundle:nil])
+    if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
         numberIsoCountryCode = isoCountryCode;
         state                = theState;

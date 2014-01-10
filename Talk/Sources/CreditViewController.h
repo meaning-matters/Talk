@@ -7,10 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ViewController.h"
 
-@interface CreditViewController : ViewController <UITableViewDelegate, UITableViewDataSource>
-
-@property (nonatomic, weak) IBOutlet UITableView*   tableView;
+@interface CreditViewController : UITableViewController
 
 @end

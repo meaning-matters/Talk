@@ -10,12 +10,8 @@
 #import "NumberType.h"
 
 
-@interface NumberAreaViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
-                                                        UITextFieldDelegate, UIGestureRecognizerDelegate,
-                                                        UIImagePickerControllerDelegate, UINavigationControllerDelegate>
-
-@property (nonatomic, weak) IBOutlet UITableView*   tableView;
-
+@interface NumberAreaViewController : UITableViewController <UITextFieldDelegate, UIGestureRecognizerDelegate,
+                                                             UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 - (instancetype)initWithIsoCountryCode:(NSString*)isoCountryCode
                                  state:(NSDictionary*)state

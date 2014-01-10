@@ -12,7 +12,6 @@
 #import "HockeySDK.h"
 #import "CallManager.h"
 #import "Settings.h"
-#import "ContactUsViewController.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
 
@@ -38,7 +37,7 @@ typedef enum
 
 - (instancetype)init
 {
-    if (self = [super initWithNibName:@"HelpsView" bundle:nil])
+    if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
         self.title = NSLocalizedStringWithDefaultValue(@"Helps ScreenTitle", nil,
                                                        [NSBundle mainBundle], @"Help",

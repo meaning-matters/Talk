@@ -10,10 +10,8 @@
 #import "NumberData.h"
 
 
-@interface NumberViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate,
-                                                    UIGestureRecognizerDelegate, UINavigationControllerDelegate>
-
-@property (nonatomic, weak) IBOutlet UITableView*   tableView;
+@interface NumberViewController : UITableViewController <UITextFieldDelegate, UIGestureRecognizerDelegate,
+                                                         UINavigationControllerDelegate>
 
 - (instancetype)initWithNumber:(NumberData*)number;
 

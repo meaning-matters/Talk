@@ -18,6 +18,7 @@
 #import "NumbersViewController.h"
 #import "ShareViewController.h"
 #import "SettingsViewController.h"
+#import "PhonesViewController.h"
 #import "NBPeoplePickerNavigationController.h"
 #import "NBRecentsNavigationController.h"
 
@@ -39,6 +40,7 @@
 @property (nonatomic, strong) NumbersViewController*                    numbersViewController;
 @property (nonatomic, strong) ShareViewController*                      shareViewController;
 @property (nonatomic, strong) SettingsViewController*                   settingsViewController;
+@property (nonatomic, strong) PhonesViewController*                     phonesViewController;
 @property (nonatomic, strong) NBPeoplePickerNavigationController*       peoplePickerViewController;
 @property (nonatomic, strong) NBRecentsNavigationController*            recentsViewController;
 

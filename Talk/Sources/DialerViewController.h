@@ -7,13 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ViewController.h"
 #import "KeypadView.h"
 #import "PhoneNumber.h"
 #import "NumberLabel.h"
 
 
-@interface DialerViewController : ViewController <KeypadViewDelegate, NumberLabelDelegate>
+@interface DialerViewController : UIViewController <KeypadViewDelegate, NumberLabelDelegate>
 
 @property (nonatomic, weak) IBOutlet UIImageView*           brandingImageView;
 @property (nonatomic, weak) IBOutlet UILabel*               infoLabel;      // Label above number.

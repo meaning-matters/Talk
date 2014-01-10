@@ -43,7 +43,7 @@ typedef enum
 
 - (instancetype)init
 {
-    if (self = [super initWithNibName:@"SettingsView" bundle:nil])
+    if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
         self.title = NSLocalizedString(@"Settings", @"Settings tab title");
         self.tabBarItem.image = [UIImage imageNamed:@"SettingsTab.png"];
@@ -63,7 +63,7 @@ typedef enum
 }
 
 
-- (void)viewDidL
+- (void)viewDidLoad
 {
     [super viewDidLoad];
 

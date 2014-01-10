@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ViewController.h"
 
-@interface GroupsViewController : ViewController
+@interface GroupsViewController : UITableViewController
 
 @property (nonatomic, weak) IBOutlet UITextField*   textField;
 

@@ -197,12 +197,14 @@
 
 - (void)addViewControllersToTabBar
 {
+    // The order in this aryay defines the default tabs order.
     NSArray* viewControllerClasses =
     @[
         NSStringFromClass([NumbersViewController              class]),
         NSStringFromClass([ForwardingsViewController          class]),
         NSStringFromClass([DialerViewController               class]),
         NSStringFromClass([NBPeoplePickerNavigationController class]),
+        NSStringFromClass([PhonesViewController               class]),
         NSStringFromClass([CreditViewController               class]),
         NSStringFromClass([NBRecentsNavigationController      class]),
         NSStringFromClass([HelpsViewController                class]),
@@ -229,7 +231,6 @@
     NSMutableArray* viewControllers = [NSMutableArray array];
     for (NSString* class in viewControllerClasses)
     {
-        // All view controllers are embedded in a navigation controller.
         UIViewController*   viewController = [[NSClassFromString(class) alloc] init];
 
         if ([class isEqualToString:NSStringFromClass([NBPeoplePickerNavigationController class])])
@@ -244,7 +245,10 @@
         }
         else
         {
-            [viewControllers addObject:viewController.navigationController];
+            UINavigationController* navigationController;
+
+            navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+            [viewControllers addObject:navigationController];
 
             // Set appropriate AppDelegate property.
             SEL selector = NSSelectorFromString([@"set" stringByAppendingFormat:@"%@:", [class description]]);
@@ -257,7 +261,7 @@
 
     defaultTabBarViewControllers          = viewControllers;
     self.tabBarController.viewControllers = viewControllers;
-    self.tabBarController.selectedIndex   = [Settings sharedSettings].tabBarSelectedIndex;
+    // self.tabBarController.selectedIndex   = [Settings sharedSettings].tabBarSelectedIndex;
 }
 
 
@@ -382,7 +386,7 @@
 
     [self.numbersViewController                          fetchData];
     //###NBRecents....
-    [self.forwardingsViewController.forwardingsTableView reloadData];
+    [self.forwardingsViewController.tableView            reloadData];
     [self.forwardingsViewController.recordingsTableView  reloadData];
     [self.creditViewController.tableView                 reloadData];
 }

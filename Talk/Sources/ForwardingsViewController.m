@@ -46,7 +46,7 @@ typedef enum
 
 - (instancetype)init
 {
-    if (self = [super initWithNibName:@"ForwardingsView" bundle:nil])
+    if (self = [super initWithStyle:UITableViewStylePlain])
     {
         self.title            = [Strings forwardingsString];
         self.tabBarItem.image = [UIImage imageNamed:@"ForwardingsTab.png"];
@@ -115,7 +115,7 @@ typedef enum
     refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings synchronizeWithServerString]];
     [refreshControl addTarget:self action:@selector(refreshForwardings:) forControlEvents:UIControlEventValueChanged];
-    [self.forwardingsTableView  addSubview:refreshControl];
+    [self.tableView  addSubview:refreshControl];
 
     refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings synchronizeWithServerString]];
@@ -157,7 +157,6 @@ typedef enum
 
 - (void)refreshRecordings:(id)sender
 {
-
 }
 
 
@@ -167,7 +166,7 @@ typedef enum
 
     if (selection == SelectionForwardings)
     {
-        [self.forwardingsTableView deselectRowAtIndexPath:self.forwardingsTableView.indexPathForSelectedRow animated:YES];
+        [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
     }
     else
     {
@@ -197,7 +196,7 @@ typedef enum
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    if (tableView == self.forwardingsTableView)
+    if (tableView == self.tableView)
     {
         ForwardingViewController*   viewController;
         ForwardingData*             forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
@@ -224,7 +223,7 @@ typedef enum
 {
     UITableViewCell*    cell;
 
-    if (tableView == self.forwardingsTableView)
+    if (tableView == self.tableView)
     {
         cell = [self forwardingCellForIndexPath:indexPath];
     }
@@ -241,7 +240,7 @@ typedef enum
 {
     UITableViewCell*    cell;
 
-    cell = [self.forwardingsTableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
@@ -277,7 +276,7 @@ typedef enum
 
 - (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (tableView == self.forwardingsTableView)
+    if (tableView == self.tableView)
     {
         ForwardingData* forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
 
@@ -296,7 +295,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        if (tableView == self.forwardingsTableView)
+        if (tableView == self.tableView)
         {
             NSManagedObjectContext* context    = [fetchedForwardingsController managedObjectContext];
             ForwardingData*         forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
@@ -396,7 +395,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
         case NSFetchedResultsChangeUpdate:
             cell = [tableView cellForRowAtIndexPath:indexPath];
-            if (tableView == self.forwardingsTableView)
+            if (tableView == self.tableView)
             {
                 forwarding = [controller objectAtIndexPath:indexPath];
                 cell.textLabel.text = forwarding.name;
@@ -445,7 +444,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                                                                       target:self
                                                                       action:@selector(addForwardingAction)];
 
-            self.forwardingsTableView.hidden = NO;
+            self.tableView.hidden = NO;
             self.recordingsTableView.hidden  = YES;
             break;
 
@@ -475,7 +474,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                                                                           action:@selector(addRecordingAction)];
             }
 
-            self.forwardingsTableView.hidden = YES;
+            self.tableView.hidden = YES;
             self.recordingsTableView.hidden  = NO;
             break;
     }
@@ -540,7 +539,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     if (controller == fetchedForwardingsController)
     {
-        return self.forwardingsTableView;
+        return self.tableView;
     }
     else
     {
@@ -551,7 +550,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
 - (NSFetchedResultsController*)resultsControllerForTableView:(UITableView*)tableView
 {
-    if (tableView == self.forwardingsTableView)
+    if (tableView == self.tableView)
     {
         return fetchedForwardingsController;
     }

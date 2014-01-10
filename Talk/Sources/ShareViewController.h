@@ -8,12 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
-#import "ViewController.h"
 #import "ShareButton.h"
 
 
-@interface ShareViewController : ViewController <MFMessageComposeViewControllerDelegate,
-                                                 MFMailComposeViewControllerDelegate>
+@interface ShareViewController : UIViewController <MFMessageComposeViewControllerDelegate,
+                                                   MFMailComposeViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet ShareButton*   twitterButton;
 @property (nonatomic, weak) IBOutlet ShareButton*   facebookButton;

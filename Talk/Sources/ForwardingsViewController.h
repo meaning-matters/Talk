@@ -7,13 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ViewController.h"
 
 
-@interface ForwardingsViewController : ViewController <UITableViewDataSource, UITableViewDelegate,
-                                                       NSFetchedResultsControllerDelegate>
+@interface ForwardingsViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 
-@property (nonatomic, weak) IBOutlet UITableView*   forwardingsTableView;
 @property (nonatomic, weak) IBOutlet UITableView*   recordingsTableView;
 
 @end

@@ -473,7 +473,8 @@ static SipInterface*    sipInterface;
             call.network = CallNetworkMobile;
         }
     }
-    else if ([Settings sharedSettings].callbackMode == YES &&
+    else if ([self checkAccount] &&
+             [Settings sharedSettings].callbackMode == YES &&
              [phoneNumber.originalFormat isEqualToString:[Settings sharedSettings].testNumber] == NO)
     {
         if ([phoneNumber isValid] == YES)

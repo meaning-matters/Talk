@@ -35,10 +35,6 @@
         self.title = NSLocalizedString(@"Dialer", @"Dialer tab title");
         self.tabBarItem.image = [UIImage imageNamed:@"DialerTab.png"];
 
-        // We don't want navigation bar when dialer is on main tabs.  (It will
-        // always get a navigation bar, when moved to more tab.)
-        navigationController.navigationBar.hidden = YES;
-
         phoneNumber = [[PhoneNumber alloc] init];
         [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
                                                           object:nil
@@ -111,6 +107,10 @@
     self.numberLabel.delegate = self;
 
     self.keypadView.delegate = self;
+
+    // We don't want navigation bar when dialer is on main tabs.  (It will
+    // always get a navigation bar, when moved to more tab.)
+    self.navigationController.navigationBar.hidden = YES;
 }
 
 

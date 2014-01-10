@@ -7,11 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ViewController.h"
 
-@interface SettingsViewController : ViewController <UITableViewDataSource, UITableViewDelegate>
-
-@property (nonatomic, strong) IBOutlet UITableView* tableView;
+@interface SettingsViewController : UITableViewController
 
 - (void)allowDataCalls; // Prompts user if data calls must be enable.
 
