@@ -240,6 +240,7 @@
 
 - (void)endCall:(Call*)call
 {
+#if HAS_VOIP
 #warning Move this to SipInterface, and do when last call in array has been ended.
     [Common dispatchAfterInterval:0.5 onMain:^
     {
@@ -248,6 +249,7 @@
         // on CallView just before it disappears.
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
     }];
+#endif
 }
 
 

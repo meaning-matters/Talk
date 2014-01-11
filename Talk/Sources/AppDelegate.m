@@ -72,8 +72,14 @@
         // Apply skinning.
         [Skinning sharedSkinning];
 
-        [self showDefaultImage];
+        // Allow mixing audio from other apps.  By default this is not the case.
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
 
+        // Welcome stuff.
+        [self showDefaultImage];
+        [self playWelcome];
+
+#if HAS_VOIP
         [[AVAudioSession sharedInstance] setActive:YES error:nil]; // Make sure there's an audio session.
         [[NSNotificationCenter defaultCenter] addObserverForName:@"AVSystemController_SystemVolumeDidChangeNotification"
                                                           object:nil
@@ -88,6 +94,7 @@
                 }];
             }
         }];
+#endif
     });
 }
 
@@ -96,8 +103,6 @@
 {
 #warning Don't forget to remove, and to switch to NO 'Application supports iTunes file sharing' in .plist.
     // [Common redirectStderrToFile];
-
-    [self playWelcome];
 
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge |
                                                                           UIRemoteNotificationTypeSound |
