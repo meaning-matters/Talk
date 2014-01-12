@@ -50,9 +50,11 @@
     if (self.presentingViewController != nil)
     {
         // Shown as modal.
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                               target:self
-                                                                                               action:@selector(cancelAction)];
+        UIBarButtonItem* barButtonItem;
+        barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                      target:self
+                                                                      action:@selector(cancelAction)];
+        self.navigationItem.rightBarButtonItem = barButtonItem;
     }
 
     [self.tableView registerNib:[UINib nibWithNibName:@"CreditAmountCell" bundle:nil]
@@ -379,7 +381,7 @@
     cell.amountImageView.alpha  = self.buyIndexPath ? 0.5 : 1.0;
     cell.descriptionLabel.alpha = self.buyIndexPath ? 0.5 : 1.0;
     cell.userInteractionEnabled = self.buyIndexPath ? NO  : YES;
-    if (self.buyIndexPath != nil && [self.buyIndexPath compare:indexPath] == NSOrderedSame)
+    if (self.buyIndexPath != nil && [self.buyIndexPath isEqual:indexPath] == YES)
     {
         [cell.activityIndicator startAnimating];
     }
@@ -392,20 +394,12 @@
 
 - (void)updateVisibleBuyCells
 {
-    NSLog(@"updateVisibleBuyCells");
-    //return;
     for (NSIndexPath* indexPath in [self.tableView indexPathsForVisibleRows])
     {
-        NSLog(@"A %d", [indexPath compare:self.amountIndexPath]);
-        if (indexPath.row != 0)
+        if ([indexPath isEqual:self.amountIndexPath] == NO)
         {
-            NSLog(@"B %d", [indexPath compare:self.amountIndexPath]);
             CreditBuyCell* cell = (CreditBuyCell*)[self.tableView cellForRowAtIndexPath:indexPath];
             [self updateBuyCell:cell atIndexPath:indexPath];
-        }
-        else
-        {
-
         }
     }
 }

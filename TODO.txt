@@ -145,4 +145,4 @@
 
 * http://gowalla.com/ bestaat niet in license
 
-
+* Kopen van credit (etc) zonder internet geeft geen melding: Kijk PurchaseManager na!

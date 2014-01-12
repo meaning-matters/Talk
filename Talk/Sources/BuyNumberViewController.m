@@ -438,7 +438,7 @@
     cell.monthsLabel.alpha       = self.buyIndexPath ? 0.5 : 1.0;
     cell.setupLabel.alpha        = self.buyIndexPath ? 0.5 : 1.0;
     cell.userInteractionEnabled  = self.buyIndexPath ? NO  : YES;
-    if (self.buyIndexPath != nil && [self.buyIndexPath compare:indexPath] == NSOrderedSame)
+    if (self.buyIndexPath != nil && [self.buyIndexPath isEqual:indexPath] == YES)
     {
         [cell.activityIndicator startAnimating];
     }
