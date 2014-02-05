@@ -286,18 +286,21 @@
     id customizeView = [[tabBarController view] subviews][1];
     if([customizeView isKindOfClass:NSClassFromString(@"UITabBarCustomizeView")] == YES)
     {
-        UINavigationBar*    navigationBar = (UINavigationBar*)[customizeView subviews][0];
+        UINavigationBar* navigationBar = (UINavigationBar*)[customizeView subviews][0];
         if ([navigationBar isKindOfClass:[UINavigationBar class]])
         {
-            navigationBar.topItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemUndo
-                                                                                                    target:self
-                                                                                                    action:@selector(setDefaultTabBarViewControllers)];
+            UIBarButtonItem* barButtonItem;
+            barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemUndo
+                                                                          target:self
+                                                                          action:@selector(setDefaultTabBarViewControllers)];
+            navigationBar.topItem.leftBarButtonItem = barButtonItem;
         }
     }
 }
 
 
-- (void)tabBarController:(UITabBarController*)tabBarController willEndCustomizingViewControllers:(NSArray*)viewControllers changed:(BOOL)changed
+- (void)tabBarController:(UITabBarController*)tabBarController willEndCustomizingViewControllers:(NSArray*)viewControllers
+                 changed:(BOOL)changed
 {
     if (changed)
     {
@@ -376,6 +379,7 @@
     [self.numbersViewController.navigationController     popToRootViewControllerAnimated:NO];
     //###NBRecents....
     [self.forwardingsViewController.navigationController popToRootViewControllerAnimated:NO];
+    [self.phonesViewController.navigationController      popToRootViewControllerAnimated:NO];
 
     [[DataManager     sharedManager]  removeAll];
     [[Settings        sharedSettings] resetAll];
@@ -388,12 +392,6 @@
     {
         NSLog(@"//### Failed to remove audio directory: %@", error.localizedDescription);
     }
-
-    [self.numbersViewController                          fetchData];
-    //###NBRecents....
-    [self.forwardingsViewController.tableView            reloadData];
-    [self.forwardingsViewController.recordingsTableView  reloadData];
-    [self.creditViewController.tableView                 reloadData];
 }
 
 
@@ -401,7 +399,6 @@
 {
     [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
     {
-        [self.numbersViewController fetchData];
     }];
 }
 

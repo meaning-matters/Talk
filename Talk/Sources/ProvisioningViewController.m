@@ -285,15 +285,16 @@
                                                                                                          e164s.count];
                     }
 
-                    if ([Settings sharedSettings].callbackE164.length == 0)
+                    NSLog(@"//####### For now always verify number.");
+                    // if ([Settings sharedSettings].callbackE164.length == 0)
                     {
                         [self setVerifyStep:1];
                         [self showView:self.verifyView];
                     }
-                    else
+                    //else
                     {
-                        [self showView:self.readyView];
-                        [[AppDelegate appDelegate] restore];
+                        //     [self showView:self.readyView];
+                        // [[AppDelegate appDelegate] restore];
                     }
                 }
                 else
@@ -546,7 +547,7 @@
                                                 @"[iOS alert title size].");
     message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyCancelMessage", nil,
                                                 [NSBundle mainBundle],
-                                                @"Enter a number you own; it will be linked to your account.",
+                                                @"Enter the number of a phone you own, or are responsible for.",
                                                 @"Message explaining about the phone number they need to enter.\n"
                                                 @"[iOS alert message size]");
     alert   = [BlockAlertView showPhoneNumberAlertViewWithTitle:title

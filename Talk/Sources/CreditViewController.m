@@ -381,7 +381,7 @@
     cell.amountImageView.alpha  = self.buyIndexPath ? 0.5 : 1.0;
     cell.descriptionLabel.alpha = self.buyIndexPath ? 0.5 : 1.0;
     cell.userInteractionEnabled = self.buyIndexPath ? NO  : YES;
-    if (self.buyIndexPath != nil && [self.buyIndexPath isEqual:indexPath] == YES)
+    if (self.buyIndexPath != nil && [Common indexPath:self.buyIndexPath isEqual:indexPath] == YES)
     {
         [cell.activityIndicator startAnimating];
     }
@@ -396,7 +396,7 @@
 {
     for (NSIndexPath* indexPath in [self.tableView indexPathsForVisibleRows])
     {
-        if ([indexPath isEqual:self.amountIndexPath] == NO)
+        if ([Common indexPath:indexPath isEqual:self.amountIndexPath] == NO)
         {
             CreditBuyCell* cell = (CreditBuyCell*)[self.tableView cellForRowAtIndexPath:indexPath];
             [self updateBuyCell:cell atIndexPath:indexPath];

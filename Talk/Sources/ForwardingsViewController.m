@@ -60,6 +60,8 @@ typedef enum
 {
     [super viewDidLoad];
 
+    self.clearsSelectionOnViewWillAppear = YES;
+
     NSString*   forwardingsTitle;
     NSString*   recordingsTitle;
 
@@ -74,7 +76,6 @@ typedef enum
                                                         @"[1/2 line larger font].");
 
     selectionSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[forwardingsTitle, recordingsTitle]];
-    selectionSegmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
     [selectionSegmentedControl addTarget:self
                                   action:@selector(selectionUpdateAction)
                         forControlEvents:UIControlEventValueChanged];
@@ -86,7 +87,7 @@ typedef enum
 
     NSError* error;
     fetchedForwardingsController = [[DataManager sharedManager] fetchResultsForEntityName:@"Forwarding"
-                                                                              withSortKey:@"name"
+                                                                             withSortKeys:@[@"name"]
                                                                                     error:&error];
     if (fetchedForwardingsController != nil)
     {
@@ -98,7 +99,7 @@ typedef enum
     }
 #if FULL_FORWARDINGS
     fetchedRecordingsController  = [[DataManager sharedManager] fetchResultsForEntityName:@"Recording"
-                                                                              withSortKey:@"name"
+                                                                             withSortKeys:@[@"name"]
                                                                                     error:&error];
     if (fetchedRecordingsController != nil)
     {
@@ -114,49 +115,29 @@ typedef enum
 
     refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings synchronizeWithServerString]];
-    [refreshControl addTarget:self action:@selector(refreshForwardings:) forControlEvents:UIControlEventValueChanged];
-    [self.tableView  addSubview:refreshControl];
-
-    refreshControl = [[UIRefreshControl alloc] init];
-    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings synchronizeWithServerString]];
-    [refreshControl addTarget:self action:@selector(refreshRecordings:) forControlEvents:UIControlEventValueChanged];
-    [self.recordingsTableView addSubview:refreshControl];
+    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
 }
 
 
-- (void)refreshForwardings:(id)sender
+- (void)refresh:(id)sender
 {
     if ([Settings sharedSettings].haveVerifiedAccount == YES)
     {
-        // Add delays to allow uninterrupted animations of UIRefreshControl
-        [Common dispatchAfterInterval:0.5 onMain:^
+        [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
         {
-            [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
-            {
-                [Common dispatchAfterInterval:0.1 onMain:^
-                {
-                    [sender endRefreshing];
-                }];
+            [sender endRefreshing];
 
-                if (error == nil)
-                {
-                    //### Need some fetch data here like in NumbersVC?
-                }
-            }];
+            if (error == nil)
+            {
+                //### Need some fetch data here like in NumbersVC?
+            }
         }];
     }
     else
     {
-        [Common dispatchAfterInterval:1.0 onMain:^
-        {
-            [sender endRefreshing];
-        }];
+        [sender endRefreshing];
     }
-}
-
-
-- (void)refreshRecordings:(id)sender
-{
 }
 
 
@@ -164,15 +145,6 @@ typedef enum
 {
     [super viewWillAppear:animated];
 
-    if (selection == SelectionForwardings)
-    {
-        [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
-    }
-    else
-    {
-        [self.recordingsTableView deselectRowAtIndexPath:self.recordingsTableView.indexPathForSelectedRow animated:YES];
-    }
-    
     [self selectionUpdateAction];
 }
 
@@ -181,16 +153,17 @@ typedef enum
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return 1;
+    NSFetchedResultsController* controller = [self resultsControllerForTableView:tableView];
+
+    return controller.sections.count;
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSFetchedResultsController*         controller = [self resultsControllerForTableView:tableView];
-    id <NSFetchedResultsSectionInfo>    sectionInfo = [[controller sections] objectAtIndex:section];
+    NSFetchedResultsController* controller  = [self resultsControllerForTableView:tableView];
 
-    return [sectionInfo numberOfObjects];
+    return [controller.sections[section] numberOfObjects];
 }
 
 
@@ -198,8 +171,8 @@ typedef enum
 {
     if (tableView == self.tableView)
     {
-        ForwardingViewController*   viewController;
-        ForwardingData*             forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
+        ForwardingViewController* viewController;
+        ForwardingData*           forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
 
         viewController = [[ForwardingViewController alloc] initWithFetchedResultsController:fetchedForwardingsController
                                                                                  forwarding:forwarding];
@@ -208,8 +181,8 @@ typedef enum
     }
     else
     {
-        RecordingViewController*    viewController;
-        RecordingData*              recording = [fetchedRecordingsController objectAtIndexPath:indexPath];
+        RecordingViewController* viewController;
+        RecordingData*           recording = [fetchedRecordingsController objectAtIndexPath:indexPath];
         
         viewController = [[RecordingViewController alloc] initWithFetchedResultsController:fetchedRecordingsController
                                                                                  recording:recording];
@@ -221,7 +194,7 @@ typedef enum
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
+    UITableViewCell* cell;
 
     if (tableView == self.tableView)
     {
@@ -238,7 +211,7 @@ typedef enum
 
 - (UITableViewCell*)forwardingCellForIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
+    UITableViewCell* cell;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
@@ -247,9 +220,9 @@ typedef enum
     }
 
     ForwardingData* forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = forwarding.name;
-    cell.imageView.image = [UIImage imageNamed:@"List"];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.text        = forwarding.name;
+    cell.imageView.image       = [UIImage imageNamed:@"List"];
+    cell.accessoryType         = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
 }
@@ -257,7 +230,7 @@ typedef enum
 
 - (UITableViewCell*)recordingCellForIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
+    UITableViewCell* cell;
 
     cell = [self.recordingsTableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
@@ -265,10 +238,10 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
-    RecordingData*  recording = [fetchedRecordingsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = recording.name;
-    cell.imageView.image = [UIImage imageNamed:@"Microphone"];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    RecordingData* recording = [fetchedRecordingsController objectAtIndexPath:indexPath];
+    cell.textLabel.text      = recording.name;
+    cell.imageView.image     = [UIImage imageNamed:@"Microphone"];
+    cell.accessoryType       = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
 }
@@ -353,7 +326,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
            atIndex:(NSUInteger)sectionIndex
      forChangeType:(NSFetchedResultsChangeType)type
 {
-    UITableView*    tableView = [self tableViewForResultsController:controller];
+    UITableView* tableView = [self tableViewForResultsController:controller];
 
     switch (type)
     {
@@ -376,10 +349,10 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath*)newIndexPath
 {
-    UITableView*        tableView = [self tableViewForResultsController:controller];
-    UITableViewCell*    cell;
-    RecordingData*      recording;
-    ForwardingData*     forwarding;
+    UITableView*     tableView = [self tableViewForResultsController:controller];
+    UITableViewCell* cell;
+    RecordingData*   recording;
+    ForwardingData*  forwarding;
 
     switch (type)
     {
@@ -419,7 +392,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController*)controller
 {
-    UITableView*    tableView = [self tableViewForResultsController:controller];
+    UITableView* tableView = [self tableViewForResultsController:controller];
 
     [tableView endUpdates];
 }
@@ -435,8 +408,8 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
         [Settings sharedSettings].forwardingsSelection = selection;
     }
 
-    UIBarButtonItem*    leftItem;
-    UIBarButtonItem*    rightItem;
+    UIBarButtonItem* leftItem;
+    UIBarButtonItem* rightItem;
     switch (selection)
     {
         case SelectionForwardings:

@@ -22,8 +22,8 @@
 
 @interface NumbersViewController ()
 {
-    NSMutableArray*     numbersArray;
-    UISegmentedControl* sortSegmentedControl;
+    NSFetchedResultsController* fetchedNumbersController;
+    UISegmentedControl*         sortSegmentedControl;
 }
 
 @end
@@ -35,14 +35,8 @@
 {
     if (self = [super initWithStyle:UITableViewStylePlain])
     {
-        // Not used, because we're having a segmented control.
-        self.title = NSLocalizedStringWithDefaultValue(@"Numbers:NumbersList ScreenTitle", nil,
-                                                       [NSBundle mainBundle], @"Numbers",
-                                                       @"Title of app screen with list of phone numbers\n"
-                                                       @"[1 line larger font].");
+        self.title            = [Strings numbersString]; // Not used, because we're having a segmented control.
         self.tabBarItem.image = [UIImage imageNamed:@"NumbersTab.png"];
-
-        numbersArray          = [NSMutableArray array];
     }
 
     return self;
@@ -52,6 +46,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.clearsSelectionOnViewWillAppear = YES;
+
+    NSError* error;
+    fetchedNumbersController = [[DataManager sharedManager] fetchResultsForEntityName:@"Number"
+                                                                         withSortKeys:[self sortKeys]
+                                                                                error:&error];
+    if (fetchedNumbersController != nil)
+    {
+        fetchedNumbersController.delegate = self;
+    }
+    else
+    {
+        NSLog(@"//### Error: %@", error.localizedDescription);
+    }
+
 
     NSString*           byCountries = NSLocalizedStringWithDefaultValue(@"Numbers SortByCountries", nil,
                                                                         [NSBundle mainBundle], @"Countries",
@@ -76,9 +86,7 @@
     UIRefreshControl* refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings synchronizeWithServerString]];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
-    [self.tableView addSubview:refreshControl];
-
-    [self fetchData];
+    self.refreshControl = refreshControl;
 }
 
 
@@ -86,29 +94,19 @@
 {
     if ([Settings sharedSettings].haveVerifiedAccount == YES)
     {
-        // Add delays to allow uninterrupted animations of UIRefreshControl
-        [Common dispatchAfterInterval:0.5 onMain:^
+        [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
         {
-            [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
-            {
-                [Common dispatchAfterInterval:0.1 onMain:^
-                {
-                    [sender endRefreshing];
-                }];
+            [sender endRefreshing];
 
-                if (error == nil)
-                {
-                    error = [self fetchData];
-                }
-            }];
+            if (error == nil)
+            {
+                //### Need some fetch data here like in NumbersVC?
+            }
         }];
     }
     else
     {
-        [Common dispatchAfterInterval:1.0 onMain:^
-        {
-            [sender endRefreshing];
-        }];
+        [sender endRefreshing];
     }
 }
 
@@ -120,7 +118,6 @@
     NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
     if (selectedIndexPath != nil)
     {
-        [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
         [self updateCell:[self.tableView cellForRowAtIndexPath:selectedIndexPath] atIndexPath:selectedIndexPath];
 
         NSError* error= nil;
@@ -145,7 +142,15 @@
 {
     [Settings sharedSettings].numbersSortSegment = sortSegmentedControl.selectedSegmentIndex;
 
-    [self fetchData];
+    NSError* error;
+    if ([[DataManager sharedManager] setSortKeys:[self sortKeys]
+                             ofResultsController:fetchedNumbersController
+                                           error:&error] == NO)
+    {
+        //#### Handle error.
+    }
+
+    //#### setSortKeys fetches, so not needed: [self fetchData];
 }
 
 
@@ -172,40 +177,9 @@
 }
 
 
-- (NSError*)fetchData
-{
-    NSFetchRequest* request         = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
-    NSArray*        sortDescriptors;
-    if (sortSegmentedControl.selectedSegmentIndex == 0)
-    {
-        sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"numberCountry" ascending:YES],
-                            [[NSSortDescriptor alloc] initWithKey:@"name"          ascending:YES]];
-    }
-    else
-    {
-        sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"name"          ascending:YES],
-                            [[NSSortDescriptor alloc] initWithKey:@"numberCountry" ascending:YES]];
-    }
-
-    [request setSortDescriptors:sortDescriptors];
-
-    NSError*        error   = nil;
-    NSMutableArray* results = [[[DataManager sharedManager].managedObjectContext executeFetchRequest:request
-                                                                                               error:&error] mutableCopy];
-    if (results != nil)
-    {
-        numbersArray = results;
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-    }
-
-    return error;
-}
-
-
 - (void)updateCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
-    NumberData* number = numbersArray[indexPath.row];
-
+    NumberData* number   = [fetchedNumbersController objectAtIndexPath:indexPath];
     cell.imageView.image = [UIImage imageNamed:number.numberCountry];
     cell.textLabel.text  = number.name;
     cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
@@ -216,22 +190,21 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return 1;
+    return fetchedNumbersController.sections.count;
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return numbersArray.count;
+    return [fetchedNumbersController.sections[section] numberOfObjects];
 }
 
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NumberData* number = numbersArray[indexPath.row];
+    NumberData*           number         = [fetchedNumbersController objectAtIndexPath:indexPath];
+    NumberViewController* viewController = [[NumberViewController alloc] initWithNumber:number];
 
-    NumberViewController* viewController;
-    viewController = [[NumberViewController alloc] initWithNumber:number];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -253,6 +226,22 @@
 - (void)tableView:(UITableView*)tableView willDisplayCell:(UITableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     [self updateCell:cell atIndexPath:indexPath];
+}
+
+
+#pragma mark - Helpers
+
+- (NSArray*)sortKeys
+{
+    if ([Settings sharedSettings].numbersSortSegment == 0)
+    {
+        return @[@"numberCountry", @"name"];
+    }
+    else
+    {
+        return @[@"name", @"numberCountry"];
+    }
+
 }
 
 @end

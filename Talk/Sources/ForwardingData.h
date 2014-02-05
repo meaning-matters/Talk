@@ -9,7 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NumberData, RecordingData;
+
+@class NumberData, RecordingData, PhoneData;
 
 @interface ForwardingData : NSManagedObject
 
@@ -18,6 +19,10 @@
 @property (nonatomic, retain) NSString* statements; // JSON formatted string.
 @property (nonatomic, retain) NSSet*    numbers;
 @property (nonatomic, retain) NSSet*    recordings;
+@property (nonatomic, retain) NSSet*    phones;
+
+- (void)deleteFromManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
+                            completion:(void (^)(BOOL succeeded))completion;
 
 @end
 
@@ -34,7 +39,9 @@
 - (void)addRecordings:(NSSet*)values;
 - (void)removeRecordings:(NSSet*)values;
 
-- (void)deleteFromManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
-                            completion:(void (^)(BOOL succeeded))completion;
+- (void)addPhonesObject:(PhoneData*)value;
+- (void)removePhonesObject:(PhoneData*)value;
+- (void)addPhones:(NSSet*)values;
+- (void)removePhones:(NSSet*)values;
 
 @end

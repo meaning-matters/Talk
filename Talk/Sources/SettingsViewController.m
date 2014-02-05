@@ -326,38 +326,38 @@ typedef enum
                                                                 phoneNumber:callerIdPhoneNumber
                                                                  completion:^(BOOL         cancelled,
                                                                               PhoneNumber* phoneNumber)
-                           {
-                               if (cancelled == NO)
-                               {
-                                   if ([phoneNumber isValid])
-                                   {
-                                       settings.callerIdE164 = [phoneNumber e164Format];
+                          {
+                              if (cancelled == NO)
+                              {
+                                  if ([phoneNumber isValid])
+                                  {
+                                      settings.callerIdE164 = [phoneNumber e164Format];
 
-                                       [self reloadCallModeSection];
-                                   }
-                                   else
-                                   {
-                                       NSString* title;
-                                       NSString* message;
+                                      [self reloadCallModeSection];
+                                  }
+                                  else
+                                  {
+                                      NSString* title;
+                                      NSString* message;
 
-                                       title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidTitle", nil,
-                                                                                   [NSBundle mainBundle], @"Invalid Number",
-                                                                                   @"Phone number is not correct.\n"
-                                                                                   @"[iOS alert title size].");
-                                       message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidMessage", nil,
-                                                                                   [NSBundle mainBundle],
-                                                                                   @"The phone number you entered is invalid, "
-                                                                                   @"please correct.",
-                                                                                   @"Alert message that entered phone number is invalid.\n"
-                                                                                   @"[iOS alert message size]");
-                                       [BlockAlertView showAlertViewWithTitle:title
-                                                                      message:message
-                                                                   completion:nil
-                                                            cancelButtonTitle:[Strings closeString]
-                                                            otherButtonTitles:nil];
-                                   }
-                               }
-                           }
+                                      title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidTitle", nil,
+                                                                                  [NSBundle mainBundle], @"Invalid Number",
+                                                                                  @"Phone number is not correct.\n"
+                                                                                  @"[iOS alert title size].");
+                                      message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidMessage", nil,
+                                                                                  [NSBundle mainBundle],
+                                                                                  @"The phone number you entered is invalid, "
+                                                                                  @"please correct.",
+                                                                                  @"Alert message that entered phone number is invalid.\n"
+                                                                                  @"[iOS alert message size]");
+                                      [BlockAlertView showAlertViewWithTitle:title
+                                                                     message:message
+                                                                  completion:nil
+                                                           cancelButtonTitle:[Strings closeString]
+                                                           otherButtonTitles:nil];
+                                  }
+                              }
+                          }
                                                           cancelButtonTitle:[Strings cancelString]
                                                           otherButtonTitles:[Strings okString], nil];
             }

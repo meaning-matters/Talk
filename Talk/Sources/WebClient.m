@@ -619,6 +619,7 @@ static NSDictionary* statuses;
 
 // 11A. PURCHASE NUMBER
 - (void)purchaseNumberForReceipt:(NSString*)receipt
+                       productId:(NSString*)productId
                           months:(int)months
                             name:(NSString*)name
                   isoCountryCode:(NSString*)isoCountryCode
@@ -632,6 +633,7 @@ static NSDictionary* statuses;
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
     NSMutableDictionary* parameters = [@{@"receipt"        : receipt,
+                                         @"productId"      : productId,
                                          @"durationMonths" : @(months),
                                          @"name"           : name,
                                          @"isoCountryCode" : isoCountryCode,

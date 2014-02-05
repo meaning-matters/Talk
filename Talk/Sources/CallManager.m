@@ -327,7 +327,7 @@ static SipInterface*    sipInterface;
 
         result = NO;
     }
-    else if (reachable == NetworkStatusReachableCellular && [Settings sharedSettings].allowCellularDataCalls == NO)
+    else if (HAS_VOIP && reachable == NetworkStatusReachableCellular && [Settings sharedSettings].allowCellularDataCalls == NO)
     {
         title   = NSLocalizedStringWithDefaultValue(@"Call:Voip DisallowCellularTitle", nil,
                                                     [NSBundle mainBundle], @"No Cellular Data Calls",

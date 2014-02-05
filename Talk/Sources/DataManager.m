@@ -167,19 +167,30 @@
 }
 
 
+- (NSArray*)fetchEntitiesWithName:(NSString*)entityName
+                         sortKeys:(NSArray*)sortKeys
+                        predicate:(NSPredicate*)predicate
+                            error:(NSError**)error
+{
+    NSFetchRequest*             fetchRequest;
+
+    fetchRequest      = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    [self setSortKeys:sortKeys ofFetchRequest:fetchRequest];
+    [fetchRequest setPredicate:predicate];
+
+    return [self.managedObjectContext executeFetchRequest:fetchRequest error:error];
+}
+
+
 - (NSFetchedResultsController*)fetchResultsForEntityName:(NSString*)entityName
-                                             withSortKey:(NSString*)key
+                                            withSortKeys:(NSArray*)sortKeys
                                                    error:(NSError**)error
 {
     NSFetchedResultsController* resultsController;
     NSFetchRequest*             fetchRequest;
-    NSSortDescriptor*           nameDescriptor;
-    NSArray*                    sortDescriptors;
 
-    fetchRequest    = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    nameDescriptor  = [[NSSortDescriptor alloc] initWithKey:key ascending:YES];
-    sortDescriptors = [[NSArray alloc] initWithObjects:nameDescriptor, nil];
-    [fetchRequest setSortDescriptors:sortDescriptors];
+    fetchRequest      = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    [self setSortKeys:sortKeys ofFetchRequest:fetchRequest];
 
     resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                             managedObjectContext:self.managedObjectContext
@@ -194,6 +205,39 @@
     else
     {
         return nil;
+    }
+}
+
+
+- (void)setSortKeys:(NSArray*)sortKeys
+     ofFetchRequest:(NSFetchRequest*)fetchRequest
+{
+    NSMutableArray* sortDescriptors;
+
+    sortDescriptors = [NSMutableArray array];
+    for (NSString* sortKey in sortKeys)
+    {
+        [sortDescriptors addObject:[[NSSortDescriptor alloc] initWithKey:sortKey ascending:YES]];
+    }
+
+    [fetchRequest setSortDescriptors:sortDescriptors];
+}
+
+
+- (BOOL)setSortKeys:(NSArray*)sortKeys
+ofResultsController:(NSFetchedResultsController*)resultsController
+              error:(NSError**)error
+{
+    [self setSortKeys:sortKeys ofFetchRequest:resultsController.fetchRequest];
+
+    *error = nil;
+    if ([resultsController performFetch:error] == YES)
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
     }
 }
 

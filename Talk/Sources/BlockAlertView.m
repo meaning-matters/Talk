@@ -127,29 +127,6 @@
 }
 
 
-- (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (self.phoneNumberTextFieldDelegate != nil && buttonIndex == 1)
-    {
-        if ([Common checkCountryOfPhoneNumber:self.phoneNumberTextFieldDelegate.phoneNumber
-                                   completion:^(BOOL cancelled, PhoneNumber* phoneNumber)
-        {
-            self.phoneNumberCompletion ? self.phoneNumberCompletion(cancelled, phoneNumber) : 0;
-        }] == YES)
-        {
-            // Number already has ISO country code; call completion now.
-            self.phoneNumberCompletion ? self.phoneNumberCompletion(NO, self.phoneNumberTextFieldDelegate.phoneNumber) : 0;
-        }
-        else
-        {
-            // No ISO country code yet; wait for checkCountryOfPhoneNumber to complete.
-        }
-    }
-    
-    [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
-}
-
-
 - (BlockAlertView*)initWithTitle:(NSString*)title
                          message:(NSString*)message
                       completion:(void (^)(BOOL cancelled, NSInteger buttonIndex))completion
@@ -177,9 +154,34 @@
 }
 
 
+#pragma  Alert View Delegate
+
+- (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (self.phoneNumberTextFieldDelegate != nil && buttonIndex == 1)
+    {
+        if ([Common checkCountryOfPhoneNumber:self.phoneNumberTextFieldDelegate.phoneNumber
+                                   completion:^(BOOL cancelled, PhoneNumber* phoneNumber)
+            {
+                self.phoneNumberCompletion ? self.phoneNumberCompletion(cancelled, phoneNumber) : 0;
+            }] == YES)
+        {
+            // Number already has ISO country code; call completion now.
+            self.phoneNumberCompletion ? self.phoneNumberCompletion(NO, self.phoneNumberTextFieldDelegate.phoneNumber) : 0;
+        }
+        else
+        {
+            // No ISO country code yet; wait for checkCountryOfPhoneNumber to complete.
+        }
+    }
+
+    [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+}
+
+
 - (void)alertView:(UIAlertView*)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    self.completion ? self.completion(buttonIndex == self.cancelButtonIndex, buttonIndex) : 0;
+    self.completion ? self.completion(buttonIndex == alertView.cancelButtonIndex, buttonIndex) : 0;
 }
 
 @end

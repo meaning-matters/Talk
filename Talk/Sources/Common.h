@@ -100,4 +100,7 @@
 
 + (void)addCountryImageToCell:(UITableViewCell*)cell isoCountryCode:(NSString*)isoCountryCode;
 
+// Resolves an issue with NSIndexPath's isEqual: http://stackoverflow.com/a/18920573/1971013
++ (BOOL)indexPath:(NSIndexPath*)indexPathA isEqual:(NSIndexPath*)indexPathB;
+
 @end

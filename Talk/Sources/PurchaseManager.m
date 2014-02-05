@@ -315,6 +315,7 @@
         {
             // Retry number processing.
             [[WebClient sharedClient] purchaseNumberForReceipt:pendingNumberBuy[@"receipt"]
+                                                     productId:pendingNumberBuy[@"productId"]
                                                         months:[pendingNumberBuy[@"months"] intValue]
                                                           name:pendingNumberBuy[@"name"]
                                                 isoCountryCode:pendingNumberBuy[@"isoCountryCode"]
@@ -811,6 +812,7 @@
             NSString*             receipt     = [Base64 encode:transaction.transactionReceipt];
 
             [[WebClient sharedClient] purchaseNumberForReceipt:receipt
+                                                     productId:[self productIdentifierForNumberTier:tier]
                                                         months:months
                                                           name:name
                                                 isoCountryCode:isoCountryCode
@@ -833,6 +835,7 @@
                     NSMutableDictionary* pendingNumberBuy;
                     pendingNumberBuy = [@{@"transactionIdentifier" : transaction.transactionIdentifier,
                                           @"receipt"               : receipt,
+                                          @"productId"             : [self productIdentifierForNumberTier:tier],
                                           @"months"                : @(months),
                                           @"name"                  : name,
                                           @"isoCountryCode"        : isoCountryCode,

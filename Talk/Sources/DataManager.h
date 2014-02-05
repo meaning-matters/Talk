@@ -20,9 +20,18 @@
 
 - (void)removeAll;
 
+- (NSArray*)fetchEntitiesWithName:(NSString*)entityName
+                         sortKeys:(NSArray*)sortKeys
+                        predicate:(NSPredicate*)predicate
+                            error:(NSError**)error;
+
 - (NSFetchedResultsController*)fetchResultsForEntityName:(NSString*)entityName
-                                             withSortKey:(NSString*)key
+                                            withSortKeys:(NSArray*)keys
                                                    error:(NSError**)error;
+
+- (BOOL)setSortKeys:(NSArray*)sortKeys
+ofResultsController:(NSFetchedResultsController*)resultsController
+              error:(NSError**)error;
 
 - (void)synchronizeWithServer:(void (^)(NSError* error))completion;
 

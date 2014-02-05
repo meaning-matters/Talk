@@ -143,6 +143,17 @@
 
 * Tijdens splash image kan je nummers intoetsen die erachter staan.
 
-* http://gowalla.com/ bestaat niet in license
-
 * Kopen van credit (etc) zonder internet geeft geen melding: Kijk PurchaseManager na!
+
+* na Restore is Caller ID niet ingevuld en crasht app bij aanmaken dictionary voor callback api message.
+
+* add refreshControl to UITableViewController property, remove added delays from action methods.
+
+* Kijk clearsSelectionOnViewWillAppear ff na in alle UITableVC's; eigen code to deselect kan weg denk ik.
+
+* segmentedControlStyle mag niet meer in iOS 7
+
+* showBlockingAlertViewWithTitle has problem.
+
+* Create and use Common method +(NSString*)localizedError:(NSError*)error; that checks userInfo for NSLocalizedDescriptionKey, and if not there, create own description.  Because on sandbox I sometimes get : po error.localizedDescription
+The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load Store products.  But perhaps these things won't occur on real system.

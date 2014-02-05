@@ -68,7 +68,7 @@ static NSString*    defaultIsoCountryCode = @"";
 {
     if (self = [super init])
     {
-        self.number = number;
+        self.number = number ? number : @"";
     }
     
     return self;
@@ -79,7 +79,8 @@ static NSString*    defaultIsoCountryCode = @"";
 {
     if (self = [super init])
     {
-        self.number = number;
+        self.number     = number         ? number         : @"";
+        _isoCountryCode = isoCountryCode ? isoCountryCode : defaultIsoCountryCode;
     }
     
     return self;

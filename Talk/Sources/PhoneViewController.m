@@ -1,73 +1,75 @@
 //
-//  ForwardingViewController.m
+//  PhoneViewController.m
 //  Talk
 //
-//  Created by Cornelis van der Bent on 27/04/13.
-//  Copyright (c) 2013 Cornelis van der Bent. All rights reserved.
+//  Created by Cornelis van der Bent on 25/01/14.
+//  Copyright (c) 2014 Cornelis van der Bent. All rights reserved.
 //
 
-#import "ForwardingViewController.h"
+#import "PhoneViewController.h"
 #import "Common.h"
 #import "Strings.h"
-#import "NumberData.h"
-#import "RecordingData.h"
 #import "PhoneNumber.h"
 #import "Settings.h"
 #import "WebClient.h"
 #import "BlockActionSheet.h"
+#import "ForwardingData.h"
+#import "NumberData.h"
+#import "DataManager.h"
+#import "VerifyPhoneViewController.h"
 
 
 typedef enum
 {
-    TableSectionName       = 1UL << 0,  // User-given name.
-    TableSectionNumber     = 1UL << 1,  //### Temporary
-    TableSectionStatements = 1UL << 2,
-    TableSectionNumbers    = 1UL << 3,
-    TableSectionRecordings = 1UL << 4,
+    TableSectionName        = 1UL << 0,
+    TableSectionNumber      = 1UL << 1,
+    TableSectionForwardings = 1UL << 2,
+    TableSectionNumbers     = 1UL << 3,
 } TableSections;
 
 
-static const int    TextFieldCellTag = 1111;
+static const int TextFieldCellTag = 1111;
 
 
-@interface ForwardingViewController ()
+@interface PhoneViewController ()
 {
     TableSections               sections;
     BOOL                        isNew;
 
     NSString*                   name;
     PhoneNumber*                phoneNumber;
-    NSMutableArray*             statementsArray;
 
     NSFetchedResultsController* fetchedResultsController;
     NSManagedObjectContext*     managedObjectContext;
 
     UITextField*                nameTextField;
-    UITextField*                numberTextField;
 
     UIBarButtonItem*            saveButtonItem;
     UIBarButtonItem*            deleteButtonItem;
+
+    NSArray*                    numbersArray;
 }
 
 @end
 
 
-@implementation ForwardingViewController
+@implementation PhoneViewController
 
 - (instancetype)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
-                                      forwarding:(ForwardingData*)forwarding
+                                           phone:(PhoneData*)phone
 {
-    fetchedResultsController = resultsController;
-    self.forwarding          = forwarding;
-    isNew                    = (forwarding == nil);
-
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
-        self.title  = [Strings forwardingString];
-        name        = forwarding.name;
-        phoneNumber = [[PhoneNumber alloc] init];
+        self.title               = [Strings phoneString];
+
+        fetchedResultsController = resultsController;
+        self.phone               = phone;
+        isNew                    = (phone == nil);
+
+        name                     = phone.name;
+        phoneNumber              = [[PhoneNumber alloc] initWithNumber:self.phone.e164];
     }
-    
+
     return self;
 }
 
@@ -76,19 +78,16 @@ static const int    TextFieldCellTag = 1111;
 {
     [super viewDidLoad];
 
+    self.clearsSelectionOnViewWillAppear = YES;
+
     if (isNew)
     {
         // Create a new managed object context; set its parent to the fetched results controller's context.
         managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
         [managedObjectContext setParentContext:[fetchedResultsController managedObjectContext]];
-        self.forwarding = (ForwardingData*)[NSEntityDescription insertNewObjectForEntityForName:@"Forwarding"
-                                                                         inManagedObjectContext:managedObjectContext];
-
-        self.forwarding.statements = [Common jsonStringWithObject:@[@{@"call" : @{@"e164" : @[@""]}}]];
+        self.phone = (PhoneData*)[NSEntityDescription insertNewObjectForEntityForName:@"Phone"
+                                                               inManagedObjectContext:managedObjectContext];
     }
-
-    statementsArray    = [Common mutableObjectWithJsonString:self.forwarding.statements];
-    phoneNumber.number = statementsArray[0][@"call"][@"e164"][0];
 
     [self updateRightBarButtonItem];
     if (isNew)
@@ -113,8 +112,8 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)deleteAction
 {
-    NSString* buttonTitle = NSLocalizedStringWithDefaultValue(@"ForwardingView DeleteTitle", nil,
-                                                              [NSBundle mainBundle], @"Delete Forwarding",
+    NSString* buttonTitle = NSLocalizedStringWithDefaultValue(@"PhoneView DeleteTitle", nil,
+                                                              [NSBundle mainBundle], @"Delete Phone",
                                                               @"...\n"
                                                               @"[1/3 line small font].");
 
@@ -123,14 +122,14 @@ static const int    TextFieldCellTag = 1111;
     {
         if (destruct == YES)
         {
-            [self.forwarding deleteFromManagedObjectContext:fetchedResultsController.managedObjectContext
-                                                 completion:^(BOOL succeeded)
-             {
-                 if (succeeded)
-                 {
-                     [self.navigationController popViewControllerAnimated:YES];
-                 }
-             }];
+            [self.phone deleteFromManagedObjectContext:fetchedResultsController.managedObjectContext
+                                            completion:^(BOOL succeeded)
+            {
+                if (succeeded)
+                {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+            }];
         }
     }
                              cancelButtonTitle:[Strings cancelString]
@@ -141,62 +140,31 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)saveAction
 {
-    self.forwarding.name = name;
-    statementsArray[0][@"call"][@"e164"][0] = phoneNumber.e164Format;
-    self.forwarding.statements = [Common jsonStringWithObject:statementsArray];
+    self.phone.name = name;
+    self.phone.e164 = [phoneNumber e164Format];
 
-    if (isNew)
+    [[WebClient sharedClient] updateVerifiedE164:self.phone.e164
+                                        withName:self.phone.name
+                                           reply:^(NSError *error)
     {
-        NSString* uuid = [[NSUUID UUID] UUIDString];
-        self.forwarding.uuid = uuid;
-        [[WebClient sharedClient] createIvrForUuid:uuid
-                                              name:name
-                                        statements:statementsArray
-                                             reply:^(NSError* error)
+        if (error == nil)
         {
-            if (error == nil)
-            {
-                NSError* error;
+            NSError* error;
 
-                if ([managedObjectContext save:&error] == NO ||
-                    [[fetchedResultsController managedObjectContext] save:&error] == NO)
-                {
-                    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-                }
-            }
-            else
+            if ([managedObjectContext save:&error] == NO ||
+                [[fetchedResultsController managedObjectContext] save:&error] == NO)
             {
-                NSLog(@"%@", error);
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             }
-        }];
-
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    else
-    {
-        [[WebClient sharedClient] updateIvrForUuid:self.forwarding.uuid
-                                              name:name
-                                        statements:statementsArray
-                                             reply:^(NSError* error)
+        }
+        else
         {
-            if (error == nil)
-            {
-                NSError* error;
+            NSLog(@"%@", error);
+        }
+    }];
 
-                if ([[fetchedResultsController managedObjectContext] save:&error] == NO)
-                {
-                    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-                }
-            }
-            else
-            {
-                //### Is rollback mogelijk?
-                NSLog(@"%@", error);
-            }
-        }];
-
-        [self.navigationController popViewControllerAnimated:YES];
-    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -204,14 +172,22 @@ static const int    TextFieldCellTag = 1111;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
+    NSError*     error;
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"ANY forwarding.phones == %@", self.phone];
+    numbersArray = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
+                                                             sortKeys:@[@"name"]
+                                                            predicate:predicate
+                                                                error:&error];
+    if (error != nil)
+    {
+        //####
+    }
+
     sections  = 0;
     sections |= TableSectionName;
     sections |= TableSectionNumber;
-#if FULL_FORWARDINGS
-    sections |= TableSectionStatements;
-#endif
-    sections |= (self.forwarding.numbers.count > 0)    ? TableSectionNumbers    : 0;
-    sections |= (self.forwarding.recordings.count > 0) ? TableSectionRecordings : 0;
+    sections |= (self.phone.forwardings.count > 0) ? TableSectionForwardings : 0;
+    sections |= (numbersArray.count > 0) ?           TableSectionNumbers     : 0;
 
     return [Common bitsSetCount:sections];
 }
@@ -231,53 +207,49 @@ static const int    TextFieldCellTag = 1111;
             numberOfRows = 1;
             break;
 
-        case TableSectionStatements:
-            numberOfRows = 1;
+        case TableSectionForwardings:
+            numberOfRows = self.phone.forwardings.count;
             break;
 
         case TableSectionNumbers:
-            numberOfRows = self.forwarding.numbers.count;
-            break;
-
-        case TableSectionRecordings:
-            numberOfRows = self.forwarding.recordings.count;
+            numberOfRows = numbersArray.count;
             break;
     }
-    
+
     return numberOfRows;
 }
 
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString*   title = nil;
+    NSString* title = nil;
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionNumber:
-            title = NSLocalizedStringWithDefaultValue(@"ForwardingView NumberHeader", nil,
+        case TableSectionForwardings:
+            title = NSLocalizedStringWithDefaultValue(@"PhoneView ForwardingsHeader", nil,
                                                       [NSBundle mainBundle],
-                                                      @"Calls Go To",
+                                                      @"Used By Forwardings",
                                                       @"Table header above phone numbers\n"
                                                       @"[1 line larger font].");
             break;
 
         case TableSectionNumbers:
-            title = NSLocalizedStringWithDefaultValue(@"ForwardingView NumbersHeader", nil,
+            title = NSLocalizedStringWithDefaultValue(@"PhoneView NumbersHeader", nil,
                                                       [NSBundle mainBundle],
                                                       @"Used By Numbers",
                                                       @"Table header above phone numbers\n"
                                                       @"[1 line larger font].");
             break;
     }
-    
+
     return title;
 }
 
 
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
-    NSString*   title = nil;
+    NSString* title = nil;
 
     switch ([Common nthBitSet:section inValue:sections])
     {
@@ -288,18 +260,12 @@ static const int    TextFieldCellTag = 1111;
             }
             break;
 
-        case TableSectionStatements:
-            break;
-
         case TableSectionNumbers:
             title = NSLocalizedStringWithDefaultValue(@"ForwardingView CanNotDeleteFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"This Forwarding can't be deleted because it's in use.",
                                                       @"Table footer that app can't be deleted\n"
                                                       @"[1 line larger font].");
-            break;
-
-        case TableSectionRecordings:
             break;
     }
 
@@ -309,7 +275,7 @@ static const int    TextFieldCellTag = 1111;
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
+    UITableViewCell* cell;
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
@@ -321,16 +287,12 @@ static const int    TextFieldCellTag = 1111;
             cell = [self numberCellForRowAtIndexPath:indexPath];
             break;
 
-        case TableSectionStatements:
-            cell = [self statementsCellForRowAtIndexPath:indexPath];
+        case TableSectionForwardings:
+            cell = [self forwardingsCellForRowAtIndexPath:indexPath];
             break;
 
         case TableSectionNumbers:
             cell = [self numbersCellForRowAtIndexPath:indexPath];
-            break;
-
-        case TableSectionRecordings:
-            cell = [self recordingsCellForRowAtIndexPath:indexPath];
             break;
     }
 
@@ -340,7 +302,7 @@ static const int    TextFieldCellTag = 1111;
 
 - (UITableViewCell*)nameCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
+    UITableViewCell* cell;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"NameCell"];
     if (cell == nil)
@@ -368,55 +330,53 @@ static const int    TextFieldCellTag = 1111;
 
 - (UITableViewCell*)numberCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
+    UITableViewCell* cell;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumberCell"];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NumberCell"];
-        numberTextField = [self addTextFieldToCell:cell];
-        numberTextField.tag = TextFieldCellTag;
+    }
+
+    cell.textLabel.text            = [Strings numberString];
+    if (isNew)
+    {
+        cell.detailTextLabel.text      = [Strings requiredString];
+        cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+        cell.imageView.image           = nil;
+        cell.accessoryType             = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle            = UITableViewCellSelectionStyleBlue;
     }
     else
     {
-        numberTextField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
+        cell.detailTextLabel.text      = [phoneNumber internationalFormat];
+        cell.detailTextLabel.textColor = [UIColor blackColor];
+        cell.imageView.image           = nil;
+        cell.accessoryType             = UITableViewCellAccessoryNone;
+        cell.selectionStyle            = UITableViewCellSelectionStyleNone;
     }
-
-    numberTextField.placeholder  = [Strings requiredString];
-    numberTextField.text         = phoneNumber.asYouTypeFormat;
-    numberTextField.keyboardType = UIKeyboardTypePhonePad;
-
-    [numberTextField removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    [numberTextField addTarget:self
-                        action:@selector(textFieldDidChange:)
-              forControlEvents:UIControlEventEditingChanged];
-
-    cell.textLabel.text  = [Strings numberString];
-    cell.imageView.image = nil;
-    cell.accessoryType   = UITableViewCellAccessoryNone;
-    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
 
     return cell;
 }
 
 
-- (UITableViewCell*)statementsCellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)forwardingsCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
+    UITableViewCell*  cell;
+    NSSortDescriptor* sortDescriptor   = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    NSArray*          sortDescriptors  = [NSArray arrayWithObject:sortDescriptor];
+    NSArray*          forwardingsArray = [self.phone.forwardings sortedArrayUsingDescriptors:sortDescriptors];
+    ForwardingData*   forwarding       = forwardingsArray[indexPath.row];
 
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"StatementsCell"];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"ForwardingsCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"StatementsCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NumbersCell"];
     }
 
-    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"ForwardingView RulesTitle", nil,
-                                                            [NSBundle mainBundle], @"Rules",
-                                                            @"Title of an table row\n"
-                                                            @"[1/3 line small font].");
-    cell.imageView.image = nil;
-    cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
-    cell.selectionStyle  = UITableViewCellSelectionStyleBlue;
+    cell.detailTextLabel.text = forwarding.name;
+    cell.accessoryType        = UITableViewCellAccessoryNone;
+    cell.selectionStyle       = UITableViewCellSelectionStyleNone;
 
     return cell;
 }
@@ -424,11 +384,8 @@ static const int    TextFieldCellTag = 1111;
 
 - (UITableViewCell*)numbersCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
-    NSSortDescriptor*   sortDescriptor  = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
-    NSArray*            sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-    NSArray*            numbersArray    = [self.forwarding.numbers sortedArrayUsingDescriptors:sortDescriptors];
-    NumberData*         number          = numbersArray[indexPath.row];
+    UITableViewCell* cell;
+    NumberData*      number = numbersArray[indexPath.row];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumbersCell"];
     if (cell == nil)
@@ -447,29 +404,6 @@ static const int    TextFieldCellTag = 1111;
 }
 
 
-- (UITableViewCell*)recordingsCellForRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    UITableViewCell*    cell;
-    NSSortDescriptor*   sortDescriptor  = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
-    NSArray*            sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-    NSArray*            recordingsArray = [self.forwarding.recordings sortedArrayUsingDescriptors:sortDescriptors];
-    RecordingData*      recording       = recordingsArray[indexPath.row];
-
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"RecordingsCell"];
-    if (cell == nil)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RecordingsCell"];
-    }
-
-    cell.textLabel.text  = recording.name;
-    cell.imageView.image = nil;
-    cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
-    cell.selectionStyle  = UITableViewCellSelectionStyleBlue;
-
-    return cell;
-}
-
-
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     switch ([Common nthBitSet:indexPath.section inValue:sections])
@@ -477,13 +411,38 @@ static const int    TextFieldCellTag = 1111;
         case TableSectionName:
             break;
 
-        case TableSectionStatements:
+        case TableSectionNumber:
+        {
+            if (isNew)
+            {
+                VerifyPhoneViewController* viewController;
+                viewController = [[VerifyPhoneViewController alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber)
+                {
+                    phoneNumber           = verifiedPhoneNumber;
+                    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+
+                    if (verifiedPhoneNumber != nil)
+                    {
+                        cell.detailTextLabel.text      = [phoneNumber internationalFormat];
+                        cell.detailTextLabel.textColor = [UIColor blackColor];
+                    }
+                    else
+                    {
+                        cell.detailTextLabel.text      = [Strings requiredString];
+                        cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+                    }
+
+                    [self updateRightBarButtonItem];
+                }];
+
+                [self.navigationController pushViewController:viewController animated:YES];
+            }
+            break;
+        }
+        case TableSectionForwardings:
             break;
 
         case TableSectionNumbers:
-            break;
-
-        case TableSectionRecordings:
             break;
     }
 }
@@ -494,7 +453,7 @@ static const int    TextFieldCellTag = 1111;
 - (BOOL)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer shouldReceiveTouch:(UITouch*)touch
 {
     if ([touch.view isKindOfClass:[UITextField class]] ||
-        [touch.view isKindOfClass:[UIButton class]])
+        [touch.view isKindOfClass:[UIButton    class]])
     {
         return NO;
     }
@@ -534,7 +493,7 @@ static const int    TextFieldCellTag = 1111;
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
 {
-    NSString*   text  = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    NSString* text  = [textField.text stringByReplacingCharactersInRange:range withString:string];
 
     if (textField == nameTextField)
     {
@@ -557,10 +516,6 @@ static const int    TextFieldCellTag = 1111;
 // Called only for NumberTextField; not a delegate method.
 - (void)textFieldDidChange:(UITextField*)textField
 {
-    textField.text = phoneNumber.asYouTypeFormat;
-
-    statementsArray[0][@"call"][@"e164"][0] = (phoneNumber.e164Format == nil) ? @"0" : phoneNumber.e164Format;
-
     [self updateRightBarButtonItem];
 }
 
@@ -573,8 +528,7 @@ static const int    TextFieldCellTag = 1111;
     BOOL             changed;
     BOOL             valid;
 
-    changed = [name isEqualToString:self.forwarding.name] == NO ||
-              [[Common jsonStringWithObject:statementsArray] isEqualToString:self.forwarding.statements] == NO;
+    changed = [name isEqualToString:self.phone.name] == NO;
     valid   = [name stringByReplacingOccurrencesOfString:@" " withString:@""].length > 0 &&
               ((phoneNumber.isValid && [Settings sharedSettings].homeCountry.length > 0) || phoneNumber.isInternational);
 
@@ -599,7 +553,7 @@ static const int    TextFieldCellTag = 1111;
     }
     else
     {
-        if (self.forwarding.numbers.count == 0 && changed == NO)
+        if (self.phone.forwardings.count == 0 && changed == NO)
         {
             buttonItem = deleteButtonItem;
         }
@@ -616,8 +570,8 @@ static const int    TextFieldCellTag = 1111;
 
 - (UITextField*)addTextFieldToCell:(UITableViewCell*)cell
 {
-    UITextField*    textField;
-    CGRect          frame = CGRectMake(83, 6, 198, 30);
+    UITextField* textField;
+    CGRect       frame = CGRectMake(83, 6, 198, 30);
 
     textField = [[UITextField alloc] initWithFrame:frame];
     [textField setFont:[UIFont boldSystemFontOfSize:15]];
@@ -630,9 +584,9 @@ static const int    TextFieldCellTag = 1111;
     textField.returnKeyType             = UIReturnKeyDone;
 
     textField.delegate                  = self;
-
+    
     [cell.contentView addSubview:textField];
-
+    
     return textField;
 }
 
@@ -640,11 +594,6 @@ static const int    TextFieldCellTag = 1111;
 - (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
 {
     [[self.tableView superview] endEditing:YES];
-
-    if (numberTextField.text.length > 0)
-    {
-        [Common checkCountryOfPhoneNumber:phoneNumber completion:nil];
-    }
 }
 
 

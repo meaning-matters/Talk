@@ -45,8 +45,8 @@
 
     NSError* error;
     fetchedResultsController = [[DataManager sharedManager] fetchResultsForEntityName:@"Forwarding"
-                                                                              withSortKey:@"name"
-                                                                                    error:&error];
+                                                                         withSortKeys:@[@"name"]
+                                                                                error:&error];
     if (fetchedResultsController == nil)
     {
         NSLog(@"//### Error: %@", error.localizedDescription);

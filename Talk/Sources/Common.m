@@ -657,4 +657,10 @@
     [cell.contentView addSubview:imageView];
 }
 
+
++ (BOOL)indexPath:(NSIndexPath*)indexPathA isEqual:(NSIndexPath*)indexPathB
+{
+    return (indexPathA.section == indexPathB.section) && (indexPathA.row == indexPathB.row);
+}
+
 @end

@@ -112,6 +112,7 @@ typedef enum
 
 // 11A. PURCHASE NUMBER
 - (void)purchaseNumberForReceipt:(NSString*)receipt
+                       productId:(NSString*)productId
                           months:(int)months
                             name:(NSString*)name
                   isoCountryCode:(NSString*)isoCountryCode

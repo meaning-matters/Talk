@@ -8,10 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NumbersViewController : UITableViewController
+@interface NumbersViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 
 - (void)refresh:(id)sender;
-
-- (NSError*)fetchData;
 
 @end

@@ -21,6 +21,7 @@
 @dynamic statements;
 @dynamic numbers;
 @dynamic recordings;
+@dynamic phones;
 
 
 - (void)deleteFromManagedObjectContext:(NSManagedObjectContext*)managedObjectContext

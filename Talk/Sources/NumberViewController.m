@@ -89,7 +89,7 @@ static const int    TextFieldCellTag = 1234;
 
 - (instancetype)initWithNumber:(NumberData*)theNumber
 {
-    if (self = [super initWithNibName:@"NumberView" bundle:nil])
+    if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
         number = theNumber;
         name   = number.name;

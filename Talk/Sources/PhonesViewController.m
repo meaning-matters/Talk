@@ -7,6 +7,7 @@
 //
 
 #import "PhonesViewController.h"
+#import "PhoneViewController.h"
 #import "PhoneData.h"
 #import "WebClient.h"
 #import "DataManager.h"
@@ -30,8 +31,7 @@
 {
     if (self = [super initWithStyle:UITableViewStylePlain])
     {
-        self.title = [Strings phonesString];
-
+        self.title            = [Strings phonesString];
         self.tabBarItem.image = [UIImage imageNamed:@"PhonesTab.png"];
     }
 
@@ -43,10 +43,12 @@
 {
     [super viewDidLoad];
 
+    self.clearsSelectionOnViewWillAppear = YES;
+
     NSError* error;
     fetchedPhonesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Phone"
-                                                                          withSortKey:@"name"
-                                                                                error:&error];
+                                                                        withSortKeys:@[@"name"]
+                                                                               error:&error];
     if (fetchedPhonesController != nil)
     {
         fetchedPhonesController.delegate = self;
@@ -57,13 +59,15 @@
     }
 
     UIRefreshControl* refreshControl = [[UIRefreshControl alloc] init];
+    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings synchronizeWithServerString]];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
-    [self.tableView addSubview:refreshControl];
+    self.refreshControl = refreshControl;
 
-    // Uncomment the following line to preserve selection between presentations.
-    self.clearsSelectionOnViewWillAppear = NO;
- 
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    UIBarButtonItem* rightItem;
+    rightItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                              target:self
+                                                              action:@selector(addPhoneAction)];
+    self.navigationItem.rightBarButtonItem = rightItem;
 }
 
 
@@ -166,6 +170,18 @@
 }
 
 
+- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    PhoneViewController* viewController;
+    PhoneData*           phone = [fetchedPhonesController objectAtIndexPath:indexPath];
+
+    viewController = [[PhoneViewController alloc] initWithFetchedResultsController:fetchedPhonesController
+                                                                             phone:phone];
+
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
@@ -179,6 +195,32 @@
     [self configureCell:cell atIndexPath:indexPath];
 
     return cell;
+}
+
+
+#pragma mark - Actions
+
+- (void)addPhoneAction
+{
+    if ([Settings sharedSettings].haveVerifiedAccount == YES)
+    {
+        UINavigationController* modalViewController;
+        PhoneViewController*    viewController;
+
+        viewController = [[PhoneViewController alloc] initWithFetchedResultsController:fetchedPhonesController
+                                                                                 phone:nil];
+
+        modalViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
+        modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+
+        [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
+                                                               animated:YES
+                                                             completion:nil];
+    }
+    else
+    {
+        [Common showProvisioningViewController];
+    }
 }
 
 
@@ -201,10 +243,7 @@
     {
         [[DataManager sharedManager] synchronizePhones:^(NSError* error)
         {
-            [Common dispatchAfterInterval:0.1 onMain:^
-            {
-                [sender endRefreshing];
-            }];
+            [sender endRefreshing];
 
             if (error == nil)
             {
