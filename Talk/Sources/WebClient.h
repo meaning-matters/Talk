@@ -24,9 +24,10 @@ typedef enum
     WebClientStatusFailDataTooLarge          = 911007,
     WebClientStatusFailInsufficientCredit    = 911008,
     WebClientStatusFailIvrInUse              = 911009,
-    WebClientStatusFailCallbackAlreadyActive = 911010,
-    WebClientStatusFailNoCallbackFound       = 911011,
-    WebClientStatusFailNoCredit              = 911012,
+    WebClientStatusFailVerfiedNumberInUse    = 911010,
+    WebClientStatusFailCallbackAlreadyActive = 911011,
+    WebClientStatusFailNoCallbackFound       = 911012,
+    WebClientStatusFailNoCredit              = 911013,
     WebClientStatusFailNoAccount             = 911051, // Indirect: not sent by server.
     WebClientStatusFailUnspecified           = 911052, // Indirect: not sent by server.
     WebClientStatusFailInvalidResponse       = 911053, // Indirect: not sent by server.

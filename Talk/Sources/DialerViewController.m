@@ -67,9 +67,9 @@
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification* note)
-         {
-             [self updateReachable];
-         }];
+        {
+            [self updateReachable];
+        }];
 
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification
                                                           object:nil

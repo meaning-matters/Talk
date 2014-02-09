@@ -43,8 +43,6 @@
 
         notificationObservers = [NSMutableArray array];
         [self addNotificationObservers];
-
-        [UIApplication sharedApplication].idleTimerDisabled = YES;
     }
 
     return self;
@@ -74,7 +72,6 @@
 {
     [super viewWillDisappear:animated];
 
-    [UIApplication sharedApplication].idleTimerDisabled = NO;
     [self removeNotificationObservers]; // Can't be done in dealloc, because the observers prevent dealloc from being called.
 }
 

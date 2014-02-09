@@ -11,10 +11,12 @@
 #import "Strings.h"
 #import "NumberData.h"
 #import "RecordingData.h"
+#import "PhoneData.h"
 #import "PhoneNumber.h"
 #import "Settings.h"
 #import "WebClient.h"
 #import "BlockActionSheet.h"
+#import "PhonesViewController.h"
 
 
 typedef enum
@@ -36,14 +38,12 @@ static const int    TextFieldCellTag = 1111;
     BOOL                        isNew;
 
     NSString*                   name;
+    PhoneData*                  phone;
     PhoneNumber*                phoneNumber;
     NSMutableArray*             statementsArray;
 
     NSFetchedResultsController* fetchedResultsController;
     NSManagedObjectContext*     managedObjectContext;
-
-    UITextField*                nameTextField;
-    UITextField*                numberTextField;
 
     UIBarButtonItem*            saveButtonItem;
     UIBarButtonItem*            deleteButtonItem;
@@ -125,12 +125,12 @@ static const int    TextFieldCellTag = 1111;
         {
             [self.forwarding deleteFromManagedObjectContext:fetchedResultsController.managedObjectContext
                                                  completion:^(BOOL succeeded)
-             {
-                 if (succeeded)
-                 {
-                     [self.navigationController popViewControllerAnimated:YES];
-                 }
-             }];
+            {
+                if (succeeded)
+                {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+            }];
         }
     }
                              cancelButtonTitle:[Strings cancelString]
@@ -309,7 +309,7 @@ static const int    TextFieldCellTag = 1111;
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
+    UITableViewCell* cell;
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
@@ -340,27 +340,28 @@ static const int    TextFieldCellTag = 1111;
 
 - (UITableViewCell*)nameCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
+    UITableViewCell* cell;
+    UITextField*     textField;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"NameCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NameCell"];
-        nameTextField = [self addTextFieldToCell:cell];
-        nameTextField.tag = TextFieldCellTag;
+        cell          = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NameCell"];
+        textField     = [self addTextFieldToCell:cell];
+        textField.tag = TextFieldCellTag;
     }
     else
     {
-        nameTextField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
+        textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
     }
 
-    nameTextField.placeholder = [Strings requiredString];
-    nameTextField.text        = name;
+    textField.placeholder = [Strings requiredString];
+    textField.text        = name;
 
-    cell.textLabel.text  = [Strings nameString];
-    cell.imageView.image = nil;
-    cell.accessoryType   = UITableViewCellAccessoryNone;
-    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
+    cell.textLabel.text   = [Strings nameString];
+    cell.imageView.image  = nil;
+    cell.accessoryType    = UITableViewCellAccessoryNone;
+    cell.selectionStyle   = UITableViewCellSelectionStyleNone;
 
     return cell;
 }
@@ -368,33 +369,30 @@ static const int    TextFieldCellTag = 1111;
 
 - (UITableViewCell*)numberCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
+    UITableViewCell* cell;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumberCell"];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NumberCell"];
-        numberTextField = [self addTextFieldToCell:cell];
-        numberTextField.tag = TextFieldCellTag;
     }
-    else
-    {
-        numberTextField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
-    }
-
-    numberTextField.placeholder  = [Strings requiredString];
-    numberTextField.text         = phoneNumber.asYouTypeFormat;
-    numberTextField.keyboardType = UIKeyboardTypePhonePad;
-
-    [numberTextField removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    [numberTextField addTarget:self
-                        action:@selector(textFieldDidChange:)
-              forControlEvents:UIControlEventEditingChanged];
 
     cell.textLabel.text  = [Strings numberString];
     cell.imageView.image = nil;
-    cell.accessoryType   = UITableViewCellAccessoryNone;
-    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
+    if (isNew)
+    {
+        cell.detailTextLabel.text      = [Strings requiredString];
+        cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+        cell.accessoryType             = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle            = UITableViewCellSelectionStyleBlue;
+    }
+    else
+    {
+        cell.detailTextLabel.text      = [phoneNumber internationalFormat];
+        cell.detailTextLabel.textColor = [UIColor blackColor];
+        cell.accessoryType             = UITableViewCellAccessoryNone;
+        cell.selectionStyle            = UITableViewCellSelectionStyleNone;
+    }
 
     return cell;
 }
@@ -477,6 +475,18 @@ static const int    TextFieldCellTag = 1111;
         case TableSectionName:
             break;
 
+        case TableSectionNumber:
+        {
+            if (isNew)
+            {
+                PhonesViewController* viewController;
+                viewController = [[PhonesViewController alloc] initWithForwarding:self.forwarding];
+
+                [self.navigationController pushViewController:viewController animated:YES];
+            }
+            break;
+        }
+
         case TableSectionStatements:
             break;
 
@@ -509,14 +519,7 @@ static const int    TextFieldCellTag = 1111;
 
 - (BOOL)textFieldShouldClear:(UITextField*)textField
 {
-    if (textField == nameTextField)
-    {
-        name = @"";
-    }
-    else
-    {
-        phoneNumber.number = @"";
-    }
+    name = @"";
 
     [self updateRightBarButtonItem];
 
@@ -536,19 +539,8 @@ static const int    TextFieldCellTag = 1111;
 {
     NSString*   text  = [textField.text stringByReplacingCharactersInRange:range withString:string];
 
-    if (textField == nameTextField)
-    {
-        name = text;
-    }
-    else
-    {
-        phoneNumber.number = text;
-    }
-
-    if (textField == nameTextField)
-    {
-        [self updateRightBarButtonItem];
-    }
+    name = text;
+    [self updateRightBarButtonItem];
 
     return YES;
 }
@@ -640,11 +632,6 @@ static const int    TextFieldCellTag = 1111;
 - (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
 {
     [[self.tableView superview] endEditing:YES];
-
-    if (numberTextField.text.length > 0)
-    {
-        [Common checkCountryOfPhoneNumber:phoneNumber completion:nil];
-    }
 }
 
 

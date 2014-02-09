@@ -37,6 +37,6 @@ ofResultsController:(NSFetchedResultsController*)resultsController
 
 - (void)synchronizePhones:(void (^)(NSError* error))completion;
 
-- (void)handleError;
+- (void)handleError:(NSError*)error;
 
 @end

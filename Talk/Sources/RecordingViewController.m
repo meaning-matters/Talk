@@ -397,7 +397,7 @@ static const int    TextFieldCellTag = 1111;
     {
         if ([managedObjectContext save:&error] == NO || [[fetchedResultsController managedObjectContext] save:&error] == NO)
         {
-            [self handleError:error];
+            [[DataManager sharedManager] handleError:error];
 
             return;
         }
@@ -405,7 +405,7 @@ static const int    TextFieldCellTag = 1111;
 
     if ([[fetchedResultsController managedObjectContext] save:&error] == NO)
     {
-        [self handleError:error];
+        [[DataManager sharedManager] handleError:error];
 
         return;
     }
@@ -953,14 +953,6 @@ static void audioRouteChangeListener(
 - (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
 {
     [[self.tableView superview] endEditing:YES];
-}
-
-
-- (void)handleError:(NSError*)error
-{
-    NSLog(@"Fetch from CoreData error %@, %@", error, [error userInfo]);
-
-    [[DataManager sharedManager] handleError];
 }
 
 @end

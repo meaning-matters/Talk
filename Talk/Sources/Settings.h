@@ -55,6 +55,8 @@
 
 @property (nonatomic, strong) NSDictionary*     pendingNumberBuy;       // Used by PurchaseManager when server failed to process number.
 
+@property (nonatomic, assign) BOOL              needsServerSync;        // YES when CoreData was wiped after error.
+
 @property (nonatomic, readonly) NSString*       appId;                  // Used in rate-app URL.
 @property (nonatomic, readonly) NSString*       appVersion;
 @property (nonatomic, readonly) NSString*       appDisplayName;

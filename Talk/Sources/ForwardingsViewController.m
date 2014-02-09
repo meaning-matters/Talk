@@ -278,7 +278,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                 NSError* error;
                 if (succeeded == YES && ![context save:&error])
                 {
-                    [self handleError:error];
+                    [[DataManager sharedManager] handleError:error];
                 }
             }];
         }
@@ -299,7 +299,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
             if (![context save:&error])
             {
-                [self handleError:error];
+                [[DataManager sharedManager] handleError:error];
             }
 
             if (fetchedRecordingsController.fetchedObjects.count == 0)
@@ -531,14 +531,6 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     {
         return fetchedRecordingsController;
     }
-}
-
-
-- (void)handleError:(NSError*)error
-{
-    NSLog(@"Fetch from CoreData error %@, %@", error, [error userInfo]);
-
-    [[DataManager sharedManager] handleError];
 }
 
 @end

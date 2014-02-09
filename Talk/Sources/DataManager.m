@@ -16,6 +16,7 @@
 #import "Base64.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
+#import "NetworkStatus.h"
 
 
 @interface DataManager ()
@@ -50,17 +51,34 @@
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification* note)
-         {
-             [sharedInstance saveContext];
-         }];
+        {
+            [sharedInstance saveContext];
+        }];
 
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification* note)
-         {
-             [sharedInstance saveContext];
-         }];
+        {
+            [sharedInstance saveContext];
+        }];
+
+        if ([Settings sharedSettings].needsServerSync == YES)
+        {
+            __block id observer = [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusReachableNotification
+                                                                                    object:nil
+                                                                                     queue:[NSOperationQueue mainQueue]
+                                                                                usingBlock:^(NSNotification* note)
+            {
+                if ([NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableCellular ||
+                    [NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableWifi)
+                {
+                    [Settings sharedSettings].needsServerSync = NO;
+                    [[NSNotificationCenter defaultCenter] removeObserver:observer];
+                    [sharedInstance synchronizeAll:nil];
+                }
+            }];
+        }
     });
     
     return sharedInstance;
@@ -127,8 +145,7 @@
                                                          options:options
                                                            error:&error])
     {
-        NSLog(@"Unresolved CoreData error %@, %@", error, [error userInfo]);
-        [self handleError];
+        [self handleError:error];
 
         return nil;
     }
@@ -149,8 +166,7 @@
     {
         if ([self.managedObjectContext hasChanges] && ![self.managedObjectContext save:&error])
         {
-            NSLog(@"Unresolved CoreData error %@, %@", error, [error userInfo]);
-            [self handleError];
+            [self handleError:error];
         }
     }
 }
@@ -279,8 +295,10 @@ ofResultsController:(NSFetchedResultsController*)resultsController
 }
 
 
-- (void)handleError
+- (void)handleError:(NSError*)error
 {
+    NSLog(@"CoreData error: %@, %@", error, [error userInfo]);
+
     [[NSFileManager defaultManager] removeItemAtURL:storeUrl error:nil];
 
     NSString* title;
@@ -293,9 +311,8 @@ ofResultsController:(NSFetchedResultsController*)resultsController
                                                 @"[iOS alert title size].");
     message = NSLocalizedStringWithDefaultValue(@"DataManager DatabaseErrorMessage", nil,
                                                 [NSBundle mainBundle],
-                                                @"Due to a problem, the internal database will be recreated.  "
-                                                @"Your call history and favorites will be lost."
-                                                @"\nSynchronize to reload your numbers and forwardings.",
+                                                @"Due to a problem, the internal database must be recreated.\n\n"
+                                                @"Your call history and favorites will be lost.  Sorry!",
                                                 @"Message telling that App's internal database has problem\n"
                                                 @"[iOS alert message size]");
     button  = NSLocalizedStringWithDefaultValue(@"DataManager DatabaseErrorButtonTitle", nil,
@@ -313,8 +330,7 @@ ofResultsController:(NSFetchedResultsController*)resultsController
 
         body   = NSLocalizedStringWithDefaultValue(@"DataManager DatabaseErrorNotificationMessage",
                                                    nil, [NSBundle mainBundle],
-                                                   @"Open the app, and your numbers and forwardings will be "
-                                                   @"reloaded.",
+                                                   @"Open app to reload numbers, forwardings, and phones.",
                                                    @"Message telling ...\n"
                                                    @"[iOS alert message size]");
         action = NSLocalizedStringWithDefaultValue(@"DataManager DatabaseErrorNotificationButton",
@@ -328,6 +344,8 @@ ofResultsController:(NSFetchedResultsController*)resultsController
         notification.alertAction = action;
         notification.userInfo    = @{@"source" : @"databaseError"};
         [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+
+        [Settings sharedSettings].needsServerSync = YES;
 
         abort();
     }
@@ -356,9 +374,17 @@ ofResultsController:(NSFetchedResultsController*)resultsController
                             {
                                 if (error == nil)
                                 {
-                                    error = nil;
                                     [self.managedObjectContext save:&error];
-                                    completion ? completion(error) : 0;
+                                    if (error == nil)
+                                    {
+                                        completion ? completion(nil) : 0;
+                                    }
+                                    else
+                                    {
+                                        [self handleError:error];
+
+                                        return;
+                                    }
                                 }
                                 else
                                 {
@@ -392,12 +418,11 @@ ofResultsController:(NSFetchedResultsController*)resultsController
 
 - (void)synchronizeNumbers:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] retrieveNumberE164List:^(NSError* webError, NSArray* e164s)
+    [[WebClient sharedClient] retrieveNumberE164List:^(NSError* error, NSArray* e164s)
     {
-        if (webError == nil)
+        if (error == nil)
         {
             // Delete Numbers that are no longer on the server.
-            __block NSError* error       = nil;
             NSFetchRequest*  request     = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
             [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (e164 IN %@)", e164s]];
             NSArray*         deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
@@ -410,7 +435,7 @@ ofResultsController:(NSFetchedResultsController*)resultsController
             }
             else
             {
-                completion ? completion(error) : 0;
+                [self handleError:error];
 
                 return;
             }
@@ -418,7 +443,7 @@ ofResultsController:(NSFetchedResultsController*)resultsController
             __block int count = e164s.count;
             if (count == 0)
             {
-                completion ? completion(error) : 0;
+                completion ? completion(nil) : 0;
 
                 return;
             }
@@ -449,16 +474,25 @@ ofResultsController:(NSFetchedResultsController*)resultsController
                                                                NSData*   proofImage,
                                                                BOOL      proofAccepted)
                 {
-                    if (error == nil && webError == nil)
+                    if (error == nil)
                     {
                         NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
                         [request setPredicate:[NSPredicate predicateWithFormat:@"e164 == %@", e164]];
 
                         NumberData* number = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
-                        if (number == nil)
+                        if (error == nil)
                         {
-                            number = (NumberData*)[NSEntityDescription insertNewObjectForEntityForName:@"Number"
-                                                                                inManagedObjectContext:self.managedObjectContext];
+                            if (number == nil)
+                            {
+                                number = (NumberData*)[NSEntityDescription insertNewObjectForEntityForName:@"Number"
+                                                                                    inManagedObjectContext:self.managedObjectContext];
+                            }
+                        }
+                        else
+                        {
+                            [self handleError:error];
+
+                            return;
                         }
 
                         number.name           = name;
@@ -483,21 +517,23 @@ ofResultsController:(NSFetchedResultsController*)resultsController
                         number.proofImage     = proofImage;
                         number.proofAccepted  = @(proofAccepted);
                     }
-                    else if (error == nil)
+                    else
                     {
-                        error = webError;
+                        completion ? completion(error) : 0;
+
+                        return;
                     }
 
                     if (--count == 0)
                     {
-                        completion ? completion(error) : 0;
+                        completion ? completion(nil) : 0;
                     }
                 }];
             }
         }
         else
         {
-            completion ? completion(webError) : 0;
+            completion ? completion(error) : 0;
         }
     }];
 }
@@ -505,12 +541,11 @@ ofResultsController:(NSFetchedResultsController*)resultsController
 
 - (void)synchronizeForwardings:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] retrieveIvrList:^(NSError* webError, NSArray* list)
+    [[WebClient sharedClient] retrieveIvrList:^(NSError* error, NSArray* list)
     {
-        if (webError == nil)
+        if (error == nil)
         {
             // Delete IVRs that are no longer on the server.
-            __block NSError* error      = nil;
             NSFetchRequest* request     = [NSFetchRequest fetchRequestWithEntityName:@"Forwarding"];
             [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (uuid IN %@)", list]];
             NSArray*        deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
@@ -523,15 +558,15 @@ ofResultsController:(NSFetchedResultsController*)resultsController
             }
             else
             {
-                completion ? completion(error) : 0;
+                [self handleError:error];
 
                 return;
             }
 
-            __block int  count   = list.count;
+            __block int count = list.count;
             if (count == 0)
             {
-                completion ? completion(error) : 0;
+                completion ? completion(nil) : 0;
 
                 return;
             }
@@ -539,41 +574,51 @@ ofResultsController:(NSFetchedResultsController*)resultsController
             for (NSString* uuid in list)
             {
                 [[WebClient sharedClient] retrieveIvrForUuid:uuid
-                                                       reply:^(NSError* webError, NSString* name, NSArray* statements)
+                                                       reply:^(NSError* error, NSString* name, NSArray* statements)
                 {
-                    if (error == nil && webError == nil)
+                    if (error == nil)
                     {
                         NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Forwarding"];
                         [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
 
                         ForwardingData* forwarding;
                         forwarding = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
-                        //### Handle error.
-                        if (forwarding == nil)
+                        if (error == nil)
                         {
-                            forwarding = (ForwardingData*)[NSEntityDescription insertNewObjectForEntityForName:@"Forwarding"
-                                                                                        inManagedObjectContext:self.managedObjectContext];
+                            if (forwarding == nil)
+                            {
+                                forwarding = (ForwardingData*)[NSEntityDescription insertNewObjectForEntityForName:@"Forwarding"
+                                                                                            inManagedObjectContext:self.managedObjectContext];
+                            }
+                        }
+                        else
+                        {
+                            [self handleError:error];
+
+                            return;
                         }
 
                         forwarding.uuid       = uuid;
                         forwarding.name       = name;
                         forwarding.statements = [Common jsonStringWithObject:statements];
                     }
-                    else if (error == nil)
+                    else
                     {
-                        error = webError;
+                        completion ? completion(error) : 0;
+
+                        return;
                     }
 
                     if (--count == 0)
                     {
-                        completion ? completion(error) : 0;
+                        completion ? completion(nil) : 0;
                     }
                 }];
             }
         }
         else
         {
-            completion ? completion(webError) : 0;
+            completion ? completion(error) : 0;
         }
     }];
 }
@@ -581,9 +626,9 @@ ofResultsController:(NSFetchedResultsController*)resultsController
 
 - (void)synchronizeIvrs:(void (^)(NSError* error))completion
 {
-    __block NSError* error   = nil;
-    NSFetchRequest*  request = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
-    NSArray*         array   = [self.managedObjectContext executeFetchRequest:request error:&error];
+    NSError*        error   = nil;
+    NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
+    NSArray*        array   = [self.managedObjectContext executeFetchRequest:request error:&error];
 
     if (error != nil)
     {
@@ -595,16 +640,16 @@ ofResultsController:(NSFetchedResultsController*)resultsController
     __block int count = array.count;
     if (count == 0)
     {
-        completion ? completion(error) : 0;
+        completion ? completion(nil) : 0;
 
         return;
     }
 
     for (NumberData* number in array)
     {
-        [[WebClient sharedClient] retrieveIvrOfE164:number.e164 reply:^(NSError* webError, NSString* uuid)
+        [[WebClient sharedClient] retrieveIvrOfE164:number.e164 reply:^(NSError* error, NSString* uuid)
         {
-            if (error == nil && webError == nil)
+            if (error == nil)
             {
                 if (uuid == nil)
                 {
@@ -617,20 +662,31 @@ ofResultsController:(NSFetchedResultsController*)resultsController
                     [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
 
                     ForwardingData* forwarding = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
-                    if (forwarding != nil)
+                    if (error == nil)
                     {
-                        number.forwarding = forwarding;
+                        if (forwarding != nil)
+                        {
+                            number.forwarding = forwarding;
+                        }
+                    }
+                    else
+                    {
+                        [self handleError:error];
+
+                        return;
                     }
                 }
             }
-            else if (error == nil)
+            else
             {
-                error = webError;
+                completion ? completion(error) : 0;
+
+                return;
             }
 
             if (--count == 0)
             {
-                completion ? completion(error) : 0;
+                completion ? completion(nil) : 0;
             }
         }];
     }
@@ -639,12 +695,11 @@ ofResultsController:(NSFetchedResultsController*)resultsController
 
 - (void)synchronizePhones:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] retrieveVerifiedE164List:^(NSError* webError, NSArray* e164s)
+    [[WebClient sharedClient] retrieveVerifiedE164List:^(NSError* error, NSArray* e164s)
     {
-        if (webError == nil)
+        if (error == nil)
         {
             // Delete phone E164's that are no longer on the server.
-            __block NSError* error       = nil;
             NSFetchRequest*  request     = [NSFetchRequest fetchRequestWithEntityName:@"Phone"];
             [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (e164 IN %@)", e164s]];
             NSArray*         deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
@@ -662,10 +717,10 @@ ofResultsController:(NSFetchedResultsController*)resultsController
                 return;
             }
 
-            __block int  count   = e164s.count;
+            __block int  count = e164s.count;
             if (count == 0)
             {
-                completion ? completion(error) : 0;
+                completion ? completion(nil) : 0;
 
                 return;
             }
@@ -683,38 +738,48 @@ ofResultsController:(NSFetchedResultsController*)resultsController
                 [[WebClient sharedClient] retrieveVerifiedE164:e164
                                                          reply:^(NSError* error, NSString* name)
                 {
-                    if (error == nil && webError == nil)
+                    if (error == nil)
                     {
                         NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Phone"];
                         [request setPredicate:[NSPredicate predicateWithFormat:@"e164 == %@", e164]];
 
                         PhoneData* phone;
                         phone = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
-                        //### Handle error.
-                        if (phone == nil)
+                        if (error == nil)
                         {
-                            phone = (PhoneData*)[NSEntityDescription insertNewObjectForEntityForName:@"Phone"
-                                                                              inManagedObjectContext:self.managedObjectContext];
+                            if (phone == nil)
+                            {
+                                phone = (PhoneData*)[NSEntityDescription insertNewObjectForEntityForName:@"Phone"
+                                                                                  inManagedObjectContext:self.managedObjectContext];
+                            }
+                        }
+                        else
+                        {
+                            [self handleError:error];
+
+                            return;
                         }
 
                         phone.e164 = e164;
                         phone.name = name;
                     }
-                    else if (error == nil)
+                    else
                     {
-                        error = webError;
+                        completion ? completion(error) : 0;
+
+                        return;
                     }
 
                     if (--count == 0)
                     {
-                        completion ? completion(error) : 0;
+                        completion ? completion(nil) : 0;
                     }
                 }];
             }
         }
         else
         {
-            completion ? completion(webError) : 0;
+            completion ? completion(error) : 0;
         }
     }];
 }

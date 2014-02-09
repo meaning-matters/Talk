@@ -49,6 +49,7 @@ static NSDictionary* statuses;
                      @"FAIL_DATA_TOO_LARGE"          : @(WebClientStatusFailDataTooLarge),
                      @"FAIL_INSUFFICIENT_CREDIT"     : @(WebClientStatusFailInsufficientCredit),
                      @"FAIL_IVR_IN_USE"              : @(WebClientStatusFailIvrInUse),
+                     @"FAIL_VERIFIED_NUMBER_IN_USE"  : @(WebClientStatusFailVerfiedNumberInUse),
                      @"FAIL_CALLBACK_ALREADY_ACTIVE" : @(WebClientStatusFailCallbackAlreadyActive),
                      @"FAIL_NO_CALLBACK_FOUND"       : @(WebClientStatusFailNoCallbackFound),
                      @"FAIL_NO_CREDIT"               : @(WebClientStatusFailNoCredit)};
@@ -299,6 +300,13 @@ static NSDictionary* statuses;
         case WebClientStatusFailIvrInUse:
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailIvrInUse", nil, [NSBundle mainBundle],
                                                        @"This Forwarding is still being used.",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailVerfiedNumberInUse:
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailVerifiedNumberInUse", nil, [NSBundle mainBundle],
+                                                       @"This Phone is still being used.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;

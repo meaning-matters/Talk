@@ -42,8 +42,6 @@ static const int TextFieldCellTag = 1111;
     NSFetchedResultsController* fetchedResultsController;
     NSManagedObjectContext*     managedObjectContext;
 
-    UITextField*                nameTextField;
-
     UIBarButtonItem*            saveButtonItem;
     UIBarButtonItem*            deleteButtonItem;
 
@@ -303,26 +301,27 @@ static const int TextFieldCellTag = 1111;
 - (UITableViewCell*)nameCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
+    UITextField*     textField;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"NameCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NameCell"];
-        nameTextField = [self addTextFieldToCell:cell];
-        nameTextField.tag = TextFieldCellTag;
+        cell          = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NameCell"];
+        textField     = [self addTextFieldToCell:cell];
+        textField.tag = TextFieldCellTag;
     }
     else
     {
-        nameTextField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
+        textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
     }
 
-    nameTextField.placeholder = [Strings requiredString];
-    nameTextField.text        = name;
+    textField.placeholder = [Strings requiredString];
+    textField.text        = name;
 
-    cell.textLabel.text  = [Strings nameString];
-    cell.imageView.image = nil;
-    cell.accessoryType   = UITableViewCellAccessoryNone;
-    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
+    cell.textLabel.text   = [Strings nameString];
+    cell.imageView.image  = nil;
+    cell.accessoryType    = UITableViewCellAccessoryNone;
+    cell.selectionStyle   = UITableViewCellSelectionStyleNone;
 
     return cell;
 }
@@ -338,12 +337,12 @@ static const int TextFieldCellTag = 1111;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NumberCell"];
     }
 
-    cell.textLabel.text            = [Strings numberString];
+    cell.textLabel.text  = [Strings numberString];
+    cell.imageView.image = nil;
     if (isNew)
     {
         cell.detailTextLabel.text      = [Strings requiredString];
         cell.detailTextLabel.textColor = [UIColor lightGrayColor];
-        cell.imageView.image           = nil;
         cell.accessoryType             = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle            = UITableViewCellSelectionStyleBlue;
     }
@@ -351,7 +350,6 @@ static const int TextFieldCellTag = 1111;
     {
         cell.detailTextLabel.text      = [phoneNumber internationalFormat];
         cell.detailTextLabel.textColor = [UIColor blackColor];
-        cell.imageView.image           = nil;
         cell.accessoryType             = UITableViewCellAccessoryNone;
         cell.selectionStyle            = UITableViewCellSelectionStyleNone;
     }
@@ -468,14 +466,7 @@ static const int TextFieldCellTag = 1111;
 
 - (BOOL)textFieldShouldClear:(UITextField*)textField
 {
-    if (textField == nameTextField)
-    {
-        name = @"";
-    }
-    else
-    {
-        phoneNumber.number = @"";
-    }
+    name = @"";
 
     [self updateRightBarButtonItem];
 
@@ -495,19 +486,9 @@ static const int TextFieldCellTag = 1111;
 {
     NSString* text  = [textField.text stringByReplacingCharactersInRange:range withString:string];
 
-    if (textField == nameTextField)
-    {
-        name = text;
-    }
-    else
-    {
-        phoneNumber.number = text;
-    }
+    name = text;
 
-    if (textField == nameTextField)
-    {
-        [self updateRightBarButtonItem];
-    }
+    [self updateRightBarButtonItem];
 
     return YES;
 }

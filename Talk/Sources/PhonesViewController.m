@@ -9,18 +9,21 @@
 #import "PhonesViewController.h"
 #import "PhoneViewController.h"
 #import "PhoneData.h"
-#import "WebClient.h"
 #import "DataManager.h"
 #import "Settings.h"
 #import "Common.h"
 #import "Strings.h"
 #import "PhoneNumber.h"
+#import "ForwardingData.h"
 
 
 @interface PhonesViewController ()
 {
     NSFetchedResultsController* fetchedPhonesController;
 }
+
+@property (nonatomic, strong) ForwardingData* forwarding;
+@property (nonatomic, strong) NSIndexPath*    selectedIndexPath;
 
 @end
 
@@ -33,6 +36,17 @@
     {
         self.title            = [Strings phonesString];
         self.tabBarItem.image = [UIImage imageNamed:@"PhonesTab.png"];
+    }
+
+    return self;
+}
+
+
+- (instancetype)initWithForwarding:(ForwardingData*)forwarding
+{
+    if ([self init])
+    {
+        self.forwarding = forwarding;
     }
 
     return self;
@@ -175,10 +189,29 @@
     PhoneViewController* viewController;
     PhoneData*           phone = [fetchedPhonesController objectAtIndexPath:indexPath];
 
-    viewController = [[PhoneViewController alloc] initWithFetchedResultsController:fetchedPhonesController
-                                                                             phone:phone];
+    if (self.forwarding == nil)
+    {
+        viewController = [[PhoneViewController alloc] initWithFetchedResultsController:fetchedPhonesController
+                                                                                 phone:phone];
 
-    [self.navigationController pushViewController:viewController animated:YES];
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
+    else
+    {
+        if ([self.forwarding.phones containsObject:phone] == NO)
+        {
+            if (self.selectedIndexPath != nil)
+            {
+                [self.forwarding removePhones:[NSSet setWithSet:self.forwarding.phones]];
+
+                [self.tableView reloadRowsAtIndexPaths:@[self.selectedIndexPath]
+                                      withRowAnimation:YES];
+            }
+
+            self.selectedIndexPath = indexPath;
+            [self.forwarding addPhonesObject:phone];
+        }
+    }
 }
 
 
@@ -233,7 +266,21 @@
     PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:phone.e164];
     cell.detailTextLabel.text = [phoneNumber internationalFormat];
     cell.imageView.image      = [UIImage imageNamed:@"Phone"];
-    cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+
+    if (self.forwarding == nil)
+    {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    else if ([self.forwarding.phones containsObject:phone] == YES)
+    {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+
+        self.selectedIndexPath = indexPath;
+    }
+    else
+    {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
 }
 
 

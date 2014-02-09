@@ -33,17 +33,17 @@
         NSString* message;
         NSString* numberString;
 
-        title   = NSLocalizedStringWithDefaultValue(@"Forwardings ForwardingInUserTitle", nil,
+        title   = NSLocalizedStringWithDefaultValue(@"Forwardings ForwardingInUseTitle", nil,
                                                     [NSBundle mainBundle], @"Forwarding Still Used",
                                                     @"Alert title telling that a number forwarding is used.\n"
                                                     @"[iOS alert title size].");
-        message = NSLocalizedStringWithDefaultValue(@"Forwardings ForwardingInUserMessage", nil,
+        message = NSLocalizedStringWithDefaultValue(@"Forwardings ForwardingInUseMessage", nil,
                                                     [NSBundle mainBundle],
                                                     @"This Forwarding is still used for %d %@.  To delete, "
                                                     @"make sure it's no longer used.",
                                                     @"Alert message telling that number forwarding is used.\n"
                                                     @"[iOS alert message size - parameters: count, number(s)]");
-        numberString = (self.numbers.count == 1) ? [Strings numberString] : [Strings numberString];
+        numberString = (self.numbers.count == 1) ? [Strings numberString] : [Strings numbersString];
         message = [NSString stringWithFormat:message, self.numbers.count, numberString];
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
@@ -74,9 +74,10 @@
                                                             @"[iOS alert title size].");
                 message = NSLocalizedStringWithDefaultValue(@"Forwarding InUseMessage", nil,
                                                             [NSBundle mainBundle],
-                                                            @"Deleting this Forwarding failed: %@"
-                                                            @"\n\nChoose another Forwarding for each number that uses this one.",
-                                                            @"Alert message telling that an online service is not available.\n"
+                                                            @"Deleting this Forwarding from our server failed: %@"
+                                                            @"\n\nSynchronize with the server, and then choose another "
+                                                            @"Forwarding for each number that uses this one.",
+                                                            @"...\n"
                                                             @"[iOS alert message size]");
                 message = [NSString stringWithFormat:message, error.localizedDescription];
                 [BlockAlertView showAlertViewWithTitle:title

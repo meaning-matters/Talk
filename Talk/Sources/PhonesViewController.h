@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class ForwardingData;
+
+
 @interface PhonesViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+
+- (instancetype)initWithForwarding:(ForwardingData*)forwarding;
 
 @end

@@ -43,6 +43,7 @@ NSString* const ForwardingsSelectionKey        = @"ForwardingsSelection";
 NSString* const CurrencyCodeKey                = @"CurrencyCode";
 NSString* const CreditKey                      = @"Credit";
 NSString* const PendingNumberBuyKey            = @"PendingNumberBuy";
+NSString* const NeedsServerSyncKey             = @"NeedsServerSync";
 
 
 @implementation Settings
@@ -144,6 +145,7 @@ static NSUserDefaults*  userDefaults;
         [dictionary setObject:@(0)                                               forKey:ForwardingsSelectionKey];
         [dictionary setObject:@""                                                forKey:CurrencyCodeKey];
         [dictionary setObject:@(0.0f)                                            forKey:CreditKey];
+        [dictionary setObject:@(NO)                                              forKey:NeedsServerSyncKey];
     });
 
     return dictionary;
@@ -462,6 +464,19 @@ static NSUserDefaults*  userDefaults;
 {
     [userDefaults setObject:pendingNumberBuy forKey:PendingNumberBuyKey];
     [userDefaults synchronize]; // We want this extra security, because this data can not be restored!
+}
+
+
+- (BOOL)needsServerSync
+{
+    return [userDefaults boolForKey:NeedsServerSyncKey];
+}
+
+
+- (void)setNeedsServerSync:(BOOL)needsServerSync
+{
+    [userDefaults setBool:needsServerSync forKey:NeedsServerSyncKey];
+    [userDefaults synchronize];
 }
 
 
