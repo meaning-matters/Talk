@@ -16,13 +16,15 @@
 #import "Settings.h"
 #import "WebClient.h"
 #import "BlockActionSheet.h"
+#import "BlockAlertView.h"
 #import "PhonesViewController.h"
+#import "DataManager.h"
 
 
 typedef enum
 {
     TableSectionName       = 1UL << 0,  // User-given name.
-    TableSectionNumber     = 1UL << 1,  //### Temporary
+    TableSectionPhone      = 1UL << 1,  //### Temporary
     TableSectionStatements = 1UL << 2,
     TableSectionNumbers    = 1UL << 3,
     TableSectionRecordings = 1UL << 4,
@@ -34,38 +36,38 @@ static const int    TextFieldCellTag = 1111;
 
 @interface ForwardingViewController ()
 {
-    TableSections               sections;
-    BOOL                        isNew;
+    TableSections    sections;
+    BOOL             isNew;
 
-    NSString*                   name;
-    PhoneData*                  phone;
-    PhoneNumber*                phoneNumber;
-    NSMutableArray*             statementsArray;
+    NSString*        name;
+    PhoneData*       phone;
+    PhoneNumber*     phoneNumber;
+    NSMutableArray*  statementsArray;
 
-    NSFetchedResultsController* fetchedResultsController;
-    NSManagedObjectContext*     managedObjectContext;
-
-    UIBarButtonItem*            saveButtonItem;
-    UIBarButtonItem*            deleteButtonItem;
+    UIBarButtonItem* saveButtonItem;
+    UIBarButtonItem* deleteButtonItem;
 }
+
+@property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
 
 @end
 
 
 @implementation ForwardingViewController
 
-- (instancetype)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
-                                      forwarding:(ForwardingData*)forwarding
+- (instancetype)initWithForwarding:(ForwardingData*)forwarding
+              managedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
-    fetchedResultsController = resultsController;
-    self.forwarding          = forwarding;
-    isNew                    = (forwarding == nil);
-
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
         self.title  = [Strings forwardingString];
         name        = forwarding.name;
+        phone       = [forwarding.phones anyObject];
         phoneNumber = [[PhoneNumber alloc] init];
+
+        self.managedObjectContext = managedObjectContext;
+        self.forwarding           = forwarding;
+        isNew                     = (forwarding == nil);
     }
     
     return self;
@@ -79,10 +81,13 @@ static const int    TextFieldCellTag = 1111;
     if (isNew)
     {
         // Create a new managed object context; set its parent to the fetched results controller's context.
+        NSManagedObjectContext* managedObjectContext;
         managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        [managedObjectContext setParentContext:[fetchedResultsController managedObjectContext]];
+        [managedObjectContext setParentContext:self.managedObjectContext];
+        self.managedObjectContext = managedObjectContext;
+
         self.forwarding = (ForwardingData*)[NSEntityDescription insertNewObjectForEntityForName:@"Forwarding"
-                                                                         inManagedObjectContext:managedObjectContext];
+                                                                         inManagedObjectContext:self.managedObjectContext];
 
         self.forwarding.statements = [Common jsonStringWithObject:@[@{@"call" : @{@"e164" : @[@""]}}]];
     }
@@ -109,6 +114,22 @@ static const int    TextFieldCellTag = 1111;
 }
 
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
+    if (selectedIndexPath != nil)
+    {
+        if (self.forwarding.phones.count != 0)
+        {
+            phone              = [self.forwarding.phones anyObject];
+            phoneNumber.number = phone.e164;
+        }
+
+        [self.tableView reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+}
+
+
 #pragma mark - Actions
 
 - (void)deleteAction
@@ -123,7 +144,7 @@ static const int    TextFieldCellTag = 1111;
     {
         if (destruct == YES)
         {
-            [self.forwarding deleteFromManagedObjectContext:fetchedResultsController.managedObjectContext
+            [self.forwarding deleteFromManagedObjectContext:self.managedObjectContext
                                                  completion:^(BOOL succeeded)
             {
                 if (succeeded)
@@ -156,17 +177,12 @@ static const int    TextFieldCellTag = 1111;
         {
             if (error == nil)
             {
-                NSError* error;
-
-                if ([managedObjectContext save:&error] == NO ||
-                    [[fetchedResultsController managedObjectContext] save:&error] == NO)
-                {
-                    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-                }
+                [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
             }
             else
             {
-                NSLog(@"%@", error);
+                [self.managedObjectContext rollback];
+                [self showSaveError:error];
             }
         }];
 
@@ -181,22 +197,38 @@ static const int    TextFieldCellTag = 1111;
         {
             if (error == nil)
             {
-                NSError* error;
-
-                if ([[fetchedResultsController managedObjectContext] save:&error] == NO)
-                {
-                    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-                }
+                [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
             }
             else
             {
-                //### Is rollback mogelijk?
-                NSLog(@"%@", error);
+                [self.managedObjectContext rollback];
+                [self showSaveError:error];
             }
         }];
 
         [self.navigationController popViewControllerAnimated:YES];
     }
+}
+
+
+- (void)showSaveError:(NSError*)error
+{
+    NSString* title;
+    NSString* message;
+
+    title   = NSLocalizedStringWithDefaultValue(@"Forwarding SaveErrorTitle", nil, [NSBundle mainBundle],
+                                                @"Failed To Save",
+                                                @"....\n"
+                                                @"[iOS alert title size].");
+    message = NSLocalizedStringWithDefaultValue(@"Forwarding SaveErroMessage", nil, [NSBundle mainBundle],
+                                                @"Failed to save this Forwarding: %@.",
+                                                @"...\n"
+                                                @"[iOS alert message size]");
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:[NSString stringWithFormat:message, [error localizedDescription]]
+                                completion:nil
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
 }
 
 
@@ -206,11 +238,11 @@ static const int    TextFieldCellTag = 1111;
 {
     sections  = 0;
     sections |= TableSectionName;
-    sections |= TableSectionNumber;
+    sections |= TableSectionPhone;
 #if FULL_FORWARDINGS
     sections |= TableSectionStatements;
 #endif
-    sections |= (self.forwarding.numbers.count > 0)    ? TableSectionNumbers    : 0;
+    sections |= (self.forwarding.numbers.count    > 0) ? TableSectionNumbers    : 0;
     sections |= (self.forwarding.recordings.count > 0) ? TableSectionRecordings : 0;
 
     return [Common bitsSetCount:sections];
@@ -227,7 +259,7 @@ static const int    TextFieldCellTag = 1111;
             numberOfRows = 1;
             break;
 
-        case TableSectionNumber:
+        case TableSectionPhone:
             numberOfRows = 1;
             break;
 
@@ -254,7 +286,7 @@ static const int    TextFieldCellTag = 1111;
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionNumber:
+        case TableSectionPhone:
             title = NSLocalizedStringWithDefaultValue(@"ForwardingView NumberHeader", nil,
                                                       [NSBundle mainBundle],
                                                       @"Calls Go To",
@@ -317,8 +349,8 @@ static const int    TextFieldCellTag = 1111;
             cell = [self nameCellForRowAtIndexPath:indexPath];
             break;
 
-        case TableSectionNumber:
-            cell = [self numberCellForRowAtIndexPath:indexPath];
+        case TableSectionPhone:
+            cell = [self phoneCellForRowAtIndexPath:indexPath];
             break;
 
         case TableSectionStatements:
@@ -367,31 +399,37 @@ static const int    TextFieldCellTag = 1111;
 }
 
 
-- (UITableViewCell*)numberCellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)phoneCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
 
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumberCell"];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"PhoneCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NumberCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"PhoneCell"];
     }
 
-    cell.textLabel.text  = [Strings numberString];
+    cell.textLabel.text  = [Strings phoneString];
     cell.imageView.image = nil;
+    cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
+    cell.selectionStyle  = UITableViewCellSelectionStyleBlue;
     if (isNew)
     {
-        cell.detailTextLabel.text      = [Strings requiredString];
-        cell.detailTextLabel.textColor = [UIColor lightGrayColor];
-        cell.accessoryType             = UITableViewCellAccessoryDisclosureIndicator;
-        cell.selectionStyle            = UITableViewCellSelectionStyleBlue;
+        if (phone == nil)
+        {
+            cell.detailTextLabel.text      = [Strings requiredString];
+            cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+        }
+        else
+        {
+            cell.detailTextLabel.text      = phone.name;
+            cell.detailTextLabel.textColor = [UIColor blackColor];
+        }
     }
     else
     {
-        cell.detailTextLabel.text      = [phoneNumber internationalFormat];
+        cell.detailTextLabel.text      = phone.name;
         cell.detailTextLabel.textColor = [UIColor blackColor];
-        cell.accessoryType             = UITableViewCellAccessoryNone;
-        cell.selectionStyle            = UITableViewCellSelectionStyleNone;
     }
 
     return cell;
@@ -475,12 +513,13 @@ static const int    TextFieldCellTag = 1111;
         case TableSectionName:
             break;
 
-        case TableSectionNumber:
+        case TableSectionPhone:
         {
             if (isNew)
             {
                 PhonesViewController* viewController;
-                viewController = [[PhonesViewController alloc] initWithForwarding:self.forwarding];
+                viewController = [[PhonesViewController alloc] initWithForwarding:self.forwarding
+                                                             managedObjectContext:self.managedObjectContext];
 
                 [self.navigationController pushViewController:viewController animated:YES];
             }

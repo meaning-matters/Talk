@@ -15,7 +15,6 @@
 #import "ForwardingData.h"
 #import "RecordingData.h"
 #import "WebClient.h"
-#import "BlockAlertView.h"
 #import "Strings.h"
 
 
@@ -39,6 +38,8 @@ typedef enum
     BOOL                        isUpdatingRecordings;
 }
 
+@property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
+
 @end
 
 
@@ -46,10 +47,17 @@ typedef enum
 
 - (instancetype)init
 {
+    return [self initWithManagedObjectContext:[DataManager sharedManager].managedObjectContext];
+}
+
+
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
+{
     if (self = [super initWithStyle:UITableViewStylePlain])
     {
-        self.title            = [Strings forwardingsString];
-        self.tabBarItem.image = [UIImage imageNamed:@"ForwardingsTab.png"];
+        self.title                = [Strings forwardingsString];
+        self.tabBarItem.image     = [UIImage imageNamed:@"ForwardingsTab.png"];
+        self.managedObjectContext = managedObjectContext;
     }
     
     return self;
@@ -88,6 +96,7 @@ typedef enum
     NSError* error;
     fetchedForwardingsController = [[DataManager sharedManager] fetchResultsForEntityName:@"Forwarding"
                                                                              withSortKeys:@[@"name"]
+                                                                     managedObjectContext:self.managedObjectContext
                                                                                     error:&error];
     if (fetchedForwardingsController != nil)
     {
@@ -174,8 +183,8 @@ typedef enum
         ForwardingViewController* viewController;
         ForwardingData*           forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
 
-        viewController = [[ForwardingViewController alloc] initWithFetchedResultsController:fetchedForwardingsController
-                                                                                 forwarding:forwarding];
+        viewController = [[ForwardingViewController alloc] initWithForwarding:forwarding
+                                                         managedObjectContext:self.managedObjectContext];
 
         [self.navigationController pushViewController:viewController animated:YES];
     }
@@ -184,8 +193,8 @@ typedef enum
         RecordingViewController* viewController;
         RecordingData*           recording = [fetchedRecordingsController objectAtIndexPath:indexPath];
         
-        viewController = [[RecordingViewController alloc] initWithFetchedResultsController:fetchedRecordingsController
-                                                                                 recording:recording];
+        viewController = [[RecordingViewController alloc] initWithRecording:recording
+                                                       managedObjectContext:self.managedObjectContext];
 
         [self.navigationController pushViewController:viewController animated:YES];
     }
@@ -219,10 +228,11 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
-    ForwardingData* forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
-    cell.textLabel.text        = forwarding.name;
-    cell.imageView.image       = [UIImage imageNamed:@"List"];
-    cell.accessoryType         = UITableViewCellAccessoryDisclosureIndicator;
+    ForwardingData* forwarding      = [fetchedForwardingsController objectAtIndexPath:indexPath];
+    cell.textLabel.text             = forwarding.name;
+    cell.imageView.image            = [UIImage imageNamed:@"List"];
+    cell.imageView.highlightedImage = [Common invertImage:cell.imageView.image];
+    cell.accessoryType              = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
 }
@@ -238,10 +248,11 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
-    RecordingData* recording = [fetchedRecordingsController objectAtIndexPath:indexPath];
-    cell.textLabel.text      = recording.name;
-    cell.imageView.image     = [UIImage imageNamed:@"Microphone"];
-    cell.accessoryType       = UITableViewCellAccessoryDisclosureIndicator;
+    RecordingData* recording        = [fetchedRecordingsController objectAtIndexPath:indexPath];
+    cell.textLabel.text             = recording.name;
+    cell.imageView.image            = [UIImage imageNamed:@"Microphone"];
+    cell.imageView.highlightedImage = [Common invertImage:cell.imageView.image];
+    cell.accessoryType              = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
 }
@@ -270,13 +281,12 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     {
         if (tableView == self.tableView)
         {
-            NSManagedObjectContext* context    = [fetchedForwardingsController managedObjectContext];
-            ForwardingData*         forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
+            ForwardingData* forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
 
-            [forwarding deleteFromManagedObjectContext:context completion:^(BOOL succeeded)
+            [forwarding deleteFromManagedObjectContext:self.managedObjectContext completion:^(BOOL succeeded)
             {
                 NSError* error;
-                if (succeeded == YES && ![context save:&error])
+                if (succeeded == YES && ![self.managedObjectContext save:&error])
                 {
                     [[DataManager sharedManager] handleError:error];
                 }
@@ -284,9 +294,8 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
         }
         else
         {
-            NSManagedObjectContext* context = [fetchedRecordingsController managedObjectContext];
-            RecordingData*          recording = [fetchedRecordingsController objectAtIndexPath:indexPath];
-            NSError*                error;
+            RecordingData* recording = [fetchedRecordingsController objectAtIndexPath:indexPath];
+            NSError*       error;
 
             if (recording.forwardings.count > 0)
             {
@@ -294,10 +303,10 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
             }
             else
             {
-                [context deleteObject:recording];
+                [self.managedObjectContext deleteObject:recording];
             }
 
-            if (![context save:&error])
+            if (![self.managedObjectContext save:&error])
             {
                 [[DataManager sharedManager] handleError:error];
             }
@@ -480,8 +489,8 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
         UINavigationController*   modalViewController;
         ForwardingViewController* viewController;
 
-        viewController = [[ForwardingViewController alloc] initWithFetchedResultsController:fetchedForwardingsController
-                                                                                 forwarding:nil];
+        viewController = [[ForwardingViewController alloc] initWithForwarding:nil
+                                                         managedObjectContext:self.managedObjectContext];
 
         modalViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
         modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -500,8 +509,9 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 - (void)addRecordingAction
 {
     RecordingViewController*    viewController;
-    viewController = [[RecordingViewController alloc] initWithFetchedResultsController:fetchedRecordingsController
-                                                                             recording:nil];
+    viewController = [[RecordingViewController alloc] initWithRecording:nil
+                                                   managedObjectContext:self.managedObjectContext];
+
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

@@ -14,7 +14,7 @@
 
 @property (nonatomic, strong) PhoneData* phone;
 
-- (instancetype)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
-                                           phone:(PhoneData*)phone;
+- (instancetype)initWithPhone:(PhoneData*)phone
+         managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
 @end

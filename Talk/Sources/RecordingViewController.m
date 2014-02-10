@@ -28,31 +28,32 @@ static const int    TextFieldCellTag = 1111;
 
 @interface RecordingViewController ()
 {
-    TableSections               sections;
-    BOOL                        isNew;
-    BOOL                        isForwarding;
-    BOOL                        isReversing;
-    BOOL                        isSliding;
-    BOOL                        isPausedRecording;
-    BOOL                        isPausedPlaying;
-    float                       duration;
-    BOOL                        tappedSave;
+    TableSections           sections;
+    BOOL                    isNew;
+    BOOL                    isForwarding;
+    BOOL                    isReversing;
+    BOOL                    isSliding;
+    BOOL                    isPausedRecording;
+    BOOL                    isPausedPlaying;
+    float                   duration;
+    BOOL                    tappedSave;
 
-    NSString*                   name;
+    NSString*               name;
 
-    AVAudioRecorder*            audioRecorder;
-    AVAudioPlayer*              audioPlayer;
-    NSTimer*                    sliderTimer;
-    NSTimer*                    meteringTimer;
+    AVAudioRecorder*        audioRecorder;
+    AVAudioPlayer*          audioPlayer;
+    NSTimer*                sliderTimer;
+    NSTimer*                meteringTimer;
 
-    NSFetchedResultsController* fetchedResultsController;
-    NSManagedObjectContext*     managedObjectContext;
-    RecordingControlsCell*      controlsCell;
+    RecordingControlsCell* controlsCell;
 
-    NSMutableArray*             meterProgressViewsArray;
+    NSMutableArray*        meterProgressViewsArray;
 
-    id                          willResignActiveObserver;
+    id                     willResignActiveObserver;
 }
+
+@property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
+
 
 @end
 
@@ -60,12 +61,11 @@ static const int    TextFieldCellTag = 1111;
 //### Use DataManager!
 @implementation RecordingViewController
 
-- (instancetype)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
-                                       recording:(RecordingData*)recording
+- (instancetype)initWithRecording:(RecordingData*)recording
+             managedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
-    fetchedResultsController = resultsController;
-    self.recording           = recording;
-    isNew                    = (recording == nil);
+    self.recording = recording;
+    isNew          = (recording == nil);
 
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
@@ -120,10 +120,13 @@ static const int    TextFieldCellTag = 1111;
         }
 
         // Create a new managed object context for the new recording; set its parent to the fetched results controller's context.
+        NSManagedObjectContext* managedObjectContext;
         managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        [managedObjectContext setParentContext:[fetchedResultsController managedObjectContext]];
+        [managedObjectContext setParentContext:self.managedObjectContext];
+        self.managedObjectContext = managedObjectContext;
+
         self.recording = (RecordingData*)[NSEntityDescription insertNewObjectForEntityForName:@"Recording"
-                                                                       inManagedObjectContext:managedObjectContext];
+                                                                       inManagedObjectContext:self.managedObjectContext];
         self.recording.uuid      = uuid;
         self.recording.urlString = [url absoluteString];
     }
@@ -197,6 +200,8 @@ static const int    TextFieldCellTag = 1111;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
 
     OSStatus result = AudioSessionAddPropertyListener(kAudioSessionProperty_AudioRouteChange,
                                                       audioRouteChangeListener,
@@ -389,28 +394,13 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)saveAction
 {
-    NSError*    error;
-
     self.recording.name = name;
 
-    if (managedObjectContext != nil)
-    {
-        if ([managedObjectContext save:&error] == NO || [[fetchedResultsController managedObjectContext] save:&error] == NO)
-        {
-            [[DataManager sharedManager] handleError:error];
+    //### Send to server (look at ForwardingViewController's saveAction.
 
-            return;
-        }
-    }
+    [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
 
-    if ([[fetchedResultsController managedObjectContext] save:&error] == NO)
-    {
-        [[DataManager sharedManager] handleError:error];
-
-        return;
-    }
-
-    tappedSave = YES;   // Prevents removal of file in viewWillDisappear.
+    tappedSave = YES; // Prevents removal of file in viewWillDisappear.
     [self.navigationController popViewControllerAnimated:YES];
 }
 

@@ -13,6 +13,7 @@
 
 @interface PhonesViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 
-- (instancetype)initWithForwarding:(ForwardingData*)forwarding;
+- (instancetype)initWithForwarding:(ForwardingData*)forwarding
+              managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
 @end

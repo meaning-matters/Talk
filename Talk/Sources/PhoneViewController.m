@@ -13,6 +13,7 @@
 #import "Settings.h"
 #import "WebClient.h"
 #import "BlockActionSheet.h"
+#import "BlockAlertView.h"
 #import "ForwardingData.h"
 #import "NumberData.h"
 #import "DataManager.h"
@@ -33,39 +34,38 @@ static const int TextFieldCellTag = 1111;
 
 @interface PhoneViewController ()
 {
-    TableSections               sections;
-    BOOL                        isNew;
+    TableSections    sections;
+    BOOL             isNew;
 
-    NSString*                   name;
-    PhoneNumber*                phoneNumber;
+    NSString*        name;
+    PhoneNumber*     phoneNumber;
 
-    NSFetchedResultsController* fetchedResultsController;
-    NSManagedObjectContext*     managedObjectContext;
+    UIBarButtonItem* saveButtonItem;
+    UIBarButtonItem* deleteButtonItem;
 
-    UIBarButtonItem*            saveButtonItem;
-    UIBarButtonItem*            deleteButtonItem;
-
-    NSArray*                    numbersArray;
+    NSArray*         numbersArray;
 }
+
+@property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
 
 @end
 
 
 @implementation PhoneViewController
 
-- (instancetype)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
-                                           phone:(PhoneData*)phone
+- (instancetype)initWithPhone:(PhoneData*)phone
+         managedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
-        self.title               = [Strings phoneString];
+        self.title                = [Strings phoneString];
 
-        fetchedResultsController = resultsController;
-        self.phone               = phone;
-        isNew                    = (phone == nil);
+        self.phone                = phone;
+        isNew                     = (phone == nil);
+        self.managedObjectContext = managedObjectContext;
 
-        name                     = phone.name;
-        phoneNumber              = [[PhoneNumber alloc] initWithNumber:self.phone.e164];
+        name                      = phone.name;
+        phoneNumber               = [[PhoneNumber alloc] initWithNumber:self.phone.e164];
     }
 
     return self;
@@ -81,10 +81,13 @@ static const int TextFieldCellTag = 1111;
     if (isNew)
     {
         // Create a new managed object context; set its parent to the fetched results controller's context.
+        NSManagedObjectContext* managedObjectContext;
         managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        [managedObjectContext setParentContext:[fetchedResultsController managedObjectContext]];
+        [managedObjectContext setParentContext:self.managedObjectContext];
+        self.managedObjectContext = managedObjectContext;
+
         self.phone = (PhoneData*)[NSEntityDescription insertNewObjectForEntityForName:@"Phone"
-                                                               inManagedObjectContext:managedObjectContext];
+                                                               inManagedObjectContext:self.managedObjectContext];
     }
 
     [self updateRightBarButtonItem];
@@ -120,7 +123,7 @@ static const int TextFieldCellTag = 1111;
     {
         if (destruct == YES)
         {
-            [self.phone deleteFromManagedObjectContext:fetchedResultsController.managedObjectContext
+            [self.phone deleteFromManagedObjectContext:self.managedObjectContext
                                             completion:^(BOOL succeeded)
             {
                 if (succeeded)
@@ -147,22 +150,38 @@ static const int TextFieldCellTag = 1111;
     {
         if (error == nil)
         {
-            NSError* error;
-
-            if ([managedObjectContext save:&error] == NO ||
-                [[fetchedResultsController managedObjectContext] save:&error] == NO)
-            {
-                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            }
+            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
         }
         else
         {
-            NSLog(@"%@", error);
+            [self.managedObjectContext rollback];
+            [self showSaveError:error];
         }
     }];
 
     [self dismissViewControllerAnimated:YES completion:nil];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+
+- (void)showSaveError:(NSError*)error
+{
+    NSString* title;
+    NSString* message;
+
+    title   = NSLocalizedStringWithDefaultValue(@"Phone SaveErrorTitle", nil, [NSBundle mainBundle],
+                                                @"Failed To Save",
+                                                @"....\n"
+                                                @"[iOS alert title size].");
+    message = NSLocalizedStringWithDefaultValue(@"Phone SaveErroMessage", nil, [NSBundle mainBundle],
+                                                @"Failed to save this Phone: %@.",
+                                                @"...\n"
+                                                @"[iOS alert message size]");
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:[NSString stringWithFormat:message, [error localizedDescription]]
+                                completion:nil
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
 }
 
 
@@ -175,6 +194,7 @@ static const int TextFieldCellTag = 1111;
     numbersArray = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
                                                              sortKeys:@[@"name"]
                                                             predicate:predicate
+                                                 managedObjectContext:nil
                                                                 error:&error];
     if (error != nil)
     {

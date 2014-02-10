@@ -46,6 +46,7 @@
     NSError* error;
     fetchedResultsController = [[DataManager sharedManager] fetchResultsForEntityName:@"Forwarding"
                                                                          withSortKeys:@[@"name"]
+                                                                 managedObjectContext:nil
                                                                                 error:&error];
     if (fetchedResultsController == nil)
     {
@@ -145,7 +146,7 @@
             if (error == nil)
             {
                 number.forwarding = selectedForwarding;
-                [[DataManager sharedManager] saveContext];
+                [[DataManager sharedManager] saveManagedObjectContext:nil];
 
                 selectedCell.accessoryType = UITableViewCellAccessoryNone;
                 cell.accessoryType         = UITableViewCellAccessoryCheckmark;

@@ -22,8 +22,9 @@
     NSFetchedResultsController* fetchedPhonesController;
 }
 
-@property (nonatomic, strong) ForwardingData* forwarding;
-@property (nonatomic, strong) NSIndexPath*    selectedIndexPath;
+@property (nonatomic, strong) ForwardingData*         forwarding;
+@property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
+@property (nonatomic, strong) NSIndexPath*            selectedIndexPath;
 
 @end
 
@@ -43,10 +44,12 @@
 
 
 - (instancetype)initWithForwarding:(ForwardingData*)forwarding
+              managedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
     if ([self init])
     {
-        self.forwarding = forwarding;
+        self.forwarding           = forwarding;
+        self.managedObjectContext =  managedObjectContext;
     }
 
     return self;
@@ -62,6 +65,7 @@
     NSError* error;
     fetchedPhonesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Phone"
                                                                         withSortKeys:@[@"name"]
+                                                                managedObjectContext:self.managedObjectContext
                                                                                error:&error];
     if (fetchedPhonesController != nil)
     {
@@ -82,6 +86,14 @@
                                                               target:self
                                                               action:@selector(addPhoneAction)];
     self.navigationItem.rightBarButtonItem = rightItem;
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+
 }
 
 
@@ -191,8 +203,7 @@
 
     if (self.forwarding == nil)
     {
-        viewController = [[PhoneViewController alloc] initWithFetchedResultsController:fetchedPhonesController
-                                                                                 phone:phone];
+        viewController = [[PhoneViewController alloc] initWithPhone:phone managedObjectContext:self.managedObjectContext];
 
         [self.navigationController pushViewController:viewController animated:YES];
     }
@@ -211,6 +222,8 @@
             self.selectedIndexPath = indexPath;
             [self.forwarding addPhonesObject:phone];
         }
+
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
@@ -240,8 +253,7 @@
         UINavigationController* modalViewController;
         PhoneViewController*    viewController;
 
-        viewController = [[PhoneViewController alloc] initWithFetchedResultsController:fetchedPhonesController
-                                                                                 phone:nil];
+        viewController = [[PhoneViewController alloc] initWithPhone:nil managedObjectContext:self.managedObjectContext];
 
         modalViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
         modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -261,11 +273,12 @@
 
 - (void)configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
-    PhoneData* phone          = [fetchedPhonesController objectAtIndexPath:indexPath];
-    cell.textLabel.text       = phone.name;
-    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:phone.e164];
-    cell.detailTextLabel.text = [phoneNumber internationalFormat];
-    cell.imageView.image      = [UIImage imageNamed:@"Phone"];
+    PhoneData* phone                = [fetchedPhonesController objectAtIndexPath:indexPath];
+    cell.textLabel.text             = phone.name;
+    PhoneNumber* phoneNumber        = [[PhoneNumber alloc] initWithNumber:phone.e164];
+    cell.detailTextLabel.text       = [phoneNumber internationalFormat];
+    cell.imageView.image            = [UIImage imageNamed:@"Phone"];
+    cell.imageView.highlightedImage = [Common invertImage:cell.imageView.image];
 
     if (self.forwarding == nil)
     {

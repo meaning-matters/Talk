@@ -16,17 +16,19 @@
 
 + (DataManager*)sharedManager;
 
-- (void)saveContext;
+- (void)saveManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
 - (void)removeAll;
 
 - (NSArray*)fetchEntitiesWithName:(NSString*)entityName
                          sortKeys:(NSArray*)sortKeys
                         predicate:(NSPredicate*)predicate
+             managedObjectContext:(NSManagedObjectContext*)managedObjectContext
                             error:(NSError**)error;
 
 - (NSFetchedResultsController*)fetchResultsForEntityName:(NSString*)entityName
                                             withSortKeys:(NSArray*)keys
+                                    managedObjectContext:(NSManagedObjectContext*)managedObjectContext
                                                    error:(NSError**)error;
 
 - (BOOL)setSortKeys:(NSArray*)sortKeys

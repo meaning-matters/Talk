@@ -163,8 +163,6 @@ static const int    TextFieldCellTag = 1234;
     NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
     if (selectedIndexPath != nil)
     {
-        [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
-
         //### replace with updateXyzCell
         [self.tableView reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
@@ -698,12 +696,11 @@ static const int    TextFieldCellTag = 1234;
         NSString* title;
         NSString* message;
 
-        title   = NSLocalizedStringWithDefaultValue(@"Number NameMissingTitle", nil,
-                                                    [NSBundle mainBundle], @"Name Is Required",
+        title   = NSLocalizedStringWithDefaultValue(@"Number NameMissingTitle", nil, [NSBundle mainBundle],
+                                                    @"Name Is Required",
                                                     @"Alert title telling that a name must be supplied.\n"
                                                     @"[iOS alert title size].");
-        message = NSLocalizedStringWithDefaultValue(@"Number NameMissingMessage", nil,
-                                                    [NSBundle mainBundle],
+        message = NSLocalizedStringWithDefaultValue(@"Number NameMissingMessage", nil, [NSBundle mainBundle],
                                                     @"A phone number tag name is required; it can't be empty.",
                                                     @"Alert message telling that a name must be supplied\n"
                                                     @"[iOS alert message size]");

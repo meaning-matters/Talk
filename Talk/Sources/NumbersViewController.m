@@ -26,6 +26,8 @@
     UISegmentedControl*         sortSegmentedControl;
 }
 
+@property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
+
 @end
 
 
@@ -35,8 +37,9 @@
 {
     if (self = [super initWithStyle:UITableViewStylePlain])
     {
-        self.title            = [Strings numbersString]; // Not used, because we're having a segmented control.
-        self.tabBarItem.image = [UIImage imageNamed:@"NumbersTab.png"];
+        self.title                = [Strings numbersString]; // Not used, because we're having a segmented control.
+        self.tabBarItem.image     = [UIImage imageNamed:@"NumbersTab.png"];
+        self.managedObjectContext = [DataManager sharedManager].managedObjectContext;
     }
 
     return self;
@@ -52,6 +55,7 @@
     NSError* error;
     fetchedNumbersController = [[DataManager sharedManager] fetchResultsForEntityName:@"Number"
                                                                          withSortKeys:[self sortKeys]
+                                                                 managedObjectContext:self.managedObjectContext
                                                                                 error:&error];
     if (fetchedNumbersController != nil)
     {
@@ -62,15 +66,14 @@
         NSLog(@"//### Error: %@", error.localizedDescription);
     }
 
-
-    NSString*           byCountries = NSLocalizedStringWithDefaultValue(@"Numbers SortByCountries", nil,
-                                                                        [NSBundle mainBundle], @"Countries",
-                                                                        @"\n"
-                                                                        @"[1/4 line larger font].");
-    NSString*           byNames     = NSLocalizedStringWithDefaultValue(@"Numbers SortByNames", nil,
-                                                                        [NSBundle mainBundle], @"Names",
-                                                                        @"\n"
-                                                                        @"[1/4 line larger font].");
+    NSString* byCountries = NSLocalizedStringWithDefaultValue(@"Numbers SortByCountries", nil,
+                                                              [NSBundle mainBundle], @"Countries",
+                                                              @"\n"
+                                                              @"[1/4 line larger font].");
+    NSString* byNames     = NSLocalizedStringWithDefaultValue(@"Numbers SortByNames", nil,
+                                                              [NSBundle mainBundle], @"Names",
+                                                              @"\n"
+                                                              @"[1/4 line larger font].");
     sortSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[byCountries, byNames]];
     sortSegmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
     sortSegmentedControl.selectedSegmentIndex  = [Settings sharedSettings].numbersSortSegment;
@@ -115,9 +118,7 @@
     {
         [self updateCell:[self.tableView cellForRowAtIndexPath:selectedIndexPath] atIndexPath:selectedIndexPath];
 
-        NSError* error= nil;
-        [[DataManager sharedManager].managedObjectContext save:&error];
-        //### Handle error.
+        [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
     }
 }
 

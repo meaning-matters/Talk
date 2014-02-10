@@ -13,4 +13,6 @@
 
 @property (nonatomic, weak) IBOutlet UITableView*   recordingsTableView;
 
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
+
 @end

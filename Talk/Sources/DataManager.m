@@ -21,7 +21,7 @@
 
 @interface DataManager ()
 {
-    NSURL*  storeUrl;
+    NSURL* storeUrl;
 }
 
 @end
@@ -52,7 +52,7 @@
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification* note)
         {
-            [sharedInstance saveContext];
+            [sharedInstance saveManagedObjectContext:nil];
         }];
 
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification
@@ -60,7 +60,7 @@
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification* note)
         {
-            [sharedInstance saveContext];
+            [sharedInstance saveManagedObjectContext:nil];
         }];
 
         if ([Settings sharedSettings].needsServerSync == YES)
@@ -158,13 +158,15 @@
 
 #pragma mark - Public API
 
-- (void)saveContext
+- (void)saveManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
     NSError* error = nil;
 
-    if (self.managedObjectContext != nil)
+    managedObjectContext = (managedObjectContext != nil) ? managedObjectContext : self.managedObjectContext;
+
+    if (managedObjectContext != nil)
     {
-        if ([self.managedObjectContext hasChanges] && ![self.managedObjectContext save:&error])
+        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
         {
             [self handleError:error];
         }
@@ -179,39 +181,43 @@
         [self.managedObjectContext deleteObject:object];
     }
 
-    [self saveContext];
+    [self saveManagedObjectContext:nil];
 }
 
 
 - (NSArray*)fetchEntitiesWithName:(NSString*)entityName
                          sortKeys:(NSArray*)sortKeys
                         predicate:(NSPredicate*)predicate
+             managedObjectContext:(NSManagedObjectContext*)managedObjectContext
                             error:(NSError**)error
 {
     NSFetchRequest*             fetchRequest;
 
-    fetchRequest      = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    managedObjectContext = (managedObjectContext != nil) ? managedObjectContext : self.managedObjectContext;
+    fetchRequest         = [NSFetchRequest fetchRequestWithEntityName:entityName];
     [self setSortKeys:sortKeys ofFetchRequest:fetchRequest];
     [fetchRequest setPredicate:predicate];
 
-    return [self.managedObjectContext executeFetchRequest:fetchRequest error:error];
+    return [managedObjectContext executeFetchRequest:fetchRequest error:error];
 }
 
 
 - (NSFetchedResultsController*)fetchResultsForEntityName:(NSString*)entityName
                                             withSortKeys:(NSArray*)sortKeys
+                                    managedObjectContext:(NSManagedObjectContext*)managedObjectContext
                                                    error:(NSError**)error
 {
     NSFetchedResultsController* resultsController;
     NSFetchRequest*             fetchRequest;
 
-    fetchRequest      = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    managedObjectContext = (managedObjectContext != nil) ? managedObjectContext : self.managedObjectContext;
+    fetchRequest         = [NSFetchRequest fetchRequestWithEntityName:entityName];
     [self setSortKeys:sortKeys ofFetchRequest:fetchRequest];
 
-    resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                            managedObjectContext:self.managedObjectContext
-                                                              sectionNameKeyPath:nil
-                                                                       cacheName:nil];
+    resultsController    = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                               managedObjectContext:managedObjectContext
+                                                                 sectionNameKeyPath:nil
+                                                                          cacheName:nil];
 
     *error = nil;
     if ([resultsController performFetch:error] == YES)
@@ -297,7 +303,7 @@ ofResultsController:(NSFetchedResultsController*)resultsController
 
 - (void)handleError:(NSError*)error
 {
-    NSLog(@"CoreData error: %@, %@", error, [error userInfo]);
+    NSLog(@"CoreData error: %@.", error);
 
     [[NSFileManager defaultManager] removeItemAtURL:storeUrl error:nil];
 

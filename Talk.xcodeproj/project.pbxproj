@@ -2079,6 +2079,7 @@
 		48C4319F189EDFB40008FE01 /* VerifyPhoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifyPhoneViewController.h; sourceTree = "<group>"; };
 		48C431A0189EDFB40008FE01 /* VerifyPhoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifyPhoneViewController.m; sourceTree = "<group>"; };
 		48C431A3189EE0310008FE01 /* VerifyPhoneView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VerifyPhoneView.xib; sourceTree = "<group>"; };
+		48C431A618A8405D0008FE01 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		48C97E9D1893F2BA00174DE9 /* BlockActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockActionSheet.h; sourceTree = "<group>"; };
 		48C97E9E1893F2BA00174DE9 /* BlockActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockActionSheet.m; sourceTree = "<group>"; };
 		48C97EA118943C7300174DE9 /* PhoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneViewController.h; sourceTree = "<group>"; };
@@ -3234,6 +3235,7 @@
 		48884A731615CE920005AA79 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				48C431A618A8405D0008FE01 /* CoreImage.framework */,
 				48A0CEBE1811430A00B8A9F8 /* CrashReporter.framework */,
 				488D7757178077A900099470 /* External */,
 				48ADD0FB170C12CC001515EB /* AddressBook.framework */,
