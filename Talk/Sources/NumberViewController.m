@@ -19,6 +19,7 @@
 #import "WebClient.h"
 #import "NumberLabel.h"
 #import "ForwardingData.h"
+#import "DataManager.h"
 
 
 typedef enum
@@ -133,9 +134,22 @@ static const int    TextFieldCellTag = 1234;
         contactAddressRows |= (number.proofImage != nil) ? ContactAddressRowProofImage : 0;
 
         nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:[Common nOfBit:TableSectionName inValue:sections]];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleManagedObjectsChange:)
+                                                     name:NSManagedObjectContextObjectsDidChangeNotification
+                                                   object:[DataManager sharedManager].managedObjectContext];
     }
 
     return self;
+}
+
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:NSManagedObjectContextObjectsDidChangeNotification
+                                                  object:[DataManager sharedManager].managedObjectContext];
 }
 
 
@@ -163,8 +177,17 @@ static const int    TextFieldCellTag = 1234;
     NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
     if (selectedIndexPath != nil)
     {
-        //### replace with updateXyzCell
         [self.tableView reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+}
+
+
+- (void)handleManagedObjectsChange:(NSNotification*)note
+{
+    NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
+    if (selectedIndexPath == nil)
+    {
+        [self.tableView reloadData];
     }
 }
 

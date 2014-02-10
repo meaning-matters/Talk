@@ -72,6 +72,14 @@ static const int TextFieldCellTag = 1111;
 }
 
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:NSManagedObjectContextObjectsDidChangeNotification
+                                                  object:self.managedObjectContext];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -90,6 +98,11 @@ static const int TextFieldCellTag = 1111;
                                                                inManagedObjectContext:self.managedObjectContext];
     }
 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleManagedObjectsChange:)
+                                                 name:NSManagedObjectContextObjectsDidChangeNotification
+                                               object:self.managedObjectContext];
+
     [self updateRightBarButtonItem];
     if (isNew)
     {
@@ -106,6 +119,16 @@ static const int TextFieldCellTag = 1111;
     gestureRecognizer.cancelsTouchesInView = NO;
     gestureRecognizer.delegate             = self;
     [self.tableView addGestureRecognizer:gestureRecognizer];
+}
+
+
+- (void)handleManagedObjectsChange:(NSNotification*)note
+{
+    NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
+    if (selectedIndexPath == nil)
+    {
+        [self.tableView reloadData];
+    }
 }
 
 

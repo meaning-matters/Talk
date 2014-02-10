@@ -74,6 +74,14 @@ static const int    TextFieldCellTag = 1111;
 }
 
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:NSManagedObjectContextObjectsDidChangeNotification
+                                                  object:self.managedObjectContext];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -91,6 +99,11 @@ static const int    TextFieldCellTag = 1111;
 
         self.forwarding.statements = [Common jsonStringWithObject:@[@{@"call" : @{@"e164" : @[@""]}}]];
     }
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleManagedObjectsChange:)
+                                                 name:NSManagedObjectContextObjectsDidChangeNotification
+                                               object:self.managedObjectContext];
 
     statementsArray    = [Common mutableObjectWithJsonString:self.forwarding.statements];
     phoneNumber.number = statementsArray[0][@"call"][@"e164"][0];
@@ -116,6 +129,8 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+
     NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
     if (selectedIndexPath != nil)
     {
@@ -126,6 +141,16 @@ static const int    TextFieldCellTag = 1111;
         }
 
         [self.tableView reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+}
+
+
+- (void)handleManagedObjectsChange:(NSNotification*)note
+{
+    NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
+    if (selectedIndexPath == nil)
+    {
+        [self.tableView reloadData];
     }
 }
 
