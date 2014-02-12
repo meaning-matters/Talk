@@ -733,4 +733,27 @@
     return returnImage;
 }
 
+
++ (UITextField*)addTextFieldToCell:(UITableViewCell*)cell delegate:(id<UITextFieldDelegate>)delegate
+{
+    UITextField*    textField;
+    CGRect          frame = CGRectMake(83, 6, 210, 30);
+
+    textField = [[UITextField alloc] initWithFrame:frame];
+    [textField setFont:[UIFont boldSystemFontOfSize:15]];
+
+    textField.adjustsFontSizeToFitWidth = NO;
+    textField.autocapitalizationType    = UITextAutocapitalizationTypeWords;
+    textField.autocorrectionType        = UITextAutocorrectionTypeNo;
+    textField.clearButtonMode           = UITextFieldViewModeWhileEditing;
+    textField.contentVerticalAlignment  = UIControlContentVerticalAlignmentCenter;
+    textField.returnKeyType             = UIReturnKeyDone;
+
+    textField.delegate                  = delegate;
+
+    [cell.contentView addSubview:textField];
+
+    return textField;
+}
+
 @end

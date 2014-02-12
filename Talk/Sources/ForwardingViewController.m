@@ -404,7 +404,7 @@ static const int    TextFieldCellTag = 1111;
     if (cell == nil)
     {
         cell          = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NameCell"];
-        textField     = [self addTextFieldToCell:cell];
+        textField     = [Common addTextFieldToCell:cell delegate:self];
         textField.tag = TextFieldCellTag;
     }
     else
@@ -567,8 +567,7 @@ static const int    TextFieldCellTag = 1111;
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer shouldReceiveTouch:(UITouch*)touch
 {
-    if ([touch.view isKindOfClass:[UITextField class]] ||
-        [touch.view isKindOfClass:[UIButton class]])
+    if ([touch.view isKindOfClass:[UITextField class]] || [touch.view isKindOfClass:[UIButton class]])
     {
         return NO;
     }
@@ -601,23 +600,12 @@ static const int    TextFieldCellTag = 1111;
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
 {
-    NSString*   text  = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    NSString* text = [textField.text stringByReplacingCharactersInRange:range withString:string];
 
     name = text;
     [self updateRightBarButtonItem];
 
     return YES;
-}
-
-
-// Called only for NumberTextField; not a delegate method.
-- (void)textFieldDidChange:(UITextField*)textField
-{
-    textField.text = phoneNumber.asYouTypeFormat;
-
-    statementsArray[0][@"call"][@"e164"][0] = (phoneNumber.e164Format == nil) ? @"0" : phoneNumber.e164Format;
-
-    [self updateRightBarButtonItem];
 }
 
 
@@ -667,29 +655,6 @@ static const int    TextFieldCellTag = 1111;
     }
 
     [self.navigationItem setRightBarButtonItem:buttonItem animated:YES];
-}
-
-
-- (UITextField*)addTextFieldToCell:(UITableViewCell*)cell
-{
-    UITextField*    textField;
-    CGRect          frame = CGRectMake(83, 6, 198, 30);
-
-    textField = [[UITextField alloc] initWithFrame:frame];
-    [textField setFont:[UIFont boldSystemFontOfSize:15]];
-
-    textField.adjustsFontSizeToFitWidth = NO;
-    textField.autocapitalizationType    = UITextAutocapitalizationTypeWords;
-    textField.autocorrectionType        = UITextAutocorrectionTypeNo;
-    textField.clearButtonMode           = UITextFieldViewModeWhileEditing;
-    textField.contentVerticalAlignment  = UIControlContentVerticalAlignmentCenter;
-    textField.returnKeyType             = UIReturnKeyDone;
-
-    textField.delegate                  = self;
-
-    [cell.contentView addSubview:textField];
-
-    return textField;
 }
 
 

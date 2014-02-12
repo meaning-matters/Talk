@@ -105,4 +105,6 @@
 
 + (UIImage*)invertImage:(UIImage*)image;
 
++ (UITextField*)addTextFieldToCell:(UITableViewCell*)cell delegate:(id<UITextFieldDelegate>)delegate;
+
 @end

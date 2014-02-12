@@ -364,7 +364,7 @@ static const int    TextFieldCellTag = 1111;
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NameCell"];
-        textField = [self addTextFieldToCell:cell];
+        textField = [Common addTextFieldToCell:cell delegate:self];
         textField.tag = TextFieldCellTag;
     }
     else
@@ -833,28 +833,6 @@ static const int    TextFieldCellTag = 1111;
 }
 
 
-- (UITextField*)addTextFieldToCell:(UITableViewCell*)cell
-{
-    UITextField*    textField;
-    CGRect          frame = CGRectMake(83, 6, 198, 30);
-
-    textField = [[UITextField alloc] initWithFrame:frame];
-    [textField setFont:[UIFont boldSystemFontOfSize:15]];
-
-    textField.adjustsFontSizeToFitWidth = NO;
-    textField.autocapitalizationType    = UITextAutocapitalizationTypeWords;
-    textField.clearButtonMode           = UITextFieldViewModeWhileEditing;
-    textField.contentVerticalAlignment  = UIControlContentVerticalAlignmentCenter;
-    textField.returnKeyType             = UIReturnKeyDone;
-
-    textField.delegate                  = self;
-
-    [cell.contentView addSubview:textField];
-
-    return textField;
-}
-
-
 - (void)updateControls
 {
     BOOL        isPlaying   = audioPlayer.isPlaying;
@@ -862,21 +840,21 @@ static const int    TextFieldCellTag = 1111;
     BOOL        canPlay     = ([audioRecorder.url checkResourceIsReachableAndReturnError:nil] == YES) || !isNew;
 
     // These expressions are negated so that they are about when an UI item is visible (instead of hidden). 
-    self.meterProgressView.hidden   = !((isNew && !canPlay) || isRecording || isPausedRecording);
-    self.timeSlider.hidden          = !self.meterProgressView.hidden;
-    self.recordButton.hidden        = !(isNew && !isRecording && !isPausedRecording && !isPlaying && !isPausedPlaying);
-    self.pauseButton.hidden         = !(isRecording || isPlaying);
-    self.continueButton.hidden      = !(isPausedRecording);
+    self.meterProgressView.hidden = !((isNew && !canPlay) || isRecording || isPausedRecording);
+    self.timeSlider.hidden        = !self.meterProgressView.hidden;
+    self.recordButton.hidden      = !(isNew && !isRecording && !isPausedRecording && !isPlaying && !isPausedPlaying);
+    self.pauseButton.hidden       = !(isRecording || isPlaying);
+    self.continueButton.hidden    = !(isPausedRecording);
 
     // These expressions are only correct for when the UI item is visible.
-    self.timeSlider.enabled         = isPlaying && !isForwarding && !isReversing && !isPausedPlaying;
-    self.reverseButton.enabled      = isPlaying && !isForwarding && !isSliding;
-    self.stopButton.enabled         = (isRecording || isPausedRecording || isPlaying || isPausedPlaying) &&
+    self.timeSlider.enabled       = isPlaying && !isForwarding && !isReversing && !isPausedPlaying;
+    self.reverseButton.enabled    = isPlaying && !isForwarding && !isSliding;
+    self.stopButton.enabled       = (isRecording || isPausedRecording || isPlaying || isPausedPlaying) &&
                                       !isForwarding && !isReversing && !isSliding;
-    self.recordButton.enabled       = isNew && !isPlaying;
-    self.playButton.enabled         = canPlay;
-    self.pauseButton.enabled        = (isRecording || isPlaying) && !isForwarding && !isReversing && !isSliding;
-    self.forwardButton.enabled      = isPlaying && !isReversing && !isSliding;
+    self.recordButton.enabled     = isNew && !isPlaying;
+    self.playButton.enabled       = canPlay;
+    self.pauseButton.enabled      = (isRecording || isPlaying) && !isForwarding && !isReversing && !isSliding;
+    self.forwardButton.enabled    = isPlaying && !isReversing && !isSliding;
 
     [self enableSaveButton];
 

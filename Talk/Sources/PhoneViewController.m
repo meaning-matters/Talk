@@ -350,7 +350,7 @@ static const int TextFieldCellTag = 1111;
     if (cell == nil)
     {
         cell          = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NameCell"];
-        textField     = [self addTextFieldToCell:cell];
+        textField     = [Common addTextFieldToCell:cell delegate:self];
         textField.tag = TextFieldCellTag;
     }
     else
@@ -589,29 +589,6 @@ static const int TextFieldCellTag = 1111;
     }
 
     [self.navigationItem setRightBarButtonItem:buttonItem animated:YES];
-}
-
-
-- (UITextField*)addTextFieldToCell:(UITableViewCell*)cell
-{
-    UITextField* textField;
-    CGRect       frame = CGRectMake(83, 6, 198, 30);
-
-    textField = [[UITextField alloc] initWithFrame:frame];
-    [textField setFont:[UIFont boldSystemFontOfSize:15]];
-
-    textField.adjustsFontSizeToFitWidth = NO;
-    textField.autocapitalizationType    = UITextAutocapitalizationTypeWords;
-    textField.autocorrectionType        = UITextAutocorrectionTypeNo;
-    textField.clearButtonMode           = UITextFieldViewModeWhileEditing;
-    textField.contentVerticalAlignment  = UIControlContentVerticalAlignmentCenter;
-    textField.returnKeyType             = UIReturnKeyDone;
-
-    textField.delegate                  = self;
-    
-    [cell.contentView addSubview:textField];
-    
-    return textField;
 }
 
 

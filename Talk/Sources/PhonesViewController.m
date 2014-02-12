@@ -49,7 +49,7 @@
     if ([self init])
     {
         self.forwarding           = forwarding;
-        self.managedObjectContext =  managedObjectContext;
+        self.managedObjectContext = managedObjectContext;
     }
 
     return self;

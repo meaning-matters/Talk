@@ -62,7 +62,7 @@ typedef enum
 } ContactAddressRows;
 
 
-static const int    TextFieldCellTag = 1234;
+static const int TextFieldCellTag = 1234;
 
 
 @interface NumberViewController ()
@@ -80,7 +80,6 @@ static const int    TextFieldCellTag = 1234;
     // Keyboard stuff.
     BOOL               keyboardShown;
     CGFloat            keyboardOverlap;
-    NSIndexPath*       activeCellIndexPath;
 }
 
 @end
@@ -196,7 +195,7 @@ static const int    TextFieldCellTag = 1234;
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString*   title = nil;
+    NSString* title = nil;
 
     switch ([Common nthBitSet:section inValue:sections])
     {
@@ -229,7 +228,7 @@ static const int    TextFieldCellTag = 1234;
 
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
-    NSString*   title = nil;
+    NSString* title = nil;
 
     switch ([Common nthBitSet:section inValue:sections])
     {
@@ -275,7 +274,7 @@ static const int    TextFieldCellTag = 1234;
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger   numberOfRows = 0;
+    NSInteger numberOfRows = 0;
 
     switch ([Common nthBitSet:section inValue:sections])
     {
@@ -362,7 +361,8 @@ static const int    TextFieldCellTag = 1234;
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionName:
-            identifier = @"TextFieldCell";
+            identifier    = @"TextFieldCell";
+            nameIndexPath = indexPath;
             break;
 
         case TableSectionNumber:
@@ -452,8 +452,9 @@ static const int    TextFieldCellTag = 1234;
     textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
     if (textField == nil)
     {
-        textField = [self addTextFieldToCell:cell];
+        textField = [Common addTextFieldToCell:cell delegate:self];
         textField.tag = TextFieldCellTag;
+        textField.enablesReturnKeyAutomatically = YES;
     }
 
     textField.placeholder            = [Strings requiredString];
@@ -463,6 +464,11 @@ static const int    TextFieldCellTag = 1234;
 
     cell.selectionStyle              = UITableViewCellSelectionStyleNone;
     cell.textLabel.text              = [Strings nameString];
+
+    if (name.length == 0)
+    {
+        [textField becomeFirstResponder];
+    }
 }
 
 
@@ -631,28 +637,6 @@ static const int    TextFieldCellTag = 1234;
 
 #pragma mark - Helpers
 
-- (UITextField*)addTextFieldToCell:(UITableViewCell*)cell
-{
-    UITextField* textField;
-    CGRect       frame = CGRectMake(83, 6, 198, 30);
-
-    textField = [[UITextField alloc] initWithFrame:frame];
-    [textField setFont:[UIFont boldSystemFontOfSize:15]];
-
-    textField.adjustsFontSizeToFitWidth = NO;
-    textField.autocapitalizationType    = UITextAutocapitalizationTypeWords;
-    textField.autocorrectionType        = UITextAutocorrectionTypeNo;
-    textField.clearButtonMode           = UITextFieldViewModeWhileEditing;
-    textField.contentVerticalAlignment  = UIControlContentVerticalAlignmentCenter;
-
-    textField.delegate                  = self;
-
-    [cell.contentView addSubview:textField];
-
-    return textField;
-}
-
-
 - (NumberLabel*)addNumberLabelToCell:(UITableViewCell*)cell
 {
     NumberLabel* label;
@@ -672,10 +656,12 @@ static const int    TextFieldCellTag = 1234;
 
 - (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
 {
-    [[self.tableView superview] endEditing:YES];
+    if (name.length > 0)
+    {
+        [[self.tableView superview] endEditing:YES];
 
-    name = number.name;
-    [self updateNameCell:[self.tableView cellForRowAtIndexPath:nameIndexPath] atIndexPath:nameIndexPath];
+        [self textFieldShouldReturn:nil];
+    }
 }
 
 
@@ -687,7 +673,6 @@ static const int    TextFieldCellTag = 1234;
 #warning The method reloadInputViews messes up two-byte keyboards (e.g. Kanji).
     [textField reloadInputViews];
 
-    activeCellIndexPath = [self findCellIndexPathForSubview:textField];
     return YES;
 }
 
@@ -714,31 +699,8 @@ static const int    TextFieldCellTag = 1234;
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-    if (name.length == 0)
+    if ([name isEqualToString:number.name] == NO)
     {
-        NSString* title;
-        NSString* message;
-
-        title   = NSLocalizedStringWithDefaultValue(@"Number NameMissingTitle", nil, [NSBundle mainBundle],
-                                                    @"Name Is Required",
-                                                    @"Alert title telling that a name must be supplied.\n"
-                                                    @"[iOS alert title size].");
-        message = NSLocalizedStringWithDefaultValue(@"Number NameMissingMessage", nil, [NSBundle mainBundle],
-                                                    @"A phone number tag name is required; it can't be empty.",
-                                                    @"Alert message telling that a name must be supplied\n"
-                                                    @"[iOS alert message size]");
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:nil
-                             cancelButtonTitle:[Strings closeString]
-                             otherButtonTitles:nil];
-
-        return NO;
-    }
-    else
-    {
-        [textField resignFirstResponder];
-
         [[WebClient sharedClient] updateNumberE164:number.e164 withName:name reply:^(NSError* error)
         {
             if (error == nil)
@@ -764,23 +726,30 @@ static const int    TextFieldCellTag = 1234;
                 [BlockAlertView showAlertViewWithTitle:title
                                                message:message
                                             completion:^(BOOL cancelled, NSInteger buttonIndex)
-                {
-                    name = number.name;
-                    [self updateNameCell:[self.tableView cellForRowAtIndexPath:nameIndexPath] atIndexPath:nameIndexPath];
-                }
+                 {
+                     name = number.name;
+                     [self updateNameCell:[self.tableView cellForRowAtIndexPath:nameIndexPath] atIndexPath:nameIndexPath];
+                 }
                                      cancelButtonTitle:[Strings closeString]
                                      otherButtonTitles:nil];
             }
         }];
-
-        return YES;
     }
+
+    [textField resignFirstResponder];
+
+    // we can always return YES, because the Done button will be disabled when there's no text.
+    return YES;
 }
 
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
 {
     name = [textField.text stringByReplacingCharactersInRange:range withString:string];
+
+    [self.tableView scrollToRowAtIndexPath:nameIndexPath
+                          atScrollPosition:UITableViewScrollPositionNone
+                                  animated:YES];
 
     return YES;
 }
@@ -865,8 +834,8 @@ static const int    TextFieldCellTag = 1234;
         NSTimeInterval delay = 0;
         if (keyboardRect.size.height)
         {
-            delay = (1 - keyboardOverlap/keyboardRect.size.height)*animationDuration;
-            animationDuration = animationDuration * keyboardOverlap/keyboardRect.size.height;
+            delay = (1 - keyboardOverlap / keyboardRect.size.height) * animationDuration;
+            animationDuration = animationDuration * keyboardOverlap / keyboardRect.size.height;
         }
 
         [UIView animateWithDuration:animationDuration delay:delay
@@ -929,16 +898,14 @@ static const int    TextFieldCellTag = 1234;
 
 - (void)tableAnimationEnded:(NSString*)animationID finished:(NSNumber*)finished contextInfo:(void*)context
 {
-    // Scroll to the active cell
-    if (activeCellIndexPath)
+    // Scroll to the Name cell
+    dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC));
+    dispatch_after(when, dispatch_get_main_queue(), ^
     {
-        [self.tableView scrollToRowAtIndexPath:activeCellIndexPath
+        [self.tableView scrollToRowAtIndexPath:nameIndexPath
                               atScrollPosition:UITableViewScrollPositionNone
                                       animated:YES];
-        [self.tableView selectRowAtIndexPath:activeCellIndexPath
-                                    animated:NO
-                              scrollPosition:UITableViewScrollPositionNone];
-    }
+    });
 }
 
 @end

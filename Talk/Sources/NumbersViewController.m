@@ -175,10 +175,12 @@
 
 - (void)updateCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
-    NumberData* number   = [fetchedNumbersController objectAtIndexPath:indexPath];
-    cell.imageView.image = [UIImage imageNamed:number.numberCountry];
-    cell.textLabel.text  = number.name;
-    cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
+    NumberData* number        = [fetchedNumbersController objectAtIndexPath:indexPath];
+    cell.imageView.image      = [UIImage imageNamed:number.numberCountry];
+    cell.textLabel.text       = number.name;
+    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:number.e164];
+    cell.detailTextLabel.text = [phoneNumber internationalFormat];
+    cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
 }
 
 
@@ -212,7 +214,7 @@
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DefaultCell"];
     }
 
     return cell;
