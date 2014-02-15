@@ -660,8 +660,52 @@ static const int TextFieldCellTag = 1234;
     {
         [[self.tableView superview] endEditing:YES];
 
-        [self textFieldShouldReturn:nil];
+        [self save];
     }
+}
+
+
+- (void)save
+{
+    if ([name isEqualToString:number.name] == YES)
+    {
+        // Nothing has changed.
+        return;
+    }
+
+    [[WebClient sharedClient] updateNumberE164:number.e164 withName:name reply:^(NSError* error)
+    {
+        if (error == nil)
+        {
+            number.name = name;
+        }
+        else
+        {
+            NSString* title;
+            NSString* message;
+
+            title   = NSLocalizedStringWithDefaultValue(@"Number NameUpdateFailedTitle", nil,
+                                                        [NSBundle mainBundle], @"Name Not Updated",
+                                                        @"Alert title telling that a name was not saved.\n"
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"Number NameUpdateFailedMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Saving the name via the internet failed: %@\n\n"
+                                                        @"Please try again later.",
+                                                        @"Alert message telling that a name must be supplied\n"
+                                                        @"[iOS alert message size]");
+            message = [NSString stringWithFormat:message, error.localizedDescription];
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+             {
+                 name = number.name;
+                 [self updateNameCell:[self.tableView cellForRowAtIndexPath:nameIndexPath] atIndexPath:nameIndexPath];
+             }
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+        }
+    }];
 }
 
 
@@ -699,42 +743,7 @@ static const int TextFieldCellTag = 1234;
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-    if ([name isEqualToString:number.name] == NO)
-    {
-        [[WebClient sharedClient] updateNumberE164:number.e164 withName:name reply:^(NSError* error)
-        {
-            if (error == nil)
-            {
-                number.name = name;
-            }
-            else
-            {
-                NSString* title;
-                NSString* message;
-
-                title   = NSLocalizedStringWithDefaultValue(@"Number NameUpdateFailedTitle", nil,
-                                                            [NSBundle mainBundle], @"Name Not Updated",
-                                                            @"Alert title telling that a name was not saved.\n"
-                                                            @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"Number NameUpdateFailedMessage", nil,
-                                                            [NSBundle mainBundle],
-                                                            @"Saving the name via the internet failed: %@\n\n"
-                                                            @"Please try again later.",
-                                                            @"Alert message telling that a name must be supplied\n"
-                                                            @"[iOS alert message size]");
-                message = [NSString stringWithFormat:message, error.localizedDescription];
-                [BlockAlertView showAlertViewWithTitle:title
-                                               message:message
-                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
-                 {
-                     name = number.name;
-                     [self updateNameCell:[self.tableView cellForRowAtIndexPath:nameIndexPath] atIndexPath:nameIndexPath];
-                 }
-                                     cancelButtonTitle:[Strings closeString]
-                                     otherButtonTitles:nil];
-            }
-        }];
-    }
+    [self save];
 
     [textField resignFirstResponder];
 
@@ -759,8 +768,7 @@ static const int TextFieldCellTag = 1234;
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer shouldReceiveTouch:(UITouch*)touch
 {
-    if ([touch.view isKindOfClass:[UITextField class]] ||
-        [touch.view isKindOfClass:[UIButton class]])
+    if ([touch.view isKindOfClass:[UITextField class]] || [touch.view isKindOfClass:[UIButton class]])
     {
         return NO;
     }

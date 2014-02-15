@@ -18,6 +18,8 @@
 #import "BlockActionSheet.h"
 #import "BlockAlertView.h"
 #import "PhonesViewController.h"
+#import "PhoneViewController.h"
+#import "NumberViewController.h"
 #import "DataManager.h"
 
 
@@ -43,9 +45,9 @@ static const int    TextFieldCellTag = 1111;
     PhoneData*       phone;
     PhoneNumber*     phoneNumber;
     NSMutableArray*  statementsArray;
+    NSArray*         numbersArray;
 
-    UIBarButtonItem* saveButtonItem;
-    UIBarButtonItem* deleteButtonItem;
+    UIBarButtonItem* rightBarButtonItem;
 }
 
 @property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
@@ -68,6 +70,35 @@ static const int    TextFieldCellTag = 1111;
         self.managedObjectContext = managedObjectContext;
         self.forwarding           = forwarding;
         isNew                     = (forwarding == nil);
+
+        if (isNew == YES)
+        {
+            // Create a new managed object context; set its parent to the fetched results controller's context.
+            NSManagedObjectContext* managedObjectContext;
+            managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+            [managedObjectContext setParentContext:self.managedObjectContext];
+            self.managedObjectContext = managedObjectContext;
+
+            self.forwarding = (ForwardingData*)[NSEntityDescription insertNewObjectForEntityForName:@"Forwarding"
+                                                                             inManagedObjectContext:self.managedObjectContext];
+
+            self.forwarding.statements = [Common jsonStringWithObject:@[@{@"call" : @{@"e164" : @[@""]}}]];
+        }
+        else
+        {
+            [[Settings sharedSettings] addObserver:self
+                                        forKeyPath:@"numbersSortSegment"
+                                           options:NSKeyValueObservingOptionNew
+                                           context:nil];
+        }
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleManagedObjectsChange:)
+                                                     name:NSManagedObjectContextObjectsDidChangeNotification
+                                                   object:self.managedObjectContext];
+
+        statementsArray    = [Common mutableObjectWithJsonString:self.forwarding.statements];
+        phoneNumber.number = statementsArray[0][@"call"][@"e164"][0];
     }
     
     return self;
@@ -79,6 +110,11 @@ static const int    TextFieldCellTag = 1111;
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:NSManagedObjectContextObjectsDidChangeNotification
                                                   object:self.managedObjectContext];
+
+    if (isNew == NO)
+    {
+        [[Settings sharedSettings] removeObserver:self forKeyPath:@"numbersSortSegment" context:nil];
+    }
 }
 
 
@@ -86,37 +122,30 @@ static const int    TextFieldCellTag = 1111;
 {
     [super viewDidLoad];
 
-    if (isNew)
+    self.clearsSelectionOnViewWillAppear = YES;
+
+    if (isNew == YES)
     {
-        // Create a new managed object context; set its parent to the fetched results controller's context.
-        NSManagedObjectContext* managedObjectContext;
-        managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        [managedObjectContext setParentContext:self.managedObjectContext];
-        self.managedObjectContext = managedObjectContext;
-
-        self.forwarding = (ForwardingData*)[NSEntityDescription insertNewObjectForEntityForName:@"Forwarding"
-                                                                         inManagedObjectContext:self.managedObjectContext];
-
-        self.forwarding.statements = [Common jsonStringWithObject:@[@{@"call" : @{@"e164" : @[@""]}}]];
-    }
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleManagedObjectsChange:)
-                                                 name:NSManagedObjectContextObjectsDidChangeNotification
-                                               object:self.managedObjectContext];
-
-    statementsArray    = [Common mutableObjectWithJsonString:self.forwarding.statements];
-    phoneNumber.number = statementsArray[0][@"call"][@"e164"][0];
-
-    [self updateRightBarButtonItem];
-    if (isNew)
-    {
-        UIBarButtonItem* buttonItem;
-        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+        UIBarButtonItem* leftBarButtonItem;
+        leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                    target:self
                                                                    action:@selector(cancel)];
-        self.navigationItem.leftBarButtonItem = buttonItem;
+        self.navigationItem.leftBarButtonItem = leftBarButtonItem;
+
+        rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                                           target:self
+                                                                           action:@selector(saveAction)];
     }
+    else
+    {
+        rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
+                                                                           target:self
+                                                                           action:@selector(deleteAction)];
+    }
+
+    self.navigationItem.rightBarButtonItem = rightBarButtonItem;
+    [self updateRightBarButtonItem];
+    [self updateNumbersArray];
 
     // Let keyboard be hidden when user taps outside text fields.
     UITapGestureRecognizer* gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -145,6 +174,17 @@ static const int    TextFieldCellTag = 1111;
 }
 
 
+- (void)observeValueForKeyPath:(NSString*)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary*)change
+                       context:(void*)context
+{
+    [self updateNumbersArray];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:[Common nOfBit:TableSectionNumbers inValue:sections]]
+                  withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+
 - (void)handleManagedObjectsChange:(NSNotification*)note
 {
     NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
@@ -152,6 +192,12 @@ static const int    TextFieldCellTag = 1111;
     {
         [self.tableView reloadData];
     }
+    else
+    {
+        [self.tableView reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+
+    [self updateRightBarButtonItem];
 }
 
 
@@ -185,54 +231,64 @@ static const int    TextFieldCellTag = 1111;
 }
 
 
-- (void)saveAction
+- (void)create
 {
     self.forwarding.name = name;
     statementsArray[0][@"call"][@"e164"][0] = phoneNumber.e164Format;
     self.forwarding.statements = [Common jsonStringWithObject:statementsArray];
 
-    if (isNew)
+    NSString* uuid = [[NSUUID UUID] UUIDString];
+    self.forwarding.uuid = uuid;
+    [[WebClient sharedClient] createIvrForUuid:uuid
+                                          name:name
+                                    statements:statementsArray
+                                         reply:^(NSError* error)
     {
-        NSString* uuid = [[NSUUID UUID] UUIDString];
-        self.forwarding.uuid = uuid;
-        [[WebClient sharedClient] createIvrForUuid:uuid
-                                              name:name
-                                        statements:statementsArray
-                                             reply:^(NSError* error)
+        if (error == nil)
         {
-            if (error == nil)
-            {
-                [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-            }
-            else
-            {
-                [self.managedObjectContext rollback];
-                [self showSaveError:error];
-            }
-        }];
+            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+        }
+        else
+        {
+            [self.managedObjectContext rollback];
+            [self showSaveError:error];
+        }
+    }];
 
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    else
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (void)save
+{
+    if ([name isEqualToString:self.forwarding.name] == YES &&
+        [[Common jsonStringWithObject:statementsArray] isEqualToString:self.forwarding.statements] == YES)
     {
-        [[WebClient sharedClient] updateIvrForUuid:self.forwarding.uuid
-                                              name:name
-                                        statements:statementsArray
-                                             reply:^(NSError* error)
-        {
-            if (error == nil)
-            {
-                [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-            }
-            else
-            {
-                [self.managedObjectContext rollback];
-                [self showSaveError:error];
-            }
-        }];
-
-        [self.navigationController popViewControllerAnimated:YES];
+        // Nothing has changed.
+        return;
     }
+
+    self.forwarding.name = name;
+    statementsArray[0][@"call"][@"e164"][0] = phoneNumber.e164Format;
+    self.forwarding.statements = [Common jsonStringWithObject:statementsArray];
+
+    [[WebClient sharedClient] updateIvrForUuid:self.forwarding.uuid
+                                          name:name
+                                    statements:statementsArray
+                                         reply:^(NSError* error)
+    {
+        if (error == nil)
+        {
+            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+        }
+        else
+        {
+            [self.managedObjectContext rollback];
+            [self showSaveError:error];
+        }
+    }];
+
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -312,9 +368,9 @@ static const int    TextFieldCellTag = 1111;
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionPhone:
-            title = NSLocalizedStringWithDefaultValue(@"ForwardingView NumberHeader", nil,
+            title = NSLocalizedStringWithDefaultValue(@"ForwardingView PhoneHeader", nil,
                                                       [NSBundle mainBundle],
-                                                      @"Calls Go To",
+                                                      @"Calls Go To Phone",
                                                       @"Table header above phone numbers\n"
                                                       @"[1 line larger font].");
             break;
@@ -435,7 +491,8 @@ static const int    TextFieldCellTag = 1111;
     }
 
     cell.textLabel.text  = [Strings phoneString];
-    cell.imageView.image = nil;
+    [Common addCountryImageToCell:cell isoCountryCode:phoneNumber.isoCountryCode];
+
     cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle  = UITableViewCellSelectionStyleBlue;
     if (isNew)
@@ -485,11 +542,8 @@ static const int    TextFieldCellTag = 1111;
 
 - (UITableViewCell*)numbersCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
-    NSSortDescriptor*   sortDescriptor  = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
-    NSArray*            sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-    NSArray*            numbersArray    = [self.forwarding.numbers sortedArrayUsingDescriptors:sortDescriptors];
-    NumberData*         number          = numbersArray[indexPath.row];
+    UITableViewCell* cell;
+    NumberData*      number = numbersArray[indexPath.row];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumbersCell"];
     if (cell == nil)
@@ -501,8 +555,8 @@ static const int    TextFieldCellTag = 1111;
     [Common addCountryImageToCell:cell isoCountryCode:number.numberCountry];
 
     cell.detailTextLabel.text = number.name;
-    cell.accessoryType        = UITableViewCellAccessoryNone;
-    cell.selectionStyle       = UITableViewCellSelectionStyleNone;
+    cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+    cell.selectionStyle       = UITableViewCellSelectionStyleBlue;
 
     return cell;
 }
@@ -548,15 +602,26 @@ static const int    TextFieldCellTag = 1111;
 
                 [self.navigationController pushViewController:viewController animated:YES];
             }
+            else
+            {
+                PhoneViewController* viewController;
+                viewController = [[PhoneViewController alloc] initWithPhone:phone
+                                                       managedObjectContext:self.managedObjectContext];
+                [self.navigationController pushViewController:viewController animated:YES];
+            }
             break;
         }
-
         case TableSectionStatements:
             break;
 
         case TableSectionNumbers:
-            break;
+        {
+            NumberData*           number         = numbersArray[indexPath.row];
+            NumberViewController* viewController = [[NumberViewController alloc] initWithNumber:number];
 
+            [self.navigationController pushViewController:viewController animated:YES];
+            break;
+        }
         case TableSectionRecordings:
             break;
     }
@@ -613,48 +678,38 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)updateRightBarButtonItem
 {
-    UIBarButtonItem* buttonItem;
-    BOOL             changed;
-    BOOL             valid;
+    BOOL valid;
 
-    changed = [name isEqualToString:self.forwarding.name] == NO ||
-              [[Common jsonStringWithObject:statementsArray] isEqualToString:self.forwarding.statements] == NO;
     valid   = [name stringByReplacingOccurrencesOfString:@" " withString:@""].length > 0 &&
               ((phoneNumber.isValid && [Settings sharedSettings].homeCountry.length > 0) || phoneNumber.isInternational);
 
-    if (saveButtonItem == nil)
+    if (isNew == YES)
     {
-        saveButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                                       target:self
-                                                                       action:@selector(saveAction)];
-    }
-
-    if (deleteButtonItem == nil)
-    {
-        deleteButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
-                                                                         target:self
-                                                                         action:@selector(deleteAction)];
-    }
-
-    if (isNew)
-    {
-        buttonItem = saveButtonItem;
-        buttonItem.enabled = valid;
+        rightBarButtonItem.enabled = valid;
     }
     else
     {
-        if (self.forwarding.numbers.count == 0 && changed == NO)
-        {
-            buttonItem = deleteButtonItem;
-        }
-        else
-        {
-            buttonItem = saveButtonItem;
-            buttonItem.enabled = (valid && changed);
-        }
+        rightBarButtonItem.enabled = (self.forwarding.numbers.count == 0);
+    }
+}
+
+
+- (void)updateNumbersArray
+{
+    NSSortDescriptor* sortDescriptorCountry = [[NSSortDescriptor alloc] initWithKey:@"numberCountry" ascending:YES];
+    NSSortDescriptor* sortDescriptorName    = [[NSSortDescriptor alloc] initWithKey:@"name"          ascending:YES];
+    NSArray*          sortDescriptors;
+
+    if ([Settings sharedSettings].numbersSortSegment == 0)
+    {
+        sortDescriptors = @[sortDescriptorCountry, sortDescriptorName];
+    }
+    else
+    {
+        sortDescriptors = @[sortDescriptorName, sortDescriptorCountry];
     }
 
-    [self.navigationItem setRightBarButtonItem:buttonItem animated:YES];
+    numbersArray = [self.forwarding.numbers sortedArrayUsingDescriptors:sortDescriptors];
 }
 
 

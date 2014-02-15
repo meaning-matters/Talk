@@ -231,8 +231,7 @@
 }
 
 
-- (void)setSortKeys:(NSArray*)sortKeys
-     ofFetchRequest:(NSFetchRequest*)fetchRequest
+- (void)setSortKeys:(NSArray*)sortKeys ofFetchRequest:(NSFetchRequest*)fetchRequest
 {
     NSMutableArray* sortDescriptors;
 
@@ -252,15 +251,7 @@ ofResultsController:(NSFetchedResultsController*)resultsController
 {
     [self setSortKeys:sortKeys ofFetchRequest:resultsController.fetchRequest];
 
-    *error = nil;
-    if ([resultsController performFetch:error] == YES)
-    {
-        return YES;
-    }
-    else
-    {
-        return NO;
-    }
+    return [resultsController performFetch:error];
 }
 
 

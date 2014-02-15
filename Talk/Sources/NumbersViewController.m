@@ -141,12 +141,10 @@
     NSError* error;
     if ([[DataManager sharedManager] setSortKeys:[self sortKeys]
                              ofResultsController:fetchedNumbersController
-                                           error:&error] == NO)
+                                           error:&error] == YES)
     {
-        //#### Handle error.
+        [self.tableView reloadData];
     }
-
-    //#### setSortKeys fetches, so not needed: [self fetchData];
 }
 
 
@@ -225,6 +223,14 @@
 {
     [self updateCell:cell atIndexPath:indexPath];
 }
+
+
+/* Create floating header (with sort segment for example)
+- (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return nil;
+}
+*/
 
 
 #pragma mark - Fetched Results Controller Delegate
@@ -315,7 +321,6 @@
     {
         return @[@"name", @"numberCountry"];
     }
-
 }
 
 @end

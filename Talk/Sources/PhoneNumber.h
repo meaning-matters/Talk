@@ -46,6 +46,8 @@ typedef enum
 
 - (instancetype)initWithNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode;
 
+- (NSString*)isoCountryCode;
+
 - (NSString*)callCountryCode;
 
 - (BOOL)isValid;

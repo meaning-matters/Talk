@@ -406,7 +406,7 @@ static NSUserDefaults*  userDefaults;
 }
 
 
-- (NSInteger)NumbersSortSegment
+- (NSInteger)numbersSortSegment
 {
     return [userDefaults integerForKey:NumbersSortSegmentKey];
 }
