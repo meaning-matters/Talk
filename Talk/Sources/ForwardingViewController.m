@@ -262,7 +262,7 @@ static const int    TextFieldCellTag = 1111;
 - (void)save
 {
     if ([name isEqualToString:self.forwarding.name] == YES &&
-        [[Common jsonStringWithObject:statementsArray] isEqualToString:self.forwarding.statements] == YES)
+        [Common object:statementsArray isEqualToJsonString:self.forwarding.statements] == YES)
     {
         // Nothing has changed.
         return;
@@ -287,8 +287,6 @@ static const int    TextFieldCellTag = 1111;
             [self showSaveError:error];
         }
     }];
-
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -657,8 +655,11 @@ static const int    TextFieldCellTag = 1111;
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
+    [self save];
+
     [textField resignFirstResponder];
 
+    // we can always return YES, because the Done button will be disabled when there's no text.
     return YES;
 }
 
@@ -715,7 +716,12 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
 {
-    [[self.tableView superview] endEditing:YES];
+    if (name.length > 0)
+    {
+        [[self.tableView superview] endEditing:YES];
+
+        [self save];
+    }
 }
 
 

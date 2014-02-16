@@ -18,7 +18,6 @@
 
 - (BOOL)haveAccount;
 
-- (BOOL)haveVerifiedAccount;
 
 @property (nonatomic, strong) NSArray*          tabBarViewControllerClasses;
 @property (nonatomic, assign) NSInteger         tabBarSelectedIndex;    // The current tab.

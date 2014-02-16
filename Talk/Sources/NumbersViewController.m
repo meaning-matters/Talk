@@ -95,7 +95,7 @@
 
 - (void)refresh:(id)sender
 {
-    if ([Settings sharedSettings].haveVerifiedAccount == YES)
+    if ([Settings sharedSettings].haveAccount == YES)
     {
         [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
         {
@@ -150,7 +150,7 @@
 
 - (void)addAction
 {
-    if ([Settings sharedSettings].haveVerifiedAccount == YES)
+    if ([Settings sharedSettings].haveAccount == YES)
     {
         UINavigationController*         modalViewController;
         NumberCountriesViewController*  numberCountriesViewController;

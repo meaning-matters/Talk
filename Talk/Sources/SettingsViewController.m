@@ -218,7 +218,7 @@ typedef enum
             break;
 
         case TableSectionAccountData:
-            numberOfRows = settings.haveVerifiedAccount ? 1 : 2;
+            numberOfRows = settings.haveAccount ? 1 : 2;
             break;
     }
 
@@ -385,7 +385,7 @@ typedef enum
         }
 
         case TableSectionAccountData:
-            if (settings.haveVerifiedAccount == NO && indexPath.row == 0)
+            if (settings.haveAccount == NO && indexPath.row == 0)
             {
                 [Common showProvisioningViewController];
             }
@@ -697,7 +697,7 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"AccountDataCell"];
     }
 
-    if (settings.haveVerifiedAccount == NO && indexPath.row == 0)
+    if (settings.haveAccount == NO && indexPath.row == 0)
     {
         cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:Get Started CellText", nil,
                                                                 [NSBundle mainBundle], @"Get Started",

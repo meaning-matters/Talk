@@ -33,21 +33,17 @@
 
 - (instancetype)init
 {
-    if (self = [super initWithStyle:UITableViewStylePlain])
-    {
-        self.title            = [Strings phonesString];
-        self.tabBarItem.image = [UIImage imageNamed:@"PhonesTab.png"];
-    }
-
-    return self;
+    return [self initWithForwarding:nil managedObjectContext:[DataManager sharedManager].managedObjectContext];
 }
 
 
 - (instancetype)initWithForwarding:(ForwardingData*)forwarding
               managedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
-    if ([self init])
+    if (self = [super initWithStyle:UITableViewStylePlain])
     {
+        self.title                = [Strings phonesString];
+        self.tabBarItem.image     = [UIImage imageNamed:@"PhonesTab.png"];
         self.forwarding           = forwarding;
         self.managedObjectContext = managedObjectContext;
     }
@@ -248,7 +244,7 @@
 
 - (void)addPhoneAction
 {
-    if ([Settings sharedSettings].haveVerifiedAccount == YES)
+    if ([Settings sharedSettings].haveAccount == YES)
     {
         UINavigationController* modalViewController;
         PhoneViewController*    viewController;
@@ -278,7 +274,6 @@
     PhoneNumber* phoneNumber        = [[PhoneNumber alloc] initWithNumber:phone.e164];
     cell.detailTextLabel.text       = [phoneNumber internationalFormat];
     cell.imageView.image            = [UIImage imageNamed:[phoneNumber isoCountryCode]];
-    cell.imageView.highlightedImage = [Common invertImage:cell.imageView.image];
 
     if (self.forwarding == nil)
     {
@@ -299,9 +294,9 @@
 
 - (void)refresh:(id)sender
 {
-    if ([Settings sharedSettings].haveVerifiedAccount == YES)
+    if ([Settings sharedSettings].haveAccount == YES)
     {
-        [[DataManager sharedManager] synchronizePhones:^(NSError* error)
+        [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
         {
             [sender endRefreshing];
 

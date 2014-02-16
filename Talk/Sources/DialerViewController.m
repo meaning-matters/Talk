@@ -220,7 +220,7 @@
 
 - (void)updateReachable
 {
-    BOOL haveAccount   = [Settings sharedSettings].haveVerifiedAccount;
+    BOOL haveAccount   = [Settings sharedSettings].haveAccount;
     BOOL allowCellular = [Settings sharedSettings].allowCellularDataCalls || [Settings sharedSettings].callbackMode;
 
     switch ([NetworkStatus sharedStatus].reachableStatus)

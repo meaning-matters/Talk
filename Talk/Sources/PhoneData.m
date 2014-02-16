@@ -16,6 +16,7 @@
 
 @dynamic name;
 @dynamic e164;
+@dynamic forwardings;
 
 
 - (void)deleteFromManagedObjectContext:(NSManagedObjectContext*)managedObjectContext

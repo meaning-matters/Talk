@@ -189,6 +189,16 @@
 }
 
 
++ (BOOL)object:(id)object isEqualToJsonString:(NSString*)string
+{
+    NSString* objectJson       = [self jsonStringWithObject:object];
+    id        stringObject     = [self objectWithJsonString:string];
+    NSString* stringObjectJson = [self jsonStringWithObject:stringObject];
+
+    return [objectJson isEqualToString:stringObjectJson];
+}
+
+
 + (NSError*)errorWithCode:(NSInteger)code description:(NSString*)description
 {
     NSDictionary* userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];

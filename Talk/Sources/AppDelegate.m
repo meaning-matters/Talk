@@ -355,7 +355,7 @@
             [defaultFadeImage removeFromSuperview];
             defaultFadeImage = nil;
 
-            if ([Settings sharedSettings].haveVerifiedAccount == NO)
+            if ([Settings sharedSettings].haveAccount == NO)
             {
                 [Common showProvisioningViewController];
             }

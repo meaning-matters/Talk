@@ -46,6 +46,8 @@
 
 + (id)mutableObjectWithJsonString:(NSString*)string;
 
++ (BOOL)object:(id)object isEqualToJsonString:(NSString*)string;
+
 + (NSError*)errorWithCode:(NSInteger)code description:(NSString*)description;
 
 + (BOOL)deviceHasReceiver;

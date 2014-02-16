@@ -131,7 +131,7 @@ typedef enum
 
 - (void)refresh:(id)sender
 {
-    if ([Settings sharedSettings].haveVerifiedAccount == YES)
+    if ([Settings sharedSettings].haveAccount == YES)
     {
         [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
         {
@@ -285,17 +285,12 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
             [forwarding deleteFromManagedObjectContext:self.managedObjectContext completion:^(BOOL succeeded)
             {
-                NSError* error;
-                if (succeeded == YES && ![self.managedObjectContext save:&error])
-                {
-                    [[DataManager sharedManager] handleError:error];
-                }
+                [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
             }];
         }
         else
         {
             RecordingData* recording = [fetchedRecordingsController objectAtIndexPath:indexPath];
-            NSError*       error;
 
             if (recording.forwardings.count > 0)
             {
@@ -306,10 +301,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                 [self.managedObjectContext deleteObject:recording];
             }
 
-            if (![self.managedObjectContext save:&error])
-            {
-                [[DataManager sharedManager] handleError:error];
-            }
+            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
 
             if (fetchedRecordingsController.fetchedObjects.count == 0)
             {
@@ -484,7 +476,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
 - (void)addForwardingAction
 {
-    if ([Settings sharedSettings].haveVerifiedAccount == YES)
+    if ([Settings sharedSettings].haveAccount == YES)
     {
         UINavigationController*   modalViewController;
         ForwardingViewController* viewController;

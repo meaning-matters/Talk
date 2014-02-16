@@ -277,7 +277,7 @@ static SipInterface*    sipInterface;
 {
     BOOL    result;
 
-    if ([Settings sharedSettings].haveVerifiedAccount)
+    if ([Settings sharedSettings].haveAccount)
     {
         result = YES;
     }

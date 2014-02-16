@@ -100,12 +100,6 @@ static NSUserDefaults*  userDefaults;
 }
 
 
-- (BOOL)haveVerifiedAccount
-{
-    return (self.haveAccount && self.callbackE164.length > 0);
-}
-
-
 #pragma mark - Helper Methods
 
 - (NSDictionary*)defaults

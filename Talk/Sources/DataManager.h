@@ -10,9 +10,9 @@
 
 @interface DataManager : NSObject
 
-@property (nonatomic, strong, readonly) NSManagedObjectContext*         managedObjectContext;
-@property (nonatomic, strong, readonly) NSManagedObjectModel*           managedObjectModel;
-@property (nonatomic, strong, readonly) NSPersistentStoreCoordinator*   persistentStoreCoordinator;
+@property (nonatomic, strong, readonly) NSManagedObjectContext*       managedObjectContext;
+@property (nonatomic, strong, readonly) NSManagedObjectModel*         managedObjectModel;
+@property (nonatomic, strong, readonly) NSPersistentStoreCoordinator* persistentStoreCoordinator;
 
 + (DataManager*)sharedManager;
 
@@ -36,9 +36,5 @@ ofResultsController:(NSFetchedResultsController*)resultsController
               error:(NSError**)error;
 
 - (void)synchronizeWithServer:(void (^)(NSError* error))completion;
-
-- (void)synchronizePhones:(void (^)(NSError* error))completion;
-
-- (void)handleError:(NSError*)error;
 
 @end
