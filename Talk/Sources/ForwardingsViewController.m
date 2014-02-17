@@ -70,8 +70,8 @@ typedef enum
 
     self.clearsSelectionOnViewWillAppear = YES;
 
-    NSString*   forwardingsTitle;
-    NSString*   recordingsTitle;
+    NSString* forwardingsTitle;
+    NSString* recordingsTitle;
 
     forwardingsTitle = NSLocalizedStringWithDefaultValue(@"ForwardingsView ForwardingsButtonTitle", nil,
                                                          [NSBundle mainBundle], @"Logic",
@@ -93,35 +93,19 @@ typedef enum
     self.navigationItem.titleView = selectionSegmentedControl;
 #endif
 
-    NSError* error;
     fetchedForwardingsController = [[DataManager sharedManager] fetchResultsForEntityName:@"Forwarding"
                                                                              withSortKeys:@[@"name"]
-                                                                     managedObjectContext:self.managedObjectContext
-                                                                                    error:&error];
-    if (fetchedForwardingsController != nil)
-    {
-        fetchedForwardingsController.delegate = self;
-    }
-    else
-    {
-        NSLog(@"//### Error: %@", error.localizedDescription);
-    }
+                                                                     managedObjectContext:self.managedObjectContext];
+    fetchedForwardingsController.delegate = self;
+
 #if FULL_FORWARDINGS
     fetchedRecordingsController  = [[DataManager sharedManager] fetchResultsForEntityName:@"Recording"
                                                                              withSortKeys:@[@"name"]
                                                                                     error:&error];
-    if (fetchedRecordingsController != nil)
-    {
-        fetchedRecordingsController.delegate = self;
-    }
-    else
-    {
-        NSLog(@"//### Error: %@", error.localizedDescription);
-    }
+    fetchedRecordingsController.delegate = self;
 #endif
 
     UIRefreshControl* refreshControl;
-
     refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings synchronizeWithServerString]];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];

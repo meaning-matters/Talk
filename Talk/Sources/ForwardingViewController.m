@@ -43,7 +43,6 @@ static const int    TextFieldCellTag = 1111;
 
     NSString*        name;
     PhoneData*       phone;
-    PhoneNumber*     phoneNumber;
     NSMutableArray*  statementsArray;
     NSArray*         numbersArray;
 
@@ -65,7 +64,6 @@ static const int    TextFieldCellTag = 1111;
         self.title  = [Strings forwardingString];
         name        = forwarding.name;
         phone       = [forwarding.phones anyObject];
-        phoneNumber = [[PhoneNumber alloc] init];
 
         self.managedObjectContext = managedObjectContext;
         self.forwarding           = forwarding;
@@ -97,8 +95,7 @@ static const int    TextFieldCellTag = 1111;
                                                      name:NSManagedObjectContextObjectsDidChangeNotification
                                                    object:self.managedObjectContext];
 
-        statementsArray    = [Common mutableObjectWithJsonString:self.forwarding.statements];
-        phoneNumber.number = statementsArray[0][@"call"][@"e164"][0];
+        statementsArray = [Common mutableObjectWithJsonString:self.forwarding.statements];
     }
     
     return self;
@@ -163,12 +160,6 @@ static const int    TextFieldCellTag = 1111;
     NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
     if (selectedIndexPath != nil)
     {
-        if (self.forwarding.phones.count != 0)
-        {
-            phone              = [self.forwarding.phones anyObject];
-            phoneNumber.number = phone.e164;
-        }
-
         [self.tableView reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
@@ -234,7 +225,7 @@ static const int    TextFieldCellTag = 1111;
 - (void)create
 {
     self.forwarding.name = name;
-    statementsArray[0][@"call"][@"e164"][0] = phoneNumber.e164Format;
+    statementsArray[0][@"call"][@"e164"][0] = phone.e164;
     self.forwarding.statements = [Common jsonStringWithObject:statementsArray];
 
     NSString* uuid = [[NSUUID UUID] UUIDString];
@@ -269,7 +260,7 @@ static const int    TextFieldCellTag = 1111;
     }
 
     self.forwarding.name = name;
-    statementsArray[0][@"call"][@"e164"][0] = phoneNumber.e164Format;
+    statementsArray[0][@"call"][@"e164"][0] = phone.e164;
     self.forwarding.statements = [Common jsonStringWithObject:statementsArray];
 
     [[WebClient sharedClient] updateIvrForUuid:self.forwarding.uuid
@@ -489,25 +480,31 @@ static const int    TextFieldCellTag = 1111;
     }
 
     cell.textLabel.text  = [Strings phoneString];
-    [Common addCountryImageToCell:cell isoCountryCode:phoneNumber.isoCountryCode];
+    if (phone != nil)
+    {
+        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:phone.e164];
+        [Common addCountryImageToCell:cell isoCountryCode:phoneNumber.isoCountryCode];
+    }
 
-    cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle  = UITableViewCellSelectionStyleBlue;
     if (isNew)
     {
         if (phone == nil)
         {
+            cell.accessoryType             = UITableViewCellAccessoryDisclosureIndicator;
             cell.detailTextLabel.text      = [Strings requiredString];
             cell.detailTextLabel.textColor = [UIColor lightGrayColor];
         }
         else
         {
+            cell.accessoryType             = UITableViewCellAccessoryDetailDisclosureButton;
             cell.detailTextLabel.text      = phone.name;
             cell.detailTextLabel.textColor = [UIColor blackColor];
         }
     }
     else
     {
+        cell.accessoryType             = UITableViewCellAccessoryDetailDisclosureButton;
         cell.detailTextLabel.text      = phone.name;
         cell.detailTextLabel.textColor = [UIColor blackColor];
     }
@@ -592,21 +589,17 @@ static const int    TextFieldCellTag = 1111;
 
         case TableSectionPhone:
         {
-            if (isNew)
+            PhonesViewController* viewController;
+            viewController = [[PhonesViewController alloc] initWithManagedObjectContext:self.managedObjectContext
+                                                                          selectedPhone:[self.forwarding.phones anyObject]
+                                                                             completion:^(PhoneData* selectedPhone)
             {
-                PhonesViewController* viewController;
-                viewController = [[PhonesViewController alloc] initWithForwarding:self.forwarding
-                                                             managedObjectContext:self.managedObjectContext];
+                phone = selectedPhone;
+                [self.forwarding removePhones:self.forwarding.phones];
+                [self.forwarding addPhonesObject:phone];
+            }];
 
-                [self.navigationController pushViewController:viewController animated:YES];
-            }
-            else
-            {
-                PhoneViewController* viewController;
-                viewController = [[PhoneViewController alloc] initWithPhone:phone
-                                                       managedObjectContext:self.managedObjectContext];
-                [self.navigationController pushViewController:viewController animated:YES];
-            }
+            [self.navigationController pushViewController:viewController animated:YES];
             break;
         }
         case TableSectionStatements:
@@ -623,6 +616,15 @@ static const int    TextFieldCellTag = 1111;
         case TableSectionRecordings:
             break;
     }
+}
+
+
+- (void)tableView:(UITableView*)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath*)indexPath
+{
+    PhoneViewController* viewController;
+    viewController = [[PhoneViewController alloc] initWithPhone:phone
+                                           managedObjectContext:self.managedObjectContext];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 
@@ -679,10 +681,11 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)updateRightBarButtonItem
 {
-    BOOL valid;
+    PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:phone.e164];
+    BOOL         valid;
 
-    valid   = [name stringByReplacingOccurrencesOfString:@" " withString:@""].length > 0 &&
-              ((phoneNumber.isValid && [Settings sharedSettings].homeCountry.length > 0) || phoneNumber.isInternational);
+    valid = [name stringByReplacingOccurrencesOfString:@" " withString:@""].length > 0 &&
+            ((phoneNumber.isValid && [Settings sharedSettings].homeCountry.length > 0) || phoneNumber.isInternational);
 
     if (isNew == YES)
     {

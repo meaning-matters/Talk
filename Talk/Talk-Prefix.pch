@@ -21,22 +21,25 @@
 
 //Used for string measurement
 #define SIZE_NAME_LABEL_MEASURE   200
-#define SIZE_NAME_LABEL_MIN       60
+#define SIZE_NAME_LABEL_MIN        60
 
 //Cell and textfield heights
-#define SIZE_CELL_HEIGHT          44
+#define SIZE_CELL_HEIGHT           44
 #define SIZE_TEXTVIEW_WIDTH       210
 #define SIZE_TEXTVIEW_EDIT_WIDTH  180
 
 //Fonts and colors used
-#define FONT_LABEL            [UIFont fontWithName:@"TrebuchetMS-Bold" size:13]
-#define FONT_ADDRESS          [UIFont boldSystemFontOfSize:14]
-#define FONT_NOTES            [UIFont boldSystemFontOfSize:15]
-#define FONT_COLOR_MY_NUMBER  [UIColor colorWithRed:91/255.0f green:108/255.0f blue:132/255.0f alpha:1.0f]
-#define FONT_COLOR_LABEL      [UIColor colorWithRed:81/255.0 green:102/255.0 blue:145/255.0 alpha:1.0]
-#define FONT_COLOR_MERGED     [UIColor colorWithRed:40/255.0f green:108/255.0f blue:214/255.0f alpha:1.0f]
-#define FONT_COLOR_MISSED     [UIColor colorWithRed:140/255.0f green:16/255.0f blue:5/255.0f alpha:1.0f]
-#define FONT_COLOR_LIGHT_GREY [UIColor colorWithRed:204/255.0f green:204/255.0f blue:204/255.0f alpha:1.0f]
+#define FONT_LABEL              [UIFont fontWithName:@"TrebuchetMS-Bold" size:13]
+#define FONT_ADDRESS            [UIFont boldSystemFontOfSize:14]
+#define FONT_NOTES              [UIFont boldSystemFontOfSize:15]
+#define FONT_COLOR_MY_NUMBER    [UIColor colorWithRed: 91/255.0f green:108/255.0f blue:132/255.0f alpha:1.0f]
+#define FONT_COLOR_LABEL        [UIColor colorWithRed: 81/255.0f green:102/255.0f blue:145/255.0f alpha:1.0f]
+#define FONT_COLOR_MERGED       [UIColor colorWithRed: 40/255.0f green:108/255.0f blue:214/255.0f alpha:1.0f]
+#define FONT_COLOR_MISSED       [UIColor colorWithRed:140/255.0f green: 16/255.0f blue:  5/255.0f alpha:1.0f]
+#define FONT_COLOR_LIGHT_GREY   [UIColor colorWithRed:204/255.0f green:204/255.0f blue:204/255.0f alpha:1.0f]
+
+#define SEARCH_BACKGROUND_COLOR [UIColor colorWithRed:191/255.0f green: 191/255.0f blue:  196/255.0f alpha:1.0f]
+#define PERSON_BACKGROUND_COLOR [UIColor colorWithRed:191/255.0f green: 191/255.0f blue:  196/255.0f alpha:1.0f]
 
 //The section for this tableview
 typedef enum
@@ -181,7 +184,6 @@ typedef enum
 
 #define RINGTONE_ARRAY  @[@"RT_DEFAULT", @"RT_NONE"]
 #define VIBRATION_ARRAY @[@"RT_DEFAULT", @"RT_VIBRATION", @"RT_NONE"]
-
 
 #endif
 

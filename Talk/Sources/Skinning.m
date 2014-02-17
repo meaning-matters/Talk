@@ -17,8 +17,8 @@
 
 + (Skinning*)sharedSkinning
 {
-    static Skinning*        sharedInstance;
-    static dispatch_once_t  onceToken;
+    static Skinning*       sharedInstance;
+    static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^
     {
@@ -29,6 +29,8 @@
                                     forKeyPath:@"callbackMode"
                                        options:NSKeyValueChangeOldKey
                                        context:nil];
+        
+        [UIApplication sharedApplication].keyWindow.tintColor = [self tintColor];
     });
     
     return sharedInstance;
@@ -37,7 +39,13 @@
 
 + (UIColor*)callbackModeTintColor
 {
-    return [UIColor colorWithHue:0.4 saturation:0.9 brightness:0.85 alpha:1.0];
+    return [UIColor colorWithHue:0.40f saturation:0.90f brightness:0.85f alpha:1.00f];
+}
+
+
++ (UIColor*)tintColor
+{
+    return [UIColor colorWithRed:0.26f green:0.41f blue:1.00f alpha:1.00f]; // NumberBay blue.
 }
 
 
@@ -57,8 +65,6 @@
     {
         [[AppDelegate appDelegate].tabBarController.tabBar setSelectedImageTintColor:[Skinning callbackModeTintColor]];
     }
-
-    [[UINavigationBar appearance] setBarStyle:UIBarStyleBlackOpaque];
 }
 
 @end

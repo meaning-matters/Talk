@@ -14,7 +14,6 @@
 #import "Common.h"
 #import "Strings.h"
 #import "PhoneNumber.h"
-#import "ForwardingData.h"
 
 
 @interface PhonesViewController ()
@@ -22,9 +21,9 @@
     NSFetchedResultsController* fetchedPhonesController;
 }
 
-@property (nonatomic, strong) ForwardingData*         forwarding;
 @property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
-@property (nonatomic, strong) NSIndexPath*            selectedIndexPath;
+@property (nonatomic, strong) PhoneData*              selectedPhone;
+@property (nonatomic, copy) void (^completion)(PhoneData* selectedPhone);
 
 @end
 
@@ -33,19 +32,23 @@
 
 - (instancetype)init
 {
-    return [self initWithForwarding:nil managedObjectContext:[DataManager sharedManager].managedObjectContext];
+    return [self initWithManagedObjectContext:[DataManager sharedManager].managedObjectContext
+                                selectedPhone:nil
+                                   completion:nil];
 }
 
 
-- (instancetype)initWithForwarding:(ForwardingData*)forwarding
-              managedObjectContext:(NSManagedObjectContext*)managedObjectContext
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
+                               selectedPhone:(PhoneData*)selectedPhone
+                                  completion:(void (^)(PhoneData* selectedPhone))completion
 {
     if (self = [super initWithStyle:UITableViewStylePlain])
     {
         self.title                = [Strings phonesString];
         self.tabBarItem.image     = [UIImage imageNamed:@"PhonesTab.png"];
-        self.forwarding           = forwarding;
         self.managedObjectContext = managedObjectContext;
+        self.selectedPhone        = selectedPhone;
+        self.completion           = completion;
     }
 
     return self;
@@ -58,19 +61,10 @@
 
     self.clearsSelectionOnViewWillAppear = YES;
 
-    NSError* error;
     fetchedPhonesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Phone"
                                                                         withSortKeys:@[@"name"]
-                                                                managedObjectContext:self.managedObjectContext
-                                                                               error:&error];
-    if (fetchedPhonesController != nil)
-    {
-        fetchedPhonesController.delegate = self;
-    }
-    else
-    {
-        NSLog(@"//### Error: %@", error.localizedDescription);
-    }
+                                                                managedObjectContext:self.managedObjectContext];
+    fetchedPhonesController.delegate = self;
 
     UIRefreshControl* refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings synchronizeWithServerString]];
@@ -197,7 +191,7 @@
     PhoneViewController* viewController;
     PhoneData*           phone = [fetchedPhonesController objectAtIndexPath:indexPath];
 
-    if (self.forwarding == nil)
+    if (self.completion == nil)
     {
         viewController = [[PhoneViewController alloc] initWithPhone:phone managedObjectContext:self.managedObjectContext];
 
@@ -205,18 +199,9 @@
     }
     else
     {
-        if ([self.forwarding.phones containsObject:phone] == NO)
+        if (phone != self.selectedPhone)
         {
-            if (self.selectedIndexPath != nil)
-            {
-                [self.forwarding removePhones:[NSSet setWithSet:self.forwarding.phones]];
-
-                [self.tableView reloadRowsAtIndexPaths:@[self.selectedIndexPath]
-                                      withRowAnimation:YES];
-            }
-
-            self.selectedIndexPath = indexPath;
-            [self.forwarding addPhonesObject:phone];
+            self.completion(phone);
         }
 
         [self.navigationController popViewControllerAnimated:YES];
@@ -269,21 +254,19 @@
 
 - (void)configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
-    PhoneData* phone                = [fetchedPhonesController objectAtIndexPath:indexPath];
-    cell.textLabel.text             = phone.name;
-    PhoneNumber* phoneNumber        = [[PhoneNumber alloc] initWithNumber:phone.e164];
-    cell.detailTextLabel.text       = [phoneNumber internationalFormat];
-    cell.imageView.image            = [UIImage imageNamed:[phoneNumber isoCountryCode]];
+    PhoneData* phone          = [fetchedPhonesController objectAtIndexPath:indexPath];
+    cell.textLabel.text       = phone.name;
+    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:phone.e164];
+    cell.detailTextLabel.text = [phoneNumber internationalFormat];
+    cell.imageView.image      = [UIImage imageNamed:[phoneNumber isoCountryCode]];
 
-    if (self.forwarding == nil)
+    if (self.completion == nil)
     {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    else if ([self.forwarding.phones containsObject:phone] == YES)
+    else if (phone == self.selectedPhone)
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
-
-        self.selectedIndexPath = indexPath;
     }
     else
     {

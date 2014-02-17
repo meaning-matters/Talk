@@ -87,7 +87,7 @@
 
     if (self.isModal)
     {
-        UIBarButtonItem*    cancelButton;
+        UIBarButtonItem* cancelButton;
 
         cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                      target:self

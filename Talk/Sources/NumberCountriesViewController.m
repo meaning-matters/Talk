@@ -20,13 +20,13 @@
 
 @interface NumberCountriesViewController ()
 {
-    NSArray*                nameIndexArray;         // Array with all first letters of country names.
-    NSMutableDictionary*    nameIndexDictionary;    // Dictionary with entry (containing array of names) per letter.
-    NSMutableArray*         filteredNamesArray;
+    NSArray*             nameIndexArray;         // Array with all first letters of country names.
+    NSMutableDictionary* nameIndexDictionary;    // Dictionary with entry (containing array of names) per letter.
+    NSMutableArray*      filteredNamesArray;
 
-    NSMutableArray*         allCountriesArray;
-    NSMutableArray*         countriesArray;
-    BOOL                    isFiltered;
+    NSMutableArray*      allCountriesArray;
+    NSMutableArray*      countriesArray;
+    BOOL                 isFiltered;
 }
 
 @end
@@ -52,16 +52,24 @@
 
     self.navigationItem.title = [Strings loadingString];
 
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+
     UIBarButtonItem*    cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                  target:self
                                                                  action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
-    self.numberTypeSegmentedControl.segmentedControlStyle = UndocumentedSearchScopeBarSegmentedControlStyle;
-    [self.numberTypeSegmentedControl setTitle:[NumberType localizedStringForNumberType:1UL << 0] forSegmentAtIndex:0];
-    [self.numberTypeSegmentedControl setTitle:[NumberType localizedStringForNumberType:1UL << 1] forSegmentAtIndex:1];
-    [self.numberTypeSegmentedControl setTitle:[NumberType localizedStringForNumberType:1UL << 2] forSegmentAtIndex:2];
+    NSArray* items = @[[NumberType localizedStringForNumberType:1UL << 0],
+                       [NumberType localizedStringForNumberType:1UL << 1],
+                       [NumberType localizedStringForNumberType:1UL << 2]];
+    self.numberTypeSegmentedControl = [[UISegmentedControl alloc] initWithItems:items];
+    [self.numberTypeSegmentedControl addTarget:self
+                                        action:@selector(numberTypeChangedAction:)
+                              forControlEvents:UIControlEventValueChanged];
+
+    self.navigationItem.titleView = self.numberTypeSegmentedControl;
+
     NSInteger   index = [NumberType numberTypeMaskToIndex:[Settings sharedSettings].numberTypeMask];
     [self.numberTypeSegmentedControl setSelectedSegmentIndex:index];
 
@@ -172,6 +180,7 @@
 
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.searchDisplayController setActive:NO animated:YES];
+    self.searchDisplayController.displaysSearchBarInNavigationBar = YES;
     
     [[WebClient sharedClient] cancelAllRetrieveNumberCountries];
 }
@@ -340,13 +349,13 @@
 
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController*)controller
 {
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    //  [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 
 - (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController*)controller
 {
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    // [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 
@@ -382,13 +391,12 @@
 {
     isFiltered = NO;
     [self.tableView reloadData];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 
 #pragma mark - UI Actions
 
-- (IBAction)numberTypeChangedAction:(id)sender
+- (void)numberTypeChangedAction:(id)sender
 {
     [Settings sharedSettings].numberTypeMask = 1UL << self.numberTypeSegmentedControl.selectedSegmentIndex;
     [self sortOutArrays];

@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class ForwardingData;
+@class PhoneData;
 
 
 @interface PhonesViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 
-- (instancetype)initWithForwarding:(ForwardingData*)forwarding
-              managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
+                               selectedPhone:(PhoneData*)selectedPhone
+                                  completion:(void (^)(PhoneData* selectedPhone))completion;
 
 @end

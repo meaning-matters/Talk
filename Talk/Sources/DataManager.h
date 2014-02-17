@@ -23,13 +23,11 @@
 - (NSArray*)fetchEntitiesWithName:(NSString*)entityName
                          sortKeys:(NSArray*)sortKeys
                         predicate:(NSPredicate*)predicate
-             managedObjectContext:(NSManagedObjectContext*)managedObjectContext
-                            error:(NSError**)error;
+             managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
 - (NSFetchedResultsController*)fetchResultsForEntityName:(NSString*)entityName
                                             withSortKeys:(NSArray*)keys
-                                    managedObjectContext:(NSManagedObjectContext*)managedObjectContext
-                                                   error:(NSError**)error;
+                                    managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
 - (BOOL)setSortKeys:(NSArray*)sortKeys
 ofResultsController:(NSFetchedResultsController*)resultsController

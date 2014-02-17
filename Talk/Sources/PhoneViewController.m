@@ -40,10 +40,10 @@ static const int TextFieldCellTag = 1111;
     NSString*        name;
     PhoneNumber*     phoneNumber;
 
+    NSArray*         numbersArray;
+
     UIBarButtonItem* saveButtonItem;
     UIBarButtonItem* deleteButtonItem;
-
-    NSArray*         numbersArray;
 }
 
 @property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
@@ -212,18 +212,12 @@ static const int TextFieldCellTag = 1111;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    NSError*     error;
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"ANY forwarding.phones == %@", self.phone];
     numbersArray = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
                                                              sortKeys:@[@"name"]
                                                             predicate:predicate
-                                                 managedObjectContext:nil
-                                                                error:&error];
-    if (error != nil)
-    {
-        //####
-    }
-
+                                                 managedObjectContext:nil];
+    
     sections  = 0;
     sections |= TableSectionName;
     sections |= TableSectionNumber;
@@ -302,9 +296,9 @@ static const int TextFieldCellTag = 1111;
             break;
 
         case TableSectionNumbers:
-            title = NSLocalizedStringWithDefaultValue(@"ForwardingView CanNotDeleteFooter", nil,
+            title = NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"This Forwarding can't be deleted because it's in use.",
+                                                      @"This Phone can't be deleted because it's in use.",
                                                       @"Table footer that app can't be deleted\n"
                                                       @"[1 line larger font].");
             break;

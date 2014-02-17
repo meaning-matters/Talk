@@ -189,23 +189,29 @@
                          sortKeys:(NSArray*)sortKeys
                         predicate:(NSPredicate*)predicate
              managedObjectContext:(NSManagedObjectContext*)managedObjectContext
-                            error:(NSError**)error
 {
-    NSFetchRequest*             fetchRequest;
+    NSError*        error;
+    NSFetchRequest* fetchRequest;
+    NSArray*        objects;
 
     managedObjectContext = (managedObjectContext != nil) ? managedObjectContext : self.managedObjectContext;
     fetchRequest         = [NSFetchRequest fetchRequestWithEntityName:entityName];
     [self setSortKeys:sortKeys ofFetchRequest:fetchRequest];
     [fetchRequest setPredicate:predicate];
 
-    return [managedObjectContext executeFetchRequest:fetchRequest error:error];
+    objects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (objects == nil)
+    {
+        [self handleError:error];
+    }
+
+    return objects;
 }
 
 
 - (NSFetchedResultsController*)fetchResultsForEntityName:(NSString*)entityName
                                             withSortKeys:(NSArray*)sortKeys
                                     managedObjectContext:(NSManagedObjectContext*)managedObjectContext
-                                                   error:(NSError**)error
 {
     NSFetchedResultsController* resultsController;
     NSFetchRequest*             fetchRequest;
@@ -219,13 +225,15 @@
                                                                  sectionNameKeyPath:nil
                                                                           cacheName:nil];
 
-    *error = nil;
-    if ([resultsController performFetch:error] == YES)
+    NSError* error;
+    if ([resultsController performFetch:&error] == YES)
     {
         return resultsController;
     }
     else
     {
+        [self handleError:error];
+
         return nil;
     }
 }

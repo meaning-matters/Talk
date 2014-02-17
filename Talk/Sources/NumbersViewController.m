@@ -52,19 +52,10 @@
 
     self.clearsSelectionOnViewWillAppear = YES;
 
-    NSError* error;
     fetchedNumbersController = [[DataManager sharedManager] fetchResultsForEntityName:@"Number"
                                                                          withSortKeys:[self sortKeys]
-                                                                 managedObjectContext:self.managedObjectContext
-                                                                                error:&error];
-    if (fetchedNumbersController != nil)
-    {
-        fetchedNumbersController.delegate = self;
-    }
-    else
-    {
-        NSLog(@"//### Error: %@", error.localizedDescription);
-    }
+                                                                 managedObjectContext:self.managedObjectContext];
+    fetchedNumbersController.delegate = self;
 
     NSString* byCountries = NSLocalizedStringWithDefaultValue(@"Numbers SortByCountries", nil,
                                                               [NSBundle mainBundle], @"Countries",
@@ -75,7 +66,6 @@
                                                               @"\n"
                                                               @"[1/4 line larger font].");
     sortSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[byCountries, byNames]];
-    sortSegmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
     sortSegmentedControl.selectedSegmentIndex  = [Settings sharedSettings].numbersSortSegment;
     [sortSegmentedControl addTarget:self
                              action:@selector(sortOrderChangedAction)
