@@ -157,3 +157,5 @@
 
 * Create and use Common method +(NSString*)localizedError:(NSError*)error; that checks userInfo for NSLocalizedDescriptionKey, and if not there, create own description.  Because on sandbox I sometimes get : po error.localizedDescription
 The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load Store products.  But perhaps these things won't occur on real system.
+
+* crash when SIM is exchanged?

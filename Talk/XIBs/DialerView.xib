@@ -43,7 +43,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" horizontalCompressionResistancePriority="772" verticalCompressionResistancePriority="827" id="130" customClass="KeypadView">
-                    <rect key="frame" x="0.0" y="105.00000000000001" width="320" height="373"/>
+                    <rect key="frame" x="0.0" y="105" width="320" height="373"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
