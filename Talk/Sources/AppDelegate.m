@@ -56,6 +56,14 @@
         // Set callback mode on, when there's no VoIP support.
         !HAS_VOIP ? [Settings sharedSettings].callbackMode = YES : 0;
 
+        [Settings sharedSettings].callbackE164 = @"+32499298238";
+        [Settings sharedSettings].callerIdE164 = @"+447936699537";
+        [BlockAlertView showAlertViewWithTitle:@"Fixed Callback"
+                                       message:@"Callback settings are fixed at startup, until fixed in Settings."
+                                    completion:nil
+                             cancelButtonTitle:@"Close"
+                             otherButtonTitles:nil];
+
         // Basic UI.
         self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         self.tabBarController = [[UITabBarController alloc] init];
@@ -67,6 +75,7 @@
 
         [self addViewControllersToTabBar];
         self.window.rootViewController = self.tabBarController;
+        self.window.backgroundColor    = [UIColor whiteColor];
         [self.window makeKeyAndVisible];
 
         // Apply skinning.
@@ -236,7 +245,7 @@
     NSMutableArray* viewControllers = [NSMutableArray array];
     for (NSString* class in viewControllerClasses)
     {
-        UIViewController*   viewController = [[NSClassFromString(class) alloc] init];
+        UIViewController* viewController = [[NSClassFromString(class) alloc] init];
 
         if ([class isEqualToString:NSStringFromClass([NBPeoplePickerNavigationController class])])
         {

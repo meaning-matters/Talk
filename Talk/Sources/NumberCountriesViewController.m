@@ -29,14 +29,20 @@
     BOOL                 isFiltered;
 }
 
+@property (nonatomic, strong) UITableView*               tableView;
+@property (nonatomic, strong) UISegmentedControl*        numberTypeSegmentedControl;
+@property (nonatomic, strong) UISearchBar*               searchBar;
+@property (nonatomic, strong) UISearchDisplayController* contactSearchDisplayController;
+
 @end
 
 
 @implementation NumberCountriesViewController
 
+
 - (instancetype)init
 {
-    if (self = [super initWithNibName:@"NumberCountriesView" bundle:nil])
+    if (self = [super init])
     {
         allCountriesArray = [NSMutableArray array];
         countriesArray    = [NSMutableArray array];
@@ -50,37 +56,61 @@
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = [Strings loadingString];
+    //Some fixed heights used to position the searchbar and tableview
+    int navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
+    int tabBarHeight        = [[self.navigationController tabBarController]tabBar].frame.size.height;
+    int searchBarHeight     = 44;
+    int statusBarHeight     = [UIApplication sharedApplication].statusBarFrame.size.height;
 
-    self.edgesForExtendedLayout = UIRectEdgeNone;
+    //Set the bar frame and take both the navigation controller and tabbar into consideration
+    CGRect appFrame = self.view.bounds;
+    self.view.frame = CGRectMake( 0, 0, appFrame.size.width, appFrame.size.height - navigationBarHeight - tabBarHeight);
 
-    UIBarButtonItem*    cancelButton;
+    //Create the table view
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(
+                                                                  0,
+                                                                  searchBarHeight,
+                                                                  self.view.frame.size.width,
+                                                                  self.view.frame.size.height + searchBarHeight )
+                                                 style:UITableViewStylePlain];
+    [self.tableView setDelegate:self];
+    [self.tableView setDataSource:self];
+    [self.view addSubview:self.tableView];
+
+    //Create the searchbar
+    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, navigationBarHeight + statusBarHeight, self.view.frame.size.width, searchBarHeight)];
+    self.searchBar.delegate = self;
+    [self.view addSubview:self.searchBar];
+
+    //Hook up a search display for the searchbar
+    self.contactSearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+    self.contactSearchDisplayController.searchResultsDataSource = self;
+    self.contactSearchDisplayController.searchResultsDelegate = self;
+    self.contactSearchDisplayController.delegate = self;
+
+    UIBarButtonItem* cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                  target:self
                                                                  action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
-    NSArray* items = @[[NumberType localizedStringForNumberType:1UL << 0],
-                       [NumberType localizedStringForNumberType:1UL << 1],
-                       [NumberType localizedStringForNumberType:1UL << 2]];
-    self.numberTypeSegmentedControl = [[UISegmentedControl alloc] initWithItems:items];
-    [self.numberTypeSegmentedControl addTarget:self
-                                        action:@selector(numberTypeChangedAction:)
-                              forControlEvents:UIControlEventValueChanged];
-
-    self.navigationItem.titleView = self.numberTypeSegmentedControl;
-
-    NSInteger   index = [NumberType numberTypeMaskToIndex:[Settings sharedSettings].numberTypeMask];
-    [self.numberTypeSegmentedControl setSelectedSegmentIndex:index];
-
+    self.navigationItem.title = [Strings loadingString];
     [[WebClient sharedClient] retrieveNumberCountries:^(NSError* error, id content)
     {
         if (error == nil)
         {
-            self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberCountries:Done ScreenTitle", nil,
-                                                                          [NSBundle mainBundle], @"Countries",
-                                                                          @"Title of app screen with list of countries.\n"
-                                                                          @"[1 line larger font].");
+            // Added number type selector.
+            NSArray* items = @[[NumberType localizedStringForNumberType:1UL << 0],
+                               [NumberType localizedStringForNumberType:1UL << 1],
+                               [NumberType localizedStringForNumberType:1UL << 2]];
+            self.numberTypeSegmentedControl = [[UISegmentedControl alloc] initWithItems:items];
+            [self.numberTypeSegmentedControl addTarget:self
+                                                action:@selector(numberTypeChangedAction:)
+                                      forControlEvents:UIControlEventValueChanged];
+            self.navigationItem.titleView = self.numberTypeSegmentedControl;
+
+            NSInteger   index = [NumberType numberTypeMaskToIndex:[Settings sharedSettings].numberTypeMask];
+            [self.numberTypeSegmentedControl setSelectedSegmentIndex:index];
 
             // Combine numberTypes per country.
             for (NSDictionary* newCountry in (NSArray*)content)
@@ -178,10 +208,9 @@
 {
     [super viewWillDisappear:animated];
 
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [self.searchDisplayController setActive:NO animated:YES];
-    self.searchDisplayController.displaysSearchBarInNavigationBar = YES;
-    
+    //  [self.navigationController setNavigationBarHidden:NO animated:YES];
+    //[self.searchDisplayController setActive:NO animated:YES];
+
     [[WebClient sharedClient] cancelAllRetrieveNumberCountries];
 }
 
@@ -349,13 +378,13 @@
 
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController*)controller
 {
-    //  [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 
 - (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController*)controller
 {
-    // [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 

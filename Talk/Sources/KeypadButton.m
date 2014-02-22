@@ -171,15 +171,23 @@
     CGRect keyFrame = self.bounds;
 
     //// Subframes
-    CGRect innerFrame = CGRectMake(CGRectGetMinX(keyFrame) + floor((CGRectGetWidth(keyFrame) - 41) * 0.49231 + 0.5), CGRectGetMinY(keyFrame) + floor((CGRectGetHeight(keyFrame) - 47) * 0.50000 + 0.5), 41, 47);
+    CGRect innerFrame = CGRectMake(CGRectGetMinX(keyFrame) + floor((CGRectGetWidth(keyFrame) - 41) * 0.49231 + 0.5),
+                                   CGRectGetMinY(keyFrame) + floor((CGRectGetHeight(keyFrame) - 47) * 0.50000 + 0.5),
+                                   41, 47);
 
     //// Abstracted Attributes
-    CGRect keyRect = CGRectMake(CGRectGetMinX(keyFrame) + 0.5, CGRectGetMinY(keyFrame) + 0.5, CGRectGetWidth(keyFrame) - 1, CGRectGetHeight(keyFrame) - 1);
+    /*
+    CGRect keyRect = CGRectMake(CGRectGetMinX(keyFrame) + 0.5, CGRectGetMinY(keyFrame) + 0.5,
+                                CGRectGetWidth(keyFrame) - 1, CGRectGetHeight(keyFrame) - 1);
+     */
+    CGRect keyRect = CGRectMake(CGRectGetMinX(keyFrame) + 3.5, CGRectGetMinY(keyFrame) + 3.5, CGRectGetWidth(keyFrame) - 7, CGRectGetHeight(keyFrame) - 7);
+
     NSString* titleContent = [self keyTitle];
     NSString* subtitleContent = [self keySubtitle];
     NSString* optionContent = (self.tag == 13) ? @"⚛" : @"";
 
     //// Key Drawing
+    /*
     UIBezierPath* keyPath = [UIBezierPath bezierPathWithRect: keyRect];
     CGContextSaveGState(context);
     [keyPath addClip];
@@ -191,6 +199,19 @@
     [[UIColor grayColor] setStroke];
     keyPath.lineWidth = 1;
     [keyPath stroke];
+     */
+    UIBezierPath* keyPath = [UIBezierPath bezierPathWithRoundedRect: keyRect cornerRadius: 5];
+    CGContextSaveGState(context);
+    [keyPath addClip];
+    CGContextDrawLinearGradient(context, gradient,
+                                CGPointMake(CGRectGetMidX(keyRect), CGRectGetMaxY(keyRect)),
+                                CGPointMake(CGRectGetMidX(keyRect), CGRectGetMinY(keyRect)),
+                                0);
+    CGContextRestoreGState(context);
+    [[UIColor grayColor] setStroke];
+    keyPath.lineWidth = 0;
+    [keyPath stroke];
+
 
     if (1 <= self.tag && self.tag <= 12)
     {
@@ -206,10 +227,41 @@
     }
     else if (self.tag == 13)
     {
+        //// Bezier Drawing
+        UIBezierPath* bezierPath = [UIBezierPath bezierPath];
+        [bezierPath moveToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.48889 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.79167 * CGRectGetHeight(innerFrame))];
+        [bezierPath addLineToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.82222 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.79167 * CGRectGetHeight(innerFrame))];
+        [bezierPath addCurveToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.79349 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.68176 * CGRectGetHeight(innerFrame)) controlPoint1: CGPointMake(CGRectGetMinX(innerFrame) + 0.82222 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.79167 * CGRectGetHeight(innerFrame)) controlPoint2: CGPointMake(CGRectGetMinX(innerFrame) + 0.82222 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.73563 * CGRectGetHeight(innerFrame))];
+        [bezierPath addCurveToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.56935 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.57616 * CGRectGetHeight(innerFrame)) controlPoint1: CGPointMake(CGRectGetMinX(innerFrame) + 0.77165 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.64081 * CGRectGetHeight(innerFrame)) controlPoint2: CGPointMake(CGRectGetMinX(innerFrame) + 0.68544 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.61710 * CGRectGetHeight(innerFrame))];
+        [bezierPath addLineToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.56935 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.49426 * CGRectGetHeight(innerFrame))];
+        [bezierPath addCurveToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.60498 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.40913 * CGRectGetHeight(innerFrame)) controlPoint1: CGPointMake(CGRectGetMinX(innerFrame) + 0.56935 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.49426 * CGRectGetHeight(innerFrame)) controlPoint2: CGPointMake(CGRectGetMinX(innerFrame) + 0.60498 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.46409 * CGRectGetHeight(innerFrame))];
+        [bezierPath addCurveToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.60498 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.34125 * CGRectGetHeight(innerFrame)) controlPoint1: CGPointMake(CGRectGetMinX(innerFrame) + 0.61992 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.40913 * CGRectGetHeight(innerFrame)) controlPoint2: CGPointMake(CGRectGetMinX(innerFrame) + 0.63372 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.35526 * CGRectGetHeight(innerFrame))];
+        [bezierPath addCurveToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.63372 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.21948 * CGRectGetHeight(innerFrame)) controlPoint1: CGPointMake(CGRectGetMinX(innerFrame) + 0.60498 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.33370 * CGRectGetHeight(innerFrame)) controlPoint2: CGPointMake(CGRectGetMinX(innerFrame) + 0.64406 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.26474 * CGRectGetHeight(innerFrame))];
+        [bezierPath addCurveToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.40153 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.20548 * CGRectGetHeight(innerFrame)) controlPoint1: CGPointMake(CGRectGetMinX(innerFrame) + 0.61877 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.15160 * CGRectGetHeight(innerFrame)) controlPoint2: CGPointMake(CGRectGetMinX(innerFrame) + 0.41648 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.15160 * CGRectGetHeight(innerFrame))];
+        [bezierPath addCurveToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.37280 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.34125 * CGRectGetHeight(innerFrame)) controlPoint1: CGPointMake(CGRectGetMinX(innerFrame) + 0.31418 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.20548 * CGRectGetHeight(innerFrame)) controlPoint2: CGPointMake(CGRectGetMinX(innerFrame) + 0.37280 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.33047 * CGRectGetHeight(innerFrame))];
+        [bezierPath addCurveToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.37280 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.40913 * CGRectGetHeight(innerFrame)) controlPoint1: CGPointMake(CGRectGetMinX(innerFrame) + 0.34406 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.35526 * CGRectGetHeight(innerFrame)) controlPoint2: CGPointMake(CGRectGetMinX(innerFrame) + 0.35785 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.40913 * CGRectGetHeight(innerFrame))];
+        [bezierPath addCurveToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.40843 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.48887 * CGRectGetHeight(innerFrame)) controlPoint1: CGPointMake(CGRectGetMinX(innerFrame) + 0.37280 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.46301 * CGRectGetHeight(innerFrame)) controlPoint2: CGPointMake(CGRectGetMinX(innerFrame) + 0.40843 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.48887 * CGRectGetHeight(innerFrame))];
+        [bezierPath addLineToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.40843 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.57508 * CGRectGetHeight(innerFrame))];
+        [bezierPath addCurveToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.18429 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.68068 * CGRectGetHeight(innerFrame)) controlPoint1: CGPointMake(CGRectGetMinX(innerFrame) + 0.29234 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.61602 * CGRectGetHeight(innerFrame)) controlPoint2: CGPointMake(CGRectGetMinX(innerFrame) + 0.20613 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.63973 * CGRectGetHeight(innerFrame))];
+        [bezierPath addCurveToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.15556 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.79059 * CGRectGetHeight(innerFrame)) controlPoint1: CGPointMake(CGRectGetMinX(innerFrame) + 0.15556 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.73456 * CGRectGetHeight(innerFrame)) controlPoint2: CGPointMake(CGRectGetMinX(innerFrame) + 0.15556 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.79059 * CGRectGetHeight(innerFrame))];
+        [bezierPath addLineToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.48889 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.79059 * CGRectGetHeight(innerFrame))];
+        [bezierPath addLineToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.48889 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.79167 * CGRectGetHeight(innerFrame))];
+        [bezierPath closePath];
+        bezierPath.lineJoinStyle = kCGLineJoinRound;
+
+
+        //UIColor* color0 = [UIColor colorWithRed: 0.103 green: 0.092 blue: 0.095 alpha: 1];
+
+        (self.highlighted) ? [[UIColor whiteColor] setFill] : [[UIColor grayColor] setFill];
+        bezierPath.lineWidth = 0.5;
+        [bezierPath fill];
+
+/*
         //// Option Drawing
         CGRect optionRect = CGRectMake(CGRectGetMinX(innerFrame) + 0.5, CGRectGetMinY(innerFrame) - 2.5, 28, 51);
         (self.highlighted) ? [[UIColor whiteColor] setFill] : [[UIColor blackColor] setFill];
         [optionContent drawInRect: optionRect withFont: [UIFont fontWithName: @"Helvetica" size: 44] lineBreakMode: 0 alignment: NSTextAlignmentCenter];
+ */
     }
     else if (self.tag == 14)
     {
@@ -274,7 +326,7 @@
         [erasePath addLineToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 27, CGRectGetMinY(innerFrame) + 13)];
         [erasePath addCurveToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 31, CGRectGetMinY(innerFrame) + 17) controlPoint1: CGPointMake(CGRectGetMinX(innerFrame) + 29.21, CGRectGetMinY(innerFrame) + 13) controlPoint2: CGPointMake(CGRectGetMinX(innerFrame) + 31, CGRectGetMinY(innerFrame) + 14.79)];
         [erasePath closePath];
-        (self.highlighted) ? [[UIColor whiteColor] setFill] : [[UIColor blackColor] setFill];
+        (self.highlighted) ? [[UIColor whiteColor] setFill] : [[UIColor grayColor] setFill];
         [erasePath fill];
     }
 

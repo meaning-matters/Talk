@@ -35,6 +35,8 @@
 {
     if (self = [super initWithNibName:@"CountriesView" bundle:nil])
     {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+
         self.title = NSLocalizedStringWithDefaultValue(@"Countries:CountriesList ScreenTitle", nil,
                                                        [NSBundle mainBundle], @"Countries",
                                                        @"Title of app screen with list of countries\n"
@@ -208,21 +210,9 @@
 }
 
 
-#pragma mark - Search Bar & Controller Delegate
+#pragma mark - Content Filtering
 
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController*)controller
-{
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-}
-
-
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController*)controller
-{
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-}
-
-
-- (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
+- (void)filterContentForSearchText:(NSString*)searchText
 {
     if (searchText.length == 0)
     {
@@ -245,16 +235,17 @@
             }
         }
     }
-
-    [self.tableView reloadData];
 }
 
 
-- (void)searchBarCancelButtonClicked:(UISearchBar*)searchBar
+#pragma mark - UISearchDisplayControllerDelegate
+
+- (BOOL)searchDisplayController:(UISearchDisplayController*)controller shouldReloadTableForSearchString:(NSString*)searchString
 {
-    isFiltered = NO;
-    [self.tableView reloadData];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self filterContentForSearchText:searchString];
+
+    // Return YES to cause the search result table view to be reloaded.
+    return YES;
 }
 
 @end

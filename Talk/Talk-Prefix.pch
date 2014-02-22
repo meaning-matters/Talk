@@ -16,6 +16,10 @@
     #import <MobileCoreServices/MobileCoreServices.h>       // Needed for AFNetworking.
 
 
+#define FULL_FORWARDINGS  0
+#define HAS_VOIP          0
+
+
 //Animation speed (used for switching between cell states)
 #define ANIMATION_SPEED 0.3f
 
@@ -26,7 +30,7 @@
 //Cell and textfield heights
 #define SIZE_CELL_HEIGHT           44
 #define SIZE_TEXTVIEW_WIDTH       210
-#define SIZE_TEXTVIEW_EDIT_WIDTH  180
+#define SIZE_TEXTVIEW_EDIT_WIDTH  195
 
 //Fonts and colors used
 #define FONT_LABEL              [UIFont fontWithName:@"TrebuchetMS-Bold" size:13]
@@ -57,7 +61,8 @@ typedef enum
     CC_SOCIAL   = 10,
     CC_IM       = 11,
     CC_NOTES    = 12,
-    CC_NEW_FIELD= 13
+    CC_NEW_FIELD= 13,
+    CC_DELETE   = 14
 } ContactCell;
 
 //Possible 'New' fields
@@ -113,7 +118,6 @@ typedef enum
     UP_ADD      = 3,
     UP_SHARE    = 4
 } UnknownContactSection;
-
 
 //Constants used for address buildup
 #define ADDRESS_KEY_STREET  @"Street"
@@ -187,5 +191,3 @@ typedef enum
 
 #endif
 
-#define FULL_FORWARDINGS  0
-#define HAS_VOIP          0
