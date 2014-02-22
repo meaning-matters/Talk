@@ -176,30 +176,12 @@
                                    41, 47);
 
     //// Abstracted Attributes
-    /*
-    CGRect keyRect = CGRectMake(CGRectGetMinX(keyFrame) + 0.5, CGRectGetMinY(keyFrame) + 0.5,
-                                CGRectGetWidth(keyFrame) - 1, CGRectGetHeight(keyFrame) - 1);
-     */
-    CGRect keyRect = CGRectMake(CGRectGetMinX(keyFrame) + 3.5, CGRectGetMinY(keyFrame) + 3.5, CGRectGetWidth(keyFrame) - 7, CGRectGetHeight(keyFrame) - 7);
+    CGRect keyRect = CGRectMake(CGRectGetMinX(keyFrame) + 3.5, CGRectGetMinY(keyFrame) + 3.5,
+                                CGRectGetWidth(keyFrame) - 7, CGRectGetHeight(keyFrame) - 7);
 
-    NSString* titleContent = [self keyTitle];
+    NSString* titleContent    = [self keyTitle];
     NSString* subtitleContent = [self keySubtitle];
-    NSString* optionContent = (self.tag == 13) ? @"⚛" : @"";
 
-    //// Key Drawing
-    /*
-    UIBezierPath* keyPath = [UIBezierPath bezierPathWithRect: keyRect];
-    CGContextSaveGState(context);
-    [keyPath addClip];
-    CGContextDrawLinearGradient(context, gradient,
-                                CGPointMake(CGRectGetMidX(keyRect), CGRectGetMaxY(keyRect)),
-                                CGPointMake(CGRectGetMidX(keyRect), CGRectGetMinY(keyRect)),
-                                0);
-    CGContextRestoreGState(context);
-    [[UIColor grayColor] setStroke];
-    keyPath.lineWidth = 1;
-    [keyPath stroke];
-     */
     UIBezierPath* keyPath = [UIBezierPath bezierPathWithRoundedRect: keyRect cornerRadius: 5];
     CGContextSaveGState(context);
     [keyPath addClip];
@@ -212,22 +194,31 @@
     keyPath.lineWidth = 0;
     [keyPath stroke];
 
-
     if (1 <= self.tag && self.tag <= 12)
     {
+        UIColor* textColor = (self.highlighted) ? [UIColor whiteColor] : [UIColor blackColor];
+
         //// Title Drawing
+        NSMutableParagraphStyle* titleTextStyle = [[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy];
+        [titleTextStyle setAlignment:NSTextAlignmentCenter];
+        NSDictionary* titleAttributes = @{NSFontAttributeName            : [Common phoneFontOfSize:34],
+                                          NSForegroundColorAttributeName : textColor,
+                                          NSParagraphStyleAttributeName  : titleTextStyle};
         CGRect titleRect = CGRectMake(CGRectGetMinX(innerFrame) + 1, CGRectGetMinY(innerFrame) + 2, 41, 46);
-        (self.highlighted) ? [[UIColor whiteColor] setFill] : [[UIColor blackColor] setFill];
-        [titleContent drawInRect: titleRect withFont: [Common phoneFontOfSize: 34] lineBreakMode: 0 alignment: NSTextAlignmentCenter];
+        [titleContent drawInRect:titleRect withAttributes:titleAttributes];
 
         //// Subtitle Drawing
+        NSMutableParagraphStyle* subtitleTextStyle = [[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy];
+        [subtitleTextStyle setAlignment:NSTextAlignmentCenter];
+        NSDictionary* subtitleAttributes = @{NSFontAttributeName            : [Common phoneFontOfSize:14],
+                                             NSForegroundColorAttributeName : textColor,
+                                             NSParagraphStyleAttributeName  : subtitleTextStyle};
         CGRect subtitleRect = CGRectMake(CGRectGetMinX(innerFrame) - 5, CGRectGetMinY(innerFrame) + 33, 53, 15);
-        (self.highlighted) ? [[UIColor whiteColor] setFill] : [[UIColor darkGrayColor] setFill];
-        [subtitleContent drawInRect: subtitleRect withFont: [Common phoneFontOfSize: [UIFont systemFontSize]] lineBreakMode: 0 alignment: NSTextAlignmentCenter];
+        [subtitleContent drawInRect:subtitleRect withAttributes:subtitleAttributes];
     }
     else if (self.tag == 13)
     {
-        //// Bezier Drawing
+        //// Person Drawing
         UIBezierPath* bezierPath = [UIBezierPath bezierPath];
         [bezierPath moveToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.48889 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.79167 * CGRectGetHeight(innerFrame))];
         [bezierPath addLineToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 0.82222 * CGRectGetWidth(innerFrame), CGRectGetMinY(innerFrame) + 0.79167 * CGRectGetHeight(innerFrame))];
@@ -249,19 +240,8 @@
         [bezierPath closePath];
         bezierPath.lineJoinStyle = kCGLineJoinRound;
 
-
-        //UIColor* color0 = [UIColor colorWithRed: 0.103 green: 0.092 blue: 0.095 alpha: 1];
-
-        (self.highlighted) ? [[UIColor whiteColor] setFill] : [[UIColor grayColor] setFill];
-        bezierPath.lineWidth = 0.5;
+        [[UIColor whiteColor] setFill];
         [bezierPath fill];
-
-/*
-        //// Option Drawing
-        CGRect optionRect = CGRectMake(CGRectGetMinX(innerFrame) + 0.5, CGRectGetMinY(innerFrame) - 2.5, 28, 51);
-        (self.highlighted) ? [[UIColor whiteColor] setFill] : [[UIColor blackColor] setFill];
-        [optionContent drawInRect: optionRect withFont: [UIFont fontWithName: @"Helvetica" size: 44] lineBreakMode: 0 alignment: NSTextAlignmentCenter];
- */
     }
     else if (self.tag == 14)
     {
@@ -291,6 +271,7 @@
         [phonePath addCurveToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 16.28, CGRectGetMinY(innerFrame) + 13.88) controlPoint1: CGPointMake(CGRectGetMinX(innerFrame) + 15.64, CGRectGetMinY(innerFrame) + 15.89) controlPoint2: CGPointMake(CGRectGetMinX(innerFrame) + 16.28, CGRectGetMinY(innerFrame) + 13.88)];
         [phonePath addLineToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 12.55, CGRectGetMinY(innerFrame) + 4.17)];
         [phonePath closePath];
+
         [[UIColor whiteColor] setFill];
         [phonePath fill];
     }
@@ -326,7 +307,8 @@
         [erasePath addLineToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 27, CGRectGetMinY(innerFrame) + 13)];
         [erasePath addCurveToPoint: CGPointMake(CGRectGetMinX(innerFrame) + 31, CGRectGetMinY(innerFrame) + 17) controlPoint1: CGPointMake(CGRectGetMinX(innerFrame) + 29.21, CGRectGetMinY(innerFrame) + 13) controlPoint2: CGPointMake(CGRectGetMinX(innerFrame) + 31, CGRectGetMinY(innerFrame) + 14.79)];
         [erasePath closePath];
-        (self.highlighted) ? [[UIColor whiteColor] setFill] : [[UIColor grayColor] setFill];
+
+        [[UIColor whiteColor] setFill];
         [erasePath fill];
     }
 
