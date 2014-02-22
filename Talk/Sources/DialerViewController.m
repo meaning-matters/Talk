@@ -139,10 +139,9 @@
 {
     [super viewWillLayoutSubviews];
 
-    NSLog(@"%d", (int)self.view.frame.size.height);
-
     // We deliberately set the KeypadView height to a fivefold, so that all keys
     // can be equally high.  This is assumed in the layout code of KeypadView!
+    // The exception in Y values for 'regular tab' has to do with iOS 7 peculiarities.
     switch ((int)self.view.frame.size.height)
     {
         case 367:   // 320x480 screen, More tab.
