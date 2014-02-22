@@ -66,7 +66,7 @@
                                                               @"\n"
                                                               @"[1/4 line larger font].");
     sortSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[byCountries, byNames]];
-    sortSegmentedControl.selectedSegmentIndex  = [Settings sharedSettings].numbersSortSegment;
+    sortSegmentedControl.selectedSegmentIndex = [Settings sharedSettings].numbersSortSegment;
     [sortSegmentedControl addTarget:self
                              action:@selector(sortOrderChangedAction)
                    forControlEvents:UIControlEventValueChanged];
@@ -128,13 +128,8 @@
 {
     [Settings sharedSettings].numbersSortSegment = sortSegmentedControl.selectedSegmentIndex;
 
-    NSError* error;
-    if ([[DataManager sharedManager] setSortKeys:[self sortKeys]
-                             ofResultsController:fetchedNumbersController
-                                           error:&error] == YES)
-    {
-        [self.tableView reloadData];
-    }
+    [[DataManager sharedManager] setSortKeys:[self sortKeys] ofResultsController:fetchedNumbersController];
+    [self.tableView reloadData];
 }
 
 
@@ -213,14 +208,6 @@
 {
     [self updateCell:cell atIndexPath:indexPath];
 }
-
-
-/* Create floating header (with sort segment for example)
-- (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return nil;
-}
-*/
 
 
 #pragma mark - Fetched Results Controller Delegate

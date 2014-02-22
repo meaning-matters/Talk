@@ -29,9 +29,7 @@
                                             withSortKeys:(NSArray*)keys
                                     managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
-- (BOOL)setSortKeys:(NSArray*)sortKeys
-ofResultsController:(NSFetchedResultsController*)resultsController
-              error:(NSError**)error;
+- (void)setSortKeys:(NSArray*)sortKeys ofResultsController:(NSFetchedResultsController*)resultsController;
 
 - (void)synchronizeWithServer:(void (^)(NSError* error))completion;
 

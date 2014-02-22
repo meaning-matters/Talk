@@ -241,9 +241,8 @@
 
 - (void)setSortKeys:(NSArray*)sortKeys ofFetchRequest:(NSFetchRequest*)fetchRequest
 {
-    NSMutableArray* sortDescriptors;
-
-    sortDescriptors = [NSMutableArray array];
+    NSMutableArray* sortDescriptors = [NSMutableArray array];
+    
     for (NSString* sortKey in sortKeys)
     {
         [sortDescriptors addObject:[[NSSortDescriptor alloc] initWithKey:sortKey ascending:YES]];
@@ -253,13 +252,16 @@
 }
 
 
-- (BOOL)setSortKeys:(NSArray*)sortKeys
-ofResultsController:(NSFetchedResultsController*)resultsController
-              error:(NSError**)error
+- (void)setSortKeys:(NSArray*)sortKeys ofResultsController:(NSFetchedResultsController*)resultsController
 {
+    NSError* error;
+
     [self setSortKeys:sortKeys ofFetchRequest:resultsController.fetchRequest];
 
-    return [resultsController performFetch:error];
+    if ([resultsController performFetch:&error] == NO)
+    {
+        [self handleError:error];
+    }
 }
 
 
