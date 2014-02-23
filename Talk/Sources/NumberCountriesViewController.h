@@ -7,11 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SearchTableViewController.h"
 
 
-@interface NumberCountriesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
-                                                             UISearchDisplayDelegate, UISearchBarDelegate>
-
-@property (nonatomic, retain) IBOutlet UITableView* tableView;
+@interface NumberCountriesViewController : SearchTableViewController <UITableViewDelegate>
 
 @end

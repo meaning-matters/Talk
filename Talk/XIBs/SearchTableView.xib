@@ -4,11 +4,11 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NumberCountriesViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchTableViewController">
             <connections>
                 <outlet property="searchDisplayController" destination="9Zh-r9-wqh" id="85c-OE-TsY"/>
                 <outlet property="tableView" destination="osJ-Km-UZA" id="X7h-Um-Y87"/>
-                <outlet property="view" destination="1" id="ffo-wL-SiM"/>
+                <outlet property="view" destination="1" id="aFW-eo-eB8"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
