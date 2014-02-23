@@ -144,7 +144,7 @@
         </view>
     </objects>
     <resources>
-        <image name="ColorCurves.png" width="640" height="1096"/>
+        <image name="ColorCurves.png" width="640" height="1136"/>
         <image name="Flip.png" width="30" height="30"/>
         <image name="HangupPhone.png" width="70" height="30"/>
         <image name="RetryPhoneSmall.png" width="40" height="40"/>
