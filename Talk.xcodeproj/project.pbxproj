@@ -901,6 +901,7 @@
 		48A261C416FDE32400007638 /* CallMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A261C316FDE32400007638 /* CallMessageView.m */; };
 		48A261C516FDE32400007638 /* CallMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A261C316FDE32400007638 /* CallMessageView.m */; };
 		48A26DD718B8C53800736CCB /* CountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A26DD618B8C53800736CCB /* CountriesView.xib */; };
+		48A26DD918BA5B6700736CCB /* NumberCountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A26DD818BA5B6700736CCB /* NumberCountriesView.xib */; };
 		48A2CDFC16834FC100506A7C /* RingbackTones.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A2CDFB16834FC100506A7C /* RingbackTones.json */; };
 		48A2CDFD16834FC100506A7C /* RingbackTones.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A2CDFB16834FC100506A7C /* RingbackTones.json */; };
 		48AD95DF164AE582006178E6 /* Skinning.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95DE164AE582006178E6 /* Skinning.m */; };
@@ -1995,6 +1996,7 @@
 		48A261FA16FE4F9700007638 /* libspeex-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libspeex-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libspeex-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48A261FB16FE4F9700007638 /* libsrtp-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsrtp-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libsrtp-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48A26DD618B8C53800736CCB /* CountriesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CountriesView.xib; sourceTree = "<group>"; };
+		48A26DD818BA5B6700736CCB /* NumberCountriesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberCountriesView.xib; sourceTree = "<group>"; };
 		48A2CDFB16834FC100506A7C /* RingbackTones.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = RingbackTones.json; path = Resources/RingbackTones.json; sourceTree = "<group>"; };
 		48AD95DD164AE581006178E6 /* Skinning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skinning.h; sourceTree = "<group>"; };
 		48AD95DE164AE582006178E6 /* Skinning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Skinning.m; sourceTree = "<group>"; };
@@ -3357,6 +3359,7 @@
 				48EDD229166771B8007B89DA /* CallKeypadView.xib */,
 				48A261BF16FDE26100007638 /* CallMessageView.xib */,
 				48EDD226166770B8007B89DA /* CallOptionsView.xib */,
+				48A26DD618B8C53800736CCB /* CountriesView.xib */,
 				4814EA3217CA98F4004B7A3C /* CreditBuyCell.xib */,
 				4814EA3917CB18DB004B7A3C /* CreditAmountCell.xib */,
 				48AF450A164948CD00DFE3D8 /* DialerView.xib */,
@@ -3370,6 +3373,7 @@
 				484A949C171821CB009E22B9 /* NumberAreasCell.xib */,
 				4896D8FB16EBE5A7008A2354 /* NumberAreasView.xib */,
 				4865A9DA1792C5550028785F /* BuyNumberCell.xib */,
+				48A26DD818BA5B6700736CCB /* NumberCountriesView.xib */,
 				488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */,
 				48C1D3C717D3132A004F910D /* ProofImageView.xib */,
 				483679FA17246977001A02AF /* RecordingControlsCell.xib */,
@@ -3377,7 +3381,6 @@
 				482D2DEF16C8172900E13B91 /* ProvisioningView.xib */,
 				484943AF1753C44D00E1D5C4 /* ThanksView.xib */,
 				48C431A3189EE0310008FE01 /* VerifyPhoneView.xib */,
-				48A26DD618B8C53800736CCB /* CountriesView.xib */,
 			);
 			path = XIBs;
 			sourceTree = "<group>";
@@ -3930,6 +3933,7 @@
 				485F6B351637270100D61365 /* LB.png in Resources */,
 				485F6B361637270100D61365 /* LB@2x.png in Resources */,
 				485F6B371637270100D61365 /* LC.png in Resources */,
+				48A26DD918BA5B6700736CCB /* NumberCountriesView.xib in Resources */,
 				485F6B381637270100D61365 /* LC@2x.png in Resources */,
 				485F6B391637270100D61365 /* LI.png in Resources */,
 				485F6B3A1637270100D61365 /* LI@2x.png in Resources */,

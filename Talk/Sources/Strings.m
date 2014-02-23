@@ -355,6 +355,15 @@
 }
 
 
++ (NSString*)countriesString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Countries", nil,
+                                             [NSBundle mainBundle], @"Countries",
+                                             @"Standard label for a list of countries.\n"
+                                             @"[No size contraint].");
+}
+
+
 + (NSString*)typeString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings PhoneNumberType", nil,

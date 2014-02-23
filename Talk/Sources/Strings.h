@@ -82,6 +82,8 @@
 
 + (NSString*)countryString;
 
++ (NSString*)countriesString;
+
 + (NSString*)typeString;
 
 + (NSString*)areaCodeString;

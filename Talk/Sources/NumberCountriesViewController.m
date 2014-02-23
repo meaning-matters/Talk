@@ -29,7 +29,6 @@
     BOOL                 isFiltered;
 }
 
-@property (nonatomic, strong) UITableView*               tableView;
 @property (nonatomic, strong) UISegmentedControl*        numberTypeSegmentedControl;
 @property (nonatomic, strong) UISearchBar*               searchBar;
 @property (nonatomic, strong) UISearchDisplayController* contactSearchDisplayController;
@@ -42,8 +41,10 @@
 
 - (instancetype)init
 {
-    if (self = [super init])
+    if (self = [super initWithNibName:@"NumberCountriesView" bundle:nil])
     {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+
         allCountriesArray = [NSMutableArray array];
         countriesArray    = [NSMutableArray array];
     }
@@ -56,38 +57,6 @@
 {
     [super viewDidLoad];
 
-    //Some fixed heights used to position the searchbar and tableview
-    int navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
-    int tabBarHeight        = [[self.navigationController tabBarController]tabBar].frame.size.height;
-    int searchBarHeight     = 44;
-    int statusBarHeight     = [UIApplication sharedApplication].statusBarFrame.size.height;
-
-    //Set the bar frame and take both the navigation controller and tabbar into consideration
-    CGRect appFrame = self.view.bounds;
-    self.view.frame = CGRectMake( 0, 0, appFrame.size.width, appFrame.size.height - navigationBarHeight - tabBarHeight);
-
-    //Create the table view
-    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(
-                                                                  0,
-                                                                  searchBarHeight,
-                                                                  self.view.frame.size.width,
-                                                                  self.view.frame.size.height + searchBarHeight )
-                                                 style:UITableViewStylePlain];
-    [self.tableView setDelegate:self];
-    [self.tableView setDataSource:self];
-    [self.view addSubview:self.tableView];
-
-    //Create the searchbar
-    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, navigationBarHeight + statusBarHeight, self.view.frame.size.width, searchBarHeight)];
-    self.searchBar.delegate = self;
-    [self.view addSubview:self.searchBar];
-
-    //Hook up a search display for the searchbar
-    self.contactSearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-    self.contactSearchDisplayController.searchResultsDataSource = self;
-    self.contactSearchDisplayController.searchResultsDelegate = self;
-    self.contactSearchDisplayController.delegate = self;
-
     UIBarButtonItem* cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                  target:self
@@ -99,6 +68,8 @@
     {
         if (error == nil)
         {
+            self.navigationItem.title = [Strings countriesString];
+
             // Added number type selector.
             NSArray* items = @[[NumberType localizedStringForNumberType:1UL << 0],
                                [NumberType localizedStringForNumberType:1UL << 1],
@@ -367,28 +338,16 @@
     isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
  
     cell.imageView.image = [UIImage imageNamed:isoCountryCode];
-    cell.textLabel.text = name;
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.textLabel.text  = name;
+    cell.accessoryType   = UITableViewCellAccessoryNone;
 
     return cell;
 }
 
 
-#pragma mark - Search Bar & Controller Delegate
+#pragma mark - Content Filtering
 
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController*)controller
-{
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-}
-
-
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController*)controller
-{
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-}
-
-
-- (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
+- (void)filterContentForSearchText:(NSString*)searchText
 {
     if (searchText.length == 0)
     {
@@ -411,15 +370,17 @@
             }
         }
     }
-
-    [self.tableView reloadData];
 }
 
 
-- (void)searchBarCancelButtonClicked:(UISearchBar*)searchBar
+#pragma mark - UISearchDisplayControllerDelegate
+
+- (BOOL)searchDisplayController:(UISearchDisplayController*)controller shouldReloadTableForSearchString:(NSString*)searchString
 {
-    isFiltered = NO;
-    [self.tableView reloadData];
+    [self filterContentForSearchText:searchString];
+
+    // Return YES to cause the search result table view to be reloaded.
+    return YES;
 }
 
 

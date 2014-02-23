@@ -9,6 +9,7 @@
 #import "CountriesViewController.h"
 #import "CountryNames.h"
 #import "NSObject+Blocks.h"
+#import "Strings.h"
 
 
 @interface CountriesViewController ()
@@ -37,10 +38,7 @@
     {
         self.edgesForExtendedLayout = UIRectEdgeNone;
 
-        self.title = NSLocalizedStringWithDefaultValue(@"Countries:CountriesList ScreenTitle", nil,
-                                                       [NSBundle mainBundle], @"Countries",
-                                                       @"Title of app screen with list of countries\n"
-                                                       @"[1 line larger font].");
+        self.title = [Strings countriesString];
 
         namesArray = [[CountryNames sharedNames].namesDictionary allValues];
         nameIndexDictionary = [NSMutableDictionary dictionary];
@@ -96,16 +94,6 @@
                                                                      action:@selector(cancel)];
         self.navigationItem.rightBarButtonItem = cancelButton;
     }
-}
-
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    isFiltered = NO;
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [self.searchDisplayController setActive:NO animated:YES];
 }
 
 

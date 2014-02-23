@@ -12,4 +12,6 @@
 @interface NumberCountriesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
                                                              UISearchDisplayDelegate, UISearchBarDelegate>
 
+@property (nonatomic, retain) IBOutlet UITableView* tableView;
+
 @end
