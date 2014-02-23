@@ -30,7 +30,7 @@
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="ColorCurves.png" id="21" userLabel="Background Image View">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.79999999999999982" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="ZzF-ll-njk" userLabel="Status Image View">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="20"/>
