@@ -22,6 +22,7 @@
 {
     if (self = [super initWithNibName:@"CallBaseView" bundle:nil])
     {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
     }
 
     return self;
@@ -48,6 +49,24 @@
     [self drawRetryButton];
     self.hideButton.hidden  = YES;
     self.retryButton.hidden = YES;
+
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 
@@ -81,13 +100,13 @@
 
 - (void)showLargeEndButton
 {
-    [self showEndButtonWithWidth:280 imageName:@"HangupPhone"];
+    [self showEndButtonWithWidth:272 imageName:@"HangupPhone"];
 }
 
 
 - (void)showSmallEndButton
 {
-    [self showEndButtonWithWidth:130 imageName:@"HangupPhoneSmall"];
+    [self showEndButtonWithWidth:122 imageName:@"HangupPhoneSmall"];
 }
 
 
@@ -113,24 +132,26 @@
 
     switch ((int)self.view.frame.size.height)
     {
-        case 460:   // 320x480 screen.
-            [Common setY:106 ofView:self.centerRootView];
+        case 480:   // 320x480 screen.
+            [Common setY:20  ofView:self.topView];
+            [Common setY:126 ofView:self.centerRootView];
+            [Common setY:387 ofView:self.bottomView];
+            break;
+
+        case 460:   // 320x480 screen with in-call iOS flasher at top.
+            [Common setY:116 ofView:self.centerRootView];
             [Common setY:367 ofView:self.bottomView];
             break;
 
-        case 440:   // 320x480 screen with in-call iOS flasher at top.
-            [Common setY:96  ofView:self.centerRootView];
-            [Common setY:347 ofView:self.bottomView];
+        case 568:   // 320x568 screen.
+            [Common setY:20  ofView:self.topView];
+            [Common setY:170 ofView:self.centerRootView];
+            [Common setY:475 ofView:self.bottomView];
             break;
 
-        case 548:   // 320x568 screen.
-            [Common setY:150 ofView:self.centerRootView];
+        case 548:   // 320x568 screen with in-call iOS flasher at top.
+            [Common setY:160 ofView:self.centerRootView];
             [Common setY:455 ofView:self.bottomView];
-            break;
-
-        case 528:   // 320x568 screen with in-call iOS flasher at top.
-            [Common setY:140 ofView:self.centerRootView];
-            [Common setY:435 ofView:self.bottomView];
             break;
     }
 }
@@ -359,55 +380,16 @@
     //// General Declarations
     CGContextRef context = UIGraphicsGetCurrentContext();
 
-    //// Color Declarations
-    UIColor* strokeColor = [UIColor colorWithRed: 0.297 green: 0.297 blue: 0.297 alpha: 0.8];
-    UIColor* shadowColor2 = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.8];
-
-    //// Shadow Declarations
-    UIColor* innerShadow = shadowColor2;
-    CGSize innerShadowOffset = CGSizeMake(0.1, 2.1);
-    CGFloat innerShadowBlurRadius = 4;
-
     //// Abstracted Attributes
-    CGRect roundedRectangleRect = CGRectMake(2, 2, size.width - 4.0f, 48);
+    CGRect roundedRectangleRect = CGRectMake(0, 0, size.width, size.height);
 
     //// Rounded Rectangle Drawing
-    UIBezierPath* roundedRectanglePath = [UIBezierPath bezierPathWithRoundedRect: roundedRectangleRect cornerRadius: 12];
+    UIBezierPath* roundedRectanglePath = [UIBezierPath bezierPathWithRoundedRect: roundedRectangleRect cornerRadius: 5];
     CGContextSaveGState(context);
     [roundedRectanglePath addClip];
-    CGContextDrawLinearGradient(context, gradient, CGPointMake(65, 2), CGPointMake(65, 50), 0);
+    CGContextDrawLinearGradient(context, gradient, CGPointMake(65, 0), CGPointMake(65, size.height), 0);
     CGContextRestoreGState(context);
 
-    ////// Rounded Rectangle Inner Shadow
-    CGRect roundedRectangleBorderRect = CGRectInset([roundedRectanglePath bounds], -innerShadowBlurRadius, -innerShadowBlurRadius);
-    roundedRectangleBorderRect = CGRectOffset(roundedRectangleBorderRect, -innerShadowOffset.width, -innerShadowOffset.height);
-    roundedRectangleBorderRect = CGRectInset(CGRectUnion(roundedRectangleBorderRect, [roundedRectanglePath bounds]), -1, -1);
-
-    UIBezierPath* roundedRectangleNegativePath = [UIBezierPath bezierPathWithRect: roundedRectangleBorderRect];
-    [roundedRectangleNegativePath appendPath: roundedRectanglePath];
-    roundedRectangleNegativePath.usesEvenOddFillRule = YES;
-
-    CGContextSaveGState(context);
-    {
-        CGFloat xOffset = innerShadowOffset.width + round(roundedRectangleBorderRect.size.width);
-        CGFloat yOffset = innerShadowOffset.height;
-        CGContextSetShadowWithColor(context,
-                                    CGSizeMake(xOffset + copysign(0.1, xOffset), yOffset + copysign(0.1, yOffset)),
-                                    innerShadowBlurRadius,
-                                    innerShadow.CGColor);
-
-        [roundedRectanglePath addClip];
-        CGAffineTransform transform = CGAffineTransformMakeTranslation(-round(roundedRectangleBorderRect.size.width), 0);
-        [roundedRectangleNegativePath applyTransform: transform];
-        [[UIColor grayColor] setFill];
-        [roundedRectangleNegativePath fill];
-    }
-    CGContextRestoreGState(context);
-
-    [strokeColor setStroke];
-    roundedRectanglePath.lineWidth = 4;
-    [roundedRectanglePath stroke];
-    
     //// End Image
     UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();

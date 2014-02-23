@@ -154,11 +154,11 @@
             break;
 
         case 347:   // 320x480 screen, More tab, with in-call iOS flasher at top.
-            [Common setY:2       ofView:self.infoLabel];
+            [Common setY:2        ofView:self.infoLabel];
             [Common setY:10       ofView:self.brandingImageView];
             [Common setY:24       ofView:self.numberLabel];
             [Common setY:64       ofView:self.nameLabel];
-            [Common setY:91      ofView:self.keypadView];
+            [Common setY:91       ofView:self.keypadView];
             [Common setHeight:255 ofView:self.keypadView];
             break;
 
@@ -172,11 +172,11 @@
             break;
 
         case 311:   // 320x480 screen, regular tab, with in-call iOS flasher at top.
-            [Common setY:2        ofView:self.infoLabel];
-            [Common setY:10       ofView:self.brandingImageView];
-            [Common setY:24       ofView:self.numberLabel];
-            [Common setY:64       ofView:self.nameLabel];
-            [Common setY:91       ofView:self.keypadView];
+            [Common setY:22       ofView:self.infoLabel];
+            [Common setY:30       ofView:self.brandingImageView];
+            [Common setY:44       ofView:self.numberLabel];
+            [Common setY:84       ofView:self.nameLabel];
+            [Common setY:111      ofView:self.keypadView];
             [Common setHeight:300 ofView:self.keypadView];
             break;
 
@@ -208,11 +208,11 @@
             break;
 
         case 499:   // 320x568 screen, regular tab, with in-call iOS flasher at top.
-            [Common setY:6        ofView:self.infoLabel];
-            [Common setY:14       ofView:self.brandingImageView];
-            [Common setY:32       ofView:self.numberLabel];
-            [Common setY:86       ofView:self.nameLabel];
-            [Common setY:108      ofView:self.keypadView];
+            [Common setY:26       ofView:self.infoLabel];
+            [Common setY:34       ofView:self.brandingImageView];
+            [Common setY:52       ofView:self.numberLabel];
+            [Common setY:106      ofView:self.nameLabel];
+            [Common setY:128      ofView:self.keypadView];
             [Common setHeight:370 ofView:self.keypadView];
             break;
     }

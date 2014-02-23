@@ -58,10 +58,8 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
 
     //// Color Declarations
-    UIColor* borderColor = [UIColor colorWithRed: 0.5 green: 0.5 blue: 0.5 alpha: 0.8];
     UIColor* centerNormalGradientTop = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.8];
-    UIColor* centerNormalGradientBottom = [UIColor colorWithRed: 0.103 green: 0.103 blue: 0.103 alpha: 0.8];
-    UIColor* borderShadowColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.5];
+    UIColor* centerNormalGradientBottom = [UIColor colorWithRed: 0.079 green: 0.079 blue: 0.079 alpha: 0.8];
 
     //// Gradient Declarations
     NSArray* keyNormalGradientColors = [NSArray arrayWithObjects:
@@ -70,28 +68,13 @@
     CGFloat keyNormalGradientLocations[] = {0, 0.98};
     CGGradientRef keyNormalGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)keyNormalGradientColors, keyNormalGradientLocations);
 
-    //// Shadow Declarations
-    UIColor* borderShadow = borderShadowColor;
-    CGSize borderShadowOffset = CGSizeMake(0.1, 2.1);
-    CGFloat borderShadowBlurRadius = 4;
-
     //// Frames
     CGRect frame = CGRectMake(0, 0, 296, 247);
 
 
-    //// Border Drawing
-    UIBezierPath* borderPath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(CGRectGetMinX(frame) + 10, CGRectGetMinY(frame) + 10, 276, 227) cornerRadius: 12];
-    CGContextSaveGState(context);
-    CGContextSetShadowWithColor(context, borderShadowOffset, borderShadowBlurRadius, borderShadow.CGColor);
-    [borderColor setStroke];
-    borderPath.lineWidth = 4;
-    [borderPath stroke];
-    CGContextRestoreGState(context);
-
-
     //// Center Drawing
     CGRect centerRect = CGRectMake(CGRectGetMinX(frame) + 12, CGRectGetMinY(frame) + 12, 272, 223);
-    UIBezierPath* centerPath = [UIBezierPath bezierPathWithRoundedRect: centerRect cornerRadius: 10];
+    UIBezierPath* centerPath = [UIBezierPath bezierPathWithRoundedRect: centerRect cornerRadius: 5];
     CGContextSaveGState(context);
     [centerPath addClip];
     CGContextDrawLinearGradient(context, keyNormalGradient,
