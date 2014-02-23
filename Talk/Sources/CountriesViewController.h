@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SearchTableViewController.h"
 
-@interface CountriesViewController : UIViewController <UISearchDisplayDelegate, UISearchBarDelegate,
-                                                       UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, assign) BOOL                  isModal;    // Set when shown as modal, and not from Settings.
-@property (nonatomic, retain) IBOutlet UITableView* tableView;
+@interface CountriesViewController : SearchTableViewController <UITableViewDelegate>
+
+@property (nonatomic, assign) BOOL isModal;    // Set when shown as modal, and not from Settings.
 
 - (instancetype)initWithIsoCountryCode:(NSString*)isoCountryCode
                             completion:(void (^)(BOOL cancelled, NSString* isoCountryCode))completion;

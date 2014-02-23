@@ -29,12 +29,6 @@
 }
 
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-}
-
-
 - (void)filterContentForSearchText:(NSString*)searchText
 {
     self.filteredNamesArray = [NSMutableArray array];

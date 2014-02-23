@@ -14,13 +14,7 @@
 
 @interface CountriesViewController ()
 {
-    NSArray*                namesArray;
-    NSArray*                nameIndexArray;         // Array with all first letters of country names.
-    NSMutableDictionary*    nameIndexDictionary;    // Dictionary with entry (containing array of names) per letter.
-    NSMutableArray*         filteredNamesArray;
-
-    BOOL                    isFiltered;
-    UITableViewCell*        selectedCell;
+    UITableViewCell* selectedCell;
 }
 
 @property (nonatomic, strong) NSString* isoCountryCode;
@@ -34,38 +28,16 @@
 - (instancetype)initWithIsoCountryCode:(NSString*)isoCountryCode
                             completion:(void (^)(BOOL cancelled, NSString* isoCountryCode))completion;
 {
-    if (self = [super initWithNibName:@"CountriesView" bundle:nil])
+    if (self = [super init])
     {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
+        self.tableView.dataSource = self;
+        self.tableView.delegate   = self;
 
-        self.title = [Strings countriesString];
+        self.title                = [Strings countriesString];
 
-        namesArray = [[CountryNames sharedNames].namesDictionary allValues];
-        nameIndexDictionary = [NSMutableDictionary dictionary];
-        for (NSString* name in namesArray)
-        {
-            NSString*       nameIndex = [name substringToIndex:1];
-            NSMutableArray* indexArray;
-            if ((indexArray = [nameIndexDictionary valueForKey:nameIndex]) != nil)
-            {
-                [indexArray addObject:name];
-            }
-            else
-            {
-                indexArray = [NSMutableArray array];
-                nameIndexDictionary[nameIndex] = indexArray;
-                [indexArray addObject:name];
-            }
-        }
-
-        nameIndexArray = [[nameIndexDictionary allKeys] sortedArrayUsingSelector:@selector(localizedCompare:)];
-        for (NSString* nameIndex in nameIndexArray)
-        {
-            nameIndexDictionary[nameIndex] = [nameIndexDictionary[nameIndex] sortedArrayUsingSelector:@selector(localizedCompare:)];
-        }
-
-        self.isoCountryCode = isoCountryCode;
-        self.completion     = completion;
+        self.objectsArray         = [[CountryNames sharedNames].namesDictionary allValues];
+        self.isoCountryCode       = isoCountryCode;
+        self.completion           = completion;
     }
 
     return self;
@@ -85,6 +57,8 @@
 {
     [super viewDidLoad];
 
+    [self createIndex];
+
     if (self.isModal)
     {
         UIBarButtonItem* cancelButton;
@@ -97,44 +71,29 @@
 }
 
 
+#pragma mark - Base Class Override
+
+- (NSString*)nameForObject:(id)object
+{
+    return object;
+}
+
+
 #pragma mark - Table View Delegates
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
-{
-    return isFiltered ? 1 : [nameIndexArray count];
-}
-
-
-- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return isFiltered ? nil : nameIndexArray[section];
-}
-
-
-- (NSArray*)sectionIndexTitlesForTableView:(UITableView*)tableView
-{
-    return isFiltered ? nil : nameIndexArray;
-}
-
-
-- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return isFiltered ? filteredNamesArray.count : [nameIndexDictionary[nameIndexArray[section]] count];
-}
-
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    NSString*           name;
+    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSString*        name;
+    BOOL             isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
 
     if (isFiltered)
     {
-        name = filteredNamesArray[indexPath.row];
+        name = self.filteredNamesArray[indexPath.row];
     }
     else
     {
-        name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
+        name = self.nameIndexDictionary[self.nameIndexArray[indexPath.section]][indexPath.row];
     }
 
     selectedCell.accessoryType = UITableViewCellAccessoryNone;
@@ -160,10 +119,11 @@
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
-    NSString*           name;
-    NSString*           isoCountryCode;
-    
+    UITableViewCell* cell;
+    NSString*        name;
+    NSString*        isoCountryCode;
+    BOOL             isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
+
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
     {
@@ -172,11 +132,11 @@
 
     if (isFiltered)
     {
-        name = filteredNamesArray[indexPath.row];
+        name = self.filteredNamesArray[indexPath.row];
     }
     else
     {
-        name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
+        name = self.nameIndexDictionary[self.nameIndexArray[indexPath.section]][indexPath.row];
     }
 
     isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
@@ -195,45 +155,6 @@
     }
 
     return cell;
-}
-
-
-#pragma mark - Content Filtering
-
-- (void)filterContentForSearchText:(NSString*)searchText
-{
-    if (searchText.length == 0)
-    {
-        isFiltered = NO;
-    }
-    else
-    {
-        isFiltered = YES;
-        filteredNamesArray = [NSMutableArray array];
-
-        for (NSString* nameIndex in nameIndexArray)
-        {
-            for (NSString* countryName in nameIndexDictionary[nameIndex])
-            {
-                NSRange range = [countryName rangeOfString:searchText options:NSCaseInsensitiveSearch];
-                if (range.location != NSNotFound)
-                {
-                    [filteredNamesArray addObject:countryName];
-                }
-            }
-        }
-    }
-}
-
-
-#pragma mark - UISearchDisplayControllerDelegate
-
-- (BOOL)searchDisplayController:(UISearchDisplayController*)controller shouldReloadTableForSearchString:(NSString*)searchString
-{
-    [self filterContentForSearchText:searchString];
-
-    // Return YES to cause the search result table view to be reloaded.
-    return YES;
 }
 
 @end

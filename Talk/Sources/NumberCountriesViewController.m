@@ -171,16 +171,18 @@
 - (void)sortOutArrays
 {
     // Select from all on numberType.
-    [self.objectsArray removeAllObjects];
-    NumberTypeMask numberTypeMask = 1UL << [self.numberTypeSegmentedControl selectedSegmentIndex];
+    NSMutableArray* currentObjectsArray = [NSMutableArray array];
+    NumberTypeMask  numberTypeMask      = 1UL << [self.numberTypeSegmentedControl selectedSegmentIndex];
+
     for (NSMutableDictionary* country in self.countriesArray)
     {
         if ([country[@"numberTypes"] intValue] & numberTypeMask)
         {
-            [self.objectsArray addObject:country];
+            [currentObjectsArray addObject:country];
         }
     }
 
+    self.objectsArray = currentObjectsArray;
     [self createIndex];
 }
 
@@ -270,7 +272,7 @@
 }
 
 
-#pragma mark - Content Filtering
+#pragma mark - Base Class Override
 
 - (NSString*)nameForObject:(id)object
 {
