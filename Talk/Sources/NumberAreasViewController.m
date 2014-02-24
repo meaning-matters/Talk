@@ -20,16 +20,9 @@
 
 @interface NumberAreasViewController ()
 {
-    NSString*               isoCountryCode;
-    NSDictionary*           state;
-    NumberTypeMask          numberTypeMask;
-
-    NSArray*                nameIndexArray;         // Array with all first letters of country names.
-    NSMutableDictionary*    nameIndexDictionary;    // Dictionary with entry (containing array of names) per letter.
-    NSMutableArray*         filteredNamesArray;
-
-    NSMutableArray*         areasArray;
-    BOOL                    isFiltered;
+    NSString*      isoCountryCode;
+    NSDictionary*  state;
+    NumberTypeMask numberTypeMask;
 }
 
 @end
@@ -41,13 +34,11 @@
                                  state:(NSDictionary*)theState
                         numberTypeMask:(NumberTypeMask)theNumberTypeMask
 {
-    if (self = [super initWithNibName:@"NumberAreasView" bundle:nil])
+    if (self = [super init])
     {
         isoCountryCode = theIsoCountryCode;
         state          = theState;      // Is nil for country without states.
         numberTypeMask = theNumberTypeMask;
-
-        areasArray     = [NSMutableArray array];
     }
 
     return self;
@@ -63,7 +54,7 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"NumberAreasCell" bundle:nil]
          forCellReuseIdentifier:@"NumberAreasCell"];
 
-    UIBarButtonItem*    cancelButton;
+    UIBarButtonItem* cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                  target:self
                                                                  action:@selector(cancel)];
@@ -107,26 +98,9 @@
 }
 
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
-
-    if (isFiltered == YES)
-    {
-        isFiltered = NO;
-        [self.tableView reloadData];
-    }
-}
-
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [self.searchDisplayController setActive:NO animated:YES];
 
     if (state != nil)
     {
@@ -151,9 +125,11 @@
 
     if ([(NSArray*)content count] > 0)
     {
+        NSMutableArray* areasArray = [NSMutableArray array];
+
         for (NSDictionary* area in content)
         {
-            NSMutableDictionary*    mutableArea = [NSMutableDictionary dictionaryWithDictionary:area];
+            NSMutableDictionary* mutableArea = [NSMutableDictionary dictionaryWithDictionary:area];
 
             if ([mutableArea objectForKey:@"areaName"] != [NSNull null])
             {
@@ -189,7 +165,8 @@
             [areasArray addObject:mutableArea];
         }
 
-        [self sortOutArrays];
+        self.objectsArray = areasArray;
+        [self createIndex];
     }
     else
     {
@@ -271,94 +248,31 @@
 }
 
 
-- (void)sortOutArrays
-{
-    // Create indexes.
-    int size = (areasArray.count > 8);  // Don't show index with 8 or less items.
-    nameIndexDictionary = [NSMutableDictionary dictionary];
-    for (NSMutableDictionary* area in areasArray)
-    {
-        NSString*       name = area[@"areaName"];
-        NSString*       nameIndex = [name substringToIndex:size];
-        NSMutableArray* indexArray;
-        if ((indexArray = [nameIndexDictionary valueForKey:nameIndex]) != nil)
-        {
-            [indexArray addObject:name];
-        }
-        else
-        {
-            indexArray = [NSMutableArray array];
-            nameIndexDictionary[nameIndex] = indexArray;
-            [indexArray addObject:name];
-        }
-    }
-
-    // Sort indexes.
-    nameIndexArray = [[nameIndexDictionary allKeys] sortedArrayUsingSelector:@selector(localizedCompare:)];
-    for (NSString* nameIndex in nameIndexArray)
-    {
-        nameIndexDictionary[nameIndex] = [nameIndexDictionary[nameIndex] sortedArrayUsingSelector:@selector(localizedCompare:)];
-    }
-
-    [self.tableView reloadData];
-    if (isFiltered)
-    {
-        [self searchBar:self.searchDisplayController.searchBar
-          textDidChange:self.searchDisplayController.searchBar.text];
-
-        [self.searchDisplayController.searchResultsTableView reloadData];
-    }
-}
-
-
 - (void)cancel
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
+#pragma mark - Base Class Override
+
+- (NSString*)nameForObject:(id)object
+{
+    NSDictionary* area = object;
+
+    return area[@"areaName"];
+}
+
+
 #pragma mark - Table View Delegates
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
-{
-    return isFiltered ? 1 : [nameIndexArray count];
-}
-
-
-- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return isFiltered ? nil : nameIndexArray[section];
-}
-
-
-- (NSArray*)sectionIndexTitlesForTableView:(UITableView*)tableView
-{
-    return isFiltered ? nil : nameIndexArray;
-}
-
-
-- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return isFiltered ? filteredNamesArray.count : [nameIndexDictionary[nameIndexArray[section]] count];
-}
-
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString*           name;
-    NSDictionary*       area;
-
-    if (isFiltered)
-    {
-        name = filteredNamesArray[indexPath.row];
-    }
-    else
-    {
-        name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
-    }
+    NSString*     name = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSDictionary* area;
 
     // Look up area.
-    for (area in areasArray)
+    for (area in self.objectsArray)
     {
         if ([area[@"areaName"] isEqualToString:name])
         {
@@ -377,9 +291,9 @@
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NumberAreasCell*    cell;
-    NSString*           name;
-    NSDictionary*       area;
+    NumberAreasCell* cell;
+    NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSDictionary*    area;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumberAreasCell"];
     if (cell == nil)
@@ -387,17 +301,8 @@
         cell = [[NumberAreasCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NumberAreasCell"];
     }
 
-    if (isFiltered)
-    {
-        name = filteredNamesArray[indexPath.row];
-    }
-    else
-    {
-        name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
-    }
-
     // Look up area.
-    for (area in areasArray)
+    for (area in self.objectsArray)
     {
         if ([area[@"areaName"] isEqualToString:name])
         {
@@ -426,56 +331,6 @@
     }
 
     return cell;
-}
-
-
-#pragma mark - Search Bar & Controller Delegate
-
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController*)controller
-{
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-}
-
-
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController*)controller
-{
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-}
-
-
-- (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
-{
-    if (searchText.length == 0)
-    {
-        isFiltered = NO;
-    }
-    else
-    {
-        isFiltered = YES;
-        filteredNamesArray = [NSMutableArray array];
-
-        for (NSString* nameIndex in nameIndexArray)
-        {
-            for (NSString* countryName in nameIndexDictionary[nameIndex])
-            {
-                NSRange range = [countryName rangeOfString:searchText options:NSCaseInsensitiveSearch];
-                if (range.location != NSNotFound)
-                {
-                    [filteredNamesArray addObject:countryName];
-                }
-            }
-        }
-    }
-
-    [self.tableView reloadData];
-}
-
-
-- (void)searchBarCancelButtonClicked:(UISearchBar*)searchBar
-{
-    isFiltered = NO;
-    [self.tableView reloadData];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 @end

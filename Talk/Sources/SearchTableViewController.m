@@ -57,7 +57,6 @@
 
 - (void)createIndex
 {
-    // Create indexes.
     self.nameIndexDictionary = [NSMutableDictionary dictionary];
     for (id object in self.objectsArray)
     {
