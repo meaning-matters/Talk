@@ -21,18 +21,6 @@
 }
 
 
-- (void)setHighlighted:(BOOL)highlighted
-{
-    if (self.isHighlighted != highlighted)
-    {
-        [super setHighlighted:highlighted];
-
-        // Trigger drawRect.
-        [self setNeedsDisplay];
-    }
-}
-
-
 - (void)layoutSubviews
 {
     [super layoutSubviews];

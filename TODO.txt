@@ -166,3 +166,4 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
   NBPeopleListViewController #466: contactsDatasource heeft 27 items, maar indexPath.section == 31.
   isFiltered state bug!  vervangen met (table == searchdisplaycontroller.table) zie searchtablevc.
 
+* Dialer = US, Dialler = UK!

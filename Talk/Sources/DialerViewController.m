@@ -18,7 +18,7 @@
 
 @interface DialerViewController ()
 {
-    PhoneNumber*    phoneNumber;    // Holds the current number on screen.
+    PhoneNumber* phoneNumber;    // Holds the current number on screen.
 }
 
 @end
