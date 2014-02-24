@@ -150,19 +150,21 @@
 }
 
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
-}
-
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
 
     [[WebClient sharedClient] cancelAllRetrieveNumberCountries];
+}
+
+
+#pragma mark - Base Class Override
+
+- (NSString*)nameForObject:(id)object
+{
+    NSMutableDictionary* country = object;
+
+    return [[CountryNames sharedNames] nameForIsoCountryCode:country[@"isoCountryCode"]];
 }
 
 
@@ -197,19 +199,9 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString*     name;
+    NSString*     name = [self nameOnTable:tableView atIndexPath:indexPath];
     NSString*     isoCountryCode;
     NSDictionary* country;
-    BOOL          isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
-
-    if (isFiltered)
-    {
-        name = self.filteredNamesArray[indexPath.row];
-    }
-    else
-    {
-        name = self.nameIndexDictionary[self.nameIndexArray[indexPath.section]][indexPath.row];
-    }
 
     // Look up country.
     isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
@@ -243,23 +235,13 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
-    NSString*        name;
+    NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
     NSString*        isoCountryCode;
-    BOOL             isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
-    }
-
-    if (isFiltered)
-    {
-        name = self.filteredNamesArray[indexPath.row];
-    }
-    else
-    {
-        name = self.nameIndexDictionary[self.nameIndexArray[indexPath.section]][indexPath.row];
     }
 
     isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
@@ -269,16 +251,6 @@
     cell.accessoryType   = UITableViewCellAccessoryNone;
 
     return cell;
-}
-
-
-#pragma mark - Base Class Override
-
-- (NSString*)nameForObject:(id)object
-{
-    NSMutableDictionary* country = object;
-
-    return [[CountryNames sharedNames] nameForIsoCountryCode:country[@"isoCountryCode"]];
 }
 
 

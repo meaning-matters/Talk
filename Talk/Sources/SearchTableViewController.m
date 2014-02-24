@@ -29,6 +29,14 @@
 }
 
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+}
+
+
 - (void)filterContentForSearchText:(NSString*)searchText
 {
     self.filteredNamesArray = [NSMutableArray array];
@@ -76,6 +84,21 @@
     }
 
     [self.tableView reloadData];
+}
+
+
+- (NSString*)nameOnTable:(UITableView*)tableView atIndexPath:(NSIndexPath*)indexPath
+{
+    BOOL isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
+
+    if (isFiltered)
+    {
+        return self.filteredNamesArray[indexPath.row];
+    }
+    else
+    {
+        return self.nameIndexDictionary[self.nameIndexArray[indexPath.section]][indexPath.row];
+    }
 }
 
 

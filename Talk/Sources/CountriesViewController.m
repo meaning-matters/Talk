@@ -84,17 +84,7 @@
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    NSString*        name;
-    BOOL             isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
-
-    if (isFiltered)
-    {
-        name = self.filteredNamesArray[indexPath.row];
-    }
-    else
-    {
-        name = self.nameIndexDictionary[self.nameIndexArray[indexPath.section]][indexPath.row];
-    }
+    NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
 
     selectedCell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -120,23 +110,13 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
-    NSString*        name;
+    NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
     NSString*        isoCountryCode;
-    BOOL             isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
-    }
-
-    if (isFiltered)
-    {
-        name = self.filteredNamesArray[indexPath.row];
-    }
-    else
-    {
-        name = self.nameIndexDictionary[self.nameIndexArray[indexPath.section]][indexPath.row];
     }
 
     isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];

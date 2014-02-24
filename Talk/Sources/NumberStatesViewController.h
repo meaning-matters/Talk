@@ -7,15 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SearchTableViewController.h"
 #import "NumberType.h"
 
-@interface NumberStatesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
-                                                          UISearchBarDelegate, UISearchDisplayDelegate>
+
+@interface NumberStatesViewController : SearchTableViewController <UITableViewDelegate>
 
 - (instancetype)initWithIsoCountryCode:(NSString*)isoCountryCode
                         numberTypeMask:(NumberTypeMask)numberTypeMask;
-
-
-@property (nonatomic, weak) IBOutlet UITableView*   tableView;
 
 @end
