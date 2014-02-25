@@ -57,7 +57,7 @@
 {
     [super viewDidLoad];
 
-    [self createIndex];
+    [self createIndexOfWidth:1];
 
     if (self.isModal)
     {

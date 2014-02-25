@@ -10,6 +10,8 @@
 
 @interface SearchTableViewController ()
 
+@property (nonatomic, assign) int width;
+
 @end
 
 
@@ -55,13 +57,15 @@
 }
 
 
-- (void)createIndex
+- (void)createIndexOfWidth:(int)width
 {
+    self.width = width;
+
     self.nameIndexDictionary = [NSMutableDictionary dictionary];
     for (id object in self.objectsArray)
     {
         NSString*       name = [self nameForObject:object];
-        NSString*       nameIndex = [name substringToIndex:1];
+        NSString*       nameIndex = [name substringToIndex:self.width];
         NSMutableArray* indexArray;
         if ((indexArray = [self.nameIndexDictionary valueForKey:nameIndex]) != nil)
         {
@@ -133,7 +137,7 @@
 {
     BOOL isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
 
-    return isFiltered ? 1 : [self.nameIndexArray count];
+    return (isFiltered || self.width == 0) ? 1 : [self.nameIndexArray count];
 }
 
 
@@ -141,7 +145,7 @@
 {
     BOOL isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
 
-    return isFiltered ? nil : self.nameIndexArray[section];
+    return (isFiltered || self.width == 0) ? nil : self.nameIndexArray[section];
 }
 
 
@@ -149,7 +153,7 @@
 {
     BOOL isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
 
-    return isFiltered ? nil : self.nameIndexArray;
+    return (isFiltered || self.width == 0) ? nil : self.nameIndexArray;
 }
 
 

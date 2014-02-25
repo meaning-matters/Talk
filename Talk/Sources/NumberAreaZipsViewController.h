@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SearchTableViewController.h"
 
-@interface NumberAreaZipsViewController : UIViewController
 
-@property (nonatomic, weak) IBOutlet UITableView*   tableView;
-
+@interface NumberAreaZipsViewController : SearchTableViewController <UITableViewDelegate>
 
 - (instancetype)initWithCitiesArray:(NSArray*)array purchaseInfo:(NSMutableDictionary*)info;
 

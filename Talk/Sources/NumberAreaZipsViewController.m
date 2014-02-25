@@ -14,10 +14,6 @@
 
 @interface NumberAreaZipsViewController ()
 {
-    NSArray*                nameIndexArray;         // Array with all first letters of zipCodes.
-    NSMutableDictionary*    nameIndexDictionary;    // Dictionary with entry (containing array of names) per letter.
-    NSMutableArray*         filteredNamesArray;
-
     NSArray*                citiesArray;
     BOOL                    isFiltered;
     NSMutableDictionary*    cityLookupDictionary;   // A map between ZIP code and matching city.
@@ -34,7 +30,7 @@
 
 - (instancetype)initWithCitiesArray:(NSArray*)array purchaseInfo:(NSMutableDictionary*)info
 {
-    if (self = [super initWithNibName:@"NumberAreaZipsView" bundle:nil])
+    if (self = [super init])
     {
         self.title = NSLocalizedStringWithDefaultValue(@"NumbersAreaZips ScreenTitle", nil,
                                                        [NSBundle mainBundle], @"ZIP Codes",
@@ -63,12 +59,19 @@
 }
 
 
+#pragma mark - Base Class Override
+
+- (NSString*)nameForObject:(id)object
+{
+    return object;
+}
+
+
 #pragma mark - Helper Methods
 
 - (void)sortOutArrays
 {
     NSMutableArray* zipCodesArray = [NSMutableArray array];
-    nameIndexDictionary           = [NSMutableDictionary dictionary];
     cityLookupDictionary          = [NSMutableDictionary dictionary];
 
     // Create one big ZIP codes array, and create city lookup dictionary.
@@ -92,15 +95,16 @@
         }
     }
 
-    // Determine a good size of section title, such that number of sections is
+    // Determine a good width of section title, such that number of sections is
     // smaller than 40, and the number of sections is smaller than the total
-    // number of items devided by a minumum section size of for example 5.
-    int size;
-    for (size = maximumSize; size > 0; size--)
+    // number of items devided by a minimum section size of for example 5.
+    int width;
+    NSMutableDictionary* nameIndexDictionary = [NSMutableDictionary dictionary];
+    for (width = maximumSize; width > 0; width--)
     {
         for (NSString* zipCode in zipCodesArray)
         {
-            NSString*       nameIndex = [zipCode substringToIndex:size];
+            NSString* nameIndex = [zipCode substringToIndex:width];
             if (([nameIndexDictionary valueForKey:nameIndex]) == nil)
             {
                 nameIndexDictionary[nameIndex] = nameIndex;
@@ -116,40 +120,8 @@
         [nameIndexDictionary removeAllObjects];
     }
 
-    // Create indexes.
-    size = (zipCodesArray.count <= 8) ? 1 : size;   // Don't show index with 8 or less items.
-    for (NSString* zipCode in zipCodesArray)
-    {
-        NSString*       name = zipCode;
-        NSString*       nameIndex = [name substringToIndex:size];
-        NSMutableArray* indexArray;
-        if ((indexArray = [nameIndexDictionary valueForKey:nameIndex]) != nil)
-        {
-            [indexArray addObject:name];
-        }
-        else
-        {
-            indexArray = [NSMutableArray array];
-            nameIndexDictionary[nameIndex] = indexArray;
-            [indexArray addObject:name];
-        }
-    }
-
-    // Sort indexes.
-    nameIndexArray = [[nameIndexDictionary allKeys] sortedArrayUsingSelector:@selector(localizedCompare:)];
-    for (NSString* nameIndex in nameIndexArray)
-    {
-        nameIndexDictionary[nameIndex] = [nameIndexDictionary[nameIndex] sortedArrayUsingSelector:@selector(localizedCompare:)];
-    }
-
-    [self.tableView reloadData];
-    if (isFiltered)
-    {
-        [self searchBar:self.searchDisplayController.searchBar
-          textDidChange:self.searchDisplayController.searchBar.text];
-
-        [self.searchDisplayController.searchResultsTableView reloadData];
-    }
+    self.objectsArray = zipCodesArray;
+    [self createIndexOfWidth:width];
 }
 
 
@@ -161,46 +133,13 @@
 
 #pragma mark - Table View Delegates
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
-{
-    return isFiltered ? 1 : [nameIndexArray count];
-}
-
-
-- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return isFiltered ? nil : nameIndexArray[section];
-}
-
-
-- (NSArray*)sectionIndexTitlesForTableView:(UITableView*)tableView
-{
-    return isFiltered ? nil : nameIndexArray;
-}
-
-
-- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return isFiltered ? filteredNamesArray.count : [nameIndexDictionary[nameIndexArray[section]] count];
-}
-
-
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    NSString*           name;
-
-    if (isFiltered)
-    {
-        name = filteredNamesArray[indexPath.row];
-    }
-    else
-    {
-        name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
-    }
+    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
 
     // Lookup city that belongs to this ZIP code, and check if it matches with current city.
-    NSString*   mismatchCity = nil;
+    NSString* mismatchCity = nil;
     if ([purchaseInfo[@"city"] length] > 0 &&
         [[cityLookupDictionary objectForKey:name] isEqualToString:purchaseInfo[@"city"]] == NO)
     {
@@ -275,22 +214,13 @@
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
-    NSString*           name;
+    UITableViewCell* cell;
+    NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"SubtitleCell"];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SubtitleCell"];
-    }
-
-    if (isFiltered)
-    {
-        name = filteredNamesArray[indexPath.row];
-    }
-    else
-    {
-        name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
     }
 
     cell.textLabel.text = name;
@@ -306,56 +236,6 @@
     }
 
     return cell;
-}
-
-
-#pragma mark - Search Bar & Controller Delegate
-
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController*)controller
-{
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-}
-
-
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController*)controller
-{
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-}
-
-
-- (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
-{
-    if (searchText.length == 0)
-    {
-        isFiltered = NO;
-    }
-    else
-    {
-        isFiltered = YES;
-        filteredNamesArray = [NSMutableArray array];
-
-        for (NSString* nameIndex in nameIndexArray)
-        {
-            for (NSString* countryName in nameIndexDictionary[nameIndex])
-            {
-                NSRange range = [countryName rangeOfString:searchText options:NSCaseInsensitiveSearch];
-                if (range.location != NSNotFound)
-                {
-                    [filteredNamesArray addObject:countryName];
-                }
-            }
-        }
-    }
-
-    [self.tableView reloadData];
-}
-
-
-- (void)searchBarCancelButtonClicked:(UISearchBar*)searchBar
-{
-    isFiltered = NO;
-    [self.tableView reloadData];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 @end

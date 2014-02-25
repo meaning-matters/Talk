@@ -60,7 +60,7 @@
                                                                           @"[1 line larger font].");
 
             self.objectsArray = content;
-            [self createIndex];
+            [self createIndexOfWidth:1];
         }
         else if (error.code == WebClientStatusFailServiceUnavailable)
         {

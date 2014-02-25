@@ -21,7 +21,7 @@
 
 //  Creates the table index.  Must be invoked by subclass each time it's objects have changed.
 //  This method reloads the table.
-- (void)createIndex;
+- (void)createIndexOfWidth:(int)width;
 
 
 //  Get the name of an object on the table.

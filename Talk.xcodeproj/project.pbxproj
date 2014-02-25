@@ -299,8 +299,6 @@
 		484D937117131E97006FA875 /* NumberAreaZipsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936F17131E97006FA875 /* NumberAreaZipsViewController.m */; };
 		484D937317132518006FA875 /* NumberAreaCitiesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484D937217132518006FA875 /* NumberAreaCitiesView.xib */; };
 		484D937417132518006FA875 /* NumberAreaCitiesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484D937217132518006FA875 /* NumberAreaCitiesView.xib */; };
-		484D937617132539006FA875 /* NumberAreaZipsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484D937517132539006FA875 /* NumberAreaZipsView.xib */; };
-		484D937717132539006FA875 /* NumberAreaZipsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484D937517132539006FA875 /* NumberAreaZipsView.xib */; };
 		484F7C3B164C15770059A5A6 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3A164C15770059A5A6 /* CoreTelephony.framework */; };
 		484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */; };
 		485E38A017B7E13C0089F0F1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E389F17B7E13B0089F0F1 /* HelpViewController.m */; };
@@ -878,8 +876,6 @@
 		4895D1B516B7AC4100BCA581 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4895D1B216B7AC4100BCA581 /* Icon.png */; };
 		4895D1B616B7AC4100BCA581 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4895D1B316B7AC4100BCA581 /* Icon@2x.png */; };
 		4895D1B716B7AC4100BCA581 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4895D1B316B7AC4100BCA581 /* Icon@2x.png */; };
-		4896D8FC16EBE5A7008A2354 /* NumberAreasView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4896D8FB16EBE5A7008A2354 /* NumberAreasView.xib */; };
-		4896D8FD16EBE5A7008A2354 /* NumberAreasView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4896D8FB16EBE5A7008A2354 /* NumberAreasView.xib */; };
 		4896D90016EBE613008A2354 /* NumberAreasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */; };
 		4896D90116EBE613008A2354 /* NumberAreasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */; };
 		48995E0B18739F46001395C2 /* Phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0918739F46001395C2 /* Phone.png */; };
@@ -1397,7 +1393,6 @@
 		484D936E17131E96006FA875 /* NumberAreaZipsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaZipsViewController.h; sourceTree = "<group>"; };
 		484D936F17131E97006FA875 /* NumberAreaZipsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaZipsViewController.m; sourceTree = "<group>"; };
 		484D937217132518006FA875 /* NumberAreaCitiesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreaCitiesView.xib; sourceTree = "<group>"; };
-		484D937517132539006FA875 /* NumberAreaZipsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreaZipsView.xib; sourceTree = "<group>"; };
 		484F7C3A164C15770059A5A6 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		485E389E17B7E1390089F0F1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
@@ -1962,7 +1957,6 @@
 		4895D19C16B1C4F200BCA581 /* PurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseManager.m; sourceTree = "<group>"; };
 		4895D1B216B7AC4100BCA581 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		4895D1B316B7AC4100BCA581 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
-		4896D8FB16EBE5A7008A2354 /* NumberAreasView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreasView.xib; sourceTree = "<group>"; };
 		4896D8FE16EBE612008A2354 /* NumberAreasViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreasViewController.h; sourceTree = "<group>"; };
 		4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreasViewController.m; sourceTree = "<group>"; };
 		48995E0918739F46001395C2 /* Phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Phone.png; sourceTree = "<group>"; };
@@ -3372,9 +3366,7 @@
 				4849433E1752410500E1D5C4 /* LicenseView.xib */,
 				484A94A5171C5065009E22B9 /* NumberAreaActionCell.xib */,
 				484D937217132518006FA875 /* NumberAreaCitiesView.xib */,
-				484D937517132539006FA875 /* NumberAreaZipsView.xib */,
 				484A949C171821CB009E22B9 /* NumberAreasCell.xib */,
-				4896D8FB16EBE5A7008A2354 /* NumberAreasView.xib */,
 				4865A9DA1792C5550028785F /* BuyNumberCell.xib */,
 				488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */,
 				48C1D3C717D3132A004F910D /* ProofImageView.xib */,
@@ -4244,12 +4236,10 @@
 				4895D1B616B7AC4100BCA581 /* Icon@2x.png in Resources */,
 				482D2DF016C8172900E13B91 /* ProvisioningView.xib in Resources */,
 				488AD1ED16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
-				4896D8FC16EBE5A7008A2354 /* NumberAreasView.xib in Resources */,
 				48A261C016FDE26100007638 /* CallMessageView.xib in Resources */,
 				48ADD0F11706551F001515EB /* RetryPhoneSmall.png in Resources */,
 				48ADD0F31706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
 				484D937317132518006FA875 /* NumberAreaCitiesView.xib in Resources */,
-				484D937617132539006FA875 /* NumberAreaZipsView.xib in Resources */,
 				484A949D171821CB009E22B9 /* NumberAreasCell.xib in Resources */,
 				484A94A6171C5065009E22B9 /* NumberAreaActionCell.xib in Resources */,
 				483679F21722F2CF001A02AF /* List.png in Resources */,
@@ -4417,12 +4407,10 @@
 				4895D1B716B7AC4100BCA581 /* Icon@2x.png in Resources */,
 				482D2DF116C8172900E13B91 /* ProvisioningView.xib in Resources */,
 				488AD1EE16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
-				4896D8FD16EBE5A7008A2354 /* NumberAreasView.xib in Resources */,
 				48A261C116FDE26100007638 /* CallMessageView.xib in Resources */,
 				48ADD0F21706551F001515EB /* RetryPhoneSmall.png in Resources */,
 				48ADD0F41706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
 				484D937417132518006FA875 /* NumberAreaCitiesView.xib in Resources */,
-				484D937717132539006FA875 /* NumberAreaZipsView.xib in Resources */,
 				48995E0C18739F46001395C2 /* Phone.png in Resources */,
 				484A949E171821CB009E22B9 /* NumberAreasCell.xib in Resources */,
 				484A94A7171C5065009E22B9 /* NumberAreaActionCell.xib in Resources */,

@@ -185,7 +185,7 @@
     }
 
     self.objectsArray = currentObjectsArray;
-    [self createIndex];
+    [self createIndexOfWidth:1];
 }
 
 

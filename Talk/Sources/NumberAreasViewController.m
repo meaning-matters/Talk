@@ -166,7 +166,7 @@
         }
 
         self.objectsArray = areasArray;
-        [self createIndex];
+        [self createIndexOfWidth:1];
     }
     else
     {
