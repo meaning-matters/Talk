@@ -14,16 +14,9 @@
 
 @interface NumberAreaCitiesViewController ()
 {
-    NSArray*                nameIndexArray;         // Array with all first letters of city names.
-    NSMutableDictionary*    nameIndexDictionary;    // Dictionary with entry (containing array of names) per letter.
-    NSMutableArray*         filteredNamesArray;
-
-    NSArray*                citiesArray;
-    BOOL                    isFiltered;
-
-    NSMutableDictionary*    purchaseInfo;
-
-    UITableViewCell*        checkmarkedCell;        // Previous cell with checkmark.
+    NSArray*             citiesArray;
+    NSMutableDictionary* purchaseInfo;
+    UITableViewCell*     checkmarkedCell;   // Previous cell with checkmark.
 }
 
 @end
@@ -33,7 +26,7 @@
 
 - (instancetype)initWithCitiesArray:(NSArray*)array purchaseInfo:(NSMutableDictionary*)info;
 {
-    if (self = [super initWithNibName:@"NumberAreaCitiesView" bundle:nil])
+    if (self = [super init])
     {
         self.title = NSLocalizedStringWithDefaultValue(@"NumbersAreaCities ScreenTitle", nil,
                                                        [NSBundle mainBundle], @"Cities",
@@ -58,7 +51,8 @@
                                                                  action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
-    [self sortOutArrays];
+    self.objectsArray = citiesArray;
+    [self createIndexOfWidth:1];
 }
 
 
@@ -71,47 +65,17 @@
 }
 
 
-#pragma mark - Helper Methods
+#pragma mark - Base Class Override
 
-- (void)sortOutArrays
+- (NSString*)nameForObject:(id)object
 {
-    // Create indexes.
-    int size = (citiesArray.count > 8); // Don't show index with 8 or less items.
-    nameIndexDictionary = [NSMutableDictionary dictionary];
-    for (NSMutableDictionary* city in citiesArray)
-    {
-        NSString*       name = city[@"city"];
-        NSString*       nameIndex = [name substringToIndex:size];
-        NSMutableArray* indexArray;
-        if ((indexArray = [nameIndexDictionary valueForKey:nameIndex]) != nil)
-        {
-            [indexArray addObject:name];
-        }
-        else
-        {
-            indexArray = [NSMutableArray array];
-            nameIndexDictionary[nameIndex] = indexArray;
-            [indexArray addObject:name];
-        }
-    }
+    NSMutableDictionary* city = object;
 
-    // Sort indexes.
-    nameIndexArray = [[nameIndexDictionary allKeys] sortedArrayUsingSelector:@selector(localizedCompare:)];
-    for (NSString* nameIndex in nameIndexArray)
-    {
-        nameIndexDictionary[nameIndex] = [nameIndexDictionary[nameIndex] sortedArrayUsingSelector:@selector(localizedCompare:)];
-    }
-
-    [self.tableView reloadData];
-    if (isFiltered)
-    {
-        [self searchBar:self.searchDisplayController.searchBar
-          textDidChange:self.searchDisplayController.searchBar.text];
-
-        [self.searchDisplayController.searchResultsTableView reloadData];
-    }
+    return city[@"city"];
 }
 
+
+#pragma mark - Helper Methods
 
 - (void)cancel
 {
@@ -121,43 +85,10 @@
 
 #pragma mark - Table View Delegates
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
-{
-    return isFiltered ? 1 : [nameIndexArray count];
-}
-
-
-- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return isFiltered ? nil : nameIndexArray[section];
-}
-
-
-- (NSArray*)sectionIndexTitlesForTableView:(UITableView*)tableView
-{
-    return isFiltered ? nil : nameIndexArray;
-}
-
-
-- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return isFiltered ? filteredNamesArray.count : [nameIndexDictionary[nameIndexArray[section]] count];
-}
-
-
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    NSString*           name;
-
-    if (isFiltered)
-    {
-        name = filteredNamesArray[indexPath.row];
-    }
-    else
-    {
-        name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
-    }
+    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
 
     // If a ZIP code is already selected, check if it matches the city.
     NSString*   mismatchZipCode = purchaseInfo[@"zipCode"];
@@ -241,22 +172,13 @@
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
-    NSString*           name;
+    UITableViewCell* cell;
+    NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
-    }
-
-    if (isFiltered)
-    {
-        name = filteredNamesArray[indexPath.row];
-    }
-    else
-    {
-        name = nameIndexDictionary[nameIndexArray[indexPath.section]][indexPath.row];
     }
 
     cell.textLabel.text = name;
@@ -271,56 +193,6 @@
     }
 
     return cell;
-}
-
-
-#pragma mark - Search Bar & Controller Delegate
-
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController*)controller
-{
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-}
-
-
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController*)controller
-{
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-}
-
-
-- (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
-{
-    if (searchText.length == 0)
-    {
-        isFiltered = NO;
-    }
-    else
-    {
-        isFiltered = YES;
-        filteredNamesArray = [NSMutableArray array];
-
-        for (NSString* nameIndex in nameIndexArray)
-        {
-            for (NSString* countryName in nameIndexDictionary[nameIndex])
-            {
-                NSRange range = [countryName rangeOfString:searchText options:NSCaseInsensitiveSearch];
-                if (range.location != NSNotFound)
-                {
-                    [filteredNamesArray addObject:countryName];
-                }
-            }
-        }
-    }
-
-    [self.tableView reloadData];
-}
-
-
-- (void)searchBarCancelButtonClicked:(UISearchBar*)searchBar
-{
-    isFiltered = NO;
-    [self.tableView reloadData];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 @end

@@ -15,7 +15,6 @@
 @interface NumberAreaZipsViewController ()
 {
     NSArray*                citiesArray;
-    BOOL                    isFiltered;
     NSMutableDictionary*    cityLookupDictionary;   // A map between ZIP code and matching city.
 
     NSMutableDictionary*    purchaseInfo;

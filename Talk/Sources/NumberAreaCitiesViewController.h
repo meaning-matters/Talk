@@ -7,13 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SearchTableViewController.h"
 
 
-@interface NumberAreaCitiesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
-                                                              UISearchBarDelegate, UISearchDisplayDelegate>
-
-@property (nonatomic, weak) IBOutlet UITableView*   tableView;
-
+@interface NumberAreaCitiesViewController : SearchTableViewController <UITableViewDelegate>
 
 - (instancetype)initWithCitiesArray:(NSArray*)array purchaseInfo:(NSMutableDictionary*)info;
 
