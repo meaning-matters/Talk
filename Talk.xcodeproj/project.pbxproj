@@ -1111,6 +1111,7 @@
 		48EDD23F1667A0B6007B89DA /* CallOptionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 48EDD23D1667A0B6007B89DA /* CallOptionButton.m */; };
 		48F1B7E117E63819003A3933 /* NumberForwardingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F1B7E017E63819003A3933 /* NumberForwardingsViewController.m */; };
 		48F1B7E217E63819003A3933 /* NumberForwardingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F1B7E017E63819003A3933 /* NumberForwardingsViewController.m */; };
+		48F47BBF18BE9C01006A6436 /* ItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F47BBE18BE9C01006A6436 /* ItemViewController.m */; };
 		48F5D2ED16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
 		48F5D2EE16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
 		48FD99D5161855D30061191B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D4161855D30061191B /* CoreMedia.framework */; };
@@ -2149,6 +2150,8 @@
 		48EE399816777EEC00823E09 /* libWebRTC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWebRTC.a; path = External/WebRTC/libWebRTC.a; sourceTree = "<group>"; };
 		48F1B7DF17E63819003A3933 /* NumberForwardingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberForwardingsViewController.h; sourceTree = "<group>"; };
 		48F1B7E017E63819003A3933 /* NumberForwardingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberForwardingsViewController.m; sourceTree = "<group>"; };
+		48F47BBD18BE9C01006A6436 /* ItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemViewController.h; sourceTree = "<group>"; };
+		48F47BBE18BE9C01006A6436 /* ItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemViewController.m; sourceTree = "<group>"; };
 		48F5D2EB16B9A380001576E1 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
 		48F5D2EC16B9A380001576E1 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
 		48FD99D4161855D30061191B /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -3379,6 +3382,7 @@
 		48AF45591649790900DFE3D8 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				48F47BC018BEA850006A6436 /* Base */,
 				48AF45001649484600DFE3D8 /* AboutViewController.h */,
 				48AF45011649484600DFE3D8 /* AboutViewController.m */,
 				4865A9D617926CE00028785F /* BuyNumberViewController.h */,
@@ -3437,8 +3441,6 @@
 				482D2DEC16C815BE00E13B91 /* ProvisioningViewController.m */,
 				483679DC1721F2DF001A02AF /* RecordingViewController.h */,
 				483679DD1721F2E0001A02AF /* RecordingViewController.m */,
-				48A26DDA18BA7FB200736CCB /* SearchTableViewController.h */,
-				48A26DDB18BA7FB200736CCB /* SearchTableViewController.m */,
 				48251B99187F4A8A00E69C3A /* SettingsViewController.h */,
 				48251B9A187F4A8A00E69C3A /* SettingsViewController.m */,
 				48AF4555164978BE00DFE3D8 /* ShareViewController.h */,
@@ -3451,8 +3453,6 @@
 				48C97EA218943C7300174DE9 /* PhoneViewController.m */,
 				48C4319F189EDFB40008FE01 /* VerifyPhoneViewController.h */,
 				48C431A0189EDFB40008FE01 /* VerifyPhoneViewController.m */,
-				48A26DE418BE279F00736CCB /* ItemsViewController.h */,
-				48A26DE518BE279F00736CCB /* ItemsViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -3565,6 +3565,19 @@
 				48EE399816777EEC00823E09 /* libWebRTC.a */,
 			);
 			name = WebRTC;
+			sourceTree = "<group>";
+		};
+		48F47BC018BEA850006A6436 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				48A26DE418BE279F00736CCB /* ItemsViewController.h */,
+				48A26DE518BE279F00736CCB /* ItemsViewController.m */,
+				48F47BBD18BE9C01006A6436 /* ItemViewController.h */,
+				48F47BBE18BE9C01006A6436 /* ItemViewController.m */,
+				48A26DDA18BA7FB200736CCB /* SearchTableViewController.h */,
+				48A26DDB18BA7FB200736CCB /* SearchTableViewController.m */,
+			);
+			name = Base;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -4558,6 +4571,7 @@
 				4837BB66165F726400E46C36 /* BlockAlertView.m in Sources */,
 				482A6397165F903900325B3F /* Strings.m in Sources */,
 				482A639D165FA94400325B3F /* CallManager.m in Sources */,
+				48F47BBF18BE9C01006A6436 /* ItemViewController.m in Sources */,
 				482A63A1165FF73400325B3F /* NumberLabel.m in Sources */,
 				4882748E1660E20D00B41EA1 /* DtmfPlayer.m in Sources */,
 				48BD8BEC1663E87800F2CB45 /* CallViewController.m in Sources */,

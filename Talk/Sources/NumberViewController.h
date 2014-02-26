@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "NumberData.h"
+#import "ItemViewController.h"
 
 
-@interface NumberViewController : UITableViewController <UITextFieldDelegate, UIGestureRecognizerDelegate,
-                                                         UINavigationControllerDelegate>
+@interface NumberViewController : ItemViewController <UITextFieldDelegate, UINavigationControllerDelegate>
 
 - (instancetype)initWithNumber:(NumberData*)number;
 

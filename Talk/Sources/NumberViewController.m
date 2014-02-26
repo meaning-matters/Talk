@@ -75,9 +75,6 @@ static const int TextFieldCellTag = 1234;
     ContactNameRows    contactNameRows;
     ContactAddressRows contactAddressRows;
 
-    NSIndexPath*       nameIndexPath;
-    NSString*          name;            // Mirror that's only processed when user taps Done.
-
     // Keyboard stuff.
     BOOL               keyboardShown;
     CGFloat            keyboardOverlap;
@@ -90,10 +87,10 @@ static const int TextFieldCellTag = 1234;
 
 - (instancetype)initWithNumber:(NumberData*)theNumber
 {
-    if (self = [super initWithStyle:UITableViewStyleGrouped])
+    if (self = [super init])
     {
-        number = theNumber;
-        name   = number.name;
+        number    = theNumber;
+        self.name = number.name;
 
         self.title = NSLocalizedStringWithDefaultValue(@"Number:NumberDetails ScreenTitle", nil,
                                                        [NSBundle mainBundle], @"Number",
@@ -133,60 +130,10 @@ static const int TextFieldCellTag = 1234;
         contactAddressRows |= ContactAddressRowCountry;
         contactAddressRows |= (number.proofImage != nil) ? ContactAddressRowProofImage : 0;
 
-        nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:[Common nOfBit:TableSectionName inValue:sections]];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(handleManagedObjectsChange:)
-                                                     name:NSManagedObjectContextObjectsDidChangeNotification
-                                                   object:[DataManager sharedManager].managedObjectContext];
+        self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:[Common nOfBit:TableSectionName inValue:sections]];
     }
 
     return self;
-}
-
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NSManagedObjectContextObjectsDidChangeNotification
-                                                  object:[DataManager sharedManager].managedObjectContext];
-}
-
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    self.tableView.allowsSelectionDuringEditing = YES;//### Needed?
-
-    // Let keyboard be hidden when user taps outside text fields.
-    UITapGestureRecognizer* gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                        action:@selector(hideKeyboard:)];
-    gestureRecognizer.cancelsTouchesInView = NO;
-    gestureRecognizer.delegate = self;
-    [self.tableView addGestureRecognizer:gestureRecognizer];
-}
-
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
-    if (selectedIndexPath != nil)
-    {
-        [self.tableView reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-}
-
-
-- (void)handleManagedObjectsChange:(NSNotification*)note
-{
-    NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
-    if (selectedIndexPath == nil)
-    {
-        [self.tableView reloadData];
-    }
 }
 
 
@@ -360,8 +307,8 @@ static const int TextFieldCellTag = 1234;
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionName:
-            identifier    = @"TextFieldCell";
-            nameIndexPath = indexPath;
+            identifier         = @"TextFieldCell";
+            self.nameIndexPath = indexPath;
             break;
 
         case TableSectionNumber:
@@ -457,14 +404,14 @@ static const int TextFieldCellTag = 1234;
     }
 
     textField.placeholder            = [Strings requiredString];
-    textField.text                   = name;
+    textField.text                   = self.name;
     textField.userInteractionEnabled = YES;
     objc_setAssociatedObject(textField, @"TextFieldKey", @"name", OBJC_ASSOCIATION_RETAIN);
 
     cell.selectionStyle              = UITableViewCellSelectionStyleNone;
     cell.textLabel.text              = [Strings nameString];
 
-    if (name.length == 0)
+    if (self.name.length == 0)
     {
         [textField becomeFirstResponder];
     }
@@ -634,34 +581,19 @@ static const int TextFieldCellTag = 1234;
 
 #pragma mark - Helpers
 
-- (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
-{
-    if (name.length > 0)
-    {
-        //### Workaround: http://stackoverflow.com/a/22053349/1971013
-        [self.tableView setContentInset:UIEdgeInsetsMake(64, 0, 265, 0)];
-        [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(64, 0, 265, 0)];
-
-        [[self.tableView superview] endEditing:YES];
-
-        [self save];
-    }
-}
-
-
 - (void)save
 {
-    if ([name isEqualToString:number.name] == YES)
+    if ([self.name isEqualToString:number.name] == YES)
     {
         // Nothing has changed.
         return;
     }
 
-    [[WebClient sharedClient] updateNumberE164:number.e164 withName:name reply:^(NSError* error)
+    [[WebClient sharedClient] updateNumberE164:number.e164 withName:self.name reply:^(NSError* error)
     {
         if (error == nil)
         {
-            number.name = name;
+            number.name = self.name;
         }
         else
         {
@@ -683,98 +615,14 @@ static const int TextFieldCellTag = 1234;
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
              {
-                 name = number.name;
-                 [self updateNameCell:[self.tableView cellForRowAtIndexPath:nameIndexPath] atIndexPath:nameIndexPath];
+                 self.name = number.name;
+                 [self updateNameCell:[self.tableView cellForRowAtIndexPath:self.nameIndexPath]
+                          atIndexPath:self.nameIndexPath];
              }
                                  cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
         }
     }];
-}
-
-
-#pragma mark - TextField Delegate
-
-- (BOOL)textFieldShouldBeginEditing:(UITextField*)textField
-{
-    textField.returnKeyType = UIReturnKeyDone;
-#warning The method reloadInputViews messes up two-byte keyboards (e.g. Kanji).
-    [textField reloadInputViews];
-
-    //### Workaround: http://stackoverflow.com/a/22053349/1971013
-    dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC));
-    dispatch_after(when, dispatch_get_main_queue(), ^(void)
-    {
-        if (self.tableView.contentInset.bottom == 265)
-        {
-            [self.tableView setContentInset:UIEdgeInsetsMake(64, 0, 216, 0)];
-            [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(64, 0, 216, 0)];
-        }
-    });
-
-    return YES;
-}
-
-
-- (NSIndexPath*)findCellIndexPathForSubview:(UIView*)subview
-{
-    UIView* superview = subview.superview;
-    while ([superview class] != [UITableViewCell class])
-    {
-        superview = superview.superview;
-    }
-
-    return [self.tableView indexPathForCell:(UITableViewCell*)superview];
-}
-
-
-- (BOOL)textFieldShouldClear:(UITextField*)textField
-{
-    name = @"";
-
-    return YES;
-}
-
-
-    - (BOOL)textFieldShouldReturn:(UITextField*)textField
-    {
-        [self save];
-
-        [textField resignFirstResponder];
-
-        //### Workaround: http://stackoverflow.com/a/22053349/1971013
-        [self.tableView setContentInset:UIEdgeInsetsMake(64, 0, 265, 0)];
-        [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(64, 0, 265, 0)];
-
-        // we can always return YES, because the Done button will be disabled when there's no text.
-        return YES;
-    }
-
-
-- (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
-{
-    name = [textField.text stringByReplacingCharactersInRange:range withString:string];
-
-    [self.tableView scrollToRowAtIndexPath:nameIndexPath
-                          atScrollPosition:UITableViewScrollPositionNone
-                                  animated:YES];
-
-    return YES;
-}
-
-
-#pragma mark - Gesture Recognizer Delegate
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer shouldReceiveTouch:(UITouch*)touch
-{
-    if ([touch.view isKindOfClass:[UITextField class]] || [touch.view isKindOfClass:[UIButton class]])
-    {
-        return NO;
-    }
-    else
-    {
-        return YES;
-    }
 }
 
 @end
