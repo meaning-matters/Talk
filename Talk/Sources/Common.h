@@ -100,12 +100,14 @@
 
 + (void)dispatchAfterInterval:(NSTimeInterval)interval onMain:(void (^)(void))block;
 
-+ (void)addCountryImageToCell:(UITableViewCell*)cell isoCountryCode:(NSString*)isoCountryCode;
-
 // Resolves an issue with NSIndexPath's isEqual: http://stackoverflow.com/a/18920573/1971013
 + (BOOL)indexPath:(NSIndexPath*)indexPathA isEqual:(NSIndexPath*)indexPathB;
 
 + (UIImage*)invertImage:(UIImage*)image;
+
++ (void)addCountryImageToCell:(UITableViewCell*)cell isoCountryCode:(NSString*)isoCountryCode;
+
++ (NumberLabel*)addNumberLabelToCell:(UITableViewCell*)cell;
 
 + (UITextField*)addTextFieldToCell:(UITableViewCell*)cell delegate:(id<UITextFieldDelegate>)delegate;
 

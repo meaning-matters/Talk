@@ -35,7 +35,7 @@
 
 - (instancetype)init
 {
-    if (self = [super initWithStyle:UITableViewStylePlain])
+    if (self = [super init])
     {
         self.title                = [Strings numbersString]; // Not used, because we're having a segmented control.
         self.tabBarItem.image     = [UIImage imageNamed:@"NumbersTab.png"];
@@ -49,8 +49,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.clearsSelectionOnViewWillAppear = YES;
 
     fetchedNumbersController = [[DataManager sharedManager] fetchResultsForEntityName:@"Number"
                                                                          withSortKeys:[self sortKeys]
@@ -70,32 +68,7 @@
     [sortSegmentedControl addTarget:self
                              action:@selector(sortOrderChangedAction)
                    forControlEvents:UIControlEventValueChanged];
-
     self.navigationItem.titleView = sortSegmentedControl;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                                           target:self
-                                                                                           action:@selector(addAction)];
-
-    UIRefreshControl* refreshControl = [[UIRefreshControl alloc] init];
-    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings synchronizeWithServerString]];
-    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
-    self.refreshControl = refreshControl;
-}
-
-
-- (void)refresh:(id)sender
-{
-    if ([Settings sharedSettings].haveAccount == YES)
-    {
-        [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
-        {
-            [sender endRefreshing];
-        }];
-    }
-    else
-    {
-        [sender endRefreshing];
-    }
 }
 
 
@@ -118,7 +91,6 @@
     [super viewWillDisappear:animated];
 
     [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [self.searchDisplayController setActive:NO animated:YES];
 }
 
 
@@ -133,6 +105,7 @@
 }
 
 
+// Is called from ItemsViewController (the baseclass).
 - (void)addAction
 {
     if ([Settings sharedSettings].haveAccount == YES)
@@ -178,6 +151,15 @@
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [fetchedNumbersController.sections[section] numberOfObjects];
+}
+
+
+- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return NSLocalizedStringWithDefaultValue(@"Numbers Number List Title", nil, [NSBundle mainBundle],
+                                             @"You can be reached at",
+                                             @"\n"
+                                             @"[1/4 line larger font].");
 }
 
 

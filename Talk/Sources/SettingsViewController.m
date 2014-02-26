@@ -496,10 +496,10 @@ typedef enum
     if (([NetworkStatus sharedStatus].simIsoCountryCode != nil && indexPath.row == 1) ||
         [NetworkStatus sharedStatus].simIsoCountryCode == nil)
     {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"CountryCell"];
         if (cell == nil)
         {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"DefaultCell"];
         }
 
         if (settings.homeCountry != nil)
@@ -508,7 +508,7 @@ typedef enum
             //       selected cell before animation).  So pay a visit there when
             //       changing this.
             cell.imageView.image = [UIImage imageNamed:settings.homeCountry];
-            cell.textLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:settings.homeCountry];
+            cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:settings.homeCountry];
         }
         else
         {
@@ -711,6 +711,8 @@ typedef enum
                                                                 @"Title of table cell for resetting all user data\n"
                                                                 @"[2/3 line - abbreviated: 'Reset'].");
     }
+
+    cell.textLabel.textColor = [Skinning tintColor];
 
     cell.accessoryType  = UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;

@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ItemsViewController.h"
 
-@interface NumbersViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+
+@interface NumbersViewController : ItemsViewController <NSFetchedResultsControllerDelegate>
 
 - (void)refresh:(id)sender;
 

@@ -53,7 +53,7 @@ typedef enum
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
-    if (self = [super initWithStyle:UITableViewStylePlain])
+    if (self = [super init])
     {
         self.title                = [Strings forwardingsString];
         self.tabBarItem.image     = [UIImage imageNamed:@"ForwardingsTab.png"];
@@ -67,8 +67,6 @@ typedef enum
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.clearsSelectionOnViewWillAppear = YES;
 
     NSString* forwardingsTitle;
     NSString* recordingsTitle;
@@ -104,33 +102,6 @@ typedef enum
                                                                                     error:&error];
     fetchedRecordingsController.delegate = self;
 #endif
-
-    UIRefreshControl* refreshControl;
-    refreshControl = [[UIRefreshControl alloc] init];
-    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings synchronizeWithServerString]];
-    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
-    self.refreshControl = refreshControl;
-}
-
-
-- (void)refresh:(id)sender
-{
-    if ([Settings sharedSettings].haveAccount == YES)
-    {
-        [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
-        {
-            [sender endRefreshing];
-
-            if (error == nil)
-            {
-                //### Need some fetch data here like in NumbersVC?
-            }
-        }];
-    }
-    else
-    {
-        [sender endRefreshing];
-    }
 }
 
 
@@ -157,6 +128,15 @@ typedef enum
     NSFetchedResultsController* controller  = [self resultsControllerForTableView:tableView];
 
     return [controller.sections[section] numberOfObjects];
+}
+
+
+- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return NSLocalizedStringWithDefaultValue(@"Forwardings Forwardings List Title", nil, [NSBundle mainBundle],
+                                             @"Where incoming calls go to",
+                                             @"\n"
+                                             @"[1/4 line larger font].");
 }
 
 
@@ -398,12 +378,13 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     switch (selection)
     {
         case SelectionForwardings:
+            // This overrides button placement of ItemsViewController (the baseclass).
             rightItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                       target:self
                                                                       action:@selector(addForwardingAction)];
 
-            self.tableView.hidden = NO;
-            self.recordingsTableView.hidden  = YES;
+            self.tableView.hidden           = NO;
+            self.recordingsTableView.hidden = YES;
             break;
 
         case SelectionRecordings:
@@ -432,8 +413,8 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                                                                           action:@selector(addRecordingAction)];
             }
 
-            self.tableView.hidden = YES;
-            self.recordingsTableView.hidden  = NO;
+            self.tableView.hidden           = YES;
+            self.recordingsTableView.hidden = NO;
             break;
     }
 

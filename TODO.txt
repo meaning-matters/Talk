@@ -167,3 +167,7 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
   isFiltered state bug!  vervangen met (table == searchdisplaycontroller.table) zie searchtablevc.
 
 * Dialer = US, Dialler = UK!
+
+* First time your Sync with server by dragging down table view, the text is too close to the spinner.  iOS bug?
+
+* Use UIactivitycontroller for Share.

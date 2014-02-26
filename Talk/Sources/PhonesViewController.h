@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ItemsViewController.h"
 
 @class PhoneData;
 
 
-@interface PhonesViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+@interface PhonesViewController : ItemsViewController <NSFetchedResultsControllerDelegate>
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
                                selectedPhone:(PhoneData*)selectedPhone

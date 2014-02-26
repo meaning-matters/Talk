@@ -20,6 +20,7 @@
 #import "NumberLabel.h"
 #import "ForwardingData.h"
 #import "DataManager.h"
+#import "Skinning.h"
 
 
 typedef enum
@@ -374,7 +375,7 @@ static const int TextFieldCellTag = 1234;
             break;
 
         case TableSectionSubscription:
-            identifier = (indexPath.row == 0) ? @"Value2Cell" : @"DisclosureCell";
+            identifier = (indexPath.row == 0) ? @"Value1Cell" : @"DisclosureCell";
             break;
 
         case TableSectionArea:
@@ -384,16 +385,16 @@ static const int TextFieldCellTag = 1234;
             }
             else
             {
-                identifier = @"Value2Cell";
+                identifier = @"Value1Cell";
             }
             break;
 
         case TableSectionContactName:
-            identifier = @"Value2Cell";
+            identifier = @"Value1Cell";
             break;
 
         case TableSectionContactAddress:
-            identifier = (indexPath.row == 4) ? @"CountryCell"    : @"Value2Cell";
+            identifier = (indexPath.row == 4) ? @"CountryCell"    : @"Value1Cell";
             identifier = (indexPath.row == 5) ? @"DisclosureCell" : identifier;
             break;
     }
@@ -401,7 +402,7 @@ static const int TextFieldCellTag = 1234;
     cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:identifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     }
 
     return cell;
@@ -474,12 +475,11 @@ static const int TextFieldCellTag = 1234;
 
 - (void)updateNumberCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
-    NumberLabel* numberLabel = [self addNumberLabelToCell:cell];
+    NumberLabel* numberLabel = [Common addNumberLabelToCell:cell];
 
-    numberLabel.text = [[PhoneNumber alloc] initWithNumber:number.e164].internationalFormat;
-
-    cell.textLabel.text       = [Strings numberString];
-    cell.selectionStyle       = UITableViewCellSelectionStyleNone;
+    numberLabel.text         = [[PhoneNumber alloc] initWithNumber:number.e164].internationalFormat;
+    [Common addCountryImageToCell:cell isoCountryCode:number.numberCountry];
+    cell.selectionStyle      = UITableViewCellSelectionStyleNone;
 }
 
 
@@ -488,8 +488,8 @@ static const int TextFieldCellTag = 1234;
     cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number Forwarding", nil,
                                                                   [NSBundle mainBundle], @"Forwarding",
                                                                   @"....");
+    cell.textLabel.textColor  = [UIColor blackColor];
     cell.detailTextLabel.text = (number.forwarding == nil) ? [Strings defaultString] : number.forwarding.name;
-
     cell.selectionStyle       = UITableViewCellSelectionStyleBlue;
     cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
 }
@@ -507,17 +507,17 @@ static const int TextFieldCellTag = 1234;
     switch (indexPath.row)
     {
         case 0:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionPurchaseDate Label", nil,
-                                                                    [NSBundle mainBundle], @"Purchased",
-                                                                    @"....");
+            cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionPurchaseDate Label", nil,
+                                                                          [NSBundle mainBundle], @"Purchased",
+                                                                          @"....");
             cell.detailTextLabel.text = [dateFormatter stringFromDate:number.purchaseDate];
             cell.selectionStyle       = UITableViewCellSelectionStyleNone;
             break;
 
         case 1:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionRenewalDate Label", nil,
-                                                                    [NSBundle mainBundle], @"Expiry",
-                                                                    @"....");
+            cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionRenewalDate Label", nil,
+                                                                          [NSBundle mainBundle], @"Expiry",
+                                                                          @"....");
             cell.detailTextLabel.text = [dateFormatter stringFromDate:number.renewalDate];
             cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle       = UITableViewCellSelectionStyleBlue;
@@ -553,8 +553,7 @@ static const int TextFieldCellTag = 1234;
             break;
 
         case AreaRowCountry:
-            cell.textLabel.text = @" ";  // Without this, detailTextLabel is on the left.
-            [Common addCountryImageToCell:cell isoCountryCode:number.numberCountry];
+            cell.textLabel.text       = [Strings countryString];
             cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:number.numberCountry];
             break;
     }
@@ -589,8 +588,8 @@ static const int TextFieldCellTag = 1234;
             break;
     }
 
-    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
-    cell.accessoryType   = UITableViewCellAccessoryNone;    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.accessoryType  = UITableViewCellAccessoryNone;
 }
 
 
@@ -630,29 +629,12 @@ static const int TextFieldCellTag = 1234;
             break;
     }
 
-    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
-    cell.accessoryType   = UITableViewCellAccessoryNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.accessoryType  = UITableViewCellAccessoryNone;
 }
 
 
 #pragma mark - Helpers
-
-- (NumberLabel*)addNumberLabelToCell:(UITableViewCell*)cell
-{
-    NumberLabel* label;
-    CGRect       frame = CGRectMake(83, 6, 198, 30);
-
-    label = [[NumberLabel alloc] initWithFrame:frame];
-    [label setFont:[UIFont boldSystemFontOfSize:15]];
-    label.backgroundColor = [UIColor clearColor];
-    label.userInteractionEnabled = YES;
-    label.menuTargetRect = CGRectMake(-31, 9, 198, 11);
-
-    [cell.contentView addSubview:label];
-
-    return label;
-}
-
 
 - (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
 {

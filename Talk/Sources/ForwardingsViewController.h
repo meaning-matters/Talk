@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ItemsViewController.h"
 
 
-@interface ForwardingsViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+@interface ForwardingsViewController : ItemsViewController <NSFetchedResultsControllerDelegate>
 
-@property (nonatomic, weak) IBOutlet UITableView*   recordingsTableView;
+@property (nonatomic, weak) IBOutlet UITableView* recordingsTableView;
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 

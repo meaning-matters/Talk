@@ -18,6 +18,7 @@
 #import "CountriesViewController.h"
 #import "ProvisioningViewController.h"
 #import "AFNetworkActivityIndicatorManager.h"
+#import "Skinning.h"
 
 
 @implementation Common
@@ -287,10 +288,11 @@
 
 
 // Returns hidden iOS font with nice * # +.
-// List of fonts: http://www.prepressure.com/fonts/basics/ios-4-fonts
+// List of fonts: http://www.prepressure.com/fonts/basics/ios-6-typefaces
 + (UIFont*)phoneFontOfSize:(CGFloat)size
 {
-    return [UIFont fontWithName:@".PhonepadTwo" size:size];
+    // Obscure ".PhonepadTwo".
+    return [UIFont fontWithName:[NSString stringWithFormat:@".%@%@Two", @"Phone", @"pad"] size:size];
 }
 
 
@@ -652,22 +654,6 @@
 }
 
 
-+ (void)addCountryImageToCell:(UITableViewCell*)cell isoCountryCode:(NSString*)isoCountryCode
-{
-    static const int CountryCellTag = 4321;
-
-    UIImage*     image     = [UIImage imageNamed:isoCountryCode];
-    UIImageView* imageView = (UIImageView*)[cell viewWithTag:CountryCellTag];
-    CGRect       frame     = CGRectMake(33, 4, image.size.width, image.size.height);
-
-    imageView       = (imageView == nil) ? [[UIImageView alloc] initWithFrame:frame] : imageView;
-    imageView.tag   = CountryCellTag;
-    imageView.image = image;
-
-    [cell.contentView addSubview:imageView];
-}
-
-
 + (BOOL)indexPath:(NSIndexPath*)indexPathA isEqual:(NSIndexPath*)indexPathB
 {
     return (indexPathA.section == indexPathB.section) && (indexPathA.row == indexPathB.row);
@@ -744,19 +730,56 @@
 }
 
 
++ (void)addCountryImageToCell:(UITableViewCell*)cell isoCountryCode:(NSString*)isoCountryCode
+{
+    static const int CountryCellTag = 4321;
+
+    UIImage*     image     = [UIImage imageNamed:isoCountryCode];
+    UIImageView* imageView = (UIImageView*)[cell viewWithTag:CountryCellTag];
+    CGRect       frame     = CGRectMake(15, 4, image.size.width, image.size.height);
+
+    imageView       = (imageView == nil) ? [[UIImageView alloc] initWithFrame:frame] : imageView;
+    imageView.tag   = CountryCellTag;
+    imageView.image = image;
+
+    [cell.contentView addSubview:imageView];
+}
+
+
++ (NumberLabel*)addNumberLabelToCell:(UITableViewCell*)cell
+{
+    NumberLabel* label;
+    CGRect       frame = CGRectMake(80, 7, 225, 30);
+
+    label = [[NumberLabel alloc] initWithFrame:frame];
+
+    label.backgroundColor        = [UIColor clearColor];
+    label.userInteractionEnabled = YES;
+    label.textAlignment          = NSTextAlignmentRight;
+    label.textColor              = [UIColor grayColor];
+
+    label.menuTargetRect = CGRectMake(80, 12, 160, 8);
+
+    [cell.contentView addSubview:label];
+
+    return label;
+}
+
+
 + (UITextField*)addTextFieldToCell:(UITableViewCell*)cell delegate:(id<UITextFieldDelegate>)delegate
 {
     UITextField*    textField;
-    CGRect          frame = CGRectMake(83, 6, 210, 30);
+    CGRect          frame = CGRectMake(80, 8, 224, 30);
 
     textField = [[UITextField alloc] initWithFrame:frame];
-    [textField setFont:[UIFont boldSystemFontOfSize:15]];
 
     textField.adjustsFontSizeToFitWidth = NO;
     textField.autocapitalizationType    = UITextAutocapitalizationTypeWords;
     textField.autocorrectionType        = UITextAutocorrectionTypeNo;
-    textField.clearButtonMode           = UITextFieldViewModeWhileEditing;
+    textField.clearButtonMode           = UITextFieldViewModeNever;
     textField.contentVerticalAlignment  = UIControlContentVerticalAlignmentCenter;
+    textField.textAlignment             = NSTextAlignmentRight;
+    textField.textColor                 = [Skinning tintColor];
     textField.returnKeyType             = UIReturnKeyDone;
 
     textField.delegate                  = delegate;

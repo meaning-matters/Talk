@@ -546,7 +546,6 @@ static const int    TextFieldCellTag = 1111;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NumbersCell"];
     }
 
-    cell.textLabel.text = @" ";  // Without this, detailTextLabel is on the left.
     [Common addCountryImageToCell:cell isoCountryCode:number.numberCountry];
 
     cell.detailTextLabel.text = number.name;

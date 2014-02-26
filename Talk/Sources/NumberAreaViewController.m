@@ -1246,7 +1246,6 @@ static const int    TextFieldCellTag = 1234;
             }
             else
             {
-                cell.textLabel.text = @" ";  // Without this, detailTextLabel is on the left.
                 countryTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:purchaseInfo[@"isoCountryCode"]];
                 [Common addCountryImageToCell:cell isoCountryCode:purchaseInfo[@"isoCountryCode"]];
             }

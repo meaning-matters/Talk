@@ -894,9 +894,9 @@
 		48A261C116FDE26100007638 /* CallMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A261BF16FDE26100007638 /* CallMessageView.xib */; };
 		48A261C416FDE32400007638 /* CallMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A261C316FDE32400007638 /* CallMessageView.m */; };
 		48A261C516FDE32400007638 /* CallMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A261C316FDE32400007638 /* CallMessageView.m */; };
-		48A26DD718B8C53800736CCB /* CountriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A26DD618B8C53800736CCB /* CountriesView.xib */; };
 		48A26DDC18BA7FB200736CCB /* SearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A26DDB18BA7FB200736CCB /* SearchTableViewController.m */; };
 		48A26DDE18BA904100736CCB /* SearchTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A26DDD18BA904100736CCB /* SearchTableView.xib */; };
+		48A26DE618BE279F00736CCB /* ItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A26DE518BE279F00736CCB /* ItemsViewController.m */; };
 		48A2CDFC16834FC100506A7C /* RingbackTones.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A2CDFB16834FC100506A7C /* RingbackTones.json */; };
 		48A2CDFD16834FC100506A7C /* RingbackTones.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A2CDFB16834FC100506A7C /* RingbackTones.json */; };
 		48AD95DF164AE582006178E6 /* Skinning.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95DE164AE582006178E6 /* Skinning.m */; };
@@ -1987,10 +1987,11 @@
 		48A261F916FE4F9700007638 /* libresample-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libresample-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libresample-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48A261FA16FE4F9700007638 /* libspeex-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libspeex-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libspeex-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48A261FB16FE4F9700007638 /* libsrtp-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsrtp-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libsrtp-arm-apple-darwin9.a"; sourceTree = "<group>"; };
-		48A26DD618B8C53800736CCB /* CountriesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CountriesView.xib; sourceTree = "<group>"; };
 		48A26DDA18BA7FB200736CCB /* SearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewController.h; sourceTree = "<group>"; };
 		48A26DDB18BA7FB200736CCB /* SearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewController.m; sourceTree = "<group>"; };
 		48A26DDD18BA904100736CCB /* SearchTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchTableView.xib; sourceTree = "<group>"; };
+		48A26DE418BE279F00736CCB /* ItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemsViewController.h; sourceTree = "<group>"; };
+		48A26DE518BE279F00736CCB /* ItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemsViewController.m; sourceTree = "<group>"; };
 		48A2CDFB16834FC100506A7C /* RingbackTones.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = RingbackTones.json; path = Resources/RingbackTones.json; sourceTree = "<group>"; };
 		48AD95DD164AE581006178E6 /* Skinning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skinning.h; sourceTree = "<group>"; };
 		48AD95DE164AE582006178E6 /* Skinning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Skinning.m; sourceTree = "<group>"; };
@@ -3353,7 +3354,6 @@
 				48EDD229166771B8007B89DA /* CallKeypadView.xib */,
 				48A261BF16FDE26100007638 /* CallMessageView.xib */,
 				48EDD226166770B8007B89DA /* CallOptionsView.xib */,
-				48A26DD618B8C53800736CCB /* CountriesView.xib */,
 				4814EA3217CA98F4004B7A3C /* CreditBuyCell.xib */,
 				4814EA3917CB18DB004B7A3C /* CreditAmountCell.xib */,
 				48AF450A164948CD00DFE3D8 /* DialerView.xib */,
@@ -3451,6 +3451,8 @@
 				48C97EA218943C7300174DE9 /* PhoneViewController.m */,
 				48C4319F189EDFB40008FE01 /* VerifyPhoneViewController.h */,
 				48C431A0189EDFB40008FE01 /* VerifyPhoneViewController.m */,
+				48A26DE418BE279F00736CCB /* ItemsViewController.h */,
+				48A26DE518BE279F00736CCB /* ItemsViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -3917,7 +3919,6 @@
 				485F6B2D1637270100D61365 /* KW.png in Resources */,
 				485F6B2E1637270100D61365 /* KW@2x.png in Resources */,
 				485F6B2F1637270100D61365 /* KY.png in Resources */,
-				48A26DD718B8C53800736CCB /* CountriesView.xib in Resources */,
 				485F6B301637270100D61365 /* KY@2x.png in Resources */,
 				485F6B311637270100D61365 /* KZ.png in Resources */,
 				485F6B321637270100D61365 /* KZ@2x.png in Resources */,
@@ -4645,6 +4646,7 @@
 				4805790B17A50FB2006923BD /* NBRecentContactViewController.m in Sources */,
 				4805790C17A50FB2006923BD /* NBRecentsListViewController.m in Sources */,
 				48251B9B187F4A8A00E69C3A /* SettingsViewController.m in Sources */,
+				48A26DE618BE279F00736CCB /* ItemsViewController.m in Sources */,
 				4805790D17A50FB2006923BD /* NBRecentsNavigationController.m in Sources */,
 				4805790E17A50FB2006923BD /* NBRecentUnknownContactViewController.m in Sources */,
 				4805790F17A50FB2006923BD /* NBUnknownPersonViewController.m in Sources */,

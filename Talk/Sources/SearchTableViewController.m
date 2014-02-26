@@ -31,6 +31,15 @@
 }
 
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    // This will remove extra separators from tableview
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+}
+
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

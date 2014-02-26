@@ -42,7 +42,7 @@
                                selectedPhone:(PhoneData*)selectedPhone
                                   completion:(void (^)(PhoneData* selectedPhone))completion
 {
-    if (self = [super initWithStyle:UITableViewStylePlain])
+    if (self = [super init])
     {
         self.title                = [Strings phonesString];
         self.tabBarItem.image     = [UIImage imageNamed:@"PhonesTab.png"];
@@ -59,31 +59,10 @@
 {
     [super viewDidLoad];
 
-    self.clearsSelectionOnViewWillAppear = YES;
-
     fetchedPhonesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Phone"
                                                                         withSortKeys:@[@"name"]
                                                                 managedObjectContext:self.managedObjectContext];
     fetchedPhonesController.delegate = self;
-
-    UIRefreshControl* refreshControl = [[UIRefreshControl alloc] init];
-    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings synchronizeWithServerString]];
-    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
-    self.refreshControl = refreshControl;
-
-    UIBarButtonItem* rightItem;
-    rightItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                              target:self
-                                                              action:@selector(addPhoneAction)];
-    self.navigationItem.rightBarButtonItem = rightItem;
-}
-
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-
 }
 
 
@@ -186,6 +165,15 @@
 }
 
 
+- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return NSLocalizedStringWithDefaultValue(@"Phone Phones List Title", nil, [NSBundle mainBundle],
+                                             @"You can take calls on",
+                                             @"\n"
+                                             @"[1/4 line larger font].");
+}
+
+
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     PhoneViewController* viewController;
@@ -227,7 +215,8 @@
 
 #pragma mark - Actions
 
-- (void)addPhoneAction
+// Is called from ItemsViewController (the baseclass).
+- (void)addAction
 {
     if ([Settings sharedSettings].haveAccount == YES)
     {
@@ -271,27 +260,6 @@
     else
     {
         cell.accessoryType = UITableViewCellAccessoryNone;
-    }
-}
-
-
-- (void)refresh:(id)sender
-{
-    if ([Settings sharedSettings].haveAccount == YES)
-    {
-        [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
-        {
-            [sender endRefreshing];
-
-            if (error == nil)
-            {
-                //### Need some fetch data here like in NumbersVC?
-            }
-        }];
-    }
-    else
-    {
-        [sender endRefreshing];
     }
 }
 

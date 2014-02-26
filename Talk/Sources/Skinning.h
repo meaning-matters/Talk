@@ -14,4 +14,6 @@
 
 + (UIColor*)callbackModeTintColor;
 
++ (UIColor*)tintColor;
+
 @end
