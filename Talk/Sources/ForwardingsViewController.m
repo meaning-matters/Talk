@@ -134,7 +134,7 @@ typedef enum
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
     return NSLocalizedStringWithDefaultValue(@"Forwardings Forwardings List Title", nil, [NSBundle mainBundle],
-                                             @"Where incoming calls go to",
+                                             @"Incoming calls go to",
                                              @"\n"
                                              @"[1/4 line larger font].");
 }

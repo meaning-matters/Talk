@@ -165,8 +165,6 @@ static const int TextFieldCellTag = 1234;
     gestureRecognizer.cancelsTouchesInView = NO;
     gestureRecognizer.delegate = self;
     [self.tableView addGestureRecognizer:gestureRecognizer];
-
-    [self addKeyboardNotifications];
 }
 
 
@@ -640,6 +638,10 @@ static const int TextFieldCellTag = 1234;
 {
     if (name.length > 0)
     {
+        //### Workaround: http://stackoverflow.com/a/22053349/1971013
+        [self.tableView setContentInset:UIEdgeInsetsMake(64, 0, 265, 0)];
+        [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(64, 0, 265, 0)];
+
         [[self.tableView superview] endEditing:YES];
 
         [self save];
@@ -699,6 +701,17 @@ static const int TextFieldCellTag = 1234;
 #warning The method reloadInputViews messes up two-byte keyboards (e.g. Kanji).
     [textField reloadInputViews];
 
+    //### Workaround: http://stackoverflow.com/a/22053349/1971013
+    dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC));
+    dispatch_after(when, dispatch_get_main_queue(), ^(void)
+    {
+        if (self.tableView.contentInset.bottom == 265)
+        {
+            [self.tableView setContentInset:UIEdgeInsetsMake(64, 0, 216, 0)];
+            [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(64, 0, 216, 0)];
+        }
+    });
+
     return YES;
 }
 
@@ -723,15 +736,19 @@ static const int TextFieldCellTag = 1234;
 }
 
 
-- (BOOL)textFieldShouldReturn:(UITextField*)textField
-{
-    [self save];
+    - (BOOL)textFieldShouldReturn:(UITextField*)textField
+    {
+        [self save];
 
-    [textField resignFirstResponder];
+        [textField resignFirstResponder];
 
-    // we can always return YES, because the Done button will be disabled when there's no text.
-    return YES;
-}
+        //### Workaround: http://stackoverflow.com/a/22053349/1971013
+        [self.tableView setContentInset:UIEdgeInsetsMake(64, 0, 265, 0)];
+        [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(64, 0, 265, 0)];
+
+        // we can always return YES, because the Done button will be disabled when there's no text.
+        return YES;
+    }
 
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
@@ -758,144 +775,6 @@ static const int TextFieldCellTag = 1234;
     {
         return YES;
     }
-}
-
-
-#pragma mark - Keyboard Handling
-// http://stackoverflow.com/questions/13845426/generic-uitableview-keyboard-resizing-algorithm
-
-- (void)addKeyboardNotifications
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
-}
-
-
-- (void)keyboardWillShow:(NSNotification*)notification
-{
-    if (keyboardShown == YES)
-    {
-        return;
-    }
-    else
-    {
-        keyboardShown = YES;
-    }
-
-    // Get keyboard size.
-    NSDictionary*   userInfo = [notification userInfo];
-    NSValue*        value = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    CGRect          keyboardRect = [self.tableView.superview convertRect:[value CGRectValue] fromView:nil];
-
-    // Get the keyboard's animation details.
-    NSTimeInterval  animationDuration;
-    [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
-    UIViewAnimationCurve animationCurve;
-    [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
-
-    // Determine how much overlap exists between tableView and the keyboard
-    CGRect tableFrame = self.tableView.frame;
-    CGFloat tableLowerYCoord = tableFrame.origin.y + tableFrame.size.height;
-    keyboardOverlap = tableLowerYCoord - keyboardRect.origin.y;
-    if (self.inputAccessoryView && keyboardOverlap > 0)
-    {
-        CGFloat accessoryHeight = self.inputAccessoryView.frame.size.height;
-        keyboardOverlap -= accessoryHeight;
-
-        self.tableView.contentInset          = UIEdgeInsetsMake(0, 0, accessoryHeight, 0);
-        self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, accessoryHeight, 0);
-    }
-
-    if (keyboardOverlap < 0)
-    {
-        keyboardOverlap = 0;
-    }
-
-    if (keyboardOverlap != 0)
-    {
-        tableFrame.size.height -= keyboardOverlap;
-
-        NSTimeInterval delay = 0;
-        if (keyboardRect.size.height)
-        {
-            delay = (1 - keyboardOverlap / keyboardRect.size.height) * animationDuration;
-            animationDuration = animationDuration * keyboardOverlap / keyboardRect.size.height;
-        }
-
-        [UIView animateWithDuration:animationDuration delay:delay
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^
-         {
-             self.tableView.frame = tableFrame;
-         }
-                         completion:^(BOOL finished)
-         {
-             [self tableAnimationEnded:nil finished:nil contextInfo:nil];
-         }];
-    }
-}
-
-
-- (void)keyboardWillHide:(NSNotification*)notification
-{
-    if (keyboardShown == NO)
-    {
-        return;
-    }
-    else
-    {
-        keyboardShown = NO;
-    }
-
-    if (keyboardOverlap == 0)
-    {
-        return;
-    }
-
-    // Get the size & animation details of the keyboard
-    NSDictionary*   userInfo = [notification userInfo];
-    NSValue*        value = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    CGRect          keyboardRect = [self.tableView.superview convertRect:[value CGRectValue] fromView:nil];
-
-    NSTimeInterval animationDuration;
-    [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
-    UIViewAnimationCurve animationCurve;
-    [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
-
-    CGRect tableFrame = self.tableView.frame;
-    tableFrame.size.height += keyboardOverlap;
-
-    if(keyboardRect.size.height)
-    {
-        animationDuration = animationDuration * keyboardOverlap/keyboardRect.size.height;
-    }
-
-    [UIView animateWithDuration:animationDuration delay:0
-                        options:UIViewAnimationOptionBeginFromCurrentState
-                     animations:^
-     {
-         self.tableView.frame = tableFrame;
-     }
-                     completion:nil];
-}
-
-
-- (void)tableAnimationEnded:(NSString*)animationID finished:(NSNumber*)finished contextInfo:(void*)context
-{
-    // Scroll to the Name cell
-    dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC));
-    dispatch_after(when, dispatch_get_main_queue(), ^
-    {
-        [self.tableView scrollToRowAtIndexPath:nameIndexPath
-                              atScrollPosition:UITableViewScrollPositionNone
-                                      animated:YES];
-    });
 }
 
 @end
