@@ -132,6 +132,16 @@
 }
 
 
+- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller
+{
+    //### Workaround for iOS issue with setting insets.
+    if (controller.searchResultsTableView.contentInset.bottom != 0)
+    {
+        [controller.searchResultsTableView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+        [controller.searchResultsTableView setScrollIndicatorInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    }
+}
+
 
 #pragma mark - Table View Data Source
 
