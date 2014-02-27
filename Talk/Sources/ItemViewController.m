@@ -11,8 +11,8 @@
 
 
 @interface ItemViewController ()
-{
-}
+
+@property (nonatomic, assign) BOOL hasCorrectedInsets;
 
 @end
 
@@ -117,9 +117,14 @@
 {
     if (self.name.length > 0)
     {
-        //### Workaround: http://stackoverflow.com/a/22053349/1971013
-        [self.tableView setContentInset:UIEdgeInsetsMake(64, 0, 265, 0)];
-        [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(64, 0, 265, 0)];
+        if (self.hasCorrectedInsets == YES)
+        {
+            //### Workaround: http://stackoverflow.com/a/22053349/1971013
+            [self.tableView setContentInset:UIEdgeInsetsMake(64, 0, 265, 0)];
+            [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(64, 0, 265, 0)];
+
+            self.hasCorrectedInsets = NO;
+        }
 
         [[self.tableView superview] endEditing:YES];
 
@@ -144,6 +149,8 @@
         {
             [self.tableView setContentInset:UIEdgeInsetsMake(64, 0, 216, 0)];
             [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(64, 0, 216, 0)];
+
+            self.hasCorrectedInsets = YES;
         }
     });
 
@@ -166,9 +173,14 @@
 
     [textField resignFirstResponder];
 
-    //### Workaround: http://stackoverflow.com/a/22053349/1971013
-    [self.tableView setContentInset:UIEdgeInsetsMake(64, 0, 265, 0)];
-    [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(64, 0, 265, 0)];
+    if (self.hasCorrectedInsets == YES)
+    {
+        //### Workaround: http://stackoverflow.com/a/22053349/1971013
+        [self.tableView setContentInset:UIEdgeInsetsMake(64, 0, 265, 0)];
+        [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(64, 0, 265, 0)];
+
+        self.hasCorrectedInsets = NO;
+    }
 
     // we can always return YES, because the Done button will be disabled when there's no text.
     return YES;
