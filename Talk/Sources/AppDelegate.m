@@ -9,7 +9,7 @@
 //### Want to remove CoreData? http://www.gravitywell.co.uk/blog/post/how-to-quickly-add-core-data-to-an-app-in-xcode-4
 
 #import <MediaPlayer/MediaPlayer.h>
-#import "HockeySDK.h"
+#import <HockeySDK/HockeySDK.h>
 #import "AppDelegate.h"
 #import "Settings.h"
 #import "PhoneNumber.h"
@@ -124,6 +124,7 @@
 
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"6abff73fa5eb64771ac8a5124ebc33f5" delegate:self];
     [[BITHockeyManager sharedHockeyManager] startManager];
+    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 
     return YES;
 }

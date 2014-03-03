@@ -6,10 +6,10 @@
 //  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
 //
 
+#import <HockeySDK/HockeySDK.h>
 #import "HelpsViewController.h"
 #import "HelpViewController.h"
 #import "Common.h"
-#import "HockeySDK.h"
 #import "CallManager.h"
 #import "Settings.h"
 #import "BlockAlertView.h"
