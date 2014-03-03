@@ -168,3 +168,5 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Use UIactivitycontroller for Share.
 
 * Add iOS 7 HockeySDK
+
+* Make sending email + MF delegate Common  (used in both About and Helps VCs).

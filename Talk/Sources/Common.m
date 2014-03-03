@@ -21,7 +21,30 @@
 #import "Skinning.h"
 
 
+@interface Common ()
+
+@property (nonatomic, copy) void (^emailCompletion)(BOOL success);
+
+@end
+
+
 @implementation Common
+
+static Common* sharedCommon;
+
++ (Common*)sharedCommon
+{
+    static Common*         sharedInstance;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^
+    {
+        sharedInstance = [[Common alloc] init];
+    });
+    
+    return sharedInstance;
+}
+
 
 + (NSURL*)documentsDirectoryUrl
 {
@@ -80,6 +103,23 @@
     NSString*   appName = [[Common bundleName] stringByReplacingOccurrencesOfString:@" " withString:@""];
 
     return [NSString stringWithFormat:@"http://itunes.com/apps/%@", appName];
+}
+
+
++ (UIViewController*)topViewController
+{
+    UIViewController* viewController;
+
+    viewController = [AppDelegate appDelegate].window.rootViewController;
+
+    if (viewController.presentedViewController != nil)
+    {
+        viewController = viewController.presentedViewController;
+    }
+
+    // viewController = [[[[UIApplication sharedApplication] keyWindow] subviews][0] nextResponder];
+
+    return viewController;
 }
 
 
@@ -287,6 +327,26 @@
 }
 
 
++ (void)styleButton:(UIButton*)button
+{
+    [Common setBorderWidth:1  ofView:button];
+    [Common setCornerRadius:5 ofView:button];
+
+    [Common setBorderColor:[Skinning tintColor] ofView:button];
+    [button setTitleColor:[Skinning tintColor] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+
+    UIGraphicsBeginImageContextWithOptions(button.frame.size, YES, 0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [[Skinning tintColor] setFill];
+    CGContextFillRect(context, CGRectMake(0, 0, button.frame.size.width, button.frame.size.height));
+    UIImage*     image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    [button setBackgroundImage:image forState:UIControlStateHighlighted];
+}
+
+
 // Returns hidden iOS font with nice * # +.
 // List of fonts: http://www.prepressure.com/fonts/basics/ios-6-typefaces
 + (UIFont*)phoneFontOfSize:(CGFloat)size
@@ -378,14 +438,14 @@
         NSString* message;
 
         title   = NSLocalizedStringWithDefaultValue(@"General NoMailAccountTitle", nil,
-                                                    [NSBundle mainBundle], @"No Email Accounts",
+                                                    [NSBundle mainBundle], @"No Email Account",
                                                     @"Alert title that no text message (SMS) can be send\n"
                                                     @"[iOS alert title size].");
 
         message = NSLocalizedStringWithDefaultValue(@"General NoEmailAccountMessage", nil,
                                                     [NSBundle mainBundle],
-                                                    @"There are no email accounts configured. You can add an email "
-                                                    @"account in iOS Settings > Mail > Add Account.",
+                                                    @"There is no email account configured. You can add an email "
+                                                    @"account in iOS Settings > Mail, Contacts, Calendars > Add Account.",
                                                     @"Alert message that no email can be send\n"
                                                     @"[iOS alert message size]");
 
@@ -396,6 +456,101 @@
                              otherButtonTitles:nil];
 
         return NO;
+    }
+}
+
+
++ (void)sendEmailTo:(NSString*)emailAddress
+            subject:(NSString*)subject
+               body:(NSString*)body
+         completion:(void (^)(BOOL success))completion;
+{
+    if ([self checkSendingEmail] == YES)
+    {
+        MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+        controller.mailComposeDelegate = [self sharedCommon];
+        [controller setSubject:subject];
+        [controller setMessageBody:body isHTML:NO];
+        [controller setToRecipients:@[emailAddress]];
+
+        [self sharedCommon].emailCompletion = completion;
+
+        [[self topViewController] presentViewController:controller animated:YES completion:nil];
+    }
+}
+
+
+#pragma mark - Mail Compose Delegate
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError*)error
+{
+    if (result == MFMailComposeResultSent)
+    {
+        NSString* title;
+        NSString* message;
+
+        title   = NSLocalizedStringWithDefaultValue(@"Common EmailSentTitle", nil, [NSBundle mainBundle],
+                                                    @"Email Underway",
+                                                    @"Alert title that sending an email is in progress\n"
+                                                    @"[iOS alert title size].");
+
+        message = NSLocalizedStringWithDefaultValue(@"Common EmailSentMessage", nil, [NSBundle mainBundle],
+                                                    @"Thanks for contacting us!  Your email has been placed "
+                                                    @"in your outbox, or has already been sent.\n\n"
+                                                    @"We do our best to respond within 48 hours.",
+                                                    @"Alert message that sending an email is in progress\n"
+                                                    @"[iOS alert message size]");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            self.emailCompletion ? self.emailCompletion(YES) : 0;
+            self.emailCompletion = nil;
+
+            [[Common topViewController] dismissViewControllerAnimated:YES completion:nil];
+        }
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+    }
+    else if (result == MFMailComposeResultFailed)
+    {
+        NSString* title;
+        NSString* message;
+
+        title   = NSLocalizedStringWithDefaultValue(@"Common EmailFailedTitle", nil,
+                                                    [NSBundle mainBundle], @"Failed To Send Email",
+                                                    @"Alert title that sending an email failed\n"
+                                                    @"[iOS alert title size].");
+
+        message = NSLocalizedStringWithDefaultValue(@"Common EmailFailedMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"Sending the email message failed: %@.",
+                                                    @"Alert message that sending an email failed\n"
+                                                    @"[iOS alert message size]");
+
+        message = [NSString stringWithFormat:message, [error localizedDescription]];
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            self.emailCompletion ? self.emailCompletion(NO) : 0;
+            self.emailCompletion = nil;
+
+            [[Common topViewController] dismissViewControllerAnimated:YES completion:nil];
+        }
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+    }
+    else
+    {
+        self.emailCompletion ? self.emailCompletion(YES) : 0;
+        self.emailCompletion = nil;
+
+        [[Common topViewController] dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
@@ -478,7 +633,6 @@
             {
                 CountriesViewController*    countriesViewController;
                 UINavigationController*     modalViewController;
-                UIViewController*           topViewController;
                 NSString*                   homeCountry = [Settings sharedSettings].homeCountry;
 
                 countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:homeCountry
@@ -498,16 +652,7 @@
                 modalViewController = [[UINavigationController alloc] initWithRootViewController:countriesViewController];
                 modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 
-                topViewController = [AppDelegate appDelegate].window.rootViewController;
-
-                if (topViewController.presentedViewController != nil)
-                {
-                    topViewController = topViewController.presentedViewController;
-                }
-            
-                // topViewController = [[[[UIApplication sharedApplication] keyWindow] subviews][0] nextResponder];
-
-                [topViewController presentViewController:modalViewController animated:YES completion:^
+                [[self topViewController] presentViewController:modalViewController animated:YES completion:^
                 {
                     alertView = nil;
                 }];

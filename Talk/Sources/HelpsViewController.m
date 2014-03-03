@@ -224,14 +224,10 @@ typedef enum
                 case 1:
                     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-                    if ([Common checkSendingEmail] == YES)
-                    {
-                        MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
-                        controller.mailComposeDelegate = self;
-                        [controller setSubject:[Settings sharedSettings].callbackE164];
-                        [controller setToRecipients:@[[Settings sharedSettings].supportEmail]];
-                        [self presentViewController:controller animated:YES completion:nil];
-                    }
+                    [Common sendEmailTo:[Settings sharedSettings].supportEmail
+                                subject:[Settings sharedSettings].callbackE164
+                                   body:nil
+                             completion:nil];
                     break;
 
                 case 2:
@@ -268,44 +264,6 @@ typedef enum
             phoneNumber = [[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].testNumber];
             [[CallManager sharedManager] callPhoneNumber:phoneNumber fromIdentity:[Settings sharedSettings].callerIdE164];
             break;
-    }
-}
-
-
-#pragma mark - Mail Compose Delegate
-
-- (void)mailComposeController:(MFMailComposeViewController*)controller
-          didFinishWithResult:(MFMailComposeResult)result
-                        error:(NSError*)error
-{
-    if (result == MFMailComposeResultFailed)
-    {
-        NSString* title;
-        NSString* message;
-
-        title   = NSLocalizedStringWithDefaultValue(@"Helps EmailFailedTitle", nil,
-                                                    [NSBundle mainBundle], @"Failed To Send Email",
-                                                    @"Alert title that sending an email failed\n"
-                                                    @"[iOS alert title size].");
-
-        message = NSLocalizedStringWithDefaultValue(@"Helps EmailFailedMessage", nil,
-                                                    [NSBundle mainBundle],
-                                                    @"Sending the text message failed.",
-                                                    @"Alert message that sending an email failed\n"
-                                                    @"[iOS alert message size]");
-
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-         {
-             [self dismissViewControllerAnimated:YES completion:nil];
-         }
-                             cancelButtonTitle:[Strings closeString]
-                             otherButtonTitles:nil];
-    }
-    else
-    {
-        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

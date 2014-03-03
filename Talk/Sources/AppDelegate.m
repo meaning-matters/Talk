@@ -224,7 +224,7 @@
         NSStringFromClass([HelpsViewController                class]),
         NSStringFromClass([AboutViewController                class]),
         NSStringFromClass([SettingsViewController             class]),
-        NSStringFromClass([ShareViewController                class]),
+        //NSStringFromClass([ShareViewController                class]),
         //NSStringFromClass([GroupsViewController               class]),
     ];
 

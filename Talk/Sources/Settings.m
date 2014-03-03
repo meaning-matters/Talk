@@ -48,15 +48,15 @@ NSString* const NeedsServerSyncKey             = @"NeedsServerSync";
 
 @implementation Settings
 
-static NSUserDefaults*  userDefaults;
+static NSUserDefaults* userDefaults;
 
 
 #pragma mark - Singleton Stuff
 
 + (Settings*)sharedSettings
 {
-    static Settings*        sharedInstance;
-    static dispatch_once_t  onceToken;
+    static Settings*       sharedInstance;
+    static dispatch_once_t onceToken;
 
     dispatch_once(&onceToken, ^
     {

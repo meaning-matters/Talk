@@ -12,6 +12,7 @@
 
 @property (nonatomic, weak) IBOutlet UILabel*   companyLabel;
 @property (nonatomic, weak) IBOutlet UILabel*   versionLabel;
+@property (nonatomic, weak) IBOutlet UIButton*  emailButton;
 @property (nonatomic, weak) IBOutlet UIButton*  thanksButton;
 @property (nonatomic, weak) IBOutlet UIButton*  licensesButton;
 

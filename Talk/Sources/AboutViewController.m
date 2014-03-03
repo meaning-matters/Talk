@@ -10,6 +10,10 @@
 #import "LicensesViewController.h"
 #import "ThanksViewController.h"
 #import "Settings.h"
+#import "Common.h"
+#import "BlockAlertView.h"
+#import "Strings.h"
+#import "Skinning.h"
 
 
 @interface AboutViewController ()
@@ -41,28 +45,41 @@
     self.companyLabel.text = [Settings sharedSettings].companyNameAddress;
 
     NSString*   versionText = NSLocalizedStringWithDefaultValue(@"About:AppInfo Version", nil,
-                                                                [NSBundle mainBundle], @"Version %@",
+                                                                [NSBundle mainBundle], @"version %@",
                                                                 @"To form software version (e.g. 'Version 1.2.5')\n"
                                                                 @"[1 line normal font].");
     self.versionLabel.text = [NSString stringWithFormat:versionText, [Settings sharedSettings].appVersion];
 
-    NSString*   title;
+    [self.emailButton setTitle:[Settings sharedSettings].supportEmail forState:UIControlStateNormal];
 
+
+    NSString*   title;
     title = NSLocalizedStringWithDefaultValue(@"About ThanksButtonTitle", nil,
                                               [NSBundle mainBundle], @"Thanks",
                                               @"Button title to open thanks screen.\n"
                                               @"[1 line normal font].");
     [self.thanksButton setTitle:title forState:UIControlStateNormal];
+    [Common styleButton:self.thanksButton];
 
     title = NSLocalizedStringWithDefaultValue(@"About LicensesButtonTitle", nil,
                                               [NSBundle mainBundle], @"Licenses",
                                               @"Button title to show open-source software licenses screen.\n"
                                               @"[1 line normal font - must use correct iOS term].");
     [self.licensesButton setTitle:title forState:UIControlStateNormal];
+    [Common styleButton:self.licensesButton];
 }
 
 
 #pragma mark - Actions
+
+- (IBAction)emailAction:(id)sender
+{
+    [Common sendEmailTo:[Settings sharedSettings].supportEmail
+                subject:[Settings sharedSettings].callbackE164
+                   body:nil
+             completion:nil];
+}
+
 
 - (IBAction)thanksAction:(id)sender
 {
@@ -91,6 +108,62 @@
     [self presentViewController:modalViewController
                        animated:YES
                      completion:nil];
+}
+
+
+#pragma mark - Mail Compose Delegate
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError*)error
+{
+    if (result == MFMailComposeResultSent)
+    {
+        NSString* title;
+        NSString* message;
+
+        title   = NSLocalizedStringWithDefaultValue(@"About EmailSentTitle", nil, [NSBundle mainBundle],
+                                                    @"Email Underway",
+                                                    @"Alert title that sending an email is in progress\n"
+                                                    @"[iOS alert title size].");
+
+        message = NSLocalizedStringWithDefaultValue(@"About EmailSentMessage", nil, [NSBundle mainBundle],
+                                                    @"Thanks for contacting us.  Your email has been placed "
+                                                    @"in your outbox, or has already been sent.\n\n"
+                                                    @"We do our best to respond within 48 hours.",
+                                                    @"Alert message that sending an email is in progress\n"
+                                                    @"[iOS alert message size]");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+    }
+    else if (result == MFMailComposeResultFailed)
+    {
+        NSString* title;
+        NSString* message;
+
+        title   = NSLocalizedStringWithDefaultValue(@"About EmailFailedTitle", nil,
+                                                    [NSBundle mainBundle], @"Failed To Send Email",
+                                                    @"Alert title that sending an email failed\n"
+                                                    @"[iOS alert title size].");
+
+        message = NSLocalizedStringWithDefaultValue(@"About EmailFailedMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"Sending the email message failed: %@.",
+                                                    @"Alert message that sending an email failed\n"
+                                                    @"[iOS alert message size]");
+
+        message = [NSString stringWithFormat:message, [error localizedDescription]];
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+    }
 }
 
 @end

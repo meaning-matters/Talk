@@ -16,7 +16,7 @@
 #define CFReleaseSafe(x)                                { if ((x) != NULL) CFRelease(x); }
 
 
-@interface Common : NSObject
+@interface Common : NSObject <MFMailComposeViewControllerDelegate>
 
 + (NSURL*)documentsDirectoryUrl;
 
@@ -33,6 +33,8 @@
 + (NSString*)bundleName;
 
 + (NSString*)appStoreUrlString;
+
++ (UIViewController*)topViewController; // View controller from which to present a modal.
 
 + (NSData*)jsonDataWithObject:(id)object;
 
@@ -68,6 +70,8 @@
 
 + (void)setHeight:(CGFloat)height ofView:(UIView*)view;
 
++ (void)styleButton:(UIButton*)button;  // Must be custom button style.
+
 + (UIFont*)phoneFontOfSize:(CGFloat)size;
 
 + (NSString*)stringWithOsStatus:(OSStatus)status;
@@ -75,6 +79,11 @@
 + (BOOL)checkRemoteNotifications;
 
 + (BOOL)checkSendingEmail;
+
++ (void)sendEmailTo:(NSString*)emailAddress
+            subject:(NSString*)subject
+               body:(NSString*)body
+         completion:(void (^)(BOOL success))completion;
 
 + (BOOL)checkSendingTextMessage;
 
