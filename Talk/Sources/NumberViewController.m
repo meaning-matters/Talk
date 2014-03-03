@@ -406,7 +406,6 @@ static const int TextFieldCellTag = 1234;
     textField.placeholder            = [Strings requiredString];
     textField.text                   = self.name;
     textField.userInteractionEnabled = YES;
-    objc_setAssociatedObject(textField, @"TextFieldKey", @"name", OBJC_ASSOCIATION_RETAIN);
 
     cell.selectionStyle              = UITableViewCellSelectionStyleNone;
     cell.textLabel.text              = [Strings nameString];
@@ -614,11 +613,11 @@ static const int TextFieldCellTag = 1234;
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
-             {
-                 self.name = number.name;
-                 [self updateNameCell:[self.tableView cellForRowAtIndexPath:self.nameIndexPath]
-                          atIndexPath:self.nameIndexPath];
-             }
+            {
+                self.name = number.name;
+                [self updateNameCell:[self.tableView cellForRowAtIndexPath:self.nameIndexPath]
+                         atIndexPath:self.nameIndexPath];
+            }
                                  cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
         }

@@ -9,9 +9,10 @@
 
 #import <UIKit/UIKit.h>
 #import "ForwardingData.h"
+#import "ItemViewController.h"
 
 
-@interface ForwardingViewController : UITableViewController <UITextFieldDelegate, UIGestureRecognizerDelegate>
+@interface ForwardingViewController : ItemViewController <UITextFieldDelegate>
 
 @property (nonatomic, strong) ForwardingData*   forwarding;
 @property (nonatomic, strong) NSMutableArray*   sequenceArray;

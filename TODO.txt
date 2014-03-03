@@ -24,11 +24,9 @@
 
 * When account and verified number: Check if checkWarnedAboutDefaultCli is properly working.
 
-* Check that VC Cancels stop activity as much as possible.
-
 * Check waarom alert over Allow Data Calls soms 3 keer komt (na app provisioning).
 
-* Check waarom Davy my op api2 zit als ik hier api1 kiest.
+* Check waarom Davy my op api2 ziet als ik hier api1 kiest.
 
 * Check waarom call direct na prov. niet lukt.  Ook lukken calls sowieso soms niet.
 
@@ -61,7 +59,7 @@
 
 * Sort PurchaseManager methods in REST.txt order.
 
-* Check what happens when notifications are of, buyAccount in PurchaseManager.
+* Check what happens when notifications are off, buyAccount in PurchaseManager.
 
 * Do all tables using http://stackoverflow.com/a/18418549/1971013
 
@@ -76,8 +74,6 @@
 
 * Rewrite WebClient status texts. localizedStringForStatus
 
-* Gooi Help teksten in RTFs?
-
 * Add a badge to Credit tab when below tier 5. 
 
 * Add warning push notification from server when credit gets below tier 5.
@@ -90,7 +86,7 @@
 
 * Als #2 faalt, mislukt Restore silently: zorg dat er een melding komt. kijk ook na voor #1 e.d.
 
-* als je nummer koop cancelt wordt deze toegevoegd als pending!
+* als je nummer-koop cancelt wordt deze toegevoegd als pending!
 
 * Differentiate between real WebClient network problem, and API problem.
 
@@ -127,7 +123,7 @@
 
 * Groot probleem in PurchaseManager zie "We can get here when app did not process purchase previous time ..."
 
-* Check is "calling" label in CallbackVC is done on main thread; saw some delays in setting it.
+* Check if "calling" label in CallbackVC is done on main thread; saw some delays in setting it.  Fixed things, but still no string at some point with every Callback call.
 
 * NumberAreaViewController #834 do something with isValid!!!
 
@@ -139,7 +135,7 @@
 
 * App crasht zonder account op Credit tab, en als je belt
 
-* Zonder internet krijg je "Loading Products Failed".
+* Zonder internet krijg je "Loading Products Failed" en soms wel een paar keer
 
 * Tijdens splash image kan je nummers intoetsen die erachter staan.
 
@@ -165,9 +161,10 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Zat ff met Contacts te spelen (weet dus niet meer wat ik precies deed) en zie een crash:
   NBPeopleListViewController #466: contactsDatasource heeft 27 items, maar indexPath.section == 31.
   isFiltered state bug!  vervangen met (table == searchdisplaycontroller.table) zie searchtablevc.
+  IS OPGELOST: Je moet isFiltered bepalen met tableView == self.searchDisplCtrl.tableView oid, zie mijn code.  Jasper moet zelfde doen.
 
 * Dialer = US, Dialler = UK!
 
-* First time your Sync with server by dragging down table view, the text is too close to the spinner.  iOS bug?
-
 * Use UIactivitycontroller for Share.
+
+* Add iOS 7 HockeySDK

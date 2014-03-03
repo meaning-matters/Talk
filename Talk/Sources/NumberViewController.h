@@ -11,7 +11,7 @@
 #import "ItemViewController.h"
 
 
-@interface NumberViewController : ItemViewController <UITextFieldDelegate, UINavigationControllerDelegate>
+@interface NumberViewController : ItemViewController <UITextFieldDelegate>
 
 - (instancetype)initWithNumber:(NumberData*)number;
 
