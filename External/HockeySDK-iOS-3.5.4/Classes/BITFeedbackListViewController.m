@@ -138,14 +138,25 @@
   }
   
   id refreshClass = NSClassFromString(@"UIRefreshControl");
-  if (refreshClass) {
+  if (refreshClass)
+  {
     self.refreshControl = [[UIRefreshControl alloc] init];
+    [self updateRefreshDate];
     [self.refreshControl addTarget:self action:@selector(reloadList) forControlEvents:UIControlEventValueChanged];
-  } else {
+
+    //### Workaround: http://stackoverflow.com/a/19126113/1971013
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+      [self.refreshControl beginRefreshing];
+      [self.refreshControl endRefreshing];
+    });
+  }
+  else
+  {
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
                                                                                             target:self
                                                                                             action:@selector(reloadList)];
-  }  
+  }
 }
 
 - (void)startLoadingIndicator {
@@ -161,6 +172,13 @@
   id refreshClass = NSClassFromString(@"UIRefreshControl");
   if (refreshClass) {
     [self.refreshControl endRefreshing];
+
+    dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
+    dispatch_after(when, dispatch_get_main_queue(), ^(void)
+    {
+      [self updateRefreshDate];
+    });
+
   } else {
     self.navigationItem.rightBarButtonItem.enabled = YES;
   }
@@ -179,6 +197,16 @@
   
   [self.manager updateMessagesList];
 }
+
+
+- (void)updateRefreshDate
+{
+  NSString* title = [NSString stringWithFormat:BITHockeyLocalizedString(@"HockeyFeedbackListLastUpdated"),
+                     [self.manager lastCheck] ? [self.lastUpdateDateFormatter stringFromDate:[self.manager lastCheck]]
+                                              : BITHockeyLocalizedString(@"HockeyFeedbackListNeverUpdated")];
+  self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:title];
+}
+
 
 - (void)updateList {
   CGSize contentSize = self.tableView.contentSize;
@@ -429,8 +457,11 @@
   return [super tableView:tableView heightForHeaderInSection:section];
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-  if (![self.manager isPreiOS7Environment] && section == 0) {
+/*
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+  if (![self.manager isPreiOS7Environment] && section == 0)
+  {
     UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 30.0f)];
     UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(16.0f, 5.0f, self.view.frame.size.width - 32.0f, 25.0f)];
     textLabel.text = [NSString stringWithFormat:BITHockeyLocalizedString(@"HockeyFeedbackListLastUpdated"),
@@ -441,9 +472,11 @@
     
     return containerView;
   }
-  
+
   return [super tableView:tableView viewForHeaderInSection:section];
 }
+ */
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   static NSString *CellIdentifier = @"MessageCell";
@@ -488,7 +521,7 @@
     if (!cell) {
       cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
 
-      cell.textLabel.font = [UIFont systemFontOfSize:14];
+      cell.textLabel.font = [UIFont systemFontOfSize:18];
       cell.textLabel.numberOfLines = 0;
       cell.accessoryType = UITableViewCellAccessoryNone;
       
@@ -502,7 +535,7 @@
     // button
     NSString *titleString = nil;
     SEL actionSelector = nil;
-    UIColor *titleColor = BIT_RGBCOLOR(35, 111, 251);
+    UIColor *titleColor = [UIColor colorWithRed:0.26f green:0.41f blue:1.00f alpha:1.00f]; // NumberBay blue.
     
     UIButton *button = nil;
     if ([self.manager isPreiOS7Environment]) {
@@ -514,7 +547,7 @@
       [button setBackgroundImage:stretchableHighlightedButton forState:UIControlStateHighlighted];
       
       [[button titleLabel] setShadowOffset:CGSizeMake(0, 1)];
-      [[button titleLabel] setFont:[UIFont boldSystemFontOfSize:14.0]];
+      [[button titleLabel] setFont:[UIFont boldSystemFontOfSize:18.0]];
       
       [button setTitleColor:BUTTON_TEXTCOLOR forState:UIControlStateNormal];
       [button setTitleShadowColor:BUTTON_TEXTCOLOR_SHADOW forState:UIControlStateNormal];

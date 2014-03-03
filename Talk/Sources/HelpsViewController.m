@@ -14,6 +14,7 @@
 #import "Settings.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
+#import "Skinning.h"
 
 
 typedef enum
@@ -50,7 +51,9 @@ typedef enum
 
         sections |= TableSectionTexts;
         sections |= TableSectionContactUs;
+#if HAS_VOIP
         sections |= TableSectionTestCall;
+#endif
     }
 
     return self;
@@ -157,7 +160,8 @@ typedef enum
                                                              @"Give & Receive Feedback",
                                                              @"....\n"
                                                              @"[1 line larger font].");
-                    cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.textLabel.textColor = [UIColor blackColor];
                     break;
 
                 case 1:
@@ -165,15 +169,17 @@ typedef enum
                                                              @"Send Email",
                                                              @"....\n"
                                                              @"[1 line larger font].");
-                    cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.accessoryType = UITableViewCellAccessoryNone;
+                    cell.textLabel.textColor = [Skinning tintColor];
                     break;
 
                 case 2:
                     text = NSLocalizedStringWithDefaultValue(@"Helps CallContactUsText", nil, [NSBundle mainBundle],
-                                                             @"Make Mobile Call...",
+                                                             @"Make Mobile Call",
                                                              @"....\n"
                                                              @"[1 line larger font].");
                     cell.accessoryType  = UITableViewCellAccessoryNone;
+                    cell.textLabel.textColor = [Skinning tintColor];
                     break;
             }
 
