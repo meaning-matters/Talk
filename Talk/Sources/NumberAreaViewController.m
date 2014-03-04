@@ -21,6 +21,7 @@
 #import "NumberAreaActionCell.h"
 #import "PurchaseManager.h"
 #import "Base64.h"
+#import "Skinning.h"
 
 
 // Update reloadSections calls when adding/removing sections.
@@ -213,8 +214,6 @@ static const int    TextFieldCellTag = 1234;
     gestureRecognizer.cancelsTouchesInView = NO;
     gestureRecognizer.delegate = self;
     [self.tableView addGestureRecognizer:gestureRecognizer];
-    
-    [self addKeyboardNotifications];
 
     if (infoType == InfoTypeNone)
     {
@@ -543,7 +542,7 @@ static const int    TextFieldCellTag = 1234;
     {
         text = NSLocalizedStringWithDefaultValue(@"NumberArea:Action TakePictureLabel", nil,
                                                  [NSBundle mainBundle],
-                                                 @"Take Picture...",
+                                                 @"Take Picture",
                                                  @"....");
     }
     else if (infoType != InfoTypeNone && isChecked == NO)
@@ -767,7 +766,6 @@ static const int    TextFieldCellTag = 1234;
                                 // Update the cell.
                                 UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
                                 cell.textLabel.text   = nil;
-                                [Common addCountryImageToCell:cell isoCountryCode:isoCountryCode];
                                 countryTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:isoCountryCode];
                             }
                         };
@@ -945,39 +943,39 @@ static const int    TextFieldCellTag = 1234;
 
 - (UITableViewCell*)areaCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
-    NSString*           identifier;
+    UITableViewCell* cell;
+    NSString*        identifier;
 
     identifier  = ([Common nthBitSet:indexPath.row inValue:areaRows] == AreaRowCountry) ? @"CountryCell"
-                                                                                        : @"Value2Cell";
+                                                                                        : @"Value1Cell";
     cell        = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:identifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     }
 
     switch ([Common nthBitSet:indexPath.row inValue:areaRows])
     {
         case AreaRowType:
-            cell.textLabel.text = [Strings typeString];
+            cell.textLabel.text       = [Strings typeString];
             cell.detailTextLabel.text = [NumberType localizedStringForNumberType:numberTypeMask];
             cell.imageView.image      = nil;
             break;
 
         case AreaRowAreaCode:
-            cell.textLabel.text = [Strings areaCodeString];
+            cell.textLabel.text       = [Strings areaCodeString];
             cell.detailTextLabel.text = area[@"areaCode"];
             cell.imageView.image      = nil;
             break;
 
         case AreaRowAreaName:
-            cell.textLabel.text = [Strings areaString];
+            cell.textLabel.text       = [Strings areaString];
             cell.detailTextLabel.text = area[@"areaName"];
             cell.imageView.image      = nil;
             break;
 
         case AreaRowState:
-            cell.textLabel.text = [Strings stateString];
+            cell.textLabel.text       = [Strings stateString];
             cell.detailTextLabel.text = state[@"stateName"];
             cell.imageView.image      = nil;
             break;
@@ -998,13 +996,13 @@ static const int    TextFieldCellTag = 1234;
 
 - (UITableViewCell*)nameCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
-    UITextField*        textField;
+    UITableViewCell* cell;
+    UITextField*     textField;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"TextFieldCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"TextFieldCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"TextFieldCell"];
         textField = [Common addTextFieldToCell:cell delegate:self];
         textField.tag = TextFieldCellTag;
     }
@@ -1024,6 +1022,8 @@ static const int    TextFieldCellTag = 1234;
     cell.accessoryType        = UITableViewCellAccessoryNone;
     cell.selectionStyle       = UITableViewCellSelectionStyleNone;
 
+    [self updateTextField:textField onCell:cell];
+
     return cell;
 }
 
@@ -1036,7 +1036,7 @@ static const int    TextFieldCellTag = 1234;
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"TextFieldCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"TextFieldCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"TextFieldCell"];
         textField = [Common addTextFieldToCell:cell delegate:self];
         textField.tag = TextFieldCellTag;
     }
@@ -1093,8 +1093,7 @@ static const int    TextFieldCellTag = 1234;
 
     textField.placeholder     = [self placeHolderForTextField:textField];
 
-    cell.detailTextLabel.text = nil;
-    cell.imageView.image      = nil;
+    [self updateTextField:textField onCell:cell];
 
     return cell;
 }
@@ -1102,11 +1101,11 @@ static const int    TextFieldCellTag = 1234;
 
 - (UITableViewCell*)contactAddressCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
-    UITextField*        textField;
-    BOOL                singleZipCode = NO;
-    BOOL                singleCity    = NO;
-    NSString*           identifier;
+    UITableViewCell* cell;
+    UITextField*     textField;
+    BOOL             singleZipCode = NO;
+    BOOL             singleCity    = NO;
+    NSString*        identifier;
 
     switch (indexPath.row)
     {
@@ -1132,7 +1131,7 @@ static const int    TextFieldCellTag = 1234;
     cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:identifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
         cell.accessoryType  = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
@@ -1178,13 +1177,10 @@ static const int    TextFieldCellTag = 1234;
             {
                 if (singleZipCode == NO)
                 {
-                    textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:ZipCode Placeholder B", nil,
-                                                                              [NSBundle mainBundle],
-                                                                              @"Required, select from list",
-                                                                              @"....");
-                    cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
-                    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-                    textField.text = nil;
+                    textField.placeholder = [Strings requiredString];
+                    cell.accessoryType    = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.selectionStyle   = UITableViewCellSelectionStyleDefault;
+                    textField.text        = nil;
                 }
                 
                 textField.userInteractionEnabled = NO;
@@ -1205,14 +1201,11 @@ static const int    TextFieldCellTag = 1234;
             {
                 if (singleCity == NO)
                 {
-                    textField.placeholder = NSLocalizedStringWithDefaultValue(@"NumberArea:ZipCode Placeholder", nil,
-                                                                              [NSBundle mainBundle],
-                                                                              @"Required, select from list",
-                                                                              @"....");
-                    textField.text = nil;
-                    cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
-                    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-                    textField.text = nil;
+                    textField.placeholder = [Strings requiredString];
+                    textField.text        = nil;
+                    cell.accessoryType    = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.selectionStyle   = UITableViewCellSelectionStyleDefault;
+                    textField.text        = nil;
                 }
 
                 textField.userInteractionEnabled = NO;
@@ -1235,25 +1228,23 @@ static const int    TextFieldCellTag = 1234;
             else
             {
                 cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
-                cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             }
 
-            countryTextField = textField;
+            countryTextField    = textField;
+            cell.textLabel.text = [Strings countryString];
             if (purchaseInfo[@"isoCountryCode"] == nil)
             {
-                cell.textLabel.text   = [Strings countryString];
                 countryTextField.text = nil;
             }
             else
             {
                 countryTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:purchaseInfo[@"isoCountryCode"]];
-                [Common addCountryImageToCell:cell isoCountryCode:purchaseInfo[@"isoCountryCode"]];
             }
             break;
     }
 
-    cell.detailTextLabel.text = nil;
-    cell.imageView.image      = nil;
+    [self updateTextField:textField onCell:cell];
 
     return cell;
 }
@@ -1270,11 +1261,37 @@ static const int    TextFieldCellTag = 1234;
                                            reuseIdentifier:@"NumberAreaActionCell"];
     }
 
-    cell.label.text = [self actionCellText];
+    cell.label.text      = [self actionCellText];
+    cell.label.textColor = [Skinning tintColor];
 
     actionIndexPath = indexPath;
 
     return cell;
+}
+
+
+- (void)updateTextField:(UITextField*)textField onCell:(UITableViewCell*)cell
+{
+    cell.detailTextLabel.text = nil;
+    cell.imageView.image      = nil;
+
+    if (cell.accessoryType == UITableViewCellAccessoryDisclosureIndicator)
+    {
+        [Common setX:60 ofView:textField];
+        textField.textColor = [UIColor grayColor];
+    }
+    else
+    {
+        [Common setX:80 ofView:textField];
+        if (textField.userInteractionEnabled == YES)
+        {
+            textField.textColor = [Skinning tintColor];
+        }
+        else
+        {
+            textField.textColor = [UIColor grayColor];
+        }
+    }
 }
 
 
@@ -1307,7 +1324,7 @@ static const int    TextFieldCellTag = 1234;
 
 - (BOOL)textFieldShouldClear:(UITextField*)textField
 {
-    NSString*   key = objc_getAssociatedObject(textField, @"TextFieldKey");
+    NSString* key = objc_getAssociatedObject(textField, @"TextFieldKey");
     
     if ([key isEqualToString:@"name"])
     {
@@ -1338,7 +1355,9 @@ static const int    TextFieldCellTag = 1234;
             [nextTextField becomeFirstResponder];
         }
         
-        [self.tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        [self.tableView scrollToRowAtIndexPath:nextIndexPath
+                              atScrollPosition:UITableViewScrollPositionNone
+                                      animated:YES];
         
         return NO;
     }
@@ -1353,7 +1372,7 @@ static const int    TextFieldCellTag = 1234;
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
 {
-    NSString*   key = objc_getAssociatedObject(textField, @"TextFieldKey");
+    NSString* key = objc_getAssociatedObject(textField, @"TextFieldKey");
 
     if ([key isEqualToString:@"name"])
     {
@@ -1363,6 +1382,10 @@ static const int    TextFieldCellTag = 1234;
     {
         purchaseInfo[key] = [textField.text stringByReplacingCharactersInRange:range withString:string];
     }
+
+    [self.tableView scrollToRowAtIndexPath:activeCellIndexPath
+                          atScrollPosition:UITableViewScrollPositionNone
+                                  animated:YES];
 
     return YES;
 }
@@ -1388,154 +1411,13 @@ static const int    TextFieldCellTag = 1234;
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer shouldReceiveTouch:(UITouch*)touch
 {
-    if ([touch.view isKindOfClass:[UITextField class]] ||
-        [touch.view isKindOfClass:[UIButton class]])
+    if ([touch.view isKindOfClass:[UITextField class]] || [touch.view isKindOfClass:[UIButton class]])
     {
         return NO;
     }
     else
     {
         return YES;
-    }
-}
-
-
-#pragma mark - Keyboard Handling
-// http://stackoverflow.com/questions/13845426/generic-uitableview-keyboard-resizing-algorithm
-
-- (void)addKeyboardNotifications
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
-}
-
-
-- (void)keyboardWillShow:(NSNotification*)notification
-{
-    if (keyboardShown == YES)
-    {
-        return;
-    }
-    else
-    {
-        keyboardShown = YES;
-    }
-
-    // Get keyboard size.
-    NSDictionary*   userInfo = [notification userInfo];
-    NSValue*        value = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    CGRect          keyboardRect = [self.tableView.superview convertRect:[value CGRectValue] fromView:nil];
-
-    // Get the keyboard's animation details.
-    NSTimeInterval  animationDuration;
-    [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
-    UIViewAnimationCurve animationCurve;
-    [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
-
-    // Determine how much overlap exists between tableView and the keyboard
-    CGRect tableFrame = self.tableView.frame;
-    CGFloat tableLowerYCoord = tableFrame.origin.y + tableFrame.size.height;
-    keyboardOverlap = tableLowerYCoord - keyboardRect.origin.y;
-    if (self.inputAccessoryView && keyboardOverlap > 0)
-    {
-        CGFloat accessoryHeight = self.inputAccessoryView.frame.size.height;
-        keyboardOverlap -= accessoryHeight;
-
-        self.tableView.contentInset          = UIEdgeInsetsMake(0, 0, accessoryHeight, 0);
-        self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, accessoryHeight, 0);
-    }
-
-    if (keyboardOverlap < 0)
-    {
-        keyboardOverlap = 0;
-    }
-
-    if (keyboardOverlap != 0)
-    {
-        tableFrame.size.height -= keyboardOverlap;
-
-        NSTimeInterval delay = 0;
-        if (keyboardRect.size.height)
-        {
-            delay = (1 - keyboardOverlap/keyboardRect.size.height)*animationDuration;
-            animationDuration = animationDuration * keyboardOverlap/keyboardRect.size.height;
-        }
-
-        [UIView animateWithDuration:animationDuration delay:delay
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^
-        {
-            self.tableView.frame = tableFrame;
-        }
-                         completion:^(BOOL finished)
-        {
-            [self tableAnimationEnded:nil finished:nil contextInfo:nil];
-        }];
-    }
-}
-
-
-- (void)keyboardWillHide:(NSNotification*)notification
-{
-    if (keyboardShown == NO)
-    {
-        return;
-    }
-    else
-    {
-        keyboardShown = NO;
-    }
-
-    if (keyboardOverlap == 0)
-    {
-        return;
-    }
-
-    // Get the size & animation details of the keyboard
-    NSDictionary*   userInfo = [notification userInfo];
-    NSValue*        value = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    CGRect          keyboardRect = [self.tableView.superview convertRect:[value CGRectValue] fromView:nil];
-
-    NSTimeInterval animationDuration;
-    [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
-    UIViewAnimationCurve animationCurve;
-    [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
-
-    CGRect tableFrame = self.tableView.frame;
-    tableFrame.size.height += keyboardOverlap;
-
-    if(keyboardRect.size.height)
-    {
-        animationDuration = animationDuration * keyboardOverlap/keyboardRect.size.height;
-    }
-
-    [UIView animateWithDuration:animationDuration delay:0
-                        options:UIViewAnimationOptionBeginFromCurrentState
-                     animations:^
-    {
-        self.tableView.frame = tableFrame;
-    }
-                     completion:nil];
-}
-
-
-- (void)tableAnimationEnded:(NSString*)animationID finished:(NSNumber*)finished contextInfo:(void*)context
-{
-    // Scroll to the active cell
-    if (activeCellIndexPath)
-    {
-        [self.tableView scrollToRowAtIndexPath:activeCellIndexPath
-                              atScrollPosition:UITableViewScrollPositionNone
-                                      animated:YES];
-        [self.tableView selectRowAtIndexPath:activeCellIndexPath
-                                    animated:NO
-                              scrollPosition:UITableViewScrollPositionNone];
     }
 }
 

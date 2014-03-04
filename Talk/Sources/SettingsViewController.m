@@ -527,7 +527,7 @@ typedef enum
         else
         {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
     }
 
@@ -582,7 +582,7 @@ typedef enum
                                                                       @"[1/2 line, abbreviated: Called].");
         cell.detailTextLabel.text = [phoneNumber internationalFormat];
         cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
-        cell.selectionStyle       = UITableViewCellSelectionStyleBlue;
+        cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
     }
     else if (indexPath.row == 2 - !HAS_VOIP)
     {
@@ -599,7 +599,7 @@ typedef enum
                                                                       @"[1 line].");
         cell.detailTextLabel.text = [phoneNumber internationalFormat];
         cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
-        cell.selectionStyle       = UITableViewCellSelectionStyleBlue;
+        cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
     }
     else if (indexPath.row == 2)
     {
@@ -715,7 +715,7 @@ typedef enum
     cell.textLabel.textColor = [Skinning tintColor];
 
     cell.accessoryType  = UITableViewCellAccessoryNone;
-    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
 
     return cell;
 }

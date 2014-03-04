@@ -486,7 +486,7 @@ static const int    TextFieldCellTag = 1111;
         [Common addCountryImageToCell:cell isoCountryCode:phoneNumber.isoCountryCode];
     }
 
-    cell.selectionStyle  = UITableViewCellSelectionStyleBlue;
+    cell.selectionStyle  = UITableViewCellSelectionStyleDefault;
     if (isNew)
     {
         if (phone == nil)
@@ -529,7 +529,7 @@ static const int    TextFieldCellTag = 1111;
                                                             @"[1/3 line small font].");
     cell.imageView.image = nil;
     cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
-    cell.selectionStyle  = UITableViewCellSelectionStyleBlue;
+    cell.selectionStyle  = UITableViewCellSelectionStyleDefault;
 
     return cell;
 }
@@ -550,7 +550,7 @@ static const int    TextFieldCellTag = 1111;
 
     cell.detailTextLabel.text = number.name;
     cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
-    cell.selectionStyle       = UITableViewCellSelectionStyleBlue;
+    cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
 
     return cell;
 }
@@ -573,7 +573,7 @@ static const int    TextFieldCellTag = 1111;
     cell.textLabel.text  = recording.name;
     cell.imageView.image = nil;
     cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
-    cell.selectionStyle  = UITableViewCellSelectionStyleBlue;
+    cell.selectionStyle  = UITableViewCellSelectionStyleDefault;
 
     return cell;
 }

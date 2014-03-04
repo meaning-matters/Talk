@@ -434,7 +434,7 @@ static const int TextFieldCellTag = 1234;
                                                                   @"....");
     cell.textLabel.textColor  = [UIColor blackColor];
     cell.detailTextLabel.text = (number.forwarding == nil) ? [Strings defaultString] : number.forwarding.name;
-    cell.selectionStyle       = UITableViewCellSelectionStyleBlue;
+    cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
     cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
 }
 
@@ -464,7 +464,7 @@ static const int TextFieldCellTag = 1234;
                                                                           @"....");
             cell.detailTextLabel.text = [dateFormatter stringFromDate:number.renewalDate];
             cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
-            cell.selectionStyle       = UITableViewCellSelectionStyleBlue;
+            cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
             break;
     }
 }

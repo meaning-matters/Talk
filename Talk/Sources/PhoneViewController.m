@@ -381,7 +381,7 @@ static const int TextFieldCellTag = 1111;
         cell.detailTextLabel.text      = [Strings requiredString];
         cell.detailTextLabel.textColor = [UIColor lightGrayColor];
         cell.accessoryType             = UITableViewCellAccessoryDisclosureIndicator;
-        cell.selectionStyle            = UITableViewCellSelectionStyleBlue;
+        cell.selectionStyle            = UITableViewCellSelectionStyleDefault;
     }
     else
     {
