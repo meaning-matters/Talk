@@ -351,8 +351,8 @@ static const int    TextFieldCellTag = 1234;
 
 - (NSIndexPath*)nextEmptyIndexPathForKey:(NSString*)currentKey
 {
-    unsigned    emptyMask  = 0;
-    unsigned    currentBit = 0;
+    unsigned emptyMask  = 0;
+    unsigned currentBit = 0;
 
     if (infoType == InfoTypeNone)
     {
@@ -385,7 +385,7 @@ static const int    TextFieldCellTag = 1234;
         currentBit |= [currentKey isEqualToString:@"city"]       << 7;
 
         // Find next bit set in emptyMask.
-        unsigned    nextBit = currentBit << 1;
+        unsigned nextBit = currentBit << 1;
         while ((nextBit & emptyMask) == 0 && nextBit != 0)
         {
             nextBit <<= 1;
@@ -401,7 +401,7 @@ static const int    TextFieldCellTag = 1234;
             }
         }
 
-        NSIndexPath*    indexPath = nil;
+        NSIndexPath* indexPath = nil;
         indexPath = (nextBit == (1 << 0)) ? nameIndexPath       : indexPath;
         indexPath = (nextBit == (1 << 1)) ? companyIndexPath    : indexPath;
         indexPath = (nextBit == (1 << 2)) ? firstNameIndexPath  : indexPath;
@@ -561,6 +561,18 @@ static const int    TextFieldCellTag = 1234;
     }
 
     return text;
+}
+
+
+- (void)updateReturnKeyTypeOfTextField:(UITextField*)textField
+{
+    textField.returnKeyType = [self isPurchaseInfoComplete] ? UIReturnKeyDone : UIReturnKeyNext;
+
+    if ([textField isFirstResponder])
+    {
+        #warning The method reloadInputViews messes up two-byte keyboards (e.g. Kanji).
+        [textField reloadInputViews];
+    }
 }
 
 
@@ -1299,13 +1311,10 @@ static const int    TextFieldCellTag = 1234;
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField*)textField
 {
-    NSString*   key = objc_getAssociatedObject(textField, @"TextFieldKey");
-
-    textField.returnKeyType = [self nextEmptyIndexPathForKey:key] ? UIReturnKeyNext : UIReturnKeyDone;
-#warning The method reloadInputViews messes up two-byte keyboards (e.g. Kanji).
-    [textField reloadInputViews];
+    [self updateReturnKeyTypeOfTextField:textField];
 
     activeCellIndexPath = [self findCellIndexPathForSubview:textField];
+
     return YES;
 }
 
@@ -1341,10 +1350,17 @@ static const int    TextFieldCellTag = 1234;
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-    NSString* key = objc_getAssociatedObject(textField, @"TextFieldKey");
-
-    if ((nextIndexPath = [self nextEmptyIndexPathForKey:key]) != nil)
+    if ([self isPurchaseInfoComplete] == YES)
     {
+        [textField resignFirstResponder];
+
+        return YES;
+    }
+    else
+    {
+        NSString* key = objc_getAssociatedObject(textField, @"TextFieldKey");
+        nextIndexPath = [self nextEmptyIndexPathForKey:key];
+
         UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
 
         if (cell != nil)
@@ -1354,18 +1370,16 @@ static const int    TextFieldCellTag = 1234;
             nextTextField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];
             [nextTextField becomeFirstResponder];
         }
-        
-        [self.tableView scrollToRowAtIndexPath:nextIndexPath
-                              atScrollPosition:UITableViewScrollPositionNone
-                                      animated:YES];
-        
+
+        dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC));
+        dispatch_after(when, dispatch_get_main_queue(), ^(void)
+        {
+            [self.tableView scrollToRowAtIndexPath:activeCellIndexPath
+                                  atScrollPosition:UITableViewScrollPositionNone
+                                          animated:YES];
+        });
+
         return NO;
-    }
-    else
-    {
-        [textField resignFirstResponder];
-        
-        return YES;
     }
 }
 
@@ -1382,6 +1396,8 @@ static const int    TextFieldCellTag = 1234;
     {
         purchaseInfo[key] = [textField.text stringByReplacingCharactersInRange:range withString:string];
     }
+
+    [self updateReturnKeyTypeOfTextField:textField];
 
     [self.tableView scrollToRowAtIndexPath:activeCellIndexPath
                           atScrollPosition:UITableViewScrollPositionNone
