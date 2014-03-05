@@ -1388,13 +1388,17 @@ static const int    TextFieldCellTag = 1234;
 {
     NSString* key = objc_getAssociatedObject(textField, @"TextFieldKey");
 
+    // See http://stackoverflow.com/a/22211018/1971013 why we're using non-breaking spaces @"\u00a0".
+    textField.text = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    textField.text = [textField.text stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
+
     if ([key isEqualToString:@"name"])
     {
-        name = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        name = [textField.text stringByReplacingOccurrencesOfString:@"\u00a0" withString:@" "];
     }
     else
     {
-        purchaseInfo[key] = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        purchaseInfo[key] = [textField.text stringByReplacingOccurrencesOfString:@"\u00a0" withString:@" "];
     }
 
     [self updateReturnKeyTypeOfTextField:textField];
@@ -1403,7 +1407,7 @@ static const int    TextFieldCellTag = 1234;
                           atScrollPosition:UITableViewScrollPositionNone
                                   animated:YES];
 
-    return YES;
+    return NO;  // Need to return NO, because we've already changed textField.text.
 }
 
 

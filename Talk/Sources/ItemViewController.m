@@ -189,13 +189,17 @@
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
 {
-    self.name = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    // See http://stackoverflow.com/a/22211018/1971013 why we're using non-breaking spaces @"\u00a0".
+    textField.text = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    textField.text = [textField.text stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
+
+    self.name = [textField.text stringByReplacingOccurrencesOfString:@"\u00a0" withString:@" "];;
 
     [self.tableView scrollToRowAtIndexPath:self.nameIndexPath
                           atScrollPosition:UITableViewScrollPositionNone
                                   animated:YES];
     
-    return YES;
+    return NO;  // Need to return NO, because we've already changed textField.text.
 }
 
 @end
