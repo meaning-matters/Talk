@@ -75,6 +75,12 @@
 }
 
 
+- (NSString*)selectedName
+{
+    return purchaseInfo[@"city"];
+}
+
+
 #pragma mark - Helper Methods
 
 - (void)cancel

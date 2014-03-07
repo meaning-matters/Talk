@@ -444,7 +444,7 @@ static Common* sharedCommon;
 
         message = NSLocalizedStringWithDefaultValue(@"General NoEmailAccountMessage", nil,
                                                     [NSBundle mainBundle],
-                                                    @"There is no email account configured. You can add an email "
+                                                    @"There is no email account configured.\n\nYou can add an email "
                                                     @"account in iOS Settings > Mail, Contacts, Calendars > Add Account.",
                                                     @"Alert message that no email can be send\n"
                                                     @"[iOS alert message size]");
@@ -913,8 +913,8 @@ static Common* sharedCommon;
 
 + (UITextField*)addTextFieldToCell:(UITableViewCell*)cell delegate:(id<UITextFieldDelegate>)delegate
 {
-    UITextField*    textField;
-    CGRect          frame = CGRectMake(80, 8, 224, 30);
+    UITextField* textField;
+    CGRect       frame = CGRectMake(80, 2, 224, 42);
 
     textField = [[UITextField alloc] initWithFrame:frame];
 

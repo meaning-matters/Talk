@@ -240,7 +240,7 @@ typedef enum
                     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
                     title   = NSLocalizedStringWithDefaultValue(@"Helps MobileCallText", nil, [NSBundle mainBundle],
-                                                                @"Make Mobile Call...",
+                                                                @"Make Mobile Call",
                                                                 @"...\n"
                                                                 @"[1 line larger font].");
                     message = NSLocalizedStringWithDefaultValue(@"Helps TestCallText", nil, [NSBundle mainBundle],

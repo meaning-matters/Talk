@@ -644,7 +644,7 @@ static const int    TextFieldCellTag = 1234;
 
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
-    NSString*   title = nil;
+    NSString* title = nil;
 
     switch ([Common nthBitSet:section inValue:sections])
     {
@@ -671,10 +671,10 @@ static const int    TextFieldCellTag = 1234;
             {
                 title = NSLocalizedStringWithDefaultValue(@"NumberArea:Action SectionFooterTakePicture", nil,
                                                           [NSBundle mainBundle],
-                                                          @"For this country a proof of address is required.  Take "
-                                                          @"a picture of a recent utility bill, or bank statement, "
-                                                          @"that has your address.  Make sure a data, your name & "
-                                                          @"address, and the name of the company/bank are visible.",
+                                                          @"For this area a proof of address is (legally) required.\n\n"
+                                                          @"Take a picture of a recent utility bill, or bank statement. "
+                                                          @"Make sure the date, your name & address, and the name of "
+                                                          @"the company/bank are clearly visible.",
                                                           @"Telephone area (or city).");
             }
             else if (infoType != InfoTypeNone && isChecked == NO)
@@ -701,7 +701,7 @@ static const int    TextFieldCellTag = 1234;
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger   numberOfRows = 0;
+    NSInteger numberOfRows = 0;
 
     switch ([Common nthBitSet:section inValue:sections])
     {
@@ -1025,7 +1025,7 @@ static const int    TextFieldCellTag = 1234;
 
     cell.textLabel.text              = [Strings nameString];
     textField.placeholder            = [Strings requiredString];
-    textField.text                   = name;
+    textField.text                   = [name stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
     textField.userInteractionEnabled = YES;
     objc_setAssociatedObject(textField, @"TextFieldKey", @"name", OBJC_ASSOCIATION_RETAIN);
 
@@ -1078,7 +1078,7 @@ static const int    TextFieldCellTag = 1234;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = [Strings companyString];
 
-            textField.text = purchaseInfo[@"company"];
+            textField.text = [purchaseInfo[@"company"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
             objc_setAssociatedObject(textField, @"TextFieldKey", @"company", OBJC_ASSOCIATION_RETAIN);
             break;
             
@@ -1088,7 +1088,7 @@ static const int    TextFieldCellTag = 1234;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = [Strings firstNameString];
             
-            textField.text = purchaseInfo[@"firstName"];
+            textField.text = [purchaseInfo[@"firstName"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
             objc_setAssociatedObject(textField, @"TextFieldKey", @"firstName", OBJC_ASSOCIATION_RETAIN);
             break;
 
@@ -1098,7 +1098,7 @@ static const int    TextFieldCellTag = 1234;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = [Strings lastNameString];
             
-            textField.text = purchaseInfo[@"lastName"];
+            textField.text = [purchaseInfo[@"lastName"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
             objc_setAssociatedObject(textField, @"TextFieldKey", @"lastName", OBJC_ASSOCIATION_RETAIN);
             break;
     }
@@ -1164,14 +1164,14 @@ static const int    TextFieldCellTag = 1234;
         case 0:
             cell.textLabel.text = [Strings streetString];
             textField.placeholder = [Strings requiredString];
-            textField.text = purchaseInfo[@"street"];
+            textField.text = [purchaseInfo[@"street"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
             objc_setAssociatedObject(textField, @"TextFieldKey", @"street", OBJC_ASSOCIATION_RETAIN);
             break;
 
         case 1:
             cell.textLabel.text = [Strings buildingString];
             textField.placeholder = [Strings requiredString];
-            textField.text = purchaseInfo[@"building"];
+            textField.text = [purchaseInfo[@"building"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
             textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
             textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
             objc_setAssociatedObject(textField, @"TextFieldKey", @"building", OBJC_ASSOCIATION_RETAIN);
@@ -1199,7 +1199,7 @@ static const int    TextFieldCellTag = 1234;
             }
             
             zipCodeTextField = textField;
-            zipCodeTextField.text = purchaseInfo[@"zipCode"];
+            zipCodeTextField.text = [purchaseInfo[@"zipCode"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
             objc_setAssociatedObject(zipCodeTextField, @"TextFieldKey", @"zipCode", OBJC_ASSOCIATION_RETAIN);
             break;
 
@@ -1225,6 +1225,7 @@ static const int    TextFieldCellTag = 1234;
             
             cityTextField = textField;
             cityTextField.text = [Common capitalizedString:purchaseInfo[@"city"]];
+            [cityTextField.text stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
             objc_setAssociatedObject(cityTextField, @"TextFieldKey", @"city", OBJC_ASSOCIATION_RETAIN);
             break;
 
@@ -1331,6 +1332,7 @@ static const int    TextFieldCellTag = 1234;
 }
 
 
+// Not used at the moment, because there are no clear buttons.
 - (BOOL)textFieldShouldClear:(UITextField*)textField
 {
     NSString* key = objc_getAssociatedObject(textField, @"TextFieldKey");
@@ -1370,14 +1372,6 @@ static const int    TextFieldCellTag = 1234;
             nextTextField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];
             [nextTextField becomeFirstResponder];
         }
-
-        dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC));
-        dispatch_after(when, dispatch_get_main_queue(), ^(void)
-        {
-            [self.tableView scrollToRowAtIndexPath:activeCellIndexPath
-                                  atScrollPosition:UITableViewScrollPositionNone
-                                          animated:YES];
-        });
 
         return NO;
     }
@@ -1450,6 +1444,9 @@ static const int    TextFieldCellTag = 1234;
     NSData*  data  = UIImageJPEGRepresentation(image, 0.5);
 
     purchaseInfo[@"proofImage"] = [Base64 encode:data];
+
+    //### When not reloading here, the new footer text will be way too low (iOS 7.0.6).
+    [self.tableView reloadData];
 
     [self dismissViewControllerAnimated:YES completion:nil];
 }

@@ -79,6 +79,12 @@
 }
 
 
+- (NSString*)selectedName
+{
+    return [[CountryNames sharedNames] nameForIsoCountryCode:self.isoCountryCode];
+}
+
+
 #pragma mark - Table View Delegates
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath

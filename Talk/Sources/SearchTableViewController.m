@@ -10,7 +10,8 @@
 
 @interface SearchTableViewController ()
 
-@property (nonatomic, assign) int width;
+@property (nonatomic, assign) int          width;
+@property (nonatomic, strong) NSIndexPath* selectedIndexPath;
 
 @end
 
@@ -45,6 +46,10 @@
     [super viewWillAppear:animated];
 
     [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+
+    [self.tableView scrollToRowAtIndexPath:self.selectedIndexPath
+                          atScrollPosition:UITableViewScrollPositionMiddle
+                                  animated:NO];
 }
 
 
@@ -95,6 +100,23 @@
         self.nameIndexDictionary[nameIndex] = [self.nameIndexDictionary[nameIndex] sortedArrayUsingSelector:@selector(localizedCompare:)];
     }
 
+    // Now find the index path of the select name, so we can scroll to it.
+    if ([self selectedName] != nil)
+    {
+        for (int section = 0; section < self.nameIndexArray.count; section++)
+        {
+            NSString* nameIndex = self.nameIndexArray[section];
+            for (int row = 0; row < [self.nameIndexDictionary[nameIndex] count]; row++)
+            {
+                NSString* name = self.nameIndexDictionary[nameIndex][row];
+                if ([name isEqualToString:[self selectedName]])
+                {
+                    self.selectedIndexPath = [NSIndexPath indexPathForRow:row inSection:section];
+                }
+            }
+        }
+    }
+
     [self.tableView reloadData];
 }
 
@@ -121,7 +143,27 @@
 }
 
 
+//  Default implementation, but can over overriden by subclass.
+- (UIKeyboardType)searchBarKeyboardType
+{
+    return UIKeyboardTypeDefault;
+}
+
+
+//  Placeholder for subclass implementation.
+- (NSString*)selectedName
+{
+    return nil;
+}
+
+
 #pragma mark - UISearchDisplayControllerDelegate
+
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController*)controller
+{
+    self.searchDisplayController.searchBar.keyboardType = [self searchBarKeyboardType];
+}
+
 
 - (BOOL)searchDisplayController:(UISearchDisplayController*)controller shouldReloadTableForSearchString:(NSString*)searchString
 {

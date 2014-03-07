@@ -57,6 +57,8 @@ typedef enum
         sections |= HAS_VOIP ? TableSectionCallOptions : 0;
 
         settings = [Settings sharedSettings];
+
+        self.clearsSelectionOnViewWillAppear = YES;
     }
     
     return self;

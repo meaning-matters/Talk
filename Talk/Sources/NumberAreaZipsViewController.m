@@ -66,6 +66,18 @@
 }
 
 
+- (UIKeyboardType)searchBarKeyboardType
+{
+    return UIKeyboardTypeNumbersAndPunctuation;
+}
+
+
+- (NSString*)selectedName
+{
+    return purchaseInfo[@"zipCode"];
+}
+
+
 #pragma mark - Helper Methods
 
 - (void)sortOutArrays

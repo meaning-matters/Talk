@@ -32,4 +32,10 @@
 //  must be used for the table index.  Must be implemented by subclass.
 - (NSString*)nameForObject:(id)object;
 
+
+- (UIKeyboardType)searchBarKeyboardType;
+
+
+- (NSString*)selectedName;
+
 @end
