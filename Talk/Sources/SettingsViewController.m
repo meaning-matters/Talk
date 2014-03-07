@@ -34,6 +34,8 @@ typedef enum
     Settings*     settings;
 }
 
+@property (nonatomic, strong) NSIndexPath* countryIndexPath;
+
 @end
 
 
@@ -367,6 +369,7 @@ typedef enum
 
         case TableSectionHomeCountry:
         {
+            self.countryIndexPath = indexPath;
             countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:homeCountry
                                                                                    completion:^(BOOL      cancelled,
                                                                                                 NSString* isoCountryCode)
@@ -376,9 +379,9 @@ typedef enum
                     settings.homeCountry = isoCountryCode;
 
                     // Set the cell to prevent quick update right after animations.
-                    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-                    cell.imageView.image  = [UIImage imageNamed:settings.homeCountry];
-                    cell.textLabel.text   = [[CountryNames sharedNames] nameForIsoCountryCode:settings.homeCountry];
+                    UITableViewCell* cell     = [self.tableView cellForRowAtIndexPath:indexPath];
+                    cell.imageView.image      = [UIImage imageNamed:settings.homeCountry];
+                    cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:settings.homeCountry];
                 }
             }];
             
@@ -509,7 +512,7 @@ typedef enum
             // Note: This is also done in CountriesViewController (to update the
             //       selected cell before animation).  So pay a visit there when
             //       changing this.
-            cell.imageView.image = [UIImage imageNamed:settings.homeCountry];
+            cell.imageView.image      = [UIImage imageNamed:settings.homeCountry];
             cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:settings.homeCountry];
         }
         else
@@ -523,12 +526,12 @@ typedef enum
         
         if ([NetworkStatus sharedStatus].simIsoCountryCode != nil && settings.homeCountryFromSim)
         {
-            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.accessoryType  = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         else
         {
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
     }
