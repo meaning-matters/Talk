@@ -52,9 +52,6 @@ typedef enum
 } InfoType;
 
 
-static const int    TextFieldCellTag = 1234;
-
-
 @interface NumberAreaViewController ()
 {
     NSString*               numberIsoCountryCode;
@@ -360,29 +357,29 @@ static const int    TextFieldCellTag = 1234;
     }
     else
     {
-        emptyMask |= ([name                        length] == 0) << 0;
-        emptyMask |= ([purchaseInfo[@"company"]    length] == 0) << 1;
-        emptyMask |= ([purchaseInfo[@"firstName"]  length] == 0) << 2;
-        emptyMask |= ([purchaseInfo[@"lastName"]   length] == 0) << 3;
-        emptyMask |= ([purchaseInfo[@"street"]     length] == 0) << 4;
-        emptyMask |= ([purchaseInfo[@"building"]   length] == 0) << 5;
+        emptyMask |= ([name                       length] == 0) << 0;
+        emptyMask |= ([purchaseInfo[@"company"]   length] == 0) << 1;
+        emptyMask |= ([purchaseInfo[@"firstName"] length] == 0) << 2;
+        emptyMask |= ([purchaseInfo[@"lastName"]  length] == 0) << 3;
+        emptyMask |= ([purchaseInfo[@"street"]    length] == 0) << 4;
+        emptyMask |= ([purchaseInfo[@"building"]  length] == 0) << 5;
         if (citiesArray.count == 0)
         {
-            emptyMask |= ([purchaseInfo[@"zipCode"]    length] == 0) << 6;
-            emptyMask |= ([purchaseInfo[@"city"]       length] == 0) << 7;
+            emptyMask |= ([purchaseInfo[@"zipCode"] length] == 0) << 6;
+            emptyMask |= ([purchaseInfo[@"city"]    length] == 0) << 7;
         }
     }
 
     if (emptyMask != 0)
     {
-        currentBit |= [currentKey isEqualToString:@"name"]       << 0;
-        currentBit |= [currentKey isEqualToString:@"company"]    << 1;
-        currentBit |= [currentKey isEqualToString:@"firstName"]  << 2;
-        currentBit |= [currentKey isEqualToString:@"lastName"]   << 3;
-        currentBit |= [currentKey isEqualToString:@"street"]     << 4;
-        currentBit |= [currentKey isEqualToString:@"building"]   << 5;
-        currentBit |= [currentKey isEqualToString:@"zipCode"]    << 6;
-        currentBit |= [currentKey isEqualToString:@"city"]       << 7;
+        currentBit |= [currentKey isEqualToString:@"name"]      << 0;
+        currentBit |= [currentKey isEqualToString:@"company"]   << 1;
+        currentBit |= [currentKey isEqualToString:@"firstName"] << 2;
+        currentBit |= [currentKey isEqualToString:@"lastName"]  << 3;
+        currentBit |= [currentKey isEqualToString:@"street"]    << 4;
+        currentBit |= [currentKey isEqualToString:@"building"]  << 5;
+        currentBit |= [currentKey isEqualToString:@"zipCode"]   << 6;
+        currentBit |= [currentKey isEqualToString:@"city"]      << 7;
 
         // Find next bit set in emptyMask.
         unsigned nextBit = currentBit << 1;
@@ -402,14 +399,14 @@ static const int    TextFieldCellTag = 1234;
         }
 
         NSIndexPath* indexPath = nil;
-        indexPath = (nextBit == (1 << 0)) ? nameIndexPath       : indexPath;
-        indexPath = (nextBit == (1 << 1)) ? companyIndexPath    : indexPath;
-        indexPath = (nextBit == (1 << 2)) ? firstNameIndexPath  : indexPath;
-        indexPath = (nextBit == (1 << 3)) ? lastNameIndexPath   : indexPath;
-        indexPath = (nextBit == (1 << 4)) ? streetIndexPath     : indexPath;
-        indexPath = (nextBit == (1 << 5)) ? buildingIndexPath   : indexPath;
-        indexPath = (nextBit == (1 << 6)) ? zipCodeIndexPath    : indexPath;
-        indexPath = (nextBit == (1 << 7)) ? cityIndexPath       : indexPath;
+        indexPath = (nextBit == (1 << 0)) ? nameIndexPath      : indexPath;
+        indexPath = (nextBit == (1 << 1)) ? companyIndexPath   : indexPath;
+        indexPath = (nextBit == (1 << 2)) ? firstNameIndexPath : indexPath;
+        indexPath = (nextBit == (1 << 3)) ? lastNameIndexPath  : indexPath;
+        indexPath = (nextBit == (1 << 4)) ? streetIndexPath    : indexPath;
+        indexPath = (nextBit == (1 << 5)) ? buildingIndexPath  : indexPath;
+        indexPath = (nextBit == (1 << 6)) ? zipCodeIndexPath   : indexPath;
+        indexPath = (nextBit == (1 << 7)) ? cityIndexPath      : indexPath;
         
         return indexPath;
     }
@@ -566,12 +563,16 @@ static const int    TextFieldCellTag = 1234;
 
 - (void)updateReturnKeyTypeOfTextField:(UITextField*)textField
 {
-    textField.returnKeyType = [self isPurchaseInfoComplete] ? UIReturnKeyDone : UIReturnKeyNext;
+    UIReturnKeyType returnKeyType = [self isPurchaseInfoComplete] ? UIReturnKeyDone : UIReturnKeyNext;
 
-    if ([textField isFirstResponder])
+    if (textField.returnKeyType != returnKeyType)
     {
-        #warning The method reloadInputViews messes up two-byte keyboards (e.g. Kanji).
-        [textField reloadInputViews];
+        textField.returnKeyType = returnKeyType;
+        if ([textField isFirstResponder])
+        {
+            #warning The method reloadInputViews messes up two-byte keyboards (e.g. Kanji).
+            [textField reloadInputViews];
+        }
     }
 }
 

@@ -436,6 +436,7 @@ static Common* sharedCommon;
     {
         NSString* title;
         NSString* message;
+        NSString* button;
 
         title   = NSLocalizedStringWithDefaultValue(@"General NoMailAccountTitle", nil,
                                                     [NSBundle mainBundle], @"No Email Account",
@@ -444,16 +445,28 @@ static Common* sharedCommon;
 
         message = NSLocalizedStringWithDefaultValue(@"General NoEmailAccountMessage", nil,
                                                     [NSBundle mainBundle],
-                                                    @"There is no email account configured.\n\nYou can add an email "
-                                                    @"account in iOS Settings > Mail, Contacts, Calendars > Add Account.",
+                                                    @"There is no email account configured.\n\nSet up your email "
+                                                    @"account now in iOS Settings > Mail, Contacts, Calendars > "
+                                                    @"Add Account, or cancel.",
                                                     @"Alert message that no email can be send\n"
                                                     @"[iOS alert message size]");
 
+        button  = NSLocalizedStringWithDefaultValue(@"General GoToiOSSettingButtonTitle", nil,
+                                                    [NSBundle mainBundle], @"To Settings...",
+                                                    @"...\n"
+                                                    @"[iOS alert title size].");
+
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
-                                    completion:nil
-                             cancelButtonTitle:[Strings closeString]
-                             otherButtonTitles:nil];
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            if (cancelled == NO)
+            {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:info@numberbay.com"]];
+            }
+        }
+                             cancelButtonTitle:[Strings cancelString]
+                             otherButtonTitles:button, nil];
 
         return NO;
     }

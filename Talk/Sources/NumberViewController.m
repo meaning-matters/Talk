@@ -63,9 +63,6 @@ typedef enum
 } ContactAddressRows;
 
 
-static const int TextFieldCellTag = 1234;
-
-
 @interface NumberViewController ()
 {
     NumberData*        number;
@@ -307,8 +304,9 @@ static const int TextFieldCellTag = 1234;
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionName:
-            identifier         = @"TextFieldCell";
-            self.nameIndexPath = indexPath;
+            return [self nameCellForRowAtIndexPath:indexPath];
+            // identifier         = @"TextFieldCell";
+            // self.nameIndexPath = indexPath;
             break;
 
         case TableSectionNumber:
@@ -359,7 +357,7 @@ static const int TextFieldCellTag = 1234;
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionName:
-            [self updateNameCell:cell atIndexPath:indexPath];
+            //###[self updateNameCell:cell atIndexPath:indexPath];
             break;
 
         case TableSectionNumber:

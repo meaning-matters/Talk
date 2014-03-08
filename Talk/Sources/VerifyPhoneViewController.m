@@ -13,6 +13,7 @@
 #import "Strings.h"
 #import "WebClient.h"
 #import "CallManager.h"
+#import "Skinning.h"
 
 
 @interface VerifyPhoneViewController ()
@@ -44,10 +45,10 @@
     [self setStep:1];
 
     self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"VerifyPhone BarTitle", nil,
-                                                                  [NSBundle mainBundle], @"Verify Phone",
+                                                                  [NSBundle mainBundle], @"Verify Number",
                                                                   @"...");
 
-    self.textView.text        = NSLocalizedStringWithDefaultValue(@"VerifyPhone", nil, [NSBundle mainBundle],
+    self.textLabel.text       = NSLocalizedStringWithDefaultValue(@"VerifyPhone", nil, [NSBundle mainBundle],
                                                                   @"To verify your phone number, you will receive a call.  "
                                                                   @"During this call, enter the code below on your phone.",
                                                                   @"...");
@@ -64,15 +65,9 @@
                                                                 @"...")
                      forState:UIControlStateNormal];
 
-    [Common setCornerRadius:10                     ofView:self.step1View];
-    [Common setCornerRadius:10                     ofView:self.step2View];
-    [Common setCornerRadius:10                     ofView:self.step3View];
-    [Common setBorderWidth:0.8                     ofView:self.step1View];
-    [Common setBorderWidth:0.8                     ofView:self.step2View];
-    [Common setBorderWidth:0.8                     ofView:self.step3View];
-    [Common setBorderColor:[UIColor darkGrayColor] ofView:self.step1View];
-    [Common setBorderColor:[UIColor darkGrayColor] ofView:self.step2View];
-    [Common setBorderColor:[UIColor darkGrayColor] ofView:self.step3View];
+    [Common setCornerRadius:5 ofView:self.step1View];
+    [Common setCornerRadius:5 ofView:self.step2View];
+    [Common setCornerRadius:5 ofView:self.step3View];
 }
 
 
@@ -102,8 +97,10 @@
         if (cancelled == NO)
         {
             [self setStep:1];
-            self.codeLabel.text = nil;
-
+            self.codeLabel.text = NSLocalizedStringWithDefaultValue(@"VerifyPhone CodeTitle", nil,
+                                                                    [NSBundle mainBundle], @"CODE",
+                                                                    @".\n"
+                                                                    @"[iOS alert title size].");
             self.phoneNumber = phoneNumber;
 
             if ([phoneNumber isValid])
@@ -176,6 +173,8 @@
     }
                                               cancelButtonTitle:[Strings cancelString]
                                               otherButtonTitles:[Strings okString], nil];
+
+    [self buttonUp:self.numberButton];
 }
 
 
@@ -222,6 +221,32 @@
                                  otherButtonTitles:nil];
         }
     }];
+}
+
+
+- (IBAction)buttonDown:(id)sender
+{
+    if (sender == self.numberButton)
+    {
+        self.step1View.backgroundColor = [Skinning tintColor];
+    }
+    else
+    {
+        self.step2View.backgroundColor = [Skinning tintColor];
+    }
+}
+
+
+- (IBAction)buttonUp:(id)sender
+{
+    if (sender == self.numberButton)
+    {
+        self.step1View.backgroundColor = [UIColor colorWithWhite:0.95f alpha:1.0f];
+    }
+    else
+    {
+        self.step2View.backgroundColor = [UIColor colorWithWhite:0.95f alpha:1.0f];
+    }
 }
 
 
@@ -317,12 +342,20 @@
 
 - (void)setStep:(int)step
 {
-    self.step1View.alpha = (step >= 1) ? 1 : 0.5;
-    self.step2View.alpha = (step >= 2) ? 1 : 0.5;
-    self.step3View.alpha = (step >= 3) ? 1 : 0.5;
-
     self.numberButton.enabled = (step == 1 || step == 2) ? YES : NO;
     self.callButton.enabled   =              (step == 2) ? YES : NO;
+
+    self.numberButton.titleLabel.textColor = [Skinning tintColor];
+    if (step >= 2)
+    {
+        self.callButton.titleLabel.tintColor = [Skinning tintColor];
+        self.codeLabel.textColor             = [UIColor blackColor];
+    }
+    else
+    {
+        self.callButton.titleLabel.tintColor = [UIColor whiteColor];
+        self.codeLabel.textColor             = [UIColor whiteColor];
+    }
 
     if (step == 3)
     {

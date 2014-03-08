@@ -17,9 +17,6 @@ typedef enum
 } TableSections;
 
 
-static const int    TextFieldCellTag = 1111;
-
-
 @interface ForwardingSequenceViewController ()
 {
     TableSections               sections;

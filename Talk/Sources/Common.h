@@ -16,6 +16,9 @@
 #define CFReleaseSafe(x)                                { if ((x) != NULL) CFRelease(x); }
 
 
+static const int TextFieldCellTag = 1111;
+
+
 @interface Common : NSObject <MFMailComposeViewControllerDelegate>
 
 + (NSURL*)documentsDirectoryUrl;

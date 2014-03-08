@@ -26,6 +26,7 @@
 }
 
 
+// Only used when there's a clear button (which we don't have now; see Common).
 - (BOOL)textFieldShouldClear:(UITextField*)textField
 {
     self.phoneNumber.number = @"";

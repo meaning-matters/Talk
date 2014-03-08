@@ -33,15 +33,11 @@ typedef enum
 } TableSections;
 
 
-static const int    TextFieldCellTag = 1111;
-
-
 @interface ForwardingViewController ()
 {
     TableSections    sections;
     BOOL             isNew;
 
-    NSString*        name;
     PhoneData*       phone;
     NSMutableArray*  statementsArray;
     NSArray*         numbersArray;
@@ -61,9 +57,9 @@ static const int    TextFieldCellTag = 1111;
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
-        self.title  = [Strings forwardingString];
-        name        = forwarding.name;
-        phone       = [forwarding.phones anyObject];
+        self.title = [Strings forwardingString];
+        self.name  = forwarding.name;
+        phone      = [forwarding.phones anyObject];
 
         self.managedObjectContext = managedObjectContext;
         self.forwarding           = forwarding;
@@ -224,14 +220,14 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)create
 {
-    self.forwarding.name = name;
+    self.forwarding.name = self.name;
     statementsArray[0][@"call"][@"e164"][0] = phone.e164;
     self.forwarding.statements = [Common jsonStringWithObject:statementsArray];
 
     NSString* uuid = [[NSUUID UUID] UUIDString];
     self.forwarding.uuid = uuid;
     [[WebClient sharedClient] createIvrForUuid:uuid
-                                          name:name
+                                          name:self.name
                                     statements:statementsArray
                                          reply:^(NSError* error)
     {
@@ -252,19 +248,19 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)save
 {
-    if ([name isEqualToString:self.forwarding.name] == YES &&
+    if ([self.name isEqualToString:self.forwarding.name] == YES &&
         [Common object:statementsArray isEqualToJsonString:self.forwarding.statements] == YES)
     {
         // Nothing has changed.
         return;
     }
 
-    self.forwarding.name = name;
+    self.forwarding.name = self.name;
     statementsArray[0][@"call"][@"e164"][0] = phone.e164;
     self.forwarding.statements = [Common jsonStringWithObject:statementsArray];
 
     [[WebClient sharedClient] updateIvrForUuid:self.forwarding.uuid
-                                          name:name
+                                          name:self.name
                                     statements:statementsArray
                                          reply:^(NSError* error)
     {
@@ -435,35 +431,6 @@ static const int    TextFieldCellTag = 1111;
             cell = [self recordingsCellForRowAtIndexPath:indexPath];
             break;
     }
-
-    return cell;
-}
-
-
-- (UITableViewCell*)nameCellForRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    UITableViewCell* cell;
-    UITextField*     textField;
-
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"NameCell"];
-    if (cell == nil)
-    {
-        cell          = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NameCell"];
-        textField     = [Common addTextFieldToCell:cell delegate:self];
-        textField.tag = TextFieldCellTag;
-    }
-    else
-    {
-        textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
-    }
-
-    textField.placeholder = [Strings requiredString];
-    textField.text        = name;
-
-    cell.textLabel.text   = [Strings nameString];
-    cell.imageView.image  = nil;
-    cell.accessoryType    = UITableViewCellAccessoryNone;
-    cell.selectionStyle   = UITableViewCellSelectionStyleNone;
 
     return cell;
 }
@@ -644,9 +611,10 @@ static const int    TextFieldCellTag = 1111;
 
 #pragma mark - TextField Delegate
 
+// Only used when there's a clear button (which we don't have now; see Common).
 - (BOOL)textFieldShouldClear:(UITextField*)textField
 {
-    name = @"";
+    self.name = @"";
 
     [self updateRightBarButtonItem];
 
@@ -669,7 +637,7 @@ static const int    TextFieldCellTag = 1111;
 {
     NSString* text = [textField.text stringByReplacingCharactersInRange:range withString:string];
 
-    name = text;
+    self.name = text;
     [self updateRightBarButtonItem];
 
     return YES;
@@ -683,7 +651,7 @@ static const int    TextFieldCellTag = 1111;
     PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:phone.e164];
     BOOL         valid;
 
-    valid = [name stringByReplacingOccurrencesOfString:@" " withString:@""].length > 0 &&
+    valid = [self.name stringByReplacingOccurrencesOfString:@" " withString:@""].length > 0 &&
             ((phoneNumber.isValid && [Settings sharedSettings].homeCountry.length > 0) || phoneNumber.isInternational);
 
     if (isNew == YES)
@@ -718,7 +686,7 @@ static const int    TextFieldCellTag = 1111;
 
 - (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
 {
-    if (name.length > 0)
+    if (self.name.length > 0)
     {
         [[self.tableView superview] endEditing:YES];
 

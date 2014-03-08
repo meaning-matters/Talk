@@ -14,8 +14,8 @@
 
 @interface ForwardingViewController : ItemViewController <UITextFieldDelegate>
 
-@property (nonatomic, strong) ForwardingData*   forwarding;
-@property (nonatomic, strong) NSMutableArray*   sequenceArray;
+@property (nonatomic, strong) ForwardingData* forwarding;
+@property (nonatomic, strong) NSMutableArray* sequenceArray;
 
 - (instancetype)initWithForwarding:(ForwardingData*)forwarding
               managedObjectContext:(NSManagedObjectContext*)managedObjectContext;

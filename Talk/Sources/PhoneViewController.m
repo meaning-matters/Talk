@@ -29,15 +29,11 @@ typedef enum
 } TableSections;
 
 
-static const int TextFieldCellTag = 1111;
-
-
 @interface PhoneViewController ()
 {
     TableSections    sections;
     BOOL             isNew;
 
-    NSString*        name;
     PhoneNumber*     phoneNumber;
 
     NSArray*         numbersArray;
@@ -64,7 +60,7 @@ static const int TextFieldCellTag = 1111;
         isNew                     = (phone == nil);
         self.managedObjectContext = managedObjectContext;
 
-        name                      = phone.name;
+        self.name                 = phone.name;
         phoneNumber               = [[PhoneNumber alloc] initWithNumber:self.phone.e164];
     }
 
@@ -164,7 +160,7 @@ static const int TextFieldCellTag = 1111;
 
 - (void)saveAction
 {
-    self.phone.name = name;
+    self.phone.name = self.name;
     self.phone.e164 = [phoneNumber e164Format];
 
     [[WebClient sharedClient] updateVerifiedE164:self.phone.e164
@@ -335,35 +331,6 @@ static const int TextFieldCellTag = 1111;
 }
 
 
-- (UITableViewCell*)nameCellForRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    UITableViewCell* cell;
-    UITextField*     textField;
-
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"NameCell"];
-    if (cell == nil)
-    {
-        cell          = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NameCell"];
-        textField     = [Common addTextFieldToCell:cell delegate:self];
-        textField.tag = TextFieldCellTag;
-    }
-    else
-    {
-        textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
-    }
-
-    textField.placeholder = [Strings requiredString];
-    textField.text        = name;
-
-    cell.textLabel.text   = [Strings nameString];
-    cell.imageView.image  = nil;
-    cell.accessoryType    = UITableViewCellAccessoryNone;
-    cell.selectionStyle   = UITableViewCellSelectionStyleNone;
-
-    return cell;
-}
-
-
 - (UITableViewCell*)numberCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
@@ -371,7 +338,7 @@ static const int TextFieldCellTag = 1111;
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumberCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NumberCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"NumberCell"];
     }
 
     cell.textLabel.text  = [Strings numberString];
@@ -385,10 +352,8 @@ static const int TextFieldCellTag = 1111;
     }
     else
     {
-        cell.detailTextLabel.text      = [phoneNumber internationalFormat];
-        cell.detailTextLabel.textColor = [UIColor blackColor];
-        cell.accessoryType             = UITableViewCellAccessoryNone;
-        cell.selectionStyle            = UITableViewCellSelectionStyleNone;
+        NumberLabel* numberLabel = [Common addNumberLabelToCell:cell];
+        numberLabel.text         = [phoneNumber internationalFormat];
     }
 
     return cell;
@@ -500,9 +465,10 @@ static const int TextFieldCellTag = 1111;
 
 #pragma mark - TextField Delegate
 
+// Only used when there's a clear button (which we don't have now; see Common).
 - (BOOL)textFieldShouldClear:(UITextField*)textField
 {
-    name = @"";
+    self.name = @"";
 
     [self updateRightBarButtonItem];
 
@@ -522,7 +488,7 @@ static const int TextFieldCellTag = 1111;
 {
     NSString* text  = [textField.text stringByReplacingCharactersInRange:range withString:string];
 
-    name = text;
+    self.name = text;
 
     [self updateRightBarButtonItem];
 
@@ -545,8 +511,8 @@ static const int TextFieldCellTag = 1111;
     BOOL             changed;
     BOOL             valid;
 
-    changed = [name isEqualToString:self.phone.name] == NO;
-    valid   = [name stringByReplacingOccurrencesOfString:@" " withString:@""].length > 0 &&
+    changed = [self.name isEqualToString:self.phone.name] == NO;
+    valid   = [self.name stringByReplacingOccurrencesOfString:@" " withString:@""].length > 0 &&
               ((phoneNumber.isValid && [Settings sharedSettings].homeCountry.length > 0) || phoneNumber.isInternational);
 
     if (saveButtonItem == nil)

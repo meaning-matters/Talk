@@ -8,11 +8,13 @@
 
 #import "ItemViewController.h"
 #import "DataManager.h"
+#import "Common.h"
+#import "Strings.h"
 
 
 @interface ItemViewController ()
 
-@property (nonatomic, assign) BOOL hasCorrectedInsets;
+@property (nonatomic, assign) BOOL      hasCorrectedInsets;
 
 @end
 
@@ -95,6 +97,37 @@
 // Placeholder that must be overriden by subclass.
 - (void)save
 {
+}
+
+
+#pragma mark - Name Cell
+
+- (UITableViewCell*)nameCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell* cell;
+    UITextField*     textField;
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"NameCell"];
+    if (cell == nil)
+    {
+        cell          = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"NameCell"];
+        textField     = [Common addTextFieldToCell:cell delegate:(id<UITextFieldDelegate>)self]; // The subclass must implement this delegate.
+        textField.tag = TextFieldCellTag;
+    }
+    else
+    {
+        textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
+    }
+
+    textField.placeholder = [Strings requiredString];
+    textField.text        = [self.name stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
+
+    cell.textLabel.text   = [Strings nameString];
+    cell.imageView.image  = nil;
+    cell.accessoryType    = UITableViewCellAccessoryNone;
+    cell.selectionStyle   = UITableViewCellSelectionStyleNone;
+
+    return cell;
 }
 
 

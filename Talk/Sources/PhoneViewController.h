@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "PhoneData.h"
+#import "ItemViewController.h"
 
 
-@interface PhoneViewController : UITableViewController <UITextFieldDelegate, UIGestureRecognizerDelegate>
+@interface PhoneViewController : ItemViewController <UITextFieldDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) PhoneData* phone;
 

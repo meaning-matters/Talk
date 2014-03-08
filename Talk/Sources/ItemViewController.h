@@ -13,6 +13,8 @@
 @property (nonatomic, strong) NSString*    name;           // Mirror that's only processed when user taps Done.
 @property (nonatomic, strong) NSIndexPath* nameIndexPath;
 
+- (UITableViewCell*)nameCellForRowAtIndexPath:(NSIndexPath*)indexPath;
+
 // Must be overriden by subclass.
 - (void)save;
 
