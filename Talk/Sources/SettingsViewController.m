@@ -90,19 +90,12 @@ typedef enum
 }
 
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.tableView reloadData];
-}
-
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
     BOOL pushed = [self isMovingToParentViewController];
-    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:!pushed];
+    // [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:!pushed];
 
     // When there's no longer a SIM supplying country, reset the homeCountryFromSim settings.
     if ([NetworkStatus sharedStatus].simIsoCountryCode == nil && settings.homeCountryFromSim == YES)
@@ -176,7 +169,7 @@ typedef enum
                                                       [NSBundle mainBundle],
                                                       @"Our server first calls the Called Back number.  Then, when you "
                                                       @"accept that call, the party you're tying to reach is being "
-                                                      @"called, and is show My Caller ID (when the Show My Caller "
+                                                      @"called, and is show Caller ID (when the Show My Caller "
                                                       @"ID setting is on).",
                                                       @"Explanation how Callback settings work\n"
                                                       @"[* lines]");
@@ -248,8 +241,6 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionCallMode:
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-
             if (indexPath.row == 1 - !HAS_VOIP)
             {
                 PhoneData* phone = [self lookupPhoneForE164:settings.callbackE164];
@@ -261,6 +252,7 @@ typedef enum
                     settings.callbackE164 = selectedPhone.e164;
                     UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
                     cell.detailTextLabel.text = selectedPhone.name;
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                 }];
 
                 [self.navigationController pushViewController:phonesViewController animated:YES];
@@ -276,6 +268,7 @@ typedef enum
                     settings.callerIdE164 = selectedPhone.e164;
                     UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
                     cell.detailTextLabel.text = selectedPhone.name;
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                 }];
                 
                 [self.navigationController pushViewController:phonesViewController animated:YES];
@@ -455,7 +448,7 @@ typedef enum
         }
         else
         {
-            cell.detailTextLabel.text      = @"...";
+            cell.detailTextLabel.text      = @"";
             cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
         }
 
@@ -482,7 +475,7 @@ typedef enum
         }
         else
         {
-            cell.detailTextLabel.text      = @"...";
+            cell.detailTextLabel.text      = @"";
             cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
         }
 
