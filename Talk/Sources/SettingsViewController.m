@@ -16,6 +16,7 @@
 #import "BlockAlertView.h"
 #import "Common.h"
 #import "Skinning.h"
+#import "DataManager.h"
 
 
 // Update reloadSections calls when adding/removing sections.
@@ -222,7 +223,7 @@ typedef enum
             break;
 
         case TableSectionAccountData:
-            numberOfRows = settings.haveAccount ? 1 : 2;
+            numberOfRows = 2;
             break;
     }
 
@@ -240,7 +241,7 @@ typedef enum
     NSString*                title;
     NSString*                message;
     NSString*                homeCountry = settings.homeCountry;
-    PhonesViewController*   phonesViewController;
+    PhonesViewController*    phonesViewController;
     CountriesViewController* countriesViewController;
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
@@ -393,6 +394,27 @@ typedef enum
             if (settings.haveAccount == NO && indexPath.row == 0)
             {
                 [Common showProvisioningViewController];
+            }
+            else if (settings.haveAccount == YES && indexPath.row == 0)
+            {
+                static UIActivityIndicatorView* indicator;
+
+                if (indicator == nil)
+                {
+                    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                    indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    cell.accessoryView = indicator;
+                    [indicator startAnimating];
+
+                    [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
+                    {
+                        [indicator stopAnimating];
+                        cell.accessoryView = nil;
+                        indicator = nil;
+                    }];
+                }
+
+                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             }
             else
             {
@@ -707,14 +729,21 @@ typedef enum
         cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:Get Started CellText", nil,
                                                                 [NSBundle mainBundle], @"Get Started",
                                                                 @"Title of table cell for getting an account\n"
-                                                                @"[2/3 line - abbreviated: 'Reset'].");
+                                                                @"[....");
+    }
+    else if (settings.haveAccount == YES && indexPath.row == 0)
+    {
+        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:Synchronize CellText", nil,
+                                                                [NSBundle mainBundle], @"Synchronize With Server",
+                                                                @"Title of table cell for getting an account\n"
+                                                                @"....");
     }
     else
     {
         cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:Reset CellText", nil,
                                                                 [NSBundle mainBundle], @"Reset All",
                                                                 @"Title of table cell for resetting all user data\n"
-                                                                @"[2/3 line - abbreviated: 'Reset'].");
+                                                                @"...].");
     }
 
     cell.textLabel.textColor = [Skinning tintColor];

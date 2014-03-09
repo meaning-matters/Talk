@@ -134,6 +134,20 @@
                                                                                @"Alert message\n"
                                                                                @"[N lines]");
             }
+            else if (error.code == WebClientStatusFailUnknownCallerId ||
+                     error.code == WebClientStatusFailUnknownVerifiedNumber ||
+                     error.code == WebClientStatusFailUnknownBothE164)
+            {
+                self.statusLabel.text = [self.call stateString];
+
+                NSString* format = NSLocalizedStringWithDefaultValue(@"Callback UnknownNumberMessage", nil,
+                                                                     [NSBundle mainBundle],
+                                                                     @"Starting callback failed: %@\n\n"
+                                                                     @"Please synchronize your account data (via Settings).",
+                                                                     @"Alert message: ...\n"
+                                                                     @"[N lines]");
+                callMessageView.label.text = [NSString stringWithFormat:format, error.localizedDescription];
+            }
             else
             {
                 self.statusLabel.text = [self.call stateString];

@@ -365,6 +365,7 @@
 
 - (void)synchronizeAll:(void (^)(NSError* error))completion
 {
+#if HAS_BUYING_NUMBERS
     [self synchronizeNumbers:^(NSError* error)
     {
         if (error == nil)
@@ -377,6 +378,7 @@
                     {
                         if (error == nil)
                         {
+#endif
                             [self synchronizePhones:^(NSError* error)
                             {
                                 if (error == nil)
@@ -399,6 +401,7 @@
                                     completion ? completion(error) : 0;
                                 }
                             }];
+#if HAS_BUYING_NUMBERS
                         }
                         else
                         {
@@ -420,6 +423,7 @@
             completion ? completion(error) : 0;
         }
     }];
+#endif
 }
 
 

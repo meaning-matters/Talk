@@ -52,7 +52,10 @@ static NSDictionary* statuses;
                      @"FAIL_VERIFIED_NUMBER_IN_USE"  : @(WebClientStatusFailVerfiedNumberInUse),
                      @"FAIL_CALLBACK_ALREADY_ACTIVE" : @(WebClientStatusFailCallbackAlreadyActive),
                      @"FAIL_NO_CALLBACK_FOUND"       : @(WebClientStatusFailNoCallbackFound),
-                     @"FAIL_NO_CREDIT"               : @(WebClientStatusFailNoCredit)};
+                     @"FAIL_NO_CREDIT"               : @(WebClientStatusFailNoCredit),
+                     @"FAIL_UNKNOWN_CALLER_ID"       : @(WebClientStatusFailUnknownCallerId),
+                     @"FAIL_UNKNOWN_VERIFIED_NUMBER" : @(WebClientStatusFailUnknownVerifiedNumber),
+                     @"FAIL_UNKNOWN_BOTH_E164"       : @(WebClientStatusFailUnknownBothE164)};
     });
 
     return sharedInstance;
@@ -332,6 +335,27 @@ static NSDictionary* statuses;
                                                        @"[].");
             break;
 
+        case WebClientStatusFailUnknownCallerId:
+            string = NSLocalizedStringWithDefaultValue(@"WebClient UnknownCallerID", nil, [NSBundle mainBundle],
+                                                       @"The caller ID you selected is unknown.",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailUnknownVerifiedNumber:
+            string = NSLocalizedStringWithDefaultValue(@"WebClient UnknownVerifiedNumber", nil, [NSBundle mainBundle],
+                                                       @"The phone you selected to be called back is unknown.",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
+        case WebClientStatusFailUnknownBothE164:
+            string = NSLocalizedStringWithDefaultValue(@"WebClient UnknownBothE164", nil, [NSBundle mainBundle],
+                                                       @"Both the caller ID and the phone to be called back are unknown.",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+
         case WebClientStatusFailNoAccount:
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailNoAccount", nil, [NSBundle mainBundle],
                                                        @"There's no active account.",
@@ -463,16 +487,16 @@ static NSDictionary* statuses;
     [self getPath:[NSString stringWithFormat:@"users/%@/verification", username]
        parameters:parameters
             reply:^(NSError* error, id content)
-     {
-         if (error == nil)
-         {
-             reply(nil, [content[@"calling"] boolValue], [content[@"verified"] boolValue]);
-         }
-         else
-         {
-             reply(error, NO, NO);
-         }
-     }];
+    {
+        if (error == nil)
+        {
+            reply(nil, [content[@"calling"] boolValue], [content[@"verified"] boolValue]);
+        }
+        else
+        {
+            reply(error, NO, NO);
+        }
+    }];
 }
 
 

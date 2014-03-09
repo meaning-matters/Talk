@@ -221,6 +221,8 @@
                                  otherButtonTitles:nil];
         }
     }];
+
+    [self buttonUp:self.numberButton];
 }
 
 

@@ -215,8 +215,10 @@
     // The order in this aryay defines the default tabs order.
     NSArray* viewControllerClasses =
     @[
+#if HAS_BUYING_NUMBERS
         NSStringFromClass([NumbersViewController              class]),
         NSStringFromClass([ForwardingsViewController          class]),
+#endif
         NSStringFromClass([DialerViewController               class]),
         NSStringFromClass([NBPeoplePickerNavigationController class]),
         NSStringFromClass([PhonesViewController               class]),

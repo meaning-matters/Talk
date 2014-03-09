@@ -28,10 +28,13 @@ typedef enum
     WebClientStatusFailCallbackAlreadyActive = 911011,
     WebClientStatusFailNoCallbackFound       = 911012,
     WebClientStatusFailNoCredit              = 911013,
-    WebClientStatusFailNoAccount             = 911051, // Indirect: not sent by server.
-    WebClientStatusFailUnspecified           = 911052, // Indirect: not sent by server.
-    WebClientStatusFailInvalidResponse       = 911053, // Indirect: not sent by server.
-    WebClientStatusFailUnknown               = 911054, // Extreme unlikely situation where AFNetworking gives failure with error == nil.
+    WebClientStatusFailUnknownCallerId       = 911014,  // Callback: When caller ID is unknown on server.
+    WebClientStatusFailUnknownVerifiedNumber = 911015,  // Callback: When called back number is unknown.
+    WebClientStatusFailUnknownBothE164       = 911016,  // Callback: When both called ID and called back number unknown.
+    WebClientStatusFailNoAccount             = 911051,  // Indirect: not sent by server.
+    WebClientStatusFailUnspecified           = 911052,  // Indirect: not sent by server.
+    WebClientStatusFailInvalidResponse       = 911053,  // Indirect: not sent by server.
+    WebClientStatusFailUnknown               = 911054,  // Extreme unlikely situation where AFNetworking gives failure with error == nil.
 } WebClientStatus;
 
 
