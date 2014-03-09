@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ItemViewController : UITableViewController <UIGestureRecognizerDelegate>
+@interface ItemViewController : UITableViewController <UIGestureRecognizerDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) NSString*    name;           // Mirror that's only processed when user taps Done.
 @property (nonatomic, strong) NSIndexPath* nameIndexPath;

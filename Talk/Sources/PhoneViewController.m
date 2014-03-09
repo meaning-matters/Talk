@@ -31,15 +31,12 @@ typedef enum
 
 @interface PhoneViewController ()
 {
-    TableSections    sections;
-    BOOL             isNew;
+    TableSections sections;
+    BOOL          isNew;
 
-    PhoneNumber*     phoneNumber;
+    PhoneNumber*  phoneNumber;
 
-    NSArray*         numbersArray;
-
-    UIBarButtonItem* saveButtonItem;
-    UIBarButtonItem* deleteButtonItem;
+    NSArray*      numbersArray;
 }
 
 @property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
@@ -99,7 +96,6 @@ typedef enum
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:self.managedObjectContext];
 
-    [self updateRightBarButtonItem];
     if (isNew)
     {
         UIBarButtonItem* buttonItem;
@@ -107,14 +103,22 @@ typedef enum
                                                                    target:self
                                                                    action:@selector(cancel)];
         self.navigationItem.leftBarButtonItem = buttonItem;
+
+        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                                   target:self
+                                                                   action:@selector(saveAction)];
+        self.navigationItem.rightBarButtonItem = buttonItem;
+    }
+    else
+    {
+        UIBarButtonItem* buttonItem;
+        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
+                                                                   target:self
+                                                                   action:@selector(deleteAction)];
+        self.navigationItem.rightBarButtonItem = buttonItem;
     }
 
-    // Let keyboard be hidden when user taps outside text fields.
-    UITapGestureRecognizer* gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                        action:@selector(hideKeyboard:)];
-    gestureRecognizer.cancelsTouchesInView = NO;
-    gestureRecognizer.delegate             = self;
-    [self.tableView addGestureRecognizer:gestureRecognizer];
+    [self updateSaveButtonItem];
 }
 
 
@@ -170,6 +174,11 @@ typedef enum
         if (error == nil)
         {
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+
+            if (isNew)
+            {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
         }
         else
         {
@@ -177,9 +186,6 @@ typedef enum
             [self showSaveError:error];
         }
     }];
-
-    [self dismissViewControllerAnimated:YES completion:nil];
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -343,17 +349,18 @@ typedef enum
 
     cell.textLabel.text  = [Strings numberString];
     cell.imageView.image = nil;
+    cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
     if (isNew)
     {
         cell.detailTextLabel.text      = [Strings requiredString];
-        cell.detailTextLabel.textColor = [UIColor lightGrayColor];
-        cell.accessoryType             = UITableViewCellAccessoryDisclosureIndicator;
+        cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
         cell.selectionStyle            = UITableViewCellSelectionStyleDefault;
     }
     else
     {
         NumberLabel* numberLabel = [Common addNumberLabelToCell:cell];
         numberLabel.text         = [phoneNumber internationalFormat];
+        cell.selectionStyle      = UITableViewCellSelectionStyleNone;
     }
 
     return cell;
@@ -428,10 +435,10 @@ typedef enum
                     else
                     {
                         cell.detailTextLabel.text      = [Strings requiredString];
-                        cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+                        cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
                     }
 
-                    [self updateRightBarButtonItem];
+                    [self updateSaveButtonItem];
                 }];
 
                 [self.navigationController pushViewController:viewController animated:YES];
@@ -447,119 +454,40 @@ typedef enum
 }
 
 
-#pragma mark - Gesture Recognizer Delegate
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer shouldReceiveTouch:(UITouch*)touch
-{
-    if ([touch.view isKindOfClass:[UITextField class]] ||
-        [touch.view isKindOfClass:[UIButton    class]])
-    {
-        return NO;
-    }
-    else
-    {
-        return YES;
-    }
-}
-
-
 #pragma mark - TextField Delegate
-
-// Only used when there's a clear button (which we don't have now; see Common).
-- (BOOL)textFieldShouldClear:(UITextField*)textField
-{
-    self.name = @"";
-
-    [self updateRightBarButtonItem];
-
-    return YES;
-}
-
-
-- (BOOL)textFieldShouldReturn:(UITextField*)textField
-{
-    [textField resignFirstResponder];
-
-    return YES;
-}
-
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
 {
-    NSString* text  = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    BOOL shouldChange = [super textField:textField shouldChangeCharactersInRange:range replacementString:string];
 
-    self.name = text;
+    [self updateSaveButtonItem];
 
-    [self updateRightBarButtonItem];
-
-    return YES;
-}
-
-
-// Called only for NumberTextField; not a delegate method.
-- (void)textFieldDidChange:(UITextField*)textField
-{
-    [self updateRightBarButtonItem];
+    return shouldChange;
 }
 
 
 #pragma mark - Helper Methods
 
-- (void)updateRightBarButtonItem
+- (void)updateSaveButtonItem
 {
-    UIBarButtonItem* buttonItem;
-    BOOL             changed;
-    BOOL             valid;
-
-    changed = [self.name isEqualToString:self.phone.name] == NO;
-    valid   = [self.name stringByReplacingOccurrencesOfString:@" " withString:@""].length > 0 &&
-              ((phoneNumber.isValid && [Settings sharedSettings].homeCountry.length > 0) || phoneNumber.isInternational);
-
-    if (saveButtonItem == nil)
-    {
-        saveButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                                       target:self
-                                                                       action:@selector(saveAction)];
-    }
-
-    if (deleteButtonItem == nil)
-    {
-        deleteButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
-                                                                         target:self
-                                                                         action:@selector(deleteAction)];
-    }
-
-    if (isNew)
-    {
-        buttonItem = saveButtonItem;
-        buttonItem.enabled = valid;
-    }
-    else
-    {
-        if (self.phone.forwardings.count == 0 && changed == NO)
-        {
-            buttonItem = deleteButtonItem;
-        }
-        else
-        {
-            buttonItem = saveButtonItem;
-            buttonItem.enabled = (valid && changed);
-        }
-    }
-
-    [self.navigationItem setRightBarButtonItem:buttonItem animated:YES];
-}
-
-
-- (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
-{
-    [[self.tableView superview] endEditing:YES];
+    self.navigationItem.rightBarButtonItem.enabled = (self.name.length > 0) && (phoneNumber != nil);
 }
 
 
 - (void)cancel
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+#pragma mark - Baseclass Override
+
+- (void)save
+{
+    if (isNew == NO)
+    {
+        [self saveAction];
+    }
 }
 
 @end

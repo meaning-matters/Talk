@@ -159,9 +159,12 @@
             self.hasCorrectedInsets = NO;
         }
 
-        [[self.tableView superview] endEditing:YES];
-
-        [self save];
+        if (self.tableView.isEditing == YES)
+        {
+            [self save];
+            
+            [[self.tableView superview] endEditing:YES];
+        }
     }
 }
 

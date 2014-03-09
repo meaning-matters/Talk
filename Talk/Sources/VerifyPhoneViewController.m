@@ -222,7 +222,7 @@
         }
     }];
 
-    [self buttonUp:self.numberButton];
+    [self buttonUp:self.callButton];
 }
 
 
