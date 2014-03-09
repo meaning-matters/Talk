@@ -17,6 +17,7 @@
 #import "Common.h"
 #import "Skinning.h"
 #import "DataManager.h"
+#import "PhoneData.h"
 
 
 // Update reloadSections calls when adding/removing sections.
@@ -251,120 +252,33 @@ typedef enum
 
             if (indexPath.row == 1 - !HAS_VOIP)
             {
-                phonesViewController = [[PhonesViewController alloc] init];
-                [self.navigationController pushViewController:phonesViewController animated:YES];
-                break;
-
-                __block BlockAlertView*  alert;
-                NSString*                title;
-                NSString*                message;
-                PhoneNumber*             callbackPhoneNumber = [[PhoneNumber alloc] initWithNumber:settings.callbackE164];
-
-                title   = NSLocalizedStringWithDefaultValue(@"Setting EnterNumberTitle", nil,
-                                                            [NSBundle mainBundle], @"Enter Called Number",
-                                                            @"Title asking user to enter their phone number.\n"
-                                                            @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"Setting VerifyCancelMessage", nil,
-                                                            [NSBundle mainBundle],
-                                                            @"Enter a number you own, on which you will be called back.",
-                                                            @"Message explaining about the phone number they need to enter.\n"
-                                                            @"[iOS alert message size]");
-                alert   = [BlockAlertView showPhoneNumberAlertViewWithTitle:title
-                                                                    message:message
-                                                                phoneNumber:callbackPhoneNumber
-                                                                 completion:^(BOOL         cancelled,
-                                                                              PhoneNumber* phoneNumber)
+                PhoneData* phone = [self lookupPhoneForE164:settings.callbackE164];
+                NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
+                phonesViewController = [[PhonesViewController alloc] initWithManagedObjectContext:managedObjectContext
+                                                                                    selectedPhone:phone
+                                                                                       completion:^(PhoneData* selectedPhone)
                 {
-                    if (cancelled == NO)
-                    {
-                        if ([phoneNumber isValid])
-                        {
-                            settings.callbackE164 = [phoneNumber e164Format];
+                    settings.callbackE164 = selectedPhone.e164;
+                    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                    cell.detailTextLabel.text = selectedPhone.name;
+                }];
 
-                            [self reloadCallModeSection];
-                        }
-                        else
-                        {
-                            NSString* title;
-                            NSString* message;
-
-                            title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidTitle", nil,
-                                                                        [NSBundle mainBundle], @"Invalid Number",
-                                                                        @"Phone number is not correct.\n"
-                                                                        @"[iOS alert title size].");
-                            message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidMessage", nil,
-                                                                        [NSBundle mainBundle],
-                                                                        @"The phone number you entered is invalid, "
-                                                                        @"please correct.",
-                                                                        @"Alert message that entered phone number is invalid.\n"
-                                                                        @"[iOS alert message size]");
-                            [BlockAlertView showAlertViewWithTitle:title
-                                                           message:message
-                                                        completion:nil
-                                                 cancelButtonTitle:[Strings closeString]
-                                                 otherButtonTitles:nil];
-                        }
-                    }
-                }
-                                                          cancelButtonTitle:[Strings cancelString]
-                                                          otherButtonTitles:[Strings okString], nil];
+                [self.navigationController pushViewController:phonesViewController animated:YES];
             }
             else if (indexPath.row == 2 - !HAS_VOIP)
             {
-                __block BlockAlertView*  alert;
-                NSString*                title;
-                NSString*                message;
-                PhoneNumber*             callerIdPhoneNumber = [[PhoneNumber alloc] initWithNumber:settings.callerIdE164];
-
-                title   = NSLocalizedStringWithDefaultValue(@"Setting EnterNumberTitle", nil,
-                                                            [NSBundle mainBundle], @"Enter Shown Number",
-                                                            @"Title asking user to enter their phone number.\n"
-                                                            @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"Setting VerifyCancelMessage", nil,
-                                                            [NSBundle mainBundle],
-                                                            @"Enter a number you own, that will be shown as caller ID "
-                                                            @"to the person you're trying reach.",
-                                                            @"Message explaining about the phone number they need to enter.\n"
-                                                            @"[iOS alert message size]");
-                alert   = [BlockAlertView showPhoneNumberAlertViewWithTitle:title
-                                                                    message:message
-                                                                phoneNumber:callerIdPhoneNumber
-                                                                 completion:^(BOOL         cancelled,
-                                                                              PhoneNumber* phoneNumber)
+                PhoneData* phone = [self lookupPhoneForE164:settings.callerIdE164];
+                NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
+                phonesViewController = [[PhonesViewController alloc] initWithManagedObjectContext:managedObjectContext
+                                                                                    selectedPhone:phone
+                                                                                       completion:^(PhoneData* selectedPhone)
                 {
-                    if (cancelled == NO)
-                    {
-                        if ([phoneNumber isValid])
-                        {
-                            settings.callerIdE164 = [phoneNumber e164Format];
-
-                            [self reloadCallModeSection];
-                        }
-                        else
-                        {
-                            NSString* title;
-                            NSString* message;
-
-                            title   = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidTitle", nil,
-                                                                        [NSBundle mainBundle], @"Invalid Number",
-                                                                        @"Phone number is not correct.\n"
-                                                                        @"[iOS alert title size].");
-                            message = NSLocalizedStringWithDefaultValue(@"Provisioning VerifyInvalidMessage", nil,
-                                                                        [NSBundle mainBundle],
-                                                                        @"The phone number you entered is invalid, "
-                                                                        @"please correct.",
-                                                                        @"Alert message that entered phone number is invalid.\n"
-                                                                        @"[iOS alert message size]");
-                            [BlockAlertView showAlertViewWithTitle:title
-                                                           message:message
-                                                        completion:nil
-                                                 cancelButtonTitle:[Strings closeString]
-                                                 otherButtonTitles:nil];
-                        }
-                    }
-                }
-                                                          cancelButtonTitle:[Strings cancelString]
-                                                          otherButtonTitles:[Strings okString], nil];
+                    settings.callerIdE164 = selectedPhone.e164;
+                    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                    cell.detailTextLabel.text = selectedPhone.name;
+                }];
+                
+                [self.navigationController pushViewController:phonesViewController animated:YES];
             }
             break;
 
@@ -489,6 +403,101 @@ typedef enum
 }
 
 
+- (UITableViewCell*)callModeCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell* cell;
+    UISwitch*        switchView;
+
+    if (indexPath.row == 0 - !HAS_VOIP)
+    {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"CallModeSwitchCell"];
+        if (cell == nil)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallModeSwitchCell"];
+            switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+            cell.accessoryView = switchView;
+        }
+        else
+        {
+            switchView = (UISwitch*)cell.accessoryView;
+        }
+
+        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:CallbackMode CellText", nil,
+                                                                [NSBundle mainBundle], @"Callback Mode",
+                                                                @"Title of switch if app is in 'callback mode'\n"
+                                                                @"[2/3 line].");
+        cell.selectionStyle    = UITableViewCellSelectionStyleNone;
+        switchView.on          = settings.callbackMode;
+        switchView.onTintColor = [Skinning callbackModeTintColor];
+
+        [switchView removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+        [switchView addTarget:self
+                       action:@selector(callbackModeSwitchAction:)
+             forControlEvents:UIControlEventValueChanged];
+    }
+    else if (indexPath.row == 1 - !HAS_VOIP)
+    {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"CallerCell"];
+        if (cell == nil)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallerCell"];
+        }
+
+        cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Settings Called Back Number", nil,
+                                                                      [NSBundle mainBundle], @"Called Back",
+                                                                      @"Phone number on which user is reachable.\n"
+                                                                      @"[1/2 line, abbreviated: Called].");
+        PhoneData* phone = [self lookupPhoneForE164:settings.callbackE164];
+        if (phone != nil)
+        {
+            cell.detailTextLabel.text      = phone.name;
+            cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+        }
+        else
+        {
+            cell.detailTextLabel.text      = @"...";
+            cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
+        }
+
+        cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
+    }
+    else if (indexPath.row == 2 - !HAS_VOIP)
+    {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"CallerIDCell"];
+        if (cell == nil)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallerIDCell"];
+        }
+
+        cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Setting Shown Number Format", nil,
+                                                                      [NSBundle mainBundle], @"Caller ID",
+                                                                      @"Format string showing shown number.\n"
+                                                                      @"[1 line].");
+        PhoneData* phone = [self lookupPhoneForE164:settings.callerIdE164];
+        if (phone != nil)
+        {
+            cell.detailTextLabel.text      = phone.name;
+            cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+        }
+        else
+        {
+            cell.detailTextLabel.text      = @"...";
+            cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
+        }
+
+        cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
+    }
+    else if (indexPath.row == 2)
+    {
+        cell = [self showCallerIdCell];
+    }
+
+    return cell;
+}
+
+
 - (UITableViewCell*)homeCountryCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
@@ -545,7 +554,7 @@ typedef enum
                                                                     @"Table cell text, when user not selected home country yet\n"
                                                                     @"[1 line - abbreviated: 'Not Selected'");
         }
-        
+
         if ([NetworkStatus sharedStatus].simIsoCountryCode != nil && settings.homeCountryFromSim)
         {
             cell.accessoryType  = UITableViewCellAccessoryNone;
@@ -557,82 +566,7 @@ typedef enum
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
     }
-
-    return cell;
-}
-
-
-- (UITableViewCell*)callModeCellForRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    UITableViewCell* cell;
-    UISwitch*        switchView;
-
-    if (indexPath.row == 0 - !HAS_VOIP)
-    {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:@"CallModeSwitchCell"];
-        if (cell == nil)
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallModeSwitchCell"];
-            switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-            cell.accessoryView = switchView;
-        }
-        else
-        {
-            switchView = (UISwitch*)cell.accessoryView;
-        }
-
-        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:CallbackMode CellText", nil,
-                                                                [NSBundle mainBundle], @"Callback Mode",
-                                                                @"Title of switch if app is in 'callback mode'\n"
-                                                                @"[2/3 line].");
-        cell.selectionStyle    = UITableViewCellSelectionStyleNone;
-        switchView.on          = settings.callbackMode;
-        switchView.onTintColor = [Skinning callbackModeTintColor];
-
-        [switchView removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-        [switchView addTarget:self
-                       action:@selector(callbackModeSwitchAction:)
-             forControlEvents:UIControlEventValueChanged];
-    }
-    else if (indexPath.row == 1 - !HAS_VOIP)
-    {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:@"CallerCell"];
-        if (cell == nil)
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallerCell"];
-        }
-
-        PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:settings.callbackE164];
-        cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Settings Called Back Number", nil,
-                                                                      [NSBundle mainBundle], @"Called Back",
-                                                                      @"Phone number on which user is reachable.\n"
-                                                                      @"[1/2 line, abbreviated: Called].");
-        cell.detailTextLabel.text = [phoneNumber internationalFormat];
-        cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
-        cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
-    }
-    else if (indexPath.row == 2 - !HAS_VOIP)
-    {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:@"CallerIDCell"];
-        if (cell == nil)
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallerIDCell"];
-        }
-
-        PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:settings.callerIdE164];
-        cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Setting Shown Number Format", nil,
-                                                                      [NSBundle mainBundle], @"Caller ID",
-                                                                      @"Format string showing shown number.\n"
-                                                                      @"[1 line].");
-        cell.detailTextLabel.text = [phoneNumber internationalFormat];
-        cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
-        cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
-    }
-    else if (indexPath.row == 2)
-    {
-        cell = [self showCallerIdCell];
-    }
-
+    
     return cell;
 }
 
@@ -850,6 +784,18 @@ typedef enum
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:index]
                   withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView endUpdates];
+}
+
+
+- (PhoneData*)lookupPhoneForE164:(NSString*)e164
+{
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"e164 == %@", e164];
+    NSArray* phonesArray = [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
+                                                                     sortKeys:@[@"name"]
+                                                                    predicate:predicate
+                                                         managedObjectContext:nil];
+
+    return [phonesArray firstObject];
 }
 
 @end

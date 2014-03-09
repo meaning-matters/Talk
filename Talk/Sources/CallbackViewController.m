@@ -24,7 +24,6 @@
     CallMessageView* callMessageView;
     NSTimer*         durationTimer;
     int              duration;
-    PhoneNumber*     callerPhoneNumber;
     NSMutableArray*  notificationObservers;
     BOOL             callbackPending;
     NSString*        uuid;
@@ -88,11 +87,12 @@
                                                                    @"Alert message: ...\n"
                                                                    @"[N lines]");
 
-    callerPhoneNumber = [[PhoneNumber alloc] initWithNumber:self.call.identityNumber];
-    callbackPending   = YES;
+    PhoneNumber* callbackPhoneNumber = [[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].callbackE164];
+    PhoneNumber* callerIdPhoneNumber = [[PhoneNumber alloc] initWithNumber:self.call.identityNumber];
+    callbackPending = YES;
     [[WebClient sharedClient] initiateCallbackForCallee:self.call.phoneNumber
-                                                 caller:callerPhoneNumber
-                                               identity:[[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].callerIdE164]
+                                                 caller:callbackPhoneNumber
+                                               identity:callerIdPhoneNumber
                                                 privacy:![Settings sharedSettings].showCallerId
                                                   reply:^(NSError* error, NSString* theUuid)
     {

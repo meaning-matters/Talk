@@ -10,4 +10,6 @@
 
 @interface ItemsViewController : UITableViewController
 
+- (void)refresh:(id)sender;
+
 @end

@@ -12,6 +12,4 @@
 
 @interface NumbersViewController : ItemsViewController <NSFetchedResultsControllerDelegate>
 
-- (void)refresh:(id)sender;
-
 @end
