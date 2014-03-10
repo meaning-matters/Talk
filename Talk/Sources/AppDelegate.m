@@ -56,14 +56,6 @@
         // Set callback mode on, when there's no VoIP support.
         !HAS_VOIP ? [Settings sharedSettings].callbackMode = YES : 0;
 
-        [Settings sharedSettings].callbackE164 = nil;
-        [Settings sharedSettings].callerIdE164 = @"+447936699537";
-        [BlockAlertView showAlertViewWithTitle:@"Fixed Callback"
-                                       message:@"Callback settings are fixed at startup, until fixed in Settings."
-                                    completion:nil
-                             cancelButtonTitle:@"Close"
-                             otherButtonTitles:nil];
-
         // Basic UI.
         self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         self.tabBarController = [[UITabBarController alloc] init];
