@@ -502,7 +502,8 @@ static SipInterface*    sipInterface;
             message = NSLocalizedStringWithDefaultValue(@"Callback InvalidMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"The number you're trying to call does not seem to be "
-                                                        @"valid.",
+                                                        @"valid.\n\nTry adding the country code, or check the "
+                                                        @"current Home Country in Settings.",
                                                         @"Alert message: ...\n"
                                                         @"[iOS alert message size]");
 

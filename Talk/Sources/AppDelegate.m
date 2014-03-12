@@ -9,7 +9,7 @@
 //### Want to remove CoreData? http://www.gravitywell.co.uk/blog/post/how-to-quickly-add-core-data-to-an-app-in-xcode-4
 
 #import <MediaPlayer/MediaPlayer.h>
-#import <HockeySDK/HockeySDK.h>
+#import "HockeySDK.h"
 #import "AppDelegate.h"
 #import "Settings.h"
 #import "PhoneNumber.h"
@@ -72,6 +72,9 @@
 
         // Apply skinning.
         [Skinning sharedSkinning];
+
+        // Set address book delegate.
+        [NBAddressBookManager sharedManager].delegate = self;
 
         // Allow mixing audio from other apps.  By default this is not the case.
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
@@ -414,6 +417,7 @@
     url                    = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Welcome" ofType:@"mp3"]];
     welcomePlayer          = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
     welcomePlayer.delegate = self;
+    welcomePlayer.volume   = 0.25;
 
     [welcomePlayer play];
 }
@@ -422,6 +426,35 @@
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer*)player successfully:(BOOL)flag
 {
     welcomePlayer = nil;
+}
+
+
+#pragma mark - Address Book Delegate
+
+- (UIColor*)tintColor
+{
+    return [Skinning tintColor];
+}
+
+
+- (NSString*)formatNumber:(NSString*)number
+{
+    PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:number];
+
+    if ([phoneNumber asYouTypeFormat] != nil)
+    {
+        return [phoneNumber asYouTypeFormat];
+    }
+    else
+    {
+        return number;
+    }
+}
+
+
+- (void)saveContext
+{
+    [[DataManager sharedManager] saveManagedObjectContext:nil];
 }
 
 @end

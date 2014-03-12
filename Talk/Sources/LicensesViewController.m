@@ -97,7 +97,7 @@
     {
         title = NSLocalizedStringWithDefaultValue(@"Licenses SectionFooter", nil,
                                                   [NSBundle mainBundle],
-                                                  @"The licences of open source software used in this app.",
+                                                  @"The licences of open-source software used in this app.",
                                                   @"[* lines]");
     }
 

@@ -1186,7 +1186,7 @@
 		480578B117A4FABD006923BD /* NBNewFieldTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBNewFieldTableViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNewFieldTableViewController.h; sourceTree = "<group>"; };
 		480578B217A4FABD006923BD /* NBNewFieldTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBNewFieldTableViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNewFieldTableViewController.m; sourceTree = "<group>"; };
 		480578B317A4FABD006923BD /* NBNewPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBNewPersonViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNewPersonViewController.h; sourceTree = "<group>"; };
-		480578B417A4FABD006923BD /* NBNewPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBNewPersonViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNewPersonViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		480578B417A4FABD006923BD /* NBNewPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBNewPersonViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNewPersonViewController.m; sourceTree = "<group>"; };
 		480578B517A4FABD006923BD /* NBNotesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBNotesCell.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNotesCell.h; sourceTree = "<group>"; };
 		480578B617A4FABD006923BD /* NBNotesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBNotesCell.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNotesCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		480578B717A4FABD006923BD /* NBPeopleListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPeopleListViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPeopleListViewController.h; sourceTree = "<group>"; };
@@ -4932,8 +4932,6 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/HockeySDK.embeddedframework",
-					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/Vendor",
 					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3.5.4/Vendor",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -4946,6 +4944,7 @@
 				HEADER_SEARCH_PATHS = (
 					"External/pjproject-2.1.0/install/include/",
 					External/WebRTC/GlueLogic,
+					"External/HockeySDK-iOS-3.5.4/Classes",
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -4975,8 +4974,6 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/HockeySDK.embeddedframework",
-					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/Vendor",
 					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3.5.4/Vendor",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -4984,6 +4981,7 @@
 				HEADER_SEARCH_PATHS = (
 					"External/pjproject-2.1.0/install/include/",
 					External/WebRTC/GlueLogic,
+					"External/HockeySDK-iOS-3.5.4/Classes",
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -5104,8 +5102,6 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/HockeySDK.embeddedframework",
-					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/Vendor",
 					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3.5.4/Vendor",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5113,6 +5109,7 @@
 				HEADER_SEARCH_PATHS = (
 					"External/pjproject-2.1.0/install/include/",
 					External/WebRTC/GlueLogic,
+					"External/HockeySDK-iOS-3.5.4/Classes",
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;

@@ -14,9 +14,12 @@
 #import "CountryNames.h"
 #import "DtmfPlayer.h"
 #import "CallManager.h"
+#import "BlockActionSheet.h"
+#import "Strings.h"
+#import "NBPersonViewController.h"
 
 
-@interface DialerViewController ()
+@interface DialerViewController () <NumberLabelDelegate, NBNewPersonViewControllerDelegate>
 {
     PhoneNumber* phoneNumber;    // Holds the current number on screen.
 }
@@ -267,6 +270,20 @@
 }
 
 
+- (NBContact*)createContact
+{
+    ABRecordRef contactRef = ABPersonCreate();
+
+    ABMutableMultiValueRef numberMulti = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+    ABMultiValueAddValueAndLabel(numberMulti, (__bridge CFTypeRef)self.numberLabel.text, kABOtherLabel, NULL);
+    ABRecordSetValue(contactRef, kABPersonPhoneProperty, numberMulti, nil);
+
+    NBContact* contact = [[NBContact alloc] initWithContact:contactRef];
+
+    return contact;
+}
+
+
 #pragma mark - KeypadView Delegate
 
 - (void)keypadView:(KeypadView*)keypadView pressedDigitKey:(KeypadKey)key
@@ -280,7 +297,49 @@
 
 - (void)keypadViewPressedOptionKey:(KeypadView*)keypadView
 {
-    NSLog(@"OPTION");
+    if (self.numberLabel.text.length == 0)
+    {
+        return;
+    }
+
+    NSString* newTitle = NSLocalizedStringWithDefaultValue(@"Dialer CreateNewContact", nil, [NSBundle mainBundle],
+                                                           @"Create New Contact",
+                                                           @"....\n"
+                                                           @"[iOS alert title size].");
+
+    NSString* addTitle = NSLocalizedStringWithDefaultValue(@"Dialer AddToContact", nil, [NSBundle mainBundle],
+                                                           @"Add to Existing Contact",
+                                                           @"....\n"
+                                                           @"[iOS alert title size].");
+
+    [BlockActionSheet showActionSheetWithTitle:nil
+                                    completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
+    {
+        if (buttonIndex == 1)
+        {
+            NBNewPersonViewController* newPersonViewController = [[NBNewPersonViewController alloc] init];
+            [newPersonViewController setContactToMergeWith:[self createContact]];
+
+            [newPersonViewController setANewPersonViewDelegate:self];
+
+            UINavigationController* navigationController;
+            navigationController = [[UINavigationController alloc] initWithRootViewController:newPersonViewController];
+            [self presentViewController:navigationController animated:YES completion:nil];
+        }
+        else if (buttonIndex == 2)
+        {
+            NBPeopleListViewController* listViewController = [[NBPeopleListViewController alloc] init];
+            [listViewController setContactToMergeWith:[self createContact]];
+            [listViewController setANewPersonViewDelegate:self];
+
+            UINavigationController* navigationController;
+            navigationController = [[NBPeoplePickerNavigationController alloc] initWithRootViewController:listViewController];
+            [self presentViewController:navigationController animated:YES completion:nil];
+        }
+    }
+                             cancelButtonTitle:[Strings cancelString]
+                        destructiveButtonTitle:nil
+                             otherButtonTitles:newTitle, addTitle, nil];
 }
 
 
@@ -329,6 +388,14 @@
 {
     phoneNumber.number = numberLabel.text;
     [self update];
+}
+
+
+#pragma mark - NewPersonViewController Delegate
+- (void)newPersonViewController:(NBNewPersonViewController*)newPersonViewController
+       didCompleteWithNewPerson:(ABRecordRef)person
+{
+
 }
 
 @end
