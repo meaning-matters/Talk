@@ -94,7 +94,7 @@ typedef enum
             break;
 
         case TableSectionContactUs:
-            numberOfRows = 3;
+            numberOfRows = 2;
             break;
 
         case TableSectionTestCall:

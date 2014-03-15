@@ -452,7 +452,7 @@ static Common* sharedCommon;
                                                     @"[iOS alert message size]");
 
         button  = NSLocalizedStringWithDefaultValue(@"General GoToiOSSettingButtonTitle", nil,
-                                                    [NSBundle mainBundle], @"To Settings...",
+                                                    [NSBundle mainBundle], @"Settings",
                                                     @"...\n"
                                                     @"[iOS alert title size].");
 

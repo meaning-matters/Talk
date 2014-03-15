@@ -61,8 +61,6 @@ typedef enum
         sections |= HAS_VOIP ? TableSectionCallOptions : 0;
 
         settings = [Settings sharedSettings];
-
-        self.clearsSelectionOnViewWillAppear = YES;
     }
     
     return self;
@@ -73,15 +71,31 @@ typedef enum
 {
     [super viewDidLoad];
 
+    self.clearsSelectionOnViewWillAppear = YES;
+
     [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusSimChangedNotification
                                                       object:nil
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification* note)
     {
-        NSMutableIndexSet*  indexSet = [NSMutableIndexSet indexSet];
+        NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
         [indexSet addIndex:[Common bitIndex:TableSectionHomeCountry]];
         [indexSet addIndex:[Common bitIndex:TableSectionCallOptions]];
         
+        [self.tableView beginUpdates];
+        [self.tableView reloadSections:indexSet
+                      withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView endUpdates];
+    }];
+
+    [[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextObjectsDidChangeNotification
+                                                      object:[DataManager sharedManager].managedObjectContext
+                                                       queue:[NSOperationQueue mainQueue]
+                                                  usingBlock:^(NSNotification* note)
+    {
+        NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
+        [indexSet addIndex:[Common bitIndex:TableSectionCallMode]];
+
         [self.tableView beginUpdates];
         [self.tableView reloadSections:indexSet
                       withRowAnimation:UITableViewRowAnimationFade];
