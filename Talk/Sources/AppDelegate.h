@@ -25,6 +25,7 @@
 
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, AVAudioPlayerDelegate,
+                                      UINavigationControllerDelegate,
                                       BITHockeyManagerDelegate, BITCrashManagerDelegate, AddressBookDelegate>
 
 @property (nonatomic, strong) UIWindow*                                 window;

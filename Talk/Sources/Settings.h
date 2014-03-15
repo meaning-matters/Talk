@@ -14,13 +14,15 @@
 
 + (Settings*)sharedSettings;
 
+- (void)synchronize;
+
 - (void)resetAll;
 
 - (BOOL)haveAccount;
 
 
-@property (nonatomic, strong) NSArray*          tabBarViewControllerClasses;
-@property (nonatomic, assign) NSInteger         tabBarSelectedIndex;    // The current tab.
+@property (nonatomic, strong) NSArray*          tabBarClassNames;
+@property (nonatomic, assign) NSUInteger        tabBarSelectedIndex;    // The current tab.
 
 @property (nonatomic, strong) NSString*         errorDomain;            // Used when creating an NSError.
 

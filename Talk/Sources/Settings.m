@@ -18,32 +18,32 @@
 #import "Common.h"
 
 
-NSString* const TabBarViewControllerClassesKey = @"TabBarViewControllerClasses";
-NSString* const TabBarSelectedIndexKey         = @"TabBarSelectedIndex";
-NSString* const ErrorDomainKey                 = @"ErrorDomain";
-NSString* const HomeCountryKey                 = @"HomeCountry";
-NSString* const HomeCountryFromSimKey          = @"HomeCountryFromSim";
-NSString* const LastDialedNumberKey            = @"LastDialedNumber";
-NSString* const WarnedAboutDefaultCliKey       = @"WarnedAboutDefaultCli";
-NSString* const WebBaseUrlKey                  = @"WebBaseUrl";
-NSString* const WebUsernameKey                 = @"WebUsername";            // Used as keychain 'username'.
-NSString* const WebPasswordKey                 = @"WebPassword";            // Used as keychain 'username'.
-NSString* const SipServerKey                   = @"SipServer";              // Used as keychain 'username'.
-NSString* const SipRealmKey                    = @"SipRealm";               // Used as keychain 'username'.
-NSString* const SipUsernameKey                 = @"SipUsername";            // Used as keychain 'username'.
-NSString* const SipPasswordKey                 = @"SipPassword";            // Used as keychain 'username'.
-NSString* const AllowCellularDataCallsKey      = @"AllowCellularDataCalls";
-NSString* const ShowCallerIdKey                = @"ShowCallerId";
-NSString* const CallbackModeKey                = @"CallbackMode";
-NSString* const CallerIdE164Key                = @"CallerIdE164";
-NSString* const CallbackE164Key                = @"CallbackE164";
-NSString* const NumberTypeMaskKey              = @"NumberTypeMask";
-NSString* const NumbersSortSegmentKey          = @"NumbersSortSegment";
-NSString* const ForwardingsSelectionKey        = @"ForwardingsSelection";
-NSString* const CurrencyCodeKey                = @"CurrencyCode";
-NSString* const CreditKey                      = @"Credit";
-NSString* const PendingNumberBuyKey            = @"PendingNumberBuy";
-NSString* const NeedsServerSyncKey             = @"NeedsServerSync";
+NSString* const TabBarClassNamesKey       = @"TabBarClassNames";
+NSString* const TabBarSelectedIndexKey    = @"TabBarSelectedIndex";
+NSString* const ErrorDomainKey            = @"ErrorDomain";
+NSString* const HomeCountryKey            = @"HomeCountry";
+NSString* const HomeCountryFromSimKey     = @"HomeCountryFromSim";
+NSString* const LastDialedNumberKey       = @"LastDialedNumber";
+NSString* const WarnedAboutDefaultCliKey  = @"WarnedAboutDefaultCli";
+NSString* const WebBaseUrlKey             = @"WebBaseUrl";
+NSString* const WebUsernameKey            = @"WebUsername";            // Used as keychain 'username'.
+NSString* const WebPasswordKey            = @"WebPassword";            // Used as keychain 'username'.
+NSString* const SipServerKey              = @"SipServer";              // Used as keychain 'username'.
+NSString* const SipRealmKey               = @"SipRealm";               // Used as keychain 'username'.
+NSString* const SipUsernameKey            = @"SipUsername";            // Used as keychain 'username'.
+NSString* const SipPasswordKey            = @"SipPassword";            // Used as keychain 'username'.
+NSString* const AllowCellularDataCallsKey = @"AllowCellularDataCalls";
+NSString* const ShowCallerIdKey           = @"ShowCallerId";
+NSString* const CallbackModeKey           = @"CallbackMode";
+NSString* const CallerIdE164Key           = @"CallerIdE164";
+NSString* const CallbackE164Key           = @"CallbackE164";
+NSString* const NumberTypeMaskKey         = @"NumberTypeMask";
+NSString* const NumbersSortSegmentKey     = @"NumbersSortSegment";
+NSString* const ForwardingsSelectionKey   = @"ForwardingsSelection";
+NSString* const CurrencyCodeKey           = @"CurrencyCode";
+NSString* const CreditKey                 = @"Credit";
+NSString* const PendingNumberBuyKey       = @"PendingNumberBuy";
+NSString* const NeedsServerSyncKey        = @"NeedsServerSync";
 
 
 @implementation Settings
@@ -68,6 +68,12 @@ static NSUserDefaults* userDefaults;
     });
 
     return sharedInstance;
+}
+
+
+- (void)synchronize
+{
+    [userDefaults synchronize];
 }
 
 
@@ -111,8 +117,8 @@ static NSUserDefaults* userDefaults;
     {
         dictionary = [NSMutableDictionary dictionary];
 
-        // Default for tabBarViewControllerClasses is handled in AppDelegate.
-        [dictionary setObject:@(2)                                               forKey:TabBarSelectedIndexKey];    // The dialer.
+        // Default for tabBarClassNames is handled in AppDelegate.
+        [dictionary setObject:@(2)                                               forKey:TabBarSelectedIndexKey]; // Contacts.
 
         [dictionary setObject:@"com.numberbay.app"                               forKey:ErrorDomainKey];
 
@@ -148,25 +154,26 @@ static NSUserDefaults* userDefaults;
 
 #pragma mark - Setters
 
-- (NSArray*)tabBarViewControllerClasses
+- (NSArray*)tabBarClassNames
 {
-    return [userDefaults objectForKey:TabBarViewControllerClassesKey];
+    return [userDefaults objectForKey:TabBarClassNamesKey];
 }
 
 
-- (void)setTabBarViewControllerClasses:(NSArray*)tabBarViewControllerClasses
+- (void)setTabBarClassNames:(NSArray*)tabBarClassNames
 {
-    [userDefaults setObject:tabBarViewControllerClasses forKey:TabBarViewControllerClassesKey];
+    [userDefaults setObject:tabBarClassNames forKey:TabBarClassNamesKey];
+    [userDefaults synchronize];
 }
 
 
-- (NSInteger)tabBarSelectedIndex
+- (NSUInteger)tabBarSelectedIndex
 {
     return [userDefaults integerForKey:TabBarSelectedIndexKey];
 }
 
 
-- (void)setTabBarSelectedIndex:(NSInteger)tabBarSelectedIndex
+- (void)setTabBarSelectedIndex:(NSUInteger)tabBarSelectedIndex
 {
     [userDefaults setInteger:tabBarSelectedIndex forKey:TabBarSelectedIndexKey];
 }

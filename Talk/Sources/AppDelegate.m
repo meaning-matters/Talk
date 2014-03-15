@@ -27,7 +27,6 @@
 
 @interface AppDelegate ()
 {
-    NSMutableArray* defaultTabBarViewControllers;
     UIImageView*    defaultFadeImage;
     BOOL            hasFadedDefaultImage;
     AVAudioPlayer*  welcomePlayer;
@@ -203,54 +202,54 @@
 }
 
 
-#pragma mark - TabBar Delegate & General
+#pragma mark - General & TabBar Delegate & More Navigation Delegate
 
 - (void)addViewControllersToTabBar
 {
     // The order in this aryay defines the default tabs order.
-    NSArray* viewControllerClasses =
+    NSArray* tabBarClassNames =
     @[
+        NSStringFromClass([CreditViewController               class]),
+        NSStringFromClass([DialerViewController               class]),
+        NSStringFromClass([NBPeoplePickerNavigationController class]),
+        NSStringFromClass([NBRecentsNavigationController      class]),
+        NSStringFromClass([PhonesViewController               class]),
 #if HAS_BUYING_NUMBERS
         NSStringFromClass([NumbersViewController              class]),
         NSStringFromClass([ForwardingsViewController          class]),
 #endif
-        NSStringFromClass([DialerViewController               class]),
-        NSStringFromClass([NBPeoplePickerNavigationController class]),
-        NSStringFromClass([PhonesViewController               class]),
-        NSStringFromClass([CreditViewController               class]),
-        NSStringFromClass([NBRecentsNavigationController      class]),
+        NSStringFromClass([SettingsViewController             class]),
         NSStringFromClass([HelpsViewController                class]),
         NSStringFromClass([AboutViewController                class]),
-        NSStringFromClass([SettingsViewController             class]),
-        //NSStringFromClass([ShareViewController                class]),
-        //NSStringFromClass([GroupsViewController               class]),
+      //NSStringFromClass([ShareViewController                class]),
+      //NSStringFromClass([GroupsViewController               class]),
     ];
 
-    NSSet*  preferredSet = [NSSet setWithArray:[Settings sharedSettings].tabBarViewControllerClasses];
-    NSSet*  defaultSet   = [NSSet setWithArray:viewControllerClasses];
+    NSSet* preferredSet = [NSSet setWithArray:[Settings sharedSettings].tabBarClassNames];
+    NSSet* defaultSet   = [NSSet setWithArray:tabBarClassNames];
 
     if ([preferredSet isEqualToSet:defaultSet])
     {
         // No view controllers were added/deleted/renamed.  Safe to use preferred set.
-        viewControllerClasses = [Settings sharedSettings].tabBarViewControllerClasses;
+        tabBarClassNames = [Settings sharedSettings].tabBarClassNames;
     }
     else
     {
         // First time, or view controllers were added/deleted/renamed.  Reset preferred set.
-        [Settings sharedSettings].tabBarViewControllerClasses = viewControllerClasses;
+        [Settings sharedSettings].tabBarClassNames = tabBarClassNames;
     }
 
     NSMutableArray* viewControllers = [NSMutableArray array];
-    for (NSString* class in viewControllerClasses)
+    for (NSString* className in tabBarClassNames)
     {
-        UIViewController* viewController = [[NSClassFromString(class) alloc] init];
+        UIViewController* viewController = [[NSClassFromString(className) alloc] init];
 
-        if ([class isEqualToString:NSStringFromClass([NBPeoplePickerNavigationController class])])
+        if ([className isEqualToString:NSStringFromClass([NBPeoplePickerNavigationController class])])
         {
             [viewControllers addObject:viewController];
             [self setPeoplePickerViewController:[viewControllers lastObject]];
         }
-        else if ([class isEqualToString:NSStringFromClass([NBRecentsNavigationController class])])
+        else if ([className isEqualToString:NSStringFromClass([NBRecentsNavigationController class])])
         {
             [viewControllers addObject:viewController];
             [self setRecentsViewController:[viewControllers lastObject]];
@@ -263,7 +262,7 @@
             [viewControllers addObject:navigationController];
 
             // Set appropriate AppDelegate property.
-            SEL selector = NSSelectorFromString([@"set" stringByAppendingFormat:@"%@:", [class description]]);
+            SEL selector = NSSelectorFromString([@"set" stringByAppendingFormat:@"%@:", className]);
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
             [self performSelector:selector withObject:[[viewControllers lastObject] topViewController]];
@@ -271,36 +270,30 @@
         }
     }
 
-    defaultTabBarViewControllers          = viewControllers;
     self.tabBarController.viewControllers = viewControllers;
-    // self.tabBarController.selectedIndex   = [Settings sharedSettings].tabBarSelectedIndex;
-}
+    NSLog(@"%d", [Settings sharedSettings].tabBarSelectedIndex);
+    if ([Settings sharedSettings].tabBarSelectedIndex == NSNotFound)
+    {
+        self.tabBarController.selectedViewController = self.tabBarController.moreNavigationController;
+    }
+    else
+    {
+        self.tabBarController.selectedViewController = viewControllers[[Settings sharedSettings].tabBarSelectedIndex];
+    }
 
-
-- (void)setDefaultTabBarViewControllers
-{
-    [self.tabBarController setViewControllers:defaultTabBarViewControllers animated:YES];
-}
-
-
-- (void)tabBarController:(UITabBarController*)tabBarController didSelectViewController:(UIViewController*)viewController
-{
+    self.tabBarController.moreNavigationController.delegate = self;
 }
 
 
 - (void)tabBarController:(UITabBarController*)tabBarController willBeginCustomizingViewControllers:(NSArray*)viewControllers
 {
     id customizeView = [[tabBarController view] subviews][1];
-    if([customizeView isKindOfClass:NSClassFromString(@"UITabBarCustomizeView")] == YES)
+    if ([customizeView isKindOfClass:NSClassFromString(@"UITabBarCustomizeView")] == YES)
     {
-        UINavigationBar* navigationBar = (UINavigationBar*)[customizeView subviews][0];
+        UINavigationBar* navigationBar = (UINavigationBar*)[customizeView subviews][1];
         if ([navigationBar isKindOfClass:[UINavigationBar class]])
         {
-            UIBarButtonItem* barButtonItem;
-            barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemUndo
-                                                                          target:self
-                                                                          action:@selector(setDefaultTabBarViewControllers)];
-            navigationBar.topItem.leftBarButtonItem = barButtonItem;
+            navigationBar.topItem.leftBarButtonItem.tintColor = [Skinning tintColor];
         }
     }
 }
@@ -311,15 +304,73 @@
 {
     if (changed)
     {
-        NSMutableArray* viewControllerClasses = [NSMutableArray array];
+        NSMutableArray* classNames = [NSMutableArray array];
         for (UINavigationController* navigationController in self.tabBarController.viewControllers)
         {
-            Class   class = [navigationController.topViewController class];
-            [viewControllerClasses addObject:NSStringFromClass(class)];
+            UIViewController* viewController = navigationController.topViewController;
+            [classNames addObject:[self classNameFromViewController:viewController]];
         }
 
-        [Settings sharedSettings].tabBarViewControllerClasses = viewControllerClasses;
-        defaultTabBarViewControllers = [NSMutableArray arrayWithArray:viewControllers];
+        [Settings sharedSettings].tabBarClassNames = classNames;
+    }
+}
+
+
+- (void)tabBarController:(UITabBarController*)tabBarController didSelectViewController:(UIViewController*)viewController
+{
+    if (tabBarController.selectedIndex == NSNotFound)
+    {
+        // More tab.
+        [Settings sharedSettings].tabBarSelectedIndex = NSNotFound;
+    }
+    else
+    {
+        [Settings sharedSettings].tabBarSelectedIndex = [self.tabBarController.viewControllers indexOfObject:viewController];
+    }
+
+    [[Settings sharedSettings] synchronize];
+}
+
+
+- (void)navigationController:(UINavigationController*)navigationController
+       didShowViewController:(UIViewController*)viewController
+                    animated:(BOOL)animated
+{
+    if ([viewController isKindOfClass:NSClassFromString(@"UIMoreListController")])
+    {
+        [Settings sharedSettings].tabBarSelectedIndex = NSNotFound;
+        [[Settings sharedSettings] synchronize];
+    }
+    else
+    {
+        NSString*  className = [self classNameFromViewController:viewController];
+        NSUInteger index     = [[Settings sharedSettings].tabBarClassNames indexOfObject:className];
+
+        // When NSNotFound, we are a level deeper; but we only remember top level choice.
+        if (index != NSNotFound)
+        {
+            [Settings sharedSettings].tabBarSelectedIndex = index;
+            [[Settings sharedSettings] synchronize];
+        }
+    }
+}
+
+
+- (NSString*)classNameFromViewController:(UIViewController*)viewController
+{
+    NSString* className = NSStringFromClass([viewController class]);
+
+    if ([className isEqualToString:@"NBPeopleListViewController"])
+    {
+        return @"NBPeoplePickerNavigationController";
+    }
+    else if ([className isEqualToString:@"NBRecentsListViewController"])
+    {
+        return @"NBRecentsNavigationController";
+    }
+    else
+    {
+        return className;
     }
 }
 
