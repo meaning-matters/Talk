@@ -163,7 +163,6 @@ static NSUserDefaults* userDefaults;
 - (void)setTabBarClassNames:(NSArray*)tabBarClassNames
 {
     [userDefaults setObject:tabBarClassNames forKey:TabBarClassNamesKey];
-    [userDefaults synchronize];
 }
 
 

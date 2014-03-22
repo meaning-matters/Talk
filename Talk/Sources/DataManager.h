@@ -31,6 +31,9 @@
 
 - (void)setSortKeys:(NSArray*)sortKeys ofResultsController:(NSFetchedResultsController*)resultsController;
 
+- (void)synchronizeAll:(void (^)(NSError* error))completion;
+
+// Same as synchronizeAll: but with alert when something went wrong.
 - (void)synchronizeWithServer:(void (^)(NSError* error))completion;
 
 @end

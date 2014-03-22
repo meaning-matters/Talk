@@ -41,9 +41,6 @@
 
 @implementation PurchaseManager
 
-@synthesize currencyCode = _currencyCode;
-@synthesize isNewAccount = _isNewAccount;
-
 #pragma mark - Singleton Stuff
 
 + (PurchaseManager*)sharedManager
@@ -100,12 +97,15 @@
     [self.productIdentifiers addObject:[self productIdentifierForCreditTier:10]];
     [self.productIdentifiers addObject:[self productIdentifierForCreditTier:20]];
     [self.productIdentifiers addObject:[self productIdentifierForCreditTier:50]];
+
+#if HAS_BUYING_NUMBERS
     [self.productIdentifiers addObject:[self productIdentifierForCreditTier:75]];   // Only used during number purchase.
 
     for (int tier = 1; tier <= 87; tier++)
     {
         [self.productIdentifiers addObject:[self productIdentifierForNumberTier:tier]];
     }
+#endif
 }
 
 
@@ -622,7 +622,7 @@
 
     if (product != nil)
     {
-        NSNumberFormatter*  numberFormatter;
+        NSNumberFormatter* numberFormatter;
 
         numberFormatter = [[NSNumberFormatter alloc] init];
         [numberFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
@@ -643,7 +643,7 @@
 
 - (void)buyAccount:(void (^)(BOOL success, id object))completion
 {
-    if (self.buyCompletion != nil || [Common checkRemoteNotifications] == NO)
+    if (self.buyCompletion != nil || (HAS_BUYING_NUMBERS && [Common checkRemoteNotifications] == NO))
     {
         completion ? completion(NO, nil) : 0;
 
@@ -656,7 +656,7 @@
 
 - (void)restoreAccount:(void (^)(BOOL success, id object))completion
 {
-    if (self.buyCompletion != nil || [Common checkRemoteNotifications] == NO)
+    if (self.buyCompletion != nil || (HAS_BUYING_NUMBERS && [Common checkRemoteNotifications] == NO))
     {
         completion ? completion(NO, nil) : 0;
 

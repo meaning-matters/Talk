@@ -327,8 +327,6 @@
     {
         [Settings sharedSettings].tabBarSelectedIndex = [self.tabBarController.viewControllers indexOfObject:viewController];
     }
-
-    [[Settings sharedSettings] synchronize];
 }
 
 
@@ -339,7 +337,6 @@
     if ([viewController isKindOfClass:NSClassFromString(@"UIMoreListController")])
     {
         [Settings sharedSettings].tabBarSelectedIndex = NSNotFound;
-        [[Settings sharedSettings] synchronize];
     }
     else
     {
@@ -350,7 +347,6 @@
         if (index != NSNotFound)
         {
             [Settings sharedSettings].tabBarSelectedIndex = index;
-            [[Settings sharedSettings] synchronize];
         }
     }
 }

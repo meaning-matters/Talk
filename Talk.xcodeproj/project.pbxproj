@@ -85,6 +85,8 @@
 		4805791017A50FB2006923BD /* NBValueListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578D717A4FABD006923BD /* NBValueListTableViewController.m */; };
 		4805791117A50FB2006923BD /* NSMutableString+Appending.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578ED17A4FACF006923BD /* NSMutableString+Appending.m */; };
 		4805791217A50FBF006923BD /* NSString+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578EF17A4FACF006923BD /* NSString+Common.m */; };
+		480BEF9518D59ECA00C882E0 /* GetStartedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 480BEF9418D59ECA00C882E0 /* GetStartedView.xib */; };
+		480BEF9618D73EF900C882E0 /* GetStartedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480BEF8D18D59E7400C882E0 /* GetStartedViewController.m */; };
 		480E524A18C5103C0054A791 /* libHockeySDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 480E524518C50F280054A791 /* libHockeySDK.a */; };
 		480E524C18C510510054A791 /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 480E524B18C510510054A791 /* CrashReporter.framework */; };
 		480E524D18C5109D0054A791 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 480E524718C50F280054A791 /* HockeySDKResources.bundle */; };
@@ -206,6 +208,17 @@
 		48367A4417247B2D001A02AF /* CueStopWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A1417247B2D001A02AF /* CueStopWhite@2x.png */; };
 		48367A47172552D2001A02AF /* RecordingControlsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48367A46172552D2001A02AF /* RecordingControlsCell.m */; };
 		48367A48172552D2001A02AF /* RecordingControlsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48367A46172552D2001A02AF /* RecordingControlsCell.m */; };
+		4837AF5E18D83BCB00D3AEBC /* GetStartedContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837AF5D18D83BCB00D3AEBC /* GetStartedContentViewController.m */; };
+		4837AF6018D83C7A00D3AEBC /* GetStartedContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF5F18D83C7A00D3AEBC /* GetStartedContentView.xib */; };
+		4837AF6218D872D500D3AEBC /* GetStarted3.png in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF6118D872D500D3AEBC /* GetStarted3.png */; };
+		4837AF6418D89E8600D3AEBC /* GetStarted.json in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF6318D89E8600D3AEBC /* GetStarted.json */; };
+		4837AF6A18D9B6EC00D3AEBC /* GetStartedRestoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837AF6918D9B6EC00D3AEBC /* GetStartedRestoreViewController.m */; };
+		4837AF6D18D9B89A00D3AEBC /* GetStartedStartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837AF6C18D9B89A00D3AEBC /* GetStartedStartViewController.m */; };
+		4837AF6F18D9B8C400D3AEBC /* GetStartedActionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF6E18D9B8C400D3AEBC /* GetStartedActionView.xib */; };
+		4837AF7618D9DAF000D3AEBC /* GetStartedActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837AF7518D9DAF000D3AEBC /* GetStartedActionViewController.m */; };
+		4837AF7A18DDDD5500D3AEBC /* GetStarted4.png in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF7718DDDD5500D3AEBC /* GetStarted4.png */; };
+		4837AF7B18DDDD5500D3AEBC /* GetStarted5.png in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF7818DDDD5500D3AEBC /* GetStarted5.png */; };
+		4837AF7C18DDDD5500D3AEBC /* GetStarted6.png in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF7918DDDD5500D3AEBC /* GetStarted6.png */; };
 		4837BB3C165D701F00E46C36 /* LibPhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */; };
 		4837BB3D165D701F00E46C36 /* LibPhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */; };
 		4837BB66165F726400E46C36 /* BlockAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB65165F726300E46C36 /* BlockAlertView.m */; };
@@ -302,6 +315,9 @@
 		484D937117131E97006FA875 /* NumberAreaZipsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936F17131E97006FA875 /* NumberAreaZipsViewController.m */; };
 		484F7C3B164C15770059A5A6 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3A164C15770059A5A6 /* CoreTelephony.framework */; };
 		484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */; };
+		485A608918D768880055C176 /* GetStartedLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 485A608818D768880055C176 /* GetStartedLogo.png */; };
+		485A609018D771F60055C176 /* GetStarted1.png in Resources */ = {isa = PBXBuildFile; fileRef = 485A608F18D771F60055C176 /* GetStarted1.png */; };
+		485A609218D7AEC50055C176 /* GetStarted2.png in Resources */ = {isa = PBXBuildFile; fileRef = 485A609118D7AEC50055C176 /* GetStarted2.png */; };
 		485E38A017B7E13C0089F0F1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E389F17B7E13B0089F0F1 /* HelpViewController.m */; };
 		485E38A117B7E13C0089F0F1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E389F17B7E13B0089F0F1 /* HelpViewController.m */; };
 		485E38A317B7E1960089F0F1 /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485E38A217B7E1960089F0F1 /* HelpView.xib */; };
@@ -1154,7 +1170,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4805788317A4F7CF006923BD /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4805788617A4FAAA006923BD /* NBAddressBookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBAddressBookManager.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressBookManager.h; sourceTree = "<group>"; };
 		4805788717A4FAAA006923BD /* NBAddressBookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBAddressBookManager.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressBookManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		4805788817A4FAAA006923BD /* NBAddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBAddressCell.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressCell.h; sourceTree = "<group>"; };
@@ -1225,6 +1240,9 @@
 		480578ED17A4FACF006923BD /* NSMutableString+Appending.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = "NSMutableString+Appending.m"; path = "../../nbaddressbook/NBAddressBook/NBAddressBook/NSMutableString+Appending.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		480578EE17A4FACF006923BD /* NSString+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+Common.h"; path = "../../nbaddressbook/NBAddressBook/NBAddressBook/NSString+Common.h"; sourceTree = "<group>"; };
 		480578EF17A4FACF006923BD /* NSString+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Common.m"; path = "../../nbaddressbook/NBAddressBook/NBAddressBook/NSString+Common.m"; sourceTree = "<group>"; };
+		480BEF8C18D59E7400C882E0 /* GetStartedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetStartedViewController.h; sourceTree = "<group>"; };
+		480BEF8D18D59E7400C882E0 /* GetStartedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetStartedViewController.m; sourceTree = "<group>"; };
+		480BEF9418D59ECA00C882E0 /* GetStartedView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GetStartedView.xib; sourceTree = "<group>"; };
 		480E523C18C50F280054A791 /* HockeySDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HockeySDK.xcodeproj; path = "External/HockeySDK-iOS-3.5.4/Support/HockeySDK.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		480E524B18C510510054A791 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CrashReporter.framework; path = "External/HockeySDK-iOS-3.5.4/Vendor/CrashReporter.framework"; sourceTree = "<group>"; };
 		4812727216487E2D00534450 /* LibPhoneNumber.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = LibPhoneNumber.js; path = External/LibPhoneNumber/LibPhoneNumber.js; sourceTree = SOURCE_ROOT; };
@@ -1306,6 +1324,21 @@
 		48367A1417247B2D001A02AF /* CueStopWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CueStopWhite@2x.png"; sourceTree = "<group>"; };
 		48367A45172552D2001A02AF /* RecordingControlsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingControlsCell.h; sourceTree = "<group>"; };
 		48367A46172552D2001A02AF /* RecordingControlsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordingControlsCell.m; sourceTree = "<group>"; };
+		4837AF5C18D83BCB00D3AEBC /* GetStartedContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetStartedContentViewController.h; sourceTree = "<group>"; };
+		4837AF5D18D83BCB00D3AEBC /* GetStartedContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetStartedContentViewController.m; sourceTree = "<group>"; };
+		4837AF5F18D83C7A00D3AEBC /* GetStartedContentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GetStartedContentView.xib; sourceTree = "<group>"; };
+		4837AF6118D872D500D3AEBC /* GetStarted3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted3.png; sourceTree = "<group>"; };
+		4837AF6318D89E8600D3AEBC /* GetStarted.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = GetStarted.json; path = Resources/GetStarted.json; sourceTree = "<group>"; };
+		4837AF6818D9B6EC00D3AEBC /* GetStartedRestoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetStartedRestoreViewController.h; sourceTree = "<group>"; };
+		4837AF6918D9B6EC00D3AEBC /* GetStartedRestoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetStartedRestoreViewController.m; sourceTree = "<group>"; };
+		4837AF6B18D9B89A00D3AEBC /* GetStartedStartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetStartedStartViewController.h; sourceTree = "<group>"; };
+		4837AF6C18D9B89A00D3AEBC /* GetStartedStartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetStartedStartViewController.m; sourceTree = "<group>"; };
+		4837AF6E18D9B8C400D3AEBC /* GetStartedActionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GetStartedActionView.xib; sourceTree = "<group>"; };
+		4837AF7418D9DAF000D3AEBC /* GetStartedActionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetStartedActionViewController.h; sourceTree = "<group>"; };
+		4837AF7518D9DAF000D3AEBC /* GetStartedActionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetStartedActionViewController.m; sourceTree = "<group>"; };
+		4837AF7718DDDD5500D3AEBC /* GetStarted4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted4.png; sourceTree = "<group>"; };
+		4837AF7818DDDD5500D3AEBC /* GetStarted5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted5.png; sourceTree = "<group>"; };
+		4837AF7918DDDD5500D3AEBC /* GetStarted6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted6.png; sourceTree = "<group>"; };
 		4837BB3A165D701F00E46C36 /* LibPhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibPhoneNumber.h; sourceTree = "<group>"; };
 		4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibPhoneNumber.m; sourceTree = "<group>"; };
 		4837BB64165F726300E46C36 /* BlockAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockAlertView.h; sourceTree = "<group>"; };
@@ -1374,6 +1407,9 @@
 		484D936F17131E97006FA875 /* NumberAreaZipsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaZipsViewController.m; sourceTree = "<group>"; };
 		484F7C3A164C15770059A5A6 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		485A608818D768880055C176 /* GetStartedLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStartedLogo.png; sourceTree = "<group>"; };
+		485A608F18D771F60055C176 /* GetStarted1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted1.png; sourceTree = "<group>"; };
+		485A609118D7AEC50055C176 /* GetStarted2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted2.png; sourceTree = "<group>"; };
 		485E389E17B7E1390089F0F1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
 		485E389F17B7E13B0089F0F1 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
 		485E38A217B7E1960089F0F1 /* HelpView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HelpView.xib; sourceTree = "<group>"; };
@@ -2474,6 +2510,7 @@
 		48338FA816170CBA0033F4C1 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				485A608718D768880055C176 /* GetStarted */,
 				4846D8A71743F47000C40713 /* Logo.png */,
 				4846D8A81743F47000C40713 /* Logo@2x.png */,
 				4864B3F5175668CA0006542F /* LogoFacebook.png */,
@@ -2641,6 +2678,20 @@
 				484943821753252800E1D5C4 /* TwitterWhite@2x.png */,
 			);
 			path = Share;
+			sourceTree = "<group>";
+		};
+		485A608718D768880055C176 /* GetStarted */ = {
+			isa = PBXGroup;
+			children = (
+				485A608818D768880055C176 /* GetStartedLogo.png */,
+				485A608F18D771F60055C176 /* GetStarted1.png */,
+				485A609118D7AEC50055C176 /* GetStarted2.png */,
+				4837AF6118D872D500D3AEBC /* GetStarted3.png */,
+				4837AF7718DDDD5500D3AEBC /* GetStarted4.png */,
+				4837AF7818DDDD5500D3AEBC /* GetStarted5.png */,
+				4837AF7918DDDD5500D3AEBC /* GetStarted6.png */,
+			);
+			path = GetStarted;
 			sourceTree = "<group>";
 		};
 		485E38BC17C40D070089F0F1 /* NumberDuration */ = {
@@ -3334,6 +3385,9 @@
 				4814EA3217CA98F4004B7A3C /* CreditBuyCell.xib */,
 				4814EA3917CB18DB004B7A3C /* CreditAmountCell.xib */,
 				48AF450A164948CD00DFE3D8 /* DialerView.xib */,
+				4837AF5F18D83C7A00D3AEBC /* GetStartedContentView.xib */,
+				4837AF6E18D9B8C400D3AEBC /* GetStartedActionView.xib */,
+				480BEF9418D59ECA00C882E0 /* GetStartedView.xib */,
 				48AF450D164948DC00DFE3D8 /* GroupsView.xib */,
 				485E38A217B7E1960089F0F1 /* HelpView.xib */,
 				48D0A6F91655E2C600FA2D98 /* KeypadView.xib */,
@@ -3379,6 +3433,10 @@
 				48AF4564164979F400DFE3D8 /* ForwardingsViewController.m */,
 				48CA5040172FC6C800CB1B7B /* ForwardingSequenceViewController.h */,
 				48CA5041172FC6C800CB1B7B /* ForwardingSequenceViewController.m */,
+				4837AF5C18D83BCB00D3AEBC /* GetStartedContentViewController.h */,
+				4837AF5D18D83BCB00D3AEBC /* GetStartedContentViewController.m */,
+				480BEF8C18D59E7400C882E0 /* GetStartedViewController.h */,
+				480BEF8D18D59E7400C882E0 /* GetStartedViewController.m */,
 				48AF44F4164947E600DFE3D8 /* GroupsViewController.h */,
 				48AF44F5164947E600DFE3D8 /* GroupsViewController.m */,
 				485E389E17B7E1390089F0F1 /* HelpViewController.h */,
@@ -3427,6 +3485,12 @@
 				48C97EA218943C7300174DE9 /* PhoneViewController.m */,
 				48C4319F189EDFB40008FE01 /* VerifyPhoneViewController.h */,
 				48C431A0189EDFB40008FE01 /* VerifyPhoneViewController.m */,
+				4837AF6818D9B6EC00D3AEBC /* GetStartedRestoreViewController.h */,
+				4837AF6918D9B6EC00D3AEBC /* GetStartedRestoreViewController.m */,
+				4837AF6B18D9B89A00D3AEBC /* GetStartedStartViewController.h */,
+				4837AF6C18D9B89A00D3AEBC /* GetStartedStartViewController.m */,
+				4837AF7418D9DAF000D3AEBC /* GetStartedActionViewController.h */,
+				4837AF7518D9DAF000D3AEBC /* GetStartedActionViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -3447,6 +3511,7 @@
 				48B9386B187B647F00132535 /* Helps.json */,
 				48B9386C187B647F00132535 /* Licenses.json */,
 				48B9386D187B647F00132535 /* Thanks.html */,
+				4837AF6318D89E8600D3AEBC /* GetStarted.json */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -3599,6 +3664,7 @@
 		48884A671615CE920005AA79 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastTestingUpgradeCheck = 0510;
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Cornelis van der Bent";
 				TargetAttributes = {
@@ -3715,6 +3781,7 @@
 				485F6A661637270100D61365 /* BG@2x.png in Resources */,
 				485F6A671637270100D61365 /* BH.png in Resources */,
 				485F6A681637270100D61365 /* BH@2x.png in Resources */,
+				485A609018D771F60055C176 /* GetStarted1.png in Resources */,
 				485F6A691637270100D61365 /* BI.png in Resources */,
 				485F6A6A1637270100D61365 /* BI@2x.png in Resources */,
 				485F6A6B1637270100D61365 /* BJ.png in Resources */,
@@ -3722,6 +3789,7 @@
 				485F6A6D1637270100D61365 /* BL.png in Resources */,
 				485F6A6E1637270100D61365 /* BL@2x.png in Resources */,
 				485F6A6F1637270100D61365 /* BM.png in Resources */,
+				4837AF6418D89E8600D3AEBC /* GetStarted.json in Resources */,
 				485F6A701637270100D61365 /* BM@2x.png in Resources */,
 				485F6A711637270100D61365 /* BN.png in Resources */,
 				485F6A721637270100D61365 /* BN@2x.png in Resources */,
@@ -3849,6 +3917,7 @@
 				485F6AEF1637270100D61365 /* GU.png in Resources */,
 				485F6AF01637270100D61365 /* GU@2x.png in Resources */,
 				485F6AF11637270100D61365 /* GW.png in Resources */,
+				4837AF6018D83C7A00D3AEBC /* GetStartedContentView.xib in Resources */,
 				485F6AF21637270100D61365 /* GW@2x.png in Resources */,
 				485F6AF31637270100D61365 /* GY.png in Resources */,
 				485F6AF41637270100D61365 /* GY@2x.png in Resources */,
@@ -3871,6 +3940,7 @@
 				485F6B071637270100D61365 /* IM.png in Resources */,
 				485F6B081637270100D61365 /* IM@2x.png in Resources */,
 				485F6B091637270100D61365 /* IN.png in Resources */,
+				4837AF7A18DDDD5500D3AEBC /* GetStarted4.png in Resources */,
 				485F6B0A1637270100D61365 /* IN@2x.png in Resources */,
 				485F6B0B1637270100D61365 /* IO.png in Resources */,
 				485F6B0C1637270100D61365 /* IO@2x.png in Resources */,
@@ -3880,6 +3950,7 @@
 				485F6B101637270100D61365 /* IR@2x.png in Resources */,
 				485F6B111637270100D61365 /* IS.png in Resources */,
 				485F6B121637270100D61365 /* IS@2x.png in Resources */,
+				485A609218D7AEC50055C176 /* GetStarted2.png in Resources */,
 				485F6B131637270100D61365 /* IT.png in Resources */,
 				485F6B141637270100D61365 /* IT@2x.png in Resources */,
 				485F6B151637270100D61365 /* JE.png in Resources */,
@@ -3895,6 +3966,7 @@
 				485F6B1F1637270100D61365 /* KG.png in Resources */,
 				485F6B201637270100D61365 /* KG@2x.png in Resources */,
 				485F6B211637270100D61365 /* KH.png in Resources */,
+				485A608918D768880055C176 /* GetStartedLogo.png in Resources */,
 				485F6B221637270100D61365 /* KH@2x.png in Resources */,
 				485F6B231637270100D61365 /* KI.png in Resources */,
 				485F6B241637270100D61365 /* KI@2x.png in Resources */,
@@ -3916,6 +3988,7 @@
 				485F6B341637270100D61365 /* LA@2x.png in Resources */,
 				485F6B351637270100D61365 /* LB.png in Resources */,
 				485F6B361637270100D61365 /* LB@2x.png in Resources */,
+				4837AF7B18DDDD5500D3AEBC /* GetStarted5.png in Resources */,
 				485F6B371637270100D61365 /* LC.png in Resources */,
 				485F6B381637270100D61365 /* LC@2x.png in Resources */,
 				485F6B391637270100D61365 /* LI.png in Resources */,
@@ -3924,6 +3997,7 @@
 				485F6B3C1637270100D61365 /* LK@2x.png in Resources */,
 				485F6B3D1637270100D61365 /* LR.png in Resources */,
 				485F6B3E1637270100D61365 /* LR@2x.png in Resources */,
+				4837AF7C18DDDD5500D3AEBC /* GetStarted6.png in Resources */,
 				485F6B3F1637270100D61365 /* LS.png in Resources */,
 				485F6B401637270100D61365 /* LS@2x.png in Resources */,
 				485F6B411637270100D61365 /* LT.png in Resources */,
@@ -4021,6 +4095,7 @@
 				485F6B9B1637270100D61365 /* PK.png in Resources */,
 				485F6B9C1637270100D61365 /* PK@2x.png in Resources */,
 				485F6B9D1637270100D61365 /* PL.png in Resources */,
+				480BEF9518D59ECA00C882E0 /* GetStartedView.xib in Resources */,
 				485F6B9E1637270100D61365 /* PL@2x.png in Resources */,
 				485F6B9F1637270100D61365 /* PM.png in Resources */,
 				48995E1018742206001395C2 /* AppledocSettings.plist in Resources */,
@@ -4036,6 +4111,7 @@
 				485F6BAB1637270100D61365 /* PY.png in Resources */,
 				485F6BAC1637270100D61365 /* PY@2x.png in Resources */,
 				485F6BAD1637270100D61365 /* QA.png in Resources */,
+				4837AF6F18D9B8C400D3AEBC /* GetStartedActionView.xib in Resources */,
 				485F6BAE1637270100D61365 /* QA@2x.png in Resources */,
 				485F6BAF1637270100D61365 /* RE.png in Resources */,
 				485F6BB01637270100D61365 /* RE@2x.png in Resources */,
@@ -4157,6 +4233,7 @@
 				485F6C241637270100D61365 /* YT@2x.png in Resources */,
 				485F6C251637270100D61365 /* ZA.png in Resources */,
 				485F6C261637270100D61365 /* ZA@2x.png in Resources */,
+				4837AF6218D872D500D3AEBC /* GetStarted3.png in Resources */,
 				485F6C271637270100D61365 /* ZM.png in Resources */,
 				485F6C281637270100D61365 /* ZM@2x.png in Resources */,
 				485F6C291637270100D61365 /* ZW.png in Resources */,
@@ -4572,6 +4649,7 @@
 				48DD72CD169F56F000CD7080 /* AFURLConnectionOperation.m in Sources */,
 				48DD72CF169F56F000CD7080 /* AFXMLRequestOperation.m in Sources */,
 				48DD72D1169F56F000CD7080 /* UIImageView+AFNetworking.m in Sources */,
+				480BEF9618D73EF900C882E0 /* GetStartedViewController.m in Sources */,
 				48DD72D5169F5AC600CD7080 /* WebClient.m in Sources */,
 				4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */,
 				48F5D2ED16B9A380001576E1 /* Base64.m in Sources */,
@@ -4588,6 +4666,7 @@
 				48BC7F3C1702FDD1006671B5 /* NumberViewController.m in Sources */,
 				489387FB17039158005CC795 /* ForwardingData.m in Sources */,
 				489387FF17039165005CC795 /* RecordingData.m in Sources */,
+				4837AF6D18D9B89A00D3AEBC /* GetStartedStartViewController.m in Sources */,
 				48ADD0F71706791A001515EB /* UIView+AnimateHidden.m in Sources */,
 				48A0CE6A1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */,
 				484D936C1712FBA1006FA875 /* NumberAreaCitiesViewController.m in Sources */,
@@ -4601,6 +4680,7 @@
 				48CA5042172FC6C800CB1B7B /* ForwardingSequenceViewController.m in Sources */,
 				48B0C3F9174989F500DAB3BD /* Keychain.m in Sources */,
 				48A0CE781809BE3100B8A9F8 /* CallBaseViewController.m in Sources */,
+				4837AF7618D9DAF000D3AEBC /* GetStartedActionViewController.m in Sources */,
 				48A26DDC18BA7FB200736CCB /* SearchTableViewController.m in Sources */,
 				4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */,
 				4849433C175240EB00E1D5C4 /* LicenseViewController.m in Sources */,
@@ -4610,9 +4690,11 @@
 				48ADE7D2185C67EC00E39DA2 /* PhoneData.m in Sources */,
 				4865A9DF1792C8B70028785F /* BuyNumberCell.m in Sources */,
 				480578F217A50F37006923BD /* NBPeoplePickerNavigationController.m in Sources */,
+				4837AF6A18D9B6EC00D3AEBC /* GetStartedRestoreViewController.m in Sources */,
 				480578F317A50FB2006923BD /* NBAddressBookManager.m in Sources */,
 				480578F417A50FB2006923BD /* NBAddressCell.m in Sources */,
 				480578F517A50FB2006923BD /* NBCallsView.m in Sources */,
+				4837AF5E18D83BCB00D3AEBC /* GetStartedContentViewController.m in Sources */,
 				480578F617A50FB2006923BD /* NBContact.m in Sources */,
 				480578F717A50FB2006923BD /* NBContactStructureManager.m in Sources */,
 				480578F817A50FB2006923BD /* NBCustomValueTableViewController.m in Sources */,
@@ -4802,7 +4884,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				483ED01317A4F6C30032B8FF /* en */,
-				4805788317A4F7CF006923BD /* nl */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -4878,7 +4959,7 @@
 					External/WebRTC/GlueLogic,
 					"External/HockeySDK-iOS-3.0.0/Classes",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "";
 				SDKROOT = iphoneos;
@@ -4912,7 +4993,7 @@
 					External/WebRTC/GlueLogic,
 					"External/HockeySDK-iOS-3.0.0/Classes",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRODUCT_NAME = "";
@@ -5081,7 +5162,7 @@
 					External/WebRTC/GlueLogic,
 					"External/HockeySDK-iOS-3.0.0/Classes",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRODUCT_NAME = "";

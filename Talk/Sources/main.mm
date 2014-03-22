@@ -10,14 +10,14 @@
 #import "AppDelegate.h"
 
 
-int main(int argc, char* argv[])
-{
-    @autoreleasepool
+    int main(int argc, char* argv[])
     {
-        // Force use of English.
-        [[NSUserDefaults standardUserDefaults] setObject:[NSArray arrayWithObjects:@"en", nil] forKey:@"AppleLanguages"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        @autoreleasepool
+        {
+            // Force use of English.
+            [[NSUserDefaults standardUserDefaults] setObject:[NSArray arrayWithObjects:@"en", nil] forKey:@"AppleLanguages"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
 
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
+            return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
+        }
     }
-}

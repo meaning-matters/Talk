@@ -19,6 +19,7 @@
 #import "ProvisioningViewController.h"
 #import "AFNetworkActivityIndicatorManager.h"
 #import "Skinning.h"
+#import "GetStartedViewController.h"
 
 
 @interface Common ()
@@ -327,23 +328,38 @@ static Common* sharedCommon;
 }
 
 
-+ (void)styleButton:(UIButton*)button
++ (void)addShadowToView:(UIView*)view
+{
+    view.layer.shadowColor   = [[UIColor blackColor] CGColor];
+    view.layer.shadowOpacity = 0.5f;
+    view.layer.shadowOffset  = CGSizeMake(0.0f, 1.0f);
+    view.layer.shadowRadius  = 1.0f;
+}
+
+
++ (void)styleButton:(UIButton*)button withColor:(UIColor*)color highlightTextColor:(UIColor*)highlightTextColor
 {
     [Common setBorderWidth:1  ofView:button];
     [Common setCornerRadius:5 ofView:button];
 
-    [Common setBorderColor:[Skinning tintColor] ofView:button];
-    [button setTitleColor:[Skinning tintColor] forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    [Common setBorderColor:color             ofView:button];
+    [button setTitleColor:color              forState:UIControlStateNormal];
+    [button setTitleColor:highlightTextColor forState:UIControlStateHighlighted];
 
     UIGraphicsBeginImageContextWithOptions(button.frame.size, YES, 0);
     CGContextRef context = UIGraphicsGetCurrentContext();
-    [[Skinning tintColor] setFill];
+    [color setFill];
     CGContextFillRect(context, CGRectMake(0, 0, button.frame.size.width, button.frame.size.height));
     UIImage*     image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 
     [button setBackgroundImage:image forState:UIControlStateHighlighted];
+}
+
+
++ (void)styleButton:(UIButton*)button
+{
+    [self styleButton:button withColor:[Skinning tintColor] highlightTextColor:[UIColor whiteColor]];
 }
 
 
@@ -793,6 +809,19 @@ static Common* sharedCommon;
 
 + (void)showProvisioningViewController
 {
+    UINavigationController*   navigationController;
+    GetStartedViewController* viewController;
+
+    viewController = [[GetStartedViewController alloc] init];
+    navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [AppDelegate.appDelegate.tabBarController presentViewController:navigationController
+                                                           animated:YES
+                                                         completion:nil];
+
+    return;
+
     ProvisioningViewController* provisioningViewController;
 
     provisioningViewController = [[ProvisioningViewController alloc] init];

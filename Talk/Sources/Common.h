@@ -73,7 +73,13 @@ static const int TextFieldCellTag = 1111;
 
 + (void)setHeight:(CGFloat)height ofView:(UIView*)view;
 
++ (void)addShadowToView:(UIView*)view;  // Adds a small shadow; used for texts.
+
++ (void)styleButton:(UIButton*)button withColor:(UIColor*)color highlightTextColor:(UIColor*)highlightTextColor;
+
 + (void)styleButton:(UIButton*)button;  // Must be custom button style.
+
++ (void)styleWhiteButton:(UIButton*)button;
 
 + (UIFont*)phoneFontOfSize:(CGFloat)size;
 
