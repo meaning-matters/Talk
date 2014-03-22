@@ -114,7 +114,7 @@
 
     CGFloat scrollHeight = self.scrollView.frame.size.height;
     CGFloat bodyToScroll =  27.0f;  // Vertical distance between bottom of body and bottom of scroll view.
-    CGFloat titleToBody  =  11.0f;  // Vertical distance between top of title and top of body.
+    CGFloat titleToBody  =  13.0f;  // Vertical distance between top of title and top of body.
     CGFloat titleWidth   = 280.0f;
     CGFloat titleHeight  =  21.0f;
     CGFloat bodyWidth    = 290.0f;

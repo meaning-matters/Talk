@@ -208,8 +208,6 @@
 		48367A4417247B2D001A02AF /* CueStopWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A1417247B2D001A02AF /* CueStopWhite@2x.png */; };
 		48367A47172552D2001A02AF /* RecordingControlsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48367A46172552D2001A02AF /* RecordingControlsCell.m */; };
 		48367A48172552D2001A02AF /* RecordingControlsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48367A46172552D2001A02AF /* RecordingControlsCell.m */; };
-		4837AF5E18D83BCB00D3AEBC /* GetStartedContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837AF5D18D83BCB00D3AEBC /* GetStartedContentViewController.m */; };
-		4837AF6018D83C7A00D3AEBC /* GetStartedContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF5F18D83C7A00D3AEBC /* GetStartedContentView.xib */; };
 		4837AF6218D872D500D3AEBC /* GetStarted3.png in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF6118D872D500D3AEBC /* GetStarted3.png */; };
 		4837AF6418D89E8600D3AEBC /* GetStarted.json in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF6318D89E8600D3AEBC /* GetStarted.json */; };
 		4837AF6A18D9B6EC00D3AEBC /* GetStartedRestoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837AF6918D9B6EC00D3AEBC /* GetStartedRestoreViewController.m */; };
@@ -1324,9 +1322,6 @@
 		48367A1417247B2D001A02AF /* CueStopWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CueStopWhite@2x.png"; sourceTree = "<group>"; };
 		48367A45172552D2001A02AF /* RecordingControlsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingControlsCell.h; sourceTree = "<group>"; };
 		48367A46172552D2001A02AF /* RecordingControlsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordingControlsCell.m; sourceTree = "<group>"; };
-		4837AF5C18D83BCB00D3AEBC /* GetStartedContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetStartedContentViewController.h; sourceTree = "<group>"; };
-		4837AF5D18D83BCB00D3AEBC /* GetStartedContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetStartedContentViewController.m; sourceTree = "<group>"; };
-		4837AF5F18D83C7A00D3AEBC /* GetStartedContentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GetStartedContentView.xib; sourceTree = "<group>"; };
 		4837AF6118D872D500D3AEBC /* GetStarted3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted3.png; sourceTree = "<group>"; };
 		4837AF6318D89E8600D3AEBC /* GetStarted.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = GetStarted.json; path = Resources/GetStarted.json; sourceTree = "<group>"; };
 		4837AF6818D9B6EC00D3AEBC /* GetStartedRestoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetStartedRestoreViewController.h; sourceTree = "<group>"; };
@@ -3385,7 +3380,6 @@
 				4814EA3217CA98F4004B7A3C /* CreditBuyCell.xib */,
 				4814EA3917CB18DB004B7A3C /* CreditAmountCell.xib */,
 				48AF450A164948CD00DFE3D8 /* DialerView.xib */,
-				4837AF5F18D83C7A00D3AEBC /* GetStartedContentView.xib */,
 				4837AF6E18D9B8C400D3AEBC /* GetStartedActionView.xib */,
 				480BEF9418D59ECA00C882E0 /* GetStartedView.xib */,
 				48AF450D164948DC00DFE3D8 /* GroupsView.xib */,
@@ -3433,8 +3427,6 @@
 				48AF4564164979F400DFE3D8 /* ForwardingsViewController.m */,
 				48CA5040172FC6C800CB1B7B /* ForwardingSequenceViewController.h */,
 				48CA5041172FC6C800CB1B7B /* ForwardingSequenceViewController.m */,
-				4837AF5C18D83BCB00D3AEBC /* GetStartedContentViewController.h */,
-				4837AF5D18D83BCB00D3AEBC /* GetStartedContentViewController.m */,
 				480BEF8C18D59E7400C882E0 /* GetStartedViewController.h */,
 				480BEF8D18D59E7400C882E0 /* GetStartedViewController.m */,
 				48AF44F4164947E600DFE3D8 /* GroupsViewController.h */,
@@ -3917,7 +3909,6 @@
 				485F6AEF1637270100D61365 /* GU.png in Resources */,
 				485F6AF01637270100D61365 /* GU@2x.png in Resources */,
 				485F6AF11637270100D61365 /* GW.png in Resources */,
-				4837AF6018D83C7A00D3AEBC /* GetStartedContentView.xib in Resources */,
 				485F6AF21637270100D61365 /* GW@2x.png in Resources */,
 				485F6AF31637270100D61365 /* GY.png in Resources */,
 				485F6AF41637270100D61365 /* GY@2x.png in Resources */,
@@ -4694,7 +4685,6 @@
 				480578F317A50FB2006923BD /* NBAddressBookManager.m in Sources */,
 				480578F417A50FB2006923BD /* NBAddressCell.m in Sources */,
 				480578F517A50FB2006923BD /* NBCallsView.m in Sources */,
-				4837AF5E18D83BCB00D3AEBC /* GetStartedContentViewController.m in Sources */,
 				480578F617A50FB2006923BD /* NBContact.m in Sources */,
 				480578F717A50FB2006923BD /* NBContactStructureManager.m in Sources */,
 				480578F817A50FB2006923BD /* NBCustomValueTableViewController.m in Sources */,
