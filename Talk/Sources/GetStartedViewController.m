@@ -15,6 +15,7 @@
 #import "DataManager.h"
 #import "GetStartedStartViewController.h"
 #import "GetStartedRestoreViewController.h"
+#import "NSTimer+Blocks.h"
 
 
 @interface GetStartedViewController ()
@@ -23,6 +24,8 @@
 @property (nonatomic, assign) NSUInteger      numberOfPages;
 @property (nonatomic, strong) NSMutableArray* imageViews;
 @property (nonatomic, assign) int             changingPage; // Is -1 if no page change busy.
+@property (nonatomic, strong) NSTimer*        timer;
+@property (nonatomic, assign) BOOL            jumpingBack;
 
 @end
 
@@ -99,6 +102,19 @@
 }
 
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:6.0 repeats:YES block:^
+    {
+        NSInteger nextPage = (self.pageControl.currentPage + 1) % self.numberOfPages;
+        self.jumpingBack   = (nextPage == 0);
+        [self gotoPage:nextPage];
+    }];
+}
+
+
 - (void)cancel
 {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -153,14 +169,25 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    // Calculate position: between 0 and numberOfPages - 1.
     float position = self.scrollView.contentOffset.x / CGRectGetWidth(self.scrollView.frame);
 
-    for (int n = 0; n < self.numberOfPages; n++)
+    if (self.jumpingBack == NO)
     {
-        UIImageView* imageView = self.imageViews[n];
-        float        distance  = fabsf(n - position);
+        for (int n = 0; n < self.numberOfPages; n++)
+        {
+            UIImageView* imageView = self.imageViews[n];
+            float        distance  = fabsf(n - position);
 
-        imageView.alpha = 1.0f - distance;  // Negative values result in 0.0.
+            imageView.alpha = 1.0f - distance;  // Negative values result in 0.0.
+        }
+    }
+    else
+    {
+        position /= self.numberOfPages;
+
+        ((UIView*)self.imageViews[self.numberOfPages - 1]).alpha = position;
+        ((UIView*)self.imageViews[0]).alpha                      = 1.0f - position;
     }
 
     // Switch the page control indicator when more than 50% of the previous/next page is visible, except when changing.
@@ -179,15 +206,27 @@
 }
 
 
-- (void)gotoPageAnimated:(BOOL)animated
+- (void)scrollViewDidEndDecelerating:(UIScrollView*)scrollView
 {
-    NSInteger page = self.pageControl.currentPage;
+    self.jumpingBack = NO;
+}
 
+
+- (void)scrollViewWillBeginDragging:(UIScrollView*)scrollView
+{
+    [self.timer invalidate];
+    self.timer = nil;
+    self.jumpingBack = NO;
+}
+
+
+- (void)gotoPage:(NSInteger)page
+{
 	// Update the scroll view to the appropriate page.
     CGRect bounds = self.scrollView.bounds;
     bounds.origin.x = CGRectGetWidth(bounds) * page;
     bounds.origin.y = 0;
-    [self.scrollView scrollRectToVisible:bounds animated:animated];
+    [self.scrollView scrollRectToVisible:bounds animated:YES];
 }
 
 
@@ -196,7 +235,7 @@
 - (IBAction)changePage:(id)sender
 {
     self.changingPage = self.pageControl.currentPage;
-    [self gotoPageAnimated:YES];
+    [self gotoPage:self.pageControl.currentPage];
 }
 
 
