@@ -138,6 +138,11 @@
         self.jumpingBack   = (nextPage == 0);
         [self gotoPage:nextPage];
     }];
+
+    if (self.showAsIntro)
+    {
+        [Common setY:(self.pageControl.frame.origin.y + 20.0f) ofView:self.pageControl];
+    }
 }
 
 
@@ -179,6 +184,11 @@
     CGFloat bodyWidth    = 290.0f;
     CGFloat bodyHeight   =  75.0f;
     CGFloat xOffset      = 320.0f * page;
+
+    if (self.showAsIntro)
+    {
+        bodyToScroll -= 20;
+    }
 
     // Add title.
     CGRect   titleFrame                 = CGRectMake(xOffset + (320.0f - titleWidth) / 2,
