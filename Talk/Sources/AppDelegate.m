@@ -271,7 +271,6 @@
     }
 
     self.tabBarController.viewControllers = viewControllers;
-    NSLog(@"%d", [Settings sharedSettings].tabBarSelectedIndex);
     if ([Settings sharedSettings].tabBarSelectedIndex == NSNotFound)
     {
         self.tabBarController.selectedViewController = self.tabBarController.moreNavigationController;

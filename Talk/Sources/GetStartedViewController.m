@@ -190,6 +190,7 @@
     titleLabel.textAlignment            = NSTextAlignmentCenter;
     titleLabel.font                     = [UIFont boldSystemFontOfSize:18.0f];
     titleLabel.textColor                = [UIColor whiteColor];
+    titleLabel.autoresizingMask         = UIViewAutoresizingFlexibleTopMargin;
     [Common addShadowToView:titleLabel];
     [self.scrollView addSubview:titleLabel];
 
@@ -205,8 +206,8 @@
     bodyTextView.textColor              = [UIColor whiteColor];
     bodyTextView.backgroundColor        = [UIColor clearColor];
     bodyTextView.userInteractionEnabled = NO;
+    bodyTextView.autoresizingMask       = UIViewAutoresizingFlexibleTopMargin;
     [Common addShadowToView:bodyTextView];
-    bodyTextView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     [self.scrollView addSubview:bodyTextView];
 }
 
