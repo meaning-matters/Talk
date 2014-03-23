@@ -44,13 +44,13 @@
                                                              @"[1 line large font].");
 
     self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedRestore Text", nil, [NSBundle mainBundle],
-                                                           @"After tapping the button below, iOS will ask you to log in. "
-                                                           @"This is needed to reload your initial credit purchase.\n\n"
+                                                           @"After tapping the button below, the iTunes Store will ask you to log in. "
+                                                           @"This is needed to retrieve your initial credit purchase.\n\n"
                                                            @"IMPORTANT: Restoring will only be possible if you use "
-                                                           @"the same App Store account.\n\n"
-                                                           @"Call history and settings are per device, "
-                                                           @"and won't be restored.\n\n"
-                                                           @"If you use NumberBay on multiple devices you'll simply "
+                                                           @"the same iTunes Store account.\n\n"
+                                                           @"Call history & settings are saved locally, "
+                                                           @"and can't be restored.\n\n"
+                                                           @"If you use the app on multiple devices, you'll simply "
                                                            @"be sharing the credit and phone number(s).",
                                                            @"....\n"
                                                            @"[iOS alert title size].");
@@ -91,8 +91,8 @@
                                                         @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"GetStartedRestore NothingToRestoreMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"No initial credit was purchased earlier with the "
-                                                        @"current App Store user's Apple ID.\n\nTap the Start "
+                                                        @"No initial credit was purchased earlier with your "
+                                                        @"current iTunes Store account.\n\nTap the Start "
                                                         @"button to buy some initial credit and have your "
                                                         @"number verified.",
                                                         @"Alert message telling there is no account that could be restored.\n"

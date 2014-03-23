@@ -14,6 +14,8 @@
 #import "PurchaseManager.h"
 #import "BlockAlertView.h"
 #import "VerifyPhoneViewController.h"
+#import "PhoneData.h"
+#import "Strings.h"
 
 
 @interface GetStartedActionViewController ()
@@ -68,7 +70,6 @@
 
 - (void)restoreCreditAndData
 {
-    /*
     [[WebClient sharedClient] retrieveCreditForCurrencyCode:[Settings sharedSettings].currencyCode
                                                       reply:^(NSError* error, float credit)
     {
@@ -89,30 +90,25 @@
                         VerifyPhoneViewController* viewController;
                         viewController = [[VerifyPhoneViewController alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber)
                         {
-
+                            if (verifiedPhoneNumber != nil)
+                            {
+                                [Settings sharedSettings].callbackE164 = ((PhoneData*)phonesArray[0]).e164;
+                                [Settings sharedSettings].callerIdE164 = ((PhoneData*)phonesArray[0]).e164;
+                            }
                         }];
+
+                        [self.navigationController pushViewController:viewController animated:YES];
                     }
                     else
                     {
-                        if ([Settings sharedSettings].callbackE164.length == 0)
-                        {
-
-                        }
+                        [Settings sharedSettings].callbackE164 = ((PhoneData*)phonesArray[0]).e164;
+                        [Settings sharedSettings].callerIdE164 = ((PhoneData*)phonesArray[0]).e164;
                     }
 
-                    float     credit;
-                    NSString* creditString;
+                    float     credit       = [Settings sharedSettings].credit;
+                    NSString* creditString = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
 
-                    credit       = [Settings sharedSettings].credit;
-                    creditString = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
-
-
-                    - (NSArray*)fetchEntitiesWithName:(NSString*)entityName
-                sortKeys:(NSArray*)sortKeys
-                predicate:(NSPredicate*)predicate
-                managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
-
-                    if ([PurchaseManager sharedManager].isNewAccount == YES && e164s.count == 0)
+                    if ([PurchaseManager sharedManager].isNewAccount == YES)
                     {
                         NSString* title;
                         NSString* message;
@@ -135,37 +131,11 @@
                                              cancelButtonTitle:[Strings closeString]
                                              otherButtonTitles:nil];
                     }
-                    else if (e164s.count == 0)
-                    {
-                        self.readyTextView.text = [NSString stringWithFormat:readyRestoreNoNumbersText, creditString];
-                    }
-                    else if (e164s.count == 1)
-                    {
-                        self.readyTextView.text = [NSString stringWithFormat:readyRestoreHasNumberText, creditString];
-                    }
-                    else
-                    {
-                        self.readyTextView.text = [NSString stringWithFormat:readyRestoreHasNumbersText, creditString,
-                                                   e164s.count];
-                    }
-
-                    NSLog(@"//####### For now always verify number.");
-                    // if ([Settings sharedSettings].callbackE164.length == 0)
-                    {
-                        [self setVerifyStep:1];
-                        [self showView:self.verifyView];
-                    }
-                    //else
-                    {
-                        //     [self showView:self.readyView];
-                        // [[AppDelegate appDelegate] restore];
-                    }
                 }
                 else
                 {
                     NSString* title;
                     NSString* message;
-
                     title   = NSLocalizedStringWithDefaultValue(@"Provisioning FailedNumbersTitle", nil,
                                                                 [NSBundle mainBundle], @"Loading Numbers Failed",
                                                                 @"Alart title: Phone numbers could not be downloaded.\n"
@@ -193,7 +163,6 @@
         {
             NSString* title;
             NSString* message;
-
             title   = NSLocalizedStringWithDefaultValue(@"Provisioning FailedCreditTitle", nil,
                                                         [NSBundle mainBundle], @"Loading Credit Failed",
                                                         @"Alert title: Calling credit could not be downloaded.\n"
@@ -216,8 +185,6 @@
                                  otherButtonTitles:nil];
         }
     }];
-     */
-
 }
 
 @end

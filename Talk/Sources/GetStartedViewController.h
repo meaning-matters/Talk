@@ -10,10 +10,12 @@
 
 @interface GetStartedViewController : UIViewController <UIScrollViewDelegate>
 
-@property (nonatomic, weak) IBOutlet UIScrollView*            scrollView;
-@property (nonatomic, weak) IBOutlet UIPageControl*           pageControl;
-@property (nonatomic, weak) IBOutlet UIButton*                restoreButton;
-@property (nonatomic, weak) IBOutlet UIButton*                startButton;
+@property (nonatomic, weak) IBOutlet UIScrollView*  scrollView;
+@property (nonatomic, weak) IBOutlet UIPageControl* pageControl;
+@property (nonatomic, weak) IBOutlet UIButton*      restoreButton;
+@property (nonatomic, weak) IBOutlet UIButton*      startButton;
+
+- (id)initShowAsIntro:(BOOL)showAsIntro;
 
 - (IBAction)changePage:(id)sender;
 - (IBAction)startAction:(id)sender;

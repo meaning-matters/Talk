@@ -26,20 +26,33 @@
 @property (nonatomic, assign) int             changingPage; // Is -1 if no page change busy.
 @property (nonatomic, strong) NSTimer*        timer;
 @property (nonatomic, assign) BOOL            jumpingBack;
+@property (nonatomic, assign) BOOL            showAsIntro;
 
 @end
 
 
 @implementation GetStartedViewController
 
-- (id)init
+- (id)initShowAsIntro:(BOOL)showAsIntro
 {
     if (self = [super initWithNibName:@"GetStartedView" bundle:nil])
     {
-        self.title = NSLocalizedStringWithDefaultValue(@"GetStarted ScreenTitle", nil,
-                                                       [NSBundle mainBundle], @"Get Started",
-                                                       @"Title of app screen ...\n"
-                                                       @"[1 line larger font].");
+        self.showAsIntro = showAsIntro;
+
+        if (showAsIntro == YES)
+        {
+            self.title = NSLocalizedStringWithDefaultValue(@"GetStarted IntroScreenTitle", nil,
+                                                           [NSBundle mainBundle], @"Intro",
+                                                           @"Title of app screen ...\n"
+                                                           @"[1 line larger font].");
+        }
+        else
+        {
+            self.title = NSLocalizedStringWithDefaultValue(@"GetStarted NormalScreenTitle", nil,
+                                                           [NSBundle mainBundle], @"Get Started",
+                                                           @"Title of app screen ...\n"
+                                                           @"[1 line larger font].");
+        }
 
         NSData* data       = [Common dataForResource:@"GetStarted" ofType:@"json"];
         self.texts         = [Common objectWithJsonData:data];
@@ -54,20 +67,23 @@
 {
     [super viewDidLoad];
 
-    UIBarButtonItem* rightBarButtonItem;
-    rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                       target:self
-                                                                       action:@selector(cancel)];
-    self.navigationItem.rightBarButtonItem = rightBarButtonItem;
+    if (self.showAsIntro == NO)
+    {
+        UIBarButtonItem* rightBarButtonItem;
+        rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                           target:self
+                                                                           action:@selector(cancel)];
+        self.navigationItem.rightBarButtonItem = rightBarButtonItem;
 
-    [self.restoreButton setTitle:NSLocalizedStringWithDefaultValue(@"GetStarted RestoreButtonTitle", nil,
-                                                                   [NSBundle mainBundle], @"Restore",
-                                                                   @"...")
-                        forState:UIControlStateNormal];
-    [self.startButton setTitle:NSLocalizedStringWithDefaultValue(@"GetStarted StartButtonTitle", nil,
-                                                                 [NSBundle mainBundle], @"Start",
-                                                                 @"...")
-                      forState:UIControlStateNormal];
+        [self.restoreButton setTitle:NSLocalizedStringWithDefaultValue(@"GetStarted RestoreButtonTitle", nil,
+                                                                       [NSBundle mainBundle], @"Restore",
+                                                                       @"...")
+                            forState:UIControlStateNormal];
+        [self.startButton setTitle:NSLocalizedStringWithDefaultValue(@"GetStarted StartButtonTitle", nil,
+                                                                     [NSBundle mainBundle], @"Start",
+                                                                     @"...")
+                          forState:UIControlStateNormal];
+    }
 
     self.imageViews = [[NSMutableArray alloc] initWithCapacity:self.numberOfPages];
     for (int page = 0; page < self.numberOfPages; page++)
@@ -77,17 +93,11 @@
         imageView.image        = [UIImage imageNamed:[NSString stringWithFormat:@"GetStarted%d.png", page + 1]];
         [self.imageViews addObject:imageView];
         [self.view insertSubview:imageView atIndex:0];
-
-        [self loadScrollViewForPage:page];
     }
 
     // Set the correct alpha for all images.
     [self scrollViewDidScroll:self.scrollView];
 
-    self.scrollView.pagingEnabled = YES;
-    CGSize size = CGSizeMake(self.scrollView.frame.size.width * self.numberOfPages,
-                        self.scrollView.frame.size.height);
-    self.scrollView.contentSize = size;
     self.scrollView.showsHorizontalScrollIndicator = NO;
     self.scrollView.showsVerticalScrollIndicator = NO;
     self.scrollView.scrollsToTop = NO;
@@ -97,14 +107,30 @@
     self.pageControl.currentPage = 0;
     self.changingPage = -1;
 
-    [Common styleButton:self.restoreButton withColor:[UIColor whiteColor] highlightTextColor:[UIColor blackColor]];
-    [Common styleButton:self.startButton   withColor:[UIColor whiteColor] highlightTextColor:[UIColor blackColor]];
+    if (self.showAsIntro == YES)
+    {
+        self.startButton.alpha   = 0.0;
+        self.restoreButton.alpha = 0.0;
+
+        self.startButton.userInteractionEnabled   = NO;
+        self.restoreButton.userInteractionEnabled = NO;
+    }
+    else
+    {
+        [Common styleButton:self.startButton   withColor:[UIColor whiteColor] highlightTextColor:[UIColor blackColor]];
+        [Common styleButton:self.restoreButton withColor:[UIColor whiteColor] highlightTextColor:[UIColor blackColor]];
+    }
 }
 
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
+
+    for (int page = 0; page < self.numberOfPages; page++)
+    {
+        [self loadScrollViewForPage:page];
+    }
 
     self.timer = [NSTimer scheduledTimerWithTimeInterval:6.0 repeats:YES block:^
     {
@@ -119,6 +145,16 @@
 {
     [super viewWillDisappear:animated];
     [self stopSlideShow];
+}
+
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+
+    CGSize size = CGSizeMake(self.scrollView.frame.size.width * self.numberOfPages,
+                             self.scrollView.frame.size.height - self.restoreButton.frame.size.height - 20.0f);
+    self.scrollView.contentSize = size;
 }
 
 
@@ -170,6 +206,7 @@
     bodyTextView.backgroundColor        = [UIColor clearColor];
     bodyTextView.userInteractionEnabled = NO;
     [Common addShadowToView:bodyTextView];
+    bodyTextView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     [self.scrollView addSubview:bodyTextView];
 }
 

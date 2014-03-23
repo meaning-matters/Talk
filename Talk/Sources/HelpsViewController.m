@@ -15,13 +15,15 @@
 #import "BlockAlertView.h"
 #import "Strings.h"
 #import "Skinning.h"
+#import "GetStartedViewController.h"
 
 
 typedef enum
 {
     TableSectionTexts     = 1UL << 0,
     TableSectionContactUs = 1UL << 1,
-    TableSectionTestCall  = 1UL << 2,
+    TableSectionIntro     = 1UL << 2,
+    TableSectionTestCall  = 1UL << 3,
 } TableSections;
 
 
@@ -51,6 +53,7 @@ typedef enum
 
         sections |= TableSectionTexts;
         sections |= TableSectionContactUs;
+        sections |= TableSectionIntro;
 #if HAS_VOIP
         sections |= TableSectionTestCall;
 #endif
@@ -89,17 +92,10 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionTexts:
-            numberOfRows = helpsArray.count;
-            break;
-
-        case TableSectionContactUs:
-            numberOfRows = 2;
-            break;
-
-        case TableSectionTestCall:
-            numberOfRows = 1;
-            break;
+        case TableSectionTexts:     numberOfRows = helpsArray.count; break;
+        case TableSectionContactUs: numberOfRows = 2;                break;
+        case TableSectionIntro:     numberOfRows = 1;                break;
+        case TableSectionTestCall:  numberOfRows = 1;                break;
     }
     
     return numberOfRows;
@@ -114,7 +110,7 @@ typedef enum
     {
         case TableSectionTexts:
             title = NSLocalizedStringWithDefaultValue(@"Helps:Texts SectionHeader", nil, [NSBundle mainBundle],
-                                                      @"Help Texts",
+                                                      @"Texts",
                                                       @"Written help.");
             break;
 
@@ -122,6 +118,12 @@ typedef enum
             title = NSLocalizedStringWithDefaultValue(@"Helps:ContactUs SectionHeader", nil, [NSBundle mainBundle],
                                                       @"Contact Us",
                                                       @"Ways to contact us.");
+            break;
+
+        case TableSectionIntro:
+            title = NSLocalizedStringWithDefaultValue(@"Helps:Intro SectionHeader", nil, [NSBundle mainBundle],
+                                                      @"Intro",
+                                                      @"Introduction images + text.");
             break;
 
         case TableSectionTestCall:
@@ -184,6 +186,13 @@ typedef enum
             }
 
             cell.textLabel.text = text;
+            break;
+
+        case TableSectionIntro:
+            cell.textLabel.text  =NSLocalizedStringWithDefaultValue(@"Helps IntroText", nil, [NSBundle mainBundle],
+                                                                    @"Intro",
+                                                                    @"...\n"
+                                                                    @"[1 line larger font].");
             break;
 
         case TableSectionTestCall:
@@ -266,6 +275,16 @@ typedef enum
             }
             break;
 
+        case TableSectionIntro:
+        {
+            GetStartedViewController* viewController;
+            UINavigationController*   navigationController;
+
+            viewController       = [[GetStartedViewController alloc] initShowAsIntro:YES];
+            navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+            [self.navigationController pushViewController:navigationController animated:YES];
+            break;
+        }
         case TableSectionTestCall:
             phoneNumber = [[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].testNumber];
             [[CallManager sharedManager] callPhoneNumber:phoneNumber fromIdentity:[Settings sharedSettings].callerIdE164];

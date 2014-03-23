@@ -260,7 +260,7 @@
 
 - (void)processCreditTransaction:(SKPaymentTransaction*)transaction
 {
-    NSString*   receipt = [Base64 encode:transaction.transactionReceipt];
+    NSString* receipt = [Base64 encode:transaction.transactionReceipt];
 
     [[WebClient sharedClient] purchaseCreditForReceipt:receipt
                                           currencyCode:self.currencyCode

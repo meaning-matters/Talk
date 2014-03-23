@@ -812,7 +812,7 @@ static Common* sharedCommon;
     UINavigationController*   navigationController;
     GetStartedViewController* viewController;
 
-    viewController = [[GetStartedViewController alloc] init];
+    viewController = [[GetStartedViewController alloc] initShowAsIntro:NO];
     navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 
     navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
