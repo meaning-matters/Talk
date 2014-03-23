@@ -52,7 +52,6 @@
 
     [self.emailButton setTitle:[Settings sharedSettings].supportEmail forState:UIControlStateNormal];
 
-
     NSString*   title;
     title = NSLocalizedStringWithDefaultValue(@"About ThanksButtonTitle", nil,
                                               [NSBundle mainBundle], @"Thanks",

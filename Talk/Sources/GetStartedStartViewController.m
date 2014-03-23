@@ -23,7 +23,7 @@
     if (self = [super init])
     {
         self.title = NSLocalizedStringWithDefaultValue(@"GetStartedStart ScreenTitle", nil,
-                                                       [NSBundle mainBundle], @"Welcome",
+                                                       [NSBundle mainBundle], @"Start",
                                                        @"Title of app screen ...\n"
                                                        @"[1 line larger font].");
     }
@@ -36,7 +36,7 @@
 {
     [super viewDidLoad];
 
-    self.textLabel.text = NSLocalizedStringWithDefaultValue(@"GetStartedStart ScreenTitle", nil, [NSBundle mainBundle],
+    self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedStart ScreenTitle", nil, [NSBundle mainBundle],
                                                             @"To get started, buy a little credit, and verify one of "
                                                             @"your phone numbers. No need to create a\n\nWhen you make a call, you'll be "
                                                             @"called back by our server; that's why your number needs "

@@ -75,10 +75,13 @@ static const int TextFieldCellTag = 1111;
 
 + (void)addShadowToView:(UIView*)view;  // Adds a small shadow; used for texts.
 
+// Must be custom button style.
 + (void)styleButton:(UIButton*)button withColor:(UIColor*)color highlightTextColor:(UIColor*)highlightTextColor;
 
-+ (void)styleButton:(UIButton*)button;  // Must be custom button style.
+// Must be custom button style.
++ (void)styleButton:(UIButton*)button;
 
+// Must be custom button style.
 + (void)styleWhiteButton:(UIButton*)button;
 
 + (UIFont*)phoneFontOfSize:(CGFloat)size;

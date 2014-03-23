@@ -10,7 +10,8 @@
 
 @interface GetStartedActionViewController : UIViewController
 
-@property (nonatomic, weak) IBOutlet UILabel*                 textLabel;
+@property (nonatomic, weak) IBOutlet UILabel*                 titleLabel;
+@property (nonatomic, weak) IBOutlet UITextView*              textView;
 @property (nonatomic, weak) IBOutlet UIButton*                button;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator;
 

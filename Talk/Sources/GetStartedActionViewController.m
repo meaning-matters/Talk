@@ -37,6 +37,16 @@
 {
     [super viewDidLoad];
 
+    CGFloat topInset    = 12.0f;
+    CGFloat leftInset   = 10.0f;
+    CGFloat bottomInset = 12.0f;
+    CGFloat rightInset  = 10.0f;
+    self.textView.textContainerInset = UIEdgeInsetsMake(topInset, leftInset, bottomInset, rightInset);
+
+    //### Setting this in XIB hit an Xcode bug: text was scaled to fit.
+    self.textView.editable   = NO;
+    self.textView.selectable = NO;
+
     [Common styleButton:self.button];
 }
 

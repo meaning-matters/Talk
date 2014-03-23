@@ -8,7 +8,8 @@
             <connections>
                 <outlet property="activityIndicator" destination="C1e-xE-Kwe" id="3e4-bq-bcw"/>
                 <outlet property="button" destination="X92-sL-W6P" id="UFV-Lj-GXq"/>
-                <outlet property="textLabel" destination="sNb-0d-OF8" id="wXb-sX-shG"/>
+                <outlet property="textView" destination="PYP-Zw-oJc" id="gJr-LT-o53"/>
+                <outlet property="titleLabel" destination="VNU-tz-wSd" id="vag-Nh-yII"/>
                 <outlet property="view" destination="iN0-l3-epB" id="tgd-TV-859"/>
             </connections>
         </placeholder>
@@ -17,24 +18,12 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo.png" id="qMa-yl-hfc">
-                    <rect key="frame" x="20" y="84" width="280" height="60"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-                </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="20" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sNb-0d-OF8">
-                    <rect key="frame" x="20" y="152" width="280" height="353"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <string key="text">The quick Brown The quick Brown The quick Brown The quick Brown The quick Brown The quick Brown The quick Brown The quick Brown The quick Brown The quick Brown The quick Brown The quick Brown The quick Brown The quick Brown The quick Brown The quick Brown The quick Brown The quick Brown The quick Brown The quick Brown The quick Brown The quick Brown The </string>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="X92-sL-W6P">
-                    <rect key="frame" x="20" y="508" width="280" height="45"/>
+                    <rect key="frame" x="20" y="503" width="280" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Button">
-                        <color key="titleColor" red="0.33198094369999998" green="0.51831609010000002" blue="0.99859672779999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -42,9 +31,24 @@
                     </connections>
                 </button>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" id="C1e-xE-Kwe">
-                    <rect key="frame" x="142" y="513" width="37" height="37"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <rect key="frame" x="142" y="508" width="37" height="37"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                 </activityIndicatorView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.79999999999999982" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcomeggg back!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VNU-tz-wSd">
+                    <rect key="frame" x="20" y="77" width="280" height="35"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="PYP-Zw-oJc">
+                    <rect key="frame" x="20" y="125" width="280" height="355"/>
+                    <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
+                    <color key="backgroundColor" white="0.94901916058394165" alpha="1" colorSpace="calibratedWhite"/>
+                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo </string>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
@@ -52,7 +56,4 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
-    <resources>
-        <image name="Logo.png" width="280" height="60"/>
-    </resources>
 </document>
