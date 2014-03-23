@@ -44,10 +44,10 @@
                                                              @"[1 line large font].");
 
     self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedRestore Text", nil, [NSBundle mainBundle],
-                                                           @"After tapping the button, iOS will ask you to login; "
-                                                           @"this is needed to reload your initial credit purchase.\n\n"
-                                                           @"IMPORTANT: Restoring will only be possible if you use the same "
-                                                           @"App Store account.\n\n"
+                                                           @"After tapping the button below, iOS will ask you to log in. "
+                                                           @"This is needed to reload your initial credit purchase.\n\n"
+                                                           @"IMPORTANT: Restoring will only be possible if you use "
+                                                           @"the same App Store account.\n\n"
                                                            @"Call history and settings are per device, "
                                                            @"and won't be restored.\n\n"
                                                            @"If you use NumberBay on multiple devices you'll simply "
