@@ -284,7 +284,7 @@ static SipInterface*    sipInterface;
     else
     {
         result = NO;
-        [Common showProvisioningViewController];
+        [Common showGetStartedViewController];
     }
 
     return result;
@@ -461,7 +461,7 @@ static SipInterface*    sipInterface;
 
 - (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity
 {
-    Call*   call = nil;
+    Call* call = nil;
 
 #warning //### Check that number and identity are non empty && valid!
 
@@ -473,9 +473,25 @@ static SipInterface*    sipInterface;
             call.network = CallNetworkMobile;
         }
     }
-    else if ([self checkAccount] &&
-             [Settings sharedSettings].callbackMode == YES &&
-             [phoneNumber.originalFormat isEqualToString:[Settings sharedSettings].testNumber] == NO)
+    else if ([Settings sharedSettings].callbackMode == YES)
+    {
+        call = [self callCallbackPhoneNumber:phoneNumber fromIdentity:identity];
+    }
+    else
+    {
+        call = [self callVoipPhoneNumber:phoneNumber fromIdentity:identity];
+    }
+
+    return call;
+}
+
+
+- (Call*)callCallbackPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity
+{
+    Call* call = nil;
+
+    if ([self checkAccount] &&
+        [phoneNumber.originalFormat isEqualToString:[Settings sharedSettings].testNumber] == NO)
     {
         if ([phoneNumber isValid] == YES)
         {
@@ -512,14 +528,21 @@ static SipInterface*    sipInterface;
                                         completion:nil
                                  cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
-
-            return nil;
         }
     }
-    else if ([self checkAccount] &&
-             [self checkNetwork] &&
-             [Common checkCountryOfPhoneNumber:phoneNumber completion:nil] &&
-             [self checkWarnedAboutDefaultCli:identity])
+
+    return call;
+}
+
+
+- (Call*)callVoipPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity
+{
+    Call* call = nil;
+
+    if ([self checkAccount] &&
+        [self checkNetwork] &&
+        [Common checkCountryOfPhoneNumber:phoneNumber completion:nil] &&
+        [self checkWarnedAboutDefaultCli:identity])
     {
         call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
         call.identityNumber = identity;

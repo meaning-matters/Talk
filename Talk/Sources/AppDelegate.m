@@ -411,7 +411,7 @@
 
             if ([Settings sharedSettings].haveAccount == NO)
             {
-                [Common showProvisioningViewController];
+                [Common showGetStartedViewController];
             }
         }];
     }

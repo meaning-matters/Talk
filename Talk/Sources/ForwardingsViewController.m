@@ -458,7 +458,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     }
     else
     {
-        [Common showProvisioningViewController];
+        [Common showGetStartedViewController];
     }
 }
 

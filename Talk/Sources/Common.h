@@ -114,7 +114,7 @@ static const int TextFieldCellTag = 1111;
 
 + (NSString*)capitalizedString:(NSString*)string;
 
-+ (void)showProvisioningViewController;
++ (void)showGetStartedViewController;
 
 + (void)dispatchAfterInterval:(NSTimeInterval)interval onMain:(void (^)(void))block;
 

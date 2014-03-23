@@ -124,7 +124,7 @@
     }
     else
     {
-        [Common showProvisioningViewController];
+        [Common showGetStartedViewController];
     }
 }
 

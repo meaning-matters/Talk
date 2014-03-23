@@ -314,7 +314,7 @@ typedef enum
         case TableSectionAccountData:
             if (settings.haveAccount == NO && indexPath.row == 0)
             {
-                [Common showProvisioningViewController];
+                [Common showGetStartedViewController];
             }
             else if (settings.haveAccount == YES && indexPath.row == 0)
             {

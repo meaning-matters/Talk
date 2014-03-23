@@ -807,7 +807,7 @@ static Common* sharedCommon;
 }
 
 
-+ (void)showProvisioningViewController
++ (void)showGetStartedViewController
 {
     UINavigationController*   navigationController;
     GetStartedViewController* viewController;
@@ -816,17 +816,7 @@ static Common* sharedCommon;
     navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 
     navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [AppDelegate.appDelegate.tabBarController presentViewController:navigationController
-                                                           animated:YES
-                                                         completion:nil];
-
-    return;
-
-    ProvisioningViewController* provisioningViewController;
-
-    provisioningViewController = [[ProvisioningViewController alloc] init];
-    provisioningViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [AppDelegate.appDelegate.tabBarController presentViewController:provisioningViewController
+    [[self topViewController] presentViewController:navigationController
                                                            animated:YES
                                                          completion:nil];
 }
