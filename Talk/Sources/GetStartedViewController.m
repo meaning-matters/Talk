@@ -115,6 +115,13 @@
 }
 
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self stopSlideShow];
+}
+
+
 - (void)cancel
 {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -167,6 +174,8 @@
 }
 
 
+#pragma mark - Scrollview Delegate
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     // Calculate position: between 0 and numberOfPages - 1.
@@ -214,11 +223,11 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView*)scrollView
 {
-    [self.timer invalidate];
-    self.timer = nil;
-    self.jumpingBack = NO;
+    [self stopSlideShow];
 }
 
+
+#pragma mark - Helpers
 
 - (void)gotoPage:(NSInteger)page
 {
@@ -230,12 +239,21 @@
 }
 
 
+- (void)stopSlideShow
+{
+    [self.timer invalidate];
+    self.timer = nil;
+    self.jumpingBack = NO;
+}
+
+
 #pragma mark - Actions
 
 - (IBAction)changePage:(id)sender
 {
     self.changingPage = self.pageControl.currentPage;
     [self gotoPage:self.pageControl.currentPage];
+    [self stopSlideShow];
 }
 
 
