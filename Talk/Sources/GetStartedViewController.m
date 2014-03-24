@@ -85,16 +85,6 @@
                           forState:UIControlStateNormal];
     }
 
-    self.imageViews = [[NSMutableArray alloc] initWithCapacity:self.numberOfPages];
-    for (int page = 0; page < self.numberOfPages; page++)
-    {
-        UIImageView* imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-        imageView.contentMode  = UIViewContentModeScaleAspectFill;
-        imageView.image        = [UIImage imageNamed:[NSString stringWithFormat:@"GetStarted%d.png", page + 1]];
-        [self.imageViews addObject:imageView];
-        [self.view insertSubview:imageView atIndex:0];
-    }
-
     // Set the correct alpha for all images.
     [self scrollViewDidScroll:self.scrollView];
 
@@ -126,6 +116,16 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    self.imageViews = [[NSMutableArray alloc] initWithCapacity:self.numberOfPages];
+    for (int page = 0; page < self.numberOfPages; page++)
+    {
+        UIImageView* imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+        imageView.contentMode  = UIViewContentModeScaleAspectFill;
+        imageView.image        = [UIImage imageNamed:[NSString stringWithFormat:@"GetStarted%d.png", page + 1]];
+        [self.imageViews addObject:imageView];
+        [self.view insertSubview:imageView atIndex:0];
+    }
 
     for (int page = 0; page < self.numberOfPages; page++)
     {

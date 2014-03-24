@@ -193,6 +193,7 @@ typedef enum
                                                                     @"Intro",
                                                                     @"...\n"
                                                                     @"[1 line larger font].");
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
 
         case TableSectionTestCall:
@@ -277,12 +278,8 @@ typedef enum
 
         case TableSectionIntro:
         {
-            GetStartedViewController* viewController;
-            UINavigationController*   navigationController;
-
-            viewController       = [[GetStartedViewController alloc] initShowAsIntro:YES];
-            navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-            [self.navigationController pushViewController:navigationController animated:YES];
+            GetStartedViewController* viewController = [[GetStartedViewController alloc] initShowAsIntro:YES];
+            [self.navigationController pushViewController:viewController animated:YES];
             break;
         }
         case TableSectionTestCall:
