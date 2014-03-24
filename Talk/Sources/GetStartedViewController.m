@@ -110,19 +110,14 @@
         [Common styleButton:self.startButton   withColor:[UIColor whiteColor] highlightTextColor:[UIColor blackColor]];
         [Common styleButton:self.restoreButton withColor:[UIColor whiteColor] highlightTextColor:[UIColor blackColor]];
     }
-}
-
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
 
     self.imageViews = [[NSMutableArray alloc] initWithCapacity:self.numberOfPages];
     for (int page = 0; page < self.numberOfPages; page++)
     {
-        UIImageView* imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-        imageView.contentMode  = UIViewContentModeScaleAspectFill;
-        imageView.image        = [UIImage imageNamed:[NSString stringWithFormat:@"GetStarted%d.png", page + 1]];
+        UIImageView* imageView     = [[UIImageView alloc] initWithFrame:self.view.bounds];
+        imageView.contentMode      = UIViewContentModeScaleAspectFill;
+        imageView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
+        imageView.image            = [UIImage imageNamed:[NSString stringWithFormat:@"GetStarted%d.png", page + 1]];
         [self.imageViews addObject:imageView];
         [self.view insertSubview:imageView atIndex:0];
     }
@@ -132,17 +127,30 @@
         [self loadScrollViewForPage:page];
     }
 
+    if (self.showAsIntro)
+    {
+        [Common setY:(self.pageControl.frame.origin.y + 20.0f) ofView:self.pageControl];
+    }
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    for (int page = 0; page < self.numberOfPages; page++)
+    {
+        CGRect rect = self.view.bounds;
+
+        [Common setHeight:rect.size.height ofView:self.imageViews[page]];
+    }
+
     self.timer = [NSTimer scheduledTimerWithTimeInterval:6.0 repeats:YES block:^
     {
         NSInteger nextPage = (self.pageControl.currentPage + 1) % self.numberOfPages;
         self.jumpingBack   = (nextPage == 0);
         [self gotoPage:nextPage];
     }];
-
-    if (self.showAsIntro)
-    {
-        [Common setY:(self.pageControl.frame.origin.y + 20.0f) ofView:self.pageControl];
-    }
 }
 
 
