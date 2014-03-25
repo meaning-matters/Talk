@@ -38,13 +38,6 @@
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings synchronizeWithServerString]];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refreshControl;
-
-    //### Workaround: http://stackoverflow.com/a/19126113/1971013
-    dispatch_async(dispatch_get_main_queue(), ^
-    {
-        [self.refreshControl beginRefreshing];
-        [self.refreshControl endRefreshing];
-    });
 }
 
 
@@ -61,6 +54,20 @@
     {
         [sender endRefreshing];
     }
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    //### Workaround: http://stackoverflow.com/a/19126113/1971013
+    //### And it also fixes my own issue: http://stackoverflow.com/a/22626388/1971013
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        [self.refreshControl beginRefreshing];
+        [self.refreshControl endRefreshing];
+    });
 }
 
 @end
