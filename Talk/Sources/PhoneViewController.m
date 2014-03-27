@@ -349,18 +349,19 @@ typedef enum
 
     cell.textLabel.text  = [Strings numberString];
     cell.imageView.image = nil;
-    cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
     if (isNew)
     {
         cell.detailTextLabel.text      = [Strings requiredString];
         cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
         cell.selectionStyle            = UITableViewCellSelectionStyleDefault;
+        cell.accessoryType             = UITableViewCellAccessoryDisclosureIndicator;
     }
     else
     {
         NumberLabel* numberLabel = [Common addNumberLabelToCell:cell];
         numberLabel.text         = [phoneNumber internationalFormat];
         cell.selectionStyle      = UITableViewCellSelectionStyleNone;
+        cell.accessoryType       = UITableViewCellAccessoryNone;
     }
 
     return cell;
