@@ -385,7 +385,7 @@
                                                 @"Loading iTunes Store products failed: %@\n\nPlease try again later.",
                                                 @"Alert message: Information could not be loaded over internet.\n"
                                                 @"[iOS alert message size]");
-    if (error != nil)
+    if (error != nil && error.code != 0)
     {
         message = [NSString stringWithFormat:message, error.localizedDescription];
     }
@@ -393,7 +393,7 @@
     {
         NSString* description = NSLocalizedStringWithDefaultValue(@"Purchase:General NoInternet", nil,
                                                                   [NSBundle mainBundle],
-                                                                  @"There is no internet connection",
+                                                                  @"There is no internet connection.",
                                                                   @"Short text that is part of alert message.\n"
                                                                   @"[Keep short]");
         message = [NSString stringWithFormat:message, description];

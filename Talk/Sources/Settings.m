@@ -140,6 +140,7 @@ static NSUserDefaults* userDefaults;
         [dictionary setObject:@(YES)                                             forKey:ShowCallerIdKey];
         [dictionary setObject:@(NO)                                              forKey:CallbackModeKey];
         [dictionary setObject:@""                                                forKey:CallerIdE164Key];
+        [dictionary setObject:@""                                                forKey:CallbackE164Key];
         [dictionary setObject:@(NumberTypeGeographicMask)                        forKey:NumberTypeMaskKey];
         [dictionary setObject:@(0)                                               forKey:NumbersSortSegmentKey];
         [dictionary setObject:@(0)                                               forKey:ForwardingsSelectionKey];

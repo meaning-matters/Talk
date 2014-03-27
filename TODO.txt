@@ -174,3 +174,6 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Settings: when changing country name, it's only updated right after pop animation (at at least later then the flag).
 
 * I switched off [Common checkRemoteNotifications] in PurchaseManager !HAS_BUYING_NUMBERS.  May want to check this when we start using notifications for missed calls for example (once we add incoming numbers).
+
+* Add number virification API that break off the process: so stops calling. Then in app the <Phone back button can be
+  enabled again and handled in UIVC's willMoveToParentViewController when parent == nil

@@ -67,7 +67,7 @@
 }
 
 
-- (void)buttonAction:(id)sender
+- (void)getStarted
 {
     [self setBusy:YES];
 

@@ -53,8 +53,17 @@
 }
 
 
-// Dummy to be overriden by subclass.
 - (IBAction)buttonAction:(id)sender
+{
+    if ([self checkCurrencyCode] == YES)
+    {
+        [self getStarted];
+    }
+}
+
+
+// Dummy to be overriden by subclass.
+- (void)getStarted
 {
 }
 
@@ -65,6 +74,40 @@
     self.button.alpha   = busy ? 0.5f : 1.0f;
 
     busy ? [self.activityIndicator startAnimating] : [self.activityIndicator stopAnimating];
+}
+
+
+- (BOOL)checkCurrencyCode
+{
+    if ([Settings sharedSettings].currencyCode.length == 0)
+    {
+        NSString* title;
+        NSString* message;
+        title   = NSLocalizedStringWithDefaultValue(@"GetStartedAction NoCurrencyCodeTitle", nil, [NSBundle mainBundle],
+                                                    @"No Connection",
+                                                    @"...\n"
+                                                    @"...");
+        message = NSLocalizedStringWithDefaultValue(@"GetStartedAction NoCurrencyCodeMessage", nil, [NSBundle mainBundle],
+                                                    @"Information from the iTunes Store has not been loaded (yet).\n\n"
+                                                    @"Please make sure you're connected to internet, and try again.",
+                                                    @"...\n"
+                                                    @"...");
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            [[AppDelegate appDelegate] resetAll];
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+
+        return NO;
+    }
+    else
+    {
+        return YES;
+    }
 }
 
 
@@ -151,10 +194,8 @@
                                                    message:message
                                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
                     {
-                        [[AppDelegate appDelegate] resetAll];
                         [self dismissViewControllerAnimated:YES completion:nil];
                     }
-
                                          cancelButtonTitle:[Strings closeString]
                                          otherButtonTitles:nil];
                 }

@@ -27,7 +27,7 @@
 
         [[Settings sharedSettings] addObserver:sharedInstance
                                     forKeyPath:@"callbackMode"
-                                       options:NSKeyValueChangeOldKey
+                                       options:0
                                        context:nil];
         
         [UIApplication sharedApplication].keyWindow.tintColor = [self tintColor];
