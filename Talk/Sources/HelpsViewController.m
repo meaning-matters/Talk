@@ -53,10 +53,29 @@ typedef enum
 
         sections |= TableSectionTexts;
         sections |= TableSectionContactUs;
-        sections |= TableSectionIntro;
 #if HAS_VOIP
         sections |= TableSectionTestCall;
 #endif
+
+        [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
+                                                          object:nil
+                                                           queue:[NSOperationQueue mainQueue]
+                                                      usingBlock:^(NSNotification* note)
+        {
+            if ([Settings sharedSettings].haveAccount != !!(sections & TableSectionIntro))
+            {
+                if ([Settings sharedSettings].haveAccount)
+                {
+                    sections |=  TableSectionIntro;
+                }
+                else
+                {
+                    sections &= ~TableSectionIntro;
+                }
+
+                [self.tableView reloadData];
+            }
+        }];
     }
 
     return self;
@@ -190,7 +209,7 @@ typedef enum
 
         case TableSectionIntro:
             cell.textLabel.text  =NSLocalizedStringWithDefaultValue(@"Helps IntroText", nil, [NSBundle mainBundle],
-                                                                    @"Intro",
+                                                                    @"Slideshow",
                                                                     @"...\n"
                                                                     @"[1 line larger font].");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
