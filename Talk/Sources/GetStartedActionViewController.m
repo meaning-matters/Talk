@@ -70,6 +70,8 @@
 
 - (void)restoreCreditAndData
 {
+    [self setBusy:YES];
+
     [[WebClient sharedClient] retrieveCreditForCurrencyCode:[Settings sharedSettings].currencyCode
                                                       reply:^(NSError* error, float credit)
     {
@@ -81,6 +83,8 @@
             {
                 if (error == nil)
                 {
+                    [self setBusy:NO];
+
                     NSArray* phonesArray = [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
                                                                                      sortKeys:@[@"name"]
                                                                                     predicate:nil
@@ -107,11 +111,11 @@
 
                     float     credit       = [Settings sharedSettings].credit;
                     NSString* creditString = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
+                    NSString* title;
+                    NSString* message;
 
                     if ([PurchaseManager sharedManager].isNewAccount == YES)
                     {
-                        NSString* title;
-                        NSString* message;
                         title   = NSLocalizedStringWithDefaultValue(@"GetStarted WelcomeTitle", nil,
                                                                     [NSBundle mainBundle],
                                                                     @"Welcome!",
@@ -125,12 +129,34 @@
                                                                     @"when there's anything.",
                                                                     @"Welcome text for a new user.");
                         message = [NSString stringWithFormat:message, creditString];
-                        [BlockAlertView showAlertViewWithTitle:title
-                                                       message:message
-                                                    completion:nil
-                                             cancelButtonTitle:[Strings closeString]
-                                             otherButtonTitles:nil];
                     }
+                    else
+                    {
+                        title   = NSLocalizedStringWithDefaultValue(@"GetStarted WelcomeTitle", nil,
+                                                                    [NSBundle mainBundle],
+                                                                    @"Welcome back!",
+                                                                    @"Welcome title for a new user.");
+
+                        message = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BuyText", nil,
+                                                                    [NSBundle mainBundle],
+                                                                    @"Nice to see you again at NumberBay. "
+                                                                    @"Your remaining credit is %@.\n\n"
+                                                                    @"Please send us a message, from the Help tab, "
+                                                                    @"when there's anything.",
+                                                                    @"Welcome text for a new user.");
+                        message = [NSString stringWithFormat:message, creditString];
+                    }
+
+                    [BlockAlertView showAlertViewWithTitle:title
+                                                   message:message
+                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+                    {
+                        [[AppDelegate appDelegate] resetAll];
+                        [self dismissViewControllerAnimated:YES completion:nil];
+                    }
+
+                                         cancelButtonTitle:[Strings closeString]
+                                         otherButtonTitles:nil];
                 }
                 else
                 {
@@ -151,7 +177,7 @@
                                                    message:message
                                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
                     {
-                        [[Settings sharedSettings] resetAll];
+                        [[AppDelegate appDelegate] resetAll];
                         [self dismissViewControllerAnimated:YES completion:nil];
                     }
                                          cancelButtonTitle:[Strings closeString]
@@ -178,7 +204,7 @@
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
             {
-                [[Settings sharedSettings] resetAll];
+                [[AppDelegate appDelegate] resetAll];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
                                  cancelButtonTitle:[Strings closeString]

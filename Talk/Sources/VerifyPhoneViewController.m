@@ -49,7 +49,7 @@
                                                                   @"...");
 
     self.textLabel.text       = NSLocalizedStringWithDefaultValue(@"VerifyPhone", nil, [NSBundle mainBundle],
-                                                                  @"To verify your phone number, you will receive a call.  "
+                                                                  @"To verify your phone number, you will receive a call. "
                                                                   @"During this call, enter the code below on your phone.",
                                                                   @"...");
 
@@ -344,28 +344,47 @@
 
 - (void)setStep:(int)step
 {
-    self.numberButton.enabled = (step == 1 || step == 2) ? YES : NO;
-    self.callButton.enabled   =              (step == 2) ? YES : NO;
+    switch (step)
+    {
+        case 1:
+        {
+            self.numberButton.enabled = YES;
+            self.callButton.enabled   = NO;
 
-    self.numberButton.titleLabel.textColor = [Skinning tintColor];
-    if (step >= 2)
-    {
-        self.callButton.titleLabel.tintColor = [Skinning tintColor];
-        self.codeLabel.textColor             = [UIColor blackColor];
-    }
-    else
-    {
-        self.callButton.titleLabel.tintColor = [UIColor whiteColor];
-        self.codeLabel.textColor             = [UIColor whiteColor];
-    }
+            self.numberButton.titleLabel.textColor = [Skinning tintColor];
+            self.callButton.titleLabel.tintColor   = [UIColor whiteColor];
+            self.codeLabel.textColor               = [UIColor whiteColor];
 
-    if (step == 3)
-    {
-        [self.callActivityIndicator startAnimating];
-    }
-    else
-    {
-        [self.callActivityIndicator stopAnimating];
+            [self.navigationItem setHidesBackButton:NO animated:YES];
+            [self.callActivityIndicator stopAnimating];
+            break;
+        }
+        case 2:
+        {
+            self.numberButton.enabled = YES;
+            self.callButton.enabled   = YES;
+
+            self.numberButton.titleLabel.textColor = [Skinning tintColor];
+            self.callButton.titleLabel.tintColor   = [Skinning tintColor];
+            self.codeLabel.textColor               = [UIColor blackColor];
+
+            [self.navigationItem setHidesBackButton:NO animated:YES];
+            [self.callActivityIndicator stopAnimating];
+            break;
+        }
+        case 3:
+        {
+            self.numberButton.enabled = NO;
+            self.callButton.enabled   = NO;
+
+            self.numberButton.titleLabel.textColor = [UIColor whiteColor];
+            self.callButton.titleLabel.tintColor   = [Skinning tintColor];
+            self.codeLabel.textColor               = [UIColor redColor];
+
+            [self.navigationItem setHidesBackButton:YES animated:YES];
+            [self.callActivityIndicator startAnimating];
+            break;
+        }
     }
 }
 

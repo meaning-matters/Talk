@@ -44,11 +44,12 @@
                                                              @"[1 line large font].");
 
     self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedRestore Text", nil, [NSBundle mainBundle],
-                                                           @"After tapping the button below, the iTunes Store will ask you to log in. "
-                                                           @"This is needed to retrieve your initial credit purchase.\n\n"
-                                                           @"IMPORTANT: Restoring will only be possible if you use "
+                                                           @"After tapping the button below, the iTunes Store will "
+                                                           @"ask you to log in. This is needed to retrieve your "
+                                                           @"initial credit purchase.\n\n"
+                                                           @"Restoring is only possible when using "
                                                            @"the same iTunes Store account.\n\n"
-                                                           @"Call history & settings are saved locally, "
+                                                           @"Call history & settings are saved locally on your device, "
                                                            @"and can't be restored.\n\n"
                                                            @"If you use the app on multiple devices, you'll simply "
                                                            @"be sharing the credit and phone number(s).",
