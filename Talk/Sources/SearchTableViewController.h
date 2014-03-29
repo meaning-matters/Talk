@@ -11,7 +11,7 @@
 
 @interface SearchTableViewController : UIViewController <UITableViewDataSource, UISearchDisplayDelegate, UISearchBarDelegate>
 
-@property (nonatomic, strong) IBOutlet UITableView* tableView;
+@property (nonatomic, weak) IBOutlet UITableView*   tableView;
 @property (nonatomic, strong) NSArray*              objectsArray;        // The main list of subclass objects.
 
 @property (nonatomic, strong) NSArray*              nameIndexArray;      // Array with all first letters of object names.

@@ -36,7 +36,7 @@
 {
     [super viewDidLoad];
 
-    // This will remove extra separators from tableview
+    // This will remove extra separators from tableview.
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 

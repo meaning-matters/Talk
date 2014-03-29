@@ -1057,6 +1057,7 @@
 		48D3F01E164F9284002041A9 /* CountryNames.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F01D164F9284002041A9 /* CountryNames.m */; };
 		48D3F01F164F9284002041A9 /* CountryNames.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F01D164F9284002041A9 /* CountryNames.m */; };
 		48D60EF418B4D7A4000BE5D2 /* CountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D60EF318B4D7A4000BE5D2 /* CountriesViewController.m */; };
+		48D7AF7C18E6FA2B005D35AC /* NBPeopleListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48D7AF7B18E6FA2B005D35AC /* NBPeopleListView.xib */; };
 		48DD727D169CCF1C00CD7080 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DD727C169CCF1C00CD7080 /* CoreData.framework */; };
 		48DD7281169CD4A200CD7080 /* Data.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 48DD727F169CD4A200CD7080 /* Data.xcdatamodeld */; };
 		48DD7282169CD4A200CD7080 /* Data.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 48DD727F169CD4A200CD7080 /* Data.xcdatamodeld */; };
@@ -2109,6 +2110,7 @@
 		48D3F01D164F9284002041A9 /* CountryNames.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryNames.m; sourceTree = "<group>"; };
 		48D60EF218B4D7A4000BE5D2 /* CountriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountriesViewController.h; sourceTree = "<group>"; };
 		48D60EF318B4D7A4000BE5D2 /* CountriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountriesViewController.m; sourceTree = "<group>"; };
+		48D7AF7B18E6FA2B005D35AC /* NBPeopleListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPeopleListView.xib; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPeopleListView.xib; sourceTree = "<group>"; };
 		48DD727C169CCF1C00CD7080 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		48DD7280169CD4A200CD7080 /* Data.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data.xcdatamodel; sourceTree = "<group>"; };
 		48DD72AB169F55C400CD7080 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -2343,6 +2345,7 @@
 			children = (
 				480578B717A4FABD006923BD /* NBPeopleListViewController.h */,
 				480578B817A4FABD006923BD /* NBPeopleListViewController.m */,
+				48D7AF7B18E6FA2B005D35AC /* NBPeopleListView.xib */,
 				48C3446417A7CCA700E385B6 /* NBPeopleTableViewCell.h */,
 				48C3446517A7CCA700E385B6 /* NBPeopleTableViewCell.m */,
 			);
@@ -4091,6 +4094,7 @@
 				485F6B9A1637270100D61365 /* PH@2x.png in Resources */,
 				485F6B9B1637270100D61365 /* PK.png in Resources */,
 				485F6B9C1637270100D61365 /* PK@2x.png in Resources */,
+				48D7AF7C18E6FA2B005D35AC /* NBPeopleListView.xib in Resources */,
 				4837AF8718E24BF100D3AEBC /* Icon-76.png in Resources */,
 				485F6B9D1637270100D61365 /* PL.png in Resources */,
 				480BEF9518D59ECA00C882E0 /* GetStartedView.xib in Resources */,
