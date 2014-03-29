@@ -12,18 +12,14 @@
 #import "Strings.h"
 
 
-@interface GetStartedStartViewController ()
-
-@end
-
 @implementation GetStartedStartViewController
 
 - (id)init
 {
     if (self = [super init])
     {
-        self.title = NSLocalizedStringWithDefaultValue(@"GetStartedStart ScreenTitle", nil,
-                                                       [NSBundle mainBundle], @"Start",
+        self.title = NSLocalizedStringWithDefaultValue(@"GetStartedStart ScreenTitle", nil, [NSBundle mainBundle],
+                                                       @"Start",
                                                        @"Title of app screen ...\n"
                                                        @"[1 line larger font].");
     }
@@ -36,34 +32,35 @@
 {
     [super viewDidLoad];
 
-    self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedStart ScreenTitle", nil, [NSBundle mainBundle],
-                                                            @"To get started, buy a little credit, and verify one of "
-                                                            @"your phone numbers. No need to create a\n\nWhen you make a call, you'll be "
-                                                            @"called back by our server; that's why your number needs "
-                                                            @"to be verified. When you answer, the person you're trying to "
-                                                            @"reach will be called.\n\n",
-                                                            @"[N lines larger font].");
+    self.titleLabel.text = NSLocalizedStringWithDefaultValue(@"GetStartedStart Welcome", nil, [NSBundle mainBundle],
+                                                             @"Welcome!",
+                                                             @"...\n"
+                                                             @"[1 line large font].");
+
+    self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedStart Text", nil, [NSBundle mainBundle],
+                                                           @"After tapping the button below, the iTunes Store will "
+                                                           @"ask you to log in. This is needed to retrieve your "
+                                                           @"initial credit purchase.\n\n"
+                                                           @"Restoring is only possible when using "
+                                                           @"the same iTunes Store account.\n\n"
+                                                           @"Call history & settings are saved locally on your device, "
+                                                           @"and can't be restored.\n\n"
+                                                           @"If you use the app on multiple devices, you'll simply "
+                                                           @"be sharing the credit and phone number(s).",
+                                                           @"....\n"
+                                                           @"[iOS alert title size].");
+
+    [self.button setTitle:NSLocalizedStringWithDefaultValue(@"GetStartedStart Button", nil, [NSBundle mainBundle],
+                                                            @"Restore Credit & Phones",
+                                                            @"...\n"
+                                                            @"[1 line larger font].")
+                 forState:UIControlStateNormal];
 }
 
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
-    self.button.enabled = NO;
-    self.button.alpha   = 0.5f;
-    [[PurchaseManager sharedManager] loadProducts:^(BOOL success)
-    {
-        if (success == YES)
-        {
-            self.button.enabled = YES;
-            self.button.alpha   = 0.5f;
-        }
-        else
-        {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
-    }];
 }
 
 

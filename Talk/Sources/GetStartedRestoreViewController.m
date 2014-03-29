@@ -13,11 +13,6 @@
 #import "Common.h"
 
 
-@interface GetStartedRestoreViewController ()
-
-@end
-
-
 @implementation GetStartedRestoreViewController
 
 - (id)init
@@ -55,9 +50,6 @@
                                                            @"be sharing the credit and phone number(s).",
                                                            @"....\n"
                                                            @"[iOS alert title size].");
-    [Common setBorderWidth:1.0f                ofView:self.textView];
-    [Common setCornerRadius:5.0f               ofView:self.textView];
-    [Common setBorderColor:[UIColor grayColor] ofView:self.textView];
 
     [self.button setTitle:NSLocalizedStringWithDefaultValue(@"GetStartedRestore Button", nil, [NSBundle mainBundle],
                                                             @"Restore Credit & Phones",

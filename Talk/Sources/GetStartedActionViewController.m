@@ -29,6 +29,20 @@
 {
     if (self = [super initWithNibName:@"GetStartedActionView" bundle:nil])
     {
+        self.button.enabled = NO;
+        self.button.alpha   = 0.5f;
+        [[PurchaseManager sharedManager] loadProducts:^(BOOL success)
+        {
+            if (success == YES)
+            {
+                self.button.enabled = YES;
+                self.button.alpha   = 1.0f;
+            }
+            else
+            {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
+        }];
     }
 
     return self;
@@ -48,6 +62,10 @@
     //### Setting this in XIB hit an Xcode bug: text was scaled to fit.
     self.textView.editable   = NO;
     self.textView.selectable = NO;
+
+    [Common setBorderWidth:1.0f                ofView:self.textView];
+    [Common setCornerRadius:5.0f               ofView:self.textView];
+    [Common setBorderColor:[UIColor grayColor] ofView:self.textView];
 
     [Common styleButton:self.button];
 }
@@ -141,6 +159,12 @@
                             {
                                 [Settings sharedSettings].callbackE164 = ((PhoneData*)phonesArray[0]).e164;
                                 [Settings sharedSettings].callerIdE164 = ((PhoneData*)phonesArray[0]).e164;
+
+                                [self showWelcomeAlert];
+                            }
+                            else
+                            {
+                                /// .....
                             }
                         }];
 
@@ -150,54 +174,9 @@
                     {
                         [Settings sharedSettings].callbackE164 = ((PhoneData*)phonesArray[0]).e164;
                         [Settings sharedSettings].callerIdE164 = ((PhoneData*)phonesArray[0]).e164;
+
+                        [self showWelcomeAlert];
                     }
-
-                    float     credit       = [Settings sharedSettings].credit;
-                    NSString* creditString = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
-                    NSString* title;
-                    NSString* message;
-
-                    if ([PurchaseManager sharedManager].isNewAccount == YES)
-                    {
-                        title   = NSLocalizedStringWithDefaultValue(@"GetStarted WelcomeTitle", nil,
-                                                                    [NSBundle mainBundle],
-                                                                    @"Welcome!",
-                                                                    @"Welcome title for a new user.");
-
-                        message = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BuyText", nil,
-                                                                    [NSBundle mainBundle],
-                                                                    @"Thanks for becoming a NumberBay user. "
-                                                                    @"Your initial credit is %@.\n\n"
-                                                                    @"Please send us a message, from the Help tab, "
-                                                                    @"when there's anything.",
-                                                                    @"Welcome text for a new user.");
-                        message = [NSString stringWithFormat:message, creditString];
-                    }
-                    else
-                    {
-                        title   = NSLocalizedStringWithDefaultValue(@"GetStarted WelcomeTitle", nil,
-                                                                    [NSBundle mainBundle],
-                                                                    @"Welcome back!",
-                                                                    @"Welcome title for a new user.");
-
-                        message = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BuyText", nil,
-                                                                    [NSBundle mainBundle],
-                                                                    @"Nice to see you again at NumberBay. "
-                                                                    @"Your remaining credit is %@.\n\n"
-                                                                    @"Please send us a message, from the Help tab, "
-                                                                    @"when there's anything.",
-                                                                    @"Welcome text for a new user.");
-                        message = [NSString stringWithFormat:message, creditString];
-                    }
-
-                    [BlockAlertView showAlertViewWithTitle:title
-                                                   message:message
-                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
-                    {
-                        [self dismissViewControllerAnimated:YES completion:nil];
-                    }
-                                         cancelButtonTitle:[Strings closeString]
-                                         otherButtonTitles:nil];
                 }
                 else
                 {
@@ -252,6 +231,57 @@
                                  otherButtonTitles:nil];
         }
     }];
+}
+
+
+- (void)showWelcomeAlert
+{
+    float     credit       = [Settings sharedSettings].credit;
+    NSString* creditString = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
+    NSString* title;
+    NSString* message;
+
+    if ([PurchaseManager sharedManager].isNewAccount == YES)
+    {
+        title   = NSLocalizedStringWithDefaultValue(@"GetStarted WelcomeTitle", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"Welcome!",
+                                                    @"Welcome title for a new user.");
+
+        message = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BuyText", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"Thanks for becoming a NumberBay user. "
+                                                    @"Your initial credit is %@.\n\n"
+                                                    @"Please send us a message, from the Help tab, "
+                                                    @"when there's anything.",
+                                                    @"Welcome text for a new user.");
+        message = [NSString stringWithFormat:message, creditString];
+    }
+    else
+    {
+        title   = NSLocalizedStringWithDefaultValue(@"GetStarted WelcomeTitle", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"Welcome back!",
+                                                    @"Welcome title for a new user.");
+
+        message = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BuyText", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"Nice to see you again at NumberBay. "
+                                                    @"Your remaining credit is %@.\n\n"
+                                                    @"Please send us a message, from the Help tab, "
+                                                    @"when there's anything.",
+                                                    @"Welcome text for a new user.");
+        message = [NSString stringWithFormat:message, creditString];
+    }
+
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
 }
 
 @end

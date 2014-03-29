@@ -430,7 +430,6 @@
 #warning Stop things in background, like audio downloads. Especially for conflicts with CoreData being cleared.
 
     [self.numbersViewController.navigationController     popToRootViewControllerAnimated:NO];
-    //###NBRecents....
     [self.forwardingsViewController.navigationController popToRootViewControllerAnimated:NO];
     [self.phonesViewController.navigationController      popToRootViewControllerAnimated:NO];
 
