@@ -14,7 +14,7 @@
 
 @interface ItemViewController ()
 
-@property (nonatomic, assign) BOOL      hasCorrectedInsets;
+@property (nonatomic, assign) BOOL hasCorrectedInsets;
 
 @end
 

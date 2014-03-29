@@ -183,6 +183,7 @@ typedef enum
         else
         {
             [self.managedObjectContext rollback];
+            self.name = self.phone.name;
             [self showSaveError:error];
         }
     }];
@@ -204,7 +205,10 @@ typedef enum
                                                 @"[iOS alert message size]");
     [BlockAlertView showAlertViewWithTitle:title
                                    message:[NSString stringWithFormat:message, [error localizedDescription]]
-                                completion:nil
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        [self.tableView reloadData];
+    }
                          cancelButtonTitle:[Strings closeString]
                          otherButtonTitles:nil];
 }
