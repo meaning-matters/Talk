@@ -167,10 +167,38 @@
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
+    if ([[fetchedPhonesController sections] count] > 0)
+    {
+        id<NSFetchedResultsSectionInfo> sectionInfo = [[fetchedPhonesController sections] objectAtIndex:section];
+
+        if ([sectionInfo numberOfObjects] > 0)
+        {
+            return NSLocalizedStringWithDefaultValue(@"Phones ...", nil, [NSBundle mainBundle],
+                                                     @"Use as Caller ID & Callback number",
+                                                     @"\n"
+                                                     @"[1/4 line larger font].");
+        }
+        else
+        {
+            return nil;
+        }
+    }
+    else
+    {
+        return nil;
+    }
+}
+
+
+- (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
     return NSLocalizedStringWithDefaultValue(@"Phone Phones List Title", nil, [NSBundle mainBundle],
-                                             @"You can take calls on",
+                                             @"List of phone numbers from which you select (on the Settings tab) "
+                                             @"your caller ID, and the number you'll be called back on.\n\n"
+                                             @"Add as many as you like. It can be handy to especially have an "
+                                             @"extensive list of caller IDs list available.",
                                              @"\n"
-                                             @"[1/4 line larger font].");
+                                             @"[ ].");
 }
 
 
