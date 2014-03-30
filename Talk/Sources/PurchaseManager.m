@@ -643,7 +643,7 @@
 
 - (void)buyAccount:(void (^)(BOOL success, id object))completion
 {
-    if (self.buyCompletion != nil || (HAS_BUYING_NUMBERS && [Common checkRemoteNotifications] == NO))
+    if (self.buyCompletion != nil || [Common checkRemoteNotifications] == NO)
     {
         completion ? completion(NO, nil) : 0;
 
@@ -656,7 +656,7 @@
 
 - (void)restoreAccount:(void (^)(BOOL success, id object))completion
 {
-    if (self.buyCompletion != nil || (HAS_BUYING_NUMBERS && [Common checkRemoteNotifications] == NO))
+    if (self.buyCompletion != nil || [Common checkRemoteNotifications] == NO)
     {
         completion ? completion(NO, nil) : 0;
 

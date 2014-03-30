@@ -442,7 +442,7 @@ static NSDictionary* statuses;
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSString*     number     = [e164 substringFromIndex:1];
-    NSDictionary* parameters = @{@"deviceName" : deviceName};
+    NSDictionary* parameters = @{@"name" : deviceName};
 
     [self postPath:[NSString stringWithFormat:@"users/%@/verification?number=%@", username, number]
         parameters:parameters

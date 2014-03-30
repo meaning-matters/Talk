@@ -671,6 +671,7 @@ typedef enum
                                                                 [NSBundle mainBundle], @"Get Started",
                                                                 @"Title of table cell for getting an account\n"
                                                                 @"[....");
+        cell.textLabel.textColor = [Skinning tintColor];
     }
     else if (settings.haveAccount == YES && indexPath.row == 0)
     {
@@ -678,6 +679,7 @@ typedef enum
                                                                 [NSBundle mainBundle], @"Synchronize With Server",
                                                                 @"Title of table cell for getting an account\n"
                                                                 @"....");
+        cell.textLabel.textColor = [Skinning tintColor];
     }
     else
     {
@@ -685,9 +687,8 @@ typedef enum
                                                                 [NSBundle mainBundle], @"Reset All",
                                                                 @"Title of table cell for resetting all user data\n"
                                                                 @"...].");
+        cell.textLabel.textColor = [UIColor redColor];
     }
-
-    cell.textLabel.textColor = [Skinning tintColor];
 
     cell.accessoryType  = UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
