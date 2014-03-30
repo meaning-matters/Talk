@@ -422,6 +422,7 @@ typedef enum
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallModeSwitchCell"];
             switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+            switchView.onTintColor = [Skinning tintColor];
             cell.accessoryView = switchView;
         }
         else
@@ -517,6 +518,7 @@ typedef enum
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
             switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+            switchView.onTintColor = [Skinning tintColor];
             cell.accessoryView = switchView;
         }
         else
@@ -596,6 +598,7 @@ typedef enum
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
             switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+            switchView.onTintColor = [Skinning tintColor];
             cell.accessoryView = switchView;
         }
         else
@@ -631,6 +634,7 @@ typedef enum
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
         switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+        switchView.onTintColor = [Skinning tintColor];
         cell.accessoryView = switchView;
     }
     else
