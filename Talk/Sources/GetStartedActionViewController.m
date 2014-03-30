@@ -163,11 +163,7 @@
                                 {
                                     if (success == YES)
                                     {
-                                        NSString* e164 = [verifiedPhoneNumber e164Format];
-                                        [Settings sharedSettings].callbackE164 = e164;
-                                        [Settings sharedSettings].callerIdE164 = e164;
-
-                                        [self showWelcomeAlert];
+                                        [self readyWithE164:[verifiedPhoneNumber e164Format]];
                                     }
                                     else
                                     {
@@ -187,10 +183,8 @@
                     }
                     else
                     {
-                        [Settings sharedSettings].callbackE164 = ((PhoneData*)phonesArray[0]).e164;
-                        [Settings sharedSettings].callerIdE164 = ((PhoneData*)phonesArray[0]).e164;
+                        [self readyWithE164:((PhoneData*)phonesArray[0]).e164];
 
-                        [self showWelcomeAlert];
                     }
                 }
                 else
@@ -275,6 +269,16 @@
             completion(NO);
         }
     }];
+}
+
+
+- (void)readyWithE164:(NSString*)e164
+{
+    [Settings sharedSettings].callbackE164 = e164;
+    [Settings sharedSettings].callerIdE164 = e164;
+    !HAS_VOIP ? [Settings sharedSettings].callbackMode = YES : 0;
+
+    [self showWelcomeAlert];
 }
 
 
