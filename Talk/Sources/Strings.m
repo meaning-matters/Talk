@@ -97,7 +97,7 @@
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings NameFooter", nil,
                                              [NSBundle mainBundle],
-                                             @"Enter a short descriptive name that is easy to remember.  "
+                                             @"Enter a short descriptive name that is easy to remember. "
                                              @"Can be changed later.",
                                              @"Standard table footer text, telling that user must supply a name.");
 }

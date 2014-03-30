@@ -39,7 +39,7 @@
                                                     @"[iOS alert title size].");
         message = NSLocalizedStringWithDefaultValue(@"Forwardings ForwardingInUseMessage", nil,
                                                     [NSBundle mainBundle],
-                                                    @"This Forwarding is still used for %d %@.  To delete, "
+                                                    @"This Forwarding is still used for %d %@. To delete, "
                                                     @"make sure it's no longer used.",
                                                     @"Alert message telling that number forwarding is used.\n"
                                                     @"[iOS alert message size - parameters: count, number(s)]");

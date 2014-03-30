@@ -173,7 +173,7 @@ typedef enum
 #if HAS_VOIP
             title = NSLocalizedStringWithDefaultValue(@"Settings:CallModeInfo SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"In Callback Mode, our server first calls your Called Back number.  "
+                                                      @"In Callback Mode, our server first calls your Called Back number. "
                                                       @"Then, when you accept that call, the person you're tying to "
                                                       @"reach is being called; the Caller ID is used as caller ID.",
                                                       @"Explanation what Call Mode setting is doing\n"
@@ -181,7 +181,7 @@ typedef enum
 #else
             title = NSLocalizedStringWithDefaultValue(@"Settings:CallbackInfo SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"Our server first calls the Called Back number.  Then, when you "
+                                                      @"Our server first calls the Called Back number. Then, when you "
                                                       @"accept that call, the party you're tying to reach is being "
                                                       @"called, and is show Caller ID (when the Show My Caller "
                                                       @"ID setting is on).",
@@ -199,12 +199,23 @@ typedef enum
             break;
 
         case TableSectionAccountData:
-            title = NSLocalizedStringWithDefaultValue(@"Settings:AccountDataInfo SectionFooter", nil,
+#if HAS_BUYING_NUMBERS
+            title = NSLocalizedStringWithDefaultValue(@"Settings:AccountDataInfoFull SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"After a reset, you can restore your account, purchased "
-                                                      @"numbers, forwardings, and credit on any device.",
+                                                      @"With a reset you only loose your Settings and Recents. "
+                                                      @"You can always restore your account credit, verified "
+                                                      @"phones, purchased numbers, and forwardings on other devices.",
                                                       @"Explanation what the Reset setting is doing\n"
                                                       @"[* lines]");
+#else
+            title = NSLocalizedStringWithDefaultValue(@"Settings:AccountDataInfo SectionFooter", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"With a reset you only loose your Settings and Recents. "
+                                                      @"You can always restore your account credit and verified "
+                                                      @"numbers on other devices.",
+                                                      @"Explanation what the Reset setting is doing\n"
+                                                      @"[* lines]");
+#endif
             break;
     }
 

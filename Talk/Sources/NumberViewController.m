@@ -178,8 +178,8 @@ typedef enum
         case TableSectionName:
             title = NSLocalizedStringWithDefaultValue(@"Number:Name SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"Tap to edit.  A change will also be saved "
-                                                      @"online.  Refresh the overview Numbers list on other "
+                                                      @"Tap to edit. A change will also be saved "
+                                                      @"online. Refresh the overview Numbers list on other "
                                                       @"devices to load changes.",
                                                       @"[* lines]");
             break;
@@ -197,7 +197,7 @@ typedef enum
             title = NSLocalizedStringWithDefaultValue(@"Number:Subscription SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"IMPORTANT: If you don't extend this subscription in time, "
-                                                      @"your number can't be used anymore after it expires.  An "
+                                                      @"your number can't be used anymore after it expires. An "
                                                       @"expired number can not be reactivated.",
                                                       @"Explanation how/when the subscription, for "
                                                       @"using a phone number, will expire\n"

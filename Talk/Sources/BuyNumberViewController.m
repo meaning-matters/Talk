@@ -331,7 +331,7 @@
                     message = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedGetCreditMessage", nil,
                                                                 [NSBundle mainBundle],
                                                                 @"Could not get your up-to-date credit, from our "
-                                                                @"internet server.  (Credit is needed for the "
+                                                                @"internet server. (Credit is needed for the "
                                                                 @"setup fee.)\n\nPlease try again later.",
                                                                 @"Message telling that buying a phone number failed\n"
                                                                 @"[iOS alert message size]");

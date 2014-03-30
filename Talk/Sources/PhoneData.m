@@ -34,7 +34,7 @@
                                                     @"[iOS alert title size].");
         message = NSLocalizedStringWithDefaultValue(@"Phone PhoneInUseMessage", nil,
                                                     [NSBundle mainBundle],
-                                                    @"This Phone is still used for %d %@.  To delete, "
+                                                    @"This Phone is still used for %d %@. To delete, "
                                                     @"make sure it's no longer used.",
                                                     @"Alert message telling that number forwarding is used.\n"
                                                     @"[iOS alert message size - parameters: count, number(s)]");

@@ -363,7 +363,7 @@
                                                                            @"[N lines]");
             callMessageView.label.text = NSLocalizedStringWithDefaultValue(@"Callback DeclinedMessage", nil, [NSBundle mainBundle],
                                                                            @"You declined an incoming call.\n\n"
-                                                                           @"If you declined the callback, please end.  "
+                                                                           @"If you declined the callback, please end. "
                                                                            @"If you declined another call, you can retry.",
                                                                            @"Alert message: ...\n"
                                                                            @"[N lines]");
@@ -389,8 +389,8 @@
                     {
                         NSString* format;
                         format = NSLocalizedStringWithDefaultValue(@"Callback StopFailedMessage", nil, [NSBundle mainBundle],
-                                                                   @"You declined an incoming call.  This resulted in an "
-                                                                   @"automatic attempt to stop the callback.  But "
+                                                                   @"You declined an incoming call. This resulted in an "
+                                                                   @"automatic attempt to stop the callback. But "
                                                                    @"this attempt failed: %@\n\nThis may mean that "
                                                                    @"your callee got connected to your voicemail.",
                                                                    @"Alert message: ...\n"

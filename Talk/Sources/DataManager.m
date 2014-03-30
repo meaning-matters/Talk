@@ -319,7 +319,7 @@
     message = NSLocalizedStringWithDefaultValue(@"DataManager DatabaseErrorMessage", nil,
                                                 [NSBundle mainBundle],
                                                 @"Due to a problem, the internal database must be recreated.\n\n"
-                                                @"Your call history and favorites will be lost.  Sorry!",
+                                                @"Your call history and favorites will be lost. Sorry!",
                                                 @"Message telling that App's internal database has problem\n"
                                                 @"[iOS alert message size]");
     button  = NSLocalizedStringWithDefaultValue(@"DataManager DatabaseErrorButtonTitle", nil,

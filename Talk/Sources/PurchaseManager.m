@@ -276,7 +276,7 @@
         {
             NSString* description = NSLocalizedStringWithDefaultValue(@"Purchase:General ProcessCreditFailed", nil,
                                                                       [NSBundle mainBundle],
-                                                                      @"Could not process credit.  This will be retried "
+                                                                      @"Could not process credit. This will be retried "
                                                                       @"later automatically",
                                                                       @"Error message ...\n"
                                                                       @"[...].");
@@ -850,7 +850,7 @@
 
                     NSString* description = NSLocalizedStringWithDefaultValue(@"Purchase:General ProcessNumberFailed", nil,
                                                                               [NSBundle mainBundle],
-                                                                              @"Could not process your new phone number.  "
+                                                                              @"Could not process your new phone number. "
                                                                               @"This will be retried later automatically",
                                                                               @"Error message ...\n"
                                                                               @"[...].");

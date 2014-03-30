@@ -127,7 +127,7 @@
                                                     @"[iOS alert title size].");
 
         message = NSLocalizedStringWithDefaultValue(@"About EmailSentMessage", nil, [NSBundle mainBundle],
-                                                    @"Thanks for contacting us.  Your email has been placed "
+                                                    @"Thanks for contacting us. Your email has been placed "
                                                     @"in your outbox, or has already been sent.\n\n"
                                                     @"We do our best to respond within 48 hours.",
                                                     @"Alert message that sending an email is in progress\n"
