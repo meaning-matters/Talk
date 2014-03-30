@@ -73,7 +73,7 @@ static SipInterface*    sipInterface;
 #warning for the NoCredit one, with a Buy button.
 - (NSString*)callFailedMessage:(SipInterfaceCallFailed)failed sipStatus:(int)sipStatus
 {
-    NSString*   message;
+    NSString* message;
 
     switch (failed)
     {
@@ -275,7 +275,7 @@ static SipInterface*    sipInterface;
 
 - (BOOL)checkAccount
 {
-    BOOL    result;
+    BOOL result;
 
     if ([Settings sharedSettings].haveAccount)
     {
@@ -285,6 +285,56 @@ static SipInterface*    sipInterface;
     {
         result = NO;
         [Common showGetStartedViewController];
+    }
+
+    return result;
+}
+
+
+- (BOOL)checkIfValidPhoneNumber:(PhoneNumber*)phoneNumber
+{
+    BOOL result;
+
+    if ([Settings sharedSettings].allowInvalidNumbers == YES || [phoneNumber isValid] == YES)
+    {
+        result = YES;
+    }
+    else
+    {
+        NSString* title;
+        NSString* message;
+        NSString* button;
+
+        title   = NSLocalizedStringWithDefaultValue(@"Callback InvalidTitle", nil,
+                                                    [NSBundle mainBundle], @"Invalid Number",
+                                                    @"Alert title: Invalid phone number\n"
+                                                    @"[iOS alert title size]");
+
+        message = NSLocalizedStringWithDefaultValue(@"Callback InvalidMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"The number you're trying to call does not seem to be "
+                                                    @"valid.\n\nTry adding the country code, check the "
+                                                    @"current Home Country in Settings, or allow this from now on "
+                                                    @"(switch off again in Settings).",
+                                                    @"Alert message: ...\n"
+                                                    @"[iOS alert message size]");
+
+        button  = NSLocalizedStringWithDefaultValue(@"Callback InvalidButton", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"Allow",
+                                                    @" ...\n"
+                                                    @"[iOS ...]");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            [Settings sharedSettings].allowInvalidNumbers = !cancelled;
+        }
+                             cancelButtonTitle:[Strings cancelString]
+                             otherButtonTitles:button, nil];
+
+        result = NO;
     }
 
     return result;
@@ -435,13 +485,18 @@ static SipInterface*    sipInterface;
             call.network = CallNetworkMobile;
         }
     }
-    else if ([Settings sharedSettings].callbackMode == YES)
+    else if ([self checkAccount] &&
+             [Common checkCountryOfPhoneNumber:phoneNumber completion:nil] &&
+             [self checkIfValidPhoneNumber:phoneNumber])
     {
-        call = [self callCallbackPhoneNumber:phoneNumber fromIdentity:identity];
-    }
-    else
-    {
-        call = [self callVoipPhoneNumber:phoneNumber fromIdentity:identity];
+        if ([Settings sharedSettings].callbackMode == YES)
+        {
+            call = [self callCallbackPhoneNumber:phoneNumber fromIdentity:identity];
+        }
+        else
+        {
+            call = [self callVoipPhoneNumber:phoneNumber fromIdentity:identity];
+        }
     }
 
     return call;
@@ -452,45 +507,17 @@ static SipInterface*    sipInterface;
 {
     Call* call = nil;
 
-    if ([self checkAccount] &&
-        [phoneNumber.originalFormat isEqualToString:[Settings sharedSettings].testNumber] == NO)
+    if ([phoneNumber.originalFormat isEqualToString:[Settings sharedSettings].testNumber] == NO)
     {
-        if ([phoneNumber isValid] == YES)
-        {
-            call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
-            call.identityNumber = identity;
-            call.showCallerId   = [Settings sharedSettings].showCallerId;
+        call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
+        call.identityNumber = identity;
+        call.showCallerId   = [Settings sharedSettings].showCallerId;
 
-            callbackViewController = [[CallbackViewController alloc] initWithCall:call];
-            callbackViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            [AppDelegate.appDelegate.tabBarController presentViewController:callbackViewController
-                                                                   animated:YES
-                                                                 completion:nil];
-        }
-        else
-        {
-            NSString* title;
-            NSString* message;
-
-            title   = NSLocalizedStringWithDefaultValue(@"Callback InvalidTitle", nil,
-                                                        [NSBundle mainBundle], @"Invalid Number",
-                                                        @"Alert title: Invalid phone number\n"
-                                                        @"[iOS alert title size]");
-
-            message = NSLocalizedStringWithDefaultValue(@"Callback InvalidMessage", nil,
-                                                        [NSBundle mainBundle],
-                                                        @"The number you're trying to call does not seem to be "
-                                                        @"valid.\n\nTry adding the country code, or check the "
-                                                        @"current Home Country in Settings.",
-                                                        @"Alert message: ...\n"
-                                                        @"[iOS alert message size]");
-
-            [BlockAlertView showAlertViewWithTitle:title
-                                           message:message
-                                        completion:nil
-                                 cancelButtonTitle:[Strings closeString]
-                                 otherButtonTitles:nil];
-        }
+        callbackViewController = [[CallbackViewController alloc] initWithCall:call];
+        callbackViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [AppDelegate.appDelegate.tabBarController presentViewController:callbackViewController
+                                                               animated:YES
+                                                             completion:nil];
     }
 
     return call;
@@ -501,9 +528,7 @@ static SipInterface*    sipInterface;
 {
     Call* call = nil;
 
-    if ([self checkAccount] &&
-        [self checkNetwork] &&
-        [Common checkCountryOfPhoneNumber:phoneNumber completion:nil])
+    if ([self checkNetwork])
     {
         call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
         call.identityNumber = identity;

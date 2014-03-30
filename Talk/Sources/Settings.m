@@ -32,6 +32,7 @@ NSString* const SipRealmKey               = @"SipRealm";               // Used a
 NSString* const SipUsernameKey            = @"SipUsername";            // Used as keychain 'username'.
 NSString* const SipPasswordKey            = @"SipPassword";            // Used as keychain 'username'.
 NSString* const AllowCellularDataCallsKey = @"AllowCellularDataCalls";
+NSString* const AllowInvalidNumbersKey    = @"AllowInvalidNumbers";
 NSString* const ShowCallerIdKey           = @"ShowCallerId";
 NSString* const CallbackModeKey           = @"CallbackMode";
 NSString* const CallerIdE164Key           = @"CallerIdE164";
@@ -135,6 +136,7 @@ static NSUserDefaults* userDefaults;
         [dictionary setObject:@""                                                forKey:LastDialedNumberKey];
         [dictionary setObject:@"https://api2.numberbay.com/"                      forKey:WebBaseUrlKey];
         [dictionary setObject:@(NO)                                              forKey:AllowCellularDataCallsKey];
+        [dictionary setObject:@(NO)                                              forKey:AllowInvalidNumbersKey];
         [dictionary setObject:@(YES)                                             forKey:ShowCallerIdKey];
         [dictionary setObject:@(NO)                                              forKey:CallbackModeKey];
         [dictionary setObject:@""                                                forKey:CallerIdE164Key];
@@ -330,6 +332,18 @@ static NSUserDefaults* userDefaults;
 - (void)setAllowCellularDataCalls:(BOOL)allowCellularDataCalls
 {
     [userDefaults setBool:allowCellularDataCalls forKey:AllowCellularDataCallsKey];
+}
+
+
+- (BOOL)allowInvalidNumbers
+{
+    return [userDefaults boolForKey:AllowInvalidNumbersKey];
+}
+
+
+- (void)setAllowInvalidNumbers:(BOOL)allowInvalidNumbers
+{
+    [userDefaults setBool:allowInvalidNumbers forKey:AllowInvalidNumbersKey];
 }
 
 

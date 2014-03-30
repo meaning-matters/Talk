@@ -113,8 +113,6 @@ static const int TextFieldCellTag = 1111;
 
 + (unsigned)nOfBit:(unsigned long)bit inValue:(unsigned long)value;     // Converts table section mask to section.
 
-+ (unsigned long)bitIndex:(unsigned long)value;                         // Converts table section mask to index.
-
 + (NSString*)capitalizedString:(NSString*)string;
 
 + (void)showGetStartedViewController;

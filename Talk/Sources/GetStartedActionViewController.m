@@ -139,6 +139,7 @@
         if (error == nil)
         {
             [Settings sharedSettings].credit = credit;
+            !HAS_VOIP ? [Settings sharedSettings].callbackMode = YES : 0;
 
             [[DataManager sharedManager] synchronizeAll:^(NSError *error)
             {
@@ -184,7 +185,6 @@
                     else
                     {
                         [self readyWithE164:((PhoneData*)phonesArray[0]).e164];
-
                     }
                 }
                 else
@@ -276,7 +276,6 @@
 {
     [Settings sharedSettings].callbackE164 = e164;
     [Settings sharedSettings].callerIdE164 = e164;
-    !HAS_VOIP ? [Settings sharedSettings].callbackMode = YES : 0;
 
     [self showWelcomeAlert];
 }

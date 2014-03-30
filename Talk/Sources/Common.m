@@ -644,7 +644,7 @@ static Common* sharedCommon;
 
         message     = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"The country for this (local) number can't be determined. "
+                                                        @"The country for this (local) number can't be determined.\n\n"
                                                         @"Select the default country, or enter an international number.",
                                                         @"Alert message informing about home country being unknown\n"
                                                         @"[iOS alert message size]");
@@ -782,20 +782,6 @@ static Common* sharedCommon;
     }
 
     return n;
-}
-
-
-+ (unsigned long)bitIndex:(unsigned long)value
-{
-    unsigned long   index = 0;
-
-    while (value >> 1)
-    {
-        index++;
-        value >>= 1;
-    }
-
-    return index;
 }
 
 

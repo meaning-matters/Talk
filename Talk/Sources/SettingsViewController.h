@@ -10,6 +10,6 @@
 
 @interface SettingsViewController : UITableViewController
 
-- (void)allowDataCalls; // Prompts user if data calls must be enable.
+- (void)allowDataCalls; // Prompts user if data calls must be enabled.
 
 @end

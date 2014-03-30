@@ -325,12 +325,12 @@ static NSString*    defaultIsoCountryCode = @"";
 
 - (NSString*)e164Format
 {
-    NSString*   format;
+    NSString* format;
 
     format = [[LibPhoneNumber sharedInstance] e164FormatOfNumber:self.number isoCountryCode:self.isoCountryCode];
     if ([format isEqualToString:@"invalid"])
     {
-        format = nil;
+        format = self.number;
         NSLog(@"Invalid E164: %@.", self.number);
     }
 

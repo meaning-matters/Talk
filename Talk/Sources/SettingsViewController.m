@@ -55,10 +55,8 @@ typedef enum
         // Mandatory sections.
         sections |= TableSectionCallMode;
         sections |= TableSectionHomeCountry;
+        sections |= TableSectionCallOptions;
         sections |= TableSectionAccountData;
-
-        // Optional sections.
-        sections |= HAS_VOIP ? TableSectionCallOptions : 0;
 
         settings = [Settings sharedSettings];
 
@@ -82,8 +80,8 @@ typedef enum
                                                   usingBlock:^(NSNotification* note)
     {
         NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
-        [indexSet addIndex:[Common bitIndex:TableSectionHomeCountry]];
-        [indexSet addIndex:[Common bitIndex:TableSectionCallOptions]];
+        [indexSet addIndex:[Common nOfBit:TableSectionHomeCountry inValue:sections]];
+        [indexSet addIndex:[Common nOfBit:TableSectionCallOptions inValue:sections]];
         
         [self.tableView beginUpdates];
         [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
@@ -96,26 +94,29 @@ typedef enum
                                                   usingBlock:^(NSNotification* note)
     {
         NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
-        [indexSet addIndex:[Common bitIndex:TableSectionCallMode]];
+        [indexSet addIndex:[Common nOfBit:TableSectionCallMode inValue:sections]];
 
         [self.tableView beginUpdates];
         [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView endUpdates];
     }];
 
-    [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
-                                                      object:nil
-                                                       queue:[NSOperationQueue mainQueue]
-                                                  usingBlock:^(NSNotification* note)
-    {
-        NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
-        [indexSet addIndex:[Common bitIndex:TableSectionHomeCountry]];
-        // [indexSet addIndex:[Common bitIndex:TableSectionAccountData]];
-
-        [self.tableView beginUpdates];
-        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView endUpdates];
-    }];
+    [settings addObserver:self
+               forKeyPath:@"callerIdE164"
+                  options:NSKeyValueObservingOptionNew
+                  context:nil];
+    [settings addObserver:self
+               forKeyPath:@"callbackE164"
+                  options:NSKeyValueObservingOptionNew
+                  context:nil];
+    [settings addObserver:self
+               forKeyPath:@"homeCountry"
+                  options:NSKeyValueObservingOptionNew
+                  context:nil];
+    [settings addObserver:self
+               forKeyPath:@"allowInvalidNumbers"
+                  options:NSKeyValueObservingOptionNew
+                  context:nil];
 }
 
 
@@ -129,6 +130,33 @@ typedef enum
         settings.homeCountryFromSim = NO;
         [self.tableView reloadData];
     }
+}
+
+
+- (void)observeValueForKeyPath:(NSString*)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary*)change
+                       context:(void*)context
+{
+    NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
+
+    if ([keyPath isEqualToString:@"callerIdE164"] || [keyPath isEqualToString:@"callbackE164"])
+    {
+        [indexSet addIndex:[Common nOfBit:TableSectionCallMode inValue:sections]];
+    }
+    else if ([keyPath isEqualToString:@"homeCountry"])
+    {
+        [indexSet addIndex:[Common nOfBit:TableSectionHomeCountry inValue:sections]];
+        [indexSet addIndex:[Common nOfBit:TableSectionAccountData inValue:sections]];
+    }
+    else if ([keyPath isEqualToString:@"allowInvalidNumbers"])
+    {
+        [indexSet addIndex:[Common nOfBit:TableSectionCallOptions inValue:sections]];
+    }
+
+    [self.tableView beginUpdates];
+    [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
 }
 
 
@@ -210,6 +238,19 @@ typedef enum
                                                       @"[* lines]");
             break;
 
+        case TableSectionCallOptions:
+#if !HAS_VOIP
+            title = NSLocalizedStringWithDefaultValue(@"Settings:CallOptions SectionFooter", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"It's best to leave this option off, as it may warn you about "
+                                                      @"typos, and numbers without country code that don't match the "
+                                                      @"current Home Country.",
+                                                      @"...\n"
+                                                      @"[* lines]");
+#endif
+            break;
+
+
         case TableSectionAccountData:
 #if HAS_BUYING_NUMBERS
             title = NSLocalizedStringWithDefaultValue(@"Settings:AccountDataInfoFull SectionFooter", nil,
@@ -250,7 +291,7 @@ typedef enum
             break;
 
         case TableSectionCallOptions:
-            numberOfRows = [NetworkStatus sharedStatus].simAvailable ? 2 : 1;
+            numberOfRows = HAS_VOIP ? ([NetworkStatus sharedStatus].simAvailable ? 2 : 1) : 1;
             break;
 
         case TableSectionAccountData:
@@ -609,7 +650,14 @@ typedef enum
 
     if (indexPath.row == 0)
     {
-        cell = [self showCallerIdCell];
+        if (HAS_VOIP)
+        {
+            cell = [self showCallerIdCell];
+        }
+        else
+        {
+            cell = [self allowInvalidNumbersCell];
+        }
     }
     
     if (indexPath.row == 1)
@@ -724,6 +772,40 @@ typedef enum
 }
 
 
+- (UITableViewCell*)allowInvalidNumbersCell
+{
+    UITableViewCell* cell;
+    UISwitch*        switchView;
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
+        switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+        switchView.onTintColor = [Skinning tintColor];
+        cell.accessoryView = switchView;
+    }
+    else
+    {
+        switchView = (UISwitch*)cell.accessoryView;
+    }
+
+    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:AllowCallingInvalidNumbers CellText", nil,
+                                                            [NSBundle mainBundle], @"Allow Invalid Numbers",
+                                                            @"...\n"
+                                                            @"[2/3 line].");
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    switchView.on = settings.allowInvalidNumbers;
+
+    [switchView removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [switchView addTarget:self
+                   action:@selector(allowInvalidNumbersSwitchAction:)
+         forControlEvents:UIControlEventValueChanged];
+
+    return cell;
+}
+
+
 #pragma mark - UI Actions
 
 - (void)readFromSimSwitchAction:(id)sender
@@ -735,7 +817,7 @@ typedef enum
     }
 
     [self.tableView beginUpdates];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:[Common bitIndex:TableSectionHomeCountry]]
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:[Common nOfBit:TableSectionHomeCountry inValue:sections]]
                   withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView endUpdates];
 }
@@ -763,7 +845,7 @@ typedef enum
 // Can be invoked with sender == nil.
 - (void)allowDataCallsSwitchAction:(id)sender
 {
-    UISwitch*   allowDataCallsSwitch = sender;
+    UISwitch* allowDataCallsSwitch = sender;
 
     if ((allowDataCallsSwitch.on == YES || allowDataCallsSwitch == nil) &&
         settings.allowCellularDataCalls == NO)
@@ -807,6 +889,12 @@ typedef enum
 - (void)showCallerIdSwitchAction:(id)sender
 {
     settings.showCallerId = ((UISwitch*)sender).on;
+}
+
+
+- (void)allowInvalidNumbersSwitchAction:(id)sender
+{
+    settings.allowInvalidNumbers = ((UISwitch*)sender).on;
 }
 
 
