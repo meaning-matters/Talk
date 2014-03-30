@@ -61,6 +61,9 @@ typedef enum
         sections |= HAS_VOIP ? TableSectionCallOptions : 0;
 
         settings = [Settings sharedSettings];
+
+        // Force loading the view in order to add the observers.
+        self.view ? (void)1 : (void)0;  // The ?: is to avoid compiler warnings only.
     }
     
     return self;
@@ -83,8 +86,7 @@ typedef enum
         [indexSet addIndex:[Common bitIndex:TableSectionCallOptions]];
         
         [self.tableView beginUpdates];
-        [self.tableView reloadSections:indexSet
-                      withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView endUpdates];
     }];
 
@@ -97,8 +99,21 @@ typedef enum
         [indexSet addIndex:[Common bitIndex:TableSectionCallMode]];
 
         [self.tableView beginUpdates];
-        [self.tableView reloadSections:indexSet
-                      withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView endUpdates];
+    }];
+
+    [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
+                                                      object:nil
+                                                       queue:[NSOperationQueue mainQueue]
+                                                  usingBlock:^(NSNotification* note)
+    {
+        NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
+        [indexSet addIndex:[Common bitIndex:TableSectionHomeCountry]];
+        // [indexSet addIndex:[Common bitIndex:TableSectionAccountData]];
+
+        [self.tableView beginUpdates];
+        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView endUpdates];
     }];
 }
@@ -107,9 +122,6 @@ typedef enum
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    BOOL pushed = [self isMovingToParentViewController];
-    // [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:!pushed];
 
     // When there's no longer a SIM supplying country, reset the homeCountryFromSim settings.
     if ([NetworkStatus sharedStatus].simIsoCountryCode == nil && settings.homeCountryFromSim == YES)
@@ -202,7 +214,7 @@ typedef enum
 #if HAS_BUYING_NUMBERS
             title = NSLocalizedStringWithDefaultValue(@"Settings:AccountDataInfoFull SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"With a reset you only loose your Settings and Recents. "
+                                                      @"With a reset you only loose these settings and your call history. "
                                                       @"You can always restore your account credit, verified "
                                                       @"phones, purchased numbers, and forwardings on other devices.",
                                                       @"Explanation what the Reset setting is doing\n"
@@ -210,7 +222,7 @@ typedef enum
 #else
             title = NSLocalizedStringWithDefaultValue(@"Settings:AccountDataInfo SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"With a reset you only loose your Settings and Recents. "
+                                                      @"With a reset you only loose these settings and your call history. "
                                                       @"You can always restore your account credit and verified "
                                                       @"numbers on other devices.",
                                                       @"Explanation what the Reset setting is doing\n"
@@ -393,7 +405,7 @@ typedef enum
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
+    UITableViewCell* cell;
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {

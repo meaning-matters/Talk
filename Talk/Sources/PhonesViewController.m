@@ -195,8 +195,8 @@
     return NSLocalizedStringWithDefaultValue(@"Phone Phones List Title", nil, [NSBundle mainBundle],
                                              @"List of phone numbers from which you select (on the Settings tab) "
                                              @"your caller ID, and the number you'll be called back on.\n\n"
-                                             @"Add as many as you like. It can be handy to especially have an "
-                                             @"extensive list of caller IDs list available.",
+                                             @"Add as many as you like. It can be handy to have an extensive "
+                                             @"list of caller IDs available.",
                                              @"\n"
                                              @"[ ].");
 }

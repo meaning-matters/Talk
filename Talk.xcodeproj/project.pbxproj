@@ -132,8 +132,6 @@
 		482A639E165FA94400325B3F /* CallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A639C165FA94400325B3F /* CallManager.m */; };
 		482A63A1165FF73400325B3F /* NumberLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A63A0165FF73400325B3F /* NumberLabel.m */; };
 		482A63A2165FF73400325B3F /* NumberLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A63A0165FF73400325B3F /* NumberLabel.m */; };
-		482D2DED16C815BE00E13B91 /* ProvisioningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 482D2DEC16C815BE00E13B91 /* ProvisioningViewController.m */; };
-		482D2DEE16C815BE00E13B91 /* ProvisioningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 482D2DEC16C815BE00E13B91 /* ProvisioningViewController.m */; };
 		482D2DF016C8172900E13B91 /* ProvisioningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482D2DEF16C8172900E13B91 /* ProvisioningView.xib */; };
 		482D2DF116C8172900E13B91 /* ProvisioningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482D2DEF16C8172900E13B91 /* ProvisioningView.xib */; };
 		4830462416EE269D000F9B05 /* NumberAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4830462316EE269D000F9B05 /* NumberAreaViewController.m */; };
@@ -4652,7 +4650,6 @@
 				48DD72D5169F5AC600CD7080 /* WebClient.m in Sources */,
 				4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */,
 				48F5D2ED16B9A380001576E1 /* Base64.m in Sources */,
-				482D2DED16C815BE00E13B91 /* ProvisioningViewController.m in Sources */,
 				48B5AAF216E6A58700BA4084 /* NumberCountriesViewController.m in Sources */,
 				488AD1EA16E799C3004D3A2A /* NumberStatesViewController.m in Sources */,
 				488AD1F116E80A60004D3A2A /* NSObject+Blocks.m in Sources */,
@@ -4790,7 +4787,6 @@
 				48DD72D6169F5AC600CD7080 /* WebClient.m in Sources */,
 				4895D19E16B1C4F200BCA581 /* PurchaseManager.m in Sources */,
 				48F5D2EE16B9A380001576E1 /* Base64.m in Sources */,
-				482D2DEE16C815BE00E13B91 /* ProvisioningViewController.m in Sources */,
 				48B5AAF316E6A58700BA4084 /* NumberCountriesViewController.m in Sources */,
 				488AD1EB16E799C3004D3A2A /* NumberStatesViewController.m in Sources */,
 				488AD1F216E80A60004D3A2A /* NSObject+Blocks.m in Sources */,

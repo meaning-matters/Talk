@@ -157,14 +157,29 @@
                         {
                             if (verifiedPhoneNumber != nil)
                             {
-                                [Settings sharedSettings].callbackE164 = ((PhoneData*)phonesArray[0]).e164;
-                                [Settings sharedSettings].callerIdE164 = ((PhoneData*)phonesArray[0]).e164;
+                                [self savePhoneNumber:verifiedPhoneNumber
+                                             withName:[UIDevice currentDevice].name
+                                           completion:^(BOOL success)
+                                {
+                                    if (success == YES)
+                                    {
+                                        NSString* e164 = [verifiedPhoneNumber e164Format];
+                                        [Settings sharedSettings].callbackE164 = e164;
+                                        [Settings sharedSettings].callerIdE164 = e164;
 
-                                [self showWelcomeAlert];
+                                        [self showWelcomeAlert];
+                                    }
+                                    else
+                                    {
+                                        /// .....
+                                        NSLog(@"///### ....");
+                                    }
+                                }];
                             }
                             else
                             {
                                 /// .....
+                                NSLog(@"///### ....");
                             }
                         }];
 
@@ -183,7 +198,7 @@
                     NSString* title;
                     NSString* message;
                     title   = NSLocalizedStringWithDefaultValue(@"Provisioning FailedNumbersTitle", nil,
-                                                                [NSBundle mainBundle], @"Loading Numbers Failed",
+                                                                [NSBundle mainBundle], @"Loading Phones Failed",
                                                                 @"Alart title: Phone numbers could not be downloaded.\n"
                                                                 @"[iOS alert title size].");
                     message = NSLocalizedStringWithDefaultValue(@"Provisioning FailedNumbersMessage", nil,
@@ -229,6 +244,35 @@
             }
                                  cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
+        }
+    }];
+}
+
+
+- (void)savePhoneNumber:(PhoneNumber*)phoneNumber withName:(NSString*)name completion:(void (^)(BOOL success))completion
+{
+    [[WebClient sharedClient] updateVerifiedE164:[phoneNumber e164Format]
+                                        withName:name
+                                           reply:^(NSError* error)
+    {
+        if (error == nil)
+        {
+            PhoneData*              phone;
+            NSManagedObjectContext* context;
+
+            context    = [DataManager sharedManager].managedObjectContext;
+            phone      = (PhoneData*)[NSEntityDescription insertNewObjectForEntityForName:@"Phone"
+                                                                   inManagedObjectContext:context];
+            phone.name = name;
+            phone.e164 = [phoneNumber e164Format];
+
+            [[DataManager sharedManager] saveManagedObjectContext:nil];
+
+            completion(YES);
+        }
+        else
+        {
+            completion(NO);
         }
     }];
 }

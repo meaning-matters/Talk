@@ -24,7 +24,6 @@ NSString* const ErrorDomainKey            = @"ErrorDomain";
 NSString* const HomeCountryKey            = @"HomeCountry";
 NSString* const HomeCountryFromSimKey     = @"HomeCountryFromSim";
 NSString* const LastDialedNumberKey       = @"LastDialedNumber";
-NSString* const WarnedAboutDefaultCliKey  = @"WarnedAboutDefaultCli";
 NSString* const WebBaseUrlKey             = @"WebBaseUrl";
 NSString* const WebUsernameKey            = @"WebUsername";            // Used as keychain 'username'.
 NSString* const WebPasswordKey            = @"WebPassword";            // Used as keychain 'username'.
@@ -134,7 +133,6 @@ static NSUserDefaults* userDefaults;
         }
 
         [dictionary setObject:@""                                                forKey:LastDialedNumberKey];
-        [dictionary setObject:@(NO)                                              forKey:WarnedAboutDefaultCliKey];
         [dictionary setObject:@"https://api2.numberbay.com/"                      forKey:WebBaseUrlKey];
         [dictionary setObject:@(NO)                                              forKey:AllowCellularDataCallsKey];
         [dictionary setObject:@(YES)                                             forKey:ShowCallerIdKey];
@@ -224,18 +222,6 @@ static NSUserDefaults* userDefaults;
 - (void)setLastDialedNumber:(NSString*)lastDialedNumber
 {
     [userDefaults setObject:lastDialedNumber forKey:LastDialedNumberKey];
-}
-
-
-- (BOOL)warnedAboutDefaultCli
-{
-    return [userDefaults boolForKey:WarnedAboutDefaultCliKey];
-}
-
-
-- (void)setWarnedAboutDefaultCli:(BOOL)warnedAboutDefaultCli
-{
-    [userDefaults setBool:warnedAboutDefaultCli forKey:WarnedAboutDefaultCliKey];
 }
 
 

@@ -402,11 +402,21 @@ static NSDictionary* statuses;
                                              NSString* sipPassword,
                                              NSString* sipRealm))reply
 {
-    NSDictionary* parameters = @{@"receipt"           : receipt,
-                                 @"language"          : language,
-                                 @"notificationToken" : notificationToken,
-                                 @"mobileCountryCode" : mobileCountryCode,
-                                 @"mobileNetworkCode" : mobileNetworkCode};
+    NSDictionary* parameters;
+    if (mobileCountryCode == nil || mobileNetworkCode == nil)
+    {
+        parameters = @{@"receipt"           : receipt,
+                       @"language"          : language,
+                       @"notificationToken" : notificationToken};
+    }
+    else
+    {
+        parameters = @{@"receipt"           : receipt,
+                       @"language"          : language,
+                       @"notificationToken" : notificationToken,
+                       @"mobileCountryCode" : mobileCountryCode,
+                       @"mobileNetworkCode" : mobileNetworkCode};
+    }
 
     NSString* currencyCode = [Settings sharedSettings].currencyCode;
     [self postPath:[NSString stringWithFormat:@"users?currencyCode=%@", currencyCode]
@@ -437,15 +447,13 @@ static NSDictionary* statuses;
 
 // 2A.
 - (void)retrieveVerificationCodeForE164:(NSString*)e164
-                              phoneName:(NSString*)deviceName
                                   reply:(void (^)(NSError* error, NSString* code))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSString*     number     = [e164 substringFromIndex:1];
-    NSDictionary* parameters = @{@"name" : deviceName};
 
     [self postPath:[NSString stringWithFormat:@"users/%@/verification?number=%@", username, number]
-        parameters:parameters
+        parameters:nil
              reply:^(NSError* error, id content)
      {
          if (error == nil)
@@ -500,7 +508,7 @@ static NSDictionary* statuses;
 }
 
 
-// 2D. UPDATE VERIFIED NUMBER
+// 2E. UPDATE VERIFIED NUMBER
 - (void)updateVerifiedE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;

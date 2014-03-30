@@ -391,44 +391,6 @@ static SipInterface*    sipInterface;
 }
 
 
-- (BOOL)checkWarnedAboutDefaultCli:(NSString*)identity
-{
-    if ([identity isEqualToString:[Settings sharedSettings].callbackE164] &&
-        [Settings sharedSettings].showCallerId == YES &&
-        [Settings sharedSettings].warnedAboutDefaultCli == NO)
-    {
-        NSString*  title;
-        NSString*  message;
-        NSInteger  buttonIndex;
-
-        title   = NSLocalizedStringWithDefaultValue(@"Call:Mobile FirstCallTitle", nil,
-                                                    [NSBundle mainBundle], @"Shown Caller ID",
-                                                    @"Alert title: Which number is being seen\n"
-                                                    @"[iOS alert title size]");
-
-        message = NSLocalizedStringWithDefaultValue(@"Call:Mobile FirstCallMessage", nil,
-                                                    [NSBundle mainBundle],
-                                                    @"By default, people you call will see your verified/personal "
-                                                    @"phone number. You can switch this off in Settings of this app.",
-                                                    @"Alert message: ...\n"
-                                                    @"[iOS alert message size]");
-
-        buttonIndex = [BlockAlertView showBlockingAlertViewWithTitle:title
-                                                             message:message
-                                                   cancelButtonTitle:[Strings cancelString]
-                                                   otherButtonTitles:[Strings callString], nil];
-
-        [Settings sharedSettings].warnedAboutDefaultCli = (buttonIndex == 1);
-            
-        return (buttonIndex == 1);
-    }
-    else
-    {
-        return YES;
-    }
-}
-
-
 - (void)addCallToRecents:(Call*)call
 {
     NSManagedObjectContext* context = [DataManager sharedManager].managedObjectContext;
@@ -541,8 +503,7 @@ static SipInterface*    sipInterface;
 
     if ([self checkAccount] &&
         [self checkNetwork] &&
-        [Common checkCountryOfPhoneNumber:phoneNumber completion:nil] &&
-        [self checkWarnedAboutDefaultCli:identity])
+        [Common checkCountryOfPhoneNumber:phoneNumber completion:nil])
     {
         call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
         call.identityNumber = identity;

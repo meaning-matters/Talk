@@ -60,7 +60,6 @@ typedef enum
 
 // 2A. DO NUMBER VERIFICATION
 - (void)retrieveVerificationCodeForE164:(NSString*)e164
-                              phoneName:(NSString*)phoneName
                                   reply:(void (^)(NSError* error, NSString* code))reply;
 
 // 2B. DO NUMBER VERIFICATION
@@ -71,7 +70,7 @@ typedef enum
 - (void)retrieveVerificationStatusForE164:(NSString*)e164
                                     reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply;
 
-// 2D. UPDATE VERIFIED NUMBER
+// 2E. UPDATE VERIFIED NUMBER
 - (void)updateVerifiedE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply;
 
 // 3. GET VERIFIED NUMBER LIST

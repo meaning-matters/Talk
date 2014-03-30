@@ -110,7 +110,6 @@
                 [self.codeActivityIndicator startAnimating];
                 WebClient* webClient = [WebClient sharedClient];
                 [webClient retrieveVerificationCodeForE164:[phoneNumber e164Format]
-                                                 phoneName:[UIDevice currentDevice].name
                                                      reply:^(NSError* error, NSString* code)
                 {
                     [self.codeActivityIndicator stopAnimating];
@@ -297,7 +296,6 @@
         {
             if (verified == YES)
             {
-                [self setStep:4];
                 self.completion(self.phoneNumber);
                 [self.navigationController popViewControllerAnimated:YES];
             }

@@ -45,42 +45,6 @@
 }
 
 
-+ (NSInteger)showBlockingAlertViewWithTitle:(NSString*)title
-                                    message:(NSString*)message
-                          cancelButtonTitle:(NSString*)cancelButtonTitle
-                          otherButtonTitles:(NSString*)otherButtonTitles, ...
-{
-    __block BOOL        dismissed   = NO;
-    __block NSInteger   index = 0;
-
-    va_list arguments;
-    va_start(arguments, otherButtonTitles);
-
-    BlockAlertView* alert = [[BlockAlertView alloc] initWithTitle:title
-                                                          message:message
-                                                       completion:^(BOOL cancelled, NSInteger buttonIndex)
-    {
-        index     = buttonIndex;
-        dismissed = YES;
-    }
-                                                cancelButtonTitle:cancelButtonTitle
-                                                otherButtonTitles:otherButtonTitles
-                                                        arguments:arguments];
-    [alert show];
-
-    va_end(arguments);
-
-    // 'Busy loop', waiting for user to dismiss alert.
-    while (dismissed == NO)
-    {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
-                                 beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
-    }
-
-    return index;
-}
-
-
 + (BlockAlertView*)showPhoneNumberAlertViewWithTitle:(NSString*)title
                                              message:(NSString*)message
                                          phoneNumber:(PhoneNumber*)phoneNumber

@@ -22,8 +22,6 @@
   
 * Bug in Notes op iPhone.  Probably old table cell mix up.
 
-* When account and verified number: Check if checkWarnedAboutDefaultCli is properly working.
-
 * Check waarom alert over Allow Data Calls soms 3 keer komt (na app provisioning).
 
 * Check waarom Davy my op api2 ziet als ik hier api1 kiest.
