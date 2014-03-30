@@ -17,6 +17,7 @@
 #import "BlockActionSheet.h"
 #import "Strings.h"
 #import "NBPersonViewController.h"
+#import "Skinning.h"
 
 
 @interface DialerViewController () <NumberLabelDelegate, NBNewPersonViewControllerDelegate>
@@ -107,9 +108,10 @@
 {
     [super viewDidLoad];
 
-    [self.numberLabel setFont:[Common phoneFontOfSize:38]];
-    self.numberLabel.hasPaste = YES;
-    self.numberLabel.delegate = self;
+    self.numberLabel.font      = [Common phoneFontOfSize:38];
+    self.numberLabel.textColor = [Skinning tintColor];
+    self.numberLabel.hasPaste  = YES;
+    self.numberLabel.delegate  = self;
 
     self.keypadView.delegate = self;
 
