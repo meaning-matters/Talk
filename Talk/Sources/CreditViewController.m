@@ -147,11 +147,18 @@
 
     if (section == 0)
     {
-        title = NSLocalizedStringWithDefaultValue(@"CreditAmount:... TableFooter", nil, [NSBundle mainBundle],
+#if HAS_BUYING_NUMBERS
+        title = NSLocalizedStringWithDefaultValue(@"CreditAmount:... TableFooterNumbers", nil, [NSBundle mainBundle],
                                                   @"Credit is used for outgoing calls, for forwarding incoming "
                                                   @"calls on NumberBay numbers to your phone(s), and for the setup "
                                                   @"fee when buying some of the numbers.",
                                                   @"[Multiple lines]");
+#else
+        title = NSLocalizedStringWithDefaultValue(@"CreditAmount:... TableFooter", nil, [NSBundle mainBundle],
+                                                  @"Credit is used for the two parts of each call: calling back "
+                                                  @"your number, and calling the other person.",
+                                                  @"[Multiple lines]");
+#endif
     }
     else
     {
