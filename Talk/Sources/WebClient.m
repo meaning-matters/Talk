@@ -535,6 +535,10 @@ static NSDictionary* statuses;
         {
             reply(nil, content);
         }
+        else
+        {
+            reply(error, nil);
+        }
     }];
 }
 
