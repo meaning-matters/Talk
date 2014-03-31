@@ -28,7 +28,7 @@
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="PYP-Zw-oJc">
                     <rect key="frame" x="20" y="125" width="280" height="355"/>
                     <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
-                    <color key="backgroundColor" white="0.94901916058394165" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.90342723540145986" alpha="1" colorSpace="calibratedWhite"/>
                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo </string>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>

@@ -262,11 +262,11 @@
 {
     if (sender == self.numberButton)
     {
-        self.step1View.backgroundColor = [UIColor colorWithWhite:0.95f alpha:1.0f];
+        self.step1View.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
     }
     else
     {
-        self.step2View.backgroundColor = [UIColor colorWithWhite:0.95f alpha:1.0f];
+        self.step2View.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
     }
 }
 

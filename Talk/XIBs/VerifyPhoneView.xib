@@ -62,7 +62,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" white="0.94702326642335766" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.9038549270072993" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" id="668" userLabel="Step 2 View">
                     <rect key="frame" x="20" y="390" width="280" height="75"/>
@@ -104,7 +104,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" white="0.94673813868613144" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.90094662408759119" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" id="673" userLabel="Step 3 View">
                     <rect key="frame" x="20" y="473" width="280" height="75"/>
@@ -130,7 +130,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" white="0.94699475364963503" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.90396897810218979" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="R3d-KY-jo7">
                     <rect key="frame" x="20" y="152" width="280" height="147"/>
