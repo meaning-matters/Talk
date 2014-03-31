@@ -114,16 +114,16 @@
     self.numberLabel.delegate  = self;
 
     self.keypadView.delegate = self;
-
-    // We don't want navigation bar when dialer is on main tabs.  (It will
-    // always get a navigation bar, when moved to more tab.)
-    self.navigationController.navigationBar.hidden = YES;
 }
 
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    // We don't want navigation bar when dialer is on main tabs (i.e., not on More).
+    BOOL hidden = (self.navigationController != self.tabBarController.moreNavigationController);
+    self.navigationController.navigationBar.hidden = hidden;
 
     // This will clear the field when coming back from call.
     [self update];
