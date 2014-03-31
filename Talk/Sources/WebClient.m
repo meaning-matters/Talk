@@ -508,6 +508,21 @@ static NSDictionary* statuses;
 }
 
 
+// 2D. STOP VERIFICATION
+- (void)stopVerificationForE164:(NSString*)e164 reply:(void (^)(NSError* error))reply
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+    NSString* number   = [e164 substringFromIndex:1];
+
+    [self deletePath:[NSString stringWithFormat:@"users/%@/verification?number=%@", username, number]
+          parameters:nil
+               reply:^(NSError* error, id content)
+    {
+        reply(error);
+    }];
+}
+
+
 // 2E. UPDATE VERIFIED NUMBER
 - (void)updateVerifiedE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply
 {
@@ -1159,6 +1174,16 @@ static NSDictionary* statuses;
 
 
 // 2D.
+- (void)cancelAllStopVerification
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self cancelAllHTTPOperationsWithMethod:@"DELETE"
+                                       path:[NSString stringWithFormat:@"users/%@/verification", username]];
+}
+
+
+// 2E.
 - (void)cancelAllUpdateVerifiedE164:(NSString*)e164
 {
     NSString* username = [Settings sharedSettings].webUsername;

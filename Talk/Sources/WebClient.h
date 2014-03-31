@@ -70,6 +70,9 @@ typedef enum
 - (void)retrieveVerificationStatusForE164:(NSString*)e164
                                     reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply;
 
+// 2D. STOP VERIFICATION
+- (void)stopVerificationForE164:(NSString*)e164 reply:(void (^)(NSError* error))reply;
+
 // 2E. UPDATE VERIFIED NUMBER
 - (void)updateVerifiedE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply;
 
@@ -235,6 +238,9 @@ typedef enum
 - (void)cancelAllRetrieveVerificationStatus;
 
 // 2D.
+- (void)cancelAllStopVerification;
+
+// 2E.
 - (void)cancelAllUpdateVerifiedE164:(NSString*)e164;
 
 // 3.

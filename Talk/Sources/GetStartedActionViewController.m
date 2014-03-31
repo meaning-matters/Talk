@@ -160,23 +160,21 @@
                             {
                                 [self savePhoneNumber:verifiedPhoneNumber
                                              withName:[UIDevice currentDevice].name
-                                           completion:^(BOOL success)
+                                           completion:^(NSError* error)
                                 {
-                                    if (success == YES)
+                                    if (error == nil)
                                     {
                                         [self readyWithE164:[verifiedPhoneNumber e164Format]];
                                     }
                                     else
                                     {
-                                        /// .....
-                                        NSLog(@"///### ....");
+                                        [self showSavingPhoneAlert:error];
                                     }
                                 }];
                             }
                             else
                             {
-                                /// .....
-                                NSLog(@"///### ....");
+                                [[AppDelegate appDelegate] resetAll];
                             }
                         }];
 
@@ -189,61 +187,19 @@
                 }
                 else
                 {
-                    NSString* title;
-                    NSString* message;
-                    title   = NSLocalizedStringWithDefaultValue(@"Provisioning FailedNumbersTitle", nil,
-                                                                [NSBundle mainBundle], @"Loading Phones Failed",
-                                                                @"Alart title: Phone numbers could not be downloaded.\n"
-                                                                @"[iOS alert title size].");
-                    message = NSLocalizedStringWithDefaultValue(@"Provisioning FailedNumbersMessage", nil,
-                                                                [NSBundle mainBundle],
-                                                                @"Your phone numbers could not be restored: %@\n\n"
-                                                                @"Please try again later.",
-                                                                @"Alert message: Phone numbers could not be downloaded.\n"
-                                                                @"[iOS alert message size]");
-                    message = [NSString stringWithFormat:message, error.localizedDescription];
-                    [BlockAlertView showAlertViewWithTitle:title
-                                                   message:message
-                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
-                    {
-                        [[AppDelegate appDelegate] resetAll];
-                        [self dismissViewControllerAnimated:YES completion:nil];
-                    }
-                                         cancelButtonTitle:[Strings closeString]
-                                         otherButtonTitles:nil];
+                    [self showLoadingPhonesAlert:error];
                 }
             }];
         }
         else
         {
-            NSString* title;
-            NSString* message;
-            title   = NSLocalizedStringWithDefaultValue(@"Provisioning FailedCreditTitle", nil,
-                                                        [NSBundle mainBundle], @"Loading Credit Failed",
-                                                        @"Alert title: Calling credit could not be downloaded.\n"
-                                                        @"[iOS alert title size].");
-            message = NSLocalizedStringWithDefaultValue(@"Provisioning FailedCreditMessage", nil,
-                                                        [NSBundle mainBundle],
-                                                        @"Your credit could not be loaded: %@\n\n"
-                                                        @"Please try again later.",
-                                                        @"Alert message: Calling credit could not be loaded.\n"
-                                                        @"[iOS alert message size]");
-            message = [NSString stringWithFormat:message, error.localizedDescription];
-            [BlockAlertView showAlertViewWithTitle:title
-                                           message:message
-                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
-            {
-                [[AppDelegate appDelegate] resetAll];
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
-                                 cancelButtonTitle:[Strings closeString]
-                                 otherButtonTitles:nil];
+            [self showLoadingCreditAlert:error];
         }
     }];
 }
 
 
-- (void)savePhoneNumber:(PhoneNumber*)phoneNumber withName:(NSString*)name completion:(void (^)(BOOL success))completion
+- (void)savePhoneNumber:(PhoneNumber*)phoneNumber withName:(NSString*)name completion:(void (^)(NSError* error))completion
 {
     [[WebClient sharedClient] updateVerifiedE164:[phoneNumber e164Format]
                                         withName:name
@@ -262,11 +218,11 @@
 
             [[DataManager sharedManager] saveManagedObjectContext:nil];
 
-            completion(YES);
+            completion(nil);
         }
         else
         {
-            completion(NO);
+            completion(error);
         }
     }];
 }
@@ -278,6 +234,86 @@
     [Settings sharedSettings].callerIdE164 = e164;
 
     [self showWelcomeAlert];
+}
+
+
+- (void)showSavingPhoneAlert:(NSError*)error
+{
+    NSString* title;
+    NSString* message;
+    title   = NSLocalizedStringWithDefaultValue(@"Provisioning FailedSavePhoneTitle", nil,
+                                                [NSBundle mainBundle], @"Storing Phone Failed",
+                                                @"Alert title: Calling credit could not be downloaded.\n"
+                                                @"[iOS alert title size].");
+    message = NSLocalizedStringWithDefaultValue(@"Provisioning FailedSavePhoneMessage", nil,
+                                                [NSBundle mainBundle],
+                                                @"You phone number could not be stored on the server: %@\n\n"
+                                                @"Please try again later.",
+                                                @"Alert message: Phone number could not be saved over internet.\n"
+                                                @"[iOS alert message size]");
+    message = [NSString stringWithFormat:message, error.localizedDescription];
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        [[AppDelegate appDelegate] resetAll];
+    }
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
+}
+
+
+- (void)showLoadingCreditAlert:(NSError*)error
+{
+    NSString* title;
+    NSString* message;
+    title   = NSLocalizedStringWithDefaultValue(@"Provisioning FailedCreditTitle", nil,
+                                                [NSBundle mainBundle], @"Loading Credit Failed",
+                                                @"Alert title: Calling credit could not be downloaded.\n"
+                                                @"[iOS alert title size].");
+    message = NSLocalizedStringWithDefaultValue(@"Provisioning FailedCreditMessage", nil,
+                                                [NSBundle mainBundle],
+                                                @"Your credit could not be loaded: %@\n\n"
+                                                @"Please try again later.",
+                                                @"Alert message: Calling credit could not be loaded.\n"
+                                                @"[iOS alert message size]");
+    message = [NSString stringWithFormat:message, error.localizedDescription];
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        [[AppDelegate appDelegate] resetAll];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
+}
+
+
+- (void)showLoadingPhonesAlert:(NSError*)error
+{
+    NSString* title;
+    NSString* message;
+    title   = NSLocalizedStringWithDefaultValue(@"Provisioning FailedNumbersTitle", nil,
+                                                [NSBundle mainBundle], @"Loading Phones Failed",
+                                                @"Alart title: Phone numbers could not be downloaded.\n"
+                                                @"[iOS alert title size].");
+    message = NSLocalizedStringWithDefaultValue(@"Provisioning FailedNumbersMessage", nil,
+                                                [NSBundle mainBundle],
+                                                @"Your phone numbers could not be restored: %@\n\n"
+                                                @"Please try again later.",
+                                                @"Alert message: Phone numbers could not be downloaded.\n"
+                                                @"[iOS alert message size]");
+    message = [NSString stringWithFormat:message, error.localizedDescription];
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        [[AppDelegate appDelegate] resetAll];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
 }
 
 

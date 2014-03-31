@@ -71,6 +71,24 @@
 }
 
 
+- (void)willMoveToParentViewController:(UIViewController*)parent
+{
+    if (parent == nil && self.completion != nil)
+    {
+        // We get here when user pops this view via navigation controller.
+        [[WebClient sharedClient] stopVerificationForE164:[self.phoneNumber e164Format] reply:^(NSError *error)
+        {
+            if (error != nil)
+            {
+                NSLog(@"Stop Verification: %@", error);
+            }
+        }];
+
+        self.completion(nil);
+    }
+}
+
+
 #pragma mark - Action
 
 - (IBAction)numberAction:(id)sender
@@ -138,6 +156,7 @@
                                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
                         {
                             self.completion(nil);
+                            self.completion = nil;
                             [self.navigationController popViewControllerAnimated:YES];
                         }
                                              cancelButtonTitle:[Strings closeString]
@@ -214,6 +233,7 @@
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
             {
                 self.completion(nil);
+                self.completion = nil;
                 [self.navigationController popViewControllerAnimated:YES];
             }
                                  cancelButtonTitle:[Strings closeString]
@@ -297,6 +317,7 @@
             if (verified == YES)
             {
                 self.completion(self.phoneNumber);
+                self.completion = nil;
                 [self.navigationController popViewControllerAnimated:YES];
             }
             else if (calling == NO)
@@ -331,6 +352,7 @@
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
             {
                 self.completion(nil);
+                self.completion = nil;
                 [self.navigationController popViewControllerAnimated:YES];
             }
                                  cancelButtonTitle:[Strings closeString]
