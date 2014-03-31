@@ -1273,8 +1273,6 @@
 		482A639C165FA94400325B3F /* CallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallManager.m; sourceTree = "<group>"; };
 		482A639F165FF73400325B3F /* NumberLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberLabel.h; sourceTree = "<group>"; };
 		482A63A0165FF73400325B3F /* NumberLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberLabel.m; sourceTree = "<group>"; };
-		482D2DEB16C815BE00E13B91 /* ProvisioningViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProvisioningViewController.h; sourceTree = "<group>"; };
-		482D2DEC16C815BE00E13B91 /* ProvisioningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProvisioningViewController.m; sourceTree = "<group>"; };
 		482D2DEF16C8172900E13B91 /* ProvisioningView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProvisioningView.xib; sourceTree = "<group>"; };
 		4830462216EE269D000F9B05 /* NumberAreaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaViewController.h; sourceTree = "<group>"; };
 		4830462316EE269D000F9B05 /* NumberAreaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaViewController.m; sourceTree = "<group>"; };
@@ -3466,8 +3464,6 @@
 				48AF44E91649479100DFE3D8 /* NumbersViewController.m */,
 				48C1D3C317D31308004F910D /* ProofImageViewController.h */,
 				48C1D3C417D31309004F910D /* ProofImageViewController.m */,
-				482D2DEB16C815BE00E13B91 /* ProvisioningViewController.h */,
-				482D2DEC16C815BE00E13B91 /* ProvisioningViewController.m */,
 				483679DC1721F2DF001A02AF /* RecordingViewController.h */,
 				483679DD1721F2E0001A02AF /* RecordingViewController.m */,
 				48251B99187F4A8A00E69C3A /* SettingsViewController.h */,

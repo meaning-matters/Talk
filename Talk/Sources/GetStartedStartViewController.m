@@ -10,6 +10,7 @@
 #import "PurchaseManager.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
+#import "AppDelegate.h"
 
 
 @implementation GetStartedStartViewController
@@ -38,20 +39,17 @@
                                                              @"[1 line large font].");
 
     self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedStart Text", nil, [NSBundle mainBundle],
-                                                           @"After tapping the button below, the iTunes Store will "
-                                                           @"ask you to log in. This is needed to retrieve your "
-                                                           @"initial credit purchase.\n\n"
-                                                           @"Restoring is only possible when using "
-                                                           @"the same iTunes Store account.\n\n"
-                                                           @"Call history & settings are saved locally on your device, "
-                                                           @"and can't be restored.\n\n"
-                                                           @"If you use the app on multiple devices, you'll simply "
-                                                           @"be sharing the credit and phone number(s).",
+                                                           @"To make calls, get some credit, and add a phone number. "
+                                                           @"That's all!\n\n"
+                                                           @"With every call, you'll be called back. "
+                                                           @"When you answer, the other person will be called. Easy!\n\n"
+                                                           @"You can install NumberBay on all your iOS devices, and "
+                                                           @"simply share the credit and phone number(s).",
                                                            @"....\n"
                                                            @"[iOS alert title size].");
 
     [self.button setTitle:NSLocalizedStringWithDefaultValue(@"GetStartedStart Button", nil, [NSBundle mainBundle],
-                                                            @"Restore Credit & Phones",
+                                                            @"Buy Some Credit",
                                                             @"...\n"
                                                             @"[1 line larger font].")
                  forState:UIControlStateNormal];
@@ -100,6 +98,7 @@
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
             {
+                [[AppDelegate appDelegate] resetAll];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
                                  cancelButtonTitle:[Strings closeString]
@@ -107,6 +106,5 @@
         }
     }];
 }
-
 
 @end

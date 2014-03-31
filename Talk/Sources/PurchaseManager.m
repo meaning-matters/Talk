@@ -459,9 +459,13 @@
 {
     for (SKPaymentTransaction* transaction in transactions)
     {
-        if (transaction.originalTransaction != nil)
+        if ([self isAccountProductIdentifier:transaction.payment.productIdentifier])
         {
-            if ([self isAccountProductIdentifier:transaction.originalTransaction.payment.productIdentifier])
+            if (transaction.originalTransaction == nil)
+            {
+                _isNewAccount = YES;
+            }
+            else
             {
                 // A new account: up to 1 day old.
                 _isNewAccount = (-[transaction.originalTransaction.transactionDate timeIntervalSinceNow] < (24 * 3600));

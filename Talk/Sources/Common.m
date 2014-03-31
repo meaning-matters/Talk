@@ -16,7 +16,6 @@
 #import "Settings.h"
 #import "AppDelegate.h"
 #import "CountriesViewController.h"
-#import "ProvisioningViewController.h"
 #import "AFNetworkActivityIndicatorManager.h"
 #import "Skinning.h"
 #import "GetStartedViewController.h"

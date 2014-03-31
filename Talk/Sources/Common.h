@@ -81,9 +81,6 @@ static const int TextFieldCellTag = 1111;
 // Must be custom button style.
 + (void)styleButton:(UIButton*)button;
 
-// Must be custom button style.
-+ (void)styleWhiteButton:(UIButton*)button;
-
 + (UIFont*)phoneFontOfSize:(CGFloat)size;
 
 + (NSString*)stringWithOsStatus:(OSStatus)status;

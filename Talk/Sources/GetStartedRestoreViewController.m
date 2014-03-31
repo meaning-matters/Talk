@@ -73,7 +73,6 @@
         }
         else if (success == YES && object == nil)
         {
-
             NSString* title;
             NSString* message;
 
@@ -120,6 +119,7 @@
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
             {
+                [[AppDelegate appDelegate] resetAll];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
                                  cancelButtonTitle:[Strings closeString]
