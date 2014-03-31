@@ -176,12 +176,16 @@
 
 - (void)removeAll
 {
+    [self.managedObjectContext lock];
+
     for (NSManagedObject* object in [self.managedObjectContext registeredObjects])
     {
         [self.managedObjectContext deleteObject:object];
     }
 
     [self saveManagedObjectContext:nil];
+
+    [_managedObjectContext unlock];
 }
 
 

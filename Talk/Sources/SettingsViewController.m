@@ -34,6 +34,7 @@ typedef enum
 {
     TableSections sections;
     Settings*     settings;
+    BOOL          accountDataUpdated;
 }
 
 @property (nonatomic, strong) NSIndexPath* countryIndexPath;
@@ -142,12 +143,17 @@ typedef enum
 
     if ([keyPath isEqualToString:@"callerIdE164"] || [keyPath isEqualToString:@"callbackE164"])
     {
-        [indexSet addIndex:[Common nOfBit:TableSectionCallMode inValue:sections]];
+        [indexSet addIndex:[Common nOfBit:TableSectionCallMode    inValue:sections]];
+        if (accountDataUpdated == NO)
+        {
+            // To update when provisioned.
+            [indexSet addIndex:[Common nOfBit:TableSectionAccountData inValue:sections]];
+            accountDataUpdated = YES;
+        }
     }
     else if ([keyPath isEqualToString:@"homeCountry"])
     {
         [indexSet addIndex:[Common nOfBit:TableSectionHomeCountry inValue:sections]];
-        [indexSet addIndex:[Common nOfBit:TableSectionAccountData inValue:sections]];
     }
     else if ([keyPath isEqualToString:@"allowInvalidNumbers"])
     {
@@ -427,9 +433,10 @@ typedef enum
                             [[AppDelegate appDelegate] resetAll];
                             
                             [self.tableView beginUpdates];
-                            [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)]
+                            [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 4)]
                                           withRowAnimation:UITableViewRowAnimationFade];
                             [self.tableView endUpdates];
+                            accountDataUpdated = NO;
                         }
                     }
                                          cancelButtonTitle:[Strings cancelString]

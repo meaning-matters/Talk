@@ -65,15 +65,14 @@
 
     [[PurchaseManager sharedManager] restoreAccount:^(BOOL success, id object)
     {
+        [self setBusy:NO];
+
         if (success == YES && object != nil)    // Transaction is passed, but we don't need/use that.
         {
-            [self setBusy:NO];
-
             [self restoreCreditAndData];
         }
         else if (success == YES && object == nil)
         {
-            [self setBusy:NO];
 
             NSString* title;
             NSString* message;
@@ -125,10 +124,6 @@
             }
                                  cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
-        }
-        else
-        {
-            [self setBusy:NO];
         }
     }];
 }

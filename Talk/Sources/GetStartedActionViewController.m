@@ -29,20 +29,6 @@
 {
     if (self = [super initWithNibName:@"GetStartedActionView" bundle:nil])
     {
-        self.button.enabled = NO;
-        self.button.alpha   = 0.5f;
-        [[PurchaseManager sharedManager] loadProducts:^(BOOL success)
-        {
-            if (success == YES)
-            {
-                self.button.enabled = YES;
-                self.button.alpha   = 1.0f;
-            }
-            else
-            {
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
-        }];
     }
 
     return self;
@@ -52,6 +38,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    [self loadProducts];
 
     CGFloat topInset    = 12.0f;
     CGFloat leftInset   = 10.0f;
@@ -92,6 +80,22 @@
     self.button.alpha   = busy ? 0.5f : 1.0f;
 
     busy ? [self.activityIndicator startAnimating] : [self.activityIndicator stopAnimating];
+}
+
+
+- (void)loadProducts
+{
+    self.button.enabled = NO;
+    self.button.alpha   = 0.5f;
+    [[PurchaseManager sharedManager] loadProducts:^(BOOL success)
+    {
+        self.button.enabled = YES;
+        self.button.alpha   = 1.0f;
+        if (success == NO)
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+    }];
 }
 
 
@@ -143,10 +147,10 @@
 
             [[DataManager sharedManager] synchronizeAll:^(NSError *error)
             {
+                [self setBusy:NO];
+
                 if (error == nil)
                 {
-                    [self setBusy:NO];
-
                     NSArray* phonesArray = [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
                                                                                      sortKeys:@[@"name"]
                                                                                     predicate:nil
@@ -158,10 +162,13 @@
                         {
                             if (verifiedPhoneNumber != nil)
                             {
+                                [self setBusy:YES];
                                 [self savePhoneNumber:verifiedPhoneNumber
                                              withName:[UIDevice currentDevice].name
                                            completion:^(NSError* error)
                                 {
+                                    [self setBusy:NO];
+
                                     if (error == nil)
                                     {
                                         [self readyWithE164:[verifiedPhoneNumber e164Format]];
@@ -187,12 +194,14 @@
                 }
                 else
                 {
+                    [self setBusy:NO];
                     [self showLoadingPhonesAlert:error];
                 }
             }];
         }
         else
         {
+            [self setBusy:NO];
             [self showLoadingCreditAlert:error];
         }
     }];
