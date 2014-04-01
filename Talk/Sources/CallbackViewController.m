@@ -300,6 +300,7 @@
         }];
     }
 
+    self.call.state = CallStateEnded;
     [[CallManager sharedManager] endCall:self.call];
 }
 

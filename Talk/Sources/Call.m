@@ -32,7 +32,10 @@
     switch (state)
     {
         case CallStateConnected:
-            _connectDate = [NSDate date];
+            if (_connectDate == nil)
+            {
+                _connectDate = [NSDate date];
+            }
             break;
 
         case CallStateEnded:

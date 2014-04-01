@@ -15,6 +15,7 @@
 #import "BlockAlertView.h"
 #import "Strings.h"
 #import "Common.h"
+#import "Skinning.h"
 
 
 @interface CreditViewController ()
@@ -379,11 +380,14 @@
 
     NSString* description;
     description = NSLocalizedStringWithDefaultValue(@"CreditView DescriptionLabel", nil, [NSBundle mainBundle],
-                                                    @"A Credit of %@",
+                                                    @"Buy %d unit%@ for %@",
                                                     @"Parameter: credit amount local currency.");
+    description = [NSString stringWithFormat:description, tier, (tier == 1) ? @"" : @"s", priceString];
 
-    cell.descriptionLabel.text  = [NSString stringWithFormat:description, priceString];
-    cell.amountImageView.image  = [UIImage imageNamed:[NSString stringWithFormat:@"CreditAmount%d.png", tier]];
+    cell.descriptionLabel.text                 = description;
+    cell.descriptionLabel.textColor            = [Skinning tintColor];
+    cell.descriptionLabel.highlightedTextColor = [Skinning tintColor];
+    cell.amountImageView.image                 = [UIImage imageNamed:[NSString stringWithFormat:@"CreditAmount%d.png", tier]];
 
     cell.amountImageView.alpha  = self.buyIndexPath ? 0.5 : 1.0;
     cell.descriptionLabel.alpha = self.buyIndexPath ? 0.5 : 1.0;

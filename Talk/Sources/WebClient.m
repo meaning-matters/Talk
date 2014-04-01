@@ -211,10 +211,12 @@ static NSDictionary* statuses;
           parameters:parameters
              success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
+        NSLog(@"DELETE response: %@", responseObject);
         [self handleSuccess:responseObject reply:reply];
     }
              failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
+        NSLog(@"DELETE failure: %@", error);
         [self handleFailure:error reply:reply];
     }];
 }
@@ -1099,7 +1101,7 @@ static NSDictionary* statuses;
             NSString* stateString = content[@"state"];
             CallState state;
 
-            NSLog(@"Callback State: %@", stateString);
+            NSLog(@"Callback: %@", content);
 
             if ([stateString isEqualToString:@"ringing"])
             {

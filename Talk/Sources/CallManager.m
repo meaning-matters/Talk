@@ -449,7 +449,8 @@ static SipInterface*    sipInterface;
 
     recent.status    = [NSNumber numberWithInt:CallStatusSuccess];
     recent.number    = call.phoneNumber.number;
-    recent.date      = [NSDate date];
+    recent.date      = call.beginDate;
+    recent.duration  = @([call.endDate timeIntervalSinceDate:call.connectDate]);
     recent.timeZone  = [[NSTimeZone defaultTimeZone] abbreviation];
     recent.contactID = call.contactId;
     recent.direction = [NSNumber numberWithInt:CallDirectionOutgoing];
