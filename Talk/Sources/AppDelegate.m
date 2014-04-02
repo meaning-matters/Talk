@@ -72,6 +72,9 @@
         // Apply skinning.
         [Skinning sharedSkinning];
 
+        // Reset status bar style. Without this the status bar becomes white sometimes.
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+
         // Set address book delegate.
         [NBAddressBookManager sharedManager].delegate = self;
 
