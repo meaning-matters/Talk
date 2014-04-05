@@ -16,4 +16,6 @@
 
 + (UIColor*)tintColor;
 
++ (UIColor*)onTintColor;    // Used for call button and UISwitch.
+
 @end

@@ -49,6 +49,12 @@
 }
 
 
++ (UIColor*)onTintColor
+{
+    return [UIColor colorWithRed: 0.344 green: 0.845 blue: 0.515 alpha: 1];
+}
+
+
 - (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
 {
     [self update];

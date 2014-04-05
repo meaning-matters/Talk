@@ -8,6 +8,8 @@
 
 #import "KeypadButton.h"
 #import "Common.h"
+#import "Skinning.h"
+
 
 @implementation KeypadButton
 
@@ -111,7 +113,7 @@
 
     NSArray* callGradientColors = [NSArray arrayWithObjects:
                                    (id)callGradientBottom.CGColor,
-                                   (id)[UIColor colorWithRed: 0.344 green: 0.845 blue: 0.515 alpha: 1].CGColor,
+                                   (id)[Skinning onTintColor].CGColor,
                                    (id)callGradientTop.CGColor, nil];
     CGFloat callGradientLocations[] = {0, 0.5, 1};
     CGGradientRef callGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)callGradientColors, callGradientLocations);
