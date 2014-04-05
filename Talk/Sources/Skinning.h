@@ -18,4 +18,6 @@
 
 + (UIColor*)onTintColor;    // Used for call button and UISwitch.
 
++ (UIColor*)deleteTintColor;
+
 @end

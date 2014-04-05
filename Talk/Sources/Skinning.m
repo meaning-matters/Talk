@@ -51,7 +51,13 @@
 
 + (UIColor*)onTintColor
 {
-    return [UIColor colorWithRed: 0.344 green: 0.845 blue: 0.515 alpha: 1];
+    return [UIColor colorWithRed:0.344f green:0.845f blue:0.515f alpha:1.0f];
+}
+
+
++ (UIColor*)deleteTintColor
+{
+    return [UIColor colorWithRed:0.988f green:0.082f blue:0.275f alpha:1.0f];
 }
 
 

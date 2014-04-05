@@ -769,7 +769,7 @@ typedef enum
                                                                 [NSBundle mainBundle], @"Reset All",
                                                                 @"Title of table cell for resetting all user data\n"
                                                                 @"...].");
-        cell.textLabel.textColor = [UIColor redColor];
+        cell.textLabel.textColor = [Skinning deleteTintColor];
     }
 
     cell.accessoryType  = UITableViewCellAccessoryNone;
