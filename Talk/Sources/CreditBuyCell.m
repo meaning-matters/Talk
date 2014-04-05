@@ -11,21 +11,10 @@
 
 @implementation CreditBuyCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString*)reuseIdentifier
+- (IBAction)buyAction:(id)sender
 {
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])
-    {
-    }
-
-    return self;
-}
-
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+    self.buyButton = sender;
+    [self.delegate buyCreditForTier:self.buyButton.tag];
 }
 
 @end

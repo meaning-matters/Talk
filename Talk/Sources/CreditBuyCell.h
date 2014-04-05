@@ -8,10 +8,33 @@
 
 #import <UIKit/UIKit.h>
 
+
+@protocol CreditBuyCellDelegate <NSObject>
+
+- (void)buyCreditForTier:(int)tier;
+
+@end
+
+
 @interface CreditBuyCell : UITableViewCell
 
-@property (nonatomic, weak) IBOutlet UIImageView*             amountImageView;
-@property (nonatomic, weak) IBOutlet UILabel*                 descriptionLabel;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator;
+@property (nonatomic, weak) IBOutlet UIButton*                button1;
+@property (nonatomic, weak) IBOutlet UIButton*                button2;
+@property (nonatomic, weak) IBOutlet UIButton*                button5;
+@property (nonatomic, weak) IBOutlet UIButton*                button10;
+@property (nonatomic, weak) IBOutlet UIButton*                button20;
+@property (nonatomic, weak) IBOutlet UIButton*                button50;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator1;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator2;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator5;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator10;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator20;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator50;
+
+@property (nonatomic, weak) id<CreditBuyCellDelegate>         delegate;
+@property (nonatomic, assign) UIButton*                       buyButton;
+
+
+- (IBAction)buyAction:(id)sender;
 
 @end

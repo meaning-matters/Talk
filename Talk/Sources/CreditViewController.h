@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CreditBuyCell.h"
 
-@interface CreditViewController : UITableViewController
+
+@interface CreditViewController : UITableViewController <CreditBuyCellDelegate>
 
 @end
