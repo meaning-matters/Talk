@@ -30,6 +30,8 @@
 
 - (NSString*)localizedFormattedPrice:(float)price;
 
+- (NSString*)localizedFormattedPrice2ExtraDigits:(float)price;
+
 - (NSString*)localizedPriceForProductIdentifier:(NSString*)identifier;
 
 - (void)buyAccount:(void (^)(BOOL success, id object))completion;

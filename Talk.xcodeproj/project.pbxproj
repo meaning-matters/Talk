@@ -822,6 +822,7 @@
 		4865A9DC1792C5550028785F /* BuyNumberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4865A9DA1792C5550028785F /* BuyNumberCell.xib */; };
 		4865A9DF1792C8B70028785F /* BuyNumberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* BuyNumberCell.m */; };
 		4865A9E01792C8B70028785F /* BuyNumberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* BuyNumberCell.m */; };
+		486D4A2318F06BC8004699C9 /* CallRatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 486D4A2218F06BC8004699C9 /* CallRatesViewController.m */; };
 		4877EDB817AB7ADF0013B18F /* NBRecentCallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDB717AB7ADF0013B18F /* NBRecentCallCell.m */; };
 		4877EDB917AB7ADF0013B18F /* NBRecentCallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDB717AB7ADF0013B18F /* NBRecentCallCell.m */; };
 		4877EDBC17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */; };
@@ -1894,6 +1895,8 @@
 		4865A9DA1792C5550028785F /* BuyNumberCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BuyNumberCell.xib; sourceTree = "<group>"; };
 		4865A9DD1792C8B70028785F /* BuyNumberCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyNumberCell.h; sourceTree = "<group>"; };
 		4865A9DE1792C8B70028785F /* BuyNumberCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyNumberCell.m; sourceTree = "<group>"; };
+		486D4A2118F06BC8004699C9 /* CallRatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallRatesViewController.h; sourceTree = "<group>"; };
+		486D4A2218F06BC8004699C9 /* CallRatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallRatesViewController.m; sourceTree = "<group>"; };
 		4877EDB617AB7ADF0013B18F /* NBRecentCallCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBRecentCallCell.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentCallCell.h; sourceTree = "<group>"; };
 		4877EDB717AB7ADF0013B18F /* NBRecentCallCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBRecentCallCell.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentCallCell.m; sourceTree = "<group>"; };
 		4877EDBA17AD27700013B18F /* PhoneNumberTextFieldDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumberTextFieldDelegate.h; sourceTree = "<group>"; };
@@ -3392,6 +3395,8 @@
 				48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */,
 				48A0CE761809BE3100B8A9F8 /* CallBaseViewController.h */,
 				48A0CE771809BE3100B8A9F8 /* CallBaseViewController.m */,
+				486D4A2118F06BC8004699C9 /* CallRatesViewController.h */,
+				486D4A2218F06BC8004699C9 /* CallRatesViewController.m */,
 				48BD8BEA1663E87800F2CB45 /* CallViewController.h */,
 				48BD8BEB1663E87800F2CB45 /* CallViewController.m */,
 				48AF44EC164947B300DFE3D8 /* CreditViewController.h */,
@@ -4622,6 +4627,7 @@
 				48BC7F3C1702FDD1006671B5 /* NumberViewController.m in Sources */,
 				489387FB17039158005CC795 /* ForwardingData.m in Sources */,
 				489387FF17039165005CC795 /* RecordingData.m in Sources */,
+				486D4A2318F06BC8004699C9 /* CallRatesViewController.m in Sources */,
 				4837AF6D18D9B89A00D3AEBC /* GetStartedStartViewController.m in Sources */,
 				48ADD0F71706791A001515EB /* UIView+AnimateHidden.m in Sources */,
 				48A0CE6A1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */,

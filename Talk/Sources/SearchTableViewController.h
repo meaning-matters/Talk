@@ -28,7 +28,7 @@
 - (NSString*)nameOnTable:(UITableView*)tableView atIndexPath:(NSIndexPath*)indexPath;
 
 
-//  Takes a subclass specific object from the `allArray` and return the name that
+//  Takes a subclass specific object from the `objectsArray` and return the name that
 //  must be used for the table index.  Must be implemented by subclass.
 - (NSString*)nameForObject:(id)object;
 

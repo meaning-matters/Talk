@@ -607,6 +607,35 @@
         [numberFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
         [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
         [numberFormatter setLocale:((SKProduct*)self.products[0]).priceLocale];
+        [numberFormatter setMaximumFractionDigits:numberFormatter.maximumFractionDigits + 2];
+
+        formattedString = [numberFormatter stringFromNumber:@(price)];
+    }
+    else
+    {
+        formattedString = @"";
+    }
+
+    return formattedString;
+}
+
+
+- (NSString*)localizedFormattedPrice2ExtraDigits:(float)price
+{
+    NSString* formattedString;
+
+    if (self.products != nil || _currencyCode.length > 0)
+    {
+        NSNumberFormatter*  numberFormatter;
+
+        numberFormatter = [[NSNumberFormatter alloc] init];
+        [numberFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
+        [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+        [numberFormatter setLocale:((SKProduct*)self.products[0]).priceLocale];
+
+        NSUInteger fractionDigits = numberFormatter.maximumFractionDigits + 2;
+        [numberFormatter setMaximumFractionDigits:fractionDigits];
+        [numberFormatter setMinimumFractionDigits:fractionDigits];
 
         formattedString = [numberFormatter stringFromNumber:@(price)];
     }

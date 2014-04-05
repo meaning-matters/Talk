@@ -75,7 +75,7 @@
             // Combine numberTypes per country.
             for (NSDictionary* newCountry in (NSArray*)content)
             {
-                NSMutableDictionary*    matchedCountry = nil;
+                NSMutableDictionary* matchedCountry = nil;
                 for (NSMutableDictionary* country in self.countriesArray)
                 {
                     if ([newCountry[@"isoCountryCode"] isEqualToString:country[@"isoCountryCode"]])

@@ -45,6 +45,9 @@ typedef enum
 
 #pragma mark - Request Methods
 
+// 0A. GET CALL RATES
+- (void)retrieveCallRates:(void (^)(NSError* error, NSArray* rates))reply;
+
 // 1. CREATE/UPDATE ACCOUNT
 - (void)retrieveAccountsForReceipt:(NSString*)receipt
                           language:(NSString*)language
@@ -224,6 +227,9 @@ typedef enum
 
 
 #pragma mark - Cancel Methods
+
+// 0A.
+- (void)cancelAllRetrieveCallRates;
 
 // 1.
 - (void)cancelAllRetrieveWebAccount;

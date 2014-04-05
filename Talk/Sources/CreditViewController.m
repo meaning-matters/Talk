@@ -15,6 +15,16 @@
 #import "Strings.h"
 #import "Common.h"
 #import "Skinning.h"
+#import "CallRatesViewController.h"
+
+
+// Update reloadSections calls when adding/removing sections.
+typedef enum
+{
+    TableSectionAmount = 1UL << 0,
+    TableSectionRates  = 1UL << 1,
+    TableSectionBuy    = 1UL << 2,
+} TableSection;
 
 
 @interface CreditViewController ()
@@ -26,6 +36,7 @@
 @property (nonatomic, strong) NSIndexPath*   amountIndexPath;
 @property (nonatomic, strong) CreditBuyCell* buyCell;
 @property (nonatomic, assign) int            buyTier;
+@property (nonatomic, assign) TableSection   sections;
 
 @end
 
@@ -39,6 +50,10 @@
     {
         self.title = NSLocalizedString(@"Credit", @"Credit tab title");
         self.tabBarItem.image = [UIImage imageNamed:@"CreditTab.png"];
+
+        self.sections |= TableSectionAmount;
+        self.sections |= TableSectionRates;
+        self.sections |= TableSectionBuy;
     }
     
     return self;
@@ -95,7 +110,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return 2;
+    return 3;
 }
 
 
@@ -109,27 +124,43 @@
 {
     UITableViewCell* cell;
 
-    if (indexPath.section == 0)
+    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"CreditAmountCell" forIndexPath:indexPath];
-        [self updateAmountCell:(CreditAmountCell*)cell];
-        self.amountIndexPath = indexPath;
-    }
-    else
-    {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"CreditBuyCell" forIndexPath:indexPath];
-        self.buyCell = (CreditBuyCell*)cell;
-        self.buyCell.delegate = self;
-        [self updateBuyCell];
-    }
+        case TableSectionAmount:
+            cell = [tableView dequeueReusableCellWithIdentifier:@"CreditAmountCell" forIndexPath:indexPath];
+            [self updateAmountCell:(CreditAmountCell*)cell];
+            self.amountIndexPath = indexPath;
+            break;
 
-    // Needed to remove button touch delay: http://stackoverflow.com/a/19671114/1971013
-    for (id object in cell.subviews)
-    {
-        if ([object respondsToSelector:@selector(setDelaysContentTouches:)])
-        {
-            [object setDelaysContentTouches:NO];
-        }
+        case TableSectionRates:
+            cell = [self.tableView dequeueReusableCellWithIdentifier:@"RatesCell"];
+            if (cell == nil)
+            {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"RatesCell"];
+            }
+
+            cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Credit Rates", nil,
+                                                                    [NSBundle mainBundle], @"Call Rates",
+                                                                    @".\n"
+                                                                    @"[1 line, abbreviated: Rates].");
+            break;
+
+        case TableSectionBuy:
+            cell = [tableView dequeueReusableCellWithIdentifier:@"CreditBuyCell" forIndexPath:indexPath];
+            self.buyCell = (CreditBuyCell*)cell;
+            self.buyCell.delegate = self;
+            [self updateBuyCell];
+
+            // Needed to remove button touch delay: http://stackoverflow.com/a/19671114/1971013
+            for (id object in cell.subviews)
+            {
+                if ([object respondsToSelector:@selector(setDelaysContentTouches:)])
+                {
+                    [object setDelaysContentTouches:NO];
+                }
+            }
+            break;
     }
 
     return cell;
@@ -140,17 +171,25 @@
 {
     NSString* title;
 
-    if (section == 0)
+    switch ([Common nthBitSet:section inValue:self.sections])
     {
-        title = NSLocalizedStringWithDefaultValue(@"creditView:... AmountHeader", nil, [NSBundle mainBundle],
-                                                  @"Current Credit",
-                                                  @"[One line larger font]");
-    }
-    else
-    {
-        title = NSLocalizedStringWithDefaultValue(@"creditView:... BuyCreditHeader", nil, [NSBundle mainBundle],
-                                                  @"Buy More Credit",
-                                                  @"[One line larger font]");
+        case TableSectionAmount:
+            title = NSLocalizedStringWithDefaultValue(@"creditView:... AmountHeader", nil, [NSBundle mainBundle],
+                                                      @"Current Credit",
+                                                      @"[One line larger font]");
+            break;
+
+        case TableSectionRates:
+            title = NSLocalizedStringWithDefaultValue(@"creditView:... RatesCreditHeader", nil, [NSBundle mainBundle],
+                                                      @"How Little You Pay",
+                                                      @"[One line larger font]");
+            break;
+
+        case TableSectionBuy:
+            title = NSLocalizedStringWithDefaultValue(@"creditView:... BuyCreditHeader", nil, [NSBundle mainBundle],
+                                                      @"Buy More Credit",
+                                                      @"[One line larger font]");
+            break;
     }
 
     return title;
@@ -161,26 +200,32 @@
 {
     NSString* title;
 
-    if (section == 0)
+    switch ([Common nthBitSet:section inValue:self.sections])
     {
+        case TableSectionAmount:
 #if HAS_BUYING_NUMBERS
-        title = NSLocalizedStringWithDefaultValue(@"CreditAmount:... TableFooterNumbers", nil, [NSBundle mainBundle],
-                                                  @"Credit is used for outgoing calls, for forwarding incoming "
-                                                  @"calls on NumberBay numbers to your phone(s), and for the setup "
-                                                  @"fee when buying some of the numbers.",
-                                                  @"[Multiple lines]");
+            title = NSLocalizedStringWithDefaultValue(@"CreditAmount:... TableFooterNumbers", nil, [NSBundle mainBundle],
+                                                      @"Credit is used for outgoing calls, for forwarding incoming "
+                                                      @"calls on NumberBay numbers to your phone(s), and for the setup "
+                                                      @"fee when buying some of the numbers.",
+                                                      @"[Multiple lines]");
 #else
-        title = NSLocalizedStringWithDefaultValue(@"CreditAmount:... TableFooter", nil, [NSBundle mainBundle],
-                                                  @"Credit is used for the two parts of each call: calling back "
-                                                  @"your number, and calling the other person.",
-                                                  @"[Multiple lines]");
+            title = NSLocalizedStringWithDefaultValue(@"CreditAmount:... TableFooter", nil, [NSBundle mainBundle],
+                                                      @"Credit is used for the two parts of each call: calling back "
+                                                      @"your number, and calling the other person.",
+                                                      @"[Multiple lines]");
 #endif
-    }
-    else
-    {
-        title = NSLocalizedStringWithDefaultValue(@"BuyCredit:... TableFooter", nil, [NSBundle mainBundle],
-                                                  @"The credit you buy will be available immediately.",
-                                                  @"[Multiple lines]");
+            break;
+
+        case TableSectionRates:
+            title = nil;
+            break;
+
+        case TableSectionBuy:
+            title = NSLocalizedStringWithDefaultValue(@"BuyCredit:... TableFooter", nil, [NSBundle mainBundle],
+                                                      @"Credit you buy won't expire, and will be available immediately.",
+                                                      @"[Multiple lines]");
+            break;
     }
 
     return title;
@@ -191,45 +236,44 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-    if (indexPath.section == 0 && indexPath.row == 0)
+    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
-        if ([Settings sharedSettings].haveAccount == YES)
+        case TableSectionAmount:
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            if ([Settings sharedSettings].haveAccount == YES)
+            {
+                [self loadCredit];
+            }
+            else
+            {
+                [Common showGetStartedViewController];
+            }
+            break;
+
+        case TableSectionRates:
         {
-            [self loadCredit];
+            CallRatesViewController* viewController = [[CallRatesViewController alloc] init];
+            [self.navigationController pushViewController:viewController animated:YES];
+            break;
         }
-        else
-        {
-            [Common showGetStartedViewController];
-        }
-    }
-}
-
-
-- (void)tableView:(UITableView*)tableView willDisplayCell:(UITableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    if (indexPath.section == 0)
-    {
-        [self updateAmountCell:(CreditAmountCell*)cell];
-    }
-    else
-    {
-        [self updateBuyCell];
+        case TableSectionBuy:
+            break;
     }
 }
 
 
 - (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    if (indexPath.section == 0)
+    CGFloat height;
+
+    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
-        return self.creditAmountCellHeight;
+        case TableSectionAmount: height = self.creditAmountCellHeight; break;
+        case TableSectionRates:  height = self.tableView.rowHeight;    break;
+        case TableSectionBuy:    height = self.creditBuyCellHeight;    break;
     }
-    else
-    {
-        return self.creditBuyCellHeight;
-    }
+
+    return height;
 }
 
 
@@ -425,8 +469,6 @@
 
 - (void)updateBuyCell
 {
-    //self.buyCell = (CreditBuyCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
-
     for (int n = 0; n <= 5; n++)
     {
         int       tier              = [self tierForN:n];

@@ -391,6 +391,31 @@ static NSDictionary* statuses;
 }
 
 
+// 0A. GET CALL RATES
+- (void)retrieveCallRates:(void (^)(NSError* error, NSArray* rates))reply
+{
+    NSString* currencyCode = [Settings sharedSettings].currencyCode;
+    [self getPath:[NSString stringWithFormat:@"rates/calls?currencyCode=%@", currencyCode]
+       parameters:nil
+          success:^(AFHTTPRequestOperation* operation, id responseObject)
+    {
+        NSLog(@"postPath request: %@", operation.request.URL);
+
+        [self handleSuccess:responseObject reply:^(NSError* error, id content)
+        {
+              reply(error, content);
+        }];
+    }
+           failure:^(AFHTTPRequestOperation* operation, NSError* error)
+    {
+        [self handleFailure:error reply:^(NSError* error, id content)
+        {
+            reply(error, content);
+        }];
+    }];
+}
+
+
 // 1. CREATE/UPDATE ACCOUNT
 - (void)retrieveAccountsForReceipt:(NSString*)receipt
                           language:(NSString*)language
@@ -1136,6 +1161,14 @@ static NSDictionary* statuses;
 
 
 #pragma mark - Public Utility
+
+// 0A.
+- (void)cancelAllRetrieveCallRates
+{
+    [self cancelAllHTTPOperationsWithMethod:@"GET"
+                                       path:@"rates/calls"];
+}
+
 
 // 1.
 - (void)cancelAllRetrieveWebAccount
