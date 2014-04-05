@@ -43,7 +43,7 @@
                     </connections>
                 </pageControl>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="xw5-ju-Qn6" userLabel="Start Button">
-                    <rect key="frame" x="20" y="415" width="132" height="45"/>
+                    <rect key="frame" x="20" y="415" width="130" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Start">
@@ -55,7 +55,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Vgt-N2-3xQ" userLabel="Restore Button">
-                    <rect key="frame" x="168" y="415" width="132" height="45"/>
+                    <rect key="frame" x="170" y="415" width="130" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Restore">
