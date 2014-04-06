@@ -173,10 +173,17 @@
 
         if ([sectionInfo numberOfObjects] > 0)
         {
-            return NSLocalizedStringWithDefaultValue(@"Phones ...", nil, [NSBundle mainBundle],
-                                                     @"Use as Caller ID & Callback number",
-                                                     @"\n"
-                                                     @"[1/4 line larger font].");
+            if (self.headerTitle == nil)
+            {
+                return NSLocalizedStringWithDefaultValue(@"Phones ...", nil, [NSBundle mainBundle],
+                                                         @"Use as Caller ID & Callback number",
+                                                         @"\n"
+                                                         @"[1/4 line larger font].");
+            }
+            else
+            {
+                return self.headerTitle;
+            }
         }
         else
         {
@@ -192,13 +199,20 @@
 
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    return NSLocalizedStringWithDefaultValue(@"Phone Phones List Title", nil, [NSBundle mainBundle],
-                                             @"List of phone numbers from which you select (on the Settings tab) "
-                                             @"your caller ID, and the number you'll be called back on.\n\n"
-                                             @"Add as many as you like. It can be handy to have an extensive "
-                                             @"list of caller IDs available.",
-                                             @"\n"
-                                             @"[ ].");
+    if (self.footerTitle == nil)
+    {
+        return NSLocalizedStringWithDefaultValue(@"Phone Phones List Title", nil, [NSBundle mainBundle],
+                                                 @"List of phone numbers from which you select (on the Settings tab) "
+                                                 @"your caller ID, and the number you'll be called back on.\n\n"
+                                                 @"Add as many as you like. It can be handy to have an extensive "
+                                                 @"list of caller IDs available.",
+                                                 @"\n"
+                                                 @"[ ].");
+    }
+    else
+    {
+        return self.footerTitle;
+    }
 }
 
 

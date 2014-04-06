@@ -14,6 +14,10 @@
 
 @interface PhonesViewController : ItemsViewController <NSFetchedResultsControllerDelegate>
 
+@property (nonatomic, strong) NSString* headerTitle;
+@property (nonatomic, strong) NSString* footerTitle;
+
+
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
                                selectedPhone:(PhoneData*)selectedPhone
                                   completion:(void (^)(PhoneData* selectedPhone))completion;

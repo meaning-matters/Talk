@@ -219,7 +219,7 @@ typedef enum
 #if HAS_VOIP
             title = NSLocalizedStringWithDefaultValue(@"Settings:CallModeInfo SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"In Callback Mode, our server first calls your Called Back number. "
+                                                      @"In Callback Mode, our server first calls your Callback Number. "
                                                       @"Then, when you accept that call, the person you're tying to "
                                                       @"reach is being called; the Caller ID is used as caller ID.",
                                                       @"Explanation what Call Mode setting is doing\n"
@@ -227,7 +227,7 @@ typedef enum
 #else
             title = NSLocalizedStringWithDefaultValue(@"Settings:CallbackInfo SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"Our server first calls the Called Back number. Then, when you "
+                                                      @"Our server first calls the Callack Number. Then, when you "
                                                       @"accept that call, the party you're tying to reach is being "
                                                       @"called, and is show Caller ID (when the Show My Caller "
                                                       @"ID setting is on).",
@@ -317,6 +317,8 @@ typedef enum
     }
 
     NSString*                title;
+    NSString*                headerTitle;
+    NSString*                footerTitle;
     NSString*                message;
     NSString*                homeCountry = settings.homeCountry;
     PhonesViewController*    phonesViewController;
@@ -339,6 +341,26 @@ typedef enum
                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                 }];
 
+                headerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
+                                                                @"Select Callback Number",
+                                                                @"\n"
+                                                                @"[1/4 line larger font].");
+                footerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
+                                                                @"When you initiate a call, you'll be called back "
+                                                                @"on the selected number.\n\nTo limit your costs, "
+                                                                @"make sure that the NumberBay calling rate to this "
+                                                                @"number is low, and also check the extra charges of your "
+                                                                @"telephone operator for receiving calls (which can be "
+                                                                @"substantial).\n\nIf you can it's often good to use "
+                                                                @"a fixed-line phone, or to use a local SIM from the "
+                                                                @"country you're in.\n\nPeople you call will never see "
+                                                                @"which number you selected here; unless of course, you "
+                                                                @"also select the same number as Caller ID).",
+                                                                @"\n"
+                                                                @"[1/4 line larger font].");
+                phonesViewController.headerTitle = headerTitle;
+                phonesViewController.footerTitle = footerTitle;
+
                 [self.navigationController pushViewController:phonesViewController animated:YES];
             }
             else if (indexPath.row == 2 - !HAS_VOIP)
@@ -354,7 +376,21 @@ typedef enum
                     cell.detailTextLabel.text = selectedPhone.name;
                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                 }];
-                
+
+                headerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
+                                                                @"Select Caller ID",
+                                                                @"\n"
+                                                                @"[1/4 line larger font].");
+                footerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
+                                                                @"People you call will see the selected number, but "
+                                                                @"only when the Show My Caller ID setting is on.\n\n"
+                                                                @"Add as many as you like. It can be handy to have an "
+                                                                @"extensive list to select from.",
+                                                                @"\n"
+                                                                @"[1/4 line larger font].");
+                phonesViewController.headerTitle = headerTitle;
+                phonesViewController.footerTitle = footerTitle;
+
                 [self.navigationController pushViewController:phonesViewController animated:YES];
             }
             break;
@@ -522,8 +558,8 @@ typedef enum
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallerCell"];
         }
 
-        cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Settings Called Back Number", nil,
-                                                                      [NSBundle mainBundle], @"Called Back",
+        cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Settings Callback Number", nil,
+                                                                      [NSBundle mainBundle], @"Callback Number",
                                                                       @"Phone number on which user is reachable.\n"
                                                                       @"[1/2 line, abbreviated: Called].");
         PhoneData* phone = [self lookupPhoneForE164:settings.callbackE164];
