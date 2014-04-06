@@ -56,7 +56,7 @@
         {
              self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"CallRates ScreenTitle", nil,
                                                                            [NSBundle mainBundle],
-                                                                           @"Call Rate Countries",
+                                                                           @"Call Rates",
                                                                            @"....\n"
                                                                            @"[iOS alert title size].");
             self.objectsArray = rates;

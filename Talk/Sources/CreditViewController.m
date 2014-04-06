@@ -179,7 +179,7 @@ typedef enum
 
         case TableSectionRates:
             title = NSLocalizedStringWithDefaultValue(@"creditView:... RatesCreditHeader", nil, [NSBundle mainBundle],
-                                                      @"How Little You Pay",
+                                                      @"What You Pay",
                                                       @"[One line larger font]");
             break;
 
@@ -419,6 +419,13 @@ typedef enum
 
 - (void)buyCreditForTier:(int)tier
 {
+    if ([Settings sharedSettings].haveAccount == NO)
+    {
+        [Common showGetStartedViewController];
+
+        return;
+    }
+
     self.buyTier = tier;
     [self updateBuyCell];
 
@@ -520,11 +527,18 @@ typedef enum
     float     credit = [Settings sharedSettings].credit;
     NSString* amount = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
 
-    cell.amountLabel.text  = amount;
-    cell.amountLabel.alpha = self.isLoadingCredit ? 0.5 : 1.0;
+    cell.amountLabel.text      = amount;
+    cell.amountLabel.alpha     = self.isLoadingCredit ? 0.5 : 1.0;
+    cell.amountLabel.textColor = self.loadingcreditFailed ? [Skinning deleteTintColor] : [UIColor blackColor];
+    cell.amountLabel.highlightedTextColor = cell.amountLabel.textColor;
 
-    cell.amountLabel.textColor = self.loadingcreditFailed ? [UIColor orangeColor] : [UIColor blackColor];
-    
+    cell.noteLabel.text        = NSLocalizedStringWithDefaultValue(@"BuyCredit ...", nil, [NSBundle mainBundle],
+                                                                   @"not up-to-date",
+                                                                   @"Alert title: Credit could not be bought.\n"
+                                                                   @"[iOS alert title size].");
+    cell.noteLabel.alpha       = self.loadingcreditFailed ? 1.0f : 0.0f;
+    cell.noteLabel.textColor   = [Skinning deleteTintColor];
+
     if (self.isLoadingCredit == YES)
     {
         [cell.activityIndicator startAnimating];

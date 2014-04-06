@@ -12,5 +12,6 @@
 
 @property (nonatomic, weak) IBOutlet UILabel*                 amountLabel;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator;
+@property (nonatomic, weak) IBOutlet UILabel*                 noteLabel;
 
 @end
