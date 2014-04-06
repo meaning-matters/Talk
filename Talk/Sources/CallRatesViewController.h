@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "SearchTableViewController.h"
+#import "PhoneNumber.h"
+
 
 @interface CallRatesViewController : SearchTableViewController <UITableViewDelegate>
+
+- (instancetype)initWithCallbackPhoneNumber:(PhoneNumber*)callbackPhoneNumber;
 
 @end

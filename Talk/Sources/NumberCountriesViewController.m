@@ -199,12 +199,11 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString*     name = [self nameOnTable:tableView atIndexPath:indexPath];
-    NSString*     isoCountryCode;
+    NSString*     name           = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSString*     isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
     NSDictionary* country;
 
     // Look up country.
-    isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
     for (country in self.objectsArray)
     {
         if ([country[@"isoCountryCode"] isEqualToString:isoCountryCode])
@@ -235,16 +234,14 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
-    NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
-    NSString*        isoCountryCode;
+    NSString*        name           = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSString*        isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
-
-    isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
  
     cell.imageView.image = [UIImage imageNamed:isoCountryCode];
     cell.textLabel.text  = name;

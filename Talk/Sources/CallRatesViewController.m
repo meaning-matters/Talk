@@ -35,6 +35,10 @@
         {
             self.callbackPhoneNumber = [[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].callbackE164];
         }
+        else
+        {
+            self.callbackPhoneNumber = callbackPhoneNumber;
+        }
     }
 
     return self;
@@ -138,35 +142,55 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString*     name = [self nameOnTable:tableView atIndexPath:indexPath];
-    NSString*     isoCountryCode;
-    NSDictionary* callRate;
+    NSString*     name                = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSString*     isoCountryCode      = [[CountryNames sharedNames] isoCountryCodeForName:name];
+    NSDictionary* rate                = [self rateForIsoCountryCode:isoCountryCode];
 
-    // Look up country.
-    isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
-    for (callRate in self.objectsArray)
-    {
-        if ([callRate[@"isoCountryCode"] isEqualToString:isoCountryCode])
-        {
-            break;
-        }
-    }
+    float         callbackPrice       = [self callbackPrice];
+    float         fixedPrice          = [rate[@"fixedPrice"]  floatValue];
+    float         mobilePrice         = [rate[@"mobilePrice"] floatValue];
+    NSString*     callbackPriceString = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:callbackPrice / 100.0f];
+    NSString*     fixedPriceString    = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:fixedPrice    / 100.0f];
+    NSString*     mobilePriceString   = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:mobilePrice   / 100.0f];
+
+    NSString* title;
+    NSString* message;
+
+    title   = NSLocalizedStringWithDefaultValue(@"CallRates InfoAlertTitle", nil, [NSBundle mainBundle],
+                                                @"Prices Per Minute To %@",
+                                                @"....\n"
+                                                @"[iOS alert message size]");
+    message = NSLocalizedStringWithDefaultValue(@"CallRates InfoAlertMessage", nil, [NSBundle mainBundle],
+                                                @"Fixed-line: %@\nMobile: %@\n\nPlus the callback to your %@ number "
+                                                @"in %@: %@",
+                                                @"....\n"
+                                                @"[iOS alert message size]");
+    title   = [NSString stringWithFormat:title, isoCountryCode];
+    message = [NSString stringWithFormat:message, fixedPriceString, mobilePriceString,
+                                         self.callbackPhoneNumber.typeString, self.callbackPhoneNumber.isoCountryCode,
+                                         callbackPriceString];
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:nil
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
+
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
+    NSString*        name           = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSString*        isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
+    NSDictionary*    rate           = [self rateForIsoCountryCode:isoCountryCode];
     UITableViewCell* cell;
-    NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
-    NSString*        isoCountryCode;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DefaultCell"];
     }
-    
-    isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
 
     cell.imageView.image = [UIImage imageNamed:isoCountryCode];
     cell.textLabel.text  = name;
@@ -177,7 +201,6 @@
                                                          @"[iOS alert title size].");
 
     float         callbackPrice       = [self callbackPrice];
-    NSDictionary* rate                = [self rateForIsoCountryCode:isoCountryCode];
     float         outgoingFixedPrice  = [rate[@"fixedPrice"]  floatValue];
     float         outgoingMobilePrice = [rate[@"mobilePrice"] floatValue];
     float         fixedPrice          = callbackPrice + outgoingFixedPrice;

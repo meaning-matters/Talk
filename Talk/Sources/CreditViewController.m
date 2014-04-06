@@ -37,6 +37,7 @@ typedef enum
 @property (nonatomic, strong) CreditBuyCell* buyCell;
 @property (nonatomic, assign) int            buyTier;
 @property (nonatomic, assign) TableSection   sections;
+@property (nonatomic, strong) PhoneNumber*   callbackPhoneNumber;
 
 @end
 
@@ -46,7 +47,6 @@ typedef enum
 - (instancetype)init
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
-        //if (self = [super initWithNibName:@"CreditView" bundle:nil])
     {
         self.title = NSLocalizedString(@"Credit", @"Credit tab title");
         self.tabBarItem.image = [UIImage imageNamed:@"CreditTab.png"];
@@ -91,8 +91,6 @@ typedef enum
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    //self.tableView.delaysContentTouches = NO;
 
     if ([Settings sharedSettings].haveAccount == YES)
     {
@@ -252,8 +250,81 @@ typedef enum
 
         case TableSectionRates:
         {
-            CallRatesViewController* viewController = [[CallRatesViewController alloc] init];
-            [self.navigationController pushViewController:viewController animated:YES];
+            if ([Settings sharedSettings].callbackE164.length > 0)
+            {
+                CallRatesViewController* viewController;
+                PhoneNumber*             phoneNumber;
+
+                phoneNumber    = [[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].callbackE164];
+                viewController = [[CallRatesViewController alloc] initWithCallbackPhoneNumber:phoneNumber];
+                [self.navigationController pushViewController:viewController animated:YES];
+            }
+            else
+            {
+                __block BlockAlertView* alert;
+                NSString*               title;
+                NSString*               message;
+
+                title   = NSLocalizedStringWithDefaultValue(@"Credit EnterNumberTitle", nil,
+                                                            [NSBundle mainBundle], @"Enter Callback Number",
+                                                            @"Title asking user to enter their phone number.\n"
+                                                            @"[iOS alert title size].");
+                message = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyCancelMessage", nil,
+                                                            [NSBundle mainBundle],
+                                                            @"A call has two parts: calling you back, and "
+                                                            @"calling the other person.\n\nFor correct rates, enter "
+                                                            @"a number you would be called back on.",
+                                                            @"Message explaining about the phone number they need to enter.\n"
+                                                            @"[iOS alert message size]");
+                alert   = [BlockAlertView showPhoneNumberAlertViewWithTitle:title
+                                                                    message:message
+                                                                phoneNumber:self.callbackPhoneNumber
+                                                                 completion:^(BOOL         cancelled,
+                                                                              PhoneNumber* phoneNumber)
+                {
+                    if (cancelled == NO)
+                    {
+                        self.callbackPhoneNumber = phoneNumber;
+
+                        if (phoneNumber.isValid)
+                        {
+                            CallRatesViewController* viewController;
+
+                            viewController = [[CallRatesViewController alloc] initWithCallbackPhoneNumber:phoneNumber];
+                            [self.navigationController pushViewController:viewController animated:YES];
+                        }
+                        else
+                        {
+                            NSString* title;
+                            NSString* message;
+
+                            title   = NSLocalizedStringWithDefaultValue(@"Credit VerifyInvalidTitle", nil,
+                                                                        [NSBundle mainBundle], @"Invalid Number",
+                                                                        @"Phone number is not correct.\n"
+                                                                        @"[iOS alert title size].");
+                            message = NSLocalizedStringWithDefaultValue(@"Credit VerifyInvalidMessage", nil,
+                                                                        [NSBundle mainBundle],
+                                                                        @"The phone number you entered is invalid, "
+                                                                        @"please correct.",
+                                                                        @"Alert message that entered phone number is invalid.\n"
+                                                                        @"[iOS alert message size]");
+                            [BlockAlertView showAlertViewWithTitle:title
+                                                           message:message
+                                                        completion:nil
+                                                 cancelButtonTitle:[Strings closeString]
+                                                 otherButtonTitles:nil];
+
+                            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                        }
+                    }
+                    else
+                    {
+                        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                    }
+                }
+                                                          cancelButtonTitle:[Strings cancelString]
+                                                          otherButtonTitles:[Strings okString], nil];
+            }
             break;
         }
         case TableSectionBuy:
