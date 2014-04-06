@@ -33,6 +33,7 @@ typedef enum
 @property (nonatomic, assign) float          creditBuyCellHeight;
 @property (nonatomic, assign) BOOL           isLoadingCredit;
 @property (nonatomic, assign) BOOL           loadingcreditFailed;
+@property (nonatomic, assign) BOOL           mustShowLoadingError;
 @property (nonatomic, strong) NSIndexPath*   amountIndexPath;
 @property (nonatomic, strong) CreditBuyCell* buyCell;
 @property (nonatomic, assign) int            buyTier;
@@ -94,6 +95,7 @@ typedef enum
 
     if ([Settings sharedSettings].haveAccount == YES)
     {
+        self.mustShowLoadingError = NO;
         [self loadCredit];
     }
 
@@ -240,6 +242,7 @@ typedef enum
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             if ([Settings sharedSettings].haveAccount == YES)
             {
+                self.mustShowLoadingError = YES;
                 [self loadCredit];
             }
             else
@@ -375,7 +378,7 @@ typedef enum
         }
         else
         {
-            if (isShowingLoadingError == NO)
+            if (isShowingLoadingError == NO && self.mustShowLoadingError == YES)
             {
                 NSString* title;
                 NSString* message;
