@@ -532,7 +532,7 @@ typedef enum
 
     cell.amountLabel.text      = amount;
     cell.amountLabel.alpha     = self.isLoadingCredit ? 0.5 : 1.0;
-    cell.amountLabel.textColor = self.loadingcreditFailed ? [Skinning deleteTintColor] : [UIColor blackColor];
+    cell.amountLabel.textColor = self.loadingcreditFailed ? [Skinning deleteTintColor] : [Skinning tintColor];
     cell.amountLabel.highlightedTextColor = cell.amountLabel.textColor;
 
     cell.noteLabel.text        = NSLocalizedStringWithDefaultValue(@"BuyCredit ...", nil, [NSBundle mainBundle],
