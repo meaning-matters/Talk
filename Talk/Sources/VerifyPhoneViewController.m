@@ -260,13 +260,15 @@
 
 - (IBAction)buttonUp:(id)sender
 {
+    UIColor* backgroundColor = [Skinning backgroundTintColor];
+
     if (sender == self.numberButton)
     {
-        self.step1View.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
+        self.step1View.backgroundColor = backgroundColor;
     }
     else
     {
-        self.step2View.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
+        self.step2View.backgroundColor = backgroundColor;
     }
 }
 

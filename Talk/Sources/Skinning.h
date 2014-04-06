@@ -20,4 +20,6 @@
 
 + (UIColor*)deleteTintColor;
 
++ (UIColor*)backgroundTintColor;
+
 @end

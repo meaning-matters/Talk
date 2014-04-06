@@ -607,8 +607,6 @@
         [numberFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
         [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
         [numberFormatter setLocale:((SKProduct*)self.products[0]).priceLocale];
-        [numberFormatter setMaximumFractionDigits:numberFormatter.maximumFractionDigits + 2];
-
         formattedString = [numberFormatter stringFromNumber:@(price)];
     }
     else

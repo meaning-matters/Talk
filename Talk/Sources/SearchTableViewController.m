@@ -7,6 +7,8 @@
 //
 
 #import "SearchTableViewController.h"
+#import "Skinning.h"
+
 
 @interface SearchTableViewController ()
 
@@ -186,6 +188,12 @@
 
 
 #pragma mark - Table View Data Source
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    view.tintColor = [Skinning backgroundTintColor];
+}
+
 
 //  Placeholder for subclass implementation.
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath

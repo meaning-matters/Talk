@@ -16,6 +16,7 @@
 #import "VerifyPhoneViewController.h"
 #import "PhoneData.h"
 #import "Strings.h"
+#import "Skinning.h"
 
 
 @interface GetStartedActionViewController ()
@@ -50,6 +51,7 @@
     //### Setting this in XIB hit an Xcode bug: text was scaled to fit.
     self.textView.editable   = NO;
     self.textView.selectable = NO;
+    self.textView.backgroundColor = [Skinning backgroundTintColor];
 
     [Common setBorderWidth:1.0f                ofView:self.textView];
     [Common setCornerRadius:5.0f               ofView:self.textView];
