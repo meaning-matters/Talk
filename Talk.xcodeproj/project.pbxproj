@@ -2370,13 +2370,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4814EA4017CE590C004B7A3C /* CreditAmount */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = CreditAmount;
-			sourceTree = "<group>";
-		};
 		482A639A165F922E00325B3F /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -2491,7 +2484,6 @@
 				4864B3F5175668CA0006542F /* LogoFacebook.png */,
 				48338FB316170D8C0033F4C1 /* App */,
 				48EDD1FC1667652A007B89DA /* Call */,
-				4814EA4017CE590C004B7A3C /* CreditAmount */,
 				485F68461637270100D61365 /* Flags */,
 				485E38BC17C40D070089F0F1 /* NumberDuration */,
 				483679ED1722F2CF001A02AF /* Other */,
