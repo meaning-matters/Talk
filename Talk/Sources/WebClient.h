@@ -223,8 +223,13 @@ typedef enum
 
 // 34. GET CALLBACK STATE
 - (void)retrieveCallbackStateForUuid:(NSString*)uuid
-                               reply:(void (^)(NSError* error, CallState state, int duration))reply;
-
+                               reply:(void (^)(NSError*  error,
+                                               CallState state,
+                                               CallLeg   leg,
+                                               int       callbackDuration,
+                                               int       outgoingDuration,
+                                               float     callbackCost,
+                                               float     outgoingCost))reply;
 
 #pragma mark - Cancel Methods
 

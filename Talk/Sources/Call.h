@@ -44,6 +44,14 @@ typedef enum
 } CallNetwork;
 
 
+typedef enum
+{
+    CallLegNone,
+    CallLegCallback,
+    CallLegOutgoing,
+} CallLeg;
+
+
 @interface Call : NSObject
 
 @property (nonatomic, strong, readonly) PhoneNumber*    phoneNumber;
@@ -54,7 +62,8 @@ typedef enum
 @property (nonatomic, strong, readonly) NSDate*         beginDate;
 @property (nonatomic, strong, readonly) NSDate*         connectDate;
 @property (nonatomic, strong, readonly) NSDate*         endDate;
-@property (nonatomic, assign) CallState                 state;
+@property (nonatomic, assign) CallState                 state;              // With callback, this is the state for the current leg only.
+@property (nonatomic, assign) CallLeg                   leg;                // This is the current leg and amends the state.
 @property (nonatomic, assign) CallDirection             direction;
 @property (nonatomic, assign) CallNetwork               network;
 @property (nonatomic, assign) BOOL                      readyForCleanup;

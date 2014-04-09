@@ -175,11 +175,18 @@
     }
 
     [[WebClient sharedClient] retrieveCallbackStateForUuid:uuid
-                                                     reply:^(NSError* error, CallState state, int duration)
+                                                     reply:^(NSError*  error,
+                                                             CallState state,
+                                                             CallLeg   leg,
+                                                             int       callbackDuration,
+                                                             int       outgoingDuration,
+                                                             float     callbackCost,
+                                                             float     outgoingCost)
     {
         if (error == nil)
         {
             self.call.state       = state;
+            self.call.leg         = leg;
             self.statusLabel.text = [self.call stateString];
 
             BOOL checkState;

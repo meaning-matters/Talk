@@ -59,6 +59,28 @@
 - (NSString*)stateString
 {
     NSString* string;
+    NSString* legString;
+
+    switch (self.leg)
+    {
+        case CallLegNone:
+            legString = @"";
+            break;
+
+        case CallLegCallback:
+            legString = NSLocalizedStringWithDefaultValue(@"Call:Leg Callback", nil,
+                                                          [NSBundle mainBundle], @"callback ",
+                                                          @"\n"
+                                                          @"[1 line small font].");
+            break;
+
+        case CallLegOutgoing:
+            legString = NSLocalizedStringWithDefaultValue(@"Call:Leg Outgoing", nil,
+                                                          [NSBundle mainBundle], @"outgoing ",
+                                                          @"\n"
+                                                          @"[1 line small font].");
+            break;
+    }
 
     switch (self.state)
     {
@@ -71,6 +93,7 @@
                                                        [NSBundle mainBundle], @"calling...",
                                                        @"In-call status that calling a number ha started; Apple standard\n"
                                                        @"[1 line small font].");
+            string = [legString stringByAppendingString:string];
             break;
 
         case CallStateRinging:
@@ -78,6 +101,7 @@
                                                        [NSBundle mainBundle], @"ringing...",
                                                        @"In-call status that called party hears ring tone; Apple standard\n"
                                                        @"[1 line small font].");
+            string = [legString stringByAppendingString:string];
             break;
 
         case CallStateConnecting:
@@ -85,6 +109,7 @@
                                                        [NSBundle mainBundle], @"connecting...",
                                                        @"In-call status that call is almost connected; Apple standard\n"
                                                        @"[1 line small font].");
+            string = [legString stringByAppendingString:string];
             break;
 
         case CallStateConnected:
@@ -92,6 +117,7 @@
                                                        [NSBundle mainBundle], @"connected",
                                                        @"In-call status that call is connected; Apple standard\n"
                                                        @"[1 line small font].");
+            string = [legString stringByAppendingString:string];
             break;
 
         case CallStateEnding:

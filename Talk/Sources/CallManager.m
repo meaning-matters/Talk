@@ -513,6 +513,7 @@ static SipInterface*    sipInterface;
         call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
         call.identityNumber = identity;
         call.showCallerId   = [Settings sharedSettings].showCallerId;
+        call.leg            = CallLegCallback;
 
         callbackViewController = [[CallbackViewController alloc] initWithCall:call];
         callbackViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;

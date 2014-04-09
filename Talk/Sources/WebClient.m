@@ -1113,7 +1113,13 @@ static NSDictionary* statuses;
 
 // 34. GET CALLBACK STATE
 - (void)retrieveCallbackStateForUuid:(NSString*)uuid
-                               reply:(void (^)(NSError* error, CallState state, int duration))reply
+                               reply:(void (^)(NSError*  error,
+                                               CallState state,
+                                               CallLeg   leg,
+                                               int       callbackDuration,
+                                               int       outgoingDuration,
+                                               float     callbackCost,
+                                               float     outgoingCost))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
@@ -1125,36 +1131,68 @@ static NSDictionary* statuses;
         {
             NSString* stateString = content[@"state"];
             CallState state;
+            CallLeg   leg;
 
             NSLog(@"Callback: %@", content);
 
-            if ([stateString isEqualToString:@"ringing"])
+            if ([stateString isEqualToString:@"CALLBACK_RINGING"])
             {
                 state = CallStateCalling;
+                leg   = CallLegCallback;
             }
-            else if ([stateString isEqualToString:@"early"])
+            else if ([stateString isEqualToString:@"CALLBACK_EARLY"])
             {
                 state = CallStateRinging;
+                leg   = CallLegCallback;
             }
-            else if ([stateString isEqualToString:@"answered"])
+            else if ([stateString isEqualToString:@"CALLBACK_ANSWERED"])
             {
                 state = CallStateConnected;
+                leg   = CallLegCallback;
             }
-            else if ([stateString isEqualToString:@"hangup"])
+            else if ([stateString isEqualToString:@"CALLBACK_HANGUP"])
             {
                 state = CallStateEnded;
+                leg   = CallLegCallback;
+            }
+            else if ([stateString isEqualToString:@"OUTGOING_RINGING"])
+            {
+                state = CallStateCalling;
+                leg   = CallLegOutgoing;
+            }
+            else if ([stateString isEqualToString:@"OUTGOING_EARLY"])
+            {
+                state = CallStateRinging;
+                leg   = CallLegOutgoing;
+            }
+            else if ([stateString isEqualToString:@"OUTGOING_ANSWERED"])
+            {
+                state = CallStateConnected;
+                leg   = CallLegOutgoing;
+            }
+            else if ([stateString isEqualToString:@"OUTGOING_HANGUP"])
+            {
+                state = CallStateEnded;
+                leg   = CallLegOutgoing;
             }
             else
             {
                 state = CallStateNone;
+                leg   = CallLegNone;
             }
 
-            reply(nil, state, [content[@"duration"] intValue]);
+            reply(nil,
+                  state,
+                  leg,
+                  [content[@"callbackDuration"] intValue],
+                  [content[@"outgoingDuration"] intValue],
+                  [content[@"callbackCost"] floatValue],
+                  [content[@"outgoingCost"] floatValue]);
         }
         else
         {
             NSLog(@"%@", error);
-            reply(error, CallStateFailed, 0);
+            reply(error, CallStateFailed, CallLegNone, 0, 0, 0.0f, 0.0f);
         }
     }];
 }
