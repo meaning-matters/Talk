@@ -310,7 +310,8 @@ static SipInterface*    sipInterface;
                                                     @"Alert title: Invalid phone number\n"
                                                     @"[iOS alert title size]");
 
-        message = NSLocalizedStringWithDefaultValue(@"Callback InvalidMessage", nil,
+#if HAS_INVALID_NUMBER_SETTING
+        message = NSLocalizedStringWithDefaultValue(@"Callback InvalidOptionMessage", nil,
                                                     [NSBundle mainBundle],
                                                     @"The number you're trying to call does not seem to be "
                                                     @"valid.\n\nTry adding the country code, check the "
@@ -324,6 +325,17 @@ static SipInterface*    sipInterface;
                                                     @"Allow",
                                                     @" ...\n"
                                                     @"[iOS ...]");
+#else
+        message = NSLocalizedStringWithDefaultValue(@"Callback InvalidMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"The number you're trying to call does not seem to be "
+                                                    @"valid.\n\nTry adding the country code, or check the "
+                                                    @"current Home Country in Settings.",
+                                                    @"Alert message: ...\n"
+                                                    @"[iOS alert message size]");
+
+        button = nil;
+#endif
 
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message

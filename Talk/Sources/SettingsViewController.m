@@ -56,8 +56,12 @@ typedef enum
         // Mandatory sections.
         sections |= TableSectionCallMode;
         sections |= TableSectionHomeCountry;
-        sections |= TableSectionCallOptions;
         sections |= TableSectionAccountData;
+
+        // Optional sections.
+#if HAS_INVALID_NUMBER_SETTING
+        sections |= TableSectionCallOptions;
+#endif
 
         settings = [Settings sharedSettings];
 

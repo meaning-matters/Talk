@@ -305,7 +305,7 @@ typedef enum
     sections  = 0;
     sections |= TableSectionName;
     sections |= TableSectionPhone;
-#if FULL_FORWARDINGS
+#if HAS_FULL_FORWARDINGS
     sections |= TableSectionStatements;
 #endif
     sections |= (self.forwarding.numbers.count    > 0) ? TableSectionNumbers    : 0;

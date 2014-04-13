@@ -87,7 +87,7 @@ typedef enum
                         forControlEvents:UIControlEventValueChanged];
     NSInteger   index = [Settings sharedSettings].forwardingsSelection;
     [selectionSegmentedControl setSelectedSegmentIndex:index];
-#if FULL_FORWARDINGS
+#if HAS_FULL_FORWARDINGS
     self.navigationItem.titleView = selectionSegmentedControl;
 #endif
 
@@ -96,7 +96,7 @@ typedef enum
                                                                      managedObjectContext:self.managedObjectContext];
     fetchedForwardingsController.delegate = self;
 
-#if FULL_FORWARDINGS
+#if HAS_FULL_FORWARDINGS
     fetchedRecordingsController  = [[DataManager sharedManager] fetchResultsForEntityName:@"Recording"
                                                                              withSortKeys:@[@"name"]
                                                                                     error:&error];

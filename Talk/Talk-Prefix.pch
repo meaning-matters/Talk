@@ -16,9 +16,10 @@
     #import <MobileCoreServices/MobileCoreServices.h>       // Needed for AFNetworking.
 
 
-#define FULL_FORWARDINGS   0
-#define HAS_VOIP           0
-#define HAS_BUYING_NUMBERS 0
+#define HAS_FULL_FORWARDINGS       0
+#define HAS_VOIP                   0
+#define HAS_BUYING_NUMBERS         0
+#define HAS_INVALID_NUMBER_SETTING 0
 
 
 //Animation speed (used for switching between cell states)
