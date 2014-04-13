@@ -424,7 +424,32 @@ typedef enum
 {
     if ([Settings sharedSettings].haveAccount == NO)
     {
-        [Common showGetStartedViewController];
+        NSString* title;
+        NSString* message;
+
+        title   = NSLocalizedStringWithDefaultValue(@"BuyCredit GetStartedTitle", nil,
+                                                    [NSBundle mainBundle], @"Get Started First",
+                                                    @"Alert title:\n"
+                                                    @"[iOS alert title size]");
+
+        message = NSLocalizedStringWithDefaultValue(@"BuyCredit GetStartedMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"First buy a little initial credit, or restore "
+                                                    @"if you're already a user.",
+                                                    @"Alert message: ...\n"
+                                                    @"[iOS alert message size]");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+         {
+             if (cancelled == NO)
+             {
+                 [Common showGetStartedViewController];
+             }
+         }
+                             cancelButtonTitle:[Strings cancelString]
+                             otherButtonTitles:[Strings okString], nil];
 
         return;
     }

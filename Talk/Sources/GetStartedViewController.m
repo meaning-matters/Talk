@@ -173,7 +173,40 @@
 
 - (void)cancel
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    NSString* title;
+    NSString* message;
+    NSString* button;
+
+    title   = NSLocalizedStringWithDefaultValue(@"GetStarted CancelTitle", nil,
+                                                [NSBundle mainBundle], @"Have A Look",
+                                                @"Alert title:\n"
+                                                @"[iOS alert title size]");
+
+    message = NSLocalizedStringWithDefaultValue(@"GetStarted CancelMessage", nil,
+                                                [NSBundle mainBundle],
+                                                @"Without credit you can have a look at the app, but can't make calls.\n\n"
+                                                @"You'll return here when trying to call, do a few other things, "
+                                                @"or by tapping Get Started on the Settings tab.",
+                                                @"Alert message: ...\n"
+                                                @"[iOS alert message size]");
+
+    button  = NSLocalizedStringWithDefaultValue(@"GetStarted LookButton", nil,
+                                                [NSBundle mainBundle],
+                                                @"Look",
+                                                @" ...\n"
+                                                @"[iOS ...]");
+
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        if (cancelled == NO)
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+    }
+                         cancelButtonTitle:[Strings cancelString]
+                         otherButtonTitles:button, nil];
 }
 
 
