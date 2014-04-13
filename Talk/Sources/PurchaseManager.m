@@ -1,4 +1,4 @@
-//
+    //
 //  PurchaseManager.m
 //  Talk
 //
@@ -532,7 +532,7 @@
 }
 
 
-- (void)paymentQueue:(SKPaymentQueue *)queue removedTransactions:(NSArray*)transactions
+- (void)paymentQueue:(SKPaymentQueue*)queue removedTransactions:(NSArray*)transactions
 {
     for (SKPaymentTransaction* transaction in transactions)
     {
