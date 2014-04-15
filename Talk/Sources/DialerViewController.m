@@ -23,6 +23,8 @@
 @interface DialerViewController () <NumberLabelDelegate, NBNewPersonViewControllerDelegate>
 {
     PhoneNumber* phoneNumber;    // Holds the current number on screen.
+    NSString*    contactId;
+    BOOL         contactIdUpdated;
 }
 
 @end
@@ -274,9 +276,30 @@
 
     self.brandingImageView.hidden = self.numberLabel.text.length > 0;
 
-    //### lookup number in Contacts...
-    //### when found show name, else:
-    self.nameLabel.text = @"";
+    // Only search for number when valid.
+    if (phoneNumber.isValid)
+    {
+        contactIdUpdated = NO;
+        contactId        = nil;
+        [[AppDelegate appDelegate] findContactsHavingNumber:[[phoneNumber nationalFormat] substringFromIndex:1]
+                                                 completion:^(NSArray* contactIds)
+        {
+            contactIdUpdated = YES;
+            if (contactIds.count > 0)
+            {
+                contactId = contactIds[0];
+                self.nameLabel.text = [[AppDelegate appDelegate] contactNameForId:contactId];
+            }
+            else
+            {
+                self.nameLabel.text = @"";
+            }
+        }];
+    }
+    else
+    {
+        self.nameLabel.text = @"";
+    }
 }
 
 
@@ -291,6 +314,27 @@
     NBContact* contact = [[NBContact alloc] initWithContact:contactRef];
 
     return contact;
+}
+
+
+- (void)makeCallWithContactId:(NSString*)contactId
+{
+    NSString* identity = [Settings sharedSettings].callerIdE164; //### Select identity.
+    Call*     call     = [[CallManager sharedManager] callPhoneNumber:phoneNumber fromIdentity:identity contactId:contactId];
+
+    if (call != nil)
+    {
+        // CallView will be shown, or mobile call is made.
+        [Settings sharedSettings].lastDialedNumber = phoneNumber.number;
+        phoneNumber = [[PhoneNumber alloc] init];
+
+        [Common dispatchAfterInterval:0.5 onMain:^
+         {
+             // Clears UI fields.  This is done after a delay to make sure that
+             // a call related view is on screen; keeping it out of sight.
+             [self update];
+         }];
+    }
 }
 
 
@@ -362,21 +406,21 @@
     }
     else
     {
-        NSString* identity = [Settings sharedSettings].callerIdE164; //### Select identity.
-        Call*     call     = [[CallManager sharedManager] callPhoneNumber:phoneNumber fromIdentity:identity];
-
-        if (call != nil)
+        if (contactIdUpdated == NO)
         {
-            // CallView will be shown, or mobile call is made.
-            [Settings sharedSettings].lastDialedNumber = phoneNumber.number;
-            phoneNumber = [[PhoneNumber alloc] init];
-
-            [Common dispatchAfterInterval:0.5 onMain:^
+            // Looking up contact while entering number is not finished yet, start a new search.
+            // We should not get here very often.
+            [[AppDelegate appDelegate] findContactsHavingNumber:phoneNumber.number completion:^(NSArray* contactIds)
             {
-                // Clears UI fields.  This is done after a delay to make sure that
-                // a call related view is on screen; keeping it out of sight.
-                [self update];
+                if (contactIds.count > 0)
+                {
+                    [self makeCallWithContactId:contactIds[0]];
+                }
             }];
+        }
+        else
+        {
+            [self makeCallWithContactId:contactId];
         }
     }
 }
@@ -402,6 +446,7 @@
 
 
 #pragma mark - NewPersonViewController Delegate
+
 - (void)newPersonViewController:(NBNewPersonViewController*)newPersonViewController
        didCompleteWithNewPerson:(ABRecordRef)person
 {

@@ -484,7 +484,7 @@ static SipInterface*    sipInterface;
 }
 
 
-- (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity
+- (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity contactId:(NSString *)contactId
 {
     Call* call = nil;
 
@@ -504,11 +504,11 @@ static SipInterface*    sipInterface;
     {
         if ([Settings sharedSettings].callbackMode == YES)
         {
-            call = [self callCallbackPhoneNumber:phoneNumber fromIdentity:identity];
+            call = [self callCallbackPhoneNumber:phoneNumber fromIdentity:identity contactId:contactId];
         }
         else
         {
-            call = [self callVoipPhoneNumber:phoneNumber fromIdentity:identity];
+            call = [self callVoipPhoneNumber:phoneNumber fromIdentity:identity contactId:contactId];
         }
     }
 
@@ -516,7 +516,7 @@ static SipInterface*    sipInterface;
 }
 
 
-- (Call*)callCallbackPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity
+- (Call*)callCallbackPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity contactId:(NSString*)contactId
 {
     Call* call = nil;
 
@@ -526,6 +526,8 @@ static SipInterface*    sipInterface;
         call.identityNumber = identity;
         call.showCallerId   = [Settings sharedSettings].showCallerId;
         call.leg            = CallLegCallback;
+        call.contactId      = contactId;
+        call.contactName    = [[AppDelegate appDelegate] contactNameForId:contactId];
 
         callbackViewController = [[CallbackViewController alloc] initWithCall:call];
         callbackViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -538,7 +540,7 @@ static SipInterface*    sipInterface;
 }
 
 
-- (Call*)callVoipPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity
+- (Call*)callVoipPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity contactId:(NSString *)contactId
 {
     Call* call = nil;
 
@@ -547,6 +549,8 @@ static SipInterface*    sipInterface;
         call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
         call.identityNumber = identity;
         call.showCallerId   = [Settings sharedSettings].showCallerId;
+        call.contactId      = contactId;
+        call.contactName    = [[AppDelegate appDelegate] contactNameForId:contactId];
 
         NSDictionary* tones = [[Tones sharedTones] tonesForIsoCountryCode:[phoneNumber isoCountryCode]];
         if ([sipInterface makeCall:call tones:tones] == YES)

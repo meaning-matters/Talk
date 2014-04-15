@@ -58,6 +58,7 @@ typedef enum
 @property (nonatomic, strong) NSString*                 calledNumber;       // Actual outgoing number (not number chosen/entered).
 @property (nonatomic, strong) NSString*                 identityNumber;     // Number form/on which call is made/received.
 @property (nonatomic, assign) BOOL                      showCallerId;
+@property (nonatomic, strong) NSString*                 contactName;
 @property (nonatomic, strong) NSString*                 contactId;          // The ABRecordID (which is int32_t) as string.
 @property (nonatomic, strong, readonly) NSDate*         beginDate;
 @property (nonatomic, strong, readonly) NSDate*         connectDate;

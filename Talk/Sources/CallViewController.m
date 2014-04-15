@@ -56,13 +56,13 @@
 {
     [super viewDidLoad];
 
-    Call*   call = [self.calls lastObject];
+    Call* call = [self.calls lastObject];
     self.infoLabel.text   = [call.phoneNumber infoString];
-    self.calleeLabel.text = [call.phoneNumber asYouTypeFormat];
+    self.calleeLabel.text = call.contactName ? call.contactName : [call.phoneNumber asYouTypeFormat];
     self.statusLabel.text = [call stateString];
     self.dtmfLabel.text   = @"";
 
-    CGRect  frame = CGRectMake(0, 0, self.centerRootView.frame.size.width, self.centerRootView.frame.size.height);
+    CGRect frame = CGRectMake(0, 0, self.centerRootView.frame.size.width, self.centerRootView.frame.size.height);
     callOptionsView = [[CallOptionsView alloc] initWithFrame:frame];
     callKeypadView  = [[CallKeypadView  alloc] initWithFrame:frame];
     callMessageView = [[CallMessageView alloc] initWithFrame:frame];

@@ -21,14 +21,14 @@
 
 @interface CallManager : NSObject <SipInterfaceDelegate>
 
-@property (nonatomic, strong) NSMutableArray*   activeCalls;
+@property (nonatomic, strong) NSMutableArray* activeCalls;
 
 
 + (CallManager*)sharedManager;
 
 - (void)resetSipAccount;    // Must be called when SIP account has changed.
 
-- (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity;
+- (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity contactId:(NSString*)contactId;
 
 - (void)endCall:(Call*)call;
 

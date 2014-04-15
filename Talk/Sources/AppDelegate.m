@@ -23,6 +23,7 @@
 #import "Common.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
+#import "NBPeopleListViewController.h"
 
 
 @interface AppDelegate ()
@@ -503,6 +504,24 @@
 - (void)saveContext
 {
     [[DataManager sharedManager] saveManagedObjectContext:nil];
+}
+
+
+#pragma mark - Address Book API
+
+- (void)findContactsHavingNumber:(NSString*)number completion:(void(^)(NSArray* contactIds))completion
+{
+    NBPeopleListViewController* viewController = self.peoplePickerViewController.viewControllers[0];
+
+    return [viewController findContactsHavingNumber:number completion:completion];
+}
+
+
+- (NSString*)contactNameForId:(NSString*)contactId
+{
+    NBPeopleListViewController* viewController = self.peoplePickerViewController.viewControllers[0];
+
+    return [viewController contactNameForId:contactId];
 }
 
 @end

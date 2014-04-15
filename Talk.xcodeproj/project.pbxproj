@@ -45,7 +45,6 @@
 		480578E317A4FABD006923BD /* NBPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578C417A4FABD006923BD /* NBPersonViewController.m */; };
 		480578E417A4FABD006923BD /* NBRecentContactEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578C817A4FABD006923BD /* NBRecentContactEntry.m */; };
 		480578E517A4FABD006923BD /* NBRecentContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578CA17A4FABD006923BD /* NBRecentContactViewController.m */; };
-		480578E617A4FABD006923BD /* NBRecents.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 480578CB17A4FABD006923BD /* NBRecents.xcdatamodeld */; };
 		480578E717A4FABD006923BD /* NBRecentsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578CE17A4FABD006923BD /* NBRecentsListViewController.m */; };
 		480578E817A4FABD006923BD /* NBRecentsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578D017A4FABD006923BD /* NBRecentsNavigationController.m */; };
 		480578E917A4FABD006923BD /* NBRecentUnknownContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578D217A4FABD006923BD /* NBRecentUnknownContactViewController.m */; };
@@ -1191,7 +1190,7 @@
 		480578B517A4FABD006923BD /* NBNotesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBNotesCell.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNotesCell.h; sourceTree = "<group>"; };
 		480578B617A4FABD006923BD /* NBNotesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBNotesCell.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNotesCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		480578B717A4FABD006923BD /* NBPeopleListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPeopleListViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPeopleListViewController.h; sourceTree = "<group>"; };
-		480578B817A4FABD006923BD /* NBPeopleListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBPeopleListViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPeopleListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		480578B817A4FABD006923BD /* NBPeopleListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBPeopleListViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPeopleListViewController.m; sourceTree = "<group>"; };
 		480578B917A4FABD006923BD /* NBPeoplePickerNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPeoplePickerNavigationController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPeoplePickerNavigationController.h; sourceTree = "<group>"; };
 		480578BA17A4FABD006923BD /* NBPeoplePickerNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBPeoplePickerNavigationController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPeoplePickerNavigationController.m; sourceTree = "<group>"; };
 		480578BB17A4FABD006923BD /* NBPersonCellAddressInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPersonCellAddressInfo.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPersonCellAddressInfo.h; sourceTree = "<group>"; };
@@ -1210,9 +1209,8 @@
 		480578C817A4FABD006923BD /* NBRecentContactEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBRecentContactEntry.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentContactEntry.m; sourceTree = "<group>"; };
 		480578C917A4FABD006923BD /* NBRecentContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBRecentContactViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentContactViewController.h; sourceTree = "<group>"; };
 		480578CA17A4FABD006923BD /* NBRecentContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBRecentContactViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentContactViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		480578CC17A4FABD006923BD /* NBRecents.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NBRecents.xcdatamodel; sourceTree = "<group>"; };
 		480578CD17A4FABD006923BD /* NBRecentsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBRecentsListViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentsListViewController.h; sourceTree = "<group>"; };
-		480578CE17A4FABD006923BD /* NBRecentsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBRecentsListViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentsListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		480578CE17A4FABD006923BD /* NBRecentsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBRecentsListViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentsListViewController.m; sourceTree = "<group>"; };
 		480578CF17A4FABD006923BD /* NBRecentsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBRecentsNavigationController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentsNavigationController.h; sourceTree = "<group>"; };
 		480578D017A4FABD006923BD /* NBRecentsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBRecentsNavigationController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentsNavigationController.m; sourceTree = "<group>"; };
 		480578D117A4FABD006923BD /* NBRecentUnknownContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBRecentUnknownContactViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentUnknownContactViewController.h; sourceTree = "<group>"; };
@@ -2615,7 +2613,6 @@
 		483ED00417A4F6860032B8FF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				480578CB17A4FABD006923BD /* NBRecents.xcdatamodeld */,
 				483ED00517A4F6920032B8FF /* AddressTypeForCountry.plist */,
 				483ED01217A4F6C30032B8FF /* Localizable.strings */,
 			);
@@ -4801,7 +4798,6 @@
 				480578E317A4FABD006923BD /* NBPersonViewController.m in Sources */,
 				480578E417A4FABD006923BD /* NBRecentContactEntry.m in Sources */,
 				480578E517A4FABD006923BD /* NBRecentContactViewController.m in Sources */,
-				480578E617A4FABD006923BD /* NBRecents.xcdatamodeld in Sources */,
 				480578E717A4FABD006923BD /* NBRecentsListViewController.m in Sources */,
 				48251B9C187F4A8A00E69C3A /* SettingsViewController.m in Sources */,
 				480578E817A4FABD006923BD /* NBRecentsNavigationController.m in Sources */,
@@ -5243,17 +5239,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		480578CB17A4FABD006923BD /* NBRecents.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				480578CC17A4FABD006923BD /* NBRecents.xcdatamodel */,
-			);
-			currentVersion = 480578CC17A4FABD006923BD /* NBRecents.xcdatamodel */;
-			name = NBRecents.xcdatamodeld;
-			path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecents.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
 		48DD727F169CD4A200CD7080 /* Data.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (

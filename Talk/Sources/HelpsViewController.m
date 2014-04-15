@@ -303,7 +303,9 @@ typedef enum
         }
         case TableSectionTestCall:
             phoneNumber = [[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].testNumber];
-            [[CallManager sharedManager] callPhoneNumber:phoneNumber fromIdentity:[Settings sharedSettings].callerIdE164];
+            [[CallManager sharedManager] callPhoneNumber:phoneNumber
+                                            fromIdentity:[Settings sharedSettings].callerIdE164
+                                               contactId:nil];
             break;
     }
 }

@@ -53,7 +53,7 @@
     [super viewDidLoad];
 
     self.infoLabel.text   = [self.call.phoneNumber infoString];
-    self.calleeLabel.text = [self.call.phoneNumber asYouTypeFormat];
+    self.calleeLabel.text = self.call.contactId ? self.call.contactName : [self.call.phoneNumber asYouTypeFormat];
     self.statusLabel.text = [self.call stateString];
 
     [self.calleeLabel setFont:[Common phoneFontOfSize:38]];
