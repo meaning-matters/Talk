@@ -23,10 +23,6 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="Logo.png" id="g6O-Gn-VUD">
-                    <rect key="frame" x="20" y="84" width="280" height="60"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                </imageView>
                 <view contentMode="scaleToFill" id="656" userLabel="Step 1 View">
                     <rect key="frame" x="20" y="307" width="280" height="75"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
@@ -132,8 +128,8 @@
                     </subviews>
                     <color key="backgroundColor" white="0.90396897810218979" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="R3d-KY-jo7">
-                    <rect key="frame" x="20" y="152" width="280" height="147"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="R3d-KY-jo7">
+                    <rect key="frame" x="20" y="73" width="280" height="226"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <nil key="highlightedColor"/>
@@ -145,7 +141,4 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
-    <resources>
-        <image name="Logo.png" width="280" height="60"/>
-    </resources>
 </document>

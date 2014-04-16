@@ -49,8 +49,10 @@
                                                                   @"...");
 
     self.textLabel.text       = NSLocalizedStringWithDefaultValue(@"VerifyPhone", nil, [NSBundle mainBundle],
-                                                                  @"To verify your phone number, you will receive a call. "
-                                                                  @"During this call, enter the code below on your phone.",
+                                                                  @"To verify your phone number (A), you will receive a "
+                                                                  @"call (B). During this call, enter "
+                                                                  @"enter the code below (C) on "
+                                                                  @"the keypad of your phone.",
                                                                   @"...");
 
     [self.numberButton setTitle:NSLocalizedStringWithDefaultValue(@"Provisioning:Verify EnterNumberTitle", nil,
