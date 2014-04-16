@@ -607,6 +607,15 @@
         [numberFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
         [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
         [numberFormatter setLocale:((SKProduct*)self.products[0]).priceLocale];
+
+        // Prevent -0.00 values when price is -0.004364 for example.
+        double factor = pow(10, numberFormatter.maximumFractionDigits);
+        price = round(price * factor) / factor;
+        if (fpclassify(price) == FP_ZERO)
+        {
+            price = fabs(price);
+        }
+
         formattedString = [numberFormatter stringFromNumber:@(price)];
     }
     else

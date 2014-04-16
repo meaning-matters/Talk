@@ -149,9 +149,9 @@
     float         callbackPrice       = [self callbackPrice];
     float         fixedPrice          = [rate[@"fixedPrice"]  floatValue];
     float         mobilePrice         = [rate[@"mobilePrice"] floatValue];
-    NSString*     callbackPriceString = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:callbackPrice / 100.0f];
-    NSString*     fixedPriceString    = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:fixedPrice    / 100.0f];
-    NSString*     mobilePriceString   = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:mobilePrice   / 100.0f];
+    NSString*     callbackPriceString = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:callbackPrice];
+    NSString*     fixedPriceString    = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:fixedPrice];
+    NSString*     mobilePriceString   = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:mobilePrice];
 
     NSString* title;
     NSString* message;
@@ -205,8 +205,8 @@
     float         outgoingMobilePrice = [rate[@"mobilePrice"] floatValue];
     float         fixedPrice          = callbackPrice + outgoingFixedPrice;
     float         mobilePrice         = callbackPrice + outgoingMobilePrice;
-    NSString*     fixedPriceString    = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:fixedPrice  / 100.0f];
-    NSString*     mobilePriceString   = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:mobilePrice / 100.0f];
+    NSString*     fixedPriceString    = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:fixedPrice];
+    NSString*     mobilePriceString   = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:mobilePrice];
 
     cell.detailTextLabel.text = [NSString stringWithFormat:format, fixedPriceString, mobilePriceString];
     cell.accessoryType        = UITableViewCellAccessoryNone;

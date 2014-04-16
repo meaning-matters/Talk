@@ -553,6 +553,7 @@ typedef enum
 - (void)updateAmountCell:(CreditAmountCell*)cell
 {
     float     credit = [Settings sharedSettings].credit;
+    
     NSString* amount = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
 
     cell.amountLabel.text      = amount;
