@@ -119,6 +119,10 @@
     {
         [self setUp];
     }
+    else
+    {
+        abort();
+    }
 
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"6abff73fa5eb64771ac8a5124ebc33f5" delegate:self];
     [[BITHockeyManager sharedHockeyManager] startManager];
@@ -130,7 +134,9 @@
 
 - (void)applicationProtectedDataDidBecomeAvailable:(UIApplication*)application
 {
-    [self setUp];
+    abort();
+
+    //[self setUp];
 }
 
 
