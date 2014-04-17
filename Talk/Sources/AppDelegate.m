@@ -132,14 +132,6 @@
 }
 
 
-- (void)applicationProtectedDataDidBecomeAvailable:(UIApplication*)application
-{
-    abort();
-
-    //[self setUp];
-}
-
-
 - (void)applicationWillResignActive:(UIApplication*)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for
