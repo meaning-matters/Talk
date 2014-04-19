@@ -61,6 +61,9 @@
         self.tabBarController = [[UITabBarController alloc] init];
         self.tabBarController.delegate = self;
 
+        // Set address book delegate.
+        [NBAddressBookManager sharedManager].delegate = self;
+
         // Must be placed here, just before tabs are added.  Otherwise navigation bar
         // will overlap with status bar.
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
@@ -75,9 +78,6 @@
 
         // Reset status bar style. Without this the status bar becomes white sometimes.
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-
-        // Set address book delegate.
-        [NBAddressBookManager sharedManager].delegate = self;
 
         // Allow mixing audio from other apps.  By default this is not the case.
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
