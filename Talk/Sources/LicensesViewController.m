@@ -63,26 +63,26 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return licensesArray.count;
+    return 1;
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return licensesArray.count;
 }
 
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
+    UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
-    cell.textLabel.text = [licensesArray[indexPath.section] allKeys][0];
+    cell.textLabel.text = [licensesArray[indexPath.row] allKeys][0];
     cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
@@ -93,13 +93,10 @@
 {
     NSString*   title = nil;
 
-    if (section == licensesArray.count - 1)
-    {
-        title = NSLocalizedStringWithDefaultValue(@"Licenses SectionFooter", nil,
-                                                  [NSBundle mainBundle],
-                                                  @"The licences of open-source software used in this app.",
-                                                  @"[* lines]");
-    }
+    title = NSLocalizedStringWithDefaultValue(@"Licenses SectionFooter", nil,
+                                              [NSBundle mainBundle],
+                                              @"The licences of open-source software used in this app.",
+                                              @"[* lines]");
 
     return title;
 }
@@ -111,7 +108,7 @@
 {
     LicenseViewController* licenceViewController;
 
-    licenceViewController = [[LicenseViewController alloc] initWithDictionary:licensesArray[indexPath.section]];
+    licenceViewController = [[LicenseViewController alloc] initWithDictionary:licensesArray[indexPath.row]];
     [self.navigationController pushViewController:licenceViewController animated:YES];
 }
 

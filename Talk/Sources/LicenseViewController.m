@@ -42,6 +42,7 @@
     licenseText = [NSString stringWithFormat:@"%@%@%@", htmlTop, licenseText, htmlBottom];
 
     self.webView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
+    self.webView.dataDetectorTypes           = 0;
 
     [self.webView loadHTMLString:licenseText baseURL:nil];
 }
