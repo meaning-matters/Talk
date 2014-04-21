@@ -404,7 +404,6 @@
             self.callButton.titleLabel.tintColor   = [UIColor whiteColor];
             self.codeLabel.textColor               = [UIColor whiteColor];
 
-            //[self.navigationItem setHidesBackButton:NO animated:YES];
             [self.callActivityIndicator stopAnimating];
             break;
         }
@@ -417,7 +416,6 @@
             self.callButton.titleLabel.tintColor   = [Skinning tintColor];
             self.codeLabel.textColor               = [UIColor blackColor];
 
-            //[self.navigationItem setHidesBackButton:NO animated:YES];
             [self.callActivityIndicator stopAnimating];
             break;
         }
@@ -430,7 +428,6 @@
             self.callButton.titleLabel.tintColor   = [Skinning tintColor];
             self.codeLabel.textColor               = [UIColor blackColor];
 
-            //[self.navigationItem setHidesBackButton:YES animated:YES];
             [self.callActivityIndicator startAnimating];
             break;
         }
