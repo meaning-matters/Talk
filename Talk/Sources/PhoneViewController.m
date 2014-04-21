@@ -167,6 +167,7 @@ typedef enum
     self.phone.name = self.name;
     self.phone.e164 = [phoneNumber e164Format];
 
+    self.navigationItem.rightBarButtonItem.enabled = NO;
     [[WebClient sharedClient] updateVerifiedE164:self.phone.e164
                                         withName:self.phone.name
                                            reply:^(NSError *error)
@@ -207,9 +208,9 @@ typedef enum
                                    message:[NSString stringWithFormat:message, [error localizedDescription]]
                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
     {
-        [self.tableView reloadData];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
-                         cancelButtonTitle:[Strings closeString]
+                         cancelButtonTitle:[Strings cancelString]
                          otherButtonTitles:nil];
 }
 
@@ -475,7 +476,7 @@ typedef enum
 
 - (void)updateSaveButtonItem
 {
-    self.navigationItem.rightBarButtonItem.enabled = (self.name.length > 0) && (phoneNumber != nil);
+    self.navigationItem.rightBarButtonItem.enabled = (self.name.length > 0) && ([phoneNumber isValid]);
 }
 
 

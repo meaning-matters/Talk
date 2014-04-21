@@ -545,7 +545,7 @@ static NSDictionary* statuses;
           parameters:nil
                reply:^(NSError* error, id content)
     {
-        reply(error);
+        reply ? reply(error) : 0;
     }];
 }
 

@@ -21,6 +21,7 @@
 @property (nonatomic, strong) PhoneNumber* phoneNumber;
 @property (nonatomic, strong) NSString*    numberButtonTitle;
 @property (nonatomic, copy)   void       (^completion)(PhoneNumber* phoneNumber);
+@property (nonatomic, assign) BOOL         isCancelled;
 
 @end
 
@@ -78,20 +79,29 @@
     if (parent == nil && self.completion != nil)
     {
         // We get here when user pops this view via navigation controller.
-        [[WebClient sharedClient] stopVerificationForE164:[self.phoneNumber e164Format] reply:^(NSError *error)
+        self.isCancelled = YES;
+
+        WebClient* webClient = [WebClient sharedClient];
+
+        [webClient cancelAllRetrieveVerificationCode];
+        [webClient cancelAllRetrieveVerificationStatus];
+        [webClient cancelAllRequestVerificationCall];
+        if ([self.phoneNumber isValid] == YES)
         {
-            if (error != nil)
-            {
-                NSLog(@"Stop Verification: %@", error);
-            }
-        }];
+            [webClient stopVerificationForE164:[self.phoneNumber e164Format] reply:nil];
+        }
 
         self.completion(nil);
     }
 }
 
 
-#pragma mark - Action
+#pragma mark - Actions
+
+- (void)cancel
+{
+}
+
 
 - (IBAction)numberAction:(id)sender
 {
@@ -132,6 +142,11 @@
                 [webClient retrieveVerificationCodeForE164:[phoneNumber e164Format]
                                                      reply:^(NSError* error, NSString* code)
                 {
+                    if (self.isCancelled)
+                    {
+                        return;
+                    }
+
                     [self.codeActivityIndicator stopAnimating];
                     if (error == nil)
                     {
@@ -207,12 +222,17 @@
     // Initiate call.
     [webClient requestVerificationCallForE164:[self.phoneNumber e164Format] reply:^(NSError* error)
     {
+        if (self.isCancelled)
+        {
+            return;
+        }
+
         if (error == nil)
         {
             // We get here when the user either answered or declined the call.
             [Common dispatchAfterInterval:1.0 onMain:^
             {
-                [self checkVerifyStatusWithRepeatCount:12];
+                [self checkVerifyStatusWithRepeatCount:20];
             }];
         }
         else
@@ -316,6 +336,11 @@
     [webClient retrieveVerificationStatusForE164:[self.phoneNumber e164Format]
                                            reply:^(NSError* error, BOOL calling, BOOL verified)
     {
+        if (self.isCancelled)
+        {
+            return;
+        }
+
         if (error == nil)
         {
             if (verified == YES)
@@ -379,7 +404,7 @@
             self.callButton.titleLabel.tintColor   = [UIColor whiteColor];
             self.codeLabel.textColor               = [UIColor whiteColor];
 
-            [self.navigationItem setHidesBackButton:NO animated:YES];
+            //[self.navigationItem setHidesBackButton:NO animated:YES];
             [self.callActivityIndicator stopAnimating];
             break;
         }
@@ -392,7 +417,7 @@
             self.callButton.titleLabel.tintColor   = [Skinning tintColor];
             self.codeLabel.textColor               = [UIColor blackColor];
 
-            [self.navigationItem setHidesBackButton:NO animated:YES];
+            //[self.navigationItem setHidesBackButton:NO animated:YES];
             [self.callActivityIndicator stopAnimating];
             break;
         }
@@ -403,9 +428,9 @@
 
             self.numberButton.titleLabel.textColor = [UIColor whiteColor];
             self.callButton.titleLabel.tintColor   = [Skinning tintColor];
-            self.codeLabel.textColor               = [UIColor redColor];
+            self.codeLabel.textColor               = [UIColor blackColor];
 
-            [self.navigationItem setHidesBackButton:YES animated:YES];
+            //[self.navigationItem setHidesBackButton:YES animated:YES];
             [self.callActivityIndicator startAnimating];
             break;
         }
