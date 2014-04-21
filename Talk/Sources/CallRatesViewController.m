@@ -175,7 +175,7 @@
                          cancelButtonTitle:[Strings closeString]
                          otherButtonTitles:nil];
 
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 
