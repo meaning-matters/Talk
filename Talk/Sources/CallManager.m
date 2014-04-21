@@ -487,9 +487,14 @@ static SipInterface*    sipInterface;
 
         case CallStateConnected:
         case CallStateEnding:
-        case CallStateEnded:
             call.state    = CallStateEnded;
             recent.status = (call.leg == CallLegOutgoing) ? @(CallStatusSuccess) : @(CallStatusCallback);
+            break;
+
+        case CallStateEnded:
+            recent.status = (call.callbackCost == 0) ? @(CallStatusCancelled)
+                                                     : ((call.outgoingCost == 0) ? @(CallStatusCallback)
+                                                                                 : @(CallStatusSuccess));
             break;
 
         case CallStateCancelled:
