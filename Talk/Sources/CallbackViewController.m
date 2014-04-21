@@ -194,12 +194,21 @@
             self.call.outgoingCost     = outgoingCost;
             self.statusLabel.text      = [self.call stateString];
 
-            BOOL checkState;
+            NSString* text = nil;
+            BOOL      checkState;
             switch (state)
             {
                 case CallStateCalling:
                     callbackPending = YES;
                     checkState      = YES;
+                    if (leg == CallLegOutgoing)
+                    {
+                        text = NSLocalizedStringWithDefaultValue(@"Callback CallingMessage", nil, [NSBundle mainBundle],
+                                                                 @"Now, the person you're trying to reach is being "
+                                                                 @"called.\n\nWhen answered, you'll be connected ",
+                                                                 @"Alert message: ...\n"
+                                                                 @"[N lines]");
+                    }
                     break;
 
                 case CallStateRinging:
@@ -210,23 +219,25 @@
                 case CallStateConnected:
                     callbackPending = YES;
                     checkState      = YES;
-                    callMessageView.label.text = NSLocalizedStringWithDefaultValue(@"Callback ConnectedMessage", nil, [NSBundle mainBundle],
-                                                                                   @"The party you were trying to reach "
-                                                                                   @"picked up the phone.\n\nIf you declined our call, or "
-                                                                                   @"answered another call, your callee got connected to "
-                                                                                   @"your voicemail.",
-                                                                                   @"Alert message: ...\n"
-                                                                                   @"[N lines]");
+                    if (leg == CallLegOutgoing)
+                    {
+                        text = NSLocalizedStringWithDefaultValue(@"Callback ConnectedMessage", nil, [NSBundle mainBundle],
+                                                                 @"The person you were trying to reach answered.\n\n"
+                                                                 @"If you declined the callback, or answered another "
+                                                                 @"call, that person got connected to your voicemail.",
+                                                                 @"Alert message: ...\n"
+                                                                 @"[N lines]");
+                    }
                     break;
 
                 case CallStateEnded:
                 {
                     if (callbackPending == YES)
                     {
-                        callMessageView.label.text = NSLocalizedStringWithDefaultValue(@"Callback EndedMessage", nil, [NSBundle mainBundle],
-                                                                                       @"The call has ended.",
-                                                                                       @"Alert message: ...\n"
-                                                                                       @"[N lines]");
+                        text = NSLocalizedStringWithDefaultValue(@"Callback EndedMessage", nil, [NSBundle mainBundle],
+                                                                 @"The call has ended.",
+                                                                 @"Alert message: ...\n"
+                                                                 @"[N lines]");
                         dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
                         dispatch_after(when, dispatch_get_main_queue(), ^
                         {
@@ -243,6 +254,11 @@
                 default:
                     checkState = YES;
                     break;
+            }
+
+            if (text != nil)
+            {
+                callMessageView.label.text = text;
             }
 
             if (checkState == YES)
