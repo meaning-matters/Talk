@@ -518,6 +518,7 @@ static SipInterface*    sipInterface;
     recent.outgoingDuration = @(call.outgoingDuration);
     recent.callbackCost     = @(call.callbackCost);
     recent.outgoingCost     = @(call.outgoingCost);
+    recent.e164             = [call.phoneNumber e164Format];
 
     [[DataManager sharedManager].managedObjectContext save:nil];
 }

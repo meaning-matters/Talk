@@ -32,14 +32,17 @@ static NSString*    defaultIsoCountryCode = @"";
 }
 
 
++ (NSString*)stripNumber:(NSString*)number
+{
+    NSCharacterSet* stripSet = [NSCharacterSet characterSetWithCharactersInString:@"()-. \u00a0\t\n\r"];
+
+    return [[number componentsSeparatedByCharactersInSet:stripSet] componentsJoinedByString:@""];
+}
+
+
 - (void)setNumber:(NSString*)number
 {
-    NSCharacterSet* stripSet = [NSCharacterSet characterSetWithCharactersInString:@"()-. \t\n\r"];
-    NSString*       strippedText;
-
-    strippedText = [[number componentsSeparatedByCharactersInSet:stripSet] componentsJoinedByString:@""];
-
-    _number = strippedText;
+    _number = [PhoneNumber stripNumber:number];
 
     _isoCountryCode = [[LibPhoneNumber sharedInstance] isoCountryCodeOfNumber:self.number
                                                                isoCountryCode:defaultIsoCountryCode];
@@ -123,9 +126,9 @@ static NSString*    defaultIsoCountryCode = @"";
 // It checks if the number has a calling country code.
 - (BOOL)isInternational
 {
-    BOOL            international;
-    PhoneNumber*    nlPhoneNumber = [[PhoneNumber alloc] initWithNumber:self.number isoCountryCode:@"NL"];
-    PhoneNumber*    bePhoneNumber = [[PhoneNumber alloc] initWithNumber:self.number isoCountryCode:@"BE"];
+    BOOL         international;
+    PhoneNumber* nlPhoneNumber = [[PhoneNumber alloc] initWithNumber:self.number isoCountryCode:@"NL"];
+    PhoneNumber* bePhoneNumber = [[PhoneNumber alloc] initWithNumber:self.number isoCountryCode:@"BE"];
 
     if ([nlPhoneNumber isValid] && [bePhoneNumber isValid])
     {
@@ -161,7 +164,7 @@ static NSString*    defaultIsoCountryCode = @"";
 
 - (NSString*)typeString
 {
-    NSString*   string = @"";
+    NSString* string = @"";
 
     switch ([self type])
     {
@@ -264,7 +267,7 @@ static NSString*    defaultIsoCountryCode = @"";
 
 - (NSString*)infoString
 {
-    NSString*   string = @"";
+    NSString* string = @"";
 
     if (self.isEmergency)
     {

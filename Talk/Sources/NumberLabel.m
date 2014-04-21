@@ -66,7 +66,7 @@
         else
         {
             NSCharacterSet *stringSet = [NSCharacterSet characterSetWithCharactersInString:pasteboard.string];
-            NSCharacterSet *allowedSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789+#*()-. \t\n\r"];
+            NSCharacterSet *allowedSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789+#*()-. \u00a0\t\n\r"];
 
             return [allowedSet isSupersetOfSet:stringSet];
         }
@@ -120,7 +120,7 @@
 - (void)paste:(id)sender
 {
     UIPasteboard*   pasteboard = [UIPasteboard generalPasteboard];
-    NSCharacterSet* stripSet   = [NSCharacterSet characterSetWithCharactersInString:@"()-. \t\n\r"];
+    NSCharacterSet* stripSet   = [NSCharacterSet characterSetWithCharactersInString:@"()-. \u00a0\t\n\r"];
     NSString*       strippedText;
 
     strippedText = [[pasteboard.string componentsSeparatedByCharactersInSet:stripSet] componentsJoinedByString:@""];

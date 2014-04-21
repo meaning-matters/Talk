@@ -33,12 +33,14 @@ typedef enum
 @interface PhoneNumber : NSObject
 
 @property (nonatomic, readonly) NSString* isoCountryCode;
-@property (nonatomic, strong) NSString*   number;   // As entered (no formatting).
+@property (nonatomic, strong) NSString*   number;   // As entered, but stripped (no formatting).
 
 
 + (void)setDefaultIsoCountryCode:(NSString*)isoCountryCode;
 
 + (NSString*)defaultIsoCountryCode;
+
++ (NSString*)stripNumber:(NSString*)number;
 
 - (instancetype)init;
 
