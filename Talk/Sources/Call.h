@@ -24,7 +24,6 @@ typedef enum
     CallStateCancelled,
     CallStateBusy,
     CallStateDeclined,
-    CallStateNotAllowed,
     CallStateFailed,
 } CallState;
 
@@ -61,14 +60,17 @@ typedef enum
 @property (nonatomic, strong) NSString*                 contactName;
 @property (nonatomic, strong) NSString*                 contactId;          // The ABRecordID (which is int32_t) as string.
 @property (nonatomic, strong, readonly) NSDate*         beginDate;
-@property (nonatomic, strong, readonly) NSDate*         connectDate;
-@property (nonatomic, strong, readonly) NSDate*         endDate;
+@property (nonatomic, assign) int                       callbackDuration;
+@property (nonatomic, assign) int                       outgoingDuration;
+@property (nonatomic, assign) float                     callbackCost;
+@property (nonatomic, assign) float                     outgoingCost;
 @property (nonatomic, assign) CallState                 state;              // With callback, this is the state for the current leg only.
 @property (nonatomic, assign) CallLeg                   leg;                // This is the current leg and amends the state.
 @property (nonatomic, assign) CallDirection             direction;
 @property (nonatomic, assign) CallNetwork               network;
 @property (nonatomic, assign) BOOL                      readyForCleanup;
 @property (nonatomic, assign) BOOL                      userInformedAboutFailure;
+@property (nonatomic, strong) NSString*                 uuid;               // When not nil, the final durations & costs are not known.
 
 // SipInterface specifics.
 @property (nonatomic, assign) int                       callId;

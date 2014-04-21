@@ -10,6 +10,7 @@
 #import "PhoneNumber.h"
 #import "Call.h"
 #import "SipInterface.h"
+#import "NBRecentContactEntry.h"
 
 
 @protocol CallManagerDelegate <NSObject>
@@ -43,5 +44,7 @@
 - (void)setOnSpeaker:(BOOL)onSpeaker;
 
 - (void)sendCall:(Call*)call dtmfCharacter:(char)character;
+
+- (void)updateRecent:(NBRecentContactEntry*)recent withCall:(Call*)call;
 
 @end

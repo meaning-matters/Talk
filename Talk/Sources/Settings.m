@@ -134,7 +134,7 @@ static NSUserDefaults* userDefaults;
         }
 
         [dictionary setObject:@""                                                forKey:LastDialedNumberKey];
-        [dictionary setObject:@"https://api2.numberbay.com/"                      forKey:WebBaseUrlKey];
+        [dictionary setObject:@"https://api.numberbay.com/"                      forKey:WebBaseUrlKey];
         [dictionary setObject:@(NO)                                              forKey:AllowCellularDataCallsKey];
         [dictionary setObject:@(NO)                                              forKey:AllowInvalidNumbersKey];
         [dictionary setObject:@(YES)                                             forKey:ShowCallerIdKey];

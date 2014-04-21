@@ -416,6 +416,10 @@
                 {
                     [self makeCallWithContactId:contactIds[0]];
                 }
+                else
+                {
+                    [self makeCallWithContactId:nil];
+                }
             }];
         }
         else

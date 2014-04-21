@@ -17,42 +17,12 @@
         _phoneNumber  = phoneNumber;        
         _beginDate    = [NSDate date];
         _state        = CallStateNone;
+        _leg          = CallLegNone;
         _direction    = direction;
         _network      = CallNetworkInternet; // Default.
     }
 
     return self;
-}
-
-
-- (void)setState:(CallState)state
-{
-    _state = state;
-
-    switch (state)
-    {
-        case CallStateConnected:
-            if (_connectDate == nil)
-            {
-                _connectDate = [NSDate date];
-            }
-            break;
-
-        case CallStateEnded:
-            _endDate = [NSDate date];
-            break;
-
-        case CallStateCancelled:
-        case CallStateBusy:
-        case CallStateDeclined:
-        case CallStateNotAllowed:
-        case CallStateFailed:
-            _endDate = [NSDate date];
-            break;
-
-        default:
-            break;
-    }
 }
 
 
@@ -151,13 +121,6 @@
             string = NSLocalizedStringWithDefaultValue(@"Call:Status Declined", nil,
                                                        [NSBundle mainBundle], @"declined",
                                                        @"In-call status that called party has declined; Apple standard\n"
-                                                       @"[1 line small font].");
-            break;
-
-        case CallStateNotAllowed:
-            string = NSLocalizedStringWithDefaultValue(@"Call:Status NotAllowed", nil,
-                                                       [NSBundle mainBundle], @"not allowed",
-                                                       @"In-call status that calls to a number are nog allowed; Apple standard\n"
                                                        @"[1 line small font].");
             break;
 

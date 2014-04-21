@@ -154,8 +154,6 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 
 * crash when SIM is exchanged?
 
-* "Callback State: Unknown error received from server.."  When declining.
-
 * Zat ff met Contacts te spelen (weet dus niet meer wat ik precies deed) en zie een crash:
   NBPeopleListViewController #466: contactsDatasource heeft 27 items, maar indexPath.section == 31.
   isFiltered state bug!  vervangen met (table == searchdisplaycontroller.table) zie searchtablevc.

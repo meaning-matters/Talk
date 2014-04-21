@@ -1177,8 +1177,10 @@ static NSDictionary* statuses;
             }
             else
             {
+                // This when the server sends an undefined state.
                 state = CallStateNone;
                 leg   = CallLegNone;
+                NSLog(@"Received undefined callback state: %@", stateString);
             }
 
             reply(nil,
@@ -1364,7 +1366,7 @@ static NSDictionary* statuses;
 
 
 // 11B.
-- (void)cancelAllUpdateNumberE164:(NSString*)e164
+- (void)cancelAllUpdateNumberForE164:(NSString*)e164;
 {
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];

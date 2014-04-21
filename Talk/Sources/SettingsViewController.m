@@ -355,7 +355,7 @@ typedef enum
                                                                 @"make sure that the NumberBay calling rate to this "
                                                                 @"number is low, and also check the extra charges of your "
                                                                 @"telephone operator for receiving calls (which can be "
-                                                                @"substantial).\n\nIf you can it's often good to use "
+                                                                @"substantial).\n\nIf you can, it's often good to use "
                                                                 @"a fixed-line phone, or to use a local SIM from the "
                                                                 @"country you're in.\n\nPeople you call will never see "
                                                                 @"which number you selected here; unless of course, you "

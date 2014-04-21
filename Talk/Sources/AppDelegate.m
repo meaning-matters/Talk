@@ -24,6 +24,7 @@
 #import "BlockAlertView.h"
 #import "Strings.h"
 #import "NBPeopleListViewController.h"
+#import "WebClient.h"
 
 
 @interface AppDelegate ()
@@ -478,12 +479,6 @@
 
 #pragma mark - Address Book Delegate
 
-- (UIColor*)tintColor
-{
-    return [Skinning tintColor];
-}
-
-
 - (NSString*)formatNumber:(NSString*)number
 {
     PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:number];
@@ -499,9 +494,68 @@
 }
 
 
+- (UIColor*)tintColor
+{
+    return [Skinning tintColor];
+}
+
+
+- (UIColor*)deleteTintColor
+{
+    return [Skinning deleteTintColor];
+}
+
+
 - (void)saveContext
 {
     [[DataManager sharedManager] saveManagedObjectContext:nil];
+}
+
+
+- (NSString*)localizedFormattedPrice2ExtraDigits:(float)price
+{
+    return [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:price];
+}
+
+
+- (void)updateRecent:(NBRecentContactEntry*)recent completion:(void (^)(BOOL success, BOOL ended))completion
+{
+    if (recent == nil || recent.uuid.length == 0)
+    {
+        return;
+    }
+
+    [[WebClient sharedClient] retrieveCallbackStateForUuid:recent.uuid
+                                                     reply:^(NSError*  error,
+                                                             CallState state,
+                                                             CallLeg   leg,
+                                                             int       callbackDuration,
+                                                             int       outgoingDuration,
+                                                             float     callbackCost,
+                                                             float     outgoingCost)
+    {
+        if (error == nil)
+        {
+            PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:recent.number];
+            Call*        call        = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
+
+            call.state            = state;
+            call.leg              = leg;
+            call.callbackDuration = callbackDuration;
+            call.outgoingDuration = outgoingDuration;
+            call.callbackCost     = callbackCost;
+            call.outgoingCost     = outgoingCost;
+
+            recent.uuid = (state == CallStateEnded) ? nil : recent.uuid;
+            [[CallManager sharedManager] updateRecent:recent withCall:call];
+
+            completion(YES, state == CallStateEnded);
+        }
+        else
+        {
+            completion(NO, NO);
+        }
+    }];
 }
 
 

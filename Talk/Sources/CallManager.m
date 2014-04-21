@@ -458,16 +458,63 @@ static SipInterface*    sipInterface;
     NSManagedObjectContext* context = [DataManager sharedManager].managedObjectContext;
     NBRecentContactEntry*   recent  = [NSEntityDescription insertNewObjectForEntityForName:@"NBRecentContactEntry"
                                                                     inManagedObjectContext:context];
-
-    recent.status    = [NSNumber numberWithInt:CallStatusSuccess];
     recent.number    = call.phoneNumber.number;
     recent.date      = call.beginDate;
-    recent.duration  = @([call.endDate timeIntervalSinceDate:call.connectDate]);
     recent.timeZone  = [[NSTimeZone defaultTimeZone] abbreviation];
     recent.contactID = call.contactId;
     recent.direction = [NSNumber numberWithInt:CallDirectionOutgoing];
+    recent.uuid      = call.uuid;
 
-    [context save:nil];
+    [self updateRecent:recent withCall:call];
+}
+
+
+- (void)updateRecent:(NBRecentContactEntry*)recent withCall:(Call*)call
+{
+    switch (call.state)
+    {
+        case CallStateNone:
+            call.state    = CallStateCancelled;
+            recent.status = @(CallStatusCancelled);
+            break;
+
+        case CallStateCalling:
+        case CallStateRinging:
+        case CallStateConnecting:
+            call.state    = (call.leg == CallLegOutgoing) ? CallStateEnded        : CallStateCancelled;
+            recent.status = (call.leg == CallLegOutgoing) ? @(CallStatusCallback) : @(CallStatusCancelled);
+            break;
+
+        case CallStateConnected:
+        case CallStateEnding:
+        case CallStateEnded:
+            call.state    = CallStateEnded;
+            recent.status = (call.leg == CallLegOutgoing) ? @(CallStatusSuccess) : @(CallStatusCallback);
+            break;
+
+        case CallStateCancelled:
+            recent.status = @(CallStatusCancelled);
+            break;
+
+        case CallStateBusy:
+            recent.status = @(CallStatusBusy);
+            break;
+
+        case CallStateDeclined:
+            recent.status = @(CallStatusDeclined);
+            break;
+
+        case CallStateFailed:
+            recent.status = @(CallStatusFailed);
+            break;
+    }
+
+    recent.callbackDuration = @(call.callbackDuration);
+    recent.outgoingDuration = @(call.outgoingDuration);
+    recent.callbackCost     = @(call.callbackCost);
+    recent.outgoingCost     = @(call.outgoingCost);
+
+    [[DataManager sharedManager].managedObjectContext save:nil];
 }
 
 
@@ -608,6 +655,7 @@ static SipInterface*    sipInterface;
 }
 
 
+// Only used for SIP.
 - (BOOL)retryCall:(Call*)call
 {
     if (call != nil)
@@ -635,7 +683,6 @@ static SipInterface*    sipInterface;
         // Call must have been ended earlier.
         [callViewController dismissViewControllerAnimated:YES completion:^
         {
-            [self addCallToRecents:call];
             callViewController = nil;
         }];
 

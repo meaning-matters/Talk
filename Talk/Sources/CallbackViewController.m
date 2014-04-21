@@ -26,7 +26,7 @@
     int              duration;
     NSMutableArray*  notificationObservers;
     BOOL             callbackPending;
-    NSString*        uuid;
+    NSString*        uuid;              // Needed to give endAction an independent copy from call's uuid.
 }
 
 @end
@@ -99,8 +99,9 @@
         if (error == nil)
         {
             self.call.state       = CallStateCalling;
-            self.statusLabel.text = [self.call stateString];
+            self.call.uuid        = theUuid;
             uuid                  = theUuid;
+            self.statusLabel.text = [self.call stateString];
 
             callMessageView.label.text = NSLocalizedStringWithDefaultValue(@"Callback ProgressMessage", nil,
                                                                            [NSBundle mainBundle],
@@ -117,7 +118,7 @@
         {
             callbackPending = NO;
 
-            self.call.state       = CallStateFailed;
+            self.call.state = CallStateFailed;
 
             if (error.code == WebClientStatusFailNoCredit)
             {
@@ -174,7 +175,7 @@
         return;
     }
 
-    [[WebClient sharedClient] retrieveCallbackStateForUuid:uuid
+    [[WebClient sharedClient] retrieveCallbackStateForUuid:self.call.uuid
                                                      reply:^(NSError*  error,
                                                              CallState state,
                                                              CallLeg   leg,
@@ -185,9 +186,13 @@
     {
         if (error == nil)
         {
-            self.call.state       = state;
-            self.call.leg         = leg;
-            self.statusLabel.text = [self.call stateString];
+            self.call.state            = (state == CallStateNone) ? self.call.state : state;
+            self.call.leg              = (leg   == CallLegNone)   ? self.call.leg   : leg;
+            self.call.callbackDuration = callbackDuration;
+            self.call.outgoingDuration = outgoingDuration;
+            self.call.callbackCost     = callbackCost;
+            self.call.outgoingCost     = outgoingCost;
+            self.statusLabel.text      = [self.call stateString];
 
             BOOL checkState;
             switch (state)
@@ -225,6 +230,7 @@
                         dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
                         dispatch_after(when, dispatch_get_main_queue(), ^
                         {
+                            //self.call.uuid = nil;
                             [self endAction:nil];
                         });
                     }
@@ -233,11 +239,6 @@
                     checkState      = NO;
                     break;
                 }
-
-                case CallStateNone:
-                    checkState = YES;
-                    NSLog(@"Got spurious CallStateNone!");
-                    break;
 
                 default:
                     checkState = YES;
@@ -274,9 +275,9 @@
     self.call.readyForCleanup = YES;
 
     [[WebClient sharedClient] cancelAllInitiateCallback];
-    if (uuid != nil)
+    if (self.call.uuid != nil)
     {
-        [[WebClient sharedClient] cancelAllRetrieveCallbackStateForUuid:uuid];
+        [[WebClient sharedClient] cancelAllRetrieveCallbackStateForUuid:self.call.uuid];
     }
 
     if (callbackPending == YES)
@@ -307,7 +308,6 @@
         }];
     }
 
-    self.call.state = CallStateEnded;
     [[CallManager sharedManager] endCall:self.call];
 }
 
@@ -377,14 +377,14 @@
                                                                            @"[N lines]");
 
             [[WebClient sharedClient] cancelAllInitiateCallback];
-            if (uuid != nil)
+            if (self.call.uuid != nil)
             {
-                [[WebClient sharedClient] cancelAllRetrieveCallbackStateForUuid:uuid];
+                [[WebClient sharedClient] cancelAllRetrieveCallbackStateForUuid:self.call.uuid];
             }
 
             if (callbackPending == YES)
             {
-                [[WebClient sharedClient] stopCallbackForUuid:uuid reply:^(NSError* error)
+                [[WebClient sharedClient] stopCallbackForUuid:self.call.uuid reply:^(NSError* error)
                 {
                     if (error == nil)
                     {
