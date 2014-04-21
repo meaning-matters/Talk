@@ -8,11 +8,13 @@
 
 #import "BlockActionSheet.h"
 #import "AppDelegate.h"
+#import "Skinning.h"
 
 
 @interface BlockActionSheet ()
 
 @property (nonatomic, copy) void (^completion)(BOOL cancelled, BOOL destruct, NSInteger buttonIndex);
+@property (nonatomic, assign) NSInteger otherNumberOfButtons;
 
 @end
 
@@ -51,17 +53,30 @@
 {
     self = [super initWithTitle:title
                        delegate:self
-              cancelButtonTitle:cancelButtonTitle
-         destructiveButtonTitle:destructiveButtonTitle
+              cancelButtonTitle:nil
+         destructiveButtonTitle:nil
               otherButtonTitles:nil];
 
     if (self)
     {
         _completion = completion;
 
+        if (destructiveButtonTitle != nil)
+        {
+            NSInteger index = [self addButtonWithTitle:destructiveButtonTitle];
+            self.destructiveButtonIndex = index;
+        }
+
         for (NSString* title = otherButtonTitles; title != nil; title = (__bridge NSString*)va_arg(arguments, void*))
         {
             [self addButtonWithTitle:title];
+            self.otherNumberOfButtons++;
+        }
+
+        if (cancelButtonTitle != nil)
+        {
+            NSInteger index = [self addButtonWithTitle:cancelButtonTitle];
+            self.cancelButtonIndex = index;
         }
     }
 
@@ -70,6 +85,28 @@
 
 
 #pragma Action Sheet Delegate
+
+- (void)willPresentActionSheet:(UIActionSheet*)actionSheet
+{
+    NSInteger index       = 0;
+    UIColor*  deleteColor = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
+    UIColor*  tintColor   = [[NBAddressBookManager sharedManager].delegate tintColor];
+    for (UIView* subview in actionSheet.subviews)
+    {
+        if ([subview isKindOfClass:[UIButton class]])
+        {
+            UIButton* button = (UIButton*)subview;
+            UIColor*  color  = (index == self.destructiveButtonIndex) ? deleteColor : tintColor;
+
+            [button setTitleColor:color forState:UIControlStateHighlighted];
+            [button setTitleColor:color forState:UIControlStateNormal];
+            [button setTitleColor:color forState:UIControlStateSelected];
+
+            index++;
+        }
+    }
+}
+
 
 - (void)actionSheet:(UIActionSheet*)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {

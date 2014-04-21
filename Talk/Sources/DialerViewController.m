@@ -369,7 +369,7 @@
     [BlockActionSheet showActionSheetWithTitle:nil
                                     completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
     {
-        if (buttonIndex == 1)
+        if (buttonIndex == 0)
         {
             NBNewPersonViewController* newPersonViewController = [[NBNewPersonViewController alloc] init];
             [newPersonViewController setContactToMergeWith:[self createContact]];
@@ -380,7 +380,7 @@
             navigationController = [[UINavigationController alloc] initWithRootViewController:newPersonViewController];
             [self presentViewController:navigationController animated:YES completion:nil];
         }
-        else if (buttonIndex == 2)
+        else if (buttonIndex == 1)
         {
             NBPeopleListViewController* listViewController = [[NBPeopleListViewController alloc] init];
             [listViewController setContactToMergeWith:[self createContact]];
