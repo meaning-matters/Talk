@@ -591,7 +591,7 @@
       }
       
       titleString = BITHockeyLocalizedString(@"HockeyFeedbackListButonDeleteAllMessages");
-      titleColor = BIT_RGBCOLOR(251, 35, 35);
+      titleColor = [UIColor colorWithRed:0.988f green:0.082f blue:0.275f alpha:1.0f];  // NumberBay delete tint.
       actionSelector = @selector(deleteAllMessagesAction:);
     }
     
@@ -727,6 +727,7 @@
       [self setUserDataAction:self];
     } else if (indexPath.section == _deleteButtonSection) {
       [self deleteAllMessagesAction:self];
+      [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
   }
 }

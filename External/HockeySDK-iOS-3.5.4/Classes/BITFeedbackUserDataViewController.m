@@ -74,6 +74,8 @@
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
 
+  self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.26f green:0.41f blue:1.00f alpha:1.00f]; // NumberBay blue.;
+
   _statusBarStyle = [[UIApplication sharedApplication] statusBarStyle];
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_6_1
   [[UIApplication sharedApplication] setStatusBarStyle:(self.navigationController.navigationBar.barStyle == UIBarStyleDefault) ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent];
