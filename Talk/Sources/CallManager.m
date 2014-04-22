@@ -22,6 +22,7 @@
 #import "SettingsViewController.h"
 #import "AppDelegate.h"
 #import "DataManager.h"
+#import "WebClient.h"
 
 
 #define ALLOW_CALLS_WHEN_REACHABLE_DISCONNECTED 1
@@ -465,7 +466,53 @@ static SipInterface*    sipInterface;
     recent.direction = [NSNumber numberWithInt:CallDirectionOutgoing];
     recent.uuid      = call.uuid;
 
+    //### It's hacky that we have two updates; needs cleanup.
     [self updateRecent:recent withCall:call];
+    [self updateRecent:recent completion:^(BOOL success, BOOL ended)
+    {
+        NSLog(@"%@", success ? @"###Success updating recent" : @"Failed updating recent.");
+    }];
+}
+
+
+- (void)updateRecent:(NBRecentContactEntry*)recent completion:(void (^)(BOOL success, BOOL ended))completion
+{
+    if (recent == nil || recent.uuid.length == 0)
+    {
+        return;
+    }
+
+    [[WebClient sharedClient] retrieveCallbackStateForUuid:recent.uuid
+                                                     reply:^(NSError*  error,
+                                                             CallState state,
+                                                             CallLeg   leg,
+                                                             int       callbackDuration,
+                                                             int       outgoingDuration,
+                                                             float     callbackCost,
+                                                             float     outgoingCost)
+     {
+         if (error == nil)
+         {
+             PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:recent.number];
+             Call*        call        = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
+
+             call.state            = state;
+             call.leg              = leg;
+             call.callbackDuration = callbackDuration;
+             call.outgoingDuration = outgoingDuration;
+             call.callbackCost     = callbackCost;
+             call.outgoingCost     = outgoingCost;
+
+             recent.uuid = (state == CallStateEnded) ? nil : recent.uuid;
+             [[CallManager sharedManager] updateRecent:recent withCall:call];
+
+             completion(YES, state == CallStateEnded);
+         }
+         else
+         {
+             completion(NO, NO);
+         }
+     }];
 }
 
 

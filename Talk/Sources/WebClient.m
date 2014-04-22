@@ -69,7 +69,15 @@ static NSDictionary* statuses;
     NSInteger code;
     id        content = responseDictionary[@"content"];
 
-    if (responseDictionary != nil && [responseDictionary isKindOfClass:[NSDictionary class]] && content != nil)
+
+    //debug
+    if (content == nil)
+    {
+        NSLog(@"############################# nil see below");
+    }
+
+
+    if (responseDictionary != nil && [responseDictionary isKindOfClass:[NSDictionary class]]/* && content != nil*/)//### there's no content on error
     {
         NSString* string = responseDictionary[@"status"];
         NSNumber* number = statuses[string];
@@ -78,6 +86,7 @@ static NSDictionary* statuses;
     }
     else
     {
+        NSLog(@"WebClientStatusFailInvalidResponse content: %@", content);
         code = WebClientStatusFailInvalidResponse;
     }
 

@@ -520,44 +520,32 @@
 
 - (void)updateRecent:(NBRecentContactEntry*)recent completion:(void (^)(BOOL success, BOOL ended))completion
 {
-    if (recent == nil || recent.uuid.length == 0)
-    {
-        return;
-    }
-
-    [[WebClient sharedClient] retrieveCallbackStateForUuid:recent.uuid
-                                                     reply:^(NSError*  error,
-                                                             CallState state,
-                                                             CallLeg   leg,
-                                                             int       callbackDuration,
-                                                             int       outgoingDuration,
-                                                             float     callbackCost,
-                                                             float     outgoingCost)
-    {
-        if (error == nil)
-        {
-            PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:recent.number];
-            Call*        call        = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
-
-            call.state            = state;
-            call.leg              = leg;
-            call.callbackDuration = callbackDuration;
-            call.outgoingDuration = outgoingDuration;
-            call.callbackCost     = callbackCost;
-            call.outgoingCost     = outgoingCost;
-
-            recent.uuid = (state == CallStateEnded) ? nil : recent.uuid;
-            [[CallManager sharedManager] updateRecent:recent withCall:call];
-
-            completion(YES, state == CallStateEnded);
-        }
-        else
-        {
-            completion(NO, NO);
-        }
-    }];
+    [[CallManager sharedManager] updateRecent:recent completion:completion];
 }
 
+
+- (BOOL)matchRecent:(NBRecentContactEntry*)recent withNumber:(NSString*)number
+{
+    // No numbers that are invalid will end up in Recents (because earlier there will be
+    // a alert). So we'll always have a E164 form available, and also the ISO country code.
+    // We assume here that Home Country won't be changed, and that all local number (the ones
+    // that will use latestEntry's ISO to get their E164 format), will be of the same country
+    // as the Recent number.  If Home Country was wrongly set when a local number is added to
+    // Recent, then following calls won't match this one.  (I was tired when writing this ;-)
+    PhoneNumber* recentPhoneNumber = [[PhoneNumber alloc] initWithNumber:recent.e164];
+    PhoneNumber* phoneNumber       = [[PhoneNumber alloc] initWithNumber:number
+                                                          isoCountryCode:recentPhoneNumber.isoCountryCode];
+
+    if ([[PhoneNumber stripNumber:number] isEqualToString:recent.number] ||
+        [recentPhoneNumber.e164Format     isEqualToString:phoneNumber.e164Format])
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}
 
 #pragma mark - Address Book API
 

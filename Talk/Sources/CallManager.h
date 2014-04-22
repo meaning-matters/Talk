@@ -47,4 +47,6 @@
 
 - (void)updateRecent:(NBRecentContactEntry*)recent withCall:(Call*)call;
 
+- (void)updateRecent:(NBRecentContactEntry*)recent completion:(void (^)(BOOL success, BOOL ended))completion;
+
 @end

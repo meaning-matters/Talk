@@ -133,7 +133,7 @@ typedef enum
                             info:(NSDictionary*)info
                            reply:(void (^)(NSError* error, NSString* e164))reply;
 
-// 11B.
+// 11B. UPDATE NUMBER'S NAME
 - (void)updateNumberE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply;
 
 // 12. GET LIST OF NUMBERS
