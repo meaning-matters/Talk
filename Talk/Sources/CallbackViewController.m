@@ -219,12 +219,24 @@
                 case CallStateConnected:
                     callbackPending = YES;
                     checkState      = YES;
+                    if (leg == CallLegCallback)
+                    {
+                        text = NSLocalizedStringWithDefaultValue(@"Callback CallbackConnectedMessage", nil, [NSBundle mainBundle],
+                                                                 @"Your phone answered the callback call.\n\n"
+                                                                 @"If this is not you, the person you're trying to"
+                                                                 @"reach is probably going to be connected to your "
+                                                                 @"callback number's voicemail.",
+                                                                 @"Alert message: ...\n"
+                                                                 @"[N lines]");
+                    }
+
                     if (leg == CallLegOutgoing)
                     {
-                        text = NSLocalizedStringWithDefaultValue(@"Callback ConnectedMessage", nil, [NSBundle mainBundle],
+                        text = NSLocalizedStringWithDefaultValue(@"Callback OutgoingConnectedMessage", nil, [NSBundle mainBundle],
                                                                  @"The person you were trying to reach answered.\n\n"
-                                                                 @"If you declined the callback, or answered another "
-                                                                 @"call, that person got connected to your voicemail.",
+                                                                 @"If you're not in the call, the person you're trying to"
+                                                                 @"reach is probably connected to your callback number's "
+                                                                 @"voicemail.",
                                                                  @"Alert message: ...\n"
                                                                  @"[N lines]");
                     }
