@@ -10,6 +10,9 @@
                 <outlet property="callButton" destination="630" id="eRP-VR-wd7"/>
                 <outlet property="codeActivityIndicator" destination="1674" id="I8u-PU-yRO"/>
                 <outlet property="codeLabel" destination="835" id="WIT-Sn-Wle"/>
+                <outlet property="label1" destination="CUb-O4-RpU" id="a1h-9h-97z"/>
+                <outlet property="label2" destination="Qwc-cd-kpD" id="hT1-8k-h5E"/>
+                <outlet property="label3" destination="QwP-cf-fem" id="gVh-Lq-Xhg"/>
                 <outlet property="numberButton" destination="1447" id="Hiv-EX-QxK"/>
                 <outlet property="step1View" destination="656" id="bZW-Sv-e0o"/>
                 <outlet property="step2View" destination="668" id="e3R-pP-xjF"/>
@@ -55,7 +58,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="52"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
+                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </label>
                     </subviews>
                     <color key="backgroundColor" white="0.9038549270072993" alpha="1" colorSpace="calibratedWhite"/>

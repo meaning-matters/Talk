@@ -22,6 +22,7 @@
 @property (nonatomic, strong) NSString*    numberButtonTitle;
 @property (nonatomic, copy)   void       (^completion)(PhoneNumber* phoneNumber);
 @property (nonatomic, assign) BOOL         isCancelled;
+@property (nonatomic, assign) int          step;
 
 @end
 
@@ -71,6 +72,10 @@
     [Common setCornerRadius:5 ofView:self.step1View];
     [Common setCornerRadius:5 ofView:self.step2View];
     [Common setCornerRadius:5 ofView:self.step3View];
+
+    self.step1View.backgroundColor = [Skinning backgroundTintColor];
+    self.step2View.backgroundColor = [Skinning backgroundTintColor];
+    self.step3View.backgroundColor = [Skinning backgroundTintColor];
 }
 
 
@@ -272,25 +277,27 @@
     if (sender == self.numberButton)
     {
         self.step1View.backgroundColor = [Skinning tintColor];
+        self.label1.textColor          = [UIColor whiteColor];
     }
     else
     {
         self.step2View.backgroundColor = [Skinning tintColor];
+        self.label2.textColor          = [UIColor whiteColor];
     }
 }
 
 
 - (IBAction)buttonUp:(id)sender
 {
-    UIColor* backgroundColor = [Skinning backgroundTintColor];
-
     if (sender == self.numberButton)
     {
-        self.step1View.backgroundColor = backgroundColor;
+        self.step1View.backgroundColor = [Skinning backgroundTintColor];
+        self.label1.textColor = (self.step == 1) ? [Skinning tintColor] : [UIColor whiteColor];
     }
     else
     {
-        self.step2View.backgroundColor = backgroundColor;
+        self.step2View.backgroundColor = [Skinning backgroundTintColor];
+        self.label2.textColor = (self.step == 2) ? [Skinning tintColor] : [UIColor whiteColor];
     }
 }
 
@@ -397,41 +404,61 @@
     {
         case 1:
         {
-            self.numberButton.enabled = YES;
-            self.callButton.enabled   = NO;
+            self.numberButton.userInteractionEnabled = YES;
+            self.callButton.userInteractionEnabled   = NO;
 
-            self.numberButton.titleLabel.textColor = [Skinning tintColor];
-            self.callButton.titleLabel.tintColor   = [UIColor whiteColor];
-            self.codeLabel.textColor               = [UIColor whiteColor];
+            self.label1.textColor = [Skinning tintColor];
+            self.label2.textColor = [UIColor whiteColor];
+            self.label3.textColor = [UIColor whiteColor];
+
+            [self setColor:[Skinning tintColor] forButton:self.numberButton];
+            [self setColor:[UIColor whiteColor] forButton:self.callButton];
+            self.codeLabel.textColor = [UIColor whiteColor];
 
             [self.callActivityIndicator stopAnimating];
             break;
         }
         case 2:
         {
-            self.numberButton.enabled = YES;
-            self.callButton.enabled   = YES;
+            self.numberButton.userInteractionEnabled = YES;
+            self.callButton.userInteractionEnabled   = YES;
 
-            self.numberButton.titleLabel.textColor = [Skinning tintColor];
-            self.callButton.titleLabel.tintColor   = [Skinning tintColor];
-            self.codeLabel.textColor               = [UIColor blackColor];
+            self.label1.textColor = [UIColor whiteColor];
+            self.label2.textColor = [Skinning tintColor];
+            self.label3.textColor = [UIColor whiteColor];
+
+            [self setColor:[Skinning tintColor] forButton:self.numberButton];
+            [self setColor:[Skinning tintColor] forButton:self.callButton];
+            self.codeLabel.textColor = [UIColor blackColor];
 
             [self.callActivityIndicator stopAnimating];
             break;
         }
         case 3:
         {
-            self.numberButton.enabled = NO;
-            self.callButton.enabled   = NO;
+            self.numberButton.userInteractionEnabled = NO;
+            self.callButton.userInteractionEnabled   = NO;
 
-            self.numberButton.titleLabel.textColor = [UIColor whiteColor];
-            self.callButton.titleLabel.tintColor   = [Skinning tintColor];
-            self.codeLabel.textColor               = [UIColor blackColor];
+            self.label1.textColor = [UIColor whiteColor];
+            self.label2.textColor = [UIColor whiteColor];
+            self.label3.textColor = [UIColor blackColor];
+
+            [self setColor:[UIColor whiteColor] forButton:self.numberButton];
+            [self setColor:[UIColor whiteColor] forButton:self.callButton];
+            self.codeLabel.textColor = [UIColor blackColor];
 
             [self.callActivityIndicator startAnimating];
             break;
         }
     }
+
+    _step = step;
+}
+
+
+- (void)setColor:(UIColor*)color forButton:(UIButton*)button
+{
+    [button setTitleColor:color forState:UIControlStateNormal];
 }
 
 @end

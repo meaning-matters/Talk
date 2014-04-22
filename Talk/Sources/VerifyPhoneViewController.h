@@ -19,6 +19,9 @@
 @property (nonatomic, weak) IBOutlet UIView*                  step1View;
 @property (nonatomic, weak) IBOutlet UIView*                  step2View;
 @property (nonatomic, weak) IBOutlet UIView*                  step3View;
+@property (nonatomic, weak) IBOutlet UILabel*                 label1;
+@property (nonatomic, weak) IBOutlet UILabel*                 label2;
+@property (nonatomic, weak) IBOutlet UILabel*                 label3;
 @property (nonatomic, weak) IBOutlet UIButton*                numberButton;
 @property (nonatomic, weak) IBOutlet UIButton*                callButton;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView* callActivityIndicator;
