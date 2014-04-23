@@ -40,7 +40,7 @@
 
     self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedStart Text", nil, [NSBundle mainBundle],
                                                            @"Get some credit, and add a phone number. "
-                                                           @"That's all you need to make calls. Easy!\n\n"
+                                                           @"That's all you need, to make calls. Easy!\n\n"
                                                            @"With every call, you'll be called back. "
                                                            @"When you answer, the other person will be called.\n\n"
                                                            @"You can install NumberBay on all your iOS devices, and "
