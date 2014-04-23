@@ -471,9 +471,10 @@ typedef enum
                         if (buttonIndex == 1)
                         {
                             [[AppDelegate appDelegate] resetAll];
-                            
+
+                            int count = [Common bitsSetCount:sections];
                             [self.tableView beginUpdates];
-                            [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 4)]
+                            [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, count)]
                                           withRowAnimation:UITableViewRowAnimationFade];
                             [self.tableView endUpdates];
                             accountDataUpdated = NO;
