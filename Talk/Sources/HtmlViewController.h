@@ -1,5 +1,5 @@
 //
-//  HelpViewController.h
+//  HtmlViewController.h
 //  Talk
 //
 //  Created by Cornelis van der Bent on 11/08/13.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HelpViewController : UIViewController
+@interface HtmlViewController : UIViewController
 
 @property (nonatomic, weak) IBOutlet UIWebView* webView;
 

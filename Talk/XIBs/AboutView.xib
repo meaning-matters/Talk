@@ -9,6 +9,7 @@
                 <outlet property="companyLabel" destination="45" id="51"/>
                 <outlet property="emailButton" destination="8hG-bB-223" id="qoN-eD-dIg"/>
                 <outlet property="licensesButton" destination="48" id="54"/>
+                <outlet property="termsButton" destination="UyB-my-aqO" id="MFY-pd-fur"/>
                 <outlet property="thanksButton" destination="47" id="58"/>
                 <outlet property="versionLabel" destination="41" id="52"/>
                 <outlet property="view" destination="1" id="3"/>
@@ -24,19 +25,33 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="NumberBay Ltd.NumberBay Ltd.NumberBay Ltd.NumberBay Ltd.NumberBay Ltd." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="45">
-                    <rect key="frame" x="20" y="202" width="280" height="107"/>
+                    <rect key="frame" x="20" y="151" width="280" height="107"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="version 3.9.2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="41">
-                    <rect key="frame" x="20" y="158" width="280" height="21"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="8hG-bB-223">
+                    <rect key="frame" x="20" y="244" width="280" height="40"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <state key="normal" title="info@numberbay.com"/>
+                    <connections>
+                        <action selector="emailAction:" destination="-1" eventType="touchUpInside" id="zfc-6y-d3w"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="UyB-my-aqO">
+                    <rect key="frame" x="20" y="388" width="280" height="45"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <state key="normal" title="Terms &amp; Conditions">
+                        <color key="titleColor" red="0.12550827140000001" green="0.45285129759999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="termsAction:" destination="-1" eventType="touchUpInside" id="GXh-fn-30f"/>
+                    </connections>
+                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="47">
                     <rect key="frame" x="20" y="453" width="130" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
@@ -61,13 +76,21 @@
                         <action selector="licensesAction:" destination="-1" eventType="touchUpInside" id="50"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="8hG-bB-223">
-                    <rect key="frame" x="20" y="295" width="280" height="40"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <state key="normal" title="info@numberbay.com"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="3.9.2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="41">
+                    <rect key="frame" x="20" y="498" width="280" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                    <color key="textColor" white="0.75102645985401473" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Kd1-Z0-mth" userLabel="Version Button">
+                    <rect key="frame" x="140" y="480" width="40" height="40"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <state key="normal">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
                     <connections>
-                        <action selector="emailAction:" destination="-1" eventType="touchUpInside" id="zfc-6y-d3w"/>
+                        <action selector="versionAction:" destination="-1" eventType="touchUpInside" id="JG7-TV-bnz"/>
                     </connections>
                 </button>
             </subviews>

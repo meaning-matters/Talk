@@ -14,6 +14,7 @@
 #import "BlockAlertView.h"
 #import "Strings.h"
 #import "Skinning.h"
+#import "HtmlViewController.h"
 
 
 @interface AboutViewController ()
@@ -45,14 +46,21 @@
     self.companyLabel.text = [Settings sharedSettings].companyNameAddress;
 
     NSString*   versionText = NSLocalizedStringWithDefaultValue(@"About:AppInfo Version", nil,
-                                                                [NSBundle mainBundle], @"version %@",
-                                                                @"To form software version (e.g. 'Version 1.2.5')\n"
+                                                                [NSBundle mainBundle], @"%@",
+                                                                @"To form software version (e.g. '1.2.5')\n"
                                                                 @"[1 line normal font].");
     self.versionLabel.text = [NSString stringWithFormat:versionText, [Settings sharedSettings].appVersion];
 
     [self.emailButton setTitle:[Settings sharedSettings].supportEmail forState:UIControlStateNormal];
 
     NSString*   title;
+    title = NSLocalizedStringWithDefaultValue(@"About TermsButtonTitle", nil,
+                                              [NSBundle mainBundle], @"Terms & Conditions",
+                                              @"Button title to open terms & conditions screen.\n"
+                                              @"[1 line normal font].");
+    [self.termsButton setTitle:title forState:UIControlStateNormal];
+    [Common styleButton:self.termsButton];
+
     title = NSLocalizedStringWithDefaultValue(@"About ThanksButtonTitle", nil,
                                               [NSBundle mainBundle], @"Thanks",
                                               @"Button title to open thanks screen.\n"
@@ -77,6 +85,42 @@
                 subject:[Settings sharedSettings].callbackE164
                    body:nil
              completion:nil];
+}
+
+
+- (IBAction)termsAction:(id)sender
+{
+    NSData*             data           = [Common dataForResource:@"Terms" ofType:@"json"];
+    NSDictionary*       dictionary     = [Common objectWithJsonData:data];
+    HtmlViewController* viewController = [[HtmlViewController alloc] initWithDictionary:dictionary];
+
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+
+- (IBAction)versionAction:(id)sender
+{
+    NSString* title;
+    NSString* message;
+
+    title   = NSLocalizedStringWithDefaultValue(@"About VersionTitle", nil, [NSBundle mainBundle],
+                                                @"Version %@",
+                                                @"\n"
+                                                @"[iOS alert title size].");
+
+    message = NSLocalizedStringWithDefaultValue(@"About VersionMessage", nil, [NSBundle mainBundle],
+                                                @"Created on %@.",
+                                                @"\n"
+                                                @"[iOS alert message size]");
+
+    title   = [NSString stringWithFormat:title, [Settings sharedSettings].appVersion];
+    message = [NSString stringWithFormat:message, [NSString stringWithUTF8String:__DATE__]];
+
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:nil
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
 }
 
 

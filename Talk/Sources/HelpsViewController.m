@@ -7,7 +7,7 @@
 //
 
 #import "HelpsViewController.h"
-#import "HelpViewController.h"
+#import "HtmlViewController.h"
 #import "HockeySDK.h"
 #import "Common.h"
 #import "CallManager.h"
@@ -232,7 +232,7 @@ typedef enum
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    HelpViewController*  helpViewController;
+    HtmlViewController*  htmlViewController;
     __block PhoneNumber* phoneNumber;
     NSString*            title;
     NSString*            message;
@@ -240,8 +240,8 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionTexts:
-            helpViewController = [[HelpViewController alloc] initWithDictionary:helpsArray[indexPath.row]];
-            [self.navigationController pushViewController:helpViewController animated:YES];
+            htmlViewController = [[HtmlViewController alloc] initWithDictionary:helpsArray[indexPath.row]];
+            [self.navigationController pushViewController:htmlViewController animated:YES];
             break;
 
         case TableSectionContactUs:

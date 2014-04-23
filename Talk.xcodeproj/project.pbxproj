@@ -212,6 +212,7 @@
 		4837BB3D165D701F00E46C36 /* LibPhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */; };
 		4837BB66165F726400E46C36 /* BlockAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB65165F726300E46C36 /* BlockAlertView.m */; };
 		4837BB67165F726400E46C36 /* BlockAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB65165F726300E46C36 /* BlockAlertView.m */; };
+		483B078F1908017900E8C42D /* Terms.json in Resources */ = {isa = PBXBuildFile; fileRef = 483B078E1908017900E8C42D /* Terms.json */; };
 		483ECFF217A4F60B0032B8FF /* deleteButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 483ECFEA17A4F60B0032B8FF /* deleteButton.png */; };
 		483ECFF317A4F60B0032B8FF /* editPhotoBottomBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 483ECFEB17A4F60B0032B8FF /* editPhotoBottomBar.png */; };
 		483ECFF417A4F60B0032B8FF /* editPhotoButtonFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 483ECFEC17A4F60B0032B8FF /* editPhotoButtonFrame.png */; };
@@ -237,10 +238,6 @@
 		4846D8AC1743F47100C40713 /* Logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4846D8A81743F47000C40713 /* Logo@2x.png */; };
 		4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849432E1752263600E1D5C4 /* LicensesViewController.m */; };
 		484943301752263600E1D5C4 /* LicensesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849432E1752263600E1D5C4 /* LicensesViewController.m */; };
-		4849433C175240EB00E1D5C4 /* LicenseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849433B175240EA00E1D5C4 /* LicenseViewController.m */; };
-		4849433D175240EB00E1D5C4 /* LicenseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849433B175240EA00E1D5C4 /* LicenseViewController.m */; };
-		4849433F1752410500E1D5C4 /* LicenseView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4849433E1752410500E1D5C4 /* LicenseView.xib */; };
-		484943401752410500E1D5C4 /* LicenseView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4849433E1752410500E1D5C4 /* LicenseView.xib */; };
 		4849436D17529DE100E1D5C4 /* ShareButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849436C17529DE100E1D5C4 /* ShareButton.m */; };
 		4849436E17529DE100E1D5C4 /* ShareButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849436C17529DE100E1D5C4 /* ShareButton.m */; };
 		484943831753252800E1D5C4 /* AppStoreBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 4849436F1753252800E1D5C4 /* AppStoreBlack.png */; };
@@ -305,10 +302,10 @@
 		485A608918D768880055C176 /* GetStartedLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 485A608818D768880055C176 /* GetStartedLogo.png */; };
 		485A609018D771F60055C176 /* GetStarted1.png in Resources */ = {isa = PBXBuildFile; fileRef = 485A608F18D771F60055C176 /* GetStarted1.png */; };
 		485A609218D7AEC50055C176 /* GetStarted2.png in Resources */ = {isa = PBXBuildFile; fileRef = 485A609118D7AEC50055C176 /* GetStarted2.png */; };
-		485E38A017B7E13C0089F0F1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E389F17B7E13B0089F0F1 /* HelpViewController.m */; };
-		485E38A117B7E13C0089F0F1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E389F17B7E13B0089F0F1 /* HelpViewController.m */; };
-		485E38A317B7E1960089F0F1 /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485E38A217B7E1960089F0F1 /* HelpView.xib */; };
-		485E38A417B7E1960089F0F1 /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485E38A217B7E1960089F0F1 /* HelpView.xib */; };
+		485E38A017B7E13C0089F0F1 /* HtmlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E389F17B7E13B0089F0F1 /* HtmlViewController.m */; };
+		485E38A117B7E13C0089F0F1 /* HtmlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E389F17B7E13B0089F0F1 /* HtmlViewController.m */; };
+		485E38A317B7E1960089F0F1 /* HtmlView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485E38A217B7E1960089F0F1 /* HtmlView.xib */; };
+		485E38A417B7E1960089F0F1 /* HtmlView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485E38A217B7E1960089F0F1 /* HtmlView.xib */; };
 		485E38A717C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E38A617C0B7F00089F0F1 /* NumberAreaTitlesViewController.m */; };
 		485E38A817C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E38A617C0B7F00089F0F1 /* NumberAreaTitlesViewController.m */; };
 		485E38C317C40D070089F0F1 /* NumberDuration1.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BD17C40D070089F0F1 /* NumberDuration1.png */; };
@@ -1322,6 +1319,7 @@
 		4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibPhoneNumber.m; sourceTree = "<group>"; };
 		4837BB64165F726300E46C36 /* BlockAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockAlertView.h; sourceTree = "<group>"; };
 		4837BB65165F726300E46C36 /* BlockAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockAlertView.m; sourceTree = "<group>"; };
+		483B078E1908017900E8C42D /* Terms.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Terms.json; path = Resources/Terms.json; sourceTree = "<group>"; };
 		483ECFEA17A4F60B0032B8FF /* deleteButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = deleteButton.png; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/deleteButton.png; sourceTree = "<group>"; };
 		483ECFEB17A4F60B0032B8FF /* editPhotoBottomBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = editPhotoBottomBar.png; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/editPhotoBottomBar.png; sourceTree = "<group>"; };
 		483ECFEC17A4F60B0032B8FF /* editPhotoButtonFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = editPhotoButtonFrame.png; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/editPhotoButtonFrame.png; sourceTree = "<group>"; };
@@ -1343,9 +1341,6 @@
 		4846D8A81743F47000C40713 /* Logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Logo@2x.png"; sourceTree = "<group>"; };
 		4849432D1752263600E1D5C4 /* LicensesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LicensesViewController.h; sourceTree = "<group>"; };
 		4849432E1752263600E1D5C4 /* LicensesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LicensesViewController.m; sourceTree = "<group>"; };
-		4849433A175240EA00E1D5C4 /* LicenseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LicenseViewController.h; sourceTree = "<group>"; };
-		4849433B175240EA00E1D5C4 /* LicenseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LicenseViewController.m; sourceTree = "<group>"; };
-		4849433E1752410500E1D5C4 /* LicenseView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LicenseView.xib; sourceTree = "<group>"; };
 		4849436B17529DE100E1D5C4 /* ShareButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareButton.h; sourceTree = "<group>"; };
 		4849436C17529DE100E1D5C4 /* ShareButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareButton.m; sourceTree = "<group>"; };
 		4849436F1753252800E1D5C4 /* AppStoreBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppStoreBlack.png; sourceTree = "<group>"; };
@@ -1387,9 +1382,9 @@
 		485A608818D768880055C176 /* GetStartedLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStartedLogo.png; sourceTree = "<group>"; };
 		485A608F18D771F60055C176 /* GetStarted1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted1.png; sourceTree = "<group>"; };
 		485A609118D7AEC50055C176 /* GetStarted2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted2.png; sourceTree = "<group>"; };
-		485E389E17B7E1390089F0F1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
-		485E389F17B7E13B0089F0F1 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
-		485E38A217B7E1960089F0F1 /* HelpView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HelpView.xib; sourceTree = "<group>"; };
+		485E389E17B7E1390089F0F1 /* HtmlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HtmlViewController.h; sourceTree = "<group>"; };
+		485E389F17B7E13B0089F0F1 /* HtmlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HtmlViewController.m; sourceTree = "<group>"; };
+		485E38A217B7E1960089F0F1 /* HtmlView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HtmlView.xib; sourceTree = "<group>"; };
 		485E38A517C0B7EE0089F0F1 /* NumberAreaTitlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaTitlesViewController.h; sourceTree = "<group>"; };
 		485E38A617C0B7F00089F0F1 /* NumberAreaTitlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaTitlesViewController.m; sourceTree = "<group>"; };
 		485E38BD17C40D070089F0F1 /* NumberDuration1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberDuration1.png; sourceTree = "<group>"; };
@@ -3354,9 +3349,8 @@
 				4837AF6E18D9B8C400D3AEBC /* GetStartedActionView.xib */,
 				480BEF9418D59ECA00C882E0 /* GetStartedView.xib */,
 				48AF450D164948DC00DFE3D8 /* GroupsView.xib */,
-				485E38A217B7E1960089F0F1 /* HelpView.xib */,
+				485E38A217B7E1960089F0F1 /* HtmlView.xib */,
 				48D0A6F91655E2C600FA2D98 /* KeypadView.xib */,
-				4849433E1752410500E1D5C4 /* LicenseView.xib */,
 				484A94A5171C5065009E22B9 /* NumberAreaActionCell.xib */,
 				484A949C171821CB009E22B9 /* NumberAreasCell.xib */,
 				4865A9DA1792C5550028785F /* BuyNumberCell.xib */,
@@ -3404,12 +3398,10 @@
 				480BEF8D18D59E7400C882E0 /* GetStartedViewController.m */,
 				48AF44F4164947E600DFE3D8 /* GroupsViewController.h */,
 				48AF44F5164947E600DFE3D8 /* GroupsViewController.m */,
-				485E389E17B7E1390089F0F1 /* HelpViewController.h */,
-				485E389F17B7E13B0089F0F1 /* HelpViewController.m */,
+				485E389E17B7E1390089F0F1 /* HtmlViewController.h */,
+				485E389F17B7E13B0089F0F1 /* HtmlViewController.m */,
 				48AF44FC1649483600DFE3D8 /* HelpsViewController.h */,
 				48AF44FD1649483600DFE3D8 /* HelpsViewController.m */,
-				4849433A175240EA00E1D5C4 /* LicenseViewController.h */,
-				4849433B175240EA00E1D5C4 /* LicenseViewController.m */,
 				4849432D1752263600E1D5C4 /* LicensesViewController.h */,
 				4849432E1752263600E1D5C4 /* LicensesViewController.m */,
 				484D936A1712FBA1006FA875 /* NumberAreaCitiesViewController.h */,
@@ -3473,6 +3465,7 @@
 				48B9386A187B647F00132535 /* Helps-VoIP.json */,
 				48B9386B187B647F00132535 /* Helps.json */,
 				48B9386C187B647F00132535 /* Licenses.json */,
+				483B078E1908017900E8C42D /* Terms.json */,
 				48B9386D187B647F00132535 /* Thanks.html */,
 				4837AF6318D89E8600D3AEBC /* GetStarted.json */,
 			);
@@ -4309,7 +4302,6 @@
 				4846D8A91743F47100C40713 /* Logo.png in Resources */,
 				4846D8AB1743F47100C40713 /* Logo@2x.png in Resources */,
 				4837AF8918E24BF100D3AEBC /* Icon-120.png in Resources */,
-				4849433F1752410500E1D5C4 /* LicenseView.xib in Resources */,
 				484943831753252800E1D5C4 /* AppStoreBlack.png in Resources */,
 				484943851753252800E1D5C4 /* AppStoreBlack@2x.png in Resources */,
 				484943871753252800E1D5C4 /* AppStoreWhite.png in Resources */,
@@ -4338,6 +4330,7 @@
 				483ECFF417A4F60B0032B8FF /* editPhotoButtonFrame.png in Resources */,
 				483ECFF517A4F60B0032B8FF /* editPhotoLeftButton.png in Resources */,
 				483ECFF617A4F60B0032B8FF /* editPhotoLeftButtonHighlighted.png in Resources */,
+				483B078F1908017900E8C42D /* Terms.json in Resources */,
 				483ECFF717A4F60B0032B8FF /* editPhotoRightButton.png in Resources */,
 				483ECFF817A4F60B0032B8FF /* editPhotoRightButtonHighlighted.png in Resources */,
 				483ECFF917A4F60B0032B8FF /* editPhotoTopBar.png in Resources */,
@@ -4348,7 +4341,7 @@
 				483ED00317A4F6650032B8FF /* noPictureImage.png in Resources */,
 				483ED00617A4F6920032B8FF /* AddressTypeForCountry.plist in Resources */,
 				483ED01417A4F6C30032B8FF /* Localizable.strings in Resources */,
-				485E38A317B7E1960089F0F1 /* HelpView.xib in Resources */,
+				485E38A317B7E1960089F0F1 /* HtmlView.xib in Resources */,
 				485E38C317C40D070089F0F1 /* NumberDuration1.png in Resources */,
 				485E38C517C40D070089F0F1 /* NumberDuration12.png in Resources */,
 				485E38C717C40D070089F0F1 /* NumberDuration2.png in Resources */,
@@ -4473,7 +4466,6 @@
 				4846D8A6174170CF00C40713 /* Branding@2x.png in Resources */,
 				4846D8AA1743F47100C40713 /* Logo.png in Resources */,
 				4846D8AC1743F47100C40713 /* Logo@2x.png in Resources */,
-				484943401752410500E1D5C4 /* LicenseView.xib in Resources */,
 				484943841753252800E1D5C4 /* AppStoreBlack.png in Resources */,
 				48995E0E18739F46001395C2 /* Phone@2x.png in Resources */,
 				484943861753252800E1D5C4 /* AppStoreBlack@2x.png in Resources */,
@@ -4500,7 +4492,7 @@
 				484943B11753C44D00E1D5C4 /* ThanksView.xib in Resources */,
 				4864B3F7175668CA0006542F /* LogoFacebook.png in Resources */,
 				4865A9DC1792C5550028785F /* BuyNumberCell.xib in Resources */,
-				485E38A417B7E1960089F0F1 /* HelpView.xib in Resources */,
+				485E38A417B7E1960089F0F1 /* HtmlView.xib in Resources */,
 				485E38C417C40D070089F0F1 /* NumberDuration1.png in Resources */,
 				485E38C617C40D070089F0F1 /* NumberDuration12.png in Resources */,
 				485E38C817C40D070089F0F1 /* NumberDuration2.png in Resources */,
@@ -4634,7 +4626,6 @@
 				4837AF7618D9DAF000D3AEBC /* GetStartedActionViewController.m in Sources */,
 				48A26DDC18BA7FB200736CCB /* SearchTableViewController.m in Sources */,
 				4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */,
-				4849433C175240EB00E1D5C4 /* LicenseViewController.m in Sources */,
 				4849436D17529DE100E1D5C4 /* ShareButton.m in Sources */,
 				484943AD1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
 				4865A9D817926CE00028785F /* BuyNumberViewController.m in Sources */,
@@ -4679,7 +4670,7 @@
 				48C3446617A7CCA700E385B6 /* NBPeopleTableViewCell.m in Sources */,
 				4877EDB817AB7ADF0013B18F /* NBRecentCallCell.m in Sources */,
 				4877EDBC17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */,
-				485E38A017B7E13C0089F0F1 /* HelpViewController.m in Sources */,
+				485E38A017B7E13C0089F0F1 /* HtmlViewController.m in Sources */,
 				485E38A717C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */,
 				4814EA3717CA993F004B7A3C /* CreditBuyCell.m in Sources */,
 				4814EA3E17CB1924004B7A3C /* CreditAmountCell.m in Sources */,
@@ -4767,7 +4758,6 @@
 				48B0C3FA174989F500DAB3BD /* Keychain.m in Sources */,
 				48A0CE791809BE3100B8A9F8 /* CallBaseViewController.m in Sources */,
 				484943301752263600E1D5C4 /* LicensesViewController.m in Sources */,
-				4849433D175240EB00E1D5C4 /* LicenseViewController.m in Sources */,
 				4849436E17529DE100E1D5C4 /* ShareButton.m in Sources */,
 				484943AE1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
 				4865A9D917926CE00028785F /* BuyNumberViewController.m in Sources */,
@@ -4809,7 +4799,7 @@
 				48C3446717A7CCA700E385B6 /* NBPeopleTableViewCell.m in Sources */,
 				4877EDB917AB7ADF0013B18F /* NBRecentCallCell.m in Sources */,
 				4877EDBD17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */,
-				485E38A117B7E13C0089F0F1 /* HelpViewController.m in Sources */,
+				485E38A117B7E13C0089F0F1 /* HtmlViewController.m in Sources */,
 				485E38A817C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */,
 				4814EA3817CA993F004B7A3C /* CreditBuyCell.m in Sources */,
 				4814EA3F17CB1924004B7A3C /* CreditAmountCell.m in Sources */,

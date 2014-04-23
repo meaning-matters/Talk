@@ -7,7 +7,7 @@
 //
 
 #import "LicensesViewController.h"
-#import "LicenseViewController.h"
+#import "HtmlViewController.h"
 #import "Common.h"
 
 
@@ -106,10 +106,10 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    LicenseViewController* licenceViewController;
+    HtmlViewController* viewController;
 
-    licenceViewController = [[LicenseViewController alloc] initWithDictionary:licensesArray[indexPath.row]];
-    [self.navigationController pushViewController:licenceViewController animated:YES];
+    viewController = [[HtmlViewController alloc] initWithDictionary:licensesArray[indexPath.row]];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 

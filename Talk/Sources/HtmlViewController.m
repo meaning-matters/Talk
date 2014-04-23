@@ -1,31 +1,31 @@
 //
-//  HelpViewController.m
+//  HtmlViewController.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 11/08/13.
 //  Copyright (c) 2013 Cornelis van der Bent. All rights reserved.
 //
 
-#import "HelpViewController.h"
+#import "HtmlViewController.h"
 
 
-@interface HelpViewController ()
+@interface HtmlViewController ()
 {
-    NSString*   helpText;
+    NSString* htmlBody;
 }
 
 @end
 
 
-@implementation HelpViewController
+@implementation HtmlViewController
 
 - (instancetype)initWithDictionary:(NSDictionary*)dictionary
 {
-    if (self = [super initWithNibName:@"HelpView" bundle:nil])
+    if (self = [super initWithNibName:@"HtmlView" bundle:nil])
     {
         self.title = [dictionary allKeys][0];
 
-        helpText   = [dictionary allValues][0];
+        htmlBody   = [dictionary allValues][0];
     }
 
     return self;
@@ -38,13 +38,12 @@
 
     NSString* htmlTop    = @"<!DOCTYPE HTML><html><head><style>body{font-family:'Helvetica';font-size:14px</style><body>";
     NSString* htmlBottom = @"</body></html>";
-
-    helpText = [NSString stringWithFormat:@"%@%@%@", htmlTop, helpText, htmlBottom];
+    NSString* html       = [NSString stringWithFormat:@"%@%@%@", htmlTop, htmlBody, htmlBottom];
 
     self.webView.dataDetectorTypes           = UIDataDetectorTypeNone;
     self.webView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
 
-    [self.webView loadHTMLString:helpText baseURL:nil];
+    [self.webView loadHTMLString:html baseURL:nil];
 }
 
 @end
