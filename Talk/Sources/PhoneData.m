@@ -57,58 +57,61 @@
             {
                 [managedObjectContext deleteObject:self];
                 completion ? completion(YES) : 0;
-            }
-            else if (error.code == WebClientStatusFailVerfiedNumberInUse)
-            {
-                NSString* title;
-                NSString* message;
 
+                return;
+            }
+
+            NSString* title;
+            NSString* message;
+            if (error.code == WebClientStatusFailVerfiedNumberInUse)
+            {
                 title   = NSLocalizedStringWithDefaultValue(@"Phone InUseTitle", nil,
                                                             [NSBundle mainBundle], @"Phone Not Deleted",
                                                             @"Alert title telling that something could not be deleted.\n"
                                                             @"[iOS alert title size].");
                 message = NSLocalizedStringWithDefaultValue(@"Forwarding InUseMessage", nil,
                                                             [NSBundle mainBundle],
-                                                            @"Deleting this Phone failed: %@"
-                                                            @"\n\nChoose another Forwarding for each number that uses this one.",
+                                                            @"Deleting this Phone failed: %@\n\n"
+                                                            @"Choose another Forwarding for each number that uses this one.",
                                                             @"Alert message telling that an online service is not available.\n"
                                                             @"[iOS alert message size]");
-                message = [NSString stringWithFormat:message, error.localizedDescription];
-                [BlockAlertView showAlertViewWithTitle:title
-                                               message:message
-                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
-                 {
-                     completion ? completion(NO) : 0;
-                 }
-                                     cancelButtonTitle:[Strings cancelString]
-                                     otherButtonTitles:nil];
+            }
+            else if (error.code == NSURLErrorNotConnectedToInternet)
+            {
+                title   = NSLocalizedStringWithDefaultValue(@"Phone DeleteFailedInternetTitle", nil,
+                                                            [NSBundle mainBundle], @"Phone Not Deleted",
+                                                            @"Alert title telling that something could not be deleted.\n"
+                                                            @"[iOS alert title size].");
+                message = NSLocalizedStringWithDefaultValue(@"Phone DeleteFailedMessage", nil,
+                                                            [NSBundle mainBundle],
+                                                            @"Deleting this Phone from your account failed: %@\n\n"
+                                                            @"Please try again later.",
+                                                            @"....\n"
+                                                            @"[iOS alert message size]");
             }
             else
             {
-                NSString* title;
-                NSString* message;
-
                 title   = NSLocalizedStringWithDefaultValue(@"Phone DeleteFailedTitle", nil,
                                                             [NSBundle mainBundle], @"Phone Not Deleted",
                                                             @"Alert title telling that something could not be deleted.\n"
                                                             @"[iOS alert title size].");
                 message = NSLocalizedStringWithDefaultValue(@"Phone DeleteFailedMessage", nil,
                                                             [NSBundle mainBundle],
-                                                            @"Deleting this Phone from our server failed: %@"
-                                                            @"\n\nSynchronize with the server, and then choose another "
-                                                            @"Forwarding for each number that uses this one.",
+                                                            @"Deleting this Phone from your account failed: %@\n\n"
+                                                            @"Synchronize with the server, and try again.",
                                                             @"....\n"
                                                             @"[iOS alert message size]");
-                message = [NSString stringWithFormat:message, error.localizedDescription];
-                [BlockAlertView showAlertViewWithTitle:title
-                                               message:message
-                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
-                 {
-                     completion ? completion(NO) : 0;
-                 }
-                                     cancelButtonTitle:[Strings cancelString]
-                                     otherButtonTitles:nil];
             }
+
+            message = [NSString stringWithFormat:message, error.localizedDescription];
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+            {
+                completion ? completion(NO) : 0;
+            }
+                                 cancelButtonTitle:[Strings cancelString]
+                                 otherButtonTitles:nil];
         }];
     }
 }

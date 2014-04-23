@@ -113,6 +113,8 @@ typedef enum
 
 - (void)viewDidLoad
 {
+    NSLog(@"########## Look at PhoneViewController.m for fixes in handling Save, Keyboard, .... on WED 23 APR 2014");
+
     [super viewDidLoad];
 
     self.clearsSelectionOnViewWillAppear = YES;

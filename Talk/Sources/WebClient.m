@@ -481,7 +481,7 @@ static NSDictionary* statuses;
 }
 
 
-// 2A.
+// 2A. GET NUMBER VERIFICATION CODE
 - (void)retrieveVerificationCodeForE164:(NSString*)e164
                                   reply:(void (^)(NSError* error, NSString* code))reply
 {
@@ -504,7 +504,7 @@ static NSDictionary* statuses;
 }
 
 
-// 2B.
+// 2B. REQUEST VERIFICATION CALL
 - (void)requestVerificationCallForE164:(NSString*)e164
                                  reply:(void (^)(NSError* error))reply
 {
@@ -520,7 +520,7 @@ static NSDictionary* statuses;
 }
 
 
-// 2C.
+// 2C. CHECK VERIFICATION STATUS
 - (void)retrieveVerificationStatusForE164:(NSString*)e164
                                     reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply
 {

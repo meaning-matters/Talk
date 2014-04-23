@@ -84,6 +84,8 @@ typedef enum
 
 - (instancetype)initWithNumber:(NumberData*)theNumber
 {
+    NSLog(@"########## Look at PhoneViewController.m for fixes in handling Save, Keyboard, .... on WED 23 APR 2014");
+
     if (self = [super init])
     {
         number    = theNumber;

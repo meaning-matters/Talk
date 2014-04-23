@@ -159,12 +159,8 @@
             self.hasCorrectedInsets = NO;
         }
 
-        if (self.tableView.isEditing == YES)
-        {
-            [self save];
-            
-            [[self.tableView superview] endEditing:YES];
-        }
+        [self save];
+        [[self.tableView superview] endEditing:YES];
     }
 }
 
@@ -173,7 +169,9 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField*)textField
 {
-    textField.returnKeyType = UIReturnKeyDone;
+    textField.returnKeyType                 = UIReturnKeyDone;
+    textField.enablesReturnKeyAutomatically = YES;
+
 #warning The method reloadInputViews messes up two-byte keyboards (e.g. Kanji).
     [textField reloadInputViews];
 
@@ -234,7 +232,7 @@
     [self.tableView scrollToRowAtIndexPath:self.nameIndexPath
                           atScrollPosition:UITableViewScrollPositionNone
                                   animated:YES];
-    
+
     return NO;  // Need to return NO, because we've already changed textField.text.
 }
 

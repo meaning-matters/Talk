@@ -118,7 +118,10 @@ typedef enum
         self.navigationItem.rightBarButtonItem = buttonItem;
     }
 
-    [self updateSaveButtonItem];
+    if (isNew)
+    {
+        [self updateSaveButtonItem];
+    }
 }
 
 
@@ -164,10 +167,19 @@ typedef enum
 
 - (void)saveAction
 {
+    if (isNew == NO && [self.phone.name isEqualToString:self.name] == YES)
+    {
+        return;
+    }
+
     self.phone.name = self.name;
     self.phone.e164 = [phoneNumber e164Format];
 
-    self.navigationItem.rightBarButtonItem.enabled = NO;
+    if (isNew == YES)
+    {
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    }
+
     [[WebClient sharedClient] updateVerifiedE164:self.phone.e164
                                         withName:self.phone.name
                                            reply:^(NSError *error)
@@ -176,7 +188,7 @@ typedef enum
         {
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
 
-            if (isNew)
+            if (isNew == YES)
             {
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
@@ -237,7 +249,7 @@ typedef enum
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger   numberOfRows = 0;
+    NSInteger numberOfRows = 0;
 
     switch ([Common nthBitSet:section inValue:sections])
     {
@@ -302,10 +314,14 @@ typedef enum
             }
             break;
 
+        case TableSectionNumber:
+            break;
+
         case TableSectionNumbers:
             title = NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"This Phone can't be deleted because it's in use.",
+                                                      @"This Phone can't be deleted because it's in use "
+                                                      @"as forwarding.",
                                                       @"Table footer that app can't be deleted\n"
                                                       @"[1 line larger font].");
             break;
@@ -425,7 +441,7 @@ typedef enum
 
         case TableSectionNumber:
         {
-            if (isNew)
+            if (isNew == YES)
             {
                 VerifyPhoneViewController* viewController;
                 viewController = [[VerifyPhoneViewController alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber)
@@ -466,7 +482,10 @@ typedef enum
 {
     BOOL shouldChange = [super textField:textField shouldChangeCharactersInRange:range replacementString:string];
 
-    [self updateSaveButtonItem];
+    if (isNew == YES)
+    {
+        [self updateSaveButtonItem];
+    }
 
     return shouldChange;
 }
