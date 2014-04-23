@@ -722,6 +722,7 @@
             {
                 for (NSManagedObject* object in deleteArray)
                 {
+                    [self checkDeletedPhone:(PhoneData*)object];
                     [self.managedObjectContext deleteObject:object];
                 }
             }
@@ -799,4 +800,43 @@
     }];
 }
 
+
+- (void)checkDeletedPhone:(PhoneData*)phone
+{
+    if ([phone.e164 isEqualToString:[Settings sharedSettings].callbackE164] ||
+        [phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164])
+    {
+        NSString* title;
+        NSString* message;
+        title   = NSLocalizedStringWithDefaultValue(@"PhonesView PhoneWasDeletedTitle", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"Used Phone Deleted",
+                                                    @"...\n"
+                                                    @"[1 line larger font].");
+        message = NSLocalizedStringWithDefaultValue(@"PhonesView PhoneWasDeletedMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"The Phone \"%@\" (%@), used as callback number and/or caller ID, "
+                                                    @"was deleted from another iOS device, and is no longer available.\n\n"
+                                                    @"To make calls, select another Phone on the Settings tab.",
+                                                    @"....\n"
+                                                    @"[multi-line small font].");
+        message = [NSString stringWithFormat:message, phone.name, [[PhoneNumber alloc] initWithNumber:phone.e164].asYouTypeFormat];
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+    }
+
+    if ([phone.e164 isEqualToString:[Settings sharedSettings].callbackE164])
+    {
+        [Settings sharedSettings].callbackE164 = nil;
+    }
+
+    if ([phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164])
+    {
+        [Settings sharedSettings].callerIdE164 = nil;
+    }
+}
 @end

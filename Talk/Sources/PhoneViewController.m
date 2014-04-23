@@ -122,6 +122,10 @@ typedef enum
     {
         [self updateSaveButtonItem];
     }
+    else
+    {
+        [self updateDeleteButtonItem];
+    }
 }
 
 
@@ -315,10 +319,21 @@ typedef enum
             break;
 
         case TableSectionNumber:
+            if ([self.phone.e164 isEqualToString:[Settings sharedSettings].callbackE164] ||
+                [self.phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164])
+            {
+                title = NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberFooter", nil,
+                                                          [NSBundle mainBundle],
+                                                          @"This Phone can't be deleted because it's used "
+                                                          @"as callback number and/or caller ID.\n\n"
+                                                          @"Go to the Settings tab to make changes.",
+                                                          @"Table footer that ....\n"
+                                                          @"[1 line larger font].");
+            }
             break;
 
         case TableSectionNumbers:
-            title = NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteFooter", nil,
+            title = NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumbersFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"This Phone can't be deleted because it's in use "
                                                       @"as forwarding.",
@@ -496,6 +511,20 @@ typedef enum
 - (void)updateSaveButtonItem
 {
     self.navigationItem.rightBarButtonItem.enabled = (self.name.length > 0) && ([phoneNumber isValid]);
+}
+
+
+- (void)updateDeleteButtonItem
+{
+    if ([self.phone.e164 isEqualToString:[Settings sharedSettings].callbackE164] ||
+        [self.phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164])
+    {
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    }
 }
 
 

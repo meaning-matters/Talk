@@ -618,7 +618,51 @@ static SipInterface*    sipInterface;
 
 - (Call*)callCallbackPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity contactId:(NSString*)contactId
 {
-    Call* call = nil;
+    Call*     call = nil;
+    NSString* title;
+    NSString* message;
+    int       missing = (([Settings sharedSettings].callbackE164.length == 0) << 0) +
+                        (([Settings sharedSettings].callerIdE164.length == 0) << 1);
+
+    if (missing != 0)
+    {
+        title   = NSLocalizedStringWithDefaultValue(@"Call:CallBack MissingPhonesTitle", nil, [NSBundle mainBundle],
+                                                    @"No Phone%@ Selected",
+                                                    @"Alert title informing that mobile calls are not supported\n"
+                                                    @"[iOS alert title size].");
+
+        message = NSLocalizedStringWithDefaultValue(@"Call:CallBack MissingPhonesMessage", nil, [NSBundle mainBundle],
+                                                    @"You can't call because no Phone was selected as %@.\n\n"
+                                                    @"Go to the Settings tab to make changes.",
+                                                    @"Alert message \n"
+                                                    @"[iOS alert message size]");
+
+        switch (missing)
+        {
+            case 1:
+                title   = [NSString stringWithFormat:title,   @""];
+                message = [NSString stringWithFormat:message, @"callback number"];
+                break;
+
+            case 2:
+                title   = [NSString stringWithFormat:title,   @""];
+                message = [NSString stringWithFormat:message, @"caller ID"];
+                break;
+
+            case 3:
+                title   = [NSString stringWithFormat:title,   @"s"];
+                message = [NSString stringWithFormat:message, @"callback number and caller ID"];
+                break;
+        }
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[Strings cancelString]
+                             otherButtonTitles:nil];
+
+        return nil;
+    }
 
     if ([phoneNumber.originalFormat isEqualToString:[Settings sharedSettings].testNumber] == NO)
     {

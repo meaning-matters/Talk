@@ -329,11 +329,11 @@
         phoneNumber = [[PhoneNumber alloc] init];
 
         [Common dispatchAfterInterval:0.5 onMain:^
-         {
-             // Clears UI fields.  This is done after a delay to make sure that
-             // a call related view is on screen; keeping it out of sight.
-             [self update];
-         }];
+        {
+            // Clears UI fields.  This is done after a delay to make sure that
+            // a call related view is on screen; keeping it out of sight.
+            [self update];
+        }];
     }
 }
 
