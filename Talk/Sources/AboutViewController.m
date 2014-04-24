@@ -90,11 +90,16 @@
 
 - (IBAction)termsAction:(id)sender
 {
-    NSData*             data           = [Common dataForResource:@"Terms" ofType:@"json"];
-    NSDictionary*       dictionary     = [Common objectWithJsonData:data];
-    HtmlViewController* viewController = [[HtmlViewController alloc] initWithDictionary:dictionary];
+    NSData*                 data                = [Common dataForResource:@"Terms" ofType:@"json"];
+    NSDictionary*           dictionary          = [Common objectWithJsonData:data];
+    HtmlViewController*     termsViewController = [[HtmlViewController alloc] initWithDictionary:dictionary];
+    UINavigationController* modalViewController;
 
-    [self.navigationController pushViewController:viewController animated:YES];
+    modalViewController = [[UINavigationController alloc] initWithRootViewController:termsViewController];
+    modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:modalViewController
+                       animated:YES
+                     completion:nil];
 }
 
 

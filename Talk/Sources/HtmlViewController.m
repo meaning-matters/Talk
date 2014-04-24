@@ -36,6 +36,16 @@
 {
     [super viewDidLoad];
 
+    if (self.presentingViewController != nil)
+    {
+        // Shown as modal.
+        UIBarButtonItem*    buttonItem;
+        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                   target:self
+                                                                   action:@selector(cancel)];
+        self.navigationItem.leftBarButtonItem = buttonItem;
+    }
+
     NSString* htmlTop    = @"<!DOCTYPE HTML><html><head><style>body{font-family:'Helvetica';font-size:14px</style><body>";
     NSString* htmlBottom = @"</body></html>";
     NSString* html       = [NSString stringWithFormat:@"%@%@%@", htmlTop, htmlBody, htmlBottom];
@@ -44,6 +54,14 @@
     self.webView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
 
     [self.webView loadHTMLString:html baseURL:nil];
+}
+
+
+#pragma mark - Helpers
+
+- (void)cancel
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
