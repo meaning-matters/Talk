@@ -345,7 +345,7 @@
 {
     if (call == nil)
     {
-        NSLog(@"//### Call is nil (failed)");
+        NBLog(@"//### Call is nil (failed)");
         Call* call = [[Call alloc] init];
         call.state = CallStateFailed;
     }

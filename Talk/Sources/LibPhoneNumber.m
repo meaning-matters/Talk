@@ -54,7 +54,7 @@
     // Start a run-loop to create a maximum 5s app delay for loading Javascript.
     if (CFRunLoopRunInMode(kCFRunLoopDefaultMode, 5.0, NO) != kCFRunLoopRunStopped)
     {
-        NSLog(@"//### Javascript not fully loaded in time.");
+        NBLog(@"//### Javascript not fully loaded in time.");
     }
 }
 
@@ -73,7 +73,7 @@
     // Stop the Javascript loading run-loop.
     CFRunLoopStop([[NSRunLoop currentRunLoop] getCFRunLoop]);
     
-    NSLog(@"Loading Javascript error: %@", error.localizedDescription);
+    NBLog(@"Loading Javascript error: %@", error.localizedDescription);
 }
 
 
@@ -192,7 +192,7 @@
     }
     else
     {
-        NSLog(@"Unknown phone number type");
+        NBLog(@"Unknown phone number type");
         return PhoneNumberTypeUnknown;
     }
 }

@@ -27,7 +27,7 @@
             return @"INTERNATIONAL";
 
         default:
-            NSLog(@"Invalid NumberTypeMask.");
+            NBLog(@"Invalid NumberTypeMask.");
             return @"";
     }
 }

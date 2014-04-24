@@ -820,7 +820,7 @@ typedef enum
 
                             if (error == nil)
                             {
-                                NSLog(@"########################### do something with isValid");
+                                NBLog(@"########################### do something with isValid");
                                 isChecked = YES;
                                 [self.tableView beginUpdates];
                                 [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section]

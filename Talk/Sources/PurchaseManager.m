@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Cornelis van der Bent. All rights reserved.
 //
 
-// Test accounts: aaa@nb.aaa Qwertu1 (aaa/bbb/ccc/ddd).
-
 #import "PurchaseManager.h"
 #import "NetworkStatus.h"
 #import "Common.h"
@@ -344,7 +342,7 @@
                 }
                 else
                 {
-                    NSLog(@"//### Failed to convert number to credit again!");
+                    NBLog(@"//### Failed to convert number to credit again!");
                 }
             }];
         }
@@ -370,7 +368,7 @@
                 }
                 else
                 {
-                    NSLog(@"Retry processing of phone number failed.");
+                    NBLog(@"Retry processing of phone number failed.");
                     //### Show alert?
                 }
             }];
@@ -452,7 +450,7 @@
     // Force a load.
     self.loadProductsDate = nil;
 
-    NSLog(@"//### Failed to load list of products.");
+    NBLog(@"//### Failed to load list of products.");
 }
 
 
@@ -460,7 +458,7 @@
 
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue*)queue
 {
-    NSLog(@"paymentQueueRestoreCompletedTransactionsFinished");
+    NBLog(@"paymentQueueRestoreCompletedTransactionsFinished");
     [Common enableNetworkActivityIndicator:NO];
 
     if (self.restoredAccountTransaction != nil)
@@ -471,7 +469,7 @@
         }
         else
         {
-            NSLog(@"//### Unexpected restored transaction: %@.", self.restoredAccountTransaction.payment.productIdentifier);
+            NBLog(@"//### Unexpected restored transaction: %@.", self.restoredAccountTransaction.payment.productIdentifier);
         }
     }
     else
@@ -484,7 +482,7 @@
 
 - (void)paymentQueue:(SKPaymentQueue*)queue restoreCompletedTransactionsFailedWithError:(NSError*)error
 {
-    NSLog(@"restoreCompletedTransactionsFailedWithError: %@", error.localizedDescription);
+    NBLog(@"restoreCompletedTransactionsFailedWithError: %@", error.localizedDescription);
     [Common enableNetworkActivityIndicator:NO];
 
     [self completeBuyWithSuccess:NO object:error];
@@ -512,7 +510,7 @@
         switch (transaction.transactionState)
         {
             case SKPaymentTransactionStatePurchasing:
-                NSLog(@"//### Busy purchasing");
+                NBLog(@"//### Busy purchasing");
                 break;
 
             case SKPaymentTransactionStatePurchased:
@@ -541,7 +539,7 @@
             case SKPaymentTransactionStateFailed:
                 if (transaction.error.code == 2)
                 {
-                    NSLog(@"Did we see Already Purchased?");
+                    NBLog(@"Did we see Already Purchased?");
                     [Common enableNetworkActivityIndicator:NO];
                     [self finishTransaction:transaction];
                     [self completeBuyWithSuccess:NO object:transaction.error];
@@ -551,7 +549,7 @@
                     [Common enableNetworkActivityIndicator:NO];
                     [self finishTransaction:transaction];
 
-                    NSLog(@"//### %@ transaction failed: %@ %d.", transaction.payment.productIdentifier,
+                    NBLog(@"//### %@ transaction failed: %@ %d.", transaction.payment.productIdentifier,
                           [transaction.error localizedDescription],
                           transaction.error.code);
 

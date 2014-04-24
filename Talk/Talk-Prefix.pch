@@ -15,6 +15,11 @@
     #import <SystemConfiguration/SystemConfiguration.h>     // Needed for AFNetworking.
     #import <MobileCoreServices/MobileCoreServices.h>       // Needed for AFNetworking.
 
+#ifdef DEBUG
+#define NBLog(fmt, ...) NSLog(fmt, ##__VA_ARGS__)
+#else
+#define NBLog(fmt, ...)
+#endif
 
 #define HAS_FULL_FORWARDINGS       0
 #define HAS_VOIP                   0

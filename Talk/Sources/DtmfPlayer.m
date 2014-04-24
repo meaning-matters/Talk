@@ -41,7 +41,7 @@
         {
             if ([sharedInstance initializeSound:character name:[NSString stringWithFormat:@"%c", character]] == NO)
             {
-                NSLog(@"Error loading DTMF sound.");
+                NBLog(@"Error loading DTMF sound.");
                 break;
             }
         }
@@ -49,7 +49,7 @@
         if ([sharedInstance initializeSound:'*' name:@"star"] == NO ||
             [sharedInstance initializeSound:'#' name:@"pound"]== NO)
         {
-            NSLog(@"Error loading DTMF sound.");
+            NBLog(@"Error loading DTMF sound.");
         }
     });
     

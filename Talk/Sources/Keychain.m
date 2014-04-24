@@ -19,7 +19,7 @@
 
     if (account == nil || inputString == nil)
     {
-        NSLog(@"saveString failed: invalid parameter(s)!");
+        NBLog(@"saveString failed: invalid parameter(s)!");
         result = NO;
     }
     else
@@ -41,7 +41,7 @@
             error = SecItemUpdate((__bridge CFDictionaryRef)query, (__bridge CFDictionaryRef)attributesToUpdate);
             if (error != errSecSuccess)
             {
-                NSLog(@"SecItemUpdate failed: %ld", error);
+                NBLog(@"SecItemUpdate failed: %ld", error);
                 result = NO;
             }
         }
@@ -53,13 +53,13 @@
             error = SecItemAdd((__bridge CFDictionaryRef)query, NULL);
             if (error != errSecSuccess)
             {
-                NSLog(@"SecItemAdd failed: %ld", error);
+                NBLog(@"SecItemAdd failed: %ld", error);
                 result = NO;
             }
         }
         else
         {
-            NSLog(@"SecItemCopyMatching failed: %ld", error);
+            NBLog(@"SecItemCopyMatching failed: %ld", error);
             result = NO;
         }
     }
@@ -74,7 +74,7 @@
 
     if (account == nil)
     {
-        NSLog(@"getStringForKey failed: invalid parameter!");
+        NBLog(@"getStringForKey failed: invalid parameter!");
     }
     else
     {
@@ -105,7 +105,7 @@
 
     if (account == nil)
     {
-        NSLog(@"deleteStringForKey failed: invalid parameter!");
+        NBLog(@"deleteStringForKey failed: invalid parameter!");
         result = NO;
     }
     else
@@ -118,7 +118,7 @@
         OSStatus status = SecItemDelete((__bridge CFDictionaryRef)query);
         if (status != errSecSuccess)
         {
-            NSLog(@"SecItemDelete failed: %ld", status);
+            NBLog(@"SecItemDelete failed: %ld", status);
             result = NO;
         }
     }

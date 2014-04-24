@@ -308,7 +308,7 @@
 
 - (void)handleError:(NSError*)error
 {
-    NSLog(@"CoreData error: %@.", error);
+    NBLog(@"CoreData error: %@.", error);
 
     [[NSFileManager defaultManager] removeItemAtURL:storeUrl error:nil];
 
@@ -745,7 +745,7 @@
             {
                 if ((NSObject*)e164s == [NSNull null])
                 {
-                    NSLog(@"Invalid E164.");
+                    NBLog(@"Invalid E164.");
                     count--;
 
                     continue;

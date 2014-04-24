@@ -140,7 +140,7 @@ static Common* sharedCommon;
     if (error != nil)
     {
         //### Replace.
-        NSLog(@"Error serializing to JSON data: %@", error.localizedDescription);
+        NBLog(@"Error serializing to JSON data: %@", error.localizedDescription);
         
         return nil;
     }
@@ -173,7 +173,7 @@ static Common* sharedCommon;
     if (error != nil)
     {
         //### Replace.
-        NSLog(@"Error serializing from JSON data: %@", error.localizedDescription);
+        NBLog(@"Error serializing from JSON data: %@", error.localizedDescription);
         
         return nil;
     }
@@ -207,7 +207,7 @@ static Common* sharedCommon;
     if (error != nil)
     {
         //### Replace.
-        NSLog(@"Error serializing from JSON data: %@", error.localizedDescription);
+        NBLog(@"Error serializing from JSON data: %@", error.localizedDescription);
 
         return nil;
     }
@@ -721,7 +721,7 @@ static Common* sharedCommon;
 }
 
 
-// This will redirect NSLog() output to a log file.  Switch on 'Application supports iTunes file sharing'
+// This will redirect NBLog() output to a log file.  Switch on 'Application supports iTunes file sharing'
 // in the app's .plist file to allow accessing the logs from iTunes.  Don't forget to set this .plist
 // parameter to NO before distributing the app (unless it's on intentionally)!
 #warning //### Automate this, switch on for DEBUG only for example: http://stackoverflow.com/questions/13689934/is-there-a-way-of-automatically-writing-custom-values-to-the-bundles-plist-dur

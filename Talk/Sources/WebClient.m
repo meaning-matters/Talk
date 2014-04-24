@@ -78,7 +78,7 @@ static NSDictionary* statuses;
     }
     else
     {
-        NSLog(@"WebClientStatusFailInvalidResponse content: %@", content);
+        NBLog(@"WebClientStatusFailInvalidResponse content: %@", content);
         code = WebClientStatusFailInvalidResponse;
     }
 
@@ -129,7 +129,7 @@ static NSDictionary* statuses;
       parameters:(NSDictionary*)parameters
            reply:(void (^)(NSError* error, id content))reply
 {
-    NSLog(@"POST %@ : %@", path, parameters ? parameters : @"");
+    NBLog(@"POST %@ : %@", path, parameters ? parameters : @"");
 
     if ([self handleAccount:reply] == NO)
     {
@@ -153,7 +153,7 @@ static NSDictionary* statuses;
      parameters:(NSDictionary*)parameters
           reply:(void (^)(NSError* error, id content))reply
 {
-    NSLog(@" PUT %@ : %@", path, parameters ? parameters : @"");
+    NBLog(@" PUT %@ : %@", path, parameters ? parameters : @"");
 
     if ([self handleAccount:reply] == NO)
     {
@@ -177,7 +177,7 @@ static NSDictionary* statuses;
      parameters:(NSDictionary*)parameters
           reply:(void (^)(NSError* error, id content))reply
 {
-    NSLog(@" GET %@ : %@", path, parameters ? parameters : @"");
+    NBLog(@" GET %@ : %@", path, parameters ? parameters : @"");
 
     if ([self handleAccount:reply] == NO)
     {
@@ -201,7 +201,7 @@ static NSDictionary* statuses;
         parameters:(NSDictionary*)parameters
              reply:(void (^)(NSError* error, id content))reply
 {
-    NSLog(@" DELETE %@ : %@", path, parameters ? parameters : @"");
+    NBLog(@" DELETE %@ : %@", path, parameters ? parameters : @"");
 
     if ([self handleAccount:reply] == NO)
     {
@@ -212,12 +212,12 @@ static NSDictionary* statuses;
           parameters:parameters
              success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
-        NSLog(@"DELETE response: %@", responseObject);
+        NBLog(@"DELETE response: %@", responseObject);
         [self handleSuccess:responseObject reply:reply];
     }
              failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
-        NSLog(@"DELETE failure: %@", error);
+        NBLog(@"DELETE failure: %@", error);
         [self handleFailure:error reply:reply];
     }];
 }
@@ -400,7 +400,7 @@ static NSDictionary* statuses;
        parameters:nil
           success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
-        NSLog(@"postPath request: %@", operation.request.URL);
+        NBLog(@"postPath request: %@", operation.request.URL);
 
         [self handleSuccess:responseObject reply:^(NSError* error, id content)
         {
@@ -451,7 +451,7 @@ static NSDictionary* statuses;
         parameters:parameters
            success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
-        NSLog(@"postPath request: %@", operation.request.URL);
+        NBLog(@"postPath request: %@", operation.request.URL);
 
         [self handleSuccess:responseObject reply:^(NSError* error, id content)
         {
@@ -1134,7 +1134,7 @@ static NSDictionary* statuses;
             CallState state;
             CallLeg   leg;
 
-            NSLog(@"Callback: %@", content);
+            NBLog(@"Callback: %@", content);
 
             if ([stateString isEqualToString:@"CALLBACK_RINGING"])
             {
@@ -1181,7 +1181,7 @@ static NSDictionary* statuses;
                 // This when the server sends an undefined state.
                 state = CallStateNone;
                 leg   = CallLegNone;
-                NSLog(@"Received undefined callback state: %@", stateString);
+                NBLog(@"Received undefined callback state: %@", stateString);
             }
 
             reply(nil,
@@ -1194,7 +1194,7 @@ static NSDictionary* statuses;
         }
         else
         {
-            NSLog(@"%@", error);
+            NBLog(@"%@", error);
             reply(error, CallStateFailed, CallLegNone, 0, 0, 0.0f, 0.0f);
         }
     }];

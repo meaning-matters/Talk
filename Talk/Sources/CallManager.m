@@ -470,7 +470,7 @@ static SipInterface*    sipInterface;
     [self updateRecent:recent withCall:call];
     [self updateRecent:recent completion:^(BOOL success, BOOL ended)
     {
-        NSLog(@"%@", success ? @"###Success updating recent" : @"Failed updating recent.");
+        NBLog(@"%@", success ? @"###Success updating recent" : @"Failed updating recent.");
     }];
 }
 
@@ -714,7 +714,7 @@ static SipInterface*    sipInterface;
         else
         {
             callViewController = nil;
-            NSLog(@"//### Call failed.");
+            NBLog(@"//### Call failed.");
         }
     }
 

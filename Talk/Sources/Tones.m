@@ -41,7 +41,7 @@
     {
         // The default.  But should not be selected, because there should be tones for
         // every supported country.
-        NSLog(@"//### Default tones were selected.");
+        NBLog(@"//### Default tones were selected.");
         tones = @{
                     @"ringing" :
                     @[

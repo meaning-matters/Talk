@@ -59,23 +59,23 @@
     NSArray*    countries = [[CountryNames sharedNames].namesDictionary allKeys];
     NSArray*    tones = [self.tonesDictionary allKeys];
 
-    NSLog(@"Countries without ringback tone:");
+    NBLog(@"Countries without ringback tone:");
     int count = 0;
     for (NSString* country in countries)
     {
         if (self.tonesDictionary[country] == nil)
         {
-            NSLog(@">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> %3d: %@ :  %@", ++count, country, [[CountryNames sharedNames] nameForIsoCountryCode:country]);
+            NBLog(@">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> %3d: %@ :  %@", ++count, country, [[CountryNames sharedNames] nameForIsoCountryCode:country]);
         }
     }
 
-    NSLog(@"Ringback tones without country:");
+    NBLog(@"Ringback tones without country:");
     count = 0;
     for (NSString* tone in tones)
     {
         if ([CountryNames sharedNames].namesDictionary[tone] == nil)
         {
-            NSLog(@"++++++++++++++++++++++++++++++++ %3d: %@", ++count, tone);
+            NBLog(@"++++++++++++++++++++++++++++++++ %3d: %@", ++count, tone);
         }
     }
 

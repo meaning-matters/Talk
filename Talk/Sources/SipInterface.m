@@ -142,7 +142,7 @@ static pjsip_module mod_default_handler =
 
 void showLog(int level, const char* data, int len)
 {
-    NSLog(@"%s", data);
+    NBLog(@"%s", data);
 }
 
 
@@ -278,7 +278,7 @@ void showLog(int level, const char* data, int len)
                                                       (__bridge void*)self);
     if (result != 0)
     {
-        NSLog(@"//### Failed to set AudioRouteChange listener: %@", [Common stringWithOsStatus:result]);
+        NBLog(@"//### Failed to set AudioRouteChange listener: %@", [Common stringWithOsStatus:result]);
     }
 
     return PJ_SUCCESS;
@@ -552,7 +552,7 @@ void showLog(int level, const char* data, int len)
 
         if ((status = [self initialize]) != PJ_SUCCESS || (status = pjsua_start()) != PJ_SUCCESS)
         {
-            NSLog(@"Initializing SIP stack failed: %d.", status);
+            NBLog(@"Initializing SIP stack failed: %d.", status);
 
             static BOOL pendingRestart;
 
@@ -620,7 +620,7 @@ void showLog(int level, const char* data, int len)
                 [self.delegate sipInterface:self callEnded:call];
                 pjsua_call_set_user_data(call.callId, NULL);
 
-                NSLog(@"//### RESTART PJSIP");
+                NBLog(@"//### RESTART PJSIP");
                 [self restart];
             }
         }
@@ -654,7 +654,7 @@ void showLog(int level, const char* data, int len)
                                      samplesPerFrame, 16, PJMEDIA_TONEGEN_LOOP, &ringback_port);
     if (status != PJ_SUCCESS)
     {
-        NSLog(@"//### Failed to create tone.");
+        NBLog(@"//### Failed to create tone.");
         return;
     }
 
@@ -674,7 +674,7 @@ void showLog(int level, const char* data, int len)
     status = pjsua_conf_add_port(pool, ringback_port, &ringback_slot);
     if (status != PJ_SUCCESS)
     {
-        NSLog(@"//### Failed to create tone.");
+        NBLog(@"//### Failed to create tone.");
         return;
     }
 }
@@ -722,7 +722,7 @@ void showLog(int level, const char* data, int len)
 
     if (pjsua_call_get_count() == PJSUA_MAX_CALLS)
     {
-        NSLog(@"//### Can't make call, maximum calls (%d) reached.", PJSUA_MAX_CALLS);
+        NBLog(@"//### Can't make call, maximum calls (%d) reached.", PJSUA_MAX_CALLS);
         dispatch_async(dispatch_get_main_queue(), ^
         {
             [self.delegate sipInterface:self callFailed:call reason:SipInterfaceCallFailedTooManyCalls sipStatus:0];
@@ -780,7 +780,7 @@ void showLog(int level, const char* data, int len)
             }
             else
             {
-                NSLog(@"//### Failed to make call: %d.", status);
+                NBLog(@"//### Failed to make call: %d.", status);
                 //### We get here by compiling PJSIP with -DDEBUG (in rebuild) and PJ_ENABLE_EXTRA_CHECK (in config_site.h).
                 dispatch_block_t    block = ^
                 {
@@ -885,7 +885,7 @@ void showLog(int level, const char* data, int len)
 
     if (call.state == CallStateEnding)
     {
-        NSLog(@"//### Multiple hangup for call %d.", call.callId);
+        NBLog(@"//### Multiple hangup for call %d.", call.callId);
         
         return;
     }
@@ -903,7 +903,7 @@ void showLog(int level, const char* data, int len)
 
     if ((status = pjsua_call_hangup(call.callId, 200, NULL, &msg_data)) != PJ_SUCCESS)
     {        
-        NSLog(@"//### Hangup failed: %d", status);
+        NBLog(@"//### Hangup failed: %d", status);
         //### Inform delegate?
         //### gave 171140 PJSIP_ESESSIONTERMINATED session already terminated, when there are
         //### no calls to hangup.
@@ -973,7 +973,7 @@ void showLog(int level, const char* data, int len)
     }
     else
     {
-        NSLog(@"//### Duplicate HOLD for call %d.", call.callId);
+        NBLog(@"//### Duplicate HOLD for call %d.", call.callId);
     }
 }
 
@@ -990,7 +990,7 @@ void showLog(int level, const char* data, int len)
     status = pjsua_snd_set_setting(PJMEDIA_AUD_DEV_CAP_OUTPUT_ROUTE, &route, PJ_TRUE);
     if (status != PJ_SUCCESS)
     {
-        NSLog(@"Setting audio route failed: %d.", status);
+        NBLog(@"Setting audio route failed: %d.", status);
     }
 }
 
@@ -1064,7 +1064,7 @@ void showLog(int level, const char* data, int len)
             //### pjsua_acc.c  !Acc 3: setting registration..
             //###   sip_reg.c  .Unable to send request, regc has another transaction pending
             //### pjsua_acc.c  .Unable to create/send REGISTER: Object is busy (PJSIP_EBUSY) [status=171001]
-            NSLog(@"//### Failed to set SIP registration for account %d.", accountId);
+            NBLog(@"//### Failed to set SIP registration for account %d.", accountId);
         }
     }
 }
@@ -1085,7 +1085,7 @@ void showLog(int level, const char* data, int len)
     else
     {
         status = PJ_ENOTFOUND;
-        NSLog(@"//### setInputLevel: No conference port.");
+        NBLog(@"//### setInputLevel: No conference port.");
     }
 
     return status;
@@ -1107,7 +1107,7 @@ void showLog(int level, const char* data, int len)
     else
     {
         status = PJ_ENOTFOUND;
-        NSLog(@"//### setOutputLevel No conference port.");
+        NBLog(@"//### setOutputLevel No conference port.");
     }
     
     return status;
@@ -1179,11 +1179,11 @@ void showLog(int level, const char* data, int len)
         }
         else
         {
-            NSLog(@"//########## No PJSIP call found.");
+            NBLog(@"//########## No PJSIP call found.");
 
             if ([calls count] > 0)
             {
-                NSLog(@"//########## But there are %d app call(s).", [calls count]);
+                NBLog(@"//########## But there are %d app call(s).", [calls count]);
             }
         }
     };
@@ -1210,7 +1210,7 @@ void showLog(int level, const char* data, int len)
 
     if (status != 0)
     {
-        NSLog(@"//### Failed to get AudioRoute: %@", [Common stringWithOsStatus:status]);
+        NBLog(@"//### Failed to get AudioRoute: %@", [Common stringWithOsStatus:status]);
         
         return;
     }
@@ -1287,7 +1287,7 @@ void showLog(int level, const char* data, int len)
     {
         inputLevel  = INPUT_LEVEL_MICROPHONE;
         outputLevel = OUTPUT_LEVEL_RECEIVER;
-        NSLog(@"//### Unknown Audio Route: %@", route);
+        NBLog(@"//### Unknown Audio Route: %@", route);
     }
 
     for (Call* call in calls)
@@ -1544,7 +1544,7 @@ void showLog(int level, const char* data, int len)
         }
             
         case PJSIP_INV_STATE_INCOMING:      // After INVITE is received.
-            NSLog(@"INCOMING");
+            NBLog(@"INCOMING");
             break;
 
         case PJSIP_INV_STATE_EARLY:         // After response with To tag.
@@ -1774,7 +1774,7 @@ void showLog(int level, const char* data, int len)
             {
                 [self stopTones:callId];
                 failed = SipInterfaceCallFailedOtherSipError;
-                NSLog(@"//### Other SIP error: %d.", status);
+                NBLog(@"//### Other SIP error: %d.", status);
                 //### Store last error code in Settings, to be printed with Easter Egg dial code.
             }
             break;
@@ -1940,7 +1940,7 @@ void showLog(int level, const char* data, int len)
 /* General processing for media state. "mi" is the media index */
 - (void)onCallGenericMediaState:(pjsua_call_info*)ci state:(unsigned)mi hasError:(pj_bool_t*)has_error
 {
-    NSLog(@"MediaState ###############");
+    NBLog(@"MediaState ###############");
 
     const char *status_name[] =
     {

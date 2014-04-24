@@ -445,7 +445,7 @@
     [[NSFileManager defaultManager] removeItemAtURL:[Common audioDirectoryUrl] error:&error];
     if (error != nil)
     {
-        NSLog(@"//### Failed to remove audio directory: %@", error.localizedDescription);
+        NBLog(@"//### Failed to remove audio directory: %@", error.localizedDescription);
     }
 }
 

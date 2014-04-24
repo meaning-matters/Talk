@@ -315,7 +315,7 @@
                         }
                         else
                         {
-                            NSLog(@"//### Apparently there's no sufficiently high credit product.");
+                            NBLog(@"//### Apparently there's no sufficiently high credit product.");
                         }
                     }
                 }

@@ -113,7 +113,7 @@ typedef enum
         }
         else
         {
-            NSLog(@"//### Failed to create audio recorder: %@", error.localizedDescription);
+            NBLog(@"//### Failed to create audio recorder: %@", error.localizedDescription);
         }
 
         // Create a new managed object context for the new recording; set its parent to the fetched results controller's context.
@@ -138,7 +138,7 @@ typedef enum
         }
         else
         {
-            NSLog(@"//### Failed to create audio player: %@", error.localizedDescription);
+            NBLog(@"//### Failed to create audio player: %@", error.localizedDescription);
         }
 
         [audioPlayer prepareToPlay];
@@ -205,7 +205,7 @@ typedef enum
                                                       (__bridge void*)self);
     if (result != 0)
     {
-        NSLog(@"//### Failed to set AudioRouteChange listener: %@", [Common stringWithOsStatus:result]);
+        NBLog(@"//### Failed to set AudioRouteChange listener: %@", [Common stringWithOsStatus:result]);
     }
 }
 
@@ -240,7 +240,7 @@ typedef enum
             [[NSFileManager defaultManager] removeItemAtURL:audioRecorder.url error:&error];
             if (error != nil)
             {
-                NSLog(@"//### Failed to remove unused audio file: %@", error.localizedDescription);
+                NBLog(@"//### Failed to remove unused audio file: %@", error.localizedDescription);
             }
         }
     }
@@ -514,7 +514,7 @@ typedef enum
         }
         else
         {
-            NSLog(@"//### Failed to create audio player: %@", error.localizedDescription);
+            NBLog(@"//### Failed to create audio player: %@", error.localizedDescription);
         }
     }
 
@@ -525,7 +525,7 @@ typedef enum
 
     if ([audioPlayer play] == NO)
     {
-        NSLog(@"//### Failed to start playing");
+        NBLog(@"//### Failed to start playing");
     }
 
     isPausedPlaying = NO;
@@ -612,7 +612,7 @@ typedef enum
 
 - (void)audioRecorderEncodeErrorDidOccur:(AVAudioRecorder*)recorder error:(NSError*)error
 {
-    NSLog(@"//### Audio recorder encoding error: %@", error.localizedDescription);
+    NBLog(@"//### Audio recorder encoding error: %@", error.localizedDescription);
 }
 
 
@@ -638,7 +638,7 @@ typedef enum
 
 - (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer*)player error:(NSError*)error
 {
-    NSLog(@"//### Audio player decoding error: %@", error.localizedDescription);
+    NBLog(@"//### Audio player decoding error: %@", error.localizedDescription);
 }
 
 
@@ -722,14 +722,14 @@ typedef enum
     [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
     if (error != nil)
     {
-        NSLog(@"//### Failed to set audio-session category: %@", error.localizedDescription);
+        NBLog(@"//### Failed to set audio-session category: %@", error.localizedDescription);
 
         return;
     }
 
     if ([audioRecorder record] == NO)
     {
-        NSLog(@"//### Failed to start recording.");
+        NBLog(@"//### Failed to start recording.");
 
         return;
     }
