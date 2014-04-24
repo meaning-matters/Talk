@@ -69,15 +69,7 @@ static NSDictionary* statuses;
     NSInteger code;
     id        content = responseDictionary[@"content"];
 
-
-    //debug
-    if (content == nil)
-    {
-        NSLog(@"############################# nil see below");
-    }
-
-
-    if (responseDictionary != nil && [responseDictionary isKindOfClass:[NSDictionary class]]/* && content != nil*/)//### there's no content on error
+    if (responseDictionary != nil && [responseDictionary isKindOfClass:[NSDictionary class]])
     {
         NSString* string = responseDictionary[@"status"];
         NSNumber* number = statuses[string];

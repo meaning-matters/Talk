@@ -125,33 +125,57 @@
 }
 
 
-- (BOOL)isAccountProductIdentifier:(NSString*)productIdentifier
-{
-    return ([productIdentifier rangeOfString:ACCOUNT].location != NSNotFound);
-}
-
-
-- (BOOL)isCreditProductIdentifier:(NSString*)productIdentifier
-{
-    return ([productIdentifier rangeOfString:CREDIT].location != NSNotFound);
-}
-
-
-- (BOOL)isNumberProductIdentifier:(NSString*)productIdentifier
-{
-    return ([productIdentifier rangeOfString:NUMBER].location != NSNotFound);
-}
-
-
 - (void)completeBuyWithSuccess:(BOOL)success object:(id)object
 {
-    self.buyCompletion ? self.buyCompletion(success, object) : 0;
-    self.buyCompletion = nil;
+    if (self.buyCompletion != nil)
+    {
+        self.buyCompletion(success, object);
+        self.buyCompletion = nil;
+    }
+    else if (success == YES)
+    {
+        SKPaymentTransaction* transaction = object;
+
+        if ([self isCreditProductIdentifier:transaction.payment.productIdentifier])
+        {
+            NSString* title;
+            NSString* message;
+
+            title   = NSLocalizedStringWithDefaultValue(@"Purchase:Retry CreditTitle", nil,
+                                                        [NSBundle mainBundle], @"Credit Purchase Done",
+                                                        @".\n"
+                                                        @"[iOS alert title size - abbreviated: 'Can't Pay'].");
+            message = NSLocalizedStringWithDefaultValue(@"Purchase:Retry CreditMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Your pending credit purchase (%@) was fully processed. "
+                                                        @"(Notice that the current credit may already have been "
+                                                        @"increased earlier for this purchase.)\n\n"
+                                                        @"You can now continue buying other credit amounts.",
+                                                        @".\n"
+                                                        @"[iOS alert title size - abbreviated: 'Can't Pay'].");
+            NSString* priceString = [self localizedPriceForProductIdentifier:transaction.payment.productIdentifier];
+            message = [NSString stringWithFormat:message, priceString];
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:nil
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+        }
+    }
 }
 
 
 - (void)buyProductIdentifier:(NSString*)productIdentifier completion:(void (^)(BOOL success, id object))completion
 {
+    if ([SKPaymentQueue defaultQueue].transactions.count > 0)
+    {
+        completion(NO, nil);
+
+        [self retryPendingTransactions];
+
+        return;
+    }
+
     self.buyCompletion = completion;
 
     if ([SKPaymentQueue canMakePayments])
@@ -181,6 +205,11 @@
                                                         @"was not loaded.\n\nPlease try again later.",
                                                         @"Message telling that product was not found.\n"
                                                         @"[iOS alert title size - abbreviated: 'Can't Pay'].");
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:nil
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
 
             [self completeBuyWithSuccess:NO object:nil];
         }
@@ -260,6 +289,13 @@
 
 - (void)processCreditTransaction:(SKPaymentTransaction*)transaction
 {
+    // Return when products are not yet loaded.  This method might namely be
+    // called early when a transaction was pending.
+    if (_products == nil)
+    {
+        return;
+    }
+
     NSString* receipt = [Base64 encode:transaction.transactionReceipt];
 
     [[WebClient sharedClient] purchaseCreditForReceipt:receipt
@@ -276,8 +312,9 @@
         {
             NSString* description = NSLocalizedStringWithDefaultValue(@"Purchase:General ProcessCreditFailed", nil,
                                                                       [NSBundle mainBundle],
-                                                                      @"Could not process credit. This will be retried "
-                                                                      @"later automatically",
+                                                                      @"Could not fully process credit; "
+                                                                      @"this will be retried when credit is refreshed, "
+                                                                      @"or when you try to buy credit",
                                                                       @"Error message ...\n"
                                                                       @"[...].");
             [self completeBuyWithSuccess:NO object:[Common errorWithCode:error.code description:description]];
@@ -496,6 +533,11 @@
                 }
                 break;
 
+            case SKPaymentTransactionStateRestored:
+                [self finishTransaction:transaction];  // Finish multiple times is allowed.
+                self.restoredAccountTransaction = transaction;
+                break;
+
             case SKPaymentTransactionStateFailed:
                 if (transaction.error.code == 2)
                 {
@@ -516,11 +558,6 @@
                     [self completeBuyWithSuccess:NO object:transaction.error];
                 }
                 break;
-
-            case SKPaymentTransactionStateRestored:
-                [self finishTransaction:transaction];  // Finish multiple times is allowed.
-                self.restoredAccountTransaction = transaction;
-                break;
         }
     };
 }
@@ -529,15 +566,6 @@
 - (void)paymentQueue:(SKPaymentQueue*)queue updatedDownloads:(NSArray*)downloads
 {
     // We don't have downloads.  (This method is required, that's the only reason it's here.)
-}
-
-
-- (void)paymentQueue:(SKPaymentQueue*)queue removedTransactions:(NSArray*)transactions
-{
-    for (SKPaymentTransaction* transaction in transactions)
-    {
-        [self finishTransaction:transaction];
-    }
 }
 
 
@@ -573,6 +601,18 @@
     else
     {
         completion ? completion(_currencyCode.length > 0) : 0;
+    }
+}
+
+
+- (void)retryPendingTransactions
+{
+    for (SKPaymentTransaction* transaction in [SKPaymentQueue defaultQueue].transactions)
+    {
+        if ([self isCreditProductIdentifier:transaction.payment.productIdentifier])
+        {
+            [self processCreditTransaction:transaction];
+        }
     }
 }
 
@@ -673,8 +713,7 @@
     }
     else
     {
-#warning //### Handle this!!!
-        priceString = @"----";
+        priceString = [NSString stringWithFormat:@"%d", [self tierOfProductIdentifier:identifier]];
     }
 
     return priceString;
@@ -720,27 +759,6 @@
     }
 
     [self buyProductIdentifier:[self productIdentifierForCreditTier:tier] completion:completion];
-}
-
-
-- (int)tierForCredit:(float)credit
-{
-    NSArray* tierNumbers = @[ @(1), @(2), @(5), @(10), @(20), @(50), @(75) ];
-
-    for (NSNumber* tierNumber in tierNumbers)
-    {
-        int        tier              = [tierNumber intValue];
-        NSString*  productIdentifier = [self productIdentifierForCreditTier:tier];
-        SKProduct* product           = [self productForProductIdentifier:productIdentifier];
-        float      price             = [product.price floatValue];
-
-        if (price > credit)
-        {
-            return tier;
-        }
-    }
-
-    return 0;
 }
 
 
@@ -905,6 +923,61 @@
             self.buyCompletion = nil;
         }
     }];
+}
+
+
+- (int)tierForCredit:(float)credit
+{
+    NSArray* tierNumbers = @[ @(1), @(2), @(5), @(10), @(20), @(50), @(75) ];
+
+    for (NSNumber* tierNumber in tierNumbers)
+    {
+        int        tier              = [tierNumber intValue];
+        NSString*  productIdentifier = [self productIdentifierForCreditTier:tier];
+        SKProduct* product           = [self productForProductIdentifier:productIdentifier];
+        float      price             = [product.price floatValue];
+
+        if (price > credit)
+        {
+            return tier;
+        }
+    }
+
+    return 0;
+}
+
+
+- (int)tierOfProductIdentifier:(NSString*)identifier
+{
+    NSString*       tierString;
+    NSScanner*      scanner = [NSScanner scannerWithString:identifier];
+    NSCharacterSet* numbers = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
+
+    // Throw away characters before the tier number.
+    [scanner scanUpToCharactersFromSet:numbers intoString:NULL];
+
+    // Collect tier number.
+    [scanner scanCharactersFromSet:numbers intoString:&tierString];
+
+    return [tierString intValue];
+}
+
+
+- (BOOL)isAccountProductIdentifier:(NSString*)productIdentifier
+{
+    return ([productIdentifier rangeOfString:ACCOUNT].location != NSNotFound);
+}
+
+
+- (BOOL)isCreditProductIdentifier:(NSString*)productIdentifier
+{
+    return ([productIdentifier rangeOfString:CREDIT].location != NSNotFound);
+}
+
+
+- (BOOL)isNumberProductIdentifier:(NSString*)productIdentifier
+{
+    return ([productIdentifier rangeOfString:NUMBER].location != NSNotFound);
 }
 
 @end

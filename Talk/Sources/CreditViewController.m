@@ -365,6 +365,8 @@ typedef enum
 {
     static BOOL isShowingLoadingError;
 
+    [[PurchaseManager sharedManager] retryPendingTransactions];
+
     self.isLoadingCredit = YES;
     [self updateAmountCell:(CreditAmountCell*)[self.tableView cellForRowAtIndexPath:self.amountIndexPath]];
     
@@ -553,7 +555,6 @@ typedef enum
 - (void)updateAmountCell:(CreditAmountCell*)cell
 {
     float     credit = [Settings sharedSettings].credit;
-    
     NSString* amount = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
 
     cell.amountLabel.text      = amount;

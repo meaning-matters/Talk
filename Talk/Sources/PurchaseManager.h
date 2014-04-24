@@ -24,6 +24,8 @@
 
 - (void)loadProducts:(void (^)(BOOL success))completion;
 
+- (void)retryPendingTransactions;
+
 - (NSString*)productIdentifierForCreditTier:(int)tier;
 
 - (NSString*)productIdentifierForNumberTier:(int)tier;
@@ -40,8 +42,6 @@
 
 - (void)buyCreditForTier:(int)tier completion:(void (^)(BOOL success, id object))completion;
 
-- (int)tierForCredit:(float)credit;
-
 - (void)buyNumberForTier:(int)tier
                   months:(int)months
                     name:(NSString*)name
@@ -54,5 +54,14 @@
                     info:(NSDictionary*)info
               completion:(void (^)(BOOL success, id object))completion;
 
+- (int)tierForCredit:(float)credit;
+
+- (int)tierOfProductIdentifier:(NSString*)identifier;
+
+- (BOOL)isAccountProductIdentifier:(NSString*)productIdentifier;
+
+- (BOOL)isCreditProductIdentifier:(NSString*)productIdentifier;
+
+- (BOOL)isNumberProductIdentifier:(NSString*)productIdentifier;
 
 @end
