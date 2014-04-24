@@ -223,6 +223,7 @@ typedef enum
 
 // 34. GET CALLBACK STATE
 - (void)retrieveCallbackStateForUuid:(NSString*)uuid
+                        currencyCode:(NSString*)currencyCode
                                reply:(void (^)(NSError*  error,
                                                CallState state,
                                                CallLeg   leg,

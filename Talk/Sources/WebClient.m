@@ -891,7 +891,8 @@ static NSDictionary* statuses;
 
 
 // 16. GET CALL RATE (PER MINUTE)
-- (void)retrieveCallRateForE164:(NSString*)e164 currencyCode:(NSString*)currencyCode
+- (void)retrieveCallRateForE164:(NSString*)e164
+                   currencyCode:(NSString*)currencyCode
                           reply:(void (^)(NSError* error, float ratePerMinute))reply
 {
     NSString*     number     = [e164 substringFromIndex:1];
@@ -1114,6 +1115,7 @@ static NSDictionary* statuses;
 
 // 34. GET CALLBACK STATE
 - (void)retrieveCallbackStateForUuid:(NSString*)uuid
+                        currencyCode:(NSString*)currencyCode
                                reply:(void (^)(NSError*  error,
                                                CallState state,
                                                CallLeg   leg,
@@ -1122,9 +1124,9 @@ static NSDictionary* statuses;
                                                float     callbackCost,
                                                float     outgoingCost))reply
 {
-    NSString* username = [Settings sharedSettings].webUsername;
+    NSString*     username   = [Settings sharedSettings].webUsername;
 
-    [self getPath:[NSString stringWithFormat:@"users/%@/callback/%@", username, uuid]
+    [self getPath:[NSString stringWithFormat:@"users/%@/callback/%@?currencyCode=%@", username, uuid, currencyCode]
        parameters:nil
             reply:^(NSError* error, id content)
     {
