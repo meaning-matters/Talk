@@ -552,7 +552,7 @@
 
 - (void)findContactsHavingNumber:(NSString*)number completion:(void(^)(NSArray* contactIds))completion
 {
-    NBPeopleListViewController* viewController = self.peoplePickerViewController.viewControllers[0];
+    NBPeopleListViewController* viewController = [self.peoplePickerViewController listViewController];
 
     return [viewController findContactsHavingNumber:number completion:completion];
 }
@@ -560,7 +560,7 @@
 
 - (NSString*)contactNameForId:(NSString*)contactId
 {
-    NBPeopleListViewController* viewController = self.peoplePickerViewController.viewControllers[0];
+    NBPeopleListViewController* viewController = [self.peoplePickerViewController listViewController];
 
     return [viewController contactNameForId:contactId];
 }
