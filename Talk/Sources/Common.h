@@ -127,4 +127,8 @@ static const int TextFieldCellTag = 1111;
 
 + (UITextField*)addTextFieldToCell:(UITableViewCell*)cell delegate:(id<UITextFieldDelegate>)delegate;
 
++ (void)getCostForCallbackE164:(NSString*)callbackE164
+                  outgoingE164:(NSString*)outgoingE164
+                    completion:(void (^)(NSString* costString))completion;
+
 @end

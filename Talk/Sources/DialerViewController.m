@@ -264,9 +264,48 @@
 
 - (void)update
 {
+    static NSString* callbackE164;
+    static NSString* outgoingE164;
+    static NSString* costString;
+
+    if (phoneNumber.isValid)
+    {
+        if ([callbackE164 isEqualToString:[Settings sharedSettings].callbackE164] == NO ||
+            [outgoingE164 isEqualToString:phoneNumber.e164Format] == NO)
+        {
+            callbackE164 = [Settings sharedSettings].callbackE164;
+            outgoingE164 = phoneNumber.e164Format;
+
+            [Common getCostForCallbackE164:[Settings sharedSettings].callbackE164
+                              outgoingE164:phoneNumber.e164Format
+                                completion:^(NSString* theCostString)
+             {
+                 if (theCostString != nil)
+                 {
+                     costString = theCostString;
+                     self.infoLabel.text = [NSString stringWithFormat:@"%@ - %@", [phoneNumber infoString], costString];
+                 }
+             }];
+        }
+    }
+    else
+    {
+        callbackE164 = nil;
+        outgoingE164 = nil;
+        costString   = nil;
+    }
+
     [self updateReachable];
 
-    self.infoLabel.text   = [phoneNumber infoString];
+    if (costString == nil)
+    {
+        self.infoLabel.text = [phoneNumber infoString];
+    }
+    else
+    {
+        self.infoLabel.text = [NSString stringWithFormat:@"%@ - %@", [phoneNumber infoString], costString];
+    }
+
     self.numberLabel.text = [phoneNumber asYouTypeFormat];
 
     if (phoneNumber.isEmergency)

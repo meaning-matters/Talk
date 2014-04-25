@@ -279,7 +279,7 @@ static NSString*    defaultIsoCountryCode = @"";
         NSString*   country = [[CountryNames sharedNames] nameForIsoCountryCode:[self isoCountryCode]];
         if ([country length] > 0)
         {
-            country = [NSString stringWithFormat:@"%@ - ", country];
+            country = [NSString stringWithFormat:@"%@%@", country, ([self typeString].length > 0) ? @" - " : @""];
         }
         else
         {

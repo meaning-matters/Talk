@@ -101,6 +101,8 @@ static NSDictionary* statuses;
     }
     else
     {
+        NSLog(@"Unknown error: %@", error);
+
         // Very unlikely that AFNetworking fails without error being set.
         NSInteger code = WebClientStatusFailUnknown;
         reply([Common errorWithCode:code description:[WebClient localizedStringForStatus:code]], nil);
@@ -400,7 +402,7 @@ static NSDictionary* statuses;
        parameters:nil
           success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
-        NBLog(@"postPath request: %@", operation.request.URL);
+        NBLog(@"getPath request: %@", operation.request.URL);
 
         [self handleSuccess:responseObject reply:^(NSError* error, id content)
         {
@@ -895,21 +897,25 @@ static NSDictionary* statuses;
                    currencyCode:(NSString*)currencyCode
                           reply:(void (^)(NSError* error, float ratePerMinute))reply
 {
-    NSString*     number     = [e164 substringFromIndex:1];
-    NSDictionary* parameters = @{@"currencyCode" : currencyCode};
+    NSString* number = [e164 substringFromIndex:1];
 
-    [self getPath:[NSString stringWithFormat:@"rate/%@", number]
-       parameters:parameters
-            reply:^(NSError* error, id content)
+    [self getPath:[NSString stringWithFormat:@"rate/%@?currencyCode=%@", number, currencyCode]
+       parameters:nil
+          success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
-        if (error == nil)
+        NBLog(@"getPath request: %@", operation.request.URL);
+
+        [self handleSuccess:responseObject reply:^(NSError* error, id content)
         {
-            reply(nil, [content[@"rate"] floatValue]);
-        }
-        else
+            reply(error, [content[@"rate"] floatValue]);
+        }];
+    }
+          failure:^(AFHTTPRequestOperation* operation, NSError* error)
+    {
+        [self handleFailure:error reply:^(NSError* error, id content)
         {
             reply(error, 0.0f);
-        }
+        }];
     }];
 }
 

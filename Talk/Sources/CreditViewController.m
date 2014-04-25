@@ -308,7 +308,9 @@ typedef enum
                             message = NSLocalizedStringWithDefaultValue(@"Credit VerifyInvalidMessage", nil,
                                                                         [NSBundle mainBundle],
                                                                         @"The phone number you entered is invalid, "
-                                                                        @"please correct.",
+                                                                        @"please correct, check the Home Country on "
+                                                                        @"the Settings tab, or enter an international "
+                                                                        @"number (starting with '+').",
                                                                         @"Alert message that entered phone number is invalid.\n"
                                                                         @"[iOS alert message size]");
                             [BlockAlertView showAlertViewWithTitle:title

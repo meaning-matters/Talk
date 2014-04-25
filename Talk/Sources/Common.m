@@ -19,6 +19,8 @@
 #import "AFNetworkActivityIndicatorManager.h"
 #import "Skinning.h"
 #import "GetStartedViewController.h"
+#import "WebClient.h"
+#import "PurchaseManager.h"
 
 
 @interface Common ()
@@ -949,6 +951,43 @@ static Common* sharedCommon;
     [cell.contentView addSubview:textField];
 
     return textField;
+}
+
+
++ (void)getCostForCallbackE164:(NSString*)callbackE164
+                  outgoingE164:(NSString*)outgoingE164
+                    completion:(void (^)(NSString* costString))completion
+{
+    __block float totalCost = 0.0f;
+
+    [[WebClient sharedClient] retrieveCallRateForE164:callbackE164
+                                         currencyCode:[Settings sharedSettings].currencyCode
+                                                reply:^(NSError *error, float ratePerMinute)
+    {
+        if (error == nil)
+        {
+            totalCost = ratePerMinute;
+
+            [[WebClient sharedClient] retrieveCallRateForE164:outgoingE164
+                                                  currencyCode:[Settings sharedSettings].currencyCode
+                                                         reply:^(NSError *error, float ratePerMinute)
+            {
+                if (error == nil)
+                {
+                    totalCost += ratePerMinute;
+                    completion([[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:totalCost]);
+                }
+                else
+                {
+                    completion(nil);
+                }
+            }];
+        }
+        else
+        {
+            completion(nil);
+        }
+    }];
 }
 
 @end

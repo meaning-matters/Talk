@@ -113,7 +113,8 @@
                                                     @"...");
         message = NSLocalizedStringWithDefaultValue(@"GetStartedAction NoCurrencyCodeMessage", nil, [NSBundle mainBundle],
                                                     @"Information from the iTunes Store has not been loaded (yet).\n\n"
-                                                    @"Please make sure you're connected to internet, and try again.",
+                                                    @"Please make sure your iTunes Store account is active on this device, "
+                                                    @"and you're connected to internet.",
                                                     @"...\n"
                                                     @"...");
         [BlockAlertView showAlertViewWithTitle:title

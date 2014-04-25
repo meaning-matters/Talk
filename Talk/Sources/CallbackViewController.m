@@ -17,6 +17,7 @@
 #import "Strings.h"
 #import "Settings.h"
 #import "NetworkStatus.h"
+#import "PurchaseManager.h"
 
 
 @interface CallbackViewController ()
@@ -56,9 +57,19 @@
     self.calleeLabel.text = self.call.contactId ? self.call.contactName : [self.call.phoneNumber asYouTypeFormat];
     self.statusLabel.text = [self.call stateString];
 
+    [Common getCostForCallbackE164:[Settings sharedSettings].callbackE164
+                      outgoingE164:self.call.phoneNumber.e164Format
+                        completion:^(NSString* costString)
+    {
+        if (costString != nil)
+        {
+            self.infoLabel.text = [NSString stringWithFormat:@"%@ - %@", [self.call.phoneNumber infoString], costString];
+        }
+    }];
+
     [self.calleeLabel setFont:[Common phoneFontOfSize:38]];
 
-    CGRect  frame = CGRectMake(0, 0, self.centerRootView.frame.size.width, self.centerRootView.frame.size.height);
+    CGRect frame = CGRectMake(0, 0, self.centerRootView.frame.size.width, self.centerRootView.frame.size.height);
     callMessageView = [[CallMessageView alloc] initWithFrame:frame];
 
     [self.centerRootView addSubview:callMessageView];
