@@ -215,12 +215,10 @@
 		483B078F1908017900E8C42D /* Terms.json in Resources */ = {isa = PBXBuildFile; fileRef = 483B078E1908017900E8C42D /* Terms.json */; };
 		483ECFF217A4F60B0032B8FF /* deleteButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 483ECFEA17A4F60B0032B8FF /* deleteButton.png */; };
 		483ECFF317A4F60B0032B8FF /* editPhotoBottomBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 483ECFEB17A4F60B0032B8FF /* editPhotoBottomBar.png */; };
-		483ECFF417A4F60B0032B8FF /* editPhotoButtonFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 483ECFEC17A4F60B0032B8FF /* editPhotoButtonFrame.png */; };
 		483ECFF517A4F60B0032B8FF /* editPhotoLeftButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 483ECFED17A4F60B0032B8FF /* editPhotoLeftButton.png */; };
 		483ECFF617A4F60B0032B8FF /* editPhotoLeftButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 483ECFEE17A4F60B0032B8FF /* editPhotoLeftButtonHighlighted.png */; };
 		483ECFF717A4F60B0032B8FF /* editPhotoRightButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 483ECFEF17A4F60B0032B8FF /* editPhotoRightButton.png */; };
 		483ECFF817A4F60B0032B8FF /* editPhotoRightButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 483ECFF017A4F60B0032B8FF /* editPhotoRightButtonHighlighted.png */; };
-		483ECFF917A4F60B0032B8FF /* editPhotoTopBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 483ECFF117A4F60B0032B8FF /* editPhotoTopBar.png */; };
 		483ECFFD17A4F65D0032B8FF /* outgoingCall.png in Resources */ = {isa = PBXBuildFile; fileRef = 483ECFFA17A4F65D0032B8FF /* outgoingCall.png */; };
 		483ECFFE17A4F65D0032B8FF /* portraitBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 483ECFFB17A4F65D0032B8FF /* portraitBackground.png */; };
 		483ECFFF17A4F65D0032B8FF /* portraitLine.png in Resources */ = {isa = PBXBuildFile; fileRef = 483ECFFC17A4F65D0032B8FF /* portraitLine.png */; };
@@ -1109,6 +1107,7 @@
 		48EDD23F1667A0B6007B89DA /* CallOptionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 48EDD23D1667A0B6007B89DA /* CallOptionButton.m */; };
 		48F1B7E117E63819003A3933 /* NumberForwardingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F1B7E017E63819003A3933 /* NumberForwardingsViewController.m */; };
 		48F1B7E217E63819003A3933 /* NumberForwardingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F1B7E017E63819003A3933 /* NumberForwardingsViewController.m */; };
+		48F2F5F4190B9DDC0093E72F /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F2F5F3190B9DDC0093E72F /* UIImage+Resize.m */; };
 		48F47BBF18BE9C01006A6436 /* ItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F47BBE18BE9C01006A6436 /* ItemViewController.m */; };
 		48F5D2ED16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
 		48F5D2EE16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
@@ -1322,12 +1321,10 @@
 		483B078E1908017900E8C42D /* Terms.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Terms.json; path = Resources/Terms.json; sourceTree = "<group>"; };
 		483ECFEA17A4F60B0032B8FF /* deleteButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = deleteButton.png; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/deleteButton.png; sourceTree = "<group>"; };
 		483ECFEB17A4F60B0032B8FF /* editPhotoBottomBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = editPhotoBottomBar.png; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/editPhotoBottomBar.png; sourceTree = "<group>"; };
-		483ECFEC17A4F60B0032B8FF /* editPhotoButtonFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = editPhotoButtonFrame.png; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/editPhotoButtonFrame.png; sourceTree = "<group>"; };
 		483ECFED17A4F60B0032B8FF /* editPhotoLeftButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = editPhotoLeftButton.png; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/editPhotoLeftButton.png; sourceTree = "<group>"; };
 		483ECFEE17A4F60B0032B8FF /* editPhotoLeftButtonHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = editPhotoLeftButtonHighlighted.png; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/editPhotoLeftButtonHighlighted.png; sourceTree = "<group>"; };
 		483ECFEF17A4F60B0032B8FF /* editPhotoRightButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = editPhotoRightButton.png; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/editPhotoRightButton.png; sourceTree = "<group>"; };
 		483ECFF017A4F60B0032B8FF /* editPhotoRightButtonHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = editPhotoRightButtonHighlighted.png; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/editPhotoRightButtonHighlighted.png; sourceTree = "<group>"; };
-		483ECFF117A4F60B0032B8FF /* editPhotoTopBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = editPhotoTopBar.png; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/editPhotoTopBar.png; sourceTree = "<group>"; };
 		483ECFFA17A4F65D0032B8FF /* outgoingCall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = outgoingCall.png; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/outgoingCall.png; sourceTree = "<group>"; };
 		483ECFFB17A4F65D0032B8FF /* portraitBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = portraitBackground.png; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/portraitBackground.png; sourceTree = "<group>"; };
 		483ECFFC17A4F65D0032B8FF /* portraitLine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = portraitLine.png; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/portraitLine.png; sourceTree = "<group>"; };
@@ -2139,6 +2136,8 @@
 		48EE399816777EEC00823E09 /* libWebRTC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWebRTC.a; path = External/WebRTC/libWebRTC.a; sourceTree = "<group>"; };
 		48F1B7DF17E63819003A3933 /* NumberForwardingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberForwardingsViewController.h; sourceTree = "<group>"; };
 		48F1B7E017E63819003A3933 /* NumberForwardingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberForwardingsViewController.m; sourceTree = "<group>"; };
+		48F2F5F2190B9DDC0093E72F /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
+		48F2F5F3190B9DDC0093E72F /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
 		48F47BBD18BE9C01006A6436 /* ItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemViewController.h; sourceTree = "<group>"; };
 		48F47BBE18BE9C01006A6436 /* ItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemViewController.m; sourceTree = "<group>"; };
 		48F5D2EB16B9A380001576E1 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
@@ -2389,6 +2388,8 @@
 				48ADD0F61706791A001515EB /* UIView+AnimateHidden.m */,
 				4877EDBA17AD27700013B18F /* PhoneNumberTextFieldDelegate.h */,
 				4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */,
+				48F2F5F2190B9DDC0093E72F /* UIImage+Resize.h */,
+				48F2F5F3190B9DDC0093E72F /* UIImage+Resize.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -2595,12 +2596,10 @@
 				483ECFFC17A4F65D0032B8FF /* portraitLine.png */,
 				483ECFEA17A4F60B0032B8FF /* deleteButton.png */,
 				483ECFEB17A4F60B0032B8FF /* editPhotoBottomBar.png */,
-				483ECFEC17A4F60B0032B8FF /* editPhotoButtonFrame.png */,
 				483ECFED17A4F60B0032B8FF /* editPhotoLeftButton.png */,
 				483ECFEE17A4F60B0032B8FF /* editPhotoLeftButtonHighlighted.png */,
 				483ECFEF17A4F60B0032B8FF /* editPhotoRightButton.png */,
 				483ECFF017A4F60B0032B8FF /* editPhotoRightButtonHighlighted.png */,
-				483ECFF117A4F60B0032B8FF /* editPhotoTopBar.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -4327,13 +4326,11 @@
 				4865A9DB1792C5550028785F /* BuyNumberCell.xib in Resources */,
 				483ECFF217A4F60B0032B8FF /* deleteButton.png in Resources */,
 				483ECFF317A4F60B0032B8FF /* editPhotoBottomBar.png in Resources */,
-				483ECFF417A4F60B0032B8FF /* editPhotoButtonFrame.png in Resources */,
 				483ECFF517A4F60B0032B8FF /* editPhotoLeftButton.png in Resources */,
 				483ECFF617A4F60B0032B8FF /* editPhotoLeftButtonHighlighted.png in Resources */,
 				483B078F1908017900E8C42D /* Terms.json in Resources */,
 				483ECFF717A4F60B0032B8FF /* editPhotoRightButton.png in Resources */,
 				483ECFF817A4F60B0032B8FF /* editPhotoRightButtonHighlighted.png in Resources */,
-				483ECFF917A4F60B0032B8FF /* editPhotoTopBar.png in Resources */,
 				483ECFFD17A4F65D0032B8FF /* outgoingCall.png in Resources */,
 				483ECFFE17A4F65D0032B8FF /* portraitBackground.png in Resources */,
 				483ECFFF17A4F65D0032B8FF /* portraitLine.png in Resources */,
@@ -4605,6 +4602,7 @@
 				48A261C416FDE32400007638 /* CallMessageView.m in Sources */,
 				488FBBDA17007CC6000ECC71 /* DataManager.m in Sources */,
 				488FBBE21700852F000ECC71 /* NumberData.m in Sources */,
+				48F2F5F4190B9DDC0093E72F /* UIImage+Resize.m in Sources */,
 				48BC7F3C1702FDD1006671B5 /* NumberViewController.m in Sources */,
 				489387FB17039158005CC795 /* ForwardingData.m in Sources */,
 				489387FF17039165005CC795 /* RecordingData.m in Sources */,

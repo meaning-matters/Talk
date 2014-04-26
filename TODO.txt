@@ -173,3 +173,5 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 
 * Add number virification API that break off the process: so stops calling. Then in app the <Phone back button can be
   enabled again and handled in UIVC's willMoveToParentViewController when parent == nil
+  
+* Received memory warning.: Tijdens maken/editen contact image.

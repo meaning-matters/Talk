@@ -10,7 +10,7 @@
 #import "Call.h"
 
 
-const NSTimeInterval    TransitionDuration = 0.5;
+const NSTimeInterval TransitionDuration = 0.5;
 
 
 @interface CallBaseViewController : UIViewController

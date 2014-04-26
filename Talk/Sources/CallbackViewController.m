@@ -440,7 +440,8 @@
                                                                    @"You declined an incoming call. This resulted in an "
                                                                    @"automatic attempt to stop the callback. But "
                                                                    @"this attempt failed: %@\n\nThis may mean that "
-                                                                   @"your callee got connected to your voicemail.",
+                                                                   @"the person you're trying to reach got connected to "
+                                                                   @"your voicemail.",
                                                                    @"Alert message: ...\n"
                                                                    @"[N lines]");
                         callMessageView.label.text = [NSString stringWithFormat:format, error.localizedDescription];
