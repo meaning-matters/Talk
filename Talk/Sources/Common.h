@@ -131,4 +131,7 @@ static const int TextFieldCellTag = 1111;
                   outgoingE164:(NSString*)outgoingE164
                     completion:(void (^)(NSString* costString))completion;
 
++ (void)aksForCallbackPhoneNumber:(PhoneNumber*)phoneNumber
+                       completion:(void (^)(BOOL cancelled, PhoneNumber* phoneNumber))completion;
+
 @end

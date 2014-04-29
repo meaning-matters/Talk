@@ -359,7 +359,7 @@ typedef enum
                                                                 @"a fixed-line phone, or to use a local SIM from the "
                                                                 @"country you're in.\n\nPeople you call will never see "
                                                                 @"which number you selected here; unless of course, you "
-                                                                @"also select the same number as Caller ID).",
+                                                                @"also select the same number as Caller ID.",
                                                                 @"\n"
                                                                 @"[1/4 line larger font].");
                 phonesViewController.headerTitle = headerTitle;

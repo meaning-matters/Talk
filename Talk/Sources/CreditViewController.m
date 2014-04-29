@@ -22,8 +22,8 @@
 typedef enum
 {
     TableSectionAmount = 1UL << 0,
-    TableSectionRates  = 1UL << 1,
-    TableSectionBuy    = 1UL << 2,
+    TableSectionRates  = 1UL << 2,
+    TableSectionBuy    = 1UL << 1,
 } TableSection;
 
 
@@ -181,7 +181,7 @@ typedef enum
 
         case TableSectionRates:
             title = NSLocalizedStringWithDefaultValue(@"creditView:... RatesCreditHeader", nil, [NSBundle mainBundle],
-                                                      @"What You Pay",
+                                                      @"Best Prices You Pay Per Minute",
                                                       @"[One line larger font]");
             break;
 
@@ -218,7 +218,14 @@ typedef enum
             break;
 
         case TableSectionRates:
-            title = nil;
+            title = NSLocalizedStringWithDefaultValue(@"Call Rates:... TableFooter", nil, [NSBundle mainBundle],
+                                                      @"There are thousands of call rates. To keep things simple, "
+                                                      @"only the best prices are shown. These are very close to what "
+                                                      @"you'll pay most of the time, but there are exceptions. "
+                                                      @"See the Credit section on the Help tab for more info.\n\n"
+                                                      @"(The actual price for a number is shown on the Dialer, "
+                                                      @"and when you make a call.)",
+                                                      @"[Multiple lines]");
             break;
 
         case TableSectionBuy:
@@ -264,71 +271,23 @@ typedef enum
             }
             else
             {
-                __block BlockAlertView* alert;
-                NSString*               title;
-                NSString*               message;
-
-                title   = NSLocalizedStringWithDefaultValue(@"Credit EnterNumberTitle", nil,
-                                                            [NSBundle mainBundle], @"Enter Callback Number",
-                                                            @"Title asking user to enter their phone number.\n"
-                                                            @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyCancelMessage", nil,
-                                                            [NSBundle mainBundle],
-                                                            @"A call has two parts: calling you back, and "
-                                                            @"calling the other person.\n\nFor correct rates, enter "
-                                                            @"a number you would be called back on.",
-                                                            @"Message explaining about the phone number they need to enter.\n"
-                                                            @"[iOS alert message size]");
-                alert   = [BlockAlertView showPhoneNumberAlertViewWithTitle:title
-                                                                    message:message
-                                                                phoneNumber:self.callbackPhoneNumber
-                                                                 completion:^(BOOL         cancelled,
-                                                                              PhoneNumber* phoneNumber)
+                [Common aksForCallbackPhoneNumber:self.callbackPhoneNumber
+                                       completion:^(BOOL cancelled, PhoneNumber* phoneNumber)
                 {
-                    if (cancelled == NO)
+                    self.callbackPhoneNumber = phoneNumber;
+
+                    if (cancelled == NO && phoneNumber.isValid)
                     {
-                        self.callbackPhoneNumber = phoneNumber;
+                        CallRatesViewController* viewController;
 
-                        if (phoneNumber.isValid)
-                        {
-                            CallRatesViewController* viewController;
-
-                            viewController = [[CallRatesViewController alloc] initWithCallbackPhoneNumber:phoneNumber];
-                            [self.navigationController pushViewController:viewController animated:YES];
-                        }
-                        else
-                        {
-                            NSString* title;
-                            NSString* message;
-
-                            title   = NSLocalizedStringWithDefaultValue(@"Credit VerifyInvalidTitle", nil,
-                                                                        [NSBundle mainBundle], @"Invalid Number",
-                                                                        @"Phone number is not correct.\n"
-                                                                        @"[iOS alert title size].");
-                            message = NSLocalizedStringWithDefaultValue(@"Credit VerifyInvalidMessage", nil,
-                                                                        [NSBundle mainBundle],
-                                                                        @"The phone number you entered is invalid, "
-                                                                        @"please correct, check the Home Country on "
-                                                                        @"the Settings tab, or enter an international "
-                                                                        @"number (starting with '+').",
-                                                                        @"Alert message that entered phone number is invalid.\n"
-                                                                        @"[iOS alert message size]");
-                            [BlockAlertView showAlertViewWithTitle:title
-                                                           message:message
-                                                        completion:nil
-                                                 cancelButtonTitle:[Strings closeString]
-                                                 otherButtonTitles:nil];
-
-                            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                        }
+                        viewController = [[CallRatesViewController alloc] initWithCallbackPhoneNumber:phoneNumber];
+                        [self.navigationController pushViewController:viewController animated:YES];
                     }
                     else
                     {
                         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                     }
-                }
-                                                          cancelButtonTitle:[Strings cancelString]
-                                                          otherButtonTitles:[Strings okString], nil];
+                }];
             }
             break;
         }

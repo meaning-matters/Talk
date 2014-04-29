@@ -22,9 +22,11 @@
 
 @interface DialerViewController () <NumberLabelDelegate, NBNewPersonViewControllerDelegate>
 {
-    PhoneNumber* phoneNumber;    // Holds the current number on screen.
+    PhoneNumber* phoneNumber;           // Holds the current number on screen.
     NSString*    contactId;
     BOOL         contactIdUpdated;
+    NSString*    costString;
+    PhoneNumber* callbackPhoneNumber;   // Only used in 'look' mode.
 }
 
 @end
@@ -262,11 +264,25 @@
 }
 
 
+- (void)updateCostForCallbackE164:(NSString*)callbackE164 outgoingE164:(NSString*)outgoingE164
+{
+    [Common getCostForCallbackE164:callbackE164
+                      outgoingE164:phoneNumber.e164Format
+                        completion:^(NSString* theCostString)
+    {
+        if (theCostString != nil)
+        {
+            costString = theCostString;
+            self.infoLabel.text = [NSString stringWithFormat:@"%@ - %@", [phoneNumber infoString], costString];
+        }
+    }];
+}
+
+
 - (void)update
 {
     static NSString* callbackE164;
     static NSString* outgoingE164;
-    static NSString* costString;
 
     if (phoneNumber.isValid)
     {
@@ -276,16 +292,23 @@
             callbackE164 = [Settings sharedSettings].callbackE164;
             outgoingE164 = phoneNumber.e164Format;
 
-            [Common getCostForCallbackE164:[Settings sharedSettings].callbackE164
-                              outgoingE164:phoneNumber.e164Format
-                                completion:^(NSString* theCostString)
-             {
-                 if (theCostString != nil)
-                 {
-                     costString = theCostString;
-                     self.infoLabel.text = [NSString stringWithFormat:@"%@ - %@", [phoneNumber infoString], costString];
-                 }
-             }];
+            if ([Settings sharedSettings].callbackE164.length > 0)
+            {
+                [self updateCostForCallbackE164:callbackE164 outgoingE164:outgoingE164];
+            }
+            else
+            {
+                [Common aksForCallbackPhoneNumber:callbackPhoneNumber
+                                       completion:^(BOOL cancelled, PhoneNumber* aPhoneNumber)
+                {
+                    callbackPhoneNumber = aPhoneNumber;
+
+                    if (cancelled == NO && aPhoneNumber.isValid)
+                    {
+                        [self updateCostForCallbackE164:callbackPhoneNumber.e164Format  outgoingE164:outgoingE164];
+                    }
+                }];
+            }
         }
     }
     else

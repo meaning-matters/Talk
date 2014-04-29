@@ -990,4 +990,68 @@ static Common* sharedCommon;
     }];
 }
 
+
++ (void)aksForCallbackPhoneNumber:(PhoneNumber*)phoneNumber
+                       completion:(void (^)(BOOL cancelled, PhoneNumber* phoneNumber))completion
+{
+    __block BlockAlertView* alert;
+    NSString*               title;
+    NSString*               message;
+
+    title   = NSLocalizedStringWithDefaultValue(@"Credit EnterNumberTitle", nil, [NSBundle mainBundle],
+                                                @"Enter Callback Number",
+                                                @"Title asking user to enter their phone number.\n"
+                                                @"[iOS alert title size].");
+    message = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyCancelMessage", nil, [NSBundle mainBundle],
+                                                @"To show correct rates, enter a number you'd be called "
+                                                @"back on.\n\n"
+                                                @"(This popup won't show up when you're a user, and the Callback Number "
+                                                @"on Settings is selected.)",
+                                                @"Message explaining about the phone number they need to enter.\n"
+                                                @"[iOS alert message size]");
+    alert   = [BlockAlertView showPhoneNumberAlertViewWithTitle:title
+                                                        message:message
+                                                    phoneNumber:phoneNumber
+                                                     completion:^(BOOL cancelled, PhoneNumber* phoneNumber)
+    {
+        if (cancelled == NO)
+        {
+            if (phoneNumber.isValid)
+            {
+                completion(cancelled, phoneNumber);
+            }
+            else
+            {
+                NSString* title;
+                NSString* message;
+
+                title   = NSLocalizedStringWithDefaultValue(@"Credit VerifyInvalidTitle", nil,
+                                                            [NSBundle mainBundle], @"Invalid Number",
+                                                            @"Phone number is not correct.\n"
+                                                            @"[iOS alert title size].");
+                message = NSLocalizedStringWithDefaultValue(@"Credit VerifyInvalidMessage", nil,
+                                                            [NSBundle mainBundle],
+                                                            @"The number you entered seems invalid.\n\nPlease correct, "
+                                                            @"enter an international number (starting with '+'), "
+                                                            @"or check/choose the Home Country on the Settings tab.",
+                                                            @"Alert message that entered phone number is invalid.\n"
+                                                            @"[iOS alert message size]");
+                [BlockAlertView showAlertViewWithTitle:title
+                                               message:message
+                                            completion:nil
+                                     cancelButtonTitle:[Strings closeString]
+                                     otherButtonTitles:nil];
+
+                completion(NO, phoneNumber);
+            }
+        }
+        else
+        {
+            completion(NO, phoneNumber);
+        }
+    }
+                                              cancelButtonTitle:[Strings cancelString]
+                                              otherButtonTitles:[Strings okString], nil];
+}
+
 @end
