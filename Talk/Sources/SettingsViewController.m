@@ -231,7 +231,7 @@ typedef enum
 #else
             title = NSLocalizedStringWithDefaultValue(@"Settings:CallbackInfo SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"Our server first calls the Callack Number. Then, when you "
+                                                      @"Our server first calls the Callback Number. Then, when you "
                                                       @"accept that call, the party you're tying to reach is being "
                                                       @"called, and is show Caller ID (when the Show My Caller "
                                                       @"ID setting is on).",
