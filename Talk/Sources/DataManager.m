@@ -179,12 +179,20 @@
 {
     [self.managedObjectContext lock];
 
+    // Make sure that all objects appear in registeredObjects.
+    [self fetchEntitiesWithName:@"Phone"                sortKeys:nil predicate:nil managedObjectContext:nil];
+    [self fetchEntitiesWithName:@"NBRecentContactEntry" sortKeys:nil predicate:nil managedObjectContext:nil];
+
     for (NSManagedObject* object in [self.managedObjectContext registeredObjects])
     {
         [self.managedObjectContext deleteObject:object];
     }
 
-    [self saveManagedObjectContext:nil];
+    NSError* error = nil;
+    if ([self.managedObjectContext save:&error] == NO)
+    {
+        [self handleError:error];
+    }
 
     [_managedObjectContext unlock];
 }
