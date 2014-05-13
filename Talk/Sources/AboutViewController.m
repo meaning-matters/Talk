@@ -92,7 +92,7 @@
 {
     NSData*                 data                = [Common dataForResource:@"Terms" ofType:@"json"];
     NSDictionary*           dictionary          = [Common objectWithJsonData:data];
-    HtmlViewController*     termsViewController = [[HtmlViewController alloc] initWithDictionary:dictionary];
+    HtmlViewController*     termsViewController = [[HtmlViewController alloc] initWithDictionary:dictionary modal:YES];
     UINavigationController* modalViewController;
 
     modalViewController = [[UINavigationController alloc] initWithRootViewController:termsViewController];

@@ -12,6 +12,6 @@
 
 @property (nonatomic, weak) IBOutlet UIWebView* webView;
 
-- (instancetype)initWithDictionary:(NSDictionary*)dictionary;
+- (instancetype)initWithDictionary:(NSDictionary*)dictionary modal:(BOOL)modal;
 
 @end

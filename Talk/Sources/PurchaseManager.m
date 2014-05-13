@@ -167,11 +167,12 @@
 {
     if ([SKPaymentQueue defaultQueue].transactions.count > 0)
     {
-        completion(NO, nil);
+        if ([self retryPendingTransactions] == YES)
+        {
+            completion(NO, nil);
 
-        [self retryPendingTransactions];
-
-        return;
+            return;
+        }
     }
 
     self.buyCompletion = completion;
@@ -449,8 +450,6 @@
 
     // Force a load.
     self.loadProductsDate = nil;
-
-    NBLog(@"//### Failed to load list of products.");
 }
 
 
@@ -603,15 +602,23 @@
 }
 
 
-- (void)retryPendingTransactions
+- (BOOL)retryPendingTransactions
 {
+    BOOL result = YES;
+
     for (SKPaymentTransaction* transaction in [SKPaymentQueue defaultQueue].transactions)
     {
         if ([self isCreditProductIdentifier:transaction.payment.productIdentifier])
         {
             [self processCreditTransaction:transaction];
         }
+        else
+        {
+            result = NO;    // Indicates that caller must continue processing other (i.e., Account) transaction.
+        }
     }
+
+    return result;
 }
 
 
@@ -720,7 +727,7 @@
 
 - (void)buyAccount:(void (^)(BOOL success, id object))completion
 {
-    if (self.buyCompletion != nil || [Common checkRemoteNotifications] == NO)
+    if (self.buyCompletion != nil)
     {
         completion ? completion(NO, nil) : 0;
 
@@ -733,7 +740,7 @@
 
 - (void)restoreAccount:(void (^)(BOOL success, id object))completion
 {
-    if (self.buyCompletion != nil || [Common checkRemoteNotifications] == NO)
+    if (self.buyCompletion != nil)
     {
         completion ? completion(NO, nil) : 0;
 

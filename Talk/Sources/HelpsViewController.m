@@ -240,7 +240,7 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionTexts:
-            htmlViewController = [[HtmlViewController alloc] initWithDictionary:helpsArray[indexPath.row]];
+            htmlViewController = [[HtmlViewController alloc] initWithDictionary:helpsArray[indexPath.row] modal:NO];
             [self.navigationController pushViewController:htmlViewController animated:YES];
             break;
 

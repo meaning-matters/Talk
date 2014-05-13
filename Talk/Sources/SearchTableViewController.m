@@ -171,19 +171,15 @@
 {
     [self filterContentForSearchText:searchString];
 
-    // Return YES to cause the search result table view to be reloaded.
-    return YES;
-}
-
-
-- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller
-{
     //### Workaround for iOS issue with setting insets.
     if (controller.searchResultsTableView.contentInset.bottom != 0)
     {
         [controller.searchResultsTableView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
         [controller.searchResultsTableView setScrollIndicatorInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     }
+
+    // Return YES to cause the search result table view to be reloaded.
+    return YES;
 }
 
 

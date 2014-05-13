@@ -95,7 +95,7 @@
         self.button.alpha   = 1.0f;
         if (success == NO)
         {
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self.navigationController popViewControllerAnimated:YES];
         }
     }];
 }
@@ -377,6 +377,8 @@
     }
                          cancelButtonTitle:[Strings closeString]
                          otherButtonTitles:nil];
+
+    [[AppDelegate appDelegate] playWelcome];
 }
 
 @end

@@ -108,7 +108,7 @@
 {
     HtmlViewController* viewController;
 
-    viewController = [[HtmlViewController alloc] initWithDictionary:licensesArray[indexPath.row]];
+    viewController = [[HtmlViewController alloc] initWithDictionary:licensesArray[indexPath.row] modal:NO];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

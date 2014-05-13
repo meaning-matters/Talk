@@ -10,22 +10,23 @@
 
 
 @interface HtmlViewController ()
-{
-    NSString* htmlBody;
-}
+
+@property (nonatomic, strong) NSString* htmlBody;
+@property (nonatomic, assign) BOOL      modal;
 
 @end
 
 
 @implementation HtmlViewController
 
-- (instancetype)initWithDictionary:(NSDictionary*)dictionary
+- (instancetype)initWithDictionary:(NSDictionary*)dictionary modal:(BOOL)modal
 {
     if (self = [super initWithNibName:@"HtmlView" bundle:nil])
     {
-        self.title = [dictionary allKeys][0];
+        self.title    = [dictionary allKeys][0];
 
-        htmlBody   = [dictionary allValues][0];
+        self.htmlBody = [dictionary allValues][0];
+        self.modal    = modal;
     }
 
     return self;
@@ -36,10 +37,9 @@
 {
     [super viewDidLoad];
 
-    if (self.presentingViewController != nil)
+    if (self.modal)
     {
-        // Shown as modal.
-        UIBarButtonItem*    buttonItem;
+        UIBarButtonItem* buttonItem;
         buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                    target:self
                                                                    action:@selector(cancel)];
@@ -48,7 +48,7 @@
 
     NSString* htmlTop    = @"<!DOCTYPE HTML><html><head><style>body{font-family:'Helvetica';font-size:14px</style><body>";
     NSString* htmlBottom = @"</body></html>";
-    NSString* html       = [NSString stringWithFormat:@"%@%@%@", htmlTop, htmlBody, htmlBottom];
+    NSString* html       = [NSString stringWithFormat:@"%@%@%@", htmlTop, self.htmlBody, htmlBottom];
 
     self.webView.dataDetectorTypes           = UIDataDetectorTypeNone;
     self.webView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;

@@ -393,7 +393,7 @@ static Common* sharedCommon;
         NSString*   message;
 
         title   = NSLocalizedStringWithDefaultValue(@"General:AppStatus NoNotificationsTitle", nil,
-                                                    [NSBundle mainBundle], @"Notications Disabled",
+                                                    [NSBundle mainBundle], @"Notifications Disabled",
                                                     @"Alert title telling that required notifications are disabled.\n"
                                                     @"[iOS alert title size - abbreviated: 'Can't Pay'].");
         message = NSLocalizedStringWithDefaultValue(@"General:AppStatus NoNotificationsMessage", nil,

@@ -101,7 +101,7 @@ static NSDictionary* statuses;
     }
     else
     {
-        NSLog(@"Unknown error: %@", error);
+        NBLog(@"Unknown error: %@", error);
 
         // Very unlikely that AFNetworking fails without error being set.
         NSInteger code = WebClientStatusFailUnknown;

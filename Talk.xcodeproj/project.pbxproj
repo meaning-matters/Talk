@@ -119,8 +119,6 @@
 		482A639E165FA94400325B3F /* CallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A639C165FA94400325B3F /* CallManager.m */; };
 		482A63A1165FF73400325B3F /* NumberLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A63A0165FF73400325B3F /* NumberLabel.m */; };
 		482A63A2165FF73400325B3F /* NumberLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A63A0165FF73400325B3F /* NumberLabel.m */; };
-		482D2DF016C8172900E13B91 /* ProvisioningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482D2DEF16C8172900E13B91 /* ProvisioningView.xib */; };
-		482D2DF116C8172900E13B91 /* ProvisioningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482D2DEF16C8172900E13B91 /* ProvisioningView.xib */; };
 		4830462416EE269D000F9B05 /* NumberAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4830462316EE269D000F9B05 /* NumberAreaViewController.m */; };
 		4830462516EE269D000F9B05 /* NumberAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4830462316EE269D000F9B05 /* NumberAreaViewController.m */; };
 		48338F8E161628BA0033F4C1 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F8C161628BA0033F4C1 /* libcrypto.a */; };
@@ -1250,7 +1248,6 @@
 		482A639C165FA94400325B3F /* CallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallManager.m; sourceTree = "<group>"; };
 		482A639F165FF73400325B3F /* NumberLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberLabel.h; sourceTree = "<group>"; };
 		482A63A0165FF73400325B3F /* NumberLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberLabel.m; sourceTree = "<group>"; };
-		482D2DEF16C8172900E13B91 /* ProvisioningView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProvisioningView.xib; sourceTree = "<group>"; };
 		4830462216EE269D000F9B05 /* NumberAreaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaViewController.h; sourceTree = "<group>"; };
 		4830462316EE269D000F9B05 /* NumberAreaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaViewController.m; sourceTree = "<group>"; };
 		48338F8C161628BA0033F4C1 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "External/OpenSSL-for-iPhone/lib/libcrypto.a"; sourceTree = "<group>"; };
@@ -3358,7 +3355,6 @@
 				483679FA17246977001A02AF /* RecordingControlsCell.xib */,
 				48A26DDD18BA904100736CCB /* SearchTableView.xib */,
 				48AF455A1649794B00DFE3D8 /* ShareView.xib */,
-				482D2DEF16C8172900E13B91 /* ProvisioningView.xib */,
 				484943AF1753C44D00E1D5C4 /* ThanksView.xib */,
 				48C431A3189EE0310008FE01 /* VerifyPhoneView.xib */,
 			);
@@ -4256,7 +4252,6 @@
 				4888D527166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */,
 				48A2CDFC16834FC100506A7C /* RingbackTones.json in Resources */,
 				48206EF8168DD8180040B04E /* Tones.json in Resources */,
-				482D2DF016C8172900E13B91 /* ProvisioningView.xib in Resources */,
 				488AD1ED16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
 				48A261C016FDE26100007638 /* CallMessageView.xib in Resources */,
 				48ADD0F11706551F001515EB /* RetryPhoneSmall.png in Resources */,
@@ -4415,7 +4410,6 @@
 				4888D528166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */,
 				48A2CDFD16834FC100506A7C /* RingbackTones.json in Resources */,
 				48206EF9168DD8180040B04E /* Tones.json in Resources */,
-				482D2DF116C8172900E13B91 /* ProvisioningView.xib in Resources */,
 				488AD1EE16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
 				48A261C116FDE26100007638 /* CallMessageView.xib in Resources */,
 				48ADD0F21706551F001515EB /* RetryPhoneSmall.png in Resources */,

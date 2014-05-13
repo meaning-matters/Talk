@@ -24,7 +24,7 @@
 
 - (void)loadProducts:(void (^)(BOOL success))completion;
 
-- (void)retryPendingTransactions;
+- (BOOL)retryPendingTransactions;
 
 - (NSString*)productIdentifierForCreditTier:(int)tier;
 

@@ -52,6 +52,8 @@
 
 - (void)restore;
 
+- (void)playWelcome;
+
 - (void)findContactsHavingNumber:(NSString*)number completion:(void(^)(NSArray* contactIds))completion;
 
 - (NSString*)contactNameForId:(NSString*)contactId;

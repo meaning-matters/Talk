@@ -45,6 +45,8 @@
     
     dispatch_once(&onceToken, ^
     {
+        self.deviceToken = @"unknown";
+
         // Trigger singletons.
         [NetworkStatus sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.
         [CallManager   sharedManager];
@@ -85,7 +87,6 @@
 
         // Welcome stuff.
         [self showDefaultImage];
-        [self playWelcome];
 
 #if HAS_VOIP
         [[AVAudioSession sharedInstance] setActive:YES error:nil]; // Make sure there's an audio session.
