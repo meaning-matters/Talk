@@ -14,6 +14,7 @@
 #import "CountryNames.h"
 #import "Strings.h"
 #import "BlockAlertView.h"
+#import "BlockActionSheet.h"
 #import "Common.h"
 #import "Skinning.h"
 #import "DataManager.h"
@@ -464,11 +465,10 @@ typedef enum
                                                             @"[iOS alert message size]");
 
                 {   // Prevents "Switch case is in protected scope” compiler error at default:.
-                    [BlockAlertView showAlertViewWithTitle:title
-                                                   message:message
-                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+                    [BlockActionSheet showActionSheetWithTitle:message
+                                                    completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
                     {
-                        if (buttonIndex == 1)
+                        if (destruct == YES)
                         {
                             [[AppDelegate appDelegate] resetAll];
 
@@ -480,8 +480,9 @@ typedef enum
                             accountDataUpdated = NO;
                         }
                     }
-                                         cancelButtonTitle:[Strings cancelString]
-                                         otherButtonTitles:[Strings okString], nil];
+                                             cancelButtonTitle:[Strings cancelString]
+                                        destructiveButtonTitle:title
+                                             otherButtonTitles:nil];
                 }
             }
             break;
