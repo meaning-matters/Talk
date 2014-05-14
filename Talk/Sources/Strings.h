@@ -96,4 +96,6 @@
 
 + (NSString*)endString;
 
++ (NSString*)agreeString;
+
 @end

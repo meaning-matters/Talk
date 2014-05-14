@@ -419,7 +419,6 @@
 
     [[DataManager     sharedManager]  removeAll];
     [[Settings        sharedSettings] resetAll];
-    [[CallManager     sharedManager]  resetSipAccount];
     [[PurchaseManager sharedManager]  reset];
 
     NSError*    error;

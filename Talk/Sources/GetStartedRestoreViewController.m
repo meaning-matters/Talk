@@ -95,7 +95,7 @@
         }
         else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
         {
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self.navigationController popViewControllerAnimated:YES];
         }
         else if (object != nil)
         {
@@ -119,7 +119,7 @@
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
             {
                 [[AppDelegate appDelegate] resetAll];
-                [self dismissViewControllerAnimated:YES completion:nil];
+                [self.navigationController popViewControllerAnimated:YES];
             }
                                  cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];

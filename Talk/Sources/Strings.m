@@ -417,4 +417,13 @@
                                              @"[No size contraint].");
 }
 
+
++ (NSString*)agreeString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Agree", nil,
+                                             [NSBundle mainBundle], @"Agree",
+                                             @"Standard string for agree action (e.g. for terms and conditions)\n"
+                                             @"[Button size].");
+}
+
 @end

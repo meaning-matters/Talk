@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+
 @interface HtmlViewController : UIViewController
 
-@property (nonatomic, weak) IBOutlet UIWebView* webView;
+@property (nonatomic, weak) IBOutlet UIWebView*  webView;
+
 
 - (instancetype)initWithDictionary:(NSDictionary*)dictionary modal:(BOOL)modal;
 

@@ -17,9 +17,12 @@
 #import "PhoneData.h"
 #import "Strings.h"
 #import "Skinning.h"
+#import "HtmlViewController.h"
 
 
 @interface GetStartedActionViewController ()
+
+@property (nonatomic, strong) HtmlViewController* termsViewController;
 
 @end
 
@@ -65,8 +68,57 @@
 {
     if ([self checkCurrencyCode] == YES)
     {
-        [self getStarted];
+        NSData*                 data                = [Common dataForResource:@"Terms" ofType:@"json"];
+        NSDictionary*           dictionary          = [Common objectWithJsonData:data];
+        UINavigationController* modalViewController;
+
+        self.termsViewController = [[HtmlViewController alloc] initWithDictionary:dictionary modal:YES];
+
+        modalViewController = [[UINavigationController alloc] initWithRootViewController:self.termsViewController];
+        modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentViewController:modalViewController
+                           animated:YES
+                         completion:nil];
+
+        UIBarButtonItem* buttonItem;
+        buttonItem = [[UIBarButtonItem alloc] initWithTitle:[Strings agreeString]
+                                                      style:UIBarButtonItemStylePlain
+                                                     target:self
+                                                     action:@selector(agree)];
+        self.termsViewController.navigationItem.rightBarButtonItem = buttonItem;
     }
+}
+
+
+- (void)agree
+{
+    NSString* title;
+    NSString* message;
+
+    title   = NSLocalizedStringWithDefaultValue(@"GetStartedAction AgreeTitle", nil,
+                                                [NSBundle mainBundle], @"Please Confirm",
+                                                @"Alert title: Calling credit could not be bought.\n"
+                                                @"[iOS alert title size].");
+    message = NSLocalizedStringWithDefaultValue(@"GetStartedAction AgreeMessage", nil,
+                                                [NSBundle mainBundle],
+                                                @"I agree to the NumberBay Terms and Conditions.",
+                                                @"....\n"
+                                                @"[iOS alert message size]");
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        [self.termsViewController dismissViewControllerAnimated:YES
+                                                     completion:^
+        {
+            if (buttonIndex == 1)
+            {
+                [self getStarted];
+            }
+        }];
+    }
+                         cancelButtonTitle:[Strings cancelString]
+                         otherButtonTitles:[Strings agreeString], nil];
 }
 
 
