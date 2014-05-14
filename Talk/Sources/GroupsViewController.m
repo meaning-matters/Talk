@@ -37,7 +37,7 @@
     if (self = [super initWithNibName:@"GroupsView" bundle:nil])
     {
         self.title = NSLocalizedString(@"Groups", @"Groups tab title");
-        self.tabBarItem.image = [UIImage imageNamed:@"GroupsTab.png"];
+        // The tabBarItem image must be set in my own NavigationController.
     }
     
     return self;

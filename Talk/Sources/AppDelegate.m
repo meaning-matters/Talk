@@ -243,7 +243,7 @@
         {
             UINavigationController* navigationController;
 
-            // NavigationController os workaround a nasty iOS bug: http://stackoverflow.com/a/23666520/1971013
+            // NavigationController is workaround a nasty iOS bug: http://stackoverflow.com/a/23666520/1971013
             navigationController = [[NavigationController alloc] initWithRootViewController:viewController];
             [viewControllers addObject:navigationController];
 

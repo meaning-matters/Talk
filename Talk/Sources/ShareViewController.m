@@ -26,7 +26,7 @@
     if (self = [super initWithNibName:@"ShareView" bundle:nil])
     {
         self.title = NSLocalizedString(@"Share", @"Share tab title");
-        self.tabBarItem.image = [UIImage imageNamed:@"ShareTab.png"];
+        // The tabBarItem image must be set in my own NavigationController.
     }
     
     return self;

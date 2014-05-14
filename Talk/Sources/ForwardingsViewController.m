@@ -56,7 +56,8 @@ typedef enum
     if (self = [super init])
     {
         self.title                = [Strings forwardingsString];
-        self.tabBarItem.image     = [UIImage imageNamed:@"ForwardingsTab.png"];
+        // The tabBarItem image must be set in my own NavigationController.
+        
         self.managedObjectContext = managedObjectContext;
     }
     

@@ -38,7 +38,8 @@
     if (self = [super init])
     {
         self.title                = [Strings numbersString]; // Not used, because we're having a segmented control.
-        self.tabBarItem.image     = [UIImage imageNamed:@"NumbersTab.png"];
+        // The tabBarItem image must be set in my own NavigationController.
+
         self.managedObjectContext = [DataManager sharedManager].managedObjectContext;
     }
 
