@@ -266,9 +266,6 @@
         {
             [Settings sharedSettings].webUsername = webUsername;
             [Settings sharedSettings].webPassword = webPassword;
-            [Settings sharedSettings].sipUsername = sipUsername;
-            [Settings sharedSettings].sipPassword = sipPassword;
-            [Settings sharedSettings].sipRealm    = sipRealm;
 
             [self finishTransaction:transaction];
             [self completeBuyWithSuccess:YES object:transaction];

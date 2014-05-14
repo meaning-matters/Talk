@@ -240,16 +240,6 @@
 
 - (void)endCall:(Call*)call
 {
-#if HAS_VOIP
-#warning Move this to SipInterface, and do when last call in array has been ended.
-    [Common dispatchAfterInterval:0.5 onMain:^
-    {
-        // Delay this (which route backs to speaker) to prevent 'noisy click' during brief moment
-        // that PISIP has not shutdown audio yet.  Also prevents Speaker option button to light up
-        // on CallView just before it disappears.
-        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
-    }];
-#endif
 }
 
 

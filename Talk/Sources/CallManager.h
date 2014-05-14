@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "PhoneNumber.h"
 #import "Call.h"
-#import "SipInterface.h"
 #import "NBRecentContactEntry.h"
 
 
@@ -20,14 +19,12 @@
 @end
 
 
-@interface CallManager : NSObject <SipInterfaceDelegate>
+@interface CallManager : NSObject
 
 @property (nonatomic, strong) NSMutableArray* activeCalls;
 
 
 + (CallManager*)sharedManager;
-
-- (void)resetSipAccount;    // Must be called when SIP account has changed.
 
 - (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity contactId:(NSString*)contactId;
 

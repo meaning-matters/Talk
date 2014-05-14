@@ -221,15 +221,6 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionCallMode:
-#if HAS_VOIP
-            title = NSLocalizedStringWithDefaultValue(@"Settings:CallModeInfo SectionFooter", nil,
-                                                      [NSBundle mainBundle],
-                                                      @"In Callback Mode, our server first calls your Callback Number. "
-                                                      @"Then, when you accept that call, the person you're tying to "
-                                                      @"reach is being called; the Caller ID is used as caller ID.",
-                                                      @"Explanation what Call Mode setting is doing\n"
-                                                      @"[* lines]");
-#else
             title = NSLocalizedStringWithDefaultValue(@"Settings:CallbackInfo SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"Our server first calls the Callback Number. Then, when you "
@@ -238,7 +229,6 @@ typedef enum
                                                       @"ID setting is on).",
                                                       @"Explanation how Callback settings work\n"
                                                       @"[* lines]");
-#endif
             break;
 
         case TableSectionHomeCountry:
@@ -250,7 +240,6 @@ typedef enum
             break;
 
         case TableSectionCallOptions:
-#if !HAS_VOIP
             title = NSLocalizedStringWithDefaultValue(@"Settings:CallOptions SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"It's best to leave this option off, as it may warn you about "
@@ -258,7 +247,6 @@ typedef enum
                                                       @"current Home Country.",
                                                       @"...\n"
                                                       @"[* lines]");
-#endif
             break;
 
 
@@ -294,7 +282,7 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionCallMode:
-            numberOfRows = HAS_VOIP ? (settings.callbackMode ? 3 : 1) : 3;
+            numberOfRows = 3;
             break;
 
         case TableSectionHomeCountry:
@@ -302,7 +290,7 @@ typedef enum
             break;
 
         case TableSectionCallOptions:
-            numberOfRows = HAS_VOIP ? ([NetworkStatus sharedStatus].simAvailable ? 2 : 1) : 1;
+            numberOfRows = 1;
             break;
 
         case TableSectionAccountData:
@@ -332,7 +320,7 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionCallMode:
-            if (indexPath.row == 1 - !HAS_VOIP)
+            if (indexPath.row == 0)
             {
                 PhoneData* phone = [self lookupPhoneForE164:settings.callbackE164];
                 NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
@@ -368,7 +356,7 @@ typedef enum
 
                 [self.navigationController pushViewController:phonesViewController animated:YES];
             }
-            else if (indexPath.row == 2 - !HAS_VOIP)
+            else if (indexPath.row == 1)
             {
                 PhoneData* phone = [self lookupPhoneForE164:settings.callerIdE164];
                 NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
@@ -508,7 +496,7 @@ typedef enum
             break;
 
         case TableSectionCallOptions:
-            cell = [self callOptionsCellForRowAtIndexPath:indexPath];
+            cell = [self allowInvalidNumbersCell];
             break;
 
         case TableSectionAccountData:
@@ -528,40 +516,12 @@ typedef enum
     UITableViewCell* cell;
     UISwitch*        switchView;
 
-    if (indexPath.row == 0 - !HAS_VOIP)
+    if (indexPath.row == 0)
     {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:@"CallModeSwitchCell"];
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"CallbackCell"];
         if (cell == nil)
         {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallModeSwitchCell"];
-            switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-            switchView.onTintColor = [Skinning onTintColor];
-            cell.accessoryView = switchView;
-        }
-        else
-        {
-            switchView = (UISwitch*)cell.accessoryView;
-        }
-
-        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:CallbackMode CellText", nil,
-                                                                [NSBundle mainBundle], @"Callback Mode",
-                                                                @"Title of switch if app is in 'callback mode'\n"
-                                                                @"[2/3 line].");
-        cell.selectionStyle    = UITableViewCellSelectionStyleNone;
-        switchView.on          = settings.callbackMode;
-        switchView.onTintColor = [Skinning callbackModeTintColor];
-
-        [switchView removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-        [switchView addTarget:self
-                       action:@selector(callbackModeSwitchAction:)
-             forControlEvents:UIControlEventValueChanged];
-    }
-    else if (indexPath.row == 1 - !HAS_VOIP)
-    {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:@"CallerCell"];
-        if (cell == nil)
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallerCell"];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallbackCell"];
         }
 
         cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Settings Callback Number", nil,
@@ -583,7 +543,7 @@ typedef enum
         cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
     }
-    else if (indexPath.row == 2 - !HAS_VOIP)
+    else if (indexPath.row == 1)
     {
         cell = [self.tableView dequeueReusableCellWithIdentifier:@"CallerIDCell"];
         if (cell == nil)
@@ -612,7 +572,31 @@ typedef enum
     }
     else if (indexPath.row == 2)
     {
-        cell = [self showCallerIdCell];
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
+        if (cell == nil)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
+            switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+            switchView.onTintColor = [Skinning onTintColor];
+            cell.accessoryView = switchView;
+        }
+        else
+        {
+            switchView = (UISwitch*)cell.accessoryView;
+        }
+
+        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:ShowCallId CellText", nil,
+                                                                [NSBundle mainBundle], @"Show My Caller ID",
+                                                                @"Title of switch if people called see my number\n"
+                                                                @"[2/3 line - abbreviated: 'Show Caller ID', use "
+                                                                @"exact same term as in iOS].");
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        switchView.on = settings.showCallerId;
+
+        [switchView removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+        [switchView addTarget:self
+                       action:@selector(showCallerIdSwitchAction:)
+             forControlEvents:UIControlEventValueChanged];
     }
 
     return cell;
@@ -689,57 +673,6 @@ typedef enum
         }
     }
     
-    return cell;
-}
-
-
-- (UITableViewCell*)callOptionsCellForRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    UITableViewCell* cell;
-
-    if (indexPath.row == 0)
-    {
-        if (HAS_VOIP)
-        {
-            cell = [self showCallerIdCell];
-        }
-        else
-        {
-            cell = [self allowInvalidNumbersCell];
-        }
-    }
-    
-    if (indexPath.row == 1)
-    {
-        UISwitch* switchView;
-
-        cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
-        if (cell == nil)
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
-            switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-            switchView.onTintColor = [Skinning onTintColor];
-            cell.accessoryView = switchView;
-        }
-        else
-        {
-            switchView = (UISwitch*)cell.accessoryView;
-        }
-
-        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:AllowDataCalls CellText", nil,
-                                                                [NSBundle mainBundle], @"Cellular Data Calls",
-                                                                @"Title of switch if calls over cellular data "
-                                                                @"(3G/EDGE/...) are allowed\n"
-                                                                @"[2/3 line - abbreviated: 'Data Calls'].");
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        switchView.on = settings.allowCellularDataCalls;
-
-        [switchView removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-        [switchView addTarget:self
-                       action:@selector(allowDataCallsSwitchAction:)
-             forControlEvents:UIControlEventValueChanged];
-    }
-
     return cell;
 }
 
@@ -872,69 +805,6 @@ typedef enum
 }
 
 
-- (void)callbackModeSwitchAction:(id)sender
-{
-    settings.callbackMode = ((UISwitch*)sender).on;
-
-    if (settings.callbackMode == YES && settings.callerIdE164.length == 0)
-    {
-        settings.callerIdE164 = settings.callbackE164;
-    }
-
-    [self reloadCallModeSection];
-}
-
-
-- (void)allowDataCalls
-{
-    [self allowDataCallsSwitchAction:nil];
-}
-
-
-// Can be invoked with sender == nil.
-- (void)allowDataCallsSwitchAction:(id)sender
-{
-    UISwitch* allowDataCallsSwitch = sender;
-
-    if ((allowDataCallsSwitch.on == YES || allowDataCallsSwitch == nil) &&
-        settings.allowCellularDataCalls == NO)
-    {
-        NSString*   title = NSLocalizedStringWithDefaultValue(@"Settings:AllowDataCalls AllowWarningTitle", nil,
-                                                              [NSBundle mainBundle], @"Cellular Data Calls",
-                                                              @"Alert title informing about allowing cellular data calls\n"
-                                                              @"[iOS alert title size].");
-
-        NSString*   message = NSLocalizedStringWithDefaultValue(@"Settings:AllowDataCalls AllowWaningMessage", nil,
-                                                                [NSBundle mainBundle],
-                                                                @"Depending on your mobile plan, cellular data calls "
-                                                                @"may add a cost from your mobile operator.",
-                                                                @"Alert message informing about allowing cellular "
-                                                                @"data calls\n"
-                                                                @"[iOS alert message size]");
-
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-        {
-            if (buttonIndex == 1)
-            {
-                settings.allowCellularDataCalls = YES;
-            }
-            else
-            {
-                [allowDataCallsSwitch setOn:NO animated:YES];
-            }
-        }
-                             cancelButtonTitle:[Strings cancelString]
-                             otherButtonTitles:[Strings okString], nil];
-    }
-    else
-    {
-        settings.allowCellularDataCalls = NO;
-    }
-}
-
-
 - (void)showCallerIdSwitchAction:(id)sender
 {
     settings.showCallerId = ((UISwitch*)sender).on;
@@ -948,16 +818,6 @@ typedef enum
 
 
 #pragma mark - Helpers
-
-- (void)reloadCallModeSection
-{
-    NSUInteger index = [Common nOfBit:TableSectionCallMode inValue:sections];
-    [self.tableView beginUpdates];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:index]
-                  withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];
-}
-
 
 - (PhoneData*)lookupPhoneForE164:(NSString*)e164
 {

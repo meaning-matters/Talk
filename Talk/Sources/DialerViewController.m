@@ -57,11 +57,6 @@
                 phoneNumber = [[PhoneNumber alloc] initWithNumber:phoneNumber.number];
                 [self update];
             }
-
-            if ([Settings sharedSettings].allowCellularDataCalls == YES)
-            {
-                [self updateReachable];
-            }
         }];
 
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification
@@ -240,8 +235,7 @@
 
 - (void)updateReachable
 {
-    BOOL haveAccount   = [Settings sharedSettings].haveAccount;
-    BOOL allowCellular = [Settings sharedSettings].allowCellularDataCalls || [Settings sharedSettings].callbackMode;
+    BOOL haveAccount = [Settings sharedSettings].haveAccount;
 
     switch ([NetworkStatus sharedStatus].reachableStatus)
     {
@@ -250,7 +244,7 @@
             break;
 
         case NetworkStatusReachableCellular:
-            self.keypadView.keyCallButton.selected = haveAccount && (allowCellular || HAS_VOIP == NO);
+            self.keypadView.keyCallButton.selected = haveAccount;
             break;
 
         case NetworkStatusReachableWifi:

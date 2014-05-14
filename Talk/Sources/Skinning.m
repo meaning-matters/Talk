@@ -23,23 +23,11 @@
     dispatch_once(&onceToken, ^
     {
         sharedInstance = [[Skinning alloc] init];
-        [sharedInstance update];
 
-        [[Settings sharedSettings] addObserver:sharedInstance
-                                    forKeyPath:@"callbackMode"
-                                       options:0
-                                       context:nil];
-        
         [UIApplication sharedApplication].keyWindow.tintColor = [self tintColor];
     });
     
     return sharedInstance;
-}
-
-
-+ (UIColor*)callbackModeTintColor
-{
-    return [UIColor colorWithHue:0.40f saturation:0.90f brightness:0.85f alpha:1.00f];
 }
 
 
@@ -64,25 +52,6 @@
 + (UIColor*)backgroundTintColor
 {
     return [UIColor colorWithRed:0.935 green:0.937 blue:0.958 alpha:1.0f];  // Color seen on grouped table views.
-}
-
-
-- (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
-{
-    [self update];
-}
-
-
-- (void)update
-{
-    if ([Settings sharedSettings].callbackMode == NO || HAS_VOIP == NO)
-    {
-        [[AppDelegate appDelegate].tabBarController.tabBar setSelectedImageTintColor:nil];
-    }
-    else
-    {
-        [[AppDelegate appDelegate].tabBarController.tabBar setSelectedImageTintColor:[Skinning callbackModeTintColor]];
-    }
 }
 
 @end

@@ -12,8 +12,6 @@
 
 + (Skinning*)sharedSkinning;
 
-+ (UIColor*)callbackModeTintColor;
-
 + (UIColor*)tintColor;
 
 + (UIColor*)onTintColor;    // Used for call button and UISwitch.

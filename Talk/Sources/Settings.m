@@ -5,10 +5,9 @@
 //  Created by Cornelis van der Bent on 07/11/12.
 //  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
 //
-//  In Talk we want to save both the SIP username and SIP password in keychain.
-//  So we store both these strings as 'password' under names/keys "SipUsername"
-//  and "SipPassword" respectively.  So these two are not saved in UserDefaults.
-//  Same applies to web API username and password.
+//  In Talk we want to save both the API username and API password in keychain.
+//  So we store both these strings as 'password' under names/keys "WebUsername"
+//  and "WebPassword" respectively.  So these two are not saved in UserDefaults.
 //
 
 #import "Settings.h"
@@ -27,14 +26,8 @@ NSString* const LastDialedNumberKey       = @"LastDialedNumber";
 NSString* const WebBaseUrlKey             = @"WebBaseUrl";
 NSString* const WebUsernameKey            = @"WebUsername";            // Used as keychain 'username'.
 NSString* const WebPasswordKey            = @"WebPassword";            // Used as keychain 'username'.
-NSString* const SipServerKey              = @"SipServer";              // Used as keychain 'username'.
-NSString* const SipRealmKey               = @"SipRealm";               // Used as keychain 'username'.
-NSString* const SipUsernameKey            = @"SipUsername";            // Used as keychain 'username'.
-NSString* const SipPasswordKey            = @"SipPassword";            // Used as keychain 'username'.
-NSString* const AllowCellularDataCallsKey = @"AllowCellularDataCalls";
 NSString* const AllowInvalidNumbersKey    = @"AllowInvalidNumbers";
 NSString* const ShowCallerIdKey           = @"ShowCallerId";
-NSString* const CallbackModeKey           = @"CallbackMode";
 NSString* const CallerIdE164Key           = @"CallerIdE164";
 NSString* const CallbackE164Key           = @"CallbackE164";
 NSString* const NumberTypeMaskKey         = @"NumberTypeMask";
@@ -81,10 +74,6 @@ static NSUserDefaults* userDefaults;
 {
     [Keychain deleteStringForKey:WebUsernameKey];
     [Keychain deleteStringForKey:WebPasswordKey];
-    [Keychain deleteStringForKey:SipServerKey];
-    [Keychain deleteStringForKey:SipRealmKey];
-    [Keychain deleteStringForKey:SipUsernameKey];
-    [Keychain deleteStringForKey:SipPasswordKey];
 
     for (NSString* key in [self defaults])
     {
@@ -97,12 +86,7 @@ static NSUserDefaults* userDefaults;
 
 - (BOOL)haveAccount
 {
-#if HAS_VOIP
-    return (self.webUsername.length > 0 && self.webPassword.length > 0 &&
-            self.sipUsername.length > 0 && self.sipPassword.length > 0);
-#else
     return (self.webUsername.length > 0 && self.webPassword.length > 0);
-#endif
 }
 
 
@@ -135,10 +119,8 @@ static NSUserDefaults* userDefaults;
 
         [dictionary setObject:@""                                                forKey:LastDialedNumberKey];
         [dictionary setObject:@"https://api.numberbay.com/"                      forKey:WebBaseUrlKey];
-        [dictionary setObject:@(NO)                                              forKey:AllowCellularDataCallsKey];
         [dictionary setObject:@(NO)                                              forKey:AllowInvalidNumbersKey];
         [dictionary setObject:@(YES)                                             forKey:ShowCallerIdKey];
-        [dictionary setObject:@(NO)                                              forKey:CallbackModeKey];
         [dictionary setObject:@""                                                forKey:CallerIdE164Key];
         [dictionary setObject:@""                                                forKey:CallbackE164Key];
         [dictionary setObject:@(NumberTypeGeographicMask)                        forKey:NumberTypeMaskKey];
@@ -267,74 +249,6 @@ static NSUserDefaults* userDefaults;
 }
 
 
-- (NSString*)sipServer
-{
-    return [Keychain getStringForKey:SipServerKey];
-}
-
-
-- (void)setSipServer:(NSString*)sipServer
-{
-    [Keychain saveString:sipServer forKey:SipServerKey];
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:nil];
-}
-
-
-- (NSString*)sipRealm
-{
-    return [Keychain getStringForKey:SipRealmKey];
-}
-
-
-- (void)setSipRealm:(NSString*)sipRealm
-{
-    [Keychain saveString:sipRealm forKey:SipRealmKey];
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:nil];
-}
-
-
-- (NSString*)sipUsername
-{
-    return [Keychain getStringForKey:SipUsernameKey];
-}
-
-
-- (void)setSipUsername:(NSString*)sipUsername
-{
-    [Keychain saveString:sipUsername forKey:SipUsernameKey];
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:nil];
-}
-
-
-- (NSString*)sipPassword
-{
-    return [Keychain getStringForKey:SipPasswordKey];
-}
-
-
-- (void)setSipPassword:(NSString*)sipPassword
-{
-    [Keychain saveString:sipPassword forKey:SipPasswordKey];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:nil];
-}
-
-
-- (BOOL)allowCellularDataCalls
-{
-    return [userDefaults boolForKey:AllowCellularDataCallsKey];
-}
-
-
-- (void)setAllowCellularDataCalls:(BOOL)allowCellularDataCalls
-{
-    [userDefaults setBool:allowCellularDataCalls forKey:AllowCellularDataCallsKey];
-}
-
-
 - (BOOL)allowInvalidNumbers
 {
     return [userDefaults boolForKey:AllowInvalidNumbersKey];
@@ -356,18 +270,6 @@ static NSUserDefaults* userDefaults;
 - (void)setShowCallerId:(BOOL)showCallerId
 {
     [userDefaults setBool:showCallerId forKey:ShowCallerIdKey];
-}
-
-
-- (BOOL)callbackMode
-{
-    return [userDefaults boolForKey:CallbackModeKey];
-}
-
-
-- (void)setCallbackMode:(BOOL)callbackMode
-{
-    [userDefaults setBool:callbackMode forKey:CallbackModeKey];
 }
 
 

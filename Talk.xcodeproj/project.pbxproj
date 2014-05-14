@@ -975,8 +975,6 @@
 		48B32A011725B65000F49182 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48B32A001725B65000F49182 /* CoreAudio.framework */; };
 		48B5AAF216E6A58700BA4084 /* NumberCountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */; };
 		48B5AAF316E6A58700BA4084 /* NumberCountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */; };
-		48B9386E187B647F00132535 /* Helps-VoIP.json in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386A187B647F00132535 /* Helps-VoIP.json */; };
-		48B9386F187B647F00132535 /* Helps-VoIP.json in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386A187B647F00132535 /* Helps-VoIP.json */; };
 		48B93870187B647F00132535 /* Helps.json in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386B187B647F00132535 /* Helps.json */; };
 		48B93871187B647F00132535 /* Helps.json in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386B187B647F00132535 /* Helps.json */; };
 		48B93872187B647F00132535 /* Licenses.json in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386C187B647F00132535 /* Licenses.json */; };
@@ -1258,8 +1256,6 @@
 		48338FB416170D8C0033F4C1 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		48338FB516170D8C0033F4C1 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		48338FB616170D8C0033F4C1 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		48338FCF16181B750033F4C1 /* SipInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SipInterface.h; sourceTree = "<group>"; };
-		48338FD016181B750033F4C1 /* SipInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SipInterface.m; sourceTree = "<group>"; };
 		483679DC1721F2DF001A02AF /* RecordingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingViewController.h; sourceTree = "<group>"; };
 		483679DD1721F2E0001A02AF /* RecordingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordingViewController.m; sourceTree = "<group>"; };
 		483679EE1722F2CF001A02AF /* List.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = List.png; sourceTree = "<group>"; };
@@ -2033,7 +2029,6 @@
 		48B32A001725B65000F49182 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		48B5AAF016E6A58400BA4084 /* NumberCountriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberCountriesViewController.h; sourceTree = "<group>"; };
 		48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberCountriesViewController.m; sourceTree = "<group>"; };
-		48B9386A187B647F00132535 /* Helps-VoIP.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Helps-VoIP.json"; path = "Resources/Helps-VoIP.json"; sourceTree = "<group>"; };
 		48B9386B187B647F00132535 /* Helps.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Helps.json; path = Resources/Helps.json; sourceTree = "<group>"; };
 		48B9386C187B647F00132535 /* Licenses.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Licenses.json; path = Resources/Licenses.json; sourceTree = "<group>"; };
 		48B9386D187B647F00132535 /* Thanks.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = Thanks.html; path = Resources/Thanks.html; sourceTree = "<group>"; };
@@ -2451,8 +2446,6 @@
 				48206EF31684B0700040B04E /* RingbackTones.m */,
 				48AF457F164A45A000DFE3D8 /* Settings.h */,
 				48AF4580164A45A100DFE3D8 /* Settings.m */,
-				48338FCF16181B750033F4C1 /* SipInterface.h */,
-				48338FD016181B750033F4C1 /* SipInterface.m */,
 				48AD95DD164AE581006178E6 /* Skinning.h */,
 				48AD95DE164AE582006178E6 /* Skinning.m */,
 				48206EFA168DD8D30040B04E /* Tones.h */,
@@ -3457,7 +3450,6 @@
 				48A2CDFB16834FC100506A7C /* RingbackTones.json */,
 				48D0A6E51654D65200FA2D98 /* SipConfig.cfg */,
 				48206EF7168DD8180040B04E /* Tones.json */,
-				48B9386A187B647F00132535 /* Helps-VoIP.json */,
 				48B9386B187B647F00132535 /* Helps.json */,
 				48B9386C187B647F00132535 /* Licenses.json */,
 				483B078E1908017900E8C42D /* Terms.json */,
@@ -4163,7 +4155,6 @@
 				485F6C0D1637270100D61365 /* UZ.png in Resources */,
 				485F6C0E1637270100D61365 /* UZ@2x.png in Resources */,
 				485F6C0F1637270100D61365 /* VA.png in Resources */,
-				48B9386E187B647F00132535 /* Helps-VoIP.json in Resources */,
 				485F6C101637270100D61365 /* VA@2x.png in Resources */,
 				485F6C111637270100D61365 /* VC.png in Resources */,
 				485F6C121637270100D61365 /* VC@2x.png in Resources */,
@@ -4353,7 +4344,6 @@
 				48884AB11615CE920005AA79 /* InfoPlist.strings in Resources */,
 				48AF450C164948CD00DFE3D8 /* DialerView.xib in Resources */,
 				48AF450F164948DC00DFE3D8 /* GroupsView.xib in Resources */,
-				48B9386F187B647F00132535 /* Helps-VoIP.json in Resources */,
 				48AF45181649494400DFE3D8 /* AboutView.xib in Resources */,
 				48AF452E1649788A00DFE3D8 /* AboutTab.png in Resources */,
 				48AF45301649788A00DFE3D8 /* AboutTab@2x.png in Resources */,

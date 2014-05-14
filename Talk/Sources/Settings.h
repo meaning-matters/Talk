@@ -35,15 +35,8 @@
 @property (nonatomic, strong) NSString*         webUsername;
 @property (nonatomic, strong) NSString*         webPassword;
 
-@property (nonatomic, strong) NSString*         sipServer;
-@property (nonatomic, strong) NSString*         sipRealm;
-@property (nonatomic, strong) NSString*         sipUsername;
-@property (nonatomic, strong) NSString*         sipPassword;
-
-@property (nonatomic, assign) BOOL              allowCellularDataCalls;
 @property (nonatomic, assign) BOOL              allowInvalidNumbers;    // Allow calling to invalid numbers.
 @property (nonatomic, assign) BOOL              showCallerId;
-@property (nonatomic, assign) BOOL              callbackMode;
 @property (nonatomic, strong) NSString*         callerIdE164;           // Caller ID E164, used until Groups are implemented.
 @property (nonatomic, strong) NSString*         callbackE164;           // Called back E164, used until Groups are implemented.
 

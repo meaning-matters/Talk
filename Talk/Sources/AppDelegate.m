@@ -56,9 +56,6 @@
         [PhoneNumber setDefaultIsoCountryCode:[Settings sharedSettings].homeCountry];
         [LibPhoneNumber sharedInstance];    // This loads the JavaScript library.
 
-        // Set callback mode on, when there's no VoIP support.
-        !HAS_VOIP ? [Settings sharedSettings].callbackMode = YES : 0;
-
         // Basic UI.
         self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         self.tabBarController = [[UITabBarController alloc] init];
@@ -87,23 +84,6 @@
 
         // Welcome stuff.
         [self showDefaultImage];
-
-#if HAS_VOIP
-        [[AVAudioSession sharedInstance] setActive:YES error:nil]; // Make sure there's an audio session.
-        [[NSNotificationCenter defaultCenter] addObserverForName:@"AVSystemController_SystemVolumeDidChangeNotification"
-                                                          object:nil
-                                                           queue:[NSOperationQueue mainQueue]
-                                                      usingBlock:^(NSNotification* note)
-        {
-            if ([MPMusicPlayerController applicationMusicPlayer].volume < 0.1)
-            {
-                [Common dispatchAfterInterval:0.05 onMain:^
-                {
-                    [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.1];
-                }];
-            }
-        }];
-#endif
     });
 }
 

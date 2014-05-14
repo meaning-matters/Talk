@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <AddressBook/AddressBook.h>
 #import "PhoneNumber.h"
-#import "SipInterface.h"
 
 
 typedef enum
@@ -71,15 +70,6 @@ typedef enum
 @property (nonatomic, assign) BOOL                      readyForCleanup;
 @property (nonatomic, assign) BOOL                      userInformedAboutFailure;
 @property (nonatomic, strong) NSString*                 uuid;               // When not nil, the final durations & costs are not known.
-
-// SipInterface specifics.
-@property (nonatomic, assign) int                       callId;
-@property (nonatomic, assign) BOOL                      ringbackToneOn;
-@property (nonatomic, assign) BOOL                      busyToneOn;
-@property (nonatomic, assign) BOOL                      congestionToneOn;
-@property (nonatomic, assign) BOOL                      ringToneOn;
-@property (nonatomic, assign) SipInterfaceCallFailed    sipInterfaceFailure;
-@property (nonatomic, assign) int                       sipFailedStatus;
 
 
 - (instancetype)initWithPhoneNumber:(PhoneNumber*)phoneNumber direction:(CallDirection)direction;

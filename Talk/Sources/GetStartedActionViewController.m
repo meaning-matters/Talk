@@ -146,7 +146,6 @@
         if (error == nil)
         {
             [Settings sharedSettings].credit = credit;
-            !HAS_VOIP ? [Settings sharedSettings].callbackMode = YES : 0;
 
             [[DataManager sharedManager] synchronizeAll:^(NSError *error)
             {
