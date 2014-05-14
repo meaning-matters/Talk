@@ -52,7 +52,7 @@ typedef enum
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
         self.title = NSLocalizedString(@"Settings", @"Settings tab title");
-        self.tabBarItem.image = [UIImage imageNamed:@"SettingsTab.png"];
+        // The tabBarItem image must be set in my own NavigationController.
 
         // Mandatory sections.
         sections |= TableSectionCallMode;

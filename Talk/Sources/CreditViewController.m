@@ -50,7 +50,7 @@ typedef enum
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
         self.title = NSLocalizedString(@"Credit", @"Credit tab title");
-        self.tabBarItem.image = [UIImage imageNamed:@"CreditTab.png"];
+        // The tabBarItem image must be set in my own NavigationController.
 
         self.sections |= TableSectionAmount;
         self.sections |= TableSectionRates;

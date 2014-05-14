@@ -32,7 +32,7 @@
                                                        [NSBundle mainBundle], @"About",
                                                        @"Title of app screen with general info\n"
                                                        @"[1 line larger font].");
-        self.tabBarItem.image = [UIImage imageNamed:@"AboutTab.png"];
+        // The tabBarItem image must be set in my own NavigationController.
     }
     
     return self;

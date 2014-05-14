@@ -45,7 +45,8 @@
     if (self = [super init])
     {
         self.title                = [Strings phonesString];
-        self.tabBarItem.image     = [UIImage imageNamed:@"PhonesTab.png"];
+        // The tabBarItem image must be set in my own NavigationController.
+
         self.managedObjectContext = managedObjectContext;
         self.selectedPhone        = selectedPhone;
         self.completion           = completion;

@@ -43,7 +43,7 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
 
         self.title = NSLocalizedString(@"Dialer", @"Dialer tab title");
-        self.tabBarItem.image = [UIImage imageNamed:@"DialerTab.png"];
+        // The tabBarItem image must be set in my own NavigationController.
 
         phoneNumber = [[PhoneNumber alloc] init];
         [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification

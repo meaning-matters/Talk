@@ -25,6 +25,7 @@
 #import "Strings.h"
 #import "NBPeopleListViewController.h"
 #import "WebClient.h"
+#import "NavigationController.h"
 
 
 @interface AppDelegate ()
@@ -242,7 +243,8 @@
         {
             UINavigationController* navigationController;
 
-            navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+            // NavigationController os workaround a nasty iOS bug: http://stackoverflow.com/a/23666520/1971013
+            navigationController = [[NavigationController alloc] initWithRootViewController:viewController];
             [viewControllers addObject:navigationController];
 
             // Set appropriate AppDelegate property.

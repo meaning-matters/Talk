@@ -46,7 +46,7 @@ typedef enum
                                                        [NSBundle mainBundle], @"Help",
                                                        @"Title of app screen with list of help items\n"
                                                        @"[1 line larger font].");
-        self.tabBarItem.image = [UIImage imageNamed:@"HelpsTab.png"];
+        // The tabBarItem image must be set in my own NavigationController.
 
         NSData* data = [Common dataForResource:@"Helps" ofType:@"json"];
         helpsArray   = [Common objectWithJsonData:data];
