@@ -26,11 +26,22 @@
     {
         self.edgesForExtendedLayout = UIRectEdgeNone;
 
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillHide:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
+
         self.objectsArray       = [NSMutableArray array];
         self.filteredNamesArray = [NSMutableArray array];
     }
 
     return self;
+}
+
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 
@@ -40,6 +51,19 @@
 
     // This will remove extra separators from tableview.
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+}
+
+
+- (void)keyboardWillHide:(NSNotification*)notification
+{
+    CGFloat bottom = 167.0f;
+
+    //### Workaround for iOS issue with setting insets.
+    if (self.searchDisplayController.searchResultsTableView.contentInset.bottom != bottom)
+    {
+        [self.searchDisplayController.searchResultsTableView setContentInset:UIEdgeInsetsMake(0, 0, bottom, 0)];
+        [self.searchDisplayController.searchResultsTableView setScrollIndicatorInsets:UIEdgeInsetsMake(0, 0, bottom, 0)];
+    }
 }
 
 
@@ -164,19 +188,14 @@
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController*)controller
 {
     self.searchDisplayController.searchBar.keyboardType = [self searchBarKeyboardType];
+
+
 }
 
 
 - (BOOL)searchDisplayController:(UISearchDisplayController*)controller shouldReloadTableForSearchString:(NSString*)searchString
 {
     [self filterContentForSearchText:searchString];
-
-    //### Workaround for iOS issue with setting insets.
-    if (controller.searchResultsTableView.contentInset.bottom != 0)
-    {
-        [controller.searchResultsTableView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
-        [controller.searchResultsTableView setScrollIndicatorInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    }
 
     // Return YES to cause the search result table view to be reloaded.
     return YES;
