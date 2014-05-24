@@ -199,7 +199,7 @@
         NSStringFromClass([NBPeoplePickerNavigationController class]),
         NSStringFromClass([NBRecentsNavigationController      class]),
         NSStringFromClass([PhonesViewController               class]),
-#if HAS_BUYING_NUMBERS
+#if HAS_BUYING_NUMBERS // When adding these, check if older version apps handle that correctly.
         NSStringFromClass([NumbersViewController              class]),
         NSStringFromClass([ForwardingsViewController          class]),
 #endif
@@ -370,7 +370,8 @@
     }
 
     [self.window addSubview:defaultFadeImage];
-    [self performSelector:@selector(fadeDefaultImage) withObject:nil afterDelay:2.0];
+
+    [self fadeDefaultImage];
 }
 
 
@@ -384,7 +385,7 @@
     {
         hasFadedDefaultImage = YES;
 
-        [UIView animateWithDuration:1.0
+        [UIView animateWithDuration:0.5
                          animations:^
         {
             defaultFadeImage.alpha = 0.0f;

@@ -145,7 +145,7 @@
         [Common setHeight:rect.size.height ofView:self.imageViews[page]];
     }
 
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:6.0 repeats:YES block:^
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:10.0 repeats:YES block:^
     {
         NSInteger nextPage = (self.pageControl.currentPage + 1) % self.numberOfPages;
         self.jumpingBack   = (nextPage == 0);

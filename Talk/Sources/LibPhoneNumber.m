@@ -47,14 +47,16 @@
 {
     webView = [[UIWebView alloc] initWithFrame:CGRectZero];
     webView.delegate = self;
-    
+
+    NBLog(@"Loading JavaScript started.");
+
     [webView loadHTMLString:@"<script src='LibPhoneNumber.js'></script>"
                     baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]]];
 
     // Start a run-loop to create a maximum 5s app delay for loading Javascript.
     if (CFRunLoopRunInMode(kCFRunLoopDefaultMode, 5.0, NO) != kCFRunLoopRunStopped)
     {
-        NBLog(@"//### Javascript not fully loaded in time.");
+        NBLog(@"//### JavaScript not fully loaded in time.");
     }
 }
 
@@ -65,6 +67,8 @@
 {
     // Stop the Javascript loading run-loop.
 	CFRunLoopStop([[NSRunLoop currentRunLoop] getCFRunLoop]);
+
+    NBLog(@"Loading JavaScript finished.");
 }
 
 
@@ -73,7 +77,7 @@
     // Stop the Javascript loading run-loop.
     CFRunLoopStop([[NSRunLoop currentRunLoop] getCFRunLoop]);
     
-    NBLog(@"Loading Javascript error: %@", error.localizedDescription);
+    NBLog(@"Loading JavaScript error: %@", error.localizedDescription);
 }
 
 
