@@ -2076,6 +2076,7 @@
 		48D4FADC1924247A00949894 /* NavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationController.m; sourceTree = "<group>"; };
 		48D537AD1930E1810095C063 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Resize.h"; path = "../../nbaddressbook/NBAddressBook/NBAddressBook/UIImage+Resize.h"; sourceTree = "<group>"; };
 		48D537AE1930E1810095C063 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Resize.m"; path = "../../nbaddressbook/NBAddressBook/NBAddressBook/UIImage+Resize.m"; sourceTree = "<group>"; };
+		48D537B31930ED120095C063 /* Data1.3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data1.3.xcdatamodel; sourceTree = "<group>"; };
 		48D60EF218B4D7A4000BE5D2 /* CountriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountriesViewController.h; sourceTree = "<group>"; };
 		48D60EF318B4D7A4000BE5D2 /* CountriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountriesViewController.m; sourceTree = "<group>"; };
 		48D7AF7B18E6FA2B005D35AC /* NBPeopleListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPeopleListView.xib; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPeopleListView.xib; sourceTree = "<group>"; };
@@ -5220,9 +5221,10 @@
 		48DD727F169CD4A200CD7080 /* Data.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				48D537B31930ED120095C063 /* Data1.3.xcdatamodel */,
 				48DD7280169CD4A200CD7080 /* Data.xcdatamodel */,
 			);
-			currentVersion = 48DD7280169CD4A200CD7080 /* Data.xcdatamodel */;
+			currentVersion = 48D537B31930ED120095C063 /* Data1.3.xcdatamodel */;
 			name = Data.xcdatamodeld;
 			path = Resources/Data.xcdatamodeld;
 			sourceTree = "<group>";
