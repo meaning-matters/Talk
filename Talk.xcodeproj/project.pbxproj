@@ -1151,7 +1151,7 @@
 		4805788617A4FAAA006923BD /* NBAddressBookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBAddressBookManager.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressBookManager.h; sourceTree = "<group>"; };
 		4805788717A4FAAA006923BD /* NBAddressBookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBAddressBookManager.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressBookManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		4805788817A4FAAA006923BD /* NBAddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBAddressCell.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressCell.h; sourceTree = "<group>"; };
-		4805788917A4FAAA006923BD /* NBAddressCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBAddressCell.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		4805788917A4FAAA006923BD /* NBAddressCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBAddressCell.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressCell.m; sourceTree = "<group>"; };
 		4805788A17A4FAAA006923BD /* NBAddressFieldHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBAddressFieldHandler.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressFieldHandler.h; sourceTree = "<group>"; };
 		4805788B17A4FAAA006923BD /* NBAddUnknownContactDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBAddUnknownContactDelegate.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddUnknownContactDelegate.h; sourceTree = "<group>"; };
 		4805788C17A4FAAA006923BD /* NBCallsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBCallsView.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBCallsView.h; sourceTree = "<group>"; };
@@ -5224,7 +5224,7 @@
 				48D537B31930ED120095C063 /* Data1.3.xcdatamodel */,
 				48DD7280169CD4A200CD7080 /* Data.xcdatamodel */,
 			);
-			currentVersion = 48D537B31930ED120095C063 /* Data1.3.xcdatamodel */;
+			currentVersion = 48DD7280169CD4A200CD7080 /* Data.xcdatamodel */;
 			name = Data.xcdatamodeld;
 			path = Resources/Data.xcdatamodeld;
 			sourceTree = "<group>";

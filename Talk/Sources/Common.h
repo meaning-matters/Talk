@@ -37,6 +37,10 @@ static const int TextFieldCellTag = 1111;
 
 + (NSString*)appStoreUrlString;
 
++ (void)openAppStoreReviewPage;
+
++ (void)addCompanyToAddressBook:(ABAddressBookRef)addressBook;
+
 + (UIViewController*)topViewController; // View controller from which to present a modal.
 
 + (NSData*)jsonDataWithObject:(id)object;

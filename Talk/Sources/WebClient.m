@@ -485,16 +485,16 @@ static NSDictionary* statuses;
     [self postPath:[NSString stringWithFormat:@"users/%@/verification?number=%@", username, number]
         parameters:nil
              reply:^(NSError* error, id content)
-     {
-         if (error == nil)
-         {
-             reply(nil, content[@"code"]);
-         }
-         else
-         {
-             reply(error, nil);
-         }
-     }];
+    {
+        if (error == nil)
+        {
+            reply(nil, content[@"code"]);
+        }
+        else
+        {
+            reply(error, nil);
+        }
+    }];
 }
 
 
@@ -508,9 +508,9 @@ static NSDictionary* statuses;
     [self putPath:[NSString stringWithFormat:@"users/%@/verification?number=%@", username, number]
        parameters:nil
             reply:^(NSError* error, id content)
-     {
-         reply(error);
-     }];
+    {
+        reply(error);
+    }];
 }
 
 

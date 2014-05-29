@@ -224,8 +224,8 @@ typedef enum
             title = NSLocalizedStringWithDefaultValue(@"Settings:CallbackInfo SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"Our server first calls the Callback Number. Then, when you "
-                                                      @"accept that call, the party you're tying to reach is being "
-                                                      @"called, and is show Caller ID (when the Show My Caller "
+                                                      @"accept that call, the party you're trying to reach is "
+                                                      @"called, and is shown Caller ID (when the Show My Caller "
                                                       @"ID setting is on).",
                                                       @"Explanation how Callback settings work\n"
                                                       @"[* lines]");
@@ -254,7 +254,7 @@ typedef enum
 #if HAS_BUYING_NUMBERS
             title = NSLocalizedStringWithDefaultValue(@"Settings:AccountDataInfoFull SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"With a reset you only loose these settings and your call history. "
+                                                      @"With a reset you only lose these settings and your call history. "
                                                       @"You can always restore your account credit, verified "
                                                       @"phones, purchased numbers, and forwardings on other devices.",
                                                       @"Explanation what the Reset setting is doing\n"
@@ -262,7 +262,7 @@ typedef enum
 #else
             title = NSLocalizedStringWithDefaultValue(@"Settings:AccountDataInfo SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"With a reset you only loose these settings and your call history. "
+                                                      @"With a reset you only lose these settings and your call history. "
                                                       @"You can always restore your account credit and verified "
                                                       @"numbers on other devices.",
                                                       @"Explanation what the Reset setting is doing\n"

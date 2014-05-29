@@ -51,9 +51,10 @@
                                                                   @"...");
 
     self.textLabel.text       = NSLocalizedStringWithDefaultValue(@"VerifyPhone", nil, [NSBundle mainBundle],
-                                                                  @"To verify your phone number (A), you will receive a "
-                                                                  @"call (B). During this call, enter the code below (C) "
-                                                                  @"on the keypad of your phone.",
+                                                                  @"To verify, enter your number (A). Then, request to "
+                                                                  @"be called (B). Finally, enter the code (C) "
+                                                                  @"on the keypad of your phone. (The small cost for "
+                                                                  @"this call is taken from your credit.)",
                                                                   @"...");
 
     [self.numberButton setTitle:NSLocalizedStringWithDefaultValue(@"Provisioning:Verify EnterNumberTitle", nil,
@@ -236,13 +237,13 @@
             // We get here when the user either answered or declined the call.
             [Common dispatchAfterInterval:1.0 onMain:^
             {
-                [self checkVerifyStatusWithRepeatCount:20];
+                [self checkVerifyStatusWithRepeatCount:30];
             }];
         }
         else
         {
-            NSString*   title;
-            NSString*   message;
+            NSString* title;
+            NSString* message;
 
             title   = NSLocalizedStringWithDefaultValue(@"VerifyPhone CallFailedTitle", nil,
                                                         [NSBundle mainBundle], @"Failed To Call",
@@ -303,8 +304,8 @@
 
 - (void)showNumberNotVerifiedAlert
 {
-    NSString*   title;
-    NSString*   message;
+    NSString* title;
+    NSString* message;
 
     title   = NSLocalizedStringWithDefaultValue(@"VerifyPhone NotVerifiedTitle", nil,
                                                 [NSBundle mainBundle], @"Number Not Verified",
@@ -369,8 +370,8 @@
         }
         else
         {
-            NSString*   title;
-            NSString*   message;
+            NSString* title;
+            NSString* message;
 
             title   = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyCheckErrorTitle", nil,
                                                         [NSBundle mainBundle], @"Verification Check Failed",

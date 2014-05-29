@@ -108,6 +108,116 @@ static Common* sharedCommon;
 }
 
 
++ (void)openAppStoreReviewPage
+{
+    // 642013221 is the Apple ID for this app.
+    NSString* urlString =  @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?"
+                           @"id=642013221&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8";
+
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+}
+
+
++ (void)addCompanyToAddressBook:(ABAddressBookRef)addressBook
+{
+    ABRecordRef person = ABPersonCreate();
+
+    NSString* venueName     = @"NumberBay Ltd.";
+    NSString* venueUrl      = @"http://www.numberbay.com";
+    NSString* venueEmail    = @"info@numberbay.com";
+    NSString* venuePhone    = @"+441617680224";
+    NSString* venueAddress1 = @"100 Barbirolli Square";
+    NSString* venueAddress2 = nil;
+    NSString* venueCity     = @"Manchester";
+    NSString* venueState    = nil;
+    NSString* venueZip      = @"M2 3AB";
+    NSString* venueCountry  = @"United Kingdom";
+    UIImage*  venueImage    = [UIImage imageNamed:@"Icon-152.png"];
+
+    ABRecordSetValue(person, kABPersonOrganizationProperty, (__bridge CFStringRef)venueName, NULL);
+
+    if (venueUrl)
+    {
+        ABMutableMultiValueRef urlMultiValue = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+        ABMultiValueAddValueAndLabel(urlMultiValue, (__bridge CFStringRef) venueUrl, kABPersonHomePageLabel, NULL);
+        ABRecordSetValue(person, kABPersonURLProperty, urlMultiValue, nil);
+        CFRelease(urlMultiValue);
+    }
+
+    if (venueEmail)
+    {
+        ABMutableMultiValueRef emailMultiValue = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+        ABMultiValueAddValueAndLabel(emailMultiValue, (__bridge CFStringRef) venueEmail, kABWorkLabel, NULL);
+        ABRecordSetValue(person, kABPersonEmailProperty, emailMultiValue, nil);
+        CFRelease(emailMultiValue);
+    }
+
+    if (venuePhone)
+    {
+        ABMutableMultiValueRef phoneNumberMultiValue = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+        NSArray*               venuePhoneNumbers     = [venuePhone componentsSeparatedByString:@" or "];
+
+        for (NSString *venuePhoneNumberString in venuePhoneNumbers)
+        {
+            ABMultiValueAddValueAndLabel(phoneNumberMultiValue, (__bridge CFStringRef) venuePhoneNumberString, kABPersonPhoneMainLabel, NULL);
+        }
+
+        ABRecordSetValue(person, kABPersonPhoneProperty, phoneNumberMultiValue, nil);
+        CFRelease(phoneNumberMultiValue);
+    }
+
+    ABMutableMultiValueRef multiAddress      = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
+    NSMutableDictionary*   addressDictionary = [[NSMutableDictionary alloc] init];
+
+    if (venueAddress1)
+    {
+        if (venueAddress2)
+        {
+            addressDictionary[(NSString *) kABPersonAddressStreetKey] = [NSString stringWithFormat:@"%@\n%@", venueAddress1, venueAddress2];
+        }
+        else
+        {
+            addressDictionary[(NSString *) kABPersonAddressStreetKey] = venueAddress1;
+        }
+    }
+
+    if (venueCity)
+    {
+        addressDictionary[(NSString *)kABPersonAddressCityKey] = venueCity;
+    }
+
+    if (venueState)
+    {
+        addressDictionary[(NSString *)kABPersonAddressStateKey] = venueState;
+    }
+
+    if (venueZip)
+    {
+        addressDictionary[(NSString *)kABPersonAddressZIPKey] = venueZip;
+    }
+
+    if (venueCountry)
+    {
+        addressDictionary[(NSString *)kABPersonAddressCountryKey] = venueCountry;
+    }
+
+    if (venueImage)
+    {
+        ABPersonSetImageData(person, (__bridge CFDataRef)UIImagePNGRepresentation(venueImage), nil);
+    }
+
+    ABMultiValueAddValueAndLabel(multiAddress, (__bridge CFDictionaryRef) addressDictionary, kABWorkLabel, NULL);
+    ABRecordSetValue(person, kABPersonAddressProperty, multiAddress, NULL);
+    CFRelease(multiAddress);
+
+    CFErrorRef error = NULL;
+    ABAddressBookAddRecord(addressBook, person, &error);
+    ABAddressBookSave(addressBook, &error);
+
+    CFRelease(person);
+}
+
+
 + (UIViewController*)topViewController
 {
     UIViewController* viewController;

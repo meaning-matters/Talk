@@ -26,22 +26,11 @@
     {
         self.edgesForExtendedLayout = UIRectEdgeNone;
 
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillHide:)
-                                                     name:UIKeyboardWillHideNotification
-                                                   object:nil];
-
         self.objectsArray       = [NSMutableArray array];
         self.filteredNamesArray = [NSMutableArray array];
     }
 
     return self;
-}
-
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 
@@ -51,18 +40,22 @@
 
     // This will remove extra separators from tableview.
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+
+    self.searchDisplayController.searchResultsTableView.delegate = self;
 }
 
 
-- (void)keyboardWillHide:(NSNotification*)notification
+- (void)scrollViewDidScroll:(UIScrollView*)scrollView
 {
-    CGFloat bottom = 167.0f;
+    UITableView *tableView = self.searchDisplayController.searchResultsTableView;
 
-    //### Workaround for iOS issue with setting insets.
-    if (self.searchDisplayController.searchResultsTableView.contentInset.bottom != bottom)
+    if (scrollView == tableView)
     {
-        [self.searchDisplayController.searchResultsTableView setContentInset:UIEdgeInsetsMake(0, 0, bottom, 0)];
-        [self.searchDisplayController.searchResultsTableView setScrollIndicatorInsets:UIEdgeInsetsMake(0, 0, bottom, 0)];
+        if ([tableView contentInset].bottom != 0)
+        {
+            [tableView setContentInset:UIEdgeInsetsZero];
+            [tableView setScrollIndicatorInsets:UIEdgeInsetsZero];
+        }
     }
 }
 
@@ -188,8 +181,6 @@
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController*)controller
 {
     self.searchDisplayController.searchBar.keyboardType = [self searchBarKeyboardType];
-
-
 }
 
 

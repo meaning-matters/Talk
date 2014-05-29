@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface SearchTableViewController : UIViewController <UITableViewDataSource, UISearchDisplayDelegate, UISearchBarDelegate>
+@interface SearchTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView*   tableView;
 @property (nonatomic, strong) NSArray*              objectsArray;        // The main list of subclass objects.
