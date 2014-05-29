@@ -109,7 +109,7 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionTexts:     numberOfRows = helpsArray.count; break;
-        case TableSectionContactUs: numberOfRows = 2;                break;
+        case TableSectionContactUs: numberOfRows = 3;                break;
         case TableSectionIntro:     numberOfRows = 1;                break;
         case TableSectionTestCall:  numberOfRows = 1;                break;
     }
@@ -192,6 +192,15 @@ typedef enum
                     break;
 
                 case 2:
+                    text = NSLocalizedStringWithDefaultValue(@"Helps RateTheAppText", nil, [NSBundle mainBundle],
+                                                             @"Write an App Store Review...",
+                                                             @"....\n"
+                                                             @"[1 line larger font].");
+                    cell.accessoryType  = UITableViewCellAccessoryNone;
+                    cell.textLabel.textColor = [Skinning tintColor];
+                    break;
+
+                case 3:
                     text = NSLocalizedStringWithDefaultValue(@"Helps CallContactUsText", nil, [NSBundle mainBundle],
                                                              @"Make Mobile Call",
                                                              @"....\n"
@@ -263,6 +272,12 @@ typedef enum
                     break;
 
                 case 2:
+                    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+                    [Common openAppStoreReviewPage];
+                    break;
+
+                case 3:
                     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
                     title   = NSLocalizedStringWithDefaultValue(@"Helps MobileCallText", nil, [NSBundle mainBundle],
