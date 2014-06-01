@@ -22,7 +22,7 @@
 #endif
 
 #define HAS_FULL_FORWARDINGS       0
-#define HAS_BUYING_NUMBERS         0
+#define HAS_BUYING_NUMBERS         1
 #define HAS_INVALID_NUMBER_SETTING 0
 
 

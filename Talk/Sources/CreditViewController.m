@@ -206,8 +206,8 @@ typedef enum
 #if HAS_BUYING_NUMBERS
             title = NSLocalizedStringWithDefaultValue(@"CreditAmount:... TableFooterNumbers", nil, [NSBundle mainBundle],
                                                       @"Credit is used for outgoing calls, for forwarding incoming "
-                                                      @"calls on NumberBay numbers to your phone(s), and for the setup "
-                                                      @"fee when buying some of the numbers.",
+                                                      @"calls on your NumberBay numbers to your phone(s), and for "
+                                                      @"buying numbers.",
                                                       @"[Multiple lines]");
 #else
             title = NSLocalizedStringWithDefaultValue(@"CreditAmount:... TableFooter", nil, [NSBundle mainBundle],
@@ -473,6 +473,8 @@ typedef enum
         case 3: tier = 10; break;
         case 4: tier = 20; break;
         case 5: tier = 50; break;
+        case 6: tier = 60; break;
+        case 7: tier = 72; break;
     }
 
     return tier;
@@ -484,12 +486,14 @@ typedef enum
     UIButton* button;
     switch (n)
     {
-        case 0: button = self.buyCell.button1;  break;
-        case 1: button = self.buyCell.button2;  break;
-        case 2: button = self.buyCell.button5;  break;
-        case 3: button = self.buyCell.button10; break;
-        case 4: button = self.buyCell.button20; break;
-        case 5: button = self.buyCell.button50; break;
+        case 0: button = self.buyCell.button1;   break;
+        case 1: button = self.buyCell.button2;   break;
+        case 2: button = self.buyCell.button5;   break;
+        case 3: button = self.buyCell.button10;  break;
+        case 4: button = self.buyCell.button20;  break;
+        case 5: button = self.buyCell.button50;  break;
+        case 6: button = self.buyCell.button100; break;
+        case 7: button = self.buyCell.button200; break;
     }
 
     return button;
@@ -501,12 +505,14 @@ typedef enum
     UIActivityIndicatorView* indicator;
     switch (n)
     {
-        case 0: indicator = self.buyCell.activityIndicator1;  break;
-        case 1: indicator = self.buyCell.activityIndicator2;  break;
-        case 2: indicator = self.buyCell.activityIndicator5;  break;
-        case 3: indicator = self.buyCell.activityIndicator10; break;
-        case 4: indicator = self.buyCell.activityIndicator20; break;
-        case 5: indicator = self.buyCell.activityIndicator50; break;
+        case 0: indicator = self.buyCell.activityIndicator1;   break;
+        case 1: indicator = self.buyCell.activityIndicator2;   break;
+        case 2: indicator = self.buyCell.activityIndicator5;   break;
+        case 3: indicator = self.buyCell.activityIndicator10;  break;
+        case 4: indicator = self.buyCell.activityIndicator20;  break;
+        case 5: indicator = self.buyCell.activityIndicator50;  break;
+        case 6: indicator = self.buyCell.activityIndicator100; break;
+        case 7: indicator = self.buyCell.activityIndicator200; break;
     }
 
     return indicator;
@@ -545,7 +551,7 @@ typedef enum
 
 - (void)updateBuyCell
 {
-    for (int n = 0; n <= 5; n++)
+    for (int n = 0; n <= 7; n++)
     {
         int       tier              = [self tierForN:n];
         NSString* productIdentifier = [[PurchaseManager sharedManager] productIdentifierForCreditTier:tier];

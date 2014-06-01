@@ -89,21 +89,14 @@
 {
     [self.productIdentifiers addObject:[self productIdentifierForAccountTier:1]];
 
-    [self.productIdentifiers addObject:[self productIdentifierForCreditTier: 1]];
-    [self.productIdentifiers addObject:[self productIdentifierForCreditTier: 2]];
-    [self.productIdentifiers addObject:[self productIdentifierForCreditTier: 5]];
-    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:10]];
-    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:20]];
-    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:50]];
-
-#if HAS_BUYING_NUMBERS
-    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:75]];   // Only used during number purchase.
-
-    for (int tier = 1; tier <= 87; tier++)
-    {
-        [self.productIdentifiers addObject:[self productIdentifierForNumberTier:tier]];
-    }
-#endif
+    [self.productIdentifiers addObject:[self productIdentifierForCreditTier: 1]];   //   1 amount.
+    [self.productIdentifiers addObject:[self productIdentifierForCreditTier: 2]];   //   2 amounts.
+    [self.productIdentifiers addObject:[self productIdentifierForCreditTier: 5]];   //   5 amounts.
+    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:10]];   //  10 amounts.
+    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:20]];   //  20 amounts.
+    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:50]];   //  50 amounts.
+    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:60]];   // 100 amounts.
+    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:72]];   // 200 amounts.
 }
 
 
@@ -715,7 +708,7 @@
     }
     else
     {
-        priceString = [NSString stringWithFormat:@"%d", [self tierOfProductIdentifier:identifier]];
+        priceString = [NSString stringWithFormat:@"%d", [self amountOfProductIdentifier:identifier]];
     }
 
     return priceString;
@@ -962,6 +955,41 @@
     [scanner scanCharactersFromSet:numbers intoString:&tierString];
 
     return [tierString intValue];
+}
+
+
+- (int)amountOfProductIdentifier:(NSString*)identifier
+{
+    NSString*       tierString;
+    int             tier;
+    int             amount;
+    NSScanner*      scanner = [NSScanner scannerWithString:identifier];
+    NSCharacterSet* numbers = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
+
+    // Throw away characters before the tier number.
+    [scanner scanUpToCharactersFromSet:numbers intoString:NULL];
+
+    // Collect tier number.
+    [scanner scanCharactersFromSet:numbers intoString:&tierString];
+
+    tier = [tierString intValue];
+
+    switch (tier)
+    {
+        case  0: amount =    0; break;
+        case  1: amount =    1; break;
+        case  2: amount =    2; break;
+        case  5: amount =    5; break;
+        case 10: amount =   10; break;
+        case 20: amount =   20; break;
+        case 50: amount =   50; break;
+        case 60: amount =  100; break;
+        case 72: amount =  200; break;
+        case 82: amount =  500; break;
+        case 87: amount = 1000; break;
+    }
+
+    return amount;
 }
 
 
