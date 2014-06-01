@@ -199,6 +199,7 @@
         NSStringFromClass([NBPeoplePickerNavigationController class]),
         NSStringFromClass([NBRecentsNavigationController      class]),
         NSStringFromClass([PhonesViewController               class]),
+        NSStringFromClass([RatesViewController                class]),
 #if HAS_BUYING_NUMBERS // When adding these, check if older version apps handle that correctly.
         NSStringFromClass([NumbersViewController              class]),
         NSStringFromClass([ForwardingsViewController          class]),
@@ -419,6 +420,7 @@
     [self.numbersViewController.navigationController     popToRootViewControllerAnimated:NO];
     [self.forwardingsViewController.navigationController popToRootViewControllerAnimated:NO];
     [self.phonesViewController.navigationController      popToRootViewControllerAnimated:NO];
+    [self.ratesViewController.navigationController       popToRootViewControllerAnimated:NO];
 
     [[DataManager     sharedManager]  removeAll];
     [[Settings        sharedSettings] resetAll];

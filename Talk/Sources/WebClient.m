@@ -406,10 +406,35 @@ static NSDictionary* statuses;
 
         [self handleSuccess:responseObject reply:^(NSError* error, id content)
         {
-              reply(error, content);
+            reply(error, content);
         }];
     }
-           failure:^(AFHTTPRequestOperation* operation, NSError* error)
+          failure:^(AFHTTPRequestOperation* operation, NSError* error)
+    {
+        [self handleFailure:error reply:^(NSError* error, id content)
+        {
+            reply(error, content);
+        }];
+    }];
+}
+
+
+// 0B. GET NUMBER RATES
+- (void)retrieveNumberRates:(void (^)(NSError* error, NSArray* rates))reply
+{
+    NSString* currencyCode = [Settings sharedSettings].currencyCode;
+    [self getPath:[NSString stringWithFormat:@"rates/numbers?currencyCode=%@", currencyCode]
+       parameters:nil
+          success:^(AFHTTPRequestOperation* operation, id responseObject)
+    {
+        NBLog(@"getPath request: %@", operation.request.URL);
+
+        [self handleSuccess:responseObject reply:^(NSError* error, id content)
+        {
+            reply(error, content);
+        }];
+    }
+          failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
         [self handleFailure:error reply:^(NSError* error, id content)
         {
@@ -1216,6 +1241,14 @@ static NSDictionary* statuses;
 {
     [self cancelAllHTTPOperationsWithMethod:@"GET"
                                        path:@"rates/calls"];
+}
+
+
+// 0B.
+- (void)cancelAllRetrieveNumberRates
+{
+    [self cancelAllHTTPOperationsWithMethod:@"GET"
+                                       path:@"rates/numbers"];
 }
 
 

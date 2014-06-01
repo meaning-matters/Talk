@@ -48,6 +48,9 @@ typedef enum
 // 0A. GET CALL RATES
 - (void)retrieveCallRates:(void (^)(NSError* error, NSArray* rates))reply;
 
+// 0B. GET NUMBER RATES
+- (void)retrieveNumberRates:(void (^)(NSError* error, NSArray* rates))reply;
+
 // 1. CREATE/UPDATE ACCOUNT
 - (void)retrieveAccountsForReceipt:(NSString*)receipt
                           language:(NSString*)language
@@ -236,6 +239,9 @@ typedef enum
 
 // 0A.
 - (void)cancelAllRetrieveCallRates;
+
+// 0B.
+- (void)cancelAllRetrieveNumberRates;
 
 // 1.
 - (void)cancelAllRetrieveWebAccount;

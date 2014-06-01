@@ -15,14 +15,12 @@
 #import "Strings.h"
 #import "Common.h"
 #import "Skinning.h"
-#import "CallRatesViewController.h"
 
 
 // Update reloadSections calls when adding/removing sections.
 typedef enum
 {
     TableSectionAmount = 1UL << 0,
-    TableSectionRates  = 1UL << 2,
     TableSectionBuy    = 1UL << 1,
 } TableSection;
 
@@ -53,7 +51,6 @@ typedef enum
         // The tabBarItem image must be set in my own NavigationController.
 
         self.sections |= TableSectionAmount;
-        self.sections |= TableSectionRates;
         self.sections |= TableSectionBuy;
     }
     
@@ -110,7 +107,7 @@ typedef enum
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return 3;
+    return [Common bitsSetCount:self.sections];
 }
 
 
@@ -130,20 +127,6 @@ typedef enum
             cell = [tableView dequeueReusableCellWithIdentifier:@"CreditAmountCell" forIndexPath:indexPath];
             [self updateAmountCell:(CreditAmountCell*)cell];
             self.amountIndexPath = indexPath;
-            break;
-
-        case TableSectionRates:
-            cell = [self.tableView dequeueReusableCellWithIdentifier:@"RatesCell"];
-            if (cell == nil)
-            {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"RatesCell"];
-            }
-
-            cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Credit Rates", nil,
-                                                                    [NSBundle mainBundle], @"Call Rates",
-                                                                    @".\n"
-                                                                    @"[1 line, abbreviated: Rates].");
             break;
 
         case TableSectionBuy:
@@ -179,12 +162,6 @@ typedef enum
                                                       @"[One line larger font]");
             break;
 
-        case TableSectionRates:
-            title = NSLocalizedStringWithDefaultValue(@"creditView:... RatesCreditHeader", nil, [NSBundle mainBundle],
-                                                      @"Best Prices You Pay Per Minute",
-                                                      @"[One line larger font]");
-            break;
-
         case TableSectionBuy:
             title = NSLocalizedStringWithDefaultValue(@"creditView:... BuyCreditHeader", nil, [NSBundle mainBundle],
                                                       @"Buy More Credit",
@@ -217,17 +194,6 @@ typedef enum
 #endif
             break;
 
-        case TableSectionRates:
-            title = NSLocalizedStringWithDefaultValue(@"Call Rates:... TableFooter", nil, [NSBundle mainBundle],
-                                                      @"There are thousands of call rates. To keep things simple, "
-                                                      @"only the best prices are shown. These are very close to what "
-                                                      @"you'll pay most of the time, but there are exceptions. "
-                                                      @"See the Credit section on the Help tab for more info.\n\n"
-                                                      @"(The actual price for a number is shown on the Dialer, "
-                                                      @"and when you make a call.)",
-                                                      @"[Multiple lines]");
-            break;
-
         case TableSectionBuy:
             title = NSLocalizedStringWithDefaultValue(@"BuyCredit:... TableFooter", nil, [NSBundle mainBundle],
                                                       @"Credit you buy won't expire, and will be available immediately.",
@@ -258,39 +224,6 @@ typedef enum
             }
             break;
 
-        case TableSectionRates:
-        {
-            if ([Settings sharedSettings].callbackE164.length > 0)
-            {
-                CallRatesViewController* viewController;
-                PhoneNumber*             phoneNumber;
-
-                phoneNumber    = [[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].callbackE164];
-                viewController = [[CallRatesViewController alloc] initWithCallbackPhoneNumber:phoneNumber];
-                [self.navigationController pushViewController:viewController animated:YES];
-            }
-            else
-            {
-                [Common aksForCallbackPhoneNumber:self.callbackPhoneNumber
-                                       completion:^(BOOL cancelled, PhoneNumber* phoneNumber)
-                {
-                    self.callbackPhoneNumber = phoneNumber;
-
-                    if (cancelled == NO && phoneNumber.isValid)
-                    {
-                        CallRatesViewController* viewController;
-
-                        viewController = [[CallRatesViewController alloc] initWithCallbackPhoneNumber:phoneNumber];
-                        [self.navigationController pushViewController:viewController animated:YES];
-                    }
-                    else
-                    {
-                        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                    }
-                }];
-            }
-            break;
-        }
         case TableSectionBuy:
             break;
     }
@@ -304,7 +237,6 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
         case TableSectionAmount: height = self.creditAmountCellHeight; break;
-        case TableSectionRates:  height = self.tableView.rowHeight;    break;
         case TableSectionBuy:    height = self.creditBuyCellHeight;    break;
     }
 
