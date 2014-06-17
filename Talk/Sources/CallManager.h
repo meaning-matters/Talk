@@ -26,7 +26,7 @@
 
 + (CallManager*)sharedManager;
 
-- (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity contactId:(NSString*)contactId;
+- (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber contactId:(NSString*)contactId;
 
 - (void)endCall:(Call*)call;
 

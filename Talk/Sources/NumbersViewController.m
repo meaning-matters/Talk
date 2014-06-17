@@ -80,7 +80,9 @@
     NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
     if (selectedIndexPath != nil)
     {
-        [self updateCell:[self.tableView cellForRowAtIndexPath:selectedIndexPath] atIndexPath:selectedIndexPath];
+        [self configureCell:[self.tableView cellForRowAtIndexPath:selectedIndexPath]
+        onResultsController:fetchedNumbersController
+                atIndexPath:selectedIndexPath];
 
         [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
     }
@@ -127,17 +129,6 @@
     {
         [Common showGetStartedViewController];
     }
-}
-
-
-- (void)updateCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
-{
-    NumberData* number        = [fetchedNumbersController objectAtIndexPath:indexPath];
-    cell.imageView.image      = [UIImage imageNamed:number.numberCountry];
-    cell.textLabel.text       = number.name;
-    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:number.e164];
-    cell.detailTextLabel.text = [phoneNumber internationalFormat];
-    cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
 }
 
 
@@ -189,83 +180,30 @@
 
 - (void)tableView:(UITableView*)tableView willDisplayCell:(UITableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    [self updateCell:cell atIndexPath:indexPath];
+    [self configureCell:cell
+    onResultsController:fetchedNumbersController
+            atIndexPath:indexPath];
 }
 
 
-#pragma mark - Fetched Results Controller Delegate
+#pragma mark - Override of ItemsViewController.
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController*)controller
+- (UITableView*)tableViewForResultsController:(NSFetchedResultsController*)controller
 {
-    [self.tableView beginUpdates];
+    return self.tableView;
 }
 
 
-- (void)controller:(NSFetchedResultsController*)controller
-  didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo
-           atIndex:(NSUInteger)sectionIndex
-     forChangeType:(NSFetchedResultsChangeType)type
+- (void)configureCell:(UITableViewCell*)cell
+  onResultsController:(NSFetchedResultsController*)controller
+          atIndexPath:(NSIndexPath*)indexPath
 {
-    switch (type)
-    {
-        case NSFetchedResultsChangeInsert:
-        {
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]
-                          withRowAnimation:UITableViewRowAnimationFade];
-            break;
-        }
-        case NSFetchedResultsChangeDelete:
-        {
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]
-                          withRowAnimation:UITableViewRowAnimationFade];
-            break;
-        }
-    }
-}
-
-
-- (void)controller:(NSFetchedResultsController*)controller
-   didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath*)indexPath
-     forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath*)newIndexPath
-{
-    UITableView* tableView = self.tableView;
-
-    switch (type)
-    {
-        case NSFetchedResultsChangeInsert:
-        {
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
-                             withRowAnimation:UITableViewRowAnimationFade];
-            break;
-        }
-        case NSFetchedResultsChangeDelete:
-        {
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-                             withRowAnimation:UITableViewRowAnimationFade];
-            break;
-        }
-        case NSFetchedResultsChangeUpdate:
-        {
-            [self updateCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-            break;
-        }
-        case NSFetchedResultsChangeMove:
-        {
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-                             withRowAnimation:UITableViewRowAnimationFade];
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
-                             withRowAnimation:UITableViewRowAnimationFade];
-            break;
-        }
-    }
-}
-
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController*)controller
-{
-    [self.tableView endUpdates];
+    NumberData* number        = [fetchedNumbersController objectAtIndexPath:indexPath];
+    cell.imageView.image      = [UIImage imageNamed:number.numberCountry];
+    cell.textLabel.text       = number.name;
+    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:number.e164];
+    cell.detailTextLabel.text = [phoneNumber internationalFormat];
+    cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
 }
 
 

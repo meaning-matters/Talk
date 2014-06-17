@@ -364,6 +364,15 @@
 }
 
 
++ (NSString*)homeCountryString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings HomeCountry", nil,
+                                             [NSBundle mainBundle], @"Home Country",
+                                             @"Standard label the user's home country (related to phone numbers).\n"
+                                             @"[No size contraint].");
+}
+
+
 + (NSString*)typeString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings PhoneNumberType", nil,

@@ -61,19 +61,11 @@
 }
 
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
-}
-
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
 
-    [[WebClient sharedClient] cancelAllRetrieveCallRates];
+    [[WebClient sharedClient] cancelAllRetrieveNumberRates];
 }
 
 
@@ -101,13 +93,13 @@
     NSString* title;
     NSString* message;
 
-    title   = NSLocalizedStringWithDefaultValue(@"CallRates InfoAlertTitle", nil, [NSBundle mainBundle],
+    title   = NSLocalizedStringWithDefaultValue(@"NumberRates InfoAlertTitle", nil, [NSBundle mainBundle],
                                                 @"Prices Per Minute To %@",
                                                 @"....\n"
                                                 @"[iOS alert message size]");
-    message = NSLocalizedStringWithDefaultValue(@"CallRates InfoAlertMessage", nil, [NSBundle mainBundle],
+    message = NSLocalizedStringWithDefaultValue(@"NumberRates InfoAlertMessage", nil, [NSBundle mainBundle],
                                                 @"Fixed: from %@\nMobile: from %@\n\n"
-                                                @"Plus the callback to your %@ number in %@: %@",
+                                                @"Plus the nback to your %@ number in %@: %@",
                                                 @"....\n"
                                                 @"[iOS alert message size]");
     title   = [NSString stringWithFormat:title, isoCountryCode];
@@ -138,7 +130,7 @@
     cell.imageView.image = [UIImage imageNamed:isoCountryCode];
     cell.textLabel.text  = name;
 
-    NSString* format = NSLocalizedStringWithDefaultValue(@"CallRates Format", nil, [NSBundle mainBundle],
+    NSString* format = NSLocalizedStringWithDefaultValue(@"NumberRates Format", nil, [NSBundle mainBundle],
                                                          @"fix.: %@  mob.: %@",
                                                          @"....\n"
                                                          @"[iOS alert title size].");
@@ -174,11 +166,11 @@
     {
         NSString* title;
         NSString* message;
-        title   = NSLocalizedStringWithDefaultValue(@"CallRates NoCurrencyCodeTitle", nil, [NSBundle mainBundle],
+        title   = NSLocalizedStringWithDefaultValue(@"NumberRates NoCurrencyCodeTitle", nil, [NSBundle mainBundle],
                                                     @"Currency Not Known",
                                                     @"...\n"
                                                     @"...");
-        message = NSLocalizedStringWithDefaultValue(@"CallRates NoCurrencyCodeMessage", nil, [NSBundle mainBundle],
+        message = NSLocalizedStringWithDefaultValue(@"NumberRates NoCurrencyCodeMessage", nil, [NSBundle mainBundle],
                                                     @"The currency code has not been loaded from the iTunes Store (yet).\n\n"
                                                     @"Please make sure your iTunes Store account is active on this device, "
                                                     @"and you're connected to internet.",
@@ -209,15 +201,15 @@
         NSString* title;
         NSString* message;
 
-        title   = NSLocalizedStringWithDefaultValue(@"CallRates UnavailableAlertTitle", nil,
+        title   = NSLocalizedStringWithDefaultValue(@"NumberRates UnavailableAlertTitle", nil,
                                                     [NSBundle mainBundle], @"Service Unavailable",
-                                                    @"Alert title telling that loading call rates over internet failed.\n"
+                                                    @"Alert title telling that loading number rates over internet failed.\n"
                                                     @"[iOS alert title size].");
-        message = NSLocalizedStringWithDefaultValue(@"CallRates UnavailableAlertMessage", nil,
+        message = NSLocalizedStringWithDefaultValue(@"NumberRates UnavailableAlertMessage", nil,
                                                     [NSBundle mainBundle],
-                                                    @"The service that supplies call rates is temporarily offline."
+                                                    @"The service that supplies number rates is temporarily offline."
                                                     @"\n\nPlease try again later.",
-                                                    @"Alert message telling that loading call rates over internet failed.\n"
+                                                    @"Alert message telling that loading number rates over internet failed.\n"
                                                     @"[iOS alert message size]");
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
@@ -233,14 +225,14 @@
         NSString* title;
         NSString* message;
 
-        title   = NSLocalizedStringWithDefaultValue(@"CallRates LoadFailAlertTitle", nil,
+        title   = NSLocalizedStringWithDefaultValue(@"NumberRates LoadFailAlertTitle", nil,
                                                     [NSBundle mainBundle], @"Loading Failed",
                                                     @"Alert title telling that loading countries over internet failed.\n"
                                                     @"[iOS alert title size].");
-        message = NSLocalizedStringWithDefaultValue(@"CallRates LoadFailAlertMessage", nil,
+        message = NSLocalizedStringWithDefaultValue(@"NumberRates LoadFailAlertMessage", nil,
                                                     [NSBundle mainBundle],
-                                                    @"Loading the list of call rates failed: %@\n\nPlease try again later.",
-                                                    @"Alert message telling that loading call rates over internet failed.\n"
+                                                    @"Loading the list of number rates failed: %@\n\nPlease try again later.",
+                                                    @"Alert message telling that loading number rates over internet failed.\n"
                                                     @"[iOS alert message size]");
         message = [NSString stringWithFormat:message, error.localizedDescription];
         [BlockAlertView showAlertViewWithTitle:title

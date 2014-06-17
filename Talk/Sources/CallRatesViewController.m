@@ -255,9 +255,9 @@
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
-         {
-             [self.navigationController popViewControllerAnimated:YES];
-         }
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
                              cancelButtonTitle:[Strings cancelString]
                              otherButtonTitles:nil];
     }
@@ -279,9 +279,9 @@
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
-         {
-             [self.navigationController popViewControllerAnimated:YES];
-         }
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
                              cancelButtonTitle:[Strings cancelString]
                              otherButtonTitles:nil];
     }

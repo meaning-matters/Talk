@@ -784,6 +784,7 @@ typedef enum
                         };
                         
                         countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:isoCountryCode
+                                                                                                    title:[Strings countryString]
                                                                                                completion:completion];
                         [self.navigationController pushViewController:countriesViewController animated:YES];
                         break;

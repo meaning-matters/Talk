@@ -277,93 +277,6 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 }
 
 
-#pragma mark - Fetched Results Controller Delegate
-
-- (void)controllerWillChangeContent:(NSFetchedResultsController*)controller
-{
-    UITableView* tableView = [self tableViewForResultsController:controller];
-
-    [tableView beginUpdates];
-}
-
-
-- (void)controller:(NSFetchedResultsController*)controller
-  didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
-           atIndex:(NSUInteger)sectionIndex
-     forChangeType:(NSFetchedResultsChangeType)type
-{
-    UITableView* tableView = [self tableViewForResultsController:controller];
-
-    switch (type)
-    {
-        case NSFetchedResultsChangeInsert:
-            [tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]
-                     withRowAnimation:UITableViewRowAnimationFade];
-            break;
-
-        case NSFetchedResultsChangeDelete:
-            [tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]
-                     withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
-}
-
-
-- (void)controller:(NSFetchedResultsController*)controller
-   didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath*)indexPath
-     forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath*)newIndexPath
-{
-    UITableView*     tableView = [self tableViewForResultsController:controller];
-    UITableViewCell* cell;
-    RecordingData*   recording;
-    ForwardingData*  forwarding;
-
-    switch (type)
-    {
-        case NSFetchedResultsChangeInsert:
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
-                             withRowAnimation:UITableViewRowAnimationFade];
-            break;
-
-        case NSFetchedResultsChangeDelete:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-                             withRowAnimation:UITableViewRowAnimationFade];
-            break;
-
-        case NSFetchedResultsChangeUpdate:
-            cell = [tableView cellForRowAtIndexPath:indexPath];
-            if (tableView == self.tableView)
-            {
-                forwarding = [controller objectAtIndexPath:indexPath];
-                cell.textLabel.text = forwarding.name;
-            }
-            else
-            {
-                recording = [controller objectAtIndexPath:indexPath];
-                cell.textLabel.text = recording.name;
-            }
-            break;
-
-        case NSFetchedResultsChangeMove:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-                             withRowAnimation:UITableViewRowAnimationFade];
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
-                             withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
-}
-
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController*)controller
-{
-    UITableView* tableView = [self tableViewForResultsController:controller];
-
-    [tableView endUpdates];
-}
-
-
 #pragma mark - Actions
 
 - (void)selectionUpdateAction
@@ -474,7 +387,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 }
 
 
-#pragma mark - Helper Methods
+#pragma mark - ItemsViewController Overrides/Implementations
 
 - (UITableView*)tableViewForResultsController:(NSFetchedResultsController*)controller
 {
@@ -488,6 +401,29 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     }
 }
 
+
+- (void)configureCell:(UITableViewCell*)cell
+  onResultsController:(NSFetchedResultsController*)controller
+          atIndexPath:(NSIndexPath*)indexPath
+{
+    UITableView*     tableView = [self tableViewForResultsController:controller];
+    RecordingData*   recording;
+    ForwardingData*  forwarding;
+
+    if (tableView == self.tableView)
+    {
+        forwarding = [controller objectAtIndexPath:indexPath];
+        cell.textLabel.text = forwarding.name;
+    }
+    else
+    {
+        recording = [controller objectAtIndexPath:indexPath];
+        cell.textLabel.text = recording.name;
+    }
+}
+
+
+#pragma mark - Helper Methods
 
 - (NSFetchedResultsController*)resultsControllerForTableView:(UITableView*)tableView
 {

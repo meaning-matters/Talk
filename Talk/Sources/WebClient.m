@@ -95,9 +95,16 @@ static NSDictionary* statuses;
 
 - (void)handleFailure:(NSError*)error reply:(void (^)(NSError* error, id content))reply
 {
-    if (error != nil && error.code != NSURLErrorCancelled)
+    if (error != nil)
     {
-        reply(error, nil);
+        if (error.code != NSURLErrorCancelled)
+        {
+            reply(error, nil);
+        }
+        else
+        {
+            // Ignore cancellation.
+        }
     }
     else
     {

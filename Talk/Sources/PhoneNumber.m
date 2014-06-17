@@ -300,15 +300,6 @@ static NSString*    defaultIsoCountryCode = @"";
             string = [NSString stringWithFormat:@"%@%@", country, [self typeString]];
         }
     }
-    else if ([self.number isEqualToString:[Settings sharedSettings].testNumber])
-    {
-        NSString* test;
-        test = NSLocalizedStringWithDefaultValue(@"General:Number Test", nil, [NSBundle mainBundle],
-                                                 @"test",
-                                                 @"Indicator of test phone number\n"
-                                                 @"[0.5 line small font].");
-        string = [NSString stringWithFormat:@"NumberBay - %@", test];
-    }
     else
     {
         NSString* isoCountryCode = [[LibPhoneNumber sharedInstance] isoCountryCodeOfNumber:self.number

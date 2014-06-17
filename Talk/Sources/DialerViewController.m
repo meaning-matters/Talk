@@ -375,8 +375,7 @@
 
 - (void)makeCallWithContactId:(NSString*)aContactId
 {
-    NSString* identity = [Settings sharedSettings].callerIdE164; //### Select identity.
-    Call*     call     = [[CallManager sharedManager] callPhoneNumber:phoneNumber fromIdentity:identity contactId:aContactId];
+    Call* call = [[CallManager sharedManager] callPhoneNumber:phoneNumber contactId:aContactId];
 
     if (call != nil)
     {

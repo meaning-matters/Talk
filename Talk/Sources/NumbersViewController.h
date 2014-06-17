@@ -10,6 +10,6 @@
 #import "ItemsViewController.h"
 
 
-@interface NumbersViewController : ItemsViewController <NSFetchedResultsControllerDelegate>
+@interface NumbersViewController : ItemsViewController
 
 @end

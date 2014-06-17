@@ -8,8 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ItemsViewController : UITableViewController
+@interface ItemsViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 
 - (void)refresh:(id)sender;
+
+// To be overriden by subclass.
+- (UITableView*)tableViewForResultsController:(NSFetchedResultsController*)controller;
+
+// To be overriden by subclass.
+- (void)configureCell:(UITableViewCell*)cell
+  onResultsController:(NSFetchedResultsController*)controller
+          atIndexPath:(NSIndexPath*)indexPath;
 
 @end

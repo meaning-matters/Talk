@@ -12,7 +12,7 @@
 @class PhoneData;
 
 
-@interface PhonesViewController : ItemsViewController <NSFetchedResultsControllerDelegate>
+@interface PhonesViewController : ItemsViewController
 
 @property (nonatomic, strong) NSString* headerTitle;
 @property (nonatomic, strong) NSString* footerTitle;

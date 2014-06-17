@@ -15,6 +15,7 @@
 @property (nonatomic, assign) BOOL isModal;    // Set when shown as modal, and not from Settings.
 
 - (instancetype)initWithIsoCountryCode:(NSString*)isoCountryCode
+                                 title:(NSString*)title
                             completion:(void (^)(BOOL cancelled, NSString* isoCountryCode))completion;
 
 @end

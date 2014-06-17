@@ -26,6 +26,7 @@
 @implementation CountriesViewController
 
 - (instancetype)initWithIsoCountryCode:(NSString*)isoCountryCode
+                                 title:(NSString*)title
                             completion:(void (^)(BOOL cancelled, NSString* isoCountryCode))completion;
 {
     if (self = [super init])
@@ -33,7 +34,7 @@
         self.tableView.dataSource = self;
         self.tableView.delegate   = self;
 
-        self.title                = [Strings countriesString];
+        self.title                = title;
 
         self.objectsArray         = [[CountryNames sharedNames].namesDictionary allValues];
         self.isoCountryCode       = isoCountryCode;

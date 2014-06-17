@@ -23,7 +23,6 @@ typedef enum
     TableSectionTexts     = 1UL << 0,
     TableSectionContactUs = 1UL << 1,
     TableSectionIntro     = 1UL << 2,
-    TableSectionTestCall  = 1UL << 3,
 } TableSections;
 
 
@@ -111,7 +110,6 @@ typedef enum
         case TableSectionTexts:     numberOfRows = helpsArray.count; break;
         case TableSectionContactUs: numberOfRows = 3;                break;
         case TableSectionIntro:     numberOfRows = 1;                break;
-        case TableSectionTestCall:  numberOfRows = 1;                break;
     }
     
     return numberOfRows;
@@ -140,12 +138,6 @@ typedef enum
             title = NSLocalizedStringWithDefaultValue(@"Helps:Intro SectionHeader", nil, [NSBundle mainBundle],
                                                       @"Intro",
                                                       @"Introduction images + text.");
-            break;
-
-        case TableSectionTestCall:
-            title = NSLocalizedStringWithDefaultValue(@"Helps:TestCall SectionHeader", nil, [NSBundle mainBundle],
-                                                      @"Test",
-                                                      @"Ways to test the app.");
             break;
     }
     
@@ -219,14 +211,6 @@ typedef enum
                                                                     @"...\n"
                                                                     @"[1 line larger font].");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            break;
-
-        case TableSectionTestCall:
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Helps TestCallText", nil, [NSBundle mainBundle],
-                                                                    @"Make Test Call",
-                                                                    @"...\n"
-                                                                    @"[1 line larger font].");
-            cell.accessoryType  = UITableViewCellAccessoryNone;
             break;
     }
 
@@ -313,12 +297,6 @@ typedef enum
             [self.navigationController pushViewController:viewController animated:YES];
             break;
         }
-        case TableSectionTestCall:
-            phoneNumber = [[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].testNumber];
-            [[CallManager sharedManager] callPhoneNumber:phoneNumber
-                                            fromIdentity:[Settings sharedSettings].callerIdE164
-                                               contactId:nil];
-            break;
     }
 }
 

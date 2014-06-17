@@ -58,11 +58,7 @@ typedef enum
         sections |= TableSectionCallMode;
         sections |= TableSectionHomeCountry;
         sections |= TableSectionAccountData;
-
-        // Optional sections.
-#if HAS_INVALID_NUMBER_SETTING
         sections |= TableSectionCallOptions;
-#endif
 
         settings = [Settings sharedSettings];
 
@@ -120,7 +116,7 @@ typedef enum
                   options:NSKeyValueObservingOptionNew
                   context:nil];
     [settings addObserver:self
-               forKeyPath:@"allowInvalidNumbers"
+               forKeyPath:@"askForCallerId"
                   options:NSKeyValueObservingOptionNew
                   context:nil];
 }
@@ -160,7 +156,7 @@ typedef enum
     {
         [indexSet addIndex:[Common nOfBit:TableSectionHomeCountry inValue:sections]];
     }
-    else if ([keyPath isEqualToString:@"allowInvalidNumbers"])
+    else if ([keyPath isEqualToString:@"askForCallerId"])
     {
         [indexSet addIndex:[Common nOfBit:TableSectionCallOptions inValue:sections]];
     }
@@ -242,13 +238,11 @@ typedef enum
         case TableSectionCallOptions:
             title = NSLocalizedStringWithDefaultValue(@"Settings:CallOptions SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"It's best to leave this option off, as it may warn you about "
-                                                      @"typos, and numbers without country code that don't match the "
-                                                      @"current Home Country.",
-                                                      @"...\n"
+                                                      @"When enabled, asks you to select a caller ID for a contact "
+                                                      @"you're calling.",
+                                                      @"Explanation what the Call Options are doing\n"
                                                       @"[* lines]");
             break;
-
 
         case TableSectionAccountData:
 #if HAS_BUYING_NUMBERS
@@ -392,6 +386,7 @@ typedef enum
         {
             self.countryIndexPath = indexPath;
             countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:homeCountry
+                                                                                        title:[Strings homeCountryString]
                                                                                    completion:^(BOOL      cancelled,
                                                                                                 NSString* isoCountryCode)
             {
@@ -496,7 +491,7 @@ typedef enum
             break;
 
         case TableSectionCallOptions:
-            cell = [self allowInvalidNumbersCell];
+            cell = [self callOptionsCellForRowAtIndexPath:indexPath];
             break;
 
         case TableSectionAccountData:
@@ -754,7 +749,7 @@ typedef enum
 }
 
 
-- (UITableViewCell*)allowInvalidNumbersCell
+- (UITableViewCell*)callOptionsCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
     UISwitch*        switchView;
@@ -772,16 +767,16 @@ typedef enum
         switchView = (UISwitch*)cell.accessoryView;
     }
 
-    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:AllowCallingInvalidNumbers CellText", nil,
-                                                            [NSBundle mainBundle], @"Allow Invalid Numbers",
+    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:AskForCallerId CellText", nil,
+                                                            [NSBundle mainBundle], @"Ask For Caller ID",
                                                             @"...\n"
                                                             @"[2/3 line].");
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    switchView.on = settings.allowInvalidNumbers;
+    switchView.on = settings.askForCallerId;
 
     [switchView removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
     [switchView addTarget:self
-                   action:@selector(allowInvalidNumbersSwitchAction:)
+                   action:@selector(askForCallerIdSwitchAction:)
          forControlEvents:UIControlEventValueChanged];
 
     return cell;
@@ -811,9 +806,9 @@ typedef enum
 }
 
 
-- (void)allowInvalidNumbersSwitchAction:(id)sender
+- (void)askForCallerIdSwitchAction:(id)sender
 {
-    settings.allowInvalidNumbers = ((UISwitch*)sender).on;
+    settings.askForCallerId = ((UISwitch*)sender).on;
 }
 
 
@@ -822,12 +817,12 @@ typedef enum
 - (PhoneData*)lookupPhoneForE164:(NSString*)e164
 {
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"e164 == %@", e164];
-    NSArray* phonesArray = [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
-                                                                     sortKeys:@[@"name"]
-                                                                    predicate:predicate
-                                                         managedObjectContext:nil];
+    NSArray*     phones    = [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
+                                                                       sortKeys:@[@"name"]
+                                                                      predicate:predicate
+                                                           managedObjectContext:nil];
 
-    return [phonesArray firstObject];
+    return [phones firstObject];
 }
 
 @end

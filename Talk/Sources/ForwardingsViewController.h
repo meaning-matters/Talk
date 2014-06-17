@@ -10,7 +10,7 @@
 #import "ItemsViewController.h"
 
 
-@interface ForwardingsViewController : ItemsViewController <NSFetchedResultsControllerDelegate>
+@interface ForwardingsViewController : ItemsViewController
 
 @property (nonatomic, weak) IBOutlet UITableView* recordingsTableView;
 

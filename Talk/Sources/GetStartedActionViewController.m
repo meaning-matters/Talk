@@ -122,9 +122,9 @@
 }
 
 
-// Dummy to be overriden by subclass.
 - (void)getStarted
 {
+    // Dummy to be overriden by subclass.
 }
 
 
@@ -205,11 +205,11 @@
 
                 if (error == nil)
                 {
-                    NSArray* phonesArray = [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
-                                                                                     sortKeys:@[@"name"]
-                                                                                    predicate:nil
-                                                                         managedObjectContext:nil];
-                    if (phonesArray.count == 0)
+                    NSArray* phones = [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
+                                                                                sortKeys:@[@"name"]
+                                                                               predicate:nil
+                                                                    managedObjectContext:nil];
+                    if (phones.count == 0)
                     {
                         VerifyPhoneViewController* viewController;
                         viewController = [[VerifyPhoneViewController alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber)
@@ -243,7 +243,7 @@
                     }
                     else
                     {
-                        [self readyWithE164:((PhoneData*)phonesArray[0]).e164];
+                        [self readyWithE164:((PhoneData*)phones[0]).e164];
                     }
                 }
                 else

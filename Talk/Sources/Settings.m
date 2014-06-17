@@ -26,7 +26,7 @@ NSString* const LastDialedNumberKey       = @"LastDialedNumber";
 NSString* const WebBaseUrlKey             = @"WebBaseUrl";
 NSString* const WebUsernameKey            = @"WebUsername";            // Used as keychain 'username'.
 NSString* const WebPasswordKey            = @"WebPassword";            // Used as keychain 'username'.
-NSString* const AllowInvalidNumbersKey    = @"AllowInvalidNumbers";
+NSString* const AskForCallerIdKey         = @"AskForCallerId";
 NSString* const ShowCallerIdKey           = @"ShowCallerId";
 NSString* const CallerIdE164Key           = @"CallerIdE164";
 NSString* const CallbackE164Key           = @"CallbackE164";
@@ -119,7 +119,7 @@ static NSUserDefaults* userDefaults;
 
         [dictionary setObject:@""                                                forKey:LastDialedNumberKey];
         [dictionary setObject:@"https://api.numberbay.com/"                      forKey:WebBaseUrlKey];
-        [dictionary setObject:@(NO)                                              forKey:AllowInvalidNumbersKey];
+        [dictionary setObject:@(YES)                                             forKey:AskForCallerIdKey];
         [dictionary setObject:@(YES)                                             forKey:ShowCallerIdKey];
         [dictionary setObject:@""                                                forKey:CallerIdE164Key];
         [dictionary setObject:@""                                                forKey:CallbackE164Key];
@@ -249,15 +249,15 @@ static NSUserDefaults* userDefaults;
 }
 
 
-- (BOOL)allowInvalidNumbers
+- (BOOL)askForCallerId
 {
-    return [userDefaults boolForKey:AllowInvalidNumbersKey];
+    return [userDefaults boolForKey:AskForCallerIdKey];
 }
 
 
-- (void)setAllowInvalidNumbers:(BOOL)allowInvalidNumbers
+- (void)setAskForCallerId:(BOOL)askForCallerId
 {
-    [userDefaults setBool:allowInvalidNumbers forKey:AllowInvalidNumbersKey];
+    [userDefaults setBool:askForCallerId forKey:AskForCallerIdKey];
 }
 
 
@@ -408,12 +408,6 @@ static NSUserDefaults* userDefaults;
 - (NSString*)companyNameAddress
 {
     return @"NumberBay Ltd.\n100 Barbirolli Square\nManchester M2 3AB\nUnited Kingdom";
-}
-
-
-- (NSString*)testNumber
-{
-    return @"200";
 }
 
 

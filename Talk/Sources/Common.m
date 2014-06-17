@@ -756,7 +756,7 @@ static Common* sharedCommon;
         message     = NSLocalizedStringWithDefaultValue(@"General:AppStatus CountryUnknownMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"The country for this (local) number can't be determined.\n\n"
-                                                        @"Select the default country, or enter an international number.",
+                                                        @"Select the home country, or enter an international number.",
                                                         @"Alert message informing about home country being unknown\n"
                                                         @"[iOS alert message size]");
 
@@ -771,11 +771,12 @@ static Common* sharedCommon;
         {
             if (buttonIndex == 1)
             {
-                CountriesViewController*    countriesViewController;
-                UINavigationController*     modalViewController;
-                NSString*                   homeCountry = [Settings sharedSettings].homeCountry;
+                CountriesViewController* countriesViewController;
+                UINavigationController*  modalViewController;
+                NSString*                homeCountry = [Settings sharedSettings].homeCountry;
 
                 countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:homeCountry
+                                                                                            title:[Strings homeCountryString]
                                                                                        completion:^(BOOL      cancelled,
                                                                                                     NSString* isoCountryCode)
                 {
