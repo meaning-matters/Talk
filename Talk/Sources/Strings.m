@@ -373,6 +373,15 @@
 }
 
 
++ (NSString*)callerIdString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings CallerID", nil,
+                                             [NSBundle mainBundle], @"Caller ID",
+                                             @"Standard label for a phone number the person you call sees.\n"
+                                             @"[No size contraint].");
+}
+
+
 + (NSString*)typeString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings PhoneNumberType", nil,

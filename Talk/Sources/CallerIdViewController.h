@@ -1,5 +1,5 @@
 //
-//  SelectCallerIdViewController.h
+//  CallerIdViewController.h
 //  Talk
 //
 //  Created by Cornelis van der Bent on 15/06/14.
@@ -12,7 +12,7 @@
 @class NumberData;
 
 
-@interface SelectCallerIdViewController : UITableViewController
+@interface CallerIdViewController : UITableViewController
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
                                selectedPhone:(PhoneData*)selectedPhone

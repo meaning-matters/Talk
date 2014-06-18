@@ -86,6 +86,8 @@
 
 + (NSString*)homeCountryString;
 
++ (NSString*)callerIdString;
+
 + (NSString*)typeString;
 
 + (NSString*)areaCodeString;

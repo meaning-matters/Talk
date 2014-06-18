@@ -92,7 +92,7 @@
 		480CE11F193BA7B20020F255 /* NumberRatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480CE11E193BA7B20020F255 /* NumberRatesViewController.m */; };
 		480CE121193C4D100020F255 /* NumberBuyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 480CE120193C4D100020F255 /* NumberBuyCell.xib */; };
 		480CE124194DA0100020F255 /* CallerIdData.m in Sources */ = {isa = PBXBuildFile; fileRef = 480CE123194DA0100020F255 /* CallerIdData.m */; };
-		480CE127194DBEC40020F255 /* SelectCallerIdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480CE126194DBEC40020F255 /* SelectCallerIdViewController.m */; };
+		480CE127194DBEC40020F255 /* CallerIdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480CE126194DBEC40020F255 /* CallerIdViewController.m */; };
 		480E524A18C5103C0054A791 /* libHockeySDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 480E524518C50F280054A791 /* libHockeySDK.a */; };
 		480E524C18C510510054A791 /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 480E524B18C510510054A791 /* CrashReporter.framework */; };
 		480E524D18C5109D0054A791 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 480E524718C50F280054A791 /* HockeySDKResources.bundle */; };
@@ -898,8 +898,8 @@
 		480CE120193C4D100020F255 /* NumberBuyCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberBuyCell.xib; sourceTree = "<group>"; };
 		480CE122194DA0100020F255 /* CallerIdData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallerIdData.h; sourceTree = "<group>"; };
 		480CE123194DA0100020F255 /* CallerIdData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallerIdData.m; sourceTree = "<group>"; };
-		480CE125194DBEC40020F255 /* SelectCallerIdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectCallerIdViewController.h; sourceTree = "<group>"; };
-		480CE126194DBEC40020F255 /* SelectCallerIdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectCallerIdViewController.m; sourceTree = "<group>"; };
+		480CE125194DBEC40020F255 /* CallerIdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallerIdViewController.h; sourceTree = "<group>"; };
+		480CE126194DBEC40020F255 /* CallerIdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallerIdViewController.m; sourceTree = "<group>"; };
 		480E523C18C50F280054A791 /* HockeySDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HockeySDK.xcodeproj; path = "External/HockeySDK-iOS-3.5.4/Support/HockeySDK.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		480E524B18C510510054A791 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CrashReporter.framework; path = "External/HockeySDK-iOS-3.5.4/Vendor/CrashReporter.framework"; sourceTree = "<group>"; };
 		4812727216487E2D00534450 /* LibPhoneNumber.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = LibPhoneNumber.js; path = External/LibPhoneNumber/LibPhoneNumber.js; sourceTree = SOURCE_ROOT; };
@@ -2561,8 +2561,8 @@
 				484943AC1753C00000E1D5C4 /* ThanksViewController.m */,
 				48C4319F189EDFB40008FE01 /* VerifyPhoneViewController.h */,
 				48C431A0189EDFB40008FE01 /* VerifyPhoneViewController.m */,
-				480CE125194DBEC40020F255 /* SelectCallerIdViewController.h */,
-				480CE126194DBEC40020F255 /* SelectCallerIdViewController.m */,
+				480CE125194DBEC40020F255 /* CallerIdViewController.h */,
+				480CE126194DBEC40020F255 /* CallerIdViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -3382,7 +3382,7 @@
 				48D60EF418B4D7A4000BE5D2 /* CountriesViewController.m in Sources */,
 				484A94AA171C518D009E22B9 /* NumberAreaActionCell.m in Sources */,
 				483679DE1721F2E1001A02AF /* RecordingViewController.m in Sources */,
-				480CE127194DBEC40020F255 /* SelectCallerIdViewController.m in Sources */,
+				480CE127194DBEC40020F255 /* CallerIdViewController.m in Sources */,
 				480CE124194DA0100020F255 /* CallerIdData.m in Sources */,
 				48367A47172552D2001A02AF /* RecordingControlsCell.m in Sources */,
 				48CA503D172C5EB400CB1B7B /* ForwardingViewController.m in Sources */,

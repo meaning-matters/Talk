@@ -25,6 +25,7 @@
 #import "WebClient.h"
 #import "CallerIdData.h"
 #import "E164Data.h"
+#import "CallerIdViewController.h"
 
 
 #define ALLOW_CALLS_WHEN_REACHABLE_DISCONNECTED 1
@@ -208,14 +209,15 @@
         NSString* defaultButton;
 
         title         = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId Title", nil, [NSBundle mainBundle],
-                                                          @"No Caller ID Selected",
+                                                          @"No Caller ID Assigned",
                                                           @"...\n"
                                                           @"[iOS alert title size - abbreviated: 'Captive Portal'].");
 
         message       = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId Message", nil, [NSBundle mainBundle],
-                                                          @"You can stop showing this alert (cancels the call), "
-                                                          @"select the caller ID from a list, or use the default caller "
-                                                          @"ID from Settings for this call only.",
+                                                          @"You can assign a caller ID to this contact. This makes sure "
+                                                          @"your contact will always see the same number when you call. "
+                                                          @"Alternatively, you can use the default from Settings for this "
+                                                          @"call.",
                                                           @"...\n"
                                                           @"[iOS alert message size]");
 
@@ -225,12 +227,12 @@
                                                           @"[iOS alert button title full width]");
 
         selectButton  = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId SelectButton", nil, [NSBundle mainBundle],
-                                                          @"Select Caller ID",
+                                                          @"Assign Caller ID",
                                                           @"...\n"
                                                           @"[iOS alert button title full width]");
 
         defaultButton = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId DefaultButton", nil, [NSBundle mainBundle],
-                                                          @"Use Default Caller ID",
+                                                          @"Use Default From Settings",
                                                           @"...\n"
                                                           @"[iOS alert button title full width]");
         message = [NSString stringWithFormat:message, [[NetworkStatus sharedStatus] getSsid]];
@@ -249,8 +251,25 @@
             {
                 if (buttonIndex == 1)
                 {
-                    //### Show callerId selector, and make call when selected in block.
-                    //### { completion(identity); }
+                    NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
+                    CallerIdViewController* viewController;
+                    UINavigationController* navigationController;
+
+                    viewController = [[CallerIdViewController alloc] initWithManagedObjectContext:managedObjectContext
+                                                                                    selectedPhone:nil
+                                                                                   selectedNumber:nil
+                                                                                       completion:^(PhoneData*  selectedPhone,
+                                                                                                    NumberData* selectedNumber)
+                    {
+                        //### Show callerId selector, and make call when selected in block.
+                        //### { completion(identity); }
+                    }];
+
+                    navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+                    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+                    [AppDelegate.appDelegate.tabBarController presentViewController:navigationController
+                                                                           animated:YES
+                                                                         completion:nil];
                 }
                 else
                 {

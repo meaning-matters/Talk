@@ -1,5 +1,5 @@
 //
-//  SelectCallerIdViewController.m
+//  CallerIdViewController.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 15/06/14.
@@ -8,7 +8,7 @@
 
 //http://stackoverflow.com/questions/8997387/tableview-with-two-instances-of-nsfetchedresultscontroller
 
-#import "SelectCallerIdViewController.h"
+#import "CallerIdViewController.h"
 #import "Common.h"
 #import "Strings.h"
 #import "DataManager.h"
@@ -23,13 +23,15 @@ typedef enum
 } TableSections;
 
 
-@interface SelectCallerIdViewController () <NSFetchedResultsControllerDelegate>
+@interface CallerIdViewController () <NSFetchedResultsControllerDelegate>
 {
     TableSections               sections;
     NSFetchedResultsController* fetchedE164Controller;
 }
 
 @property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
+@property (nonatomic, strong) NSMutableArray*         phones;
+@property (nonatomic, strong) NSMutableArray*         numbers;
 @property (nonatomic, strong) PhoneData*              selectedPhone;
 @property (nonatomic, strong) NumberData*             selectedNumber;
 @property (nonatomic, copy) void (^completion)(PhoneData* selectedPhone, NumberData* selectedNumber);
@@ -37,7 +39,7 @@ typedef enum
 @end
 
 
-@implementation SelectCallerIdViewController
+@implementation CallerIdViewController
 
 - (instancetype)init
 {
@@ -47,6 +49,7 @@ typedef enum
                                    completion:nil];
 }
 
+
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
                                selectedPhone:(PhoneData*)selectedPhone
                               selectedNumber:(NumberData*)selectedNumber
@@ -55,7 +58,7 @@ typedef enum
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
-        self.title                = [Strings phonesString];
+        self.title                = [Strings callerIdString];
         self.managedObjectContext = managedObjectContext;
         self.selectedPhone        = selectedPhone;
         self.selectedNumber       = selectedNumber;
@@ -70,6 +73,15 @@ typedef enum
 {
     [super viewDidLoad];
 
+    if (self.navigationController.presentingViewController != nil)
+    {
+        UIBarButtonItem* buttonItem;
+        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                   target:self
+                                                                   action:@selector(cancel)];
+        self.navigationItem.leftBarButtonItem = buttonItem;
+    }
+
     fetchedE164Controller = [[DataManager sharedManager] fetchResultsForEntityName:@"E164"
                                                                       withSortKeys:@[@"name"]
                                                               managedObjectContext:self.managedObjectContext];
@@ -81,32 +93,17 @@ typedef enum
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return fetchedE164Controller.sections.count;
+    return ([self phones].count > 0) + ([self numbers].count > 0);
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSArray* array;
-
     switch ([self tableSectionForSection:section])
     {
-        case TableSectionPhones:
-            array  = [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
-                                                               sortKeys:@[@"name"]
-                                                              predicate:nil
-                                                   managedObjectContext:nil];
-            break;
-
-        case TableSectionNumbers:
-            array  = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
-                                                               sortKeys:@[@"name"]
-                                                              predicate:nil
-                                                   managedObjectContext:nil];
-            break;
+        case TableSectionPhones:  return [self phones].count;
+        case TableSectionNumbers: return [self numbers].count;
     }
-
-    return array.count;
 }
 
 
@@ -117,15 +114,11 @@ typedef enum
     switch ([self tableSectionForSection:section])
     {
         case TableSectionPhones:
-            title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Phones SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Phones",
-                                                      @".....");
+            title = [Strings phonesString];
             break;
 
         case TableSectionNumbers:
-            title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Numbers SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Numbers",
-                                                      @".....");
+            title = [Strings numbersString];
             break;
     }
 
@@ -178,6 +171,10 @@ typedef enum
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
+    self.completion(nil, nil);
+
+    [self dismissViewControllerAnimated:YES completion:nil];
+
     /*    PhoneData*  phone  = [fetchedPhonesController  objectAtIndexPath:indexPath];
     NumberData* number = [fetchedNumbersController objectAtIndexPath:indexPath];
 
@@ -203,28 +200,52 @@ typedef enum
 
 #pragma Helpers
 
+- (void)cancel
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (NSArray*)phones
+{
+    return [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
+                                                     sortKeys:@[@"name"]
+                                                    predicate:nil
+                                         managedObjectContext:nil];
+}
+
+
+- (NSArray*)numbers
+{
+    return [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
+                                                     sortKeys:@[@"name"]
+                                                    predicate:nil
+                                         managedObjectContext:nil];
+}
+
+
 - (TableSections)tableSectionForSection:(NSInteger)section
 {
-    // When there are no Phones, the first section is Numbers.
-    //return [Common nthBitSet:(section + (fetchedPhonesController.sections.count == 0)) inValue:sections];
-
-    return 0;
+    if ([self phones].count == 0)
+    {
+        return TableSectionNumbers;
+    }
+    else
+    {
+        return [Common nthBitSet:section inValue:sections];
+    }
 }
 
 
 - (void)configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
-    PhoneData* phone          = [fetchedE164Controller objectAtIndexPath:indexPath];
-    cell.textLabel.text       = phone.name;
-    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:phone.e164];
+    E164Data* e164            = [fetchedE164Controller objectAtIndexPath:indexPath];
+    cell.textLabel.text       = e164.name;
+    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:e164.e164];
     cell.detailTextLabel.text = [phoneNumber internationalFormat];
     cell.imageView.image      = [UIImage imageNamed:[phoneNumber isoCountryCode]];
 
-    if (self.completion == nil)
-    {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
-    else if (phone == self.selectedPhone)
+    if (e164 == (E164Data*)self.selectedPhone || e164 == (E164Data*)self.selectedNumber)
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
