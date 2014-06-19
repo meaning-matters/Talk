@@ -72,7 +72,7 @@
 
         if (success == YES)
         {
-            [self restoreCreditAndData];
+            [self restoreUserData];
         }
         else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
         {

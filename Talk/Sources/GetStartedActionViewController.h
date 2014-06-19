@@ -18,6 +18,6 @@
 - (IBAction)buttonAction:(id)sender;
 
 - (void)setBusy:(BOOL)busy;
-- (void)restoreCreditAndData;
+- (void)restoreUserData;
 
 @end

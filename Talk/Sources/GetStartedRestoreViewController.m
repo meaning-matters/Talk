@@ -68,7 +68,7 @@
 
         if (success == YES && object != nil)    // Transaction is passed, but we don't need/use that.
         {
-            [self restoreCreditAndData];
+            [self restoreUserData];
         }
         else if (success == YES && object == nil)
         {

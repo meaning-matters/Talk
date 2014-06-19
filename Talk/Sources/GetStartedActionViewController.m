@@ -188,75 +188,61 @@
 }
 
 
-- (void)restoreCreditAndData
+- (void)restoreUserData
 {
     [self setBusy:YES];
 
-    [[WebClient sharedClient] retrieveCreditForCurrencyCode:[Settings sharedSettings].currencyCode
-                                                      reply:^(NSError* error, float credit)
+    [[DataManager sharedManager] synchronizeAll:^(NSError *error)
     {
+        [self setBusy:NO];
+
         if (error == nil)
         {
-            [Settings sharedSettings].credit = credit;
-
-            [[DataManager sharedManager] synchronizeAll:^(NSError *error)
+            NSArray* phones = [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
+                                                                        sortKeys:@[@"name"]
+                                                                       predicate:nil
+                                                            managedObjectContext:nil];
+            if (phones.count == 0)
             {
-                [self setBusy:NO];
-
-                if (error == nil)
+                VerifyPhoneViewController* viewController;
+                viewController = [[VerifyPhoneViewController alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber)
                 {
-                    NSArray* phones = [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
-                                                                                sortKeys:@[@"name"]
-                                                                               predicate:nil
-                                                                    managedObjectContext:nil];
-                    if (phones.count == 0)
+                    if (verifiedPhoneNumber != nil)
                     {
-                        VerifyPhoneViewController* viewController;
-                        viewController = [[VerifyPhoneViewController alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber)
+                        [self setBusy:YES];
+                        [self savePhoneNumber:verifiedPhoneNumber
+                                     withName:[UIDevice currentDevice].name
+                                   completion:^(NSError* error)
                         {
-                            if (verifiedPhoneNumber != nil)
-                            {
-                                [self setBusy:YES];
-                                [self savePhoneNumber:verifiedPhoneNumber
-                                             withName:[UIDevice currentDevice].name
-                                           completion:^(NSError* error)
-                                {
-                                    [self setBusy:NO];
+                            [self setBusy:NO];
 
-                                    if (error == nil)
-                                    {
-                                        [self readyWithE164:[verifiedPhoneNumber e164Format]];
-                                    }
-                                    else
-                                    {
-                                        [self showSavingPhoneAlert:error];
-                                    }
-                                }];
+                            if (error == nil)
+                            {
+                                [self readyWithE164:[verifiedPhoneNumber e164Format]];
                             }
                             else
                             {
-                                [[AppDelegate appDelegate] resetAll];
+                                [self showSavingPhoneAlert:error];
                             }
                         }];
-
-                        [self.navigationController pushViewController:viewController animated:YES];
                     }
                     else
                     {
-                        [self readyWithE164:((PhoneData*)phones[0]).e164];
+                        [[AppDelegate appDelegate] resetAll];
                     }
-                }
-                else
-                {
-                    [self setBusy:NO];
-                    [self showLoadingPhonesAlert:error];
-                }
-            }];
+                }];
+
+                [self.navigationController pushViewController:viewController animated:YES];
+            }
+            else
+            {
+                [self readyWithE164:((PhoneData*)phones[0]).e164];
+            }
         }
         else
         {
             [self setBusy:NO];
-            [self showLoadingCreditAlert:error];
+            [self showLoadingPhonesAlert:error];
         }
     }];
 }
@@ -326,33 +312,6 @@
 }
 
 
-- (void)showLoadingCreditAlert:(NSError*)error
-{
-    NSString* title;
-    NSString* message;
-    title   = NSLocalizedStringWithDefaultValue(@"Provisioning FailedCreditTitle", nil,
-                                                [NSBundle mainBundle], @"Loading Credit Failed",
-                                                @"Alert title: Calling credit could not be downloaded.\n"
-                                                @"[iOS alert title size].");
-    message = NSLocalizedStringWithDefaultValue(@"Provisioning FailedCreditMessage", nil,
-                                                [NSBundle mainBundle],
-                                                @"Your credit could not be loaded: %@\n\n"
-                                                @"Please try again later.",
-                                                @"Alert message: Calling credit could not be loaded.\n"
-                                                @"[iOS alert message size]");
-    message = [NSString stringWithFormat:message, error.localizedDescription];
-    [BlockAlertView showAlertViewWithTitle:title
-                                   message:message
-                                completion:^(BOOL cancelled, NSInteger buttonIndex)
-    {
-        [[AppDelegate appDelegate] resetAll];
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-                         cancelButtonTitle:[Strings closeString]
-                         otherButtonTitles:nil];
-}
-
-
 - (void)showLoadingPhonesAlert:(NSError*)error
 {
     NSString* title;
@@ -382,8 +341,6 @@
 
 - (void)showWelcomeAlert
 {
-    float     credit       = [Settings sharedSettings].credit;
-    NSString* creditString = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
     NSString* title;
     NSString* message;
 
@@ -396,12 +353,10 @@
 
         message = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BuyText", nil,
                                                     [NSBundle mainBundle],
-                                                    @"Thanks for becoming a NumberBay user. "
-                                                    @"Your initial credit is %@.\n\n"
-                                                    @"Please send us a message, from the Help tab, "
-                                                    @"when there's anything.",
+                                                    @"Thanks for becoming a NumberBay user!\n\n"
+                                                    @"Please send us a message from the Help tab, "
+                                                    @"when there's anything you want to ask or talk about.",
                                                     @"Welcome text for a new user.");
-        message = [NSString stringWithFormat:message, creditString];
     }
     else
     {
@@ -412,12 +367,10 @@
 
         message = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BuyText", nil,
                                                     [NSBundle mainBundle],
-                                                    @"Nice to see you again at NumberBay. "
-                                                    @"Your remaining credit is %@.\n\n"
-                                                    @"Please send us a message, from the Help tab, "
-                                                    @"when there's anything.",
+                                                    @"Nice to see you again at NumberBay!\n\n"
+                                                    @"Remember to send us a message from the Help tab, "
+                                                    @"when there's anything you want to ask or talk about.",
                                                     @"Welcome text for a new user.");
-        message = [NSString stringWithFormat:message, creditString];
     }
 
     [BlockAlertView showAlertViewWithTitle:title
