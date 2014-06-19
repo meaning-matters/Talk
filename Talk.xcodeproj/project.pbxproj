@@ -21,7 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		48017A12194E554C0059A53B /* E164Data.m in Sources */ = {isa = PBXBuildFile; fileRef = 48017A11194E554C0059A53B /* E164Data.m */; };
+		48017A12194E554C0059A53B /* CallableData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48017A11194E554C0059A53B /* CallableData.m */; };
 		480578A117A4FAAA006923BD /* NBAddressBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4805788717A4FAAA006923BD /* NBAddressBookManager.m */; };
 		480578A217A4FAAA006923BD /* NBAddressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4805788917A4FAAA006923BD /* NBAddressCell.m */; };
 		480578A317A4FAAA006923BD /* NBCallsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4805788D17A4FAAA006923BD /* NBCallsView.m */; };
@@ -816,8 +816,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		48017A10194E554C0059A53B /* E164Data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E164Data.h; sourceTree = "<group>"; };
-		48017A11194E554C0059A53B /* E164Data.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E164Data.m; sourceTree = "<group>"; };
+		48017A10194E554C0059A53B /* CallableData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallableData.h; sourceTree = "<group>"; };
+		48017A11194E554C0059A53B /* CallableData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallableData.m; sourceTree = "<group>"; };
 		4805788617A4FAAA006923BD /* NBAddressBookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBAddressBookManager.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressBookManager.h; sourceTree = "<group>"; };
 		4805788717A4FAAA006923BD /* NBAddressBookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBAddressBookManager.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressBookManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		4805788817A4FAAA006923BD /* NBAddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBAddressCell.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressCell.h; sourceTree = "<group>"; };
@@ -2432,8 +2432,8 @@
 				480CE123194DA0100020F255 /* CallerIdData.m */,
 				488FBBD817007CC6000ECC71 /* DataManager.h */,
 				488FBBD917007CC6000ECC71 /* DataManager.m */,
-				48017A10194E554C0059A53B /* E164Data.h */,
-				48017A11194E554C0059A53B /* E164Data.m */,
+				48017A10194E554C0059A53B /* CallableData.h */,
+				48017A11194E554C0059A53B /* CallableData.m */,
 				489387F917039158005CC795 /* ForwardingData.h */,
 				489387FA17039158005CC795 /* ForwardingData.m */,
 				488FBBE01700852F000ECC71 /* NumberData.h */,
@@ -3348,7 +3348,7 @@
 				48DD72C1169F56F000CD7080 /* AFHTTPClient.m in Sources */,
 				48DD72C3169F56F000CD7080 /* AFHTTPRequestOperation.m in Sources */,
 				48DD72C5169F56F000CD7080 /* AFImageRequestOperation.m in Sources */,
-				48017A12194E554C0059A53B /* E164Data.m in Sources */,
+				48017A12194E554C0059A53B /* CallableData.m in Sources */,
 				48DD72C7169F56F000CD7080 /* AFJSONRequestOperation.m in Sources */,
 				48DD72C9169F56F000CD7080 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				48F1B7E117E63819003A3933 /* NumberForwardingsViewController.m in Sources */,

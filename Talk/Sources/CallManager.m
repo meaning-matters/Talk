@@ -24,7 +24,7 @@
 #import "DataManager.h"
 #import "WebClient.h"
 #import "CallerIdData.h"
-#import "E164Data.h"
+#import "CallableData.h"
 #import "CallerIdViewController.h"
 
 
@@ -186,6 +186,13 @@
 
 - (void)checkIdentityForContactId:(NSString*)contactId completion:(void (^)(BOOL cancelled, NSString* identity))completion
 {
+    if ([self checkCallbackAndIdentity:[Settings sharedSettings].callerIdE164] == NO)
+    {
+        completion(YES, nil);
+
+        return;
+    }
+
     NSString* title;
     NSString* message;
 
@@ -198,7 +205,7 @@
     {
         CallerIdData* callerId = callerIds[0];
 
-        completion(NO, callerId.e164.e164);
+        completion(NO, callerId.callable.e164);
 
         return;
     }
@@ -214,12 +221,13 @@
                                                           @"[iOS alert title size - abbreviated: 'Captive Portal'].");
 
         message       = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId Message", nil, [NSBundle mainBundle],
-                                                          @"You can assign a caller ID to this contact. This makes sure "
-                                                          @"your contact will always see the same number when you call. "
-                                                          @"Alternatively, you can use the default from Settings for this "
-                                                          @"call.",
+                                                          @"You can assign a caller ID that will be used for all "
+                                                          @"your calls to this contact.\n"
+                                                          @"Or use the default from Settings: \"%@\", "
+                                                          @"for only this call.",
                                                           @"...\n"
                                                           @"[iOS alert message size]");
+        message       = [NSString stringWithFormat:message, [self defaultCallerIdName]];
 
         cancelButton  = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId CancelButton", nil, [NSBundle mainBundle],
                                                           @"Stop Showing This Alert",
@@ -232,10 +240,9 @@
                                                           @"[iOS alert button title full width]");
 
         defaultButton = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId DefaultButton", nil, [NSBundle mainBundle],
-                                                          @"Use Default From Settings",
+                                                          @"Use Default Only Now",
                                                           @"...\n"
                                                           @"[iOS alert button title full width]");
-        message = [NSString stringWithFormat:message, [[NetworkStatus sharedStatus] getSsid]];
 
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
@@ -508,6 +515,19 @@
     }
 
     return call;
+}
+
+
+- (NSString*)defaultCallerIdName
+{
+    NSString*    e164      = [Settings sharedSettings].callerIdE164;
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"e164 == %@", e164];
+    NSArray*     callables = [[DataManager sharedManager] fetchEntitiesWithName:@"Callable"
+                                                                       sortKeys:@[@"name"]
+                                                                      predicate:predicate
+                                                           managedObjectContext:nil];
+
+    return ((CallableData*)[callables firstObject]).name;
 }
 
 

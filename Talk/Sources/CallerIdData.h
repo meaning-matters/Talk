@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class E164Data;
+@class CallableData;
 
 @interface CallerIdData : NSManagedObject
 
-@property (nonatomic, retain) NSString* contactId;
-@property (nonatomic, retain) E164Data* e164;
+@property (nonatomic, retain) NSString*     contactId;
+@property (nonatomic, retain) CallableData* callable;
 
 @end

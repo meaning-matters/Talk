@@ -14,6 +14,6 @@
 @implementation CallerIdData
 
 @dynamic contactId;
-@dynamic e164;
+@dynamic callable;
 
 @end

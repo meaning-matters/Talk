@@ -12,7 +12,7 @@
 #import "Common.h"
 #import "Strings.h"
 #import "DataManager.h"
-#import "E164Data.h"
+#import "CallableData.h"
 #import "PhoneData.h"
 #import "NumberData.h"
 
@@ -82,7 +82,7 @@ typedef enum
         self.navigationItem.leftBarButtonItem = buttonItem;
     }
 
-    fetchedE164Controller = [[DataManager sharedManager] fetchResultsForEntityName:@"E164"
+    fetchedE164Controller = [[DataManager sharedManager] fetchResultsForEntityName:@"Callable"
                                                                       withSortKeys:@[@"name"]
                                                               managedObjectContext:self.managedObjectContext];
     fetchedE164Controller.delegate = self;
@@ -239,13 +239,13 @@ typedef enum
 
 - (void)configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
-    E164Data* e164            = [fetchedE164Controller objectAtIndexPath:indexPath];
-    cell.textLabel.text       = e164.name;
-    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:e164.e164];
+    CallableData* callable    = [fetchedE164Controller objectAtIndexPath:indexPath];
+    cell.textLabel.text       = callable.name;
+    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:callable.e164];
     cell.detailTextLabel.text = [phoneNumber internationalFormat];
     cell.imageView.image      = [UIImage imageNamed:[phoneNumber isoCountryCode]];
 
-    if (e164 == (E164Data*)self.selectedPhone || e164 == (E164Data*)self.selectedNumber)
+    if (callable == (CallableData*)self.selectedPhone || callable == (CallableData*)self.selectedNumber)
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }

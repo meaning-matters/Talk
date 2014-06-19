@@ -27,9 +27,9 @@
 
 @interface PhoneData (CoreDataGeneratedAccessors)
 
-- (void)addForwardingsObject:(ForwardingData *)value;
-- (void)removeForwardingsObject:(ForwardingData *)value;
-- (void)addForwardings:(NSSet *)values;
-- (void)removeForwardings:(NSSet *)values;
+- (void)addForwardingsObject:(ForwardingData*)value;
+- (void)removeForwardingsObject:(ForwardingData*)value;
+- (void)addForwardings:(NSSet*)values;
+- (void)removeForwardings:(NSSet*)values;
 
 @end

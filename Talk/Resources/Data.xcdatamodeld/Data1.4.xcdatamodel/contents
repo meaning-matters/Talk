@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C64" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="CallerId" representedClassName="CallerIdData" syncable="YES">
-        <attribute name="contactId" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="e164" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="E164" inverseName="callerId" inverseEntity="E164" syncable="YES"/>
-    </entity>
-    <entity name="E164" representedClassName="E164Data" isAbstract="YES" syncable="YES">
+    <entity name="Callable" representedClassName="CallableData" isAbstract="YES" syncable="YES">
         <attribute name="e164" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <relationship name="callerId" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CallerId" inverseName="e164" inverseEntity="CallerId" syncable="YES"/>
+        <relationship name="callerId" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CallerId" inverseName="callable" inverseEntity="CallerId" syncable="YES"/>
+    </entity>
+    <entity name="CallerId" representedClassName="CallerIdData" syncable="YES">
+        <attribute name="contactId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="callable" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Callable" inverseName="callerId" inverseEntity="Callable" syncable="YES"/>
     </entity>
     <entity name="Forwarding" representedClassName="ForwardingData" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
@@ -31,7 +31,7 @@
         <attribute name="timeZone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="Number" representedClassName="NumberData" parentEntity="E164" syncable="YES">
+    <entity name="Number" representedClassName="NumberData" parentEntity="Callable" syncable="YES">
         <attribute name="addressCountry" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="areaCode" attributeType="String" syncable="YES"/>
         <attribute name="areaName" optional="YES" attributeType="String" syncable="YES"/>
@@ -53,7 +53,7 @@
         <attribute name="zipCode" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="forwarding" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Forwarding" inverseName="numbers" inverseEntity="Forwarding" syncable="YES"/>
     </entity>
-    <entity name="Phone" representedClassName="PhoneData" parentEntity="E164" syncable="YES">
+    <entity name="Phone" representedClassName="PhoneData" parentEntity="Callable" syncable="YES">
         <relationship name="forwardings" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="Forwarding" inverseName="phones" inverseEntity="Forwarding" syncable="YES"/>
     </entity>
     <entity name="Recording" representedClassName="RecordingData" syncable="YES">
@@ -63,8 +63,8 @@
         <relationship name="forwardings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Forwarding" inverseName="recordings" inverseEntity="Forwarding" syncable="YES"/>
     </entity>
     <elements>
+        <element name="Callable" positionX="142" positionY="-486" width="128" height="88"/>
         <element name="CallerId" positionX="331" positionY="-469" width="128" height="73"/>
-        <element name="E164" positionX="142" positionY="-486" width="128" height="88"/>
         <element name="Forwarding" positionX="268" positionY="-55" width="128" height="133"/>
         <element name="NBRecentContactEntry" positionX="520" positionY="-513" width="128" height="223"/>
         <element name="Number" positionX="52" positionY="-342" width="128" height="343"/>

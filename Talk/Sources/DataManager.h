@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface DataManager : NSObject
 
 @property (nonatomic, strong, readonly) NSManagedObjectContext*       managedObjectContext;

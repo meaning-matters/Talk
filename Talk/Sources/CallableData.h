@@ -1,5 +1,5 @@
 //
-//  E164Data.h
+//  CallableData.h
 //  Talk
 //
 //  Created by Cornelis van der Bent on 15/06/14.
@@ -11,7 +11,7 @@
 
 @class CallerIdData;
 
-@interface E164Data : NSManagedObject
+@interface CallableData : NSManagedObject
 
 @property (nonatomic, retain) NSString*     e164;
 @property (nonatomic, retain) NSString*     name;
