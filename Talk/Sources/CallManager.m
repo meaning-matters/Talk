@@ -223,8 +223,8 @@
         message       = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId Message", nil, [NSBundle mainBundle],
                                                           @"You can assign a caller ID that will be used for all "
                                                           @"your calls to this contact.\n"
-                                                          @"Or use the default from Settings: \"%@\", "
-                                                          @"for only this call.",
+                                                          @"Or, use the default from Settings: \"%@\", "
+                                                          @"for this call only.",
                                                           @"...\n"
                                                           @"[iOS alert message size]");
         message       = [NSString stringWithFormat:message, [self defaultCallerIdName]];
