@@ -27,8 +27,8 @@ typedef enum
 
 @interface CreditViewController ()
 
-@property (nonatomic, assign) float          creditAmountCellHeight;
-@property (nonatomic, assign) float          creditBuyCellHeight;
+@property (nonatomic, assign) float          amountCellHeight;
+@property (nonatomic, assign) float          buyCellHeight;
 @property (nonatomic, assign) BOOL           isLoadingCredit;
 @property (nonatomic, assign) BOOL           loadingcreditFailed;
 @property (nonatomic, assign) BOOL           mustShowLoadingError;
@@ -62,6 +62,8 @@ typedef enum
 {
     [super viewDidLoad];
 
+    self.tableView.delaysContentTouches = NO;
+
     if (self.presentingViewController != nil)
     {
         // Shown as modal.
@@ -77,12 +79,10 @@ typedef enum
     [self.tableView registerNib:[UINib nibWithNibName:@"CreditBuyCell" bundle:nil]
          forCellReuseIdentifier:@"CreditBuyCell"];
 
-    UITableViewCell* cell       = [self.tableView dequeueReusableCellWithIdentifier:@"CreditAmountCell"];
-    self.creditAmountCellHeight = cell.bounds.size.height;
-    self.buyCell                = [self.tableView dequeueReusableCellWithIdentifier:@"CreditBuyCell"];
-    self.creditBuyCellHeight    = self.buyCell.bounds.size.height;
-
-    self.tableView.delaysContentTouches = NO;
+    UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"CreditAmountCell"];
+    self.amountCellHeight = cell.bounds.size.height;
+    self.buyCell          = [self.tableView dequeueReusableCellWithIdentifier:@"CreditBuyCell"];
+    self.buyCellHeight    = self.buyCell.bounds.size.height;
 }
 
 
@@ -236,8 +236,8 @@ typedef enum
 
     switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
-        case TableSectionAmount: height = self.creditAmountCellHeight; break;
-        case TableSectionBuy:    height = self.creditBuyCellHeight;    break;
+        case TableSectionAmount: height = self.amountCellHeight; break;
+        case TableSectionBuy:    height = self.buyCellHeight;    break;
     }
 
     return height;
@@ -322,13 +322,12 @@ typedef enum
         NSString* title;
         NSString* message;
 
-        title   = NSLocalizedStringWithDefaultValue(@"BuyCredit GetStartedTitle", nil,
-                                                    [NSBundle mainBundle], @"Get Started First",
+        title   = NSLocalizedStringWithDefaultValue(@"BuyCredit GetStartedTitle", nil, [NSBundle mainBundle],
+                                                    @"Get Started First",
                                                     @"Alert title:\n"
                                                     @"[iOS alert title size]");
 
-        message = NSLocalizedStringWithDefaultValue(@"BuyCredit GetStartedMessage", nil,
-                                                    [NSBundle mainBundle],
+        message = NSLocalizedStringWithDefaultValue(@"BuyCredit GetStartedMessage", nil, [NSBundle mainBundle],
                                                     @"First buy a little initial credit, or restore "
                                                     @"if you're already a user.",
                                                     @"Alert message: ...\n"
@@ -367,12 +366,11 @@ typedef enum
             NSString* title;
             NSString* message;
 
-            title   = NSLocalizedStringWithDefaultValue(@"BuyCredit FailedBuyCreditTitle", nil,
-                                                        [NSBundle mainBundle], @"Buying Credit Failed",
+            title   = NSLocalizedStringWithDefaultValue(@"BuyCredit FailedBuyCreditTitle", nil, [NSBundle mainBundle],
+                                                        @"Buying Credit Failed",
                                                         @"Alert title: Credit could not be bought.\n"
                                                         @"[iOS alert title size].");
-            message = NSLocalizedStringWithDefaultValue(@"BuyCredit FailedBuyCreditMessage", nil,
-                                                        [NSBundle mainBundle],
+            message = NSLocalizedStringWithDefaultValue(@"BuyCredit FailedBuyCreditMessage", nil, [NSBundle mainBundle],
                                                         @"Something went wrong while buying credit: "
                                                         @"%@.\n\nPlease try again later.",
                                                         @"Message telling that buying credit failed\n"

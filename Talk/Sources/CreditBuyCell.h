@@ -36,7 +36,6 @@
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator200;
 
 @property (nonatomic, weak) id<CreditBuyCellDelegate>         delegate;
-@property (nonatomic, assign) UIButton*                       buyButton;
 
 
 - (IBAction)buyAction:(id)sender;

@@ -80,7 +80,7 @@
     {
         for (NSString* name in self.nameIndexDictionary[nameIndex])
         {
-            NSRange range = [name rangeOfString:searchText options:NSCaseInsensitiveSearch];
+            NSRange range = [name rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch];
             if (range.location != NSNotFound)
             {
                 [self.filteredNamesArray addObject:name];

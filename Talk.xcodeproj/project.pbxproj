@@ -526,10 +526,8 @@
 		4864B3F917566E950006542F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4864B3F817566E950006542F /* MessageUI.framework */; };
 		4865A9D817926CE00028785F /* BuyNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9D717926CE00028785F /* BuyNumberViewController.m */; };
 		4865A9D917926CE00028785F /* BuyNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9D717926CE00028785F /* BuyNumberViewController.m */; };
-		4865A9DB1792C5550028785F /* BuyNumberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4865A9DA1792C5550028785F /* BuyNumberCell.xib */; };
-		4865A9DC1792C5550028785F /* BuyNumberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4865A9DA1792C5550028785F /* BuyNumberCell.xib */; };
-		4865A9DF1792C8B70028785F /* BuyNumberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* BuyNumberCell.m */; };
-		4865A9E01792C8B70028785F /* BuyNumberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* BuyNumberCell.m */; };
+		4865A9DF1792C8B70028785F /* NumberBuyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberBuyCell.m */; };
+		4865A9E01792C8B70028785F /* NumberBuyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberBuyCell.m */; };
 		486D4A2318F06BC8004699C9 /* CallRatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 486D4A2218F06BC8004699C9 /* CallRatesViewController.m */; };
 		4877EDB817AB7ADF0013B18F /* NBRecentCallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDB717AB7ADF0013B18F /* NBRecentCallCell.m */; };
 		4877EDB917AB7ADF0013B18F /* NBRecentCallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDB717AB7ADF0013B18F /* NBRecentCallCell.m */; };
@@ -1290,9 +1288,8 @@
 		4864B3F817566E950006542F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		4865A9D617926CE00028785F /* BuyNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyNumberViewController.h; sourceTree = "<group>"; };
 		4865A9D717926CE00028785F /* BuyNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyNumberViewController.m; sourceTree = "<group>"; };
-		4865A9DA1792C5550028785F /* BuyNumberCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BuyNumberCell.xib; sourceTree = "<group>"; };
-		4865A9DD1792C8B70028785F /* BuyNumberCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyNumberCell.h; sourceTree = "<group>"; };
-		4865A9DE1792C8B70028785F /* BuyNumberCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyNumberCell.m; sourceTree = "<group>"; };
+		4865A9DD1792C8B70028785F /* NumberBuyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberBuyCell.h; sourceTree = "<group>"; };
+		4865A9DE1792C8B70028785F /* NumberBuyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberBuyCell.m; sourceTree = "<group>"; };
 		486D4A2118F06BC8004699C9 /* CallRatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallRatesViewController.h; sourceTree = "<group>"; };
 		486D4A2218F06BC8004699C9 /* CallRatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallRatesViewController.m; sourceTree = "<group>"; };
 		4877EDB617AB7ADF0013B18F /* NBRecentCallCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBRecentCallCell.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentCallCell.h; sourceTree = "<group>"; };
@@ -2020,8 +2017,8 @@
 		485ECBDF16525D1600364F08 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				4865A9DD1792C8B70028785F /* BuyNumberCell.h */,
-				4865A9DE1792C8B70028785F /* BuyNumberCell.m */,
+				4865A9DD1792C8B70028785F /* NumberBuyCell.h */,
+				4865A9DE1792C8B70028785F /* NumberBuyCell.m */,
 				48EDD2381667A0A5007B89DA /* CallKeypadButton.h */,
 				48EDD2391667A0A5007B89DA /* CallKeypadButton.m */,
 				48EDD2301667722B007B89DA /* CallKeypadView.h */,
@@ -2450,7 +2447,6 @@
 			isa = PBXGroup;
 			children = (
 				48AF45161649494400DFE3D8 /* AboutView.xib */,
-				4865A9DA1792C5550028785F /* BuyNumberCell.xib */,
 				48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */,
 				48EDD229166771B8007B89DA /* CallKeypadView.xib */,
 				48A261BF16FDE26100007638 /* CallMessageView.xib */,
@@ -3137,7 +3133,6 @@
 				484943A91753252800E1D5C4 /* TwitterWhite@2x.png in Resources */,
 				484943B01753C44D00E1D5C4 /* ThanksView.xib in Resources */,
 				4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */,
-				4865A9DB1792C5550028785F /* BuyNumberCell.xib in Resources */,
 				483ECFF217A4F60B0032B8FF /* deleteButton.png in Resources */,
 				483ECFF317A4F60B0032B8FF /* editPhotoBottomBar.png in Resources */,
 				483ECFF517A4F60B0032B8FF /* editPhotoLeftButton.png in Resources */,
@@ -3253,7 +3248,6 @@
 				484943AA1753252800E1D5C4 /* TwitterWhite@2x.png in Resources */,
 				484943B11753C44D00E1D5C4 /* ThanksView.xib in Resources */,
 				4864B3F7175668CA0006542F /* LogoFacebook.png in Resources */,
-				4865A9DC1792C5550028785F /* BuyNumberCell.xib in Resources */,
 				485E38A417B7E1960089F0F1 /* HtmlView.xib in Resources */,
 				485E38C417C40D070089F0F1 /* NumberDuration1.png in Resources */,
 				485E38C617C40D070089F0F1 /* NumberDuration12.png in Resources */,
@@ -3396,7 +3390,7 @@
 				484943AD1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
 				4865A9D817926CE00028785F /* BuyNumberViewController.m in Sources */,
 				48ADE7D2185C67EC00E39DA2 /* PhoneData.m in Sources */,
-				4865A9DF1792C8B70028785F /* BuyNumberCell.m in Sources */,
+				4865A9DF1792C8B70028785F /* NumberBuyCell.m in Sources */,
 				480578F217A50F37006923BD /* NBPeoplePickerNavigationController.m in Sources */,
 				4837AF6A18D9B6EC00D3AEBC /* GetStartedRestoreViewController.m in Sources */,
 				480578F317A50FB2006923BD /* NBAddressBookManager.m in Sources */,
@@ -3531,7 +3525,7 @@
 				484943AE1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
 				4865A9D917926CE00028785F /* BuyNumberViewController.m in Sources */,
 				48ADE7D3185C67EC00E39DA2 /* PhoneData.m in Sources */,
-				4865A9E01792C8B70028785F /* BuyNumberCell.m in Sources */,
+				4865A9E01792C8B70028785F /* NumberBuyCell.m in Sources */,
 				480578A117A4FAAA006923BD /* NBAddressBookManager.m in Sources */,
 				480578A217A4FAAA006923BD /* NBAddressCell.m in Sources */,
 				480578A317A4FAAA006923BD /* NBCallsView.m in Sources */,
