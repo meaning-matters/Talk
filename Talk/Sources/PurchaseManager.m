@@ -312,66 +312,6 @@
 }
 
 
-- (void)processNumberTransaction:(SKPaymentTransaction*)transaction
-{
-    NSDictionary* pendingNumberBuy = [Settings sharedSettings].pendingNumberBuy;
-    
-    if (pendingNumberBuy != nil &&
-        [transaction.transactionIdentifier isEqualToString:pendingNumberBuy[@"transactionIdentifier"]])
-    {
-        if ([pendingNumberBuy[@"convertedToCredit"] boolValue] == YES)
-        {
-            NSString* receipt = [Base64 encode:transaction.transactionReceipt];
-            [[WebClient sharedClient] purchaseCreditForReceipt:receipt
-                                                  currencyCode:self.currencyCode
-                                                         reply:^(NSError* error, float credit)
-            {
-                if (error == nil)
-                {
-                    [Settings sharedSettings].pendingNumberBuy = nil;
-                    [Settings sharedSettings].credit           = credit;
-                }
-                else
-                {
-                    NBLog(@"//### Failed to convert number to credit again!");
-                }
-            }];
-        }
-        else
-        {
-            // Retry number processing.
-            [[WebClient sharedClient] purchaseNumberForReceipt:pendingNumberBuy[@"receipt"]
-                                                     productId:pendingNumberBuy[@"productId"]
-                                                        months:[pendingNumberBuy[@"months"] intValue]
-                                                          name:pendingNumberBuy[@"name"]
-                                                isoCountryCode:pendingNumberBuy[@"isoCountryCode"]
-                                                      areaCode:pendingNumberBuy[@"areaCode"]
-                                                      areaName:pendingNumberBuy[@"areaName"]
-                                                     stateCode:pendingNumberBuy[@"stateCode"]
-                                                     stateName:pendingNumberBuy[@"stateName"]
-                                                    numberType:pendingNumberBuy[@"numberType"]
-                                                          info:pendingNumberBuy[@"info"]
-                                                         reply:^(NSError* error, NSString *e164)
-            {
-                if (error == nil)
-                {
-                    [self finishTransaction:transaction];
-                }
-                else
-                {
-                    NBLog(@"Retry processing of phone number failed.");
-                    //### Show alert?
-                }
-            }];
-        }
-    }
-    else
-    {
-        [self completeBuyWithSuccess:YES object:transaction];
-    }
-}
-
-
 #pragma mark - SKProductsRequestDelegate
 
 - (void)productsRequest:(SKProductsRequest*)request didReceiveResponse:(SKProductsResponse*)response
@@ -511,12 +451,6 @@
                 else if ([self isCreditProductIdentifier:transaction.payment.productIdentifier])
                 {
                     [self processCreditTransaction:transaction];
-                }
-                else if ([self isNumberProductIdentifier:transaction.payment.productIdentifier])
-                {
-                    [self finishTransaction:transaction];
-#warning We can get here when app did not process purchase previous time.  But now we have no Number so completeBuyWithSuccess does nothing.  Need to fix this
-                    [self processNumberTransaction:transaction];
                 }
                 break;
 
@@ -757,165 +691,35 @@
 }
 
 
-- (void)buyNumberForTier:(int)tier
-                  months:(int)months
-                    name:(NSString*)name
-          isoCountryCode:(NSString*)isoCountryCode
-                areaCode:(NSString*)areaCode
-                areaName:(NSString*)areaName
-               stateCode:(NSString*)stateCode
-               stateName:(NSString*)stateName
-              numberType:(NSString*)numberType
-                    info:(NSDictionary*)info
-              completion:(void (^)(BOOL success, id object))completion
+- (void)buyNumberForMonths:(int)months
+                      name:(NSString*)name
+            isoCountryCode:(NSString*)isoCountryCode
+                  areaCode:(NSString*)areaCode
+                  areaName:(NSString*)areaName
+                 stateCode:(NSString*)stateCode
+                 stateName:(NSString*)stateName
+                numberType:(NSString*)numberType
+                      info:(NSDictionary*)info
+                completion:(void (^)(BOOL success, id object))completion
 {
-    if (self.buyCompletion != nil)
+    [[WebClient sharedClient] purchaseNumberForMonths:months
+                                                 name:name
+                                       isoCountryCode:isoCountryCode
+                                             areaCode:areaCode
+                                             areaName:areaName
+                                            stateCode:stateCode
+                                            stateName:stateName
+                                           numberType:numberType
+                                                 info:info
+                                                reply:^(NSError* error, NSString *e164)
     {
-        completion ? completion(NO, nil) : 0;
-
-        return;
-    }
-
-    if ([Settings sharedSettings].pendingNumberBuy != nil)
-    {
-        NSString* title;
-        NSString* message;
-
-        title   = NSLocalizedStringWithDefaultValue(@"Purchase:General PendingNumberBuyTitle", nil,
-                                                    [NSBundle mainBundle], @"Pending Number Purchase",
-                                                    @"Alert title that a purchase is not finialized yet.\n"
-                                                    @"[iOS alert title size].");
-        message = NSLocalizedStringWithDefaultValue(@"Purchase:General PendingNumberBuyMessage", nil,
-                                                    [NSBundle mainBundle],
-                                                    @"You can't buy a phone number now, because the previous one "
-                                                    @"has not been processed yet.\nIf this issue persists, you can "
-                                                    @"convert this pending purchase to credit.",
-                                                    @"Alert message telling that ....\n"
-                                                    @"[iOS alert message size]");
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        if (error == nil)
         {
-            if (cancelled == YES)
-            {
-                completion ? completion(NO, nil) : 0;
-            }
-            else
-            {
-                NSString* receipt = [Settings sharedSettings].pendingNumberBuy[@"receipt"];
-                [[WebClient sharedClient] purchaseCreditForReceipt:receipt
-                                                      currencyCode:self.currencyCode
-                                                             reply:^(NSError* error, float credit)
-                {
-                    if (error == nil)
-                    {
-                        [Settings sharedSettings].pendingNumberBuy = nil;
-                        [Settings sharedSettings].credit           = credit;
-
-                        completion ? completion(YES, nil) : 0;
-                    }
-                    else
-                    {
-                        NSString* identifier = [Settings sharedSettings].pendingNumberBuy[@"transactionIdentifier"];
-                        NSString* receipt    = [Settings sharedSettings].pendingNumberBuy[@"receipt"];
-                        [Settings sharedSettings].pendingNumberBuy = @{@"transactionIdentifier" : identifier,
-                                                                       @"receipt"               : receipt,
-                                                                       @"convertedToCredit"     : @(YES)};
-
-                        NSString* title;
-                        NSString* message;
-                        NSString* description;
-
-                        title       = NSLocalizedStringWithDefaultValue(@"Purchase:General BuyingCreditFailedTitle", nil,
-                                                                        [NSBundle mainBundle], @"Buying Credit Failed",
-                                                                        @"Alert title that a purchase of credit failed.\n"
-                                                                        @"[iOS alert title size].");
-                        message     = NSLocalizedStringWithDefaultValue(@"Purchase:General BuyingCreditFailedMessage", nil,
-                                                                        [NSBundle mainBundle],
-                                                                        @"Something went wrong while converting your number "
-                                                                        @"purchase to credit: %@",
-                                                                        @"Alert message telling that a purchase of credit failed.\n"
-                                                                        @"[iOS alert message size]");
-                        description = error.localizedDescription;
-                        message     = [NSString stringWithFormat:message, description];
-                        [BlockAlertView showAlertViewWithTitle:title
-                                                       message:message
-                                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-                        {
-                            completion ? completion(NO, nil) : 0;
-                        }
-                                             cancelButtonTitle:[Strings closeString]
-                                             otherButtonTitles:nil];
-                    }
-                }];
-            }
-        }
-                             cancelButtonTitle:[Strings cancelString]
-                             otherButtonTitles:[Strings creditString], nil];
-
-        return;
-    }
-
-    // This block below becomes self.buyCompletion.
-    [self buyProductIdentifier:[self productIdentifierForNumberTier:tier] completion:^(BOOL success, id object)
-    {
-        if (success == YES)
-        {
-            SKPaymentTransaction* transaction = object;
-            NSString*             receipt     = [Base64 encode:transaction.transactionReceipt];
-
-            [[WebClient sharedClient] purchaseNumberForReceipt:receipt
-                                                     productId:[self productIdentifierForNumberTier:tier]
-                                                        months:months
-                                                          name:name
-                                                isoCountryCode:isoCountryCode
-                                                      areaCode:areaCode
-                                                      areaName:areaName
-                                                     stateCode:stateCode
-                                                     stateName:stateName
-                                                    numberType:numberType
-                                                          info:info
-                                                         reply:^(NSError* error, NSString *e164)
-            {
-                if (error == nil)
-                {
-                    [self finishTransaction:transaction];
-                    completion ? completion(YES, transaction) : 0;
-                    self.buyCompletion = nil;
-                }
-                else
-                {
-                    NSMutableDictionary* pendingNumberBuy;
-                    pendingNumberBuy = [@{@"transactionIdentifier" : transaction.transactionIdentifier,
-                                          @"receipt"               : receipt,
-                                          @"productId"             : [self productIdentifierForNumberTier:tier],
-                                          @"months"                : @(months),
-                                          @"name"                  : name,
-                                          @"isoCountryCode"        : isoCountryCode,
-                                          @"numberType"            : numberType} mutableCopy];
-                    (areaCode  != nil) ? [pendingNumberBuy setObject:areaCode  forKey:@"areaCode"]  : 0;
-                    (areaName  != nil) ? [pendingNumberBuy setObject:areaName  forKey:@"areaName"]  : 0;
-                    (stateCode != nil) ? [pendingNumberBuy setObject:stateCode forKey:@"stateCode"] : 0;
-                    (stateName != nil) ? [pendingNumberBuy setObject:stateName forKey:@"stateName"] : 0;
-                    (info      != nil) ? [pendingNumberBuy setObject:info      forKey:@"info"]      : 0;
-
-                    [Settings sharedSettings].pendingNumberBuy = pendingNumberBuy;
-
-                    NSString* description = NSLocalizedStringWithDefaultValue(@"Purchase:General ProcessNumberFailed", nil,
-                                                                              [NSBundle mainBundle],
-                                                                              @"Could not process your new phone number. "
-                                                                              @"This will be retried later automatically",
-                                                                              @"Error message ...\n"
-                                                                              @"[...].");
-                    completion ? completion(NO, [Common errorWithCode:error.code description:description]) : 0;
-                    self.buyCompletion = nil;
-                }
-            }];
+            completion ? completion(YES, nil) : 0;
         }
         else
         {
-            completion ? completion(success, object) : 0;
-            self.buyCompletion = nil;
+            completion ? completion(NO, error) : 0;
         }
     }];
 }

@@ -123,18 +123,16 @@ typedef enum
                     reply:(void (^)(NSError* error, BOOL isValid))reply;
 
 // 11A. PURCHASE NUMBER
-- (void)purchaseNumberForReceipt:(NSString*)receipt
-                       productId:(NSString*)productId
-                          months:(int)months
-                            name:(NSString*)name
-                  isoCountryCode:(NSString*)isoCountryCode
-                        areaCode:(NSString*)areaCode
-                        areaName:(NSString*)areaName
-                       stateCode:(NSString*)stateCode
-                       stateName:(NSString*)stateName
-                      numberType:(NSString*)numberType
-                            info:(NSDictionary*)info
-                           reply:(void (^)(NSError* error, NSString* e164))reply;
+- (void)purchaseNumberForMonths:(int)months
+                           name:(NSString*)name
+                 isoCountryCode:(NSString*)isoCountryCode
+                       areaCode:(NSString*)areaCode
+                       areaName:(NSString*)areaName
+                      stateCode:(NSString*)stateCode
+                      stateName:(NSString*)stateName
+                     numberType:(NSString*)numberType
+                           info:(NSDictionary*)info
+                          reply:(void (^)(NSError* error, NSString* e164))reply;
 
 // 11B. UPDATE NUMBER'S NAME
 - (void)updateNumberE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply;
