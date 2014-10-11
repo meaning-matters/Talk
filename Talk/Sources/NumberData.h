@@ -35,8 +35,8 @@
 @property (nonatomic, retain) NSString*       stateName;
 @property (nonatomic, retain) NSString*       stateCode;
 @property (nonatomic, retain) NSString*       addressCountry; // ISO country code.
-@property (nonatomic, retain) NSData*         proofImage;
-@property (nonatomic, retain) NSNumber*       proofAccepted;
+@property (nonatomic, retain) NSData*         image;          // Proof of address.
+@property (nonatomic, retain) NSNumber*       imageAccepted;
 
 // Relationships.
 @property (nonatomic, retain) ForwardingData* forwarding;

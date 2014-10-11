@@ -10,7 +10,7 @@
 
 
 #import "WebClient.h"
-#import "AFJSONRequestOperation.h"
+#import "FailoverWebInterface.h"
 #import "AFNetworkActivityIndicatorManager.h"
 #import "Settings.h"
 #import "Common.h"
@@ -19,6 +19,12 @@
 
 
 static NSDictionary* statuses;
+
+@interface WebClient () <FailoverDelegate>
+
+@property (nonatomic, strong) FailoverWebInterface* webInterface;
+
+@end
 
 
 @implementation WebClient
@@ -32,12 +38,11 @@ static NSDictionary* statuses;
 
     dispatch_once(&onceToken, ^
     {
-        sharedInstance = [[self alloc] initWithBaseURL:[NSURL URLWithString:[Settings sharedSettings].webBaseUrl]];
+        sharedInstance                       = [[self alloc] init];
 
-        [sharedInstance setParameterEncoding:AFJSONParameterEncoding];
-        [sharedInstance setDefaultHeader:@"Accept" value:@"application/json"];
-        [sharedInstance registerHTTPOperationClass:[AFJSONRequestOperation class]];
-        [sharedInstance.operationQueue setMaxConcurrentOperationCount:6];
+        sharedInstance.webInterface          = [FailoverWebInterface sharedInterface];
+        sharedInstance.webInterface.dnsHost  = @"_https._tcp.numberbay.com";
+        sharedInstance.webInterface.delegate = sharedInstance;
 
         statuses = @{@"OK"                           : @(WebClientStatusOk),
                      @"FAIL_INVALID_REQUEST"         : @(WebClientStatusFailInvalidRequest),
@@ -59,6 +64,32 @@ static NSDictionary* statuses;
     });
 
     return sharedInstance;
+}
+
+
+#pragma mark - FailoverDelegate
+
+- (NSString*)modifyServer:(NSString*)server
+{
+    return [server stringByReplacingOccurrencesOfString:@"sip" withString:@"api"];
+}
+
+
+- (BOOL)checkReplyContent:(id)content
+{
+    return YES;
+}
+
+
+- (NSString*)webUsername
+{
+    return [Settings sharedSettings].webUsername;
+}
+
+
+- (NSString*)webPassword
+{
+    return [Settings sharedSettings].webPassword;
 }
 
 
@@ -124,11 +155,6 @@ static NSDictionary* statuses;
         NSInteger code = WebClientStatusFailNoAccount;
         reply([Common errorWithCode:code description:[WebClient localizedStringForStatus:code]], nil);
     }
-    else
-    {
-        [self setAuthorizationHeaderWithUsername:[Settings sharedSettings].webUsername
-                                        password:[Settings sharedSettings].webPassword];
-    }
 
     return [Settings sharedSettings].haveAccount;
 }
@@ -145,13 +171,13 @@ static NSDictionary* statuses;
         return;
     }
 
-    [self postPath:path
-        parameters:parameters
-           success:^(AFHTTPRequestOperation* operation, id responseObject)
+    [self.webInterface postPath:path
+                     parameters:parameters
+                        success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
         [self handleSuccess:responseObject reply:reply];
     }
-           failure:^(AFHTTPRequestOperation* operation, NSError* error)
+                        failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
         [self handleFailure:error reply:reply];
     }];
@@ -169,13 +195,13 @@ static NSDictionary* statuses;
         return;
     }
 
-    [self putPath:path
-       parameters:parameters
-          success:^(AFHTTPRequestOperation* operation, id responseObject)
+    [self.webInterface putPath:path
+                    parameters:parameters
+                       success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
         [self handleSuccess:responseObject reply:reply];
     }
-          failure:^(AFHTTPRequestOperation* operation, NSError* error)
+                       failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
         [self handleFailure:error reply:reply];
     }];
@@ -193,13 +219,13 @@ static NSDictionary* statuses;
         return;
     }
 
-    [self getPath:path
-       parameters:parameters
-          success:^(AFHTTPRequestOperation* operation, id responseObject)
+    [self.webInterface getPath:path
+                    parameters:parameters
+                       success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
         [self handleSuccess:responseObject reply:reply];
     }
-          failure:^(AFHTTPRequestOperation* operation, NSError* error)
+                       failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
         [self handleFailure:error reply:reply];
     }];
@@ -217,14 +243,14 @@ static NSDictionary* statuses;
         return;
     }
 
-    [self deletePath:path
-          parameters:parameters
-             success:^(AFHTTPRequestOperation* operation, id responseObject)
+    [self.webInterface deletePath:path
+                       parameters:parameters
+                          success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
         NBLog(@"DELETE response: %@", responseObject);
         [self handleSuccess:responseObject reply:reply];
     }
-             failure:^(AFHTTPRequestOperation* operation, NSError* error)
+                          failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
         NBLog(@"DELETE failure: %@", error);
         [self handleFailure:error reply:reply];
@@ -405,9 +431,9 @@ static NSDictionary* statuses;
 - (void)retrieveCallRates:(void (^)(NSError* error, NSArray* rates))reply
 {
     NSString* currencyCode = [Settings sharedSettings].currencyCode;
-    [self getPath:[NSString stringWithFormat:@"rates/calls?currencyCode=%@", currencyCode]
-       parameters:nil
-          success:^(AFHTTPRequestOperation* operation, id responseObject)
+    [self.webInterface getPath:[NSString stringWithFormat:@"/rates/calls?currencyCode=%@", currencyCode]
+                    parameters:nil
+                       success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
         NBLog(@"getPath request: %@", operation.request.URL);
 
@@ -416,7 +442,7 @@ static NSDictionary* statuses;
             reply(error, content);
         }];
     }
-          failure:^(AFHTTPRequestOperation* operation, NSError* error)
+                       failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
         [self handleFailure:error reply:^(NSError* error, id content)
         {
@@ -430,9 +456,9 @@ static NSDictionary* statuses;
 - (void)retrieveNumberRates:(void (^)(NSError* error, NSArray* rates))reply
 {
     NSString* currencyCode = [Settings sharedSettings].currencyCode;
-    [self getPath:[NSString stringWithFormat:@"rates/numbers?currencyCode=%@", currencyCode]
-       parameters:nil
-          success:^(AFHTTPRequestOperation* operation, id responseObject)
+    [self.webInterface getPath:[NSString stringWithFormat:@"/rates/numbers?currencyCode=%@", currencyCode]
+                    parameters:nil
+                       success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
         NBLog(@"getPath request: %@", operation.request.URL);
 
@@ -441,7 +467,7 @@ static NSDictionary* statuses;
             reply(error, content);
         }];
     }
-          failure:^(AFHTTPRequestOperation* operation, NSError* error)
+                       failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
         [self handleFailure:error reply:^(NSError* error, id content)
         {
@@ -481,9 +507,9 @@ static NSDictionary* statuses;
     }
 
     NSString* currencyCode = [Settings sharedSettings].currencyCode;
-    [self postPath:[NSString stringWithFormat:@"users?currencyCode=%@", currencyCode]
-        parameters:parameters
-           success:^(AFHTTPRequestOperation* operation, id responseObject)
+    [self.webInterface postPath:[NSString stringWithFormat:@"/users?currencyCode=%@", currencyCode]
+                     parameters:parameters
+                        success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
         NBLog(@"postPath request: %@", operation.request.URL);
 
@@ -497,7 +523,7 @@ static NSDictionary* statuses;
                   content[@"sipRealm"]);
         }];
     }
-           failure:^(AFHTTPRequestOperation* operation, NSError* error)
+                        failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
         [self handleFailure:error reply:^(NSError* error, id content)
         {
@@ -514,7 +540,7 @@ static NSDictionary* statuses;
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSString*     number     = [e164 substringFromIndex:1];
 
-    [self postPath:[NSString stringWithFormat:@"users/%@/verification?number=%@", username, number]
+    [self postPath:[NSString stringWithFormat:@"/users/%@/verification?number=%@", username, number]
         parameters:nil
              reply:^(NSError* error, id content)
     {
@@ -537,7 +563,7 @@ static NSDictionary* statuses;
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self putPath:[NSString stringWithFormat:@"users/%@/verification?number=%@", username, number]
+    [self putPath:[NSString stringWithFormat:@"/users/%@/verification?number=%@", username, number]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -554,7 +580,7 @@ static NSDictionary* statuses;
     NSString*     number     = [e164 substringFromIndex:1];
     NSDictionary* parameters = @{@"number" : number};
 
-    [self getPath:[NSString stringWithFormat:@"users/%@/verification", username]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/verification", username]
        parameters:parameters
             reply:^(NSError* error, id content)
     {
@@ -576,7 +602,7 @@ static NSDictionary* statuses;
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self deletePath:[NSString stringWithFormat:@"users/%@/verification?number=%@", username, number]
+    [self deletePath:[NSString stringWithFormat:@"/users/%@/verification?number=%@", username, number]
           parameters:nil
                reply:^(NSError* error, id content)
     {
@@ -592,7 +618,7 @@ static NSDictionary* statuses;
     NSString*     number     = [e164 substringFromIndex:1];
     NSDictionary* parameters = @{@"name" : name};
 
-    [self postPath:[NSString stringWithFormat:@"users/%@/verification/numbers/%@", username, number]
+    [self postPath:[NSString stringWithFormat:@"/users/%@/verification/numbers/%@", username, number]
         parameters:parameters
              reply:^(NSError* error, id content)
     {
@@ -604,7 +630,7 @@ static NSDictionary* statuses;
 // 3. GET VERIFIED NUMBER LIST
 - (void)retrieveVerifiedE164List:(void (^)(NSError* error, NSArray* e164s))reply;
 {
-    [self getPath:[NSString stringWithFormat:@"users/%@/verification/numbers", [Settings sharedSettings].webUsername]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/verification/numbers", [Settings sharedSettings].webUsername]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -627,7 +653,7 @@ static NSDictionary* statuses;
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self getPath:[NSString stringWithFormat:@"users/%@/verification/numbers/%@", username, number]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/verification/numbers/%@", username, number]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -650,7 +676,7 @@ static NSDictionary* statuses;
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self deletePath:[NSString stringWithFormat:@"users/%@/verification/numbers/%@", username, number]
+    [self deletePath:[NSString stringWithFormat:@"/users/%@/verification/numbers/%@", username, number]
           parameters:nil
                reply:^(NSError *error, id content)
     {
@@ -662,7 +688,7 @@ static NSDictionary* statuses;
 // 6. GET LIST OF ALL AVAILABLE NUMBER COUNTRIES
 - (void)retrieveNumberCountries:(void (^)(NSError* error, NSArray* countries))reply
 {
-    [self getPath:@"numbers/countries" parameters:nil reply:reply];
+    [self getPath:@"/numbers/countries" parameters:nil reply:reply];
 }
 
 
@@ -670,7 +696,7 @@ static NSDictionary* statuses;
 - (void)retrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode
                                         reply:(void (^)(NSError* error, NSArray* states))reply
 {
-    [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/states", isoCountryCode]
+    [self getPath:[NSString stringWithFormat:@"/numbers/countries/%@/states", isoCountryCode]
        parameters:nil
             reply:reply];
 }
@@ -686,7 +712,7 @@ static NSDictionary* statuses;
     NSDictionary* parameters = @{@"numberType"   : [NumberType stringForNumberType:numberTypeMask],
                                  @"currencyCode" : currencyCode};
 
-    [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/states/%@/areas", isoCountryCode, stateCode]
+    [self getPath:[NSString stringWithFormat:@"/numbers/countries/%@/states/%@/areas", isoCountryCode, stateCode]
        parameters:parameters
             reply:reply];
 }
@@ -701,7 +727,7 @@ static NSDictionary* statuses;
     NSDictionary* parameters = @{@"numberType"   : [NumberType stringForNumberType:numberTypeMask],
                                  @"currencyCode" : currencyCode};
 
-    [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/areas", isoCountryCode]
+    [self getPath:[NSString stringWithFormat:@"/numbers/countries/%@/areas", isoCountryCode]
        parameters:parameters
             reply:reply];
 }
@@ -712,7 +738,7 @@ static NSDictionary* statuses;
                                        areaCode:(NSString*)areaCode
                                           reply:(void (^)(NSError* error, NSArray* areaInfo))reply
 {
-    [self getPath:[NSString stringWithFormat:@"numbers/countries/%@/areas/%@", isoCountryCode, areaCode]
+    [self getPath:[NSString stringWithFormat:@"/numbers/countries/%@/areas/%@", isoCountryCode, areaCode]
        parameters:nil
             reply:reply];
 }
@@ -722,7 +748,7 @@ static NSDictionary* statuses;
 - (void)checkPurchaseInfo:(NSDictionary*)info
                     reply:(void (^)(NSError* error, BOOL isValid))reply;
 {
-    [self postPath:@"numbers/check"
+    [self postPath:@"/numbers/check"
         parameters:info
              reply:^(NSError *error, id content)
     {
@@ -739,23 +765,19 @@ static NSDictionary* statuses;
 
 
 // 11A. PURCHASE NUMBER
-- (void)purchaseNumberForReceipt:(NSString*)receipt
-                       productId:(NSString*)productId
-                          months:(int)months
-                            name:(NSString*)name
-                  isoCountryCode:(NSString*)isoCountryCode
-                        areaCode:(NSString*)areaCode
-                        areaName:(NSString*)areaName
-                       stateCode:(NSString*)stateCode
-                       stateName:(NSString*)stateName
-                      numberType:(NSString*)numberType
-                            info:(NSDictionary*)info
-                           reply:(void (^)(NSError* error, NSString* e164))reply
+- (void)purchaseNumberForMonths:(int)months
+                           name:(NSString*)name
+                 isoCountryCode:(NSString*)isoCountryCode
+                       areaCode:(NSString*)areaCode
+                       areaName:(NSString*)areaName
+                      stateCode:(NSString*)stateCode
+                      stateName:(NSString*)stateName
+                     numberType:(NSString*)numberType
+                           info:(NSDictionary*)info
+                          reply:(void (^)(NSError* error, NSString* e164))reply;
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
-    NSMutableDictionary* parameters = [@{@"receipt"        : receipt,
-                                         @"productId"      : productId,
-                                         @"durationMonths" : @(months),
+    NSMutableDictionary* parameters = [@{@"durationMonths" : @(months),
                                          @"name"           : name,
                                          @"isoCountryCode" : isoCountryCode,
                                          @"numberType"     : numberType} mutableCopy];
@@ -765,9 +787,13 @@ static NSDictionary* statuses;
     (stateName != nil) ? parameters[@"stateName"] = stateName : 0;
     (info      != nil) ? parameters[@"info"]      = info      : 0;
 
+    NSLog(@"##################### DUMMY RETURN purchaseNumberForReceipt #########");
+    reply(nil, @"+3215666666");
+    return;
+
     //parameters[@"debug"] = @(true);
 
-    [self postPath:[NSString stringWithFormat:@"users/%@/numbers", username]
+    [self postPath:[NSString stringWithFormat:@"/users/%@/numbers", username]
         parameters:parameters
              reply:^(NSError* error, id content)
     {
@@ -790,7 +816,7 @@ static NSDictionary* statuses;
     NSString*     number     = [e164 substringFromIndex:1];
     NSDictionary* parameters = @{@"name" : name};
 
-    [self postPath:[NSString stringWithFormat:@"users/%@/numbers/%@", username, number]
+    [self postPath:[NSString stringWithFormat:@"/users/%@/numbers/%@", username, number]
         parameters:parameters
              reply:^(NSError* error, id content)
     {
@@ -800,22 +826,34 @@ static NSDictionary* statuses;
 
 
 // 11C. EXTEND NUMBER
+- (void)extendNumberE164:(NSString*)e164 forMonths:(int)months reply:(void (^)(NSError* error))reply;
+{
+    NSString*     username   = [Settings sharedSettings].webUsername;
+    NSString*     number     = [e164 substringFromIndex:1];
+    NSDictionary* parameters = @{@"durationMonths" : @(months)};
 
+    [self postPath:[NSString stringWithFormat:@"/users/%@/numbers/%@", username, number]
+        parameters:parameters
+             reply:^(NSError* error, id content)
+    {
+        reply(error);
+    }];
+}
 
 
 // 12. GET LIST OF NUMBERS
 - (void)retrieveNumberE164List:(void (^)(NSError* error, NSArray* e164s))reply
 {
-    [self getPath:[NSString stringWithFormat:@"users/%@/numbers", [Settings sharedSettings].webUsername]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/numbers", [Settings sharedSettings].webUsername]
        parameters:nil
             reply:reply];
 }
 
 
-// 13. GET NUMBER INFO
+// 13A. GET NUMBER INFO
 - (void)retrieveNumberE164:(NSString*)e164
               currencyCode:(NSString*)currencyCode
-                     reply:(void (^)(NSError* error,
+                     reply:(void (^)(NSError*  error,
                                      NSString* name,
                                      NSString* numberType,
                                      NSString* areaCode,
@@ -823,6 +861,7 @@ static NSDictionary* statuses;
                                      NSString* numberCountry,
                                      NSDate*   purchaseDate,
                                      NSDate*   renewalDate,
+                                     float     monthPrice,
                                      NSString* salutation,
                                      NSString* firstName,
                                      NSString* lastName,
@@ -834,14 +873,14 @@ static NSDictionary* statuses;
                                      NSString* stateName,
                                      NSString* stateCode,
                                      NSString* addressCountry,
-                                     NSData*   proofImage,
-                                     BOOL      proofAccepted))reply
+                                     BOOL      hasImage,
+                                     BOOL      imageAccepted))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSString*     number     = [e164 substringFromIndex:1];
     NSDictionary* parameters = @{@"currencyCode" : currencyCode};
 
-    [self getPath:[NSString stringWithFormat:@"users/%@/numbers/%@", username, number]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/numbers/%@", username, number]
        parameters:parameters
             reply:^(NSError *error, id content)
     {
@@ -855,6 +894,7 @@ static NSDictionary* statuses;
                   content[@"isoCountryCode"],
                   [self dateWithString:content[@"purchaseDateTime"]],
                   [self dateWithString:content[@"renewalDateTime"]],
+                  [content[@"monthPrice"] floatValue],
                   content[@"info"][@"salutation"],
                   content[@"info"][@"firstName"],
                   content[@"info"][@"lastName"],
@@ -866,15 +906,24 @@ static NSDictionary* statuses;
                   content[@"info"][@"stateName"],
                   content[@"info"][@"stateCode"],
                   content[@"info"][@"isoCountryCode"],
-                  [Base64 decode:content[@"info"][@"proofImage"]],
-                  [content[@"info"][@"proofAccepted"] boolValue]);
+                  [content[@"info"][@"hasImage"] boolValue],
+                  [content[@"info"][@"imageAccepted"] boolValue]);
         }
         else
         {
             reply(error,
-                  nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO);
+                  nil, nil, nil, nil, nil, nil, nil, 0.0f, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, NO);
         }
     }];
+}
+
+
+// 13B. GET NUMBER PROOF IMAGE
+- (void)retrieveNumberImageE164:(NSString*)e164
+{
+    //    [Base64 decode:content[@"info"][@"proofImage"]],
+    //[content[@"info"][@"proofAccepted"] boolValue]);
+
 }
 
 
@@ -885,7 +934,7 @@ static NSDictionary* statuses;
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"receipt" : receipt};
 
-    [self postPath:[NSString stringWithFormat:@"users/%@/credit?currencyCode=%@", username, currencyCode]
+    [self postPath:[NSString stringWithFormat:@"/users/%@/credit?currencyCode=%@", username, currencyCode]
         parameters:parameters
              reply:^(NSError* error, id content)
     {
@@ -908,7 +957,7 @@ static NSDictionary* statuses;
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"currencyCode" : currencyCode};
 
-    [self getPath:[NSString stringWithFormat:@"users/%@/credit", username]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/credit", username]
        parameters:parameters
             reply:^(NSError* error, id content)
     {
@@ -931,9 +980,9 @@ static NSDictionary* statuses;
 {
     NSString* number = [e164 substringFromIndex:1];
 
-    [self getPath:[NSString stringWithFormat:@"rate/%@?currencyCode=%@", number, currencyCode]
-       parameters:nil
-          success:^(AFHTTPRequestOperation* operation, id responseObject)
+    [self.webInterface getPath:[NSString stringWithFormat:@"/rate/%@?currencyCode=%@", number, currencyCode]
+                    parameters:nil
+                       success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
         NBLog(@"getPath request: %@", operation.request.URL);
 
@@ -942,7 +991,7 @@ static NSDictionary* statuses;
             reply(error, [content[@"rate"] floatValue]);
         }];
     }
-          failure:^(AFHTTPRequestOperation* operation, NSError* error)
+                       failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
         [self handleFailure:error reply:^(NSError* error, id content)
         {
@@ -970,7 +1019,7 @@ static NSDictionary* statuses;
     NSDictionary* parameters = @{@"name"       : name,
                                  @"statements" : statements};
 
-    [self putPath:[NSString stringWithFormat:@"users/%@/ivr/%@", username, uuid]
+    [self putPath:[NSString stringWithFormat:@"/users/%@/ivr/%@", username, uuid]
        parameters:parameters
             reply:^(NSError* error, id content)
     {
@@ -989,7 +1038,7 @@ static NSDictionary* statuses;
     NSDictionary* parameters = @{@"name"       : name,
                                  @"statements" : statements};
 
-    [self postPath:[NSString stringWithFormat:@"users/%@/ivr/%@", username, uuid]
+    [self postPath:[NSString stringWithFormat:@"/users/%@/ivr/%@", username, uuid]
         parameters:parameters
              reply:^(NSError* error, id content)
     {
@@ -1004,7 +1053,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self deletePath:[NSString stringWithFormat:@"users/%@/ivr/%@", username, uuid]
+    [self deletePath:[NSString stringWithFormat:@"/users/%@/ivr/%@", username, uuid]
           parameters:nil
                reply:^(NSError* error, id content)
     {
@@ -1018,7 +1067,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self getPath:[NSString stringWithFormat:@"users/%@/ivr", username]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/ivr", username]
        parameters:nil
             reply:reply];
 }
@@ -1030,7 +1079,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self getPath:[NSString stringWithFormat:@"users/%@/ivr/%@", username, uuid]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/ivr/%@", username, uuid]
        parameters:nil
             reply:^(NSError* error, id content)
      {
@@ -1055,7 +1104,7 @@ static NSDictionary* statuses;
     NSString*     number     = [e164 substringFromIndex:1];
     NSDictionary* parameters = @{@"uuid" : uuid};
 
-    [self putPath:[NSString stringWithFormat:@"users/%@/numbers/%@/ivr", username, number]
+    [self putPath:[NSString stringWithFormat:@"/users/%@/numbers/%@/ivr", username, number]
        parameters:parameters
             reply:^(NSError* error, id content)
     {
@@ -1071,7 +1120,7 @@ static NSDictionary* statuses;
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self getPath:[NSString stringWithFormat:@"users/%@/numbers/%@/ivr", username, number]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/numbers/%@/ivr", username, number]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -1120,7 +1169,7 @@ static NSDictionary* statuses;
                                  @"callerId" : [identityPhoneNumber e164Format],
                                  @"privacy"  : privacy ? @"true" : @"false"};
 
-    [self postPath:[NSString stringWithFormat:@"users/%@/callback", username]
+    [self postPath:[NSString stringWithFormat:@"/users/%@/callback", username]
         parameters:parameters
              reply:^(NSError* error, id content)
     {
@@ -1142,7 +1191,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self deletePath:[NSString stringWithFormat:@"users/%@/callback/%@", username, uuid]
+    [self deletePath:[NSString stringWithFormat:@"/users/%@/callback/%@", username, uuid]
           parameters:nil
                reply:^(NSError* error, id content)
     {
@@ -1164,7 +1213,7 @@ static NSDictionary* statuses;
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
 
-    [self getPath:[NSString stringWithFormat:@"users/%@/callback/%@?currencyCode=%@", username, uuid, currencyCode]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/callback/%@?currencyCode=%@", username, uuid, currencyCode]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -1246,24 +1295,24 @@ static NSDictionary* statuses;
 // 0A.
 - (void)cancelAllRetrieveCallRates
 {
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:@"rates/calls"];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+                                                    path:@"/rates/calls"];
 }
 
 
 // 0B.
 - (void)cancelAllRetrieveNumberRates
 {
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:@"rates/numbers"];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+                                                    path:@"/rates/numbers"];
 }
 
 
 // 1.
 - (void)cancelAllRetrieveWebAccount
 {
-    [self cancelAllHTTPOperationsWithMethod:@"POST"
-                                       path:@"users"];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"POST"
+                                                    path:@"/users"];
 }
 
 
@@ -1272,8 +1321,9 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self cancelAllHTTPOperationsWithMethod:@"POST"
-                                       path:[NSString stringWithFormat:@"users/%@/verification", username]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"POST"
+                                                    path:[NSString stringWithFormat:@"/users/%@/verification",
+                                                          username]];
 }
 
 
@@ -1282,8 +1332,9 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self cancelAllHTTPOperationsWithMethod:@"PUT"
-                                       path:[NSString stringWithFormat:@"users/%@/verification", username]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"PUT"
+                                                    path:[NSString stringWithFormat:@"/users/%@/verification",
+                                                          username]];
 }
 
 
@@ -1292,8 +1343,9 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:[NSString stringWithFormat:@"users/%@/verification", username]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/users/%@/verification",
+                                                          username]];
 }
 
 
@@ -1302,8 +1354,9 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self cancelAllHTTPOperationsWithMethod:@"DELETE"
-                                       path:[NSString stringWithFormat:@"users/%@/verification", username]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"DELETE"
+                                                    path:[NSString stringWithFormat:@"/users/%@/verification",
+                                                          username]];
 }
 
 
@@ -1313,9 +1366,9 @@ static NSDictionary* statuses;
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self cancelAllHTTPOperationsWithMethod:@"POST"
-                                       path:[NSString stringWithFormat:@"users/%@/verification/numbers/%@",
-                                             username, number]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"POST"
+                                                    path:[NSString stringWithFormat:@"/users/%@/verification/numbers/%@",
+                                                          username, number]];
 }
 
 
@@ -1324,8 +1377,9 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:[NSString stringWithFormat:@"users/%@/verification/numbers", username]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/users/%@/verification/numbers",
+                                                          username]];
 }
 
 
@@ -1335,9 +1389,9 @@ static NSDictionary* statuses;
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:[NSString stringWithFormat:@"users/%@/verification/numbers/%@",
-                                             username, number]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/users/%@/verification/numbers/%@",
+                                                          username, number]];
 }
 
 
@@ -1347,60 +1401,61 @@ static NSDictionary* statuses;
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self cancelAllHTTPOperationsWithMethod:@"DELETE"
-                                       path:[NSString stringWithFormat:@"users/%@/verification/numbers/%@",
-                                             username, number]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"DELETE"
+                                                    path:[NSString stringWithFormat:@"/users/%@/verification/numbers/%@",
+                                                          username, number]];
 }
 
 
 // 6.
 - (void)cancelAllRetrieveNumberCountries
 {
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:@"numbers/countries"];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+                                                    path:@"/numbers/countries"];
 }
 
 
 // 7.
 - (void)cancelAllRetrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode
 {
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:[NSString stringWithFormat:@"numbers/countries/%@/states", isoCountryCode]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/numbers/countries/%@/states",
+                                                          isoCountryCode]];
 }
 
 
 // 8A.
 - (void)cancelAllRetrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode stateCode:(NSString*)stateCode
 {
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:[NSString stringWithFormat:@"numbers/countries/%@/states/%@/areas",
-                                             isoCountryCode, stateCode]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/numbers/countries/%@/states/%@/areas",
+                                                          isoCountryCode, stateCode]];
 }
 
 
 // 8B.
 - (void)cancelAllRetrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
 {
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:[NSString stringWithFormat:@"numbers/countries/%@/areas",
-                                             isoCountryCode]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/numbers/countries/%@/areas",
+                                                          isoCountryCode]];
 }
 
 
 // 9.
 - (void)cancelAllRetrieveAreaInfoForIsoCountryCode:(NSString*)isoCountryCode areaCode:(NSString*)areaCode
 {
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:[NSString stringWithFormat:@"numbers/countries/%@/areas/%@",
-                                             isoCountryCode, areaCode]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/numbers/countries/%@/areas/%@",
+                                                          isoCountryCode, areaCode]];
 }
 
 
 // 10.
 - (void)cancelAllCheckPurchaseInfo
 {
-    [self cancelAllHTTPOperationsWithMethod:@"POST"
-                                       path:@"numbers/check"];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"POST"
+                                                    path:@"/numbers/check"];
 }
 
 
@@ -1409,28 +1464,42 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self cancelAllHTTPOperationsWithMethod:@"POST"
-                                       path:[NSString stringWithFormat:@"users/%@/numbers", username]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"POST"
+                                                    path:[NSString stringWithFormat:@"/users/%@/numbers",
+                                                          username]];
 }
 
 
 // 11B.
-- (void)cancelAllUpdateNumberForE164:(NSString*)e164;
+- (void)cancelAllUpdateNumberE164:(NSString*)e164;
 {
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self cancelAllHTTPOperationsWithMethod:@"POST"
-                                       path:[NSString stringWithFormat:@"users/%@/numbers/%@", username, number]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"POST"
+                                                    path:[NSString stringWithFormat:@"/users/%@/numbers/%@",
+                                                          username, number]];
+}
+
+
+// 11C.
+- (void)cancelAllExtendNumberE164:(NSString*)e164;
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+    NSString* number   = [e164 substringFromIndex:1];
+
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"PUT"
+                                                    path:[NSString stringWithFormat:@"/users/%@/numbers/%@",
+                                                          username, number]];
 }
 
 
 // 12.
 - (void)cancelAllRetrieveNumberE164List
 {
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:[NSString stringWithFormat:@"users/%@/numbers",
-                                             [Settings sharedSettings].webUsername]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/users/%@/numbers",
+                                                          [Settings sharedSettings].webUsername]];
 }
 
 
@@ -1440,17 +1509,18 @@ static NSDictionary* statuses;
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:[NSString stringWithFormat:@"users/%@/numbers/%@", username, number]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/users/%@/numbers/%@",
+                                                          username, number]];
 }
 
 
 // 14.
 - (void)cancelAllPurchaseCredit
 {
-    [self cancelAllHTTPOperationsWithMethod:@"POST"
-                                       path:[NSString stringWithFormat:@"users/%@/credit",
-                                             [Settings sharedSettings].webUsername]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"POST"
+                                                    path:[NSString stringWithFormat:@"/users/%@/credit",
+                                                          [Settings sharedSettings].webUsername]];
 }
 
 
@@ -1459,16 +1529,18 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:[NSString stringWithFormat:@"users/%@/credit", username]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/users/%@/credit",
+                                                          username]];
 }
 
 
 // 16.
 - (void)cancelAllRetrieveCallRateForE164:(NSString*)e164
 {
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:[NSString stringWithFormat:@"rate/%@", [e164 substringFromIndex:1]]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/rate/%@",
+                                                          [e164 substringFromIndex:1]]];
 }
 
 
@@ -1477,8 +1549,9 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self cancelAllHTTPOperationsWithMethod:@"PUT"
-                                       path:[NSString stringWithFormat:@"users/%@/ivr/%@", username, uuid]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"PUT"
+                                                    path:[NSString stringWithFormat:@"/users/%@/ivr/%@",
+                                                          username, uuid]];
 }
 
 
@@ -1487,8 +1560,9 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self cancelAllHTTPOperationsWithMethod:@"POST"
-                                       path:[NSString stringWithFormat:@"users/%@/ivr/%@", username, uuid]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"POST"
+                                                    path:[NSString stringWithFormat:@"/users/%@/ivr/%@",
+                                                          username, uuid]];
 }
 
 
@@ -1497,8 +1571,9 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self cancelAllHTTPOperationsWithMethod:@"DELETE"
-                                       path:[NSString stringWithFormat:@"users/%@/ivr/%@", username, uuid]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"DELETE"
+                                                    path:[NSString stringWithFormat:@"/users/%@/ivr/%@",
+                                                          username, uuid]];
 }
 
 
@@ -1507,8 +1582,9 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:[NSString stringWithFormat:@"users/%@/ivr", username]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/users/%@/ivr",
+                                                          username]];
 }
 
 
@@ -1517,8 +1593,9 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:[NSString stringWithFormat:@"users/%@/ivr/%@", username, uuid]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/users/%@/ivr/%@",
+                                                          username, uuid]];
 }
 
 
@@ -1528,8 +1605,9 @@ static NSDictionary* statuses;
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self cancelAllHTTPOperationsWithMethod:@"PUT"
-                                       path:[NSString stringWithFormat:@"users/%@/numbers/%@/ivr", username, number]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"PUT"
+                                                    path:[NSString stringWithFormat:@"/users/%@/numbers/%@/ivr",
+                                                          username, number]];
 }
 
 
@@ -1538,8 +1616,9 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self cancelAllHTTPOperationsWithMethod:@"POST"
-                                       path:[NSString stringWithFormat:@"users/%@/callback", username]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"POST"
+                                                    path:[NSString stringWithFormat:@"/users/%@/callback",
+                                                          username]];
 }
 
 
@@ -1548,8 +1627,9 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self cancelAllHTTPOperationsWithMethod:@"DELETE"
-                                       path:[NSString stringWithFormat:@"users/%@/callback/%@", username, uuid]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"DELETE"
+                                                    path:[NSString stringWithFormat:@"/users/%@/callback/%@",
+                                                          username, uuid]];
 }
 
 
@@ -1558,8 +1638,9 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self cancelAllHTTPOperationsWithMethod:@"GET"
-                                       path:[NSString stringWithFormat:@"users/%@/callback/%@", username, uuid]];
+    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/users/%@/callback/%@",
+                                                          username, uuid]];
 }
 
 @end

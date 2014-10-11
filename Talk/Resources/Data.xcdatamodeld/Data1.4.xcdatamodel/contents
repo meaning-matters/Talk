@@ -39,11 +39,11 @@
         <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="company" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="imageAccepted" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="numberCountry" attributeType="String" minValueString="2" maxValueString="2" syncable="YES"/>
         <attribute name="numberType" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="proofAccepted" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="proofImage" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="purchaseDate" attributeType="Date" syncable="YES"/>
         <attribute name="renewalDate" attributeType="Date" syncable="YES"/>
         <attribute name="salutation" optional="YES" attributeType="String" syncable="YES"/>

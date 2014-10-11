@@ -12,7 +12,7 @@
 
 @interface CountriesViewController : SearchTableViewController <UITableViewDelegate>
 
-@property (nonatomic, assign) BOOL isModal;    // Set when shown as modal, and not from Settings.
+@property (nonatomic, assign) BOOL isModal;    // Set this to YES when shown as modal (and not from Settings).
 
 - (instancetype)initWithIsoCountryCode:(NSString*)isoCountryCode
                                  title:(NSString*)title

@@ -23,7 +23,6 @@
 @property (nonatomic, strong) NSDictionary*  area;
 @property (nonatomic, assign) NumberTypeMask numberTypeMask;
 @property (nonatomic, strong) NSDictionary*  info;
-@property (nonatomic, strong) NSIndexPath*   buyIndexPath;
 @property (nonatomic, assign) float          buyCellHeight;
 @property (nonatomic, strong) NumberBuyCell* buyCell;
 @property (nonatomic, assign) int            buyMonths;
@@ -61,8 +60,7 @@
 {
     [super viewDidLoad];
 
-    // self.clearsSelectionOnViewWillAppear = NO;
-    self.tableView.delaysContentTouches  = NO;
+    self.tableView.delaysContentTouches = NO;
 
     [self.tableView registerNib:[UINib nibWithNibName:@"NumberBuyCell" bundle:nil]
          forCellReuseIdentifier:@"NumberBuyCell"];
@@ -137,7 +135,7 @@
     {
         title = NSLocalizedStringWithDefaultValue(@"BuyNumber:... NoSetupFeeTableFooter", nil, [NSBundle mainBundle],
                                                   @"The shown price will be taken from your credit.\n\n"
-                                                  @"After the You can extend using your number at any time.",
+                                                  @"You can extend your number at any time.",
                                                   @"[Multiple lines]");
     }
     else
@@ -145,7 +143,7 @@
         title = NSLocalizedStringWithDefaultValue(@"BuyNumber:... TableFooter", nil, [NSBundle mainBundle],
                                                   @"The prices include a one-time setup fee of %@. The shown "
                                                   @"price will be taken from your credit.\n\n"
-                                                  @"You can extend using your number at any time.",
+                                                  @"You can extend your number at any time.",
                                                   @"[Multiple lines]");
 
         title = [NSString stringWithFormat:title, [[PurchaseManager sharedManager] localizedFormattedPrice:setupFee]];
@@ -181,25 +179,23 @@
         BOOL hasAreaCode = [self.area[@"areaCode"] length] > 0;
         BOOL hasAreaName = self.numberTypeMask == NumberTypeGeographicMask && !allCities;
 
-        [[PurchaseManager sharedManager] buyNumberForMonths:months
-                                                       name:self.name
-                                             isoCountryCode:self.isoCountryCode
-                                                   areaCode:hasAreaCode ? self.area[@"areaCode"] : nil
-                                                   areaName:hasAreaName ? self.area[@"areaName"] : nil
-                                                  stateCode:self.area[@"stateCode"]
-                                                  stateName:self.area[@"stateName"]
-                                                 numberType:[NumberType stringForNumberType:self.numberTypeMask]
-                                                       info:self.info
-                                                 completion:^(BOOL success, id object)
+        [[WebClient sharedClient] purchaseNumberForMonths:months
+                                                     name:self.name
+                                           isoCountryCode:self.isoCountryCode
+                                                 areaCode:hasAreaCode ? self.area[@"areaCode"] : nil
+                                                 areaName:hasAreaName ? self.area[@"areaName"] : nil
+                                                stateCode:self.area[@"stateCode"]
+                                                stateName:self.area[@"stateName"]
+                                               numberType:[NumberType stringForNumberType:self.numberTypeMask]
+                                                     info:self.info
+                                                    reply:^(NSError* error, NSString *e164)
         {
-            self.buyIndexPath = nil;
-
-            if (success == YES)
+            if (error == nil)
             {
                 [[AppDelegate appDelegate].numbersViewController refresh:nil];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
-            else if (object != nil)
+            else
             {
                 NSString* title;
                 NSString* message;
@@ -214,7 +210,7 @@
                                                             @"Please try again later.",
                                                             @"Message telling that buying a phone number failed\n"
                                                             @"[iOS alert message size]");
-                message = [NSString stringWithFormat:message, [object localizedDescription]];
+                message = [NSString stringWithFormat:message, [error localizedDescription]];
                 [BlockAlertView showAlertViewWithTitle:title
                                                message:message
                                             completion:^(BOOL cancelled, NSInteger buttonIndex)
@@ -254,7 +250,7 @@
 
                     title   = NSLocalizedStringWithDefaultValue(@"BuyNumber NeedExtraCreditTitle", nil,
                                                                 [NSBundle mainBundle], @"Extra Credit Needed",
-                                                                @"Alart title: extra credit must be bought.\n"
+                                                                @"Alert title: extra credit must be bought.\n"
                                                                 @"[iOS alert title size].");
                     message = NSLocalizedStringWithDefaultValue(@"BuyNumber NeedExtraCreditMessage", nil,
                                                                 [NSBundle mainBundle],
@@ -327,8 +323,8 @@
             NSString* message;
 
             title   = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedGetCreditTitle", nil,
-                                                        [NSBundle mainBundle], @"Up-to-date Credit Unknown",
-                                                        @"Alart title: Reading the user's credit failed.\n"
+                                                        [NSBundle mainBundle], @"Credit Unknown",
+                                                        @"Alert title: Reading the user's credit failed.\n"
                                                         @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedGetCreditMessage", nil,
                                                         [NSBundle mainBundle],

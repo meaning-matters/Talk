@@ -7,7 +7,6 @@
 //
 //  List of errors: https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Miscellaneous/Foundation_Constants/Reference/reference.html#//apple_ref/doc/uid/TP40003793-CH3g-SW40
 
-#import "AFHTTPClient.h"
 #import "NumberType.h"
 #import "Call.h"
 
@@ -38,7 +37,7 @@ typedef enum
 } WebClientStatus;
 
 
-@interface WebClient : AFHTTPClient
+@interface WebClient : NSObject
 
 + (WebClient*)sharedClient;
 
@@ -137,13 +136,16 @@ typedef enum
 // 11B. UPDATE NUMBER'S NAME
 - (void)updateNumberE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply;
 
+// 11C. EXTEND NUMBER
+- (void)extendNumberE164:(NSString*)e164 forMonths:(int)months reply:(void (^)(NSError* error))reply;
+
 // 12. GET LIST OF NUMBERS
 - (void)retrieveNumberE164List:(void (^)(NSError* error, NSArray* e164s))reply;
 
 // 13. GET NUMBER INFO
 - (void)retrieveNumberE164:(NSString*)e164
               currencyCode:(NSString*)currencyCode
-                     reply:(void (^)(NSError* error,
+                     reply:(void (^)(NSError*  error,
                                      NSString* name,
                                      NSString* numberType,
                                      NSString* areaCode,
@@ -151,6 +153,7 @@ typedef enum
                                      NSString* numberCountry,
                                      NSDate*   purchaseDate,
                                      NSDate*   renewalDate,
+                                     float     monthPrice,
                                      NSString* salutation,
                                      NSString* firstName,
                                      NSString* lastName,
@@ -162,8 +165,8 @@ typedef enum
                                      NSString* stateName,
                                      NSString* stateCode,
                                      NSString* addressCountry,
-                                     NSData*   proofImage,
-                                     BOOL      proofAccepted))reply;
+                                     BOOL      hasImage,
+                                     BOOL      imageAccepted))reply;
 
 // 14. BUY CREDIT
 - (void)purchaseCreditForReceipt:(NSString*)receipt
@@ -175,7 +178,8 @@ typedef enum
                                 reply:(void (^)(NSError* error, float credit))reply;
 
 // 16. GET CALL RATE (PER MINUTE)
-- (void)retrieveCallRateForE164:(NSString*)e164 currencyCode:(NSString*)currencyCode
+- (void)retrieveCallRateForE164:(NSString*)e164
+                   currencyCode:(NSString*)currencyCode
                           reply:(void (^)(NSError* error, float ratePerMinute))reply;
 
 // 19A. CREATE IVR
@@ -290,7 +294,10 @@ typedef enum
 - (void)cancelAllPurchaseNumber;
 
 // 11B.
-- (void)cancelAllUpdateNumberForE164:(NSString*)e164;
+- (void)cancelAllUpdateNumberE164:(NSString*)e164;
+
+// 11C.
+- (void)cancelAllExtendNumberE164:(NSString*)e164;
 
 // 12.
 - (void)cancelAllRetrieveNumberE164List;

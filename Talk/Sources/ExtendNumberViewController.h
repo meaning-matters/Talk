@@ -1,5 +1,5 @@
 //
-//  BuyNumberViewController.h
+//  ExtendNumberViewController.h
 //  Talk
 //
 //  Created by Cornelis van der Bent on 14/07/13.
@@ -9,12 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "NumberType.h"
 
-@interface BuyNumberViewController : UITableViewController
+@interface ExtendNumberViewController : UITableViewController
 
-- (instancetype)initWithName:(NSString*)name
-              isoCountryCode:(NSString*)isoCountryCode
-                        area:(NSDictionary*)area
-              numberTypeMask:(NumberTypeMask)numberTypeMask
-                        info:(NSDictionary*)info;
+- (instancetype)initWithE164:(NSString*)e164;
 
 @end

@@ -487,6 +487,7 @@
                                                                NSString* numberCountry,
                                                                NSDate*   purchaseDate,
                                                                NSDate*   renewalDate,
+                                                               float     monthPrice,
                                                                NSString* salutation,
                                                                NSString* firstName,
                                                                NSString* lastName,
@@ -498,8 +499,8 @@
                                                                NSString* stateName,
                                                                NSString* stateCode,
                                                                NSString* addressCountry,
-                                                               NSData*   proofImage,
-                                                               BOOL      proofAccepted)
+                                                               BOOL      hasImage,
+                                                               BOOL      imageAccepted)
                 {
                     if (error == nil)
                     {
@@ -541,8 +542,7 @@
                         number.stateName      = stateName;
                         number.stateCode      = stateCode;
                         number.addressCountry = addressCountry;
-                        number.proofImage     = proofImage;
-                        number.proofAccepted  = @(proofAccepted);
+                        number.imageAccepted  = @(imageAccepted);
                     }
                     else
                     {

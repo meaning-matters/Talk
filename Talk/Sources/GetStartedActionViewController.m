@@ -318,7 +318,7 @@
     NSString* message;
     title   = NSLocalizedStringWithDefaultValue(@"Provisioning FailedNumbersTitle", nil,
                                                 [NSBundle mainBundle], @"Loading Phones Failed",
-                                                @"Alart title: Phone numbers could not be downloaded.\n"
+                                                @"Alert title: Phone numbers could not be downloaded.\n"
                                                 @"[iOS alert title size].");
     message = NSLocalizedStringWithDefaultValue(@"Provisioning FailedNumbersMessage", nil,
                                                 [NSBundle mainBundle],

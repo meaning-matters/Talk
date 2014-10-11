@@ -60,7 +60,7 @@
     <elements>
         <element name="Forwarding" positionX="268" positionY="-55" width="128" height="133"/>
         <element name="NBRecentContactEntry" positionX="520" positionY="-513" width="128" height="223"/>
-        <element name="Number" positionX="43" positionY="-270" width="128" height="375"/>
+        <element name="Number" positionX="43" positionY="-270" width="128" height="373"/>
         <element name="Phone" positionX="252" positionY="-241" width="128" height="88"/>
         <element name="Recording" positionX="484" positionY="14" width="128" height="103"/>
     </elements>

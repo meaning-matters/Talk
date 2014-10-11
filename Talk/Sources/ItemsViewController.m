@@ -138,9 +138,9 @@
     if ([Settings sharedSettings].haveAccount == YES)
     {
         [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
-         {
-             [sender endRefreshing];
-         }];
+        {
+            [sender endRefreshing];
+        }];
     }
     else
     {

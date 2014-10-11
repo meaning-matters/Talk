@@ -1,12 +1,12 @@
 //
-//  BuyNumberViewController.m
+//  ExtendNumberViewController.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 14/07/13.
 //  Copyright (c) 2013 Cornelis van der Bent. All rights reserved.
 //
 
-#import "BuyNumberViewController.h"
+#import "ExtendNumberViewController.h"
 #import "NumberBuyCell.h"
 #import "Strings.h"
 #import "PurchaseManager.h"
@@ -16,41 +16,62 @@
 #import "Settings.h"
 
 
-@interface BuyNumberViewController () <NumberBuyCellDelegate>
+@interface ExtendNumberViewController () <NumberBuyCellDelegate>
 
-@property (nonatomic, strong) NSString*      name;
-@property (nonatomic, strong) NSString*      isoCountryCode;
-@property (nonatomic, strong) NSDictionary*  area;
-@property (nonatomic, assign) NumberTypeMask numberTypeMask;
-@property (nonatomic, strong) NSDictionary*  info;
-@property (nonatomic, strong) NSIndexPath*   buyIndexPath;
 @property (nonatomic, assign) float          buyCellHeight;
 @property (nonatomic, strong) NumberBuyCell* buyCell;
 @property (nonatomic, assign) int            buyMonths;
 @property (nonatomic, assign) float          monthPrice;
+@property (nonatomic, strong) NSString*      e164;
 
 @end
 
 
-@implementation BuyNumberViewController
+@implementation ExtendNumberViewController
 
-- (instancetype)initWithName:(NSString*)name
-              isoCountryCode:(NSString*)isoCountryCode
-                        area:(NSDictionary*)area
-              numberTypeMask:(NumberTypeMask)numberTypeMask
-                        info:(NSDictionary*)info
+- (instancetype)initWithE164:(NSString*)e164
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
-        self.title = NSLocalizedStringWithDefaultValue(@"BuyNumber:... ViewTitle", nil, [NSBundle mainBundle],
-                                                       @"Buy Number",
+        self.title = NSLocalizedStringWithDefaultValue(@"ExtendNumber:... ViewTitle", nil, [NSBundle mainBundle],
+                                                       @"Extend Number",
                                                        @"[ ].");
 
-        self.name           = name;
-        self.isoCountryCode = isoCountryCode;
-        self.area           = area;
-        self.numberTypeMask = numberTypeMask;
-        self.info           = info;
+        // Get the month price.
+        [[WebClient sharedClient] retrieveNumberE164:e164
+                                        currencyCode:[Settings sharedSettings].currencyCode
+                                               reply:^(NSError*  error,
+                                                       NSString* name,
+                                                       NSString* numberType,
+                                                       NSString* areaCode,
+                                                       NSString* areaName,
+                                                       NSString* numberCountry,
+                                                       NSDate*   purchaseDate,
+                                                       NSDate*   renewalDate,
+                                                       float     monthPrice,
+                                                       NSString* salutation,
+                                                       NSString* firstName,
+                                                       NSString* lastName,
+                                                       NSString* company,
+                                                       NSString* street,
+                                                       NSString* building,
+                                                       NSString* city,
+                                                       NSString* zipCode,
+                                                       NSString* stateName,
+                                                       NSString* stateCode,
+                                                       NSString* addressCountry,
+                                                       BOOL      hasImage,
+                                                       BOOL      imageAccepted)
+        {
+            if (error == nil)
+            {
+                
+            }
+            else
+            {
+
+            }
+        }];
     }
 
     return self;
@@ -61,8 +82,7 @@
 {
     [super viewDidLoad];
 
-    // self.clearsSelectionOnViewWillAppear = NO;
-    self.tableView.delaysContentTouches  = NO;
+    self.tableView.delaysContentTouches = NO;
 
     [self.tableView registerNib:[UINib nibWithNibName:@"NumberBuyCell" bundle:nil]
          forCellReuseIdentifier:@"NumberBuyCell"];
@@ -108,50 +128,18 @@
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString* title;
-    float     setupFee = [self.area[@"setupFee"] floatValue];
-
-    if (setupFee == 0)
-    {
-        title = NSLocalizedStringWithDefaultValue(@"BuyNumber:... NoSetupFeeTableHeader", nil, [NSBundle mainBundle],
-                                                  @"Fixed Price Per Month",
-                                                  @"[Multiple lines]");
-    }
-    else
-    {
-        title = NSLocalizedStringWithDefaultValue(@"BuyNumber:... TableHeader", nil, [NSBundle mainBundle],
-                                                  @"Includes A Setup Fee",
-                                                  @"[Multiple lines]");
-    }
-
-    return title;
+    return NSLocalizedStringWithDefaultValue(@"ExtendNumber:... NoSetupFeeTableHeader", nil, [NSBundle mainBundle],
+                                             @"Fixed Price Per Month",
+                                             @"[Multiple lines]");
 }
 
 
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
-    NSString* title;
-    float     setupFee = [self.area[@"setupFee"] floatValue];
-
-    if (setupFee == 0)
-    {
-        title = NSLocalizedStringWithDefaultValue(@"BuyNumber:... NoSetupFeeTableFooter", nil, [NSBundle mainBundle],
-                                                  @"The shown price will be taken from your credit.\n\n"
-                                                  @"After the You can extend using your number at any time.",
-                                                  @"[Multiple lines]");
-    }
-    else
-    {
-        title = NSLocalizedStringWithDefaultValue(@"BuyNumber:... TableFooter", nil, [NSBundle mainBundle],
-                                                  @"The prices include a one-time setup fee of %@. The shown "
-                                                  @"price will be taken from your credit.\n\n"
-                                                  @"You can extend using your number at any time.",
-                                                  @"[Multiple lines]");
-
-        title = [NSString stringWithFormat:title, [[PurchaseManager sharedManager] localizedFormattedPrice:setupFee]];
-    }
-
-    return title;
+    return NSLocalizedStringWithDefaultValue(@"ExtendNumber:... NoSetupFeeTableFooter", nil, [NSBundle mainBundle],
+                                             @"The shown price will be taken from your credit.\n\n"
+                                             @"You can extend your again number at any time.",
+                                             @"[Multiple lines]");
 }
 
 
@@ -177,44 +165,30 @@
     float totalPrice = [self updateBuyCell];
     void (^buyNumberBlock)(void) = ^
     {
-        BOOL allCities   = [[self.area objectForKey:@"areaName"] caseInsensitiveCompare:@"All cities"] == NSOrderedSame;
-        BOOL hasAreaCode = [self.area[@"areaCode"] length] > 0;
-        BOOL hasAreaName = self.numberTypeMask == NumberTypeGeographicMask && !allCities;
-
-        [[PurchaseManager sharedManager] buyNumberForMonths:months
-                                                       name:self.name
-                                             isoCountryCode:self.isoCountryCode
-                                                   areaCode:hasAreaCode ? self.area[@"areaCode"] : nil
-                                                   areaName:hasAreaName ? self.area[@"areaName"] : nil
-                                                  stateCode:self.area[@"stateCode"]
-                                                  stateName:self.area[@"stateName"]
-                                                 numberType:[NumberType stringForNumberType:self.numberTypeMask]
-                                                       info:self.info
-                                                 completion:^(BOOL success, id object)
+        [[WebClient sharedClient] extendNumberE164:self.e164
+                                         forMonths:months
+                                             reply:^(NSError* error)
         {
-            self.buyIndexPath = nil;
-
-            if (success == YES)
+            if (error == nil)
             {
                 [[AppDelegate appDelegate].numbersViewController refresh:nil];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
-            else if (object != nil)
+            else
             {
                 NSString* title;
                 NSString* message;
 
-                title   = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyNumberTitle", nil,
-                                                            [NSBundle mainBundle], @"Buying Number Failed",
-                                                            @"Alert title: A phone number could not be bought.\n"
+                title   = NSLocalizedStringWithDefaultValue(@"ExtendNumber FailedBuyNumberTitle", nil,
+                                                            [NSBundle mainBundle], @"Extending Number Failed",
+                                                            @"Alert title: A phone number subscription could not be extended.\n"
                                                             @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyNumberMessage", nil,
+                message = NSLocalizedStringWithDefaultValue(@"ExtendNumber FailedBuyNumberMessage", nil,
                                                             [NSBundle mainBundle],
-                                                            @"Something went wrong while buying your number: %@.\n\n"
-                                                            @"Please try again later.",
-                                                            @"Message telling that buying a phone number failed\n"
+                                                            @"Something went wrong while extending your number: %@.",
+                                                            @"Message telling that extending a phone number failed\n"
                                                             @"[iOS alert message size]");
-                message = [NSString stringWithFormat:message, [object localizedDescription]];
+                message = [NSString stringWithFormat:message, [error localizedDescription]];
                 [BlockAlertView showAlertViewWithTitle:title
                                                message:message
                                             completion:^(BOOL cancelled, NSInteger buttonIndex)
@@ -252,11 +226,11 @@
                     extraString       = [[PurchaseManager sharedManager] localizedPriceForProductIdentifier:productIdentifier];
                     creditString      = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
 
-                    title   = NSLocalizedStringWithDefaultValue(@"BuyNumber NeedExtraCreditTitle", nil,
+                    title   = NSLocalizedStringWithDefaultValue(@"ExtendNumber NeedExtraCreditTitle", nil,
                                                                 [NSBundle mainBundle], @"Extra Credit Needed",
-                                                                @"Alart title: extra credit must be bought.\n"
+                                                                @"Alert title: extra credit must be bought.\n"
                                                                 @"[iOS alert title size].");
-                    message = NSLocalizedStringWithDefaultValue(@"BuyNumber NeedExtraCreditMessage", nil,
+                    message = NSLocalizedStringWithDefaultValue(@"ExtendNumber NeedExtraCreditMessage", nil,
                                                                 [NSBundle mainBundle],
                                                                 @"The price is more than your current "
                                                                 @"credit: %@.\nYou can buy %@ extra credit now.",
@@ -285,11 +259,11 @@
                                     NSString* title;
                                     NSString* message;
 
-                                    title   = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyCreditTitle", nil,
+                                    title   = NSLocalizedStringWithDefaultValue(@"ExtendNumber FailedBuyCreditTitle", nil,
                                                                                 [NSBundle mainBundle], @"Buying Credit Failed",
                                                                                 @"Alert title: Credit could not be bought.\n"
                                                                                 @"[iOS alert title size].");
-                                    message = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyCreditMessage", nil,
+                                    message = NSLocalizedStringWithDefaultValue(@"ExtendNumber FailedBuyCreditMessage", nil,
                                                                                 [NSBundle mainBundle],
                                                                                 @"Something went wrong while buying credit: "
                                                                                 @"%@.\n\nPlease try again later.",
@@ -326,11 +300,11 @@
             NSString* title;
             NSString* message;
 
-            title   = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedGetCreditTitle", nil,
+            title   = NSLocalizedStringWithDefaultValue(@"ExtendNumber FailedGetCreditTitle", nil,
                                                         [NSBundle mainBundle], @"Up-to-date Credit Unknown",
-                                                        @"Alart title: Reading the user's credit failed.\n"
+                                                        @"Alert title: Reading the user's credit failed.\n"
                                                         @"[iOS alert title size].");
-            message = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedGetCreditMessage", nil,
+            message = NSLocalizedStringWithDefaultValue(@"ExtendNumber FailedGetCreditMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"Could not get your up-to-date credit, from our "
                                                         @"internet server. (Credit is needed for the "
@@ -405,15 +379,14 @@
 
 - (float)updateBuyCell
 {
-    float setupFee   = [self.area[@"setupFee"]   floatValue];
-    float monthPrice = [self.area[@"monthPrice"] floatValue];
+    float monthPrice = 3.33; //#############
     float totalPrice = 0.0f;
 
     for (int n = 0; n <= 5; n++)
     {
         int       months           = [self monthsForN:n];
         float     monthsPrice      = months * monthPrice;
-        NSString* totalPriceString = [[PurchaseManager sharedManager] localizedFormattedPrice:setupFee + monthsPrice];
+        NSString* totalPriceString = [[PurchaseManager sharedManager] localizedFormattedPrice:monthsPrice];
         NSString* monthsString     = (months == 1) ? [Strings monthString] : [Strings monthsString];
         NSString* title            = [NSString stringWithFormat:@"%d %@ %@", months, monthsString, totalPriceString];
 
@@ -429,7 +402,7 @@
 
         if (months == self.buyMonths)
         {
-            totalPrice = setupFee + monthsPrice;
+            totalPrice = monthsPrice;
         }
     }
 

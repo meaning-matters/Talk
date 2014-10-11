@@ -26,6 +26,7 @@
 #import "NBPeopleListViewController.h"
 #import "WebClient.h"
 #import "NavigationController.h"
+#import "CountriesViewController.h"
 
 
 @interface AppDelegate ()
@@ -530,6 +531,54 @@
     {
         return NO;
     }
+}
+
+
+- (BOOL)number:(NSString*)numberA isEqualToNumber:(NSString*)numberB
+{
+    const char* stringA = [numberA UTF8String];
+    const char* stringB = [numberB UTF8String];
+    int         lengthA = strlen(stringA);
+    int         lengthB = strlen(stringB);
+    int         indexA  = (lengthA - 1);
+    int         indexB  = (lengthB - 1);
+    int         lcs     = 0;  // Longest Common Suffix.
+
+    while (indexA >= 0 && indexB >= 0 && stringA[indexA--] == stringB[indexB--])
+    {
+        lcs++;
+    }
+
+    return (lcs >= 7); // Assumes that real phone numbers are at least 7 digits.
+}
+
+
+- (void)selectCountryWithCurrent:(NSString*)currentCountry completion:(void (^)(NSString* country))completion
+{
+    CountriesViewController* countriesViewController;
+    UINavigationController*  modalViewController;
+
+    countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:currentCountry
+                                                                                title:[Strings countryString]
+                                                                           completion:^(BOOL      cancelled,
+                                                                                        NSString* isoCountryCode)
+    {
+        if (cancelled)
+        {
+            completion(nil);
+        }
+        else
+        {
+            completion(isoCountryCode);
+        }
+    }];
+
+    countriesViewController.isModal = YES;
+
+    modalViewController = [[UINavigationController alloc] initWithRootViewController:countriesViewController];
+    modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+
+    [[Common topViewController] presentViewController:modalViewController animated:YES completion:nil];
 }
 
 

@@ -31,8 +31,8 @@
 @dynamic stateName;
 @dynamic stateCode;
 @dynamic addressCountry;    // ISO country code.
-@dynamic proofImage;
-@dynamic proofAccepted;
+@dynamic image;             // Proof of address.
+@dynamic imageAccepted;
 
 @dynamic forwarding;
 

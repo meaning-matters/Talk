@@ -36,30 +36,30 @@ typedef enum
 
 typedef enum
 {
-    AreaRowType                 = 1UL << 0,
-    AreaRowAreaCode             = 1UL << 1,
-    AreaRowAreaName             = 1UL << 2,
-    AreaRowStateName            = 1UL << 3,
-    AreaRowCountry              = 1UL << 4,
+    AreaRowType                = 1UL << 0,
+    AreaRowAreaCode            = 1UL << 1,
+    AreaRowAreaName            = 1UL << 2,
+    AreaRowStateName           = 1UL << 3,
+    AreaRowCountry             = 1UL << 4,
 } AreaRows;
 
 typedef enum
 {
-    ContactNameRowSalutation    = 1UL << 0,
-    ContactNameRowCompany       = 1UL << 1,
-    ContactNameRowFirstName     = 1UL << 2,
-    ContactNameRowLastName      = 1UL << 3,
+    ContactNameRowSalutation   = 1UL << 0,
+    ContactNameRowCompany      = 1UL << 1,
+    ContactNameRowFirstName    = 1UL << 2,
+    ContactNameRowLastName     = 1UL << 3,
 } ContactNameRows;
 
 typedef enum
 {
-    ContactAddressRowStreet     = 1UL << 0,
-    ContactAddressRowBuilding   = 1UL << 1,
-    ContactAddressRowCity       = 1UL << 2,
-    ContactAddressRowZipCode    = 1UL << 3,
-    ContactAddressRowStateName  = 1UL << 4,
-    ContactAddressRowCountry    = 1UL << 5,
-    ContactAddressRowProofImage = 1UL << 6,
+    ContactAddressRowStreet    = 1UL << 0,
+    ContactAddressRowBuilding  = 1UL << 1,
+    ContactAddressRowCity      = 1UL << 2,
+    ContactAddressRowZipCode   = 1UL << 3,
+    ContactAddressRowStateName = 1UL << 4,
+    ContactAddressRowCountry   = 1UL << 5,
+    ContactAddressRowImage     = 1UL << 6,
 } ContactAddressRows;
 
 
@@ -127,7 +127,7 @@ typedef enum
         contactAddressRows |= ContactAddressRowZipCode;
         contactAddressRows |= (number.stateName != nil)  ? ContactAddressRowStateName  : 0;
         contactAddressRows |= ContactAddressRowCountry;
-        contactAddressRows |= (number.proofImage != nil) ? ContactAddressRowProofImage : 0;
+        contactAddressRows |= (number.image != nil) ? ContactAddressRowImage : 0;
 
         self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:[Common nOfBit:TableSectionName inValue:sections]];
     }
@@ -247,7 +247,7 @@ typedef enum
             break;
 
         case TableSectionContactAddress:
-            numberOfRows = (number.proofImage == nil) ? 5 : 6;
+            numberOfRows = (number.image == nil) ? 5 : 6;
             break;
     }
 
@@ -290,7 +290,7 @@ typedef enum
         case TableSectionContactAddress:
             if (indexPath.row == 5)
             {
-                proofImageviewController = [[ProofImageViewController alloc] initWithImageData:number.proofImage];
+                proofImageviewController = [[ProofImageViewController alloc] initWithImageData:number.image];
                 [self.navigationController pushViewController:proofImageviewController animated:YES];
             }
             break;
