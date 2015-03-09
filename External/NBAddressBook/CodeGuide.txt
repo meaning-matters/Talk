@@ -1,0 +1,361 @@
+Guidelines
+================================================================================
+ 
+Main goal of these guidelines is minimizing visual complexity.  This makes
+the code easier for the eye, which helps understanding and avoids mistakes.
+ 
+1. Indentation
+--------------------------------------------------------------------------------
+* Indent with 4 spaces, and don't use TABs.
+ 
+* Xcode -> Preferences -> Text Editing : Indentation
+  Prefer indent using: Spaces
+            Tab width: 4 spaces
+         Indent width: 4 spaces
+ 
+* Indent 'completion' blocks all the way left to avoid very long lines.
+  // Example
+    [BlockAlertView showAlertViewWithTitle:@"Hello"
+                                   message:@"Welcome the world of code cosmetics."
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        ...
+    }
+                         cancelButtonTitle:@"Close"
+                         otherButtonTitles:nil];
+ 
+* When method call or prototype does not fit on line, indent all parameters
+  and align on :
+    // Good
+    [BlockAlertView showAlertViewWithTitle:@"Hello"
+                                   message:@"Welcome the world of code cosmetics."
+                                completion:nil
+                         cancelButtonTitle:@"Close"
+                         otherButtonTitles:nil];
+ 
+    // Bad
+    [BlockAlertView showAlertViewWithTitle:@"Hello"
+                                   message:@"Welcome the world of code cosmetics."
+                                completion:nil
+                         cancelButtonTitle:@"Close" otherButtonTitles:nil];
+ 
+    // Bad
+    [BlockAlertView showAlertViewWithTitle:@"Hello"
+        message:@"Welcome the world of code cosmetics." completion:nil
+        cancelButtonTitle:@"Close" otherButtonTitles:nil];
+ 
+ 
+2. Line Width
+--------------------------------------------------------------------------------
+* Try to keep line shorter than 80 character.
+ 
+* Lines must not be longer than 120 character.
+ 
+* Xcode -> Preferences -> Text Editing : Editing
+  [v] Page Guide at column 120
+ 
+ 
+3. Parentheses
+--------------------------------------------------------------------------------
+* Each parenthesis is on a further empty line.
+    // Good
+    if (index == 0)
+    {
+        ...
+    }
+  
+    // Good
+    if (...)
+    {
+        ...
+    }
+    else if (...)
+    {
+        ...
+    }
+    else
+    {
+        ...
+    }
+ 
+    // Bad
+    if (index == 0) {
+        ...
+    }
+ 
+    // Bad
+    if (...) {
+      ...
+    } else if (...) {
+        ...
+    }
+    else {
+        ...
+    }
+ 
+* Parenthesis are always placed, even when there is only one, or even zero
+  statement[s].
+    // Good
+    if (index == 0)
+    {
+        NSLog(@"Index is zero");
+    }
+  
+    // Bad
+    if (index == 0)
+        NSLog(@"Index is zero");
+      
+    // Good
+    while ([self processUntilReady:something] == NO)
+    {
+        // All processing done in processUntilReady.
+    }
+  
+    // Very Bad
+    while ([self processUntilReady:something] == NO);
+ 
+    // Bad
+    while ([self processUntilReady:something] == NO)
+        ;
+ 
+ 
+4. Horizontal Spacing
+--------------------------------------------------------------------------------
+* Place one space around binary and ternary operators.
+    // Good
+    index = array.length - offset;
+ 
+    // Bad
+    index = array.length-offset;
+ 
+    // Bad
+    index=array.length-offset;
+ 
+* No space between unary operator and operand.
+    // Good
+    index++;
+ 
+    // Bad
+    index ++;
+ 
+* Place pointer * against type.
+    // Good
+    UIViewController*   viewController;
+ 
+    // Good
+    - (NSString*)convertString:(NSString*)string;
+ 
+    // Bad
+    UIViewController    *viewController;
+  
+    // Bad
+    - (NSString *)convertString:(NSString *)string;
+ 
+* Proper spacing of method prototype
+    // Good
+    - (NSString*)convertString:(NSString*)string;
+ 
+    // Bad
+    -(NSString*)convertString: (NSString *)string;
+  
+    // Bad
+    - (NSString*) convertString : (NSString*)string;
+ 
+* Single space must be after if, while, for, switch, do.
+    // Good
+    for (...)
+    {
+    }
+  
+    // Bad
+    for(...)
+    {
+    }
+ 
+ 
+5. Horizontal Alignment
+--------------------------------------------------------------------------------
+* Align variable names where defined (on TAB positions).
+    // Good
+    int                 index;
+    NSString*           string;
+    UIViewController*   viewController;
+ 
+    // Bad
+    int index;
+    NSString* string;
+    UIViewController* viewController;
+ 
+* Align operators of statements that belong together.
+    // Good
+    nameLabel.text      = @"Your name";
+    nameLabel.textColor = [UIColor blueColor];
+ 
+    // Bad
+    nameLabel.text = @"Your name";
+    nameLabel.textColor = [UIColor blueColor];
+ 
+* Align other things of lines that belong together
+    // Example
+    typedef enum
+    {
+        SECTION_NAME    = 1UL << 0,
+        SECTION_ADDRESS = 1UL << 1,
+    } Section;
+    
+* Alight numbers where appropriate.
+    // Example
+    typedef enum
+    {
+        SECTION_NAME    = 1UL <<  0,
+        SECTION_ADDRESS = 1UL <<  1,
+        ...
+        SECTION_COMPANY = 1UL << 12,
+    } Section;
+ 
+ 
+6. Vertical Spacing
+--------------------------------------------------------------------------------
+* A return must be preceded by an empty line, to make it stand out.
+    // Good
+    result = [self calculateResult];
+  
+    return result;
+  
+    // Good
+    if (...)
+    {
+        ...
+    }
+ 
+    return result;
+ 
+    // Bad
+    result = [self calculateResult];
+    return result;
+ 
+    // Bad
+    if (...)
+    {
+        ...
+    }
+    return result;
+ 
+* The last block of an if-, switch-, while-, do-while-, or for-statement must
+  get an empty line below it
+    // Good
+    while (...)
+    {
+        ...
+    }
+ 
+    if (...)
+    {
+        if (...)
+        {
+            ...
+        }
+        ...
+    }
+  
+    result = [self calculateResult];
+  
+    // Bad
+    while (...)
+    {
+        ...
+    }
+    if (...)
+    {
+        ...
+    }
+    result = [self calculateResult];
+ 
+* Make small groups of statements that belong together.
+    // Good
+    nameLabel.text      = @"Your name";
+    nameLabel.textColor = [UIColor blueColor];
+  
+    passwordLabel.text      = @"Password";
+    passwordLavel.textColor = [UIColor greenColor];
+ 
+    infoLabel.text = @"Enter your credentials";
+ 
+    // Better perhaps (when the statement groups are doing similar things)
+    nameLabel.text          = @"Your name";
+    nameLabel.textColor     = [UIColor blueColor];
+  
+    passwordLabel.text      = @"Password";
+    passwordLavel.textColor = [UIColor greenColor];
+ 
+    infoLabel.text          = @"Enter your credentials";
+ 
+    // Bad
+    nameLabel.text = @"Your name";
+    nameLabel.textColor = [UIColor blueColor];
+    passwordLabel.text = @"Password";
+    passwordLavel.textColor = [UIColor greenColor];
+    infoLabel.text = @"Enter your credentials";
+ 
+* Place two empty lines between method definitions (in the .m file)
+ 
+* Don't place more than one empty line inside methods.
+    // Bad
+    index = length - 1;
+    
+    
+    NSLog(@"index = %d", index);
+    
+* Don't place empty lines between subsequent closing parentheses
+    // Bad
+    if (...)
+    {
+        if (...)
+        {
+            ...
+        }
+        
+    }
+ 
+ 
+7. Markers
+--------------------------------------------------------------------------------
+* Use #warning to mark something that still needs attention.
+    // Example
+    if (index == -1)
+    {
+    #warning Sort out if we can ever get here.
+    }
+    
+* Use #pragma mark above set of methods
+    // Example
+    #pragma mark - TableView Delegate
+ 
+    - (BOOL)tableView:(UITableView*)tableView ...
+    {
+    }
+    
+ 
+    #pragma mark - UI Actions
+    
+    - (IBAction)loginAction:(id)sender
+    {
+        ....
+    }
+    
+  Again two empty lines between previous method and #pragme (see 6.), and one
+  empty line between #pragma and first method below.
+  
+  
+8. Miscellaneous
+--------------------------------------------------------------------------------
+* Use literals to create NSDictionary, NSArray, ...
+    NSDictionary*   dictionary = @{ "key1" : @"value1",
+                                    "key2" : @"value2",
+                                    ... };
+                                    
+    NSArray*        array = @[ item1, item2, ... ];
+    
+    NSNumber*       number = @( 5 * index );
+    
+    

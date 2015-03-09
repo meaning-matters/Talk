@@ -1,0 +1,98 @@
+/* 
+  Localizable.strings
+  NBAddressBook
+
+  Created by Jasper Siebelink on 6/4/13.
+  Copyright (c) 2013 Jasper Siebelink. All rights reserved.
+*/
+
+//The Groups screen
+"GRP_TITLE"         = "Groepen";
+"GRP_SHOW_ALL"      = "Toon alle contacten";
+"GRP_HIDE_ALL"      = "Verberg alle contacten";
+"GRP_KEYWORD_ALL"   = "Alle";
+
+//The Contacts list screen
+"CNT_TITLE_ALL"     = "Alle contacten";
+"CNT_TITLE"         = "Contacten";
+"CNT_NO_NAME"       = "Geen naam";
+"CNT_NO_CONTACTS"   = "Geen contacten";
+"CNT_LOADING"       = "Bezig met laden...";
+"CNT_DENIED"        = "Je hebt de toegang tot contacten geweigerd. Ga naar de Privacy sectie in iOS Instellingen om toegang te geven.";
+
+//Editing a photo
+"PHT_MOVE_AND_SCALE"= "Verplaats en wijzig grootte";
+"PHT_CHOOSE"        = "Kies";
+
+//The Recents list screen
+"CNT_RECENTS"       = "Recent";
+"LBL_UNKNOWN"       = "onbekend";
+"CNT_CLEAR"         = "Wis";
+"CNT_CLEAR_RECENTS" = "Wis alle recente";
+"CNT_ALL"           = "Alles";
+"CNT_MISSED"        = "Gemist";
+"CNT_TODAY"         = "Today";
+"CNT_YESTERDAY"     = "Yesterday";
+
+//The Recents-details screen
+"RCD_INCOMING_CALLS"= "Inkomend";
+"RCD_OUTGOING_CALLS"= "Uitgaand";
+"RCD_HOUR"          = "uur";
+"RCD_HOURS"         = "uren";
+"RCD_MINUTE"        = "minuut";
+"RCD_MINUTES"       = "minuten";
+"RCD_SECOND"        = "seconde";
+"RCD_SECONDS"       = "seconden";
+
+//Recent call statuses
+"RCD_CANCELLED"      = "geannuleerd";
+"RCD_FAILED"        = "mislukt";
+"RCD_MISSED"        = "gemist";
+
+//The own number
+"LBL_OWN_NUMBER"    = "Mijn nummer:";
+
+//The new contact screen
+"NCT_INFO"          = "Info";
+"NCT_NEW_CONTACT"   = "Nieuw";
+"NCT_CANCEL"        = "Annuleer";
+"NCT_TAKE_PHOTO"    = "Maak foto";
+"NCT_CHOOSE_PHOTO"  = "Kies foto";
+"NCT_MODIFY_PHOTO"  = "Pas foto aan";
+"NCT_DELETE_PHOTO"  = "Verwijder foto";
+"NCT_ADD_PICTURE"   = "voeg foto toe";
+"NCT_EDIT_PICTURE"  = "wijzig";
+
+//The unknown contact screen
+"UCT_CALL"          = "Bel";
+"UCT_SEND_MESSAGE"  = "Stuur bericht";
+"UCT_ADD"           = "Maak nieuw contact";
+"UCT_UPDATE"        = "Zet in bestaand contact";
+
+//Add custom label
+"LBL_CUSTOM"        = "Voeg aangepast label toe";
+
+//Other placeholders
+"PH_NAME"           = "Naam";
+
+//Social/IM labels
+"SS_ADD_OTHER"      = "Add Custom Service";
+
+//Contact's ringtone label
+"RT_RINGTONE_LABEL"     = "beltoon";
+"RT_VIBRATION_LABEL"= "trillen";
+
+//Contact's ringtone value
+"RT_DEFAULT"        = "Standaard";
+"RT_VIBRATION"      = "Trillen";
+"RT_NONE"           = "Geen";
+
+//Contact's other table cells
+"CL_NEW_ADDRESS"    = "voeg adres toe";
+"CL_NEW_FIELD"      = "nieuw veld";
+
+//Contact button labels
+"BL_DELETE_CONTACT" = "Verwijder contact";
+"BL_SEND_MESSAGE"   = "Stuur\nbericht";
+"BL_SHARE_CONTACT"  = "Deel\ncontact";
+"BL_ADD_TO_FAV"     = "Zet in\nfavorieten";

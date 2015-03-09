@@ -1,0 +1,105 @@
+/* 
+  Localizable.strings
+  NBAddressBook
+
+  Created by Jasper Siebelink on 6/4/13.
+  Copyright (c) 2013 Jasper Siebelink. All rights reserved.
+*/
+
+//The Groups screen
+"GRP_TITLE"         = "Groups";
+"GRP_SHOW_ALL"      = "Show All Contacts";
+"GRP_HIDE_ALL"      = "Hide All Contacts";
+"GRP_KEYWORD_ALL"   = "All";
+
+//The Contacts list screen
+"CNT_TITLE_ALL"     = "All Contacts";
+"CNT_TITLE"         = "Contacts";
+"CNT_NO_NAME"       = "No Name";
+"CNT_NO_CONTACTS"   = "No Contacts";
+"CNT_LOADING"       = "Loading...";
+"CNT_DENIED"        = "You've denied access to contacts. Go to the Privacy section in iOS Settings to grant access.";
+
+//Editing a photo
+"PHT_MOVE_AND_SCALE"= "Move and Scale";
+"PHT_CHOOSE"        = "Choose";
+
+//The Recents list screen
+"CNT_RECENTS"       = "Recents";
+"LBL_UNKNOWN"       = "unknown";
+"CNT_CLEAR"         = "Clear";
+"CNT_CLEAR_ALL"     = "Clear All";
+"CNT_CLEAR_WEEK"    = "Clear Older Than a Week";
+"CNT_CLEAR_MONTH"   = "Clear Older Than a Month";
+"CNT_ALL"           = "All";
+"CNT_MISSED"        = "Missed";
+"CNT_TODAY"         = "Today";
+"CNT_YESTERDAY"     = "Yesterday";
+
+//The Recents-details screen
+"RCD_INCOMING_CALLS"= "Incoming Calls";
+"RCD_OUTGOING_CALLS"= "Outgoing Calls";
+"RCD_HOUR"          = "hour";
+"RCD_HOURS"         = "hours";
+"RCD_MINUTE"        = "minute";
+"RCD_MINUTES"       = "minutes";
+"RCD_SECOND"        = "second";
+"RCD_SECONDS"       = "seconds";
+
+//Recent call statuses
+"RCD_CANCELLED"     = "cancelled";
+"RCD_FAILED"        = "failed";
+"RCD_MISSED"        = "missed";
+"RCD_CALLBACK"      = "callback only";
+"RCD_BUSY"          = "busy";
+"RCD_DECLINED"      = "declined";
+"RCD_NOT_UPTODATE"  = "not up-to-date";
+
+//The own number
+"LBL_OWN_NUMBER"    = "My number:";
+
+//The new contact screen
+"NCT_INFO"          = "Info";
+"NCT_NEW_CONTACT"   = "New Contact";
+"NCT_CANCEL"        = "Cancel";
+"NCT_TAKE_PHOTO"    = "Take photo";
+"NCT_CHOOSE_PHOTO"  = "Choose Photo";
+"NCT_MODIFY_PHOTO"  = "Edit Photo";
+"NCT_DELETE_PHOTO"  = "Delete Photo";
+"NCT_ADD_PICTURE"   = "add photo";
+"NCT_EDIT_PICTURE"  = "edit";
+
+//The unknown contact screen
+"UCT_CALL"          = "Call";
+"UCT_SEND_MESSAGE"  = "Send Message";
+"UCT_ADD"           = "Create New Contact";
+"UCT_UPDATE"        = "Add to Existing Contact";
+
+//Add custom label
+"LBL_CUSTOM"        = "Add Custom Label";
+
+//Other placeholders
+"PH_NAME"           = "Name";
+
+//Social/IM labels
+"SS_ADD_OTHER"      = "Add Custom Service";
+
+//Contact's ringtone label
+"RT_RINGTONE_LABEL" = "ringtone";
+"RT_VIBRATION_LABEL"= "vibration";
+
+//Contact's ringtone value
+"RT_DEFAULT"        = "Default";
+"RT_VIBRATION"      = "Vibrations";
+"RT_NONE"           = "None";
+
+//Contact's other table cells
+"CL_NEW_ADDRESS"    = "add new address";
+"CL_NEW_FIELD"      = "add field";
+
+//Contact button labels
+"BL_DELETE_CONTACT" = "Delete Contact";
+"BL_SEND_MESSAGE"   = "Send\nMessage";
+"BL_SHARE_CONTACT"  = "Share\nContact";
+"BL_ADD_TO_FAV"     = "Add to\nFavorites";
+
