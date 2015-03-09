@@ -12,6 +12,7 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import <CoreData/CoreData.h>
+    #import "NBAddressBook.h"
 
 #ifdef DEBUG
 #define NBLog(fmt, ...) NSLog(fmt, ##__VA_ARGS__)
@@ -19,10 +20,10 @@
 #define NBLog(fmt, ...)
 #endif
 
+
 #define HAS_FULL_FORWARDINGS 0
 #define HAS_BUYING_NUMBERS   1
 
 #define HAS_AFN2             1
 
 #endif
-

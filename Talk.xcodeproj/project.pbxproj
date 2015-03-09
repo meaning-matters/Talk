@@ -36,8 +36,6 @@
 		480578AB17A4FAAA006923BD /* NBGroupsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4805789E17A4FAAA006923BD /* NBGroupsManager.m */; };
 		480578AC17A4FAAA006923BD /* NBGroupsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578A017A4FAAA006923BD /* NBGroupsTableViewController.m */; };
 		480578D917A4FABD006923BD /* NBNameTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578B017A4FABD006923BD /* NBNameTableViewCell.m */; };
-		480578DA17A4FABD006923BD /* NBNewFieldTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578B217A4FABD006923BD /* NBNewFieldTableViewController.m */; };
-		480578DB17A4FABD006923BD /* NBNewPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578B417A4FABD006923BD /* NBNewPersonViewController.m */; };
 		480578DC17A4FABD006923BD /* NBNotesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578B617A4FABD006923BD /* NBNotesCell.m */; };
 		480578DD17A4FABD006923BD /* NBPeopleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578B817A4FABD006923BD /* NBPeopleListViewController.m */; };
 		480578DF17A4FABD006923BD /* NBPersonCellAddressInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578BC17A4FABD006923BD /* NBPersonCellAddressInfo.m */; };
@@ -50,7 +48,6 @@
 		480578E717A4FABD006923BD /* NBRecentsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578CE17A4FABD006923BD /* NBRecentsListViewController.m */; };
 		480578E817A4FABD006923BD /* NBRecentsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578D017A4FABD006923BD /* NBRecentsNavigationController.m */; };
 		480578E917A4FABD006923BD /* NBRecentUnknownContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578D217A4FABD006923BD /* NBRecentUnknownContactViewController.m */; };
-		480578EA17A4FABD006923BD /* NBUnknownPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578D517A4FABD006923BD /* NBUnknownPersonViewController.m */; };
 		480578EB17A4FABD006923BD /* NBValueListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578D717A4FABD006923BD /* NBValueListTableViewController.m */; };
 		480578F017A4FACF006923BD /* NSMutableString+Appending.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578ED17A4FACF006923BD /* NSMutableString+Appending.m */; };
 		480578F117A4FACF006923BD /* NSString+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578EF17A4FACF006923BD /* NSString+Common.m */; };
@@ -68,8 +65,6 @@
 		480578FD17A50FB2006923BD /* NBGroupsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4805789E17A4FAAA006923BD /* NBGroupsManager.m */; };
 		480578FE17A50FB2006923BD /* NBGroupsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578A017A4FAAA006923BD /* NBGroupsTableViewController.m */; };
 		4805790017A50FB2006923BD /* NBNameTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578B017A4FABD006923BD /* NBNameTableViewCell.m */; };
-		4805790117A50FB2006923BD /* NBNewFieldTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578B217A4FABD006923BD /* NBNewFieldTableViewController.m */; };
-		4805790217A50FB2006923BD /* NBNewPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578B417A4FABD006923BD /* NBNewPersonViewController.m */; };
 		4805790317A50FB2006923BD /* NBNotesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578B617A4FABD006923BD /* NBNotesCell.m */; };
 		4805790417A50FB2006923BD /* NBPeopleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578B817A4FABD006923BD /* NBPeopleListViewController.m */; };
 		4805790517A50FB2006923BD /* NBPersonCellAddressInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578BC17A4FABD006923BD /* NBPersonCellAddressInfo.m */; };
@@ -82,7 +77,6 @@
 		4805790C17A50FB2006923BD /* NBRecentsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578CE17A4FABD006923BD /* NBRecentsListViewController.m */; };
 		4805790D17A50FB2006923BD /* NBRecentsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578D017A4FABD006923BD /* NBRecentsNavigationController.m */; };
 		4805790E17A50FB2006923BD /* NBRecentUnknownContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578D217A4FABD006923BD /* NBRecentUnknownContactViewController.m */; };
-		4805790F17A50FB2006923BD /* NBUnknownPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578D517A4FABD006923BD /* NBUnknownPersonViewController.m */; };
 		4805791017A50FB2006923BD /* NBValueListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578D717A4FABD006923BD /* NBValueListTableViewController.m */; };
 		4805791117A50FB2006923BD /* NSMutableString+Appending.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578ED17A4FACF006923BD /* NSMutableString+Appending.m */; };
 		4805791217A50FBF006923BD /* NSString+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 480578EF17A4FACF006923BD /* NSString+Common.m */; };
@@ -738,6 +732,7 @@
 		48DD72AC169F55C400CD7080 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DD72AB169F55C400CD7080 /* MobileCoreServices.framework */; };
 		48DD72D5169F5AC600CD7080 /* WebClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DD72D4169F5AC600CD7080 /* WebClient.m */; };
 		48DD72D6169F5AC600CD7080 /* WebClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DD72D4169F5AC600CD7080 /* WebClient.m */; };
+		48DF16491A91247A00B13310 /* NBUnknownPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488C4B671A5146B80062C0D0 /* NBUnknownPersonViewController.m */; };
 		48EC6DC016545B1F00394A4B /* AC@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EC6DBD16545B1F00394A4B /* AC@2x.png */; };
 		48EC6DC116545B1F00394A4B /* AC@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EC6DBD16545B1F00394A4B /* AC@2x.png */; };
 		48EDD20D1667652A007B89DA /* AddCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD1FE1667652A007B89DA /* AddCall@2x.png */; };
@@ -771,7 +766,6 @@
 		48F47BBF18BE9C01006A6436 /* ItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F47BBE18BE9C01006A6436 /* ItemViewController.m */; };
 		48F5D2ED16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
 		48F5D2EE16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
-		48FB74A019A0E16C0064ED62 /* UIView+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FB749F19A0E16C0064ED62 /* UIView+Common.m */; };
 		48FD99D5161855D30061191B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D4161855D30061191B /* CoreMedia.framework */; };
 		48FD99D9161855EF0061191B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D8161855EF0061191B /* AVFoundation.framework */; };
 		48FD99DB161856070061191B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99DA161856070061191B /* AudioToolbox.framework */; };
@@ -820,7 +814,6 @@
 		4805788717A4FAAA006923BD /* NBAddressBookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBAddressBookManager.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressBookManager.m; sourceTree = "<group>"; };
 		4805788817A4FAAA006923BD /* NBAddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBAddressCell.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressCell.h; sourceTree = "<group>"; };
 		4805788917A4FAAA006923BD /* NBAddressCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBAddressCell.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressCell.m; sourceTree = "<group>"; };
-		4805788A17A4FAAA006923BD /* NBAddressFieldHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBAddressFieldHandler.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddressFieldHandler.h; sourceTree = "<group>"; };
 		4805788B17A4FAAA006923BD /* NBAddUnknownContactDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBAddUnknownContactDelegate.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBAddUnknownContactDelegate.h; sourceTree = "<group>"; };
 		4805788C17A4FAAA006923BD /* NBCallsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBCallsView.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBCallsView.h; sourceTree = "<group>"; };
 		4805788D17A4FAAA006923BD /* NBCallsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBCallsView.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBCallsView.m; sourceTree = "<group>"; };
@@ -844,10 +837,6 @@
 		480578A017A4FAAA006923BD /* NBGroupsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBGroupsTableViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBGroupsTableViewController.m; sourceTree = "<group>"; };
 		480578AF17A4FABD006923BD /* NBNameTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBNameTableViewCell.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNameTableViewCell.h; sourceTree = "<group>"; };
 		480578B017A4FABD006923BD /* NBNameTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBNameTableViewCell.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNameTableViewCell.m; sourceTree = "<group>"; };
-		480578B117A4FABD006923BD /* NBNewFieldTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBNewFieldTableViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNewFieldTableViewController.h; sourceTree = "<group>"; };
-		480578B217A4FABD006923BD /* NBNewFieldTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBNewFieldTableViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNewFieldTableViewController.m; sourceTree = "<group>"; };
-		480578B317A4FABD006923BD /* NBNewPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBNewPersonViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNewPersonViewController.h; sourceTree = "<group>"; };
-		480578B417A4FABD006923BD /* NBNewPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBNewPersonViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNewPersonViewController.m; sourceTree = "<group>"; };
 		480578B517A4FABD006923BD /* NBNotesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBNotesCell.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNotesCell.h; sourceTree = "<group>"; };
 		480578B617A4FABD006923BD /* NBNotesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBNotesCell.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBNotesCell.m; sourceTree = "<group>"; };
 		480578B717A4FABD006923BD /* NBPeopleListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPeopleListViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPeopleListViewController.h; sourceTree = "<group>"; };
@@ -864,7 +853,6 @@
 		480578C217A4FABD006923BD /* NBPersonIMCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPersonIMCell.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPersonIMCell.m; sourceTree = "<group>"; };
 		480578C317A4FABD006923BD /* NBPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPersonViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPersonViewController.h; sourceTree = "<group>"; };
 		480578C417A4FABD006923BD /* NBPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBPersonViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPersonViewController.m; sourceTree = "<group>"; };
-		480578C517A4FABD006923BD /* NBPersonViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPersonViewDelegate.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPersonViewDelegate.h; sourceTree = "<group>"; };
 		480578C617A4FABD006923BD /* NBPhotoDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPhotoDelegate.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBPhotoDelegate.h; sourceTree = "<group>"; };
 		480578C717A4FABD006923BD /* NBRecentContactEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBRecentContactEntry.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentContactEntry.h; sourceTree = "<group>"; };
 		480578C817A4FABD006923BD /* NBRecentContactEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBRecentContactEntry.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentContactEntry.m; sourceTree = "<group>"; };
@@ -877,8 +865,6 @@
 		480578D117A4FABD006923BD /* NBRecentUnknownContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBRecentUnknownContactViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentUnknownContactViewController.h; sourceTree = "<group>"; };
 		480578D217A4FABD006923BD /* NBRecentUnknownContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBRecentUnknownContactViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRecentUnknownContactViewController.m; sourceTree = "<group>"; };
 		480578D317A4FABD006923BD /* NBRelatedPersonDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBRelatedPersonDelegate.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBRelatedPersonDelegate.h; sourceTree = "<group>"; };
-		480578D417A4FABD006923BD /* NBUnknownPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBUnknownPersonViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBUnknownPersonViewController.h; sourceTree = "<group>"; };
-		480578D517A4FABD006923BD /* NBUnknownPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBUnknownPersonViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBUnknownPersonViewController.m; sourceTree = "<group>"; };
 		480578D617A4FABD006923BD /* NBValueListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBValueListTableViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBValueListTableViewController.h; sourceTree = "<group>"; };
 		480578D717A4FABD006923BD /* NBValueListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NBValueListTableViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBValueListTableViewController.m; sourceTree = "<group>"; };
 		480578EC17A4FACF006923BD /* NSMutableString+Appending.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSMutableString+Appending.h"; path = "../../nbaddressbook/NBAddressBook/NBAddressBook/NSMutableString+Appending.h"; sourceTree = "<group>"; };
@@ -1351,6 +1337,9 @@
 		488AD1EF16E80A60004D3A2A /* NSObject+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Blocks.h"; sourceTree = "<group>"; };
 		488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Blocks.m"; sourceTree = "<group>"; };
 		488B8E5B17AFFD8E005C33A2 /* TODO.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
+		488C4B661A5146B80062C0D0 /* NBUnknownPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBUnknownPersonViewController.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBUnknownPersonViewController.h; sourceTree = "<group>"; };
+		488C4B671A5146B80062C0D0 /* NBUnknownPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBUnknownPersonViewController.m; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBUnknownPersonViewController.m; sourceTree = "<group>"; };
+		488C4B681A5146B80062C0D0 /* NBUnknownPersonViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBUnknownPersonViewControllerDelegate.h; path = ../../nbaddressbook/NBAddressBook/NBAddressBook/NBUnknownPersonViewControllerDelegate.h; sourceTree = "<group>"; };
 		488D7753178076E300099470 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HockeySDK.framework; path = "External/HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework"; sourceTree = "<group>"; };
 		488D77551780773800099470 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		488D7758178078CC00099470 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -1536,8 +1525,6 @@
 		48F47BBE18BE9C01006A6436 /* ItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemViewController.m; sourceTree = "<group>"; };
 		48F5D2EB16B9A380001576E1 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
 		48F5D2EC16B9A380001576E1 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
-		48FB749E19A0E16C0064ED62 /* UIView+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+Common.h"; path = "../../nbaddressbook/NBAddressBook/NBAddressBook/UIView+Common.h"; sourceTree = "<group>"; };
-		48FB749F19A0E16C0064ED62 /* UIView+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+Common.m"; path = "../../nbaddressbook/NBAddressBook/NBAddressBook/UIView+Common.m"; sourceTree = "<group>"; };
 		48FD99D4161855D30061191B /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		48FD99D6161855E10061191B /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		48FD99D8161855EF0061191B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -1606,7 +1593,6 @@
 				4805788717A4FAAA006923BD /* NBAddressBookManager.m */,
 				4805788817A4FAAA006923BD /* NBAddressCell.h */,
 				4805788917A4FAAA006923BD /* NBAddressCell.m */,
-				4805788A17A4FAAA006923BD /* NBAddressFieldHandler.h */,
 				4805788F17A4FAAA006923BD /* NBContact.h */,
 				4805789017A4FAAA006923BD /* NBContact.m */,
 				4805789117A4FAAA006923BD /* NBContactStructureManager.h */,
@@ -1621,10 +1607,6 @@
 				4805789A17A4FAAA006923BD /* NBEditPhotoViewController.m */,
 				480578AF17A4FABD006923BD /* NBNameTableViewCell.h */,
 				480578B017A4FABD006923BD /* NBNameTableViewCell.m */,
-				480578B117A4FABD006923BD /* NBNewFieldTableViewController.h */,
-				480578B217A4FABD006923BD /* NBNewFieldTableViewController.m */,
-				480578B317A4FABD006923BD /* NBNewPersonViewController.h */,
-				480578B417A4FABD006923BD /* NBNewPersonViewController.m */,
 				480578B517A4FABD006923BD /* NBNotesCell.h */,
 				480578B617A4FABD006923BD /* NBNotesCell.m */,
 				480578B917A4FABD006923BD /* NBPeoplePickerNavigationController.h */,
@@ -1639,11 +1621,8 @@
 				480578C217A4FABD006923BD /* NBPersonIMCell.m */,
 				480578C317A4FABD006923BD /* NBPersonViewController.h */,
 				480578C417A4FABD006923BD /* NBPersonViewController.m */,
-				480578C517A4FABD006923BD /* NBPersonViewDelegate.h */,
 				480578C617A4FABD006923BD /* NBPhotoDelegate.h */,
 				480578D317A4FABD006923BD /* NBRelatedPersonDelegate.h */,
-				480578D417A4FABD006923BD /* NBUnknownPersonViewController.h */,
-				480578D517A4FABD006923BD /* NBUnknownPersonViewController.m */,
 				480578D617A4FABD006923BD /* NBValueListTableViewController.h */,
 				480578D717A4FABD006923BD /* NBValueListTableViewController.m */,
 				480578EC17A4FACF006923BD /* NSMutableString+Appending.h */,
@@ -1652,8 +1631,9 @@
 				480578EF17A4FACF006923BD /* NSString+Common.m */,
 				48D537AD1930E1810095C063 /* UIImage+Resize.h */,
 				48D537AE1930E1810095C063 /* UIImage+Resize.m */,
-				48FB749E19A0E16C0064ED62 /* UIView+Common.h */,
-				48FB749F19A0E16C0064ED62 /* UIView+Common.m */,
+				488C4B661A5146B80062C0D0 /* NBUnknownPersonViewController.h */,
+				488C4B671A5146B80062C0D0 /* NBUnknownPersonViewController.m */,
+				488C4B681A5146B80062C0D0 /* NBUnknownPersonViewControllerDelegate.h */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -3385,7 +3365,6 @@
 				486D4A2318F06BC8004699C9 /* CallRatesViewController.m in Sources */,
 				4837AF6D18D9B89A00D3AEBC /* GetStartedStartViewController.m in Sources */,
 				48ADD0F71706791A001515EB /* UIView+AnimateHidden.m in Sources */,
-				48FB74A019A0E16C0064ED62 /* UIView+Common.m in Sources */,
 				48CB0B0119DB2E1B00F95369 /* RetryRequest.m in Sources */,
 				4814D56819E9660200958E33 /* AFHTTPRequestOperationManager.m in Sources */,
 				48A0CE6A1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */,
@@ -3427,6 +3406,7 @@
 				480578F917A50FB2006923BD /* NBDateCell.m in Sources */,
 				480578FA17A50FB2006923BD /* NBDetailLineSeparatedCell.m in Sources */,
 				480578FB17A50FB2006923BD /* NBEditPhotoViewController.m in Sources */,
+				48DF16491A91247A00B13310 /* NBUnknownPersonViewController.m in Sources */,
 				4814D56719E9660200958E33 /* AFHTTPRequestOperation.m in Sources */,
 				480CE11F193BA7B20020F255 /* NumberRatesViewController.m in Sources */,
 				480578FC17A50FB2006923BD /* NBGroup.m in Sources */,
@@ -3436,8 +3416,6 @@
 				48D4FADD1924247A00949894 /* NavigationController.m in Sources */,
 				48793369185C6A5800C08C8C /* PhonesViewController.m in Sources */,
 				4805790017A50FB2006923BD /* NBNameTableViewCell.m in Sources */,
-				4805790117A50FB2006923BD /* NBNewFieldTableViewController.m in Sources */,
-				4805790217A50FB2006923BD /* NBNewPersonViewController.m in Sources */,
 				4805790317A50FB2006923BD /* NBNotesCell.m in Sources */,
 				4805790417A50FB2006923BD /* NBPeopleListViewController.m in Sources */,
 				4805790517A50FB2006923BD /* NBPersonCellAddressInfo.m in Sources */,
@@ -3453,7 +3431,6 @@
 				4805790D17A50FB2006923BD /* NBRecentsNavigationController.m in Sources */,
 				4805790E17A50FB2006923BD /* NBRecentUnknownContactViewController.m in Sources */,
 				4814D56D19E9660200958E33 /* AFURLRequestSerialization.m in Sources */,
-				4805790F17A50FB2006923BD /* NBUnknownPersonViewController.m in Sources */,
 				4805791017A50FB2006923BD /* NBValueListTableViewController.m in Sources */,
 				4805791117A50FB2006923BD /* NSMutableString+Appending.m in Sources */,
 				4805791217A50FBF006923BD /* NSString+Common.m in Sources */,
@@ -3558,8 +3535,6 @@
 				480578AC17A4FAAA006923BD /* NBGroupsTableViewController.m in Sources */,
 				480578D917A4FABD006923BD /* NBNameTableViewCell.m in Sources */,
 				4879336A185C6A5800C08C8C /* PhonesViewController.m in Sources */,
-				480578DA17A4FABD006923BD /* NBNewFieldTableViewController.m in Sources */,
-				480578DB17A4FABD006923BD /* NBNewPersonViewController.m in Sources */,
 				480578DC17A4FABD006923BD /* NBNotesCell.m in Sources */,
 				480578DD17A4FABD006923BD /* NBPeopleListViewController.m in Sources */,
 				480578DF17A4FABD006923BD /* NBPersonCellAddressInfo.m in Sources */,
@@ -3573,7 +3548,6 @@
 				48251B9C187F4A8A00E69C3A /* SettingsViewController.m in Sources */,
 				480578E817A4FABD006923BD /* NBRecentsNavigationController.m in Sources */,
 				480578E917A4FABD006923BD /* NBRecentUnknownContactViewController.m in Sources */,
-				480578EA17A4FABD006923BD /* NBUnknownPersonViewController.m in Sources */,
 				480578EB17A4FABD006923BD /* NBValueListTableViewController.m in Sources */,
 				480578F017A4FACF006923BD /* NSMutableString+Appending.m in Sources */,
 				480578F117A4FACF006923BD /* NSString+Common.m in Sources */,
@@ -3756,12 +3730,13 @@
 					"\"$(SRCROOT)/External/OpenZRTP/lib/Release\"",
 					"$(SDKROOT)/usr/lib/system",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = NumberBay;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3799,7 +3774,7 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -3928,7 +3903,7 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = AdHoc;

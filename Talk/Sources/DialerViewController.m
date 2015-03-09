@@ -18,9 +18,10 @@
 #import "Strings.h"
 #import "NBPersonViewController.h"
 #import "Skinning.h"
+#import "NBAddressBookManager.h"
 
 
-@interface DialerViewController () <NumberLabelDelegate, NBNewPersonViewControllerDelegate>
+@interface DialerViewController () <NumberLabelDelegate>
 {
     PhoneNumber* phoneNumber;           // Holds the current number on screen.
     NSString*    contactId;
@@ -342,10 +343,16 @@
                                                  completion:^(NSArray* contactIds)
         {
             contactIdUpdated = YES;
-            if (contactIds.count > 0)
+            if (contactIds.count == 1)
             {
                 contactId = contactIds[0];
                 self.nameLabel.text = [[AppDelegate appDelegate] contactNameForId:contactId];
+            }
+            else if (contactIds.count > 1)
+            {
+                contactId = contactIds[0];
+                self.nameLabel.text = [[AppDelegate appDelegate] contactNameForId:contactId];
+                self.nameLabel.text = [self.nameLabel.text stringByAppendingString:@" ..."];
             }
             else
             {
@@ -360,17 +367,18 @@
 }
 
 
-- (NBContact*)createContact
+- (ABRecordRef)createContact
 {
-    ABRecordRef contactRef = ABPersonCreate();
-
+    ABRecordRef            contactRef  = ABPersonCreate();
     ABMutableMultiValueRef numberMulti = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-    ABMultiValueAddValueAndLabel(numberMulti, (__bridge CFTypeRef)self.numberLabel.text, kABOtherLabel, NULL);
+
+    NSString*   typeString = [phoneNumber typeString];
+    CFStringRef typeLabel  = (typeString.length == 0) ? kABOtherLabel : CFBridgingRetain([phoneNumber typeString]);
+
+    ABMultiValueAddValueAndLabel(numberMulti, (__bridge CFTypeRef)self.numberLabel.text, typeLabel, NULL);
     ABRecordSetValue(contactRef, kABPersonPhoneProperty, numberMulti, nil);
 
-    NBContact* contact = [[NBContact alloc] initWithContact:contactRef];
-
-    return contact;
+    return contactRef;
 }
 
 
@@ -412,44 +420,9 @@
         return;
     }
 
-    NSString* newTitle = NSLocalizedStringWithDefaultValue(@"Dialer CreateNewContact", nil, [NSBundle mainBundle],
-                                                           @"Create New Contact",
-                                                           @"....\n"
-                                                           @"[iOS alert title size].");
-
-    NSString* addTitle = NSLocalizedStringWithDefaultValue(@"Dialer AddToContact", nil, [NSBundle mainBundle],
-                                                           @"Add to Existing Contact",
-                                                           @"....\n"
-                                                           @"[iOS alert title size].");
-
-    [BlockActionSheet showActionSheetWithTitle:nil
-                                    completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
-    {
-        if (buttonIndex == 0)
-        {
-            NBNewPersonViewController* newPersonViewController = [[NBNewPersonViewController alloc] init];
-            [newPersonViewController setContactToMergeWith:[self createContact]];
-
-            [newPersonViewController setANewPersonViewDelegate:self];
-
-            UINavigationController* navigationController;
-            navigationController = [[UINavigationController alloc] initWithRootViewController:newPersonViewController];
-            [self presentViewController:navigationController animated:YES completion:nil];
-        }
-        else if (buttonIndex == 1)
-        {
-            NBPeopleListViewController* listViewController = [[NBPeopleListViewController alloc] init];
-            [listViewController setContactToMergeWith:[self createContact]];
-            [listViewController setANewPersonViewDelegate:self];
-
-            UINavigationController* navigationController;
-            navigationController = [[NBPeoplePickerNavigationController alloc] initWithRootViewController:listViewController];
-            [self presentViewController:navigationController animated:YES completion:nil];
-        }
-    }
-                             cancelButtonTitle:[Strings cancelString]
-                        destructiveButtonTitle:nil
-                             otherButtonTitles:newTitle, addTitle, nil];
+    [[NBAddressBookManager sharedManager] addNumber:self.numberLabel.text
+                                    toContactAsType:[phoneNumber typeString]
+                                     viewController:self];
 }
 
 
@@ -502,15 +475,6 @@
 {
     phoneNumber.number = numberLabel.text;
     [self update];
-}
-
-
-#pragma mark - NewPersonViewController Delegate
-
-- (void)newPersonViewController:(NBNewPersonViewController*)newPersonViewController
-       didCompleteWithNewPerson:(ABRecordRef)person
-{
-
 }
 
 @end

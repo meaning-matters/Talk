@@ -11,9 +11,7 @@
 #import "UIView+AnimateHidden.h"
 
 
-@interface CallBaseViewController ()
-
-@end
+const NSTimeInterval TransitionDuration = 0.5;
 
 
 @implementation CallBaseViewController

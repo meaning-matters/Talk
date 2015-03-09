@@ -79,7 +79,6 @@
 }
 
 
-
 #pragma mark - Options Delegate
 
 - (void)callOptionsViewPressedMuteKey:(CallOptionsView*)optionsView

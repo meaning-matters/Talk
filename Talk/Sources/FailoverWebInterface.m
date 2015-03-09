@@ -343,6 +343,10 @@ static void processDnsReply(DNSServiceRef       sdRef,
 
 - (NSString*)getServer
 {
+    NSLog(@"######## USING API2!!!");
+
+    return @"api2.numberbay.com";
+
     @synchronized(self)
     {
         if ([self.serversQueue count] > 0)
