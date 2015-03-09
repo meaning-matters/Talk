@@ -85,7 +85,7 @@
         //Give it a random duration
         if( [recentContactEntry.status intValue] == CallStatusSuccess)
         {
-            [recentContactEntry setDuration:[NSNumber numberWithInteger:(arc4random()%60)+1]];
+            //[recentContactEntry setDuration:[NSNumber numberWithInteger:(arc4random()%60)+1]];
         }
 
         [context save:nil];

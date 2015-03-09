@@ -6,18 +6,18 @@
 //  Copyright (c) 2013 Jasper Siebelink. All rights reserved.
 //
 
+#import <AddressBookUI/AddressBookUI.h>
 #import "NBPeopleListViewController.h"
 
-@interface NBPeopleListViewController ()
+@interface NBPeopleListViewController () <ABNewPersonViewControllerDelegate>
 {
     dispatch_queue_t         searchQueue;
     UIActivityIndicatorView* searchIndicator;
 }
 @end
 
-@implementation NBPeopleListViewController
 
-@synthesize amSelectingName, aNewPersonViewDelegate, relatedPersonDelegate, peoplePickerDelegate;
+@implementation NBPeopleListViewController
 
 #pragma mark - Life Cycle
 
@@ -100,13 +100,6 @@
     [noContactsLabel setNumberOfLines:10];
     [self.tableView addSubview:noContactsLabel];
 
-    //If we're merging with an unknown contact, show a cancel button topright
-    if (self.contactToMergeWith != nil)
-    {
-        UIBarButtonItem * cancelButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
-        [self.navigationItem setRightBarButtonItem:cancelButton];
-    }
-    
     //Listen for reloads
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doLoad) name:NF_RELOAD_CONTACTS object:nil];
 
@@ -211,12 +204,26 @@
 }
 
 
+#pragma mark - Adding Contact
+
 - (void)addPressed
 {
-    //Programatically add a navigation controller with a form to create a new contact
-    NBNewPersonViewController * newPersonController = [[NBNewPersonViewController alloc]init];
-    UINavigationController * newPersonNavController = [[UINavigationController alloc]initWithRootViewController:newPersonController];
-    [self presentViewController:newPersonNavController animated:YES completion:nil];
+    ABNewPersonViewController* viewController = [[ABNewPersonViewController alloc] init];
+    viewController.newPersonViewDelegate = self;
+
+    UINavigationController* navigationController;
+    navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+
+#pragma mark - ABNewPersonViewControllerDelegate
+
+- (void)newPersonViewController:(ABNewPersonViewController*)newPersonViewController
+       didCompleteWithNewPerson:(ABRecordRef)person
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -380,58 +387,35 @@
         selectedContactRef = (__bridge ABRecordRef)([[contactsDatasource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]);
     }
     
-    //If we have a delegate, call that
-    BOOL continueAfterTap = YES;
-    if (self.peoplePickerDelegate != nil)
+    //If we are only selecting a name, do so
+    if (self.amSelectingName)
     {
-        NBPeoplePickerNavigationController * navController = (NBPeoplePickerNavigationController*)self.navigationController;
-        continueAfterTap = [self.peoplePickerDelegate peoplePickerNavigationController:navController shouldContinueAfterSelectingPerson:selectedContactRef];
+        [_relatedPersonDelegate relatedPersonSelected:[[NBContact getListRepresentation:selectedContactRef] string]];
+        [self setRelatedPersonDelegate:nil];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
-    
-    //If we should continue
-    if (continueAfterTap)
+    else
     {
-        //If we are only selecting a name, do so
-        if (self.amSelectingName)
-        {
-            [relatedPersonDelegate relatedPersonSelected:[[NBContact getListRepresentation:selectedContactRef] string]];
-            [self setRelatedPersonDelegate:nil];
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
-        else
-        {
-            //Remember the selected index to change later
-            selectedIndexPath = indexPath;
-            
-            //Load the person view controller
-            personViewController = [[NBPersonViewController alloc] init];
-            
-            //Load the person view controller
-            [personViewController setDisplayedPerson:selectedContactRef];
-            
-            //By default, allow editing and actions
-            [personViewController setAllowsEditing:YES];
+        //Remember the selected index to change later
+        selectedIndexPath = indexPath;
+        
+        //Load the person view controller
+        personViewController = [[NBPersonViewController alloc] init];
+        
+        //Load the person view controller
+        [personViewController setDisplayedPerson:selectedContactRef];
+        
+        //By default, allow editing and actions
 #ifdef NB_STANDALONE
-            [personViewController setAllowsActions:YES];
+        [personViewController setAllowsActions:YES];
 #else
-            [personViewController setAllowsActions:NO];
+        [personViewController setAllowsActions:NO];
 #endif
 
 #warning - Set the cell action-delegate
-            [personViewController setPersonViewDelegate:nil];
-            
-            //Set the navigationdelegate if we have one
-            [personViewController setPeoplePickerDelegate:peoplePickerDelegate];
-            
-            //Optionally set the contact to merge with
-            if (self.contactToMergeWith != nil)
-            {
-                [personViewController setContactToMergeWith:self.contactToMergeWith];
-                [personViewController setANewContactDelegate:aNewPersonViewDelegate];
-            }
-        
-            [self.navigationController pushViewController:personViewController animated:YES];
-        }
+        [personViewController setPersonViewDelegate:nil];
+
+        [self.navigationController pushViewController:personViewController animated:YES];
     }
 }
 
@@ -664,7 +648,7 @@
                 numberArray = ABRecordCopyValue(contact, kABPersonPhoneProperty);
             }
 
-            int count = ABMultiValueGetCount(numberArray);
+            CFIndex count = ABMultiValueGetCount(numberArray);
             for (CFIndex i = 0; i < count; i++)
             {
                 NSString* contactNumber = (__bridge NSString*)(ABMultiValueCopyValueAtIndex(numberArray, i));
@@ -748,11 +732,6 @@
 #pragma mark - Cancel button
 - (void)cancelPressed
 {
-    //If we have a delegate, inform it
-    if (peoplePickerDelegate != nil)
-    {
-        [peoplePickerDelegate peoplePickerNavigationControllerDidCancel:(NBPeoplePickerNavigationController*)self.navigationController];
-    }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

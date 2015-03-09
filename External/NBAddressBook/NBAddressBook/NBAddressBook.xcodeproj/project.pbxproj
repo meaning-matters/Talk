@@ -16,8 +16,6 @@
 		1A28A56A176FA1A4005EF066 /* NBPersonIMCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A28A569176FA1A4005EF066 /* NBPersonIMCell.m */; };
 		1A2F278317A15AAA0092AAF6 /* NBEditPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A2F278217A15AAA0092AAF6 /* NBEditPhotoViewController.m */; };
 		1A2F278A17A17F870092AAF6 /* editPhotoBottomBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A2F278817A17F870092AAF6 /* editPhotoBottomBar.png */; };
-		1A2F278B17A17F870092AAF6 /* editPhotoTopBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A2F278917A17F870092AAF6 /* editPhotoTopBar.png */; };
-		1A2F278E17A19CE00092AAF6 /* editPhotoButtonFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A2F278C17A19CE00092AAF6 /* editPhotoButtonFrame.png */; };
 		1A2F278F17A19CE00092AAF6 /* editPhotoLeftButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A2F278D17A19CE00092AAF6 /* editPhotoLeftButton.png */; };
 		1A2F279117A1A4FC0092AAF6 /* editPhotoLeftButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A2F279017A1A4FC0092AAF6 /* editPhotoLeftButtonHighlighted.png */; };
 		1A2F279417A1A7600092AAF6 /* editPhotoRightButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A2F279217A1A7600092AAF6 /* editPhotoRightButton.png */; };
@@ -96,8 +94,6 @@
 		1A2F278117A15AAA0092AAF6 /* NBEditPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBEditPhotoViewController.h; sourceTree = "<group>"; };
 		1A2F278217A15AAA0092AAF6 /* NBEditPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBEditPhotoViewController.m; sourceTree = "<group>"; };
 		1A2F278817A17F870092AAF6 /* editPhotoBottomBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = editPhotoBottomBar.png; sourceTree = "<group>"; };
-		1A2F278917A17F870092AAF6 /* editPhotoTopBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = editPhotoTopBar.png; sourceTree = "<group>"; };
-		1A2F278C17A19CE00092AAF6 /* editPhotoButtonFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = editPhotoButtonFrame.png; sourceTree = "<group>"; };
 		1A2F278D17A19CE00092AAF6 /* editPhotoLeftButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = editPhotoLeftButton.png; sourceTree = "<group>"; };
 		1A2F279017A1A4FC0092AAF6 /* editPhotoLeftButtonHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = editPhotoLeftButtonHighlighted.png; sourceTree = "<group>"; };
 		1A2F279217A1A7600092AAF6 /* editPhotoRightButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = editPhotoRightButton.png; sourceTree = "<group>"; };
@@ -262,10 +258,8 @@
 				1A2F279217A1A7600092AAF6 /* editPhotoRightButton.png */,
 				1A2F279317A1A7600092AAF6 /* editPhotoRightButtonHighlighted.png */,
 				1A2F279017A1A4FC0092AAF6 /* editPhotoLeftButtonHighlighted.png */,
-				1A2F278C17A19CE00092AAF6 /* editPhotoButtonFrame.png */,
 				1A2F278D17A19CE00092AAF6 /* editPhotoLeftButton.png */,
 				1A2F278817A17F870092AAF6 /* editPhotoBottomBar.png */,
-				1A2F278917A17F870092AAF6 /* editPhotoTopBar.png */,
 				1A368A09179C22470066DF77 /* outgoingCall.png */,
 				1AF4086A1789B1BF00CAC168 /* noPictureCompanyImage.png */,
 				1A63D575176BF2F80018E5B6 /* deleteButton.png */,
@@ -582,8 +576,6 @@
 				1AF4086B1789B1BF00CAC168 /* noPictureCompanyImage.png in Resources */,
 				1A368A0A179C22470066DF77 /* outgoingCall.png in Resources */,
 				1A2F278A17A17F870092AAF6 /* editPhotoBottomBar.png in Resources */,
-				1A2F278B17A17F870092AAF6 /* editPhotoTopBar.png in Resources */,
-				1A2F278E17A19CE00092AAF6 /* editPhotoButtonFrame.png in Resources */,
 				1A2F278F17A19CE00092AAF6 /* editPhotoLeftButton.png in Resources */,
 				1A2F279117A1A4FC0092AAF6 /* editPhotoLeftButtonHighlighted.png in Resources */,
 				1A2F279417A1A7600092AAF6 /* editPhotoRightButton.png in Resources */,

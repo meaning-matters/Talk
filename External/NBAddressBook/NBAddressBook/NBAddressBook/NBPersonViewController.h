@@ -11,18 +11,16 @@
 #import <UIKit/UIKit.h>
 #import "NBContactStructureManager.h"
 #import <AddressBook/AddressBook.h>
-#import "NBNewFieldTableViewController.h"
 #import "NBValueListTableViewController.h"
 #import "NSMutableString+Appending.h"
 #import "NBContact.h"
 #import "NSString+Common.h"
-#import "NBAddressFieldHandler.h"
 #import "NBEditPhotoViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "NBRelatedPersonDelegate.h"
 #import "NBPeoplePickerNavigationControllerDelegate.h"
 #import "NBPersonViewControllerDelegate.h"
-#import "NBNewPersonViewControllerDelegate.h"
+//##### #import "NBNewPersonViewControllerDelegate.h"
 
 #define FACEBOOK_PREFIX @"facebook"
 #define FACEBOOK_SUFFIX @"(Facebook)"
@@ -36,18 +34,14 @@ typedef enum
     AS_DELETE_CONTACT   = 3
 } ActionSheetType;
 
-@interface NBPersonViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, UIActionSheetDelegate, NBAddressFieldHandler, NBPersonViewDelegate, NBPhotoDelegate, NBRelatedPersonDelegate>
+@interface NBPersonViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, NBPhotoDelegate, NBRelatedPersonDelegate>
 {
     //The bar button items
-    UIBarButtonItem * doneButton;
-    UIBarButtonItem * editButton;
     UIBarButtonItem * backButton;
-    UIBarButtonItem * cancelButton;
     
     //Portrait controls
     UIButton * portraitButton;                  //The pressable button  (in edit-mode)
     UIImageView * portraitImageView;            //The non-pressable portrait edge (in non-edit mode)
-    UIImagePickerController * portraitPicker;   //Picker for the image
     UIImage * portraitLine;         //The dotted line when editing the photo
     UIImage * portraitNoPhoto;      //The photo used when none is available
     UIImage * portraitCompanyNoPhoto; //The photo used when a company doesn't have a picture
@@ -67,9 +61,6 @@ typedef enum
     
     //Target section for the date picker
     NSIndexPath * datePickerTargetRow;
-    
-    //Index path to focus on and its active responder
-    NSIndexPath * indexPathToFocusOn;
     
     //Indicator for the initial load
     BOOL tableViewHasLoaded;
@@ -107,20 +98,16 @@ typedef enum
 //The delete-button when editing a contact
 //@property (weak, nonatomic) UIButton *deleteButton;
 
+/*#####
 //The delegate to inform we added/updated this contact
 @property (nonatomic) id<NBNewPersonViewControllerDelegate> aNewContactDelegate;
-
-//The navigation controller delegate
-@property (nonatomic) id<NBPeoplePickerNavigationControllerDelegate> peoplePickerDelegate;
+*/
 
 //The person view controller delegate
 @property (nonatomic) id<NBPersonViewControllerDelegate> personViewDelegate;
 
 //Wether the buttons at the bottom of the page are used
 @property (nonatomic) BOOL allowsActions;
-
-//Wether the record allows for editing
-@property (nonatomic) BOOL allowsEditing;
 
 - (void)firstFooterButtonPressed;
 - (void)secondFooterButtonPressed;
@@ -130,13 +117,4 @@ typedef enum
 - (void)setNameLabel;
 - (int)measureLabelHeight:(NSString*)stringToMeasure usingFont:(UIFont*)font;
 
-//Methods shared with inheriting classes
-- (void)enableEditMode:(BOOL)enable;
-- (void)showDatePicker:(BOOL)show animated:(BOOL)animated;
-
-//Button delegates
-- (void)editPressed:(id)sender;
-- (void)cancelPressed:(id)sender;
-- (void)donePressed:(id)sender;
-- (void)continueDonePressed;
 @end

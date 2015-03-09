@@ -42,6 +42,7 @@
 
 @property (nonatomic, weak) id<AddressBookDelegate> delegate;
 
+- (void)addNumber:(NSString*)number toContactAsType:(NSString*)type viewController:(UIViewController*)viewController;
 
 //Singleton-addressbook available across the app
 + (NBAddressBookManager*)sharedManager;

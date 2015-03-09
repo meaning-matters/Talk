@@ -13,8 +13,6 @@
 
 @interface NBPeoplePickerNavigationController : UINavigationController
 
-@property (nonatomic) id<NBPeoplePickerNavigationControllerDelegate> peoplePickerDelegate;
-
 - (id)listViewController;
 
 @end

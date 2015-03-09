@@ -17,8 +17,6 @@
 
 @implementation NBPeoplePickerNavigationController
 
-@synthesize peoplePickerDelegate;
-
 - (instancetype)init
 {
     //Initialize with the list of people.
@@ -37,15 +35,6 @@
 - (id)listViewController
 {
     return listViewController;
-}
-
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    //Set the delegate if one was set
-    [[self.viewControllers objectAtIndex:0] setPeoplePickerDelegate:peoplePickerDelegate];
 }
 
 @end

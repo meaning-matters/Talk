@@ -384,67 +384,63 @@
         ABMutableMultiValueRef addresses = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
         for (int i = 0; i < [addressArray count]; i++)
         {
-            //If it's an address and not the add-cell
             NBPersonCellAddressInfo * addressInfo = [addressArray objectAtIndex:i];
-            if (!addressInfo.isAddButton)
+            //Filter out empty addresses
+            if ([addressInfo.city length]       == 0 &&
+                [addressInfo.ZIP length]        == 0 &&
+                [addressInfo.state length]      == 0 &&
+                [addressInfo.streetLines count] == 0)
             {
-                //Filter out empty addresses
-                if ([addressInfo.city length]       == 0 &&
-                    [addressInfo.ZIP length]        == 0 &&
-                    [addressInfo.state length]      == 0 &&
-                    [addressInfo.streetLines count] == 0)
+                //Remove the cell and continue at the same position
+                [addressArray removeObject:addressInfo];
+                i--;
+            }
+            else
+            {
+                NSMutableDictionary * addDict = [NSMutableDictionary dictionary];
+                //Build up the street-label
+                NSMutableString * streetString = [NSMutableString string];
+                for (int i = 0; i < [addressInfo.streetLines count]; i++)
                 {
-                    //Remove the cell and continue at the same position
-                    [addressArray removeObject:addressInfo];
-                    i--;
+                    NSString * curStreet = [addressInfo.streetLines objectAtIndex:i];
+                    if ([curStreet length] > 0)
+                    {
+                        [streetString appendString:curStreet];
+                    }
+
+                    if (i != [addressInfo.streetLines count] - 1)
+                    {
+                        [streetString appendString:@"\n"];
+                    }
                 }
-                else
+
+                [addDict setObject:[NSString stringWithString:streetString] forKey:ADDRESS_KEY_STREET];
+                if ([addressInfo.city length] > 0)
                 {
-                    NSMutableDictionary * addDict = [NSMutableDictionary dictionary];
-                    //Build up the street-label
-                    NSMutableString * streetString = [NSMutableString string];
-                    for (int i = 0; i < [addressInfo.streetLines count]; i++)
-                    {
-                        NSString * curStreet = [addressInfo.streetLines objectAtIndex:i];
-                        if ([curStreet length] > 0)
-                        {
-                            [streetString appendString:curStreet];
-                        }
-
-                        if (i != [addressInfo.streetLines count] - 1)
-                        {
-                            [streetString appendString:@"\n"];
-                        }
-                    }
-
-                    [addDict setObject:[NSString stringWithString:streetString] forKey:ADDRESS_KEY_STREET];
-                    if ([addressInfo.city length] > 0)
-                    {
-                        [addDict setObject:addressInfo.city     forKey:ADDRESS_KEY_CITY];
-                    }
-
-                    if ([addressInfo.ZIP length] > 0)
-                    {
-                        [addDict setObject:addressInfo.ZIP      forKey:ADDRESS_KEY_ZIP];
-                    }
-
-                    if ([addressInfo.country length] > 0)
-                    {
-                        [addDict setObject:addressInfo.country  forKey:ADDRESS_KEY_COUNTRY];
-                    }
-
-                    if ([addressInfo.countryCode length] > 0)
-                    {
-                        [addDict setObject:addressInfo.countryCode forKey:ADDRESS_KEY_COUNTRY_CODE];
-                    }
-
-                    if ([addressInfo.state length] > 0)
-                    {
-                        [addDict setObject:addressInfo.state    forKey:ADDRESS_KEY_STATE];
-                    }
-
-                    ABMultiValueAddValueAndLabel(addresses, (__bridge CFTypeRef)(addDict), (__bridge CFStringRef)addressInfo.labelTitle, NULL);
+                    [addDict setObject:addressInfo.city     forKey:ADDRESS_KEY_CITY];
                 }
+
+                if ([addressInfo.ZIP length] > 0)
+                {
+                    [addDict setObject:addressInfo.ZIP      forKey:ADDRESS_KEY_ZIP];
+                }
+
+                if ([addressInfo.country length] > 0)
+                {
+                    [addDict setObject:addressInfo.country  forKey:ADDRESS_KEY_COUNTRY];
+                }
+
+                if ([addressInfo.countryCode length] > 0)
+                {
+                    [addDict setObject:addressInfo.countryCode forKey:ADDRESS_KEY_COUNTRY_CODE];
+                }
+
+                if ([addressInfo.state length] > 0)
+                {
+                    [addDict setObject:addressInfo.state    forKey:ADDRESS_KEY_STATE];
+                }
+
+                ABMultiValueAddValueAndLabel(addresses, (__bridge CFTypeRef)(addDict), (__bridge CFStringRef)addressInfo.labelTitle, NULL);
             }
         }
 

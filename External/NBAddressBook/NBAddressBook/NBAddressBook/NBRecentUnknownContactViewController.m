@@ -64,6 +64,7 @@
 }
 
 
+/*#####
 #pragma mark - New contact added/merged
 - (void)newPersonViewController:(NBNewPersonViewController *)newPersonViewController didCompleteWithNewPerson:(ABRecordRef)contactRef
 {
@@ -88,6 +89,7 @@
     [self setAddUnknownContactDelegate:nil];
     [contactDelegate replaceViewController:personViewController];
 }
+*/
 
 #pragma mark - Tableview overloading - Received/made calls-section
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section

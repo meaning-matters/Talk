@@ -8,13 +8,13 @@
 //  Displaying an unknown contact
 
 #import "NBPersonViewController.h"
-#import "NBNewPersonViewController.h"
+/*######import "NBNewPersonViewController.h"*/
 #import "NBPeopleListViewController.h"
 #import "NBPeoplePickerNavigationController.h"
 #import "NBUnknownPersonViewControllerDelegate.h"
 #import "NBRecentContactViewController.h"
 
-@interface NBUnknownPersonViewController : NBPersonViewController <NBNewPersonViewControllerDelegate>
+@interface NBUnknownPersonViewController : NBPersonViewController
 {
     //Can be either a name or a phone number
     NSMutableAttributedString * personRepresentation;

@@ -642,7 +642,6 @@
         [recentViewController setDisplayedPerson:[self getContactForID:firstEntry.contactID]];
         
         //By default, allow actions
-        [recentViewController setAllowsEditing:YES];
 #ifdef NB_STANDALONE
         [recentViewController setAllowsActions:YES];
 #else

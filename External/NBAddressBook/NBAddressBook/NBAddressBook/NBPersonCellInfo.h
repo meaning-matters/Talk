@@ -17,9 +17,6 @@
 
 @interface NBPersonCellInfo : NSObject
 
-//Flag to indicate this cell needs focus as soon as it becomes visible
-@property (nonatomic) BOOL makeFirstResponder;
-
 //Indicate wether this cell should be visible
 @property (nonatomic) BOOL visible;
 

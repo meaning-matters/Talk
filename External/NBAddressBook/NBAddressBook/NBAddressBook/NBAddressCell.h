@@ -7,8 +7,6 @@
 //
 
 #import "NBDetailLineSeparatedCell.h"
-#import "NBAddressFieldHandler.h"
-#import "NBPersonViewDelegate.h"
 #import <math.h>
 
 //All possible celltypes
@@ -89,7 +87,7 @@ typedef enum
 //Measure size for the label
 #define HEIGHT_MEASURE_SIZE     20
 
-@interface NBAddressCell : NBDetailLineSeparatedCell <UITextFieldDelegate>
+@interface NBAddressCell : NBDetailLineSeparatedCell
 {    
     //Indicator to show where in the array the separators start
     int textfieldSeparatorPosition;
@@ -123,11 +121,8 @@ typedef enum
 //The top cell to focus on in case this field is newly added
 @property (nonatomic) UITextField * topTextfield;
 
-//Delegate to handle textfield changes
-@property (nonatomic) id<NBAddressFieldHandler, NBPersonViewDelegate> fieldDelegate;
-
 //Overloaded constructor
-- (instancetype)initWithStyle:(UITableViewCellStyle)style andDelegate:(id<NBAddressFieldHandler>)fieldDelegate;
+- (instancetype)initWithStyle:(UITableViewCellStyle)style;
 
 //Adding/removing a new field post-creation
 - (UITextField*)addTextfieldForPosition:(int)position andLineType:(LineType)lineType andTextfieldType:(TextfieldType)textfieldType;

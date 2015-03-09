@@ -11,13 +11,12 @@
 
 @implementation NBAddressCell
 
-@synthesize streetTextfields, cityTextfield, ZIPTextfield, stateTextfield, countryTextfield, separators, applicableFields, representationLabel, editingTextfield, fieldDelegate;
+@synthesize streetTextfields, cityTextfield, ZIPTextfield, stateTextfield, countryTextfield, separators, applicableFields, representationLabel, editingTextfield;
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style andDelegate:(id<NBAddressFieldHandler, NBPersonViewDelegate>)fieldDelegateParam
+- (instancetype)initWithStyle:(UITableViewCellStyle)style
 {
     if (self = [super initWithStyle:style reuseIdentifier:nil])
     {
-        fieldDelegate = fieldDelegateParam;
         streetTextfields = [[NSMutableArray alloc]init];
         separators = [[NSMutableArray alloc]init];
         applicableFields = [[NSMutableArray alloc]init];
@@ -321,75 +320,6 @@
     [textfield removeFromSuperview];
     [applicableFields removeObject:textfield];
     [streetTextfields removeObject:textfield];
-}
-
-#pragma mark - Textfield delegate
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    //Flag to indicate the cell is selected
-    editingTextfield = textField;
-    
-    //Remember the active responder
-    [fieldDelegate scrollToRow:self];
-    
-    //Handle the textfield
-    if (textField.tag == TT_COUNTRY)
-    {
-        return NO;
-    }
-
-    return YES;
-}
-
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    //Execute this with delay so we can return YES
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void)
-    {
-        //Check if this is the second-to-last cell, if so, insert
-        [fieldDelegate addressTextfieldMutated:textField inCell:self];
-    });
-
-    return YES;
-}
-
-
-- (BOOL)textFieldShouldReturn:(UITextField*)textField
-{
-    [textField resignFirstResponder];
-
-    return YES;
-}
-
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    //Call this delayed so we have time to see what's happening with the textfield focus (disappear or change)
-    if (editingTextfield == textField)
-    {
-        editingTextfield = nil;
-    }
-
-    [self performSelector:@selector(informEditingEnded:) withObject:textField afterDelay:0.25f];
-}
-
-
-- (void)informEditingEnded:(UITextField*)textField
-{
-    if (editingTextfield == nil)
-    {
-        //Check if we need to remove the cell if it's empty        
-        [fieldDelegate addressTextfieldMutated:textField inCell:self];
-    }
-    else
-    {
-        //Check for street textfield removal
-        if (textField.tag == TT_STREET || textField.tag == TT_FURTHER)
-        {
-            [fieldDelegate streetTextfieldEditEnded:textField inCell:self];
-        }
-    }
 }
 
 

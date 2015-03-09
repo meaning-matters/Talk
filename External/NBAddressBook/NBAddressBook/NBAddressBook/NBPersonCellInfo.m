@@ -10,7 +10,7 @@
 
 @implementation NBPersonCellInfo
 
-@synthesize visible, labelTitle, textfieldPlaceHolder, textValue, tableViewCell, isMergedField, IMType, dateValue, makeFirstResponder;
+@synthesize visible, labelTitle, textfieldPlaceHolder, textValue, tableViewCell, isMergedField, IMType, dateValue;
 
 - (instancetype)initWithPlaceholder:(NSString*)placeHolderParam andLabel:(NSString*)labelTitleParam
 {

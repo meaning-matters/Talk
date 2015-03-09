@@ -23,7 +23,7 @@
 - (void)reset;
 - (void)fillWithContact:(NBContact*)person;
 - (void)fillWithContactToMergeWith:(NBContact*)person;
-- (NSMutableArray*)getVisibleRows:(BOOL)visible ForSection:(int)sectionIndex;
+- (NSMutableArray*)getVisibleRows:(BOOL)visible forSection:(NSInteger)sectionIndex;
 - (NBPersonCellInfo*)getVisibleCellForIndexPath:(NSIndexPath*)indexPath;
 - (void)determineRowVisibility:(BOOL)editing;
 - (void)switchIMLabels:(BOOL)editing;

@@ -6,10 +6,19 @@
 //  Copyright (c) 2013 Jasper Siebelink. All rights reserved.
 //
 
+#import <AddressBookUI/AddressBookUI.h>
 #import "NBAddressBookManager.h"
 #ifndef NB_STANDALONE
 #import "Common.h"
 #endif
+
+
+@interface NBAddressBookManager () <ABUnknownPersonViewControllerDelegate>
+
+@property (nonatomic, strong) UIViewController* addToContactViewController;
+
+@end
+
 
 @implementation NBAddressBookManager
 
@@ -42,6 +51,7 @@
 
 
 #pragma mark - Reload the address book (external changes)
+
 - (void)reloadAddressBook
 {
     CFErrorRef error;
@@ -68,6 +78,69 @@
 }
 
 
+#pragma mark - Adding Number To Contact
+
+- (void)addNumber:(NSString*)number toContactAsType:(NSString*)type viewController:(UIViewController*)viewController
+{
+    self.addToContactViewController = viewController;
+
+    ABRecordRef            contactRef  = ABPersonCreate();
+    ABMutableMultiValueRef numberMulti = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+    CFStringRef            typeLabel   = (type.length == 0) ? kABOtherLabel : CFBridgingRetain(type);
+    ABMultiValueAddValueAndLabel(numberMulti, (__bridge CFTypeRef)number, typeLabel, NULL);
+    ABRecordSetValue(contactRef, kABPersonPhoneProperty, numberMulti, nil);
+
+    ABUnknownPersonViewController* personViewController = [[ABUnknownPersonViewController alloc] init];
+    personViewController.unknownPersonViewDelegate = self;
+    personViewController.displayedPerson = contactRef;
+    CFRelease(personViewController.displayedPerson);
+
+    personViewController.title = NSLocalizedStringWithDefaultValue(@"Dialer AddToContact", nil, [NSBundle mainBundle],
+                                                                   @"Add To Contact",
+                                                                   @"Title.\n"
+                                                                   @"[].");
+
+    UINavigationController* navigationController;
+    navigationController = [[UINavigationController alloc] initWithRootViewController:personViewController];
+
+    UIBarButtonItem* cancelButton;
+    cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                 target:self
+                                                                 action:@selector(cancelAddToContact)];
+    personViewController.navigationItem.rightBarButtonItem = cancelButton;
+
+    [viewController presentViewController:navigationController animated:YES completion:nil];
+}
+
+
+- (void)cancelAddToContact
+{
+    [self.addToContactViewController dismissViewControllerAnimated:YES completion:nil];
+    self.addToContactViewController = nil;
+}
+
+
+#pragma mark - ABUnknownPersonViewControllerDelegate
+
+- (void)unknownPersonViewController:(ABUnknownPersonViewController*)unknownPersonView
+                 didResolveToPerson:(ABRecordRef)person
+{
+    [self.addToContactViewController dismissViewControllerAnimated:YES completion:nil];
+    self.addToContactViewController = nil;
+}
+
+
+- (BOOL)unknownPersonViewController:(ABUnknownPersonViewController*)unknownPersonViewController
+shouldPerformDefaultActionForPerson:(ABRecordRef)person
+                           property:(ABPropertyID)property
+                         identifier:(ABMultiValueIdentifier)identifier
+{
+    // We don't want to allow default action while adding to contact,
+    // as this may result in the user leaving the app.
+    return NO;
+}
+
+
 #pragma mark - Get address book
 - (ABAddressBookRef)getAddressBook
 {
@@ -78,6 +151,7 @@
 
     return addressBook;
 }
+
 
 #pragma mark - Address book callback
 void addressBookChanged(ABAddressBookRef reference, CFDictionaryRef dictionary, void *context)

@@ -19,6 +19,7 @@
     {
         [self constructTree];
     }
+
     return self;
 }
 
@@ -35,7 +36,7 @@
     //Build up the table structure
     tableStructure = [NSMutableArray array];
     NSMutableArray * sectionArray;
-    for (int section = 0; section < 14; section++)
+    for (int section = 0; section < CC_NUMBER_OF_SECTIONS; section++)
     {
         //Each of these arrays holds the info of a cell in the tableview
         sectionArray = [NSMutableArray array];
@@ -45,8 +46,8 @@
             {
                 //This is merely to push down the cells for the label; an empty filler
                 [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:nil andLabel:nil]];
-            }
                 break;
+            }
             case CC_NAME:
             {
                 //Has a total of 11 fields
@@ -61,19 +62,19 @@
                 [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonJobTitleProperty) andLabel:nil]];
                 [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonDepartmentProperty) andLabel:nil]];
                 [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonOrganizationProperty) andLabel:nil]];
-            }
                 break;
+            }
             case CC_NUMBER:
             {
                 //Only show a new-phonenumber cell
                 [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonPhoneProperty)) andLabel:[[NSString alloc]initWithString:(__bridge NSString*)ABAddressBookCopyLocalizedLabel((__bridge CFStringRef)[NUMBER_ARRAY objectAtIndex:0])]]];
-            }
                 break;
+            }
             case CC_EMAIL:
             {
                 [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonEmailProperty)) andLabel:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel((__bridge CFStringRef)([HWO_ARRAY objectAtIndex:0])))]];
-            }
                 break;
+            }
             case CC_RINGTONE:
             {
                 //The ringtone cell
@@ -85,20 +86,20 @@
                 NBPersonCellInfo * vibrationInfo = [[NBPersonCellInfo alloc]initWithPlaceholder:nil andLabel:NSLocalizedString(@"RT_VIBRATION_LABEL", @"")];
                 [vibrationInfo setTextValue:NSLocalizedString(@"RT_DEFAULT", @"")];
                 [sectionArray addObject:vibrationInfo];
-            }
                 break;
+            }
             case CC_HOMEPAGE:
             {
                 [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonURLProperty)) andLabel:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel((__bridge CFStringRef)([WEB_ARRAY objectAtIndex:0])))]];
-            }
                 break;
+            }
             case CC_ADDRESS:
             {
                 NBPersonCellAddressInfo * addressInfo = [[NBPersonCellAddressInfo alloc]initWithPlaceholder:nil andLabel:NSLocalizedString(@"CL_NEW_ADDRESS", @"")];
                 [addressInfo setIsAddButton:YES];
                 [sectionArray addObject:addressInfo];
-            }
                 break;
+            }
             case CC_BIRTHDAY:
             case CC_OTHER_DATES:
             case CC_RELATED_CONTACTS:
@@ -107,16 +108,14 @@
             case CC_NOTES:
             {
                 //This field is hidden until added
-            }
                 break;
-            case CC_NEW_FIELD:
-            {
-                [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:nil andLabel:NSLocalizedString(@"CL_NEW_FIELD", @"")]];
             }
-                break;
             default:
+            {
                 break;
+            }
         }
+
         [self.tableStructure addObject:sectionArray];
     }
 }
@@ -398,7 +397,7 @@
     {
         NBPersonFieldTableCell * detailCell = [cellInfo getPersonFieldTableCell];
         CGRect frame = detailCell.cellTextfield.frame;
-        frame.size.width = editing ? SIZE_TEXTVIEW_EDIT_WIDTH : SIZE_TEXTVIEW_WIDTH;
+        frame.size.width = SIZE_TEXTVIEW_WIDTH;
         [detailCell.cellTextfield setFrame:frame];
     }
     
@@ -533,7 +532,7 @@
 }
 
 #pragma mark - Array of all rows of given visibility in this section
-- (NSMutableArray*)getVisibleRows:(BOOL)visible ForSection:(int)sectionIndex
+- (NSMutableArray*)getVisibleRows:(BOOL)visible forSection:(NSInteger)sectionIndex
 {
     //Skip ringtones for now
     if( sectionIndex == CC_RINGTONE )

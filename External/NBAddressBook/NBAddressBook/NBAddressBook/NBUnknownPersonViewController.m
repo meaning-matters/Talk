@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Jasper Siebelink. All rights reserved.
 //
 
+#import <AddressBookUI/AddressBookUI.h>
 #import "NBUnknownPersonViewController.h"
 #import "NBRecentUnknownContactViewController.h"
 
@@ -122,7 +123,7 @@
         }
         case UP_ADD:
         {
-            return allowsAddingToAddressBook ? 2 : 0;
+            return 1;
         }
         case UP_SHARE:
         {
@@ -147,13 +148,13 @@
         case UP_FILLER:
         {
             [cell setHidden:YES];
-        }
             break;
+        }
         case UP_EMAIL:
         {
             [cell.textLabel setText:emailAddress];
-        }
             break;
+        }
         case UP_CONTACT:
         {
             if (indexPath.row == 0)
@@ -164,31 +165,25 @@
             {
                 [[cell textLabel] setText:NSLocalizedString(@"UCT_SEND_MESSAGE", @"")];
             }
-        }
             break;
+        }
         case UP_ADD:
         {
-            if (indexPath.row == 0)
-            {
-                [[cell textLabel] setText:NSLocalizedString(@"UCT_ADD", @"")];
-            }
-            else if (indexPath.row == 1)
-            {
-                [[cell textLabel] setText:NSLocalizedString(@"UCT_UPDATE", @"")];
-            }
-        }
+            [[cell textLabel] setText:NSLocalizedString(@"UCT_ADD", @"")];
             break;
+        }
         case UP_SHARE:
         {
             if (indexPath.row == 0)
             {
                 [[cell textLabel] setText:NSLocalizedString(@"BL_SHARE_CONTACT", @"")];
             }
-        }
             break;
+        }
         default:
             break;
     }
+
     return cell;
 }
 
@@ -283,44 +278,17 @@
                 break;
 
             case UP_ADD:
-                if (indexPath.row == 0)
-                {
-                    //Display the New Person controller, filled with this contact 
-                    NBNewPersonViewController * newPersonViewController = [[NBNewPersonViewController alloc]init];
-                    [newPersonViewController setContactToMergeWith:self.contact];
-                    
-#warning - Set new person controller delegate
-                    [newPersonViewController setANewPersonViewDelegate:self];
-
-                    navController = [[UINavigationController alloc]initWithRootViewController:newPersonViewController];
-                    [self presentViewController:navController animated:YES completion:nil];
-                }
-                else if (indexPath.row == 1)
-                {
-                    //Display all contacts, with cancel button on the right
-                    NBPeopleListViewController * listViewController = [[NBPeopleListViewController alloc] init];
-                    [listViewController setContactToMergeWith:self.contact];
-                    
-#warning - Set new person controller delegate
-                    [listViewController setANewPersonViewDelegate:self];
-                    
-                    navController = [[NBPeoplePickerNavigationController alloc]initWithRootViewController:listViewController];
-                    [self presentViewController:navController animated:YES completion:nil];
-                }
+            {
+                [[NBAddressBookManager sharedManager] addNumber:[personRepresentation string]
+                                                toContactAsType:@"typje"
+                                                 viewController:self];
                 break;
-
+            }
             case UP_SHARE:
 #warning - Add your own implementation here
                 break;
         }
     }
-}
-
-
-#pragma mark - New contact added/merged
-- (void)newPersonViewController:(NBNewPersonViewController *)newPersonViewController didCompleteWithNewPerson:(ABRecordRef)contactRef
-{
-#warning - Add custom implementation
 }
 
 @end

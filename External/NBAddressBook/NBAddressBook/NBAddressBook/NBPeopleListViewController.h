@@ -8,13 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "NBPersonViewController.h"
-#import "NBUnknownPersonViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "NSMutableString+Appending.h"
 #import "NBAddressBookManager.h"
 #import "NBGroupsManager.h"
 #import "NBGroupsTableViewController.h"
-#import "NBNewPersonViewController.h"
 #import "NBPeoplePickerNavigationControllerDelegate.h"
 #import "NBPeopleTableViewCell.h"
 
@@ -67,11 +65,10 @@
 
 //@property (nonatomic, strong) UISearchDisplayController *contactSearchDisplayController;
 
-//The delegate to call in case of person-selection or cancellation
-@property (nonatomic) id<NBPeoplePickerNavigationControllerDelegate> peoplePickerDelegate;
-
+/*#####
 //Delegate called when adding a contact is completed
 @property (nonatomic, assign) id<NBNewPersonViewControllerDelegate> aNewPersonViewDelegate;
+*/
 
 //Flag to indicate we are merely selecting a name from the list
 @property (nonatomic) BOOL amSelectingName;
