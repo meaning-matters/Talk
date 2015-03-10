@@ -19,19 +19,10 @@
 #import "NBRelatedPersonDelegate.h"
 #import "NBPeoplePickerNavigationControllerDelegate.h"
 #import "NBPersonViewControllerDelegate.h"
-//##### #import "NBNewPersonViewControllerDelegate.h"
 
 #define FACEBOOK_PREFIX @"facebook"
 #define FACEBOOK_SUFFIX @"(Facebook)"
 
-//Flag to indicate a type of label
-typedef enum
-{
-    AS_PHOTO            = 0,
-    AS_PHOTO_EXISTING   = 1,
-    AS_DELETE_PHOTO     = 2,
-    AS_DELETE_CONTACT   = 3
-} ActionSheetType;
 
 @interface NBPersonViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, NBRelatedPersonDelegate>
 {
@@ -92,15 +83,6 @@ typedef enum
 
 //Contact to merge with (phone number only)
 @property (nonatomic) NBContact * contactToMergeWith;
-
-//DEPRECATED
-//The delete-button when editing a contact
-//@property (weak, nonatomic) UIButton *deleteButton;
-
-/*#####
-//The delegate to inform we added/updated this contact
-@property (nonatomic) id<NBNewPersonViewControllerDelegate> aNewContactDelegate;
-*/
 
 //The person view controller delegate
 @property (nonatomic) id<NBPersonViewControllerDelegate> personViewDelegate;

@@ -15,7 +15,7 @@
 
 @implementation NBPersonViewController
 
-@synthesize contact /*#####, aNewContactDelegate*/, allowsActions, displayedPerson, personViewDelegate;
+@synthesize contact, allowsActions, displayedPerson, personViewDelegate;
 
 #pragma mark - Initialization
 - (void)viewDidLoad
