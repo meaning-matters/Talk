@@ -638,7 +638,6 @@
 		48B813751AADF9F90019AF77 /* NBValueListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B813741AADF9F90019AF77 /* NBValueListTableViewController.m */; };
 		48B813781AADFA030019AF77 /* NSMutableString+Appending.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B813771AADFA030019AF77 /* NSMutableString+Appending.m */; };
 		48B8137B1AADFA090019AF77 /* NSString+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B8137A1AADFA090019AF77 /* NSString+Common.m */; };
-		48B8137E1AADFA180019AF77 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B8137D1AADFA180019AF77 /* UIImage+Resize.m */; };
 		48B813811AADFA290019AF77 /* NBUnknownPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B813801AADFA290019AF77 /* NBUnknownPersonViewController.m */; };
 		48B813841AADFA430019AF77 /* AddressTypeForCountry.plist in Resources */ = {isa = PBXBuildFile; fileRef = 48B813831AADFA430019AF77 /* AddressTypeForCountry.plist */; };
 		48B93870187B647F00132535 /* Helps.json in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386B187B647F00132535 /* Helps.json */; };
@@ -1407,8 +1406,6 @@
 		48B813771AADFA030019AF77 /* NSMutableString+Appending.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSMutableString+Appending.m"; path = "External/NBAddressBook/NBAddressBook/NBAddressBook/NSMutableString+Appending.m"; sourceTree = SOURCE_ROOT; };
 		48B813791AADFA090019AF77 /* NSString+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+Common.h"; path = "External/NBAddressBook/NBAddressBook/NBAddressBook/NSString+Common.h"; sourceTree = SOURCE_ROOT; };
 		48B8137A1AADFA090019AF77 /* NSString+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Common.m"; path = "External/NBAddressBook/NBAddressBook/NBAddressBook/NSString+Common.m"; sourceTree = SOURCE_ROOT; };
-		48B8137C1AADFA180019AF77 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Resize.h"; path = "External/NBAddressBook/NBAddressBook/NBAddressBook/UIImage+Resize.h"; sourceTree = SOURCE_ROOT; };
-		48B8137D1AADFA180019AF77 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Resize.m"; path = "External/NBAddressBook/NBAddressBook/NBAddressBook/UIImage+Resize.m"; sourceTree = SOURCE_ROOT; };
 		48B8137F1AADFA290019AF77 /* NBUnknownPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBUnknownPersonViewController.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBUnknownPersonViewController.h; sourceTree = SOURCE_ROOT; };
 		48B813801AADFA290019AF77 /* NBUnknownPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBUnknownPersonViewController.m; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBUnknownPersonViewController.m; sourceTree = SOURCE_ROOT; };
 		48B813821AADFA320019AF77 /* NBUnknownPersonViewControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NBUnknownPersonViewControllerDelegate.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBUnknownPersonViewControllerDelegate.h; sourceTree = SOURCE_ROOT; };
@@ -1598,8 +1595,6 @@
 				48B813771AADFA030019AF77 /* NSMutableString+Appending.m */,
 				48B813791AADFA090019AF77 /* NSString+Common.h */,
 				48B8137A1AADFA090019AF77 /* NSString+Common.m */,
-				48B8137C1AADFA180019AF77 /* UIImage+Resize.h */,
-				48B8137D1AADFA180019AF77 /* UIImage+Resize.m */,
 				48B8137F1AADFA290019AF77 /* NBUnknownPersonViewController.h */,
 				48B813801AADFA290019AF77 /* NBUnknownPersonViewController.m */,
 				48B813821AADFA320019AF77 /* NBUnknownPersonViewControllerDelegate.h */,
@@ -3352,7 +3347,6 @@
 				489387FB17039158005CC795 /* ForwardingData.m in Sources */,
 				489387FF17039165005CC795 /* RecordingData.m in Sources */,
 				486D4A2318F06BC8004699C9 /* CallRatesViewController.m in Sources */,
-				48B8137E1AADFA180019AF77 /* UIImage+Resize.m in Sources */,
 				48B813421AADF91D0019AF77 /* NBGroupsManager.m in Sources */,
 				4837AF6D18D9B89A00D3AEBC /* GetStartedStartViewController.m in Sources */,
 				48B8136D1AADF9B20019AF77 /* NBPersonCellInfo.m in Sources */,
