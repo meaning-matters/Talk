@@ -626,7 +626,6 @@
 		48B8134F1AADF9460019AF77 /* NBCustomValueTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B8134D1AADF9460019AF77 /* NBCustomValueTableViewController.m */; };
 		48B813561AADF9590019AF77 /* NBDateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B813511AADF9590019AF77 /* NBDateCell.m */; };
 		48B813571AADF9590019AF77 /* NBDetailLineSeparatedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B813531AADF9590019AF77 /* NBDetailLineSeparatedCell.m */; };
-		48B813581AADF9590019AF77 /* NBEditPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B813551AADF9590019AF77 /* NBEditPhotoViewController.m */; };
 		48B8135B1AADF96F0019AF77 /* NBNameTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B8135A1AADF96F0019AF77 /* NBNameTableViewCell.m */; };
 		48B8135E1AADF97A0019AF77 /* NBNotesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B8135D1AADF97A0019AF77 /* NBNotesCell.m */; };
 		48B813611AADF98C0019AF77 /* NBPeoplePickerNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B813601AADF98C0019AF77 /* NBPeoplePickerNavigationController.m */; };
@@ -1380,8 +1379,6 @@
 		48B813511AADF9590019AF77 /* NBDateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBDateCell.m; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBDateCell.m; sourceTree = SOURCE_ROOT; };
 		48B813521AADF9590019AF77 /* NBDetailLineSeparatedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBDetailLineSeparatedCell.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBDetailLineSeparatedCell.h; sourceTree = SOURCE_ROOT; };
 		48B813531AADF9590019AF77 /* NBDetailLineSeparatedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBDetailLineSeparatedCell.m; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBDetailLineSeparatedCell.m; sourceTree = SOURCE_ROOT; };
-		48B813541AADF9590019AF77 /* NBEditPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBEditPhotoViewController.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBEditPhotoViewController.h; sourceTree = SOURCE_ROOT; };
-		48B813551AADF9590019AF77 /* NBEditPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBEditPhotoViewController.m; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBEditPhotoViewController.m; sourceTree = SOURCE_ROOT; };
 		48B813591AADF96F0019AF77 /* NBNameTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBNameTableViewCell.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBNameTableViewCell.h; sourceTree = SOURCE_ROOT; };
 		48B8135A1AADF96F0019AF77 /* NBNameTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBNameTableViewCell.m; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBNameTableViewCell.m; sourceTree = SOURCE_ROOT; };
 		48B8135C1AADF97A0019AF77 /* NBNotesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBNotesCell.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBNotesCell.h; sourceTree = SOURCE_ROOT; };
@@ -1398,7 +1395,6 @@
 		48B813691AADF9B20019AF77 /* NBPersonIMCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPersonIMCell.m; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBPersonIMCell.m; sourceTree = SOURCE_ROOT; };
 		48B8136A1AADF9B20019AF77 /* NBPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPersonViewController.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBPersonViewController.h; sourceTree = SOURCE_ROOT; };
 		48B8136B1AADF9B20019AF77 /* NBPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPersonViewController.m; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBPersonViewController.m; sourceTree = SOURCE_ROOT; };
-		48B813711AADF9D80019AF77 /* NBPhotoDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NBPhotoDelegate.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBPhotoDelegate.h; sourceTree = SOURCE_ROOT; };
 		48B813721AADF9EB0019AF77 /* NBRelatedPersonDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NBRelatedPersonDelegate.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBRelatedPersonDelegate.h; sourceTree = SOURCE_ROOT; };
 		48B813731AADF9F90019AF77 /* NBValueListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBValueListTableViewController.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBValueListTableViewController.h; sourceTree = SOURCE_ROOT; };
 		48B813741AADF9F90019AF77 /* NBValueListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBValueListTableViewController.m; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBValueListTableViewController.m; sourceTree = SOURCE_ROOT; };
@@ -1569,8 +1565,6 @@
 				48B813511AADF9590019AF77 /* NBDateCell.m */,
 				48B813521AADF9590019AF77 /* NBDetailLineSeparatedCell.h */,
 				48B813531AADF9590019AF77 /* NBDetailLineSeparatedCell.m */,
-				48B813541AADF9590019AF77 /* NBEditPhotoViewController.h */,
-				48B813551AADF9590019AF77 /* NBEditPhotoViewController.m */,
 				48B813591AADF96F0019AF77 /* NBNameTableViewCell.h */,
 				48B8135A1AADF96F0019AF77 /* NBNameTableViewCell.m */,
 				48B8135C1AADF97A0019AF77 /* NBNotesCell.h */,
@@ -1587,7 +1581,6 @@
 				48B813691AADF9B20019AF77 /* NBPersonIMCell.m */,
 				48B8136A1AADF9B20019AF77 /* NBPersonViewController.h */,
 				48B8136B1AADF9B20019AF77 /* NBPersonViewController.m */,
-				48B813711AADF9D80019AF77 /* NBPhotoDelegate.h */,
 				48B813721AADF9EB0019AF77 /* NBRelatedPersonDelegate.h */,
 				48B813731AADF9F90019AF77 /* NBValueListTableViewController.h */,
 				48B813741AADF9F90019AF77 /* NBValueListTableViewController.m */,
@@ -3338,7 +3331,6 @@
 				48B813491AADF9380019AF77 /* NBContact.m in Sources */,
 				488FBBDA17007CC6000ECC71 /* DataManager.m in Sources */,
 				48B813351AADF8DE0019AF77 /* NBPeopleListViewController.m in Sources */,
-				48B813581AADF9590019AF77 /* NBEditPhotoViewController.m in Sources */,
 				488FBBE21700852F000ECC71 /* NumberData.m in Sources */,
 				4814D56B19E9660200958E33 /* AFSecurityPolicy.m in Sources */,
 				48B8135E1AADF97A0019AF77 /* NBNotesCell.m in Sources */,

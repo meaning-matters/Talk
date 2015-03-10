@@ -15,7 +15,6 @@
 #import "NSMutableString+Appending.h"
 #import "NBContact.h"
 #import "NSString+Common.h"
-#import "NBEditPhotoViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "NBRelatedPersonDelegate.h"
 #import "NBPeoplePickerNavigationControllerDelegate.h"
@@ -34,7 +33,7 @@ typedef enum
     AS_DELETE_CONTACT   = 3
 } ActionSheetType;
 
-@interface NBPersonViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, NBPhotoDelegate, NBRelatedPersonDelegate>
+@interface NBPersonViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, NBRelatedPersonDelegate>
 {
     //The bar button items
     UIBarButtonItem * backButton;

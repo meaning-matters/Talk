@@ -11,7 +11,6 @@
 #import "NBPeopleListViewController.h"
 #import "NBPeoplePickerNavigationController.h"
 #import "NBRecentContactViewController.h"
-#import "UIImage+Resize.h"
 
 
 @implementation NBPersonViewController
