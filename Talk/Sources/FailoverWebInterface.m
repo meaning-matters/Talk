@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Cornelis van der Bent. All rights reserved.
 //
 //  Apple's sample SRV resolver: https://developer.apple.com/library/mac/samplecode/SRVResolver/Introduction/Intro.html
+//
 
 #import <objc/runtime.h>
 #import <dns_sd.h>
@@ -343,10 +344,6 @@ static void processDnsReply(DNSServiceRef       sdRef,
 
 - (NSString*)getServer
 {
-    NSLog(@"######## USING API2!!!");
-
-    return @"api2.numberbay.com";
-
     @synchronized(self)
     {
         if ([self.serversQueue count] > 0)
@@ -407,7 +404,8 @@ static void processDnsReply(DNSServiceRef       sdRef,
         [mutableRequest addValue:@"true" forHTTPHeaderField:@"IgnoreClientStartRetry"];
         request = [mutableRequest copy];
 
-        FailoverOperation* operationCopy = [FailoverOperation initWithOperation:notificationOperation request:request];
+        FailoverOperation* operationCopy = [FailoverOperation operationWithOperation:notificationOperation
+                                                                             request:request];
         
         [operationCopy setCompletionBlockWithSuccess:^(AFHTTPRequestOperation* operation, id responseObject)
         {

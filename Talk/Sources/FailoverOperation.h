@@ -8,16 +8,13 @@
 
 #import "AFHTTPRequestOperation.h"
 
-typedef void (^originalSuccessBlock)(AFHTTPRequestOperation* operation, id responseObject);
-typedef void (^originalFailureBlock)(AFHTTPRequestOperation* operation, id responseObject);
-
 @interface FailoverOperation : AFHTTPRequestOperation
 
-@property (nonatomic, copy) originalSuccessBlock success;
-@property (nonatomic, copy) originalFailureBlock failure;
+@property (nonatomic, copy) void (^success)(AFHTTPRequestOperation *operation, id responseObject);
+@property (nonatomic, copy) void (^failure)(AFHTTPRequestOperation *operation, id responseObject);
+@property (nonatomic, strong) NSDate* startTime;
 
-+ (instancetype)initWithOperation:(AFHTTPRequestOperation*)operation;
-+ (instancetype)initWithOperation:(AFHTTPRequestOperation*)operation request:(NSURLRequest*)request;
++ (instancetype)operationWithOperation:(AFHTTPRequestOperation*)operation request:(NSURLRequest*)request;
 
 + (BOOL)hasIgnoreStartHeader:(NSDictionary*)dictionary;
 

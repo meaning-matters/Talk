@@ -57,14 +57,13 @@
         return;
     }
 
-    [[WebClient sharedClient] retrieveCallRates:^(NSError *error, NSArray *rates)
+    [[WebClient sharedClient] retrieveCallRateForE164:self.callbackPhoneNumber.e164Format
+                                         currencyCode:[Settings sharedSettings].currencyCode
+                                                reply:^(NSError *error, float ratePerMinute)
     {
         if (error == nil)
         {
-            // Now get real callback price.
-            [[WebClient sharedClient] retrieveCallRateForE164:self.callbackPhoneNumber.e164Format
-                                                 currencyCode:[Settings sharedSettings].currencyCode
-                                                        reply:^(NSError *error, float ratePerMinute)
+            [[WebClient sharedClient] retrieveCallRates:^(NSError *error, NSArray *rates)
             {
                 if (error == nil)
                 {

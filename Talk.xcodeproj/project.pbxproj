@@ -673,7 +673,6 @@
 		48CB0775163D76C300B07199 /* PhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CB0774163D76C300B07199 /* PhoneNumber.m */; };
 		48CB0AFE19DB2E1B00F95369 /* FailoverOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CB0AF519DB2E1B00F95369 /* FailoverOperation.m */; };
 		48CB0AFF19DB2E1B00F95369 /* FailoverWebInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CB0AF719DB2E1B00F95369 /* FailoverWebInterface.m */; };
-		48CB0B0119DB2E1B00F95369 /* RetryRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CB0AFB19DB2E1B00F95369 /* RetryRequest.m */; };
 		48CB2C4417E6539000E19C3D /* Target.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4217E6539000E19C3D /* Target.png */; };
 		48CB2C4517E6539000E19C3D /* Target.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4217E6539000E19C3D /* Target.png */; };
 		48CB2C4617E6539000E19C3D /* Target@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4317E6539000E19C3D /* Target@2x.png */; };
@@ -694,6 +693,8 @@
 		48D3F01F164F9284002041A9 /* CountryNames.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F01D164F9284002041A9 /* CountryNames.m */; };
 		48D4FADD1924247A00949894 /* NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D4FADC1924247A00949894 /* NavigationController.m */; };
 		48D60EF418B4D7A4000BE5D2 /* CountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D60EF318B4D7A4000BE5D2 /* CountriesViewController.m */; };
+		48D8CA541AB01DDA00060515 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 48D8CA531AB01DDA00060515 /* README.txt */; };
+		48D8CA5F1AB8DAFF00060515 /* RetryRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8CA5E1AB8DAFF00060515 /* RetryRequest.m */; };
 		48DD727D169CCF1C00CD7080 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DD727C169CCF1C00CD7080 /* CoreData.framework */; };
 		48DD7281169CD4A200CD7080 /* Data.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 48DD727F169CD4A200CD7080 /* Data.xcdatamodeld */; };
 		48DD7282169CD4A200CD7080 /* Data.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 48DD727F169CD4A200CD7080 /* Data.xcdatamodeld */; };
@@ -1437,8 +1438,6 @@
 		48CB0AF519DB2E1B00F95369 /* FailoverOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FailoverOperation.m; path = Sources/FailoverOperation.m; sourceTree = "<group>"; };
 		48CB0AF619DB2E1B00F95369 /* FailoverWebInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FailoverWebInterface.h; path = Sources/FailoverWebInterface.h; sourceTree = "<group>"; };
 		48CB0AF719DB2E1B00F95369 /* FailoverWebInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FailoverWebInterface.m; path = Sources/FailoverWebInterface.m; sourceTree = "<group>"; };
-		48CB0AFA19DB2E1B00F95369 /* RetryRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RetryRequest.h; path = Sources/RetryRequest.h; sourceTree = "<group>"; };
-		48CB0AFB19DB2E1B00F95369 /* RetryRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RetryRequest.m; path = Sources/RetryRequest.m; sourceTree = "<group>"; };
 		48CB0B0319DCC8DC00F95369 /* libsystem_dnssd.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsystem_dnssd.dylib; path = usr/lib/system/libsystem_dnssd.dylib; sourceTree = SDKROOT; };
 		48CB2C4217E6539000E19C3D /* Target.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Target.png; path = Talk/Images/Other/Target.png; sourceTree = SOURCE_ROOT; };
 		48CB2C4317E6539000E19C3D /* Target@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Target@2x.png"; path = "Talk/Images/Other/Target@2x.png"; sourceTree = SOURCE_ROOT; };
@@ -1455,6 +1454,9 @@
 		48D537B31930ED120095C063 /* Data1.4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data1.4.xcdatamodel; sourceTree = "<group>"; };
 		48D60EF218B4D7A4000BE5D2 /* CountriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountriesViewController.h; sourceTree = "<group>"; };
 		48D60EF318B4D7A4000BE5D2 /* CountriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountriesViewController.m; sourceTree = "<group>"; };
+		48D8CA531AB01DDA00060515 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		48D8CA5D1AB8DAFF00060515 /* RetryRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RetryRequest.h; path = Sources/RetryRequest.h; sourceTree = "<group>"; };
+		48D8CA5E1AB8DAFF00060515 /* RetryRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RetryRequest.m; path = Sources/RetryRequest.m; sourceTree = "<group>"; };
 		48DD727C169CCF1C00CD7080 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		48DD7280169CD4A200CD7080 /* Data.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data.xcdatamodel; sourceTree = "<group>"; };
 		48DD72AB169F55C400CD7080 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -2624,12 +2626,13 @@
 		48F8F54319CB58B300FF3C75 /* Failover */ = {
 			isa = PBXGroup;
 			children = (
+				48D8CA531AB01DDA00060515 /* README.txt */,
 				48CB0AF419DB2E1B00F95369 /* FailoverOperation.h */,
 				48CB0AF519DB2E1B00F95369 /* FailoverOperation.m */,
 				48CB0AF619DB2E1B00F95369 /* FailoverWebInterface.h */,
 				48CB0AF719DB2E1B00F95369 /* FailoverWebInterface.m */,
-				48CB0AFA19DB2E1B00F95369 /* RetryRequest.h */,
-				48CB0AFB19DB2E1B00F95369 /* RetryRequest.m */,
+				48D8CA5D1AB8DAFF00060515 /* RetryRequest.h */,
+				48D8CA5E1AB8DAFF00060515 /* RetryRequest.m */,
 			);
 			name = Failover;
 			sourceTree = "<group>";
@@ -3032,6 +3035,7 @@
 				48AF45331649788A00DFE3D8 /* CreditTab@2x.png in Resources */,
 				48AF45371649788A00DFE3D8 /* DialerTab@2x.png in Resources */,
 				48AF453B1649788A00DFE3D8 /* ForwardingsTab@2x.png in Resources */,
+				48D8CA541AB01DDA00060515 /* README.txt in Resources */,
 				48AF453F1649788A00DFE3D8 /* GroupsTab@2x.png in Resources */,
 				48AF45431649788A00DFE3D8 /* HelpsTab@2x.png in Resources */,
 				48AF45471649788A00DFE3D8 /* NumbersTab@2x.png in Resources */,
@@ -3309,6 +3313,7 @@
 				482608EE166A4707007F0844 /* NSTimer+Blocks.m in Sources */,
 				4888D1FA166E865400B55B22 /* Call.m in Sources */,
 				48B8132E1AADF7CC0019AF77 /* NBRecentsListViewController.m in Sources */,
+				48D8CA5F1AB8DAFF00060515 /* RetryRequest.m in Sources */,
 				48206EF41684B0700040B04E /* RingbackTones.m in Sources */,
 				48206EFC168DD8D30040B04E /* Tones.m in Sources */,
 				48DD7281169CD4A200CD7080 /* Data.xcdatamodeld in Sources */,
@@ -3343,7 +3348,6 @@
 				4837AF6D18D9B89A00D3AEBC /* GetStartedStartViewController.m in Sources */,
 				48B8136D1AADF9B20019AF77 /* NBPersonCellInfo.m in Sources */,
 				48ADD0F71706791A001515EB /* UIView+AnimateHidden.m in Sources */,
-				48CB0B0119DB2E1B00F95369 /* RetryRequest.m in Sources */,
 				4814D56819E9660200958E33 /* AFHTTPRequestOperationManager.m in Sources */,
 				48A0CE6A1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */,
 				484D936C1712FBA1006FA875 /* NumberAreaCitiesViewController.m in Sources */,

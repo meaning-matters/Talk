@@ -83,7 +83,7 @@
     [mutableRequest setURL:url];
     request = [mutableRequest copy];
     
-    FailoverOperation* operationCopy = [FailoverOperation initWithOperation:operation request:request];
+    FailoverOperation* operationCopy = [FailoverOperation operationWithOperation:operation request:request];
     
     [operationCopy setCompletionBlockWithSuccess:^(AFHTTPRequestOperation* operation, id responseObject)
     {       

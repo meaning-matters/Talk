@@ -12,15 +12,8 @@
 
 @implementation FailoverOperation
 
-+ (instancetype)initWithOperation:(AFHTTPRequestOperation*)operation
-{
-    FailoverOperation* operationFailover = [FailoverOperation initWithOperation:operation request:operation.request];
-    
-    return operationFailover;
-}
 
-
-+ (instancetype)initWithOperation:(AFHTTPRequestOperation*)operation request:(NSURLRequest*)request
++ (instancetype)operationWithOperation:(AFHTTPRequestOperation*)operation request:(NSURLRequest*)request
 {
     FailoverOperation* operationFailover = [[FailoverOperation alloc] initWithRequest:request];
     
@@ -34,8 +27,8 @@
     if ([operation isKindOfClass:[FailoverOperation class]])
     {
         FailoverOperation* operationFailure = (FailoverOperation*)operation;
-        operationFailover.success           = operationFailure.success;
-        operationFailover.failure           = operationFailure.failure;
+        operationFailover.success = operationFailure.success;
+        operationFailover.failure = operationFailure.failure;
     }
     
     return operationFailover;
@@ -43,10 +36,10 @@
 
 
 // Early error detection. No need to wait for notification event
-- (void)connectionDidFinishLoading:(NSURLConnection __unused*)connection
+- (void)connectionDidFinishLoading:(__unused NSURLConnection*)connection
 {
     NSHTTPURLResponse* httpResponse = self.response;
-    if (httpResponse.statusCode / 100 == 4) // failure considered, so start the retry algorithm
+    if (httpResponse.statusCode / 100 == 2) // failure considered, so start the retry algorithm
     {
         NSDictionary* headers = [(NSURLRequest*)self.request allHTTPHeaderFields];
 

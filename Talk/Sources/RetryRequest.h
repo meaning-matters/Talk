@@ -10,11 +10,11 @@
 #import "FailoverWebInterface.h"
 #import "FailoverOperation.h"
 
-@interface RetryRequest:NSObject
+@interface RetryRequest : NSObject
+
+@property (nonatomic, strong) NSDate* startTime;
 
 - (void)tryMakeRequest:(AFHTTPRequestOperation*)operation;
-
-@property NSDate* startTime;
 
 @end
 
