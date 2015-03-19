@@ -28,6 +28,8 @@
 @property (atomic, copy)      NSString*            dnsHost;
 @property (atomic, weak)      id<FailoverDelegate> delegate;
 @property (nonatomic, assign) NSTimeInterval       timeout;  // Seconds.
+@property (nonatomic, assign) NSUInteger           retries;  // Number of times a server is retried.
+@property (nonatomic, assign) NSTimeInterval       delay;    // Delay between retries.
 
 
 + (FailoverWebInterface*)sharedInterface;

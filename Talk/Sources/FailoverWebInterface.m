@@ -43,7 +43,9 @@
 
         sharedInstance.okStep             =  1;
         sharedInstance.failStep           =  3;
-        sharedInstance.timeout            = 10;
+        sharedInstance.timeout            = 20;
+        sharedInstance.retries            =  2;
+        sharedInstance.delay              =  0.25;
         sharedInstance.serversQueue       = [NSMutableArray new];
         sharedInstance.fetchedServers     = [NSMutableArray new];
         sharedInstance.dnsUpdateTimeout   = 20;
@@ -450,6 +452,12 @@ static void processDnsReply(DNSServiceRef       sdRef,
     operation.shouldUseCredentialStorage = self.shouldUseCredentialStorage;
     operation.credential                 = self.credential;
     operation.securityPolicy             = self.securityPolicy;
+    operation.startTime                  = [NSDate date];
+    operation.serverStates               = [NSMutableDictionary dictionary];
+    for (NSString* server in self.serversQueue)
+    {
+        operation.serverStates[server] = @(self.retries);
+    }
     
     [operation setCompletionBlockWithSuccess:success failure:failure];
     operation.completionQueue = self.completionQueue;
