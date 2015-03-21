@@ -1,5 +1,5 @@
 //
-//  AFHTTPRequestOperationManagerFailover.h
+//  FailoverWebInterface.h
 //  Talk
 //
 //  Created by Dev on 9/9/14.

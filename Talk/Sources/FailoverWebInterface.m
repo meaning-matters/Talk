@@ -18,8 +18,6 @@
 
 @interface FailoverWebInterface ()
 
-@property (nonatomic, assign) int             okStep;
-@property (nonatomic, assign) int             failStep;
 @property (nonatomic, assign) NSTimeInterval  dnsUpdateTimeout; // Seconds.
 @property (atomic, assign)    uint32_t        ttl;              // Seconds.
 @property (atomic, strong)    NSDate*         dnsUpdateDate;
@@ -41,8 +39,6 @@
     {
         sharedInstance = [[FailoverWebInterface alloc] init];
 
-        sharedInstance.okStep             =  1;
-        sharedInstance.failStep           =  3;
         sharedInstance.timeout            = 20;
         sharedInstance.retries            =  2;
         sharedInstance.delay              =  0.25;
@@ -102,9 +98,11 @@
     if (host != NULL)
     {
         NSTimeInterval remainingTime = self.dnsUpdateTimeout;
-        NSDate*        startTime = [NSDate date];
+        NSDate*        startTime     = [NSDate date];
 
-        err = DNSServiceQueryRecord(&sdRef, 0, 0,
+        err = DNSServiceQueryRecord(&sdRef,
+                                    0,
+                                    0,
                                     host,
                                     kDNSServiceType_SRV,
                                     kDNSServiceClass_IN,
@@ -171,14 +169,14 @@
             }
         }
 
-        if (remainingTime == 0)
+        if (remainingTime == DBL_MIN)
+        {
+            NBLog(@"Error parsing DNS data.");
+        }
+        else if (remainingTime <= 0)
         {
             NBLog(@"DNS update done.");
             [self replaceServers];
-        }
-        else if (remainingTime == -1)
-        {
-            NBLog(@"Error parsing DNS data.");
         }
         else
         {
@@ -263,15 +261,14 @@ static void processDnsReply(DNSServiceRef       sdRef,
         if (target != nil)
         {
             uint16_t priority = rr->data.SRV->priority;
-            uint16_t weight   = rr->data.SRV->weight;
             uint16_t port     = rr->data.SRV->port;
 
-            [[FailoverWebInterface sharedInterface] addServer:target priority:priority weight:weight port:port ttl:ttl];
+            [[FailoverWebInterface sharedInterface] addServer:target priority:priority port:port ttl:ttl];
         }
     }
     else
     {
-        remainingTime = -1;
+        *remainingTime = DBL_MIN;
     }
 
     dns_free_resource_record(rr);
@@ -280,7 +277,6 @@ static void processDnsReply(DNSServiceRef       sdRef,
 
 - (void)addServer:(NSString*)server
          priority:(uint16_t)priority
-           weight:(uint16_t)weight
              port:(uint16_t)port
               ttl:(uint32_t)ttl
 {
@@ -339,8 +335,6 @@ static void processDnsReply(DNSServiceRef       sdRef,
              return (NSComparisonResult)NSOrderedSame;
          }
     }];
-
-    self.failStep = self.serversQueue.count;
 }
 
 
@@ -348,7 +342,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
 {
     @synchronized(self)
     {
-        if ([self.serversQueue count] > 0)
+        if (self.serversQueue.count > 0)
         {
             return [self.serversQueue[0][@"host"] copy];
         }
@@ -360,34 +354,35 @@ static void processDnsReply(DNSServiceRef       sdRef,
 }
 
 
-//update the server order by inserting the top server in a proper position
+// Update the server order by inserting the top server in a proper position.
 - (void)reorderServersWithSuccess:(BOOL)success
 {
     @synchronized(self)
     {
-        if ([self.serversQueue count] == 0)
+        if (self.serversQueue.count == 0)
         {
             return;
         }
 
-        //pop the first server
-        NSMutableDictionary* topserver = [self.serversQueue objectAtIndex:0];
+        // Pop the top/used server.
+        NSMutableDictionary* topServer = [self.serversQueue objectAtIndex:0];
         [self.serversQueue removeObjectAtIndex:0];
 
-        int step = success ? self.okStep : self.failStep;
-        topserver[@"order"] = @([topserver[@"order"] intValue] + [topserver[@"priority"] intValue] + step);
+        // Push back the top/used server 1 step on success the number of servers on failure.
+        NSUInteger step = success ? 1 : self.serversQueue.count;
+        topServer[@"order"] = @([topServer[@"order"] intValue] + [topServer[@"priority"] intValue] + step);
 
-        int index = self.serversQueue.count;
-        for (int i = 0; i < self.serversQueue.count; i++)
+        NSUInteger index = self.serversQueue.count;
+        for (NSUInteger i = 0; i < self.serversQueue.count; i++)
         {
-            if ([topserver[@"order"] intValue] < [self.serversQueue[i][@"order"] intValue])
+            if ([topServer[@"order"] intValue] < [self.serversQueue[i][@"order"] intValue])
             {
                 index = i;
                 break;
             }
         }
 
-        [self.serversQueue insertObject:topserver atIndex:index];
+        [self.serversQueue insertObject:topServer atIndex:index];
     }
 }
 
@@ -424,7 +419,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
 
                 RetryRequest* retry = [RetryRequest new];
 
-                // run retry algorithm
+                // Run retry algorithm.
                 [retry tryMakeRequest:operation];
             }
             else
