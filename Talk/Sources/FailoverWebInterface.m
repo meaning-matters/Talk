@@ -285,24 +285,9 @@ static void processDnsReply(DNSServiceRef       sdRef,
         server = [self.delegate modifyServer:server];
     }
 
-    NBLog(@">>> Service: %@ with Priority: %i", server, priority);
+    NSDictionary* info = @{@"host":server, @"order":@(priority), @"priority":@(priority), @"ttl":@(ttl)};
 
-    NSPredicate*         predicate  = [NSPredicate predicateWithFormat:@"host == %@", server];
-    NSMutableDictionary* info       = [[self.serversQueue filteredArrayUsingPredicate:predicate] firstObject];
-
-    if (info != nil)
-    {
-        // Update existing.
-        info[@"priority"] = @(priority);
-        info[@"ttl"]      = @(ttl);
-    }
-    else
-    {
-        // New one.
-        info = [@{@"host":server, @"order":@(priority), @"priority":@(priority), @"ttl":@(ttl)} mutableCopy];
-    }
-
-    [self.fetchedServers addObject:info];
+    [self.fetchedServers addObject:[info mutableCopy]];
 }
 
 
