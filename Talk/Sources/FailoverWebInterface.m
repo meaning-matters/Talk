@@ -63,6 +63,7 @@
 // TODO Implement flushing cache: https://developer.apple.com/library/mac/documentation/Networking/Conceptual/NSNetServiceProgGuide/Articles/ResolvingServices.html DNSServiceReconfirmRecord
 - (void)updateDnsRecords
 {
+    // Allow only one thread to update the server list.
     @synchronized(self)
     {
         if (self.serversQueue.count == 0 || [[NSDate date] timeIntervalSinceDate:self.dnsUpdateDate] > self.ttl)
@@ -244,13 +245,13 @@ static void processDnsReply(DNSServiceRef       sdRef,
         if (target != nil)
         {
             uint16_t priority = rr->data.SRV->priority;
-            uint16_t port     = rr->data.SRV->port;
 
-            [[FailoverWebInterface sharedInterface] addServer:target priority:priority port:port ttl:ttl];
+            [[FailoverWebInterface sharedInterface] addServer:target priority:priority ttl:ttl];
         }
     }
     else
     {
+        // Notify updateDnsRecords that something went wrong.
         *remainingTime = DBL_MIN;
     }
 
@@ -260,7 +261,6 @@ static void processDnsReply(DNSServiceRef       sdRef,
 
 - (void)addServer:(NSString*)server
          priority:(uint16_t)priority
-             port:(uint16_t)port
               ttl:(uint32_t)ttl
 {
     if ([self.delegate respondsToSelector:@selector(modifyServer:)] == YES)
