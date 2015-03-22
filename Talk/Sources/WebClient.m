@@ -97,8 +97,8 @@ static NSDictionary* statuses;
 
 - (void)handleSuccess:(NSDictionary*)responseDictionary reply:(void (^)(NSError* error, id content))reply
 {
-    NSInteger code;
-    id        content = responseDictionary[@"content"];
+    WebClientStatus code;
+    id              content = responseDictionary[@"content"];
 
     if (responseDictionary != nil && [responseDictionary isKindOfClass:[NSDictionary class]])
     {
@@ -142,7 +142,7 @@ static NSDictionary* statuses;
         NBLog(@"Unknown error: %@", error);
 
         // Very unlikely that AFNetworking fails without error being set.
-        NSInteger code = WebClientStatusFailUnknown;
+        WebClientStatus code = WebClientStatusFailUnknown;
         reply([Common errorWithCode:code description:[WebClient localizedStringForStatus:code]], nil);
     }
 }
@@ -152,7 +152,7 @@ static NSDictionary* statuses;
 {
     if ([Settings sharedSettings].haveAccount == NO)
     {
-        NSInteger code = WebClientStatusFailNoAccount;
+        WebClientStatus code = WebClientStatusFailNoAccount;
         reply([Common errorWithCode:code description:[WebClient localizedStringForStatus:code]], nil);
     }
 
