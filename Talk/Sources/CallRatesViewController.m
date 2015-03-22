@@ -57,36 +57,7 @@
         return;
     }
 
-    [[WebClient sharedClient] retrieveCallRateForE164:self.callbackPhoneNumber.e164Format
-                                         currencyCode:[Settings sharedSettings].currencyCode
-                                                reply:^(NSError *error, float ratePerMinute)
-    {
-        if (error == nil)
-        {
-            [[WebClient sharedClient] retrieveCallRates:^(NSError *error, NSArray *rates)
-            {
-                if (error == nil)
-                {
-                    self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"CallRates ScreenTitle", nil,
-                                                                                  [NSBundle mainBundle],
-                                                                                  @"Call Rates",
-                                                                                  @"....\n"
-                                                                                  @"[iOS alert title size].");
-                    self.callbackPrice = ratePerMinute;
-                    self.objectsArray  = rates;
-                    [self createIndexOfWidth:1];
-                }
-                else
-                {
-                    [self handleError:error];
-                }
-            }];
-        }
-        else
-        {
-            [self handleError:error];
-        }
-    }];
+    [self retrieveCallRates];
 }
 
 
@@ -190,6 +161,41 @@
 
 
 #pragma mark - Helpers
+
+- (void)retrieveCallRates
+{
+    [[WebClient sharedClient] retrieveCallRateForE164:self.callbackPhoneNumber.e164Format
+                                         currencyCode:[Settings sharedSettings].currencyCode
+                                                reply:^(NSError *error, float ratePerMinute)
+    {
+        if (error == nil)
+        {
+            [[WebClient sharedClient] retrieveCallRates:^(NSError *error, NSArray *rates)
+            {
+                if (error == nil)
+                {
+                    self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"CallRates ScreenTitle", nil,
+                                                                                  [NSBundle mainBundle],
+                                                                                   @"Call Rates",
+                                                                                   @"....\n"
+                                                                                   @"[iOS alert title size].");
+                    self.callbackPrice = ratePerMinute;
+                    self.objectsArray  = rates;
+                    [self createIndexOfWidth:1];
+                }
+                else
+                {
+                    [self handleError:error];
+                }
+            }];
+        }
+        else
+        {
+            [self handleError:error];
+        }
+    }];
+}
+
 
 - (NSDictionary*)rateForIsoCountryCode:(NSString*)isoCountryCode
 {

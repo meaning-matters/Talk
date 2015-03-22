@@ -23,7 +23,6 @@ NSString* const ErrorDomainKey            = @"ErrorDomain";
 NSString* const HomeCountryKey            = @"HomeCountry";
 NSString* const HomeCountryFromSimKey     = @"HomeCountryFromSim";
 NSString* const LastDialedNumberKey       = @"LastDialedNumber";
-NSString* const WebBaseUrlKey             = @"WebBaseUrl";
 NSString* const WebUsernameKey            = @"WebUsername";            // Used as keychain 'username'.
 NSString* const WebPasswordKey            = @"WebPassword";            // Used as keychain 'username'.
 NSString* const AskForCallerIdKey         = @"AskForCallerId";
@@ -117,7 +116,6 @@ static NSUserDefaults* userDefaults;
         }
 
         [dictionary setObject:@""                                                forKey:LastDialedNumberKey];
-        [dictionary setObject:@"https://api.numberbay.com/"                      forKey:WebBaseUrlKey];
         [dictionary setObject:@(YES)                                             forKey:AskForCallerIdKey];
         [dictionary setObject:@(YES)                                             forKey:ShowCallerIdKey];
         [dictionary setObject:@""                                                forKey:CallerIdE164Key];
@@ -205,18 +203,6 @@ static NSUserDefaults* userDefaults;
 - (void)setLastDialedNumber:(NSString*)lastDialedNumber
 {
     [userDefaults setObject:lastDialedNumber forKey:LastDialedNumberKey];
-}
-
-
-- (NSString*)webBaseUrl
-{
-    return [userDefaults objectForKey:WebBaseUrlKey];
-}
-
-
-- (void)setWebBaseUrl:(NSString*)webBaseUrl
-{
-    [userDefaults setObject:webBaseUrl forKey:WebBaseUrlKey];
 }
 
 

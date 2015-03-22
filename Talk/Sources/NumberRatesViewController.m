@@ -40,24 +40,7 @@
         return;
     }
 
-    [[WebClient sharedClient] retrieveNumberRates:^(NSError *error, NSArray *rates)
-    {
-        if (error == nil)
-        {
-            self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberRates ScreenTitle", nil,
-                                                                          [NSBundle mainBundle],
-                                                                          @"Number Rates",
-                                                                          @"....\n"
-                                                                          @"[iOS alert title size].");
-
-            self.objectsArray  = rates;
-            [self createIndexOfWidth:1];
-        }
-        else
-        {
-            [self handleError:error];
-        }
-    }];
+    [self retrieveNumberRates];
 }
 
 
@@ -87,6 +70,7 @@
 
     float         fixedPrice          = [rate[@"fixedPrice"]  floatValue];
     float         mobilePrice         = [rate[@"mobilePrice"] floatValue];
+    NSLog(@"####### Forgot to use strings below???");
     NSString*     fixedPriceString    = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:fixedPrice];
     NSString*     mobilePriceString   = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:mobilePrice];
 
@@ -150,6 +134,29 @@
 
 
 #pragma mark - Helpers
+
+- (void)retrieveNumberRates
+{
+    [[WebClient sharedClient] retrieveNumberRates:^(NSError *error, NSArray *rates)
+    {
+        if (error == nil)
+        {
+            self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberRates ScreenTitle", nil,
+                                                                          [NSBundle mainBundle],
+                                                                          @"Number Rates",
+                                                                          @"....\n"
+                                                                          @"[iOS alert title size].");
+
+            self.objectsArray  = rates;
+            [self createIndexOfWidth:1];
+        }
+        else
+        {
+            [self handleError:error];
+        }
+    }];
+}
+
 
 - (NSDictionary*)rateForIsoCountryCode:(NSString*)isoCountryCode
 {

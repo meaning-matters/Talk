@@ -31,7 +31,6 @@
 
 @property (nonatomic, strong) NSString*      lastDialedNumber;
 
-@property (nonatomic, strong) NSString*      webBaseUrl;            // Base URL of web API.
 @property (nonatomic, strong) NSString*      webUsername;
 @property (nonatomic, strong) NSString*      webPassword;
 

@@ -21,7 +21,6 @@
 @property (nonatomic, assign) NSTimeInterval  dnsUpdateTimeout; // Seconds.
 @property (atomic, assign)    uint32_t        ttl;              // Seconds.
 @property (atomic, strong)    NSDate*         dnsUpdateDate;
-@property (atomic, assign)    BOOL            dnsUpdatePending;
 @property (atomic, strong)    NSMutableArray* serversQueue;
 @property (atomic, strong)    NSMutableArray* fetchedServers;
 
@@ -61,130 +60,114 @@
 }
 
 
-- (void)checkDnsRecords
-{
-    if (self.serversQueue.count == 0)
-    {
-        [self updateDnsRecords];
-    }
-    else if ([[NSDate date] timeIntervalSinceDate:self.dnsUpdateDate] > self.ttl)
-    {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
-        {
-            [self updateDnsRecords];
-        });
-    }
-}
-
-
 // TODO Implement flushing cache: https://developer.apple.com/library/mac/documentation/Networking/Conceptual/NSNetServiceProgGuide/Articles/ResolvingServices.html DNSServiceReconfirmRecord
 - (void)updateDnsRecords
 {
-    if (self.dnsUpdatePending == YES)
+    @synchronized(self)
     {
-        return;
-    }
-    else
-    {
-        self.dnsUpdatePending = YES;
-        [self.fetchedServers removeAllObjects];
-    }
-
-    NBLog(@"Start DNS update.");
-    DNSServiceRef       sdRef;
-    DNSServiceErrorType err;
-
-    const char* host = [self.dnsHost UTF8String];
-    if (host != NULL)
-    {
-        NSTimeInterval remainingTime = self.dnsUpdateTimeout;
-        NSDate*        startTime     = [NSDate date];
-
-        err = DNSServiceQueryRecord(&sdRef,
-                                    0,
-                                    0,
-                                    host,
-                                    kDNSServiceType_SRV,
-                                    kDNSServiceClass_IN,
-                                    processDnsReply,
-                                    &remainingTime);
-
-        if (err != kDNSServiceErr_NoError)
+        if (self.serversQueue.count == 0 || [[NSDate date] timeIntervalSinceDate:self.dnsUpdateDate] > self.ttl)
         {
-            NBLog(@"DNS SRV query failed: %d", err);
+            [self.fetchedServers removeAllObjects];
 
-            return;
-        }
+            NBLog(@"Start DNS update.");
+            DNSServiceRef       sdRef;
+            DNSServiceErrorType err;
 
-        // This is necessary so we don't hang forever if there are no results
-        int    dns_sd_fd = DNSServiceRefSockFD(sdRef);
-        int    nfds      = dns_sd_fd + 1;
-        fd_set readfds;
-        int    result;
-        
-        while (remainingTime > 0)
-        {
-            FD_ZERO(&readfds);
-            FD_SET(dns_sd_fd, &readfds);
-
-            struct timeval tv;
-            tv.tv_sec  = (time_t)remainingTime;
-            tv.tv_usec = (remainingTime - tv.tv_sec) * 1000000;
-
-            result = select(nfds, &readfds, (fd_set*)NULL, (fd_set*)NULL, &tv);
-            if (result == 1)
+            const char* host = [self.dnsHost UTF8String];
+            if (host != NULL)
             {
-                if (FD_ISSET(dns_sd_fd, &readfds))
+                NSTimeInterval remainingTime = self.dnsUpdateTimeout;
+                NSDate*        startTime     = [NSDate date];
+
+                err = DNSServiceQueryRecord(&sdRef,
+                                            0,
+                                            0,
+                                            host,
+                                            kDNSServiceType_SRV,
+                                            kDNSServiceClass_IN,
+                                            processDnsReply,
+                                            &remainingTime);
+
+                if (err != kDNSServiceErr_NoError)
                 {
-                    err = DNSServiceProcessResult(sdRef);
-                    if (err != kDNSServiceErr_NoError)
+                    NBLog(@"DNS SRV query failed: %d", err);
+
+                    return;
+                }
+
+                // This is necessary so we don't hang forever if there are no results
+                int    dns_sd_fd = DNSServiceRefSockFD(sdRef);
+                int    nfds      = dns_sd_fd + 1;
+                fd_set readfds;
+                int    result;
+
+                while (remainingTime > 0)
+                {
+                    FD_ZERO(&readfds);
+                    FD_SET(dns_sd_fd, &readfds);
+
+                    struct timeval tv;
+                    tv.tv_sec  = (time_t)remainingTime;
+                    tv.tv_usec = (remainingTime - tv.tv_sec) * 1000000;
+
+                    result = select(nfds, &readfds, (fd_set*)NULL, (fd_set*)NULL, &tv);
+                    if (result == 1)
                     {
-                        NBLog(@"There was an error reading the DNS SRV records.");
+                        if (FD_ISSET(dns_sd_fd, &readfds))
+                        {
+                            err = DNSServiceProcessResult(sdRef);
+                            if (err != kDNSServiceErr_NoError)
+                            {
+                                NBLog(@"There was an error reading the DNS SRV records.");
+                                break;
+                            }
+                        }
+                    }
+                    else if (result == 0)
+                    {
+                        NBLog(@"DNS SRV select() timed out");
+                        remainingTime = DBL_MIN;
                         break;
                     }
+                    else
+                    {
+                        if (errno == EINTR)
+                        {
+                            NBLog(@"DNS SRV select() interrupted, retry.");
+                        }
+                        else
+                        {
+                            NBLog(@"DNS SRV select() returned %d errno %d %s.", result, errno, strerror(errno));
+                            remainingTime = DBL_MIN;
+                            break;
+                        }
+                    }
+                    
+                    if (remainingTime > 0)
+                    {
+                        NSTimeInterval elapsed = [[NSDate date] timeIntervalSinceDate:startTime];
+                        remainingTime -= elapsed;
+                    }
                 }
-            }
-            else if (result == 0)
-            {
-                NBLog(@"DNS SRV select() timed out");
-                break;
-            }
-            else
-            {
-                if (errno == EINTR)
+                
+                if (remainingTime == DBL_MIN)
                 {
-                    NBLog(@"DNS SRV select() interrupted, retry.");
+                    NBLog(@"DNS update failed.");
+                    result = NO;
+                }
+                else if (remainingTime <= 0)
+                {
+                    NBLog(@"DNS update done.");
+                    [self replaceServers];
                 }
                 else
                 {
-                    NBLog(@"DNS SRV select() returned %d errno %d %s.", result, errno, strerror(errno));
-                    break;
+                    NBLog(@"This can't happen.");
                 }
-            }
-
-            if (remainingTime > 0)
-            {
-                NSTimeInterval elapsed = [[NSDate date] timeIntervalSinceDate:startTime];
-                remainingTime -= elapsed;
+                
+                DNSServiceRefDeallocate(sdRef);
             }
         }
-
-        if (remainingTime == DBL_MIN)
-        {
-            NBLog(@"Error parsing DNS data.");
-        }
-        else if (remainingTime <= 0)
-        {
-            NBLog(@"DNS update done.");
-            [self replaceServers];
-        }
-        else
-        {
-            NBLog(@"This can't happen.");
-        }
-
-        DNSServiceRefDeallocate(sdRef);
-        self.dnsUpdatePending = NO;
     }
 }
 
@@ -455,7 +438,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
     {
-        [self checkDnsRecords];
+        [self updateDnsRecords];
 
         [self.requestSerializer setAuthorizationHeaderFieldWithUsername:[self.delegate webUsername]
                                                                password:[self.delegate webPassword]];
