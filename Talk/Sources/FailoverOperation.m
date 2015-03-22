@@ -1,5 +1,5 @@
 //
-//  AFHTTPRequestOperationFailover.m
+//  FailoverOperation.m
 //  Talk
 //
 //  Created by Dev on 9/10/14.

@@ -1,5 +1,5 @@
 //
-//  AFHTTPRequestOperationFailover.h
+//  FailoverOperation.h
 //  Talk
 //
 //  Created by Dev on 9/10/14.
@@ -12,7 +12,7 @@
 
 @property (nonatomic, copy) void (^success)(AFHTTPRequestOperation *operation, id responseObject);
 @property (nonatomic, copy) void (^failure)(AFHTTPRequestOperation *operation, NSError* error);
-@property (nonatomic, strong) NSDate* startTime;
+@property (nonatomic, strong) NSDate*              startTime;
 @property (nonatomic, strong) NSMutableDictionary* serverStates;
 
 + (instancetype)operationWithOperation:(AFHTTPRequestOperation*)operation request:(NSURLRequest*)request;
