@@ -126,11 +126,11 @@ static Common* sharedCommon;
     NSString* venueUrl      = @"http://www.numberbay.com";
     NSString* venueEmail    = @"info@numberbay.com";
     NSString* venuePhone    = @"+441617680224";
-    NSString* venueAddress1 = @"100 Barbirolli Square";
-    NSString* venueAddress2 = nil;
-    NSString* venueCity     = @"Manchester";
+    NSString* venueAddress1 = @"Suite 101";
+    NSString* venueAddress2 = @"128 Aldersgate Street";
+    NSString* venueCity     = @"London";
     NSString* venueState    = nil;
-    NSString* venueZip      = @"M2 3AB";
+    NSString* venueZip      = @"EC1A 4AE";
     NSString* venueCountry  = @"United Kingdom";
     UIImage*  venueImage    = [UIImage imageNamed:@"Icon-152.png"];
 
@@ -354,7 +354,7 @@ static Common* sharedCommon;
 
 + (NSError*)errorWithCode:(NSInteger)code description:(NSString*)description
 {
-    NSDictionary* userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
+    NSDictionary* userInfo = @{NSLocalizedDescriptionKey : description};
     NSError*      error    = [[NSError alloc] initWithDomain:[Settings sharedSettings].errorDomain
                                                         code:code
                                                     userInfo:userInfo];
