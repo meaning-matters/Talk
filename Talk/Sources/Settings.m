@@ -284,7 +284,7 @@ static NSUserDefaults* userDefaults;
 
 - (NumberTypeMask)numberTypeMask
 {
-    return [userDefaults integerForKey:NumberTypeMaskKey];
+    return (NumberTypeMask)[userDefaults integerForKey:NumberTypeMaskKey];
 }
 
 
@@ -392,6 +392,18 @@ static NSUserDefaults* userDefaults;
 - (NSString*)supportEmail
 {
     return @"info@numberbay.com";
+}
+
+
+- (NSString*)dnsHost
+{
+    return @"_https._tcp.numberbay.com";
+}
+
+
+- (NSString*)defaultServer
+{
+    return @"api.numberbay.com";
 }
 
 @end

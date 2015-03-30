@@ -12,6 +12,8 @@
 #import <dns_sd.h>
 #import <dns_util.h>
 #import "FailoverWebInterface.h"
+#import "Common.h"
+#import "Settings.h"
 #import "AFNetworking.h"
 #import "RetryRequest.h"
 
@@ -61,7 +63,7 @@
 
 
 // TODO Implement flushing cache: https://developer.apple.com/library/mac/documentation/Networking/Conceptual/NSNetServiceProgGuide/Articles/ResolvingServices.html DNSServiceReconfirmRecord
-- (void)updateDnsRecords
+- (NSUInteger)updateDnsRecords
 {
     // Allow only one thread to update the server list.
     @synchronized(self)
@@ -93,7 +95,7 @@
                 {
                     NBLog(@"DNS SRV query failed: %d", err);
 
-                    return;
+                    return self.serversQueue.count;
                 }
 
                 // This is necessary so we don't hang forever if there are no results
@@ -154,7 +156,6 @@
                 if (remainingTime == DBL_MIN)
                 {
                     NBLog(@"DNS update failed.");
-                    result = NO;
                 }
                 else if (remainingTime <= 0)
                 {
@@ -169,6 +170,8 @@
                 DNSServiceRefDeallocate(sdRef);
             }
         }
+
+        return self.serversQueue.count;
     }
 }
 
@@ -306,6 +309,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
 }
 
 
+// It's assumed that this method never returns nil.
 - (NSString*)getServer
 {
     @synchronized(self)
@@ -316,7 +320,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
         }
         else
         {
-            return nil;
+            return [Settings sharedSettings].defaultServer;
         }
     }
 }

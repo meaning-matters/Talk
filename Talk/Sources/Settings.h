@@ -57,4 +57,7 @@
 @property (nonatomic, readonly) NSString*    supportNumber;         // NumberBay telephone support number.
 @property (nonatomic, readonly) NSString*    supportEmail;          // NumberBay email support address.
 
+@property (nonatomic, readonly) NSString*    dnsHost;               // URL to DNS request list of servers.
+@property (nonatomic, readonly) NSString*    defaultServer;         // Server used when DNS request fails.
+
 @end

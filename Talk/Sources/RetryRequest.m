@@ -60,21 +60,19 @@
     NSURL*    oldUrl = operation.request.URL; //old url - failed
     NSURL*    url    = operation.request.URL; //to be modified
     NSString* server = [interface getServer];
-    if (server != nil)
+
+    url = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@", oldUrl.scheme, server]];
+    
+    if (oldUrl.path != nil)
     {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@", oldUrl.scheme, server]];
-        
-        if (oldUrl.path != nil)
-        {
-            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", url.absoluteURL, oldUrl.path]];
-        }
-        
-        if (oldUrl.query != nil)
-        {
-            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?%@", url.absoluteURL, oldUrl.query]];
-        }
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", url.absoluteURL, oldUrl.path]];
     }
     
+    if (oldUrl.query != nil)
+    {
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?%@", url.absoluteURL, oldUrl.query]];
+    }
+
     // Retries the request
     NSURLRequest* request = operation.request;
 
