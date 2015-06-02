@@ -180,12 +180,13 @@
                     NBLog(@"DNS update done.");
 
                     self.servers = self.updatingServers;
+
                     [self testServers];
                     [self prepareServers];
                 }
                 else
                 {
-                    NBLog(@"This can't happen.");
+                    NBLog(@"DNS: This can't happen.");
                 }
                 
                 DNSServiceRefDeallocate(sdRef);
@@ -487,7 +488,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
             if ([operation.request.HTTPMethod isEqualToString:method] &&
                 [operation.request.URL.path   isEqualToString:path])
             {
-                NBLog(@"####### Cancelling operation");
+                NBLog(@"Cancelling HTTP %@ %@", method, path);
                 [operation cancel];
             }
         }
