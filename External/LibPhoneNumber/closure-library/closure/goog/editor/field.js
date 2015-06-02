@@ -18,6 +18,7 @@
  * iframe to contain the editable area, never inherits the style of the
  * surrounding page, and is always a fixed height.
  *
+ * @author nicksantos@google.com (Nick Santos)
  * @see ../demos/editor/editor.html
  * @see ../demos/editor/field_basic.html
  */
@@ -25,10 +26,11 @@
 goog.provide('goog.editor.Field');
 goog.provide('goog.editor.Field.EventType');
 
+goog.require('goog.a11y.aria');
+goog.require('goog.a11y.aria.Role');
 goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.async.Delay');
-goog.require('goog.debug.Logger');
 goog.require('goog.dom');
 goog.require('goog.dom.Range');
 goog.require('goog.dom.TagName');
@@ -46,6 +48,8 @@ goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventType');
 goog.require('goog.events.KeyCodes');
 goog.require('goog.functions');
+goog.require('goog.log');
+goog.require('goog.log.Level');
 goog.require('goog.string');
 goog.require('goog.string.Unicode');
 goog.require('goog.style');
@@ -114,7 +118,7 @@ goog.editor.Field = function(id, opt_doc) {
   /**
    * Plugins registered on this field, indexed by the goog.editor.Plugin.Op
    * that they support.
-   * @type {Object.<Array>}
+   * @type {Object<Array<goog.editor.Plugin>>}
    * @private
    */
   this.indexedPlugins_ = {};
@@ -151,7 +155,7 @@ goog.editor.Field = function(id, opt_doc) {
   }
 
   /**
-   * @type {goog.events.EventHandler}
+   * @type {goog.events.EventHandler<!goog.editor.Field>}
    * @protected
    */
   this.eventRegister = new goog.events.EventHandler(this);
@@ -174,6 +178,12 @@ goog.editor.Field = function(id, opt_doc) {
    * @protected
    */
   this.originalElement = this.originalDomHelper.getElement(this.id);
+
+  /**
+   * @private {boolean}
+   */
+  this.followLinkInNewWindow_ =
+      goog.editor.BrowserFeature.FOLLOWS_EDITABLE_LINKS;
 
   // Default to the same window as the field is in.
   this.appWindow_ = this.originalDomHelper.getWindow();
@@ -200,11 +210,11 @@ goog.editor.Field.prototype.originalElement = null;
 
 /**
  * Logging object.
- * @type {goog.debug.Logger}
+ * @type {goog.log.Logger}
  * @protected
  */
 goog.editor.Field.prototype.logger =
-    goog.debug.Logger.getLogger('goog.editor.Field');
+    goog.log.getLogger('goog.editor.Field');
 
 
 /**
@@ -253,10 +263,15 @@ goog.editor.Field.EventType = {
    */
   BLUR: 'blur',
   /**
-   * Dispach before tab is handled by the field.  This is a legacy way
+   * Dispatched before tab is handled by the field.  This is a legacy way
    * of controlling tab behavior.  Use trog.plugins.AbstractTabHandler now.
    */
   BEFORETAB: 'beforetab',
+  /**
+   * Dispatched after the iframe containing the field is resized, so that UI
+   * components which contain it can respond.
+   */
+  IFRAME_RESIZED: 'ifrsz',
   /**
    * Dispatched when the selection changes.
    * Use handleSelectionChange from plugin API instead of listening
@@ -436,7 +451,7 @@ goog.editor.Field.prototype.getOriginalElement = function() {
  * Registers a keyboard event listener on the field.  This is necessary for
  * Gecko since the fields are contained in an iFrame and there is no way to
  * auto-propagate key events up to the main window.
- * @param {string|Array.<string>} type Event type to listen for or array of
+ * @param {string|Array<string>} type Event type to listen for or array of
  *    event types, for example goog.events.EventType.KEYDOWN.
  * @param {Function} listener Function to be used as the listener.
  * @param {boolean=} opt_capture Whether to use capture phase (optional,
@@ -452,7 +467,12 @@ goog.editor.Field.prototype.addListener = function(type, listener, opt_capture,
       this.usesIframe()) {
     elem = elem.ownerDocument;
   }
-  this.eventRegister.listen(elem, type, listener, opt_capture, opt_handler);
+  if (opt_handler) {
+    this.eventRegister.listenWithScope(
+        elem, type, listener, opt_capture, opt_handler);
+  } else {
+    this.eventRegister.listen(elem, type, listener, opt_capture);
+  }
 };
 
 
@@ -473,7 +493,8 @@ goog.editor.Field.prototype.getPluginByClassId = function(classId) {
 goog.editor.Field.prototype.registerPlugin = function(plugin) {
   var classId = plugin.getTrogClassId();
   if (this.plugins_[classId]) {
-    this.logger.severe('Cannot register the same class of plugin twice.');
+    goog.log.error(this.logger,
+        'Cannot register the same class of plugin twice.');
   }
   this.plugins_[classId] = plugin;
 
@@ -502,7 +523,8 @@ goog.editor.Field.prototype.registerPlugin = function(plugin) {
 goog.editor.Field.prototype.unregisterPlugin = function(plugin) {
   var classId = plugin.getTrogClassId();
   if (!this.plugins_[classId]) {
-    this.logger.severe('Cannot unregister a plugin that isn\'t registered.');
+    goog.log.error(this.logger,
+        'Cannot unregister a plugin that isn\'t registered.');
   }
   delete this.plugins_[classId];
 
@@ -536,6 +558,7 @@ goog.editor.Field.prototype.resetOriginalElemProperties = function() {
   var field = this.getOriginalElement();
   field.removeAttribute('contentEditable');
   field.removeAttribute('g_editable');
+  field.removeAttribute('role');
 
   if (!this.id) {
     field.removeAttribute('id');
@@ -639,9 +662,9 @@ goog.editor.Field.CTRL_KEYS_CAUSING_CHANGES_ = {
   88: true // X
 };
 
-if (goog.userAgent.IE) {
-  // In IE input from IME (Input Method Editor) does not generate keypress
-  // event so we have to rely on the keydown event. This way we have
+if (goog.userAgent.WINDOWS && !goog.userAgent.GECKO) {
+  // In IE and Webkit, input from IME (Input Method Editor) does not generate a
+  // keypress event so we have to rely on the keydown event. This way we have
   // false positives while the user is using keyboard to select the
   // character to input, but it is still better than the false negatives
   // that ignores user's final input at all.
@@ -742,6 +765,7 @@ goog.editor.Field.prototype.setupFieldObject = function(field) {
   this.isModified_ = false;
   this.isEverModified_ = false;
   field.setAttribute('g_editable', 'true');
+  goog.a11y.aria.setRole(field, goog.a11y.aria.Role.TEXTBOX);
 };
 
 
@@ -864,7 +888,7 @@ goog.editor.Field.prototype.setupChangeListeners_ = function() {
       new goog.async.Delay(this.handleSelectionChangeTimer_,
                            goog.editor.Field.SELECTION_CHANGE_FREQUENCY_, this);
 
-  if (goog.editor.BrowserFeature.FOLLOWS_EDITABLE_LINKS) {
+  if (this.followLinkInNewWindow_) {
     this.addListener(
         goog.events.EventType.CLICK, goog.editor.Field.cancelLinkClick_);
   }
@@ -938,7 +962,7 @@ goog.editor.Field.prototype.clearListeners = function() {
 /** @override */
 goog.editor.Field.prototype.disposeInternal = function() {
   if (this.isLoading() || this.isLoaded()) {
-    this.logger.warning('Disposing a field that is in use.');
+    goog.log.warning(this.logger, 'Disposing a field that is in use.');
   }
 
   if (this.getOriginalElement()) {
@@ -995,8 +1019,19 @@ goog.editor.Field.prototype.removeAllWrappers = function() {
 
 
 /**
+ * Sets whether activating a hyperlink in this editable field will open a new
+ *     window or not.
+ * @param {boolean} followLinkInNewWindow
+ */
+goog.editor.Field.prototype.setFollowLinkInNewWindow =
+    function(followLinkInNewWindow) {
+  this.followLinkInNewWindow_ = followLinkInNewWindow;
+};
+
+
+/**
  * List of mutation events in Gecko browsers.
- * @type {Array.<string>}
+ * @type {Array<string>}
  * @protected
  */
 goog.editor.Field.MUTATION_EVENTS_GECKO = [
@@ -1013,7 +1048,10 @@ goog.editor.Field.MUTATION_EVENTS_GECKO = [
  * @protected
  */
 goog.editor.Field.prototype.setupMutationEventHandlersGecko = function() {
-  if (goog.editor.BrowserFeature.HAS_DOM_SUBTREE_MODIFIED_EVENT) {
+  // Always use DOMSubtreeModified on Gecko when not using an iframe so that
+  // DOM mutations outside the Field do not trigger handleMutationEventGecko_.
+  if (goog.editor.BrowserFeature.HAS_DOM_SUBTREE_MODIFIED_EVENT ||
+      !this.usesIframe()) {
     this.eventRegister.listen(this.getElement(), 'DOMSubtreeModified',
         this.handleMutationEventGecko_);
   } else {
@@ -1049,8 +1087,9 @@ goog.editor.Field.prototype.handleBeforeChangeKeyEvent_ = function(e) {
       // #2: to block a Firefox-specific bug where Macs try to navigate
       // back a page when you hit command+left arrow or comamnd-right arrow.
       // See https://bugzilla.mozilla.org/show_bug.cgi?id=341886
-      // TODO(nicksantos): Get Firefox to fix this.
+      // This was fixed in Firefox 29, but still exists in older versions.
       (goog.userAgent.GECKO && e.metaKey &&
+       !goog.userAgent.isVersionOrHigher(29) &&
        (e.keyCode == goog.events.KeyCodes.LEFT ||
         e.keyCode == goog.events.KeyCodes.RIGHT));
 
@@ -1078,10 +1117,9 @@ goog.editor.Field.prototype.handleBeforeChangeKeyEvent_ = function(e) {
 
 /**
  * Keycodes that result in a selectionchange event (e.g. the cursor moving).
- * @enum {number}
- * @private
+ * @type {!Object<number, number>}
  */
-goog.editor.Field.SELECTION_CHANGE_KEYCODES_ = {
+goog.editor.Field.SELECTION_CHANGE_KEYCODES = {
   8: 1,  // backspace
   9: 1,  // tab
   13: 1, // enter
@@ -1102,7 +1140,7 @@ goog.editor.Field.SELECTION_CHANGE_KEYCODES_ = {
  * Ctrl key cause selection changes in the field contents. These are the keys
  * that are not handled by the basic formatting trogedit plugins. Note that
  * combinations like Ctrl-left etc are already handled in
- * SELECTION_CHANGE_KEYCODES_
+ * SELECTION_CHANGE_KEYCODES
  * @type {Object}
  * @private
  */
@@ -1117,7 +1155,7 @@ goog.editor.Field.CTRL_KEYS_CAUSING_SELECTION_CHANGES_ = {
  * Map of keyCodes (not charCodes) that might need to be handled as a keyboard
  * shortcut (even when ctrl/meta key is not pressed) by some plugin. Currently
  * it is a small list. If it grows too big we can optimize it by using ranges
- * or extending it from SELECTION_CHANGE_KEYCODES_
+ * or extending it from SELECTION_CHANGE_KEYCODES
  * @type {Object}
  * @private
  */
@@ -1222,7 +1260,7 @@ goog.editor.Field.prototype.injectContents = function(contents, field) {
   var styles = {};
   var newHtml = this.getInjectableContents(contents, styles);
   goog.style.setStyle(field, styles);
-  field.innerHTML = newHtml;
+  goog.editor.node.replaceInnerHtml(field, newHtml);
 };
 
 
@@ -1302,7 +1340,7 @@ goog.editor.Field.prototype.handleKeyUp_ = function(e) {
     return;
   }
 
-  if (goog.editor.Field.SELECTION_CHANGE_KEYCODES_[e.keyCode] ||
+  if (goog.editor.Field.SELECTION_CHANGE_KEYCODES[e.keyCode] ||
       ((e.ctrlKey || e.metaKey) &&
        goog.editor.Field.CTRL_KEYS_CAUSING_SELECTION_CHANGES_[e.keyCode])) {
     this.selectionChangeTimer_.start();
@@ -1340,6 +1378,13 @@ goog.editor.Field.prototype.handleKeyboardShortcut_ = function(e) {
     }
 
     var stringKey = String.fromCharCode(key).toLowerCase();
+    // Ctrl+Cmd+Space generates a charCode for a backtick on Mac Firefox, but
+    // has the correct string key in the browser event.
+    if (goog.userAgent.MAC && goog.userAgent.GECKO &&
+        stringKey == '`' && e.getBrowserEvent().key == ' ') {
+      stringKey = ' ';
+    }
+
     if (this.invokeShortCircuitingOp_(goog.editor.Plugin.Op.SHORTCUT,
                                       e, stringKey, isModifierPressed)) {
       e.preventDefault();
@@ -1379,7 +1424,7 @@ goog.editor.Field.prototype.execCommand = function(command, var_args) {
 
 /**
  * Gets the value of command(s).
- * @param {string|Array.<string>} commands String name(s) of the command.
+ * @param {string|Array<string>} commands String name(s) of the command.
  * @return {*} Value of each command. Returns false (or array of falses)
  *     if designMode is off or the field is otherwise uneditable, and
  *     there are no activeOnUneditable plugins for the command.
@@ -1759,7 +1804,7 @@ goog.editor.Field.prototype.manipulateDom = function(func,
 
 /**
  * Dispatches a command value change event.
- * @param {Array.<string>=} opt_commands Commands whose state has
+ * @param {Array<string>=} opt_commands Commands whose state has
  *     changed.
  */
 goog.editor.Field.prototype.dispatchCommandValueChange =
@@ -2034,7 +2079,8 @@ goog.editor.Field.prototype.getCleanContents = function() {
     // The field is uneditable, so it's ok to read contents directly.
     var elem = this.getOriginalElement();
     if (!elem) {
-      this.logger.shout("Couldn't get the field element to read the contents");
+      goog.log.log(this.logger, goog.log.Level.SHOUT,
+          "Couldn't get the field element to read the contents");
     }
     return elem.innerHTML;
   }
@@ -2051,7 +2097,7 @@ goog.editor.Field.prototype.getCleanContents = function() {
 /**
  * Get the copy of the editable field element, which has the innerHTML set
  * correctly.
- * @return {Element} The copy of the editable field.
+ * @return {!Element} The copy of the editable field.
  * @protected
  */
 goog.editor.Field.prototype.getFieldCopy = function() {
@@ -2084,7 +2130,7 @@ goog.editor.Field.prototype.getFieldCopy = function() {
 goog.editor.Field.prototype.setHtml = function(
     addParas, html, opt_dontFireDelayedChange, opt_applyLorem) {
   if (this.isLoading()) {
-    this.logger.severe("Can't set html while loading Trogedit");
+    goog.log.error(this.logger, "Can't set html while loading Trogedit");
     return;
   }
 
@@ -2149,7 +2195,8 @@ goog.editor.Field.prototype.setInnerHtml_ = function(html) {
     // Note:  We punt on this issue for the non iframe case since
     // we don't want to screw with the main document.
     if (this.usesIframe() && goog.editor.BrowserFeature.MOVES_STYLE_TO_HEAD) {
-      var heads = field.ownerDocument.getElementsByTagName('HEAD');
+      var heads = field.ownerDocument.getElementsByTagName(
+          goog.dom.TagName.HEAD);
       for (var i = heads.length - 1; i >= 1; --i) {
         heads[i].parentNode.removeChild(heads[i]);
       }
@@ -2205,7 +2252,7 @@ goog.editor.Field.prototype.dispatchLoadEvent_ = function() {
 
   this.installStyles();
   this.startChangeEvents();
-  this.logger.info('Dispatching load ' + this.id);
+  goog.log.info(this.logger, 'Dispatching load ' + this.id);
   this.dispatchEvent(goog.editor.Field.EventType.LOAD);
 };
 
@@ -2272,7 +2319,7 @@ goog.editor.Field.prototype.focusAndPlaceCursorAtStart = function() {
   // TODO(user): Refactor the code using this and related methods. We should
   // only mess with the selection in the case where there is not an existing
   // selection in the field.
-  if (goog.editor.BrowserFeature.HAS_IE_RANGES || goog.userAgent.WEBKIT) {
+  if (goog.editor.BrowserFeature.HAS_IE_RANGES || !goog.userAgent.GECKO) {
     this.placeCursorAtStart();
   }
   this.focus();
@@ -2318,6 +2365,24 @@ goog.editor.Field.prototype.placeCursorAtStartOrEnd_ = function(isStart) {
       goog.editor.range.placeCursorNextTo(cursorPosition, isStart);
     }
     this.dispatchSelectionChangeEvent();
+  }
+};
+
+
+/**
+ * Restore a saved range, and set the focus on the field.
+ * If no range is specified, we simply set the focus.
+ * @param {goog.dom.SavedRange=} opt_range A previously saved selected range.
+ */
+goog.editor.Field.prototype.restoreSavedRange = function(opt_range) {
+  if (goog.userAgent.IE) {
+    this.focus();
+  }
+  if (opt_range) {
+    opt_range.restore();
+  }
+  if (!goog.userAgent.IE) {
+    this.focus();
   }
 };
 
@@ -2433,7 +2498,7 @@ goog.editor.Field.prototype.makeUneditable = function(opt_skipRestore) {
   // so that the original node will have the same properties as it did before
   // it was made editable.
   if (goog.isString(html)) {
-    field.innerHTML = html;
+    goog.editor.node.replaceInnerHtml(field, html);
     this.resetOriginalElemProperties();
   }
 
@@ -2527,7 +2592,7 @@ goog.editor.Field.prototype.makeIframeField_ = function(opt_iframeSrc) {
     html = this.reduceOp_(goog.editor.Plugin.Op.PREPARE_CONTENTS_HTML,
         html, styles);
 
-    var iframe = /** @type {HTMLIFrameElement} */(
+    var iframe = /** @type {!HTMLIFrameElement} */(
         this.originalDomHelper.createDom(goog.dom.TagName.IFRAME,
             this.getIframeAttributes()));
 
@@ -2582,8 +2647,8 @@ goog.editor.Field.prototype.attachIframe = function(iframe) {
 
 /**
  * @param {Object} extraStyles A map of extra styles.
- * @return {goog.editor.icontent.FieldFormatInfo} The FieldFormatInfo object for
- *     this field's configuration.
+ * @return {!goog.editor.icontent.FieldFormatInfo} The FieldFormatInfo
+ *     object for this field's configuration.
  * @protected
  */
 goog.editor.Field.prototype.getFieldFormatInfo = function(extraStyles) {
@@ -2668,7 +2733,7 @@ goog.editor.Field.prototype.clearFieldLoadListener_ = function() {
 
 
 /**
- * @return {Object} Get the HTML attributes for this field's iframe.
+ * @return {!Object} Get the HTML attributes for this field's iframe.
  * @protected
  */
 goog.editor.Field.prototype.getIframeAttributes = function() {

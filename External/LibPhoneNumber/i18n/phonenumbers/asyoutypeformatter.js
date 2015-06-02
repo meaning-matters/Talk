@@ -165,7 +165,7 @@ i18n.phonenumbers.AsYouTypeFormatter = function(regionCode) {
    * @type {string}
    * @private
    */
-  this.nationalPrefixExtracted_ = '';
+  this.extractedNationalPrefix_ = '';
   /**
    * @type {!goog.string.StringBuffer}
    * @private
@@ -181,12 +181,12 @@ i18n.phonenumbers.AsYouTypeFormatter = function(regionCode) {
    * @private
    */
   this.defaultCountry_ = regionCode;
-  this.currentMetaData_ = this.getMetadataForRegion_(this.defaultCountry_);
+  this.currentMetadata_ = this.getMetadataForRegion_(this.defaultCountry_);
   /**
    * @type {i18n.phonenumbers.PhoneMetadata}
    * @private
    */
-  this.defaultMetaData_ = this.currentMetaData_;
+  this.defaultMetadata_ = this.currentMetadata_;
 };
 
 
@@ -342,18 +342,18 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.maybeCreateNewTemplate_ =
 
 
 /**
- * @param {string} leadingThreeDigits first three digits of entered number.
+ * @param {string} leadingDigits leading digits of entered number.
  * @private
  */
 i18n.phonenumbers.AsYouTypeFormatter.prototype.getAvailableFormats_ =
-    function(leadingThreeDigits) {
+    function(leadingDigits) {
 
   /** @type {Array.<i18n.phonenumbers.NumberFormat>} */
   var formatList =
       (this.isCompleteNumber_ &&
-           this.currentMetaData_.intlNumberFormatCount() > 0) ?
-      this.currentMetaData_.intlNumberFormatArray() :
-      this.currentMetaData_.numberFormatArray();
+           this.currentMetadata_.intlNumberFormatCount() > 0) ?
+      this.currentMetadata_.intlNumberFormatArray() :
+      this.currentMetadata_.numberFormatArray();
   /** @type {number} */
   var formatListLength = formatList.length;
   for (var i = 0; i < formatListLength; ++i) {
@@ -361,7 +361,7 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.getAvailableFormats_ =
     var format = formatList[i];
     /** @type {boolean} */
     var nationalPrefixIsUsedByCountry =
-        this.currentMetaData_.hasNationalPrefix();
+        this.currentMetadata_.hasNationalPrefix();
     if (!nationalPrefixIsUsedByCountry || this.isCompleteNumber_ ||
         format.getNationalPrefixOptionalWhenFormatting() ||
         this.phoneUtil_.formattingRuleHasFirstGroupOnly(
@@ -371,7 +371,7 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.getAvailableFormats_ =
       }
     }
   }
-  this.narrowDownPossibleFormats_(leadingThreeDigits);
+  this.narrowDownPossibleFormats_(leadingDigits);
 };
 
 
@@ -405,16 +405,18 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.narrowDownPossibleFormats_ =
   for (var i = 0; i < possibleFormatsLength; ++i) {
     /** @type {i18n.phonenumbers.NumberFormat} */
     var format = this.possibleFormats_[i];
-    if (format.leadingDigitsPatternCount() > indexOfLeadingDigitsPattern) {
-      /** @type {string} */
-      var leadingDigitsPattern =
-          format.getLeadingDigitsPatternOrDefault(indexOfLeadingDigitsPattern);
-      if (leadingDigits.search(leadingDigitsPattern) == 0) {
-        possibleFormats.push(this.possibleFormats_[i]);
-      }
-    } else {
-      // else the particular format has no more specific leadingDigitsPattern,
-      // and it should be retained.
+    if (format.leadingDigitsPatternCount() == 0) {
+      // Keep everything that isn't restricted by leading digits.
+      possibleFormats.push(this.possibleFormats_[i]);
+      continue;
+    }
+    /** @type {number} */
+    var lastLeadingDigitsPattern = Math.min(
+        indexOfLeadingDigitsPattern, format.leadingDigitsPatternCount() - 1);
+    /** @type {string} */
+    var leadingDigitsPattern = /** @type {string} */
+        (format.getLeadingDigitsPattern(lastLeadingDigitsPattern));
+    if (leadingDigits.search(leadingDigitsPattern) == 0) {
       possibleFormats.push(this.possibleFormats_[i]);
     }
   }
@@ -505,7 +507,7 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.clear = function() {
   this.lastMatchPosition_ = 0;
   this.currentFormattingPattern_ = '';
   this.prefixBeforeNationalNumber_.clear();
-  this.nationalPrefixExtracted_ = '';
+  this.extractedNationalPrefix_ = '';
   this.nationalNumber_.clear();
   this.ableToFormat_ = true;
   this.inputHasFormatting_ = false;
@@ -515,8 +517,8 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.clear = function() {
   this.isExpectingCountryCallingCode_ = false;
   this.possibleFormats_ = [];
   this.shouldAddSpaceAfterNationalPrefix_ = false;
-  if (this.currentMetaData_ != this.defaultMetaData_) {
-    this.currentMetaData_ = this.getMetadataForRegion_(this.defaultCountry_);
+  if (this.currentMetadata_ != this.defaultMetadata_) {
+    this.currentMetadata_ = this.getMetadataForRegion_(this.defaultCountry_);
   }
 };
 
@@ -617,7 +619,7 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.
         this.isExpectingCountryCallingCode_ = true;
       } else {
         // No IDD or plus sign is found, might be entering in national format.
-        this.nationalPrefixExtracted_ =
+        this.extractedNationalPrefix_ =
             this.removeNationalPrefixFromNationalNumber_();
         return this.attemptToChooseFormattingPattern_();
       }
@@ -630,7 +632,7 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.
             this.nationalNumber_.toString();
       }
       if (this.possibleFormats_.length > 0) {
-        // The formatting pattern is already chosen.
+        // The formatting patterns are already chosen.
         /** @type {string} */
         var tempNationalNumber = this.inputDigitHelper_(nextChar);
         // See if the accrued digits can be formatted properly already. If not,
@@ -665,7 +667,20 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.
   this.ableToFormat_ = true;
   this.isExpectingCountryCallingCode_ = false;
   this.possibleFormats_ = [];
+  this.lastMatchPosition_ = 0;
+  this.formattingTemplate_.clear();
+  this.currentFormattingPattern_ = '';
   return this.attemptToChooseFormattingPattern_();
+};
+
+
+/**
+ * @return {string}
+ * @private
+ */
+i18n.phonenumbers.AsYouTypeFormatter.prototype.getExtractedNationalPrefix_ =
+    function() {
+  return this.extractedNationalPrefix_;
 };
 
 
@@ -678,13 +693,13 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.
  */
 i18n.phonenumbers.AsYouTypeFormatter.prototype.ableToExtractLongerNdd_ =
     function() {
-  if (this.nationalPrefixExtracted_.length > 0) {
+  if (this.extractedNationalPrefix_.length > 0) {
     // Put the extracted NDD back to the national number before attempting to
     // extract a new NDD.
     /** @type {string} */
     var nationalNumberStr = this.nationalNumber_.toString();
     this.nationalNumber_.clear();
-    this.nationalNumber_.append(this.nationalPrefixExtracted_);
+    this.nationalNumber_.append(this.extractedNationalPrefix_);
     this.nationalNumber_.append(nationalNumberStr);
     // Remove the previously extracted NDD from prefixBeforeNationalNumber. We
     // cannot simply set it to empty string because people sometimes incorrectly
@@ -694,12 +709,12 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.ableToExtractLongerNdd_ =
         this.prefixBeforeNationalNumber_.toString();
     /** @type {number} */
     var indexOfPreviousNdd = prefixBeforeNationalNumberStr.lastIndexOf(
-        this.nationalPrefixExtracted_);
+        this.extractedNationalPrefix_);
     this.prefixBeforeNationalNumber_.clear();
     this.prefixBeforeNationalNumber_.append(
         prefixBeforeNationalNumberStr.substring(0, indexOfPreviousNdd));
   }
-  return this.nationalPrefixExtracted_ !=
+  return this.extractedNationalPrefix_ !=
       this.removeNationalPrefixFromNationalNumber_();
 };
 
@@ -831,13 +846,16 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.
 
   /** @type {string} */
   var nationalNumber = this.nationalNumber_.toString();
-  // We start to attempt to format only when as least MIN_LEADING_DIGITS_LENGTH
+  // We start to attempt to format only when at least MIN_LEADING_DIGITS_LENGTH
   // digits of national number (excluding national prefix) have been entered.
   if (nationalNumber.length >=
       i18n.phonenumbers.AsYouTypeFormatter.MIN_LEADING_DIGITS_LENGTH_) {
-    this.getAvailableFormats_(
-        nationalNumber.substring(0,
-            i18n.phonenumbers.AsYouTypeFormatter.MIN_LEADING_DIGITS_LENGTH_));
+    this.getAvailableFormats_(nationalNumber);
+    // See if the accrued digits can be formatted properly already.
+    var formattedNumber = this.attemptToFormatAccruedDigits_();
+    if (formattedNumber.length > 0) {
+      return formattedNumber;
+    }
     return this.maybeCreateNewTemplate_() ?
         this.inputAccruedNationalNumber_() : this.accruedInput_.toString();
   } else {
@@ -887,7 +905,7 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.
   // prefix. The reason is that national significant numbers in NANPA always
   // start with [2-9] after the national prefix. Numbers beginning with 1[01]
   // can only be short/emergency numbers, which don't need the national prefix.
-  if (this.currentMetaData_.getCountryCode() != 1) {
+  if (this.currentMetadata_.getCountryCode() != 1) {
     return false;
   }
   /** @type {string} */
@@ -916,12 +934,14 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.
     this.prefixBeforeNationalNumber_.append('1').append(
         i18n.phonenumbers.AsYouTypeFormatter.SEPARATOR_BEFORE_NATIONAL_NUMBER_);
     this.isCompleteNumber_ = true;
-  } else if (this.currentMetaData_.hasNationalPrefixForParsing()) {
+  } else if (this.currentMetadata_.hasNationalPrefixForParsing()) {
     /** @type {RegExp} */
     var nationalPrefixForParsing = new RegExp(
-        '^(?:' + this.currentMetaData_.getNationalPrefixForParsing() + ')');
+        '^(?:' + this.currentMetadata_.getNationalPrefixForParsing() + ')');
     /** @type {Array.<string>} */
     var m = nationalNumber.match(nationalPrefixForParsing);
+    // Since some national prefix patterns are entirely optional, check that a
+    // national prefix could actually be extracted.
     if (m != null && m[0] != null && m[0].length > 0) {
       // When the national prefix is detected, we use international formatting
       // rules instead of national ones, because national formatting rules could
@@ -955,7 +975,7 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.attemptToExtractIdd_ =
   /** @type {RegExp} */
   var internationalPrefix = new RegExp(
       '^(?:' + '\\' + i18n.phonenumbers.PhoneNumberUtil.PLUS_SIGN + '|' +
-      this.currentMetaData_.getInternationalPrefix() + ')');
+      this.currentMetadata_.getInternationalPrefix() + ')');
   /** @type {Array.<string>} */
   var m = accruedInputWithoutFormatting.match(internationalPrefix);
   if (m != null && m[0] != null && m[0].length > 0) {
@@ -1008,15 +1028,18 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.
   var newRegionCode = this.phoneUtil_.getRegionCodeForCountryCode(countryCode);
   if (i18n.phonenumbers.PhoneNumberUtil.REGION_CODE_FOR_NON_GEO_ENTITY ==
       newRegionCode) {
-    this.currentMetaData_ =
+    this.currentMetadata_ =
         this.phoneUtil_.getMetadataForNonGeographicalRegion(countryCode);
   } else if (newRegionCode != this.defaultCountry_) {
-    this.currentMetaData_ = this.getMetadataForRegion_(newRegionCode);
+    this.currentMetadata_ = this.getMetadataForRegion_(newRegionCode);
   }
   /** @type {string} */
   var countryCodeString = '' + countryCode;
   this.prefixBeforeNationalNumber_.append(countryCodeString).append(
       i18n.phonenumbers.AsYouTypeFormatter.SEPARATOR_BEFORE_NATIONAL_NUMBER_);
+  // When we have successfully extracted the IDD, the previously extracted NDD
+  // should be cleared because it is no longer valid.
+  this.extractedNationalPrefix_ = '';
   return true;
 };
 
@@ -1063,6 +1086,8 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.
 i18n.phonenumbers.AsYouTypeFormatter.prototype.inputDigitHelper_ =
     function(nextChar) {
 
+  // Note that formattingTemplate is not guaranteed to have a value, it could be
+  // empty, e.g. when the next digit is entered after extracting an IDD or NDD.
   /** @type {string} */
   var formattingTemplate = this.formattingTemplate_.toString();
   if (formattingTemplate.substring(this.lastMatchPosition_)

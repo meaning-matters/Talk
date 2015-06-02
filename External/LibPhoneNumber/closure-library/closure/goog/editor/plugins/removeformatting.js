@@ -29,6 +29,7 @@ goog.require('goog.editor.Plugin');
 goog.require('goog.editor.node');
 goog.require('goog.editor.range');
 goog.require('goog.string');
+goog.require('goog.userAgent');
 
 
 
@@ -36,6 +37,7 @@ goog.require('goog.string');
  * A plugin to handle removing formatting from selected text.
  * @constructor
  * @extends {goog.editor.Plugin}
+ * @final
  */
 goog.editor.plugins.RemoveFormatting = function() {
   goog.editor.Plugin.call(this);
@@ -70,7 +72,7 @@ goog.editor.plugins.RemoveFormatting.BLOCK_RE_ =
 
 /**
  * Appends a new line to a string buffer.
- * @param {Array.<string>} sb The string buffer to add to.
+ * @param {Array<string>} sb The string buffer to add to.
  * @private
  */
 goog.editor.plugins.RemoveFormatting.appendNewline_ = function(sb) {
@@ -85,7 +87,7 @@ goog.editor.plugins.RemoveFormatting.appendNewline_ = function(sb) {
  *    range as the beginning of the new range.
  * @param {goog.dom.AbstractRange} endRange Use the end point of this
  *    range as the end of the new range.
- * @return {goog.dom.AbstractRange} The new range.
+ * @return {!goog.dom.AbstractRange} The new range.
  * @private
  */
 goog.editor.plugins.RemoveFormatting.createRangeDelimitedByRanges_ = function(
@@ -172,7 +174,8 @@ goog.editor.plugins.RemoveFormatting.prototype.removeFormatting_ = function() {
       // breaking spaces.
       // Old versions of WebKit (Safari 3, Chrome 1) incorrectly match /u00A0
       // and newer versions properly match &nbsp;.
-      var nbspRegExp = goog.userAgent.isVersion('528') ? /&nbsp;/g : /\u00A0/g;
+      var nbspRegExp =
+          goog.userAgent.isVersionOrHigher('528') ? /&nbsp;/g : /\u00A0/g;
       return text.replace(nbspRegExp, ' ');
     });
   }
@@ -185,9 +188,16 @@ goog.editor.plugins.RemoveFormatting.prototype.removeFormatting_ = function() {
  * @return {Node} The table, or null if one was not found.
  * @private
  */
-goog.editor.plugins.RemoveFormatting.getTableAncestor_ = function(nodeToCheck) {
-  return goog.dom.getAncestor(nodeToCheck,
-      function(node) { return node.tagName == goog.dom.TagName.TABLE; }, true);
+goog.editor.plugins.RemoveFormatting.prototype.getTableAncestor_ = function(
+    nodeToCheck) {
+  var fieldElement = this.getFieldObject().getElement();
+  while (nodeToCheck && nodeToCheck != fieldElement) {
+    if (nodeToCheck.tagName == goog.dom.TagName.TABLE) {
+      return nodeToCheck;
+    }
+    nodeToCheck = nodeToCheck.parentNode;
+  }
+  return null;
 };
 
 
@@ -276,11 +286,11 @@ goog.editor.plugins.RemoveFormatting.prototype.pasteHtml_ = function(html) {
     // remove parentNodes of the span while they are empty.
 
     if (goog.userAgent.GECKO) {
-      parent.innerHTML =
-          parent.innerHTML.replace(dummyImageNodePattern, html);
+      goog.editor.node.replaceInnerHtml(parent,
+          parent.innerHTML.replace(dummyImageNodePattern, html));
     } else {
-      parent.innerHTML =
-          parent.innerHTML.replace(dummyImageNodePattern, dummySpanText);
+      goog.editor.node.replaceInnerHtml(parent,
+          parent.innerHTML.replace(dummyImageNodePattern, dummySpanText));
       var dummySpan = dh.getElement(dummyNodeId);
       parent = dummySpan;
       while ((parent = dummySpan.parentNode) &&
@@ -300,8 +310,8 @@ goog.editor.plugins.RemoveFormatting.prototype.pasteHtml_ = function(html) {
         goog.dom.insertSiblingAfter(dummySpan, parent);
         goog.dom.removeNode(parent);
       }
-      parent.innerHTML =
-          parent.innerHTML.replace(new RegExp(dummySpanText, 'i'), html);
+      goog.editor.node.replaceInnerHtml(parent,
+          parent.innerHTML.replace(new RegExp(dummySpanText, 'i'), html));
     }
   }
 
@@ -327,7 +337,7 @@ goog.editor.plugins.RemoveFormatting.prototype.pasteHtml_ = function(html) {
  * @private
  */
 goog.editor.plugins.RemoveFormatting.prototype.getHtmlText_ = function(range) {
-  var div = this.getFieldDomHelper().createDom('div');
+  var div = this.getFieldDomHelper().createDom(goog.dom.TagName.DIV);
   var textRange = range.getBrowserRangeObject();
 
   if (goog.editor.BrowserFeature.HAS_W3C_RANGES) {
@@ -370,7 +380,7 @@ goog.editor.plugins.RemoveFormatting.prototype.getHtmlText_ = function(range) {
  * @param {goog.dom.AbstractRange} range The range to adjust.
  * @param {Node} startInTable Table node that the range starts in.
  * @param {Node} endInTable Table node that the range ends in.
- * @return {goog.dom.SavedCaretRange} Range to use to restore the
+ * @return {!goog.dom.SavedCaretRange} Range to use to restore the
  *     selection after we run our custom remove formatting.
  * @private
  */
@@ -495,10 +505,8 @@ goog.editor.plugins.RemoveFormatting.prototype.convertSelectedHtmlText_ =
     var expandedRange = goog.editor.range.expand(range,
         this.getFieldObject().getElement());
 
-    var startInTable = goog.editor.plugins.RemoveFormatting.getTableAncestor_(
-        expandedRange.getStartNode());
-    var endInTable = goog.editor.plugins.RemoveFormatting.getTableAncestor_(
-        expandedRange.getEndNode());
+    var startInTable = this.getTableAncestor_(expandedRange.getStartNode());
+    var endInTable = this.getTableAncestor_(expandedRange.getEndNode());
 
     if (startInTable || endInTable) {
       if (startInTable == endInTable) {
@@ -574,7 +582,7 @@ goog.editor.plugins.RemoveFormatting.prototype.convertSelectedHtmlText_ =
  */
 goog.editor.plugins.RemoveFormatting.prototype.removeFormattingWorker_ =
     function(html) {
-  var el = goog.dom.createElement('div');
+  var el = goog.dom.createElement(goog.dom.TagName.DIV);
   el.innerHTML = html;
 
   // Put everything into a string buffer to avoid lots of expensive string
