@@ -397,13 +397,19 @@ static NSUserDefaults* userDefaults;
 
 - (NSString*)dnsHost
 {
-    return @"_https._tcp.numberbay.com";
+    return @"_api._tcp.numberbay.com";
 }
 
 
 - (NSString*)defaultServer
 {
     return @"api.numberbay.com";
+}
+
+
+- (NSString*)serverTestUrlPath
+{
+    return @"/test/amazon";
 }
 
 @end

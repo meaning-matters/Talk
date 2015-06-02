@@ -29,6 +29,9 @@
 #import "CountriesViewController.h"
 
 
+#import "WebClient.h"
+
+
 @interface AppDelegate ()
 {
     UIImageView*    defaultFadeImage;
@@ -111,6 +114,13 @@
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"6abff73fa5eb64771ac8a5124ebc33f5" delegate:self];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
+
+    WebClient* webClient = [WebClient sharedClient];
+    [webClient retrieveCallRates:^(NSError *error, NSArray *rates)
+    {
+        ;
+    }];
+
 
     return YES;
 }

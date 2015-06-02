@@ -10,7 +10,7 @@
 
 
 #import "WebClient.h"
-#import "FailoverWebInterface.h"
+#import "WebInterface.h"
 #import "AFNetworkActivityIndicatorManager.h"
 #import "Settings.h"
 #import "Common.h"
@@ -20,9 +20,9 @@
 
 static NSDictionary* statuses;
 
-@interface WebClient () <FailoverDelegate>
+@interface WebClient () <WebInterfaceDelegate>
 
-@property (nonatomic, strong) FailoverWebInterface* webInterface;
+@property (nonatomic, strong) WebInterface* webInterface;
 
 @end
 
@@ -40,8 +40,7 @@ static NSDictionary* statuses;
     {
         sharedInstance                       = [[self alloc] init];
 
-        sharedInstance.webInterface          = [FailoverWebInterface sharedInterface];
-        sharedInstance.webInterface.dnsHost  = @"_https._tcp.numberbay.com";
+        sharedInstance.webInterface          = [WebInterface sharedInterface];
         sharedInstance.webInterface.delegate = sharedInstance;
 
         statuses = @{@"OK"                           : @(WebClientStatusOk),
@@ -67,7 +66,7 @@ static NSDictionary* statuses;
 }
 
 
-#pragma mark - FailoverDelegate
+#pragma mark - WebInterfaceDelegate
 
 - (NSString*)modifyServer:(NSString*)server
 {

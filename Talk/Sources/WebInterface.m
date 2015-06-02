@@ -1,52 +1,70 @@
 //
-//  FailoverWebInterface.m
+//  WebInterface.m
 //  Talk
 //
 //  Created by Dev on 9/9/14.
 //  Copyright (c) 2014 Cornelis van der Bent. All rights reserved.
 //
-//  Apple's sample SRV resolver: https://developer.apple.com/library/mac/samplecode/SRVResolver/Introduction/Intro.html
+//  The server list is DNS-refreshed when it's empty, when the shortest TTL of
+//  all servers has expired, or when one of the servers returned a failure;
+//  so not when HTTPS request timed out for example).  The code below adds
+//  60 seconds to the expiry time to make sure that our refresh is well after
+//  the TTL has expired; this to make sure we get fresh values from iOS' DNS
+//  cache.
+//
+//  The new list of servers is tested.  Servers that fail, are removed from
+//  the list; they get a new chance on the next refresh.
+//
+//  The sequence in which the servers are used for API calls, is determined
+//  by their DNS SRV priority and weight.  Only the highest priority servers
+//  will be used.  Subsequently these highest priority servers will be used
+//  in weighted round-robin fashion.
+//
+//  The round-robin scheme works as follows: A so called 'weighter' value is
+//  incremented with the GCD of weights of the servers with highest priority.
+//  Image the weights of the used servers are lined up along a line that has
+//  a length of weightSum.  Then imagine a parallel line with a length equal
+//  to weighter % weighterSum (which is less than weighterSum).  This line
+//  ends at one of the server's weights, which is the server that is selected.
+//  Finally the weighter is incremented with weighterIncrement (which is, as
+//  said, the GCD of the weights).
 //
 
 #import <objc/runtime.h>
 #import <dns_sd.h>
 #import <dns_util.h>
-#import "FailoverWebInterface.h"
+#import "WebInterface.h"
 #import "Common.h"
 #import "Settings.h"
 #import "AFNetworking.h"
-#import "RetryRequest.h"
 
 
-@interface FailoverWebInterface ()
+@interface WebInterface ()
 
 @property (nonatomic, assign) NSTimeInterval  dnsUpdateTimeout; // Seconds.
-@property (atomic, assign)    uint32_t        ttl;              // Seconds.
-@property (atomic, strong)    NSDate*         dnsUpdateDate;
-@property (atomic, strong)    NSMutableArray* serversQueue;
-@property (atomic, strong)    NSMutableArray* fetchedServers;
+@property (nonatomic, strong) NSDate*         dnsUpdateDate;
+@property (atomic, assign)    uint32_t        ttl;              // Shortest TTL of servers, in seconds.
+@property (nonatomic, strong) NSMutableArray* servers;
+@property (nonatomic, strong) NSMutableArray* updatingServers;
+@property (nonatomic, assign) int             weightSum;
+@property (nonatomic, assign) int             weighter;
+@property (nonatomic, assign) int             weighterIncrement;
 
 @end
 
 
-@implementation FailoverWebInterface
+@implementation WebInterface
 
-+ (FailoverWebInterface*)sharedInterface
++ (WebInterface*)sharedInterface
 {
-    static FailoverWebInterface* sharedInstance;
-    static dispatch_once_t       onceToken;
+    static WebInterface*   sharedInstance;
+    static dispatch_once_t onceToken;
 
     dispatch_once(&onceToken, ^
     {
-        sharedInstance = [[FailoverWebInterface alloc] init];
+        sharedInstance = [[WebInterface alloc] init];
 
-        sharedInstance.timeout            = 20;
-        sharedInstance.retries            =  2;
-        sharedInstance.delay              =  0.25;
-        sharedInstance.serversQueue       = [NSMutableArray new];
-        sharedInstance.fetchedServers     = [NSMutableArray new];
         sharedInstance.dnsUpdateTimeout   = 20;
-
         sharedInstance.requestSerializer  = [AFJSONRequestSerializer serializer];
         [sharedInstance.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
         [sharedInstance.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
@@ -62,40 +80,40 @@
 }
 
 
-// TODO Implement flushing cache: https://developer.apple.com/library/mac/documentation/Networking/Conceptual/NSNetServiceProgGuide/Articles/ResolvingServices.html DNSServiceReconfirmRecord
-- (NSUInteger)updateDnsRecords
+- (void)updateServers
 {
     // Allow only one thread to update the server list.
     @synchronized(self)
     {
-        if (self.serversQueue.count == 0 || [[NSDate date] timeIntervalSinceDate:self.dnsUpdateDate] > self.ttl)
+        if (self.servers.count == 0 || [[NSDate date] timeIntervalSinceDate:self.dnsUpdateDate] > (self.ttl + 60))
         {
-            [self.fetchedServers removeAllObjects];
+            self.updatingServers = [NSMutableArray array];
+            self.ttl             = UINT32_MAX;
 
             NBLog(@"Start DNS update.");
             DNSServiceRef       sdRef;
-            DNSServiceErrorType err;
+            DNSServiceErrorType error;
 
-            const char* host = [self.dnsHost UTF8String];
+            const char* host = [[Settings sharedSettings].dnsHost UTF8String];
             if (host != NULL)
             {
                 NSTimeInterval remainingTime = self.dnsUpdateTimeout;
                 NSDate*        startTime     = [NSDate date];
 
-                err = DNSServiceQueryRecord(&sdRef,
-                                            0,
-                                            0,
-                                            host,
-                                            kDNSServiceType_SRV,
-                                            kDNSServiceClass_IN,
-                                            processDnsReply,
-                                            &remainingTime);
+                error = DNSServiceQueryRecord(&sdRef,
+                                              0,
+                                              0,
+                                              host,
+                                              kDNSServiceType_SRV,
+                                              kDNSServiceClass_IN,
+                                              processDnsReply,
+                                              &remainingTime);
 
-                if (err != kDNSServiceErr_NoError)
+                if (error != kDNSServiceErr_NoError)
                 {
-                    NBLog(@"DNS SRV query failed: %d", err);
+                    NBLog(@"DNS SRV query failed: %d.", error);
 
-                    return self.serversQueue.count;
+                    goto done;
                 }
 
                 // This is necessary so we don't hang forever if there are no results
@@ -118,8 +136,8 @@
                     {
                         if (FD_ISSET(dns_sd_fd, &readfds))
                         {
-                            err = DNSServiceProcessResult(sdRef);
-                            if (err != kDNSServiceErr_NoError)
+                            error = DNSServiceProcessResult(sdRef);
+                            if (error != kDNSServiceErr_NoError)
                             {
                                 NBLog(@"There was an error reading the DNS SRV records.");
                                 break;
@@ -145,7 +163,7 @@
                             break;
                         }
                     }
-                    
+
                     if (remainingTime > 0)
                     {
                         NSTimeInterval elapsed = [[NSDate date] timeIntervalSinceDate:startTime];
@@ -160,7 +178,10 @@
                 else if (remainingTime <= 0)
                 {
                     NBLog(@"DNS update done.");
-                    [self replaceServers];
+
+                    self.servers = self.updatingServers;
+                    [self testServers];
+                    [self prepareServers];
                 }
                 else
                 {
@@ -171,7 +192,15 @@
             }
         }
 
-        return self.serversQueue.count;
+    done:
+        if (self.servers.count == 0)
+        {
+            NSDictionary* server = @{@"target"   : [Settings sharedSettings].defaultServer,
+                                     @"priority" : @(1),
+                                     @"weight"   : @(100),
+                                     @"ttl"      : @(1800)};
+            self.servers = [NSMutableArray arrayWithObject:server];
+        }
     }
 }
 
@@ -247,9 +276,17 @@ static void processDnsReply(DNSServiceRef       sdRef,
         NSString* target = [NSString stringWithCString:rr->data.SRV->target encoding:NSASCIIStringEncoding];
         if (target != nil)
         {
-            uint16_t priority = rr->data.SRV->priority;
+            [WebInterface sharedInterface].ttl = MIN([WebInterface sharedInterface].ttl, ttl);
 
-            [[FailoverWebInterface sharedInterface] addServer:target priority:priority ttl:ttl];
+            uint16_t priority = rr->data.SRV->priority;
+            uint16_t weight   = rr->data.SRV->weight;
+
+            NSDictionary* server = @{@"target"   : target,
+                                     @"priority" : @(priority),
+                                     @"weight"   : @(weight),
+                                     @"ttl"      : @(ttl)};
+
+            [[WebInterface sharedInterface].updatingServers addObject:server];
         }
     }
     else
@@ -257,175 +294,121 @@ static void processDnsReply(DNSServiceRef       sdRef,
         // Notify updateDnsRecords that something went wrong.
         *remainingTime = DBL_MIN;
     }
-
+    
     dns_free_resource_record(rr);
 }
 
 
-- (void)addServer:(NSString*)server
-         priority:(uint16_t)priority
-              ttl:(uint32_t)ttl
+- (void)testServers
 {
-    if ([self.delegate respondsToSelector:@selector(modifyServer:)] == YES)
+    NSMutableArray* testServers = [NSMutableArray array];
+
+    for (NSDictionary* server in self.servers)
     {
-        server = [self.delegate modifyServer:server];
+        NSString* urlString = [NSString stringWithFormat:@"https://%@/%@",
+                                                         server[@"target"],
+                                                         [Settings sharedSettings].serverTestUrlPath];
+
+        NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString] options:NSDataReadingUncached
+                                               error:nil];
+        if (data != nil && [[Common objectWithJsonData:data][@"status"] isEqualToString:@"OK"])
+        {
+            [testServers addObject:server];
+        }
     }
 
-    NSDictionary* info = @{@"host":server, @"order":@(priority), @"priority":@(priority), @"ttl":@(ttl)};
-
-    [self.fetchedServers addObject:[info mutableCopy]];
+    self.servers = testServers;
 }
 
 
-- (void)replaceServers
+- (void)prepareServers
 {
-    if (self.fetchedServers.count > 0)
+    // Sort servers in descending priority order.
+    [self.servers sortUsingComparator:^NSComparisonResult(NSDictionary* server1, NSDictionary* server2)
     {
-        self.ttl = INT_MAX;
-        for (NSDictionary* info in self.fetchedServers)
-        {
-            self.ttl = MIN(self.ttl, [info[@"ttl"] intValue]);
-        }
-
-        self.dnsUpdateDate = [NSDate date];
-        self.serversQueue  = self.fetchedServers;
-    }
-
-    [self.serversQueue sortUsingComparator:^(NSDictionary* info1, NSDictionary* info2)
-    {
-         if (info1[@"order"] > info2[@"order"])
-         {
-             return (NSComparisonResult)NSOrderedDescending;
-         }
-         else if (info1[@"order"] < info2[@"order"])
-         {
-             return (NSComparisonResult)NSOrderedAscending;
-         }
-         else
-         {
-             return (NSComparisonResult)NSOrderedSame;
-         }
+        return [server1[@"priority"] intValue] > [server2[@"priority"] intValue];
     }];
-}
 
-
-// It's assumed that this method never returns nil.
-- (NSString*)getServer
-{
-    @synchronized(self)
+    self.weightSum = 0;
+    int weightMin = INT_MAX;
+    int priority = [self.servers[0][@"priority"] intValue];
+    for (NSDictionary* server in self.servers)
     {
-        if (self.serversQueue.count > 0)
+        if ([server[@"priority"] intValue] == priority)
         {
-            return [self.serversQueue[0][@"host"] copy];
-        }
-        else
-        {
-            return [Settings sharedSettings].defaultServer;
+            int weight = [server[@"weight"] intValue];
+            self.weightSum += weight;
+
+            weightMin = MIN(weightMin, weight);
         }
     }
-}
 
-
-// Update the server order by inserting the top server in a proper position.
-- (void)reorderServersWithSuccess:(BOOL)success
-{
-    @synchronized(self)
+    // Find weightIncrement as GCD of all weights.
+    self.weighterIncrement = 1;
+    for (int divisor = 2; divisor <= weightMin; divisor++)
     {
-        if (self.serversQueue.count == 0)
+        BOOL isDivisor;
+        for (NSDictionary* server in self.servers)
         {
-            return;
-        }
+            int weight = [server[@"weight"] intValue];
+            isDivisor = (weight % divisor) == 0;
 
-        // Pop the top/used server.
-        NSMutableDictionary* topServer = [self.serversQueue objectAtIndex:0];
-        [self.serversQueue removeObjectAtIndex:0];
-
-        // Push back the top/used server 1 step on success the number of servers on failure.
-        NSUInteger step = success ? 1 : self.serversQueue.count;
-        topServer[@"order"] = @([topServer[@"order"] intValue] + [topServer[@"priority"] intValue] + step);
-
-        NSUInteger index = self.serversQueue.count;
-        for (NSUInteger i = 0; i < self.serversQueue.count; i++)
-        {
-            if ([topServer[@"order"] intValue] < [self.serversQueue[i][@"order"] intValue])
+            if (isDivisor == NO)
             {
-                index = i;
                 break;
             }
         }
 
-        [self.serversQueue insertObject:topServer atIndex:index];
+        if (isDivisor)
+        {
+            self.weighterIncrement = divisor;
+        }
     }
 }
 
 
-- (void)networkRequestFail:(FailoverOperation*)notificationOperation
+- (NSString*)selectServer
 {
-    NBLog(@"networkRequestFail");
+    [self updateServers];
 
-    NSDictionary* headers = [(NSURLRequest*)notificationOperation.request allHTTPHeaderFields];
-    if (![FailoverOperation hasIgnoreStartHeader:headers])
+    NSString* target;
+    int       priority = [self.servers[0][@"priority"] intValue];
+
+    int weighter = 0;
+    for (NSDictionary* server in self.servers)
     {
-        [notificationOperation cancel];
-        
-        NSURLRequest*        request        = notificationOperation.request;
-        NSMutableURLRequest* mutableRequest = [request mutableCopy];
-        [mutableRequest addValue:@"true" forHTTPHeaderField:@"IgnoreClientStartRetry"];
-        request = [mutableRequest copy];
-
-        FailoverOperation* operationCopy = [FailoverOperation operationWithOperation:notificationOperation
-                                                                             request:request];
-        
-        [operationCopy setCompletionBlockWithSuccess:^(AFHTTPRequestOperation* operation, id responseObject)
+        if ([server[@"priority"] intValue] == priority)
         {
-            FailoverOperation* operationFailover = (FailoverOperation*)operation;
-            operationFailover.success(operation, responseObject);
+            weighter += [server[@"weight"] intValue];
+
+            if ((self.weighter % self.weightSum) < weighter)
+            {
+                target = server[@"target"];
+                break;
+            }
         }
-                                             failure:^(AFHTTPRequestOperation* operation, NSError* error)
-        {
-            NSHTTPURLResponse* httpResponse = operation.response;
-
-            if (httpResponse.statusCode / 100 == 4)// failure considered, so start the retry algorithm
-            {
-                NBLog(@"%@: Retry triggered at:%@", operation.request.URL, [NSDate new]);
-
-                RetryRequest* retry = [RetryRequest new];
-
-                // Run retry algorithm.
-                [retry tryMakeRequest:operation];
-            }
-            else
-            {
-                FailoverOperation* operationFailover = (FailoverOperation*)operation;
-                operationFailover.failure(operation, error);
-            }
-        }];
-        
-        [[self operationQueue] addOperation:operationCopy];
     }
+
+    self.weighter += self.weighterIncrement;
+
+    return target;
 }
 
 
 #pragma mark WebClient mapping methods
 
-- (FailoverOperation*)failoverOperationWithRequest:(NSURLRequest*)request
-                                           success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
-                                           failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
+- (AFHTTPRequestOperation*)RequestOperationWithRequest:(NSURLRequest*)request
+                                               success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
+                                               failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
 {
-    FailoverOperation* operation = [[FailoverOperation alloc] initWithRequest:request];
+    AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 
     operation.responseSerializer = self.responseSerializer;
     [operation setResponseSerializer:[AFJSONResponseSerializer serializer]]; // force json response serializer
     operation.shouldUseCredentialStorage = self.shouldUseCredentialStorage;
     operation.credential                 = self.credential;
     operation.securityPolicy             = self.securityPolicy;
-    operation.startTime                  = [NSDate date];
-    operation.serverStates               = [NSMutableDictionary dictionary];
-    for (NSString* server in self.serversQueue)
-    {
-        operation.serverStates[server] = @(self.retries);
-    }
-    
+
     [operation setCompletionBlockWithSuccess:success failure:failure];
     operation.completionQueue = self.completionQueue;
     operation.completionGroup = self.completionGroup;
@@ -442,22 +425,18 @@ static void processDnsReply(DNSServiceRef       sdRef,
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
     {
-        [self updateDnsRecords];
-
         [self.requestSerializer setAuthorizationHeaderFieldWithUsername:[self.delegate webUsername]
                                                                password:[self.delegate webPassword]];
 
-        NSString* urlString = [NSString stringWithFormat:@"https://%@%@", [self getServer], path];
+        NSString* urlString = [NSString stringWithFormat:@"https://%@%@", [self selectServer], path];
         NSMutableURLRequest* request   = [self.requestSerializer requestWithMethod:method
                                                                          URLString:urlString
                                                                         parameters:parameters
                                                                              error:nil];    //### Is 'nil' okay?
 
-        FailoverOperation* operation = [self failoverOperationWithRequest:request success:success failure:failure];
+        AFHTTPRequestOperation* operation = [self RequestOperationWithRequest:request success:success failure:failure];
 
         NSLog(@"%@", [operation.request.URL path]);
-        operation.success = success;
-        operation.failure = failure;
         [self.operationQueue addOperation:operation];
     });
 }
@@ -503,7 +482,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
     {
-        for (FailoverOperation* operation in self.operationQueue.operations)
+        for (AFHTTPRequestOperation* operation in self.operationQueue.operations)
         {
             if ([operation.request.HTTPMethod isEqualToString:method] &&
                 [operation.request.URL.path   isEqualToString:path])
