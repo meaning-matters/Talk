@@ -95,8 +95,11 @@
 
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
-#warning Don't forget to remove, and to switch to NO 'Application supports iTunes file sharing' in .plist.
-    // [Common redirectStderrToFile];
+#ifdef REDIRECT_LOGS_TO_FILE
+    // To do this, change 'Application supports iTunes file sharing' in .plist to YES.
+    #warning Don't forget to remove, and to switch to NO 'Application supports iTunes file sharing' in .plist.
+    [Common redirectStderrToFile];
+#endif
 
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge |
                                                                           UIRemoteNotificationTypeSound |
@@ -114,13 +117,6 @@
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"6abff73fa5eb64771ac8a5124ebc33f5" delegate:self];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
-
-    WebClient* webClient = [WebClient sharedClient];
-    [webClient retrieveCallRates:^(NSError *error, NSArray *rates)
-    {
-        ;
-    }];
-
 
     return YES;
 }
