@@ -379,7 +379,7 @@ static NSUserDefaults* userDefaults;
 
 - (NSString*)companyNameAddress
 {
-    return @"NumberBay Ltd.\n100 Barbirolli Square\nManchester M2 3AB\nUnited Kingdom";
+    return @"NumberBay Ltd.\nSuite 101\n128 Aldersgate Street\nLondon EC1A 4AE\nUnited Kingdom";
 }
 
 
