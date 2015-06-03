@@ -72,7 +72,7 @@
     }
     else
     {
-        NSLog(@"No country name available for code %@.", isoCountryCode);
+        NBLog(@"No country name available for code %@.", isoCountryCode);
 
         return nil;
     }
@@ -89,7 +89,7 @@
     }
     else
     {
-        NSLog(@"No country code available for name %@.", countryName);
+        NBLog(@"No country code available for name %@.", countryName);
 
         return nil;
     }

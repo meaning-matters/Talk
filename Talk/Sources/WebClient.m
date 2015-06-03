@@ -1294,7 +1294,7 @@ static NSDictionary* statuses;
 // 0A.
 - (void)cancelAllRetrieveCallRates
 {
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:@"/rates/calls"];
 }
 
@@ -1302,7 +1302,7 @@ static NSDictionary* statuses;
 // 0B.
 - (void)cancelAllRetrieveNumberRates
 {
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:@"/rates/numbers"];
 }
 
@@ -1310,7 +1310,7 @@ static NSDictionary* statuses;
 // 1.
 - (void)cancelAllRetrieveWebAccount
 {
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"POST"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
                                                     path:@"/users"];
 }
 
@@ -1320,7 +1320,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"POST"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
                                                     path:[NSString stringWithFormat:@"/users/%@/verification",
                                                           username]];
 }
@@ -1331,7 +1331,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"PUT"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
                                                     path:[NSString stringWithFormat:@"/users/%@/verification",
                                                           username]];
 }
@@ -1342,7 +1342,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/users/%@/verification",
                                                           username]];
 }
@@ -1353,7 +1353,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"DELETE"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
                                                     path:[NSString stringWithFormat:@"/users/%@/verification",
                                                           username]];
 }
@@ -1365,7 +1365,7 @@ static NSDictionary* statuses;
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"POST"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
                                                     path:[NSString stringWithFormat:@"/users/%@/verification/numbers/%@",
                                                           username, number]];
 }
@@ -1376,7 +1376,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/users/%@/verification/numbers",
                                                           username]];
 }
@@ -1388,7 +1388,7 @@ static NSDictionary* statuses;
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/users/%@/verification/numbers/%@",
                                                           username, number]];
 }
@@ -1400,7 +1400,7 @@ static NSDictionary* statuses;
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"DELETE"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
                                                     path:[NSString stringWithFormat:@"/users/%@/verification/numbers/%@",
                                                           username, number]];
 }
@@ -1409,7 +1409,7 @@ static NSDictionary* statuses;
 // 6.
 - (void)cancelAllRetrieveNumberCountries
 {
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:@"/numbers/countries"];
 }
 
@@ -1417,7 +1417,7 @@ static NSDictionary* statuses;
 // 7.
 - (void)cancelAllRetrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode
 {
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/numbers/countries/%@/states",
                                                           isoCountryCode]];
 }
@@ -1426,7 +1426,7 @@ static NSDictionary* statuses;
 // 8A.
 - (void)cancelAllRetrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode stateCode:(NSString*)stateCode
 {
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/numbers/countries/%@/states/%@/areas",
                                                           isoCountryCode, stateCode]];
 }
@@ -1435,7 +1435,7 @@ static NSDictionary* statuses;
 // 8B.
 - (void)cancelAllRetrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
 {
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/numbers/countries/%@/areas",
                                                           isoCountryCode]];
 }
@@ -1444,7 +1444,7 @@ static NSDictionary* statuses;
 // 9.
 - (void)cancelAllRetrieveAreaInfoForIsoCountryCode:(NSString*)isoCountryCode areaCode:(NSString*)areaCode
 {
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/numbers/countries/%@/areas/%@",
                                                           isoCountryCode, areaCode]];
 }
@@ -1453,7 +1453,7 @@ static NSDictionary* statuses;
 // 10.
 - (void)cancelAllCheckPurchaseInfo
 {
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"POST"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
                                                     path:@"/numbers/check"];
 }
 
@@ -1463,7 +1463,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"POST"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
                                                     path:[NSString stringWithFormat:@"/users/%@/numbers",
                                                           username]];
 }
@@ -1475,7 +1475,7 @@ static NSDictionary* statuses;
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"POST"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
                                                     path:[NSString stringWithFormat:@"/users/%@/numbers/%@",
                                                           username, number]];
 }
@@ -1487,7 +1487,7 @@ static NSDictionary* statuses;
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"PUT"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
                                                     path:[NSString stringWithFormat:@"/users/%@/numbers/%@",
                                                           username, number]];
 }
@@ -1496,7 +1496,7 @@ static NSDictionary* statuses;
 // 12.
 - (void)cancelAllRetrieveNumberE164List
 {
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/users/%@/numbers",
                                                           [Settings sharedSettings].webUsername]];
 }
@@ -1508,7 +1508,7 @@ static NSDictionary* statuses;
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/users/%@/numbers/%@",
                                                           username, number]];
 }
@@ -1517,7 +1517,7 @@ static NSDictionary* statuses;
 // 14.
 - (void)cancelAllPurchaseCredit
 {
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"POST"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
                                                     path:[NSString stringWithFormat:@"/users/%@/credit",
                                                           [Settings sharedSettings].webUsername]];
 }
@@ -1528,7 +1528,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/users/%@/credit",
                                                           username]];
 }
@@ -1537,7 +1537,7 @@ static NSDictionary* statuses;
 // 16.
 - (void)cancelAllRetrieveCallRateForE164:(NSString*)e164
 {
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/rate/%@",
                                                           [e164 substringFromIndex:1]]];
 }
@@ -1548,7 +1548,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"PUT"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
                                                     path:[NSString stringWithFormat:@"/users/%@/ivr/%@",
                                                           username, uuid]];
 }
@@ -1559,7 +1559,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"POST"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
                                                     path:[NSString stringWithFormat:@"/users/%@/ivr/%@",
                                                           username, uuid]];
 }
@@ -1570,7 +1570,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"DELETE"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
                                                     path:[NSString stringWithFormat:@"/users/%@/ivr/%@",
                                                           username, uuid]];
 }
@@ -1581,7 +1581,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/users/%@/ivr",
                                                           username]];
 }
@@ -1592,7 +1592,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/users/%@/ivr/%@",
                                                           username, uuid]];
 }
@@ -1604,7 +1604,7 @@ static NSDictionary* statuses;
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"PUT"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
                                                     path:[NSString stringWithFormat:@"/users/%@/numbers/%@/ivr",
                                                           username, number]];
 }
@@ -1615,7 +1615,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"POST"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
                                                     path:[NSString stringWithFormat:@"/users/%@/callback",
                                                           username]];
 }
@@ -1626,7 +1626,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"DELETE"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
                                                     path:[NSString stringWithFormat:@"/users/%@/callback/%@",
                                                           username, uuid]];
 }
@@ -1637,7 +1637,7 @@ static NSDictionary* statuses;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHTTPOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/users/%@/callback/%@",
                                                           username, uuid]];
 }

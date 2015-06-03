@@ -437,7 +437,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
 
         AFHTTPRequestOperation* operation = [self RequestOperationWithRequest:request success:success failure:failure];
 
-        NSLog(@"%@", [operation.request.URL path]);
+        NBLog(@"%@", [operation.request.URL path]);
         [self.operationQueue addOperation:operation];
     });
 }
@@ -479,7 +479,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
 }
 
 
-- (void)cancelAllHTTPOperationsWithMethod:(NSString*)method path:(NSString*)path
+- (void)cancelAllHttpOperationsWithMethod:(NSString*)method path:(NSString*)path
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
     {
@@ -491,6 +491,18 @@ static void processDnsReply(DNSServiceRef       sdRef,
                 NBLog(@"Cancelling HTTP %@ %@", method, path);
                 [operation cancel];
             }
+        }
+    });
+}
+
+
+- (void)cancelAllHttpOperations
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+    {
+        for (AFHTTPRequestOperation* operation in self.operationQueue.operations)
+        {
+            [operation cancel];
         }
     });
 }

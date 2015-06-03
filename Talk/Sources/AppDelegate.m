@@ -25,6 +25,7 @@
 #import "Strings.h"
 #import "NBPeopleListViewController.h"
 #import "WebClient.h"
+#import "WebInterface.h"
 #import "NavigationController.h"
 #import "CountriesViewController.h"
 
@@ -423,7 +424,7 @@
 
 - (void)resetAll
 {
-#warning Stop things in background, like audio downloads. Especially for conflicts with CoreData being cleared.
+    [[WebInterface sharedInterface] cancelAllHttpOperations];
 
     [self.numbersViewController.navigationController     popToRootViewControllerAnimated:NO];
     [self.forwardingsViewController.navigationController popToRootViewControllerAnimated:NO];
@@ -434,7 +435,7 @@
     [[Settings        sharedSettings] resetAll];
     [[PurchaseManager sharedManager]  reset];
 
-    NSError*    error;
+    NSError* error;
     [[NSFileManager defaultManager] removeItemAtURL:[Common audioDirectoryUrl] error:&error];
     if (error != nil)
     {

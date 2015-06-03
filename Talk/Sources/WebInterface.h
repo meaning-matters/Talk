@@ -49,6 +49,8 @@
            success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
            failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure;
 
-- (void)cancelAllHTTPOperationsWithMethod:(NSString*)method path:(NSString*)path;
+- (void)cancelAllHttpOperationsWithMethod:(NSString*)method path:(NSString*)path;
+
+- (void)cancelAllHttpOperations;
 
 @end
