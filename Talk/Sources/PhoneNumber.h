@@ -72,8 +72,6 @@ typedef enum
 
 - (NSString*)e164Format;
 
-- (NSString*)e164FormatWithoutPlus;
-
 - (NSString*)internationalFormat;
 
 - (NSString*)nationalFormat;

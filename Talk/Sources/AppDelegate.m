@@ -545,8 +545,8 @@
 {
     const char* stringA = [numberA UTF8String];
     const char* stringB = [numberB UTF8String];
-    int         lengthA = strlen(stringA);
-    int         lengthB = strlen(stringB);
+    int         lengthA = (int)strlen(stringA);
+    int         lengthB = (int)strlen(stringB);
     int         indexA  = (lengthA - 1);
     int         indexB  = (lengthB - 1);
     int         lcs     = 0;  // Longest Common Suffix.

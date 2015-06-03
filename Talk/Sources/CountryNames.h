@@ -10,7 +10,7 @@
 
 @interface CountryNames : NSObject
 
-@property (nonatomic, strong) NSDictionary* namesDictionary;
+@property (nonatomic, readonly) NSDictionary* namesDictionary;
 
 + (CountryNames*)sharedNames;
 

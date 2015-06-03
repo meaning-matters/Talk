@@ -1,5 +1,5 @@
 //
-//  main.m
+//  main.mm
 //  Talk
 //
 //  Created by Cornelis van der Bent on 28/09/12.
@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 {
     @autoreleasepool
     {
-        // Force use of English.
+        // Force use of English.  (When changed check CountryNames.m and other locale dependencies.)
         [[NSUserDefaults standardUserDefaults] setObject:[NSArray arrayWithObjects:@"en", nil] forKey:@"AppleLanguages"];
 
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));

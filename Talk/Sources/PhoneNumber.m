@@ -319,60 +319,50 @@ static NSString*    defaultIsoCountryCode = @"";
 
 - (NSString*)e164Format
 {
-    NSString* format;
-
-    format = [[LibPhoneNumber sharedInstance] e164FormatOfNumber:self.number isoCountryCode:self.isoCountryCode];
-    if ([format isEqualToString:@"invalid"])
-    {
-        format = self.number;
-        NBLog(@"Invalid E164: %@.", self.number);
-    }
-
-    return format;
-}
-
-
-- (NSString*)e164FormatWithoutPlus
-{
-    NSString*   format;
-
-    format = [self e164Format];
-    if ([format isEqualToString:@"invalid"])
-    {
-        format = nil;
-    }
-    else
-    {
-        format = [format substringFromIndex:1];
-    }
-
-    return format;
+    return [self validateFormat:[[LibPhoneNumber sharedInstance] e164FormatOfNumber:self.number
+                                                                     isoCountryCode:self.isoCountryCode]];
 }
 
 
 - (NSString*)internationalFormat
 {
-#warning Handle LibPhoneNumber returning "invalid" (here, or in LibPhoneNumber).  Also localize!  (May apply for other methods as well.)
-    return [[LibPhoneNumber sharedInstance] internationalFormatOfNumber:self.number isoCountryCode:self.isoCountryCode];
+    return [self validateFormat:[[LibPhoneNumber sharedInstance] internationalFormatOfNumber:self.number
+                                                                              isoCountryCode:self.isoCountryCode]];
 }
 
 
 - (NSString*)nationalFormat
 {
-    return [[LibPhoneNumber sharedInstance] nationalFormatOfNumber:self.number isoCountryCode:self.isoCountryCode];
+    return [self validateFormat:[[LibPhoneNumber sharedInstance] nationalFormatOfNumber:self.number
+                                                                         isoCountryCode:self.isoCountryCode]];
 }
 
 
 - (NSString*)outOfCountryFormatFromIsoCountryCode:(NSString*)isoCountryCode
 {
-    return [[LibPhoneNumber sharedInstance] outOfCountryFormatOfNumber:self.number isoCountryCode:self.isoCountryCode
-                                                   outOfIsoCountryCode:isoCountryCode];
+    return [self validateFormat:[[LibPhoneNumber sharedInstance] outOfCountryFormatOfNumber:self.number
+                                                                             isoCountryCode:self.isoCountryCode
+                                                                        outOfIsoCountryCode:isoCountryCode]];
 }
 
 
 - (NSString*)asYouTypeFormat
 {
     return [[LibPhoneNumber sharedInstance] asYouTypeFormatOfNumber:self.number isoCountryCode:self.isoCountryCode];
+}
+
+
+#pragma mark - Helpers
+
+- (NSString*)validateFormat:(NSString*)format
+{
+    if ([format isEqualToString:@"invalid"])
+    {
+        format = self.number;
+        NBLog(@"Failed to format %@.", self.number);
+    }
+
+    return format;
 }
 
 @end

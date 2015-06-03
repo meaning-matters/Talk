@@ -166,11 +166,11 @@
 {
     [[WebClient sharedClient] retrieveCallRateForE164:self.callbackPhoneNumber.e164Format
                                          currencyCode:[Settings sharedSettings].currencyCode
-                                                reply:^(NSError *error, float ratePerMinute)
+                                                reply:^(NSError* error, float ratePerMinute)
     {
         if (error == nil)
         {
-            [[WebClient sharedClient] retrieveCallRates:^(NSError *error, NSArray *rates)
+            [[WebClient sharedClient] retrieveCallRates:^(NSError* error, NSArray* rates)
             {
                 if (error == nil)
                 {
@@ -180,7 +180,7 @@
                                                                                    @"....\n"
                                                                                    @"[iOS alert title size].");
                     self.callbackPrice = ratePerMinute;
-                    self.objectsArray  = rates;
+                    self.objectsArray  = [self filterRates:rates];
                     [self createIndexOfWidth:1];
                 }
                 else
@@ -194,6 +194,23 @@
             [self handleError:error];
         }
     }];
+}
+
+
+- (NSArray*)filterRates:(NSArray*)rates
+{
+    NSMutableArray* filteredRates = [NSMutableArray array];
+
+    for (NSDictionary* rate in rates)
+    {
+        // Only include rates for which we have the country name.
+        if ([[CountryNames sharedNames] nameForIsoCountryCode:rate[@"isoCountryCode"]] != nil)
+        {
+            [filteredRates addObject:rate];
+        }
+    }
+
+    return filteredRates;
 }
 
 

@@ -837,7 +837,6 @@ static Common* sharedCommon;
 // This will redirect NBLog() output to a log file.  Switch on 'Application supports iTunes file sharing'
 // in the app's .plist file to allow accessing the logs from iTunes.  Don't forget to set this .plist
 // parameter to NO before distributing the app (unless it's on intentionally)!
-#warning //### Automate this, switch on for DEBUG only for example: http://stackoverflow.com/questions/13689934/is-there-a-way-of-automatically-writing-custom-values-to-the-bundles-plist-dur
 + (void)redirectStderrToFile
 {
     NSArray*    paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C64" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14D136" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Forwarding" representedClassName="ForwardingData" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="statements" optional="YES" attributeType="String" syncable="YES"/>
@@ -49,7 +49,7 @@
     <entity name="Phone" representedClassName="PhoneData" syncable="YES">
         <attribute name="e164" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <relationship name="forwardings" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="Forwarding" inverseName="phones" inverseEntity="Forwarding" syncable="YES"/>
+        <relationship name="forwardings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Forwarding" inverseName="phones" inverseEntity="Forwarding" syncable="YES"/>
     </entity>
     <entity name="Recording" representedClassName="RecordingData" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>

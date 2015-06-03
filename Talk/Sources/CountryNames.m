@@ -15,38 +15,48 @@
 #import "Common.h"
 
 
+@interface CountryNames ()
+
+@property (nonatomic, strong) NSMutableDictionary* namesDictionary;
+
+@end
+
+
 @implementation CountryNames
 
 #pragma mark - Singleton Stuff
 
 + (CountryNames*)sharedNames;
 {
-    static CountryNames*    sharedInstance;
-    static dispatch_once_t  onceToken;
+    static CountryNames*   sharedInstance;
+    static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^
     {
         sharedInstance = [[CountryNames alloc] init];
 
-        NSData* data = [Common dataForResource:@"CountryNames" ofType:@"json"];
-        sharedInstance.namesDictionary = [Common objectWithJsonData:data];
+        // Make sure the locale matches the language of the app (see main.mm).
+        NSDictionary* localeInfo = @{NSLocaleLanguageCode : [[NSLocale preferredLanguages] objectAtIndex:0]};
+        NSLocale*     locale     = [[NSLocale alloc] initWithLocaleIdentifier:[NSLocale localeIdentifierFromComponents:localeInfo]];
+
+        sharedInstance.namesDictionary = [NSMutableDictionary dictionary];
+        for (NSString* countryCode in [NSLocale ISOCountryCodes])
+        {
+            NSString* identifier  = [NSLocale localeIdentifierFromComponents:[NSDictionary dictionaryWithObject:countryCode
+                                                                                                         forKey:NSLocaleCountryCode]];
+            NSString* countryName = [locale displayNameForKey:NSLocaleIdentifier value:identifier];
+            [sharedInstance.namesDictionary setValue:countryName forKey:countryCode];
+        }
+
+        // Add countries not supported by iOS.
+        NSString* countryName;
+        countryName = NSLocalizedStringWithDefaultValue(@"Country:AC", nil, [NSBundle mainBundle], @"Ascension Island", @"AC");
+        [sharedInstance.namesDictionary setValue:countryName forKey:@"AC"];
+        countryName = NSLocalizedStringWithDefaultValue(@"Country:AN", nil, [NSBundle mainBundle], @"Netherlands Antilles", @"AN");
+        [sharedInstance.namesDictionary setValue:countryName forKey:@"AN"];
     });
     
     return sharedInstance;
-}
-
-
-- (void)todo
-{
-#warning //### Implement/Replace this class using:  (but need to sort out locales first: We don't want countries to be in other locale than app texts.
-    NSMutableArray *countries = [NSMutableArray arrayWithCapacity: [[NSLocale ISOCountryCodes] count]];
-    for (NSString *countryCode in [NSLocale ISOCountryCodes])
-    {
-        NSString *identifier = [NSLocale localeIdentifierFromComponents:[NSDictionary dictionaryWithObject:countryCode
-                                                                                                    forKey:NSLocaleCountryCode]];
-        NSString *country = [[NSLocale currentLocale] displayNameForKey:NSLocaleIdentifier value:identifier];
-        [countries addObject:country];
-    }
 }
 
 
@@ -54,13 +64,35 @@
 
 - (NSString*)nameForIsoCountryCode:(NSString*)isoCountryCode
 {
-    return self.namesDictionary[[isoCountryCode uppercaseString]];
+    NSString* countryName = self.namesDictionary[[isoCountryCode uppercaseString]];
+
+    if (countryName != nil)
+    {
+        return countryName;
+    }
+    else
+    {
+        NSLog(@"No country name available for code %@.", isoCountryCode);
+
+        return nil;
+    }
 }
 
 
-- (NSString*)isoCountryCodeForName:(NSString*)name
+- (NSString*)isoCountryCodeForName:(NSString*)countryName
 {
-    return [self.namesDictionary allKeysForObject:name][0];
+    NSArray*  keys = [self.namesDictionary allKeysForObject:countryName];
+
+    if (keys.count != 0)
+    {
+        return keys[0];
+    }
+    else
+    {
+        NSLog(@"No country code available for name %@.", countryName);
+
+        return nil;
+    }
 }
 
 @end
