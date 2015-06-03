@@ -53,9 +53,10 @@
         self.deviceToken = @"unknown";
 
         // Trigger singletons.
-        [NetworkStatus sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.
-        [CallManager   sharedManager];
-        [DataManager   sharedManager];
+        [NetworkStatus   sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.
+        [CallManager     sharedManager];
+        [DataManager     sharedManager];
+        [PurchaseManager sharedManager];  // Makes sure the currency locale & code are available early.
 
         // Initialize phone number stuff.
         [PhoneNumber setDefaultIsoCountryCode:[Settings sharedSettings].homeCountry];

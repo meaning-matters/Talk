@@ -239,6 +239,23 @@
 }
 
 
+- (NSLocale*)priceLocale
+{
+    if (self.products.count > 0)
+    {
+        return ((SKProduct*)self.products[0]).priceLocale;
+    }
+    else
+    {
+        NSDictionary* localeInfo = @{NSLocaleCurrencyCode : self.currencyCode,
+                                     NSLocaleLanguageCode : [[NSLocale preferredLanguages] objectAtIndex:0]};
+
+        return [[NSLocale alloc] initWithLocaleIdentifier:[NSLocale localeIdentifierFromComponents:localeInfo]];
+    }
+
+}
+
+
 #pragma mark - Transaction Processing
 
 - (void)processAccountTransaction:(SKPaymentTransaction*)transaction
@@ -521,7 +538,7 @@
     }
     else
     {
-        completion ? completion(_currencyCode.length > 0) : 0;
+        completion ? completion(self.currencyCode.length > 0) : 0;
     }
 }
 
@@ -567,15 +584,16 @@
 - (NSString*)localizedFormattedPrice:(float)price
 {
     NSString* formattedString;
+    NSLocale* priceLocale = [self priceLocale];
 
-    if (self.products != nil || _currencyCode.length > 0)
+    if (priceLocale != nil)
     {
-        NSNumberFormatter*  numberFormatter;
+        NSNumberFormatter* numberFormatter;
 
         numberFormatter = [[NSNumberFormatter alloc] init];
         [numberFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
         [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-        [numberFormatter setLocale:((SKProduct*)self.products[0]).priceLocale];
+        [numberFormatter setLocale:priceLocale];
 
         // Prevent -0.00 values when price is -0.004364 for example.
         double factor = pow(10, numberFormatter.maximumFractionDigits);
@@ -599,15 +617,16 @@
 - (NSString*)localizedFormattedPrice2ExtraDigits:(float)price
 {
     NSString* formattedString;
+    NSLocale* priceLocale = [self priceLocale];
 
-    if (self.products != nil || _currencyCode.length > 0)
+    if (priceLocale != nil)
     {
-        NSNumberFormatter*  numberFormatter;
+        NSNumberFormatter* numberFormatter;
 
         numberFormatter = [[NSNumberFormatter alloc] init];
         [numberFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
         [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-        [numberFormatter setLocale:((SKProduct*)self.products[0]).priceLocale];
+        [numberFormatter setLocale:priceLocale];
 
         NSUInteger fractionDigits = numberFormatter.maximumFractionDigits + 2;
         [numberFormatter setMaximumFractionDigits:fractionDigits];
