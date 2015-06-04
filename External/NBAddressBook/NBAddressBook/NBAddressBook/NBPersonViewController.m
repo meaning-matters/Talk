@@ -13,7 +13,7 @@
 #import "NBRecentContactViewController.h"
 
 
-@interface NBPeopleListViewController () <UITextViewDelegate>
+@interface NBPeopleListViewController () <UITextFieldDelegate>
 @end
 
 

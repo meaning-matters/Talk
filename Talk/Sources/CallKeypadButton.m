@@ -113,9 +113,16 @@
     CGRect textRect = CGRectMake(CGRectGetMinX(self.bounds) + 21, CGRectGetMinY(self.bounds) + 14, 48, 38);
     CGContextSaveGState(context);
     CGContextSetShadowWithColor(context, textShadowOffset, textShadowBlurRadius, textShadow.CGColor);
-    [[UIColor whiteColor] setFill];
-    [[self keyTitle] drawInRect: textRect withFont: [Common phoneFontOfSize:34] lineBreakMode: 0 alignment: NSTextAlignmentCenter];
+    NSMutableParagraphStyle* textStyle = NSMutableParagraphStyle.defaultParagraphStyle.mutableCopy;
+    textStyle.alignment = NSTextAlignmentCenter;
+
+    NSDictionary* textFontAttributes = @{NSFontAttributeName: [Common phoneFontOfSize:34],
+                                         NSForegroundColorAttributeName: UIColor.whiteColor,
+                                         NSParagraphStyleAttributeName: textStyle};
+
+    [[self keyTitle] drawInRect: textRect withAttributes: textFontAttributes];
     CGContextRestoreGState(context);
+
 
     //// Cleanup
     CGGradientRelease(keyNormalGradient);
