@@ -710,12 +710,6 @@
 		48EDD2201667652A007B89DA /* MuteCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2081667652A007B89DA /* MuteCall@2x.png */; };
 		48EDD2231667652A007B89DA /* SpeakerCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD20A1667652A007B89DA /* SpeakerCall@2x.png */; };
 		48EDD2241667652A007B89DA /* SpeakerCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD20A1667652A007B89DA /* SpeakerCall@2x.png */; };
-		48EDD227166770B8007B89DA /* CallOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD226166770B8007B89DA /* CallOptionsView.xib */; };
-		48EDD228166770B8007B89DA /* CallOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD226166770B8007B89DA /* CallOptionsView.xib */; };
-		48EDD22E16677219007B89DA /* CallOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48EDD22D16677219007B89DA /* CallOptionsView.m */; };
-		48EDD22F16677219007B89DA /* CallOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48EDD22D16677219007B89DA /* CallOptionsView.m */; };
-		48EDD23E1667A0B6007B89DA /* CallOptionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 48EDD23D1667A0B6007B89DA /* CallOptionButton.m */; };
-		48EDD23F1667A0B6007B89DA /* CallOptionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 48EDD23D1667A0B6007B89DA /* CallOptionButton.m */; };
 		48F1B7E117E63819003A3933 /* NumberForwardingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F1B7E017E63819003A3933 /* NumberForwardingsViewController.m */; };
 		48F1B7E217E63819003A3933 /* NumberForwardingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F1B7E017E63819003A3933 /* NumberForwardingsViewController.m */; };
 		48F47BBF18BE9C01006A6436 /* ItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F47BBE18BE9C01006A6436 /* ItemViewController.m */; };
@@ -1450,12 +1444,7 @@
 		48EDD2061667652A007B89DA /* KeypadCall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "KeypadCall@2x.png"; sourceTree = "<group>"; };
 		48EDD2081667652A007B89DA /* MuteCall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MuteCall@2x.png"; sourceTree = "<group>"; };
 		48EDD20A1667652A007B89DA /* SpeakerCall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SpeakerCall@2x.png"; sourceTree = "<group>"; };
-		48EDD226166770B8007B89DA /* CallOptionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallOptionsView.xib; sourceTree = "<group>"; };
-		48EDD22C16677219007B89DA /* CallOptionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CallOptionsView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		48EDD22D16677219007B89DA /* CallOptionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallOptionsView.m; sourceTree = "<group>"; };
 		48EDD2341667729E007B89DA /* KeypadKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeypadKey.h; sourceTree = "<group>"; };
-		48EDD23C1667A0B6007B89DA /* CallOptionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallOptionButton.h; sourceTree = "<group>"; };
-		48EDD23D1667A0B6007B89DA /* CallOptionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallOptionButton.m; sourceTree = "<group>"; };
 		48EE399816777EEC00823E09 /* libWebRTC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWebRTC.a; path = External/WebRTC/libWebRTC.a; sourceTree = "<group>"; };
 		48F1B7DF17E63819003A3933 /* NumberForwardingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberForwardingsViewController.h; sourceTree = "<group>"; };
 		48F1B7E017E63819003A3933 /* NumberForwardingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberForwardingsViewController.m; sourceTree = "<group>"; };
@@ -1964,10 +1953,6 @@
 				4865A9DE1792C8B70028785F /* NumberBuyCell.m */,
 				48A261C216FDE32400007638 /* CallMessageView.h */,
 				48A261C316FDE32400007638 /* CallMessageView.m */,
-				48EDD23C1667A0B6007B89DA /* CallOptionButton.h */,
-				48EDD23D1667A0B6007B89DA /* CallOptionButton.m */,
-				48EDD22C16677219007B89DA /* CallOptionsView.h */,
-				48EDD22D16677219007B89DA /* CallOptionsView.m */,
 				4814EA3C17CB1923004B7A3C /* CreditAmountCell.h */,
 				4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */,
 				4814EA3517CA993F004B7A3C /* CreditBuyCell.h */,
@@ -2391,7 +2376,6 @@
 				48AF45161649494400DFE3D8 /* AboutView.xib */,
 				48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */,
 				48A261BF16FDE26100007638 /* CallMessageView.xib */,
-				48EDD226166770B8007B89DA /* CallOptionsView.xib */,
 				4814EA3917CB18DB004B7A3C /* CreditAmountCell.xib */,
 				4814EA3217CA98F4004B7A3C /* CreditBuyCell.xib */,
 				48AF450A164948CD00DFE3D8 /* DialerView.xib */,
@@ -3020,7 +3004,6 @@
 				48EDD21F1667652A007B89DA /* MuteCall@2x.png in Resources */,
 				48A26DDE18BA904100736CCB /* SearchTableView.xib in Resources */,
 				48EDD2231667652A007B89DA /* SpeakerCall@2x.png in Resources */,
-				48EDD227166770B8007B89DA /* CallOptionsView.xib in Resources */,
 				4888D51C166D1AEE00572566 /* Flip@2x.png in Resources */,
 				4888D520166D1AEE00572566 /* HangupPhone@2x.png in Resources */,
 				4888D527166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */,
@@ -3114,7 +3097,6 @@
 				48EDD21C1667652A007B89DA /* KeypadCall@2x.png in Resources */,
 				48EDD2201667652A007B89DA /* MuteCall@2x.png in Resources */,
 				48EDD2241667652A007B89DA /* SpeakerCall@2x.png in Resources */,
-				48EDD228166770B8007B89DA /* CallOptionsView.xib in Resources */,
 				48B93873187B647F00132535 /* Licenses.json in Resources */,
 				4888D51D166D1AEE00572566 /* Flip@2x.png in Resources */,
 				4888D521166D1AEE00572566 /* HangupPhone@2x.png in Resources */,
@@ -3256,9 +3238,7 @@
 				48B813321AADF88E0019AF77 /* NBAddressBookManager.m in Sources */,
 				48B813611AADF98C0019AF77 /* NBPeoplePickerNavigationController.m in Sources */,
 				4882748E1660E20D00B41EA1 /* DtmfPlayer.m in Sources */,
-				48EDD22E16677219007B89DA /* CallOptionsView.m in Sources */,
 				48C97EA318943C7300174DE9 /* PhoneViewController.m in Sources */,
-				48EDD23E1667A0B6007B89DA /* CallOptionButton.m in Sources */,
 				48B813431AADF91D0019AF77 /* NBGroupsTableViewController.m in Sources */,
 				48B813811AADFA290019AF77 /* NBUnknownPersonViewController.m in Sources */,
 				48B813571AADF9590019AF77 /* NBDetailLineSeparatedCell.m in Sources */,
@@ -3385,9 +3365,7 @@
 				482A639E165FA94400325B3F /* CallManager.m in Sources */,
 				482A63A2165FF73400325B3F /* NumberLabel.m in Sources */,
 				4882748F1660E20D00B41EA1 /* DtmfPlayer.m in Sources */,
-				48EDD22F16677219007B89DA /* CallOptionsView.m in Sources */,
 				48C97EA418943C7300174DE9 /* PhoneViewController.m in Sources */,
-				48EDD23F1667A0B6007B89DA /* CallOptionButton.m in Sources */,
 				482608EF166A4707007F0844 /* NSTimer+Blocks.m in Sources */,
 				4888D1FB166E865400B55B22 /* Call.m in Sources */,
 				48206EF51684B0700040B04E /* RingbackTones.m in Sources */,
