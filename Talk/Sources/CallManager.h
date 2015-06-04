@@ -30,17 +30,7 @@
 
 - (void)endCall:(Call*)call;
 
-- (BOOL)retryCall:(Call*)call;
-
 - (BOOL)callMobilePhoneNumber:(PhoneNumber*)phoneNumber;
-
-- (void)setCall:(Call*)call onMute:(BOOL)onMute;
-
-- (void)setCall:(Call*)call onHold:(BOOL)onHold;
-
-- (void)setOnSpeaker:(BOOL)onSpeaker;
-
-- (void)sendCall:(Call*)call dtmfCharacter:(char)character;
 
 - (void)updateRecent:(NBRecentContactEntry*)recent withCall:(Call*)call;
 

@@ -17,7 +17,6 @@
 #import "NetworkStatus.h"
 #import "LibPhoneNumber.h"
 #import "CallManager.h"
-#import "CallViewController.h"
 #import "PurchaseManager.h"
 #import "DataManager.h"
 #import "Common.h"

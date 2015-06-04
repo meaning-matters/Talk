@@ -15,7 +15,6 @@
 #import "PurchaseManager.h"
 #import "PhoneNumber.h"
 #import "CountriesViewController.h"
-#import "CallViewController.h"
 #import "CallbackViewController.h"
 #import "Tones.h"
 #import "Base64.h"
@@ -33,7 +32,6 @@
 
 @interface CallManager ()
 {
-    CallViewController*     callViewController;
     CallbackViewController* callbackViewController;
 }
 

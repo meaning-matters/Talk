@@ -235,7 +235,8 @@ static NSIndexPath* targetLabel;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     //First section for the default labels, second section for custom labels
-    int numberOfRows = (section == 0 ? [defaultLabels count] : [customLabels count] + 1);
+    int numberOfRows = (section == 0 ? (int)[defaultLabels count] : (int)[customLabels count] + 1);
+    
     return numberOfRows;
 }
 

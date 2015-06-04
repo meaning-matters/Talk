@@ -13,6 +13,10 @@
 #import "NBRecentContactViewController.h"
 
 
+@interface NBPeopleListViewController () <UITextViewDelegate>
+@end
+
+
 @implementation NBPersonViewController
 
 @synthesize contact, allowsActions, displayedPerson, personViewDelegate;
@@ -602,10 +606,11 @@
     [nameLabel setFont:font];
     [nameLabel setText:stringToMeasure];
     
-    CGSize labelSize = [nameLabel.text sizeWithFont:nameLabel.font
-                                  constrainedToSize:nameLabel.frame.size
-                                      lineBreakMode:NSLineBreakByWordWrapping];
-    return labelSize.height;
+    nameLabel.numberOfLines = 0;
+    nameLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    CGSize size = [nameLabel sizeThatFits:nameLabel.frame.size];
+
+    return ceilf(size.height);
 }
 
 

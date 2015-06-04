@@ -650,8 +650,6 @@
 		48BC7F3C1702FDD1006671B5 /* NumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BC7F3B1702FDD1006671B5 /* NumberViewController.m */; };
 		48BC7F3D1702FDD1006671B5 /* NumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BC7F3B1702FDD1006671B5 /* NumberViewController.m */; };
 		48BD8BE81663E7A400F2CB45 /* CallBaseView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */; };
-		48BD8BEC1663E87800F2CB45 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BD8BEB1663E87800F2CB45 /* CallViewController.m */; };
-		48BD8BED1663E87800F2CB45 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BD8BEB1663E87800F2CB45 /* CallViewController.m */; };
 		48C1D3C517D31309004F910D /* ProofImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C1D3C417D31309004F910D /* ProofImageViewController.m */; };
 		48C1D3C617D31309004F910D /* ProofImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C1D3C417D31309004F910D /* ProofImageViewController.m */; };
 		48C1D3C817D3132A004F910D /* ProofImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48C1D3C717D3132A004F910D /* ProofImageView.xib */; };
@@ -1409,8 +1407,6 @@
 		48BC7F3A1702FDD1006671B5 /* NumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberViewController.h; sourceTree = "<group>"; };
 		48BC7F3B1702FDD1006671B5 /* NumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberViewController.m; sourceTree = "<group>"; };
 		48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallBaseView.xib; sourceTree = "<group>"; };
-		48BD8BEA1663E87800F2CB45 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallViewController.h; sourceTree = "<group>"; };
-		48BD8BEB1663E87800F2CB45 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallViewController.m; sourceTree = "<group>"; };
 		48C1D3C317D31308004F910D /* ProofImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProofImageViewController.h; sourceTree = "<group>"; };
 		48C1D3C417D31309004F910D /* ProofImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProofImageViewController.m; sourceTree = "<group>"; };
 		48C1D3C717D3132A004F910D /* ProofImageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProofImageView.xib; sourceTree = "<group>"; };
@@ -2450,8 +2446,6 @@
 				480CE126194DBEC40020F255 /* CallerIdViewController.m */,
 				486D4A2118F06BC8004699C9 /* CallRatesViewController.h */,
 				486D4A2218F06BC8004699C9 /* CallRatesViewController.m */,
-				48BD8BEA1663E87800F2CB45 /* CallViewController.h */,
-				48BD8BEB1663E87800F2CB45 /* CallViewController.m */,
 				48D60EF218B4D7A4000BE5D2 /* CountriesViewController.h */,
 				48D60EF318B4D7A4000BE5D2 /* CountriesViewController.m */,
 				48AF44EC164947B300DFE3D8 /* CreditViewController.h */,
@@ -3280,7 +3274,6 @@
 				48B813321AADF88E0019AF77 /* NBAddressBookManager.m in Sources */,
 				48B813611AADF98C0019AF77 /* NBPeoplePickerNavigationController.m in Sources */,
 				4882748E1660E20D00B41EA1 /* DtmfPlayer.m in Sources */,
-				48BD8BEC1663E87800F2CB45 /* CallViewController.m in Sources */,
 				48EDD22E16677219007B89DA /* CallOptionsView.m in Sources */,
 				48C97EA318943C7300174DE9 /* PhoneViewController.m in Sources */,
 				48EDD2321667722B007B89DA /* CallKeypadView.m in Sources */,
@@ -3412,7 +3405,6 @@
 				482A639E165FA94400325B3F /* CallManager.m in Sources */,
 				482A63A2165FF73400325B3F /* NumberLabel.m in Sources */,
 				4882748F1660E20D00B41EA1 /* DtmfPlayer.m in Sources */,
-				48BD8BED1663E87800F2CB45 /* CallViewController.m in Sources */,
 				48EDD22F16677219007B89DA /* CallOptionsView.m in Sources */,
 				48C97EA418943C7300174DE9 /* PhoneViewController.m in Sources */,
 				48EDD2331667722B007B89DA /* CallKeypadView.m in Sources */,
