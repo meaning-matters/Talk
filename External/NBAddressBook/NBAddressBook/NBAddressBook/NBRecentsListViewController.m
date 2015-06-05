@@ -110,11 +110,12 @@
     [clearActionSheet showFromTabBar:[[self.navigationController tabBarController] tabBar]];
 }
 
+
 - (void)clearOneWeekRecents
 {
     NSCalendar*       calendar    = [NSCalendar currentCalendar];
     NSDateComponents* components  = [NSDateComponents new];
-    components.week               = -1;
+    components.weekOfYear         = -1;
     NSDate*           weekAgoDate = [calendar dateByAddingComponents:components toDate:[NSDate date] options:0];
 
     // Clear all the old objects
@@ -130,6 +131,7 @@
 
     [managedObjectContext save:nil];
 }
+
 
 - (void)clearOneMonthRecents
 {
@@ -226,7 +228,7 @@
     if (numRecentCalls == 0 || [allRecentContacts count] != numRecentCalls)
     {
         //Performance improvement
-        numRecentCalls = [allRecentContacts count];
+        numRecentCalls = (int)[allRecentContacts count];
         
         //Group the recent contacts into a datasource
         [dataSource removeAllObjects];
@@ -436,7 +438,7 @@
     {
         //Set the last part as greyed out regular
         NSMutableAttributedString* attributedName = [[NSMutableAttributedString alloc]
-                                                     initWithString:[NSString stringWithFormat:@"%@ (%d)", numberLabel.text, [entryRowArray count]]
+                                                     initWithString:[NSString stringWithFormat:@"%@ (%lu)", numberLabel.text, (unsigned long)[entryRowArray count]]
                                                      attributes:[NSDictionary dictionaryWithObjectsAndKeys:numberLabel.font, NSFontAttributeName, nil]];
 
         [attributedName setAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -498,7 +500,7 @@
             //Determine the day in the week
             NSCalendar*       calendar = [NSCalendar currentCalendar];
             NSDateComponents* comps    = [calendar components:NSWeekdayCalendarUnit fromDate:latestEntry.date];
-            int               weekday  = [comps weekday] - 1;
+            int               weekday  = (int)[comps weekday] - 1;
             
             NSDateFormatter* df = [[NSDateFormatter alloc] init];
             [df setLocale: [NSLocale currentLocale]];

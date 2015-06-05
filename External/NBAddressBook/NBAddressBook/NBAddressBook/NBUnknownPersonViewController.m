@@ -241,7 +241,7 @@
         if (indexPath.section == UP_EMAIL)
         {
             propertyID = kABPersonEmailProperty;
-            multiRefIdentifier =  ((ABRecordCopyValue(self.contact.contactRef, propertyID)), indexPath.row);
+            multiRefIdentifier = ((ABRecordCopyValue(self.contact.contactRef, propertyID)), (int)indexPath.row);
         }
         else if (indexPath.section == UP_CONTACT && indexPath.row == 0)
         {

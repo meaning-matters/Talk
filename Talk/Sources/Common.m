@@ -863,7 +863,7 @@ static Common* sharedCommon;
 
 
 // Returns the bit-mask of the N-th bit that is set in `value`.
-+ (unsigned long)nthBitSet:(unsigned)n inValue:(unsigned long)value
++ (unsigned long)nthBitSet:(NSUInteger)n inValue:(unsigned long)value
 {
     unsigned long   bit = 1;
 

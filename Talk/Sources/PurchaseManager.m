@@ -260,6 +260,7 @@
 
 - (void)processAccountTransaction:(SKPaymentTransaction*)transaction
 {
+    // I tried [NSBundle appStoreReceiptURL] ..., but this requires server-side changes.
     [[WebClient sharedClient] retrieveAccountsForReceipt:[Base64 encode:transaction.transactionReceipt]
                                                 language:[[NSLocale preferredLanguages] objectAtIndex:0]
                                        notificationToken:[AppDelegate appDelegate].deviceToken

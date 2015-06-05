@@ -110,7 +110,7 @@ static const int TextFieldCellTag = 1111;
 
 + (unsigned)bitsSetCount:(unsigned long)value;
 
-+ (unsigned long)nthBitSet:(unsigned)n inValue:(unsigned long)value;    // With n == 0 return first bit set.
++ (unsigned long)nthBitSet:(NSUInteger)n inValue:(unsigned long)value;   // With n == 0 return first bit set.
 
 + (unsigned)nOfBit:(unsigned long)bit inValue:(unsigned long)value;     // Converts table section mask to section.
 
