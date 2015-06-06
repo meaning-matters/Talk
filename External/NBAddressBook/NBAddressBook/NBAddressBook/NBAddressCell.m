@@ -9,6 +9,11 @@
 #import "NBAddressCell.h"
 #import <AddressBook/AddressBook.h>
 
+
+@interface NBAddressCell () <UITextFieldDelegate>
+@end
+
+
 @implementation NBAddressCell
 
 @synthesize streetTextfields, cityTextfield, ZIPTextfield, stateTextfield, countryTextfield, separators, applicableFields, representationLabel, editingTextfield;
@@ -215,13 +220,13 @@
     if (textfieldType == TT_STREET)
     {
         //Find the last street-textfield
-        int newStreetIndex = [applicableFields count];
+        NSUInteger newStreetIndex = [applicableFields count];
         for (int pos = 0; pos < [applicableFields count]; pos++)
         {
             UITextField * tv = [applicableFields objectAtIndex:pos];
             if (tv.tag == TT_STREET)
             {
-                newStreetIndex = pos+1;
+                newStreetIndex = pos + 1;
             }
         }
         
@@ -229,7 +234,7 @@
         if (newStreetIndex != [applicableFields count])
         {
             //Shift the textfields
-            for (int shiftViewPos = newStreetIndex; shiftViewPos < [applicableFields count]; shiftViewPos++)
+            for (NSUInteger shiftViewPos = newStreetIndex; shiftViewPos < [applicableFields count]; shiftViewPos++)
             {
                 UITextField * textField = [applicableFields objectAtIndex:shiftViewPos];
                 textField.center = CGPointMake( textField.center.x, textField.center.y + SIZE_CELL_HEIGHT);
@@ -309,8 +314,8 @@
 - (void)removeStreetfield:(UITextField*)textfield
 {    
     //Shift up the frames and textfields below this textfield
-    int textfieldPosition = [applicableFields indexOfObject:textfield];
-    for (int shiftPos = textfieldPosition; shiftPos < [applicableFields count]; shiftPos ++)
+    NSUInteger textfieldPosition = [applicableFields indexOfObject:textfield];
+    for (NSInteger shiftPos = textfieldPosition; shiftPos < [applicableFields count]; shiftPos++)
     {
         UIView * view = [applicableFields objectAtIndex:shiftPos];
         view.center = CGPointMake( view.center.x, view.center.y - SIZE_CELL_HEIGHT);
@@ -760,7 +765,7 @@
         NSArray * splitArray = [representationString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
         int labelHeight = 0;
         
-        for (NSString * component in splitArray)
+        for (int n = 0; n < splitArray.count; n++)
         {
             CGSize labelSize = [representationString sizeWithFont:representationLabel.font
                                                 constrainedToSize:measureFrame.size];
@@ -823,7 +828,7 @@
 }
 
 
-+ (int)determineAddressCellHeight:(NSString*)countryCode
++ (CGFloat)determineAddressCellHeight:(NSString*)countryCode
 {
     AddressType type = [NBAddressCell determineAddressTypeCountryCode:countryCode];
     switch (type)
@@ -846,9 +851,9 @@
         case AT_TYPE_28:
         case AT_TYPE_30:
         {
-            return 3*SIZE_CELL_HEIGHT;
-        }
+            return 3 * SIZE_CELL_HEIGHT;
             break;
+        }
         case AT_TYPE_2:
         case AT_TYPE_4:
         case AT_TYPE_10:
@@ -865,18 +870,20 @@
         case AT_TYPE_29:
         case AT_TYPE_32:
         {
-            return 4*SIZE_CELL_HEIGHT;
-        }
+            return 4 * SIZE_CELL_HEIGHT;
             break;
+        }
         case AT_TYPE_31:
         case AT_TYPE_33:
         {
             return 5*SIZE_CELL_HEIGHT;
-        }
             break;
+        }
         default:
+        {
             return SIZE_CELL_HEIGHT;
             break;
+        }
     }
 }
 

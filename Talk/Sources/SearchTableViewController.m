@@ -12,7 +12,7 @@
 
 @interface SearchTableViewController ()
 
-@property (nonatomic, assign) int          width;
+@property (nonatomic, assign) NSUInteger   width;
 @property (nonatomic, strong) NSIndexPath* selectedIndexPath;
 
 @end
@@ -90,7 +90,7 @@
 }
 
 
-- (void)createIndexOfWidth:(int)width
+- (void)createIndexOfWidth:(NSUInteger)width
 {
     self.width = width;
 

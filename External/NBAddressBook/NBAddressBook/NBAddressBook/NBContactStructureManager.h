@@ -27,8 +27,8 @@
 - (NBPersonCellInfo*)getVisibleCellForIndexPath:(NSIndexPath*)indexPath;
 - (void)determineRowVisibility:(BOOL)editing;
 - (void)switchIMLabels:(BOOL)editing;
-- (int)removeCellWithTextfield:(UITextField*)textfield;
-- (int)checkToInsertCellBelowCellWithTextfield:(UITextField*)textfield;
+- (NSInteger)removeCellWithTextfield:(UITextField*)textfield;
+- (NSInteger)checkToInsertCellBelowCellWithTextfield:(UITextField*)textfield;
 - (NSString*)findNextLabelInArray:(NSArray*)array usingSource:(NSMutableArray*)source;
 - (NBPersonCellInfo*)getCellInfoForIMLabel:(UILabel*)label;
 - (NBPersonCellInfo*)getCellInfoForTextfield:(UITextField*)textfield;

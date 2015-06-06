@@ -97,7 +97,7 @@
     }
 
     // Find maximum ZIP code size.
-    int maximumSize = 0;
+    NSUInteger maximumSize = 0;
     for (NSString* zipCode in zipCodesArray)
     {
         if (zipCode.length > maximumSize)
@@ -109,7 +109,7 @@
     // Determine a good width of section title, such that number of sections is
     // smaller than 40, and the number of sections is smaller than the total
     // number of items devided by a minimum section size of for example 5.
-    int width;
+    NSInteger width;
     NSMutableDictionary* nameIndexDictionary = [NSMutableDictionary dictionary];
     for (width = maximumSize; width > 0; width--)
     {

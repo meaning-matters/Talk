@@ -131,7 +131,7 @@ typedef enum
 
 //Public methods for formatting and height
 - (void)formatUsingType:(NSString*)countryCode;
-+ (int)determineAddressCellHeight:(NSString*)countryCode;
++ (CGFloat)determineAddressCellHeight:(NSString*)countryCode;
 + (int)determineAddressTypeCountryCode:(NSString*)countryCode;
 + (NSString*)getStringForStreets:(NSArray*)streets andState:(NSString*)state andZipCode:(NSString*)zipCode andCity:(NSString*)city andCountry:(NSString*)country;
 @end

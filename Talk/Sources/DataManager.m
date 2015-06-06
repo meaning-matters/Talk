@@ -467,7 +467,7 @@
                 return;
             }
 
-            __block int count = e164s.count;
+            __block NSUInteger count = e164s.count;
             if (count == 0)
             {
                 completion ? completion(nil) : 0;
@@ -590,7 +590,7 @@
                 return;
             }
 
-            __block int count = list.count;
+            __block NSUInteger count = list.count;
             if (count == 0)
             {
                 completion ? completion(nil) : 0;
@@ -664,7 +664,7 @@
         return;
     }
 
-    __block int count = array.count;
+    __block NSUInteger count = array.count;
     if (count == 0)
     {
         completion ? completion(nil) : 0;
@@ -745,7 +745,7 @@
                 return;
             }
 
-            __block int  count = e164s.count;
+            __block NSUInteger count = e164s.count;
             if (count == 0)
             {
                 completion ? completion(nil) : 0;

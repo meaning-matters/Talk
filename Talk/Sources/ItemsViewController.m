@@ -82,6 +82,14 @@
                           withRowAnimation:UITableViewRowAnimationFade];
             break;
         }
+        case NSFetchedResultsChangeMove:
+        {
+            // Do nothing.
+        }
+        case NSFetchedResultsChangeUpdate:
+        {
+            // Do nothing.
+        }
     }
 }
 
@@ -156,7 +164,9 @@
 }
 
 
-- (void)configureCellOnResultsController:(NSFetchedResultsController*)controller atIndexPath:(NSIndexPath*)indexPath
+- (void)configureCell:(UITableViewCell*)cell
+  onResultsController:(NSFetchedResultsController*)controller
+          atIndexPath:(NSIndexPath*)indexPath
 {
     // Dummy to be overriden by subclass.
 }

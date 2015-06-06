@@ -232,7 +232,7 @@ typedef enum
     }
     else
     {
-        return [Common nthBitSet:section inValue:sections];
+        return (TableSections)[Common nthBitSet:section inValue:sections];
     }
 }
 

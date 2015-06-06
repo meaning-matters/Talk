@@ -174,7 +174,7 @@
 {
     // Select from all on numberType.
     NSMutableArray* currentObjectsArray = [NSMutableArray array];
-    NumberTypeMask  numberTypeMask      = 1UL << [self.numberTypeSegmentedControl selectedSegmentIndex];
+    NumberTypeMask  numberTypeMask      = (NumberTypeMask)(1UL << [self.numberTypeSegmentedControl selectedSegmentIndex]);
 
     for (NSMutableDictionary* country in self.countriesArray)
     {
@@ -212,7 +212,7 @@
         }
     }
 
-    NumberTypeMask  numberTypeMask = 1UL << self.numberTypeSegmentedControl.selectedSegmentIndex;
+    NumberTypeMask  numberTypeMask = (NumberTypeMask)(1UL << self.numberTypeSegmentedControl.selectedSegmentIndex);
     if ([country[@"hasStates"] boolValue] && numberTypeMask == NumberTypeGeographicMask)
     {
         NumberStatesViewController* viewController;
@@ -255,7 +255,7 @@
 
 - (void)numberTypeChangedAction:(id)sender
 {
-    [Settings sharedSettings].numberTypeMask = 1UL << self.numberTypeSegmentedControl.selectedSegmentIndex;
+    [Settings sharedSettings].numberTypeMask = (NumberTypeMask)(1UL << self.numberTypeSegmentedControl.selectedSegmentIndex);
     [self sortOutArrays];
 }
 

@@ -83,8 +83,8 @@
 {
     if (section == CC_NAME  && !self.tableView.isEditing )
     {
-        int incomingHeight = [incomingCalls count] > 0 ?  ( [incomingCalls count] * HEIGHT_CALL_ENTRY) + HEIGHT_CALL_INFO_HEADER : 0;
-        int outgoingHeight = [outgoingCalls count] > 0 ?  ( [outgoingCalls count] * HEIGHT_CALL_ENTRY) + HEIGHT_CALL_INFO_HEADER : 0;
+        CGFloat incomingHeight = incomingCalls.count > 0 ?  (incomingCalls.count * HEIGHT_CALL_ENTRY) + HEIGHT_CALL_INFO_HEADER : 0;
+        CGFloat outgoingHeight = outgoingCalls.count > 0 ?  (outgoingCalls.count * HEIGHT_CALL_ENTRY) + HEIGHT_CALL_INFO_HEADER : 0;
         return incomingHeight + outgoingHeight + PADDING_CALLS_VIEW;
     }
     else

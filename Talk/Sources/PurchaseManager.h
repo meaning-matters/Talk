@@ -42,7 +42,7 @@
 
 - (void)buyCreditForTier:(int)tier completion:(void (^)(BOOL success, id object))completion;
 
-- (void)buyNumberForMonths:(int)months
+- (void)buyNumberForMonths:(NSUInteger)months
                       name:(NSString*)name
             isoCountryCode:(NSString*)isoCountryCode
                   areaCode:(NSString*)areaCode

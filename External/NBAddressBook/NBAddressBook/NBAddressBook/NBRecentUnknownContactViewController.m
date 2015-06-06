@@ -97,12 +97,15 @@
     //Only show the recent calls when not editing
     if (section == CC_FILLER && !self.tableView.isEditing )
     {
-        int incomingHeight = [incomingCalls count] > 0 ?  ( [incomingCalls count] * HEIGHT_CALL_ENTRY) + HEIGHT_CALL_INFO_HEADER : 0;
-        int outgoingHeight = [outgoingCalls count] > 0 ?  ( [outgoingCalls count] * HEIGHT_CALL_ENTRY) + HEIGHT_CALL_INFO_HEADER : 0;
+        CGFloat incomingHeight = [incomingCalls count] > 0 ?  ( [incomingCalls count] * HEIGHT_CALL_ENTRY) + HEIGHT_CALL_INFO_HEADER : 0;
+        CGFloat outgoingHeight = [outgoingCalls count] > 0 ?  ( [outgoingCalls count] * HEIGHT_CALL_ENTRY) + HEIGHT_CALL_INFO_HEADER : 0;
+
         return incomingHeight + outgoingHeight + PADDING_CALLS_VIEW;
     }
     else
+    {
         return [super tableView:tableView heightForFooterInSection:section];
+    }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section

@@ -11,7 +11,7 @@
 
 @protocol NumberBuyCellDelegate <NSObject>
 
-- (void)buyNumberForMonths:(int)months;
+- (void)buyNumberForMonths:(NSUInteger)months;
 
 @end
 

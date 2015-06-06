@@ -283,7 +283,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     if (selection != selectionSegmentedControl.selectedSegmentIndex)
     {
-        selection = selectionSegmentedControl.selectedSegmentIndex;
+        selection = (Selection)selectionSegmentedControl.selectedSegmentIndex;
         [Settings sharedSettings].forwardingsSelection = selection;
     }
 

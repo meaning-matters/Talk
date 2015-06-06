@@ -764,7 +764,7 @@ static NSDictionary* statuses;
 
 
 // 11A. PURCHASE NUMBER
-- (void)purchaseNumberForMonths:(int)months
+- (void)purchaseNumberForMonths:(NSUInteger)months
                            name:(NSString*)name
                  isoCountryCode:(NSString*)isoCountryCode
                        areaCode:(NSString*)areaCode
@@ -825,7 +825,7 @@ static NSDictionary* statuses;
 
 
 // 11C. EXTEND NUMBER
-- (void)extendNumberE164:(NSString*)e164 forMonths:(int)months reply:(void (^)(NSError* error))reply;
+- (void)extendNumberE164:(NSString*)e164 forMonths:(NSUInteger)months reply:(void (^)(NSError* error))reply;
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSString*     number     = [e164 substringFromIndex:1];

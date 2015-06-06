@@ -196,7 +196,7 @@
         ABMultiValueRef datesRef = ABRecordCopyValue(person.contactRef, kABPersonDateProperty);
         if (datesRef != nil)
         {
-            int numDates = ABMultiValueGetCount(datesRef);
+            CFIndex numDates = ABMultiValueGetCount(datesRef);
             for (CFIndex i = 0; i < numDates; i++)
             {
                 NSString* label = (__bridge NSString *)ABAddressBookCopyLocalizedLabel((ABMultiValueCopyLabelAtIndex(datesRef, i)));
@@ -236,7 +236,7 @@
         //Load in the IM
         NSMutableArray * IMArray = [self.tableStructure objectAtIndex:CC_IM];
         ABMultiValueRef instantMessageRef = ABRecordCopyValue(person.contactRef, kABPersonInstantMessageProperty);
-        int numIMs = ABMultiValueGetCount(instantMessageRef);
+        CFIndex numIMs = ABMultiValueGetCount(instantMessageRef);
         for (CFIndex i = 0; i < numIMs; i++)
         {
             NSString* label = (__bridge NSString *)ABAddressBookCopyLocalizedLabel((ABMultiValueCopyLabelAtIndex(instantMessageRef, i)));
@@ -258,7 +258,7 @@
         //Load in the Social
         NSMutableArray * socialArray = [self.tableStructure objectAtIndex:CC_SOCIAL];
         ABMultiValueRef socialMessageRef = ABRecordCopyValue(person.contactRef, kABPersonSocialProfileProperty);
-        int numSocial = ABMultiValueGetCount(socialMessageRef);
+        CFIndex numSocial = ABMultiValueGetCount(socialMessageRef);
         for (CFIndex i = 0; i < numSocial; i++)
         {
             NSDictionary * socialDictionary = (__bridge NSDictionary *)(ABMultiValueCopyValueAtIndex(socialMessageRef, i));
@@ -580,7 +580,7 @@
 
 #pragma mark - Removing/inserting cells from model through textfield
 //Support function to remove this cell when it is empty (only used for detail cells)
-- (int)removeCellWithTextfield:(UITextField*)textfield
+- (NSInteger)removeCellWithTextfield:(UITextField*)textfield
 {
     NSMutableArray * section = [tableStructure objectAtIndex:textfield.tag];
     //Only if there are more cells and this textfield is empty, can we delete
@@ -594,7 +594,7 @@
             {
                 if ([section lastObject] != cellInfo)
                 {
-                    int cellPosition = [section indexOfObject:cellInfo];
+                    NSUInteger cellPosition = [section indexOfObject:cellInfo];
                     [section removeObject:cellInfo];
                     return cellPosition;
                 }
@@ -605,12 +605,13 @@
             }
         }
     }
-        //No cell removed
+
+    // No cell removed
     return -1;
 }
 
 //Support function to make cells appear below this one when typing something in this cell (only used for Detail line separated cells)
-- (int)checkToInsertCellBelowCellWithTextfield:(UITextField*)textfield
+- (NSInteger)checkToInsertCellBelowCellWithTextfield:(UITextField*)textfield
 {
     NSMutableArray * section = [tableStructure objectAtIndex:textfield.tag];
     NBPersonCellInfo * lastCellInfo = [section lastObject];
@@ -671,6 +672,7 @@
         [[section lastObject] setVisible:YES];
         return [section indexOfObject:lastCellInfo] + 1;
     }
+
     //No cell inserted
     return -1;
 }

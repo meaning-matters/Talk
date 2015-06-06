@@ -122,7 +122,7 @@ typedef enum
                     reply:(void (^)(NSError* error, BOOL isValid))reply;
 
 // 11A. PURCHASE NUMBER
-- (void)purchaseNumberForMonths:(int)months
+- (void)purchaseNumberForMonths:(NSUInteger)months
                            name:(NSString*)name
                  isoCountryCode:(NSString*)isoCountryCode
                        areaCode:(NSString*)areaCode
@@ -137,7 +137,7 @@ typedef enum
 - (void)updateNumberE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply;
 
 // 11C. EXTEND NUMBER
-- (void)extendNumberE164:(NSString*)e164 forMonths:(int)months reply:(void (^)(NSError* error))reply;
+- (void)extendNumberE164:(NSString*)e164 forMonths:(NSUInteger)months reply:(void (^)(NSError* error))reply;
 
 // 12. GET LIST OF NUMBERS
 - (void)retrieveNumberE164List:(void (^)(NSError* error, NSArray* e164s))reply;

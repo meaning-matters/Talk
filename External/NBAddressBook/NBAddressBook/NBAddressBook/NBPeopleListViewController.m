@@ -317,8 +317,8 @@
         CFMutableArrayRef selectedContactsRef = (__bridge CFMutableArrayRef)contactsInSelectedSources;
         CFArraySortValues(selectedContactsRef,
                           CFRangeMake(0, CFArrayGetCount(selectedContactsRef)),
-                          (CFComparatorFunction) ABPersonComparePeopleByName,
-                          (void*) ABPersonGetSortOrdering());
+                          (CFComparatorFunction)ABPersonComparePeopleByName,
+                          (void*)((intptr_t)ABPersonGetSortOrdering()));
         allContacts = (__bridge NSMutableArray*)selectedContactsRef;
 
         //Check to see if we are showing section headers
@@ -326,7 +326,7 @@
 
         //Build up a clean datasource
         [contactsDatasource removeAllObjects];
-        for (NSString* key in SECTION_TITLES)
+        for (int n = 0; n < SECTION_TITLES.count; n++)
         {
             [contactsDatasource addObject:[NSMutableArray array]];
         }
@@ -339,8 +339,8 @@
             NSString* firstChar = (contactSortingProperty == nil) ? @"#" : [[contactSortingProperty substringToIndex:1] uppercaseString];
             
             //Get the array this contact belongs to
-            int index = [SECTION_TITLES indexOfObject:firstChar];
-            if (index == NSNotFound || index == -1)
+            NSUInteger index = [SECTION_TITLES indexOfObject:firstChar];
+            if (index == NSNotFound)
             {
                 //If we can't place this item, place it in the hash section
                 index = [SECTION_TITLES indexOfObject:@"#"];
@@ -367,7 +367,7 @@
         }
 
         //Set the number of contacts in the label
-        [numContactsLabel setText:[NSString stringWithFormat:@"%d %@", [allContacts count], NSLocalizedString(@"CNT_TITLE", @"")]];
+        [numContactsLabel setText:[NSString stringWithFormat:@"%d %@", (int)[allContacts count], NSLocalizedString(@"CNT_TITLE", @"")]];
         [numContactsLabel setHidden:[allContacts count] < 2];
     });
 }
@@ -569,7 +569,7 @@
     [filteredContacts filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary* bindings)
     {
         ABRecordRef contact      = (__bridge ABRecordRef)evaluatedObject;
-        NSInteger   properties[] =
+        int32_t     properties[] =
         {
             kABPersonFirstNameProperty,
             kABPersonLastNameProperty,

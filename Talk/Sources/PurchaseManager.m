@@ -457,10 +457,12 @@
         switch (transaction.transactionState)
         {
             case SKPaymentTransactionStatePurchasing:
+            {
                 NBLog(@"//### Busy purchasing");
                 break;
-
+            }
             case SKPaymentTransactionStatePurchased:
+            {
                 [Common enableNetworkActivityIndicator:NO];
                 if ([self isAccountProductIdentifier:transaction.payment.productIdentifier])
                 {
@@ -471,13 +473,15 @@
                     [self processCreditTransaction:transaction];
                 }
                 break;
-
+            }
             case SKPaymentTransactionStateRestored:
+            {
                 [self finishTransaction:transaction];  // Finish multiple times is allowed.
                 self.restoredAccountTransaction = transaction;
                 break;
-
+            }
             case SKPaymentTransactionStateFailed:
+            {
                 if (transaction.error.code == 2)
                 {
                     NBLog(@"Did we see Already Purchased?");
@@ -492,11 +496,17 @@
 
                     NBLog(@"//### %@ transaction failed: %@ %d.", transaction.payment.productIdentifier,
                           [transaction.error localizedDescription],
-                          transaction.error.code);
+                          (int)transaction.error.code);
 
                     [self completeBuyWithSuccess:NO object:transaction.error];
                 }
                 break;
+            }
+            SKPaymentTransactionStateDeferred:
+            {
+                // Waiting for user action (like tapping Buy).  We don't use this now.
+                break;
+            }
         }
     };
 }
@@ -711,7 +721,7 @@
 }
 
 
-- (void)buyNumberForMonths:(int)months
+- (void)buyNumberForMonths:(NSUInteger)months
                       name:(NSString*)name
             isoCountryCode:(NSString*)isoCountryCode
                   areaCode:(NSString*)areaCode

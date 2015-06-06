@@ -41,7 +41,7 @@
             error = SecItemUpdate((__bridge CFDictionaryRef)query, (__bridge CFDictionaryRef)attributesToUpdate);
             if (error != errSecSuccess)
             {
-                NBLog(@"SecItemUpdate failed: %ld", error);
+                NBLog(@"SecItemUpdate failed: %d", (int)error);
                 result = NO;
             }
         }
@@ -53,13 +53,13 @@
             error = SecItemAdd((__bridge CFDictionaryRef)query, NULL);
             if (error != errSecSuccess)
             {
-                NBLog(@"SecItemAdd failed: %ld", error);
+                NBLog(@"SecItemAdd failed: %d", (int)error);
                 result = NO;
             }
         }
         else
         {
-            NBLog(@"SecItemCopyMatching failed: %ld", error);
+            NBLog(@"SecItemCopyMatching failed: %d", (int)error);
             result = NO;
         }
     }
@@ -118,7 +118,7 @@
         OSStatus status = SecItemDelete((__bridge CFDictionaryRef)query);
         if (status != errSecSuccess)
         {
-            NBLog(@"SecItemDelete failed: %ld", status);
+            NBLog(@"SecItemDelete failed: %d", (int)status);
             result = NO;
         }
     }

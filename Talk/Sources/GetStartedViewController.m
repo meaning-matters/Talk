@@ -23,7 +23,7 @@
 @property (nonatomic, strong) NSArray*        texts;
 @property (nonatomic, assign) NSUInteger      numberOfPages;
 @property (nonatomic, strong) NSMutableArray* imageViews;
-@property (nonatomic, assign) int             changingPage; // Is -1 if no page change busy.
+@property (nonatomic, assign) NSInteger       changingPage; // Is -1 if no page change busy.
 @property (nonatomic, strong) NSTimer*        timer;
 @property (nonatomic, assign) BOOL            jumpingBack;
 @property (nonatomic, assign) BOOL            showAsIntro;

@@ -25,7 +25,7 @@
 @property (nonatomic, strong) NSDictionary*  info;
 @property (nonatomic, assign) float          buyCellHeight;
 @property (nonatomic, strong) NumberBuyCell* buyCell;
-@property (nonatomic, assign) int            buyMonths;
+@property (nonatomic, assign) NSUInteger     buyMonths;
 @property (nonatomic, assign) float          monthPrice;
 
 @end
@@ -169,7 +169,7 @@
 
 #pragma mark - Number Buy Delegate
 
-- (void)buyNumberForMonths:(int)months
+- (void)buyNumberForMonths:(NSUInteger)months
 {
     self.buyMonths   = months;
     float totalPrice = [self updateBuyCell];
