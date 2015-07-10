@@ -36,24 +36,36 @@
         sharedInstance = [[CountryNames alloc] init];
 
         // Make sure the locale matches the language of the app (see main.mm).
-        NSDictionary* localeInfo = @{NSLocaleLanguageCode : [[NSLocale preferredLanguages] objectAtIndex:0]};
-        NSLocale*     locale     = [[NSLocale alloc] initWithLocaleIdentifier:[NSLocale localeIdentifierFromComponents:localeInfo]];
+        NSDictionary*        localeInfo      = @{NSLocaleLanguageCode : [[NSLocale preferredLanguages] objectAtIndex:0]};
+        NSLocale*            locale          = [[NSLocale alloc] initWithLocaleIdentifier:[NSLocale localeIdentifierFromComponents:localeInfo]];
+        NSMutableDictionary* namesDictionary = [NSMutableDictionary dictionary];
 
-        sharedInstance.namesDictionary = [NSMutableDictionary dictionary];
         for (NSString* countryCode in [NSLocale ISOCountryCodes])
         {
             NSString* identifier  = [NSLocale localeIdentifierFromComponents:[NSDictionary dictionaryWithObject:countryCode
                                                                                                          forKey:NSLocaleCountryCode]];
             NSString* countryName = [locale displayNameForKey:NSLocaleIdentifier value:identifier];
-            [sharedInstance.namesDictionary setValue:countryName forKey:countryCode];
+            [namesDictionary setValue:countryName forKey:countryCode];
         }
 
         // Add countries not supported by iOS.
         NSString* countryName;
         countryName = NSLocalizedStringWithDefaultValue(@"Country:AC", nil, [NSBundle mainBundle], @"Ascension Island", @"AC");
-        [sharedInstance.namesDictionary setValue:countryName forKey:@"AC"];
+        [namesDictionary setValue:countryName forKey:@"AC"];
         countryName = NSLocalizedStringWithDefaultValue(@"Country:AN", nil, [NSBundle mainBundle], @"Netherlands Antilles", @"AN");
-        [sharedInstance.namesDictionary setValue:countryName forKey:@"AN"];
+        [namesDictionary setValue:countryName forKey:@"AN"];
+
+        // Remove countries for which we don't have a flag icon yet.
+        [namesDictionary removeObjectForKey:@"AQ"]; // Antartica
+        [namesDictionary removeObjectForKey:@"BV"]; // Bouvet Island
+        [namesDictionary removeObjectForKey:@"TF"]; // French Southern Territories
+        [namesDictionary removeObjectForKey:@"HM"]; // Heard & MacDonald Island
+        [namesDictionary removeObjectForKey:@"PN"]; // Pitcairn Island
+        [namesDictionary removeObjectForKey:@"GS"]; // So. Georgia & So. Sandwich Isl.
+        [namesDictionary removeObjectForKey:@"UM"]; // U.S Outlying Islands
+        [namesDictionary removeObjectForKey:@"EH"]; // Western Sahara
+
+        sharedInstance.namesDictionary = namesDictionary;
     });
     
     return sharedInstance;
