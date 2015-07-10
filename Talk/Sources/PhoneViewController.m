@@ -49,12 +49,11 @@ typedef enum
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
-        self.title                = [Strings phoneString];
-
-        self.phone                = phone;
         isNew                     = (phone == nil);
+        self.phone                = phone;
         self.managedObjectContext = managedObjectContext;
-
+        self.title                = isNew ? [Strings newPhoneString] : [Strings phoneString];
+        
         self.name                 = phone.name;
         phoneNumber               = [[PhoneNumber alloc] initWithNumber:self.phone.e164];
     }

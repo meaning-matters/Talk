@@ -139,11 +139,29 @@
 }
 
 
++ (NSString*)newNumberString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings New Number", nil,
+                                             [NSBundle mainBundle], @"New Number",
+                                             @"Standard string to label a new phone number\n"
+                                             @"[iOS standard size].");
+}
+
+
 + (NSString*)numbersString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Numbers", nil,
                                              [NSBundle mainBundle], @"Numbers",
                                              @"Standard string to label phone numbers\n"
+                                             @"[iOS standard size].");
+}
+
+
++ (NSString*)newForwardingString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings New Forwarding", nil,
+                                             [NSBundle mainBundle], @"New Forwarding",
+                                             @"Standard string to label a new phone call forwarding\n"
                                              @"[iOS standard size].");
 }
 
@@ -162,6 +180,15 @@
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Forwardings", nil,
                                              [NSBundle mainBundle], @"Forwardings",
                                              @"Standard string to label phone call forwardings\n"
+                                             @"[iOS standard size].");
+}
+
+
++ (NSString*)newPhoneString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings New Phone", nil,
+                                             [NSBundle mainBundle], @"New Phone",
+                                             @"Standard string to label a new telephone device\n"
                                              @"[iOS standard size].");
 }
 

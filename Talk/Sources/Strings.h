@@ -36,13 +36,19 @@
 
 + (NSString*)detailsString;
 
++ (NSString*)newNumberString;
+
 + (NSString*)numberString;
 
 + (NSString*)numbersString;
 
++ (NSString*)newForwardingString;
+
 + (NSString*)forwardingString;
 
 + (NSString*)forwardingsString;
+
++ (NSString*)newPhoneString;
 
 + (NSString*)phoneString;
 

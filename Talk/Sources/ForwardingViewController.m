@@ -53,13 +53,13 @@ typedef enum
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
-        self.title = [Strings forwardingString];
         self.name  = forwarding.name;
         phone      = [forwarding.phones anyObject];
 
         self.managedObjectContext = managedObjectContext;
         self.forwarding           = forwarding;
         isNew                     = (forwarding == nil);
+        self.title                = isNew ? [Strings newForwardingString] : [Strings forwardingString];
 
         if (isNew == YES)
         {
