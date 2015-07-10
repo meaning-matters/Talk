@@ -39,8 +39,6 @@ typedef enum
     NSArray*      numbersArray;
 }
 
-@property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
-
 @end
 
 
@@ -101,7 +99,7 @@ typedef enum
         UIBarButtonItem* buttonItem;
         buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                    target:self
-                                                                   action:@selector(cancel)];
+                                                                   action:@selector(cancelAction)];
         self.navigationItem.leftBarButtonItem = buttonItem;
 
         buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
@@ -525,12 +523,6 @@ typedef enum
     {
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
-}
-
-
-- (void)cancel
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

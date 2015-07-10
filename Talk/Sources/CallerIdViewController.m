@@ -30,11 +30,8 @@ typedef enum
 }
 
 @property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
-@property (nonatomic, strong) NSMutableArray*         phones;
-@property (nonatomic, strong) NSMutableArray*         numbers;
-@property (nonatomic, strong) PhoneData*              selectedPhone;
-@property (nonatomic, strong) NumberData*             selectedNumber;
-@property (nonatomic, copy) void (^completion)(PhoneData* selectedPhone, NumberData* selectedNumber);
+@property (nonatomic, strong) CallableData*           selectedCallable;
+@property (nonatomic, copy) void (^completion)(CallableData* selectedCallable);
 
 @end
 
@@ -44,24 +41,20 @@ typedef enum
 - (instancetype)init
 {
     return [self initWithManagedObjectContext:[DataManager sharedManager].managedObjectContext
-                                selectedPhone:nil
-                               selectedNumber:nil
+                             selectedCallable:nil
                                    completion:nil];
 }
 
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
-                               selectedPhone:(PhoneData*)selectedPhone
-                              selectedNumber:(NumberData*)selectedNumber
-                                  completion:(void (^)(PhoneData*  selectedPhone,
-                                                       NumberData* selectedNumber))completion;
+                            selectedCallable:(CallableData*)selectedCallable
+                                  completion:(void (^)(CallableData*  selectedCallable))completion
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
         self.title                = [Strings callerIdString];
         self.managedObjectContext = managedObjectContext;
-        self.selectedPhone        = selectedPhone;
-        self.selectedNumber       = selectedNumber;
+        self.selectedCallable     = selectedCallable;
         self.completion           = completion;
     }
 
@@ -171,7 +164,7 @@ typedef enum
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    self.completion(nil, nil);
+    self.completion(nil);
 
     [self dismissViewControllerAnimated:YES completion:nil];
 
@@ -245,7 +238,7 @@ typedef enum
     cell.detailTextLabel.text = [phoneNumber internationalFormat];
     cell.imageView.image      = [UIImage imageNamed:[phoneNumber isoCountryCode]];
 
-    if (callable == (CallableData*)self.selectedPhone || callable == (CallableData*)self.selectedNumber)
+    if (callable == self.selectedCallable)
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }

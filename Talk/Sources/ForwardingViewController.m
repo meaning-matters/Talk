@@ -41,11 +41,7 @@ typedef enum
     PhoneData*       phone;
     NSMutableArray*  statementsArray;
     NSArray*         numbersArray;
-
-    UIBarButtonItem* rightBarButtonItem;
 }
-
-@property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
 
 @end
 
@@ -113,41 +109,34 @@ typedef enum
 
 - (void)viewDidLoad
 {
-    NBLog(@"########## Look at PhoneViewController.m for fixes in handling Save, Keyboard, .... on WED 23 APR 2014");
-
     [super viewDidLoad];
 
     self.clearsSelectionOnViewWillAppear = YES;
 
-    if (isNew == YES)
+    if (isNew)
     {
-        UIBarButtonItem* leftBarButtonItem;
-        leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+        UIBarButtonItem* buttonItem;
+        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                    target:self
-                                                                   action:@selector(cancel)];
-        self.navigationItem.leftBarButtonItem = leftBarButtonItem;
+                                                                   action:@selector(cancelAction)];
+        self.navigationItem.leftBarButtonItem = buttonItem;
 
-        rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                                           target:self
-                                                                           action:@selector(saveAction)];
+        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                                   target:self
+                                                                   action:@selector(createAction)];
+        self.navigationItem.rightBarButtonItem = buttonItem;
     }
     else
     {
-        rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
-                                                                           target:self
-                                                                           action:@selector(deleteAction)];
+        UIBarButtonItem* buttonItem;
+        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
+                                                                   target:self
+                                                                   action:@selector(deleteAction)];
+        self.navigationItem.rightBarButtonItem = buttonItem;
     }
 
-    self.navigationItem.rightBarButtonItem = rightBarButtonItem;
     [self updateRightBarButtonItem];
     [self updateNumbersArray];
-
-    // Let keyboard be hidden when user taps outside text fields.
-    UITapGestureRecognizer* gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                        action:@selector(hideKeyboard:)];
-    gestureRecognizer.cancelsTouchesInView = NO;
-    gestureRecognizer.delegate             = self;
-    [self.tableView addGestureRecognizer:gestureRecognizer];
 }
 
 
@@ -220,7 +209,7 @@ typedef enum
 }
 
 
-- (void)create
+- (void)createAction
 {
     self.forwarding.name = self.name;
     statementsArray[0][@"call"][@"e164"][0] = phone.e164;
@@ -248,7 +237,7 @@ typedef enum
 }
 
 
-- (void)save
+- (void)saveAction
 {
     if ([self.name isEqualToString:self.forwarding.name] == YES &&
         [Common object:statementsArray isEqualToJsonString:self.forwarding.statements] == YES)
@@ -658,11 +647,11 @@ typedef enum
 
     if (isNew == YES)
     {
-        rightBarButtonItem.enabled = valid;
+        self.navigationItem.rightBarButtonItem.enabled = valid;
     }
     else
     {
-        rightBarButtonItem.enabled = (self.forwarding.numbers.count == 0);
+        self.navigationItem.rightBarButtonItem.enabled = (self.forwarding.numbers.count == 0);
     }
 }
 
@@ -686,20 +675,14 @@ typedef enum
 }
 
 
-- (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
+#pragma mark - Baseclass Override
+
+- (void)save
 {
-    if (self.name.length > 0)
+    if (isNew == NO)
     {
-        [[self.tableView superview] endEditing:YES];
-
-        [self save];
+        [self saveAction];
     }
-}
-
-
-- (void)cancel
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

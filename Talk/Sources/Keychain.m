@@ -7,6 +7,14 @@
 //
 //  Found here: http://software-security.sans.org/blog/2011/01/05/using-keychain-to-store-passwords-ios-iphone-ipad
 //
+//  In iOS 8 there's a severe issue that causes all keychain calls to fail
+//  with -34018 (errSecMissingEntitlement).  This is discussed here:
+//  https://devforums.apple.com/thread/246122?start=50&tstart=0 and here
+//  http://stackoverflow.com/q/20344255/1971013 and in various other posts.
+//  What I've done so far is remove wildcard provisioning profiles and
+//  making this module non-ARC.  Best suggestions were given in Apple forum
+//  by Kevin Hawkins.
+//
 
 #import "Keychain.h"
 #import <Security/Security.h>

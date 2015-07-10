@@ -21,14 +21,16 @@
 
 @implementation ItemViewController
 
-- (id)init
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
+        self.managedObjectContext = managedObjectContext;
+
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(handleManagedObjectsChange:)
                                                      name:NSManagedObjectContextObjectsDidChangeNotification
-                                                   object:[DataManager sharedManager].managedObjectContext];
+                                                   object:self.managedObjectContext];
     }
 
     return self;
@@ -39,7 +41,7 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:NSManagedObjectContextObjectsDidChangeNotification
-                                                  object:[DataManager sharedManager].managedObjectContext];
+                                                  object:self.managedObjectContext];
 }
 
 
@@ -67,6 +69,14 @@
     {
         [self.tableView reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
+}
+
+
+#pragma mark - Navigation Action
+
+- (void)cancelAction
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

@@ -21,8 +21,7 @@
     NSFetchedResultsController* fetchedPhonesController;
 }
 
-@property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
-@property (nonatomic, strong) PhoneData*              selectedPhone;
+@property (nonatomic, strong) PhoneData* selectedPhone;
 @property (nonatomic, copy) void (^completion)(PhoneData* selectedPhone);
 
 @end

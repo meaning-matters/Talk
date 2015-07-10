@@ -11,8 +11,6 @@
 
 @implementation NumberData
 
-@dynamic name;
-@dynamic e164;
 @dynamic numberType;
 @dynamic areaCode;
 @dynamic areaName;

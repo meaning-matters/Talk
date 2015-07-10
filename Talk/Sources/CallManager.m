@@ -191,6 +191,13 @@
         return;
     }
 
+    if (contactId == nil)
+    {
+        completion(NO, [Settings sharedSettings].callerIdE164);
+
+        return;
+    }
+
     NSString* title;
     NSString* message;
 
@@ -214,14 +221,14 @@
         NSString* defaultButton;
 
         title         = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId Title", nil, [NSBundle mainBundle],
-                                                          @"No Caller ID Assigned",
+                                                          @"Choose Caller ID",
                                                           @"...\n"
                                                           @"[iOS alert title size - abbreviated: 'Captive Portal'].");
 
         message       = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId Message", nil, [NSBundle mainBundle],
-                                                          @"You can assign a caller ID that will be used for all "
-                                                          @"your calls to this contact.\n"
-                                                          @"Or, use the default from Settings: \"%@\", "
+                                                          @"Assign a caller ID for all "
+                                                          @"your calls to this contact.\n\n"
+                                                          @"Or, use the default: \"%@\", "
                                                           @"for this call only.",
                                                           @"...\n"
                                                           @"[iOS alert message size]");
@@ -261,13 +268,11 @@
                     UINavigationController* navigationController;
 
                     viewController = [[CallerIdViewController alloc] initWithManagedObjectContext:managedObjectContext
-                                                                                    selectedPhone:nil
-                                                                                   selectedNumber:nil
-                                                                                       completion:^(PhoneData*  selectedPhone,
-                                                                                                    NumberData* selectedNumber)
+                                                                                 selectedCallable:nil
+                                                                                       completion:^(CallableData*  selectedCallable)
                     {
                         //### Show callerId selector, and make call when selected in block.
-                        //### { completion(identity); }
+                        completion(NO, @"+3215666666");
                     }];
 
                     navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
@@ -303,7 +308,6 @@
 
     if (missing != 0)
     {
-
         switch (missing)
         {
             case 1:
@@ -552,9 +556,7 @@
         {
             if (cancelled == NO && [self checkCallbackAndIdentity:identity] == YES)
             {
-                [self callPhoneNumber:phoneNumber
-                         fromIdentity:identity
-                            contactId:contactId];
+                [self callPhoneNumber:phoneNumber fromIdentity:identity contactId:contactId];
             }
         }];
     }

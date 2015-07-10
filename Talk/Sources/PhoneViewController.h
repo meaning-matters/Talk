@@ -11,7 +11,7 @@
 #import "ItemViewController.h"
 
 
-@interface PhoneViewController : ItemViewController <UITextFieldDelegate, UIGestureRecognizerDelegate>
+@interface PhoneViewController : ItemViewController <UITextFieldDelegate>
 
 @property (nonatomic, strong) PhoneData* phone;
 

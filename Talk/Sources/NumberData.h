@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "CallableData.h"
 
 @class ForwardingData;
 
-@interface NumberData : NSManagedObject
+
+@interface NumberData : CallableData
 
 // Mandatory.
-@property (nonatomic, retain) NSString*       name;           // Default: formatted number.
-@property (nonatomic, retain) NSString*       e164;
 @property (nonatomic, retain) NSString*       numberType;
 @property (nonatomic, retain) NSString*       areaCode;
 @property (nonatomic, retain) NSString*       areaName;

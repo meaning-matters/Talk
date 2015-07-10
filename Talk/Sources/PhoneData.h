@@ -8,15 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-
+#import "CallableData.h"
 
 @class ForwardingData;
 
-@interface PhoneData : NSManagedObject
 
-@property (nonatomic, retain) NSString* name;
-@property (nonatomic, retain) NSString* e164;
-@property (nonatomic, retain) NSSet*    forwardings;
+@interface PhoneData : CallableData
+
+@property (nonatomic, retain) NSSet* forwardings;
 
 
 - (void)deleteFromManagedObjectContext:(NSManagedObjectContext*)managedObjectContext

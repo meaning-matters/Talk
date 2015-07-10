@@ -352,7 +352,7 @@ typedef enum
             }
             else if (indexPath.row == 1)
             {
-                PhoneData* phone = [self lookupPhoneForE164:settings.callerIdE164];
+                PhoneData*              phone                = [self lookupPhoneForE164:settings.callerIdE164];
                 NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
                 phonesViewController = [[PhonesViewController alloc] initWithManagedObjectContext:managedObjectContext
                                                                                     selectedPhone:phone
@@ -547,7 +547,7 @@ typedef enum
         }
 
         cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Setting Shown Number Format", nil,
-                                                                      [NSBundle mainBundle], @"Caller ID",
+                                                                      [NSBundle mainBundle], @"Default Caller ID",
                                                                       @"Format string showing shown number.\n"
                                                                       @"[1 line].");
         PhoneData* phone = [self lookupPhoneForE164:settings.callerIdE164];

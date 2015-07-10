@@ -38,8 +38,6 @@ typedef enum
     BOOL                        isUpdatingRecordings;
 }
 
-@property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
-
 @end
 
 
@@ -57,10 +55,10 @@ typedef enum
     {
         self.title                = [Strings forwardingsString];
         // The tabBarItem image must be set in my own NavigationController.
-        
+
         self.managedObjectContext = managedObjectContext;
     }
-    
+
     return self;
 }
 

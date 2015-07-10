@@ -2,7 +2,7 @@
 //  WebInterface.m
 //  Talk
 //
-//  Created by Dev on 9/9/14.
+//  Created by Cornelis van der Bent on 9/9/14.
 //  Copyright (c) 2014 Cornelis van der Bent. All rights reserved.
 //
 //  The server list is DNS-refreshed when it's empty, when the shortest TTL of

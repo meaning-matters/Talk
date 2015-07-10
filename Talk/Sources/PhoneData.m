@@ -14,8 +14,6 @@
 
 @implementation PhoneData
 
-@dynamic name;
-@dynamic e164;
 @dynamic forwardings;
 
 
@@ -26,7 +24,7 @@
     {
         NSString* title;
         NSString* message;
-        NSString* phoneString;
+        NSString* forwardingString;
 
         title   = NSLocalizedStringWithDefaultValue(@"Phones PhoneInUserTitle", nil,
                                                     [NSBundle mainBundle], @"Phone Still Used",
@@ -38,8 +36,8 @@
                                                     @"make sure it's no longer used.",
                                                     @"Alert message telling that number forwarding is used.\n"
                                                     @"[iOS alert message size - parameters: count, number(s)]");
-        phoneString = (self.forwardings.count == 1) ? [Strings phoneString] : [Strings phonesString];
-        message = [NSString stringWithFormat:message, self.forwardings.count, phoneString];
+        forwardingString = (self.forwardings.count == 1) ? [Strings forwardingString] : [Strings forwardingsString];
+        message = [NSString stringWithFormat:message, self.forwardings.count, forwardingString];
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
