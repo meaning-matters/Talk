@@ -62,14 +62,6 @@ typedef enum
 }
 
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NSManagedObjectContextObjectsDidChangeNotification
-                                                  object:self.managedObjectContext];
-}
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -87,11 +79,6 @@ typedef enum
         self.phone = (PhoneData*)[NSEntityDescription insertNewObjectForEntityForName:@"Phone"
                                                                inManagedObjectContext:self.managedObjectContext];
     }
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleManagedObjectsChange:)
-                                                 name:NSManagedObjectContextObjectsDidChangeNotification
-                                               object:self.managedObjectContext];
 
     if (isNew)
     {
@@ -122,16 +109,6 @@ typedef enum
     else
     {
         [self updateDeleteButtonItem];
-    }
-}
-
-
-- (void)handleManagedObjectsChange:(NSNotification*)note
-{
-    NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
-    if (selectedIndexPath == nil)
-    {
-        [self.tableView reloadData];
     }
 }
 

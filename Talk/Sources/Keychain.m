@@ -78,7 +78,7 @@
 
 + (NSString*)getStringForKey:(NSString*)account
 {
-    NSString*   stringToReturn = nil;
+    NSString* stringToReturn = nil;
 
     if (account == nil)
     {

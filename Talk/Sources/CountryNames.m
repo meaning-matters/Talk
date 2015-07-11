@@ -48,6 +48,7 @@
             [namesDictionary setValue:countryName forKey:countryCode];
         }
 
+#warning Issues with a number of countries.
         // Add countries not supported by iOS.
         NSString* countryName;
         countryName = NSLocalizedStringWithDefaultValue(@"Country:AC", nil, [NSBundle mainBundle], @"Ascension Island", @"AC");

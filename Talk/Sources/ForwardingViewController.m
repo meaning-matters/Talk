@@ -53,13 +53,12 @@ typedef enum
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
-        self.name  = forwarding.name;
-        phone      = [forwarding.phones anyObject];
+        self.name       = forwarding.name;
+        phone           = [forwarding.phones anyObject];
 
-        self.managedObjectContext = managedObjectContext;
-        self.forwarding           = forwarding;
-        isNew                     = (forwarding == nil);
-        self.title                = isNew ? [Strings newForwardingString] : [Strings forwardingString];
+        self.forwarding = forwarding;
+        isNew           = (forwarding == nil);
+        self.title      = isNew ? [Strings newForwardingString] : [Strings forwardingString];
 
         if (isNew == YES)
         {
@@ -76,16 +75,13 @@ typedef enum
         }
         else
         {
+            self.managedObjectContext = managedObjectContext;
+
             [[Settings sharedSettings] addObserver:self
                                         forKeyPath:@"numbersSortSegment"
                                            options:NSKeyValueObservingOptionNew
                                            context:nil];
         }
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(handleManagedObjectsChange:)
-                                                     name:NSManagedObjectContextObjectsDidChangeNotification
-                                                   object:self.managedObjectContext];
 
         statementsArray = [Common mutableObjectWithJsonString:self.forwarding.statements];
     }
@@ -96,10 +92,6 @@ typedef enum
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NSManagedObjectContextObjectsDidChangeNotification
-                                                  object:self.managedObjectContext];
-
     if (isNew == NO)
     {
         [[Settings sharedSettings] removeObserver:self forKeyPath:@"numbersSortSegment" context:nil];
@@ -160,22 +152,6 @@ typedef enum
     [self updateNumbersArray];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:[Common nOfBit:TableSectionNumbers inValue:sections]]
                   withRowAnimation:UITableViewRowAnimationAutomatic];
-}
-
-
-- (void)handleManagedObjectsChange:(NSNotification*)note
-{
-    NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
-    if (selectedIndexPath == nil)
-    {
-        [self.tableView reloadData];
-    }
-    else
-    {
-        [self.tableView reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-
-    [self updateRightBarButtonItem];
 }
 
 
@@ -434,14 +410,17 @@ typedef enum
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"PhoneCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"PhoneCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"PhoneCell"];
     }
 
-    cell.textLabel.text  = [Strings phoneString];
     if (phone != nil)
     {
         PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:phone.e164];
         [Common addCountryImageToCell:cell isoCountryCode:phoneNumber.isoCountryCode];
+    }
+    else
+    {
+        cell.textLabel.text = [Strings phoneString];
     }
 
     cell.selectionStyle  = UITableViewCellSelectionStyleDefault;
@@ -554,14 +533,17 @@ typedef enum
                 phone = selectedPhone;
                 [self.forwarding removePhones:self.forwarding.phones];
                 [self.forwarding addPhonesObject:phone];
+
+                [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
             }];
 
             [self.navigationController pushViewController:viewController animated:YES];
             break;
         }
         case TableSectionStatements:
+        {
             break;
-
+        }
         case TableSectionNumbers:
         {
             NumberData*           number         = numbersArray[indexPath.row];
@@ -571,7 +553,9 @@ typedef enum
             break;
         }
         case TableSectionRecordings:
+        {
             break;
+        }
     }
 }
 
@@ -585,53 +569,16 @@ typedef enum
 }
 
 
-#pragma mark - Gesture Recognizer Delegate
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer shouldReceiveTouch:(UITouch*)touch
-{
-    if ([touch.view isKindOfClass:[UITextField class]] || [touch.view isKindOfClass:[UIButton class]])
-    {
-        return NO;
-    }
-    else
-    {
-        return YES;
-    }
-}
-
-
 #pragma mark - TextField Delegate
-
-// Only used when there's a clear button (which we don't have now; see Common).
-- (BOOL)textFieldShouldClear:(UITextField*)textField
-{
-    self.name = @"";
-
-    [self updateRightBarButtonItem];
-
-    return YES;
-}
-
-
-- (BOOL)textFieldShouldReturn:(UITextField*)textField
-{
-    [self save];
-
-    [textField resignFirstResponder];
-
-    // we can always return YES, because the Done button will be disabled when there's no text.
-    return YES;
-}
-
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
 {
-    NSString* text = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    BOOL shouldChange = [super textField:textField shouldChangeCharactersInRange:range replacementString:string];
 
-    self.name = text;
+    self.name = textField.text;
     [self updateRightBarButtonItem];
 
-    return YES;
+    return shouldChange;
 }
 
 
@@ -683,6 +630,12 @@ typedef enum
     {
         [self saveAction];
     }
+}
+
+
+- (void)update
+{
+    [self updateRightBarButtonItem];
 }
 
 @end

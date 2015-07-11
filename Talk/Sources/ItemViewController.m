@@ -11,6 +11,7 @@
 #import "Common.h"
 #import "Strings.h"
 
+#warning Check if the hard-coded inset values (265, 216, ...) are working on iPhone 6+ and for all keyboard configurations.
 
 @interface ItemViewController ()
 
@@ -26,11 +27,6 @@
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
         self.managedObjectContext = managedObjectContext;
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(handleManagedObjectsChange:)
-                                                     name:NSManagedObjectContextObjectsDidChangeNotification
-                                                   object:self.managedObjectContext];
     }
 
     return self;
@@ -50,6 +46,12 @@
     [super viewDidLoad];
 
     self.clearsSelectionOnViewWillAppear = NO;
+
+    // Can't be in init method because subclass may create/set child managed object context.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleManagedObjectsChange:)
+                                                 name:NSManagedObjectContextObjectsDidChangeNotification
+                                               object:self.managedObjectContext];
 
     // Let keyboard be hidden when user taps outside text fields.
     UITapGestureRecognizer* gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -89,6 +91,12 @@
     {
         [self.tableView reloadData];
     }
+    else
+    {
+        [self.tableView reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+
+    [self update];
 }
 
 
@@ -104,8 +112,13 @@
 }
 
 
-// Placeholder that must be overriden by subclass.
+#pragma mark - Placeholders that must be overriden by subclass.
+
 - (void)save
+{
+}
+
+- (void)update
 {
 }
 
