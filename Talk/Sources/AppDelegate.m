@@ -337,8 +337,8 @@
         NSString*  className = [self classNameFromViewController:viewController];
         NSUInteger index     = [[Settings sharedSettings].tabBarClassNames indexOfObject:className];
 
-        // When NSNotFound, we are a level deeper; but we only remember top level choice.
-        if (index != NSNotFound)
+        // When NSNotFound or when count != 2, we are a level deeper; but we only remember top level choice.
+        if (index != NSNotFound && viewController.navigationController.viewControllers.count == 2)
         {
             [Settings sharedSettings].tabBarSelectedIndex = index;
         }
