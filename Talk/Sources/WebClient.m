@@ -786,11 +786,12 @@ static NSDictionary* statuses;
     (stateName != nil) ? parameters[@"stateName"] = stateName : 0;
     (info      != nil) ? parameters[@"info"]      = info      : 0;
 
+    /*
     NSLog(@"##################### DUMMY RETURN purchaseNumberForReceipt #########");
     reply(nil, @"+3215666666");
     return;
-
-    //parameters[@"debug"] = @(true);
+*/
+    parameters[@"debug"] = @(true);
 
     [self postPath:[NSString stringWithFormat:@"/users/%@/numbers", username]
         parameters:parameters

@@ -47,7 +47,7 @@ typedef enum
 - (instancetype)initWithPhone:(PhoneData*)phone
          managedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
-    if (self = [super initWithStyle:UITableViewStyleGrouped])
+    if (self = [super initWithManagedObjectContext:managedObjectContext])
     {
         isNew                     = (phone == nil);
         self.phone                = phone;

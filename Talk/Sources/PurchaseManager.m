@@ -502,7 +502,7 @@
                 }
                 break;
             }
-            SKPaymentTransactionStateDeferred:
+            case SKPaymentTransactionStateDeferred:
             {
                 // Waiting for user action (like tapping Buy).  We don't use this now.
                 break;

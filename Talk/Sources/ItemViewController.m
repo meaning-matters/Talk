@@ -82,9 +82,9 @@
 }
 
 
-#pragma mark - Helper Methods
+#pragma mark - Table Update
 
-- (void)handleManagedObjectsChange:(NSNotification*)note
+- (void)updateTable
 {
     NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
     if (selectedIndexPath == nil)
@@ -95,7 +95,14 @@
     {
         [self.tableView reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
+}
 
+
+#pragma mark - Helper Methods
+
+- (void)handleManagedObjectsChange:(NSNotification*)note
+{
+    [self updateTable];
     [self update];
 }
 

@@ -206,7 +206,7 @@
                                                             @"[iOS alert title size].");
                 message = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyNumberMessage", nil,
                                                             [NSBundle mainBundle],
-                                                            @"Something went wrong while buying your number: %@.\n\n"
+                                                            @"Something went wrong while buying your number: %@\n\n"
                                                             @"Please try again later.",
                                                             @"Message telling that buying a phone number failed\n"
                                                             @"[iOS alert message size]");
@@ -288,7 +288,7 @@
                                     message = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyCreditMessage", nil,
                                                                                 [NSBundle mainBundle],
                                                                                 @"Something went wrong while buying credit: "
-                                                                                @"%@.\n\nPlease try again later.",
+                                                                                @"%@\n\nPlease try again later.",
                                                                                 @"Message telling that buying credit failed\n"
                                                                                 @"[iOS alert message size]");
                                     message = [NSString stringWithFormat:message, [object localizedDescription]];

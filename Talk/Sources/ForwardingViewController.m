@@ -51,7 +51,7 @@ typedef enum
 - (instancetype)initWithForwarding:(ForwardingData*)forwarding
               managedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
-    if (self = [super initWithStyle:UITableViewStyleGrouped])
+    if (self = [super initWithManagedObjectContext:managedObjectContext])
     {
         self.name       = forwarding.name;
         phone           = [forwarding.phones anyObject];
@@ -534,7 +534,7 @@ typedef enum
                 [self.forwarding removePhones:self.forwarding.phones];
                 [self.forwarding addPhonesObject:phone];
 
-                [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+                [self updateTable];
             }];
 
             [self.navigationController pushViewController:viewController animated:YES];
