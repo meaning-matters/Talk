@@ -15,11 +15,29 @@
 //  making this module non-ARC.  Best suggestions were given in Apple forum
 //  by Kevin Hawkins.
 //
+//  Because the problem persisted, I'm now caching the values.  Really unsafe,
+//  but I've also asked Apple for a permanent solution.
+//
 
 #import "Keychain.h"
 #import <Security/Security.h>
 
+
 @implementation Keychain
+
++ (NSMutableDictionary*)sharedStrings
+{
+    static NSMutableDictionary* strings;
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^
+    {
+        strings = [NSMutableDictionary dictionary];
+    });
+
+    return strings;
+}
+
 
 + (BOOL)saveString:(NSString*)inputString forKey:(NSString*)account
 {
@@ -72,6 +90,11 @@
         }
     }
 
+    if (result == YES)
+    {
+        [[self sharedStrings] setObject:inputString forKey:account];
+    }
+
     return result;
 }
 
@@ -83,6 +106,10 @@
     if (account == nil)
     {
         NBLog(@"getStringForKey failed: invalid parameter!");
+    }
+    else if ([[self sharedStrings] objectForKey:account] != nil)
+    {
+        stringToReturn = [[self sharedStrings] objectForKey:account];
     }
     else
     {
@@ -100,6 +127,8 @@
         if (error == errSecSuccess)
         {
             stringToReturn = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+            [[self sharedStrings] setObject:stringToReturn forKey:account];
         }
     }
 
@@ -107,7 +136,7 @@
 }
 
 
-+ (BOOL)deleteStringForKey:(NSString *)account
++ (BOOL)deleteStringForKey:(NSString*)account
 {
     BOOL result = YES;
 
@@ -118,6 +147,8 @@
     }
     else
     {
+        [[self sharedStrings] removeObjectForKey:account];
+
         NSMutableDictionary *query = [NSMutableDictionary dictionary];
 
         [query setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
