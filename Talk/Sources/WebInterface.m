@@ -279,10 +279,12 @@ static void processDnsReply(DNSServiceRef       sdRef,
         {
             [WebInterface sharedInterface].ttl = MIN([WebInterface sharedInterface].ttl, ttl);
 
+            uint16_t port     = rr->data.SRV->port;
             uint16_t priority = rr->data.SRV->priority;
             uint16_t weight   = rr->data.SRV->weight;
 
             NSDictionary* server = @{@"target"   : target,
+                                     @"port"     : @(port),
                                      @"priority" : @(priority),
                                      @"weight"   : @(weight),
                                      @"ttl"      : @(ttl)};
@@ -306,8 +308,9 @@ static void processDnsReply(DNSServiceRef       sdRef,
 
     for (NSDictionary* server in self.servers)
     {
-        NSString* urlString = [NSString stringWithFormat:@"https://%@/%@",
+        NSString* urlString = [NSString stringWithFormat:@"https://%@:%d%@",
                                                          server[@"target"],
+                                                         [server[@"port"] intValue],
                                                          [Settings sharedSettings].serverTestUrlPath];
 
         NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString] options:NSDataReadingUncached
@@ -324,6 +327,13 @@ static void processDnsReply(DNSServiceRef       sdRef,
 
 - (void)prepareServers
 {
+    if (self.servers.count == 0)
+    {
+        NBLog(@"No DNS-SRV servers to prepare.");
+
+        return;
+    }
+
     // Sort servers in descending priority order.
     [self.servers sortUsingComparator:^NSComparisonResult(NSDictionary* server1, NSDictionary* server2)
     {
@@ -368,15 +378,15 @@ static void processDnsReply(DNSServiceRef       sdRef,
 }
 
 
-- (NSString*)selectServer
+- (NSDictionary*)selectServer
 {
     [self updateServers];
 
-    NSString* target;
-    int       priority = [self.servers[0][@"priority"] intValue];
+    int           priority = [self.servers[0][@"priority"] intValue];
+    NSDictionary* server = nil;
 
     int weighter = 0;
-    for (NSDictionary* server in self.servers)
+    for (server in self.servers)
     {
         if ([server[@"priority"] intValue] == priority)
         {
@@ -384,7 +394,6 @@ static void processDnsReply(DNSServiceRef       sdRef,
 
             if ((self.weighter % self.weightSum) < weighter)
             {
-                target = server[@"target"];
                 break;
             }
         }
@@ -392,7 +401,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
 
     self.weighter += self.weighterIncrement;
 
-    return target;
+    return server;
 }
 
 
@@ -429,8 +438,12 @@ static void processDnsReply(DNSServiceRef       sdRef,
         [self.requestSerializer setAuthorizationHeaderFieldWithUsername:[self.delegate webUsername]
                                                                password:[self.delegate webPassword]];
 
-        NSString* urlString = [NSString stringWithFormat:@"https://%@%@", [self selectServer], path];
-        NSMutableURLRequest* request   = [self.requestSerializer requestWithMethod:method
+        NSDictionary* server    = [self selectServer];
+        NSString*     urlString = [NSString stringWithFormat:@"https://%@:%d%@",
+                                                             server[@"target"],
+                                                             [server[@"port"] intValue],
+                                                             path];
+        NSMutableURLRequest* request = [self.requestSerializer requestWithMethod:method
                                                                          URLString:urlString
                                                                         parameters:parameters
                                                                              error:nil];    //### Is 'nil' okay?
