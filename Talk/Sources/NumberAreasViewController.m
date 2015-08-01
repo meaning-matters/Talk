@@ -74,9 +74,9 @@
         {
             if (error == nil)
             {
-                self.isLoading = NO;
-
                 [self processContent:content];
+
+                self.isLoading = NO;    // Placed here, after processing results, to let reload of search results work.
             }
             else
             {
@@ -94,9 +94,9 @@
         {
             if (error == nil)
             {
-                self.isLoading = NO;
-
                 [self processContent:content];
+
+                self.isLoading = NO;    // Placed here, after processing results, to let reload of search results work.
             }
             else
             {

@@ -70,7 +70,7 @@
         // Set address book delegate.
         [NBAddressBookManager sharedManager].delegate = self;
 
-        // Must be placed here, just before tabs are added.  Otherwise navigation bar
+        // Placed here, after processing results,, just before tabs are added.  Otherwise navigation bar
         // will overlap with status bar.
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
 

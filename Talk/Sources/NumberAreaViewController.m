@@ -313,7 +313,6 @@ typedef enum
     {
         if (error == nil)
         {
-            self.isLoading = NO;
             self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberArea ScreenTitle", nil,
                                                                           [NSBundle mainBundle], @"Area",
                                                                           @"Title of app screen with one area.\n"
@@ -323,6 +322,7 @@ typedef enum
             purchaseInfo[@"city"]    = @"";     // Resets what user may have typed while loading (on slow internet).
 
             [self.tableView reloadData];
+            self.isLoading = NO;    // Placed here, after processing results, to let reload of search results work.
         }
         else if (error.code == WebClientStatusFailServiceUnavailable)
         {

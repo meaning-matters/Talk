@@ -72,8 +72,6 @@
         center = [topView convertPoint:center toView:self.view];
         self.activityIndicator.center = center;
 
-        NSLog(@"%f %f", center.x, center.y);
-
         self.hasCenteredActivityIndicator = YES;
     }
 }
@@ -115,6 +113,8 @@
         [self.activityIndicator stopAnimating];
         [self.activityIndicator removeFromSuperview];
         self.activityIndicator = nil;
+
+        self.searchDisplayController.searchBar.text = self.searchDisplayController.searchBar.text;
     }
 }
 

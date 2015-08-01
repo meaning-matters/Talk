@@ -59,8 +59,6 @@
     {
         if (error == nil)
         {
-            self.isLoading = NO;
-
             // Added number type selector.
             NSArray* items = @[[NumberType localizedStringForNumberType:1UL << 0],
                                [NumberType localizedStringForNumberType:1UL << 1],
@@ -99,6 +97,7 @@
             }
 
             [self sortOutArrays];
+            self.isLoading = NO;    // Placed here, after processing results, to let reload of search results work.
         }
         else if (error.code == WebClientStatusFailServiceUnavailable)
         {

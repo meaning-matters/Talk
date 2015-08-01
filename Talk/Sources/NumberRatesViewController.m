@@ -146,10 +146,10 @@
     {
         if (error == nil)
         {
-            self.isLoading = NO;
-
             self.objectsArray  = rates;
             [self createIndexOfWidth:1];
+
+            self.isLoading = NO;    // Placed here, after processing results, to let reload of search results work.
         }
         else
         {

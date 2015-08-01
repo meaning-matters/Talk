@@ -179,11 +179,11 @@
             {
                 if (error == nil)
                 {
-                    self.isLoading = NO;
-
                     self.callbackPrice = ratePerMinute;
                     self.objectsArray  = [self filterRates:rates];
                     [self createIndexOfWidth:1];
+
+                    self.isLoading = NO;    // Placed here, after processing results, to let reload of search results work.
                 }
                 else
                 {
