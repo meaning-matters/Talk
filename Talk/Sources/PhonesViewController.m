@@ -59,6 +59,12 @@
 {
     [super viewDidLoad];
 
+    // Don't show add button
+    if (self.selectedPhone != nil)
+    {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+
     fetchedPhonesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Phone"
                                                                         withSortKeys:@[@"name"]
                                                                 managedObjectContext:self.managedObjectContext];

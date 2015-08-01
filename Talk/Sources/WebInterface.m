@@ -439,7 +439,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
                                                                password:[self.delegate webPassword]];
 
         NSDictionary* server    = [self selectServer];
-        NSString*     urlString = [NSString stringWithFormat:@"https://%@:%d%@",
+        NSString*     urlString = [NSString stringWithFormat:@"https://%@:%d/%@",
                                                              server[@"target"],
                                                              [server[@"port"] intValue],
                                                              path];

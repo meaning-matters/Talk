@@ -21,11 +21,8 @@
 
 - (void)cancelAction;
 
-- (void)updateTable;
-
 // Must be overriden by subclass.
 - (void)save;
-
 
 // Must be overriden by subclass.
 - (void)update;

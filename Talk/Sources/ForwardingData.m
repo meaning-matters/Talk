@@ -12,6 +12,8 @@
 #import "WebClient.h"
 #import "Strings.h"
 #import "BlockAlertView.h"
+#import "Common.h"
+#import "DataManager.h"
 
 
 @implementation ForwardingData
@@ -116,6 +118,46 @@
             }
         }];
     }
+}
+
+
+// Overrides a NSManagedObject setter.
+- (void)setStatements:(NSString*)statements
+{
+    // Required for the override.
+    [self willChangeValueForKey:@"statements"];
+    [self setPrimitiveValue:statements forKey:@"statements"];
+
+    [self updateDependenciesWithStatements:statements];
+
+    // Required for the override.
+    [self didChangeValueForKey:@"statements"];
+}
+
+
+- (void)updateDependenciesWithStatements:(NSString*)statements
+{
+    NSArray*     statementsArray = [Common mutableObjectWithJsonString:statements];
+    NSString*    e164            = statementsArray[0][@"call"][@"e164"][0];
+
+    if ([e164 length] == 0)
+    {
+        return;
+    }
+
+    NSPredicate* predicate       = [NSPredicate predicateWithFormat:@"e164 == %@", e164];
+    NSArray*     phones          = [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
+                                                                             sortKeys:nil
+                                                                            predicate:predicate
+                                                                 managedObjectContext:self.managedObjectContext];
+
+    if (phones.count == 0)
+    {
+        return;
+    }
+
+    [self removePhones:self.phones];
+    [self addPhonesObject:phones[0]];
 }
 
 @end

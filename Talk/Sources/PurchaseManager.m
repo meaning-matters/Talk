@@ -366,7 +366,7 @@
                                                 @"[iOS alert title size - abbreviated: 'Can't Pay'].");
     message = NSLocalizedStringWithDefaultValue(@"Purchase:General ProductLoadFailAlertMessage", nil,
                                                 [NSBundle mainBundle],
-                                                @"Loading iTunes Store products failed: %@\n\nPlease try again later.",
+                                                @"Loading iTunes Store products failed: %@.\n\nPlease try again later.",
                                                 @"Alert message: Information could not be loaded over internet.\n"
                                                 @"[iOS alert message size]");
     if (error != nil && error.code != 0)

@@ -35,12 +35,13 @@ typedef enum
 
 @interface ForwardingViewController ()
 {
-    TableSections    sections;
-    BOOL             isNew;
+    TableSections   sections;
+    BOOL            isNew;
+    BOOL            isDeleting;
 
-    PhoneData*       phone;
-    NSMutableArray*  statementsArray;
-    NSArray*         numbersArray;
+    PhoneData*      phone;
+    NSMutableArray* statementsArray;
+    NSArray*        numbersArray;
 }
 
 @end
@@ -169,6 +170,9 @@ typedef enum
     {
         if (destruct == YES)
         {
+            isDeleting = YES;
+
+            [self.forwarding removePhones:self.forwarding.phones];
             [self.forwarding deleteFromManagedObjectContext:self.managedObjectContext
                                                  completion:^(BOOL succeeded)
             {
@@ -201,6 +205,10 @@ typedef enum
         if (error == nil)
         {
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+            [[DataManager sharedManager].managedObjectContext performBlockAndWait:^
+            {
+                [[DataManager sharedManager].managedObjectContext save:nil];
+            }];
         }
         else
         {
@@ -284,29 +292,35 @@ typedef enum
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger   numberOfRows = 0;
+    NSInteger numberOfRows = 0;
 
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionName:
+        {
             numberOfRows = 1;
             break;
-
+        }
         case TableSectionPhone:
+        {
             numberOfRows = 1;
             break;
-
+        }
         case TableSectionStatements:
+        {
             numberOfRows = 1;
             break;
-
+        }
         case TableSectionNumbers:
+        {
             numberOfRows = self.forwarding.numbers.count;
             break;
-
+        }
         case TableSectionRecordings:
+        {
             numberOfRows = self.forwarding.recordings.count;
             break;
+        }
     }
     
     return numberOfRows;
@@ -315,25 +329,19 @@ typedef enum
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString*   title = nil;
+    NSString* title = nil;
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionPhone:
-            title = NSLocalizedStringWithDefaultValue(@"ForwardingView PhoneHeader", nil,
-                                                      [NSBundle mainBundle],
-                                                      @"Calls Go To Phone",
-                                                      @"Table header above phone numbers\n"
-                                                      @"[1 line larger font].");
-            break;
-
         case TableSectionNumbers:
+        {
             title = NSLocalizedStringWithDefaultValue(@"ForwardingView NumbersHeader", nil,
                                                       [NSBundle mainBundle],
                                                       @"Used By Numbers",
                                                       @"Table header above phone numbers\n"
                                                       @"[1 line larger font].");
             break;
+        }
     }
     
     return title;
@@ -342,30 +350,27 @@ typedef enum
 
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
-    NSString*   title = nil;
+    NSString* title = nil;
 
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionName:
+        {
             if (isNew)
             {
                 title = [Strings nameFooterString];
             }
             break;
-
-        case TableSectionStatements:
-            break;
-
+        }
         case TableSectionNumbers:
+        {
             title = NSLocalizedStringWithDefaultValue(@"ForwardingView CanNotDeleteFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"This Forwarding can't be deleted because it's in use.",
                                                       @"Table footer that app can't be deleted\n"
                                                       @"[1 line larger font].");
             break;
-
-        case TableSectionRecordings:
-            break;
+        }
     }
 
     return title;
@@ -379,24 +384,30 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionName:
+        {
             cell = [self nameCellForRowAtIndexPath:indexPath];
             break;
-
+        }
         case TableSectionPhone:
+        {
             cell = [self phoneCellForRowAtIndexPath:indexPath];
             break;
-
+        }
         case TableSectionStatements:
+        {
             cell = [self statementsCellForRowAtIndexPath:indexPath];
             break;
-
+        }
         case TableSectionNumbers:
+        {
             cell = [self numbersCellForRowAtIndexPath:indexPath];
             break;
-
+        }
         case TableSectionRecordings:
+        {
             cell = [self recordingsCellForRowAtIndexPath:indexPath];
             break;
+        }
     }
 
     return cell;
@@ -413,38 +424,14 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"PhoneCell"];
     }
 
-    if (phone != nil)
-    {
-        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:phone.e164];
-        [Common addCountryImageToCell:cell isoCountryCode:phoneNumber.isoCountryCode];
-    }
-    else
-    {
-        cell.textLabel.text = [Strings phoneString];
-    }
+    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"ForwardingView ForwardTo", nil, [NSBundle mainBundle],
+                                                            @"Forward To",
+                                                            @"Title of a table row\n"
+                                                            @"[1/3 line small font].");
+    cell.detailTextLabel.text = phone.name;
 
-    cell.selectionStyle  = UITableViewCellSelectionStyleDefault;
-    if (isNew)
-    {
-        if (phone == nil)
-        {
-            cell.accessoryType             = UITableViewCellAccessoryDisclosureIndicator;
-            cell.detailTextLabel.text      = [Strings requiredString];
-            cell.detailTextLabel.textColor = [UIColor lightGrayColor];
-        }
-        else
-        {
-            cell.accessoryType             = UITableViewCellAccessoryDetailDisclosureButton;
-            cell.detailTextLabel.text      = phone.name;
-            cell.detailTextLabel.textColor = [UIColor blackColor];
-        }
-    }
-    else
-    {
-        cell.accessoryType             = UITableViewCellAccessoryDetailDisclosureButton;
-        cell.detailTextLabel.text      = phone.name;
-        cell.detailTextLabel.textColor = [UIColor blackColor];
-    }
+    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
 }
@@ -520,9 +507,6 @@ typedef enum
 {
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
-        case TableSectionName:
-            break;
-
         case TableSectionPhone:
         {
             PhonesViewController* viewController;
@@ -531,17 +515,18 @@ typedef enum
                                                                              completion:^(PhoneData* selectedPhone)
             {
                 phone = selectedPhone;
-                [self.forwarding removePhones:self.forwarding.phones];
-                [self.forwarding addPhonesObject:phone];
+                self.forwarding.statements = [Common jsonStringWithObject:@[@{@"call" : @{@"e164" : @[phone.e164]}}]];
 
+                [self updateRightBarButtonItem];
                 [self updateTable];
+
+                [self save];
             }];
 
+            viewController.headerTitle = @"";
+            viewController.footerTitle = @"";
+
             [self.navigationController pushViewController:viewController animated:YES];
-            break;
-        }
-        case TableSectionStatements:
-        {
             break;
         }
         case TableSectionNumbers:
@@ -550,10 +535,6 @@ typedef enum
             NumberViewController* viewController = [[NumberViewController alloc] initWithNumber:number];
 
             [self.navigationController pushViewController:viewController animated:YES];
-            break;
-        }
-        case TableSectionRecordings:
-        {
             break;
         }
     }
@@ -622,11 +603,25 @@ typedef enum
 }
 
 
+- (void)updateTable
+{
+    NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
+    if (selectedIndexPath == nil)
+    {
+        [self.tableView reloadData];
+    }
+    else
+    {
+        [self.tableView reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+}
+
+
 #pragma mark - Baseclass Override
 
 - (void)save
 {
-    if (isNew == NO)
+    if (isNew == NO && isDeleting == NO)
     {
         [self saveAction];
     }

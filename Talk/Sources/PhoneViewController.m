@@ -389,12 +389,12 @@ typedef enum
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"ForwardingsCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NumbersCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"ForwardingsCell"];
     }
 
-    cell.detailTextLabel.text = forwarding.name;
-    cell.accessoryType        = UITableViewCellAccessoryNone;
-    cell.selectionStyle       = UITableViewCellSelectionStyleNone;
+    cell.textLabel.text = forwarding.name;
+    cell.accessoryType  = UITableViewCellAccessoryNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     return cell;
 }

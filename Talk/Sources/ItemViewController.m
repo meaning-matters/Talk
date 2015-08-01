@@ -57,7 +57,7 @@
     UITapGestureRecognizer* gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                         action:@selector(hideKeyboard:)];
     gestureRecognizer.cancelsTouchesInView = NO;
-    gestureRecognizer.delegate = self;
+    gestureRecognizer.delegate             = self;
     [self.tableView addGestureRecognizer:gestureRecognizer];
 }
 
@@ -82,28 +82,11 @@
 }
 
 
-#pragma mark - Table Update
-
-- (void)updateTable
-{
-    NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
-    if (selectedIndexPath == nil)
-    {
-        [self.tableView reloadData];
-    }
-    else
-    {
-        [self.tableView reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-}
-
-
 #pragma mark - Helper Methods
 
 - (void)handleManagedObjectsChange:(NSNotification*)note
 {
-    [self updateTable];
-    [self update];
+    [self save];
 }
 
 
@@ -124,6 +107,7 @@
 - (void)save
 {
 }
+
 
 - (void)update
 {

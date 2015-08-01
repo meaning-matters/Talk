@@ -381,35 +381,36 @@
 
 - (void)synchronizeAll:(void (^)(NSError* error))completion
 {
-#if HAS_BUYING_NUMBERS
-    [self synchronizeNumbers:^(NSError* error)
+    [self synchronizePhones:^(NSError* error)
     {
         if (error == nil)
         {
-            [self synchronizeForwardings:^(NSError* error)
+#if HAS_BUYING_NUMBERS
+            [self synchronizeNumbers:^(NSError* error)
             {
                 if (error == nil)
                 {
-                    [self synchronizeIvrs:^(NSError* error)
+                    [self synchronizeForwardings:^(NSError* error)
                     {
                         if (error == nil)
                         {
-#endif
-                            [self synchronizePhones:^(NSError* error)
+                            [self synchronizeIvrs:^(NSError* error)
                             {
                                 if (error == nil)
                                 {
-                                    [self.managedObjectContext save:&error];
-                                    if (error == nil)
-                                    {
-                                        completion ? completion(nil) : 0;
-                                    }
-                                    else
-                                    {
-                                        [self handleError:error];
+#endif
+                                       [self.managedObjectContext save:&error];
+                                       if (error == nil)
+                                       {
+                                           completion ? completion(nil) : 0;
+                                       }
+                                       else
+                                       {
+                                           [self handleError:error];
 
-                                        return;
-                                    }
+                                           return;
+                                       }
+#if HAS_BUYING_NUMBERS
                                 }
                                 else
                                 {
@@ -417,7 +418,6 @@
                                     completion ? completion(error) : 0;
                                 }
                             }];
-#if HAS_BUYING_NUMBERS
                         }
                         else
                         {
@@ -432,6 +432,7 @@
                     completion ? completion(error) : 0;
                 }
             }];
+#endif
         }
         else
         {
@@ -439,7 +440,6 @@
             completion ? completion(error) : 0;
         }
     }];
-#endif
 }
 
 
@@ -851,4 +851,5 @@
         [Settings sharedSettings].callerIdE164 = nil;
     }
 }
+
 @end
