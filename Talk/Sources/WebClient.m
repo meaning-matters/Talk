@@ -174,10 +174,12 @@ static NSDictionary* statuses;
                      parameters:parameters
                         success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
+        NBLog(@"POST response: %@", responseObject);
         [self handleSuccess:responseObject reply:reply];
     }
                         failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
+        NBLog(@"POST failure: %@", error);
         [self handleFailure:error reply:reply];
     }];
 }
@@ -198,10 +200,12 @@ static NSDictionary* statuses;
                     parameters:parameters
                        success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
+        NBLog(@"PUT response: %@", responseObject);
         [self handleSuccess:responseObject reply:reply];
     }
                        failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
+        NBLog(@"PUT failure: %@", error);
         [self handleFailure:error reply:reply];
     }];
 }
@@ -222,10 +226,12 @@ static NSDictionary* statuses;
                     parameters:parameters
                        success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
+        NBLog(@"GET response: %@", responseObject);
         [self handleSuccess:responseObject reply:reply];
     }
                        failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
+        NBLog(@"GET failure: %@", error);
         [self handleFailure:error reply:reply];
     }];
 }

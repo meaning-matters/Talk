@@ -439,7 +439,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
                                                                password:[self.delegate webPassword]];
 
         NSDictionary* server    = [self selectServer];
-        NSString*     urlString = [NSString stringWithFormat:@"https://%@:%d/%@",
+        NSString*     urlString = [NSString stringWithFormat:@"https://%@:%d%@",
                                                              server[@"target"],
                                                              [server[@"port"] intValue],
                                                              path];
@@ -450,7 +450,6 @@ static void processDnsReply(DNSServiceRef       sdRef,
 
         AFHTTPRequestOperation* operation = [self RequestOperationWithRequest:request success:success failure:failure];
 
-        NBLog(@"%@", [operation.request.URL path]);
         [self.operationQueue addOperation:operation];
     });
 }

@@ -205,10 +205,6 @@ typedef enum
         if (error == nil)
         {
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-            [[DataManager sharedManager].managedObjectContext performBlockAndWait:^
-            {
-                [[DataManager sharedManager].managedObjectContext save:nil];
-            }];
         }
         else
         {
