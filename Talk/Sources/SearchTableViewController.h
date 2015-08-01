@@ -11,12 +11,14 @@
 
 @interface SearchTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate>
 
-@property (nonatomic, weak) IBOutlet UITableView*   tableView;
-@property (nonatomic, strong) NSArray*              objectsArray;        // The main list of subclass objects.
+@property (nonatomic, weak) IBOutlet UITableView*  tableView;
+@property (nonatomic, strong) NSArray*             objectsArray;        // The main list of subclass objects.
 
-@property (nonatomic, strong) NSArray*              nameIndexArray;      // Array with all first letters of object names.
-@property (nonatomic, strong) NSMutableDictionary*  nameIndexDictionary; // Dictionary with array of names per letter.
-@property (nonatomic, strong) NSMutableArray*       filteredNamesArray;  // List of names selected by search.
+@property (nonatomic, strong) NSArray*             nameIndexArray;      // Array with all first letters of object names.
+@property (nonatomic, strong) NSMutableDictionary* nameIndexDictionary; // Dictionary with array of names per letter.
+@property (nonatomic, strong) NSMutableArray*      filteredNamesArray;  // List of names selected by search.
+
+@property (nonatomic, assign) BOOL                 isLoading;
 
 
 //  Creates the table index.  Must be invoked by subclass each time it's objects have changed.

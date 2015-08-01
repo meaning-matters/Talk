@@ -96,6 +96,9 @@ typedef enum
     NSIndexPath*            activeCellIndexPath;
 }
 
+@property (nonatomic, assign) BOOL                     isLoading;
+@property (nonatomic, strong) UIActivityIndicatorView* activityIndicator;
+
 @end
 
 
@@ -199,6 +202,11 @@ typedef enum
 {
     [super viewDidLoad];
 
+    self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberArea ScreenTitle", nil,
+                                                                  [NSBundle mainBundle], @"Area",
+                                                                  @"Title of app screen with one area.\n"
+                                                                  @"[1 line larger font].");
+
     UIBarButtonItem*    cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                  target:self
@@ -212,16 +220,8 @@ typedef enum
     gestureRecognizer.delegate = self;
     [self.tableView addGestureRecognizer:gestureRecognizer];
 
-    if (infoType == InfoTypeNone)
+    if (infoType != InfoTypeNone)
     {
-        self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberArea ScreenTitle", nil,
-                                                                      [NSBundle mainBundle], @"Area",
-                                                                      @"Title of app screen with one area.\n"
-                                                                      @"[1 line larger font].");
-    }
-    else
-    {
-        self.navigationItem.title = [Strings loadingString];
         [self loadData];
     }
 
@@ -253,10 +253,44 @@ typedef enum
 {
     [super viewWillDisappear:animated];
 
-    NSString*   areaCode = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : @"0";
+    NSString* areaCode = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : @"0";
 
     [[WebClient sharedClient] cancelAllRetrieveAreaInfoForIsoCountryCode:numberIsoCountryCode
                                                                 areaCode:areaCode];
+}
+
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+
+    UIView* topView = [[[[UIApplication sharedApplication] keyWindow] subviews] lastObject];
+    CGPoint center = topView.center;
+    center = [topView convertPoint:center toView:self.view];
+    self.activityIndicator.center = center;
+}
+
+
+#pragma mark Property Setter
+
+- (void)setIsLoading:(BOOL)isLoading
+{
+    _isLoading = isLoading;
+
+    if (isLoading == YES && self.activityIndicator == nil)
+    {
+        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        self.activityIndicator.color = [UIColor blackColor];
+
+        [self.activityIndicator startAnimating];
+        [self.view addSubview:self.activityIndicator];
+    }
+    else if (self.isLoading == NO && self.activityIndicator != nil)
+    {
+        [self.activityIndicator stopAnimating];
+        [self.activityIndicator removeFromSuperview];
+        self.activityIndicator = nil;
+    }
 }
 
 
@@ -270,14 +304,16 @@ typedef enum
 
 - (void)loadData
 {
-    NSString*   areaCode = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : @"0";
+    NSString* areaCode = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : @"0";
 
+    self.isLoading = YES;
     [[WebClient sharedClient] retrieveNumberAreaInfoForIsoCountryCode:numberIsoCountryCode
                                                              areaCode:areaCode
                                                                 reply:^(NSError* error, id content)
     {
         if (error == nil)
         {
+            self.isLoading = NO;
             self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberArea ScreenTitle", nil,
                                                                           [NSBundle mainBundle], @"Area",
                                                                           @"Title of app screen with one area.\n"
@@ -1314,11 +1350,18 @@ typedef enum
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField*)textField
 {
-    [self updateReturnKeyTypeOfTextField:textField];
+    if (self.isLoading == YES)
+    {
+        return NO;
+    }
+    else
+    {
+        [self updateReturnKeyTypeOfTextField:textField];
 
-    activeCellIndexPath = [self findCellIndexPathForSubview:textField];
+        activeCellIndexPath = [self findCellIndexPathForSubview:textField];
 
-    return YES;
+        return YES;
+    }
 }
 
 

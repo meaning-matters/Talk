@@ -66,15 +66,6 @@
 }
 
 
-+ (NSString*)loadingString
-{
-    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Loading", nil,
-                                             [NSBundle mainBundle], @"Loading...",
-                                             @"Standard string indicating data is being loaded (from internet)\n"
-                                             @"[iOS standard size].");
-}
-
-
 + (NSString*)enableString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Enable", nil,

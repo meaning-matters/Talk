@@ -41,7 +41,10 @@
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = [Strings loadingString];
+    self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberStates:Done ScreenTitle", nil,
+                                                                  [NSBundle mainBundle], @"States",
+                                                                  @"Title of app screen with list of states.\n"
+                                                                  @"[1 line larger font].");
 
     UIBarButtonItem* cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
@@ -49,16 +52,14 @@
                                                                  action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
+    self.isLoading = YES;
     [[WebClient sharedClient] retrieveNumberStatesForIsoCountryCode:isoCountryCode
                                                               reply:^(NSError* error, id content)
     {
         if (error == nil)
         {
-            self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberStates:Done ScreenTitle", nil,
-                                                                          [NSBundle mainBundle], @"States",
-                                                                          @"Title of app screen with list of states.\n"
-                                                                          @"[1 line larger font].");
-
+            self.isLoading = NO;
+            
             self.objectsArray = content;
             [self createIndexOfWidth:1];
         }

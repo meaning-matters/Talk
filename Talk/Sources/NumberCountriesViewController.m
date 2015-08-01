@@ -36,6 +36,8 @@
         self.tableView.delegate   = self;
 
         self.countriesArray = [NSMutableArray array];
+
+        self.navigationItem.title = [Strings countriesString];
     }
 
     return self;
@@ -52,12 +54,12 @@
                                                                  action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
-    self.navigationItem.title = [Strings loadingString];
+    self.isLoading = YES;
     [[WebClient sharedClient] retrieveNumberCountries:^(NSError* error, id content)
     {
         if (error == nil)
         {
-            self.navigationItem.title = [Strings countriesString];
+            self.isLoading = NO;
 
             // Added number type selector.
             NSArray* items = @[[NumberType localizedStringForNumberType:1UL << 0],

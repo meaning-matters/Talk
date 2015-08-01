@@ -12,13 +12,17 @@
 
 @interface SearchTableViewController ()
 
-@property (nonatomic, assign) NSUInteger   width;
-@property (nonatomic, strong) NSIndexPath* selectedIndexPath;
+@property (nonatomic, assign) NSUInteger               width;
+@property (nonatomic, strong) NSIndexPath*             selectedIndexPath;
+@property (nonatomic, strong) UIActivityIndicatorView* activityIndicator;
+@property (nonatomic, assign) BOOL                     hasCenteredActivityIndicator;
 
 @end
 
 
 @implementation SearchTableViewController
+
+#pragma mark Life Cycle
 
 - (id)init
 {
@@ -45,6 +49,38 @@
 }
 
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+
+    [self.tableView scrollToRowAtIndexPath:self.selectedIndexPath
+                          atScrollPosition:UITableViewScrollPositionMiddle
+                                  animated:NO];
+}
+
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+
+    if (self.hasCenteredActivityIndicator == NO)
+    {
+        UIView* topView = [[[[UIApplication sharedApplication] keyWindow] subviews] lastObject];
+        CGPoint center = topView.center;
+        center = [topView convertPoint:center toView:self.view];
+        self.activityIndicator.center = center;
+
+        NSLog(@"%f %f", center.x, center.y);
+
+        self.hasCenteredActivityIndicator = YES;
+    }
+}
+
+
+#pragma mark - Scrollview Delegate
+
 - (void)scrollViewDidScroll:(UIScrollView*)scrollView
 {
     UITableView *tableView = self.searchDisplayController.searchResultsTableView;
@@ -60,17 +96,30 @@
 }
 
 
-- (void)viewWillAppear:(BOOL)animated
+#pragma mark Property Setter
+
+- (void)setIsLoading:(BOOL)isLoading
 {
-    [super viewWillAppear:animated];
+    _isLoading = isLoading;
 
-    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+    if (isLoading == YES && self.activityIndicator == nil)
+    {
+        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        self.activityIndicator.color = [UIColor blackColor];
 
-    [self.tableView scrollToRowAtIndexPath:self.selectedIndexPath
-                          atScrollPosition:UITableViewScrollPositionMiddle
-                                  animated:NO];
+        [self.activityIndicator startAnimating];
+        [self.view addSubview:self.activityIndicator];
+    }
+    else if (self.isLoading == NO && self.activityIndicator != nil)
+    {
+        [self.activityIndicator stopAnimating];
+        [self.activityIndicator removeFromSuperview];
+        self.activityIndicator = nil;
+    }
 }
 
+
+#pragma mark - Supporting Methods
 
 - (void)filterContentForSearchText:(NSString*)searchText
 {

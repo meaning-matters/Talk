@@ -40,6 +40,12 @@
         {
             self.callbackPhoneNumber = callbackPhoneNumber;
         }
+
+        self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"CallRates ScreenTitle", nil,
+                                                                      [NSBundle mainBundle],
+                                                                      @"Call Rates",
+                                                                      @"....\n"
+                                                                      @"[iOS alert title size].");
     }
 
     return self;
@@ -49,8 +55,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.navigationItem.title = [Strings loadingString];
 
     if ([self checkCurrencyCode] == NO)
     {
@@ -164,6 +168,7 @@
 
 - (void)retrieveCallRates
 {
+    self.isLoading = YES;
     [[WebClient sharedClient] retrieveCallRateForE164:self.callbackPhoneNumber.e164Format
                                          currencyCode:[Settings sharedSettings].currencyCode
                                                 reply:^(NSError* error, float ratePerMinute)
@@ -174,11 +179,8 @@
             {
                 if (error == nil)
                 {
-                    self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"CallRates ScreenTitle", nil,
-                                                                                  [NSBundle mainBundle],
-                                                                                   @"Call Rates",
-                                                                                   @"....\n"
-                                                                                   @"[iOS alert title size].");
+                    self.isLoading = NO;
+
                     self.callbackPrice = ratePerMinute;
                     self.objectsArray  = [self filterRates:rates];
                     [self createIndexOfWidth:1];

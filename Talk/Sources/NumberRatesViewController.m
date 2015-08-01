@@ -33,7 +33,11 @@
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = [Strings loadingString];
+    self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberRates ScreenTitle", nil,
+                                                                  [NSBundle mainBundle],
+                                                                  @"Number Rates",
+                                                                  @"....\n"
+                                                                  @"[iOS alert title size].");
 
     if ([self checkCurrencyCode] == NO)
     {
@@ -137,15 +141,12 @@
 
 - (void)retrieveNumberRates
 {
+    self.isLoading = YES;
     [[WebClient sharedClient] retrieveNumberRates:^(NSError *error, NSArray *rates)
     {
         if (error == nil)
         {
-            self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberRates ScreenTitle", nil,
-                                                                          [NSBundle mainBundle],
-                                                                          @"Number Rates",
-                                                                          @"....\n"
-                                                                          @"[iOS alert title size].");
+            self.isLoading = NO;
 
             self.objectsArray  = rates;
             [self createIndexOfWidth:1];

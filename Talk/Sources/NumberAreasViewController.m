@@ -49,7 +49,10 @@
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = [Strings loadingString];
+    self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberAreas:Done ScreenTitle", nil,
+                                                                  [NSBundle mainBundle], @"Areas",
+                                                                  @"Title of app screen with list of areas.\n"
+                                                                  @"[1 line larger font].");
 
     [self.tableView registerNib:[UINib nibWithNibName:@"NumberAreasCell" bundle:nil]
          forCellReuseIdentifier:@"NumberAreasCell"];
@@ -62,6 +65,7 @@
 
     if (state != nil)
     {
+        self.isLoading = YES;
         [[WebClient sharedClient] retrieveNumberAreasForIsoCountryCode:isoCountryCode
                                                              stateCode:state[@"stateCode"]
                                                         numberTypeMask:numberTypeMask
@@ -70,6 +74,8 @@
         {
             if (error == nil)
             {
+                self.isLoading = NO;
+
                 [self processContent:content];
             }
             else
@@ -80,6 +86,7 @@
     }
     else
     {
+        self.isLoading = YES;
         [[WebClient sharedClient] retrieveNumberAreasForIsoCountryCode:isoCountryCode
                                                         numberTypeMask:numberTypeMask
                                                           currencyCode:[Settings sharedSettings].currencyCode
@@ -87,6 +94,8 @@
         {
             if (error == nil)
             {
+                self.isLoading = NO;
+
                 [self processContent:content];
             }
             else
@@ -118,11 +127,6 @@
 
 - (void)processContent:(id)content
 {
-    self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberAreas:Done ScreenTitle", nil,
-                                                                  [NSBundle mainBundle], @"Areas",
-                                                                  @"Title of app screen with list of areas.\n"
-                                                                  @"[1 line larger font].");
-
     if ([(NSArray*)content count] > 0)
     {
         NSMutableArray* areasArray = [NSMutableArray array];

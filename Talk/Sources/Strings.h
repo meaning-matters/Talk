@@ -22,8 +22,6 @@
 
 + (NSString*)buyString;
 
-+ (NSString*)loadingString;
-
 + (NSString*)enableString;
 
 + (NSString*)nameString;
