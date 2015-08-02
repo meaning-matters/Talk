@@ -269,10 +269,11 @@
 
                     viewController = [[CallerIdViewController alloc] initWithManagedObjectContext:managedObjectContext
                                                                                  selectedCallable:nil
-                                                                                       completion:^(CallableData*  selectedCallable)
+                                                                                       completion:^(CallableData* callable)
                     {
                         //### Show callerId selector, and make call when selected in block.
-                        completion(NO, @"+3215666666");
+                        //callable.callerId
+                        completion(NO, callable.e164);
                     }];
 
                     navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
