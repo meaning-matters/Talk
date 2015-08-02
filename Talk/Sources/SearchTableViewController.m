@@ -168,7 +168,7 @@
         self.nameIndexDictionary[nameIndex] = [self.nameIndexDictionary[nameIndex] sortedArrayUsingSelector:@selector(localizedCompare:)];
     }
 
-    // Now find the index path of the select name, so we can scroll to it.
+    // Now find the index path of the selected name, so we can scroll to it.
     if ([self selectedName] != nil)
     {
         for (int section = 0; section < self.nameIndexArray.count; section++)

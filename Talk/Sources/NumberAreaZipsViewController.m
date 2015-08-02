@@ -74,7 +74,23 @@
 
 - (NSString*)selectedName
 {
-    return purchaseInfo[@"zipCode"];
+    if ([purchaseInfo[@"zipCode"] length] == 0 && [purchaseInfo[@"city"] length] > 0)
+    {
+        // No ZIP code is selected, but we return the first one matching the city so
+        // that the table is scrolled to the ZIP code(s) of the selected city.
+        NSUInteger index = [self.objectsArray indexOfObjectPassingTest:^BOOL(NSString*  zipCode,
+                                                                             NSUInteger index,
+                                                                             BOOL*      stop)
+        {
+            return [cityLookupDictionary[zipCode] isEqualToString:purchaseInfo[@"city"]];
+        }];
+
+        return [self.objectsArray objectAtIndex:index];
+    }
+    else
+    {
+        return purchaseInfo[@"zipCode"];
+    }
 }
 
 
