@@ -185,6 +185,29 @@
 }
 
 
+- (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    PhoneData* phone = [fetchedPhonesController objectAtIndexPath:indexPath];
+
+    return (phone.forwardings.count == 0);
+}
+
+
+- (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+forRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        PhoneData* phone = [fetchedPhonesController objectAtIndexPath:indexPath];
+
+        [phone deleteFromManagedObjectContext:self.managedObjectContext completion:^(BOOL succeeded)
+        {
+            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+        }];
+    }
+}
+
+
 #pragma mark - Actions
 
 // Is called from ItemsViewController (the baseclass).
