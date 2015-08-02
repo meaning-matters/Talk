@@ -3,11 +3,11 @@
     <entity name="Callable" representedClassName="CallableData" isAbstract="YES" syncable="YES">
         <attribute name="e164" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <relationship name="callerId" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CallerId" inverseName="callable" inverseEntity="CallerId" syncable="YES"/>
+        <relationship name="callerIds" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CallerId" inverseName="callable" inverseEntity="CallerId" syncable="YES"/>
     </entity>
     <entity name="CallerId" representedClassName="CallerIdData" syncable="YES">
         <attribute name="contactId" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="callable" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Callable" inverseName="callerId" inverseEntity="Callable" syncable="YES"/>
+        <relationship name="callable" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Callable" inverseName="callerIds" inverseEntity="Callable" syncable="YES"/>
     </entity>
     <entity name="Forwarding" representedClassName="ForwardingData" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
@@ -65,10 +65,10 @@
     <elements>
         <element name="Callable" positionX="117" positionY="-468" width="128" height="88"/>
         <element name="CallerId" positionX="313" positionY="-451" width="128" height="73"/>
-        <element name="Forwarding" positionX="250" positionY="-108" width="128" height="133"/>
+        <element name="Forwarding" positionX="268" positionY="-54" width="128" height="133"/>
         <element name="NBRecentContactEntry" positionX="486" positionY="-342" width="128" height="223"/>
         <element name="Number" positionX="52" positionY="-342" width="128" height="343"/>
-        <element name="Phone" positionX="214" positionY="-342" width="128" height="58"/>
+        <element name="Phone" positionX="261" positionY="-297" width="128" height="58"/>
         <element name="Recording" positionX="484" positionY="-27" width="128" height="103"/>
     </elements>
 </model>

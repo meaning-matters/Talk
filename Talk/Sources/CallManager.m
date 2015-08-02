@@ -271,8 +271,17 @@
                                                                                  selectedCallable:nil
                                                                                        completion:^(CallableData* callable)
                     {
-                        //### Show callerId selector, and make call when selected in block.
-                        //callable.callerId
+                        NSManagedObjectContext* managedObjectContext;
+                        CallerIdData*           callerId;
+
+                        managedObjectContext = [DataManager sharedManager].managedObjectContext;
+                        callerId             = [NSEntityDescription insertNewObjectForEntityForName:@"CallerId"
+                                                                             inManagedObjectContext:managedObjectContext];
+                        callerId.callable  = callable;
+                        callerId.contactId = contactId;
+
+                        [[DataManager sharedManager] saveManagedObjectContext:managedObjectContext];
+
                         completion(NO, callable.e164);
                     }];
 

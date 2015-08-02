@@ -260,8 +260,8 @@
             NSManagedObjectContext* context;
 
             context    = [DataManager sharedManager].managedObjectContext;
-            phone      = (PhoneData*)[NSEntityDescription insertNewObjectForEntityForName:@"Phone"
-                                                                   inManagedObjectContext:context];
+            phone      = [NSEntityDescription insertNewObjectForEntityForName:@"Phone"
+                                                       inManagedObjectContext:context];
             phone.name = name;
             phone.e164 = [phoneNumber e164Format];
 

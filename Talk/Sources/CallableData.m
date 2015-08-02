@@ -14,6 +14,6 @@
 
 @dynamic e164;
 @dynamic name;
-@dynamic callerId;
+@dynamic callerIds;
 
 @end

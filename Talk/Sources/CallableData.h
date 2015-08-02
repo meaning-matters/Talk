@@ -13,8 +13,18 @@
 
 @interface CallableData : NSManagedObject
 
-@property (nonatomic, retain) NSString*     e164;
-@property (nonatomic, retain) NSString*     name;
-@property (nonatomic, retain) CallerIdData* callerId;
+@property (nonatomic, retain) NSString* e164;
+@property (nonatomic, retain) NSString* name;
+@property (nonatomic, retain) NSSet*    callerIds;
+
+@end
+
+
+@interface CallableData (CoreDataGeneratedAccessors)
+
+- (void)addCallerIdsObject:(CallerIdData*)value;
+- (void)removeCallerIdsObject:(CallerIdData*)value;
+- (void)addCallerIds:(NSSet*)values;
+- (void)removeCallerIds:(NSSet*)values;
 
 @end

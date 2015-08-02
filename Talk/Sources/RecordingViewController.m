@@ -122,8 +122,8 @@ typedef enum
         [managedObjectContext setParentContext:self.managedObjectContext];
         self.managedObjectContext = managedObjectContext;
 
-        self.recording = (RecordingData*)[NSEntityDescription insertNewObjectForEntityForName:@"Recording"
-                                                                       inManagedObjectContext:self.managedObjectContext];
+        self.recording = [NSEntityDescription insertNewObjectForEntityForName:@"Recording"
+                                                       inManagedObjectContext:self.managedObjectContext];
         self.recording.uuid      = uuid;
         self.recording.urlString = [url absoluteString];
     }

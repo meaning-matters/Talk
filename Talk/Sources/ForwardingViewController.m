@@ -69,8 +69,8 @@ typedef enum
             [managedObjectContext setParentContext:self.managedObjectContext];
             self.managedObjectContext = managedObjectContext;
 
-            self.forwarding = (ForwardingData*)[NSEntityDescription insertNewObjectForEntityForName:@"Forwarding"
-                                                                             inManagedObjectContext:self.managedObjectContext];
+            self.forwarding = [NSEntityDescription insertNewObjectForEntityForName:@"Forwarding"
+                                                            inManagedObjectContext:self.managedObjectContext];
 
             self.forwarding.statements = [Common jsonStringWithObject:@[@{@"call" : @{@"e164" : @[@""]}}]];
         }

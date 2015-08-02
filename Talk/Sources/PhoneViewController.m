@@ -76,8 +76,8 @@ typedef enum
         [managedObjectContext setParentContext:self.managedObjectContext];
         self.managedObjectContext = managedObjectContext;
 
-        self.phone = (PhoneData*)[NSEntityDescription insertNewObjectForEntityForName:@"Phone"
-                                                               inManagedObjectContext:self.managedObjectContext];
+        self.phone = [NSEntityDescription insertNewObjectForEntityForName:@"Phone"
+                                                   inManagedObjectContext:self.managedObjectContext];
     }
 
     if (isNew)

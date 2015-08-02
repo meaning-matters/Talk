@@ -512,8 +512,8 @@
                         {
                             if (number == nil)
                             {
-                                number = (NumberData*)[NSEntityDescription insertNewObjectForEntityForName:@"Number"
-                                                                                    inManagedObjectContext:self.managedObjectContext];
+                                number = [NSEntityDescription insertNewObjectForEntityForName:@"Number"
+                                                                       inManagedObjectContext:self.managedObjectContext];
                             }
                         }
                         else
@@ -614,8 +614,8 @@
                         {
                             if (forwarding == nil)
                             {
-                                forwarding = (ForwardingData*)[NSEntityDescription insertNewObjectForEntityForName:@"Forwarding"
-                                                                                            inManagedObjectContext:self.managedObjectContext];
+                                forwarding = [NSEntityDescription insertNewObjectForEntityForName:@"Forwarding"
+                                                                           inManagedObjectContext:self.managedObjectContext];
                             }
                         }
                         else
@@ -777,8 +777,8 @@
                         {
                             if (phone == nil)
                             {
-                                phone = (PhoneData*)[NSEntityDescription insertNewObjectForEntityForName:@"Phone"
-                                                                                  inManagedObjectContext:self.managedObjectContext];
+                                phone = [NSEntityDescription insertNewObjectForEntityForName:@"Phone"
+                                                                      inManagedObjectContext:self.managedObjectContext];
                             }
                         }
                         else
