@@ -16,6 +16,7 @@
 #import "BlockAlertView.h"
 #import "ForwardingData.h"
 #import "NumberData.h"
+#import "CallerIdData.h"
 #import "DataManager.h"
 #import "VerifyPhoneViewController.h"
 
@@ -26,6 +27,7 @@ typedef enum
     TableSectionNumber      = 1UL << 1,
     TableSectionForwardings = 1UL << 2,
     TableSectionNumbers     = 1UL << 3,
+    TableSectionCallerIds   = 1UL << 4,
 } TableSections;
 
 
@@ -37,6 +39,7 @@ typedef enum
     PhoneNumber*  phoneNumber;
 
     NSArray*      numbersArray;
+    NSArray*      callerIdsArray;
 }
 
 @end
@@ -214,12 +217,17 @@ typedef enum
                                                              sortKeys:@[@"name"]
                                                             predicate:predicate
                                                  managedObjectContext:nil];
-    
+
+    CallableData* callable = self.phone;
+    NSArray* descriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"contactId" ascending:YES]];
+    callerIdsArray = [[callable.callerIds allObjects] sortedArrayUsingDescriptors:descriptors];
+
     sections  = 0;
     sections |= TableSectionName;
     sections |= TableSectionNumber;
     sections |= (self.phone.forwardings.count > 0) ? TableSectionForwardings : 0;
     sections |= (numbersArray.count > 0) ?           TableSectionNumbers     : 0;
+    sections |= (callerIdsArray.count > 0) ?         TableSectionCallerIds   : 0;
 
     return [Common bitsSetCount:sections];
 }
@@ -232,20 +240,30 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionName:
+        {
             numberOfRows = 1;
             break;
-
+        }
         case TableSectionNumber:
+        {
             numberOfRows = 1;
             break;
-
+        }
         case TableSectionForwardings:
+        {
             numberOfRows = self.phone.forwardings.count;
             break;
-
+        }
         case TableSectionNumbers:
+        {
             numberOfRows = numbersArray.count;
             break;
+        }
+        case TableSectionCallerIds:
+        {
+            numberOfRows = callerIdsArray.count;
+            break;
+        }
     }
 
     return numberOfRows;
@@ -259,20 +277,32 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionForwardings:
+        {
             title = NSLocalizedStringWithDefaultValue(@"PhoneView ForwardingsHeader", nil,
                                                       [NSBundle mainBundle],
                                                       @"Used By Forwardings",
-                                                      @"Table header above phone numbers\n"
+                                                      @"Table header above forwardings\n"
                                                       @"[1 line larger font].");
             break;
-
+        }
         case TableSectionNumbers:
+        {
             title = NSLocalizedStringWithDefaultValue(@"PhoneView NumbersHeader", nil,
                                                       [NSBundle mainBundle],
                                                       @"Used By Numbers",
                                                       @"Table header above phone numbers\n"
                                                       @"[1 line larger font].");
             break;
+        }
+        case TableSectionCallerIds:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"PhoneView CallerIdsHeader", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"Used As Caller Id By Contacts",
+                                                      @"Table header above contacts\n"
+                                                      @"[1 line larger font].");
+            break;
+        }
     }
 
     return title;
@@ -286,13 +316,15 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionName:
+        {
             if (isNew)
             {
                 title = [Strings nameFooterString];
             }
             break;
-
+        }
         case TableSectionNumber:
+        {
             if ([self.phone.e164 isEqualToString:[Settings sharedSettings].callbackE164] ||
                 [self.phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164])
             {
@@ -305,8 +337,9 @@ typedef enum
                                                           @"[1 line larger font].");
             }
             break;
-
+        }
         case TableSectionNumbers:
+        {
             title = NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumbersFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"This Phone can't be deleted because it's in use "
@@ -314,6 +347,7 @@ typedef enum
                                                       @"Table footer that app can't be deleted\n"
                                                       @"[1 line larger font].");
             break;
+        }
     }
 
     return title;
@@ -327,20 +361,30 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionName:
+        {
             cell = [self nameCellForRowAtIndexPath:indexPath];
             break;
-
+        }
         case TableSectionNumber:
+        {
             cell = [self numberCellForRowAtIndexPath:indexPath];
             break;
-
+        }
         case TableSectionForwardings:
+        {
             cell = [self forwardingsCellForRowAtIndexPath:indexPath];
             break;
-
+        }
         case TableSectionNumbers:
+        {
             cell = [self numbersCellForRowAtIndexPath:indexPath];
             break;
+        }
+        case TableSectionCallerIds:
+        {
+            cell = [self callerIdsCellForRowAtIndexPath:indexPath];
+            break;
+        }
     }
 
     return cell;
@@ -421,13 +465,33 @@ typedef enum
 }
 
 
+- (UITableViewCell*)callerIdsCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell* cell;
+    CallerIdData*    callerId = callerIdsArray[indexPath.row];
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"CallerIdsCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallerIdsCell"];
+    }
+
+    cell.textLabel.text = [[AppDelegate appDelegate] contactNameForId:callerId.contactId];
+    cell.accessoryType  = UITableViewCellAccessoryNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+    return cell;
+}
+
+
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionName:
+        {
             break;
-
+        }
         case TableSectionNumber:
         {
             if (isNew == YES)
@@ -457,10 +521,13 @@ typedef enum
             break;
         }
         case TableSectionForwardings:
+        {
             break;
-
+        }
         case TableSectionNumbers:
+        {
             break;
+        }
     }
 }
 
