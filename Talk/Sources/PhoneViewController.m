@@ -39,7 +39,7 @@ typedef enum
     PhoneNumber*  phoneNumber;
 
     NSArray*      numbersArray;
-    NSArray*      callerIdsArray;
+    NSArray*      namesArray;
 }
 
 @end
@@ -59,6 +59,8 @@ typedef enum
         
         self.name                 = phone.name;
         phoneNumber               = [[PhoneNumber alloc] initWithNumber:self.phone.e164];
+
+        namesArray                = [NSMutableArray array];
     }
 
     return self;
@@ -218,16 +220,22 @@ typedef enum
                                                             predicate:predicate
                                                  managedObjectContext:nil];
 
+    NSMutableArray* array = [NSMutableArray array];
     CallableData* callable = self.phone;
-    NSArray* descriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"contactId" ascending:YES]];
-    callerIdsArray = [[callable.callerIds allObjects] sortedArrayUsingDescriptors:descriptors];
+    for (CallerIdData* callerId in [callable.callerIds allObjects])
+    {
+        NSString* name = [[AppDelegate appDelegate] contactNameForId:callerId.contactId];
+        [array addObject:name];
+    }
+
+    namesArray = [array sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
 
     sections  = 0;
     sections |= TableSectionName;
     sections |= TableSectionNumber;
     sections |= (self.phone.forwardings.count > 0) ? TableSectionForwardings : 0;
     sections |= (numbersArray.count > 0) ?           TableSectionNumbers     : 0;
-    sections |= (callerIdsArray.count > 0) ?         TableSectionCallerIds   : 0;
+    sections |= (namesArray.count > 0) ?             TableSectionCallerIds   : 0;
 
     return [Common bitsSetCount:sections];
 }
@@ -261,7 +269,7 @@ typedef enum
         }
         case TableSectionCallerIds:
         {
-            numberOfRows = callerIdsArray.count;
+            numberOfRows = namesArray.count;
             break;
         }
     }
@@ -298,7 +306,7 @@ typedef enum
         {
             title = NSLocalizedStringWithDefaultValue(@"PhoneView CallerIdsHeader", nil,
                                                       [NSBundle mainBundle],
-                                                      @"Used As Caller Id By Contacts",
+                                                      @"Used As Caller Id For Contacts",
                                                       @"Table header above contacts\n"
                                                       @"[1 line larger font].");
             break;
@@ -468,7 +476,6 @@ typedef enum
 - (UITableViewCell*)callerIdsCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
-    CallerIdData*    callerId = callerIdsArray[indexPath.row];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"CallerIdsCell"];
     if (cell == nil)
@@ -476,7 +483,7 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallerIdsCell"];
     }
 
-    cell.textLabel.text = [[AppDelegate appDelegate] contactNameForId:callerId.contactId];
+    cell.textLabel.text = namesArray[indexPath.row];
     cell.accessoryType  = UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 

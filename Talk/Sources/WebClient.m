@@ -797,7 +797,7 @@ static NSDictionary* statuses;
     reply(nil, @"+3215666666");
     return;
 */
-    parameters[@"debug"] = @(true);
+    // parameters[@"debug"] = @(false);
 
     [self postPath:[NSString stringWithFormat:@"/users/%@/numbers", username]
         parameters:parameters
