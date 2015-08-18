@@ -547,7 +547,7 @@
 
 - (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber contactId:(NSString*)contactId
 {
-    Call* call = nil;
+    __block Call* call = nil;
 
     if (phoneNumber.isEmergency)
     {
@@ -566,7 +566,7 @@
         {
             if (cancelled == NO && [self checkCallbackAndIdentity:identity] == YES)
             {
-                [self callPhoneNumber:phoneNumber fromIdentity:identity contactId:contactId];
+                call = [self callPhoneNumber:phoneNumber fromIdentity:identity contactId:contactId];
             }
         }];
     }

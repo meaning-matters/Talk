@@ -1,5 +1,4 @@
 NEXT:
-# Sort callerIds Contact list alphabetic (same as NBContacts).
 # Disable deletion of Phones when used in Settings, Forwarding and as Caller ID: do in all places PhoneVC and PhonesVC.
 Perhaps move test code to common place.
 # Place phone number type (iPhone, mobile, home, office, ...) as detail text under Contact name in above list.
@@ -9,6 +8,8 @@ Perhaps move test code to common place.
 # When user taps cell of above list, show dialog "Do you want to call this contact?" "Call" / "Cancel".
 # Implement swipe delete of the above cells.
 */
+
+# NO_CALLBACK_FOUND in call to AnnetteM 17 Aug 22:16 (21:16 UK time)
 
 
 

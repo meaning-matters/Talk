@@ -19,8 +19,8 @@
 
 @interface NumberLabel : UILabel
 
-@property (nonatomic, assign) id<NumberLabelDelegate>   delegate;
-@property (nonatomic, assign) BOOL                      hasPaste;
-@property (nonatomic, assign) CGRect                    menuTargetRect;
+@property (nonatomic, assign) id<NumberLabelDelegate> delegate;
+@property (nonatomic, assign) BOOL                    hasPaste;
+@property (nonatomic, assign) CGRect                  menuTargetRect;
 
 @end
