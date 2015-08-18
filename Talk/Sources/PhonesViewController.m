@@ -66,7 +66,7 @@
     }
 
     fetchedPhonesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Phone"
-                                                                        withSortKeys:@[@"name"]
+                                                                        withSortKeys:@[@"e164", @"name"]
                                                                 managedObjectContext:self.managedObjectContext];
     fetchedPhonesController.delegate = self;
 }
