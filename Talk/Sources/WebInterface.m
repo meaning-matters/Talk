@@ -200,7 +200,8 @@
                                      @"priority" : @(1),
                                      @"weight"   : @(100),
                                      @"ttl"      : @(1800)};
-            self.servers = [NSMutableArray arrayWithObject:server];
+            self.servers   = [NSMutableArray arrayWithObject:server];
+            self.weightSum = 100;
         }
     }
 }
