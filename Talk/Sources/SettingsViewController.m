@@ -336,7 +336,7 @@ typedef enum
             {
                 phone       = [self lookupPhoneForE164:settings.callbackE164];
                 headerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
-                                                                @"Select Phone To Be Called Back",
+                                                                @"Select Phone To Be Called On",
                                                                 @"[1/4 line larger font].");
                 footerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
                                                                 @"When you initiate a call, you'll be called back "
