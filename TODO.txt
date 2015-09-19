@@ -12,7 +12,7 @@ Perhaps move test code to common place.
 # NO_CALLBACK_FOUND in call to AnnetteM 17 Aug 22:16 (21:16 UK time)
 
 
-
+Make country list diacritic insensitive
 
 * Check what happens when user switches SIM (e.g. BE -> NL).  Both when ReadFromSIM is on
   and off.  Integrate this behaviour with alerts given to user when he calls first local
@@ -191,3 +191,5 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
   enabled again and handled in UIVC's willMoveToParentViewController when parent == nil
   
 * Received memory warning.: Tijdens maken/editen contact image.
+
+* Name textFields don't allow editing halfway the string. When trying to do so, the cursor jumps to the end.

@@ -14,6 +14,10 @@
 #import "Common.h"
 #import "Strings.h"
 #import "PhoneNumber.h"
+#import "Skinning.h"
+#import "BlockAlertView.h"
+
+const NSInteger kUseButtonTag = 123;
 
 
 @interface PhonesViewController ()
@@ -49,6 +53,17 @@
         self.managedObjectContext = managedObjectContext;
         self.selectedPhone        = selectedPhone;
         self.completion           = completion;
+        
+        [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
+                                                          object:nil
+                                                           queue:[NSOperationQueue mainQueue]
+                                                      usingBlock:^(NSNotification* note)
+        {
+            if ([Settings sharedSettings].haveAccount)
+            {
+                [self.tableView reloadData];
+            }
+        }];
     }
 
     return self;
@@ -106,7 +121,7 @@
             if (self.headerTitle == nil)
             {
                 return NSLocalizedStringWithDefaultValue(@"Phones ...", nil, [NSBundle mainBundle],
-                                                         @"Use as Caller ID & Callback number",
+                                                         @"The phones you use",
                                                          @"\n"
                                                          @"[1/4 line larger font].");
             }
@@ -251,6 +266,11 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:phone.e164];
     cell.detailTextLabel.text = [phoneNumber internationalFormat];
     cell.imageView.image      = [UIImage imageNamed:[phoneNumber isoCountryCode]];
+    
+    if (self.selectedPhone == nil)
+    {
+        [self addUseButtonsWithPhone:phone toCell:cell];
+    }
 
     if (self.completion == nil)
     {
@@ -264,6 +284,110 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
+}
+
+
+#pragma mark - Helpers
+
+- (void)addUseButtonsWithPhone:(PhoneData*)phone toCell:(UITableViewCell*)cell
+{
+    BOOL      isCallback   = [phone.e164 isEqualToString:[Settings sharedSettings].callbackE164];
+    BOOL      isCallerId   = [phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164];
+    NSString* callbackText = NSLocalizedStringWithDefaultValue(@"Phones ...", nil, [NSBundle mainBundle],
+                                                               @"CB", @"Abbreviation for Callback");
+    NSString* callerIdText = NSLocalizedStringWithDefaultValue(@"Phones ...", nil, [NSBundle mainBundle],
+                                                               @"ID", @"Abbreviation for Caller ID");
+    CGFloat   fontSize     = cell.detailTextLabel.font.pointSize;
+    
+    for (UIView* subview in cell.subviews)
+    {
+        if (subview.tag == kUseButtonTag)
+        {
+            [subview removeFromSuperview];
+        }
+    }
+
+    int position = 0;
+    
+    if (isCallerId)
+    {
+        UIButton* button = [self addUseButtonWithText:callerIdText fontSize:fontSize toCell:cell atPosition:position++];
+        [button addTarget:self action:@selector(showCallerIdAlert) forControlEvents:UIControlEventTouchUpInside];
+    }
+
+    if (isCallback)
+    {
+        UIButton* button = [self addUseButtonWithText:callbackText fontSize:fontSize toCell:cell atPosition:position++];
+        [button addTarget:self action:@selector(showCallbackAlert) forControlEvents:UIControlEventTouchUpInside];
+    }
+}
+
+
+- (UIButton*)addUseButtonWithText:(NSString*)text
+                         fontSize:(CGFloat)fontSize
+                           toCell:(UITableViewCell*)cell
+                       atPosition:(int)position
+{
+    CGFloat width    = 27.0f;
+    CGFloat height   = 17.0f;
+    CGFloat gap      =  6.0f;   // Horizontal gap between buttons.
+    CGFloat trailing = 38.0f;   // Space between right most button and right side of cell.
+    CGFloat x;
+    CGFloat y        = 25.0f;
+    
+    // Assumes there are at most 2 buttons.
+    if (position == 0)
+    {
+        x = cell.frame.size.width - trailing - width;
+    }
+    else
+    {
+        x = cell.frame.size.width - trailing - width - gap - width;
+    }
+    
+    UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    button.frame           = CGRectMake(x, y, width, height);
+    button.tag             = kUseButtonTag;
+    button.titleLabel.font = [UIFont systemFontOfSize:fontSize];
+    [button setTitle:text forState:UIControlStateNormal];
+    [Common styleButton:button];
+    
+    [cell addSubview:button];
+    
+    return button;
+}
+
+
+- (void)showCallbackAlert
+{
+    NSString* title   = NSLocalizedStringWithDefaultValue(@"Phones ...", nil, [NSBundle mainBundle],
+                                                          @"Callback Phone", @"...");
+    NSString* message = NSLocalizedStringWithDefaultValue(@"Phone ...", nil, [NSBundle mainBundle],
+                                                          @"When making a call, you're first being called back on this phone.",
+                                                          @"...");
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:nil
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
+}
+
+
+- (void)showCallerIdAlert
+{
+    NSString* title   = NSLocalizedStringWithDefaultValue(@"Phones ...", nil, [NSBundle mainBundle],
+                                                          @"Default Caller ID", @"...");
+    NSString* message = NSLocalizedStringWithDefaultValue(@"Phone ...", nil, [NSBundle mainBundle],
+                                                          @"This caller ID will be used when you did not select "
+                                                          @"one for the contact you're calling, or "
+                                                          @"when you call using the dialer.",
+                                                          @"...");
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:nil
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
 }
 
 @end

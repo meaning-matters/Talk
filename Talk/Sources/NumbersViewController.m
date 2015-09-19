@@ -113,8 +113,8 @@
 {
     if ([Settings sharedSettings].haveAccount == YES)
     {
-        UINavigationController*         modalViewController;
-        NumberCountriesViewController*  numberCountriesViewController;
+        UINavigationController*        modalViewController;
+        NumberCountriesViewController* numberCountriesViewController;
 
         numberCountriesViewController = [[NumberCountriesViewController alloc] init];
 

@@ -182,28 +182,33 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionCallMode:
+        {
             title = NSLocalizedStringWithDefaultValue(@"Settings:CallMode SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Call Mode",
                                                       @"The way calls are being made.");
             break;
-
+        }
         case TableSectionHomeCountry:
+        {
             title = NSLocalizedStringWithDefaultValue(@"Settings:HomeCountry SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Home Country",
                                                       @"Country where user lives (used to interpret dialed phone numbers).");
             break;
-
+        }
         case TableSectionCallOptions:
+        {
             title = NSLocalizedStringWithDefaultValue(@"Settings:CallOptions SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Call Options",
                                                       @"Various options related to making calls.");
             break;
-
+        }
         case TableSectionAccountData:
+        {
             title = NSLocalizedStringWithDefaultValue(@"Settings:AccountData SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Account Data",
                                                       @"Option to reset all app settings & data.");
             break;
+        }
     }
 
     return title;
@@ -217,6 +222,7 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionCallMode:
+        {
             title = NSLocalizedStringWithDefaultValue(@"Settings:CallbackInfo SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"Our server first calls the Callback Number. Then, when you "
@@ -226,16 +232,18 @@ typedef enum
                                                       @"Explanation how Callback settings work\n"
                                                       @"[* lines]");
             break;
-
+        }
         case TableSectionHomeCountry:
+        {
             title = NSLocalizedStringWithDefaultValue(@"Settings:HomeCountryInfo SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"Determines how phone numbers without country code are interpreted.",
                                                       @"Explanation what the Home Country setting is doing\n"
                                                       @"[* lines]");
             break;
-
+        }
         case TableSectionCallOptions:
+        {
             title = NSLocalizedStringWithDefaultValue(@"Settings:CallOptions SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"When enabled, asks you to select a caller ID for a contact "
@@ -243,8 +251,9 @@ typedef enum
                                                       @"Explanation what the Call Options are doing\n"
                                                       @"[* lines]");
             break;
-
+        }
         case TableSectionAccountData:
+        {
 #if HAS_BUYING_NUMBERS
             title = NSLocalizedStringWithDefaultValue(@"Settings:AccountDataInfoFull SectionFooter", nil,
                                                       [NSBundle mainBundle],
@@ -263,6 +272,7 @@ typedef enum
                                                       @"[* lines]");
 #endif
             break;
+        }
     }
 
     return title;
@@ -276,20 +286,25 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionCallMode:
+        {
             numberOfRows = 3;
             break;
-
+        }
         case TableSectionHomeCountry:
+        {
             numberOfRows = ([NetworkStatus sharedStatus].simIsoCountryCode != nil) ? 2 : 1;
             break;
-
+        }
         case TableSectionCallOptions:
+        {
             numberOfRows = 1;
             break;
-
+        }
         case TableSectionAccountData:
+        {
             numberOfRows = 2;
             break;
+        }
     }
 
     return numberOfRows;
@@ -308,29 +323,20 @@ typedef enum
     NSString*                footerTitle;
     NSString*                message;
     NSString*                homeCountry = settings.homeCountry;
+    PhoneData*               phone;
+    UITableViewCell*         cell = [self.tableView cellForRowAtIndexPath:indexPath];
     PhonesViewController*    phonesViewController;
     CountriesViewController* countriesViewController;
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionCallMode:
+        {
             if (indexPath.row == 0)
             {
-                PhoneData* phone = [self lookupPhoneForE164:settings.callbackE164];
-                NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
-                phonesViewController = [[PhonesViewController alloc] initWithManagedObjectContext:managedObjectContext
-                                                                                    selectedPhone:phone
-                                                                                       completion:^(PhoneData* selectedPhone)
-                {
-                    settings.callbackE164 = selectedPhone.e164;
-                    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-                    cell.detailTextLabel.text = selectedPhone.name;
-                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                }];
-
+                phone       = [self lookupPhoneForE164:settings.callbackE164];
                 headerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
-                                                                @"Select Callback Number",
-                                                                @"\n"
+                                                                @"Select Phone To Be Called Back",
                                                                 @"[1/4 line larger font].");
                 footerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
                                                                 @"When you initiate a call, you'll be called back "
@@ -343,45 +349,38 @@ typedef enum
                                                                 @"country you're in.\n\nPeople you call will never see "
                                                                 @"which number you selected here; unless of course, you "
                                                                 @"also select the same number as Caller ID.",
-                                                                @"\n"
                                                                 @"[1/4 line larger font].");
-                phonesViewController.headerTitle = headerTitle;
-                phonesViewController.footerTitle = footerTitle;
-
-                [self.navigationController pushViewController:phonesViewController animated:YES];
             }
             else if (indexPath.row == 1)
             {
-                PhoneData*              phone                = [self lookupPhoneForE164:settings.callerIdE164];
-                NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
-                phonesViewController = [[PhonesViewController alloc] initWithManagedObjectContext:managedObjectContext
-                                                                                    selectedPhone:phone
-                                                                                       completion:^(PhoneData* selectedPhone)
-                {
-                    settings.callerIdE164 = selectedPhone.e164;
-                    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-                    cell.detailTextLabel.text = selectedPhone.name;
-                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                }];
-
+                phone       = [self lookupPhoneForE164:settings.callerIdE164];
                 headerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
-                                                                @"Select Caller ID",
-                                                                @"\n"
+                                                                @"Select Default Caller ID",
                                                                 @"[1/4 line larger font].");
                 footerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
                                                                 @"People you call will see the selected number, but "
                                                                 @"only when the Show My Caller ID setting is on.\n\n"
                                                                 @"Add as many as you like. It can be handy to have an "
                                                                 @"extensive list to select from.",
-                                                                @"\n"
                                                                 @"[1/4 line larger font].");
-                phonesViewController.headerTitle = headerTitle;
-                phonesViewController.footerTitle = footerTitle;
-
-                [self.navigationController pushViewController:phonesViewController animated:YES];
             }
+            
+            NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
+            phonesViewController = [[PhonesViewController alloc] initWithManagedObjectContext:managedObjectContext
+                                                                                selectedPhone:phone
+                                                                                   completion:^(PhoneData* selectedPhone)
+            {
+                settings.callbackE164 = selectedPhone.e164;
+                cell.detailTextLabel.text = selectedPhone.name;
+                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            }];
+            
+            phonesViewController.title       = cell.textLabel.text;
+            phonesViewController.headerTitle = headerTitle;
+            phonesViewController.footerTitle = footerTitle;
+            [self.navigationController pushViewController:phonesViewController animated:YES];
             break;
-
+        }
         case TableSectionHomeCountry:
         {
             self.countryIndexPath = indexPath;
@@ -395,7 +394,6 @@ typedef enum
                     settings.homeCountry = isoCountryCode;
 
                     // Set the cell to prevent quick update right after animations.
-                    UITableViewCell* cell     = [self.tableView cellForRowAtIndexPath:indexPath];
                     cell.imageView.image      = [UIImage imageNamed:settings.homeCountry];
                     cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:settings.homeCountry];
                 }
@@ -404,8 +402,8 @@ typedef enum
             [self.navigationController pushViewController:countriesViewController animated:YES];
             break;
         }
-
         case TableSectionAccountData:
+        {
             if (settings.haveAccount == NO && indexPath.row == 0)
             {
                 [Common showGetStartedViewController];
@@ -416,7 +414,6 @@ typedef enum
 
                 if (indicator == nil)
                 {
-                    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
                     indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
                     cell.accessoryView = indicator;
                     [indicator startAnimating];
@@ -447,31 +444,32 @@ typedef enum
                                                             @"Alert message informing about resetting all user data\n"
                                                             @"[iOS alert message size]");
 
-                {   // Prevents "Switch case is in protected scope” compiler error at default:.
-                    [BlockActionSheet showActionSheetWithTitle:message
-                                                    completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
+                [BlockActionSheet showActionSheetWithTitle:message
+                                                completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
+                {
+                    if (destruct == YES)
                     {
-                        if (destruct == YES)
-                        {
-                            [[AppDelegate appDelegate] resetAll];
-
-                            int count = [Common bitsSetCount:sections];
-                            [self.tableView beginUpdates];
-                            [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, count)]
-                                          withRowAnimation:UITableViewRowAnimationFade];
-                            [self.tableView endUpdates];
-                            accountDataUpdated = NO;
-                        }
+                        [[AppDelegate appDelegate] resetAll];
+                        
+                        int count = [Common bitsSetCount:sections];
+                        [self.tableView beginUpdates];
+                        [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, count)]
+                                      withRowAnimation:UITableViewRowAnimationFade];
+                        [self.tableView endUpdates];
+                        accountDataUpdated = NO;
                     }
-                                             cancelButtonTitle:[Strings cancelString]
-                                        destructiveButtonTitle:title
-                                             otherButtonTitles:nil];
                 }
+                                         cancelButtonTitle:[Strings cancelString]
+                                    destructiveButtonTitle:title
+                                         otherButtonTitles:nil];
             }
+            
             break;
-
+        }
         default:
+        {
             break;
+        }
     }
 }
 
@@ -483,23 +481,29 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionCallMode:
+        {
             cell = [self callModeCellForRowAtIndexPath:indexPath];
             break;
-
+        }
         case TableSectionHomeCountry:
+        {
             cell = [self homeCountryCellForRowAtIndexPath:indexPath];
             break;
-
+        }
         case TableSectionCallOptions:
+        {
             cell = [self callOptionsCellForRowAtIndexPath:indexPath];
             break;
-
+        }
         case TableSectionAccountData:
+        {
             cell = [self accountDataCellForRowAtIndexPath:indexPath];
             break;
-            
+        }
         default:
+        {
             break;
+        }
     }
 
     return cell;
@@ -519,10 +523,10 @@ typedef enum
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallbackCell"];
         }
 
-        cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Settings Callback Number", nil,
-                                                                      [NSBundle mainBundle], @"Callback Number",
-                                                                      @"Phone number on which user is reachable.\n"
-                                                                      @"[1/2 line, abbreviated: Called].");
+        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings Callback Number", nil,
+                                                                [NSBundle mainBundle], @"Callback Phone",
+                                                                @"Phone number on which user is reachable.\n"
+                                                                @"[1/2 line, abbreviated: Called].");
         PhoneData* phone = [self lookupPhoneForE164:settings.callbackE164];
         if (phone != nil)
         {

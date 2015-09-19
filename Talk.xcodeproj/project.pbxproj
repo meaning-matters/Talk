@@ -3569,7 +3569,7 @@
 					"External/OpenSSL-for-iPhone/include",
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
@@ -3609,7 +3609,7 @@
 					"External/OpenSSL-for-iPhone/include",
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
@@ -3739,7 +3739,7 @@
 					"External/OpenSSL-for-iPhone/include",
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
