@@ -9,6 +9,8 @@
 #ifndef Talk_NBAddressBook_h
 #define Talk_NBAddressBook_h
 
+#import "Skinning.h"
+
 
 //Hide or show ringtines
 //#define NB_HAS_RING_TONES
@@ -25,11 +27,11 @@
 #define SIZE_TEXTVIEW_WIDTH       210
 
 //Fonts and colors used
-#define FONT_LABEL              [UIFont fontWithName:@"TrebuchetMS-Bold" size:13]
+#define FONT_LABEL              [UIFont systemFontOfSize:13]
 #define FONT_ADDRESS            [UIFont boldSystemFontOfSize:14]
 #define FONT_NOTES              [UIFont boldSystemFontOfSize:15]
 #define FONT_COLOR_MY_NUMBER    [UIColor colorWithRed: 91/255.0f green:108/255.0f blue:132/255.0f alpha:1.0f]
-#define FONT_COLOR_LABEL        [UIColor colorWithRed: 81/255.0f green:102/255.0f blue:145/255.0f alpha:1.0f]
+#define FONT_COLOR_LABEL        [Skinning tintColor]
 #define FONT_COLOR_MERGED       [UIColor colorWithRed: 40/255.0f green:108/255.0f blue:214/255.0f alpha:1.0f]
 #define FONT_COLOR_MISSED       [UIColor colorWithRed:140/255.0f green: 16/255.0f blue:  5/255.0f alpha:1.0f]
 #define FONT_COLOR_LIGHT_GREY   [UIColor colorWithRed:204/255.0f green:204/255.0f blue:204/255.0f alpha:1.0f]
@@ -52,7 +54,8 @@ typedef enum  : NSUInteger
     CC_SOCIAL             = 10,
     CC_IM                 = 11,
     CC_NOTES              = 12,
-    CC_NUMBER_OF_SECTIONS = 13, // This is valid when start at 0, and use every value 0, 1, ...
+    CC_CALLER_ID          = 13,
+    CC_NUMBER_OF_SECTIONS = 14, // This is valid when start at 0, and use every value 0, 1, ...
 } ContactCell;
 
 //Possible 'New' fields

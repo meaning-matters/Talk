@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@class CallerIdData;
 @class CallableData;
 
 
 @interface CallerIdViewController : UITableViewController
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
-                            selectedCallable:(CallableData*)selectedCallable
+                                    callerId:(CallerIdData*)callerId
+                                   contactId:(NSString*)contactId
                                   completion:(void (^)(CallableData*  selectedCallable))completion;
 
 @end

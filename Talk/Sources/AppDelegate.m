@@ -27,9 +27,9 @@
 #import "WebInterface.h"
 #import "NavigationController.h"
 #import "CountriesViewController.h"
-
-
-#import "WebClient.h"
+#import "CallerIdData.h"
+#import "CallableData.h"
+#import "CallerIdViewController.h"
 
 
 @interface AppDelegate ()
@@ -470,7 +470,7 @@
 }
 
 
-#pragma mark - Address Book Delegate
+#pragma mark - AddressBookDelegate
 
 - (NSString*)formatNumber:(NSString*)number
 {
@@ -604,6 +604,43 @@
     NBPeopleListViewController* viewController = [self.peoplePickerViewController listViewController];
 
     return [viewController contactNameForId:contactId];
+}
+
+
+- (NSString*)callerIdForContactId:(NSString *)contactId
+{
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"contactId == %@", contactId];
+    NSArray* array = [[DataManager sharedManager] fetchEntitiesWithName:@"CallerId"
+                                                             sortKeys:@[@"contactId"]
+                                                            predicate:predicate
+                                                 managedObjectContext:nil];
+
+    CallerIdData* callerId = [array lastObject];
+    
+    return callerId.callable.name;
+}
+
+- (void)selectCallerIdForContactId:(NSString*)contactId
+              navigationController:(UINavigationController*)navigationController
+                        completion:(void (^)(CallableData* selectedCallable))completion
+{
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"contactId == %@", contactId];
+    NSArray* array = [[DataManager sharedManager] fetchEntitiesWithName:@"CallerId"
+                                                               sortKeys:@[@"contactId"]
+                                                              predicate:predicate
+                                                   managedObjectContext:nil];
+    
+    CallerIdData* callerId = [array lastObject];
+
+    CallerIdViewController* viewController = [[CallerIdViewController alloc] initWithManagedObjectContext:nil
+                                                                                                 callerId:callerId
+                                                                                                contactId:contactId
+                                                                                               completion:^(CallableData *selectedCallable)
+    {
+        completion ? completion(selectedCallable) : (void)0;
+    }];
+    
+    [navigationController pushViewController:viewController animated:YES];
 }
 
 @end

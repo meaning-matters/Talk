@@ -106,6 +106,7 @@
             case CC_SOCIAL:
             case CC_IM:
             case CC_NOTES:
+            case CC_CALLER_ID:
             {
                 //This field is hidden until added
                 break;
@@ -232,7 +233,16 @@
             [cellInfo setTextValue:notes];
             [sectionArray addObject:cellInfo];
         }
-
+        
+        {
+            NSMutableArray* sectionArray = [self.tableStructure objectAtIndex:CC_CALLER_ID];
+            NBPersonCellInfo* personCellInfo = [[NBPersonCellInfo alloc] initWithPlaceholder:@"Uses default" andLabel:@"Caller ID"];
+            NSString* contactId = [NSString stringWithFormat:@"%d", ABRecordGetRecordID(person.contactRef)];
+            NSString* callerId = [[NBAddressBookManager sharedManager].delegate callerIdForContactId:contactId];
+            [personCellInfo setTextValue:callerId];
+            [sectionArray addObject:personCellInfo];
+        }
+        
         //Load in the IM
         NSMutableArray * IMArray = [self.tableStructure objectAtIndex:CC_IM];
         ABMultiValueRef instantMessageRef = ABRecordCopyValue(person.contactRef, kABPersonInstantMessageProperty);

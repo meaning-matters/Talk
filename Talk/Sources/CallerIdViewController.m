@@ -12,7 +12,7 @@
 #import "Common.h"
 #import "Strings.h"
 #import "DataManager.h"
-#import "CallableData.h"
+#import "CallerIdData.h"
 #import "PhoneData.h"
 #import "NumberData.h"
 
@@ -29,6 +29,8 @@ typedef enum
 }
 
 @property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
+@property (nonatomic, strong) CallerIdData*           callerId;
+@property (nonatomic, strong) NSString*               contactId;
 @property (nonatomic, strong) CallableData*           selectedCallable;
 @property (nonatomic, copy) void (^completion)(CallableData* selectedCallable);
 @property (nonatomic, strong) NSArray*                phones;
@@ -40,18 +42,23 @@ typedef enum
 @implementation CallerIdViewController
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
-                            selectedCallable:(CallableData*)selectedCallable
-                                  completion:(void (^)(CallableData*  selectedCallable))completion
+                                    callerId:(CallerIdData*)callerId
+                                   contactId:(NSString*)contactId
+                                  completion:(void (^)(CallableData* selectedCallable))completion
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
         self.title                = [Strings callerIdString];
-        self.managedObjectContext = managedObjectContext;
-        self.selectedCallable     = selectedCallable;
+        self.managedObjectContext = managedObjectContext ? managedObjectContext : [DataManager sharedManager].managedObjectContext;
+        self.callerId             = callerId;
+        self.contactId            = contactId;
+        self.selectedCallable     = callerId.callable;
         self.completion           = completion;
 
         self.phones               = [self fetchPhones];
+#if HAS_NUMBERS
         self.numbers              = [self fetchNumbers];
+#endif
     }
 
     return self;
@@ -64,11 +71,21 @@ typedef enum
 
     if (self.navigationController.presentingViewController != nil)
     {
+        // We get here when selected to assign a caller ID right before a call.
         UIBarButtonItem* buttonItem;
         buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                    target:self
-                                                                   action:@selector(cancel)];
+                                                                   action:@selector(cancelAction)];
         self.navigationItem.leftBarButtonItem = buttonItem;
+    }
+    else if (self.callerId != nil)
+    {
+        // We get here from contact info view.  A caller already been selected.
+        UIBarButtonItem* buttonItem;
+        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
+                                                                   target:self
+                                                                   action:@selector(deleteAction)];
+        self.navigationItem.rightBarButtonItem = buttonItem;
     }
 }
 
@@ -99,12 +116,14 @@ typedef enum
     {
         case TableSectionPhones:
         {
-            title = [Strings phonesString];
+            title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Phones SectionHeader", nil, [NSBundle mainBundle],
+                                                      @"Select A Phone As Caller ID", @"...");
             break;
         }
         case TableSectionNumbers:
         {
-            title = [Strings numbersString];
+            title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Numbers SectionHeader", nil, [NSBundle mainBundle],
+                                                      @"Select A Number As Caller ID", @"...");
             break;
         }
     }
@@ -121,18 +140,18 @@ typedef enum
     {
         case TableSectionPhones:
         {
-            title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Phones SectionFooter", nil,
-                                                      [NSBundle mainBundle],
-                                                      @"....",
+            title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Phones SectionFooter", nil, [NSBundle mainBundle],
+                                                      @"The selected Phone will be used as caller ID for all "
+                                                      @"your calls to this contact.",
                                                       @"...\n"
                                                       @"[* lines]");
             break;
         }
         case TableSectionNumbers:
         {
-            title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Numbers SectionFooter", nil,
-                                                      [NSBundle mainBundle],
-                                                      @"....",
+            title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Numbers SectionFooter", nil, [NSBundle mainBundle],
+                                                      @"The selected Number will be used as caller ID for all "
+                                                      @"your calls to this contact.",
                                                       @"...\n"
                                                       @"[* lines]");
             break;
@@ -177,18 +196,53 @@ typedef enum
         }
     }
 
-    [self dismissViewControllerAnimated:YES completion:^
+    if (self.callerId == nil)
     {
-        self.completion(callable);
-    }];
+        self.callerId = [NSEntityDescription insertNewObjectForEntityForName:@"CallerId"
+                                                      inManagedObjectContext:self.managedObjectContext];
+        self.callerId.contactId = self.contactId;
+    }
+    
+    self.callerId.callable = callable;
+    [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+
+    if (self.navigationController.presentingViewController != nil)
+    {
+        [self dismissViewControllerAnimated:YES completion:^
+        {
+            self.completion ? self.completion(callable) : (void)0;
+        }];
+    }
+    else
+    {
+        if (callable != self.selectedCallable)
+        {
+            self.completion ? self.completion(callable) : (void)0;
+        }
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 
 #pragma Helpers
 
-- (void)cancel
+- (void)cancelAction
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (void)deleteAction
+{
+    self.callerId.callable = nil;
+
+    [self.managedObjectContext deleteObject:self.callerId];
+    
+    self.completion ? self.completion(nil) : (void)0;
+    
+    // We can only get here pushed from a contact.
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -197,7 +251,7 @@ typedef enum
     return [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
                                                      sortKeys:@[@"name"]
                                                     predicate:nil
-                                         managedObjectContext:nil];
+                                         managedObjectContext:self.managedObjectContext];
 }
 
 
@@ -206,7 +260,7 @@ typedef enum
     return [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
                                                      sortKeys:@[@"name"]
                                                     predicate:nil
-                                         managedObjectContext:nil];
+                                         managedObjectContext:self.managedObjectContext];
 }
 
 
@@ -245,7 +299,7 @@ typedef enum
     cell.detailTextLabel.text = [phoneNumber internationalFormat];
     cell.imageView.image      = [UIImage imageNamed:[phoneNumber isoCountryCode]];
 
-    if (callable == self.selectedCallable)
+    if (callable == self.callerId.callable)
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }

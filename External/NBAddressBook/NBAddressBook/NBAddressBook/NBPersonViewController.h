@@ -20,7 +20,7 @@
 #import "NBPeoplePickerNavigationControllerDelegate.h"
 #import "NBPersonViewControllerDelegate.h"
 
-#define FACEBOOK_PREFIX @"facebook"
+#define FACEBOOK_PREFIX @"facebook___"
 #define FACEBOOK_SUFFIX @"(Facebook)"
 
 

@@ -24,13 +24,13 @@
 
 typedef enum
 {
-    TableSectionName            = 1UL << 0,
-    TableSectionNumber          = 1UL << 1,
-    TableSectionForwarding      = 1UL << 2,
-    TableSectionSubscription    = 1UL << 3,
-    TableSectionArea            = 1UL << 4,    // The optional state will be placed in a row here.
-    TableSectionContactName     = 1UL << 5,
-    TableSectionContactAddress  = 1UL << 6,
+    TableSectionName           = 1UL << 0,
+    TableSectionE164           = 1UL << 1,
+    TableSectionForwarding     = 1UL << 2,
+    TableSectionSubscription   = 1UL << 3,
+    TableSectionArea           = 1UL << 4,    // The optional state will be placed in a row here.
+    TableSectionContactName    = 1UL << 5,
+    TableSectionContactAddress = 1UL << 6,
 } TableSections;
 
 typedef enum
@@ -97,7 +97,7 @@ typedef enum
 
         // Mandatory sections.
         sections |= TableSectionName;
-        sections |= TableSectionNumber;
+        sections |= TableSectionE164;
         sections |= TableSectionForwarding;
         sections |= TableSectionArea;
         sections |= TableSectionSubscription;
@@ -226,8 +226,9 @@ typedef enum
             numberOfRows = 1;
             break;
 
-        case TableSectionNumber:
+        case TableSectionE164:
             numberOfRows = 1;
+            break;
 
         case TableSectionForwarding:
             numberOfRows = 1;
@@ -269,7 +270,7 @@ typedef enum
         case TableSectionName:
             break;
 
-        case TableSectionNumber:
+        case TableSectionE164:
             break;
 
         case TableSectionForwarding:
@@ -310,7 +311,7 @@ typedef enum
             // self.nameIndexPath = indexPath;
             break;
 
-        case TableSectionNumber:
+        case TableSectionE164:
             identifier = @"NumberCell";
             break;
 
@@ -361,7 +362,7 @@ typedef enum
             //###[self updateNameCell:cell atIndexPath:indexPath];
             break;
 
-        case TableSectionNumber:
+        case TableSectionE164:
             [self updateNumberCell:cell atIndexPath:indexPath];
             break;
 

@@ -24,7 +24,7 @@
 typedef enum
 {
     TableSectionName        = 1UL << 0,
-    TableSectionNumber      = 1UL << 1,
+    TableSectionE164        = 1UL << 1,
     TableSectionForwardings = 1UL << 2,
     TableSectionNumbers     = 1UL << 3,
     TableSectionCallerIds   = 1UL << 4,
@@ -232,7 +232,7 @@ typedef enum
 
     sections  = 0;
     sections |= TableSectionName;
-    sections |= TableSectionNumber;
+    sections |= TableSectionE164;
     sections |= (self.phone.forwardings.count > 0) ? TableSectionForwardings : 0;
     sections |= (numbersArray.count > 0) ?           TableSectionNumbers     : 0;
     sections |= (namesArray.count > 0) ?             TableSectionCallerIds   : 0;
@@ -252,7 +252,7 @@ typedef enum
             numberOfRows = 1;
             break;
         }
-        case TableSectionNumber:
+        case TableSectionE164:
         {
             numberOfRows = 1;
             break;
@@ -331,7 +331,7 @@ typedef enum
             }
             break;
         }
-        case TableSectionNumber:
+        case TableSectionE164:
         {
             if ([self.phone.e164 isEqualToString:[Settings sharedSettings].callbackE164] ||
                 [self.phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164])
@@ -373,7 +373,7 @@ typedef enum
             cell = [self nameCellForRowAtIndexPath:indexPath];
             break;
         }
-        case TableSectionNumber:
+        case TableSectionE164:
         {
             cell = [self numberCellForRowAtIndexPath:indexPath];
             break;
@@ -499,7 +499,7 @@ typedef enum
         {
             break;
         }
-        case TableSectionNumber:
+        case TableSectionE164:
         {
             if (isNew == YES)
             {

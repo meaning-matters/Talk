@@ -11,6 +11,7 @@
 #import "NBPeopleListViewController.h"
 #import "NBPeoplePickerNavigationController.h"
 #import "NBRecentContactViewController.h"
+#import "CallableData.h"
 
 
 @interface NBPersonViewController () <UITextFieldDelegate>
@@ -714,7 +715,7 @@
             [cell setSection:indexPath.section];
             
             //Build up the title label
-            UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 12, 75, cell.contentView.bounds.size.height/2)];
+            UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 10.5, 75, cell.contentView.bounds.size.height/2)];
             [label setTextAlignment:NSTextAlignmentRight];
             [label setTextColor:FONT_COLOR_LABEL];
             [label setFont:FONT_LABEL];
@@ -765,10 +766,11 @@
         case CC_IM:
         {
             NBPersonIMCell * cell = [[NBPersonIMCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            cell.accessoryType = UITableViewCellAccessoryNone;
             [cell registerForKeyboardDismiss];
             
             //Build up the title label
-            UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 12, 75, cell.contentView.bounds.size.height/2)];
+            UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 10.5, 75, cell.contentView.bounds.size.height/2)];
             [label setTextAlignment:NSTextAlignmentRight];
             [label setTextColor:FONT_COLOR_LABEL];
             [label setFont:FONT_LABEL];
@@ -811,7 +813,7 @@
             [dateCell registerForKeyboardDismiss];
             
             //Build up the title label
-            UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 12, 75, dateCell.contentView.bounds.size.height/2)];
+            UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 10.5, 75, dateCell.contentView.bounds.size.height/2)];
             [label setTextAlignment:NSTextAlignmentRight];
             [label setTextColor:FONT_COLOR_LABEL];
             [label setFont:FONT_LABEL];
@@ -851,7 +853,7 @@
             [notesCell registerForKeyboardDismiss];
             
             //Build up the title label
-            UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 12, 75, notesCell.contentView.bounds.size.height/2)];
+            UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 10.5, 75, notesCell.contentView.bounds.size.height/2)];
             [label setTextAlignment:NSTextAlignmentRight];
             [label setTextColor:FONT_COLOR_LABEL];
             [label setFont:[UIFont boldSystemFontOfSize:13]];
@@ -891,6 +893,49 @@
             [notesCell setCellTextview:textView];
 
             return notesCell;
+        }
+        case CC_CALLER_ID:
+        {
+            NBPersonIMCell * cell = [[NBPersonIMCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+            [cell registerForKeyboardDismiss];
+            
+            //Build up the title label
+            UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 10.5, 75, cell.contentView.bounds.size.height/2)];
+            [label setTextAlignment:NSTextAlignmentRight];
+            [label setTextColor:FONT_COLOR_LABEL];
+            [label setFont:FONT_LABEL];
+            [label setBackgroundColor:[UIColor clearColor]];
+            cell.cellLabel = label;
+            [cell.contentView addSubview:label];
+            
+            //Set the section type
+            [cell setSection:indexPath.section];
+            
+            //Make the input textfield
+            UITextField * textField = [[UITextField alloc]initWithFrame:CGRectMake(85, 0, SIZE_TEXTVIEW_WIDTH, cell.frame.size.height)];
+            [textField setBackgroundColor:[UIColor clearColor]];
+            [textField setClearButtonMode:UITextFieldViewModeWhileEditing];
+            [textField setFont:[UIFont boldSystemFontOfSize:14]];
+            [textField setPlaceholder:cellInfo.textfieldPlaceHolder];
+            [textField setText:cellInfo.textValue];
+            [textField setEnabled:self.tableView.isEditing];
+            [textField setTag:indexPath.section];
+            [textField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
+            [cell.contentView addSubview:textField];
+            
+            //If the value was merged
+            if (cellInfo.isMergedField)
+            {
+                [textField setTextColor:FONT_COLOR_MERGED];
+            }
+            
+            //Remember the textfield and cell
+            cellInfo.tableViewCell = cell;
+            cell.cellTextfield = textField;
+            
+            return cell;
         }
         default:
             return nil;
@@ -967,7 +1012,7 @@
             [cell registerForKeyboardDismiss];
             
             //Build up the title label
-            label = [[UILabel alloc]initWithFrame:CGRectMake(0, 12, 75, cell.contentView.bounds.size.height/2)];
+            label = [[UILabel alloc]initWithFrame:CGRectMake(0, 10.5, 75, cell.contentView.bounds.size.height/2)];
             [label setTextAlignment:NSTextAlignmentRight];
             [label setTextColor:FONT_COLOR_LABEL];
             [label setFont:FONT_LABEL];
@@ -1041,7 +1086,7 @@
             else
             {                
                 //Set the label
-                UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 12, 75, addressCell.contentView.bounds.size.height/2)];
+                UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 10.5, 75, addressCell.contentView.bounds.size.height/2)];
                 [label setTextAlignment:NSTextAlignmentRight];
                 [label setTextColor:FONT_COLOR_LABEL];
 //                [label setHighlightedTextColor:[UIColor whiteColor]];
@@ -1130,6 +1175,20 @@
         [cell.typeLabel setText:cellInfo.IMType];
         return cell;
     }
+    else if (indexPath.section == CC_CALLER_ID)
+    {
+        NBPersonIMCell * cell = [cellInfo getIMCell];
+        if (cell == nil)
+        {
+            cell = (NBPersonIMCell*)[self getTableViewCellForIndexPath:indexPath];
+            [cellInfo setTableViewCell:cell];
+        }
+        
+        //Always reload the title, since the user could have selected a new one
+        [cell.cellLabel setText:cellInfo.labelTitle];
+        [cell.typeLabel setText:cellInfo.IMType];
+        return cell;
+    }
 
     return nil;
 }
@@ -1179,7 +1238,7 @@
         }
         return cellheight;
     }
-    else if (indexPath.section == CC_IM)
+    else if (indexPath.section == CC_IM || indexPath.section == CC_CALLER_ID)
     {
         //Return double-size when editing to allow the user to change the IM-type
         return self.tableView.isEditing ? 2*SIZE_CELL_HEIGHT : 1*SIZE_CELL_HEIGHT;
@@ -1285,8 +1344,11 @@
 {
     NBPersonCellInfo * cellInfo = [personStructureManager getVisibleCellForIndexPath:indexPath];
 
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-
+    if (indexPath.section != CC_CALLER_ID)
+    {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+    
     //Determine if we should continue from the delegate
     BOOL shouldContinue = YES;
     if (personViewDelegate != nil && !self.tableView.isEditing)
@@ -1302,8 +1364,8 @@
                 
                 //It's a multivalue
                 multiRefIdentifier = ABMultiValueGetIdentifierAtIndex((ABRecordCopyValue(contact.contactRef, propertyID)), indexPath.row);
-            }
                 break;
+            }
             case CC_EMAIL:
             {
                 //Set the property
@@ -1311,8 +1373,8 @@
                 
                 //It's a multivalue
                 multiRefIdentifier = ABMultiValueGetIdentifierAtIndex((ABRecordCopyValue(contact.contactRef, propertyID)), indexPath.row);
-            }
                 break;
+            }
             case CC_HOMEPAGE:
             {
                 //Set the property
@@ -1320,8 +1382,8 @@
                 
                 //It's a multivalue
                 multiRefIdentifier = ABMultiValueGetIdentifierAtIndex((ABRecordCopyValue(contact.contactRef, propertyID)), indexPath.row);
-            }
                 break;
+            }
             case CC_ADDRESS:
             {
                 //Set the property
@@ -1329,14 +1391,14 @@
                 
                 //It's a multivalue
                 multiRefIdentifier = ABMultiValueGetIdentifierAtIndex((ABRecordCopyValue(contact.contactRef, propertyID)), indexPath.row);
-            }
                 break;
+            }
             case CC_BIRTHDAY:
             {
                 //Set the property
                 propertyID = kABPersonBirthdayProperty;
-            }
                 break;
+            }
             case CC_OTHER_DATES:
             {
                 //Set the property
@@ -1344,8 +1406,8 @@
                 
                 //It's a multivalue
                 multiRefIdentifier = ABMultiValueGetIdentifierAtIndex((ABRecordCopyValue(contact.contactRef, kABPersonDateProperty)), indexPath.row);
-            }
                 break;
+            }
             case CC_RELATED_CONTACTS:
             {
                 //Set the property
@@ -1353,8 +1415,8 @@
                 
                 //It's a multivalue
                 multiRefIdentifier = ABMultiValueGetIdentifierAtIndex((ABRecordCopyValue(contact.contactRef, propertyID)), indexPath.row);
-            }
                 break;
+            }
             case CC_SOCIAL:
             {
                 //Set the property
@@ -1362,8 +1424,8 @@
                 
                 //It's a multivalue
                 multiRefIdentifier = ABMultiValueGetIdentifierAtIndex((ABRecordCopyValue(contact.contactRef, propertyID)), indexPath.row);
-            }
                 break;
+            }
             case CC_IM:
             {
                 //Set the property
@@ -1371,16 +1433,23 @@
                 
                 //It's a multivalue
                 multiRefIdentifier = ABMultiValueGetIdentifierAtIndex((ABRecordCopyValue(contact.contactRef, propertyID)), indexPath.row);
-            }
                 break;
+            }
             case CC_NOTES:
             {
                 //Set the property
                 propertyID = kABPersonNoteProperty;
+                break;
             }
+            case CC_CALLER_ID:
+            {
+                propertyID = 0;
                 break;
+            }
             default:
+            {
                 break;
+            }
         }
 
         //Determine if we should continue according to the person delegate
@@ -1400,7 +1469,12 @@
             case CC_NUMBER:
             {
                 NSString * phoneNumber = [((NBPersonCellInfo*)[[personStructureManager.tableStructure objectAtIndex:CC_NUMBER] objectAtIndex:indexPath.row]) textValue];
-                [NBContact makePhoneCall:phoneNumber withContactID:[NSString stringWithFormat:@"%d", ABRecordGetRecordID(self.contact.contactRef)]];
+                [NBContact makePhoneCall:phoneNumber withContactID:[self contactId] completion:^(CallableData* selectedCallable)
+                {
+                    NSIndexPath* callerIdIndexPath = [NSIndexPath indexPathForRow:0 inSection:CC_CALLER_ID];
+                    NBPersonIMCell* cell = (NBPersonIMCell*)[self.tableView cellForRowAtIndexPath:callerIdIndexPath];
+                    cell.cellTextfield.text = selectedCallable.name;
+                }];
 
                 if ([self isKindOfClass:[NBRecentContactViewController class]])
                 {
@@ -1410,9 +1484,8 @@
                                        [self.navigationController popToRootViewControllerAnimated:NO];
                                    });
                 }
+                break;
             }
-            break;
-
             case CC_EMAIL:
             {
                 NSString* text = [cellInfo.textValue stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
@@ -1422,12 +1495,13 @@
                 break;
             }
             case CC_RINGTONE:
+            {
                 //Set the type and load the list of available ringtones
                 [NBValueListTableViewController setLabelType:(indexPath.row == 0 ? LT_RINGTONE : LT_VIBRATION)];
                 [NBValueListTableViewController setTargetIndexPath:indexPath];
                 [self displayValuePicker];
                 break;
-
+            }
             case CC_HOMEPAGE:
             {
                 NSString* text = [cellInfo.textValue stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
@@ -1485,7 +1559,20 @@
             case CC_IM:
                 //If we're editing, show the options. Else, attempt to 'launch' the cell
                 break;
-
+                
+            case CC_CALLER_ID:
+            {
+                [[NBAddressBookManager sharedManager].delegate selectCallerIdForContactId:[self contactId]
+                                                                     navigationController:self.navigationController
+                                                                               completion:^(CallableData* selectedCallable)
+                {
+                    NBPersonIMCell* cell = (NBPersonIMCell*)cellInfo.tableViewCell;
+                    cell.cellTextfield.text = selectedCallable.name;
+                    
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                }];
+                break;
+            }
             case CC_RELATED_CONTACTS:
                 break;
 
@@ -1594,6 +1681,12 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:NF_RELOAD_CONTACT object:nil];
     }
+}
+
+
+- (NSString*)contactId
+{
+    return [NSString stringWithFormat:@"%d", ABRecordGetRecordID(self.contact.contactRef)];
 }
 
 

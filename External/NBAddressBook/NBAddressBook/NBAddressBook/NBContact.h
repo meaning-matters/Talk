@@ -48,6 +48,8 @@
 + (NSString*)getAvailableProperty:(ABPropertyID)property from:(ABRecordRef)contactRef;
 
 //Call support
-+ (void)makePhoneCall:(NSString*)phoneNumber withContactID:(NSString*)contactID;
++ (void)makePhoneCall:(NSString*)phoneNumber
+        withContactID:(NSString*)contactID
+           completion:(void (^)(CallableData* selectedCallable))completion;
 
 @end

@@ -569,11 +569,17 @@
 
 
 #pragma mark - Single point of handling calls
-+ (void)makePhoneCall:(NSString*)phoneNumber withContactID:(NSString*)contactID
++ (void)makePhoneCall:(NSString*)phoneNumber
+        withContactID:(NSString*)contactID
+           completion:(void (^)(CallableData* selectedCallable))completion
 {    
 #ifndef NB_STANDALONE
     [[CallManager sharedManager] callPhoneNumber:[[PhoneNumber alloc] initWithNumber:phoneNumber]
-                                       contactId:contactID];
+                                       contactId:contactID
+                                      completion:^(CallableData* selectedCallable)
+    {
+        completion ? completion(selectedCallable) : (void)0;
+    }];
 #endif
 }
 

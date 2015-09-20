@@ -384,7 +384,7 @@
 
 - (void)makeCallWithContactId:(NSString*)aContactId
 {
-    Call* call = [[CallManager sharedManager] callPhoneNumber:phoneNumber contactId:aContactId];
+    Call* call = [[CallManager sharedManager] callPhoneNumber:phoneNumber contactId:aContactId completion:nil];
 
     if (call != nil)
     {

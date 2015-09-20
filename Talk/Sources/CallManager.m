@@ -182,18 +182,21 @@
 }
 
 
-- (void)checkIdentityForContactId:(NSString*)contactId completion:(void (^)(BOOL cancelled, NSString* identity))completion
+// The `selectedCallable` completion parameter is only filled in when a callable
+// was selected as caller ID, while previously there was none selected.
+- (void)checkIdentityForContactId:(NSString*)contactId
+                       completion:(void (^)(BOOL cancelled, NSString* identity, CallableData* selectedCallable))completion
 {
     if ([self checkCallbackAndIdentity:[Settings sharedSettings].callerIdE164] == NO)
     {
-        completion(YES, nil);
+        completion(YES, nil, nil);
 
         return;
     }
 
     if (contactId == nil)
     {
-        completion(NO, [Settings sharedSettings].callerIdE164);
+        completion(NO, [Settings sharedSettings].callerIdE164, nil);
 
         return;
     }
@@ -210,7 +213,7 @@
     {
         CallerIdData* callerId = callerIds[0];
 
-        completion(NO, callerId.callable.e164);
+        completion(NO, callerId.callable.e164, nil);
 
         return;
     }
@@ -257,7 +260,7 @@
             {
                 [Settings sharedSettings].askForCallerId = NO;
 
-                completion(YES, nil);
+                completion(YES, nil, nil);
             }
             else
             {
@@ -268,21 +271,11 @@
                     UINavigationController* navigationController;
 
                     viewController = [[CallerIdViewController alloc] initWithManagedObjectContext:managedObjectContext
-                                                                                 selectedCallable:nil
-                                                                                       completion:^(CallableData* callable)
+                                                                                         callerId:nil
+                                                                                        contactId:contactId
+                                                                                       completion:^(CallableData* selectedCallable)
                     {
-                        NSManagedObjectContext* managedObjectContext;
-                        CallerIdData*           callerId;
-
-                        managedObjectContext = [DataManager sharedManager].managedObjectContext;
-                        callerId             = [NSEntityDescription insertNewObjectForEntityForName:@"CallerId"
-                                                                             inManagedObjectContext:managedObjectContext];
-                        callerId.callable  = callable;
-                        callerId.contactId = contactId;
-
-                        [[DataManager sharedManager] saveManagedObjectContext:managedObjectContext];
-
-                        completion(NO, callable.e164);
+                         completion(NO, selectedCallable.e164, selectedCallable);
                     }];
 
                     navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
@@ -293,7 +286,7 @@
                 }
                 else
                 {
-                    completion(NO, [Settings sharedSettings].callerIdE164);
+                    completion(NO, [Settings sharedSettings].callerIdE164, nil);
                 }
             }
         }
@@ -302,7 +295,7 @@
     }
     else
     {
-        completion(NO, [Settings sharedSettings].callerIdE164);
+        completion(NO, [Settings sharedSettings].callerIdE164, nil);
     }
 }
 
@@ -545,7 +538,9 @@
 
 #pragma mark - Public API
 
-- (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber contactId:(NSString*)contactId
+- (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber
+               contactId:(NSString*)contactId
+              completion:(void (^)(CallableData* selectedCallable))completion
 {
     __block Call* call = nil;
 
@@ -562,8 +557,10 @@
              [self checkIfValidPhoneNumber:phoneNumber])
     {
         // Basic conditions have been met, now check the E164s.
-        [self checkIdentityForContactId:contactId completion:^(BOOL cancelled, NSString* identity)
+        [self checkIdentityForContactId:contactId completion:^(BOOL cancelled, NSString* identity, CallableData* selectedCallable)
         {
+            completion ? completion(selectedCallable) : (void)0;
+            
             if (cancelled == NO && [self checkCallbackAndIdentity:identity] == YES)
             {
                 call = [self callPhoneNumber:phoneNumber fromIdentity:identity contactId:contactId];

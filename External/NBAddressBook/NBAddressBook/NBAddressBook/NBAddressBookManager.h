@@ -12,6 +12,7 @@
 #import "NSString+Common.h"
 
 @class NBRecentContactEntry;
+@class CallableData;
 
 
 @protocol AddressBookDelegate <NSObject>
@@ -29,6 +30,12 @@
 - (void)updateRecent:(NBRecentContactEntry*)recent completion:(void (^)(BOOL success, BOOL ended))completion;
 
 - (BOOL)matchRecent:(NBRecentContactEntry*)recent withNumber:(NSString*)number;
+
+- (NSString*)callerIdForContactId:(NSString*)contactId;
+
+- (void)selectCallerIdForContactId:(NSString*)contactId
+              navigationController:(UINavigationController*)navigationController
+                        completion:(void (^)(CallableData* selectedCallable))completion;
 
 @end
 
