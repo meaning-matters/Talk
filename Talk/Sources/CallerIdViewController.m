@@ -249,7 +249,7 @@ typedef enum
 - (NSArray*)fetchPhones
 {
     return [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
-                                                     sortKeys:@[@"name"]
+                                                     sortKeys:@[@"e164", @"name"]
                                                     predicate:nil
                                          managedObjectContext:self.managedObjectContext];
 }
@@ -258,7 +258,7 @@ typedef enum
 - (NSArray*)fetchNumbers
 {
     return [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
-                                                     sortKeys:@[@"name"]
+                                                     sortKeys:@[@"e164", @"name"]
                                                     predicate:nil
                                          managedObjectContext:self.managedObjectContext];
 }
