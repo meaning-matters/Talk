@@ -46,7 +46,7 @@
 
 - (void)setUp
 {
-    static dispatch_once_t  onceToken;
+    static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^
     {
@@ -272,6 +272,12 @@
     }
     else
     {
+        if ([Settings sharedSettings].tabBarSelectedIndex >= viewControllers.count)
+        {
+            // We may get here if the number of tabs has becomes less.
+            [Settings sharedSettings].tabBarSelectedIndex = 2;
+        }
+        
         self.tabBarController.selectedViewController = viewControllers[[Settings sharedSettings].tabBarSelectedIndex];
     }
 
