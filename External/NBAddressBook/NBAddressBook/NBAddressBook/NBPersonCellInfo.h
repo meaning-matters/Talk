@@ -49,6 +49,5 @@
 - (NBNotesCell*)getNotesCell;
 - (NBDateCell*)getDateCell;
 - (NBPersonIMCell*)getIMCell;
-- (NBPersonIMCell*)getCallerIdCell;
 
 @end
