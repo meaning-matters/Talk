@@ -234,7 +234,9 @@ typedef enum
     sections |= TableSectionName;
     sections |= TableSectionE164;
     sections |= (self.phone.forwardings.count > 0) ? TableSectionForwardings : 0;
+#if HAS_NUMBERS
     sections |= (numbersArray.count > 0) ?           TableSectionNumbers     : 0;
+#endif
     sections |= (namesArray.count > 0) ?             TableSectionCallerIds   : 0;
 
     return [Common bitsSetCount:sections];
