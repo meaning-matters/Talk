@@ -1471,9 +1471,12 @@
                 NSString * phoneNumber = [((NBPersonCellInfo*)[[personStructureManager.tableStructure objectAtIndex:CC_NUMBER] objectAtIndex:indexPath.row]) textValue];
                 [NBContact makePhoneCall:phoneNumber withContactID:[self contactId] completion:^(CallableData* selectedCallable)
                 {
-                    NSIndexPath* callerIdIndexPath = [NSIndexPath indexPathForRow:0 inSection:CC_CALLER_ID];
-                    NBPersonIMCell* cell = (NBPersonIMCell*)[self.tableView cellForRowAtIndexPath:callerIdIndexPath];
-                    cell.cellTextfield.text = selectedCallable.name;
+                    if (selectedCallable != nil)
+                    {
+                        NSIndexPath* callerIdIndexPath = [NSIndexPath indexPathForRow:0 inSection:CC_CALLER_ID];
+                        NBPersonIMCell* cell = (NBPersonIMCell*)[self.tableView cellForRowAtIndexPath:callerIdIndexPath];
+                        cell.cellTextfield.text = selectedCallable.name;
+                    }
                 }];
 
                 if ([self isKindOfClass:[NBRecentContactViewController class]])
