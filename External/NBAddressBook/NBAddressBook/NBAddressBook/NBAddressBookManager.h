@@ -31,7 +31,7 @@
 
 - (BOOL)matchRecent:(NBRecentContactEntry*)recent withNumber:(NSString*)number;
 
-- (NSString*)callerIdForContactId:(NSString*)contactId;
+- (NSString*)callerIdNameForContactId:(NSString*)contactId;
 
 - (void)selectCallerIdForContactId:(NSString*)contactId
               navigationController:(UINavigationController*)navigationController

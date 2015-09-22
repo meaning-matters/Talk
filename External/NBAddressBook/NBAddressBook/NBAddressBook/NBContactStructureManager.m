@@ -238,8 +238,8 @@
             NSMutableArray* sectionArray = [self.tableStructure objectAtIndex:CC_CALLER_ID];
             NBPersonCellInfo* personCellInfo = [[NBPersonCellInfo alloc] initWithPlaceholder:@"Uses default" andLabel:@"Caller ID"];
             NSString* contactId = [NSString stringWithFormat:@"%d", ABRecordGetRecordID(person.contactRef)];
-            NSString* callerId = [[NBAddressBookManager sharedManager].delegate callerIdForContactId:contactId];
-            [personCellInfo setTextValue:callerId];
+            NSString* callerIdName = [[NBAddressBookManager sharedManager].delegate callerIdNameForContactId:contactId];
+            [personCellInfo setTextValue:callerIdName];
             [sectionArray addObject:personCellInfo];
         }
         

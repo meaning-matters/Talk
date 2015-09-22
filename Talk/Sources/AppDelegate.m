@@ -605,30 +605,7 @@
 }
 
 
-- (NSString*)contactNameForId:(NSString*)contactId
-{
-    NBPeopleListViewController* viewController = [self.peoplePickerViewController listViewController];
-
-    return [viewController contactNameForId:contactId];
-}
-
-
-- (NSString*)callerIdForContactId:(NSString *)contactId
-{
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"contactId == %@", contactId];
-    NSArray* array = [[DataManager sharedManager] fetchEntitiesWithName:@"CallerId"
-                                                             sortKeys:@[@"contactId"]
-                                                            predicate:predicate
-                                                 managedObjectContext:nil];
-
-    CallerIdData* callerId = [array lastObject];
-    
-    return callerId.callable.name;
-}
-
-- (void)selectCallerIdForContactId:(NSString*)contactId
-              navigationController:(UINavigationController*)navigationController
-                        completion:(void (^)(CallableData* selectedCallable))completion
+- (CallerIdData*)callerIdForContactId:(NSString*)contactId
 {
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"contactId == %@", contactId];
     NSArray* array = [[DataManager sharedManager] fetchEntitiesWithName:@"CallerId"
@@ -637,6 +614,47 @@
                                                    managedObjectContext:nil];
     
     CallerIdData* callerId = [array lastObject];
+    
+    return callerId;
+}
+
+
+- (NSString*)contactNameForId:(NSString*)contactId
+{
+    NBPeopleListViewController* viewController = [self.peoplePickerViewController listViewController];
+
+    NSString* contactName = [viewController contactNameForId:contactId];
+    
+    if (contactName == nil)
+    {
+        CallerIdData* callerId = [self callerIdForContactId:contactId];
+        if (callerId != nil)
+        {
+            [[DataManager sharedManager].managedObjectContext deleteObject:callerId];
+        }
+        
+        contactName = NSLocalizedStringWithDefaultValue(@"AppDelegate DeletedContact", nil, [NSBundle mainBundle],
+                                                        @"Unknown",
+                                                        @"...");
+    }
+    
+    return contactName;
+}
+
+
+- (NSString*)callerIdNameForContactId:(NSString *)contactId
+{
+    CallerIdData* callerId = [self callerIdForContactId:contactId];
+    
+    return callerId.callable.name;
+}
+
+
+- (void)selectCallerIdForContactId:(NSString*)contactId
+              navigationController:(UINavigationController*)navigationController
+                        completion:(void (^)(CallableData* selectedCallable))completion
+{
+    CallerIdData* callerId = [self callerIdForContactId:contactId];
 
     CallerIdViewController* viewController = [[CallerIdViewController alloc] initWithManagedObjectContext:nil
                                                                                                  callerId:callerId

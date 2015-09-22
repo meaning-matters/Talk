@@ -684,7 +684,14 @@
     ABRecordID  recordId = [contactId intValue];
     ABRecordRef contact  = ABAddressBookGetPersonWithRecordID([[NBAddressBookManager sharedManager] getAddressBook], recordId);
 
-    return [[NBContact getListRepresentation:contact] string];
+    if (contact == NULL)
+    {
+        return nil;
+    }
+    else
+    {
+        return [[NBContact getListRepresentation:contact] string];
+    }
 }
 
 
