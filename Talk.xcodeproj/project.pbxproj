@@ -536,10 +536,10 @@
 		48A0CE71180740F300B8A9F8 /* Welcome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */; };
 		48A0CE781809BE3100B8A9F8 /* CallBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE771809BE3100B8A9F8 /* CallBaseViewController.m */; };
 		48A0CE791809BE3100B8A9F8 /* CallBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE771809BE3100B8A9F8 /* CallBaseViewController.m */; };
-		48A261C016FDE26100007638 /* CallMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A261BF16FDE26100007638 /* CallMessageView.xib */; };
-		48A261C116FDE26100007638 /* CallMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A261BF16FDE26100007638 /* CallMessageView.xib */; };
-		48A261C416FDE32400007638 /* CallMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A261C316FDE32400007638 /* CallMessageView.m */; };
-		48A261C516FDE32400007638 /* CallMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A261C316FDE32400007638 /* CallMessageView.m */; };
+		48A261C016FDE26100007638 /* CallStateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A261BF16FDE26100007638 /* CallStateView.xib */; };
+		48A261C116FDE26100007638 /* CallStateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A261BF16FDE26100007638 /* CallStateView.xib */; };
+		48A261C416FDE32400007638 /* CallStateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A261C316FDE32400007638 /* CallStateView.m */; };
+		48A261C516FDE32400007638 /* CallStateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A261C316FDE32400007638 /* CallStateView.m */; };
 		48A26DDC18BA7FB200736CCB /* SearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A26DDB18BA7FB200736CCB /* SearchTableViewController.m */; };
 		48A26DDE18BA904100736CCB /* SearchTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A26DDD18BA904100736CCB /* SearchTableView.xib */; };
 		48A26DE618BE279F00736CCB /* ItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A26DE518BE279F00736CCB /* ItemsViewController.m */; };
@@ -1247,9 +1247,9 @@
 		48A0CE761809BE3100B8A9F8 /* CallBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallBaseViewController.h; sourceTree = "<group>"; };
 		48A0CE771809BE3100B8A9F8 /* CallBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallBaseViewController.m; sourceTree = "<group>"; };
 		48A0CEBE1811430A00B8A9F8 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CrashReporter.framework; path = "External/HockeySDK-iOS-3.0.0/Vendor/CrashReporter.framework"; sourceTree = "<group>"; };
-		48A261BF16FDE26100007638 /* CallMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallMessageView.xib; sourceTree = "<group>"; };
-		48A261C216FDE32400007638 /* CallMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallMessageView.h; sourceTree = "<group>"; };
-		48A261C316FDE32400007638 /* CallMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallMessageView.m; sourceTree = "<group>"; };
+		48A261BF16FDE26100007638 /* CallStateView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallStateView.xib; sourceTree = "<group>"; };
+		48A261C216FDE32400007638 /* CallStateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallStateView.h; sourceTree = "<group>"; };
+		48A261C316FDE32400007638 /* CallStateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallStateView.m; sourceTree = "<group>"; };
 		48A261EA16FE4F9700007638 /* libg7221codec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libg7221codec-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libg7221codec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48A261EB16FE4F9700007638 /* libgsmcodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgsmcodec-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libgsmcodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48A261EC16FE4F9700007638 /* libilbccodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libilbccodec-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libilbccodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
@@ -1951,8 +1951,8 @@
 			children = (
 				4865A9DD1792C8B70028785F /* NumberBuyCell.h */,
 				4865A9DE1792C8B70028785F /* NumberBuyCell.m */,
-				48A261C216FDE32400007638 /* CallMessageView.h */,
-				48A261C316FDE32400007638 /* CallMessageView.m */,
+				48A261C216FDE32400007638 /* CallStateView.h */,
+				48A261C316FDE32400007638 /* CallStateView.m */,
 				4814EA3C17CB1923004B7A3C /* CreditAmountCell.h */,
 				4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */,
 				4814EA3517CA993F004B7A3C /* CreditBuyCell.h */,
@@ -2375,7 +2375,7 @@
 			children = (
 				48AF45161649494400DFE3D8 /* AboutView.xib */,
 				48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */,
-				48A261BF16FDE26100007638 /* CallMessageView.xib */,
+				48A261BF16FDE26100007638 /* CallStateView.xib */,
 				4814EA3917CB18DB004B7A3C /* CreditAmountCell.xib */,
 				4814EA3217CA98F4004B7A3C /* CreditBuyCell.xib */,
 				48AF450A164948CD00DFE3D8 /* DialerView.xib */,
@@ -3010,7 +3010,7 @@
 				48A2CDFC16834FC100506A7C /* RingbackTones.json in Resources */,
 				48206EF8168DD8180040B04E /* Tones.json in Resources */,
 				488AD1ED16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
-				48A261C016FDE26100007638 /* CallMessageView.xib in Resources */,
+				48A261C016FDE26100007638 /* CallStateView.xib in Resources */,
 				48ADD0F31706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
 				484A949D171821CB009E22B9 /* NumberAreasCell.xib in Resources */,
 				484A94A6171C5065009E22B9 /* NumberAreaActionCell.xib in Resources */,
@@ -3104,7 +3104,7 @@
 				48A2CDFD16834FC100506A7C /* RingbackTones.json in Resources */,
 				48206EF9168DD8180040B04E /* Tones.json in Resources */,
 				488AD1EE16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
-				48A261C116FDE26100007638 /* CallMessageView.xib in Resources */,
+				48A261C116FDE26100007638 /* CallStateView.xib in Resources */,
 				48ADD0F41706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
 				48995E0C18739F46001395C2 /* Phone.png in Resources */,
 				484A949E171821CB009E22B9 /* NumberAreasCell.xib in Resources */,
@@ -3264,7 +3264,7 @@
 				4896D90016EBE613008A2354 /* NumberAreasViewController.m in Sources */,
 				48200D1C16EC89BA0069677E /* NumberType.m in Sources */,
 				4830462416EE269D000F9B05 /* NumberAreaViewController.m in Sources */,
-				48A261C416FDE32400007638 /* CallMessageView.m in Sources */,
+				48A261C416FDE32400007638 /* CallStateView.m in Sources */,
 				48B813491AADF9380019AF77 /* NBContact.m in Sources */,
 				488FBBDA17007CC6000ECC71 /* DataManager.m in Sources */,
 				48B813351AADF8DE0019AF77 /* NBPeopleListViewController.m in Sources */,
@@ -3381,7 +3381,7 @@
 				4896D90116EBE613008A2354 /* NumberAreasViewController.m in Sources */,
 				48200D1D16EC89BA0069677E /* NumberType.m in Sources */,
 				4830462516EE269D000F9B05 /* NumberAreaViewController.m in Sources */,
-				48A261C516FDE32400007638 /* CallMessageView.m in Sources */,
+				48A261C516FDE32400007638 /* CallStateView.m in Sources */,
 				488FBBDB17007CC6000ECC71 /* DataManager.m in Sources */,
 				488FBBE31700852F000ECC71 /* NumberData.m in Sources */,
 				48BC7F3D1702FDD1006671B5 /* NumberViewController.m in Sources */,

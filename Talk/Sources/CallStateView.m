@@ -1,14 +1,14 @@
 //
-//  CallMessageView.m
+//  CallStateView.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 23/03/13.
 //  Copyright (c) 2013 Cornelis van der Bent. All rights reserved.
 //
 
-#import "CallMessageView.h"
+#import "CallStateView.h"
 
-@implementation CallMessageView
+@implementation CallStateView
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -30,7 +30,7 @@
 
 - (void)setUp
 {
-    [[NSBundle mainBundle] loadNibNamed:@"CallMessageView" owner:self options:nil];
+    [[NSBundle mainBundle] loadNibNamed:@"CallStateView" owner:self options:nil];
     CGRect frame = self.frame;
     self.view.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
     [self addSubview:self.view];

@@ -9,7 +9,7 @@
 #import "CallbackViewController.h"
 #import "Common.h"
 #import "CallManager.h"
-#import "CallMessageView.h"
+#import "CallStateView.h"
 #import "NSTimer+Blocks.h"
 #import "NSObject+Blocks.h"
 #import "BlockAlertView.h"
@@ -22,7 +22,7 @@
 
 @interface CallbackViewController ()
 {
-    CallMessageView* callMessageView;
+    CallStateView*   callStateView;
     NSTimer*         durationTimer;
     int              duration;
     NSMutableArray*  notificationObservers;
@@ -70,9 +70,9 @@
     [self.calleeLabel setFont:[Common phoneFontOfSize:38]];
 
     CGRect frame = CGRectMake(0, 0, self.centerRootView.frame.size.width, self.centerRootView.frame.size.height);
-    callMessageView = [[CallMessageView alloc] initWithFrame:frame];
+    callStateView = [[CallStateView alloc] initWithFrame:frame];
 
-    [self.centerRootView addSubview:callMessageView];
+    [self.centerRootView addSubview:callStateView];
 
     [self startCallback];
 }
@@ -92,7 +92,7 @@
                                                                    @"requesting...",
                                                                    @"Text ...\n"
                                                                    @"[N lines]");
-    callMessageView.label.text = NSLocalizedStringWithDefaultValue(@"Callback StartMessage", nil, [NSBundle mainBundle],
+    callStateView.label.text = NSLocalizedStringWithDefaultValue(@"Callback StartMessage", nil, [NSBundle mainBundle],
                                                                    @"A request to call you back is being sent to our "
                                                                    @"server via internet.\n\nPlease wait.",
                                                                    @"Alert message: ...\n"
@@ -114,7 +114,7 @@
             uuid                  = theUuid;
             self.statusLabel.text = [self.call stateString];
 
-            callMessageView.label.text = NSLocalizedStringWithDefaultValue(@"Callback ProgressMessage", nil,
+            callStateView.label.text = NSLocalizedStringWithDefaultValue(@"Callback ProgressMessage", nil,
                                                                            [NSBundle mainBundle],
                                                                            @"Your number is being called.\n\nAfter you "
                                                                            @"answer, the person you're trying to reach "
@@ -138,7 +138,7 @@
                                                                                @"no credit",
                                                                                @"Call status text\n"
                                                                                @"[1 line]");
-                callMessageView.label.text = NSLocalizedStringWithDefaultValue(@"Callback NoCreditMessage", nil,
+                callStateView.label.text = NSLocalizedStringWithDefaultValue(@"Callback NoCreditMessage", nil,
                                                                                [NSBundle mainBundle],
                                                                                @"The callback failed because you've run "
                                                                                @"out of credit.\n\nBuy more on the "
@@ -158,7 +158,7 @@
                                                                      @"Please synchronize your account data (via Settings).",
                                                                      @"Alert message: ...\n"
                                                                      @"[N lines]");
-                callMessageView.label.text = [NSString stringWithFormat:format, error.localizedDescription];
+                callStateView.label.text = [NSString stringWithFormat:format, error.localizedDescription];
             }
             else
             {
@@ -170,7 +170,7 @@
                                                                      @"You can end this callback, or retry.",
                                                                      @"Alert message: ...\n"
                                                                      @"[N lines]");
-                callMessageView.label.text = [NSString stringWithFormat:format, error.localizedDescription];
+                callStateView.label.text = [NSString stringWithFormat:format, error.localizedDescription];
                 
                 [self showRetry];
             }
@@ -282,7 +282,7 @@
 
             if (text != nil)
             {
-                callMessageView.label.text = text;
+                callStateView.label.text = text;
             }
 
             if (checkState == YES)
@@ -409,7 +409,7 @@
                                                                            @"declined",
                                                                            @"Text ...\n"
                                                                            @"[N lines]");
-            callMessageView.label.text = NSLocalizedStringWithDefaultValue(@"Callback DeclinedMessage", nil, [NSBundle mainBundle],
+            callStateView.label.text = NSLocalizedStringWithDefaultValue(@"Callback DeclinedMessage", nil, [NSBundle mainBundle],
                                                                            @"You declined an incoming call.\n\n"
                                                                            @"If you declined the callback, please end. "
                                                                            @"If you declined another call, you can retry.",
@@ -444,7 +444,7 @@
                                                                    @"your voicemail.",
                                                                    @"Alert message: ...\n"
                                                                    @"[N lines]");
-                        callMessageView.label.text = [NSString stringWithFormat:format, error.localizedDescription];
+                        callStateView.label.text = [NSString stringWithFormat:format, error.localizedDescription];
 
                         // Don't show Retry here, because something failed; may otherwise cause multiple Callbacks.
                     }
