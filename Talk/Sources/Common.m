@@ -122,16 +122,16 @@ static Common* sharedCommon;
 {
     ABRecordRef person = ABPersonCreate();
 
-    NSString* venueName     = @"NumberBay Ltd.";
-    NSString* venueUrl      = @"http://www.numberbay.com";
-    NSString* venueEmail    = @"info@numberbay.com";
-    NSString* venuePhone    = @"+441617680224";
-    NSString* venueAddress1 = @"Suite 101";
-    NSString* venueAddress2 = @"128 Aldersgate Street";
-    NSString* venueCity     = @"London";
+    NSString* venueName     = [Settings sharedSettings].companyName;
+    NSString* venueUrl      = [Settings sharedSettings].companyWebsite;
+    NSString* venueEmail    = [Settings sharedSettings].companyEmail;
+    NSString* venuePhone    = [Settings sharedSettings].companyPhone;
+    NSString* venueAddress1 = [Settings sharedSettings].companyAddress1;
+    NSString* venueAddress2 = [Settings sharedSettings].companyAddress2;
+    NSString* venueCity     = [Settings sharedSettings].companyCity;
     NSString* venueState    = nil;
-    NSString* venueZip      = @"EC1A 4AE";
-    NSString* venueCountry  = @"United Kingdom";
+    NSString* venueZip      = [Settings sharedSettings].companyPostcode;
+    NSString* venueCountry  = [Settings sharedSettings].companyCountry;
     UIImage*  venueImage    = [UIImage imageNamed:@"Icon-152.png"];
 
     ABRecordSetValue(person, kABPersonOrganizationProperty, (__bridge CFStringRef)venueName, NULL);

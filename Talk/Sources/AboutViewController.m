@@ -43,7 +43,13 @@
 {
     [super viewDidLoad];
 
-    self.companyLabel.text = [Settings sharedSettings].companyNameAddress;
+    self.companyLabel.text = [NSString stringWithFormat:@"%@\n%@\n%@\n%@ %@\n%@",
+                                                        [Settings sharedSettings].companyName,
+                                                        [Settings sharedSettings].companyAddress1,
+                                                        [Settings sharedSettings].companyAddress2,
+                                                        [Settings sharedSettings].companyCity,
+                                                        [Settings sharedSettings].companyPostcode,
+                                                        [Settings sharedSettings].companyCountry];
 
     NSString*   versionText = NSLocalizedStringWithDefaultValue(@"About:AppInfo Version", nil,
                                                                 [NSBundle mainBundle], @"%@",
@@ -51,7 +57,7 @@
                                                                 @"[1 line normal font].");
     self.versionLabel.text = [NSString stringWithFormat:versionText, [Settings sharedSettings].appVersion];
 
-    [self.emailButton setTitle:[Settings sharedSettings].supportEmail forState:UIControlStateNormal];
+    [self.emailButton setTitle:[Settings sharedSettings].companyEmail forState:UIControlStateNormal];
 
     NSString*   title;
     title = NSLocalizedStringWithDefaultValue(@"About TermsButtonTitle", nil,
@@ -81,7 +87,7 @@
 
 - (IBAction)emailAction:(id)sender
 {
-    [Common sendEmailTo:[Settings sharedSettings].supportEmail
+    [Common sendEmailTo:[Settings sharedSettings].companyEmail
                 subject:[Settings sharedSettings].callbackE164
                    body:nil
              completion:nil];

@@ -52,10 +52,16 @@
 @property (nonatomic, readonly) NSString*    appId;                 // Used in rate-app URL.
 @property (nonatomic, readonly) NSString*    appVersion;
 @property (nonatomic, readonly) NSString*    appDisplayName;
-@property (nonatomic, readonly) NSString*    companyNameAddress;    // Used on About.
 
-@property (nonatomic, readonly) NSString*    supportNumber;         // NumberBay telephone support number.
-@property (nonatomic, readonly) NSString*    supportEmail;          // NumberBay email support address.
+@property (nonatomic, readonly) NSString*    companyName;           // Company official name.
+@property (nonatomic, readonly) NSString*    companyAddress1;       // Company address line 1.
+@property (nonatomic, readonly) NSString*    companyAddress2;       // Company address line 2.
+@property (nonatomic, readonly) NSString*    companyCity;           // Company city.
+@property (nonatomic, readonly) NSString*    companyPostcode;       // Company postal code.
+@property (nonatomic, readonly) NSString*    companyCountry;        // Company country.
+@property (nonatomic, readonly) NSString*    companyPhone;          // Company (support) phone number.
+@property (nonatomic, readonly) NSString*    companyEmail;          // Company (support) email address.
+@property (nonatomic, readonly) NSString*    companyWebsite;        // Company website URL.
 
 @property (nonatomic, readonly) NSString*    dnsHost;               // URL to DNS request list of servers.
 @property (nonatomic, readonly) NSString*    defaultServer;         // Server used when DNS request fails.

@@ -249,7 +249,7 @@ typedef enum
                 case 1:
                     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-                    [Common sendEmailTo:[Settings sharedSettings].supportEmail
+                    [Common sendEmailTo:[Settings sharedSettings].companyEmail
                                 subject:[Settings sharedSettings].callbackE164
                                    body:nil
                              completion:nil];
@@ -281,7 +281,7 @@ typedef enum
                     {
                         if (buttonIndex == 1)
                         {
-                            phoneNumber = [[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].supportNumber];
+                            phoneNumber = [[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].companyPhone];
                             [[CallManager sharedManager] callMobilePhoneNumber:phoneNumber];
                         }
                     }

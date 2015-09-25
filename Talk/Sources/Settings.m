@@ -377,23 +377,63 @@ static NSUserDefaults* userDefaults;
 }
 
 
-- (NSString*)companyNameAddress
+#pragma mark - Company Details
+
+- (NSString*)companyName
 {
-    return @"NumberBay Ltd.\nSuite 101\n128 Aldersgate Street\nLondon EC1A 4AE\nUnited Kingdom";
+    return @"NumberBay Ltd.";
 }
 
 
-- (NSString*)supportNumber
+- (NSString*)companyAddress1
+{
+    return @"Suite 101";
+}
+
+
+- (NSString*)companyAddress2
+{
+    return @"128 Aldersgate Street";
+}
+
+
+- (NSString*)companyCity
+{
+    return @"London";
+}
+
+
+- (NSString*)companyPostcode
+{
+    return @"EC1A 4AE";
+}
+
+
+- (NSString*)companyCountry
+{
+    return @"United Kingdom";
+}
+
+
+- (NSString*)companyPhone
 {
     return @"+442038083855";
 }
 
 
-- (NSString*)supportEmail
+- (NSString*)companyEmail
 {
     return @"info@numberbay.com";
 }
 
+
+- (NSString*)companyWebsite
+{
+    return @"http://www.numberbay.com";
+}
+
+
+#pragma mark - Hard-Coded URLs
 
 - (NSString*)dnsHost
 {
