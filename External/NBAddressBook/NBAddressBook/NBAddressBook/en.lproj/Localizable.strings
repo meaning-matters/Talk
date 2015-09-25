@@ -72,7 +72,7 @@
 //The unknown contact screen
 "UCT_CALL"          = "Call";
 "UCT_SEND_MESSAGE"  = "Send Message";
-"UCT_ADD"           = "Add To Contact";
+"UCT_ADD"           = "Add to Contacts";
 
 //Add custom label
 "LBL_CUSTOM"        = "Add Custom Label";

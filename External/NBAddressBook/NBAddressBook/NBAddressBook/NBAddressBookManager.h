@@ -19,6 +19,8 @@
 
 - (NSString*)formatNumber:(NSString*)number;
 
+- (NSString*)typeOfNumber:(NSString*)number;
+
 - (UIColor*)tintColor;
 
 - (UIColor*)deleteTintColor;

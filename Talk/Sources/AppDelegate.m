@@ -498,6 +498,15 @@
 }
 
 
+- (NSString*)typeOfNumber:(NSString*)number
+{
+    PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:number];
+    NSString*    typeString  = [phoneNumber typeString];
+    
+    return (typeString.length == 0) ? [[Strings phoneString] lowercaseString] : typeString;
+}
+
+
 - (UIColor*)tintColor
 {
     return [Skinning tintColor];

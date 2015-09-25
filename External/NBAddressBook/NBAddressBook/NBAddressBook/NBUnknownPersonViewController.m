@@ -279,8 +279,10 @@
 
             case UP_ADD:
             {
-                [[NBAddressBookManager sharedManager] addNumber:[personRepresentation string]
-                                                toContactAsType:@"typje"
+                NSString* number = [personRepresentation string];
+                NSString* type   = [[NBAddressBookManager sharedManager].delegate typeOfNumber:number];
+                [[NBAddressBookManager sharedManager] addNumber:number
+                                                toContactAsType:type
                                                  viewController:self];
                 break;
             }
