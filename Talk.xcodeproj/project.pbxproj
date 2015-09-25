@@ -556,19 +556,6 @@
 		48ADE7D2185C67EC00E39DA2 /* PhoneData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ADE7D1185C67EC00E39DA2 /* PhoneData.m */; };
 		48ADE7D3185C67EC00E39DA2 /* PhoneData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ADE7D1185C67EC00E39DA2 /* PhoneData.m */; };
 		48AE1B1C1BB4A26C0061B92E /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48AE1B1B1BB4A26C0061B92E /* AdSupport.framework */; };
-		48AE1B471BB5C5A30061B92E /* NBAsYouTypeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE1B2D1BB5C5A30061B92E /* NBAsYouTypeFormatter.m */; settings = {ASSET_TAGS = (); }; };
-		48AE1B481BB5C5A30061B92E /* NBMetadataCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE1B2F1BB5C5A30061B92E /* NBMetadataCore.m */; settings = {ASSET_TAGS = (); }; };
-		48AE1B491BB5C5A30061B92E /* NBMetadataCoreMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE1B311BB5C5A30061B92E /* NBMetadataCoreMapper.m */; settings = {ASSET_TAGS = (); }; };
-		48AE1B4A1BB5C5A30061B92E /* NBMetadataCoreTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE1B331BB5C5A30061B92E /* NBMetadataCoreTest.m */; settings = {ASSET_TAGS = (); }; };
-		48AE1B4B1BB5C5A30061B92E /* NBMetadataCoreTestMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE1B351BB5C5A30061B92E /* NBMetadataCoreTestMapper.m */; settings = {ASSET_TAGS = (); }; };
-		48AE1B4C1BB5C5A30061B92E /* NBMetadataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE1B371BB5C5A30061B92E /* NBMetadataHelper.m */; settings = {ASSET_TAGS = (); }; };
-		48AE1B4D1BB5C5A30061B92E /* NBNumberFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE1B391BB5C5A30061B92E /* NBNumberFormat.m */; settings = {ASSET_TAGS = (); }; };
-		48AE1B4E1BB5C5A30061B92E /* NBPhoneMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE1B3B1BB5C5A30061B92E /* NBPhoneMetaData.m */; settings = {ASSET_TAGS = (); }; };
-		48AE1B4F1BB5C5A30061B92E /* NBPhoneMetaDataGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE1B3D1BB5C5A30061B92E /* NBPhoneMetaDataGenerator.m */; settings = {ASSET_TAGS = (); }; };
-		48AE1B501BB5C5A30061B92E /* NBPhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE1B3F1BB5C5A30061B92E /* NBPhoneNumber.m */; settings = {ASSET_TAGS = (); }; };
-		48AE1B511BB5C5A30061B92E /* NBPhoneNumberDesc.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE1B421BB5C5A30061B92E /* NBPhoneNumberDesc.m */; settings = {ASSET_TAGS = (); }; };
-		48AE1B521BB5C5A30061B92E /* NBPhoneNumberUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE1B441BB5C5A30061B92E /* NBPhoneNumberUtil.m */; settings = {ASSET_TAGS = (); }; };
-		48AE1B531BB5C5A30061B92E /* NSArray+NBAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE1B461BB5C5A30061B92E /* NSArray+NBAdditions.m */; settings = {ASSET_TAGS = (); }; };
 		48AF44EA1649479100DFE3D8 /* NumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44E91649479100DFE3D8 /* NumbersViewController.m */; };
 		48AF44EB1649479100DFE3D8 /* NumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44E91649479100DFE3D8 /* NumbersViewController.m */; };
 		48AF44EE164947B300DFE3D8 /* CreditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44ED164947B300DFE3D8 /* CreditViewController.m */; };
@@ -1298,34 +1285,6 @@
 		48ADE7D0185C67EC00E39DA2 /* PhoneData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PhoneData.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		48ADE7D1185C67EC00E39DA2 /* PhoneData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PhoneData.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		48AE1B1B1BB4A26C0061B92E /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
-		48AE1B2B1BB5C5A30061B92E /* libPhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libPhoneNumber.h; sourceTree = "<group>"; };
-		48AE1B2C1BB5C5A30061B92E /* NBAsYouTypeFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAsYouTypeFormatter.h; sourceTree = "<group>"; };
-		48AE1B2D1BB5C5A30061B92E /* NBAsYouTypeFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAsYouTypeFormatter.m; sourceTree = "<group>"; };
-		48AE1B2E1BB5C5A30061B92E /* NBMetadataCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBMetadataCore.h; sourceTree = "<group>"; };
-		48AE1B2F1BB5C5A30061B92E /* NBMetadataCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBMetadataCore.m; sourceTree = "<group>"; };
-		48AE1B301BB5C5A30061B92E /* NBMetadataCoreMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBMetadataCoreMapper.h; sourceTree = "<group>"; };
-		48AE1B311BB5C5A30061B92E /* NBMetadataCoreMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBMetadataCoreMapper.m; sourceTree = "<group>"; };
-		48AE1B321BB5C5A30061B92E /* NBMetadataCoreTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBMetadataCoreTest.h; sourceTree = "<group>"; };
-		48AE1B331BB5C5A30061B92E /* NBMetadataCoreTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBMetadataCoreTest.m; sourceTree = "<group>"; };
-		48AE1B341BB5C5A30061B92E /* NBMetadataCoreTestMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBMetadataCoreTestMapper.h; sourceTree = "<group>"; };
-		48AE1B351BB5C5A30061B92E /* NBMetadataCoreTestMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBMetadataCoreTestMapper.m; sourceTree = "<group>"; };
-		48AE1B361BB5C5A30061B92E /* NBMetadataHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBMetadataHelper.h; sourceTree = "<group>"; };
-		48AE1B371BB5C5A30061B92E /* NBMetadataHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBMetadataHelper.m; sourceTree = "<group>"; };
-		48AE1B381BB5C5A30061B92E /* NBNumberFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBNumberFormat.h; sourceTree = "<group>"; };
-		48AE1B391BB5C5A30061B92E /* NBNumberFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBNumberFormat.m; sourceTree = "<group>"; };
-		48AE1B3A1BB5C5A30061B92E /* NBPhoneMetaData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBPhoneMetaData.h; sourceTree = "<group>"; };
-		48AE1B3B1BB5C5A30061B92E /* NBPhoneMetaData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBPhoneMetaData.m; sourceTree = "<group>"; };
-		48AE1B3C1BB5C5A30061B92E /* NBPhoneMetaDataGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBPhoneMetaDataGenerator.h; sourceTree = "<group>"; };
-		48AE1B3D1BB5C5A30061B92E /* NBPhoneMetaDataGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBPhoneMetaDataGenerator.m; sourceTree = "<group>"; };
-		48AE1B3E1BB5C5A30061B92E /* NBPhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBPhoneNumber.h; sourceTree = "<group>"; };
-		48AE1B3F1BB5C5A30061B92E /* NBPhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBPhoneNumber.m; sourceTree = "<group>"; };
-		48AE1B401BB5C5A30061B92E /* NBPhoneNumberDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBPhoneNumberDefines.h; sourceTree = "<group>"; };
-		48AE1B411BB5C5A30061B92E /* NBPhoneNumberDesc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBPhoneNumberDesc.h; sourceTree = "<group>"; };
-		48AE1B421BB5C5A30061B92E /* NBPhoneNumberDesc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBPhoneNumberDesc.m; sourceTree = "<group>"; };
-		48AE1B431BB5C5A30061B92E /* NBPhoneNumberUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBPhoneNumberUtil.h; sourceTree = "<group>"; };
-		48AE1B441BB5C5A30061B92E /* NBPhoneNumberUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBPhoneNumberUtil.m; sourceTree = "<group>"; };
-		48AE1B451BB5C5A30061B92E /* NSArray+NBAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+NBAdditions.h"; sourceTree = "<group>"; };
-		48AE1B461BB5C5A30061B92E /* NSArray+NBAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+NBAdditions.m"; sourceTree = "<group>"; };
 		48AF44E81649479100DFE3D8 /* NumbersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumbersViewController.h; sourceTree = "<group>"; };
 		48AF44E91649479100DFE3D8 /* NumbersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumbersViewController.m; sourceTree = "<group>"; };
 		48AF44EC164947B300DFE3D8 /* CreditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditViewController.h; sourceTree = "<group>"; };
@@ -2415,42 +2374,6 @@
 			name = CoreData;
 			sourceTree = "<group>";
 		};
-		48AE1B2A1BB5C5A30061B92E /* libPhoneNumber-iOS */ = {
-			isa = PBXGroup;
-			children = (
-				48AE1B2B1BB5C5A30061B92E /* libPhoneNumber.h */,
-				48AE1B2C1BB5C5A30061B92E /* NBAsYouTypeFormatter.h */,
-				48AE1B2D1BB5C5A30061B92E /* NBAsYouTypeFormatter.m */,
-				48AE1B2E1BB5C5A30061B92E /* NBMetadataCore.h */,
-				48AE1B2F1BB5C5A30061B92E /* NBMetadataCore.m */,
-				48AE1B301BB5C5A30061B92E /* NBMetadataCoreMapper.h */,
-				48AE1B311BB5C5A30061B92E /* NBMetadataCoreMapper.m */,
-				48AE1B321BB5C5A30061B92E /* NBMetadataCoreTest.h */,
-				48AE1B331BB5C5A30061B92E /* NBMetadataCoreTest.m */,
-				48AE1B341BB5C5A30061B92E /* NBMetadataCoreTestMapper.h */,
-				48AE1B351BB5C5A30061B92E /* NBMetadataCoreTestMapper.m */,
-				48AE1B361BB5C5A30061B92E /* NBMetadataHelper.h */,
-				48AE1B371BB5C5A30061B92E /* NBMetadataHelper.m */,
-				48AE1B381BB5C5A30061B92E /* NBNumberFormat.h */,
-				48AE1B391BB5C5A30061B92E /* NBNumberFormat.m */,
-				48AE1B3A1BB5C5A30061B92E /* NBPhoneMetaData.h */,
-				48AE1B3B1BB5C5A30061B92E /* NBPhoneMetaData.m */,
-				48AE1B3C1BB5C5A30061B92E /* NBPhoneMetaDataGenerator.h */,
-				48AE1B3D1BB5C5A30061B92E /* NBPhoneMetaDataGenerator.m */,
-				48AE1B3E1BB5C5A30061B92E /* NBPhoneNumber.h */,
-				48AE1B3F1BB5C5A30061B92E /* NBPhoneNumber.m */,
-				48AE1B401BB5C5A30061B92E /* NBPhoneNumberDefines.h */,
-				48AE1B411BB5C5A30061B92E /* NBPhoneNumberDesc.h */,
-				48AE1B421BB5C5A30061B92E /* NBPhoneNumberDesc.m */,
-				48AE1B431BB5C5A30061B92E /* NBPhoneNumberUtil.h */,
-				48AE1B441BB5C5A30061B92E /* NBPhoneNumberUtil.m */,
-				48AE1B451BB5C5A30061B92E /* NSArray+NBAdditions.h */,
-				48AE1B461BB5C5A30061B92E /* NSArray+NBAdditions.m */,
-			);
-			name = "libPhoneNumber-iOS";
-			path = "External/libPhoneNumber-iOS";
-			sourceTree = SOURCE_ROOT;
-		};
 		48AF44E116490FF200DFE3D8 /* XIBs */ = {
 			isa = PBXGroup;
 			children = (
@@ -2592,7 +2515,6 @@
 		48DD7284169F548600CD7080 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				48AE1B2A1BB5C5A30061B92E /* libPhoneNumber-iOS */,
 				4814D55319E9660200958E33 /* AFNetworking */,
 				480E523C18C50F280054A791 /* HockeySDK.xcodeproj */,
 			);
@@ -3280,7 +3202,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48AE1B511BB5C5A30061B92E /* NBPhoneNumberDesc.m in Sources */,
 				48338FA516170CA80033F4C1 /* AppDelegate.m in Sources */,
 				48FD99E71618CC370061191B /* Common.m in Sources */,
 				48CB0775163D76C300B07199 /* PhoneNumber.m in Sources */,
@@ -3291,7 +3212,6 @@
 				48C97E9F1893F2BA00174DE9 /* BlockActionSheet.m in Sources */,
 				48AF44FE1649483600DFE3D8 /* HelpsViewController.m in Sources */,
 				48B8137B1AADFA090019AF77 /* NSString+Common.m in Sources */,
-				48AE1B471BB5C5A30061B92E /* NBAsYouTypeFormatter.m in Sources */,
 				48B813261AADF7AE0019AF77 /* NBRecentUnknownContactViewController.m in Sources */,
 				4814D56F19E9660200958E33 /* AFURLSessionManager.m in Sources */,
 				48AF45021649484600DFE3D8 /* AboutViewController.m in Sources */,
@@ -3304,13 +3224,11 @@
 				48826909164BDC3400EA58AE /* Reachability.m in Sources */,
 				48B8134E1AADF9460019AF77 /* NBContactStructureManager.m in Sources */,
 				4814D56C19E9660200958E33 /* AFURLConnectionOperation.m in Sources */,
-				48AE1B4C1BB5C5A30061B92E /* NBMetadataHelper.m in Sources */,
 				48D3F01E164F9284002041A9 /* CountryNames.m in Sources */,
 				48B813751AADF9F90019AF77 /* NBValueListTableViewController.m in Sources */,
 				48B813701AADF9B20019AF77 /* NBPersonViewController.m in Sources */,
 				48C431A1189EDFB40008FE01 /* VerifyPhoneViewController.m in Sources */,
 				480CE11C193B67CF0020F255 /* RatesViewController.m in Sources */,
-				48AE1B4F1BB5C5A30061B92E /* NBPhoneMetaDataGenerator.m in Sources */,
 				485ECBE216525D3600364F08 /* KeypadView.m in Sources */,
 				485ECBE61652B9BE00364F08 /* KeypadButton.m in Sources */,
 				48D0A6F41654D6D700FA2D98 /* main.mm in Sources */,
@@ -3325,15 +3243,12 @@
 				48B813611AADF98C0019AF77 /* NBPeoplePickerNavigationController.m in Sources */,
 				4882748E1660E20D00B41EA1 /* DtmfPlayer.m in Sources */,
 				48C97EA318943C7300174DE9 /* PhoneViewController.m in Sources */,
-				48AE1B4B1BB5C5A30061B92E /* NBMetadataCoreTestMapper.m in Sources */,
-				48AE1B531BB5C5A30061B92E /* NSArray+NBAdditions.m in Sources */,
 				48B813431AADF91D0019AF77 /* NBGroupsTableViewController.m in Sources */,
 				48B813811AADFA290019AF77 /* NBUnknownPersonViewController.m in Sources */,
 				48B813571AADF9590019AF77 /* NBDetailLineSeparatedCell.m in Sources */,
 				48B8131C1AADF7390019AF77 /* NBRecentContactEntry.m in Sources */,
 				482608EE166A4707007F0844 /* NSTimer+Blocks.m in Sources */,
 				4888D1FA166E865400B55B22 /* Call.m in Sources */,
-				48AE1B481BB5C5A30061B92E /* NBMetadataCore.m in Sources */,
 				48B8132E1AADF7CC0019AF77 /* NBRecentsListViewController.m in Sources */,
 				48206EF41684B0700040B04E /* RingbackTones.m in Sources */,
 				48206EFC168DD8D30040B04E /* Tones.m in Sources */,
@@ -3343,7 +3258,6 @@
 				480BEF9618D73EF900C882E0 /* GetStartedViewController.m in Sources */,
 				48B813781AADFA030019AF77 /* NSMutableString+Appending.m in Sources */,
 				48DD72D5169F5AC600CD7080 /* WebClient.m in Sources */,
-				48AE1B4A1BB5C5A30061B92E /* NBMetadataCoreTest.m in Sources */,
 				48B813411AADF91D0019AF77 /* NBGroup.m in Sources */,
 				4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */,
 				48F5D2ED16B9A380001576E1 /* Base64.m in Sources */,
@@ -3356,11 +3270,9 @@
 				4830462416EE269D000F9B05 /* NumberAreaViewController.m in Sources */,
 				48A261C416FDE32400007638 /* CallStateView.m in Sources */,
 				48B813491AADF9380019AF77 /* NBContact.m in Sources */,
-				48AE1B4D1BB5C5A30061B92E /* NBNumberFormat.m in Sources */,
 				488FBBDA17007CC6000ECC71 /* DataManager.m in Sources */,
 				48B813351AADF8DE0019AF77 /* NBPeopleListViewController.m in Sources */,
 				488FBBE21700852F000ECC71 /* NumberData.m in Sources */,
-				48AE1B521BB5C5A30061B92E /* NBPhoneNumberUtil.m in Sources */,
 				4814D56B19E9660200958E33 /* AFSecurityPolicy.m in Sources */,
 				48B8135E1AADF97A0019AF77 /* NBNotesCell.m in Sources */,
 				48B8131F1AADF7530019AF77 /* NBCallsView.m in Sources */,
@@ -3384,10 +3296,8 @@
 				483679DE1721F2E1001A02AF /* RecordingViewController.m in Sources */,
 				480CE127194DBEC40020F255 /* CallerIdViewController.m in Sources */,
 				480CE124194DA0100020F255 /* CallerIdData.m in Sources */,
-				48AE1B491BB5C5A30061B92E /* NBMetadataCoreMapper.m in Sources */,
 				48367A47172552D2001A02AF /* RecordingControlsCell.m in Sources */,
 				48B8134F1AADF9460019AF77 /* NBCustomValueTableViewController.m in Sources */,
-				48AE1B501BB5C5A30061B92E /* NBPhoneNumber.m in Sources */,
 				48CA503D172C5EB400CB1B7B /* ForwardingViewController.m in Sources */,
 				48CA5042172FC6C800CB1B7B /* ForwardingSequenceViewController.m in Sources */,
 				48B0C3F9174989F500DAB3BD /* Keychain.m in Sources */,
@@ -3411,7 +3321,6 @@
 				480CE11F193BA7B20020F255 /* NumberRatesViewController.m in Sources */,
 				48B8132F1AADF7CC0019AF77 /* NBRecentsNavigationController.m in Sources */,
 				4814D56919E9660200958E33 /* AFHTTPSessionManager.m in Sources */,
-				48AE1B4E1BB5C5A30061B92E /* NBPhoneMetaData.m in Sources */,
 				48D4FADD1924247A00949894 /* NavigationController.m in Sources */,
 				48793369185C6A5800C08C8C /* PhonesViewController.m in Sources */,
 				48251B9B187F4A8A00E69C3A /* SettingsViewController.m in Sources */,

@@ -8,7 +8,6 @@
 
 #import "PhoneNumber.h"
 #import "Common.h"
-#import "Settings.h"
 #import "LibPhoneNumber.h"
 #import "CountryNames.h"
 
