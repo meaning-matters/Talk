@@ -9,8 +9,6 @@ Perhaps move test code to common place.
 # Implement swipe delete of the above cells.
 */
 
-# NO_CALLBACK_FOUND in call to AnnetteM 17 Aug 22:16 (21:16 UK time)
-
 
 Make country list diacritic insensitive
 
@@ -20,7 +18,7 @@ Make country list diacritic insensitive
 
 * Netherlands Antilles flag not correct, must have 5 instead of 6 stars.
 
-* MobileCountryCodes.json has duplicate keys (e.g. 340), so can't be stored in NSDictionary!  App needs 
+* MobileCountryCodes.json has duplicate keys (e.g. 340), so can't be stored in NSDictionary!  App needs
   to display choice for ISO country, when MCC has more than one.
 
 # NOTE: The SIP info (username, password, ...) saved in keychain, can only be read back when app is 
@@ -35,12 +33,6 @@ Make country list diacritic insensitive
 
 * Revisit "canceled" (iOS preferred?) vs. "cancelled" (current in app, also used in
   AFNetworking, so don't change these!).
-  
-* Bug in Notes op iPhone.  Probably old table cell mix up.
-
-* Check waarom alert over Allow Data Calls soms 3 keer komt (na app provisioning).
-
-* Check waarom Davy my op api2 ziet als ik hier api1 kiest.
 
 * Check waarom call direct na prov. niet lukt.  Ook lukken calls sowieso soms niet.
 
@@ -76,8 +68,6 @@ Make country list diacritic insensitive
 * Check what happens when notifications are off, buyAccount in PurchaseManager.
 
 * Do all tables using http://stackoverflow.com/a/18418549/1971013
-
-* Make number duration images softer (no black borders), and make them 37x37 ipv 38x38.
 
 * Think about if it's really good to cancel the who buy VC when Store alert is cancelled, as is done now.
 
@@ -123,8 +113,6 @@ Make country list diacritic insensitive
 
 * Replace DTMF keepalive with something else that always works.
 
-* Only start sip when account, check restarts
-
 * Do simIsoCountryCode in Settings VC en elders. niet met ==/!= nil maar met length.
 
 * Make NSString properties copy, instead of strong:http://stackoverflow.com/questions/387959/nsstring-property-copy-or-retain
@@ -149,12 +137,6 @@ Make country list diacritic insensitive
 
 * App crasht zonder account op Credit tab, en als je belt
 
-* Zonder internet krijg je "Loading Products Failed" en soms wel een paar keer
-
-* Tijdens splash image kan je nummers intoetsen die erachter staan.
-
-* Kopen van credit (etc) zonder internet geeft geen melding: Kijk PurchaseManager na!
-
 * na Restore is Caller ID niet ingevuld en crasht app bij aanmaken dictionary voor callback api message.
 
 * add refreshControl to UITableViewController property, remove added delays from action methods.
@@ -162,8 +144,6 @@ Make country list diacritic insensitive
 * Kijk clearsSelectionOnViewWillAppear ff na in alle UITableVC's; eigen code to deselect kan weg denk ik.
 
 * segmentedControlStyle mag niet meer in iOS 7
-
-* showBlockingAlertViewWithTitle has problem.
 
 * Create and use Common method +(NSString*)localizedError:(NSError*)error; that checks userInfo for NSLocalizedDescriptionKey, and if not there, create own description.  Because on sandbox I sometimes get : po error.localizedDescription
 The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load Store products.  But perhaps these things won't occur on real system.
@@ -189,11 +169,7 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 
 * Add number virification API that break off the process: so stops calling. Then in app the <Phone back button can be
   enabled again and handled in UIVC's willMoveToParentViewController when parent == nil
-  
-* Received memory warning.: Tijdens maken/editen contact image.
 
-* Name textFields don't allow editing halfway the string. When trying to do so, the cursor jumps to the end.
-
-* Stop polling callback state when app in background!
+* Do Number textFields allow editing halfway the string. When trying to do so, the cursor jumps to the end.  If not see ItemVC #240
 
 * Do something with Advertising/Vendor Identifiers in AppDelegate

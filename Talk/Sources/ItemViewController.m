@@ -237,16 +237,25 @@
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
 {
+    // See http://stackoverflow.com/a/14792880/1971013 for keeping cursor on correct position.
+    UITextPosition* beginning    = textField.beginningOfDocument;
+    UITextPosition* start        = [textField positionFromPosition:beginning offset:range.location];
+    NSInteger       cursorOffset = [textField offsetFromPosition:beginning toPosition:start] + string.length;
+    
     // See http://stackoverflow.com/a/22211018/1971013 why we're using non-breaking spaces @"\u00a0".
     textField.text = [textField.text stringByReplacingCharactersInRange:range withString:string];
     textField.text = [textField.text stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
 
-    self.name = [textField.text stringByReplacingOccurrencesOfString:@"\u00a0" withString:@" "];;
+    self.name = [textField.text stringByReplacingOccurrencesOfString:@"\u00a0" withString:@" "];
 
     [self.tableView scrollToRowAtIndexPath:self.nameIndexPath
                           atScrollPosition:UITableViewScrollPositionNone
                                   animated:YES];
 
+    UITextPosition* newCursorPosition = [textField positionFromPosition:textField.beginningOfDocument offset:cursorOffset];
+    UITextRange*    newSelectedRange  = [textField textRangeFromPosition:newCursorPosition toPosition:newCursorPosition];
+    [textField setSelectedTextRange:newSelectedRange];
+    
     return NO;  // Need to return NO, because we've already changed textField.text.
 }
 
