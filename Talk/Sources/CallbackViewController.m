@@ -186,6 +186,17 @@
         return;
     }
 
+    // Don't poll the server when app is not active.
+    if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive)
+    {
+        [Common dispatchAfterInterval:0.333 onMain:^
+        {
+            [self checkCallbackState];
+        }];
+        
+        return;
+    }
+    
     [[WebClient sharedClient] retrieveCallbackStateForUuid:self.call.uuid
                                                      reply:^(NSError*  error,
                                                              CallState state,
