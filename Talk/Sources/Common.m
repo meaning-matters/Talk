@@ -1071,7 +1071,6 @@ static Common* sharedCommon;
     __block float totalCost = 0.0f;
 
     [[WebClient sharedClient] retrieveCallRateForE164:callbackE164
-                                         currencyCode:[Settings sharedSettings].currencyCode
                                                 reply:^(NSError *error, float ratePerMinute)
     {
         if (error == nil)
@@ -1079,7 +1078,6 @@ static Common* sharedCommon;
             totalCost = ratePerMinute;
 
             [[WebClient sharedClient] retrieveCallRateForE164:outgoingE164
-                                                  currencyCode:[Settings sharedSettings].currencyCode
                                                          reply:^(NSError *error, float ratePerMinute)
             {
                 if (error == nil)

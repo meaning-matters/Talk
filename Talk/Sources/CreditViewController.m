@@ -263,8 +263,7 @@ typedef enum
     self.isLoadingCredit = YES;
     [self updateAmountCell:(CreditAmountCell*)[self.tableView cellForRowAtIndexPath:self.amountIndexPath]];
     
-    [[WebClient sharedClient] retrieveCreditForCurrencyCode:[Settings sharedSettings].currencyCode
-                                                      reply:^(NSError* error, float credit)
+    [[WebClient sharedClient] retrieveCreditWithReply:^(NSError* error, float credit)
     {
         if (error == nil)
         {

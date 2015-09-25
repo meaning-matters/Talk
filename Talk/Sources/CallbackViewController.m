@@ -187,7 +187,6 @@
     }
 
     [[WebClient sharedClient] retrieveCallbackStateForUuid:self.call.uuid
-                                              currencyCode:[Settings sharedSettings].currencyCode
                                                      reply:^(NSError*  error,
                                                              CallState state,
                                                              CallLeg   leg,

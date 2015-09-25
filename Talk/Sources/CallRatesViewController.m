@@ -170,7 +170,6 @@
 {
     self.isLoading = YES;
     [[WebClient sharedClient] retrieveCallRateForE164:self.callbackPhoneNumber.e164Format
-                                         currencyCode:[Settings sharedSettings].currencyCode
                                                 reply:^(NSError* error, float ratePerMinute)
     {
         if (error == nil)
@@ -227,7 +226,7 @@
 
 - (BOOL)checkCurrencyCode
 {
-    if ([Settings sharedSettings].currencyCode.length == 0)
+    if ([Settings sharedSettings].storeCurrencyCode.length == 0)
     {
         NSString* title;
         NSString* message;

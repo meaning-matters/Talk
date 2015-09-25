@@ -32,7 +32,8 @@ NSString* const CallbackE164Key           = @"CallbackE164";
 NSString* const NumberTypeMaskKey         = @"NumberTypeMask";
 NSString* const NumbersSortSegmentKey     = @"NumbersSortSegment";
 NSString* const ForwardingsSelectionKey   = @"ForwardingsSelection";
-NSString* const CurrencyCodeKey           = @"CurrencyCode";
+NSString* const StoreCurrencyCodeKey      = @"StoreCurrencyCode";
+NSString* const StoreCountryCodeKey       = @"StoreCountryCode";
 NSString* const CreditKey                 = @"Credit";
 NSString* const NeedsServerSyncKey        = @"NeedsServerSync";
 
@@ -123,7 +124,8 @@ static NSUserDefaults* userDefaults;
         [dictionary setObject:@(NumberTypeGeographicMask)                        forKey:NumberTypeMaskKey];
         [dictionary setObject:@(0)                                               forKey:NumbersSortSegmentKey];
         [dictionary setObject:@(0)                                               forKey:ForwardingsSelectionKey];
-        [dictionary setObject:@""                                                forKey:CurrencyCodeKey];
+        [dictionary setObject:@""                                                forKey:StoreCurrencyCodeKey];
+        [dictionary setObject:@""                                                forKey:StoreCountryCodeKey];
         [dictionary setObject:@(0.0f)                                            forKey:CreditKey];
         [dictionary setObject:@(NO)                                              forKey:NeedsServerSyncKey];
     });
@@ -318,15 +320,27 @@ static NSUserDefaults* userDefaults;
 }
 
 
-- (NSString*)currencyCode
+- (NSString*)storeCurrencyCode
 {
-    return [userDefaults objectForKey:CurrencyCodeKey];
+    return [userDefaults objectForKey:StoreCurrencyCodeKey];
 }
 
 
-- (void)setCurrencyCode:(NSString*)currencyCode
+- (void)setStoreCurrencyCode:(NSString*)storeCurrencyCode
 {
-    [userDefaults setObject:currencyCode forKey:CurrencyCodeKey];
+    [userDefaults setObject:storeCurrencyCode forKey:StoreCurrencyCodeKey];
+}
+
+
+- (NSString*)storeCountryCode
+{
+    return [userDefaults objectForKey:StoreCountryCodeKey];
+}
+
+
+- (void)setStoreCountryCode:(NSString*)storeCountryCode
+{
+    [userDefaults setObject:storeCountryCode forKey:StoreCountryCodeKey];
 }
 
 

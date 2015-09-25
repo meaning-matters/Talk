@@ -170,7 +170,7 @@
 
 - (BOOL)checkCurrencyCode
 {
-    if ([Settings sharedSettings].currencyCode.length == 0)
+    if ([Settings sharedSettings].storeCurrencyCode.length == 0)
     {
         NSString* title;
         NSString* message;

@@ -144,7 +144,6 @@ typedef enum
 
 // 13. GET NUMBER INFO
 - (void)retrieveNumberE164:(NSString*)e164
-              currencyCode:(NSString*)currencyCode
                      reply:(void (^)(NSError*  error,
                                      NSString* name,
                                      NSString* numberType,
@@ -170,16 +169,13 @@ typedef enum
 
 // 14. BUY CREDIT
 - (void)purchaseCreditForReceipt:(NSString*)receipt
-                    currencyCode:(NSString*)currencyCode
                            reply:(void (^)(NSError* error, float credit))reply;
 
 // 15. GET CURRENT CREDIT
-- (void)retrieveCreditForCurrencyCode:(NSString*)currencyCode
-                                reply:(void (^)(NSError* error, float credit))reply;
+- (void)retrieveCreditWithReply:(void (^)(NSError* error, float credit))reply;
 
 // 16. GET CALL RATE (PER MINUTE)
 - (void)retrieveCallRateForE164:(NSString*)e164
-                   currencyCode:(NSString*)currencyCode
                           reply:(void (^)(NSError* error, float ratePerMinute))reply;
 
 // 19A. CREATE IVR
@@ -228,7 +224,6 @@ typedef enum
 
 // 34. GET CALLBACK STATE
 - (void)retrieveCallbackStateForUuid:(NSString*)uuid
-                        currencyCode:(NSString*)currencyCode
                                reply:(void (^)(NSError*  error,
                                                CallState state,
                                                CallLeg   leg,

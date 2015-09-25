@@ -77,8 +77,6 @@
                 [[NSNotificationCenter defaultCenter] removeObserver:observer];
             }
         }];
-
-        sharedInstance->_currencyCode = [Settings sharedSettings].currencyCode;
     });
 
     return sharedInstance;
@@ -247,12 +245,11 @@
     }
     else
     {
-        NSDictionary* localeInfo = @{NSLocaleCurrencyCode : self.currencyCode,
+        NSDictionary* localeInfo = @{NSLocaleCurrencyCode : [Settings sharedSettings].storeCurrencyCode,
                                      NSLocaleLanguageCode : [[NSLocale preferredLanguages] objectAtIndex:0]};
 
         return [[NSLocale alloc] initWithLocaleIdentifier:[NSLocale localeIdentifierFromComponents:localeInfo]];
     }
-
 }
 
 
@@ -305,9 +302,7 @@
 
     NSString* receipt = [Base64 encode:transaction.transactionReceipt];
 
-    [[WebClient sharedClient] purchaseCreditForReceipt:receipt
-                                          currencyCode:self.currencyCode
-                                                 reply:^(NSError* error, float credit)
+    [[WebClient sharedClient] purchaseCreditForReceipt:receipt reply:^(NSError* error, float credit)
     {
         if (error == nil)
         {
@@ -340,8 +335,8 @@
     {
         if ([self isCreditProductIdentifier:product.productIdentifier])
         {
-            _currencyCode = [product.priceLocale objectForKey:NSLocaleCurrencyCode];
-            [Settings sharedSettings].currencyCode = _currencyCode;
+            [Settings sharedSettings].storeCurrencyCode = [product.priceLocale objectForKey:NSLocaleCurrencyCode];
+            [Settings sharedSettings].storeCountryCode  = [product.priceLocale objectForKey:NSLocaleCountryCode];
             break;
         }
     }
@@ -549,7 +544,7 @@
     }
     else
     {
-        completion ? completion(self.currencyCode.length > 0) : 0;
+        completion ? completion([Settings sharedSettings].storeCurrencyCode.length > 0) : 0;
     }
 }
 

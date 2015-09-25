@@ -13,9 +13,8 @@
 
 @interface PurchaseManager : NSObject
 
-@property (nonatomic, strong) NSArray*    products;
-@property (nonatomic, readonly) NSString* currencyCode;     // Currency code (e.g. "USD" for current Store.
-@property (nonatomic, readonly) BOOL      isNewAccount;     // YES, when is new account (i.e. not a restored account).
+@property (nonatomic, strong) NSArray* products;
+@property (nonatomic, readonly) BOOL   isNewAccount;     // YES, when is new account (i.e. not a restored account).
 
 
 + (PurchaseManager*)sharedManager;

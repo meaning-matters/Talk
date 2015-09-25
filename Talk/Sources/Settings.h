@@ -44,7 +44,8 @@
 @property (nonatomic, assign) NSInteger      numbersSortSegment;    // Selected numbers sort segmented control index.
 @property (nonatomic, assign) NSInteger      forwardingsSelection;  // Selected segment/table in ForwardingsView.
 
-@property (nonatomic, strong) NSString*      currencyCode;          // Backup until Store products are received.
+@property (nonatomic, strong) NSString*      storeCurrencyCode;     // Backup until Store products are received.
+@property (nonatomic, strong) NSString*      storeCountryCode;      // Backup until Store products are received.
 @property (nonatomic, assign) float          credit;                // Holds most recent credit update.
 
 @property (nonatomic, assign) BOOL           needsServerSync;       // YES when CoreData was wiped after error.

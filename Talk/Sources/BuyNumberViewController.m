@@ -224,8 +224,7 @@
     };
 
     // Check if there's enough credit.
-    [[WebClient sharedClient] retrieveCreditForCurrencyCode:[Settings sharedSettings].currencyCode
-                                                      reply:^(NSError* error, float credit)
+    [[WebClient sharedClient] retrieveCreditWithReply:^(NSError* error, float credit)
     {
         if (error == nil)
         {

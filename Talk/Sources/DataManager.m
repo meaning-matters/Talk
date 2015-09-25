@@ -478,7 +478,6 @@
             for (NSString* e164 in e164s)
             {
                 [[WebClient sharedClient] retrieveNumberE164:e164
-                                                currencyCode:[Settings sharedSettings].currencyCode
                                                        reply:^(NSError*  error,
                                                                NSString* name,
                                                                NSString* numberType,

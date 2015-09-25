@@ -435,8 +435,11 @@ static NSDictionary* statuses;
 // 0A. GET CALL RATES
 - (void)retrieveCallRates:(void (^)(NSError* error, NSArray* rates))reply
 {
-    NSString* currencyCode = [Settings sharedSettings].currencyCode;
-    [self.webInterface getPath:[NSString stringWithFormat:@"/rates/calls?currencyCode=%@", currencyCode]
+    NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
+    NSString* countryCode  = [Settings sharedSettings].storeCountryCode;
+    
+    [self.webInterface getPath:[NSString stringWithFormat:@"/rates/calls?currencyCode=%@&countryCode=%@",
+                                                          currencyCode, countryCode]
                     parameters:nil
                        success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
@@ -460,8 +463,11 @@ static NSDictionary* statuses;
 // 0B. GET NUMBER RATES
 - (void)retrieveNumberRates:(void (^)(NSError* error, NSArray* rates))reply
 {
-    NSString* currencyCode = [Settings sharedSettings].currencyCode;
-    [self.webInterface getPath:[NSString stringWithFormat:@"/rates/numbers?currencyCode=%@", currencyCode]
+    NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
+    NSString* countryCode  = [Settings sharedSettings].storeCountryCode;
+    
+    [self.webInterface getPath:[NSString stringWithFormat:@"/rates/numbers?currencyCode=%@&countryCode=%@",
+                                                          currencyCode, countryCode]
                     parameters:nil
                        success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
@@ -511,8 +517,11 @@ static NSDictionary* statuses;
                        @"mobileNetworkCode" : mobileNetworkCode};
     }
 
-    NSString* currencyCode = [Settings sharedSettings].currencyCode;
-    [self.webInterface postPath:[NSString stringWithFormat:@"/users?currencyCode=%@", currencyCode]
+    NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
+    NSString* countryCode  = [Settings sharedSettings].storeCountryCode;
+    
+    [self.webInterface postPath:[NSString stringWithFormat:@"/users?currencyCode=%@&countryCode=%@",
+                                                           currencyCode, countryCode]
                      parameters:parameters
                         success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
@@ -858,7 +867,6 @@ static NSDictionary* statuses;
 
 // 13A. GET NUMBER INFO
 - (void)retrieveNumberE164:(NSString*)e164
-              currencyCode:(NSString*)currencyCode
                      reply:(void (^)(NSError*  error,
                                      NSString* name,
                                      NSString* numberType,
@@ -882,9 +890,11 @@ static NSDictionary* statuses;
                                      BOOL      hasImage,
                                      BOOL      imageAccepted))reply
 {
-    NSString*     username   = [Settings sharedSettings].webUsername;
-    NSString*     number     = [e164 substringFromIndex:1];
-    NSDictionary* parameters = @{@"currencyCode" : currencyCode};
+    NSString*     username     = [Settings sharedSettings].webUsername;
+    NSString*     number       = [e164 substringFromIndex:1];
+    NSString*     currencyCode = [Settings sharedSettings].storeCurrencyCode;
+    NSString*     countryCode  = [Settings sharedSettings].storeCountryCode;
+    NSDictionary* parameters   = @{@"currencyCode" : currencyCode, @"countryCode" : countryCode};
 
     [self getPath:[NSString stringWithFormat:@"/users/%@/numbers/%@", username, number]
        parameters:parameters
@@ -927,6 +937,7 @@ static NSDictionary* statuses;
 // 13B. GET NUMBER PROOF IMAGE
 - (void)retrieveNumberImageE164:(NSString*)e164
 {
+    //###
     //    [Base64 decode:content[@"info"][@"proofImage"]],
     //[content[@"info"][@"proofAccepted"] boolValue]);
 
@@ -934,13 +945,16 @@ static NSDictionary* statuses;
 
 
 // 14. BUY CREDIT
-- (void)purchaseCreditForReceipt:(NSString*)receipt currencyCode:(NSString*)currencyCode
+- (void)purchaseCreditForReceipt:(NSString*)receipt
                            reply:(void (^)(NSError* error, float credit))reply
 {
-    NSString*     username   = [Settings sharedSettings].webUsername;
-    NSDictionary* parameters = @{@"receipt" : receipt};
-
-    [self postPath:[NSString stringWithFormat:@"/users/%@/credit?currencyCode=%@", username, currencyCode]
+    NSString*     username     = [Settings sharedSettings].webUsername;
+    NSString*     currencyCode = [Settings sharedSettings].storeCurrencyCode;
+    NSString*     countryCode  = [Settings sharedSettings].storeCountryCode;
+    NSDictionary* parameters   = @{@"receipt" : receipt};
+    
+    [self postPath:[NSString stringWithFormat:@"/users/%@/credit?currencyCode=%@&countryCode=%@",
+                                              username, currencyCode, countryCode]
         parameters:parameters
              reply:^(NSError* error, id content)
     {
@@ -957,11 +971,12 @@ static NSDictionary* statuses;
 
 
 // 15. GET CURRENT CALLING CREDIT
-- (void)retrieveCreditForCurrencyCode:(NSString*)currencyCode
-                                reply:(void (^)(NSError* error, float credit))reply
+- (void)retrieveCreditWithReply:(void (^)(NSError* error, float credit))reply
 {
-    NSString*     username   = [Settings sharedSettings].webUsername;
-    NSDictionary* parameters = @{@"currencyCode" : currencyCode};
+    NSString*     username     = [Settings sharedSettings].webUsername;
+    NSString*     currencyCode = [Settings sharedSettings].storeCurrencyCode;
+    NSString*     countyCode   = [Settings sharedSettings].storeCountryCode;
+    NSDictionary* parameters   = @{@"currencyCode" : currencyCode, @"countryCode" : countyCode};
 
     [self getPath:[NSString stringWithFormat:@"/users/%@/credit", username]
        parameters:parameters
@@ -981,12 +996,14 @@ static NSDictionary* statuses;
 
 // 16. GET CALL RATE (PER MINUTE)
 - (void)retrieveCallRateForE164:(NSString*)e164
-                   currencyCode:(NSString*)currencyCode
                           reply:(void (^)(NSError* error, float ratePerMinute))reply
 {
-    NSString* number = [e164 substringFromIndex:1];
-
-    [self.webInterface getPath:[NSString stringWithFormat:@"/rate/%@?currencyCode=%@", number, currencyCode]
+    NSString* number       = [e164 substringFromIndex:1];
+    NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
+    NSString* countryCode  = [Settings sharedSettings].storeCountryCode;
+    
+    [self.webInterface getPath:[NSString stringWithFormat:@"/rate/%@?currencyCode=%@&countryCode=%@",
+                                                          number, currencyCode, countryCode]
                     parameters:nil
                        success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
@@ -1208,7 +1225,6 @@ static NSDictionary* statuses;
 
 // 34. GET CALLBACK STATE
 - (void)retrieveCallbackStateForUuid:(NSString*)uuid
-                        currencyCode:(NSString*)currencyCode
                                reply:(void (^)(NSError*  error,
                                                CallState state,
                                                CallLeg   leg,
@@ -1217,9 +1233,12 @@ static NSDictionary* statuses;
                                                float     callbackCost,
                                                float     outgoingCost))reply
 {
-    NSString*     username   = [Settings sharedSettings].webUsername;
+    NSString* username     = [Settings sharedSettings].webUsername;
+    NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
+    NSString* countryCode  = [Settings sharedSettings].storeCountryCode;
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/callback/%@?currencyCode=%@", username, uuid, currencyCode]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/callback/%@?currencyCode=%@&countryCode=%@",
+                                             username, uuid, currencyCode, countryCode]
        parameters:nil
             reply:^(NSError* error, id content)
     {

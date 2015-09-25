@@ -69,7 +69,7 @@
         [[WebClient sharedClient] retrieveNumberAreasForIsoCountryCode:isoCountryCode
                                                              stateCode:state[@"stateCode"]
                                                         numberTypeMask:numberTypeMask
-                                                          currencyCode:[Settings sharedSettings].currencyCode
+                                                          currencyCode:[Settings sharedSettings].storeCurrencyCode
                                                                  reply:^(NSError* error, id content)
         {
             if (error == nil)
@@ -89,7 +89,7 @@
         self.isLoading = YES;
         [[WebClient sharedClient] retrieveNumberAreasForIsoCountryCode:isoCountryCode
                                                         numberTypeMask:numberTypeMask
-                                                          currencyCode:[Settings sharedSettings].currencyCode
+                                                          currencyCode:[Settings sharedSettings].storeCurrencyCode
                                                                  reply:^(NSError* error, id content)
         {
             if (error == nil)
