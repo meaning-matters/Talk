@@ -332,6 +332,8 @@ typedef enum
     {
         case TableSectionCallMode:
         {
+            NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
+
             if (indexPath.row == 0)
             {
                 phone       = [self lookupPhoneForE164:settings.callbackE164];
@@ -351,7 +353,7 @@ typedef enum
                                                                 @"also select the same number as Caller ID.",
                                                                 @"[1/4 line larger font].");
             }
-            else if (indexPath.row == 1)
+            else
             {
                 phone       = [self lookupPhoneForE164:settings.callerIdE164];
                 headerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
@@ -365,12 +367,19 @@ typedef enum
                                                                 @"[1/4 line larger font].");
             }
             
-            NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
             phonesViewController = [[PhonesViewController alloc] initWithManagedObjectContext:managedObjectContext
                                                                                 selectedPhone:phone
                                                                                    completion:^(PhoneData* selectedPhone)
             {
-                settings.callbackE164 = selectedPhone.e164;
+                if (indexPath.row == 0)
+                {
+                    settings.callbackE164 = selectedPhone.e164;
+                }
+                else
+                {
+                    settings.callerIdE164 = selectedPhone.e164;
+                }
+                
                 cell.detailTextLabel.text = selectedPhone.name;
                 [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             }];
