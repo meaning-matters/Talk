@@ -252,6 +252,7 @@
                           atScrollPosition:UITableViewScrollPositionNone
                                   animated:YES];
 
+    // See http://stackoverflow.com/a/14792880/1971013 for keeping cursor on correct position.
     UITextPosition* newCursorPosition = [textField positionFromPosition:textField.beginningOfDocument offset:cursorOffset];
     UITextRange*    newSelectedRange  = [textField textRangeFromPosition:newCursorPosition toPosition:newCursorPosition];
     [textField setSelectedTextRange:newSelectedRange];

@@ -49,10 +49,11 @@
 
     // This is needed because the AYT formatter, when backspacing, turns "+44" again into "+44 "
     // so you'd never to get rid of the country code anymore.
-    if ([textField.text isEqualToString:self.phoneNumber.asYouTypeFormat])
+    if ([textField.text isEqualToString:self.phoneNumber.asYouTypeFormat] && (string.length == 0) &&
+        (range.location == (textField.text.length - 1)) && (range.location > 0) && (range.length == 1))
     {
-        textField.text          = @"";
-        self.phoneNumber.number = @"";
+        range = NSMakeRange((range.location - 1), 2);
+        self.phoneNumber.number = [textField.text stringByReplacingCharactersInRange:range withString:string];
     }
 
     return YES;
