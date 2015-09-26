@@ -103,11 +103,6 @@
 
 #pragma mark - Actions
 
-- (void)cancel
-{
-}
-
-
 - (IBAction)numberAction:(id)sender
 {
     __block BlockAlertView* alert;

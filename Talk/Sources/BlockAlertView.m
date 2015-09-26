@@ -60,6 +60,9 @@
                                                                   message:message
                                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
     {
+        UITextField* textField = [alert textFieldAtIndex:0];
+        [textField resignFirstResponder];
+        
         // Only the cancel must be handled here.
         if (cancelled == YES)
         {
@@ -143,7 +146,7 @@
 }
 
 
-- (void)alertView:(UIAlertView*)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+- (void)alertView:(UIAlertView*)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     self.completion ? self.completion(buttonIndex == alertView.cancelButtonIndex, buttonIndex) : 0;
 }
