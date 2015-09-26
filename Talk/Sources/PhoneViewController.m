@@ -173,6 +173,7 @@ typedef enum
 
             if (isNew == YES)
             {
+                [self.view endEditing:YES];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
         }
@@ -203,6 +204,7 @@ typedef enum
                                    message:[NSString stringWithFormat:message, [error localizedDescription]]
                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
     {
+        [self.view endEditing:YES];
         [self dismissViewControllerAnimated:YES completion:nil];
     }
                          cancelButtonTitle:[Strings cancelString]
