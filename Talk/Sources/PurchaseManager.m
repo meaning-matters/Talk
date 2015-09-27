@@ -280,6 +280,8 @@
         }
         else
         {
+            NBLog(@"Retrieve account error: %@.", error);
+            
             // If this was a restored transaction, it already been 'finished' in updatedTransactions:.
             NSString* description = NSLocalizedStringWithDefaultValue(@"Purchase:General WebAccountFailed", nil,
                                                                       [NSBundle mainBundle], @"Could not get account",

@@ -14,15 +14,31 @@
 #import "WebClient.h"
 #import "CallManager.h"
 #import "Skinning.h"
+#import "NSTimer+Blocks.h"
 
 
 @interface VerifyPhoneViewController ()
+
+@property (nonatomic, weak) IBOutlet UILabel*                 textLabel;
+@property (nonatomic, weak) IBOutlet UIView*                  step1View;
+@property (nonatomic, weak) IBOutlet UIView*                  step2View;
+@property (nonatomic, weak) IBOutlet UIView*                  step3View;
+@property (nonatomic, weak) IBOutlet UILabel*                 label1;
+@property (nonatomic, weak) IBOutlet UILabel*                 label2;
+@property (nonatomic, weak) IBOutlet UILabel*                 label3;
+@property (nonatomic, weak) IBOutlet UIButton*                numberButton;
+@property (nonatomic, weak) IBOutlet UIButton*                callButton;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* callActivityIndicator;
+@property (nonatomic, weak) IBOutlet UILabel*                 codeLabel;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* codeActivityIndicator;
 
 @property (nonatomic, strong) PhoneNumber* phoneNumber;
 @property (nonatomic, strong) NSString*    numberButtonTitle;
 @property (nonatomic, copy)   void       (^completion)(PhoneNumber* phoneNumber);
 @property (nonatomic, assign) BOOL         isCancelled;
 @property (nonatomic, assign) int          step;
+@property (nonatomic, strong) NSTimer*     codeTimer;
+@property (nonatomic, assign) int          codeDigitsShown;
 
 @end
 
@@ -51,10 +67,12 @@
                                                                   @"...");
 
     self.textLabel.text       = NSLocalizedStringWithDefaultValue(@"VerifyPhone", nil, [NSBundle mainBundle],
-                                                                  @"To verify, enter your number (A). Then, request to "
-                                                                  @"be called (B). Finally, enter the code (C) "
-                                                                  @"on the keypad of your phone. (The small cost for "
-                                                                  @"this call is taken from your credit.)",
+                                                                  @"To verify your number:\n"
+                                                                  @"A. Enter your phone number,\n"
+                                                                  @"B. Remember the code,\n"
+                                                                  @"C. Request call & enter code.\n"
+                                                                  @"The small cost for "
+                                                                  @"this call is taken from your credit.",
                                                                   @"...");
 
     [self.numberButton setTitle:NSLocalizedStringWithDefaultValue(@"Provisioning:Verify EnterNumberTitle", nil,
@@ -85,6 +103,9 @@
     {
         // We get here when user pops this view via navigation controller.
         self.isCancelled = YES;
+        
+        [self.codeTimer invalidate];
+        self.codeTimer = nil;
 
         WebClient* webClient = [WebClient sharedClient];
 
@@ -127,16 +148,16 @@
         if (cancelled == NO)
         {
             [self setStep:1];
-            self.codeLabel.text = NSLocalizedStringWithDefaultValue(@"VerifyPhone CodeTitle", nil,
-                                                                    [NSBundle mainBundle], @"CODE",
-                                                                    @".\n"
-                                                                    @"[iOS alert title size].");
             self.phoneNumber = phoneNumber;
 
             if ([phoneNumber isValid])
             {
                 [self.numberButton setTitle:[phoneNumber internationalFormat] forState:UIControlStateNormal];
 
+                self.codeDigitsShown = 0;
+                [self.codeTimer invalidate];
+                self.codeTimer = nil;
+                
                 [self.codeActivityIndicator startAnimating];
                 WebClient* webClient = [WebClient sharedClient];
                 [webClient retrieveVerificationCodeForE164:[phoneNumber e164Format]
@@ -147,11 +168,29 @@
                         return;
                     }
 
+                    [self setStep:2];
+
                     [self.codeActivityIndicator stopAnimating];
                     if (error == nil)
                     {
-                        self.codeLabel.text = code;
-                        [self setStep:2];
+                       // self.codeLabel.text = code;
+                        self.codeTimer = [NSTimer scheduledTimerWithTimeInterval:0.7 repeats:YES block:^
+                        {
+                            self.codeDigitsShown++;
+                            self.codeLabel.text = [code substringToIndex:self.codeDigitsShown];
+                            for (int n = self.codeDigitsShown; n < code.length; n++)
+                            {
+                                self.codeLabel.text = [self.codeLabel.text stringByAppendingString:@"-"];
+                            }
+                            
+                            if (self.codeDigitsShown == code.length)
+                            {
+                                [self.codeTimer invalidate];
+                                self.codeTimer = nil;
+                                
+                                [self setStep:3];
+                            }
+                        }];
                     }
                     else
                     {
@@ -217,7 +256,7 @@
 {
     WebClient* webClient = [WebClient sharedClient];
 
-    [self setStep:3];
+    [self setStep:4];
 
     // Initiate call.
     [webClient requestVerificationCallForE164:[self.phoneNumber e164Format] reply:^(NSError* error)
@@ -276,8 +315,8 @@
     }
     else
     {
-        self.step2View.backgroundColor = [Skinning tintColor];
-        self.label2.textColor          = [UIColor whiteColor];
+        self.step3View.backgroundColor = [Skinning tintColor];
+        self.label3.textColor          = [UIColor whiteColor];
     }
 }
 
@@ -286,13 +325,14 @@
 {
     if (sender == self.numberButton)
     {
+        [self setStep:1];
         self.step1View.backgroundColor = [Skinning backgroundTintColor];
         self.label1.textColor = (self.step == 1) ? [Skinning tintColor] : [UIColor whiteColor];
     }
     else
     {
-        self.step2View.backgroundColor = [Skinning backgroundTintColor];
-        self.label2.textColor = (self.step == 2) ? [Skinning tintColor] : [UIColor whiteColor];
+        self.step3View.backgroundColor = [Skinning backgroundTintColor];
+        self.label3.textColor = ((self.step == 3) || (self.step == 4)) ? [Skinning tintColor] : [UIColor whiteColor];
     }
 }
 
@@ -316,9 +356,9 @@
     [BlockAlertView showAlertViewWithTitle:title
                                    message:message
                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
-     {
-         [self setStep:2];
-     }
+    {
+        [self setStep:2];
+    }
                          cancelButtonTitle:[Strings closeString]
                          otherButtonTitles:nil];
 }
@@ -407,8 +447,9 @@
             self.label3.textColor = [UIColor whiteColor];
 
             [self setColor:[Skinning tintColor] forButton:self.numberButton];
-            [self setColor:[UIColor whiteColor] forButton:self.callButton];
             self.codeLabel.textColor = [UIColor whiteColor];
+            self.codeLabel.text = @"----";
+            [self setColor:[UIColor whiteColor] forButton:self.callButton];
 
             [self.callActivityIndicator stopAnimating];
             break;
@@ -418,13 +459,13 @@
             self.numberButton.userInteractionEnabled = YES;
             self.callButton.userInteractionEnabled   = YES;
 
-            self.label1.textColor = [UIColor whiteColor];
+            self.label1.textColor = [UIColor grayColor];
             self.label2.textColor = [Skinning tintColor];
             self.label3.textColor = [UIColor whiteColor];
 
-            [self setColor:[Skinning tintColor] forButton:self.numberButton];
-            [self setColor:[Skinning tintColor] forButton:self.callButton];
-            self.codeLabel.textColor = [UIColor blackColor];
+            [self setColor:[UIColor grayColor] forButton:self.numberButton];
+            self.codeLabel.textColor = [Skinning tintColor];
+            [self setColor:[UIColor whiteColor] forButton:self.callButton];
 
             [self.callActivityIndicator stopAnimating];
             break;
@@ -432,15 +473,23 @@
         case 3:
         {
             self.numberButton.userInteractionEnabled = NO;
+            self.callButton.userInteractionEnabled   = YES;
+
+            self.label1.textColor = [UIColor grayColor];
+            self.label2.textColor = [UIColor grayColor];
+            self.label3.textColor = [Skinning tintColor];
+
+            [self setColor:[UIColor grayColor] forButton:self.numberButton];
+            self.codeLabel.textColor = [UIColor grayColor];
+            [self setColor:[Skinning tintColor] forButton:self.callButton];
+            
+            [self.callActivityIndicator stopAnimating];
+            break;
+        }
+        case 4:
+        {
+            self.numberButton.userInteractionEnabled = NO;
             self.callButton.userInteractionEnabled   = NO;
-
-            self.label1.textColor = [UIColor whiteColor];
-            self.label2.textColor = [UIColor whiteColor];
-            self.label3.textColor = [UIColor blackColor];
-
-            [self setColor:[UIColor whiteColor] forButton:self.numberButton];
-            [self setColor:[UIColor whiteColor] forButton:self.callButton];
-            self.codeLabel.textColor = [UIColor blackColor];
 
             [self.callActivityIndicator startAnimating];
             break;
