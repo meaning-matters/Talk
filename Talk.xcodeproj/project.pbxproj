@@ -3551,6 +3551,7 @@
 		48884AB81615CE920005AA79 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ATS_DISABLE = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -3597,6 +3598,7 @@
 		48884AB91615CE920005AA79 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ATS_DISABLE = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -3728,6 +3730,7 @@
 		488FBBD41700604C000ECC71 /* AdHoc */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ATS_DISABLE = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
