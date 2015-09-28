@@ -122,14 +122,13 @@
 }
 
 
-#pragma mark - Actions
+#pragma mark - Helpers
 
-- (IBAction)numberAction:(id)sender
+- (void)getNumberWithCompletion:(void (^)(PhoneNumber* phoneNumber))completion
 {
-    __block BlockAlertView* alert;
-    NSString*               title;
-    NSString*               message;
-
+    __block NSString* title;
+    __block NSString* message;
+    
     title   = NSLocalizedStringWithDefaultValue(@"VerifyPhone EnterNumberTitle", nil,
                                                 [NSBundle mainBundle], @"Enter Your Number",
                                                 @"Title asking user to enter their phone number.\n"
@@ -139,114 +138,165 @@
                                                 @"Enter the number of a phone you own, or are responsible for.",
                                                 @"Message explaining about the phone number they need to enter.\n"
                                                 @"[iOS alert message size]");
-    alert   = [BlockAlertView showPhoneNumberAlertViewWithTitle:title
-                                                        message:message
-                                                    phoneNumber:self.phoneNumber
-                                                     completion:^(BOOL         cancelled,
-                                                                  PhoneNumber* phoneNumber)
+    [BlockAlertView showPhoneNumberAlertViewWithTitle:title
+                                              message:message
+                                          phoneNumber:self.phoneNumber
+                                           completion:^(BOOL         cancelled,
+                                                        PhoneNumber* phoneNumber)
     {
         if (cancelled == NO)
         {
-            [self setStep:1];
-            self.phoneNumber = phoneNumber;
-
-            if ([phoneNumber isValid])
+            [[WebClient sharedClient] retrieveVerifiedE164:phoneNumber.e164Format reply:^(NSError *error, NSString *name)
             {
-                [self.numberButton setTitle:[phoneNumber internationalFormat] forState:UIControlStateNormal];
-
-                self.codeDigitsShown = 0;
-                [self.codeTimer invalidate];
-                self.codeTimer = nil;
-                
-                [self.codeActivityIndicator startAnimating];
-                WebClient* webClient = [WebClient sharedClient];
-                [webClient retrieveVerificationCodeForE164:[phoneNumber e164Format]
-                                                     reply:^(NSError* error, NSString* code)
+                if (error.code == WebClientStatusFailInvalidRequest)
                 {
-                    if (self.isCancelled)
-                    {
-                        return;
-                    }
-
-                    [self setStep:2];
-
-                    [self.codeActivityIndicator stopAnimating];
-                    if (error == nil)
-                    {
-                       // self.codeLabel.text = code;
-                        self.codeTimer = [NSTimer scheduledTimerWithTimeInterval:0.7 repeats:YES block:^
-                        {
-                            self.codeDigitsShown++;
-                            self.codeLabel.text = [code substringToIndex:self.codeDigitsShown];
-                            for (int n = self.codeDigitsShown; n < code.length; n++)
-                            {
-                                self.codeLabel.text = [self.codeLabel.text stringByAppendingString:@"-"];
-                            }
-                            
-                            if (self.codeDigitsShown == code.length)
-                            {
-                                [self.codeTimer invalidate];
-                                self.codeTimer = nil;
-                                
-                                [self setStep:3];
-                            }
-                        }];
-                    }
-                    else
-                    {
-                        NSString* title;
-                        NSString* message;
-
-                        title   = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyCodeErrorTitle", nil,
-                                                                    [NSBundle mainBundle], @"Couldn't Get Code",
-                                                                    @"Something went wrong.\n"
-                                                                    @"[iOS alert title size].");
-                        message = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyCodeErrorMessage", nil,
-                                                                    [NSBundle mainBundle],
-                                                                    @"Failed to get a verification code.\n\n"
-                                                                    @"Please try again later.",
-                                                                    @"Alert message if user wants.\n"
-                                                                    @"[iOS alert message size]");
-                        [BlockAlertView showAlertViewWithTitle:title
-                                                       message:message
-                                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-                        {
-                            self.completion(nil);
-                            self.completion = nil;
-                            [self.navigationController popViewControllerAnimated:YES];
-                        }
-                                             cancelButtonTitle:[Strings closeString]
-                                             otherButtonTitles:nil];
-                    }
-                }];
-            }
-            else
-            {
-                NSString* title;
-                NSString* message;
-
-                title   = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyInvalidTitle", nil,
-                                                            [NSBundle mainBundle], @"Invalid Number",
-                                                            @"Phone number is not correct.\n"
-                                                            @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyInvalidMessage", nil,
-                                                            [NSBundle mainBundle],
-                                                            @"The phone number you entered is invalid, "
-                                                            @"please correct.",
-                                                            @"Alert message that entered phone number is invalid.\n"
-                                                            @"[iOS alert message size]");
+                    // The server generates this error when the number is unknown (should be changed to HTTP 404 later).
+                    completion(phoneNumber);
+                    
+                    return;
+                }
+                else if (error == nil)
+                {
+                    title   = NSLocalizedStringWithDefaultValue(@"VerifyPhone KnownTitle", nil, [NSBundle mainBundle],
+                                                                @"Already Verified", @"...");
+                    message = NSLocalizedStringWithDefaultValue(@"VerifyPhone KnownMessage", nil, [NSBundle mainBundle],
+                                                                @"You verified this Phone earlier.\n\n"
+                                                                @"Please pull to refresh your Phones if you "
+                                                                @"don't see it in the list.", @"...");
+                }
+                else
+                {
+                    title   = NSLocalizedStringWithDefaultValue(@"VerifyPhone KnownTitle", nil, [NSBundle mainBundle],
+                                                                @"Couldn't Check Number", @"...");
+                    message = NSLocalizedStringWithDefaultValue(@"VerifyPhone KnownMessage", nil, [NSBundle mainBundle],
+                                                                @"Failed to check if you already verified this number: %@\n\n"
+                                                                @"Please try again laeter.", @"...");
+                    message = [NSString stringWithFormat:message, error.localizedDescription];
+                }
+                
                 [BlockAlertView showAlertViewWithTitle:title
                                                message:message
-                                            completion:nil
-                                     cancelButtonTitle:[Strings closeString]
+                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                {
+                    // Without delay a 'ghost' keyboard may appear briefly: http://stackoverflow.com/q/32095734/1971013
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                    {
+                        [self.navigationController popViewControllerAnimated:YES];
+                    });
+                }
+                                     cancelButtonTitle:[Strings cancelString]
                                      otherButtonTitles:nil];
-
-                [self.numberButton setTitle:self.numberButtonTitle forState:UIControlStateNormal];
-            }
+            }];
         }
     }
-                                              cancelButtonTitle:[Strings cancelString]
-                                              otherButtonTitles:[Strings okString], nil];
+                                    cancelButtonTitle:[Strings cancelString]
+                                    otherButtonTitles:[Strings okString], nil];
+}
+
+
+#pragma mark - Actions
+
+- (IBAction)numberAction:(id)sender
+{
+    [self getNumberWithCompletion:^(PhoneNumber *phoneNumber)
+    {
+        [self setStep:1];
+        self.phoneNumber = phoneNumber;
+
+        if ([phoneNumber isValid])
+        {
+            [self.numberButton setTitle:[phoneNumber internationalFormat] forState:UIControlStateNormal];
+
+            self.codeDigitsShown = 0;
+            [self.codeTimer invalidate];
+            self.codeTimer = nil;
+            
+            [self.codeActivityIndicator startAnimating];
+            WebClient* webClient = [WebClient sharedClient];
+            [webClient retrieveVerificationCodeForE164:[phoneNumber e164Format]
+                                                 reply:^(NSError* error, NSString* code)
+            {
+                if (self.isCancelled)
+                {
+                    return;
+                }
+
+                [self setStep:2];
+
+                [self.codeActivityIndicator stopAnimating];
+                if (error == nil)
+                {
+                    self.codeTimer = [NSTimer scheduledTimerWithTimeInterval:0.7 repeats:YES block:^
+                    {
+                        self.codeDigitsShown++;
+                        self.codeLabel.text = [code substringToIndex:self.codeDigitsShown];
+                        for (int n = self.codeDigitsShown; n < code.length; n++)
+                        {
+                            self.codeLabel.text = [self.codeLabel.text stringByAppendingString:@"-"];
+                        }
+                        
+                        if (self.codeDigitsShown == code.length)
+                        {
+                            [self.codeTimer invalidate];
+                            self.codeTimer = nil;
+                            
+                            [self setStep:3];
+                        }
+                    }];
+                }
+                else
+                {
+                    NSString* title;
+                    NSString* message;
+
+                    title   = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyCodeErrorTitle", nil,
+                                                                [NSBundle mainBundle], @"Couldn't Get Code",
+                                                                @"Something went wrong.\n"
+                                                                @"[iOS alert title size].");
+                    message = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyCodeErrorMessage", nil,
+                                                                [NSBundle mainBundle],
+                                                                @"Failed to get a verification code: %@\n\n"
+                                                                @"Please try again later.",
+                                                                @"Alert message if user wants.\n"
+                                                                @"[iOS alert message size]");
+                    message = [NSString stringWithFormat:message, error.localizedDescription];
+                    [BlockAlertView showAlertViewWithTitle:title
+                                                   message:message
+                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+                    {
+                        self.completion(nil);
+                        self.completion = nil;
+                        [self.navigationController popViewControllerAnimated:YES];
+                    }
+                                         cancelButtonTitle:[Strings closeString]
+                                         otherButtonTitles:nil];
+                }
+            }];
+        }
+        else
+        {
+            NSString* title;
+            NSString* message;
+
+            title   = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyInvalidTitle", nil,
+                                                        [NSBundle mainBundle], @"Invalid Number",
+                                                        @"Phone number is not correct.\n"
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyInvalidMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"The phone number you entered is invalid, "
+                                                        @"please correct.",
+                                                        @"Alert message that entered phone number is invalid.\n"
+                                                        @"[iOS alert message size]");
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:nil
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+
+            [self.numberButton setTitle:self.numberButtonTitle forState:UIControlStateNormal];
+        }
+    }];
 
     [self buttonUp:self.numberButton];
 }
@@ -285,10 +335,11 @@
                                                         @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"VerifyPhone CallFailedMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"Calling you, to enter the verification code, failed.\n\n"
+                                                        @"Calling you, to enter the verification code, failed: %@\n\n"
                                                         @"Please try again later.",
                                                         @"Alert message that calling the user failed.\n"
                                                         @"[iOS alert message size]");
+            message = [NSString stringWithFormat:message, error.localizedDescription];
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
