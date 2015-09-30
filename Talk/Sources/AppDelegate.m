@@ -107,9 +107,12 @@
     [Common redirectStderrToFile];
 #endif
 
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge |
-                                                                          UIRemoteNotificationTypeSound |
-                                                                          UIRemoteNotificationTypeAlert];
+    
+    UIUserNotificationType types         = UIUserNotificationTypeBadge |
+                                           UIUserNotificationTypeSound |
+                                           UIUserNotificationTypeAlert;
+    UIUserNotificationSettings* settings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
 
     if ([UIApplication sharedApplication].protectedDataAvailable)
     {
@@ -125,6 +128,22 @@
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 
     return YES;
+}
+
+- (void)application:(UIApplication*)application didRegisterUserNotificationSettings:(UIUserNotificationSettings*)notificationSettings
+{
+    [application registerForRemoteNotifications];
+}
+
+
+- (void)application:(UIApplication*)application handleActionWithIdentifier:(NSString*)identifier forRemoteNotification:(NSDictionary*)userInfo completionHandler:(void(^)())completionHandler
+{
+    if ([identifier isEqualToString:@"declineAction"])
+    {
+    }
+    else if ([identifier isEqualToString:@"answerAction"])
+    {
+    }
 }
 
 

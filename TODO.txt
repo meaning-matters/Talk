@@ -173,3 +173,10 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Do Number textFields allow editing halfway the string. When trying to do so, the cursor jumps to the end.  If not see ItemVC #240
 
 * Do something with Advertising/Vendor Identifiers in AppDelegate
+
+* AppDelegate, is this the cause for unavailability of currencyCode sometimes at accoutn creation?    // When account purchase transaction has not been finished, the PurchaseManager receives
+// it again at app startup.  This is however slightly earlier than that device token is
+// received.  Therefore the PurchaseManager is started up here.
+
+
+
