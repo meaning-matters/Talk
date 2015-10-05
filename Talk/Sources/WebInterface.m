@@ -45,10 +45,10 @@
 @property (nonatomic, strong) NSDate*         dnsUpdateDate;
 @property (atomic, assign)    uint32_t        ttl;              // Shortest TTL of servers, in seconds.
 @property (nonatomic, strong) NSMutableArray* servers;
-@property (nonatomic, strong) NSMutableArray* updatingServers;
 @property (nonatomic, assign) int             weightSum;
 @property (nonatomic, assign) int             weighter;
 @property (nonatomic, assign) int             weighterIncrement;
+@property (nonatomic, strong) NSCondition*    condition;
 
 @end
 
@@ -74,6 +74,9 @@
         [sharedInstance.operationQueue setMaxConcurrentOperationCount:10];
 
         sharedInstance.securityPolicy.allowInvalidCertificates = NO;
+        
+        sharedInstance.servers   = [NSMutableArray array];
+        sharedInstance.condition = [[NSCondition alloc] init];
     });
     
     return sharedInstance;
@@ -87,8 +90,8 @@
     {
         if (self.servers.count == 0 || [[NSDate date] timeIntervalSinceDate:self.dnsUpdateDate] > (self.ttl + 60))
         {
-            self.updatingServers = [NSMutableArray array];
-            self.ttl             = UINT32_MAX;
+            [self.servers removeAllObjects];
+            self.ttl = UINT32_MAX;
 
             NBLog(@"Start DNS update.");
             DNSServiceRef       sdRef;
@@ -113,7 +116,7 @@
                 {
                     NBLog(@"DNS SRV query failed: %d.", error);
 
-                    goto done;
+                    return;
                 }
 
                 // This is necessary so we don't hang forever if there are no results
@@ -179,8 +182,6 @@
                 {
                     NBLog(@"DNS update done.");
 
-                    self.servers = self.updatingServers;
-
                     [self testServers];
                     [self prepareServers];
                 }
@@ -191,17 +192,6 @@
                 
                 DNSServiceRefDeallocate(sdRef);
             }
-        }
-
-    done:
-        if (self.servers.count == 0)
-        {
-            NSDictionary* server = @{@"target"   : [Settings sharedSettings].defaultServer,
-                                     @"priority" : @(1),
-                                     @"weight"   : @(100),
-                                     @"ttl"      : @(1800)};
-            self.servers   = [NSMutableArray arrayWithObject:server];
-            self.weightSum = 100;
         }
     }
 }
@@ -284,13 +274,13 @@ static void processDnsReply(DNSServiceRef       sdRef,
             uint16_t priority = rr->data.SRV->priority;
             uint16_t weight   = rr->data.SRV->weight;
 
-            NSDictionary* server = @{@"target"   : target,
-                                     @"port"     : @(port),
-                                     @"priority" : @(priority),
-                                     @"weight"   : @(weight),
-                                     @"ttl"      : @(ttl)};
+            NSMutableDictionary* server = [@{@"target"   : target,
+                                             @"port"     : @(port),
+                                             @"priority" : @(priority),
+                                             @"weight"   : @(weight),
+                                             @"ttl"      : @(ttl)} mutableCopy];
 
-            [[WebInterface sharedInterface].updatingServers addObject:server];
+            [[WebInterface sharedInterface].servers addObject:server];
         }
     }
     else
@@ -305,24 +295,54 @@ static void processDnsReply(DNSServiceRef       sdRef,
 
 - (void)testServers
 {
-    NSMutableArray* testServers = [NSMutableArray array];
+    [self.condition lock];
 
-    for (NSDictionary* server in self.servers)
+    NSArray* servers = [self.servers copy];
+    [self.servers removeAllObjects];
+
+    for (NSMutableDictionary* server in servers)
     {
         NSString* urlString = [NSString stringWithFormat:@"https://%@:%d%@",
                                                          server[@"target"],
                                                          [server[@"port"] intValue],
                                                          [Settings sharedSettings].serverTestUrlPath];
 
-        NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString] options:NSDataReadingUncached
-                                               error:nil];
-        if (data != nil && [[Common objectWithJsonData:data][@"status"] isEqualToString:@"OK"])
+        NSDate* startDate = [NSDate date];
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+        [NSURLConnection sendAsynchronousRequest:request
+                                           queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse* response, NSData* data, NSError* error)
         {
-            [testServers addObject:server];
-        }
+            if (data != nil && [[Common objectWithJsonData:data][@"status"] isEqualToString:@"OK"])
+            {
+                // This method returns as soon a the first response is received, meaning
+                // that any other servers are added after `updateServers` is done.  For that
+                // reason we need to mutally exclude access to `self.servers` here and in
+                // `selectServer`.
+                @synchronized(self.servers)
+                {
+                    server[@"delay"] = @([[NSDate date] timeIntervalSinceDate:startDate]);
+                    [self.servers addObject:server];
+                }
+                
+                [self.condition signal];
+            }
+        }];
     }
 
-    self.servers = testServers;
+    NSUInteger count;
+    do
+    {
+        [self.condition wait];
+        
+        @synchronized(self.servers)
+        {
+            count = self.servers.count;
+        }
+    }
+    while (count == 0);
+
+    [self.condition unlock];
 }
 
 
@@ -383,26 +403,32 @@ static void processDnsReply(DNSServiceRef       sdRef,
 {
     [self updateServers];
 
-    int           priority = [self.servers[0][@"priority"] intValue];
-    NSDictionary* server = nil;
-
-    int weighter = 0;
-    for (server in self.servers)
+    // See comment in `testServers` about mutual exclusive access to `self.servers`.
+    @synchronized(self.servers)
     {
-        if ([server[@"priority"] intValue] == priority)
+        int           priority = [self.servers[0][@"priority"] intValue];
+        NSDictionary* server = nil;
+        
+        int weighter = 0;
+        for (server in self.servers)
         {
-            weighter += [server[@"weight"] intValue];
-
-            if ((self.weighter % self.weightSum) < weighter)
+            if ([server[@"priority"] intValue] == priority)
             {
-                break;
+                weighter += [server[@"weight"] intValue];
+                
+                if ((self.weighter % self.weightSum) < weighter)
+                {
+                    break;
+                }
             }
         }
+        
+        self.weighter += self.weighterIncrement;
+        
+        NBLog(@"Selected server: %@", server);
+        
+        return server;
     }
-
-    self.weighter += self.weighterIncrement;
-
-    return server;
 }
 
 

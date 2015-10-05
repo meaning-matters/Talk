@@ -455,12 +455,6 @@ static NSUserDefaults* userDefaults;
 }
 
 
-- (NSString*)defaultServer
-{
-    return @"api.numberbay.com";
-}
-
-
 - (NSString*)serverTestUrlPath
 {
     return @"/test/system";

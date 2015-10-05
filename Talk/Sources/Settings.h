@@ -65,7 +65,6 @@
 @property (nonatomic, readonly) NSString*    companyWebsite;        // Company website URL.
 
 @property (nonatomic, readonly) NSString*    dnsHost;               // URL to DNS request list of servers.
-@property (nonatomic, readonly) NSString*    defaultServer;         // Server used when DNS request fails.
 @property (nonatomic, readonly) NSString*    serverTestUrlPath;     // Path of server test URL.
 
 @end
