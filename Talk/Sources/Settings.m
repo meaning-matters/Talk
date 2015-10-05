@@ -463,7 +463,7 @@ static NSUserDefaults* userDefaults;
 
 - (NSString*)serverTestUrlPath
 {
-    return @"/test/amazon";
+    return @"/test/system";
 }
 
 @end
