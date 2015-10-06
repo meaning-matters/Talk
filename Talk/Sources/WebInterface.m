@@ -183,7 +183,6 @@
                     NBLog(@"DNS update done.");
 
                     [self testServers];
-                    [self prepareServers];
                 }
                 else
                 {
@@ -323,6 +322,8 @@ static void processDnsReply(DNSServiceRef       sdRef,
                 {
                     server[@"delay"] = @([[NSDate date] timeIntervalSinceDate:startDate]);
                     [self.servers addObject:server];
+                    
+                    [self prepareServers];
                 }
                 
                 [self.condition signal];
@@ -348,7 +349,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
 
 - (void)prepareServers
 {
-    if (self.servers.count == 0)
+    if (self.servers.count < 2)
     {
         NBLog(@"No DNS-SRV servers to prepare.");
 
