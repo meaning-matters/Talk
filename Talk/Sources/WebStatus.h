@@ -10,7 +10,7 @@
 
 typedef enum
 {
-    WebClientStatusOk,
+    WebStatusOk,
     WebStatusFailInvalidRequest        = 911001,
     WebStatusFailServerIternal         = 911002,
     WebStatusFailServiceUnavailable    = 911003,
@@ -37,5 +37,7 @@ typedef enum
 @interface WebStatus : NSObject
 
 + (WebStatusCode)codeForString:(NSString*)string;
+
++ (NSString*)localizedStringForStatus:(WebStatusCode)code;
 
 @end

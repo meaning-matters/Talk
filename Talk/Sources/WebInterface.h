@@ -13,25 +13,21 @@
 
 + (WebInterface*)sharedInterface;
 
-- (void)getPath:(NSString*)path
-     parameters:(id)parameters
-        success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
-        failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure;
-
 - (void)postPath:(NSString*)path
-      parameters:(id)parameters
-         success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
-         failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure;
+      parameters:(NSDictionary*)parameters
+           reply:(void (^)(NSError* error, id content))reply;
 
 - (void)putPath:(NSString*)path
-     parameters:(id)parameters
-        success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
-        failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure;
+     parameters:(NSDictionary*)parameters
+          reply:(void (^)(NSError* error, id content))reply;
+
+- (void)getPath:(NSString*)path
+     parameters:(NSDictionary*)parameters
+          reply:(void (^)(NSError* error, id content))reply;
 
 - (void)deletePath:(NSString*)path
-        parameters:(id)parameters
-           success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
-           failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure;
+        parameters:(NSDictionary*)parameters
+             reply:(void (^)(NSError* error, id content))reply;
 
 - (void)cancelAllHttpOperationsWithMethod:(NSString*)method path:(NSString*)path;
 

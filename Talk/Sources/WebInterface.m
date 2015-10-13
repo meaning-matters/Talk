@@ -34,6 +34,7 @@
 #import <dns_sd.h>
 #import <dns_util.h>
 #import "WebInterface.h"
+#import "WebStatus.h"
 #import "Common.h"
 #import "Settings.h"
 #import "AFNetworking.h"
@@ -549,6 +550,144 @@ static void processDnsReply(DNSServiceRef       sdRef,
             [operation cancel];
         }
     });
+}
+
+
+#pragma mark - Helper Methods
+
+- (void)handleSuccess:(NSDictionary*)responseDictionary reply:(void (^)(NSError* error, id content))reply
+{
+    WebStatusCode code;
+    id            content = responseDictionary[@"content"];
+    
+    if (responseDictionary != nil && [responseDictionary isKindOfClass:[NSDictionary class]])
+    {
+        NSString* string = responseDictionary[@"status"];
+        
+        code = [WebStatus codeForString:string];
+    }
+    else
+    {
+        NBLog(@"WebStatusFailInvalidResponse content: %@", content);
+        code = WebStatusFailInvalidResponse;
+    }
+    
+    if (code == WebStatusOk)
+    {
+        reply(nil, content);
+    }
+    else
+    {
+        reply([Common errorWithCode:code description:[WebStatus localizedStringForStatus:code]], nil);
+    }
+}
+
+
+- (void)handleFailure:(NSError*)error reply:(void (^)(NSError* error, id content))reply
+{
+    if (error != nil)
+    {
+        if (error.code != NSURLErrorCancelled)
+        {
+            reply(error, nil);
+        }
+        else
+        {
+            // Ignore cancellation.
+        }
+    }
+    else
+    {
+        NBLog(@"Unknown error: %@", error);
+        
+        // Very unlikely that AFNetworking fails without error being set.
+        WebStatusCode code = WebStatusFailUnknown;
+        reply([Common errorWithCode:code description:[WebStatus localizedStringForStatus:code]], nil);
+    }
+}
+
+
+- (void)postPath:(NSString*)path
+      parameters:(NSDictionary*)parameters
+           reply:(void (^)(NSError* error, id content))reply
+{
+    NBLog(@"POST %@ : %@", path, parameters ? parameters : @"");
+    
+    [self postPath:path
+        parameters:parameters
+           success:^(AFHTTPRequestOperation* operation, id responseObject)
+    {
+        NBLog(@"POST response: %@", responseObject);
+        [self handleSuccess:responseObject reply:reply];
+    }
+                        failure:^(AFHTTPRequestOperation* operation, NSError* error)
+    {
+        NBLog(@"POST failure: %@", error);
+        [self handleFailure:error reply:reply];
+    }];
+}
+
+
+- (void)putPath:(NSString*)path
+     parameters:(NSDictionary*)parameters
+          reply:(void (^)(NSError* error, id content))reply
+{
+    NBLog(@" PUT %@ : %@", path, parameters ? parameters : @"");
+    
+    [self putPath:path
+       parameters:parameters
+          success:^(AFHTTPRequestOperation* operation, id responseObject)
+    {
+        NBLog(@"PUT response: %@", responseObject);
+        [self handleSuccess:responseObject reply:reply];
+    }
+                       failure:^(AFHTTPRequestOperation* operation, NSError* error)
+    {
+        NBLog(@"PUT failure: %@", error);
+        [self handleFailure:error reply:reply];
+    }];
+}
+
+
+- (void)getPath:(NSString*)path
+     parameters:(NSDictionary*)parameters
+          reply:(void (^)(NSError* error, id content))reply
+{
+    NBLog(@" GET %@ : %@", path, parameters ? parameters : @"");
+    
+    [self getPath:path
+       parameters:parameters
+          success:^(AFHTTPRequestOperation* operation, id responseObject)
+    {
+        NBLog(@"GET response: %@", responseObject);
+        [self handleSuccess:responseObject reply:reply];
+    }
+                       failure:^(AFHTTPRequestOperation* operation, NSError* error)
+    {
+        NBLog(@"GET failure: %@", error);
+        [self handleFailure:error reply:reply];
+    }];
+}
+
+
+- (void)deletePath:(NSString*)path
+        parameters:(NSDictionary*)parameters
+             reply:(void (^)(NSError* error, id content))reply
+{
+    NBLog(@" DELETE %@ : %@", path, parameters ? parameters : @"");
+    
+    [self deletePath:path
+          parameters:parameters
+             success:^(AFHTTPRequestOperation* operation, id responseObject)
+    {
+        NBLog(@"DELETE response: %@", responseObject);
+        [self handleSuccess:responseObject reply:reply];
+    }
+                          failure:^(AFHTTPRequestOperation* operation, NSError* error)
+    {
+        NBLog(@"DELETE failure: %@", error);
+        [self handleFailure:error reply:reply];
+    }];
 }
 
 @end
