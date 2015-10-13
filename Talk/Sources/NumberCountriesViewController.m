@@ -99,7 +99,7 @@
             [self sortOutArrays];
             self.isLoading = NO;    // Placed here, after processing results, to let reload of search results work.
         }
-        else if (error.code == WebClientStatusFailServiceUnavailable)
+        else if (error.code == WebStatusFailServiceUnavailable)
         {
             NSString* title;
             NSString* message;

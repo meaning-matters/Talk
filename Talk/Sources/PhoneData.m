@@ -61,7 +61,7 @@
 
             NSString* title;
             NSString* message;
-            if (error.code == WebClientStatusFailVerfiedNumberInUse)
+            if (error.code == WebStatusFailVerfiedNumberInUse)
             {
                 title   = NSLocalizedStringWithDefaultValue(@"Phone InUseTitle", nil,
                                                             [NSBundle mainBundle], @"Phone Not Deleted",

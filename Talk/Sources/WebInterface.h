@@ -9,23 +9,7 @@
 #import "AFHTTPRequestOperationManager.h"
 
 
-@protocol WebInterfaceDelegate <NSObject>
-
-- (NSString*)modifyServer:(NSString*)server;
-
-- (BOOL)checkReplyContent:(id)content;
-
-- (NSString*)webUsername;
-
-- (NSString*)webPassword;
-
-@end
-
-
 @interface WebInterface : AFHTTPRequestOperationManager
-
-@property (atomic, weak) id<WebInterfaceDelegate> delegate;
-
 
 + (WebInterface*)sharedInterface;
 

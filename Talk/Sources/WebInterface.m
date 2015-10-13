@@ -39,6 +39,7 @@
 #import "AFNetworking.h"
 
 
+
 @interface WebInterface ()
 
 @property (nonatomic, assign) NSTimeInterval  dnsUpdateTimeout; // Seconds.
@@ -66,6 +67,7 @@
 
         sharedInstance.dnsUpdateTimeout   = 20;
         sharedInstance.requestSerializer  = [AFJSONRequestSerializer serializer];
+        [sharedInstance.requestSerializer setTimeoutInterval:10];
         [sharedInstance.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
         [sharedInstance.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 
@@ -77,6 +79,8 @@
         
         sharedInstance.servers   = [NSMutableArray array];
         sharedInstance.condition = [[NSCondition alloc] init];
+        
+
     });
     
     return sharedInstance;
@@ -463,8 +467,8 @@ static void processDnsReply(DNSServiceRef       sdRef,
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
     {
-        [self.requestSerializer setAuthorizationHeaderFieldWithUsername:[self.delegate webUsername]
-                                                               password:[self.delegate webPassword]];
+        [self.requestSerializer setAuthorizationHeaderFieldWithUsername:[Settings sharedSettings].webUsername
+                                                               password:[Settings sharedSettings].webPassword];
 
         NSDictionary* server    = [self selectServer];
         NSString*     urlString = [NSString stringWithFormat:@"https://%@:%d%@",
@@ -472,9 +476,9 @@ static void processDnsReply(DNSServiceRef       sdRef,
                                                              [server[@"port"] intValue],
                                                              path];
         NSMutableURLRequest* request = [self.requestSerializer requestWithMethod:method
-                                                                         URLString:urlString
-                                                                        parameters:parameters
-                                                                             error:nil];    //### Is 'nil' okay?
+                                                                       URLString:urlString
+                                                                      parameters:parameters
+                                                                           error:nil];    //### Is 'nil' okay?
 
         AFHTTPRequestOperation* operation = [self RequestOperationWithRequest:request success:success failure:failure];
 

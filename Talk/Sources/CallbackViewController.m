@@ -131,7 +131,7 @@
 
             self.call.state = CallStateFailed;
 
-            if (error.code == WebClientStatusFailNoCredit)
+            if (error.code == WebStatusFailNoCredit)
             {
                 self.statusLabel.text      = NSLocalizedStringWithDefaultValue(@"Callback NoCreditStatusText", nil,
                                                                                [NSBundle mainBundle],
@@ -146,9 +146,9 @@
                                                                                @"Alert message\n"
                                                                                @"[N lines]");
             }
-            else if (error.code == WebClientStatusFailUnknownCallerId ||
-                     error.code == WebClientStatusFailUnknownVerifiedNumber ||
-                     error.code == WebClientStatusFailUnknownBothE164)
+            else if (error.code == WebStatusFailUnknownCallerId ||
+                     error.code == WebStatusFailUnknownVerifiedNumber ||
+                     error.code == WebStatusFailUnknownBothE164)
             {
                 self.statusLabel.text = [self.call stateString];
 

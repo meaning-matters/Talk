@@ -148,7 +148,7 @@
         {
             [[WebClient sharedClient] retrieveVerifiedE164:phoneNumber.e164Format reply:^(NSError *error, NSString *name)
             {
-                if (error.code == WebClientStatusFailInvalidRequest)
+                if (error.code == WebStatusFailInvalidRequest)
                 {
                     // The server generates this error when the number is unknown (should be changed to HTTP 404 later).
                     completion(phoneNumber);

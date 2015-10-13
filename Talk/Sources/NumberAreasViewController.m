@@ -201,7 +201,7 @@
 
 - (void)handleError:(NSError*)error
 {
-    if (error.code == WebClientStatusFailServiceUnavailable)
+    if (error.code == WebStatusFailServiceUnavailable)
     {
         NSString* title;
         NSString* message;

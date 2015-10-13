@@ -324,7 +324,7 @@ typedef enum
             [self.tableView reloadData];
             self.isLoading = NO;    // Placed here, after processing results, to let reload of search results work.
         }
-        else if (error.code == WebClientStatusFailServiceUnavailable)
+        else if (error.code == WebStatusFailServiceUnavailable)
         {
             NSString* title;
             NSString* message;
@@ -891,7 +891,7 @@ typedef enum
                                                      cancelButtonTitle:[Strings closeString]
                                                      otherButtonTitles:nil];
                             }
-                            else //TODO Check with WebClientStatusFailInvalidInfo, check if server generates this.
+                            else //TODO Check with WebStatusFailInvalidInfo, check if server generates this.
                             {
                                 NSString* title;
                                 NSString* message;

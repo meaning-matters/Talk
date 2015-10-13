@@ -121,7 +121,7 @@ Make country list diacritic insensitive
 
 * Gebruik tijd bij bepalen of callback stop nog gedaan moet worden.  Nu komt er namelijk een alert als je NB pas veel later weer opent.
 
-* NumberAreaViewController.m #876 check with WebClientStatusFailInvalidInfo ...
+* NumberAreaViewController.m #876 check with WebStatusFailInvalidInfo ...
 
 * Groot probleem in PurchaseManager zie "We can get here when app did not process purchase previous time ..."
 

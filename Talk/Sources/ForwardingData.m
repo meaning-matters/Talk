@@ -65,7 +65,7 @@
                 [managedObjectContext deleteObject:self];
                 completion ? completion(YES) : 0;
             }
-            else if (error.code == WebClientStatusFailIvrInUse)
+            else if (error.code == WebStatusFailIvrInUse)
             {
                 NSString* title;
                 NSString* message;
