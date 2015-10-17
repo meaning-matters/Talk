@@ -635,33 +635,34 @@
     {
         NSMutableArray* contacts = [NSMutableArray arrayWithArray:allContacts];
 
-        [contacts filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary* bindings)
+        // The method is sometimes run concurrently, and then gives a EXC_BAD_ACCESS here.
+        // By synchronizing it went away.  Apparently ABRecordCopyValue is not re-entrant.
+        // http://stackoverflow.com/questions/23118802/exc-bad-access-in-abrecordcopyvalue
+        @synchronized(self)
         {
-            ABRecordRef contact = (__bridge ABRecordRef)evaluatedObject;
-
-            ABMultiValueRef numberArray;
-            @synchronized(self)
+            [contacts filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary* bindings)
             {
-                // The method is sometimes run concurrently, and then gives a EXC_BAD_ACCESS here.
-                // By synchronizing it went away.  Apparently ABRecordCopyValue is not re-entrant.
-                // http://stackoverflow.com/questions/23118802/exc-bad-access-in-abrecordcopyvalue
+                ABRecordRef contact = (__bridge ABRecordRef)evaluatedObject;
+                
+                ABMultiValueRef numberArray;
+
                 numberArray = ABRecordCopyValue(contact, kABPersonPhoneProperty);
-            }
-
-            CFIndex count = ABMultiValueGetCount(numberArray);
-            for (CFIndex i = 0; i < count; i++)
-            {
-                NSString* contactNumber = (__bridge NSString*)(ABMultiValueCopyValueAtIndex(numberArray, i));
-                contactNumber = [[contactNumber componentsSeparatedByCharactersInSet:stripSet] componentsJoinedByString:@""];
-
-                if ([contactNumber rangeOfString:number].location != NSNotFound)
+                
+                CFIndex count = ABMultiValueGetCount(numberArray);
+                for (CFIndex i = 0; i < count; i++)
                 {
-                    return YES;
+                    NSString* contactNumber = (__bridge NSString*)(ABMultiValueCopyValueAtIndex(numberArray, i));
+                    contactNumber = [[contactNumber componentsSeparatedByCharactersInSet:stripSet] componentsJoinedByString:@""];
+                    
+                    if ([contactNumber rangeOfString:number].location != NSNotFound)
+                    {
+                        return YES;
+                    }
                 }
-            }
-            
-            return NO;
-        }]];
+                
+                return NO;
+            }]];
+        }
 
         dispatch_async(dispatch_get_main_queue(), ^
         {
