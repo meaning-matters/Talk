@@ -21,7 +21,9 @@
     NBRecentContactViewController*        recentViewController;
 
     //The missed-calls only predicate
-    NSPredicate * missedCallsOnlyPredicate;
+    NSPredicate*                          missedCallsOnlyPredicate;
+    
+    NSDate*                               reloadDate;
 }
 
 @end
@@ -45,6 +47,11 @@
     }
 
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
@@ -91,6 +98,18 @@
     
     //Load in the initial content
     [self performFetch];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reload)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self reload];
 }
 
 #pragma mark - Replacing an unknown contact with a known one
@@ -196,12 +215,12 @@
     {
         case 0:
             [self clearOneWeekRecents];
-            [self loadDatasource];
+            [self reload];
             break;
 
         case 1:
             [self clearOneMonthRecents];
-            [self loadDatasource];
+            [self reload];
             break;
 
         case 2:
@@ -220,13 +239,20 @@
     }
 }
 
+
 #pragma mark - Loading recent calls from CoreData
-- (void)loadDatasource
+
+- (void)reload
 {
-    //Only perform a full reload if more calls were made
-    NSArray * allRecentContacts = [self.fetchedResultsController fetchedObjects];
-    if (numRecentCalls == 0 || [allRecentContacts count] != numRecentCalls)
+    // Only perform a full reload if more calls were made or when it's the next day.
+    NSCalendar* calendar          = [NSCalendar currentCalendar];
+    NSArray*    allRecentContacts = [self.fetchedResultsController fetchedObjects];
+    
+    if (numRecentCalls == 0 || [allRecentContacts count] != numRecentCalls ||
+        ![calendar isDate:[NSDate date] inSameDayAsDate:reloadDate])
     {
+        reloadDate = [NSDate date];
+        
         //Performance improvement
         numRecentCalls = (int)[allRecentContacts count];
         
@@ -249,12 +275,7 @@
                     ( [lastEntry.status intValue] != CallStatusMissed && [entry.status intValue] != CallStatusMissed)))
                 {
                     //If the last entry's day is equal to this day
-                    NSCalendar * cal = [NSCalendar currentCalendar];
-                    NSDateComponents * components = [cal components:( NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit) fromDate:lastEntry.date];
-                    NSDate * lastEntryDate = [cal dateFromComponents:components];
-                    components = [cal components:( NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit) fromDate:entry.date];
-                    NSDate * currentEntryDate = [cal dateFromComponents:components];
-                    if ([lastEntryDate timeIntervalSinceDate:currentEntryDate] == 0)
+                    if ([calendar isDate:lastEntry.date inSameDayAsDate:entry.date])
                     {
                         [entryArray addObject:entry];
                         entryAdded = YES;
@@ -282,6 +303,7 @@
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
+
 
 #pragma mark - Segmented control change
 - (void)segmentedControlSwitched:(UISegmentedControl*)control
@@ -330,9 +352,14 @@
     
     [self.navigationItem setLeftBarButtonItem:nil];
     if ([dataSource count] > 0)
+    {
         [self.navigationItem setRightBarButtonItem:editButton];
+    }
     else
+    {
         [self.navigationItem setRightBarButtonItem:nil];
+    }
+    
     [self.tableView setEditing:NO animated:YES];
 }
 
@@ -473,18 +500,19 @@
     }
 #endif
 
-    //Set the time and (yesterday/day name in case of less than a week ago/date)
+    // Set the time and (yesterday/day name in case of less than a week ago/date)
     NSString*         dayOrDate;
     NSCalendar*       cal         = [NSCalendar currentCalendar];
-    NSDateComponents* components  = [cal components:( NSYearCalendarUnit | NSMonthCalendarUnit |
-                                                      NSWeekCalendarUnit | NSDayCalendarUnit)
+    NSDateComponents* components  = [cal components:(NSCalendarUnitYear      | NSCalendarUnitMonth |
+                                                     NSCalendarUnitWeekOfYear | NSCalendarUnitDay)
                                            fromDate:latestEntry.date];
     NSDate*           entryDate   = [cal dateFromComponents:components];
-    components                    = [cal components:( NSYearCalendarUnit | NSMonthCalendarUnit |
-                                                      NSWeekCalendarUnit | NSDayCalendarUnit)
+    components                    = [cal components:(NSCalendarUnitYear       | NSCalendarUnitMonth |
+                                                     NSCalendarUnitWeekOfYear | NSCalendarUnitDay)
                                            fromDate:[NSDate date]];
     NSDate*           currentDate = [cal dateFromComponents:components];
     int               timeDelta   = [currentDate timeIntervalSinceDate:entryDate];
+    
     if (timeDelta < 60 * 60 * 24 * 7)
     {
         if (timeDelta == 0)
@@ -697,21 +725,26 @@
     return fetchedResultsController;
 }
 
--(void)performFetch
+- (void)performFetch
 {
     NSFetchedResultsController * fetchedController = [self fetchedResultsController];
     NSError * error;
     [fetchedController performFetch:&error];
-    if( error )
-        NBLog( @"%@", [error localizedDescription] );
+    if (error)
+    {
+        NBLog(@"%@", [error localizedDescription]);
+    }
     else
-        [self loadDatasource];
+    {
+        [self reload];
+    }
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate
+
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    [self loadDatasource];
+    [self reload];
 }
 
 /*#pragma mark - DEBUG - Insert test-data into recent-called data structure
