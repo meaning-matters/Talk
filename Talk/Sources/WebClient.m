@@ -128,6 +128,8 @@
     NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
     NSString* countryCode  = [Settings sharedSettings].storeCountryCode;
     
+    // Don't call `handleAccount` and get data without needing account.
+    
     [self.webInterface getPath:[NSString stringWithFormat:@"/rates/calls?currencyCode=%@&countryCode=%@",
                                                           currencyCode, countryCode]
                     parameters:nil
@@ -141,6 +143,8 @@
     NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
     NSString* countryCode  = [Settings sharedSettings].storeCountryCode;
     
+    // Don't call `handleAccount` and get data without needing account.
+
     [self.webInterface getPath:[NSString stringWithFormat:@"/rates/numbers?currencyCode=%@&countryCode=%@",
                                                           currencyCode, countryCode]
                     parameters:nil
@@ -180,6 +184,8 @@
     NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
     NSString* countryCode  = [Settings sharedSettings].storeCountryCode;
     
+    // Don't call `handleAccount` and get data without needing account.
+
     [self.webInterface postPath:[NSString stringWithFormat:@"/users?currencyCode=%@&countryCode=%@",
                                                            currencyCode, countryCode]
                      parameters:parameters
@@ -650,6 +656,8 @@
     NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
     NSString* countryCode  = [Settings sharedSettings].storeCountryCode;
     
+    // Don't call `handleAccount` and get data without needing account.
+
     [self.webInterface getPath:[NSString stringWithFormat:@"/rate/%@?currencyCode=%@&countryCode=%@",
                                                           number, currencyCode, countryCode]
                     parameters:nil
@@ -748,16 +756,16 @@
     [self getPath:[NSString stringWithFormat:@"/users/%@/ivr/%@", username, uuid]
        parameters:nil
             reply:^(NSError* error, id content)
-     {
-         if (error == nil)
-         {
-             reply(nil, content[@"name"], content[@"statements"]);
-         }
-         else
-         {
-             reply(error, nil, nil);
-         }
-     }];
+    {
+        if (error == nil)
+        {
+            reply(nil, content[@"name"], content[@"statements"]);
+        }
+        else
+        {
+            reply(error, nil, nil);
+        }
+    }];
 }
 
 
