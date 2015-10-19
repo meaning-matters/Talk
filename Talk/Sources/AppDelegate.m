@@ -683,6 +683,14 @@
 }
 
 
+- (BOOL)callerIdIsShownForContactId:(NSString*)contactId
+{
+    CallerIdData* callerId = [self callerIdForContactId:contactId];
+    
+    return ((callerId == nil) || (callerId.callable != nil));
+}
+
+
 - (void)selectCallerIdForContactId:(NSString*)contactId
               navigationController:(UINavigationController*)navigationController
                         completion:(void (^)(CallableData* selectedCallable))completion

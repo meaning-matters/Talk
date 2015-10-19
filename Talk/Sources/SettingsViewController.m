@@ -184,7 +184,7 @@ typedef enum
         case TableSectionCallMode:
         {
             title = NSLocalizedStringWithDefaultValue(@"Settings:CallMode SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Call Mode",
+                                                      [NSBundle mainBundle], @"Default Call Mode",
                                                       @"The way calls are being made.");
             break;
         }
@@ -548,8 +548,8 @@ typedef enum
             cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
         }
 
-        cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
-        cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
+        cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
     else if (indexPath.row == 1)
     {
@@ -559,10 +559,10 @@ typedef enum
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallerIDCell"];
         }
 
-        cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Setting Shown Number Format", nil,
-                                                                      [NSBundle mainBundle], @"Default Caller ID",
-                                                                      @"Format string showing shown number.\n"
-                                                                      @"[1 line].");
+        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Setting Shown Number Format", nil,
+                                                                [NSBundle mainBundle], @"Caller ID",
+                                                                @"Format string showing shown number.\n"
+                                                                @"[1 line].");
         PhoneData* phone = [self lookupPhoneForE164:settings.callerIdE164];
         if (phone != nil)
         {
@@ -575,8 +575,8 @@ typedef enum
             cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
         }
 
-        cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
-        cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
+        cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
     else if (indexPath.row == 2)
     {
@@ -681,41 +681,6 @@ typedef enum
         }
     }
     
-    return cell;
-}
-
-
-- (UITableViewCell*)showCallerIdCell
-{
-    UITableViewCell* cell;
-    UISwitch*        switchView;
-
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
-    if (cell == nil)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
-        switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-        switchView.onTintColor = [Skinning onTintColor];
-        cell.accessoryView = switchView;
-    }
-    else
-    {
-        switchView = (UISwitch*)cell.accessoryView;
-    }
-
-    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:ShowCallId CellText", nil,
-                                                            [NSBundle mainBundle], @"Show My Caller ID",
-                                                            @"Title of switch if people called see my number\n"
-                                                            @"[2/3 line - abbreviated: 'Show Caller ID', use "
-                                                            @"exact same term as in iOS].");
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    switchView.on = settings.showCallerId;
-
-    [switchView removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    [switchView addTarget:self
-                   action:@selector(showCallerIdSwitchAction:)
-         forControlEvents:UIControlEventValueChanged];
-
     return cell;
 }
 

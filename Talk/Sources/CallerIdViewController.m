@@ -18,16 +18,15 @@
 
 typedef enum
 {
-    TableSectionPhones  = 1UL << 0,
-    TableSectionNumbers = 1UL << 1,
+    TableSectionShowCallerId = 1UL << 0,
+    TableSectionPhones       = 1UL << 1,
+    TableSectionNumbers      = 1UL << 2,
 } TableSections;
 
 
 @interface CallerIdViewController ()
-{
-    TableSections sections;
-}
 
+@property (nonatomic, assign) TableSections           sections;
 @property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
 @property (nonatomic, strong) CallerIdData*           callerId;
 @property (nonatomic, strong) NSString*               contactId;
@@ -90,30 +89,54 @@ typedef enum
 }
 
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if ([self isMovingFromParentViewController])
+    {
+        self.completion ? self.completion(self.callerId.callable) : (void)0;
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return (self.phones.count > 0) + (self.numbers.count > 0);
+    self.sections = TableSectionShowCallerId;
+
+    if (self.callerId == nil || self.callerId.callable != nil)
+    {
+        self.sections |= (self.phones.count  > 0) ? TableSectionPhones  : 0;
+        self.sections |= (self.numbers.count > 0) ? TableSectionNumbers : 0;
+    }
+    
+    return [Common bitsSetCount:self.sections];
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    switch ([self tableSectionForSection:section])
+    switch ((TableSections)[Common nthBitSet:section inValue:self.sections])
     {
-        case TableSectionPhones:  return self.phones.count;
-        case TableSectionNumbers: return self.numbers.count;
+        case TableSectionShowCallerId: return 1;
+        case TableSectionPhones:       return self.phones.count;
+        case TableSectionNumbers:      return self.numbers.count;
     }
 }
 
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString* title = nil;
+    NSString* title;
 
-    switch ([self tableSectionForSection:section])
+    switch ((TableSections)[Common nthBitSet:section inValue:self.sections])
     {
+        case TableSectionShowCallerId:
+        {
+            title = nil;
+            break;
+        }
         case TableSectionPhones:
         {
             title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Phones SectionHeader", nil, [NSBundle mainBundle],
@@ -134,10 +157,15 @@ typedef enum
 
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
-    NSString* title = nil;
+    NSString* title;
 
-    switch ([self tableSectionForSection:section])
+    switch ((TableSections)[Common nthBitSet:section inValue:self.sections])
     {
+        case TableSectionShowCallerId:
+        {
+            title = nil;
+            break;
+        }
         case TableSectionPhones:
         {
             title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Phones SectionFooter", nil, [NSBundle mainBundle],
@@ -165,6 +193,56 @@ typedef enum
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
+    
+    switch ((TableSections)[Common nthBitSet:indexPath.section inValue:self.sections])
+    {
+        case TableSectionShowCallerId: cell = [self switchCell];                                              break;
+        case TableSectionPhones:       cell = [self callableCell:[self.phones  objectAtIndex:indexPath.row]]; break;
+        case TableSectionNumbers:      cell = [self callableCell:[self.numbers objectAtIndex:indexPath.row]]; break;
+    }
+
+    return cell;
+}
+
+
+- (UITableViewCell*)switchCell
+{
+    UITableViewCell* cell;
+    UISwitch*        switchView;
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
+        switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+        switchView.onTintColor = [Skinning onTintColor];
+        cell.accessoryView = switchView;
+    }
+    else
+    {
+        switchView = (UISwitch*)cell.accessoryView;
+    }
+    
+    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"CallerId:ShowCallId CellText", nil,
+                                                            [NSBundle mainBundle], @"Show My Caller ID",
+                                                            @"Title of switch if people called see my number\n"
+                                                            @"[2/3 line - abbreviated: 'Show Caller ID', use "
+                                                            @"exact same term as in iOS].");
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    switchView.on = ((self.callerId == nil) || (self.callerId.callable != nil));
+    
+    [switchView removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [switchView addTarget:self
+                   action:@selector(showCallerIdSwitchAction:)
+         forControlEvents:UIControlEventValueChanged];
+    
+    return cell;
+}
+
+
+- (UITableViewCell*)callableCell:(CallableData*)callable
+{
+    UITableViewCell* cell;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"SubtitleCell"];
     if (cell == nil)
@@ -172,7 +250,19 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SubtitleCell"];
     }
 
-    [self configureCell:cell atIndexPath:indexPath];
+    cell.textLabel.text       = callable.name;
+    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:callable.e164];
+    cell.detailTextLabel.text = [phoneNumber internationalFormat];
+    cell.imageView.image      = [UIImage imageNamed:[phoneNumber isoCountryCode]];
+    
+    if (callable == self.callerId.callable)
+    {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
+    else
+    {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
 
     return cell;
 }
@@ -182,8 +272,12 @@ typedef enum
 {
     CallableData* callable = nil;
     
-    switch ([self tableSectionForSection:indexPath.section])
+    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
+        case TableSectionShowCallerId:
+        {
+            return;
+        }
         case TableSectionPhones:
         {
             callable = [self.phones objectAtIndex:indexPath.row];
@@ -204,6 +298,7 @@ typedef enum
     }
     
     self.callerId.callable = callable;
+    
     [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
 
     if (self.navigationController.presentingViewController != nil)
@@ -235,14 +330,53 @@ typedef enum
 
 - (void)deleteAction
 {
-    self.callerId.callable = nil;
-
     [self.managedObjectContext deleteObject:self.callerId];
     
     self.completion ? self.completion(nil) : (void)0;
     
+    [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+    
     // We can only get here pushed from a contact.
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+
+- (void)showCallerIdSwitchAction:(UISwitch*)switchView
+{
+    if (switchView.on)
+    {
+        [self.managedObjectContext deleteObject:self.callerId];
+        self.callerId = nil;
+        
+        NSInteger   numberOfSections = [self numberOfSectionsInTableView:self.tableView];
+        NSRange     range            = NSMakeRange(1, numberOfSections - 1);
+        NSIndexSet* indexSet         = [NSIndexSet indexSetWithIndexesInRange:range];
+
+        [self.tableView beginUpdates];
+        [self.tableView insertSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+    }
+    else
+    {
+        NSInteger   numberOfSections = [self numberOfSectionsInTableView:self.tableView];
+        NSRange     range            = NSMakeRange(1, numberOfSections - 1);
+        NSIndexSet* indexSet         = [NSIndexSet indexSetWithIndexesInRange:range];
+
+        if (self.callerId == nil)
+        {
+            self.callerId = [NSEntityDescription insertNewObjectForEntityForName:@"CallerId"
+                                                          inManagedObjectContext:self.managedObjectContext];
+            self.callerId.contactId = self.contactId;
+        }
+        
+        self.callerId.callable = nil;
+        
+        [self.tableView beginUpdates];
+        [self.tableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+    }
+    
+    [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
 }
 
 
@@ -261,52 +395,6 @@ typedef enum
                                                      sortKeys:@[@"e164", @"name"]
                                                     predicate:nil
                                          managedObjectContext:self.managedObjectContext];
-}
-
-
-- (TableSections)tableSectionForSection:(NSInteger)section
-{
-    if (self.phones.count == 0)
-    {
-        return TableSectionNumbers;
-    }
-    else
-    {
-        return (TableSections)[Common nthBitSet:section inValue:sections];
-    }
-}
-
-
-- (void)configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
-{
-    CallableData* callable;
-    switch ([self tableSectionForSection:indexPath.section])
-    {
-        case TableSectionPhones:
-        {
-            callable = [self.phones objectAtIndex:indexPath.row];
-            break;
-        }
-        case TableSectionNumbers:
-        {
-            callable = [self.numbers objectAtIndex:indexPath.row];
-            break;
-        }
-    }
-
-    cell.textLabel.text       = callable.name;
-    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:callable.e164];
-    cell.detailTextLabel.text = [phoneNumber internationalFormat];
-    cell.imageView.image      = [UIImage imageNamed:[phoneNumber isoCountryCode]];
-
-    if (callable == self.callerId.callable)
-    {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    }
-    else
-    {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }
 }
 
 @end

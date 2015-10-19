@@ -108,7 +108,6 @@
             case CC_NOTES:
             case CC_CALLER_ID:
             {
-                //This field is hidden until added
                 break;
             }
             default:
@@ -236,8 +235,20 @@
         
         {
             NSMutableArray* sectionArray = [self.tableStructure objectAtIndex:CC_CALLER_ID];
-            NBPersonCellInfo* personCellInfo = [[NBPersonCellInfo alloc] initWithPlaceholder:@"Uses default" andLabel:@"Caller ID"];
-            NSString* contactId = [NSString stringWithFormat:@"%d", ABRecordGetRecordID(person.contactRef)];
+            NSString*       contactId    = [NSString stringWithFormat:@"%d", ABRecordGetRecordID(person.contactRef)];
+            NSString*       placeholder;
+            
+            if ([[NBAddressBookManager sharedManager].delegate callerIdIsShownForContactId:contactId])
+            {
+                placeholder = NSLocalizedString(@"CI_USES_DEFAULT", @"");
+            }
+            else
+            {
+                placeholder = NSLocalizedString(@"CI_IS_NOT_SHOWN", @"");
+            }
+            
+            NBPersonCellInfo* personCellInfo = [[NBPersonCellInfo alloc] initWithPlaceholder:placeholder
+                                                                                    andLabel:NSLocalizedString(@"CI_CALLER_ID", @"")];
             NSString* callerIdName = [[NBAddressBookManager sharedManager].delegate callerIdNameForContactId:contactId];
             [personCellInfo setTextValue:callerIdName];
             [sectionArray addObject:personCellInfo];

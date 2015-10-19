@@ -35,6 +35,8 @@
 
 - (NSString*)callerIdNameForContactId:(NSString*)contactId;
 
+- (BOOL)callerIdIsShownForContactId:(NSString*)contactId;
+
 - (void)selectCallerIdForContactId:(NSString*)contactId
               navigationController:(UINavigationController*)navigationController
                         completion:(void (^)(CallableData* selectedCallable))completion;

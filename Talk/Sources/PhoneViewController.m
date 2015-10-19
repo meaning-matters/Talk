@@ -221,7 +221,7 @@ typedef enum
                                                              sortKeys:@[@"name"]
                                                             predicate:predicate
                                                  managedObjectContext:nil];
-
+    
     NSMutableArray* array = [NSMutableArray array];
     CallableData* callable = self.phone;
     for (CallerIdData* callerId in [callable.callerIds allObjects])

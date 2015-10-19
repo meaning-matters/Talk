@@ -1572,6 +1572,15 @@
                     NBPersonIMCell* cell = (NBPersonIMCell*)cellInfo.tableViewCell;
                     cell.cellTextfield.text = selectedCallable.name;
                     
+                    if ([[NBAddressBookManager sharedManager].delegate callerIdIsShownForContactId:[self contactId]])
+                    {
+                        cell.cellTextfield.placeholder = NSLocalizedString(@"CI_USES_DEFAULT", @"");
+                    }
+                    else
+                    {
+                        cell.cellTextfield.placeholder = NSLocalizedString(@"CI_IS_NOT_SHOWN", @"");
+                    }
+
                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                 }];
                 break;

@@ -248,7 +248,7 @@
                                                           @"[iOS alert button title full width]");
 
         defaultButton = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId DefaultButton", nil, [NSBundle mainBundle],
-                                                          @"Use Default Only Now",
+                                                          @"Use Default",
                                                           @"...\n"
                                                           @"[iOS alert button title full width]");
 
