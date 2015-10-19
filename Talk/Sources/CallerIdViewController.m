@@ -310,11 +310,6 @@ typedef enum
     }
     else
     {
-        if (callable != self.selectedCallable)
-        {
-            self.completion ? self.completion(callable) : (void)0;
-        }
-        
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
@@ -374,6 +369,11 @@ typedef enum
         [self.tableView beginUpdates];
         [self.tableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
         [self.tableView endUpdates];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.333 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        });
     }
     
     [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
