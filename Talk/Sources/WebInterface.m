@@ -3,7 +3,7 @@
 //  Talk
 //
 //  Created by Cornelis van der Bent on 9/9/14.
-//  Copyright (c) 2014 Cornelis van der Bent. All rights reserved.
+//  Copyright (c) 2014 NumberBay Ltd. All rights reserved.
 //
 //  The server list is DNS-refreshed when it's empty, when the shortest TTL of
 //  all servers has expired, or when one of the servers returned a failure;

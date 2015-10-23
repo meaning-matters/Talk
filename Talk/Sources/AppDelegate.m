@@ -4,7 +4,7 @@
 //  Talk
 //
 //  Created by Cornelis van der Bent on 28/09/12.
-//  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
+//  Copyright (c) 2012 NumberBay Ltd. All rights reserved.
 //
 //### Want to remove CoreData? http://www.gravitywell.co.uk/blog/post/how-to-quickly-add-core-data-to-an-app-in-xcode-4
 

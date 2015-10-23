@@ -3,7 +3,7 @@
 //  Talk
 //
 //  Created by Cornelis van der Bent on 16/03/14.
-//  Copyright (c) 2014 Cornelis van der Bent. All rights reserved.
+//  Copyright (c) 2014 NumberBay Ltd. All rights reserved.
 //
 
 #import "GetStartedViewController.h"

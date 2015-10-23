@@ -3,7 +3,7 @@
 //  NBAddressBook
 //
 //  Created by Jasper Siebelink on 6/12/13.
-//  Copyright (c) 2013 Jasper Siebelink. All rights reserved.
+//  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 //  Single point of access management to the iOS address book
 

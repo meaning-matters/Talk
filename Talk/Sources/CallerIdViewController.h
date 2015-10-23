@@ -3,7 +3,7 @@
 //  Talk
 //
 //  Created by Cornelis van der Bent on 15/06/14.
-//  Copyright (c) 2014 Cornelis van der Bent. All rights reserved.
+//  Copyright (c) 2014 NumberBay Ltd. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

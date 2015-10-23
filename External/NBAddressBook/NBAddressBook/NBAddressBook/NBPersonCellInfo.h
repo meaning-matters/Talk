@@ -3,7 +3,7 @@
 //  NBAddressBook
 //
 //  Created by Jasper Siebelink on 6/5/13.
-//  Copyright (c) 2013 Jasper Siebelink. All rights reserved.
+//  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 //  Meta-information of a person's table view cells, used to hide/show in edit mode
 

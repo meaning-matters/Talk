@@ -3,7 +3,7 @@
 //  Talk
 //
 //  Created by Cornelis van der Bent on 10/01/13.
-//  Copyright (c) 2013 Cornelis van der Bent. All rights reserved.
+//  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 //  List of errors: https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Miscellaneous/Foundation_Constants/Reference/reference.html#//apple_ref/doc/uid/TP40003793-CH3g-SW40
 

@@ -3,7 +3,7 @@
 //  NBAddressBook
 //
 //  Created by Jasper Siebelink on 6/2/13.
-//  Copyright (c) 2013 Jasper Siebelink. All rights reserved.
+//  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 //  Displaying the existing groups and selecting/deselecting them
 

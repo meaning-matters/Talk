@@ -3,7 +3,7 @@
 //  Talk
 //
 //  Created by Cornelis van der Bent on 24/11/12.
-//  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
+//  Copyright (c) 2012 NumberBay Ltd. All rights reserved.
 //
 //  The keep-alive works around a weird play delay that kicks in after about 5 seconds
 //  of not having played anything.  By playing something silently, the delay is prevented.

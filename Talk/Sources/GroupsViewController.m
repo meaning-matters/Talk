@@ -3,7 +3,7 @@
 //  Talk
 //
 //  Created by Cornelis van der Bent on 06/11/12.
-//  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
+//  Copyright (c) 2012 NumberBay Ltd. All rights reserved.
 //
 
 //### Have a look at this (http://stackoverflow.com/questions/9859639/ios-bridge-vs-bridge-transfer):

@@ -3,7 +3,7 @@
 //  Talk
 //
 //  Created by Cornelis van der Bent on 07/11/12.
-//  Copyright (c) 2012 Cornelis van der Bent. All rights reserved.
+//  Copyright (c) 2012 NumberBay Ltd. All rights reserved.
 //
 //  In Talk we want to save both the API username and API password in keychain.
 //  So we store both these strings as 'password' under names/keys "WebUsername"

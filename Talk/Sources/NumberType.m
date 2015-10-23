@@ -3,7 +3,7 @@
 //  Talk
 //
 //  Created by Cornelis van der Bent on 10/03/13.
-//  Copyright (c) 2013 Cornelis van der Bent. All rights reserved.
+//  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
 #import "NumberType.h"
