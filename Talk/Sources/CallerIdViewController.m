@@ -389,9 +389,9 @@ typedef enum
     if (self.navigationController.presentingViewController != nil)
     {
         [self dismissViewControllerAnimated:YES completion:^
-         {
-             self.completion ? self.completion(self.selectedCallable, [self showCallerId]) : (void)0;
-         }];
+        {
+            self.completion ? self.completion(self.selectedCallable, [self showCallerId]) : (void)0;
+        }];
     }
     else
     {

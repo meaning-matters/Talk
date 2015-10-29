@@ -599,13 +599,17 @@
     }
 }
 
+
 #pragma mark - Table view delegate
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSArray*              entryArray = [dataSource objectAtIndex:indexPath.row];
     NBRecentContactEntry* firstEntry = [entryArray objectAtIndex:0];
 
-    [NBContact makePhoneCall:firstEntry.number withContactID:firstEntry.contactID completion:^(CallableData *selectedCallable)
+    [NBContact makePhoneCall:firstEntry.number
+               withContactID:firstEntry.contactID
+                  completion:^(BOOL cancelled, CallableData *selectedCallable)
     {
         //### Do something?
     }];

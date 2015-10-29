@@ -190,8 +190,6 @@
                                             BOOL          showCallerId,
                                             CallableData* selectedCallable))completion
 {
-    [Settings sharedSettings].callerIdE164 = nil;//#####
-    
     if (contactId == nil)
     {
         [self checkDefaultIdentityWithCompletion:completion];

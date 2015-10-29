@@ -50,6 +50,6 @@
 //Call support
 + (void)makePhoneCall:(NSString*)phoneNumber
         withContactID:(NSString*)contactID
-           completion:(void (^)(CallableData* selectedCallable))completion;
+           completion:(void (^)(BOOL cancelled, CallableData* selectedCallable))completion;
 
 @end

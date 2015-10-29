@@ -843,6 +843,8 @@
                                  @"callerId" : [identityPhoneNumber e164Format],
                                  @"privacy"  : privacy ? @"true" : @"false"};
     
+    NBLog(@"###########\n%@\n############", parameters);
+
     [self postPath:[NSString stringWithFormat:@"/users/%@/callback", username]
         parameters:parameters
              reply:^(NSError* error, id content)

@@ -490,7 +490,6 @@
 		48884A751615CE920005AA79 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A741615CE920005AA79 /* UIKit.framework */; };
 		48884A771615CE920005AA79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A761615CE920005AA79 /* Foundation.framework */; };
 		48884A791615CE920005AA79 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A781615CE920005AA79 /* CoreGraphics.framework */; };
-		48884AA71615CE920005AA79 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884AA61615CE920005AA79 /* SenTestingKit.framework */; };
 		48884AA81615CE920005AA79 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A741615CE920005AA79 /* UIKit.framework */; };
 		48884AA91615CE920005AA79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A761615CE920005AA79 /* Foundation.framework */; };
 		48884AB11615CE920005AA79 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48884AAF1615CE920005AA79 /* InfoPlist.strings */; };
@@ -1206,8 +1205,7 @@
 		48884A781615CE920005AA79 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		48884A7C1615CE920005AA79 /* Talk-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Talk-Info.plist"; sourceTree = "<group>"; };
 		48884A821615CE920005AA79 /* Talk-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Talk-Prefix.pch"; sourceTree = "<group>"; };
-		48884AA51615CE920005AA79 /* TalkTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TalkTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		48884AA61615CE920005AA79 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		48884AA51615CE920005AA79 /* TalkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TalkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		48884AAE1615CE920005AA79 /* TalkTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TalkTests-Info.plist"; sourceTree = "<group>"; };
 		48884AB01615CE920005AA79 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		48884AB21615CE920005AA79 /* TalkTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TalkTests.h; sourceTree = "<group>"; };
@@ -1505,7 +1503,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48884AA71615CE920005AA79 /* SenTestingKit.framework in Frameworks */,
 				48884AA81615CE920005AA79 /* UIKit.framework in Frameworks */,
 				48884AA91615CE920005AA79 /* Foundation.framework in Frameworks */,
 				48338F8F161628BA0033F4C1 /* libcrypto.a in Frameworks */,
@@ -2262,7 +2259,7 @@
 			isa = PBXGroup;
 			children = (
 				48884A701615CE920005AA79 /* NumberBay.app */,
-				48884AA51615CE920005AA79 /* TalkTests.octest */,
+				48884AA51615CE920005AA79 /* TalkTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2295,7 +2292,6 @@
 				48DD72AB169F55C400CD7080 /* MobileCoreServices.framework */,
 				488D7758178078CC00099470 /* QuartzCore.framework */,
 				4888D28E16724FCD00B55B22 /* Security.framework */,
-				48884AA61615CE920005AA79 /* SenTestingKit.framework */,
 				484943B517551EB100E1D5C4 /* Social.framework */,
 				4895D19916B1BE9200BCA581 /* StoreKit.framework */,
 				484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */,
@@ -2619,8 +2615,8 @@
 			);
 			name = TalkTests;
 			productName = TalkTests;
-			productReference = 48884AA51615CE920005AA79 /* TalkTests.octest */;
-			productType = "com.apple.product-type.bundle.ocunit-test";
+			productReference = 48884AA51615CE920005AA79 /* TalkTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -3643,6 +3639,7 @@
 					"\\\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\\\"",
 					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/HockeySDK.embeddedframework",
 					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3/HockeySDK.embeddedframework",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
@@ -3657,7 +3654,6 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
@@ -3670,6 +3666,7 @@
 					"\\\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\\\"",
 					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/HockeySDK.embeddedframework",
 					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3/HockeySDK.embeddedframework",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
@@ -3684,7 +3681,6 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};
@@ -3775,6 +3771,7 @@
 					"\\\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\\\"",
 					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/HockeySDK.embeddedframework",
 					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3/HockeySDK.embeddedframework",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
@@ -3789,7 +3786,6 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = AdHoc;
 		};

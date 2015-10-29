@@ -1469,13 +1469,22 @@
             case CC_NUMBER:
             {
                 NSString * phoneNumber = [((NBPersonCellInfo*)[[personStructureManager.tableStructure objectAtIndex:CC_NUMBER] objectAtIndex:indexPath.row]) textValue];
-                [NBContact makePhoneCall:phoneNumber withContactID:[self contactId] completion:^(CallableData* selectedCallable)
+                [NBContact makePhoneCall:phoneNumber withContactID:[self contactId] completion:^(BOOL cancelled, CallableData* selectedCallable)
                 {
-                    if (selectedCallable != nil)
+                    if (cancelled == NO)
                     {
                         NSIndexPath* callerIdIndexPath = [NSIndexPath indexPathForRow:0 inSection:CC_CALLER_ID];
                         NBPersonIMCell* cell = (NBPersonIMCell*)[self.tableView cellForRowAtIndexPath:callerIdIndexPath];
-                        cell.cellTextfield.text = selectedCallable.name;
+
+                        if (selectedCallable != nil)
+                        {
+                            cell.cellTextfield.text        = selectedCallable.name;
+                        }
+                        else
+                        {
+                            cell.cellTextfield.text        = nil;
+                            cell.cellTextfield.placeholder = NSLocalizedString(@"CI_IS_NOT_SHOWN", @"");
+                        }
                     }
                 }];
 
@@ -1483,9 +1492,9 @@
                 {
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)),
                                    dispatch_get_main_queue(), ^
-                                   {
-                                       [self.navigationController popToRootViewControllerAnimated:NO];
-                                   });
+                    {
+                        [self.navigationController popToRootViewControllerAnimated:NO];
+                    });
                 }
                 break;
             }
@@ -1556,13 +1565,15 @@
             }
             case CC_OTHER_DATES:
             case CC_BIRTHDAY:
+            {
                 break;
-
+            }
             case CC_SOCIAL:
             case CC_IM:
+            {
                 //If we're editing, show the options. Else, attempt to 'launch' the cell
                 break;
-                
+            }
             case CC_CALLER_ID:
             {
                 [[NBAddressBookManager sharedManager].delegate selectCallerIdForContactId:[self contactId]
@@ -1587,10 +1598,13 @@
                 break;
             }
             case CC_RELATED_CONTACTS:
+            {
                 break;
-
+            }
             default:
+            {
                 break;
+            }
         }
     }
     else

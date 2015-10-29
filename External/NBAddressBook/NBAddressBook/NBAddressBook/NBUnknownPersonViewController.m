@@ -258,6 +258,7 @@
         switch (indexPath.section)
         {
             case UP_CONTACT:
+            {
                 if (indexPath.row == 0)
                 {
                     [NBContact makePhoneCall:number withContactID:nil completion:nil];
@@ -272,11 +273,12 @@
                     }
                 }
                 break;
-
+            }
             case UP_EMAIL:
+            {
 #warning - Add your own implementation
                 break;
-
+            }
             case UP_ADD:
             {
                 NSString* number = [personRepresentation string];
@@ -287,8 +289,10 @@
                 break;
             }
             case UP_SHARE:
+            {
 #warning - Add your own implementation here
                 break;
+            }
         }
     }
 }
