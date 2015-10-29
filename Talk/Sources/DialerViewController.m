@@ -384,21 +384,24 @@
 
 - (void)makeCallWithContactId:(NSString*)aContactId
 {
-    Call* call = [[CallManager sharedManager] callPhoneNumber:phoneNumber contactId:aContactId completion:nil];
-
-    if (call != nil)
+    [[CallManager sharedManager] callPhoneNumber:phoneNumber
+                                       contactId:aContactId
+                                      completion:^(Call *call, CallableData *selectedCallable)
     {
-        // CallView will be shown, or mobile call is made.
-        [Settings sharedSettings].lastDialedNumber = phoneNumber.number;
-        phoneNumber = [[PhoneNumber alloc] init];
-
-        [Common dispatchAfterInterval:0.5 onMain:^
+        if (call != nil)
         {
-            // Clears UI fields.  This is done after a delay to make sure that
-            // a call related view is on screen; keeping it out of sight.
-            [self update];
-        }];
-    }
+            // CallView will be shown, or mobile call is made.
+            [Settings sharedSettings].lastDialedNumber = phoneNumber.number;
+            phoneNumber = [[PhoneNumber alloc] init];
+            
+            [Common dispatchAfterInterval:0.5 onMain:^
+            {
+                // Clears UI fields.  This is done after a delay to make sure that
+                // a call related view is on screen; keeping it out of sight.
+                [self update];
+            }];
+        }
+    }];
 }
 
 

@@ -42,6 +42,7 @@
 @property (nonatomic) NSString * IMType;
 
 - (instancetype)initWithPlaceholder:(NSString*)placeHolderParam andLabel:(NSString*)labelTitle;
+
 - (NBPersonFieldTableCell*)getPersonFieldTableCell;
 - (NBNameTableViewCell*)getNameTableViewCell;
 - (NBDetailLineSeparatedCell*)getDetailCell;

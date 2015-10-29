@@ -9,6 +9,7 @@
 #import "SettingsViewController.h"
 #import "CountriesViewController.h"
 #import "PhonesViewController.h"
+#import "CallerIdViewController.h"
 #import "Settings.h"
 #import "NetworkStatus.h"
 #import "CountryNames.h"
@@ -20,14 +21,14 @@
 #import "DataManager.h"
 #import "PhoneData.h"
 
-
 // Update reloadSections calls when adding/removing sections.
 typedef enum
 {
-    TableSectionCallMode    = 1UL << 0,
-    TableSectionHomeCountry = 1UL << 1,
+    TableSectionCallback    = 1UL << 0,
+    TableSectionCallerId    = 1UL << 1,
     TableSectionCallOptions = 1UL << 2,
-    TableSectionAccountData = 1UL << 3,
+    TableSectionHomeCountry = 1UL << 3,
+    TableSectionAccountData = 1UL << 4,
 } TableSections;
 
 
@@ -55,9 +56,10 @@ typedef enum
         // The tabBarItem image must be set in my own NavigationController.
 
         // Mandatory sections.
-        sections |= TableSectionCallMode;
-        sections |= TableSectionHomeCountry;
+        sections |= TableSectionCallback;
+        sections |= TableSectionCallerId;
         sections |= TableSectionAccountData;
+        sections |= TableSectionHomeCountry;
         sections |= TableSectionCallOptions;
 
         settings = [Settings sharedSettings];
@@ -90,13 +92,15 @@ typedef enum
         [self.tableView endUpdates];
     }];
 
+    // Refresh the Phone or Number names used.
     [[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextObjectsDidChangeNotification
                                                       object:[DataManager sharedManager].managedObjectContext
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification* note)
     {
         NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
-        [indexSet addIndex:[Common nOfBit:TableSectionCallMode inValue:sections]];
+        [indexSet addIndex:[Common nOfBit:TableSectionCallback inValue:sections]];
+        [indexSet addIndex:[Common nOfBit:TableSectionCallerId inValue:sections]];
 
         [self.tableView beginUpdates];
         [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
@@ -104,19 +108,19 @@ typedef enum
     }];
 
     [settings addObserver:self
-               forKeyPath:@"callerIdE164"
-                  options:NSKeyValueObservingOptionNew
-                  context:nil];
-    [settings addObserver:self
                forKeyPath:@"callbackE164"
                   options:NSKeyValueObservingOptionNew
                   context:nil];
     [settings addObserver:self
-               forKeyPath:@"homeCountry"
+               forKeyPath:@"callerIdE164"
                   options:NSKeyValueObservingOptionNew
                   context:nil];
     [settings addObserver:self
                forKeyPath:@"askForCallerId"
+                  options:NSKeyValueObservingOptionNew
+                  context:nil];
+    [settings addObserver:self
+               forKeyPath:@"homeCountry"
                   options:NSKeyValueObservingOptionNew
                   context:nil];
 }
@@ -141,24 +145,32 @@ typedef enum
                        context:(void*)context
 {
     NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
-
-    if ([keyPath isEqualToString:@"callerIdE164"] || [keyPath isEqualToString:@"callbackE164"])
+    
+    if ([keyPath isEqualToString:@"callbackE164"])
     {
-        [indexSet addIndex:[Common nOfBit:TableSectionCallMode    inValue:sections]];
+        [indexSet addIndex:[Common nOfBit:TableSectionCallback inValue:sections]];
+    }
+    else if ([keyPath isEqualToString:@"callerIdE164"])
+    {
+        [indexSet addIndex:[Common nOfBit:TableSectionCallerId inValue:sections]];
+    }
+    else if ([keyPath isEqualToString:@"askForCallerId"])
+    {
+        [indexSet addIndex:[Common nOfBit:TableSectionCallOptions inValue:sections]];
+    }
+    else if ([keyPath isEqualToString:@"homeCountry"])
+    {
+        [indexSet addIndex:[Common nOfBit:TableSectionHomeCountry inValue:sections]];
+    }
+    
+    if ([keyPath isEqualToString:@"callbackE164"] || [keyPath isEqualToString:@"callerIdE164"])
+    {
         if (accountDataUpdated == NO)
         {
             // To update when provisioned.
             [indexSet addIndex:[Common nOfBit:TableSectionAccountData inValue:sections]];
             accountDataUpdated = YES;
         }
-    }
-    else if ([keyPath isEqualToString:@"homeCountry"])
-    {
-        [indexSet addIndex:[Common nOfBit:TableSectionHomeCountry inValue:sections]];
-    }
-    else if ([keyPath isEqualToString:@"askForCallerId"])
-    {
-        [indexSet addIndex:[Common nOfBit:TableSectionCallOptions inValue:sections]];
     }
 
     [self.tableView beginUpdates];
@@ -181,11 +193,23 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionCallMode:
+        case TableSectionCallback:
         {
-            title = NSLocalizedStringWithDefaultValue(@"Settings:CallMode SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Default Call Mode",
+            title = NSLocalizedStringWithDefaultValue(@"Settings:Callback SectionHeader", nil,
+                                                      [NSBundle mainBundle], @"Phone You're Called On",
                                                       @"The way calls are being made.");
+            break;
+        }
+        case TableSectionCallerId:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Settings:CallerId SectionHeader", nil,
+                                                      [NSBundle mainBundle], @"Default Identity",
+                                                      @"The way calls are being made.");
+            break;
+        }
+        case TableSectionCallOptions:
+        {
+            title = nil;
             break;
         }
         case TableSectionHomeCountry:
@@ -193,13 +217,6 @@ typedef enum
             title = NSLocalizedStringWithDefaultValue(@"Settings:HomeCountry SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Home Country",
                                                       @"Country where user lives (used to interpret dialed phone numbers).");
-            break;
-        }
-        case TableSectionCallOptions:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"Settings:CallOptions SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Call Options",
-                                                      @"Various options related to making calls.");
             break;
         }
         case TableSectionAccountData:
@@ -221,15 +238,32 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionCallMode:
+        case TableSectionCallback:
         {
-            title = NSLocalizedStringWithDefaultValue(@"Settings:CallbackInfo SectionFooter", nil,
+            title = NSLocalizedStringWithDefaultValue(@"Settings:Callback SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"Our server first calls the Callback Number. Then, when you "
-                                                      @"accept that call, the party you're trying to reach is "
-                                                      @"called, and is shown Caller ID (when the Show My Caller "
-                                                      @"ID setting is on).",
-                                                      @"Explanation how Callback settings work\n"
+                                                      @"When making a call, you're first called back on this Phone.",
+                                                      @"Explanation how Callback setting works\n"
+                                                      @"[* lines]");
+            break;
+        }
+        case TableSectionCallerId:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Settings:CallerId SectionFooter", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"Used when dialing a number, or calling a contact "
+                                                      @"you did not assign an ID.",
+                                                      @"Explanation how Caller ID setting works\n"
+                                                      @"[* lines]");
+            break;
+        }
+        case TableSectionCallOptions:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Settings:CallOptions SectionFooter", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"When enabled, asks you to select a caller ID when "
+                                                      @"calling a contact.",
+                                                      @"Explanation what the Call Options are doing\n"
                                                       @"[* lines]");
             break;
         }
@@ -239,16 +273,6 @@ typedef enum
                                                       [NSBundle mainBundle],
                                                       @"Determines how phone numbers without country code are interpreted.",
                                                       @"Explanation what the Home Country setting is doing\n"
-                                                      @"[* lines]");
-            break;
-        }
-        case TableSectionCallOptions:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"Settings:CallOptions SectionFooter", nil,
-                                                      [NSBundle mainBundle],
-                                                      @"When enabled, asks you to select a caller ID for a contact "
-                                                      @"you're calling.",
-                                                      @"Explanation what the Call Options are doing\n"
                                                       @"[* lines]");
             break;
         }
@@ -266,7 +290,7 @@ typedef enum
             title = NSLocalizedStringWithDefaultValue(@"Settings:AccountDataInfo SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"With a reset you only lose these settings and your call history. "
-                                                      @"You can always restore your account credit and verified "
+                                                      @"You can always restore your credit and verified "
                                                       @"numbers on other devices.",
                                                       @"Explanation what the Reset setting is doing\n"
                                                       @"[* lines]");
@@ -285,19 +309,24 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionCallMode:
+        case TableSectionCallback:
         {
-            numberOfRows = 3;
+            numberOfRows = 1;
             break;
         }
-        case TableSectionHomeCountry:
+        case TableSectionCallerId:
         {
-            numberOfRows = ([NetworkStatus sharedStatus].simIsoCountryCode != nil) ? 2 : 1;
+            numberOfRows = 2;
             break;
         }
         case TableSectionCallOptions:
         {
             numberOfRows = 1;
+            break;
+        }
+        case TableSectionHomeCountry:
+        {
+            numberOfRows = ([NetworkStatus sharedStatus].simIsoCountryCode != nil) ? 2 : 1;
             break;
         }
         case TableSectionAccountData:
@@ -326,59 +355,37 @@ typedef enum
     PhoneData*               phone;
     UITableViewCell*         cell = [self.tableView cellForRowAtIndexPath:indexPath];
     PhonesViewController*    phonesViewController;
+    CallerIdViewController*  callerIdViewController;
     CountriesViewController* countriesViewController;
+    NSManagedObjectContext*  managedObjectContext = [DataManager sharedManager].managedObjectContext;
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
-        case TableSectionCallMode:
+        case TableSectionCallback:
         {
-            NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
 
-            if (indexPath.row == 0)
-            {
-                phone       = [self lookupPhoneForE164:settings.callbackE164];
-                headerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
-                                                                @"Select Phone To Be Called On",
-                                                                @"[1/4 line larger font].");
-                footerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
-                                                                @"When you initiate a call, you'll be called back "
-                                                                @"on the selected number.\n\nTo limit your costs, "
-                                                                @"make sure that the NumberBay calling rate to this "
-                                                                @"number is low, and also check the extra charges of your "
-                                                                @"telephone operator for receiving calls (which can be "
-                                                                @"substantial).\n\nIf you can, it's often good to use "
-                                                                @"a fixed-line phone, or to use a local SIM from the "
-                                                                @"country you're in.\n\nPeople you call will never see "
-                                                                @"which number you selected here; unless of course, you "
-                                                                @"also select the same number as Caller ID.",
-                                                                @"[1/4 line larger font].");
-            }
-            else
-            {
-                phone       = [self lookupPhoneForE164:settings.callerIdE164];
-                headerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
-                                                                @"Select Default Caller ID",
-                                                                @"[1/4 line larger font].");
-                footerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
-                                                                @"People you call will see the selected number, but "
-                                                                @"only when the Show My Caller ID setting is on.\n\n"
-                                                                @"Add as many as you like. It can be handy to have an "
-                                                                @"extensive list to select from.",
-                                                                @"[1/4 line larger font].");
-            }
+            phone       = [self lookupPhoneForE164:settings.callbackE164];
+            headerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
+                                                            @"Select Phone To Be Called On",
+                                                            @"[1/4 line larger font].");
+            footerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
+                                                            @"When you initiate a call, you'll be called back "
+                                                            @"on the selected number.\n\nTo limit your costs, "
+                                                            @"make sure that the NumberBay calling rate to this "
+                                                            @"number is low, and also check the extra charges of your "
+                                                            @"telephone operator for receiving calls (which can be "
+                                                            @"substantial).\n\nIf you can, it's often good to use "
+                                                            @"a fixed-line phone, or to use a local SIM from the "
+                                                            @"country you're in.\n\nPeople you call will never see "
+                                                            @"which number you selected here; unless of course, you "
+                                                            @"also select the same number as Caller ID.",
+                                                            @"[1/4 line larger font].");
             
             phonesViewController = [[PhonesViewController alloc] initWithManagedObjectContext:managedObjectContext
                                                                                 selectedPhone:phone
                                                                                    completion:^(PhoneData* selectedPhone)
             {
-                if (indexPath.row == 0)
-                {
-                    settings.callbackE164 = selectedPhone.e164;
-                }
-                else
-                {
-                    settings.callerIdE164 = selectedPhone.e164;
-                }
+                settings.callbackE164 = selectedPhone.e164;
                 
                 cell.detailTextLabel.text = selectedPhone.name;
                 [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -388,6 +395,38 @@ typedef enum
             phonesViewController.headerTitle = headerTitle;
             phonesViewController.footerTitle = footerTitle;
             [self.navigationController pushViewController:phonesViewController animated:YES];
+            
+            break;
+        }
+        case TableSectionCallerId:
+        {
+            phone       = [self lookupPhoneForE164:settings.callerIdE164];
+            headerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
+                                                            @"Select Default Caller ID",
+                                                            @"[1/4 line larger font].");
+            footerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
+                                                            @"People you call will see the selected number, but "
+                                                            @"only when the Show My Caller ID setting is on.\n\n"
+                                                            @"Add as many as you like. It can be handy to have an "
+                                                            @"extensive list to select from.",
+                                                            @"[1/4 line larger font].");
+            
+            callerIdViewController = [[CallerIdViewController alloc] initWithManagedObjectContext:nil
+                                                                                         callerId:nil
+                                                                                 selectedCallable:phone
+                                                                                        contactId:nil
+                                                                                       completion:^(CallableData* selectedCallable,
+                                                                                                    BOOL          showCallerId)
+            {
+                settings.showCallerId = showCallerId;
+
+                settings.callerIdE164 = selectedCallable.e164;
+
+                cell.detailTextLabel.text = selectedCallable.name;
+                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            }];
+            
+            [self.navigationController pushViewController:callerIdViewController animated:YES];
             break;
         }
         case TableSectionHomeCountry:
@@ -489,19 +528,24 @@ typedef enum
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
-        case TableSectionCallMode:
+        case TableSectionCallback:
         {
-            cell = [self callModeCellForRowAtIndexPath:indexPath];
+            cell = [self callbackCellForRowAtIndexPath:indexPath];
             break;
         }
-        case TableSectionHomeCountry:
+        case TableSectionCallerId:
         {
-            cell = [self homeCountryCellForRowAtIndexPath:indexPath];
+            cell = [self callerIdCellForRowAtIndexPath:indexPath];
             break;
         }
         case TableSectionCallOptions:
         {
             cell = [self callOptionsCellForRowAtIndexPath:indexPath];
+            break;
+        }
+        case TableSectionHomeCountry:
+        {
+            cell = [self homeCountryCellForRowAtIndexPath:indexPath];
             break;
         }
         case TableSectionAccountData:
@@ -519,46 +563,46 @@ typedef enum
 }
 
 
-- (UITableViewCell*)callModeCellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)callbackCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell* cell;
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"CallbackCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallbackCell"];
+        cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+    }
+
+    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings Callback Number", nil,
+                                                            [NSBundle mainBundle], @"Callback",
+                                                            @"Phone number on which user is reachable.\n"
+                                                            @"[1/2 line, abbreviated: Called].");
+    
+    PhoneData* phone = [self lookupPhoneForE164:settings.callbackE164];
+    cell.detailTextLabel.text = (phone != nil) ? phone.name : @"";
+
+    cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+
+    return cell;
+}
+
+
+- (UITableViewCell*)callerIdCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
     UISwitch*        switchView;
 
     if (indexPath.row == 0)
     {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:@"CallbackCell"];
-        if (cell == nil)
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallbackCell"];
-        }
-
-        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings Callback Number", nil,
-                                                                [NSBundle mainBundle], @"Callback Phone",
-                                                                @"Phone number on which user is reachable.\n"
-                                                                @"[1/2 line, abbreviated: Called].");
-        PhoneData* phone = [self lookupPhoneForE164:settings.callbackE164];
-        if (phone != nil)
-        {
-            cell.detailTextLabel.text      = phone.name;
-            cell.detailTextLabel.textColor = [UIColor lightGrayColor];
-        }
-        else
-        {
-            cell.detailTextLabel.text      = @"";
-            cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
-        }
-
-        cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
-        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-    }
-    else if (indexPath.row == 1)
-    {
         cell = [self.tableView dequeueReusableCellWithIdentifier:@"CallerIDCell"];
         if (cell == nil)
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallerIDCell"];
+            cell.detailTextLabel.textColor = [UIColor lightGrayColor];
         }
-
+        
         cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Setting Shown Number Format", nil,
                                                                 [NSBundle mainBundle], @"Caller ID",
                                                                 @"Format string showing shown number.\n"
@@ -566,19 +610,27 @@ typedef enum
         PhoneData* phone = [self lookupPhoneForE164:settings.callerIdE164];
         if (phone != nil)
         {
-            cell.detailTextLabel.text      = phone.name;
-            cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+            if (settings.showCallerId)
+            {
+                cell.detailTextLabel.attributedText = nil;
+                cell.detailTextLabel.text = phone.name;
+            }
+            else
+            {
+                NSDictionary*       attributes = @{NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)};
+                NSAttributedString* nameString = [[NSAttributedString alloc] initWithString:phone.name attributes:attributes];
+                cell.detailTextLabel.attributedText = nameString;
+            }
         }
         else
         {
-            cell.detailTextLabel.text      = @"";
-            cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
+            cell.detailTextLabel.text = @"";
         }
-
+        
         cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
-    else if (indexPath.row == 2)
+    else
     {
         cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
         if (cell == nil)
@@ -592,7 +644,7 @@ typedef enum
         {
             switchView = (UISwitch*)cell.accessoryView;
         }
-
+        
         cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:ShowCallId CellText", nil,
                                                                 [NSBundle mainBundle], @"Show My Caller ID",
                                                                 @"Title of switch if people called see my number\n"
@@ -600,13 +652,47 @@ typedef enum
                                                                 @"exact same term as in iOS].");
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         switchView.on = settings.showCallerId;
-
+        
         [switchView removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
         [switchView addTarget:self
                        action:@selector(showCallerIdSwitchAction:)
              forControlEvents:UIControlEventValueChanged];
     }
+    
+    return cell;
+}
 
+
+- (UITableViewCell*)callOptionsCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell* cell;
+    UISwitch*        switchView;
+    
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
+        switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+        switchView.onTintColor = [Skinning onTintColor];
+        cell.accessoryView = switchView;
+    }
+    else
+    {
+        switchView = (UISwitch*)cell.accessoryView;
+    }
+    
+    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:AskForCallerId CellText", nil,
+                                                            [NSBundle mainBundle], @"Ask For Caller ID",
+                                                            @"...\n"
+                                                            @"[2/3 line].");
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    switchView.on = settings.askForCallerId;
+    
+    [switchView removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [switchView addTarget:self
+                   action:@selector(askForCallerIdSwitchAction:)
+         forControlEvents:UIControlEventValueChanged];
+    
     return cell;
 }
 
@@ -727,40 +813,6 @@ typedef enum
 }
 
 
-- (UITableViewCell*)callOptionsCellForRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    UITableViewCell* cell;
-    UISwitch*        switchView;
-
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
-    if (cell == nil)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
-        switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-        switchView.onTintColor = [Skinning onTintColor];
-        cell.accessoryView = switchView;
-    }
-    else
-    {
-        switchView = (UISwitch*)cell.accessoryView;
-    }
-
-    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:AskForCallerId CellText", nil,
-                                                            [NSBundle mainBundle], @"Ask For Caller ID",
-                                                            @"...\n"
-                                                            @"[2/3 line].");
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    switchView.on = settings.askForCallerId;
-
-    [switchView removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    [switchView addTarget:self
-                   action:@selector(askForCallerIdSwitchAction:)
-         forControlEvents:UIControlEventValueChanged];
-
-    return cell;
-}
-
-
 #pragma mark - UI Actions
 
 - (void)readFromSimSwitchAction:(id)sender
@@ -781,6 +833,13 @@ typedef enum
 - (void)showCallerIdSwitchAction:(id)sender
 {
     settings.showCallerId = ((UISwitch*)sender).on;
+    
+    NSArray* indexPaths = @[[NSIndexPath indexPathForItem:0
+                                                inSection:[Common nOfBit:TableSectionCallerId inValue:sections]]];
+    
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView endUpdates];
 }
 
 

@@ -198,6 +198,11 @@
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
     self.deviceToken = nil;
+
+    // When account purchase transaction has not been finished, the PurchaseManager receives
+    // it again at app startup.  This is however slightly earlier than that device token is
+    // received.  Therefore the PurchaseManager is started up here.
+    [PurchaseManager sharedManager];
 }
 
 
@@ -693,16 +698,20 @@
 
 - (void)selectCallerIdForContactId:(NSString*)contactId
               navigationController:(UINavigationController*)navigationController
-                        completion:(void (^)(CallableData* selectedCallable))completion
+                        completion:(void (^)(CallableData* selectedCallable, BOOL showCallerId))completion
 {
-    CallerIdData* callerId = [self callerIdForContactId:contactId];
-
-    CallerIdViewController* viewController = [[CallerIdViewController alloc] initWithManagedObjectContext:nil
-                                                                                                 callerId:callerId
-                                                                                                contactId:contactId
-                                                                                               completion:^(CallableData *selectedCallable)
+    CallerIdData*           callerId             = [self callerIdForContactId:contactId];
+    NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
+    CallerIdViewController* viewController;
+    
+    viewController = [[CallerIdViewController alloc] initWithManagedObjectContext:managedObjectContext
+                                                                         callerId:callerId
+                                                                 selectedCallable:callerId.callable
+                                                                        contactId:contactId
+                                                                       completion:^(CallableData* selectedCallable,
+                                                                                    BOOL          showCallerId)
     {
-        completion ? completion(selectedCallable) : (void)0;
+        completion ? completion(selectedCallable, showCallerId) : (void)0;
     }];
     
     [navigationController pushViewController:viewController animated:YES];

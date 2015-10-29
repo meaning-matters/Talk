@@ -39,7 +39,7 @@
 
 + (UIColor*)onTintColor
 {
-    return [UIColor colorWithRed:0.344f green:0.845f blue:0.515f alpha:1.0f];
+    return [UIColor colorWithRed:0.344f green:0.845f blue:0.515f alpha:1.0f]; // Green
 }
 
 

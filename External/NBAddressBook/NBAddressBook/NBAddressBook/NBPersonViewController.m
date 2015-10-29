@@ -1567,12 +1567,13 @@
             {
                 [[NBAddressBookManager sharedManager].delegate selectCallerIdForContactId:[self contactId]
                                                                      navigationController:self.navigationController
-                                                                               completion:^(CallableData* selectedCallable)
+                                                                               completion:^(CallableData* selectedCallable,
+                                                                                            BOOL          showCallerId)
                 {
                     NBPersonIMCell* cell = (NBPersonIMCell*)cellInfo.tableViewCell;
                     cell.cellTextfield.text = selectedCallable.name;
                     
-                    if ([[NBAddressBookManager sharedManager].delegate callerIdIsShownForContactId:[self contactId]])
+                    if (showCallerId)
                     {
                         cell.cellTextfield.placeholder = NSLocalizedString(@"CI_USES_DEFAULT", @"");
                     }

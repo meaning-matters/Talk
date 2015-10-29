@@ -2628,9 +2628,9 @@
 		48884A671615CE920005AA79 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastTestingUpgradeCheck = 0630;
+				LastTestingUpgradeCheck = 0700;
 				LastUpgradeCheck = 0500;
-				ORGANIZATIONNAME = "Cornelis van der Bent";
+				ORGANIZATIONNAME = "NumberBay Ltd.";
 				TargetAttributes = {
 					48884A6F1615CE920005AA79 = {
 						DevelopmentTeam = K68747FJ6J;

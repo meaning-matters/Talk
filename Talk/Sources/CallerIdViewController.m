@@ -5,6 +5,19 @@
 //  Created by Cornelis van der Bent on 15/06/14.
 //  Copyright (c) 2014 NumberBay Ltd. All rights reserved.
 //
+//  This is a tricky module because it can be shown in three different
+//  situations:
+//  A. From Contacts, to select the called ID for a contact (navigation push)
+//  B. Just before making a call, to select the caller ID for a contact (modal)
+//  C. From Settings, to select the default caller ID (navigation push)
+//
+//  A anD B only differ in the manner in which the view was shown.  C however,
+//  is quite different as it does not involve a contact nor a caller ID data
+//  object.
+//
+//  When making changes, make sure to test all possible states & transitions
+//  for all three situations above.
+//
 
 //http://stackoverflow.com/questions/8997387/tableview-with-two-instances-of-nsfetchedresultscontroller
 
@@ -15,6 +28,7 @@
 #import "CallerIdData.h"
 #import "PhoneData.h"
 #import "NumberData.h"
+#import "Settings.h"
 
 typedef enum
 {
@@ -31,7 +45,7 @@ typedef enum
 @property (nonatomic, strong) CallerIdData*           callerId;
 @property (nonatomic, strong) NSString*               contactId;
 @property (nonatomic, strong) CallableData*           selectedCallable;
-@property (nonatomic, copy) void (^completion)(CallableData* selectedCallable);
+@property (nonatomic, copy) void (^completion)(CallableData* selectedCallable, BOOL showCallerId);
 @property (nonatomic, strong) NSArray*                phones;
 @property (nonatomic, strong) NSArray*                numbers;
 
@@ -42,20 +56,21 @@ typedef enum
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
                                     callerId:(CallerIdData*)callerId
-                                   contactId:(NSString*)contactId
-                                  completion:(void (^)(CallableData* selectedCallable))completion
+                            selectedCallable:(CallableData*)selectedCallable
+                                   contactId:(NSString*)contactId   // Used as mode switch for Contacts or Settings.
+                                  completion:(void (^)(CallableData* selectedCallable, BOOL showCallerId))completion
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
         self.title                = [Strings callerIdString];
-        self.managedObjectContext = managedObjectContext ? managedObjectContext : [DataManager sharedManager].managedObjectContext;
+        self.managedObjectContext = managedObjectContext;
         self.callerId             = callerId;
         self.contactId            = contactId;
-        self.selectedCallable     = callerId.callable;
+        self.selectedCallable     = selectedCallable;
         self.completion           = completion;
 
         self.phones               = [self fetchPhones];
-#if HAS_NUMBERS
+#if HAS_BUYING_NUMBERS
         self.numbers              = [self fetchNumbers];
 #endif
     }
@@ -77,7 +92,7 @@ typedef enum
                                                                    action:@selector(cancelAction)];
         self.navigationItem.leftBarButtonItem = buttonItem;
     }
-    else if (self.callerId != nil)
+    else if (self.callerId != nil && self.callerId.callable != nil)
     {
         // We get here from contact info view.  A caller already been selected.
         UIBarButtonItem* buttonItem;
@@ -95,17 +110,18 @@ typedef enum
     
     if ([self isMovingFromParentViewController])
     {
-        self.completion ? self.completion(self.callerId.callable) : (void)0;
+        self.completion ? self.completion(self.selectedCallable, [self showCallerId]) : (void)0;
     }
 }
+
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    self.sections = TableSectionShowCallerId;
+    self.sections = (self.contactId != nil) ? TableSectionShowCallerId : 0;
 
-    if (self.callerId == nil || self.callerId.callable != nil)
+    if ([self showCallerId] || (self.contactId == nil))
     {
         self.sections |= (self.phones.count  > 0) ? TableSectionPhones  : 0;
         self.sections |= (self.numbers.count > 0) ? TableSectionNumbers : 0;
@@ -168,20 +184,42 @@ typedef enum
         }
         case TableSectionPhones:
         {
-            title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Phones SectionFooter", nil, [NSBundle mainBundle],
-                                                      @"The selected Phone will be used as caller ID for all "
-                                                      @"your calls to this contact.",
-                                                      @"...\n"
-                                                      @"[* lines]");
+            if (self.contactId != nil)
+            {
+                title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Phones SectionFooterA", nil, [NSBundle mainBundle],
+                                                          @"The selected Phone will be used as caller ID for all "
+                                                          @"your calls to this contact.",
+                                                          @"...\n"
+                                                          @"[* lines]");
+            }
+            else
+            {
+                title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Phones SectionFooterB", nil, [NSBundle mainBundle],
+                                                          @"The selected Phone will be used when dialing a number, or "
+                                                          @"calling a contact you did not assign an ID.",
+                                                          @"...\n"
+                                                          @"[* lines]");
+            }
             break;
         }
         case TableSectionNumbers:
         {
-            title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Numbers SectionFooter", nil, [NSBundle mainBundle],
-                                                      @"The selected Number will be used as caller ID for all "
-                                                      @"your calls to this contact.",
-                                                      @"...\n"
-                                                      @"[* lines]");
+            if (self.contactId != nil)
+            {
+                title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Numbers SectionFooterA", nil, [NSBundle mainBundle],
+                                                          @"The selected Number will be used as caller ID for all "
+                                                          @"your calls to this contact.",
+                                                          @"...\n"
+                                                          @"[* lines]");
+            }
+            else
+            {
+                title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Numbers SectionFooterB", nil, [NSBundle mainBundle],
+                                                          @"The selected Number will be used when dialing a number, or "
+                                                          @"calling a contact you did not assign an ID.",
+                                                          @"...\n"
+                                                          @"[* lines]");
+            }
             break;
         }
     }
@@ -224,12 +262,12 @@ typedef enum
     }
     
     cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"CallerId:ShowCallId CellText", nil,
-                                                            [NSBundle mainBundle], @"Show My Caller ID",
+                                                            [NSBundle mainBundle], @"Hide My Caller ID",
                                                             @"Title of switch if people called see my number\n"
                                                             @"[2/3 line - abbreviated: 'Show Caller ID', use "
                                                             @"exact same term as in iOS].");
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    switchView.on = ((self.callerId == nil) || (self.callerId.callable != nil));
+    switchView.on = ![self showCallerId];
     
     [switchView removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
     [switchView addTarget:self
@@ -255,7 +293,7 @@ typedef enum
     cell.detailTextLabel.text = [phoneNumber internationalFormat];
     cell.imageView.image      = [UIImage imageNamed:[phoneNumber isoCountryCode]];
     
-    if (callable == self.callerId.callable)
+    if (callable == self.selectedCallable)
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
@@ -270,8 +308,6 @@ typedef enum
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    CallableData* callable = nil;
-    
     switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
         case TableSectionShowCallerId:
@@ -280,38 +316,35 @@ typedef enum
         }
         case TableSectionPhones:
         {
-            callable = [self.phones objectAtIndex:indexPath.row];
+            self.selectedCallable = [self.phones objectAtIndex:indexPath.row];
             break;
         }
         case TableSectionNumbers:
         {
-            callable = [self.numbers objectAtIndex:indexPath.row];
+            self.selectedCallable = [self.numbers objectAtIndex:indexPath.row];
             break;
         }
     }
 
-    if (self.callerId == nil)
+    if (self.contactId != nil)
     {
-        self.callerId = [NSEntityDescription insertNewObjectForEntityForName:@"CallerId"
-                                                      inManagedObjectContext:self.managedObjectContext];
-        self.callerId.contactId = self.contactId;
-    }
-    
-    self.callerId.callable = callable;
-    
-    [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-
-    if (self.navigationController.presentingViewController != nil)
-    {
-        [self dismissViewControllerAnimated:YES completion:^
+        if (self.callerId == nil)
         {
-            self.completion ? self.completion(callable) : (void)0;
-        }];
+            self.callerId = [NSEntityDescription insertNewObjectForEntityForName:@"CallerId"
+                                                          inManagedObjectContext:self.managedObjectContext];
+            self.callerId.contactId = self.contactId;
+        }
+        
+        self.callerId.callable = self.selectedCallable;
+        
+        [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
     }
     else
     {
-        [self.navigationController popViewControllerAnimated:YES];
+        
     }
+
+    [self closeView];
 }
 
 
@@ -326,8 +359,10 @@ typedef enum
 - (void)deleteAction
 {
     [self.managedObjectContext deleteObject:self.callerId];
+    self.callerId = nil;
+    self.selectedCallable = nil;
     
-    self.completion ? self.completion(nil) : (void)0;
+    self.completion ? self.completion(nil, [self showCallerId]) : (void)0;
     
     [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
     
@@ -336,22 +371,39 @@ typedef enum
 }
 
 
-- (void)showCallerIdSwitchAction:(UISwitch*)switchView
+- (BOOL)showCallerId
 {
-    if (switchView.on)
+    if (self.contactId != nil)
     {
-        [self.managedObjectContext deleteObject:self.callerId];
-        self.callerId = nil;
-        
-        NSInteger   numberOfSections = [self numberOfSectionsInTableView:self.tableView];
-        NSRange     range            = NSMakeRange(1, numberOfSections - 1);
-        NSIndexSet* indexSet         = [NSIndexSet indexSetWithIndexesInRange:range];
-
-        [self.tableView beginUpdates];
-        [self.tableView insertSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-        [self.tableView endUpdates];
+        return ((self.callerId == nil) || (self.callerId.callable != nil));
     }
     else
+    {
+        return [Settings sharedSettings].showCallerId;
+    }
+}
+
+
+- (void)closeView
+{
+    if (self.navigationController.presentingViewController != nil)
+    {
+        [self dismissViewControllerAnimated:YES completion:^
+         {
+             self.completion ? self.completion(self.selectedCallable, [self showCallerId]) : (void)0;
+         }];
+    }
+    else
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+
+- (void)showCallerIdSwitchAction:(UISwitch*)switchView
+{
+    // This method can only be called for contacts, so we don't have to check self.contactId here.
+    if (switchView.on)
     {
         NSInteger   numberOfSections = [self numberOfSectionsInTableView:self.tableView];
         NSRange     range            = NSMakeRange(1, numberOfSections - 1);
@@ -363,8 +415,9 @@ typedef enum
                                                           inManagedObjectContext:self.managedObjectContext];
             self.callerId.contactId = self.contactId;
         }
-        
+    
         self.callerId.callable = nil;
+        self.selectedCallable  = nil;
         
         [self.tableView beginUpdates];
         [self.tableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -372,10 +425,23 @@ typedef enum
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.333 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
         {
-            [self.navigationController popViewControllerAnimated:YES];
+            [self closeView];
         });
     }
-    
+    else
+    {
+        [self.managedObjectContext deleteObject:self.callerId];
+        self.callerId = nil;
+        
+        NSInteger   numberOfSections = [self numberOfSectionsInTableView:self.tableView];
+        NSRange     range            = NSMakeRange(1, numberOfSections - 1);
+        NSIndexSet* indexSet         = [NSIndexSet indexSetWithIndexesInRange:range];
+        
+        [self.tableView beginUpdates];
+        [self.tableView insertSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+    }
+
     [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
 }
 

@@ -182,186 +182,213 @@
 }
 
 
-// The `selectedCallable` completion parameter is only filled in when a callable
-// was selected as caller ID, while previously there was none selected.
+// The `selectedCallable` completion parameter is only filled in if a callable
+// was selected as caller ID and if previously there was none selected.
 - (void)checkIdentityForContactId:(NSString*)contactId
-                       completion:(void (^)(BOOL cancelled, NSString* identity, CallableData* selectedCallable))completion
+                       completion:(void (^)(BOOL          cancelled,
+                                            NSString*     identity,
+                                            BOOL          showCallerId,
+                                            CallableData* selectedCallable))completion
 {
-    if ([self checkCallbackAndIdentity:[Settings sharedSettings].callerIdE164] == NO)
-    {
-        completion(YES, nil, nil);
-
-        return;
-    }
-
+    [Settings sharedSettings].callerIdE164 = nil;//#####
+    
     if (contactId == nil)
     {
-        completion(NO, [Settings sharedSettings].callerIdE164, nil);
-
-        return;
-    }
-
-    NSString* title;
-    NSString* message;
-
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"contactId == %@", contactId];
-    NSArray*     callerIds = [[DataManager sharedManager] fetchEntitiesWithName:@"CallerId"
-                                                                       sortKeys:nil
-                                                                      predicate:predicate
-                                                           managedObjectContext:nil];
-    if (callerIds.count > 0)
-    {
-        CallerIdData* callerId = callerIds[0];
-
-        completion(NO, callerId.callable.e164, nil);
-
-        return;
-    }
-    else if ([Settings sharedSettings].askForCallerId == YES)
-    {
-        NSString* cancelButton;
-        NSString* selectButton;
-        NSString* defaultButton;
-
-        title         = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId Title", nil, [NSBundle mainBundle],
-                                                          @"Choose Caller ID",
-                                                          @"...\n"
-                                                          @"[iOS alert title size - abbreviated: 'Captive Portal'].");
-
-        message       = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId Message", nil, [NSBundle mainBundle],
-                                                          @"Assign a caller ID for all "
-                                                          @"your calls to this contact.\n\n"
-                                                          @"Or, use the default: \"%@\", "
-                                                          @"for this call only.",
-                                                          @"...\n"
-                                                          @"[iOS alert message size]");
-        message       = [NSString stringWithFormat:message, [self defaultCallerIdName]];
-
-        cancelButton  = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId CancelButton", nil, [NSBundle mainBundle],
-                                                          @"Stop Showing This Alert",
-                                                          @"...\n"
-                                                          @"[iOS alert button title full width]");
-
-        selectButton  = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId SelectButton", nil, [NSBundle mainBundle],
-                                                          @"Assign Caller ID",
-                                                          @"...\n"
-                                                          @"[iOS alert button title full width]");
-
-        defaultButton = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId DefaultButton", nil, [NSBundle mainBundle],
-                                                          @"Use Default",
-                                                          @"...\n"
-                                                          @"[iOS alert button title full width]");
-
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-        {
-            if (cancelled == YES)
-            {
-                [Settings sharedSettings].askForCallerId = NO;
-
-                completion(YES, nil, nil);
-            }
-            else
-            {
-                if (buttonIndex == 1)
-                {
-                    NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
-                    CallerIdViewController* viewController;
-                    UINavigationController* navigationController;
-
-                    viewController = [[CallerIdViewController alloc] initWithManagedObjectContext:managedObjectContext
-                                                                                         callerId:nil
-                                                                                        contactId:contactId
-                                                                                       completion:^(CallableData* selectedCallable)
-                    {
-                         completion(NO, selectedCallable.e164, selectedCallable);
-                    }];
-
-                    navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-                    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-                    [AppDelegate.appDelegate.tabBarController presentViewController:navigationController
-                                                                           animated:YES
-                                                                         completion:nil];
-                }
-                else
-                {
-                    completion(NO, [Settings sharedSettings].callerIdE164, nil);
-                }
-            }
-        }
-                             cancelButtonTitle:cancelButton
-                             otherButtonTitles:selectButton, defaultButton, nil];
+        [self checkDefaultIdentityWithCompletion:completion];
     }
     else
     {
-        completion(NO, [Settings sharedSettings].callerIdE164, nil);
+        NSString* title;
+        NSString* message;
+        
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"contactId == %@", contactId];
+        NSArray*     callerIds = [[DataManager sharedManager] fetchEntitiesWithName:@"CallerId"
+                                                                           sortKeys:nil
+                                                                          predicate:predicate
+                                                               managedObjectContext:nil];
+        if (callerIds.count > 0)
+        {
+            CallerIdData* callerId = callerIds[0];
+            
+            completion(NO, callerId.callable.e164, (callerId.callable != nil), nil);
+        }
+        else if ([Settings sharedSettings].askForCallerId == YES)
+        {
+            NSString* cancelButton;
+            NSString* selectButton;
+            NSString* defaultButton;
+            
+            title         = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId Title", nil, [NSBundle mainBundle],
+                                                              @"Choose Caller ID",
+                                                              @"...\n"
+                                                              @"[iOS alert title size - abbreviated: 'Captive Portal'].");
+            
+            message       = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId Message", nil, [NSBundle mainBundle],
+                                                              @"Assign a caller ID for all "
+                                                              @"your calls to this contact.\n\n"
+                                                              @"Or, use the default: \"%@\", "
+                                                              @"for this call only.",
+                                                              @"...\n"
+                                                              @"[iOS alert message size]");
+            message       = [NSString stringWithFormat:message, [self defaultCallerIdName]];
+            
+            cancelButton  = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId CancelButton", nil, [NSBundle mainBundle],
+                                                              @"Stop Showing This Alert",
+                                                              @"...\n"
+                                                              @"[iOS alert button title full width]");
+            
+            selectButton  = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId SelectButton", nil, [NSBundle mainBundle],
+                                                              @"Assign Caller ID",
+                                                              @"...\n"
+                                                              @"[iOS alert button title full width]");
+            
+            defaultButton = NSLocalizedStringWithDefaultValue(@"Call:CheckCallerId DefaultButton", nil, [NSBundle mainBundle],
+                                                              @"Use Default",
+                                                              @"...\n"
+                                                              @"[iOS alert button title full width]");
+            
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+            {
+                if (cancelled == YES)
+                {
+                    [Settings sharedSettings].askForCallerId = NO;
+                    
+                    completion(YES, nil, NO, nil);
+                }
+                else
+                {
+                    if (buttonIndex == 1) // Assign caller ID.
+                    {
+                        NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
+                        CallerIdViewController* viewController;
+                        UINavigationController* navigationController;
+                        
+                        viewController = [[CallerIdViewController alloc] initWithManagedObjectContext:managedObjectContext
+                                                                                             callerId:nil
+                                                                                     selectedCallable:nil
+                                                                                            contactId:contactId
+                                                                                           completion:^(CallableData* selectedCallable,
+                                                                                                        BOOL          showCallerId)
+                        {
+                            completion(NO, selectedCallable.e164, showCallerId, selectedCallable);
+                        }];
+                        
+                        navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+                        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+                        [AppDelegate.appDelegate.tabBarController presentViewController:navigationController
+                                                                               animated:YES
+                                                                             completion:nil];
+                    }
+                    else // Use default.
+                    {
+                        [self checkDefaultIdentityWithCompletion:completion];
+                    }
+                }
+            }
+                                 cancelButtonTitle:cancelButton
+                                 otherButtonTitles:selectButton, defaultButton, nil];
+        }
+        else // Use default.
+        {
+            [self checkDefaultIdentityWithCompletion:completion];
+        }
     }
 }
 
 
-- (BOOL)checkCallbackAndIdentity:(NSString*)identity
+// Parameter `selectedCallable` is only there get the same completion prototype as checkIdentityForContactId:completion:.
+- (void)checkDefaultIdentityWithCompletion:(void (^)(BOOL          cancelled,
+                                                     NSString*     identity,
+                                                     BOOL          showCallerId,
+                                                     CallableData* selectedCallable))completion
+{
+    if ([self checkCallbackAndIdentity:[Settings sharedSettings].callerIdE164
+                          showCallerId:[Settings sharedSettings].showCallerId] == NO)
+    {
+        completion(YES, nil, NO, nil);
+    }
+    else
+    {
+        completion(NO, [Settings sharedSettings].callerIdE164, [Settings sharedSettings].showCallerId, nil);
+    }
+}
+
+
+- (BOOL)checkCallbackAndIdentity:(NSString*)identity showCallerId:(BOOL)showCallerId
 {
     BOOL result;
 
     NSString* title;
     NSString* message;
     int       missing = (([Settings sharedSettings].callbackE164.length == 0) << 0) +
-                        ((identity.length == 0)                               << 1);
+                        ((identity.length == 0 && showCallerId)               << 1);
 
     if (missing != 0)
     {
         switch (missing)
         {
             case 1:
+            {
                 title   = NSLocalizedStringWithDefaultValue(@"Call MissingCallbackTitle", nil, [NSBundle mainBundle],
-                                                            @"No Callback Number Selected",
+                                                            @"No Callback Phone",
                                                             @"...\n"
                                                             @"[iOS alert title size].");
 
                 message = NSLocalizedStringWithDefaultValue(@"Call MissingCallbackMessage", nil, [NSBundle mainBundle],
-                                                            @"Go to the Settings tab to select a Phone.",
+                                                            @"Go to the Settings tab to select the Phone you want to be "
+                                                            @"called back on.",
                                                             @"Alert message \n"
                                                             @"[iOS alert message size]");
                 break;
-
+            }
             case 2:
+            {
                 title   = NSLocalizedStringWithDefaultValue(@"Call MissingIndentityTitle", nil, [NSBundle mainBundle],
-                                                            @"No Caller ID Selected",
+                                                            @"No Default Caller ID",
                                                             @"...\n"
                                                             @"[iOS alert title size].");
 
 #if HAS_BUYING_NUMBERS
                 message = NSLocalizedStringWithDefaultValue(@"Call MissingIndentityMessage", nil, [NSBundle mainBundle],
-                                                            @"Go to the Settings tab to select a Phone or Number.",
+                                                            @"Go to the Settings tab to select a Phone or Number as "
+                                                            @"your default caller ID.",
                                                             @"Alert message \n"
                                                             @"[iOS alert message size]");
 #else
                 message = NSLocalizedStringWithDefaultValue(@"Call MissingIndentityMessage", nil, [NSBundle mainBundle],
-                                                            @"Go to the Settings tab to select a Phone.",
+                                                            @"Go to the Settings tab to select a Phone as your default "
+                                                            @"caller ID.",
                                                             @"Alert message \n"
                                                             @"[iOS alert message size]");
 #endif
                 break;
-
+            }
             case 3:
+            {
                 title   = NSLocalizedStringWithDefaultValue(@"Call MissingPhonesTitle", nil, [NSBundle mainBundle],
-                                                            @"No Callback Number, Nor Caller ID Selected",
+                                                            @"No Callback Nor Caller ID",
                                                             @"...\n"
                                                             @"[iOS alert title size].");
 
 #if HAS_BUYING_NUMBERS
                 message = NSLocalizedStringWithDefaultValue(@"Call MissingPhonesMessage", nil, [NSBundle mainBundle],
-                                                            @"Go to the Settings tab to select Phone(s) and/or Number(s).",
+                                                            @"Go to the Settings tab to select the Phone you want to be "
+                                                            @"called back on, and select a Phone or Number as your "
+                                                            @"default caller ID.",
                                                             @"Alert message \n"
                                                             @"[iOS alert message size]");
 #else
                 message = NSLocalizedStringWithDefaultValue(@"Call MissingPhonesMessage", nil, [NSBundle mainBundle],
-                                                            @"Go to the Settings tab to select a Phone.",
+                                                            @"Go to the Settings tab to select the Phone you want to be "
+                                                            @"called back on, and select a Phone as your default "
+                                                            @"caller ID.",
                                                             @"Alert message \n"
                                                             @"[iOS alert message size]");
 #endif
                 break;
+            }
         }
 
         [BlockAlertView showAlertViewWithTitle:title
@@ -448,44 +475,53 @@
     switch (call.state)
     {
         case CallStateNone:
+        {
             call.state    = CallStateCancelled;
             recent.status = @(CallStatusCancelled);
             break;
-
+        }
         case CallStateCalling:
         case CallStateRinging:
         case CallStateConnecting:
+        {
             call.state    = (call.leg == CallLegOutgoing) ? CallStateEnded        : CallStateCancelled;
             recent.status = (call.leg == CallLegOutgoing) ? @(CallStatusCallback) : @(CallStatusCancelled);
             break;
-
+        }
         case CallStateConnected:
         case CallStateEnding:
+        {
             call.state    = CallStateEnded;
             recent.status = (call.leg == CallLegOutgoing) ? @(CallStatusSuccess) : @(CallStatusCallback);
             break;
-
+        }
         case CallStateEnded:
+        {
             recent.status = (call.callbackCost == 0) ? @(CallStatusCancelled)
                                                      : ((call.outgoingCost == 0) ? @(CallStatusCallback)
                                                                                  : @(CallStatusSuccess));
             break;
-
+        }
         case CallStateCancelled:
+        {
             recent.status = @(CallStatusCancelled);
             break;
-
+        }
         case CallStateBusy:
+        {
             recent.status = @(CallStatusBusy);
             break;
-
+        }
         case CallStateDeclined:
+        {
             recent.status = @(CallStatusDeclined);
             break;
-
+        }
         case CallStateFailed:
+        {
             recent.status = @(CallStatusFailed);
             break;
+        }
     }
 
     recent.callbackDuration = @(call.callbackDuration);
@@ -498,7 +534,10 @@
 }
 
 
-- (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber fromIdentity:(NSString*)identity contactId:(NSString*)contactId
+- (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber
+            fromIdentity:(NSString*)identity
+            showCallerId:(BOOL)showCallerId
+               contactId:(NSString*)contactId
 {
     Call* call = nil;
 
@@ -506,7 +545,7 @@
     {
         call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
         call.identityNumber = identity;
-        call.showCallerId   = [Settings sharedSettings].showCallerId;
+        call.showCallerId   = showCallerId;
         call.leg            = CallLegCallback;
         call.contactId      = contactId;
         call.contactName    = [[AppDelegate appDelegate] contactNameForId:contactId];
@@ -537,9 +576,9 @@
 
 #pragma mark - Public API
 
-- (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber
-               contactId:(NSString*)contactId
-              completion:(void (^)(CallableData* selectedCallable))completion
+- (void)callPhoneNumber:(PhoneNumber*)phoneNumber
+              contactId:(NSString*)contactId
+             completion:(void (^)(Call* call, CallableData* selectedCallable))completion
 {
     __block Call* call = nil;
 
@@ -556,18 +595,25 @@
              [self checkIfValidPhoneNumber:phoneNumber])
     {
         // Basic conditions have been met, now check the E164s.
-        [self checkIdentityForContactId:contactId completion:^(BOOL cancelled, NSString* identity, CallableData* selectedCallable)
+        [self checkIdentityForContactId:contactId
+                             completion:^(BOOL          cancelled,
+                                          NSString*     identity,
+                                          BOOL          showCallerId,
+                                          CallableData* selectedCallable)
         {
-            completion ? completion(selectedCallable) : (void)0;
-            
-            if (cancelled == NO && [self checkCallbackAndIdentity:identity] == YES)
+            if (cancelled == NO)
             {
-                call = [self callPhoneNumber:phoneNumber fromIdentity:identity contactId:contactId];
+                if (showCallerId == NO && identity.length == 0)
+                {
+                    identity = [Settings sharedSettings].callbackE164;
+                }
+                
+                call = [self callPhoneNumber:phoneNumber fromIdentity:identity showCallerId:showCallerId contactId:contactId];
             }
+            
+            completion ? completion(call, selectedCallable) : (void)0;
         }];
     }
-
-    return call;
 }
 
 

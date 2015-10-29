@@ -104,7 +104,7 @@
     [[WebClient sharedClient] initiateCallbackForCallee:self.call.phoneNumber
                                                  caller:callbackPhoneNumber
                                                identity:callerIdPhoneNumber
-                                                privacy:![Settings sharedSettings].showCallerId
+                                                privacy:!self.call.showCallerId
                                                   reply:^(NSError* error, NSString* theUuid)
     {
         if (error == nil)

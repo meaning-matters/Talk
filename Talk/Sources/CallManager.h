@@ -26,9 +26,9 @@
 
 + (CallManager*)sharedManager;
 
-- (Call*)callPhoneNumber:(PhoneNumber*)phoneNumber
-               contactId:(NSString*)contactId
-              completion:(void (^)(CallableData* selectedCallable))completion;
+- (void)callPhoneNumber:(PhoneNumber*)phoneNumber
+              contactId:(NSString*)contactId
+             completion:(void (^)(Call* call, CallableData* selectedCallable))completion;
 
 - (void)endCall:(Call*)call;
 

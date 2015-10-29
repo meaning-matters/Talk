@@ -842,7 +842,7 @@
                                  @"caller"   : [callerPhoneNumber   e164Format],
                                  @"callerId" : [identityPhoneNumber e164Format],
                                  @"privacy"  : privacy ? @"true" : @"false"};
-
+    
     [self postPath:[NSString stringWithFormat:@"/users/%@/callback", username]
         parameters:parameters
              reply:^(NSError* error, id content)

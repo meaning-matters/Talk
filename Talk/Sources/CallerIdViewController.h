@@ -16,7 +16,8 @@
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
                                     callerId:(CallerIdData*)callerId
-                                   contactId:(NSString*)contactId
-                                  completion:(void (^)(CallableData*  selectedCallable))completion;
+                            selectedCallable:(CallableData*)selectedCallable
+                                   contactId:(NSString*)contactId   // When nil puts it in Settings > Caller ID mode.
+                                  completion:(void (^)(CallableData*  selectedCallable, BOOL showCallerId))completion;
 
 @end

@@ -39,7 +39,7 @@
 
 - (void)selectCallerIdForContactId:(NSString*)contactId
               navigationController:(UINavigationController*)navigationController
-                        completion:(void (^)(CallableData* selectedCallable))completion;
+                        completion:(void (^)(CallableData* selectedCallable, BOOL showCallerId))completion;
 
 @end
 
