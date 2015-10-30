@@ -8,9 +8,9 @@
 //  The server list is DNS-refreshed when it's empty, when the shortest TTL of
 //  all servers has expired, or when one of the servers returned a failure;
 //  so not when HTTPS request timed out for example).  The code below adds
-//  60 seconds to the expiry time to make sure that our refresh is well after
-//  the TTL has expired; this to make sure we get fresh values from iOS' DNS
-//  cache.
+//  `kTtlIncrement` seconds to the expiry time to make sure that our refresh
+//  is well after the TTL has expired; this to make sure we get fresh values,
+//  and not the previous from (iOS') DNS cache.
 //
 //  The new list of servers is tested.  Servers that fail, are removed from
 //  the list; they get a new chance on the next refresh.
@@ -19,6 +19,12 @@
 //  by their DNS SRV priority and weight.  Only the highest priority servers
 //  will be used.  Subsequently these highest priority servers will be used
 //  in weighted round-robin fashion.
+//
+//  However, to prevent API calls to potentially go to a different server
+//  each time, a hold mechanism has been added: As long as subsequent calls
+//  are done within `kSelectedServerHoldTime`, the same server is used.  If
+//  a previous call is longer ago, the weighted round-robin scheme kicks in
+//  to select the next server.
 //
 //  The round-robin scheme works as follows: A so called 'weighter' value is
 //  incremented with the GCD of weights of the servers with highest priority.
@@ -39,6 +45,10 @@
 #import "Settings.h"
 #import "AFNetworking.h"
 
+const NSTimeInterval kDnsUpdateTimeout       = 20;
+const NSTimeInterval kApiRequestTimeout      = 20;
+const NSTimeInterval kTtlIncrement           = 10;
+const NSTimeInterval kSelectedServerHoldTime = 10;
 
 
 @interface WebInterface ()
@@ -51,6 +61,8 @@
 @property (nonatomic, assign) int             weighter;
 @property (nonatomic, assign) int             weighterIncrement;
 @property (nonatomic, strong) NSCondition*    condition;
+@property (nonatomic, strong) NSDate*         selectedServerDate; // Date of last server selection.
+@property (nonatomic, strong) NSDictionary*   selectedServer;
 
 @end
 
@@ -66,9 +78,9 @@
     {
         sharedInstance = [[WebInterface alloc] init];
 
-        sharedInstance.dnsUpdateTimeout   = 20;
+        sharedInstance.dnsUpdateTimeout   = kDnsUpdateTimeout;
         sharedInstance.requestSerializer  = [AFJSONRequestSerializer serializer];
-        [sharedInstance.requestSerializer setTimeoutInterval:10];
+        [sharedInstance.requestSerializer setTimeoutInterval:kApiRequestTimeout];
         [sharedInstance.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
         [sharedInstance.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 
@@ -80,8 +92,6 @@
         
         sharedInstance.servers   = [NSMutableArray array];
         sharedInstance.condition = [[NSCondition alloc] init];
-        
-
     });
     
     return sharedInstance;
@@ -91,9 +101,9 @@
 - (void)updateServers
 {
     // Allow only one thread to update the server list.
-    @synchronized(self)
+    @synchronized(self) //### Is this correct? However, `@synchronized(self.servers)` causes dead-lock in `testServers`.
     {
-        if (self.servers.count == 0 || [[NSDate date] timeIntervalSinceDate:self.dnsUpdateDate] > (self.ttl + 60))
+        if (self.servers.count == 0 || [[NSDate date] timeIntervalSinceDate:self.dnsUpdateDate] > (self.ttl + kTtlIncrement))
         {
             [self.servers removeAllObjects];
             self.ttl = UINT32_MAX;
@@ -187,6 +197,7 @@
                 {
                     NBLog(@"DNS update done.");
 
+                    self.dnsUpdateDate = [NSDate date];
                     [self testServers];
                 }
                 else
@@ -360,13 +371,14 @@ static void processDnsReply(DNSServiceRef       sdRef,
 
         return;
     }
-
+    
     // Sort servers in descending priority order.
-    [self.servers sortUsingComparator:^NSComparisonResult(NSDictionary* server1, NSDictionary* server2)
-    {
-        return [server1[@"priority"] intValue] > [server2[@"priority"] intValue];
-    }];
-
+    NSSortDescriptor* sortDescriptorPriority = [[NSSortDescriptor alloc] initWithKey:@"priority" ascending:YES];
+    NSSortDescriptor* sortDescriptorDelay    = [[NSSortDescriptor alloc] initWithKey:@"delay"    ascending:YES];
+    NSArray*          sortDescriptors        = @[sortDescriptorPriority, sortDescriptorDelay];
+    
+    [self.servers sortUsingDescriptors:sortDescriptors];
+     
     self.weightSum = 0;
     int weightMin = INT_MAX;
     int priority = [self.servers[0][@"priority"] intValue];
@@ -412,26 +424,44 @@ static void processDnsReply(DNSServiceRef       sdRef,
     // See comment in `testServers` about mutual exclusive access to `self.servers`.
     @synchronized(self.servers)
     {
-        int           priority = [self.servers[0][@"priority"] intValue];
-        NSDictionary* server = nil;
-        
-        int weighter = 0;
-        for (server in self.servers)
+        NSDictionary* server;
+
+        if (self.servers.count > 0)
         {
-            if ([server[@"priority"] intValue] == priority)
+            if (self.selectedServer == nil ||
+                [[NSDate date] timeIntervalSinceDate:self.selectedServerDate] > kSelectedServerHoldTime)
             {
-                weighter += [server[@"weight"] intValue];
+                int priority = [self.servers[0][@"priority"] intValue];
                 
-                if ((self.weighter % self.weightSum) < weighter)
+                int weighter = 0;
+                for (server in self.servers)
                 {
-                    break;
+                    if ([server[@"priority"] intValue] == priority)
+                    {
+                        weighter += [server[@"weight"] intValue];
+                        
+                        if ((self.weighter % self.weightSum) < weighter)
+                        {
+                            break;
+                        }
+                    }
                 }
+                
+                self.weighter += self.weighterIncrement;
+                
+                self.selectedServer     = server;
             }
+            else
+            {
+                server = self.selectedServer;
+            }
+            
+            self.selectedServerDate = [NSDate date];
         }
-        
-        self.weighter += self.weighterIncrement;
-        
-        NBLog(@"Selected server: %@", server);
+        else
+        {
+            server = nil;
+        }
         
         return server;
     }
@@ -468,22 +498,34 @@ static void processDnsReply(DNSServiceRef       sdRef,
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
     {
-        [self.requestSerializer setAuthorizationHeaderFieldWithUsername:[Settings sharedSettings].webUsername
-                                                               password:[Settings sharedSettings].webPassword];
-
-        NSDictionary* server    = [self selectServer];
-        NSString*     urlString = [NSString stringWithFormat:@"https://%@:%d%@",
-                                                             server[@"target"],
-                                                             [server[@"port"] intValue],
-                                                             path];
-        NSMutableURLRequest* request = [self.requestSerializer requestWithMethod:method
-                                                                       URLString:urlString
-                                                                      parameters:parameters
-                                                                           error:nil];    //### Is 'nil' okay?
-
-        AFHTTPRequestOperation* operation = [self RequestOperationWithRequest:request success:success failure:failure];
-
-        [self.operationQueue addOperation:operation];
+        NSDictionary* server = [self selectServer];
+        if (server != nil)
+        {
+            [self.requestSerializer setAuthorizationHeaderFieldWithUsername:[Settings sharedSettings].webUsername
+                                                                   password:[Settings sharedSettings].webPassword];
+            
+            NSString*     urlString = [NSString stringWithFormat:@"https://%@:%d%@",
+                                       server[@"target"],
+                                       [server[@"port"] intValue],
+                                       path];
+            NSMutableURLRequest* request = [self.requestSerializer requestWithMethod:method
+                                                                           URLString:urlString
+                                                                          parameters:parameters
+                                                                               error:nil];    //### Is 'nil' okay?
+            
+            AFHTTPRequestOperation* operation = [self RequestOperationWithRequest:request success:success failure:failure];
+            
+            [self.operationQueue addOperation:operation];
+        }
+        else
+        {
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                NSError* error = [Common errorWithCode:WebStatusFailNoServer
+                                           description:[WebStatus localizedStringForStatus:WebStatusFailNoServer]];
+                failure ? failure(nil, error) : (void)0;
+            });
+        }
     });
 }
 

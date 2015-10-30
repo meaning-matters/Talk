@@ -30,7 +30,8 @@ typedef enum
     WebStatusFailNoAccount             = 911051,  // Indirect: not sent by server.
     WebStatusFailUnspecified           = 911052,  // Indirect: not sent by server.
     WebStatusFailInvalidResponse       = 911053,  // Indirect: not sent by server.
-    WebStatusFailUnknown               = 911054,  // Extreme unlikely situation where AFNetworking gives failure with error == nil.
+    WebStatusFailNoServer              = 911054,  // No API server could be retrieved with DNS-SRV.
+    WebStatusFailUnknown               = 911099,  // Extreme unlikely situation where AFNetworking gives failure with error == nil.
 } WebStatusCode;
 
 

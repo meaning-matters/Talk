@@ -51,155 +51,184 @@
     switch (code)
     {
         case WebStatusOk:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient StatusOk", nil, [NSBundle mainBundle],
                                                        @"Successful.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailInvalidRequest:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailInvalidRequest", nil, [NSBundle mainBundle],
                                                        @"Couldn't communicate with the server.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailServerIternal:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailServerIternal", nil, [NSBundle mainBundle],
                                                        @"Internal server issue.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailServiceUnavailable:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailServiceUnavailable", nil, [NSBundle mainBundle],
                                                        @"Service is temporatily unavailable.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailInvalidReceipt:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailInvalidReceipt", nil, [NSBundle mainBundle],
                                                        @"Electronic receipt is not valid.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailNoStatesForCountry:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailNoStatesForCountry", nil, [NSBundle mainBundle],
                                                        @"This country does not have states.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailInvalidInfo:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailInvalidInfo", nil, [NSBundle mainBundle],
                                                        @"Your name and address were not accepted.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailDataTooLarge:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailDataTooLarge", nil, [NSBundle mainBundle],
                                                        @"Too much data to load in one go.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailInsufficientCredit:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailInsufficientCredit", nil, [NSBundle mainBundle],
                                                        @"You have not enough credit.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailIvrInUse:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailIvrInUse", nil, [NSBundle mainBundle],
                                                        @"This Forwarding is still being used.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailVerfiedNumberInUse:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailVerifiedNumberInUse", nil, [NSBundle mainBundle],
                                                        @"This Phone is still being used.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailCallbackAlreadyActive:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient CallbackAlreadyActive", nil, [NSBundle mainBundle],
                                                        @"There's already a callback request active.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailNoCallbackFound:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient CallbackNotFound", nil, [NSBundle mainBundle],
                                                        @"No callback request found.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailNoCredit:   // Not used at the moment, because we have different failure texts.
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient NoCredit", nil, [NSBundle mainBundle],
                                                        @"You've run out of credit; buy more on the Credit tab.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailUnknownCallerId:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient UnknownCallerID", nil, [NSBundle mainBundle],
                                                        @"The caller ID you selected is unknown.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailUnknownVerifiedNumber:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient UnknownVerifiedNumber", nil, [NSBundle mainBundle],
                                                        @"The phone you selected to be called back is unknown.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailUnknownBothE164:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient UnknownBothE164", nil, [NSBundle mainBundle],
                                                        @"Both the caller ID and the phone to be called back are unknown.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailNoAccount:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailNoAccount", nil, [NSBundle mainBundle],
                                                        @"There's no active account.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailUnspecified:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailUnspecified", nil, [NSBundle mainBundle],
                                                        @"An unspecified issue.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
         case WebStatusFailInvalidResponse:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailInvalidResponse", nil, [NSBundle mainBundle],
                                                        @"Invalid data received from server.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
-            
+        }
+        case WebStatusFailNoServer:
+        {
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailNoServer", nil, [NSBundle mainBundle],
+                                                       @"No server could be reached.",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+        }
         case WebStatusFailUnknown:
+        {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailInvalidResponse", nil, [NSBundle mainBundle],
                                                        @"Unknown error received from server.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
+        }
     }
     
     return string;
 }
-
 
 @end
