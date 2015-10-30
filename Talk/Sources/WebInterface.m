@@ -35,6 +35,9 @@
 //  Finally the weighter is incremented with weighterIncrement (which is, as
 //  said, the GCD of the weights).
 //
+//  In case of a failure ...... TODO: ### Don't retry on cancelled HTTP reguest and
+//  neither on HTTP timeout, ...
+//
 
 #import <objc/runtime.h>
 #import <dns_sd.h>
@@ -105,8 +108,11 @@ const NSTimeInterval kSelectedServerHoldTime = 10;
     {
         if (self.servers.count == 0 || [[NSDate date] timeIntervalSinceDate:self.dnsUpdateDate] > (self.ttl + kTtlIncrement))
         {
-            [self.servers removeAllObjects];
-            self.ttl = UINT32_MAX;
+            @synchronized(self.servers)
+            {
+                [self.servers removeAllObjects];
+                self.ttl = UINT32_MAX;
+            }
 
             NBLog(@"Start DNS update.");
             DNSServiceRef       sdRef;
@@ -312,8 +318,13 @@ static void processDnsReply(DNSServiceRef       sdRef,
 {
     [self.condition lock];
 
-    NSArray* servers = [self.servers copy];
-    [self.servers removeAllObjects];
+    NSArray* servers;
+    
+    @synchronized(self.servers)
+    {
+        servers = [self.servers copy];
+        [self.servers removeAllObjects];
+    }
 
     for (NSMutableDictionary* server in servers)
     {
@@ -344,6 +355,10 @@ static void processDnsReply(DNSServiceRef       sdRef,
                 
                 [self.condition signal];
             }
+            else
+            {
+                NBLog(@"Server test failed: %@", server[@"target"]);
+            }
         }];
     }
 
@@ -358,7 +373,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
         }
     }
     while (count == 0);
-
+    
     [self.condition unlock];
 }
 
@@ -377,8 +392,11 @@ static void processDnsReply(DNSServiceRef       sdRef,
     NSSortDescriptor* sortDescriptorDelay    = [[NSSortDescriptor alloc] initWithKey:@"delay"    ascending:YES];
     NSArray*          sortDescriptors        = @[sortDescriptorPriority, sortDescriptorDelay];
     
-    [self.servers sortUsingDescriptors:sortDescriptors];
-     
+    @synchronized(self.servers)
+    {
+        [self.servers sortUsingDescriptors:sortDescriptors];
+    }
+    
     self.weightSum = 0;
     int weightMin = INT_MAX;
     int priority = [self.servers[0][@"priority"] intValue];
@@ -449,7 +467,8 @@ static void processDnsReply(DNSServiceRef       sdRef,
                 
                 self.weighter += self.weighterIncrement;
                 
-                self.selectedServer     = server;
+                NBLog(@"Selected server: %@", self.selectedServer[@"target"]);
+                self.selectedServer = server;
             }
             else
             {
@@ -476,15 +495,15 @@ static void processDnsReply(DNSServiceRef       sdRef,
 {
     AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 
-    operation.responseSerializer = self.responseSerializer;
+    operation.responseSerializer         = self.responseSerializer;
     [operation setResponseSerializer:[AFJSONResponseSerializer serializer]]; // force json response serializer
     operation.shouldUseCredentialStorage = self.shouldUseCredentialStorage;
     operation.credential                 = self.credential;
     operation.securityPolicy             = self.securityPolicy;
 
     [operation setCompletionBlockWithSuccess:success failure:failure];
-    operation.completionQueue = self.completionQueue;
-    operation.completionGroup = self.completionGroup;
+    operation.completionQueue            = self.completionQueue;
+    operation.completionGroup            = self.completionGroup;
     
     return operation;
 }
@@ -504,16 +523,29 @@ static void processDnsReply(DNSServiceRef       sdRef,
             [self.requestSerializer setAuthorizationHeaderFieldWithUsername:[Settings sharedSettings].webUsername
                                                                    password:[Settings sharedSettings].webPassword];
             
-            NSString*     urlString = [NSString stringWithFormat:@"https://%@:%d%@",
-                                       server[@"target"],
-                                       [server[@"port"] intValue],
-                                       path];
+            NSString* urlString = [NSString stringWithFormat:@"https://%@:%d%@",
+                                                             server[@"target"],
+                                                             [server[@"port"] intValue],
+                                                             path];
             NSMutableURLRequest* request = [self.requestSerializer requestWithMethod:method
                                                                            URLString:urlString
                                                                           parameters:parameters
                                                                                error:nil];    //### Is 'nil' okay?
             
-            AFHTTPRequestOperation* operation = [self RequestOperationWithRequest:request success:success failure:failure];
+            AFHTTPRequestOperation* operation = [self RequestOperationWithRequest:request
+                                                                          success:success
+                                                                          failure:^(AFHTTPRequestOperation* operation,
+                                                                                    NSError*                error)
+            {
+                // Retry once.
+                @synchronized(self.servers)
+                {
+                    [self.servers removeAllObjects];
+                    self.selectedServer = nil;
+                }
+                
+                [self requestWithMethod:method path:path parameters:parameters success:success failure:failure];
+            }];
             
             [self.operationQueue addOperation:operation];
         }
@@ -662,7 +694,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
         NBLog(@"POST response: %@", responseObject);
         [self handleSuccess:responseObject reply:reply];
     }
-                        failure:^(AFHTTPRequestOperation* operation, NSError* error)
+           failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
         NBLog(@"POST failure: %@", error);
         [self handleFailure:error reply:reply];
@@ -683,7 +715,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
         NBLog(@"PUT response: %@", responseObject);
         [self handleSuccess:responseObject reply:reply];
     }
-                       failure:^(AFHTTPRequestOperation* operation, NSError* error)
+          failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
         NBLog(@"PUT failure: %@", error);
         [self handleFailure:error reply:reply];
@@ -704,7 +736,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
         NBLog(@"GET response: %@", responseObject);
         [self handleSuccess:responseObject reply:reply];
     }
-                       failure:^(AFHTTPRequestOperation* operation, NSError* error)
+          failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
         NBLog(@"GET failure: %@", error);
         [self handleFailure:error reply:reply];
@@ -725,7 +757,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
         NBLog(@"DELETE response: %@", responseObject);
         [self handleSuccess:responseObject reply:reply];
     }
-                          failure:^(AFHTTPRequestOperation* operation, NSError* error)
+             failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
         NBLog(@"DELETE failure: %@", error);
         [self handleFailure:error reply:reply];
