@@ -101,7 +101,7 @@ const NSTimeInterval kSelectedServerHoldTime = 10;
 - (void)updateServers
 {
     // Allow only one thread to update the server list.
-    @synchronized(self) //### Is this correct? However, `@synchronized(self.servers)` causes dead-lock in `testServers`.
+    @synchronized(self) //### Is this thread-safe? However, `@synchronized(self.servers)` causes dead-lock in `testServers`.
     {
         if (self.servers.count == 0 || [[NSDate date] timeIntervalSinceDate:self.dnsUpdateDate] > (self.ttl + kTtlIncrement))
         {
