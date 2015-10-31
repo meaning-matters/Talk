@@ -25,9 +25,10 @@ typedef enum
 {
     TableSectionName        = 1UL << 0,
     TableSectionE164        = 1UL << 1,
-    TableSectionForwardings = 1UL << 2,
-    TableSectionNumbers     = 1UL << 3,
-    TableSectionCallerIds   = 1UL << 4,
+    TableSectionUsage       = 1UL << 2,
+    TableSectionForwardings = 1UL << 3,
+    TableSectionNumbers     = 1UL << 4,
+    TableSectionCallerIds   = 1UL << 5,
 } TableSections;
 
 
@@ -111,10 +112,6 @@ typedef enum
     {
         [self updateSaveButtonItem];
     }
-    else
-    {
-        [self updateDeleteButtonItem];
-    }
 }
 
 
@@ -122,29 +119,47 @@ typedef enum
 
 - (void)deleteAction
 {
-    NSString* buttonTitle = NSLocalizedStringWithDefaultValue(@"PhoneView DeleteTitle", nil,
-                                                              [NSBundle mainBundle], @"Delete Phone",
-                                                              @"...\n"
-                                                              @"[1/3 line small font].");
-
-    [BlockActionSheet showActionSheetWithTitle:nil
-                                    completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
+    if ([self canDelete])
     {
-        if (destruct == YES)
+        NSString* buttonTitle = NSLocalizedStringWithDefaultValue(@"PhoneView DeleteTitle", nil, [NSBundle mainBundle],
+                                                                  @"Delete Phone",
+                                                                  @"...\n"
+                                                                  @"[1/3 line small font].");
+        
+        [BlockActionSheet showActionSheetWithTitle:nil
+                                        completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
         {
-            [self.phone deleteFromManagedObjectContext:self.managedObjectContext
-                                            completion:^(BOOL succeeded)
+            if (destruct == YES)
             {
-                if (succeeded)
-                {
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
-            }];
+                [self.phone deleteFromManagedObjectContext:self.managedObjectContext
+                                                completion:^(BOOL succeeded)
+                 {
+                     if (succeeded)
+                     {
+                         [self.navigationController popViewControllerAnimated:YES];
+                     }
+                 }];
+            }
         }
+                                 cancelButtonTitle:[Strings cancelString]
+                            destructiveButtonTitle:buttonTitle
+                                 otherButtonTitles:nil];
     }
-                             cancelButtonTitle:[Strings cancelString]
-                        destructiveButtonTitle:buttonTitle
+    else
+    {
+        NSString* title;
+        
+        title   = NSLocalizedStringWithDefaultValue(@"PhoneView CantDeleteTitle", nil, [NSBundle mainBundle],
+                                                    @"Can't Delete Phone",
+                                                    @"...\n"
+                                                    @"[1/3 line small font].");
+        
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:[self cantDeleteTitle]
+                                    completion:nil
+                             cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
+    }
 }
 
 
@@ -235,6 +250,7 @@ typedef enum
     sections  = 0;
     sections |= TableSectionName;
     sections |= TableSectionE164;
+    sections |= (isNew == NO)                      ? TableSectionUsage       : 0;
     sections |= (self.phone.forwardings.count > 0) ? TableSectionForwardings : 0;
 #if HAS_BUYING_NUMBERS
     sections |= (numbersArray.count > 0) ?           TableSectionNumbers     : 0;
@@ -251,31 +267,12 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionName:
-        {
-            numberOfRows = 1;
-            break;
-        }
-        case TableSectionE164:
-        {
-            numberOfRows = 1;
-            break;
-        }
-        case TableSectionForwardings:
-        {
-            numberOfRows = self.phone.forwardings.count;
-            break;
-        }
-        case TableSectionNumbers:
-        {
-            numberOfRows = numbersArray.count;
-            break;
-        }
-        case TableSectionCallerIds:
-        {
-            numberOfRows = namesArray.count;
-            break;
-        }
+        case TableSectionName:        numberOfRows = 1;                            break;
+        case TableSectionE164:        numberOfRows = 1;                            break;
+        case TableSectionUsage:       numberOfRows = 2;                            break;
+        case TableSectionForwardings: numberOfRows = self.phone.forwardings.count; break;
+        case TableSectionNumbers:     numberOfRows = numbersArray.count;           break;
+        case TableSectionCallerIds:   numberOfRows = namesArray.count;             break;
     }
 
     return numberOfRows;
@@ -335,31 +332,6 @@ typedef enum
             }
             break;
         }
-        case TableSectionE164:
-        {
-            if ([self.phone.e164 isEqualToString:[Settings sharedSettings].callbackE164] ||
-                [self.phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164])
-            {
-                title = NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberFooter", nil,
-                                                          [NSBundle mainBundle],
-                                                          @"This Phone can't be deleted because it's used "
-                                                          @"as callback number and/or caller ID.\n\n"
-                                                          @"Go to the Settings tab to make changes.",
-                                                          @"Table footer that ....\n"
-                                                          @"[1 line larger font].");
-            }
-            break;
-        }
-        case TableSectionNumbers:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumbersFooter", nil,
-                                                      [NSBundle mainBundle],
-                                                      @"This Phone can't be deleted because it's in use "
-                                                      @"as forwarding.",
-                                                      @"Table footer that app can't be deleted\n"
-                                                      @"[1 line larger font].");
-            break;
-        }
     }
 
     return title;
@@ -372,31 +344,12 @@ typedef enum
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
-        case TableSectionName:
-        {
-            cell = [self nameCellForRowAtIndexPath:indexPath];
-            break;
-        }
-        case TableSectionE164:
-        {
-            cell = [self numberCellForRowAtIndexPath:indexPath];
-            break;
-        }
-        case TableSectionForwardings:
-        {
-            cell = [self forwardingsCellForRowAtIndexPath:indexPath];
-            break;
-        }
-        case TableSectionNumbers:
-        {
-            cell = [self numbersCellForRowAtIndexPath:indexPath];
-            break;
-        }
-        case TableSectionCallerIds:
-        {
-            cell = [self callerIdsCellForRowAtIndexPath:indexPath];
-            break;
-        }
+        case TableSectionName:        cell = [self nameCellForRowAtIndexPath:indexPath];        break;
+        case TableSectionE164:        cell = [self numberCellForRowAtIndexPath:indexPath];      break;
+        case TableSectionUsage:       cell = [self usageCellForRowAtIndexPath:indexPath];       break;
+        case TableSectionForwardings: cell = [self forwardingsCellForRowAtIndexPath:indexPath]; break;
+        case TableSectionNumbers:     cell = [self numbersCellForRowAtIndexPath:indexPath];     break;
+        case TableSectionCallerIds:   cell = [self callerIdsCellForRowAtIndexPath:indexPath];   break;
     }
 
     return cell;
@@ -429,6 +382,45 @@ typedef enum
         cell.selectionStyle      = UITableViewCellSelectionStyleNone;
         cell.accessoryType       = UITableViewCellAccessoryNone;
     }
+
+    return cell;
+}
+
+
+- (UITableViewCell*)usageCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell* cell;
+    
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"SelectCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SelectCell"];
+    }
+    
+    if (indexPath.row == 0)
+    {
+        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:UseCallback CellText", nil,
+                                                                [NSBundle mainBundle], @"Use As Callback Phone",
+                                                                @"..."
+                                                                @"[....");
+        if ([[Settings sharedSettings].callbackE164 isEqualToString:self.phone.e164])
+        {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+    }
+    else
+    {
+        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:UseDefaultCallerId CellText", nil,
+                                                                [NSBundle mainBundle], @"Use As Default Caller ID",
+                                                                @"..."
+                                                                @"[....");
+        if ([[Settings sharedSettings].callerIdE164 isEqualToString:self.phone.e164])
+        {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+    }
+    
+    cell.textLabel.textColor = [Skinning tintColor];
 
     return cell;
 }
@@ -531,6 +523,22 @@ typedef enum
             }
             break;
         }
+        case TableSectionUsage:
+        {
+            if (indexPath.row == 0)
+            {
+                [Settings sharedSettings].callbackE164 = self.phone.e164;
+            }
+            else
+            {
+                [Settings sharedSettings].callerIdE164 = self.phone.e164;
+            }
+            
+            UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            break;
+        }
         case TableSectionForwardings:
         {
             break;
@@ -566,17 +574,97 @@ typedef enum
 }
 
 
-- (void)updateDeleteButtonItem
+- (BOOL)canDelete
 {
-    if ([self.phone.e164 isEqualToString:[Settings sharedSettings].callbackE164] ||
-        [self.phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164])
+    return !([self.phone.e164 isEqualToString:[Settings sharedSettings].callbackE164] ||
+             [self.phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164] ||
+             (numbersArray.count > 0) ||
+             (namesArray.count > 0));
+}
+
+
+- (NSString*)cantDeleteTitle
+{
+    NSString*       title;
+    NSMutableArray* useArray = [NSMutableArray array];
+    
+    if ([self.phone.e164 isEqualToString:[Settings sharedSettings].callbackE164])
     {
-        self.navigationItem.rightBarButtonItem.enabled = NO;
+        [useArray addObject:NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberFooter", nil,
+                                                              [NSBundle mainBundle],
+                                                              @"for callback",
+                                                              @"Table footer that ....\n"
+                                                              @"[1 line larger font].")];
     }
-    else
+    
+    if ([self.phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164])
     {
-        self.navigationItem.rightBarButtonItem.enabled = YES;
+        [useArray addObject:NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberFooter", nil,
+                                                              [NSBundle mainBundle],
+                                                              @"as default caller ID",
+                                                              @"Table footer that ....\n"
+                                                              @"[1 line larger font].")];
     }
+    
+    if (numbersArray.count > 0)
+    {
+        [useArray addObject:NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberFooter", nil,
+                                                              [NSBundle mainBundle],
+                                                              @"in one or more Destinations",
+                                                              @"Table footer that ....\n"
+                                                              @"[1 line larger font].")];
+    }
+    
+    if (namesArray.count > 0)
+    {
+        [useArray addObject:NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberFooter", nil,
+                                                              [NSBundle mainBundle],
+                                                              @"as caller ID for contacts",
+                                                              @"Table footer that ....\n"
+                                                              @"[1 line larger font].")];
+    }
+    
+    title = NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberFooter", nil,
+                                              [NSBundle mainBundle],
+                                              @"This Phone can't be deleted because it's used ",
+                                              @"Table footer that ....\n"
+                                              @"[1 line larger font].");
+    
+    for (int i = 0; i < useArray.count; i++)
+    {
+        if (useArray.count == 1)
+        {
+            title = [title stringByAppendingFormat:@"%@.", useArray[i]];
+        }
+        else if (useArray.count == 2)
+        {
+            if (i == 0)
+            {
+                title = [title stringByAppendingFormat:@"%@ and ", useArray[i]];
+            }
+            else
+            {
+                title = [title stringByAppendingFormat:@"%@.", useArray[i]];
+            }
+        }
+        else
+        {
+            if (i == (useArray.count - 2))
+            {
+                title = [title stringByAppendingFormat:@"%@, and ", useArray[i]];
+            }
+            else if (i == (useArray.count - 1))
+            {
+                title = [title stringByAppendingFormat:@"%@.", useArray[i]];
+            }
+            else
+            {
+                title = [title stringByAppendingFormat:@"%@, ", useArray[i]];
+            }
+        }
+    }
+    
+    return title;
 }
 
 
