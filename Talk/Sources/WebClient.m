@@ -153,24 +153,33 @@
 
 
 // 1. CREATE/UPDATE ACCOUNT
-- (void)retrieveAccountsForReceipt:(NSString*)receipt
-                          language:(NSString*)language
-                 notificationToken:(NSString*)notificationToken
-                 mobileCountryCode:(NSString*)mobileCountryCode
-                 mobileNetworkCode:(NSString*)mobileNetworkCode
-                             reply:(void (^)(NSError*  error,
-                                             NSString* webUsername,
-                                             NSString* webPassword,
-                                             NSString* sipUsername,
-                                             NSString* sipPassword,
-                                             NSString* sipRealm))reply
+- (void)retrieveAccountForReceipt:(NSString*)receipt
+                         language:(NSString*)language
+                notificationToken:(NSString*)notificationToken
+                mobileCountryCode:(NSString*)mobileCountryCode
+                mobileNetworkCode:(NSString*)mobileNetworkCode
+                       deviceName:(NSString*)deviceName
+                         deviceOs:(NSString*)deviceOs
+                      deviceModel:(NSString*)deviceModel
+                       appVersion:(NSString*)appVersion
+                         vendorId:(NSString*)vendorId
+                    advertisingId:(NSString*)advertisingId
+                            reply:(void (^)(NSError*  error,
+                                            NSString* webUsername,
+                                            NSString* webPassword))reply;
 {
     NSDictionary* parameters;
     if (mobileCountryCode == nil || mobileNetworkCode == nil)
     {
         parameters = @{@"receipt"           : receipt,
                        @"language"          : language,
-                       @"notificationToken" : notificationToken};
+                       @"notificationToken" : notificationToken,
+                       @"deviceName"        : deviceName,
+                       @"deviceOs"          : deviceOs,
+                       @"deviceModel"       : deviceModel,
+                       @"appVersion"        : appVersion,
+                       @"vendorId"          : vendorId,
+                       @"advertisingId"     : advertisingId};
     }
     else
     {
@@ -178,7 +187,13 @@
                        @"language"          : language,
                        @"notificationToken" : notificationToken,
                        @"mobileCountryCode" : mobileCountryCode,
-                       @"mobileNetworkCode" : mobileNetworkCode};
+                       @"mobileNetworkCode" : mobileNetworkCode,
+                       @"deviceName"        : deviceName,
+                       @"deviceOs"          : deviceOs,
+                       @"deviceModel"       : deviceModel,
+                       @"appVersion"        : appVersion,
+                       @"vendorId"          : vendorId,
+                       @"advertisingId"     : advertisingId};
     }
 
     NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
@@ -187,16 +202,11 @@
     // Don't call `handleAccount` and get data without needing account.
 
     [self.webInterface postPath:[NSString stringWithFormat:@"/users?currencyCode=%@&countryCode=%@",
-                                                           currencyCode, countryCode]
+                                 currencyCode, countryCode]
                      parameters:parameters
-        reply:^(NSError *error, id content)
+                          reply:^(NSError *error, id content)
     {
-        reply(error,
-              content[@"webUsername"],
-              content[@"webPassword"],
-              content[@"sipUsername"],
-              content[@"sipPassword"],
-              content[@"sipRealm"]);
+        reply(error,  content[@"webUsername"], content[@"webPassword"]);
     }];
 }
 

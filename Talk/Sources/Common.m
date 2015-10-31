@@ -10,6 +10,7 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import <sys/utsname.h>
+#import <sys/sysctl.h>
 #import "Common.h"
 #import "Strings.h"
 #import "BlockAlertView.h"
@@ -369,14 +370,106 @@ static Common* sharedCommon;
 }
 
 
-// Add: http://stackoverflow.com/questions/1108859/detect-the-specific-iphone-ipod-touch-model
+// Idea:      https://github.com/erichoracek/UIDevice-Hardware/blob/master/UIDevice-Hardware.m
+// iPhone:    http://theiphonewiki.com/wiki/IPhone
+// iPad:      http://theiphonewiki.com/wiki/IPad
+// iPad Mini: http://theiphonewiki.com/wiki/IPad_mini
+// iPod:      http://theiphonewiki.com/wiki/IPod
+// Apple TV:  https://www.theiphonewiki.com/wiki/Apple_TV
+//
 + (NSString*)deviceModel
 {
-    struct utsname  systemInfo;
+    static dispatch_once_t onceToken;
+    static NSDictionary*   table;
+    
+    dispatch_once(&onceToken, ^
+    {
+        table =
+        @{
+            @"iPhone1,1"  : @"iPhone 1G",
+            @"iPhone1,2"  : @"iPhone 3G",
+            @"iPhone2,1"  : @"iPhone 3GS",
+            @"iPhone3,1"  : @"iPhone 4 (GSM)",
+            @"iPhone3,2"  : @"iPhone 4 (GSM Rev A)",
+            @"iPhone3,3"  : @"iPhone 4 (CDMA)",
+            @"iPhone4,1"  : @"iPhone 4S",
+            @"iPhone5,1"  : @"iPhone 5 (GSM)",
+            @"iPhone5,2"  : @"iPhone 5 (Global)",
+            @"iPhone5,3"  : @"iPhone 5c (GSM)",
+            @"iPhone5,4"  : @"iPhone 5c (Global)",
+            @"iPhone6,1"  : @"iPhone 5s (GSM)",
+            @"iPhone6,2"  : @"iPhone 5s (Global)",
+            @"iPhone7,1"  : @"iPhone 6 Plus",
+            @"iPhone7,2"  : @"iPhone 6",
+            @"iPhone8,1"  : @"iPhone 6s",
+            @"iPhone8,2"  : @"iPhone 6s Plus",
 
+            @"iPad1,1"    : @"iPad 1G",
+            @"iPad2,1"    : @"iPad 2 (Wi-Fi)",
+            @"iPad2,2"    : @"iPad 2 (GSM)",
+            @"iPad2,3"    : @"iPad 2 (CDMA)",
+            @"iPad2,4"    : @"iPad 2 (Rev A)",
+            @"iPad3,1"    : @"iPad 3 (Wi-Fi)",
+            @"iPad3,2"    : @"iPad 3 (GSM)",
+            @"iPad3,3"    : @"iPad 3 (Global)",
+            @"iPad3,4"    : @"iPad 4 (Wi-Fi)",
+            @"iPad3,5"    : @"iPad 4 (GSM)",
+            @"iPad3,6"    : @"iPad 4 (Global)",
+
+            @"iPad4,1"    : @"iPad Air (Wi-Fi)",
+            @"iPad4,2"    : @"iPad Air (Cellular)",
+            @"iPad5,3"    : @"iPad Air 2 (Wi-Fi)",
+            @"iPad5,4"    : @"iPad Air 2 (Cellular)",
+
+            @"iPad2,5"    : @"iPad mini 1G (Wi-Fi)",
+            @"iPad2,6"    : @"iPad mini 1G (GSM)",
+            @"iPad2,7"    : @"iPad mini 1G (Global)",
+            @"iPad4,4"    : @"iPad mini 2G (Wi-Fi)",
+            @"iPad4,5"    : @"iPad mini 2G (Cellular)",
+            @"iPad4,6"    : @"iPad mini 2G (Cellular)", // TD-LTE model see https://support.apple.com/en-us/HT201471#iPad-mini2
+            @"iPad4,7"    : @"iPad mini 3G (Wi-Fi)",
+            @"iPad4,8"    : @"iPad mini 3G (Cellular)",
+            @"iPad4,9"    : @"iPad mini 3G (Cellular)",
+
+            @"iPod1,1"    : @"iPod touch 1G",
+            @"iPod2,1"    : @"iPod touch 2G",
+            @"iPod3,1"    : @"iPod touch 3G",
+            @"iPod4,1"    : @"iPod touch 4G",
+            @"iPod5,1"    : @"iPod touch 5G",
+            @"iPod7,1"    : @"iPod touch 6G",           // as 6,1 was never released 7,1 is actually 6th generation
+
+            @"AppleTV1,1" : @"Apple TV 1G",
+            @"AppleTV2,1" : @"Apple TV 2G",
+            @"AppleTV3,1" : @"Apple TV 3G",
+            @"AppleTV3,2" : @"Apple TV 3G",             // small, incremental update over 3,1
+            @"AppleTV5,3" : @"Apple TV 4G",             // as 4,1 was never released, 5,1 is actually 4th generation
+        };
+    });
+
+    struct    utsname systemInfo;
     uname(&systemInfo);
+    NSString* machine = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+    NSString* model   = table[machine];
+    
+    if (model == nil && ([machine hasSuffix:@"86"] || [machine isEqual:@"x86_64"]))
+    {
+        model = ([[UIScreen mainScreen] bounds].size.width < 768.0) ? @"iPhone Simulator" : @"iPad Simulator";
+    }
+    
+    if (model == nil)
+    {
+        model = machine;
+    }
 
-    return [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+    return model;
+}
+
+ 
++ (NSString*)deviceOs
+{
+    NSOperatingSystemVersion osVersion = [[NSProcessInfo processInfo] operatingSystemVersion];
+    
+    return [NSString stringWithFormat:@"%d.%d.%d", (int)osVersion.majorVersion, (int)osVersion.minorVersion, (int)osVersion.patchVersion];
 }
 
 

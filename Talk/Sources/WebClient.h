@@ -26,17 +26,20 @@
 - (void)retrieveNumberRates:(void (^)(NSError* error, NSArray* rates))reply;
 
 // 1. CREATE/UPDATE ACCOUNT
-- (void)retrieveAccountsForReceipt:(NSString*)receipt
-                          language:(NSString*)language
-                 notificationToken:(NSString*)notificationToken
-                 mobileCountryCode:(NSString*)mobileCountryCode
-                 mobileNetworkCode:(NSString*)mobileNetworkCode
-                             reply:(void (^)(NSError*  error,
-                                             NSString* webUsername,
-                                             NSString* webPassword,
-                                             NSString* sipUsername,
-                                             NSString* sipPassword,
-                                             NSString* sipRealm))reply;
+- (void)retrieveAccountForReceipt:(NSString*)receipt
+                         language:(NSString*)language
+                notificationToken:(NSString*)notificationToken
+                mobileCountryCode:(NSString*)mobileCountryCode
+                mobileNetworkCode:(NSString*)mobileNetworkCode
+                       deviceName:(NSString*)deviceName
+                         deviceOs:(NSString*)deviceOs
+                      deviceModel:(NSString*)deviceModel
+                       appVersion:(NSString*)appVersion
+                         vendorId:(NSString*)vendorId
+                    advertisingId:(NSString*)advertisingId
+                            reply:(void (^)(NSError*  error,
+                                            NSString* webUsername,
+                                            NSString* webPassword))reply;
 
 // 2A. DO NUMBER VERIFICATION
 - (void)retrieveVerificationCodeForE164:(NSString*)e164

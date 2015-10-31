@@ -9,7 +9,6 @@
 //### Want to remove CoreData? http://www.gravitywell.co.uk/blog/post/how-to-quickly-add-core-data-to-an-app-in-xcode-4
 
 #import <MediaPlayer/MediaPlayer.h>
-#import <AdSupport/AdSupport.h>
 #import "HockeySDK.h"
 #import "AppDelegate.h"
 #import "Settings.h"
@@ -48,10 +47,6 @@
 - (void)setUp
 {
     static dispatch_once_t onceToken;
-    
-    //###
-    NSString* idfv = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-    NSString* adId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
     
     dispatch_once(&onceToken, ^
     {

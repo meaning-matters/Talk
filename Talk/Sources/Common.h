@@ -63,6 +63,8 @@ static const int TextFieldCellTag = 1111;
 
 + (NSString*)deviceModel;
 
++ (NSString*)deviceOs;
+
 + (void)setCornerRadius:(CGFloat)radius ofView:(UIView*)view;
 
 + (void)setBorderWidth:(CGFloat)width ofView:(UIView*)view;

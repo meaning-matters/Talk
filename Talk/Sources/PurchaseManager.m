@@ -1,4 +1,4 @@
-    //
+//
 //  PurchaseManager.m
 //  Talk
 //
@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+#import <AdSupport/AdSupport.h>
 #import "PurchaseManager.h"
 #import "NetworkStatus.h"
 #import "Common.h"
@@ -257,18 +259,21 @@
 
 - (void)processAccountTransaction:(SKPaymentTransaction*)transaction
 {
-    // I tried [NSBundle appStoreReceiptURL] ..., but this requires server-side changes.
-    [[WebClient sharedClient] retrieveAccountsForReceipt:[Base64 encode:transaction.transactionReceipt]
-                                                language:[[NSLocale preferredLanguages] objectAtIndex:0]
-                                       notificationToken:[AppDelegate appDelegate].deviceToken
-                                       mobileCountryCode:[NetworkStatus sharedStatus].simMobileCountryCode
-                                       mobileNetworkCode:[NetworkStatus sharedStatus].simMobileNetworkCode
-                                                   reply:^(NSError*  error,
-                                                           NSString* webUsername,
-                                                           NSString* webPassword,
-                                                           NSString* sipUsername,
-                                                           NSString* sipPassword,
-                                                           NSString* sipRealm)
+    //### I tried [NSBundle appStoreReceiptURL] ..., but this requires server-side changes.
+    [[WebClient sharedClient] retrieveAccountForReceipt:[Base64 encode:transaction.transactionReceipt]
+                                               language:[[NSLocale preferredLanguages] objectAtIndex:0]
+                                      notificationToken:[AppDelegate appDelegate].deviceToken
+                                      mobileCountryCode:[NetworkStatus sharedStatus].simMobileCountryCode
+                                      mobileNetworkCode:[NetworkStatus sharedStatus].simMobileNetworkCode
+                                             deviceName:[UIDevice currentDevice].name
+                                               deviceOs:[Common deviceOs]
+                                            deviceModel:[Common deviceModel]
+                                             appVersion:[Settings sharedSettings].appVersion
+                                               vendorId:[[[UIDevice currentDevice] identifierForVendor] UUIDString]
+                                          advertisingId:[[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString]
+                                                  reply:^(NSError*  error,
+                                                          NSString* webUsername,
+                                                          NSString* webPassword)
     {
         if (error == nil)
         {
