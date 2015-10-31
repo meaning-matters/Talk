@@ -37,6 +37,8 @@
 //
 //  In case of a failure ...... TODO: ### Don't retry on cancelled HTTP reguest and
 //  neither on HTTP timeout, ...
+//  Zoek oorzaak van "No server could be reached" met api4 net uit en dan Sync all
+//  Check gedrag als alle api stopped en dan weer een started: app lijkt dood nu
 //
 
 #import <objc/runtime.h>
@@ -544,6 +546,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
                     self.selectedServer = nil;
                 }
                 
+                NBLog(@"Retrying: %@", path);
                 [self requestWithMethod:method path:path parameters:parameters success:success failure:failure];
             }];
             
