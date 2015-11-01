@@ -82,7 +82,7 @@
 
 // Caller ID related
 "CI_CALLER_ID"      = "Caller ID";
-"CI_USES_DEFAULT"   = "Uses default from Settings";
+"CI_USES_DEFAULT"   = "Default: %@";
 "CI_IS_NOT_SHOWN"   = "Hidden";
 
 //Social/IM labels

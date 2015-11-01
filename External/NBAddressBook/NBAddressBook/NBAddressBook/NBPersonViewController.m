@@ -1568,8 +1568,10 @@
                     cell.cellTextfield.text = selectedCallable.name;
                     
                     if (showCallerId)
-                    {
-                        cell.cellTextfield.placeholder = NSLocalizedString(@"CI_USES_DEFAULT", @"");
+                    {                        
+                        NSString* defaultCallerId = [[NBAddressBookManager sharedManager].delegate defaultCallerId];
+                        cell.cellTextfield.placeholder = [NSString stringWithFormat:NSLocalizedString(@"CI_USES_DEFAULT", @""),
+                                                          defaultCallerId.length ? defaultCallerId : @""];
                     }
                     else
                     {

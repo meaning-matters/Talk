@@ -318,6 +318,20 @@
 }
 
 
+- (PhoneData*)lookupPhoneForE164:(NSString*)e164
+{
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"e164 == %@", e164];
+    NSArray*     phones    = [self fetchEntitiesWithName:@"Phone"
+                                                sortKeys:@[@"name"]
+                                               predicate:predicate
+                                    managedObjectContext:nil];
+    
+    return [phones firstObject];
+}
+
+
+#pragma mark - Helpers
+
 - (void)handleError:(NSError*)error
 {
     NBLog(@"CoreData error: %@.", error);

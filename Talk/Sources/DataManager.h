@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class PhoneData;
+
 
 @interface DataManager : NSObject
 
@@ -36,5 +38,7 @@
 
 // Same as synchronizeAll: but with alert when something went wrong.
 - (void)synchronizeWithServer:(void (^)(NSError* error))completion;
+
+- (PhoneData*)lookupPhoneForE164:(NSString*)e164;
 
 @end

@@ -332,8 +332,7 @@ typedef enum
     {
         case TableSectionCallback:
         {
-
-            phone       = [self lookupPhoneForE164:settings.callbackE164];
+            phone       = [[DataManager sharedManager] lookupPhoneForE164:settings.callbackE164];
             headerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
                                                             @"Select Phone To Be Called On",
                                                             @"[1/4 line larger font].");
@@ -369,7 +368,7 @@ typedef enum
         }
         case TableSectionCallerId:
         {
-            phone       = [self lookupPhoneForE164:settings.callerIdE164];
+            phone       = [[DataManager sharedManager] lookupPhoneForE164:settings.callerIdE164];
             headerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
                                                             @"Select Default Caller ID",
                                                             @"[1/4 line larger font].");
@@ -543,7 +542,7 @@ typedef enum
                                                             @"Phone number on which user is reachable.\n"
                                                             @"[1/2 line, abbreviated: Called].");
     
-    PhoneData* phone = [self lookupPhoneForE164:settings.callbackE164];
+    PhoneData* phone = [[DataManager sharedManager] lookupPhoneForE164:settings.callbackE164];
     cell.detailTextLabel.text = (phone != nil) ? phone.name : @"";
 
     cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
@@ -571,7 +570,7 @@ typedef enum
                                                                 [NSBundle mainBundle], @"Caller ID",
                                                                 @"Format string showing shown number.\n"
                                                                 @"[1 line].");
-        PhoneData* phone = [self lookupPhoneForE164:settings.callerIdE164];
+        PhoneData* phone = [[DataManager sharedManager] lookupPhoneForE164:settings.callerIdE164];
         if (phone != nil)
         {
             if (settings.showCallerId)
@@ -770,20 +769,6 @@ typedef enum
     [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
     [self.tableView endUpdates];
-}
-
-
-#pragma mark - Helpers
-
-- (PhoneData*)lookupPhoneForE164:(NSString*)e164
-{
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"e164 == %@", e164];
-    NSArray*     phones    = [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
-                                                                       sortKeys:@[@"name"]
-                                                                      predicate:predicate
-                                                           managedObjectContext:nil];
-
-    return [phones firstObject];
 }
 
 @end

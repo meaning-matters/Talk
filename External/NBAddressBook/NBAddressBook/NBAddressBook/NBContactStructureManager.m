@@ -240,7 +240,9 @@
             
             if ([[NBAddressBookManager sharedManager].delegate callerIdIsShownForContactId:contactId])
             {
-                placeholder = NSLocalizedString(@"CI_USES_DEFAULT", @"");
+                NSString* defaultCallerId = [[NBAddressBookManager sharedManager].delegate defaultCallerId];
+                placeholder = [NSString stringWithFormat:NSLocalizedString(@"CI_USES_DEFAULT", @""),
+                               defaultCallerId.length ? defaultCallerId : @""];
             }
             else
             {

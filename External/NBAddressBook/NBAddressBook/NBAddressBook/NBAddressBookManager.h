@@ -41,6 +41,8 @@
               navigationController:(UINavigationController*)navigationController
                         completion:(void (^)(CallableData* selectedCallable, BOOL showCallerId))completion;
 
+- (NSString*)defaultCallerId;
+
 @end
 
 

@@ -17,7 +17,6 @@
 
 @property (nonatomic, retain) NSSet* forwardings;
 
-
 - (void)deleteFromManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
                             completion:(void (^)(BOOL succeeded))completion;
 

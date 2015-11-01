@@ -29,6 +29,7 @@
 #import "CountriesViewController.h"
 #import "CallerIdData.h"
 #import "CallableData.h"
+#import "PhoneData.h"
 #import "CallerIdViewController.h"
 
 
@@ -710,6 +711,12 @@
     }];
     
     [navigationController pushViewController:viewController animated:YES];
+}
+
+
+- (NSString*)defaultCallerId
+{
+    return [[DataManager sharedManager] lookupPhoneForE164:[Settings sharedSettings].callerIdE164].name;
 }
 
 @end
