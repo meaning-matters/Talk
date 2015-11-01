@@ -49,7 +49,6 @@
 
 //Call support
 + (void)makePhoneCall:(NSString*)phoneNumber
-        withContactID:(NSString*)contactID
-           completion:(void (^)(BOOL cancelled, CallableData* selectedCallable))completion;
+        withContactID:(NSString*)contactID;
 
 @end

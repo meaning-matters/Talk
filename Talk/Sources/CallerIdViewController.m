@@ -5,18 +5,13 @@
 //  Created by Cornelis van der Bent on 15/06/14.
 //  Copyright (c) 2014 NumberBay Ltd. All rights reserved.
 //
-//  This is a tricky module because it can be shown in three different
-//  situations:
-//  A. From Contacts, to select the called ID for a contact (navigation push)
-//  B. Just before making a call, to select the caller ID for a contact (modal)
-//  C. From Settings, to select the default caller ID (navigation push)
-//
-//  A anD B only differ in the manner in which the view was shown.  C however,
-//  is quite different as it does not involve a contact nor a caller ID data
-//  object.
+//  This view can be shown in two quite different situations:
+//  A. From Contacts, to select the called ID for a contact.
+//  B. From Settings, to select the default caller ID (does not get 'callerId'
+//     nor 'contactId' parameters.
 //
 //  When making changes, make sure to test all possible states & transitions
-//  for all three situations above.
+//  for both situations above.
 //
 
 //http://stackoverflow.com/questions/8997387/tableview-with-two-instances-of-nsfetchedresultscontroller
@@ -83,16 +78,7 @@ typedef enum
 {
     [super viewDidLoad];
 
-    if (self.navigationController.presentingViewController != nil)
-    {
-        // We get here when selected to assign a caller ID right before a call.
-        UIBarButtonItem* buttonItem;
-        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                   target:self
-                                                                   action:@selector(cancelAction)];
-        self.navigationItem.leftBarButtonItem = buttonItem;
-    }
-    else if (self.callerId != nil && self.callerId.callable != nil)
+    if (self.callerId != nil && self.callerId.callable != nil)
     {
         // We get here from contact info view.  A caller already been selected.
         UIBarButtonItem* buttonItem;
@@ -344,7 +330,7 @@ typedef enum
         
     }
 
-    [self closeView];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -384,22 +370,6 @@ typedef enum
 }
 
 
-- (void)closeView
-{
-    if (self.navigationController.presentingViewController != nil)
-    {
-        [self dismissViewControllerAnimated:YES completion:^
-        {
-            self.completion ? self.completion(self.selectedCallable, [self showCallerId]) : (void)0;
-        }];
-    }
-    else
-    {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-}
-
-
 - (void)showCallerIdSwitchAction:(UISwitch*)switchView
 {
     // This method can only be called for contacts, so we don't have to check self.contactId here.
@@ -425,7 +395,7 @@ typedef enum
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.333 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
         {
-            [self closeView];
+            [self.navigationController popViewControllerAnimated:YES];
         });
     }
     else

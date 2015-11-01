@@ -34,8 +34,6 @@
 @property (nonatomic, strong) NSString*      webUsername;
 @property (nonatomic, strong) NSString*      webPassword;
 
-@property (nonatomic, assign) BOOL           askForCallerId;        // Ask user to select caller ID for contact.
-
 @property (nonatomic, assign) BOOL           showCallerId;
 @property (nonatomic, strong) NSString*      callerIdE164;          // Caller ID E164, used until Groups are implemented.
 @property (nonatomic, strong) NSString*      callbackE164;          // Called back E164, used until Groups are implemented.

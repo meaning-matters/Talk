@@ -571,15 +571,11 @@
 #pragma mark - Single point of handling calls
 + (void)makePhoneCall:(NSString*)phoneNumber
         withContactID:(NSString*)contactID
-           completion:(void (^)(BOOL cancelled, CallableData* selectedCallable))completion
-{    
+{
 #ifndef NB_STANDALONE
     [[CallManager sharedManager] callPhoneNumber:[[PhoneNumber alloc] initWithNumber:phoneNumber]
                                        contactId:contactID
-                                      completion:^(Call* call, CallableData* selectedCallable)
-    {
-        completion ? completion(call == nil, selectedCallable) : (void)0;
-    }];
+                                      completion:nil];
 #endif
 }
 

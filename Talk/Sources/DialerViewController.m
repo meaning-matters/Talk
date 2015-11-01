@@ -386,7 +386,7 @@
 {
     [[CallManager sharedManager] callPhoneNumber:phoneNumber
                                        contactId:aContactId
-                                      completion:^(Call *call, CallableData *selectedCallable)
+                                      completion:^(Call *call)
     {
         if (call != nil)
         {

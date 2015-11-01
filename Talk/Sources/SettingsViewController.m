@@ -26,9 +26,8 @@ typedef enum
 {
     TableSectionCallback    = 1UL << 0,
     TableSectionCallerId    = 1UL << 1,
-    TableSectionCallOptions = 1UL << 2,
-    TableSectionHomeCountry = 1UL << 3,
-    TableSectionAccountData = 1UL << 4,
+    TableSectionHomeCountry = 1UL << 2,
+    TableSectionAccountData = 1UL << 3,
 } TableSections;
 
 
@@ -60,7 +59,6 @@ typedef enum
         sections |= TableSectionCallerId;
         sections |= TableSectionAccountData;
         sections |= TableSectionHomeCountry;
-        sections |= TableSectionCallOptions;
 
         settings = [Settings sharedSettings];
 
@@ -85,7 +83,6 @@ typedef enum
     {
         NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
         [indexSet addIndex:[Common nOfBit:TableSectionHomeCountry inValue:sections]];
-        [indexSet addIndex:[Common nOfBit:TableSectionCallOptions inValue:sections]];
         
         [self.tableView beginUpdates];
         [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
@@ -113,10 +110,6 @@ typedef enum
                   context:nil];
     [settings addObserver:self
                forKeyPath:@"callerIdE164"
-                  options:NSKeyValueObservingOptionNew
-                  context:nil];
-    [settings addObserver:self
-               forKeyPath:@"askForCallerId"
                   options:NSKeyValueObservingOptionNew
                   context:nil];
     [settings addObserver:self
@@ -153,10 +146,6 @@ typedef enum
     else if ([keyPath isEqualToString:@"callerIdE164"])
     {
         [indexSet addIndex:[Common nOfBit:TableSectionCallerId inValue:sections]];
-    }
-    else if ([keyPath isEqualToString:@"askForCallerId"])
-    {
-        [indexSet addIndex:[Common nOfBit:TableSectionCallOptions inValue:sections]];
     }
     else if ([keyPath isEqualToString:@"homeCountry"])
     {
@@ -207,11 +196,6 @@ typedef enum
                                                       @"The way calls are being made.");
             break;
         }
-        case TableSectionCallOptions:
-        {
-            title = nil;
-            break;
-        }
         case TableSectionHomeCountry:
         {
             title = NSLocalizedStringWithDefaultValue(@"Settings:HomeCountry SectionHeader", nil,
@@ -254,16 +238,6 @@ typedef enum
                                                       @"Used when dialing a number, or calling a contact "
                                                       @"you did not assign an ID.",
                                                       @"Explanation how Caller ID setting works\n"
-                                                      @"[* lines]");
-            break;
-        }
-        case TableSectionCallOptions:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"Settings:CallOptions SectionFooter", nil,
-                                                      [NSBundle mainBundle],
-                                                      @"When enabled, asks you to select a caller ID when "
-                                                      @"calling a contact.",
-                                                      @"Explanation what the Call Options are doing\n"
                                                       @"[* lines]");
             break;
         }
@@ -317,11 +291,6 @@ typedef enum
         case TableSectionCallerId:
         {
             numberOfRows = 2;
-            break;
-        }
-        case TableSectionCallOptions:
-        {
-            numberOfRows = 1;
             break;
         }
         case TableSectionHomeCountry:
@@ -538,11 +507,6 @@ typedef enum
             cell = [self callerIdCellForRowAtIndexPath:indexPath];
             break;
         }
-        case TableSectionCallOptions:
-        {
-            cell = [self callOptionsCellForRowAtIndexPath:indexPath];
-            break;
-        }
         case TableSectionHomeCountry:
         {
             cell = [self homeCountryCellForRowAtIndexPath:indexPath];
@@ -658,40 +622,6 @@ typedef enum
                        action:@selector(showCallerIdSwitchAction:)
              forControlEvents:UIControlEventValueChanged];
     }
-    
-    return cell;
-}
-
-
-- (UITableViewCell*)callOptionsCellForRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    UITableViewCell* cell;
-    UISwitch*        switchView;
-    
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
-    if (cell == nil)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
-        switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-        switchView.onTintColor = [Skinning onTintColor];
-        cell.accessoryView = switchView;
-    }
-    else
-    {
-        switchView = (UISwitch*)cell.accessoryView;
-    }
-    
-    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:AskForCallerId CellText", nil,
-                                                            [NSBundle mainBundle], @"Ask For Caller ID",
-                                                            @"...\n"
-                                                            @"[2/3 line].");
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    switchView.on = settings.askForCallerId;
-    
-    [switchView removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    [switchView addTarget:self
-                   action:@selector(askForCallerIdSwitchAction:)
-         forControlEvents:UIControlEventValueChanged];
     
     return cell;
 }
@@ -840,12 +770,6 @@ typedef enum
     [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
     [self.tableView endUpdates];
-}
-
-
-- (void)askForCallerIdSwitchAction:(id)sender
-{
-    settings.askForCallerId = ((UISwitch*)sender).on;
 }
 
 

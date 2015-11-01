@@ -25,7 +25,6 @@ NSString* const HomeCountryFromSimKey     = @"HomeCountryFromSim";
 NSString* const LastDialedNumberKey       = @"LastDialedNumber";
 NSString* const WebUsernameKey            = @"WebUsername";            // Used as keychain 'username'.
 NSString* const WebPasswordKey            = @"WebPassword";            // Used as keychain 'username'.
-NSString* const AskForCallerIdKey         = @"AskForCallerId";
 NSString* const ShowCallerIdKey           = @"ShowCallerId";
 NSString* const CallerIdE164Key           = @"CallerIdE164";
 NSString* const CallbackE164Key           = @"CallbackE164";
@@ -117,7 +116,6 @@ static NSUserDefaults* userDefaults;
         }
 
         [dictionary setObject:@""                                                forKey:LastDialedNumberKey];
-        [dictionary setObject:@(YES)                                             forKey:AskForCallerIdKey];
         [dictionary setObject:@(YES)                                             forKey:ShowCallerIdKey];
         [dictionary setObject:@""                                                forKey:CallerIdE164Key];
         [dictionary setObject:@""                                                forKey:CallbackE164Key];
@@ -233,18 +231,6 @@ static NSUserDefaults* userDefaults;
     [Keychain saveString:webPassword forKey:WebPasswordKey];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:nil];
-}
-
-
-- (BOOL)askForCallerId
-{
-    return [userDefaults boolForKey:AskForCallerIdKey];
-}
-
-
-- (void)setAskForCallerId:(BOOL)askForCallerId
-{
-    [userDefaults setBool:askForCallerId forKey:AskForCallerIdKey];
 }
 
 

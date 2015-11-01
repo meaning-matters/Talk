@@ -607,12 +607,7 @@
     NSArray*              entryArray = [dataSource objectAtIndex:indexPath.row];
     NBRecentContactEntry* firstEntry = [entryArray objectAtIndex:0];
 
-    [NBContact makePhoneCall:firstEntry.number
-               withContactID:firstEntry.contactID
-                  completion:^(BOOL cancelled, CallableData *selectedCallable)
-    {
-        //### Do something?
-    }];
+    [NBContact makePhoneCall:firstEntry.number withContactID:firstEntry.contactID];
 
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];    
 }

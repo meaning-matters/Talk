@@ -261,7 +261,7 @@
             {
                 if (indexPath.row == 0)
                 {
-                    [NBContact makePhoneCall:number withContactID:nil completion:nil];
+                    [NBContact makePhoneCall:number withContactID:nil];
 
                     if ([self isKindOfClass:[NBRecentUnknownContactViewController class]])
                     {

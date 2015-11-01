@@ -1469,24 +1469,7 @@
             case CC_NUMBER:
             {
                 NSString * phoneNumber = [((NBPersonCellInfo*)[[personStructureManager.tableStructure objectAtIndex:CC_NUMBER] objectAtIndex:indexPath.row]) textValue];
-                [NBContact makePhoneCall:phoneNumber withContactID:[self contactId] completion:^(BOOL cancelled, CallableData* selectedCallable)
-                {
-                    if (cancelled == NO)
-                    {
-                        NSIndexPath* callerIdIndexPath = [NSIndexPath indexPathForRow:0 inSection:CC_CALLER_ID];
-                        NBPersonIMCell* cell = (NBPersonIMCell*)[self.tableView cellForRowAtIndexPath:callerIdIndexPath];
-
-                        if (selectedCallable != nil)
-                        {
-                            cell.cellTextfield.text        = selectedCallable.name;
-                        }
-                        else
-                        {
-                            cell.cellTextfield.text        = nil;
-                            cell.cellTextfield.placeholder = NSLocalizedString(@"CI_IS_NOT_SHOWN", @"");
-                        }
-                    }
-                }];
+                [NBContact makePhoneCall:phoneNumber withContactID:[self contactId]];
 
                 if ([self isKindOfClass:[NBRecentContactViewController class]])
                 {
