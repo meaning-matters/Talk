@@ -19,6 +19,8 @@
 
 - (NSString*)formatNumber:(NSString*)number;
 
+- (BOOL)isValidNumber:(NSString*)number;
+
 - (NSString*)typeOfNumber:(NSString*)number;
 
 - (UIColor*)tintColor;

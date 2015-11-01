@@ -737,15 +737,25 @@
                 number = [[NBAddressBookManager sharedManager].delegate formatNumber:cellInfo.textValue];
 #endif
                 [textField setText:number];
+                
+                if ([[NBAddressBookManager sharedManager].delegate isValidNumber:cellInfo.textValue])
+                {
+                    textField.textColor = [UIColor blackColor];
+                }
+                else
+                {
+                    textField.textColor = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
+                }
             }
             else
             {
                 [textField setText:cellInfo.textValue];
+                [textField setTextColor:[UIColor blackColor]];
             }
+            
             [textField setEnabled:self.tableView.isEditing];
             [textField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
             [textField setTag:indexPath.section];
-            [textField setTextColor:[UIColor blackColor]];
             [cell.contentView addSubview:textField];
             
             //Disallow selection

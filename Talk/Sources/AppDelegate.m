@@ -518,6 +518,14 @@
 }
 
 
+- (BOOL)isValidNumber:(NSString*)number
+{
+    PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:number];
+    
+    return phoneNumber.isValid;
+}
+
+
 - (NSString*)typeOfNumber:(NSString*)number
 {
     PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:number];
