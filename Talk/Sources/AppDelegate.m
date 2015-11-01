@@ -727,4 +727,22 @@
     return [[DataManager sharedManager] lookupPhoneForE164:[Settings sharedSettings].callerIdE164].name;
 }
 
+
+- (void)getCostForOutgoingNumber:(NSString*)outgoingNumber
+                      completion:(void (^)(NSString* costString))completion
+{
+    PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:outgoingNumber];
+    
+    if (phoneNumber.isValid && [Settings sharedSettings].callerIdE164.length > 0)
+    {
+        [Common getCostForCallbackE164:[Settings sharedSettings].callerIdE164
+                          outgoingE164:phoneNumber.e164Format
+                            completion:completion];
+    }
+    else
+    {
+        completion(@"");
+    }
+}
+
 @end

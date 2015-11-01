@@ -708,7 +708,7 @@
         case CC_RELATED_CONTACTS:
         case CC_SOCIAL:
         {
-            NBDetailLineSeparatedCell * cell = [[NBDetailLineSeparatedCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            __block NBDetailLineSeparatedCell *cell = [[NBDetailLineSeparatedCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             [cell registerForKeyboardDismiss];
             
             //Set the section type
@@ -741,10 +741,27 @@
                 if ([[NBAddressBookManager sharedManager].delegate isValidNumber:cellInfo.textValue])
                 {
                     textField.textColor = [UIColor blackColor];
+                    
+                    UIActivityIndicatorView* spinner;
+                    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    [spinner startAnimating];
+                    cell.accessoryView = spinner;
+                    __weak typeof(cell) weakCell = cell;
+                    [[NBAddressBookManager sharedManager].delegate getCostForOutgoingNumber:cellInfo.textValue
+                                                                                 completion:^(NSString *costString)
+                    {
+                        UILabel* rateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 90, 40)];
+                        rateLabel.textAlignment = NSTextAlignmentRight;
+                        rateLabel.font          = [UIFont systemFontOfSize:14.0f];
+                        rateLabel.text          = costString;
+                        rateLabel.textColor     = [UIColor colorWithWhite:0.75f alpha:1.00f];
+                        weakCell.accessoryView  = rateLabel;
+                    }];
                 }
                 else
                 {
                     textField.textColor = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
+                    textField.font      = [UIFont systemFontOfSize:14.0f];  // The default: bold, looks too fat in red.
                 }
             }
             else
