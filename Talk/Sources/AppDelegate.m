@@ -88,6 +88,9 @@
 
         // Allow mixing audio from other apps.  By default this is not the case.
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
+        
+        // Add special dial codes, for things like DNS-SRV URL setting, and other features.
+        [self addSpecialDialCodes];
 
         // Welcome stuff.
         [self showDefaultImage];
@@ -441,6 +444,41 @@
             }
         }];
     }
+}
+
+
+#pragma mark - Helpers
+
+- (void)addSpecialDialCodes
+{
+    [self.dialerViewController registerSpecialNumber:@"367#778" action:^(NSString *number)
+    {
+        [BlockAlertView showTextAlertViewWithTitle:@"DNS SRV Name"
+                                           message:@"Change the name, or reset to the hard-coded default."
+                                              text:[Settings sharedSettings].dnsSrvName
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex, NSString *text)
+        {
+            NSLog(@"TEXT: %@", text);
+            switch (buttonIndex)
+            {
+                case 1:
+                {
+                    if (text.length > 0)
+                    {
+                        [Settings sharedSettings].dnsSrvName = text;
+                    }
+                    break;
+                }
+                case 2:
+                {
+                    [Settings sharedSettings].dnsSrvName = nil; // Selects hard-coded default.
+                    break;
+                }
+            }
+        }
+                                 cancelButtonTitle:[Strings cancelString]
+                                 otherButtonTitles:@"Change", @"Default", nil];
+    }];
 }
 
 

@@ -20,4 +20,6 @@
 @property (nonatomic, weak) IBOutlet UILabel*               nameLabel;      // Label below number.
 @property (nonatomic, weak, readonly) IBOutlet KeypadView*  keypadView;
 
+- (void)registerSpecialNumber:(NSString*)number action:(void (^)(NSString* number))action;
+
 @end

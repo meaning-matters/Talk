@@ -120,7 +120,7 @@ const NSTimeInterval kSelectedServerHoldTime = 10;
             DNSServiceRef       sdRef;
             DNSServiceErrorType error;
 
-            const char* host = [[Settings sharedSettings].dnsHost UTF8String];
+            const char* host = [[Settings sharedSettings].dnsSrvName UTF8String];
             if (host != NULL)
             {
                 NSTimeInterval remainingTime = self.dnsUpdateTimeout;

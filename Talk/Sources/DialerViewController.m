@@ -30,6 +30,8 @@
     PhoneNumber* callbackPhoneNumber;   // Only used in 'look' mode.
 }
 
+@property (nonatomic, strong) NSMutableDictionary* specialNumberInfo;
+
 @end
 
 
@@ -45,6 +47,8 @@
 
         self.title = NSLocalizedString(@"Dialer", @"Dialer tab title");
         // The tabBarItem image must be set in my own NavigationController.
+        
+        self.specialNumberInfo = [NSMutableDictionary dictionary];
 
         phoneNumber = [[PhoneNumber alloc] init];
         [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
@@ -437,7 +441,16 @@
 
 - (void)keypadViewPressedCallKey:(KeypadView*)keypadView
 {
-    if ([self.numberLabel.text length] == 0)
+    if ([self handleAsSpecialNumber:self.numberLabel.text] == YES)
+    {
+        self.infoLabel.text   = @"";
+        self.numberLabel.text = @"";
+        self.nameLabel.text   = @"";
+        phoneNumber.number    = @"";
+        
+        self.brandingImageView.hidden = NO;
+    }
+    else if ([self.numberLabel.text length] == 0)
     {
         phoneNumber.number = [Settings sharedSettings].lastDialedNumber;
         [self update];
@@ -484,6 +497,31 @@
 {
     phoneNumber.number = numberLabel.text;
     [self update];
+}
+
+
+#pragma mark - Special Number Support
+
+- (void)registerSpecialNumber:(NSString*)number action:(void (^)(NSString* number))action
+{
+    self.specialNumberInfo[number] = [action copy];
+}
+
+
+- (BOOL)handleAsSpecialNumber:(NSString*)number
+{
+    void (^action)(NSString* number) = self.specialNumberInfo[number];
+    
+    if (action != nil)
+    {
+        action(number);
+        
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
 }
 
 @end

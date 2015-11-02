@@ -15,6 +15,7 @@
 
 @property (nonatomic, copy) void (^completion)(BOOL cancelled, NSInteger buttonIndex);
 @property (nonatomic, copy) void (^phoneNumberCompletion)(BOOL cancelled, PhoneNumber* phoneNumber);
+@property (nonatomic, copy) void (^textCompletion)(BOOL cancelled, NSInteger buttonIndex, NSString* text);
 @property (nonatomic, strong) PhoneNumberTextFieldDelegate* phoneNumberTextFieldDelegate;
 
 @end
@@ -88,6 +89,49 @@
     [alert show];
     textField.font                     = [UIFont boldSystemFontOfSize:18.0f];   // Needs to be placed after `show` to work.
 
+    va_end(arguments);
+    
+    return alert;
+}
+
+
++ (BlockAlertView*)showTextAlertViewWithTitle:(NSString*)title
+                                      message:(NSString*)message
+                                         text:(NSString*)text
+                                   completion:(void (^)(BOOL      cancelled,
+                                                        NSInteger buttonIndex,
+                                                        NSString* text))completion
+                            cancelButtonTitle:(NSString*)cancelButtonTitle
+                            otherButtonTitles:(NSString*)otherButtonTitles, ...
+{
+    va_list arguments;
+    va_start(arguments, otherButtonTitles);
+    
+    __block BlockAlertView* alert = [[BlockAlertView alloc] initWithTitle:title
+                                                                  message:message
+                                                               completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        UITextField* textField = [alert textFieldAtIndex:0];
+        [textField resignFirstResponder];
+        
+        alert->_textCompletion ? alert->_textCompletion(cancelled, buttonIndex, textField.text) : 0;
+    }
+                                                        cancelButtonTitle:cancelButtonTitle
+                                                        otherButtonTitles:otherButtonTitles
+                                                                arguments:arguments];
+    
+    alert.alertViewStyle         = UIAlertViewStylePlainTextInput;
+    
+    UITextField* textField       = [alert textFieldAtIndex:0];
+    textField.textAlignment      = NSTextAlignmentCenter;
+    textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    textField.text               = text;
+    
+    alert->_textCompletion       = completion;
+    
+    [alert show];
+    textField.font               = [UIFont boldSystemFontOfSize:18.0f];   // Needs to be placed after `show` to work.
+    
     va_end(arguments);
     
     return alert;

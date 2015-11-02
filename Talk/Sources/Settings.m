@@ -52,7 +52,8 @@ static NSUserDefaults* userDefaults;
     dispatch_once(&onceToken, ^
     {
         sharedInstance = [[Settings alloc] init];
-
+        sharedInstance.dnsSrvName = nil;  // Select hard-coded default.
+        
         userDefaults = [NSUserDefaults standardUserDefaults];
 
         [userDefaults registerDefaults:[sharedInstance defaults]];
@@ -77,6 +78,8 @@ static NSUserDefaults* userDefaults;
     {
         [userDefaults setObject:[[self defaults] objectForKey:key] forKey:key];
     }
+    
+    self.dnsSrvName = nil;  // Select hard-coded default.
 
     [userDefaults synchronize];
 }
@@ -435,9 +438,16 @@ static NSUserDefaults* userDefaults;
 
 #pragma mark - Hard-Coded URLs
 
-- (NSString*)dnsHost
+- (void)setDnsSrvName:(NSString*)dnsSrvName
 {
-    return @"_api._tcp.numberbay.com";
+    if (dnsSrvName.length == 0)
+    {
+        _dnsSrvName = @"_api._tcp.numberbay.com";
+    }
+    else
+    {
+        _dnsSrvName = dnsSrvName;
+    }
 }
 
 

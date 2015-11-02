@@ -25,4 +25,13 @@
                                    cancelButtonTitle:(NSString*)cancelButtonTitle
                                    otherButtonTitles:(NSString*)otherButtonTitles, ...;
 
++ (BlockAlertView*)showTextAlertViewWithTitle:(NSString*)title
+                                      message:(NSString*)message
+                                         text:(NSString*)text
+                                   completion:(void (^)(BOOL      cancelled,
+                                                        NSInteger buttonIndex,
+                                                        NSString* text))completion
+                            cancelButtonTitle:(NSString*)cancelButtonTitle
+                            otherButtonTitles:(NSString*)otherButtonTitles, ...;
+
 @end

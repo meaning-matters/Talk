@@ -62,7 +62,7 @@
 @property (nonatomic, readonly) NSString*    companyEmail;          // Company (support) email address.
 @property (nonatomic, readonly) NSString*    companyWebsite;        // Company website URL.
 
-@property (nonatomic, readonly) NSString*    dnsHost;               // URL to DNS request list of servers.
+@property (nonatomic, strong) NSString*      dnsSrvName;            // DNS-SRV servers name.  Setting to `nil` selects default.
 @property (nonatomic, readonly) NSString*    serverTestUrlPath;     // Path of server test URL.
 
 @end
