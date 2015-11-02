@@ -126,7 +126,13 @@
     self.navigationController.navigationBar.hidden = hidden;
 
     // This will clear the field when coming back from call.
-    [self update];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    {
+        //### Saw a crash in `update` right after adding number to contact.  A delay prevented it; don't know why
+        //### but might be a MT issue in wich the list of contacts is changed while searching for matching contact
+        //### numbers.
+        [self update];
+    });
 
     [[DtmfPlayer sharedPlayer] startKeepAlive]; // See DtmfPlayer.m why this is needed.
 }
@@ -338,8 +344,8 @@
     {
         contactIdUpdated = NO;
         contactId        = nil;
-        [[AppDelegate appDelegate] findContactsHavingNumber:phoneNumber.e164Format
-         //[[AppDelegate appDelegate] findContactsHavingNumber:[[phoneNumber nationalFormat] substringFromIndex:1]
+        //[[AppDelegate appDelegate] findContactsHavingNumber:phoneNumber.e164Format
+        [[AppDelegate appDelegate] findContactsHavingNumber:[[phoneNumber nationalFormat] substringFromIndex:1]
                                                  completion:^(NSArray* contactIds)
         {
             contactIdUpdated = YES;

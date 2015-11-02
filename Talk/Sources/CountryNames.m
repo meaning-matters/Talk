@@ -85,8 +85,11 @@
     }
     else
     {
-        NBLog(@"No country name available for code %@.", isoCountryCode);
-
+        if (isoCountryCode.length > 0)
+        {
+            NBLog(@"No country name available for code %@.", isoCountryCode);
+        }
+        
         return nil;
     }
 }

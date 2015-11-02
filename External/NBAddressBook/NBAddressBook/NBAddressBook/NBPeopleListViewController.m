@@ -283,10 +283,9 @@
         if (allGroupsSelected)
         {
             //All contacts were selected
-            [contactsInSelectedSources addObjectsFromArray:(__bridge NSArray *)(ABAddressBookCopyArrayOfAllPeople(addressBook))];
+            [contactsInSelectedSources addObjectsFromArray:(__bridge NSArray *)ABAddressBookCopyArrayOfAllPeople(addressBook)];
         }
-        //Load the contacts that are members of the selected groups
-        else
+        else //Load the contacts that are members of the selected groups
         {
             //Collect all the selected ID's
             NSMutableArray * selectedIDs = [NSMutableArray array];
@@ -331,12 +330,19 @@
             [contactsDatasource addObject:[NSMutableArray array]];
         }
 
-        for (id contactRef in allContacts)
+        // When iterating over `allContacts` crashes the app right after adding a
+        // contact with a number that's already in another contact.  Here's a link
+        // to why this happens: http://stackoverflow.com/a/9426722/1971013 `allContacts`
+        // has more items than ABAddressBookGetPersonCount() returns.
+        // To fix this, we iterate differently using ABAddressBookGetPersonCount().
+        CFIndex personCount = ABAddressBookGetPersonCount(addressBook);
+        for (int i = 0; i < personCount; i++)
         {
+            id contactRef = allContacts[i];
+
             //Get the first character of the contact
-            NSString* contactSortingProperty = [NBContact getSortingProperty:(ABRecordRef)contactRef
-                                                            mustFormatNumber:NO];
-            NSString* firstChar = (contactSortingProperty == nil) ? @"#" : [[contactSortingProperty substringToIndex:1] uppercaseString];
+            NSString* sortingProperty = [NBContact getSortingProperty:(ABRecordRef)contactRef mustFormatNumber:NO];
+            NSString* firstChar = (sortingProperty == nil) ? @"#" : [[sortingProperty substringToIndex:1] uppercaseString];
             
             //Get the array this contact belongs to
             NSUInteger index = [SECTION_TITLES indexOfObject:firstChar];
