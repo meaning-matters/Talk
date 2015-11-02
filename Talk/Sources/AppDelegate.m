@@ -458,7 +458,6 @@
                                               text:[Settings sharedSettings].dnsSrvName
                                         completion:^(BOOL cancelled, NSInteger buttonIndex, NSString *text)
         {
-            NSLog(@"TEXT: %@", text);
             switch (buttonIndex)
             {
                 case 1:
@@ -477,7 +476,7 @@
             }
         }
                                  cancelButtonTitle:[Strings cancelString]
-                                 otherButtonTitles:@"Change", @"Default", nil];
+                                 otherButtonTitles:@"Change", @"Reset", nil];
     }];
 }
 

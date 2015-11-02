@@ -22,6 +22,5 @@
 
 
 #define HAS_FULL_FORWARDINGS 0
-#define HAS_BUYING_NUMBERS   0
 
 #endif

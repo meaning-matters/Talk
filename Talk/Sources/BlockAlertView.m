@@ -130,7 +130,7 @@
     alert->_textCompletion       = completion;
     
     [alert show];
-    textField.font               = [UIFont boldSystemFontOfSize:18.0f];   // Needs to be placed after `show` to work.
+    textField.font               = [UIFont systemFontOfSize:18.0f];   // Needs to be placed after `show` to work.
     
     va_end(arguments);
     
