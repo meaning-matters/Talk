@@ -16,7 +16,7 @@
 
 @interface LibPhoneNumber ()
 {
-    UIWebView*  webView;
+    UIWebView* webView;
 }
 
 @end
@@ -206,7 +206,7 @@
     NSString*   function = [[NSString alloc] initWithFormat: @"getOriginalFormat('%@','%@')", number, isoCountryCode];
     NSString*   result   = [webView stringByEvaluatingJavaScriptFromString:function];
 
-    return ([result length] > 0) ? result : nil;
+    return (result.length > 0) ? result : nil;
 }
 
 
@@ -215,7 +215,7 @@
     NSString*   function = [[NSString alloc] initWithFormat: @"getE164Format('%@','%@')", number, isoCountryCode];
     NSString*   result   = [webView stringByEvaluatingJavaScriptFromString:function];
 
-    return ([result length] > 0) ? result : nil;
+    return (result.length > 0) ? result : nil;
 }
 
 
@@ -224,7 +224,7 @@
     NSString*   function = [[NSString alloc] initWithFormat: @"getInternationalFormat('%@','%@')", number, isoCountryCode];
     NSString*   result   = [webView stringByEvaluatingJavaScriptFromString:function];
 
-    return ([result length] > 0) ? result : nil;
+    return (result.length > 0) ? result : nil;
 }
 
 
@@ -233,7 +233,7 @@
     NSString*   function = [[NSString alloc] initWithFormat: @"getNationalFormat('%@','%@')", number, isoCountryCode];
     NSString*   result   = [webView stringByEvaluatingJavaScriptFromString:function];
 
-    return ([result length] > 0) ? result : nil;
+    return (result.length > 0) ? result : nil;
 }
 
 
@@ -245,7 +245,7 @@
                                                              number, isoCountryCode, outOfIsoCountryCode];
     NSString*   result   = [webView stringByEvaluatingJavaScriptFromString:function];
 
-    return ([result length] > 0) ? result : nil;
+    return (result.length > 0) ? result : nil;
 }
 
 
@@ -254,7 +254,7 @@
     NSString*   function = [[NSString alloc] initWithFormat: @"getAsYouTypeFormat('%@','%@')", number, isoCountryCode];
     NSString*   result   = [webView stringByEvaluatingJavaScriptFromString:function];
 
-    return ([result length] > 0) ? result : nil;
+    return (result.length > 0) ? result : nil;
 }
 
 @end

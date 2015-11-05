@@ -347,11 +347,58 @@ static NSString*    defaultIsoCountryCode = @"";
 
 - (NSString*)asYouTypeFormat
 {
-    return [[LibPhoneNumber sharedInstance] asYouTypeFormatOfNumber:self.number isoCountryCode:self.isoCountryCode];
+    NSString* formatted = [[LibPhoneNumber sharedInstance] asYouTypeFormatOfNumber:self.number isoCountryCode:self.isoCountryCode];
+    
+    if ([_isoCountryCode isEqualToString:@"NL"])
+    {
+        formatted = [self nlFormat:formatted];
+    }
+    
+    return formatted;
 }
 
 
 #pragma mark - Helpers
+
+// Patch bad NL mobile number formatting.
+- (NSString*)nlFormat:(NSString*)formatted
+{
+    NSString* prefix = nil;
+    NSString* suffix;
+    
+    if ([formatted hasPrefix:@"+31 6 "])
+    {
+        prefix = @"+31 6 ";
+    }
+    
+    if ([formatted hasPrefix:@"00 31 6 "])
+    {
+        prefix = @"00 31 6 ";
+    }
+    
+    if ([formatted hasPrefix:@"06 "])
+    {
+        prefix = @"06 ";
+    }
+    
+    if (prefix != nil)
+    {
+        suffix    = [formatted substringFromIndex:prefix.length];
+        formatted = [formatted substringToIndex:prefix.length - 1];
+        
+        if (suffix.length > 0 && suffix.length <= 8)
+        {
+            for (int n = 0; n < (suffix.length + 1) / 2; n++)
+            {
+                NSRange range = NSMakeRange(n * 2, ((suffix.length - (n * 2)) == 1) ? 1 : 2);
+                formatted = [formatted stringByAppendingFormat:@" %@", [suffix substringWithRange:range]];
+            }
+        }
+    }
+
+    return formatted;
+}
+
 
 - (NSString*)validateFormat:(NSString*)format
 {
