@@ -375,23 +375,21 @@ static NSString* defaultIsoCountryCode = @"";
 // Patch bad NL mobile number formatting.
 - (NSString*)patchNlFormat:(NSString*)number
 {
-    NSString*  formatted    = number;
-    NSString*  regex        = @"(^\\+31\\s6\\s)|(^00\\s31\\s6\\s)|(^06\\s)";
-    NSUInteger prefixLength = [formatted rangeOfString:regex options:NSRegularExpressionSearch].length;
-    NSString*  suffix;
+    NSMutableString* formatted    = [number mutableCopy];
+    NSString*        regex        = @"(^\\+31\\s6\\s)|(^00\\s31\\s6\\s)|(^06\\s)";
+    NSUInteger       prefixLength = [formatted rangeOfString:regex options:NSRegularExpressionSearch].length;
     
     if (prefixLength > 0)
     {
-        suffix    = [formatted substringFromIndex:prefixLength];
-        formatted = [formatted substringToIndex:prefixLength - 1];
+        NSString* prefix = [formatted substringToIndex:prefixLength];
+        NSString* suffix = [formatted substringFromIndex:prefixLength];
         
-        if (suffix.length > 0 && suffix.length <= 8)
+        suffix    = [[suffix componentsSeparatedByString:@" "] componentsJoinedByString:@""];
+        formatted = [[prefix stringByAppendingString:suffix] mutableCopy];
+        
+        for (int n = 0; n < (suffix.length / 2) && n < 3; n++)
         {
-            for (int n = 0; n < (suffix.length + 1) / 2; n++)
-            {
-                NSRange range = NSMakeRange(n * 2, ((suffix.length - (n * 2)) == 1) ? 1 : 2);
-                formatted = [formatted stringByAppendingFormat:@" %@", [suffix substringWithRange:range]];
-            }
+            [formatted insertString:@" " atIndex:prefix.length + ((n + 1) * 2) + n];
         }
     }
 
@@ -408,8 +406,8 @@ static NSString* defaultIsoCountryCode = @"";
 
     if (prefixLength > 0)
     {
-        NSString* prefix = [formatted substringToIndex:prefixLength];
-        NSString* suffix = [formatted substringFromIndex:prefixLength - 1];
+        NSString* prefix = [formatted substringToIndex:prefixLength - 4];
+        NSString* suffix = [formatted substringFromIndex:prefixLength - 4];
         
         suffix    = [[suffix componentsSeparatedByString:@" "] componentsJoinedByString:@""];
         formatted = [[prefix stringByAppendingString:suffix] mutableCopy];
