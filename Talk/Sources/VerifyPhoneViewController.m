@@ -408,7 +408,7 @@
                                    message:message
                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
     {
-        [self setStep:2];
+        [self setStep:3];
     }
                          cancelButtonTitle:[Strings closeString]
                          otherButtonTitles:nil];
@@ -508,7 +508,7 @@
         case 2:
         {
             self.numberButton.userInteractionEnabled = YES;
-            self.callButton.userInteractionEnabled   = YES;
+            self.callButton.userInteractionEnabled   = NO;
 
             self.label1.textColor = [UIColor grayColor];
             self.label2.textColor = [Skinning tintColor];
