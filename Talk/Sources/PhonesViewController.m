@@ -202,9 +202,13 @@ const NSInteger kUseButtonTag = 123;
 
 - (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    PhoneData* phone = [fetchedPhonesController objectAtIndexPath:indexPath];
-
-    return (phone.forwardings.count == 0);
+    PhoneData*    phone    = [fetchedPhonesController objectAtIndexPath:indexPath];
+    CallableData* callable = phone;
+    
+    return [phone.e164 isEqualToString:[Settings sharedSettings].callbackE164] == NO &&
+           [phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164] == NO &&
+           phone.forwardings.count == 0 &&
+           callable.callerIds.count == 0;
 }
 
 

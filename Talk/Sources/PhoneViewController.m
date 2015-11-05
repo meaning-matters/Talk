@@ -576,10 +576,10 @@ typedef enum
 
 - (BOOL)canDelete
 {
-    return !([self.phone.e164 isEqualToString:[Settings sharedSettings].callbackE164] ||
-             [self.phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164] ||
-             (numbersArray.count > 0) ||
-             (namesArray.count > 0));
+    return [self.phone.e164 isEqualToString:[Settings sharedSettings].callbackE164] == NO &&
+           [self.phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164] == NO &&
+           numbersArray.count == 0 &&
+           namesArray.count == 0;
 }
 
 
