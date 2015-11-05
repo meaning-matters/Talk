@@ -16,7 +16,7 @@
 
 @synthesize isoCountryCode = _isoCountryCode;
 
-static NSString*    defaultIsoCountryCode = @"";
+static NSString* defaultIsoCountryCode = @"";
 
 
 + (void)setDefaultIsoCountryCode:(NSString*)isoCountryCode
@@ -347,22 +347,28 @@ static NSString*    defaultIsoCountryCode = @"";
 
 - (NSString*)asYouTypeFormat
 {
-    NSString* formatted = [[LibPhoneNumber sharedInstance] asYouTypeFormatOfNumber:self.number isoCountryCode:self.isoCountryCode];
-    
     if ([_isoCountryCode isEqualToString:@"NL"])
     {
-        formatted = [self nlFormat:formatted];
+        return [self nlAsYouTypeFormat];
     }
-    
-    return formatted;
+    else if ([_isoCountryCode isEqualToString:@"ES"])
+    {
+        return [self esAsYouTypeFormat];
+    }
+    else
+    {
+        return [[LibPhoneNumber sharedInstance] asYouTypeFormatOfNumber:self.number isoCountryCode:self.isoCountryCode];
+    }
 }
 
 
 #pragma mark - Helpers
 
 // Patch bad NL mobile number formatting.
-- (NSString*)nlFormat:(NSString*)formatted
+- (NSString*)nlAsYouTypeFormat
 {
+    NSString* formatted = [[LibPhoneNumber sharedInstance] asYouTypeFormatOfNumber:self.number isoCountryCode:self.isoCountryCode];
+
     NSString* prefix = nil;
     NSString* suffix;
     
@@ -396,6 +402,32 @@ static NSString*    defaultIsoCountryCode = @"";
         }
     }
 
+    return formatted;
+}
+
+
+// Correct SP number formatting.
+- (NSString*)esAsYouTypeFormat
+{
+    NSMutableString* formatted = [[[LibPhoneNumber sharedInstance] asYouTypeFormatOfNumber:self.number
+                                                                            isoCountryCode:self.isoCountryCode] mutableCopy];
+
+    NSRange range = [formatted rangeOfString:@"[56789][0-9][0-9]\\s" options:NSRegularExpressionSearch];
+    
+    if (range.length > 0)
+    {
+        NSString* prefix = [formatted substringToIndex:range.location];
+        NSString* suffix = [[formatted substringFromIndex:range.location] mutableCopy];
+        
+        suffix    = [[suffix componentsSeparatedByString:@" "] componentsJoinedByString:@""];
+        formatted = [[prefix stringByAppendingString:suffix] mutableCopy];
+
+        for (int n = 0; n < suffix.length / 3; n++)
+        {
+            [formatted insertString:@" " atIndex:prefix.length + ((n + 1) * 3) + n];
+        }
+    }
+    
     return formatted;
 }
 
