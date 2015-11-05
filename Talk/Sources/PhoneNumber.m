@@ -347,50 +347,43 @@ static NSString* defaultIsoCountryCode = @"";
 
 - (NSString*)asYouTypeFormat
 {
-    if ([_isoCountryCode isEqualToString:@"NL"])
-    {
-        return [self nlAsYouTypeFormat];
-    }
-    else if ([_isoCountryCode isEqualToString:@"ES"])
-    {
-        return [self esAsYouTypeFormat];
-    }
-    else
-    {
-        return [[LibPhoneNumber sharedInstance] asYouTypeFormatOfNumber:self.number isoCountryCode:self.isoCountryCode];
-    }
+    NSString* formatted = [[LibPhoneNumber sharedInstance] asYouTypeFormatOfNumber:self.number
+                                                                    isoCountryCode:self.isoCountryCode];
+    
+    return [self patchFormat:formatted];
 }
 
 
 #pragma mark - Helpers
 
-// Patch bad NL mobile number formatting.
-- (NSString*)nlAsYouTypeFormat
+- (NSString*)patchFormat:(NSString*)number
 {
-    NSString* formatted = [[LibPhoneNumber sharedInstance] asYouTypeFormatOfNumber:self.number isoCountryCode:self.isoCountryCode];
+    if ([_isoCountryCode isEqualToString:@"NL"])
+    {
+        return [self patchNlFormat:number];
+    }
+    else if ([_isoCountryCode isEqualToString:@"ES"])
+    {
+        return [self patchEsFormat:number];
+    }
+    else
+    {
+        return number;
+    }
+}
 
-    NSString* prefix = nil;
-    NSString* suffix;
+// Patch bad NL mobile number formatting.
+- (NSString*)patchNlFormat:(NSString*)number
+{
+    NSString*  formatted    = number;
+    NSString*  regex        = @"(^\\+31\\s6\\s)|(^00\\s31\\s6\\s)|(^06\\s)";
+    NSUInteger prefixLength = [formatted rangeOfString:regex options:NSRegularExpressionSearch].length;
+    NSString*  suffix;
     
-    if ([formatted hasPrefix:@"+31 6 "])
+    if (prefixLength > 0)
     {
-        prefix = @"+31 6 ";
-    }
-    
-    if ([formatted hasPrefix:@"00 31 6 "])
-    {
-        prefix = @"00 31 6 ";
-    }
-    
-    if ([formatted hasPrefix:@"06 "])
-    {
-        prefix = @"06 ";
-    }
-    
-    if (prefix != nil)
-    {
-        suffix    = [formatted substringFromIndex:prefix.length];
-        formatted = [formatted substringToIndex:prefix.length - 1];
+        suffix    = [formatted substringFromIndex:prefixLength];
+        formatted = [formatted substringToIndex:prefixLength - 1];
         
         if (suffix.length > 0 && suffix.length <= 8)
         {
@@ -407,22 +400,21 @@ static NSString* defaultIsoCountryCode = @"";
 
 
 // Correct SP number formatting.
-- (NSString*)esAsYouTypeFormat
+- (NSString*)patchEsFormat:(NSString*)number
 {
-    NSMutableString* formatted = [[[LibPhoneNumber sharedInstance] asYouTypeFormatOfNumber:self.number
-                                                                            isoCountryCode:self.isoCountryCode] mutableCopy];
+    NSMutableString* formatted    = [number mutableCopy];
+    NSString*        regex        = @"(^\\+34\\s[56789][0-9][0-9]\\s)|(^00\\s34\\s[56789][0-9][0-9]\\s)|(^[56789][0-9][0-9]\\s)";
+    NSUInteger       prefixLength = [formatted rangeOfString:regex options:NSRegularExpressionSearch].length;
 
-    NSRange range = [formatted rangeOfString:@"[56789][0-9][0-9]\\s" options:NSRegularExpressionSearch];
-    
-    if (range.length > 0)
+    if (prefixLength > 0)
     {
-        NSString* prefix = [formatted substringToIndex:range.location];
-        NSString* suffix = [[formatted substringFromIndex:range.location] mutableCopy];
+        NSString* prefix = [formatted substringToIndex:prefixLength];
+        NSString* suffix = [formatted substringFromIndex:prefixLength - 1];
         
         suffix    = [[suffix componentsSeparatedByString:@" "] componentsJoinedByString:@""];
         formatted = [[prefix stringByAppendingString:suffix] mutableCopy];
 
-        for (int n = 0; n < suffix.length / 3; n++)
+        for (int n = 0; n < (suffix.length / 3) && n < 2; n++)
         {
             [formatted insertString:@" " atIndex:prefix.length + ((n + 1) * 3) + n];
         }
@@ -432,15 +424,19 @@ static NSString* defaultIsoCountryCode = @"";
 }
 
 
-- (NSString*)validateFormat:(NSString*)format
+- (NSString*)validateFormat:(NSString*)number
 {
-    if ([format isEqualToString:@"invalid"])
+    if ([number isEqualToString:@"invalid"])
     {
-        format = self.number;
+        number = self.number;
         NBLog(@"Failed to format %@.", self.number);
     }
+    else
+    {
+        number = [self patchFormat:number];
+    }
 
-    return format;
+    return number;
 }
 
 @end
