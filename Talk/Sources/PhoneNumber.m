@@ -372,7 +372,7 @@ static NSString* defaultIsoCountryCode = @"";
     }
 }
 
-// Patch bad NL mobile number formatting.
+// Patch bad NL mobile number formatting (+31 6 12345678 ==> +31 6 12 34 56 78).
 - (NSString*)patchNlFormat:(NSString*)number
 {
     NSMutableString* formatted    = [number mutableCopy];
@@ -397,7 +397,7 @@ static NSString* defaultIsoCountryCode = @"";
 }
 
 
-// Correct SP number formatting.
+// Patch non-standard SP number formatting (+34 612 34 56 78 ==> +34 612 345 678).
 - (NSString*)patchEsFormat:(NSString*)number
 {
     NSMutableString* formatted    = [number mutableCopy];
