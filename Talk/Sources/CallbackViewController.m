@@ -101,9 +101,17 @@
     PhoneNumber* callbackPhoneNumber = [[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].callbackE164];
     PhoneNumber* callerIdPhoneNumber = [[PhoneNumber alloc] initWithNumber:self.call.identityNumber];
     callbackPending = YES;
-    [[WebClient sharedClient] initiateCallbackForCallee:self.call.phoneNumber
-                                                 caller:callbackPhoneNumber
-                                               identity:callerIdPhoneNumber
+    
+    NSString* calleeE164 = [self.call.phoneNumber e164Format];
+    if (![self.call.phoneNumber isValid] && ![calleeE164 hasPrefix:@"+"] && ![calleeE164 hasPrefix:@"00"])
+    {
+        // Not (common) international number; prefix it with Home Country calling code.
+        calleeE164 = [@"+" stringByAppendingFormat:@"%@%@", [PhoneNumber defaultCallCountryCode], calleeE164];
+    }
+    
+    [[WebClient sharedClient] initiateCallbackForCallee:calleeE164
+                                                 caller:[callbackPhoneNumber e164Format]
+                                               identity:[callerIdPhoneNumber e164Format]
                                                 privacy:!self.call.showCallerId
                                                   reply:^(NSError* error, NSString* theUuid)
     {

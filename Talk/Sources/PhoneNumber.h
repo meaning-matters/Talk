@@ -40,6 +40,8 @@ typedef enum
 
 + (NSString*)defaultIsoCountryCode;
 
++ (NSString*)defaultCallCountryCode;
+
 + (NSString*)stripNumber:(NSString*)number;
 
 - (instancetype)init;

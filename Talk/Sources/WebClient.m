@@ -841,16 +841,16 @@
 
 
 // 32. INITIATE CALLBACK
-- (void)initiateCallbackForCallee:(PhoneNumber*)calleePhoneNumber
-                           caller:(PhoneNumber*)callerPhoneNumber
-                         identity:(PhoneNumber*)identityPhoneNumber
+- (void)initiateCallbackForCallee:(NSString*)calleeE164
+                           caller:(NSString*)callerE164
+                         identity:(NSString*)identityE164
                           privacy:(BOOL)privacy
                             reply:(void (^)(NSError* error, NSString* uuid))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
-    NSDictionary* parameters = @{@"callee"   : [calleePhoneNumber   e164Format],
-                                 @"caller"   : [callerPhoneNumber   e164Format],
-                                 @"callerId" : [identityPhoneNumber e164Format],
+    NSDictionary* parameters = @{@"callee"   : calleeE164,
+                                 @"caller"   : calleeE164,
+                                 @"callerId" : identityE164,
                                  @"privacy"  : privacy ? @"true" : @"false"};
     
     [self postPath:[NSString stringWithFormat:@"/users/%@/callback", username]

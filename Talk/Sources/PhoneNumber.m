@@ -31,6 +31,12 @@ static NSString* defaultIsoCountryCode = @"";
 }
 
 
++ (NSString*)defaultCallCountryCode
+{
+    return [Common callingCodeForCountry:defaultIsoCountryCode];
+}
+
+
 + (NSString*)stripNumber:(NSString*)number
 {
     NSCharacterSet* stripSet = [NSCharacterSet characterSetWithCharactersInString:@"()-. \u00a0\t\n\r"];

@@ -190,9 +190,9 @@
 
 
 // 32. INITIATE CALLBACK
-- (void)initiateCallbackForCallee:(PhoneNumber*)calleePhoneNumber
-                           caller:(PhoneNumber*)callerPhoneNumber
-                         identity:(PhoneNumber*)identityPhoneNumber
+- (void)initiateCallbackForCallee:(NSString*)calleeE164
+                           caller:(NSString*)callerE164
+                         identity:(NSString*)identityE164
                           privacy:(BOOL)privacy
                             reply:(void (^)(NSError* error, NSString* uuid))reply;
 

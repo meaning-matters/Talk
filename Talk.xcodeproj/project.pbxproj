@@ -23,6 +23,7 @@
 /* Begin PBXBuildFile section */
 		48017A12194E554C0059A53B /* CallableData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48017A11194E554C0059A53B /* CallableData.m */; };
 		4803081B196AAFC000FDE1A4 /* ExtendNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4803081A196AAFC000FDE1A4 /* ExtendNumberViewController.m */; };
+		480B4FFA1BED1A890098F3A4 /* CountryCallingCodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 480B4FF91BED1A890098F3A4 /* CountryCallingCodes.json */; };
 		480BEF9518D59ECA00C882E0 /* GetStartedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 480BEF9418D59ECA00C882E0 /* GetStartedView.xib */; };
 		480BEF9618D73EF900C882E0 /* GetStartedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480BEF8D18D59E7400C882E0 /* GetStartedViewController.m */; };
 		480CE119193B604D0020F255 /* RatesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 480CE118193B604D0020F255 /* RatesTab@2x.png */; };
@@ -757,6 +758,7 @@
 		48017A11194E554C0059A53B /* CallableData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallableData.m; sourceTree = "<group>"; };
 		48030819196AAFC000FDE1A4 /* ExtendNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtendNumberViewController.h; sourceTree = "<group>"; };
 		4803081A196AAFC000FDE1A4 /* ExtendNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtendNumberViewController.m; sourceTree = "<group>"; };
+		480B4FF91BED1A890098F3A4 /* CountryCallingCodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryCallingCodes.json; path = Resources/CountryCallingCodes.json; sourceTree = "<group>"; };
 		480BEF8C18D59E7400C882E0 /* GetStartedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetStartedViewController.h; sourceTree = "<group>"; };
 		480BEF8D18D59E7400C882E0 /* GetStartedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetStartedViewController.m; sourceTree = "<group>"; };
 		480BEF9418D59ECA00C882E0 /* GetStartedView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GetStartedView.xib; sourceTree = "<group>"; };
@@ -2498,6 +2500,7 @@
 				48A2CDFB16834FC100506A7C /* RingbackTones.json */,
 				48D0A6E51654D65200FA2D98 /* SipConfig.cfg */,
 				48206EF7168DD8180040B04E /* Tones.json */,
+				480B4FF91BED1A890098F3A4 /* CountryCallingCodes.json */,
 				48B9386B187B647F00132535 /* Helps.json */,
 				48B9386C187B647F00132535 /* Licenses.json */,
 				483B078E1908017900E8C42D /* Terms.json */,
@@ -2844,6 +2847,7 @@
 				485F6B501637270100D61365 /* ME@2x.png in Resources */,
 				485F6B521637270100D61365 /* MF@2x.png in Resources */,
 				485F6B541637270100D61365 /* MG@2x.png in Resources */,
+				480B4FFA1BED1A890098F3A4 /* CountryCallingCodes.json in Resources */,
 				485F6B561637270100D61365 /* MH@2x.png in Resources */,
 				485F6B581637270100D61365 /* MK@2x.png in Resources */,
 				485F6B5A1637270100D61365 /* ML@2x.png in Resources */,

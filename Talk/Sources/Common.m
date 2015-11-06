@@ -1255,4 +1255,19 @@ static Common* sharedCommon;
                                               otherButtonTitles:[Strings okString], nil];
 }
 
+
++ (NSString*)callingCodeForCountry:(NSString*)isoCountryCode
+{
+    static NSDictionary*   callingCodes;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^
+    {
+        NSData* data = [Common dataForResource:@"CountryCallingCodes" ofType:@"json"];
+        callingCodes = [Common objectWithJsonData:data];
+    });
+                  
+    return callingCodes[isoCountryCode];
+}
+
 @end

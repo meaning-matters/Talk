@@ -86,8 +86,8 @@
 
 - (NSString*)callCountryCodeOfNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode
 {
-    NSString*   function = [[NSString alloc] initWithFormat: @"getCountryCode('%@','%@')", number, isoCountryCode];
-    NSString*   result   = [webView stringByEvaluatingJavaScriptFromString:function];
+    NSString* function = [[NSString alloc] initWithFormat: @"getCountryCode('%@','%@')", number, isoCountryCode];
+    NSString* result   = [webView stringByEvaluatingJavaScriptFromString:function];
 
     return result;
 }
@@ -95,8 +95,8 @@
 
 - (NSString*)isoCountryCodeOfNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode
 {
-    NSString*   function = [[NSString alloc] initWithFormat: @"getRegionCodeForNumber('%@','%@')", number, isoCountryCode];
-    NSString*   result   = [webView stringByEvaluatingJavaScriptFromString:function];
+    NSString* function = [[NSString alloc] initWithFormat: @"getRegionCodeForNumber('%@','%@')", number, isoCountryCode];
+    NSString* result   = [webView stringByEvaluatingJavaScriptFromString:function];
 
     return result;
 }
@@ -105,8 +105,8 @@
 //### Check if number is valid in itself (does not look at ISO code???)
 - (BOOL)isValidNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode
 {
-    NSString*   function = [[NSString alloc] initWithFormat: @"isValidNumber('%@','%@')", number, isoCountryCode];
-    BOOL        result   = [[webView stringByEvaluatingJavaScriptFromString:function] boolValue];
+    NSString* function = [[NSString alloc] initWithFormat: @"isValidNumber('%@','%@')", number, isoCountryCode];
+    BOOL      result   = [[webView stringByEvaluatingJavaScriptFromString:function] boolValue];
 
     return result;
 }
@@ -115,8 +115,8 @@
 //### Check if number is valid in ISO Code region (e.g. US vs. CA; both have +1).
 - (BOOL)isValidNumber:(NSString*)number forIsoCountryCode:(NSString*)isoCountryCode;
 {
-    NSString*   function = [[NSString alloc] initWithFormat: @"isValidNumberForRegion('%@','%@')", number, isoCountryCode];
-    BOOL        result   = [[webView stringByEvaluatingJavaScriptFromString:function] boolValue];
+    NSString* function = [[NSString alloc] initWithFormat: @"isValidNumberForRegion('%@','%@')", number, isoCountryCode];
+    BOOL      result   = [[webView stringByEvaluatingJavaScriptFromString:function] boolValue];
 
     return result;
 }
@@ -124,8 +124,8 @@
 
 - (BOOL)isPossibleNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode
 {
-    NSString*   function = [[NSString alloc] initWithFormat: @"isPossibleNumber('%@','%@')", number, isoCountryCode];
-    BOOL        result   = [[webView stringByEvaluatingJavaScriptFromString:function] boolValue];
+    NSString* function = [[NSString alloc] initWithFormat: @"isPossibleNumber('%@','%@')", number, isoCountryCode];
+    BOOL      result   = [[webView stringByEvaluatingJavaScriptFromString:function] boolValue];
 
     return result;
 }
@@ -133,8 +133,8 @@
 
 - (BOOL)isEmergencyNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode
 {
-    NSString*   function = [[NSString alloc] initWithFormat: @"isEmergencyNumber('%@','%@')", number, isoCountryCode];
-    BOOL        result   = [[webView stringByEvaluatingJavaScriptFromString:function] boolValue];
+    NSString* function = [[NSString alloc] initWithFormat: @"isEmergencyNumber('%@','%@')", number, isoCountryCode];
+    BOOL      result   = [[webView stringByEvaluatingJavaScriptFromString:function] boolValue];
 
     return result;
 }
@@ -142,8 +142,8 @@
 
 - (PhoneNumberType)typeOfNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode
 {
-    NSString*   function = [[NSString alloc] initWithFormat: @"getNumberType('%@','%@')", number, isoCountryCode];
-    NSString*   result   = [webView stringByEvaluatingJavaScriptFromString:function];
+    NSString* function = [[NSString alloc] initWithFormat: @"getNumberType('%@','%@')", number, isoCountryCode];
+    NSString* result   = [webView stringByEvaluatingJavaScriptFromString:function];
 
     if ([self isEmergencyNumber:number isoCountryCode:isoCountryCode])
     {
@@ -203,8 +203,8 @@
 
 - (NSString*)originalFormatOfNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode
 {
-    NSString*   function = [[NSString alloc] initWithFormat: @"getOriginalFormat('%@','%@')", number, isoCountryCode];
-    NSString*   result   = [webView stringByEvaluatingJavaScriptFromString:function];
+    NSString* function = [[NSString alloc] initWithFormat: @"getOriginalFormat('%@','%@')", number, isoCountryCode];
+    NSString* result   = [webView stringByEvaluatingJavaScriptFromString:function];
 
     return (result.length > 0) ? result : nil;
 }
@@ -212,8 +212,8 @@
 
 - (NSString*)e164FormatOfNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode
 {
-    NSString*   function = [[NSString alloc] initWithFormat: @"getE164Format('%@','%@')", number, isoCountryCode];
-    NSString*   result   = [webView stringByEvaluatingJavaScriptFromString:function];
+    NSString* function = [[NSString alloc] initWithFormat: @"getE164Format('%@','%@')", number, isoCountryCode];
+    NSString* result   = [webView stringByEvaluatingJavaScriptFromString:function];
 
     return (result.length > 0) ? result : nil;
 }
@@ -221,8 +221,8 @@
 
 - (NSString*)internationalFormatOfNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode
 {
-    NSString*   function = [[NSString alloc] initWithFormat: @"getInternationalFormat('%@','%@')", number, isoCountryCode];
-    NSString*   result   = [webView stringByEvaluatingJavaScriptFromString:function];
+    NSString* function = [[NSString alloc] initWithFormat: @"getInternationalFormat('%@','%@')", number, isoCountryCode];
+    NSString* result   = [webView stringByEvaluatingJavaScriptFromString:function];
 
     return (result.length > 0) ? result : nil;
 }
@@ -230,8 +230,8 @@
 
 - (NSString*)nationalFormatOfNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode
 {
-    NSString*   function = [[NSString alloc] initWithFormat: @"getNationalFormat('%@','%@')", number, isoCountryCode];
-    NSString*   result   = [webView stringByEvaluatingJavaScriptFromString:function];
+    NSString* function = [[NSString alloc] initWithFormat: @"getNationalFormat('%@','%@')", number, isoCountryCode];
+    NSString* result   = [webView stringByEvaluatingJavaScriptFromString:function];
 
     return (result.length > 0) ? result : nil;
 }
@@ -241,9 +241,9 @@
                          isoCountryCode:(NSString*)isoCountryCode       // ISO country code of number.
                     outOfIsoCountryCode:(NSString*)outOfIsoCountryCode  // ISO country code from which to call.
 {
-    NSString*   function = [[NSString alloc] initWithFormat: @"getOutOfCountryCallingFormat('%@','%@','%@')",
+    NSString* function = [[NSString alloc] initWithFormat: @"getOutOfCountryCallingFormat('%@','%@','%@')",
                                                              number, isoCountryCode, outOfIsoCountryCode];
-    NSString*   result   = [webView stringByEvaluatingJavaScriptFromString:function];
+    NSString* result   = [webView stringByEvaluatingJavaScriptFromString:function];
 
     return (result.length > 0) ? result : nil;
 }
@@ -251,8 +251,8 @@
 
 - (NSString*)asYouTypeFormatOfNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode
 {
-    NSString*   function = [[NSString alloc] initWithFormat: @"getAsYouTypeFormat('%@','%@')", number, isoCountryCode];
-    NSString*   result   = [webView stringByEvaluatingJavaScriptFromString:function];
+    NSString* function = [[NSString alloc] initWithFormat: @"getAsYouTypeFormat('%@','%@')", number, isoCountryCode];
+    NSString* result   = [webView stringByEvaluatingJavaScriptFromString:function];
 
     return (result.length > 0) ? result : nil;
 }

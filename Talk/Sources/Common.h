@@ -140,4 +140,6 @@ static const int TextFieldCellTag = 1111;
 + (void)aksForCallbackPhoneNumber:(PhoneNumber*)phoneNumber
                        completion:(void (^)(BOOL cancelled, PhoneNumber* phoneNumber))completion;
 
++ (NSString*)callingCodeForCountry:(NSString*)isoCountryCode;
+
 @end
