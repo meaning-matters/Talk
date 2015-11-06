@@ -1158,7 +1158,7 @@ static Common* sharedCommon;
 
 
 + (void)getCostForCallbackE164:(NSString*)callbackE164
-                  outgoingE164:(NSString*)outgoingE164
+                  callthruE164:(NSString*)callthruE164
                     completion:(void (^)(NSString* costString))completion
 {
     __block float totalCost = 0.0f;
@@ -1170,7 +1170,7 @@ static Common* sharedCommon;
         {
             totalCost = ratePerMinute;
 
-            [[WebClient sharedClient] retrieveCallRateForE164:outgoingE164
+            [[WebClient sharedClient] retrieveCallRateForE164:callthruE164
                                                          reply:^(NSError *error, float ratePerMinute)
             {
                 if (error == nil)

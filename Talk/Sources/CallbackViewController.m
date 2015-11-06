@@ -58,7 +58,7 @@
     self.statusLabel.text = [self.call stateString];
 
     [Common getCostForCallbackE164:[Settings sharedSettings].callbackE164
-                      outgoingE164:self.call.phoneNumber.e164Format
+                      callthruE164:self.call.phoneNumber.e164Format
                         completion:^(NSString* costString)
     {
         if (costString != nil)

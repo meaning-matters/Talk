@@ -258,10 +258,10 @@
 }
 
 
-- (void)updateCostForCallbackE164:(NSString*)callbackE164 outgoingE164:(NSString*)outgoingE164
+- (void)updateCostForCallbackE164:(NSString*)callbackE164 callthruE164:(NSString*)callthruE164
 {
     [Common getCostForCallbackE164:callbackE164
-                      outgoingE164:phoneNumber.e164Format
+                      callthruE164:phoneNumber.e164Format
                         completion:^(NSString* theCostString)
     {
         if (theCostString != nil)
@@ -276,19 +276,19 @@
 - (void)update
 {
     static NSString* callbackE164;
-    static NSString* outgoingE164;
+    static NSString* callthruE164;
 
     if (phoneNumber.isValid)
     {
         if ([callbackE164 isEqualToString:[Settings sharedSettings].callbackE164] == NO ||
-            [outgoingE164 isEqualToString:phoneNumber.e164Format] == NO)
+            [callthruE164 isEqualToString:phoneNumber.e164Format] == NO)
         {
             callbackE164 = [Settings sharedSettings].callbackE164;
-            outgoingE164 = phoneNumber.e164Format;
+            callthruE164 = phoneNumber.e164Format;
 
             if ([Settings sharedSettings].callbackE164.length > 0)
             {
-                [self updateCostForCallbackE164:callbackE164 outgoingE164:outgoingE164];
+                [self updateCostForCallbackE164:callbackE164 callthruE164:callthruE164];
             }
             else
             {
@@ -299,7 +299,7 @@
 
                     if (cancelled == NO && aPhoneNumber.isValid)
                     {
-                        [self updateCostForCallbackE164:callbackPhoneNumber.e164Format  outgoingE164:outgoingE164];
+                        [self updateCostForCallbackE164:callbackPhoneNumber.e164Format  callthruE164:callthruE164];
                     }
                 }];
             }
@@ -308,7 +308,7 @@
     else
     {
         callbackE164 = nil;
-        outgoingE164 = nil;
+        callthruE164 = nil;
         costString   = nil;
     }
 

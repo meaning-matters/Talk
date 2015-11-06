@@ -772,8 +772,8 @@
     
     if (phoneNumber.isValid && [Settings sharedSettings].callerIdE164.length > 0)
     {
-        [Common getCostForCallbackE164:[Settings sharedSettings].callerIdE164
-                          outgoingE164:phoneNumber.e164Format
+        [Common getCostForCallbackE164:[Settings sharedSettings].callbackE164
+                          callthruE164:phoneNumber.e164Format
                             completion:completion];
     }
     else
