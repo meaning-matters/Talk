@@ -73,18 +73,17 @@
 }
 
 
-- (BOOL)checkIfValidPhoneNumber:(PhoneNumber*)phoneNumber
+- (void)checkIfValidPhoneNumber:(PhoneNumber*)phoneNumber completion:(void (^)(void))completion
 {
-    BOOL result;
-
     if ([phoneNumber isValid] == YES)
     {
-        result = YES;
+        completion ? completion() : (void)0;
     }
     else
     {
         NSString* title;
         NSString* message;
+        NSString* button;
 
         title   = NSLocalizedStringWithDefaultValue(@"Callback InvalidTitle", nil, [NSBundle mainBundle],
                                                     @"Invalid Number",
@@ -93,21 +92,40 @@
 
         message = NSLocalizedStringWithDefaultValue(@"Callback InvalidMessage", nil, [NSBundle mainBundle],
                                                     @"The number you're trying to call does not seem to be "
-                                                    @"valid.\n\nTry adding the country code, or check the "
+                                                    @"valid%@.\n\nTry adding the country code, or check the "
                                                     @"current Home Country in Settings.",
                                                     @"Alert message: ...\n"
                                                     @"[iOS alert message size]");
+        
+        button  = NSLocalizedStringWithDefaultValue(@"Callback InvalidButton", nil, [NSBundle mainBundle],
+                                                    @"Make Call",
+                                                    @"Alert message button\n"
+                                                    @"[1/2 iOS alert message size]");
+        
+        NSString* homeCountry;
+        if ([Settings sharedSettings].homeCountry.length > 0)
+        {
+            homeCountry = [NSString stringWithFormat:@" (in %@)", [Settings sharedSettings].homeCountry];
+        }
+        else
+        {
+            homeCountry = @"";
+        }
+
+        message = [NSString stringWithFormat:message, homeCountry];
 
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
-                                    completion:nil
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            if (buttonIndex == 1)
+            {
+                completion ? completion() : (void)0;
+            }
+        }
                              cancelButtonTitle:[Strings cancelString]
-                             otherButtonTitles:nil];
-
-        result = NO;
+                             otherButtonTitles:button, nil];
     }
-
-    return result;
 }
 
 
@@ -426,21 +444,22 @@
             call.network = CallNetworkMobile;
         }
     }
-    else if ([self checkAccount] &&
-             [Common checkCountryOfPhoneNumber:phoneNumber completion:nil] &&
-             [self checkIfValidPhoneNumber:phoneNumber])
+    else if ([self checkAccount] && [Common checkCountryOfPhoneNumber:phoneNumber completion:nil])
     {
-        // Basic conditions have been met, now check the E164s.
-        [self checkIdentityForContactId:contactId completion:^(NSString* identity, BOOL showCallerId)
+        [self checkIfValidPhoneNumber:phoneNumber completion:^
         {
-            if (showCallerId == NO && identity.length == 0)
+            // Basic conditions have been met, now check the E164s.
+            [self checkIdentityForContactId:contactId completion:^(NSString* identity, BOOL showCallerId)
             {
-                identity = [Settings sharedSettings].callbackE164;
-            }
+                if (showCallerId == NO && identity.length == 0)
+                {
+                    identity = [Settings sharedSettings].callbackE164;
+                }
+                    
+                call = [self callPhoneNumber:phoneNumber fromIdentity:identity showCallerId:showCallerId contactId:contactId];
                 
-            call = [self callPhoneNumber:phoneNumber fromIdentity:identity showCallerId:showCallerId contactId:contactId];
-            
-            completion ? completion(call) : (void)0;
+                completion ? completion(call) : (void)0;
+            }];
         }];
     }
 }
