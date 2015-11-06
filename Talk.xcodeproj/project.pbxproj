@@ -24,6 +24,7 @@
 		48017A12194E554C0059A53B /* CallableData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48017A11194E554C0059A53B /* CallableData.m */; };
 		4803081B196AAFC000FDE1A4 /* ExtendNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4803081A196AAFC000FDE1A4 /* ExtendNumberViewController.m */; };
 		480B4FFA1BED1A890098F3A4 /* CountryCallingCodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 480B4FF91BED1A890098F3A4 /* CountryCallingCodes.json */; };
+		480B4FFF1BED4AC20098F3A4 /* WD@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 480B4FFE1BED4AC20098F3A4 /* WD@2x.png */; };
 		480BEF9518D59ECA00C882E0 /* GetStartedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 480BEF9418D59ECA00C882E0 /* GetStartedView.xib */; };
 		480BEF9618D73EF900C882E0 /* GetStartedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480BEF8D18D59E7400C882E0 /* GetStartedViewController.m */; };
 		480CE119193B604D0020F255 /* RatesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 480CE118193B604D0020F255 /* RatesTab@2x.png */; };
@@ -759,6 +760,7 @@
 		48030819196AAFC000FDE1A4 /* ExtendNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtendNumberViewController.h; sourceTree = "<group>"; };
 		4803081A196AAFC000FDE1A4 /* ExtendNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtendNumberViewController.m; sourceTree = "<group>"; };
 		480B4FF91BED1A890098F3A4 /* CountryCallingCodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryCallingCodes.json; path = Resources/CountryCallingCodes.json; sourceTree = "<group>"; };
+		480B4FFE1BED4AC20098F3A4 /* WD@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WD@2x.png"; sourceTree = "<group>"; };
 		480BEF8C18D59E7400C882E0 /* GetStartedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetStartedViewController.h; sourceTree = "<group>"; };
 		480BEF8D18D59E7400C882E0 /* GetStartedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetStartedViewController.m; sourceTree = "<group>"; };
 		480BEF9418D59ECA00C882E0 /* GetStartedView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GetStartedView.xib; sourceTree = "<group>"; };
@@ -2212,6 +2214,7 @@
 				485F6A261637270100D61365 /* VI@2x.png */,
 				485F6A281637270100D61365 /* VN@2x.png */,
 				485F6A2A1637270100D61365 /* VU@2x.png */,
+				480B4FFE1BED4AC20098F3A4 /* WD@2x.png */,
 				485F6A2C1637270100D61365 /* WF@2x.png */,
 				485F6A2E1637270100D61365 /* WS@2x.png */,
 				485F6A301637270100D61365 /* YE@2x.png */,
@@ -2876,6 +2879,7 @@
 				485F6B821637270100D61365 /* NI@2x.png in Resources */,
 				485F6B841637270100D61365 /* NL@2x.png in Resources */,
 				485F6B861637270100D61365 /* NO@2x.png in Resources */,
+				480B4FFF1BED4AC20098F3A4 /* WD@2x.png in Resources */,
 				485F6B881637270100D61365 /* NP@2x.png in Resources */,
 				485F6B8A1637270100D61365 /* NR@2x.png in Resources */,
 				485F6B8C1637270100D61365 /* NU@2x.png in Resources */,
@@ -3573,6 +3577,7 @@
 					"$(SDKROOT)/usr/lib/system",
 				);
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "-DHAS_BUYING_NUMBERS=1";
 				PRODUCT_NAME = NumberBay;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
