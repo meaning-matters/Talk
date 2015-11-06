@@ -7,35 +7,33 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Reachability.h"
 
 
-extern NSString* const  NetworkStatusSimChangedNotification;
-extern NSString* const  NetworkStatusMobileCallStateChangedNotification;
-extern NSString* const  NetworkStatusReachableNotification;
+extern NSString* const NetworkStatusSimChangedNotification;
+extern NSString* const NetworkStatusMobileCallStateChangedNotification;
+extern NSString* const NetworkStatusReachableNotification;
 
-typedef enum
+typedef NS_ENUM(NSUInteger, NetworkStatusSim)
 {
     NetworkStatusSimAvailable,
     NetworkStatusSimNotAvailable,
-} NetworkStatusSim;
+};
 
-typedef enum
+typedef NS_ENUM(NSUInteger, NetworkStatusMobileCall)
 {
     NetworkStatusMobileCallDialing,
     NetworkStatusMobileCallIncoming,
     NetworkStatusMobileCallConnected,
     NetworkStatusMobileCallDisconnected,
-} NetworkStatusMobileCall;
+};
 
-// IMPORTANT: We assume that the values of ReachableStatus match these here!
-typedef enum
+typedef NS_ENUM(NSInteger, NetworkStatusReachable)
 {
-    NetworkStatusReachableDisconnected,
-    NetworkStatusReachableCellular,
-    NetworkStatusReachableWifi,
-    NetworkStatusReachableCaptivePortal,    // Means blocked behind captive portal (i.e. not logged in yet).                                            
-} NetworkStatusReachable;
+    NetworkStatusReachableUnknown      = -1,
+    NetworkStatusReachableDisconnected =  0,
+    NetworkStatusReachableCellular     =  1,
+    NetworkStatusReachableWifi         =  2,
+};
 
 
 @class CTCallCenter;

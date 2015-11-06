@@ -250,21 +250,10 @@
 
     switch ([NetworkStatus sharedStatus].reachableStatus)
     {
-        case NetworkStatusReachableDisconnected:
-            self.keypadView.keyCallButton.selected = NO;
-            break;
-
-        case NetworkStatusReachableCellular:
-            self.keypadView.keyCallButton.selected = haveAccount;
-            break;
-
-        case NetworkStatusReachableWifi:
-            self.keypadView.keyCallButton.selected = haveAccount;
-            break;
-
-        case NetworkStatusReachableCaptivePortal:
-            self.keypadView.keyCallButton.selected = NO;
-            break;
+        case NetworkStatusReachableUnknown:      self.keypadView.keyCallButton.selected = NO;          break;
+        case NetworkStatusReachableDisconnected: self.keypadView.keyCallButton.selected = NO;          break;
+        case NetworkStatusReachableCellular:     self.keypadView.keyCallButton.selected = haveAccount; break;
+        case NetworkStatusReachableWifi:         self.keypadView.keyCallButton.selected = haveAccount; break;
     }
 }
 

@@ -27,9 +27,6 @@
 #import "CallerIdViewController.h"
 
 
-#define ALLOW_CALLS_WHEN_REACHABLE_DISCONNECTED 1
-
-
 @interface CallManager ()
 {
     CallbackViewController* callbackViewController;
@@ -110,74 +107,6 @@
         result = NO;
     }
 
-    return result;
-}
-
-
-- (BOOL)checkNetwork
-{
-    BOOL                   result;
-    NSString*              title;
-    NSString*              message;
-    NetworkStatusReachable reachable = [NetworkStatus sharedStatus].reachableStatus;
-
-    if (reachable == NetworkStatusReachableDisconnected && ALLOW_CALLS_WHEN_REACHABLE_DISCONNECTED)
-    {
-        result = YES;
-    }
-    else if (reachable == NetworkStatusReachableDisconnected)
-    {
-        title   = NSLocalizedStringWithDefaultValue(@"Call:Voip NotConnectedTitle", nil, [NSBundle mainBundle],
-                                                    @"No Internet Connection",
-                                                    @"Alert title informing about not being able to make a "
-                                                    @"call because not connected to internet\n"
-                                                    @"[iOS alert title size - abbreviated: 'No Internet' or "
-                                                    @"'Not Connected'].");
-
-        message = NSLocalizedStringWithDefaultValue(@"Call:Voip NotConnectedMessage", nil, [NSBundle mainBundle],
-                                                    @"You can't make this call because there is no internet "
-                                                    @"connection.",
-                                                    @"Alert message informing about not being able to make a "
-                                                    @"call because not connected to internet\n"
-                                                    @"[iOS alert message size]");
-
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:nil
-                             cancelButtonTitle:[Strings closeString]
-                             otherButtonTitles:nil];
-
-        result = NO;
-    }
-    else if (reachable == NetworkStatusReachableCaptivePortal)
-    {
-        title   = NSLocalizedStringWithDefaultValue(@"Call:Voip CaptivePortalTitle", nil, [NSBundle mainBundle],
-                                                    @"Behind Captive Portal",
-                                                    @"Alert title informing about not being able to make a "
-                                                    @"call because behind a Wi-Fi captive portal\n"
-                                                    @"[iOS alert title size - abbreviated: 'Captive Portal'].");
-
-        message = NSLocalizedStringWithDefaultValue(@"Call:Voip CaptivePortalMessage", nil, [NSBundle mainBundle],
-                                                    @"You can't make this call because Wi-Fi is connected "
-                                                    @"to a captive portal (%@), which requires you to log in.",
-                                                    @"Alert message informing about not being able to make a "
-                                                    @"call because behind a Wi-Fi captive portal\n"
-                                                    @"[iOS alert message size]");
-        message = [NSString stringWithFormat:message, [[NetworkStatus sharedStatus] getSsid]];
-
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:nil
-                             cancelButtonTitle:[Strings closeString]
-                             otherButtonTitles:nil];
-        
-        result = NO;
-    }
-    else
-    {
-        result = YES;
-    }
-    
     return result;
 }
 
@@ -451,21 +380,18 @@
 {
     Call* call = nil;
 
-    if ([self checkNetwork])
-    {
-        call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
-        call.identityNumber = identity;
-        call.showCallerId   = showCallerId;
-        call.leg            = CallLegCallback;
-        call.contactId      = contactId;
-        call.contactName    = [[AppDelegate appDelegate] contactNameForId:contactId];
+    call = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
+    call.identityNumber = identity;
+    call.showCallerId   = showCallerId;
+    call.leg            = CallLegCallback;
+    call.contactId      = contactId;
+    call.contactName    = [[AppDelegate appDelegate] contactNameForId:contactId];
 
-        callbackViewController = [[CallbackViewController alloc] initWithCall:call];
-        callbackViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [AppDelegate.appDelegate.tabBarController presentViewController:callbackViewController
-                                                               animated:YES
-                                                             completion:nil];
-    }
+    callbackViewController = [[CallbackViewController alloc] initWithCall:call];
+    callbackViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [AppDelegate.appDelegate.tabBarController presentViewController:callbackViewController
+                                                           animated:YES
+                                                         completion:nil];
 
     return call;
 }

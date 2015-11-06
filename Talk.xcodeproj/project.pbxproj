@@ -483,8 +483,6 @@
 		487A7C9A16978DBE007693EE /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 487A7C9916978DBE007693EE /* MediaPlayer.framework */; };
 		488268D9164BCF8600EA58AE /* NetworkStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 488268D8164BCF8600EA58AE /* NetworkStatus.m */; };
 		488268DA164BCF8600EA58AE /* NetworkStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 488268D8164BCF8600EA58AE /* NetworkStatus.m */; };
-		48826909164BDC3400EA58AE /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 48826908164BDC3400EA58AE /* Reachability.m */; };
-		4882690A164BDC3400EA58AE /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 48826908164BDC3400EA58AE /* Reachability.m */; };
 		4882748E1660E20D00B41EA1 /* DtmfPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4882748D1660E20C00B41EA1 /* DtmfPlayer.m */; };
 		4882748F1660E20D00B41EA1 /* DtmfPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4882748D1660E20C00B41EA1 /* DtmfPlayer.m */; };
 		48884A751615CE920005AA79 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A741615CE920005AA79 /* UIKit.framework */; };
@@ -1194,8 +1192,6 @@
 		487A7C9916978DBE007693EE /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		488268D7164BCF8600EA58AE /* NetworkStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkStatus.h; sourceTree = "<group>"; };
 		488268D8164BCF8600EA58AE /* NetworkStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkStatus.m; sourceTree = "<group>"; };
-		48826907164BDC3400EA58AE /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		48826908164BDC3400EA58AE /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		4882748C1660E20C00B41EA1 /* DtmfPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DtmfPlayer.h; sourceTree = "<group>"; };
 		4882748D1660E20C00B41EA1 /* DtmfPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DtmfPlayer.m; sourceTree = "<group>"; };
 		48884A701615CE920005AA79 /* NumberBay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NumberBay.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2230,8 +2226,6 @@
 			children = (
 				488268D7164BCF8600EA58AE /* NetworkStatus.h */,
 				488268D8164BCF8600EA58AE /* NetworkStatus.m */,
-				48826907164BDC3400EA58AE /* Reachability.h */,
-				48826908164BDC3400EA58AE /* Reachability.m */,
 				48CB0AF619DB2E1B00F95369 /* WebInterface.h */,
 				48CB0AF719DB2E1B00F95369 /* WebInterface.m */,
 				48DD72D3169F5AC600CD7080 /* WebClient.h */,
@@ -3213,7 +3207,6 @@
 				48AF4581164A45A100DFE3D8 /* Settings.m in Sources */,
 				48AD95DF164AE582006178E6 /* Skinning.m in Sources */,
 				488268D9164BCF8600EA58AE /* NetworkStatus.m in Sources */,
-				48826909164BDC3400EA58AE /* Reachability.m in Sources */,
 				48B8134E1AADF9460019AF77 /* NBContactStructureManager.m in Sources */,
 				4814D56C19E9660200958E33 /* AFURLConnectionOperation.m in Sources */,
 				48D3F01E164F9284002041A9 /* CountryNames.m in Sources */,
@@ -3349,7 +3342,6 @@
 				48AF4566164979F400DFE3D8 /* ForwardingsViewController.m in Sources */,
 				48AD95E0164AE582006178E6 /* Skinning.m in Sources */,
 				488268DA164BCF8600EA58AE /* NetworkStatus.m in Sources */,
-				4882690A164BDC3400EA58AE /* Reachability.m in Sources */,
 				48D3F01F164F9284002041A9 /* CountryNames.m in Sources */,
 				48C431A2189EDFB40008FE01 /* VerifyPhoneViewController.m in Sources */,
 				485ECBE316525D3600364F08 /* KeypadView.m in Sources */,

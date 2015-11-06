@@ -275,7 +275,6 @@
                         dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
                         dispatch_after(when, dispatch_get_main_queue(), ^
                         {
-                            //self.call.uuid = nil;
                             [self endAction:nil];
                         });
                     }
@@ -330,7 +329,7 @@
         [[WebClient sharedClient] cancelAllRetrieveCallbackStateForUuid:self.call.uuid];
     }
 
-    if (callbackPending == YES)
+    if (uuid != nil && callbackPending == YES)
     {
         [[WebClient sharedClient] stopCallbackForUuid:uuid reply:^(NSError* error)
         {

@@ -14,17 +14,9 @@
 #import <ifaddrs.h>
 #import <arpa/inet.h>
 #import "NetworkStatus.h"
+#import "AFNetworking.h"
 #import "Common.h"
-#import "Reachability.h"
 #import "Settings.h"
-
-
-#define REACHABILITY_HOSTNAME   @"www.google.com"
-#define LOAD_URL_TEST_URL       @"http://www.apple.com/library/test/success.html"
-#define LOAD_URL_TEST_STRING    @"<TITLE>Success</TITLE>"   // Part of received HTML
-#define LOAD_URL_TEST_INTERVAL  5
-#define LOAD_URL_TEST_TIMEOUT   10
-
 
 NSString* const NetworkStatusSimChangedNotification             = @"NetworkStatusSimChangedNotification";
 NSString* const NetworkStatusMobileCallStateChangedNotification = @"NetworkStatusMobileCallStateChangedNotification";
@@ -33,7 +25,6 @@ NSString* const NetworkStatusReachableNotification              = @"NetworkStatu
 
 @implementation NetworkStatus
 
-static Reachability*            hostReach;
 static NetworkStatusReachable   previousNetworkStatusReachable;
 static CTTelephonyNetworkInfo*  networkInfo;
 static CTCallCenter*            callCenter;
@@ -63,71 +54,27 @@ static NSTimer*                 loadUrlTestTimer;
 
 - (void)setUpReachability
 {
-    [[NSNotificationCenter defaultCenter] addObserverForName:kReachabilityChangedNotification
-                                                      object:nil
-                                                       queue:[NSOperationQueue mainQueue]
-                                                  usingBlock:^(NSNotification* note)
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status)
     {
-        if (note.object == hostReach)
-        {
-            NetworkStatusReachable networkStatusReachable = [hostReach currentReachabilityStatus];
-
-            if (networkStatusReachable != previousNetworkStatusReachable)
-            {
-                // We always get here when previous is NetworkStatusReachableCaptivePortal.
-                if (networkStatusReachable == NetworkStatusReachableDisconnected)
-                {
-                    previousNetworkStatusReachable = networkStatusReachable;
-                    [[NSNotificationCenter defaultCenter] postNotificationName:NetworkStatusReachableNotification
-                                                                        object:nil
-                                                                      userInfo:@{@"status" : @(networkStatusReachable)}];
-                }
-                else
-                {
-                    // Switch between Wi-Fi and Cellular, or still at captive portal.
-                    // Let's check the connection.
-                    [self loadUrlTest:nil];
-                }
-            }
-        }
+        NetworkStatusReachable reachable = [self translateAfnReachability:status];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NetworkStatusReachableNotification
+                                                            object:nil
+                                                          userInfo:@{@"status" : @(reachable)}];
     }];
+}
 
-    hostReach = [Reachability reachabilityWithHostname:REACHABILITY_HOSTNAME];
 
-    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidBecomeActiveNotification
-                                                      object:nil
-                                                       queue:[NSOperationQueue mainQueue]
-                                                  usingBlock:^(NSNotification* note)
+- (NetworkStatusReachable)translateAfnReachability:(AFNetworkReachabilityStatus)status
+{
+    switch (status)
     {
-        // The UIApplicationDidBecomeActiveNotification can be received a second
-        // time (e.g. after "Turn Off Airplane More or Use Wi-Fi to Access Data").
-        // Use loadUrlTestTimer as flag to make sure we set up only once.
-        //
-        // (BTW, UIApplicationWillEnterForegroundNotification is not received
-        //  the first time, when the app starts.  So that would not have helped.)
-        if (loadUrlTestTimer == nil)
-        {
-            [self loadUrlTest:nil];
-            [hostReach startNotifier];
-
-            loadUrlTestTimer = [NSTimer scheduledTimerWithTimeInterval:LOAD_URL_TEST_INTERVAL
-                                                                target:self
-                                                              selector:@selector(loadUrlTest:)
-                                                              userInfo:nil
-                                                               repeats:YES];
-        }
-    }];
-
-    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification
-                                                      object:nil
-                                                       queue:[NSOperationQueue mainQueue]
-                                                  usingBlock:^(NSNotification* note)
-    {
-        [hostReach stopNotifier];
-
-        [loadUrlTestTimer invalidate];
-        loadUrlTestTimer = nil;
-    }];
+        case AFNetworkReachabilityStatusUnknown:          return NetworkStatusReachableUnknown;
+        case AFNetworkReachabilityStatusNotReachable:     return NetworkStatusReachableDisconnected;
+        case AFNetworkReachabilityStatusReachableViaWWAN: return NetworkStatusReachableCellular;
+        case AFNetworkReachabilityStatusReachableViaWiFi: return NetworkStatusReachableWifi;
+    }
 }
 
 
@@ -166,7 +113,7 @@ static NSTimer*                 loadUrlTestTimer;
     callCenter = [[CTCallCenter alloc] init];
     callCenter.callEventHandler = ^(CTCall* call)
     {
-        NBLog(@">>>>>>>>>>>>>>>>>>>>> CallCenter: %d", [self convertCallState:call.callState]);
+        NBLog(@">>>>>>>>>>>>>>>>>>>>> CallCenter: %lu", (unsigned long)[self convertCallState:call.callState]);
 
         [[NSNotificationCenter defaultCenter] postNotificationName:NetworkStatusMobileCallStateChangedNotification
                                                             object:nil
@@ -202,58 +149,6 @@ static NSTimer*                 loadUrlTestTimer;
     }
 
     return status;
-}
-
-
-- (void)loadUrlTest:(NSTimer*)timer
-{
-    if (timer == nil || [hostReach isReachable])
-    {
-        NSURL*          url = [NSURL URLWithString:LOAD_URL_TEST_URL];
-        NSURLRequest*   request = [NSURLRequest requestWithURL:url
-                                                   cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                               timeoutInterval:LOAD_URL_TEST_TIMEOUT];
-        [NSURLConnection sendAsynchronousRequest:request
-                                           queue:[[NSOperationQueue alloc] init]
-                               completionHandler:^(NSURLResponse* response, NSData* data, NSError* error)
-        {
-            NetworkStatusReachable networkStatusReachable;
-
-            NSString*  html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            if ([html rangeOfString:LOAD_URL_TEST_STRING].location != NSNotFound && error == nil)
-            {
-                networkStatusReachable = [hostReach currentReachabilityStatus];
-            }
-            else if (error == nil)
-            {
-                // Received data, but not the expected.  Check for captive portal.
-                if ([html rangeOfString:@"WISPAccessGatewayParam"].location != NSNotFound)
-                {
-                    // WISPr portal reply found.
-                    networkStatusReachable = NetworkStatusReachableCaptivePortal;
-                }
-                else
-                {
-                    // No, or unknown captive portal.
-                    //### Could be extended with WiFi & Internet status, and looking at SSID.
-                    networkStatusReachable = NetworkStatusReachableDisconnected;
-                }
-            }
-            else
-            {
-                // Error.
-                networkStatusReachable = NetworkStatusReachableDisconnected;
-            }
-
-            if (networkStatusReachable != previousNetworkStatusReachable)
-            {
-                previousNetworkStatusReachable = networkStatusReachable;
-                [[NSNotificationCenter defaultCenter] postNotificationName:NetworkStatusReachableNotification
-                                                                    object:nil
-                                                                  userInfo:@{@"status" : @(networkStatusReachable)}];
-            }
-        }];
-    }
 }
 
 
@@ -340,7 +235,7 @@ static NSTimer*                 loadUrlTestTimer;
 
 - (NetworkStatusReachable)reachableStatus
 {
-    return previousNetworkStatusReachable;
+    return [self translateAfnReachability:[AFNetworkReachabilityManager sharedManager].networkReachabilityStatus];
 }
 
 
