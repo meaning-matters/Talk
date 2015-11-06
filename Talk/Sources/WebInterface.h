@@ -11,6 +11,9 @@
 
 @interface WebInterface : AFHTTPRequestOperationManager
 
+@property (atomic, assign) BOOL forceServerUpdate;
+
+
 + (WebInterface*)sharedInterface;
 
 - (void)postPath:(NSString*)path

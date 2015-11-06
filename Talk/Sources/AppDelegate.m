@@ -465,12 +465,14 @@
                     if (text.length > 0)
                     {
                         [Settings sharedSettings].dnsSrvName = text;
+                        [WebInterface sharedInterface].forceServerUpdate = YES;
                     }
                     break;
                 }
                 case 2:
                 {
                     [Settings sharedSettings].dnsSrvName = nil; // Selects hard-coded default.
+                    [WebInterface sharedInterface].forceServerUpdate = YES;
                     break;
                 }
             }
