@@ -59,12 +59,6 @@
 		4814EA3F17CB1924004B7A3C /* CreditAmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */; };
 		48200D1C16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
 		48200D1D16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
-		48206EF41684B0700040B04E /* RingbackTones.m in Sources */ = {isa = PBXBuildFile; fileRef = 48206EF31684B0700040B04E /* RingbackTones.m */; };
-		48206EF51684B0700040B04E /* RingbackTones.m in Sources */ = {isa = PBXBuildFile; fileRef = 48206EF31684B0700040B04E /* RingbackTones.m */; };
-		48206EF8168DD8180040B04E /* Tones.json in Resources */ = {isa = PBXBuildFile; fileRef = 48206EF7168DD8180040B04E /* Tones.json */; };
-		48206EF9168DD8180040B04E /* Tones.json in Resources */ = {isa = PBXBuildFile; fileRef = 48206EF7168DD8180040B04E /* Tones.json */; };
-		48206EFC168DD8D30040B04E /* Tones.m in Sources */ = {isa = PBXBuildFile; fileRef = 48206EFB168DD8D30040B04E /* Tones.m */; };
-		48206EFD168DD8D30040B04E /* Tones.m in Sources */ = {isa = PBXBuildFile; fileRef = 48206EFB168DD8D30040B04E /* Tones.m */; };
 		48251B9B187F4A8A00E69C3A /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48251B9A187F4A8A00E69C3A /* SettingsViewController.m */; };
 		48251B9C187F4A8A00E69C3A /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48251B9A187F4A8A00E69C3A /* SettingsViewController.m */; };
 		482608EE166A4707007F0844 /* NSTimer+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 482608ED166A4706007F0844 /* NSTimer+Blocks.m */; };
@@ -543,8 +537,6 @@
 		48A26DDC18BA7FB200736CCB /* SearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A26DDB18BA7FB200736CCB /* SearchTableViewController.m */; };
 		48A26DDE18BA904100736CCB /* SearchTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A26DDD18BA904100736CCB /* SearchTableView.xib */; };
 		48A26DE618BE279F00736CCB /* ItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A26DE518BE279F00736CCB /* ItemsViewController.m */; };
-		48A2CDFC16834FC100506A7C /* RingbackTones.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A2CDFB16834FC100506A7C /* RingbackTones.json */; };
-		48A2CDFD16834FC100506A7C /* RingbackTones.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A2CDFB16834FC100506A7C /* RingbackTones.json */; };
 		48AD95DF164AE582006178E6 /* Skinning.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95DE164AE582006178E6 /* Skinning.m */; };
 		48AD95E0164AE582006178E6 /* Skinning.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AD95DE164AE582006178E6 /* Skinning.m */; };
 		48ADD0F31706551F001515EB /* RetryPhoneSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48ADD0F01706551E001515EB /* RetryPhoneSmall@2x.png */; };
@@ -807,11 +799,6 @@
 		4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditAmountCell.m; sourceTree = "<group>"; };
 		48200D1A16EC89BA0069677E /* NumberType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberType.h; sourceTree = "<group>"; };
 		48200D1B16EC89BA0069677E /* NumberType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberType.m; sourceTree = "<group>"; };
-		48206EF21684B0700040B04E /* RingbackTones.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingbackTones.h; sourceTree = "<group>"; };
-		48206EF31684B0700040B04E /* RingbackTones.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RingbackTones.m; sourceTree = "<group>"; };
-		48206EF7168DD8180040B04E /* Tones.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Tones.json; path = Resources/Tones.json; sourceTree = "<group>"; };
-		48206EFA168DD8D30040B04E /* Tones.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tones.h; sourceTree = "<group>"; };
-		48206EFB168DD8D30040B04E /* Tones.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tones.m; sourceTree = "<group>"; };
 		48251B99187F4A8A00E69C3A /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		48251B9A187F4A8A00E69C3A /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		482608EC166A4706007F0844 /* NSTimer+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Blocks.h"; sourceTree = "<group>"; };
@@ -1274,7 +1261,6 @@
 		48A26DDD18BA904100736CCB /* SearchTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchTableView.xib; sourceTree = "<group>"; };
 		48A26DE418BE279F00736CCB /* ItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemsViewController.h; sourceTree = "<group>"; };
 		48A26DE518BE279F00736CCB /* ItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemsViewController.m; sourceTree = "<group>"; };
-		48A2CDFB16834FC100506A7C /* RingbackTones.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = RingbackTones.json; path = Resources/RingbackTones.json; sourceTree = "<group>"; };
 		48AD95DD164AE581006178E6 /* Skinning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skinning.h; sourceTree = "<group>"; };
 		48AD95DE164AE582006178E6 /* Skinning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Skinning.m; sourceTree = "<group>"; };
 		48ADD0F01706551E001515EB /* RetryPhoneSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RetryPhoneSmall@2x.png"; sourceTree = "<group>"; };
@@ -1769,14 +1755,10 @@
 				48CB0774163D76C300B07199 /* PhoneNumber.m */,
 				4895D19B16B1C4F100BCA581 /* PurchaseManager.h */,
 				4895D19C16B1C4F200BCA581 /* PurchaseManager.m */,
-				48206EF21684B0700040B04E /* RingbackTones.h */,
-				48206EF31684B0700040B04E /* RingbackTones.m */,
 				48AF457F164A45A000DFE3D8 /* Settings.h */,
 				48AF4580164A45A100DFE3D8 /* Settings.m */,
 				48AD95DD164AE581006178E6 /* Skinning.h */,
 				48AD95DE164AE582006178E6 /* Skinning.m */,
-				48206EFA168DD8D30040B04E /* Tones.h */,
-				48206EFB168DD8D30040B04E /* Tones.m */,
 				482A639A165F922E00325B3F /* Common */,
 				488FBBD717007C39000ECC71 /* CoreData */,
 				488268D1164BCF6300EA58AE /* Networking */,
@@ -2500,9 +2482,7 @@
 				48995E0F18742206001395C2 /* AppledocSettings.plist */,
 				48D0A6E81654D66200FA2D98 /* InfoPlist.strings */,
 				4812727216487E2D00534450 /* LibPhoneNumber.js */,
-				48A2CDFB16834FC100506A7C /* RingbackTones.json */,
 				48D0A6E51654D65200FA2D98 /* SipConfig.cfg */,
-				48206EF7168DD8180040B04E /* Tones.json */,
 				480B4FF91BED1A890098F3A4 /* CountryCallingCodes.json */,
 				48B9386B187B647F00132535 /* Helps.json */,
 				48B9386C187B647F00132535 /* Licenses.json */,
@@ -3005,8 +2985,6 @@
 				4888D51C166D1AEE00572566 /* Flip@2x.png in Resources */,
 				4888D520166D1AEE00572566 /* HangupPhone@2x.png in Resources */,
 				4888D527166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */,
-				48A2CDFC16834FC100506A7C /* RingbackTones.json in Resources */,
-				48206EF8168DD8180040B04E /* Tones.json in Resources */,
 				488AD1ED16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
 				48A261C016FDE26100007638 /* CallStateView.xib in Resources */,
 				48ADD0F31706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
@@ -3099,8 +3077,6 @@
 				4888D51D166D1AEE00572566 /* Flip@2x.png in Resources */,
 				4888D521166D1AEE00572566 /* HangupPhone@2x.png in Resources */,
 				4888D528166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */,
-				48A2CDFD16834FC100506A7C /* RingbackTones.json in Resources */,
-				48206EF9168DD8180040B04E /* Tones.json in Resources */,
 				488AD1EE16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
 				48A261C116FDE26100007638 /* CallStateView.xib in Resources */,
 				48ADD0F41706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
@@ -3244,8 +3220,6 @@
 				482608EE166A4707007F0844 /* NSTimer+Blocks.m in Sources */,
 				4888D1FA166E865400B55B22 /* Call.m in Sources */,
 				48B8132E1AADF7CC0019AF77 /* NBRecentsListViewController.m in Sources */,
-				48206EF41684B0700040B04E /* RingbackTones.m in Sources */,
-				48206EFC168DD8D30040B04E /* Tones.m in Sources */,
 				48DD7281169CD4A200CD7080 /* Data.xcdatamodeld in Sources */,
 				48017A12194E554C0059A53B /* CallableData.m in Sources */,
 				48F1B7E117E63819003A3933 /* NumberForwardingsViewController.m in Sources */,
@@ -3364,8 +3338,6 @@
 				48C97EA418943C7300174DE9 /* PhoneViewController.m in Sources */,
 				482608EF166A4707007F0844 /* NSTimer+Blocks.m in Sources */,
 				4888D1FB166E865400B55B22 /* Call.m in Sources */,
-				48206EF51684B0700040B04E /* RingbackTones.m in Sources */,
-				48206EFD168DD8D30040B04E /* Tones.m in Sources */,
 				48DD7282169CD4A200CD7080 /* Data.xcdatamodeld in Sources */,
 				48F1B7E217E63819003A3933 /* NumberForwardingsViewController.m in Sources */,
 				48DD72D6169F5AC600CD7080 /* WebClient.m in Sources */,
