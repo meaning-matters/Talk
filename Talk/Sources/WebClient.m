@@ -849,7 +849,7 @@
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"callee"   : calleeE164,
-                                 @"caller"   : calleeE164,
+                                 @"caller"   : callerE164,
                                  @"callerId" : identityE164,
                                  @"privacy"  : privacy ? @"true" : @"false"};
     
