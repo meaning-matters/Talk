@@ -37,8 +37,6 @@
 //
 //  In case of a failure ...... TODO: ### Don't retry on cancelled HTTP reguest and
 //  neither on HTTP timeout, ...
-//  Zoek oorzaak van "No server could be reached" met api4 net uit en dan Sync all
-//  Check gedrag als alle api stopped en dan weer een started: app lijkt dood nu
 //
 
 #import <objc/runtime.h>
@@ -106,7 +104,7 @@ const NSTimeInterval kSelectedServerHoldTime = 10;
 - (void)updateServers
 {
     // Allow only one thread to update the server list.
-    @synchronized(self) //### Is this thread-safe? However, `@synchronized(self.servers)` causes dead-lock in `testServers`.
+    @synchronized(self)  //### Is this thread-safe? However, `@synchronized(self.servers)` causes dead-lock in `testServers`.
     {
         if (self.servers.count == 0 ||
             [[NSDate date] timeIntervalSinceDate:self.dnsUpdateDate] > (self.ttl + kTtlIncrement) ||
@@ -386,13 +384,6 @@ static void processDnsReply(DNSServiceRef       sdRef,
 
 - (void)prepareServers
 {
-    if (self.servers.count < 2)
-    {
-        NBLog(@"No DNS-SRV servers to prepare.");
-
-        return;
-    }
-    
     // Sort servers in descending priority order.
     NSSortDescriptor* sortDescriptorPriority = [[NSSortDescriptor alloc] initWithKey:@"priority" ascending:YES];
     NSSortDescriptor* sortDescriptorDelay    = [[NSSortDescriptor alloc] initWithKey:@"delay"    ascending:YES];
@@ -473,7 +464,6 @@ static void processDnsReply(DNSServiceRef       sdRef,
                 
                 self.weighter += self.weighterIncrement;
                 
-                NBLog(@"Selected server: %@", self.selectedServer[@"target"]);
                 self.selectedServer = server;
             }
             else
