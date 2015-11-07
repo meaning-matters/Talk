@@ -174,21 +174,41 @@ typedef enum
         switch (numberTypeMask)
         {
             case NumberTypeGeographicMask:
+            {
                 city = [Common capitalizedString:area[@"city"]];
                 name = [NSString stringWithFormat:@"%@ (%@)", city, numberIsoCountryCode];
                 break;
-                
+            }
             case NumberTypeNationalMask:
+            {
                 name = [NSString stringWithFormat:@"%@ (paid)", countryName];
                 break;
-
+            }
             case NumberTypeTollFreeMask:
+            {
                 name = [NSString stringWithFormat:@"%@ (free)", countryName];
                 break;
-
+            }
+            case NumberTypeMobileMask:
+            {
+                name = [NSString stringWithFormat:@"%@ (mobile)", countryName];
+                break;
+            }
+            case NumberTypeSharedCostMask:
+            {
+                name = [NSString stringWithFormat:@"%@ (shared)", countryName];
+                break;
+            }
+            case NumberTypeSpecialMask:
+            {
+                name = [NSString stringWithFormat:@"%@ (special)", countryName];
+                break;
+            }
             case NumberTypeInternationalMask:
+            {
                 name = [NSString stringWithFormat:@"International (%@)", area[@"areaCode"]];
                 break;
+            }
         }
 
         [self initializeIndexPaths];

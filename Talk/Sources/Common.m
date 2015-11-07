@@ -989,6 +989,27 @@ static Common* sharedCommon;
 }
 
 
++ (unsigned)bitIndexOfMask:(unsigned long)mask
+{
+    unsigned index = 0;
+    
+    if (mask == 0)
+    {
+        NBLog(@"Trying to get bit-index of mask 0.");
+    }
+    else
+    {
+        while ((mask & 1) == 0)
+        {
+            mask >>= 1;
+            index++;
+        }
+    }
+    
+    return index;
+}
+
+
 + (NSString*)capitalizedString:(NSString*)string
 {
     NSLocale* locale = [NSLocale currentLocale];

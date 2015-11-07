@@ -60,9 +60,12 @@
         if (error == nil)
         {
             // Added number type selector.
-            NSArray* items = @[[NumberType localizedStringForNumberType:1UL << 0],
-                               [NumberType localizedStringForNumberType:1UL << 1],
-                               [NumberType localizedStringForNumberType:1UL << 2]];
+            NSArray* items = @[[NumberType localizedStringForNumberType:NumberTypeGeographicMask],
+                               [NumberType localizedStringForNumberType:NumberTypeNationalMask],
+                               [NumberType localizedStringForNumberType:NumberTypeTollFreeMask],
+                               [NumberType localizedStringForNumberType:NumberTypeMobileMask],
+                               [NumberType localizedStringForNumberType:NumberTypeSharedCostMask],
+                               [NumberType localizedStringForNumberType:NumberTypeSpecialMask]];
             self.numberTypeSegmentedControl = [[UISegmentedControl alloc] initWithItems:items];
             [self.numberTypeSegmentedControl addTarget:self
                                                 action:@selector(numberTypeChangedAction:)
