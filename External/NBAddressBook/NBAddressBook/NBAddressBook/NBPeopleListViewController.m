@@ -466,19 +466,25 @@
     }
 
     //Set the person's name on the cell
-    ABRecordRef contact;
+    ABRecordRef contact = nil;
     if (filterEnabled)
     {
-        contact = (__bridge ABRecordRef)[filteredContacts objectAtIndex:indexPath.row];
+        if (indexPath.row < filteredContacts.count) //### Patches crash from out-of-sync/empty `filteredContacts`.
+        {
+            contact = (__bridge ABRecordRef)[filteredContacts objectAtIndex:indexPath.row];
+        }
     }
     else
     {
-        contact = (__bridge ABRecordRef)([[contactsDatasource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]);
+        if (indexPath.row < contactsDatasource.count) //### Patches crash from out-of-sync/empty `contactsDatasource`.
+        {
+            contact = (__bridge ABRecordRef)([[contactsDatasource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]);
+        }
     }
     
     //Get a representation for this contact in the list
     [cell.textLabel setAttributedText:[NBContact getListRepresentation:contact]];
-
+    
     return cell;
 }
 
