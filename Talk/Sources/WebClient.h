@@ -36,7 +36,6 @@
                       deviceModel:(NSString*)deviceModel
                        appVersion:(NSString*)appVersion
                          vendorId:(NSString*)vendorId
-                    advertisingId:(NSString*)advertisingId
                             reply:(void (^)(NSError*  error,
                                             NSString* webUsername,
                                             NSString* webPassword))reply;

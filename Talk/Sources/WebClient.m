@@ -163,7 +163,6 @@
                       deviceModel:(NSString*)deviceModel
                        appVersion:(NSString*)appVersion
                          vendorId:(NSString*)vendorId
-                    advertisingId:(NSString*)advertisingId
                             reply:(void (^)(NSError*  error,
                                             NSString* webUsername,
                                             NSString* webPassword))reply;
@@ -178,8 +177,7 @@
                        @"deviceOs"          : deviceOs,
                        @"deviceModel"       : deviceModel,
                        @"appVersion"        : appVersion,
-                       @"vendorId"          : vendorId,
-                       @"advertisingId"     : advertisingId};
+                       @"vendorId"          : vendorId};
     }
     else
     {
@@ -192,8 +190,7 @@
                        @"deviceOs"          : deviceOs,
                        @"deviceModel"       : deviceModel,
                        @"appVersion"        : appVersion,
-                       @"vendorId"          : vendorId,
-                       @"advertisingId"     : advertisingId};
+                       @"vendorId"          : vendorId};
     }
 
     NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;

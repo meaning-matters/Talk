@@ -270,7 +270,6 @@
                                             deviceModel:[Common deviceModel]
                                              appVersion:[Settings sharedSettings].appVersion
                                                vendorId:[[[UIDevice currentDevice] identifierForVendor] UUIDString]
-                                          advertisingId:[[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString]
                                                   reply:^(NSError*  error,
                                                           NSString* webUsername,
                                                           NSString* webPassword)
