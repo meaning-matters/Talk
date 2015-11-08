@@ -208,7 +208,10 @@ const NSTimeInterval kSelectedServerHoldTime = 10;
                     NBLog(@"DNS update done.");
 
                     self.dnsUpdateDate = [NSDate date];
-                    [self testServers];
+                    if (self.servers.count > 0)
+                    {
+                        [self testServers];
+                    }
                 }
                 else
                 {
@@ -330,6 +333,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
         [self.servers removeAllObjects];
     }
 
+    __block int failCount = 0;
     for (NSMutableDictionary* server in servers)
     {
         NSString* urlString = [NSString stringWithFormat:@"https://%@:%d%@",
@@ -362,6 +366,8 @@ static void processDnsReply(DNSServiceRef       sdRef,
             else
             {
                 NBLog(@"Server test failed: %@", server[@"target"]);
+                failCount++;
+                [self.condition signal];
             }
         }];
     }
@@ -376,7 +382,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
             count = self.servers.count;
         }
     }
-    while (count == 0);
+    while (count == 0 && failCount != servers.count);
     
     [self.condition unlock];
 }
