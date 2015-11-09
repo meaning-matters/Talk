@@ -539,15 +539,22 @@ static void processDnsReply(DNSServiceRef       sdRef,
                                                                           failure:^(AFHTTPRequestOperation* operation,
                                                                                     NSError*                error)
             {
-                // Retry once.
-                @synchronized(self.servers)
+                if (error.code == NSURLErrorNotConnectedToInternet)
                 {
-                    [self.servers removeAllObjects];
-                    self.selectedServer = nil;
+                    failure ? failure(operation, error) : (void)0;
                 }
+                else if (error.code != NSURLErrorCancelled)
+                {
+                    // Retry once.
+                    @synchronized(self.servers)
+                    {
+                        [self.servers removeAllObjects];
+                        self.selectedServer = nil;
+                    }
                 
-                NBLog(@"Retrying: %@", path);
-                [self requestWithMethod:method path:path parameters:parameters success:success failure:failure];
+                    NBLog(@"Retrying: %@", path);
+                    [self requestWithMethod:method path:path parameters:parameters success:success failure:failure];
+                }
             }];
             
             [self.operationQueue addOperation:operation];
