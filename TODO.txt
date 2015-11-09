@@ -1,5 +1,5 @@
 NEXT:
-# Disable deletion of Phones when used in Settings, Forwarding and as Caller ID: do in all places PhoneVC and PhonesVC.
+# Disable deletion of Phones when used in Settings, Destination and as Caller ID: do in all places PhoneVC and PhonesVC.
 Perhaps move test code to common place.
 # Place phone number type (iPhone, mobile, home, office, ...) as detail text under Contact name in above list.
 # Update PhoneVC when a caller ID was assigned, it may need to be added to its list.
@@ -29,7 +29,7 @@ Make country list diacritic insensitive
   portal when host does not return expected data (latter is tricky because bad connection
   may also have unexpected data).
   
-* Use special new textfield with format in ForwardingVC.
+* Use special new textfield with format in DestinationVC.
 
 * Revisit "canceled" (iOS preferred?) vs. "cancelled" (current in app, also used in
   AFNetworking, so don't change these!).
@@ -84,9 +84,9 @@ Make country list diacritic insensitive
 
 * Order delegate methods in same way accross .m files (e.g. table view delegates).
 
-* Place common methods (textfield & keyboard handling) between NumberAreaVC, NumberVC, ForwardingsVC and others in super class.
+* Place common methods (textfield & keyboard handling) between NumberAreaVC, NumberVC, DestinationsVC and others in super class.
 
-* Implement Number[s]VC with NSFetchResultsController (see Forwarding[s]VC).
+* Implement Number[s]VC with NSFetchResultsController (see Destination[s]VC).
 
 * Als #2 faalt, mislukt Restore silently: zorg dat er een melding komt. kijk ook na voor #1 e.d.
 
@@ -109,7 +109,7 @@ Make country list diacritic insensitive
 * Do: [NSError errorWithDomain:FSMyAppErrorDomain code:FSProfileParsingFailedError userInfo:@{NSLocalizedDescriptionKey : FS_ERROR_LOCALIZED_DESCRIPTION(error.code)}]; –
   en haal message uit error met userInfo[NSLocalizedDescriptionKey];
 
-* Use capitalized Forwardings and Numbers, .... in texts?  currently use "Forwardings" & "numbers" -> inconsistent
+* Use capitalized Destinations and Numbers, .... in texts?  currently use "Destinations" & "numbers" -> inconsistent
 
 * Replace DTMF keepalive with something else that always works.
 

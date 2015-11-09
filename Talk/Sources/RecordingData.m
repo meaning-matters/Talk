@@ -7,7 +7,7 @@
 //
 
 #import "RecordingData.h"
-#import "ForwardingData.h"
+#import "DestinationData.h"
 
 
 @implementation RecordingData
@@ -15,6 +15,6 @@
 @dynamic uuid;
 @dynamic name;
 @dynamic urlString;
-@dynamic forwardings;
+@dynamic destinations;
 
 @end

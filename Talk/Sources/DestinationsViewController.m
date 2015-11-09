@@ -1,18 +1,18 @@
 //
-//  ForwardingsViewController.m
+//  DestinationsViewController.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 06/11/12.
 //  Copyright (c) 2012 NumberBay Ltd. All rights reserved.
 //
 
-#import "ForwardingsViewController.h"
+#import "DestinationsViewController.h"
 #import "RecordingViewController.h"
-#import "ForwardingViewController.h"
+#import "DestinationViewController.h"
 #import "DataManager.h"
 #import "Common.h"
 #import "Settings.h"
-#import "ForwardingData.h"
+#import "DestinationData.h"
 #import "RecordingData.h"
 #import "WebClient.h"
 #import "Strings.h"
@@ -20,28 +20,25 @@
 
 typedef enum
 {
-    SelectionForwardings,
+    SelectionDestinations,
     SelectionRecordings,
 } Selection;
 
 
-@interface ForwardingsViewController ()
+@interface DestinationsViewController ()
 {
     UISegmentedControl*         selectionSegmentedControl;
 
-    NSFetchedResultsController* fetchedForwardingsController;
+    NSFetchedResultsController* fetchedDestinationsController;
     NSFetchedResultsController* fetchedRecordingsController;
 
     Selection                   selection;
-
-    BOOL                        isUpdatingForwardings;
-    BOOL                        isUpdatingRecordings;
 }
 
 @end
 
 
-@implementation ForwardingsViewController
+@implementation DestinationsViewController
 
 - (instancetype)init
 {
@@ -53,7 +50,7 @@ typedef enum
 {
     if (self = [super init])
     {
-        self.title                = [Strings forwardingsString];
+        self.title                = [Strings destinationsString];
         // The tabBarItem image must be set in my own NavigationController.
 
         self.managedObjectContext = managedObjectContext;
@@ -67,35 +64,35 @@ typedef enum
 {
     [super viewDidLoad];
 
-    NSString* forwardingsTitle;
+    NSString* destinationsTitle;
     NSString* recordingsTitle;
 
-    forwardingsTitle = NSLocalizedStringWithDefaultValue(@"ForwardingsView ForwardingsButtonTitle", nil,
-                                                         [NSBundle mainBundle], @"Logic",
-                                                         @"Title of button selecting call forwardings logic.\n"
-                                                         @"[1/2 line larger font].");
+    destinationsTitle = NSLocalizedStringWithDefaultValue(@"DestinationsView DestinationsButtonTitle", nil,
+                                                          [NSBundle mainBundle], @"Logic",
+                                                          @"Title of button selecting call destinations logic.\n"
+                                                          @"[1/2 line larger font].");
 
-    recordingsTitle = NSLocalizedStringWithDefaultValue(@"ForwardingsView RecordingsButtonTitle", nil,
+    recordingsTitle = NSLocalizedStringWithDefaultValue(@"DestinationsView RecordingsButtonTitle", nil,
                                                         [NSBundle mainBundle], @"Audio",
                                                         @"Title of button selecting recordings.\n"
                                                         @"[1/2 line larger font].");
 
-    selectionSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[forwardingsTitle, recordingsTitle]];
+    selectionSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[destinationsTitle, recordingsTitle]];
     [selectionSegmentedControl addTarget:self
                                   action:@selector(selectionUpdateAction)
                         forControlEvents:UIControlEventValueChanged];
-    NSInteger   index = [Settings sharedSettings].forwardingsSelection;
+    NSInteger index = [Settings sharedSettings].destinationsSelection;
     [selectionSegmentedControl setSelectedSegmentIndex:index];
-#if HAS_FULL_FORWARDINGS
+#if HAS_FULL_DESTINATIONS
     self.navigationItem.titleView = selectionSegmentedControl;
 #endif
 
-    fetchedForwardingsController = [[DataManager sharedManager] fetchResultsForEntityName:@"Forwarding"
-                                                                             withSortKeys:@[@"name"]
-                                                                     managedObjectContext:self.managedObjectContext];
-    fetchedForwardingsController.delegate = self;
+    fetchedDestinationsController = [[DataManager sharedManager] fetchResultsForEntityName:@"Destination"
+                                                                              withSortKeys:@[@"name"]
+                                                                      managedObjectContext:self.managedObjectContext];
+    fetchedDestinationsController.delegate = self;
 
-#if HAS_FULL_FORWARDINGS
+#if HAS_FULL_DESTINATIONS
     fetchedRecordingsController  = [[DataManager sharedManager] fetchResultsForEntityName:@"Recording"
                                                                              withSortKeys:@[@"name"]
                                                                                     error:&error];
@@ -132,7 +129,7 @@ typedef enum
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return NSLocalizedStringWithDefaultValue(@"Forwardings Forwardings List Title", nil, [NSBundle mainBundle],
+    return NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Title", nil, [NSBundle mainBundle],
                                              @"Incoming calls go to",
                                              @"\n"
                                              @"[1/4 line larger font].");
@@ -143,11 +140,11 @@ typedef enum
 {
     if (tableView == self.tableView)
     {
-        ForwardingViewController* viewController;
-        ForwardingData*           forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
+        DestinationViewController* viewController;
+        DestinationData*           destination = [fetchedDestinationsController objectAtIndexPath:indexPath];
 
-        viewController = [[ForwardingViewController alloc] initWithForwarding:forwarding
-                                                         managedObjectContext:self.managedObjectContext];
+        viewController = [[DestinationViewController alloc] initWithDestination:destination
+                                                           managedObjectContext:self.managedObjectContext];
 
         [self.navigationController pushViewController:viewController animated:YES];
     }
@@ -170,7 +167,7 @@ typedef enum
 
     if (tableView == self.tableView)
     {
-        cell = [self forwardingCellForIndexPath:indexPath];
+        cell = [self distinationCellForIndexPath:indexPath];
     }
     else
     {
@@ -181,7 +178,7 @@ typedef enum
 }
 
 
-- (UITableViewCell*)forwardingCellForIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)distinationCellForIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
 
@@ -191,8 +188,8 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
-    ForwardingData* forwarding      = [fetchedForwardingsController objectAtIndexPath:indexPath];
-    cell.textLabel.text             = forwarding.name;
+    DestinationData* destination    = [fetchedDestinationsController objectAtIndexPath:indexPath];
+    cell.textLabel.text             = destination.name;
     cell.imageView.image            = [UIImage imageNamed:@"List"];
     cell.imageView.highlightedImage = [Common invertImage:cell.imageView.image];
     cell.accessoryType              = UITableViewCellAccessoryDisclosureIndicator;
@@ -225,9 +222,9 @@ typedef enum
 {
     if (tableView == self.tableView)
     {
-        ForwardingData* forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
+        DestinationData* destination = [fetchedDestinationsController objectAtIndexPath:indexPath];
 
-        return (forwarding.numbers.count == 0);
+        return (destination.numbers.count == 0);
     }
     else
     {
@@ -244,9 +241,9 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     {
         if (tableView == self.tableView)
         {
-            ForwardingData* forwarding = [fetchedForwardingsController objectAtIndexPath:indexPath];
+            DestinationData* destination = [fetchedDestinationsController objectAtIndexPath:indexPath];
 
-            [forwarding deleteFromManagedObjectContext:self.managedObjectContext completion:^(BOOL succeeded)
+            [destination deleteFromManagedObjectContext:self.managedObjectContext completion:^(BOOL succeeded)
             {
                 [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
             }];
@@ -255,7 +252,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
         {
             RecordingData* recording = [fetchedRecordingsController objectAtIndexPath:indexPath];
 
-            if (recording.forwardings.count > 0)
+            if (recording.destinations.count > 0)
             {
 
             }
@@ -282,18 +279,18 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     if (selection != selectionSegmentedControl.selectedSegmentIndex)
     {
         selection = (Selection)selectionSegmentedControl.selectedSegmentIndex;
-        [Settings sharedSettings].forwardingsSelection = selection;
+        [Settings sharedSettings].destinationsSelection = selection;
     }
 
     UIBarButtonItem* leftItem;
     UIBarButtonItem* rightItem;
     switch (selection)
     {
-        case SelectionForwardings:
+        case SelectionDestinations:
             // This overrides button placement of ItemsViewController (the baseclass).
             rightItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                       target:self
-                                                                      action:@selector(addForwardingAction)];
+                                                                      action:@selector(addDestinationAction)];
 
             self.tableView.hidden           = NO;
             self.recordingsTableView.hidden = YES;
@@ -351,15 +348,15 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 }
 
 
-- (void)addForwardingAction
+- (void)addDestinationAction
 {
     if ([Settings sharedSettings].haveAccount == YES)
     {
-        UINavigationController*   modalViewController;
-        ForwardingViewController* viewController;
+        UINavigationController*    modalViewController;
+        DestinationViewController* viewController;
 
-        viewController = [[ForwardingViewController alloc] initWithForwarding:nil
-                                                         managedObjectContext:self.managedObjectContext];
+        viewController = [[DestinationViewController alloc] initWithDestination:nil
+                                                           managedObjectContext:self.managedObjectContext];
 
         modalViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
         modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -389,7 +386,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
 - (UITableView*)tableViewForResultsController:(NSFetchedResultsController*)controller
 {
-    if (controller == fetchedForwardingsController)
+    if (controller == fetchedDestinationsController)
     {
         return self.tableView;
     }
@@ -406,12 +403,12 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableView*     tableView = [self tableViewForResultsController:controller];
     RecordingData*   recording;
-    ForwardingData*  forwarding;
+    DestinationData* destination;
 
     if (tableView == self.tableView)
     {
-        forwarding = [controller objectAtIndexPath:indexPath];
-        cell.textLabel.text = forwarding.name;
+        destination = [controller objectAtIndexPath:indexPath];
+        cell.textLabel.text = destination.name;
     }
     else
     {
@@ -427,7 +424,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     if (tableView == self.tableView)
     {
-        return fetchedForwardingsController;
+        return fetchedDestinationsController;
     }
     else
     {

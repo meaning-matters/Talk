@@ -17,9 +17,9 @@
 
 typedef enum
 {
-    TableSectionName        = 1UL << 0, // User-given name.
-    TableSectionControls    = 1UL << 1,
-    TableSectionForwardings = 1UL << 2,
+    TableSectionName         = 1UL << 0, // User-given name.
+    TableSectionControls     = 1UL << 1,
+    TableSectionDestinations = 1UL << 2,
 } TableSections;
 
 
@@ -73,7 +73,7 @@ typedef enum
 
         sections |= TableSectionName;
         sections |= TableSectionControls;
-        sections |= (self.recording.forwardings.count > 0) ? TableSectionForwardings : 0;
+        sections |= (self.recording.destinations.count > 0) ? TableSectionDestinations : 0;
 
         // Select initial audio route.
         audioRouteChangeListener(NULL, kAudioSessionProperty_AudioRouteChange, 0, NULL);
@@ -269,8 +269,8 @@ typedef enum
             numberOfRows = 1;
             break;
 
-        case TableSectionForwardings:
-            numberOfRows = self.recording.forwardings.count;
+        case TableSectionDestinations:
+            numberOfRows = self.recording.destinations.count;
             break;
     }
 
@@ -292,7 +292,7 @@ typedef enum
             height = 150;
             break;
 
-        case TableSectionForwardings:
+        case TableSectionDestinations:
             height = 44;
             break;
     }
@@ -344,7 +344,7 @@ typedef enum
             cell = [self controlsCellForIndexPath:indexPath];
             break;
 
-        case TableSectionForwardings:
+        case TableSectionDestinations:
             break;
     }
     
@@ -393,7 +393,7 @@ typedef enum
 {
     self.recording.name = name;
 
-    //### Send to server (look at ForwardingViewController's saveAction.
+    //### Send to server (look at DestinationViewController's saveAction.
 
     [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
 

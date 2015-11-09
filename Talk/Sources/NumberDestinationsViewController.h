@@ -1,5 +1,5 @@
 //
-//  NumberForwardingsViewController.h
+//  NumberDestinationsViewController.h
 //  Talk
 //
 //  Created by Cornelis van der Bent on 15/09/13.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "NumberData.h"
 
-@interface NumberForwardingsViewController : UITableViewController
+@interface NumberDestinationsViewController : UITableViewController
 
 - (instancetype)initWithNumber:(NumberData*)theNumber;
 

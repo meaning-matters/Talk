@@ -147,29 +147,29 @@
 }
 
 
-+ (NSString*)newForwardingString
++ (NSString*)newDestinationString
 {
-    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings New Forwarding", nil, [NSBundle mainBundle],
-                                             @"New Forwarding",
-                                             @"Standard string to label a new phone call forwarding\n"
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings New Destination", nil, [NSBundle mainBundle],
+                                             @"New Destination",
+                                             @"Standard string to label a new phone call destination\n"
                                              @"[iOS standard size].");
 }
 
 
-+ (NSString*)forwardingString
++ (NSString*)destinationString
 {
-    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Forwarding", nil, [NSBundle mainBundle],
-                                             @"Forwarding",
-                                             @"Standard string to label a phone call forwarding\n"
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Destination", nil, [NSBundle mainBundle],
+                                             @"Destination",
+                                             @"Standard string to label a phone call destination\n"
                                              @"[iOS standard size].");
 }
 
 
-+ (NSString*)forwardingsString
++ (NSString*)destinationsString
 {
-    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Forwardings", nil, [NSBundle mainBundle],
-                                             @"Forwardings",
-                                             @"Standard string to label phone call forwardings\n"
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Destinations", nil, [NSBundle mainBundle],
+                                             @"Destinations",
+                                             @"Standard string to label phone call destinations\n"
                                              @"[iOS standard size].");
 }
 

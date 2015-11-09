@@ -1,12 +1,12 @@
 //
-//  ForwardingData.m
+//  DestinationData.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 27/03/13.
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
-#import "ForwardingData.h"
+#import "DestinationData.h"
 #import "NumberData.h"
 #import "RecordingData.h"
 #import "WebClient.h"
@@ -16,7 +16,7 @@
 #import "DataManager.h"
 
 
-@implementation ForwardingData
+@implementation DestinationData
 
 @dynamic uuid;
 @dynamic name;
@@ -35,15 +35,15 @@
         NSString* message;
         NSString* numberString;
 
-        title   = NSLocalizedStringWithDefaultValue(@"Forwardings ForwardingInUseTitle", nil,
-                                                    [NSBundle mainBundle], @"Forwarding Still Used",
-                                                    @"Alert title telling that a number forwarding is used.\n"
+        title   = NSLocalizedStringWithDefaultValue(@"Destinations DestinationInUseTitle", nil,
+                                                    [NSBundle mainBundle], @"Destination Still Used",
+                                                    @"Alert title telling that a number destination is used.\n"
                                                     @"[iOS alert title size].");
-        message = NSLocalizedStringWithDefaultValue(@"Forwardings ForwardingInUseMessage", nil,
+        message = NSLocalizedStringWithDefaultValue(@"Destinations DestinationInUseMessage", nil,
                                                     [NSBundle mainBundle],
-                                                    @"This Forwarding is still used for %d %@. To delete, "
+                                                    @"This Destination is still used for %d %@. To delete, "
                                                     @"make sure it's no longer used.",
-                                                    @"Alert message telling that number forwarding is used.\n"
+                                                    @"Alert message telling that number destination is used.\n"
                                                     @"[iOS alert message size - parameters: count, number(s)]");
         numberString = (self.numbers.count == 1) ? [Strings numberString] : [Strings numbersString];
         message = [NSString stringWithFormat:message, self.numbers.count, numberString];
@@ -70,15 +70,15 @@
                 NSString* title;
                 NSString* message;
 
-                title   = NSLocalizedStringWithDefaultValue(@"Forwarding InUseTitle", nil,
-                                                            [NSBundle mainBundle], @"Forwarding Not Deleted",
+                title   = NSLocalizedStringWithDefaultValue(@"Destination InUseTitle", nil,
+                                                            [NSBundle mainBundle], @"Destination Not Deleted",
                                                             @"Alert title telling that something could not be deleted.\n"
                                                             @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"Forwarding InUseMessage", nil,
+                message = NSLocalizedStringWithDefaultValue(@"Destination InUseMessage", nil,
                                                             [NSBundle mainBundle],
-                                                            @"Deleting this Forwarding from our server failed: %@"
+                                                            @"Deleting this Destination from our server failed: %@"
                                                             @"\n\nSynchronize with the server, and then choose another "
-                                                            @"Forwarding for each number that uses this one.",
+                                                            @"Destination for each number that uses this one.",
                                                             @"...\n"
                                                             @"[iOS alert message size]");
                 message = [NSString stringWithFormat:message, error.localizedDescription];
@@ -96,13 +96,13 @@
                 NSString* title;
                 NSString* message;
 
-                title   = NSLocalizedStringWithDefaultValue(@"Forwarding DeleteFailedTitle", nil,
-                                                            [NSBundle mainBundle], @"Forwarding Not Deleted",
+                title   = NSLocalizedStringWithDefaultValue(@"Destination DeleteFailedTitle", nil,
+                                                            [NSBundle mainBundle], @"Destination Not Deleted",
                                                             @"Alert title telling that something could not be deleted.\n"
                                                             @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"Forwarding DeleteFailedMessage", nil,
+                message = NSLocalizedStringWithDefaultValue(@"Destination DeleteFailedMessage", nil,
                                                             [NSBundle mainBundle],
-                                                            @"Deleting this Forwarding from our server failed: %@"
+                                                            @"Deleting this Destination from our server failed: %@"
                                                             @"\n\nPlease try again later.",
                                                             @"Alert message telling that an online service is not available.\n"
                                                             @"[iOS alert message size]");

@@ -256,7 +256,7 @@ typedef enum
                                                       [NSBundle mainBundle],
                                                       @"With a reset you only lose these settings and your call history. "
                                                       @"You can always restore your account credit, verified "
-                                                      @"phones, purchased numbers, and forwardings on other devices.",
+                                                      @"phones, purchased numbers, and destinations on other devices.",
                                                       @"Explanation what the Reset setting is doing\n"
                                                       @"[* lines]");
             break;

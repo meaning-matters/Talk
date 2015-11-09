@@ -1,20 +1,20 @@
 //
-//  NumberForwardingsViewController.m
+//  NumberDestinationsViewController.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 15/09/13.
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
-#import "NumberForwardingsViewController.h"
+#import "NumberDestinationsViewController.h"
 #import "DataManager.h"
 #import "Strings.h"
-#import "ForwardingData.h"
+#import "DestinationData.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
 
 
-@interface NumberForwardingsViewController ()
+@interface NumberDestinationsViewController ()
 {
     NumberData*                 number;
     NSFetchedResultsController* fetchedResultsController;
@@ -24,13 +24,13 @@
 @end
 
 
-@implementation NumberForwardingsViewController
+@implementation NumberDestinationsViewController
 
 - (instancetype)initWithNumber:(NumberData*)theNumber
 {
     if (self = [super initWithStyle:UITableViewStylePlain])
     {
-        self.title = [Strings forwardingsString];
+        self.title = [Strings destinationsString];
 
         number = theNumber;
     }
@@ -43,7 +43,7 @@
 {
     [super viewDidLoad];
 
-    fetchedResultsController = [[DataManager sharedManager] fetchResultsForEntityName:@"Forwarding"
+    fetchedResultsController = [[DataManager sharedManager] fetchResultsForEntityName:@"Destination"
                                                                          withSortKeys:@[@"name"]
                                                                  managedObjectContext:nil];
 }
@@ -80,7 +80,7 @@
         cell.textLabel.text  = [Strings defaultString];
         cell.imageView.image = [UIImage imageNamed:@"Target"];
 
-        if (number.forwarding == nil)
+        if (number.destination == nil)
         {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
             selectedCell       = cell;
@@ -93,11 +93,11 @@
     else
     {
         indexPath = [NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section];
-        ForwardingData* forwarding = [fetchedResultsController objectAtIndexPath:indexPath];
-        cell.textLabel.text  = forwarding.name;
+        DestinationData* destination = [fetchedResultsController objectAtIndexPath:indexPath];
+        cell.textLabel.text  = destination.name;
         cell.imageView.image = [UIImage imageNamed:@"List"];
 
-        if (number.forwarding == forwarding)
+        if (number.destination == destination)
         {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
             selectedCell       = cell;
@@ -116,30 +116,30 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    ForwardingData*  selectedForwarding;
+    DestinationData*  selectedDestination;
     UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];    // Get here because indexPath is overwritten.
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     if (indexPath.row == 0)
     {
-        selectedForwarding = nil;
+        selectedDestination = nil;
     }
     else
     {
         indexPath = [NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section];
-        selectedForwarding = [fetchedResultsController objectAtIndexPath:indexPath];
+        selectedDestination = [fetchedResultsController objectAtIndexPath:indexPath];
     }
 
-    if (number.forwarding != selectedForwarding)
+    if (number.destination != selectedDestination)
     {
         [[WebClient sharedClient] setIvrOfE164:number.e164
-                                          uuid:(selectedForwarding == nil) ? @"" : selectedForwarding.uuid
+                                          uuid:(selectedDestination == nil) ? @"" : selectedDestination.uuid
                                          reply:^(NSError* error)
         {
             if (error == nil)
             {
-                number.forwarding = selectedForwarding;
+                number.destination = selectedDestination;
                 [[DataManager sharedManager] saveManagedObjectContext:nil];
 
                 selectedCell.accessoryType = UITableViewCellAccessoryNone;
@@ -154,13 +154,13 @@
                 NSString* title;
                 NSString* message;
 
-                title   = NSLocalizedStringWithDefaultValue(@"NumberForwardings SetForwardingFailedTitle", nil,
-                                                            [NSBundle mainBundle], @"Setting Forwarding Failed",
+                title   = NSLocalizedStringWithDefaultValue(@"NumberDestinations SetDestinationFailedTitle", nil,
+                                                            [NSBundle mainBundle], @"Setting Destination Failed",
                                                             @"Alert title: ....\n"
                                                             @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"BuyCredit SetForwardingFailedMessage", nil,
+                message = NSLocalizedStringWithDefaultValue(@"BuyCredit SetDestinationFailedMessage", nil,
                                                             [NSBundle mainBundle],
-                                                            @"Something went wrong while setting the Forwarding: "
+                                                            @"Something went wrong while setting the Destination: "
                                                             @"%@\n\nPlease try again later.",
                                                             @"Message telling that ... failed\n"
                                                             @"[iOS alert message size]");

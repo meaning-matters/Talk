@@ -1,5 +1,5 @@
 //
-//  ForwardingData.h
+//  DestinationData.h
 //  Talk
 //
 //  Created by Cornelis van der Bent on 27/03/13.
@@ -12,7 +12,7 @@
 
 @class NumberData, RecordingData, PhoneData;
 
-@interface ForwardingData : NSManagedObject
+@interface DestinationData : NSManagedObject
 
 @property (nonatomic, retain) NSString* uuid;
 @property (nonatomic, retain) NSString* name;
@@ -27,7 +27,7 @@
 @end
 
 
-@interface ForwardingData (CoreDataGeneratedAccessors)
+@interface DestinationData (CoreDataGeneratedAccessors)
 
 - (void)addNumbersObject:(NumberData*)value;
 - (void)removeNumbersObject:(NumberData*)value;

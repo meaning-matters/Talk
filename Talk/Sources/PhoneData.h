@@ -10,12 +10,12 @@
 #import <CoreData/CoreData.h>
 #import "CallableData.h"
 
-@class ForwardingData;
+@class DestinationData;
 
 
 @interface PhoneData : CallableData
 
-@property (nonatomic, retain) NSSet* forwardings;
+@property (nonatomic, retain) NSSet* destinations;
 
 - (void)deleteFromManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
                             completion:(void (^)(BOOL succeeded))completion;
@@ -25,9 +25,9 @@
 
 @interface PhoneData (CoreDataGeneratedAccessors)
 
-- (void)addForwardingsObject:(ForwardingData*)value;
-- (void)removeForwardingsObject:(ForwardingData*)value;
-- (void)addForwardings:(NSSet*)values;
-- (void)removeForwardings:(NSSet*)values;
+- (void)addDestinationsObject:(DestinationData*)value;
+- (void)removeDestinationsObject:(DestinationData*)value;
+- (void)addDestinations:(NSSet*)values;
+- (void)removeDestinations:(NSSet*)values;
 
 @end

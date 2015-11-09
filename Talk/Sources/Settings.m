@@ -30,7 +30,7 @@ NSString* const CallerIdE164Key           = @"CallerIdE164";
 NSString* const CallbackE164Key           = @"CallbackE164";
 NSString* const NumberTypeMaskKey         = @"NumberTypeMask";
 NSString* const NumbersSortSegmentKey     = @"NumbersSortSegment";
-NSString* const ForwardingsSelectionKey   = @"ForwardingsSelection";
+NSString* const DestinationsSelectionKey  = @"DestinationsSelection";
 NSString* const StoreCurrencyCodeKey      = @"StoreCurrencyCode";
 NSString* const StoreCountryCodeKey       = @"StoreCountryCode";
 NSString* const CreditKey                 = @"Credit";
@@ -124,7 +124,7 @@ static NSUserDefaults* userDefaults;
         [dictionary setObject:@""                                                forKey:CallbackE164Key];
         [dictionary setObject:@(NumberTypeGeographicMask)                        forKey:NumberTypeMaskKey];
         [dictionary setObject:@(0)                                               forKey:NumbersSortSegmentKey];
-        [dictionary setObject:@(0)                                               forKey:ForwardingsSelectionKey];
+        [dictionary setObject:@(0)                                               forKey:DestinationsSelectionKey];
         [dictionary setObject:@""                                                forKey:StoreCurrencyCodeKey];
         [dictionary setObject:@""                                                forKey:StoreCountryCodeKey];
         [dictionary setObject:@(0.0f)                                            forKey:CreditKey];
@@ -297,15 +297,15 @@ static NSUserDefaults* userDefaults;
 }
 
 
-- (NSInteger)forwardingsSelection
+- (NSInteger)destinationsSelection
 {
-    return [userDefaults integerForKey:ForwardingsSelectionKey];
+    return [userDefaults integerForKey:DestinationsSelectionKey];
 }
 
 
-- (void)setForwardingsSelection:(NSInteger)forwardingsSelection
+- (void)setDestinationsSelection:(NSInteger)destinationsSelection
 {
-    [userDefaults setInteger:forwardingsSelection forKey:ForwardingsSelectionKey];
+    [userDefaults setInteger:destinationsSelection forKey:DestinationsSelectionKey];
 }
 
 

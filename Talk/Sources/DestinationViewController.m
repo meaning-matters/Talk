@@ -1,12 +1,12 @@
 //
-//  ForwardingViewController.m
+//  DestinationViewController.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 27/04/13.
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
-#import "ForwardingViewController.h"
+#import "DestinationViewController.h"
 #import "Common.h"
 #import "Strings.h"
 #import "NumberData.h"
@@ -33,7 +33,7 @@ typedef enum
 } TableSections;
 
 
-@interface ForwardingViewController ()
+@interface DestinationViewController ()
 {
     TableSections   sections;
     BOOL            isNew;
@@ -47,19 +47,19 @@ typedef enum
 @end
 
 
-@implementation ForwardingViewController
+@implementation DestinationViewController
 
-- (instancetype)initWithForwarding:(ForwardingData*)forwarding
-              managedObjectContext:(NSManagedObjectContext*)managedObjectContext
+- (instancetype)initWithDestination:(DestinationData*)destination
+               managedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
     if (self = [super initWithManagedObjectContext:managedObjectContext])
     {
-        self.name       = forwarding.name;
-        phone           = [forwarding.phones anyObject];
+        self.name        = destination.name;
+        phone            = [destination.phones anyObject];
 
-        self.forwarding = forwarding;
-        isNew           = (forwarding == nil);
-        self.title      = isNew ? [Strings newForwardingString] : [Strings forwardingString];
+        self.destination = destination;
+        isNew            = (destination == nil);
+        self.title       = isNew ? [Strings newDestinationString] : [Strings destinationString];
 
         if (isNew == YES)
         {
@@ -69,10 +69,10 @@ typedef enum
             [managedObjectContext setParentContext:self.managedObjectContext];
             self.managedObjectContext = managedObjectContext;
 
-            self.forwarding = [NSEntityDescription insertNewObjectForEntityForName:@"Forwarding"
-                                                            inManagedObjectContext:self.managedObjectContext];
+            self.destination = [NSEntityDescription insertNewObjectForEntityForName:@"Destination"
+                                                             inManagedObjectContext:self.managedObjectContext];
 
-            self.forwarding.statements = [Common jsonStringWithObject:@[@{@"call" : @{@"e164" : @[@""]}}]];
+            self.destination.statements = [Common jsonStringWithObject:@[@{@"call" : @{@"e164" : @[@""]}}]];
         }
         else
         {
@@ -84,7 +84,7 @@ typedef enum
                                            context:nil];
         }
 
-        statementsArray = [Common mutableObjectWithJsonString:self.forwarding.statements];
+        statementsArray = [Common mutableObjectWithJsonString:self.destination.statements];
     }
     
     return self;
@@ -160,8 +160,8 @@ typedef enum
 
 - (void)deleteAction
 {
-    NSString* buttonTitle = NSLocalizedStringWithDefaultValue(@"ForwardingView DeleteTitle", nil,
-                                                              [NSBundle mainBundle], @"Delete Forwarding",
+    NSString* buttonTitle = NSLocalizedStringWithDefaultValue(@"DestinationView DeleteTitle", nil,
+                                                              [NSBundle mainBundle], @"Delete Destination",
                                                               @"...\n"
                                                               @"[1/3 line small font].");
 
@@ -172,8 +172,8 @@ typedef enum
         {
             isDeleting = YES;
 
-            [self.forwarding removePhones:self.forwarding.phones];
-            [self.forwarding deleteFromManagedObjectContext:self.managedObjectContext
+            [self.destination removePhones:self.destination.phones];
+            [self.destination deleteFromManagedObjectContext:self.managedObjectContext
                                                  completion:^(BOOL succeeded)
             {
                 if (succeeded)
@@ -191,12 +191,12 @@ typedef enum
 
 - (void)createAction
 {
-    self.forwarding.name = self.name;
+    self.destination.name = self.name;
     statementsArray[0][@"call"][@"e164"][0] = phone.e164;
-    self.forwarding.statements = [Common jsonStringWithObject:statementsArray];
+    self.destination.statements = [Common jsonStringWithObject:statementsArray];
 
     NSString* uuid = [[NSUUID UUID] UUIDString];
-    self.forwarding.uuid = uuid;
+    self.destination.uuid = uuid;
     [[WebClient sharedClient] createIvrForUuid:uuid
                                           name:self.name
                                     statements:statementsArray
@@ -220,18 +220,18 @@ typedef enum
 
 - (void)saveAction
 {
-    if ([self.name isEqualToString:self.forwarding.name] == YES &&
-        [Common object:statementsArray isEqualToJsonString:self.forwarding.statements] == YES)
+    if ([self.name isEqualToString:self.destination.name] == YES &&
+        [Common object:statementsArray isEqualToJsonString:self.destination.statements] == YES)
     {
         // Nothing has changed.
         return;
     }
 
-    self.forwarding.name = self.name;
+    self.destination.name = self.name;
     statementsArray[0][@"call"][@"e164"][0] = phone.e164;
-    self.forwarding.statements = [Common jsonStringWithObject:statementsArray];
+    self.destination.statements = [Common jsonStringWithObject:statementsArray];
 
-    [[WebClient sharedClient] updateIvrForUuid:self.forwarding.uuid
+    [[WebClient sharedClient] updateIvrForUuid:self.destination.uuid
                                           name:self.name
                                     statements:statementsArray
                                          reply:^(NSError* error)
@@ -254,12 +254,12 @@ typedef enum
     NSString* title;
     NSString* message;
 
-    title   = NSLocalizedStringWithDefaultValue(@"Forwarding SaveErrorTitle", nil, [NSBundle mainBundle],
+    title   = NSLocalizedStringWithDefaultValue(@"Destination SaveErrorTitle", nil, [NSBundle mainBundle],
                                                 @"Failed To Save",
                                                 @"....\n"
                                                 @"[iOS alert title size].");
-    message = NSLocalizedStringWithDefaultValue(@"Forwarding SaveErroMessage", nil, [NSBundle mainBundle],
-                                                @"Failed to save this Forwarding: %@.",
+    message = NSLocalizedStringWithDefaultValue(@"Destination SaveErroMessage", nil, [NSBundle mainBundle],
+                                                @"Failed to save this Destination: %@.",
                                                 @"...\n"
                                                 @"[iOS alert message size]");
     [BlockAlertView showAlertViewWithTitle:title
@@ -277,11 +277,11 @@ typedef enum
     sections  = 0;
     sections |= TableSectionName;
     sections |= TableSectionPhone;
-#if HAS_FULL_FORWARDINGS
+#if HAS_FULL_DESTINATIONS
     sections |= TableSectionStatements;
 #endif
-    sections |= (self.forwarding.numbers.count    > 0) ? TableSectionNumbers    : 0;
-    sections |= (self.forwarding.recordings.count > 0) ? TableSectionRecordings : 0;
+    sections |= (self.destination.numbers.count    > 0) ? TableSectionNumbers    : 0;
+    sections |= (self.destination.recordings.count > 0) ? TableSectionRecordings : 0;
 
     return [Common bitsSetCount:sections];
 }
@@ -310,12 +310,12 @@ typedef enum
         }
         case TableSectionNumbers:
         {
-            numberOfRows = self.forwarding.numbers.count;
+            numberOfRows = self.destination.numbers.count;
             break;
         }
         case TableSectionRecordings:
         {
-            numberOfRows = self.forwarding.recordings.count;
+            numberOfRows = self.destination.recordings.count;
             break;
         }
     }
@@ -332,7 +332,7 @@ typedef enum
     {
         case TableSectionNumbers:
         {
-            title = NSLocalizedStringWithDefaultValue(@"ForwardingView NumbersHeader", nil,
+            title = NSLocalizedStringWithDefaultValue(@"DestinationView NumbersHeader", nil,
                                                       [NSBundle mainBundle],
                                                       @"Used By Numbers",
                                                       @"Table header above phone numbers\n"
@@ -361,9 +361,9 @@ typedef enum
         }
         case TableSectionNumbers:
         {
-            title = NSLocalizedStringWithDefaultValue(@"ForwardingView CanNotDeleteFooter", nil,
+            title = NSLocalizedStringWithDefaultValue(@"DestinationView CanNotDeleteFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"This Forwarding can't be deleted because it's in use.",
+                                                      @"This Destination can't be deleted because it's in use.",
                                                       @"Table footer that app can't be deleted\n"
                                                       @"[1 line larger font].");
             break;
@@ -421,7 +421,7 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"PhoneCell"];
     }
 
-    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"ForwardingView ForwardTo", nil, [NSBundle mainBundle],
+    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"DestinationView ForwardTo", nil, [NSBundle mainBundle],
                                                             @"Forward To",
                                                             @"Title of a table row\n"
                                                             @"[1/3 line small font].");
@@ -444,7 +444,7 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"StatementsCell"];
     }
 
-    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"ForwardingView RulesTitle", nil,
+    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"DestinationView RulesTitle", nil,
                                                             [NSBundle mainBundle], @"Rules",
                                                             @"Title of an table row\n"
                                                             @"[1/3 line small font].");
@@ -482,7 +482,7 @@ typedef enum
     UITableViewCell*    cell;
     NSSortDescriptor*   sortDescriptor  = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
     NSArray*            sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-    NSArray*            recordingsArray = [self.forwarding.recordings sortedArrayUsingDescriptors:sortDescriptors];
+    NSArray*            recordingsArray = [self.destination.recordings sortedArrayUsingDescriptors:sortDescriptors];
     RecordingData*      recording       = recordingsArray[indexPath.row];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"RecordingsCell"];
@@ -508,11 +508,11 @@ typedef enum
         {
             PhonesViewController* viewController;
             viewController = [[PhonesViewController alloc] initWithManagedObjectContext:self.managedObjectContext
-                                                                          selectedPhone:[self.forwarding.phones anyObject]
+                                                                          selectedPhone:[self.destination.phones anyObject]
                                                                              completion:^(PhoneData* selectedPhone)
             {
                 phone = selectedPhone;
-                self.forwarding.statements = [Common jsonStringWithObject:@[@{@"call" : @{@"e164" : @[phone.e164]}}]];
+                self.destination.statements = [Common jsonStringWithObject:@[@{@"call" : @{@"e164" : @[phone.e164]}}]];
 
                 [self updateRightBarButtonItem];
                 [self updateTable];
@@ -576,7 +576,7 @@ typedef enum
     }
     else
     {
-        self.navigationItem.rightBarButtonItem.enabled = (self.forwarding.numbers.count == 0);
+        self.navigationItem.rightBarButtonItem.enabled = (self.destination.numbers.count == 0);
     }
 }
 
@@ -596,7 +596,7 @@ typedef enum
         sortDescriptors = @[sortDescriptorName, sortDescriptorCountry];
     }
 
-    numbersArray = [self.forwarding.numbers sortedArrayUsingDescriptors:sortDescriptors];
+    numbersArray = [self.destination.numbers sortedArrayUsingDescriptors:sortDescriptors];
 }
 
 

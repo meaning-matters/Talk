@@ -1,5 +1,5 @@
 //
-//  ForwardingsViewController.h
+//  DestinationsViewController.h
 //  Talk
 //
 //  Created by Cornelis van der Bent on 06/11/12.
@@ -10,7 +10,7 @@
 #import "ItemsViewController.h"
 
 
-@interface ForwardingsViewController : ItemsViewController
+@interface DestinationsViewController : ItemsViewController
 
 @property (nonatomic, weak) IBOutlet UITableView* recordingsTableView;
 

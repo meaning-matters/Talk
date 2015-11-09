@@ -12,7 +12,7 @@
 #import "AboutViewController.h"
 #import "CreditViewController.h"
 #import "DialerViewController.h"
-#import "ForwardingsViewController.h"
+#import "DestinationsViewController.h"
 #import "GroupsViewController.h"
 #import "HelpsViewController.h"
 #import "NumbersViewController.h"
@@ -37,7 +37,7 @@
 @property (nonatomic, strong) AboutViewController*                aboutViewController;
 @property (nonatomic, strong) CreditViewController*               creditViewController;
 @property (nonatomic, strong) DialerViewController*               dialerViewController;
-@property (nonatomic, strong) ForwardingsViewController*          forwardingsViewController;
+@property (nonatomic, strong) DestinationsViewController*         destinationsViewController;
 @property (nonatomic, strong) GroupsViewController*               groupsViewController;
 @property (nonatomic, strong) HelpsViewController*                helpsViewController;
 @property (nonatomic, strong) NumbersViewController*              numbersViewController;

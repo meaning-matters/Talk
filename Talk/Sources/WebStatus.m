@@ -125,7 +125,7 @@
         case WebStatusFailIvrInUse:
         {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailIvrInUse", nil, [NSBundle mainBundle],
-                                                       @"This Forwarding is still being used.",
+                                                       @"This Destination is still being used.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;

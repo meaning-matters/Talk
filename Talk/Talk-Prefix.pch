@@ -21,6 +21,6 @@
 #endif
 
 
-#define HAS_FULL_FORWARDINGS 0
+#define HAS_FULL_DESTINATIONS 0
 
 #endif

@@ -14,17 +14,17 @@
 
 @implementation PhoneData
 
-@dynamic forwardings;
+@dynamic destinations;
 
 
 - (void)deleteFromManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
                             completion:(void (^)(BOOL succeeded))completion
 {
-    if (self.forwardings.count > 0)
+    if (self.destinations.count > 0)
     {
         NSString* title;
         NSString* message;
-        NSString* forwardingString;
+        NSString* destinationString;
 
         title   = NSLocalizedStringWithDefaultValue(@"Phones PhoneInUserTitle", nil,
                                                     [NSBundle mainBundle], @"Phone Still Used",
@@ -34,10 +34,10 @@
                                                     [NSBundle mainBundle],
                                                     @"This Phone is still used for %d %@. To delete, "
                                                     @"make sure it's no longer used.",
-                                                    @"Alert message telling that number forwarding is used.\n"
+                                                    @"Alert message telling that number destination is used.\n"
                                                     @"[iOS alert message size - parameters: count, number(s)]");
-        forwardingString = (self.forwardings.count == 1) ? [Strings forwardingString] : [Strings forwardingsString];
-        message = [NSString stringWithFormat:message, self.forwardings.count, forwardingString];
+        destinationString = (self.destinations.count == 1) ? [Strings destinationString] : [Strings destinationsString];
+        message = [NSString stringWithFormat:message, self.destinations.count, destinationString];
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
@@ -67,10 +67,10 @@
                                                             [NSBundle mainBundle], @"Phone Not Deleted",
                                                             @"Alert title telling that something could not be deleted.\n"
                                                             @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"Forwarding InUseMessage", nil,
+                message = NSLocalizedStringWithDefaultValue(@"Destination InUseMessage", nil,
                                                             [NSBundle mainBundle],
                                                             @"Deleting this Phone failed: %@\n\n"
-                                                            @"Choose another Forwarding for each number that uses this one.",
+                                                            @"Choose another Destination for each number that uses this one.",
                                                             @"Alert message telling that an online service is not available.\n"
                                                             @"[iOS alert message size]");
             }

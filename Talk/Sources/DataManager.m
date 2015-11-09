@@ -8,7 +8,7 @@
 
 #import "DataManager.h"
 #import "NumberData.h"
-#import "ForwardingData.h"
+#import "DestinationData.h"
 #import "PhoneData.h"
 #import "Common.h"
 #import "WebClient.h"
@@ -38,8 +38,8 @@
 
 + (DataManager*)sharedManager
 {
-    static DataManager*     sharedInstance;
-    static dispatch_once_t  onceToken;
+    static DataManager*    sharedInstance;
+    static dispatch_once_t onceToken;
 
     dispatch_once(&onceToken, ^
     {
@@ -116,7 +116,7 @@
         return _managedObjectModel;
     }
 
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Data1.4"
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Data2.0"
                                               withExtension:@"mom"
                                                subdirectory:@"Data.momd"];
 
@@ -367,7 +367,7 @@
 
         body   = NSLocalizedStringWithDefaultValue(@"DataManager DatabaseErrorNotificationMessage",
                                                    nil, [NSBundle mainBundle],
-                                                   @"Open app to reload numbers, forwardings, and phones.",
+                                                   @"Open app to reload numbers, destinations, and phones.",
                                                    @"Message telling ...\n"
                                                    @"[iOS alert message size]");
         action = NSLocalizedStringWithDefaultValue(@"DataManager DatabaseErrorNotificationButton",
@@ -403,7 +403,7 @@
             {
                 if (error == nil)
                 {
-                    [self synchronizeForwardings:^(NSError* error)
+                    [self synchronizeDestinations:^(NSError* error)
                     {
                         if (error == nil)
                         {
@@ -575,14 +575,14 @@
 }
 
 
-- (void)synchronizeForwardings:(void (^)(NSError* error))completion
+- (void)synchronizeDestinations:(void (^)(NSError* error))completion
 {
     [[WebClient sharedClient] retrieveIvrList:^(NSError* error, NSArray* list)
     {
         if (error == nil)
         {
             // Delete IVRs that are no longer on the server.
-            NSFetchRequest* request     = [NSFetchRequest fetchRequestWithEntityName:@"Forwarding"];
+            NSFetchRequest* request     = [NSFetchRequest fetchRequestWithEntityName:@"Destination"];
             [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (uuid IN %@)", list]];
             NSArray*        deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
             if (error == nil)
@@ -614,17 +614,17 @@
                 {
                     if (error == nil)
                     {
-                        NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Forwarding"];
+                        NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Destination"];
                         [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
 
-                        ForwardingData* forwarding;
-                        forwarding = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
+                        DestinationData* destination;
+                        destination = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
                         if (error == nil)
                         {
-                            if (forwarding == nil)
+                            if (destination == nil)
                             {
-                                forwarding = [NSEntityDescription insertNewObjectForEntityForName:@"Forwarding"
-                                                                           inManagedObjectContext:self.managedObjectContext];
+                                destination = [NSEntityDescription insertNewObjectForEntityForName:@"Destination"
+                                                                            inManagedObjectContext:self.managedObjectContext];
                             }
                         }
                         else
@@ -634,9 +634,9 @@
                             return;
                         }
 
-                        forwarding.uuid       = uuid;
-                        forwarding.name       = name;
-                        forwarding.statements = [Common jsonStringWithObject:statements];
+                        destination.uuid       = uuid;
+                        destination.name       = name;
+                        destination.statements = [Common jsonStringWithObject:statements];
                     }
                     else
                     {
@@ -689,20 +689,20 @@
             {
                 if (uuid == nil)
                 {
-                    number.forwarding = nil;
+                    number.destination = nil;
                 }
                 else
                 {
-                    // Lookup the forwarding.
-                    NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Forwarding"];
+                    // Lookup the destination.
+                    NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Destination"];
                     [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
 
-                    ForwardingData* forwarding = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
+                    DestinationData* destination = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
                     if (error == nil)
                     {
-                        if (forwarding != nil)
+                        if (destination != nil)
                         {
-                            number.forwarding = forwarding;
+                            number.destination = destination;
                         }
                     }
                     else

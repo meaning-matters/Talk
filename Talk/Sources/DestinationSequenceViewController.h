@@ -1,5 +1,5 @@
 //
-//  ForwardingSequenceViewController.h
+//  DestinationSequenceViewController.h
 //  Talk
 //
 //  Created by Cornelis van der Bent on 30/04/13.
@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ForwardingData.h"
+#import "DestinationData.h"
 
 
-@interface ForwardingSequenceViewController : UITableViewController
+@interface DestinationSequenceViewController : UITableViewController
 
 - (instancetype)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
-                                      forwarding:(ForwardingData*)theForwarding
+                                     destination:(DestinationData*)theDestination
                                     rootSequence:(NSMutableArray*)theRootSequence
                                         sequence:(NSMutableArray*)theSequence;
 @end

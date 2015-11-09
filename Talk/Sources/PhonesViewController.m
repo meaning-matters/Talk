@@ -207,7 +207,7 @@ const NSInteger kUseButtonTag = 123;
     
     return [phone.e164 isEqualToString:[Settings sharedSettings].callbackE164] == NO &&
            [phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164] == NO &&
-           phone.forwardings.count == 0 &&
+           phone.destinations.count == 0 &&
            callable.callerIds.count == 0;
 }
 

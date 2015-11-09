@@ -9,22 +9,22 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class ForwardingData;
+@class DestinationData;
 
 @interface RecordingData : NSManagedObject
 
 @property (nonatomic, retain) NSString* uuid;
 @property (nonatomic, retain) NSString* name;
 @property (nonatomic, retain) NSString* urlString;
-@property (nonatomic, retain) NSSet*    forwardings;
+@property (nonatomic, retain) NSSet*    destinations;
 
 @end
 
 @interface RecordingData (CoreDataGeneratedAccessors)
 
-- (void)addForwardingsObject:(ForwardingData*)value;
-- (void)removeForwardingsObject:(ForwardingData*)value;
-- (void)addForwardings:(NSSet*)values;
-- (void)removeForwardings:(NSSet*)values;
+- (void)addDestinationsObject:(DestinationData*)value;
+- (void)removeDestinationsObject:(DestinationData*)value;
+- (void)addDestinations:(NSSet*)values;
+- (void)removeDestinations:(NSSet*)values;
 
 @end

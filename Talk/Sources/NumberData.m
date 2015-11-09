@@ -32,6 +32,6 @@
 @dynamic image;             // Proof of address.
 @dynamic imageAccepted;
 
-@dynamic forwarding;
+@dynamic destination;
 
 @end

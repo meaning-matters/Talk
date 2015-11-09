@@ -10,7 +10,7 @@
 #import "NumberViewController.h"
 #import "BuyNumberViewController.h"
 #import "ProofImageViewController.h"
-#import "NumberForwardingsViewController.h"
+#import "NumberDestinationsViewController.h"
 #import "Common.h"
 #import "PhoneNumber.h"
 #import "CountryNames.h"
@@ -18,7 +18,7 @@
 #import "BlockAlertView.h"
 #import "WebClient.h"
 #import "NumberLabel.h"
-#import "ForwardingData.h"
+#import "DestinationData.h"
 #import "Skinning.h"
 
 
@@ -26,7 +26,7 @@ typedef enum
 {
     TableSectionName           = 1UL << 0,
     TableSectionE164           = 1UL << 1,
-    TableSectionForwarding     = 1UL << 2,
+    TableSectionDestination    = 1UL << 2,
     TableSectionSubscription   = 1UL << 3,
     TableSectionArea           = 1UL << 4,    // The optional state will be placed in a row here.
     TableSectionContactName    = 1UL << 5,
@@ -98,7 +98,7 @@ typedef enum
         // Mandatory sections.
         sections |= TableSectionName;
         sections |= TableSectionE164;
-        sections |= TableSectionForwarding;
+        sections |= TableSectionDestination;
         sections |= TableSectionArea;
         sections |= TableSectionSubscription;
 
@@ -185,8 +185,8 @@ typedef enum
                                                       @"[* lines]");
             break;
 
-        case TableSectionForwarding:
-            title = NSLocalizedStringWithDefaultValue(@"Number:ForwardingDefault SectionFooter", nil,
+        case TableSectionDestination:
+            title = NSLocalizedStringWithDefaultValue(@"Number:DestinationDefault SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"With 'Default' all devices associated with this number "
                                                       @"will ring when an incoming call is received.",
@@ -230,7 +230,7 @@ typedef enum
             numberOfRows = 1;
             break;
 
-        case TableSectionForwarding:
+        case TableSectionDestination:
             numberOfRows = 1;
             break;
 
@@ -258,7 +258,7 @@ typedef enum
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     ProofImageViewController*        proofImageviewController;
-    NumberForwardingsViewController* forwardingsViewController;
+    NumberDestinationsViewController* destinationsViewController;
 
     if ([self.tableView cellForRowAtIndexPath:indexPath].selectionStyle == UITableViewCellSelectionStyleNone)
     {
@@ -273,9 +273,9 @@ typedef enum
         case TableSectionE164:
             break;
 
-        case TableSectionForwarding:
-            forwardingsViewController = [[NumberForwardingsViewController alloc] initWithNumber:number];
-            [self.navigationController pushViewController:forwardingsViewController animated:YES];
+        case TableSectionDestination:
+            destinationsViewController = [[NumberDestinationsViewController alloc] initWithNumber:number];
+            [self.navigationController pushViewController:destinationsViewController animated:YES];
             break;
 
         case TableSectionSubscription:
@@ -315,7 +315,7 @@ typedef enum
             identifier = @"NumberCell";
             break;
 
-        case TableSectionForwarding:
+        case TableSectionDestination:
             identifier = @"DisclosureCell";
             break;
 
@@ -366,8 +366,8 @@ typedef enum
             [self updateNumberCell:cell atIndexPath:indexPath];
             break;
 
-        case TableSectionForwarding:
-            [self updateForwardingCell:cell atIndexPath:indexPath];
+        case TableSectionDestination:
+            [self updateDestinationCell:cell atIndexPath:indexPath];
             break;
 
         case TableSectionSubscription:
@@ -427,13 +427,13 @@ typedef enum
 }
 
 
-- (void)updateForwardingCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
+- (void)updateDestinationCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
-    cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number Forwarding", nil,
-                                                                  [NSBundle mainBundle], @"Forwarding",
+    cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number Destination", nil,
+                                                                  [NSBundle mainBundle], @"Destination",
                                                                   @"....");
     cell.textLabel.textColor  = [UIColor blackColor];
-    cell.detailTextLabel.text = (number.forwarding == nil) ? [Strings defaultString] : number.forwarding.name;
+    cell.detailTextLabel.text = (number.destination == nil) ? [Strings defaultString] : number.destination.name;
     cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
     cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
 }

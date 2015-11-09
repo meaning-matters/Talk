@@ -40,11 +40,11 @@
 
 + (NSString*)numbersString;
 
-+ (NSString*)newForwardingString;
++ (NSString*)newDestinationString;
 
-+ (NSString*)forwardingString;
++ (NSString*)destinationString;
 
-+ (NSString*)forwardingsString;
++ (NSString*)destinationsString;
 
 + (NSString*)newPhoneString;
 

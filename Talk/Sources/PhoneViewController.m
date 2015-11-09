@@ -14,7 +14,7 @@
 #import "WebClient.h"
 #import "BlockActionSheet.h"
 #import "BlockAlertView.h"
-#import "ForwardingData.h"
+#import "DestinationData.h"
 #import "NumberData.h"
 #import "CallerIdData.h"
 #import "DataManager.h"
@@ -23,12 +23,12 @@
 
 typedef enum
 {
-    TableSectionName        = 1UL << 0,
-    TableSectionE164        = 1UL << 1,
-    TableSectionUsage       = 1UL << 2,
-    TableSectionForwardings = 1UL << 3,
-    TableSectionNumbers     = 1UL << 4,
-    TableSectionCallerIds   = 1UL << 5,
+    TableSectionName         = 1UL << 0,
+    TableSectionE164         = 1UL << 1,
+    TableSectionUsage        = 1UL << 2,
+    TableSectionDestinations = 1UL << 3,
+    TableSectionNumbers      = 1UL << 4,
+    TableSectionCallerIds    = 1UL << 5,
 } TableSections;
 
 
@@ -231,7 +231,7 @@ typedef enum
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"ANY forwarding.phones == %@", self.phone];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"ANY destination.phones == %@", self.phone];
     numbersArray = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
                                                              sortKeys:@[@"name"]
                                                             predicate:predicate
@@ -250,10 +250,10 @@ typedef enum
     sections  = 0;
     sections |= TableSectionName;
     sections |= TableSectionE164;
-    sections |= (isNew == NO)                      ? TableSectionUsage       : 0;
-    sections |= (self.phone.forwardings.count > 0) ? TableSectionForwardings : 0;
-    sections |= (numbersArray.count > 0) ?           TableSectionNumbers     : 0;
-    sections |= (namesArray.count > 0) ?             TableSectionCallerIds   : 0;
+    sections |= (isNew == NO)                       ? TableSectionUsage        : 0;
+    sections |= (self.phone.destinations.count > 0) ? TableSectionDestinations : 0;
+    sections |= (numbersArray.count > 0) ?            TableSectionNumbers      : 0;
+    sections |= (namesArray.count > 0) ?              TableSectionCallerIds    : 0;
 
     return [Common bitsSetCount:sections];
 }
@@ -265,12 +265,12 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionName:        numberOfRows = 1;                            break;
-        case TableSectionE164:        numberOfRows = 1;                            break;
-        case TableSectionUsage:       numberOfRows = 2;                            break;
-        case TableSectionForwardings: numberOfRows = self.phone.forwardings.count; break;
-        case TableSectionNumbers:     numberOfRows = numbersArray.count;           break;
-        case TableSectionCallerIds:   numberOfRows = namesArray.count;             break;
+        case TableSectionName:         numberOfRows = 1;                             break;
+        case TableSectionE164:         numberOfRows = 1;                             break;
+        case TableSectionUsage:        numberOfRows = 2;                             break;
+        case TableSectionDestinations: numberOfRows = self.phone.destinations.count; break;
+        case TableSectionNumbers:      numberOfRows = numbersArray.count;            break;
+        case TableSectionCallerIds:    numberOfRows = namesArray.count;              break;
     }
 
     return numberOfRows;
@@ -283,12 +283,12 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionForwardings:
+        case TableSectionDestinations:
         {
-            title = NSLocalizedStringWithDefaultValue(@"PhoneView ForwardingsHeader", nil,
+            title = NSLocalizedStringWithDefaultValue(@"PhoneView DestinationsHeader", nil,
                                                       [NSBundle mainBundle],
-                                                      @"Used By Forwardings",
-                                                      @"Table header above forwardings\n"
+                                                      @"Used By Destinations",
+                                                      @"Table header above destinations\n"
                                                       @"[1 line larger font].");
             break;
         }
@@ -342,12 +342,12 @@ typedef enum
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
-        case TableSectionName:        cell = [self nameCellForRowAtIndexPath:indexPath];        break;
-        case TableSectionE164:        cell = [self numberCellForRowAtIndexPath:indexPath];      break;
-        case TableSectionUsage:       cell = [self usageCellForRowAtIndexPath:indexPath];       break;
-        case TableSectionForwardings: cell = [self forwardingsCellForRowAtIndexPath:indexPath]; break;
-        case TableSectionNumbers:     cell = [self numbersCellForRowAtIndexPath:indexPath];     break;
-        case TableSectionCallerIds:   cell = [self callerIdsCellForRowAtIndexPath:indexPath];   break;
+        case TableSectionName:         cell = [self nameCellForRowAtIndexPath:indexPath];         break;
+        case TableSectionE164:         cell = [self numberCellForRowAtIndexPath:indexPath];       break;
+        case TableSectionUsage:        cell = [self usageCellForRowAtIndexPath:indexPath];        break;
+        case TableSectionDestinations: cell = [self destinationsCellForRowAtIndexPath:indexPath]; break;
+        case TableSectionNumbers:      cell = [self numbersCellForRowAtIndexPath:indexPath];      break;
+        case TableSectionCallerIds:    cell = [self callerIdsCellForRowAtIndexPath:indexPath];    break;
     }
 
     return cell;
@@ -424,21 +424,21 @@ typedef enum
 }
 
 
-- (UITableViewCell*)forwardingsCellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)destinationsCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*  cell;
-    NSSortDescriptor* sortDescriptor   = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
-    NSArray*          sortDescriptors  = [NSArray arrayWithObject:sortDescriptor];
-    NSArray*          forwardingsArray = [self.phone.forwardings sortedArrayUsingDescriptors:sortDescriptors];
-    ForwardingData*   forwarding       = forwardingsArray[indexPath.row];
+    NSSortDescriptor* sortDescriptor    = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    NSArray*          sortDescriptors   = [NSArray arrayWithObject:sortDescriptor];
+    NSArray*          destinationsArray = [self.phone.destinations sortedArrayUsingDescriptors:sortDescriptors];
+    DestinationData*  destination       = destinationsArray[indexPath.row];
 
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"ForwardingsCell"];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"DestinationsCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"ForwardingsCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"DestinationsCell"];
     }
 
-    cell.textLabel.text = forwarding.name;
+    cell.textLabel.text = destination.name;
     cell.accessoryType  = UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
@@ -537,7 +537,7 @@ typedef enum
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
         }
-        case TableSectionForwardings:
+        case TableSectionDestinations:
         {
             break;
         }

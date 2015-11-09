@@ -1,12 +1,12 @@
 //
-//  ForwardingSequenceViewController.m
+//  DestinationSequenceViewController.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 30/04/13.
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
-#import "ForwardingSequenceViewController.h"
+#import "DestinationSequenceViewController.h"
 #import "Common.h"
 
 
@@ -17,12 +17,12 @@ typedef enum
 } TableSections;
 
 
-@interface ForwardingSequenceViewController ()
+@interface DestinationSequenceViewController ()
 {
     TableSections               sections;
 
     NSFetchedResultsController* fetchedResultsController;
-    ForwardingData*             forwarding;
+    DestinationData*            destination;
     NSMutableArray*             rootSequence;
     NSMutableArray*             sequence;
 }
@@ -30,23 +30,23 @@ typedef enum
 @end
 
 
-@implementation ForwardingSequenceViewController
+@implementation DestinationSequenceViewController
 
 - (instancetype)initWithFetchedResultsController:(NSFetchedResultsController*)resultsController
-                                      forwarding:(ForwardingData*)theForwarding
+                                    destination:(DestinationData*)theDestination
                                     rootSequence:(NSMutableArray*)theRootSequence
                                         sequence:(NSMutableArray*)theSequence
 {
     fetchedResultsController = resultsController;
-    forwarding               = theForwarding;
+    destination              = theDestination;
     rootSequence             = theRootSequence;
     sequence                 = theSequence;
 
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
-        self.title = NSLocalizedStringWithDefaultValue(@"ForwardingSequenceView ScreenTitle", nil,
+        self.title = NSLocalizedStringWithDefaultValue(@"DestinationSequenceView ScreenTitle", nil,
                                                        [NSBundle mainBundle], @"Sequence",
-                                                       @"Title of app screen with details of a call forwarding\n"
+                                                       @"Title of app screen with details of a call destination\n"
                                                        @"[1 line larger font].");
 
         sections |= TableSectionName;
