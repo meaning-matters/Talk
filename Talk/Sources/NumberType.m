@@ -151,6 +151,63 @@
 }
 
 
++ (NSString*)abbreviatedLocalizedStringForNumberType:(NumberTypeMask)mask
+{
+    switch (mask)
+    {
+        case NumberTypeGeographicMask:
+        {
+            return NSLocalizedStringWithDefaultValue(@"NumberType:StringsAbbreviated Geographic", nil,
+                                                     [NSBundle mainBundle], @"Geo",
+                                                     @"Standard term for geographic phone number (in a certain city)\n"
+                                                     @"[iOS standard size].");
+        }
+        case NumberTypeNationalMask:
+        {
+            return NSLocalizedStringWithDefaultValue(@"NumberType:StringsAbbreviated National", nil,
+                                                     [NSBundle mainBundle], @"Nat",
+                                                     @"Standard term for national phone number (not in a certain city)\n"
+                                                     @"[iOS standard size].");
+        }
+        case NumberTypeTollFreeMask:
+        {
+            return NSLocalizedStringWithDefaultValue(@"NumberType:StringsAbbreviated Toll-free", nil,
+                                                     [NSBundle mainBundle], @"Free",
+                                                     @"Standard term for a free phone number (e.g. starting with 0800)\n"
+                                                     @"[iOS standard size].");
+        }
+        case NumberTypeMobileMask:
+        {
+            return NSLocalizedStringWithDefaultValue(@"NumberType:StringsAbbreviated Mobile", nil,
+                                                     [NSBundle mainBundle], @"Mob",
+                                                     @"Standard term for a free phone number (e.g. starting with 0800)\n"
+                                                     @"[iOS standard size].");
+        }
+        case NumberTypeSharedCostMask:
+        {
+            return NSLocalizedStringWithDefaultValue(@"NumberType:StringsAbbreviated Shared-cost", nil,
+                                                     [NSBundle mainBundle], @"Share",
+                                                     @"Standard term for a free phone number (e.g. starting with 0800)\n"
+                                                     @"[iOS standard size].");
+        }
+        case NumberTypeSpecialMask:
+        {
+            return NSLocalizedStringWithDefaultValue(@"NumberType:StringsAbbreviated Special", nil,
+                                                     [NSBundle mainBundle], @"Spec",
+                                                     @"Standard term for a free phone number (e.g. starting with 0800)\n"
+                                                     @"[iOS standard size].");
+        }
+        case NumberTypeInternationalMask:
+        {
+            return NSLocalizedStringWithDefaultValue(@"NumberType:StringsAbbreviated International", nil,
+                                                     [NSBundle mainBundle], @"Intl",
+                                                     @"Standard term for international phone number\n"
+                                                     @"[iOS standard size].");
+        }
+    }
+}
+
+
 + (NSUInteger)numberTypeMaskToIndex:(NumberTypeMask)mask
 {
     return [Common bitIndexOfMask:mask];

@@ -20,6 +20,8 @@
 
 @property (nonatomic, assign) BOOL                 isLoading;
 
+@property (nonatomic, weak) UISearchBar*           searchBar;
+
 
 //  Creates the table index.  Must be invoked by subclass each time it's objects have changed.
 //  This method reloads the table.

@@ -29,6 +29,8 @@ typedef NS_ENUM(NSUInteger, NumberTypeMask)
 
 + (NSString*)localizedStringForNumberType:(NumberTypeMask)mask;
 
++ (NSString*)abbreviatedLocalizedStringForNumberType:(NumberTypeMask)mask;
+
 + (NSUInteger)numberTypeMaskToIndex:(NumberTypeMask)mask;
 
 @end

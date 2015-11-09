@@ -47,6 +47,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.searchBar.placeholder = [self searchBarPlaceHolder];
 
     UIBarButtonItem* cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
@@ -60,12 +62,12 @@
         if (error == nil)
         {
             // Added number type selector.
-            NSArray* items = @[[NumberType localizedStringForNumberType:NumberTypeGeographicMask],
-                               [NumberType localizedStringForNumberType:NumberTypeNationalMask],
-                               [NumberType localizedStringForNumberType:NumberTypeTollFreeMask],
-                               [NumberType localizedStringForNumberType:NumberTypeMobileMask],
-                               [NumberType localizedStringForNumberType:NumberTypeSharedCostMask],
-                               [NumberType localizedStringForNumberType:NumberTypeSpecialMask]];
+            NSArray* items = @[[NumberType abbreviatedLocalizedStringForNumberType:NumberTypeGeographicMask],
+                               [NumberType abbreviatedLocalizedStringForNumberType:NumberTypeNationalMask],
+                               [NumberType abbreviatedLocalizedStringForNumberType:NumberTypeTollFreeMask],
+                               [NumberType abbreviatedLocalizedStringForNumberType:NumberTypeMobileMask],
+                               [NumberType abbreviatedLocalizedStringForNumberType:NumberTypeSharedCostMask],
+                               [NumberType abbreviatedLocalizedStringForNumberType:NumberTypeSpecialMask]];
             self.numberTypeSegmentedControl = [[UISegmentedControl alloc] initWithItems:items];
             [self.numberTypeSegmentedControl addTarget:self
                                                 action:@selector(numberTypeChangedAction:)
@@ -199,6 +201,17 @@
 }
 
 
+- (NSString*)searchBarPlaceHolder
+{
+    NSString* numberType = [NumberType localizedStringForNumberType:[Settings sharedSettings].numberTypeMask];
+    NSString* format     = NSLocalizedStringWithDefaultValue(@"NumberCountries Placeholder", nil, [NSBundle mainBundle],
+                                                             @"Countries With %@ Numbers",
+                                                             @"...");
+    
+    return [NSString stringWithFormat:format, numberType];
+}
+
+
 #pragma mark - Table View Delegate
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
@@ -261,6 +274,8 @@
 {
     [Settings sharedSettings].numberTypeMask = (NumberTypeMask)(1UL << self.numberTypeSegmentedControl.selectedSegmentIndex);
     [self sortOutArrays];
+    
+    self.searchBar.placeholder = [self searchBarPlaceHolder];
 }
 
 @end

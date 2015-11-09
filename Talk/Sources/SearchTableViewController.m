@@ -46,6 +46,7 @@
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
     self.searchDisplayController.searchResultsTableView.delegate = self;
+    self.searchBar = self.searchDisplayController.searchBar;
 }
 
 
