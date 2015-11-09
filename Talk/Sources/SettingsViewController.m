@@ -252,7 +252,6 @@ typedef enum
         }
         case TableSectionAccountData:
         {
-#if HAS_BUYING_NUMBERS
             title = NSLocalizedStringWithDefaultValue(@"Settings:AccountDataInfoFull SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"With a reset you only lose these settings and your call history. "
@@ -260,15 +259,6 @@ typedef enum
                                                       @"phones, purchased numbers, and forwardings on other devices.",
                                                       @"Explanation what the Reset setting is doing\n"
                                                       @"[* lines]");
-#else
-            title = NSLocalizedStringWithDefaultValue(@"Settings:AccountDataInfo SectionFooter", nil,
-                                                      [NSBundle mainBundle],
-                                                      @"With a reset you only lose these settings and your call history. "
-                                                      @"You can always restore your credit and verified "
-                                                      @"numbers on other devices.",
-                                                      @"Explanation what the Reset setting is doing\n"
-                                                      @"[* lines]");
-#endif
             break;
         }
     }

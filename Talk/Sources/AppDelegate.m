@@ -236,10 +236,8 @@
         NSStringFromClass([DialerViewController               class]),
         NSStringFromClass([PhonesViewController               class]),
         NSStringFromClass([RatesViewController                class]),
-#if HAS_BUYING_NUMBERS // When adding these, check if older version apps handle that correctly.
         NSStringFromClass([NumbersViewController              class]),
         NSStringFromClass([ForwardingsViewController          class]),
-#endif
         NSStringFromClass([SettingsViewController             class]),
         NSStringFromClass([HelpsViewController                class]),
         NSStringFromClass([AboutViewController                class]),

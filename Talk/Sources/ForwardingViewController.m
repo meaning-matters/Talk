@@ -280,9 +280,7 @@ typedef enum
 #if HAS_FULL_FORWARDINGS
     sections |= TableSectionStatements;
 #endif
-#if HAS_BUYING_NUMBERS
     sections |= (self.forwarding.numbers.count    > 0) ? TableSectionNumbers    : 0;
-#endif
     sections |= (self.forwarding.recordings.count > 0) ? TableSectionRecordings : 0;
 
     return [Common bitsSetCount:sections];

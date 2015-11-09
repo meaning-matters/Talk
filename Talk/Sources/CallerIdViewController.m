@@ -65,9 +65,7 @@ typedef enum
         self.completion           = completion;
 
         self.phones               = [self fetchPhones];
-#if HAS_BUYING_NUMBERS
         self.numbers              = [self fetchNumbers];
-#endif
     }
 
     return self;

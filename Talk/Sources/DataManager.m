@@ -399,7 +399,6 @@
     {
         if (error == nil)
         {
-#if HAS_BUYING_NUMBERS
             [self synchronizeNumbers:^(NSError* error)
             {
                 if (error == nil)
@@ -412,7 +411,6 @@
                             {
                                 if (error == nil)
                                 {
-#endif
                                        [self.managedObjectContext save:&error];
                                        if (error == nil)
                                        {
@@ -424,7 +422,6 @@
 
                                            return;
                                        }
-#if HAS_BUYING_NUMBERS
                                 }
                                 else
                                 {
@@ -446,7 +443,6 @@
                     completion ? completion(error) : 0;
                 }
             }];
-#endif
         }
         else
         {
