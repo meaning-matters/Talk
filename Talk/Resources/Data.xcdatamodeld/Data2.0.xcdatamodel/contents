@@ -17,20 +17,6 @@
         <relationship name="phones" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Phone" inverseName="destinations" inverseEntity="Phone" syncable="YES"/>
         <relationship name="recordings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Recording" inverseName="destinations" inverseEntity="Recording" syncable="YES"/>
     </entity>
-    <entity name="NBRecentContactEntry" syncable="YES">
-        <attribute name="callbackCost" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="callbackDuration" optional="YES" attributeType="Integer 32" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="contactID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="direction" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="e164" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="outgoingCost" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="outgoingDuration" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="timeZone" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
-    </entity>
     <entity name="Number" representedClassName="NumberData" parentEntity="Callable" syncable="YES">
         <attribute name="addressCountry" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="areaCode" attributeType="String" syncable="YES"/>
@@ -56,6 +42,20 @@
     <entity name="Phone" representedClassName="PhoneData" parentEntity="Callable" syncable="YES">
         <relationship name="destinations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Destination" inverseName="phones" inverseEntity="Destination" syncable="YES"/>
     </entity>
+    <entity name="Recent" syncable="YES">
+        <attribute name="callbackCost" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="callbackDuration" optional="YES" attributeType="Integer 32" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="contactID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="direction" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="e164" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="outgoingCost" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="outgoingDuration" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="timeZone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Recording" representedClassName="RecordingData" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
@@ -66,7 +66,7 @@
         <element name="Callable" positionX="117" positionY="-468" width="128" height="88"/>
         <element name="CallerId" positionX="313" positionY="-451" width="128" height="73"/>
         <element name="Destination" positionX="268" positionY="-54" width="128" height="135"/>
-        <element name="NBRecentContactEntry" positionX="486" positionY="-342" width="128" height="223"/>
+        <element name="Recent" positionX="486" positionY="-342" width="128" height="223"/>
         <element name="Number" positionX="52" positionY="-342" width="128" height="345"/>
         <element name="Phone" positionX="259" positionY="-270" width="128" height="60"/>
         <element name="Recording" positionX="484" positionY="-27" width="128" height="105"/>

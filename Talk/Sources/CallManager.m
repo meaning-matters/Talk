@@ -250,7 +250,7 @@
 - (void)addCallToRecents:(Call*)call
 {
     NSManagedObjectContext* context = [DataManager sharedManager].managedObjectContext;
-    NBRecentContactEntry*   recent  = [NSEntityDescription insertNewObjectForEntityForName:@"NBRecentContactEntry"
+    NBRecentContactEntry*   recent  = [NSEntityDescription insertNewObjectForEntityForName:@"Recent"
                                                                     inManagedObjectContext:context];
     recent.number    = call.phoneNumber.number;
     recent.date      = call.beginDate;

@@ -707,7 +707,7 @@
         //If we want to see missed calls only
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
         [request setSortDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO]]];
-        [request setEntity:[NSEntityDescription entityForName:@"NBRecentContactEntry" inManagedObjectContext:managedObjectContext]];
+        [request setEntity:[NSEntityDescription entityForName:@"Recent" inManagedObjectContext:managedObjectContext]];
         
         //Create the instance
         fetchedResultsController = [[NSFetchedResultsController alloc]
@@ -760,7 +760,7 @@
     for (int i = 0; i < 20; i++)
     {
         //Create random entries
-        NBRecentContactEntry * recentContactEntry = [NSEntityDescription insertNewObjectForEntityForName:@"NBRecentContactEntry" inManagedObjectContext:managedObjectContext];
+        NBRecentContactEntry * recentContactEntry = [NSEntityDescription insertNewObjectForEntityForName:@"RecentCall" inManagedObjectContext:managedObjectContext];
         
         //Determine if this contact is known or not
         BOOL unknownContact = (arc4random()%2) == 1;
