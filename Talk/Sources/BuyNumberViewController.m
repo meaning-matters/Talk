@@ -182,6 +182,7 @@
         [[WebClient sharedClient] purchaseNumberForMonths:months
                                                      name:self.name
                                            isoCountryCode:self.isoCountryCode
+                                                   areaId:self.area[@"areaId"]
                                                  areaCode:hasAreaCode ? self.area[@"areaCode"] : nil
                                                  areaName:hasAreaName ? self.area[@"areaName"] : nil
                                                 stateCode:self.area[@"stateCode"]

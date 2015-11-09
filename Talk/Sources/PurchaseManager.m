@@ -725,6 +725,7 @@
 - (void)buyNumberForMonths:(NSUInteger)months
                       name:(NSString*)name
             isoCountryCode:(NSString*)isoCountryCode
+                    areaId:(NSString*)areaId
                   areaCode:(NSString*)areaCode
                   areaName:(NSString*)areaName
                  stateCode:(NSString*)stateCode
@@ -736,6 +737,7 @@
     [[WebClient sharedClient] purchaseNumberForMonths:months
                                                  name:name
                                        isoCountryCode:isoCountryCode
+                                               areaId:areaId
                                              areaCode:areaCode
                                              areaName:areaName
                                             stateCode:stateCode

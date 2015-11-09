@@ -44,6 +44,7 @@
 - (void)buyNumberForMonths:(NSUInteger)months
                       name:(NSString*)name
             isoCountryCode:(NSString*)isoCountryCode
+                    areaId:(NSString*)areaId
                   areaCode:(NSString*)areaCode
                   areaName:(NSString*)areaName
                  stateCode:(NSString*)stateCode

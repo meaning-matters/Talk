@@ -443,6 +443,7 @@
 - (void)purchaseNumberForMonths:(NSUInteger)months
                            name:(NSString*)name
                  isoCountryCode:(NSString*)isoCountryCode
+                         areaId:(NSString*)areaId
                        areaCode:(NSString*)areaCode
                        areaName:(NSString*)areaName
                       stateCode:(NSString*)stateCode
@@ -455,6 +456,7 @@
     NSMutableDictionary* parameters = [@{@"durationMonths" : @(months),
                                          @"name"           : name,
                                          @"isoCountryCode" : isoCountryCode,
+                                         @"areaId"         : areaId,
                                          @"numberType"     : numberType} mutableCopy];
     (areaCode  != nil) ? parameters[@"areaCode"]  = areaCode  : 0;
     (areaName  != nil) ? parameters[@"areaName"]  = areaName  : 0;
