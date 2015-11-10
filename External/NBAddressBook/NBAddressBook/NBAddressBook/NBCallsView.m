@@ -101,7 +101,7 @@
 
         timeString = [NSString formatToTime:recent.date];
 
-        int duration = [recent.outgoingDuration intValue];
+        int duration = [recent.callthruDuration intValue];
         switch ([recent.status intValue])
         {
             case CallStatusMissed:    statusString = NSLocalizedString(@"RCD_MISSED",    @"");  break;
@@ -114,7 +114,7 @@
         }
 
         NBAddressBookManager* manager = [NBAddressBookManager sharedManager];
-        float cost = [recent.callbackCost floatValue] + [recent.outgoingCost floatValue];
+        float cost = [recent.callbackCost floatValue] + [recent.callthruCost floatValue];
         if (cost != 0)
         {
             costString = [manager.delegate localizedFormattedPrice2ExtraDigits:cost];
@@ -151,7 +151,7 @@
                         {
                             statusLabel.text = NSLocalizedString(@"RCD_CANCELLED", @""); // Best guess.
                         }
-                        else if ([recent.outgoingCost floatValue] == 0)
+                        else if ([recent.callthruCost floatValue] == 0)
                         {
                             statusLabel.text = NSLocalizedString(@"RCD_CALLBACK",  @"");
 
@@ -160,9 +160,9 @@
                         }
                         else
                         {
-                            statusLabel.text = [self durationStringForDuration:[recent.outgoingDuration intValue]];
+                            statusLabel.text = [self durationStringForDuration:[recent.callthruDuration intValue]];
 
-                            float cost       = [recent.callbackCost floatValue] + [recent.outgoingCost floatValue];
+                            float cost       = [recent.callbackCost floatValue] + [recent.callthruCost floatValue];
                             costLabel.text   = [manager.delegate localizedFormattedPrice2ExtraDigits:cost];
                         }
                     }

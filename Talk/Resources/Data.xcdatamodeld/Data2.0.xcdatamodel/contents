@@ -45,13 +45,13 @@
     <entity name="Recent" syncable="YES">
         <attribute name="callbackCost" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="callbackDuration" optional="YES" attributeType="Integer 32" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="callthruCost" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="callthruDuration" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="contactID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="direction" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="e164" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="outgoingCost" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="outgoingDuration" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="timeZone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>

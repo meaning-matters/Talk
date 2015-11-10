@@ -13,7 +13,7 @@
 @dynamic contactID;
 @dynamic number;
 @dynamic callbackDuration;
-@dynamic outgoingDuration;
+@dynamic callthruDuration;
 @dynamic direction;
 @dynamic date;
 @dynamic timeZone;
@@ -21,6 +21,6 @@
 @dynamic e164;
 @dynamic uuid;
 @dynamic callbackCost;
-@dynamic outgoingCost;
+@dynamic callthruCost;
 
 @end

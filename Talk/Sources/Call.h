@@ -46,7 +46,7 @@ typedef enum
 {
     CallLegNone,
     CallLegCallback,
-    CallLegOutgoing,
+    CallLegCallthru,
 } CallLeg;
 
 
@@ -60,9 +60,9 @@ typedef enum
 @property (nonatomic, strong) NSString*                 contactId;          // The ABRecordID (which is int32_t) as string.
 @property (nonatomic, strong, readonly) NSDate*         beginDate;
 @property (nonatomic, assign) int                       callbackDuration;
-@property (nonatomic, assign) int                       outgoingDuration;
+@property (nonatomic, assign) int                       callthruDuration;
 @property (nonatomic, assign) float                     callbackCost;
-@property (nonatomic, assign) float                     outgoingCost;
+@property (nonatomic, assign) float                     callthruCost;
 @property (nonatomic, assign) CallState                 state;              // With callback, this is the state for the current leg only.
 @property (nonatomic, assign) CallLeg                   leg;                // This is the current leg and amends the state.
 @property (nonatomic, assign) CallDirection             direction;

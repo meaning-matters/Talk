@@ -190,11 +190,11 @@
 
 
 // 32. INITIATE CALLBACK
-- (void)initiateCallbackForCallee:(NSString*)calleeE164
-                           caller:(NSString*)callerE164
-                         identity:(NSString*)identityE164
-                          privacy:(BOOL)privacy
-                            reply:(void (^)(NSError* error, NSString* uuid))reply;
+- (void)initiateCallbackForCallbackE164:(NSString*)callbackE164
+                           callthruE164:(NSString*)callthruE164
+                           identityE164:(NSString*)identityE164
+                                privacy:(BOOL)privacy
+                                  reply:(void (^)(NSError* error, NSString* uuid))reply;
 
 // 33. STOP CALLBACK
 - (void)stopCallbackForUuid:(NSString*)uuid
@@ -206,9 +206,9 @@
                                                CallState state,
                                                CallLeg   leg,
                                                int       callbackDuration,
-                                               int       outgoingDuration,
+                                               int       callthruDuration,
                                                float     callbackCost,
-                                               float     outgoingCost))reply;
+                                               float     callthruCost))reply;
 
 #pragma mark - Cancel Methods
 

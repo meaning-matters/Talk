@@ -47,16 +47,17 @@
 #import "Common.h"
 #import "Settings.h"
 #import "AFNetworking.h"
+#import "NetworkStatus.h"
 
-const NSTimeInterval kDnsUpdateTimeout       = 20;
-const NSTimeInterval kApiRequestTimeout      = 20;
-const NSTimeInterval kTtlIncrement           = 10;
-const NSTimeInterval kSelectedServerHoldTime = 10;
+const NSTimeInterval kDnsUpdateTimeoutReachable    = 20;
+const NSTimeInterval kDnsUpdateTimeoutNotReachable =  3;  // Limit timeout because of hard `select()` timeout.
+const NSTimeInterval kApiRequestTimeout            = 20;
+const NSTimeInterval kTtlIncrement                 = 10;
+const NSTimeInterval kSelectedServerHoldTime       = 10;
 
 
 @interface WebInterface ()
 
-@property (nonatomic, assign) NSTimeInterval  dnsUpdateTimeout; // Seconds.
 @property (nonatomic, strong) NSDate*         dnsUpdateDate;
 @property (atomic, assign)    uint32_t        ttl;              // Shortest TTL of servers, in seconds.
 @property (nonatomic, strong) NSMutableArray* servers;
@@ -81,7 +82,6 @@ const NSTimeInterval kSelectedServerHoldTime = 10;
     {
         sharedInstance = [[WebInterface alloc] init];
 
-        sharedInstance.dnsUpdateTimeout   = kDnsUpdateTimeout;
         sharedInstance.requestSerializer  = [AFJSONRequestSerializer serializer];
         [sharedInstance.requestSerializer setTimeoutInterval:kApiRequestTimeout];
         [sharedInstance.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
@@ -122,104 +122,110 @@ const NSTimeInterval kSelectedServerHoldTime = 10;
             DNSServiceRef       sdRef;
             DNSServiceErrorType error;
 
-            const char* host = [[Settings sharedSettings].dnsSrvName UTF8String];
-            if (host != NULL)
+            const char*    host          = [[Settings sharedSettings].dnsSrvName UTF8String];
+            NSDate*        startTime     = [NSDate date];
+            NSTimeInterval remainingTime;
+            if ([NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableWifi ||
+                [NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableCellular)
             {
-                NSTimeInterval remainingTime = self.dnsUpdateTimeout;
-                NSDate*        startTime     = [NSDate date];
+                remainingTime = kDnsUpdateTimeoutReachable;
+            }
+            else
+            {
+                remainingTime = kDnsUpdateTimeoutNotReachable;
+            }
 
-                error = DNSServiceQueryRecord(&sdRef,
-                                              0,
-                                              0,
-                                              host,
-                                              kDNSServiceType_SRV,
-                                              kDNSServiceClass_IN,
-                                              processDnsReply,
-                                              &remainingTime);
+            error = DNSServiceQueryRecord(&sdRef,
+                                          0,
+                                          0,
+                                          host,
+                                          kDNSServiceType_SRV,
+                                          kDNSServiceClass_IN,
+                                          processDnsReply,
+                                          &remainingTime);
 
-                if (error != kDNSServiceErr_NoError)
+            if (error != kDNSServiceErr_NoError)
+            {
+                NBLog(@"DNS SRV query failed: %d.", error);
+
+                return;
+            }
+
+            // This is necessary so we don't hang forever if there are no results
+            int    dns_sd_fd = DNSServiceRefSockFD(sdRef);
+            int    nfds      = dns_sd_fd + 1;
+            fd_set readfds;
+            int    result;
+
+            while (remainingTime > 0)
+            {
+                FD_ZERO(&readfds);
+                FD_SET(dns_sd_fd, &readfds);
+
+                struct timeval tv;
+                tv.tv_sec  = (time_t)remainingTime;
+                tv.tv_usec = (remainingTime - tv.tv_sec) * 1000000;
+
+                result = select(nfds, &readfds, (fd_set*)NULL, (fd_set*)NULL, &tv);
+                if (result == 1)
                 {
-                    NBLog(@"DNS SRV query failed: %d.", error);
-
-                    return;
-                }
-
-                // This is necessary so we don't hang forever if there are no results
-                int    dns_sd_fd = DNSServiceRefSockFD(sdRef);
-                int    nfds      = dns_sd_fd + 1;
-                fd_set readfds;
-                int    result;
-
-                while (remainingTime > 0)
-                {
-                    FD_ZERO(&readfds);
-                    FD_SET(dns_sd_fd, &readfds);
-
-                    struct timeval tv;
-                    tv.tv_sec  = (time_t)remainingTime;
-                    tv.tv_usec = (remainingTime - tv.tv_sec) * 1000000;
-
-                    result = select(nfds, &readfds, (fd_set*)NULL, (fd_set*)NULL, &tv);
-                    if (result == 1)
+                    if (FD_ISSET(dns_sd_fd, &readfds))
                     {
-                        if (FD_ISSET(dns_sd_fd, &readfds))
+                        error = DNSServiceProcessResult(sdRef);
+                        if (error != kDNSServiceErr_NoError)
                         {
-                            error = DNSServiceProcessResult(sdRef);
-                            if (error != kDNSServiceErr_NoError)
-                            {
-                                NBLog(@"There was an error reading the DNS SRV records.");
-                                break;
-                            }
-                        }
-                    }
-                    else if (result == 0)
-                    {
-                        NBLog(@"DNS SRV select() timed out");
-                        remainingTime = DBL_MIN;
-                        break;
-                    }
-                    else
-                    {
-                        if (errno == EINTR)
-                        {
-                            NBLog(@"DNS SRV select() interrupted, retry.");
-                        }
-                        else
-                        {
-                            NBLog(@"DNS SRV select() returned %d errno %d %s.", result, errno, strerror(errno));
-                            remainingTime = DBL_MIN;
+                            NBLog(@"There was an error reading the DNS SRV records.");
                             break;
                         }
                     }
-
-                    if (remainingTime > 0)
-                    {
-                        NSTimeInterval elapsed = [[NSDate date] timeIntervalSinceDate:startTime];
-                        remainingTime -= elapsed;
-                    }
                 }
-                
-                if (remainingTime == DBL_MIN)
+                else if (result == 0)
                 {
-                    NBLog(@"DNS update failed.");
-                }
-                else if (remainingTime <= 0)
-                {
-                    NBLog(@"DNS update done.");
-
-                    self.dnsUpdateDate = [NSDate date];
-                    if (self.servers.count > 0)
-                    {
-                        [self testServers];
-                    }
+                    NBLog(@"DNS SRV select() timed out");
+                    remainingTime = DBL_MIN;
+                    break;
                 }
                 else
                 {
-                    NBLog(@"DNS: This can't happen.");
+                    if (errno == EINTR)
+                    {
+                        NBLog(@"DNS SRV select() interrupted, retry.");
+                    }
+                    else
+                    {
+                        NBLog(@"DNS SRV select() returned %d errno %d %s.", result, errno, strerror(errno));
+                        remainingTime = DBL_MIN;
+                        break;
+                    }
                 }
-                
-                DNSServiceRefDeallocate(sdRef);
+
+                if (remainingTime > 0)
+                {
+                    NSTimeInterval elapsed = [[NSDate date] timeIntervalSinceDate:startTime];
+                    remainingTime -= elapsed;
+                }
             }
+            
+            if (remainingTime == DBL_MIN)
+            {
+                NBLog(@"DNS update failed.");
+            }
+            else if (remainingTime <= 0)
+            {
+                NBLog(@"DNS update done.");
+
+                self.dnsUpdateDate = [NSDate date];
+                if (self.servers.count > 0)
+                {
+                    [self testServers];
+                }
+            }
+            else
+            {
+                NBLog(@"DNS: This can't happen.");
+            }
+            
+            DNSServiceRefDeallocate(sdRef);
         }
     }
 }

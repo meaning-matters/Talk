@@ -42,7 +42,7 @@ typedef enum
 
 // Duration of the call.
 @property (nonatomic) NSNumber* callbackDuration;
-@property (nonatomic) NSNumber* outgoingDuration;
+@property (nonatomic) NSNumber* callthruDuration;
 
 // Wether this was an incoming or outgoing call
 @property (nonatomic) NSNumber* direction;
@@ -64,6 +64,6 @@ typedef enum
 
 // Te calls cost.
 @property (nonatomic) NSNumber* callbackCost;
-@property (nonatomic) NSNumber* outgoingCost;
+@property (nonatomic) NSNumber* callthruCost;
 
 @end

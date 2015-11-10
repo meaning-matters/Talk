@@ -840,17 +840,17 @@
 
 
 // 32. INITIATE CALLBACK
-- (void)initiateCallbackForCallee:(NSString*)calleeE164
-                           caller:(NSString*)callerE164
-                         identity:(NSString*)identityE164
-                          privacy:(BOOL)privacy
-                            reply:(void (^)(NSError* error, NSString* uuid))reply
+- (void)initiateCallbackForCallbackE164:(NSString*)callbackE164
+                           callthruE164:(NSString*)callthruE164
+                           identityE164:(NSString*)identityE164
+                                privacy:(BOOL)privacy
+                                  reply:(void (^)(NSError* error, NSString* uuid))reply;
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
-    NSDictionary* parameters = @{@"callee"   : calleeE164,
-                                 @"caller"   : callerE164,
-                                 @"callerId" : identityE164,
-                                 @"privacy"  : privacy ? @"true" : @"false"};
+    NSDictionary* parameters = @{@"callbackE164" : callbackE164,
+                                 @"callthruE164" : callthruE164,
+                                 @"identityE164" : identityE164,
+                                 @"privacy"      : privacy ? @"true" : @"false"};
     
     [self postPath:[NSString stringWithFormat:@"/users/%@/callback", username]
         parameters:parameters
@@ -889,9 +889,9 @@
                                                CallState state,
                                                CallLeg   leg,
                                                int       callbackDuration,
-                                               int       outgoingDuration,
+                                               int       callthruDuration,
                                                float     callbackCost,
-                                               float     outgoingCost))reply
+                                               float     callthruCost))reply
 {
     NSString* username     = [Settings sharedSettings].webUsername;
     NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
@@ -930,25 +930,25 @@
                 state = CallStateEnded;
                 leg   = CallLegCallback;
             }
-            else if ([stateString isEqualToString:@"OUTGOING_RINGING"])
+            else if ([stateString isEqualToString:@"CALLTHRU_RINGING"])
             {
                 state = CallStateCalling;
-                leg   = CallLegOutgoing;
+                leg   = CallLegCallthru;
             }
-            else if ([stateString isEqualToString:@"OUTGOING_EARLY"])
+            else if ([stateString isEqualToString:@"CALLTHRU_EARLY"])
             {
                 state = CallStateRinging;
-                leg   = CallLegOutgoing;
+                leg   = CallLegCallthru;
             }
-            else if ([stateString isEqualToString:@"OUTGOING_ANSWERED"])
+            else if ([stateString isEqualToString:@"CALLTHRU_ANSWERED"])
             {
                 state = CallStateConnected;
-                leg   = CallLegOutgoing;
+                leg   = CallLegCallthru;
             }
-            else if ([stateString isEqualToString:@"OUTGOING_HANGUP"])
+            else if ([stateString isEqualToString:@"CALLTHRU_HANGUP"])
             {
                 state = CallStateEnded;
-                leg   = CallLegOutgoing;
+                leg   = CallLegCallthru;
             }
             else
             {
@@ -962,9 +962,9 @@
                   state,
                   leg,
                   [content[@"callbackDuration"] intValue],
-                  [content[@"outgoingDuration"] intValue],
+                  [content[@"callthruDuration"] intValue],
                   [content[@"callbackCost"] floatValue],
-                  [content[@"outgoingCost"] floatValue]);
+                  [content[@"callthruCost"] floatValue]);
         }
         else
         {

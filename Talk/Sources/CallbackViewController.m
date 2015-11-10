@@ -88,32 +88,32 @@
 
 - (void)startCallback
 {
-    self.statusLabel.text      = NSLocalizedStringWithDefaultValue(@"Callback RequestingText", nil, [NSBundle mainBundle],
-                                                                   @"requesting...",
-                                                                   @"Text ...\n"
-                                                                   @"[N lines]");
+    self.statusLabel.text    = NSLocalizedStringWithDefaultValue(@"Callback RequestingText", nil, [NSBundle mainBundle],
+                                                                 @"requesting...",
+                                                                 @"Text ...\n"
+                                                                 @"[N lines]");
     callStateView.label.text = NSLocalizedStringWithDefaultValue(@"Callback StartMessage", nil, [NSBundle mainBundle],
-                                                                   @"A request to call you back is being sent to our "
-                                                                   @"server via internet.\n\nPlease wait.",
-                                                                   @"Alert message: ...\n"
-                                                                   @"[N lines]");
+                                                                 @"A request to call you back is being sent to our "
+                                                                 @"server via internet.\n\nPlease wait.",
+                                                                 @"Alert message: ...\n"
+                                                                 @"[N lines]");
 
     PhoneNumber* callbackPhoneNumber = [[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].callbackE164];
     PhoneNumber* callerIdPhoneNumber = [[PhoneNumber alloc] initWithNumber:self.call.identityNumber];
     callbackPending = YES;
     
-    NSString* calleeE164 = [self.call.phoneNumber e164Format];
-    if (![self.call.phoneNumber isValid] && ![calleeE164 hasPrefix:@"+"] && ![calleeE164 hasPrefix:@"00"])
+    NSString* callthruE164 = [self.call.phoneNumber e164Format];
+    if (![self.call.phoneNumber isValid] && ![callthruE164 hasPrefix:@"+"] && ![callthruE164 hasPrefix:@"00"])
     {
         // Not (common) international number; prefix it with Home Country calling code.
-        calleeE164 = [@"+" stringByAppendingFormat:@"%@%@", [PhoneNumber defaultCallCountryCode], calleeE164];
+        callthruE164 = [@"+" stringByAppendingFormat:@"%@%@", [PhoneNumber defaultCallCountryCode], callthruE164];
     }
     
-    [[WebClient sharedClient] initiateCallbackForCallee:calleeE164
-                                                 caller:[callbackPhoneNumber e164Format]
-                                               identity:[callerIdPhoneNumber e164Format]
-                                                privacy:!self.call.showCallerId
-                                                  reply:^(NSError* error, NSString* theUuid)
+    [[WebClient sharedClient] initiateCallbackForCallbackE164:[callbackPhoneNumber e164Format]
+                                                 callthruE164:callthruE164
+                                                 identityE164:[callerIdPhoneNumber e164Format]
+                                                      privacy:self.call.showCallerId
+                                                        reply:^(NSError* error, NSString* theUuid)
     {
         if (error == nil)
         {
@@ -123,13 +123,13 @@
             self.statusLabel.text = [self.call stateString];
 
             callStateView.label.text = NSLocalizedStringWithDefaultValue(@"Callback ProgressMessage", nil,
-                                                                           [NSBundle mainBundle],
-                                                                           @"Your number is being called.\n\nAfter you "
-                                                                           @"answer, the person you're trying to reach "
-                                                                           @"will be called automatically.\n\n"
-                                                                           @"Then, wait until you're connected.",
-                                                                           @"Alert message: ...\n"
-                                                                           @"[N lines]");
+                                                                         [NSBundle mainBundle],
+                                                                         @"Your number is being called.\n\nAfter you "
+                                                                         @"answer, the person you're trying to reach "
+                                                                         @"will be called automatically.\n\n"
+                                                                         @"Then, wait until you're connected.",
+                                                                         @"Alert message: ...\n"
+                                                                         @"[N lines]");
 
             [self checkCallbackState];
         }
@@ -141,18 +141,18 @@
 
             if (error.code == WebStatusFailNoCredit)
             {
-                self.statusLabel.text      = NSLocalizedStringWithDefaultValue(@"Callback NoCreditStatusText", nil,
-                                                                               [NSBundle mainBundle],
-                                                                               @"no credit",
-                                                                               @"Call status text\n"
-                                                                               @"[1 line]");
+                self.statusLabel.text    = NSLocalizedStringWithDefaultValue(@"Callback NoCreditStatusText", nil,
+                                                                             [NSBundle mainBundle],
+                                                                             @"no credit",
+                                                                             @"Call status text\n"
+                                                                             @"[1 line]");
                 callStateView.label.text = NSLocalizedStringWithDefaultValue(@"Callback NoCreditMessage", nil,
-                                                                               [NSBundle mainBundle],
-                                                                               @"The callback failed because you've run "
-                                                                               @"out of credit.\n\nBuy more on the "
-                                                                               @"Credit tab.",
-                                                                               @"Alert message\n"
-                                                                               @"[N lines]");
+                                                                             [NSBundle mainBundle],
+                                                                             @"The callback failed because you've run "
+                                                                             @"out of credit.\n\nBuy more on the "
+                                                                             @"Credit tab.",
+                                                                             @"Alert message\n"
+                                                                             @"[N lines]");
             }
             else if (error.code == WebStatusFailUnknownCallerId ||
                      error.code == WebStatusFailUnknownVerifiedNumber ||
@@ -210,18 +210,18 @@
                                                              CallState state,
                                                              CallLeg   leg,
                                                              int       callbackDuration,
-                                                             int       outgoingDuration,
+                                                             int       callthruDuration,
                                                              float     callbackCost,
-                                                             float     outgoingCost)
+                                                             float     callthruCost)
     {
         if (error == nil)
         {
             self.call.state            = (state == CallStateNone) ? self.call.state : state;
             self.call.leg              = (leg   == CallLegNone)   ? self.call.leg   : leg;
             self.call.callbackDuration = callbackDuration;
-            self.call.outgoingDuration = outgoingDuration;
+            self.call.callthruDuration = callthruDuration;
             self.call.callbackCost     = callbackCost;
-            self.call.outgoingCost     = outgoingCost;
+            self.call.callthruCost     = callthruCost;
             self.statusLabel.text      = [self.call stateString];
 
             NSString* text = nil;
@@ -231,7 +231,7 @@
                 case CallStateCalling:
                     callbackPending = YES;
                     checkState      = YES;
-                    if (leg == CallLegOutgoing)
+                    if (leg == CallLegCallthru)
                     {
                         text = NSLocalizedStringWithDefaultValue(@"Callback CallingMessage", nil, [NSBundle mainBundle],
                                                                  @"Now, the person you're trying to reach is being "
@@ -260,9 +260,9 @@
                                                                  @"[N lines]");
                     }
 
-                    if (leg == CallLegOutgoing)
+                    if (leg == CallLegCallthru)
                     {
-                        text = NSLocalizedStringWithDefaultValue(@"Callback OutgoingConnectedMessage", nil, [NSBundle mainBundle],
+                        text = NSLocalizedStringWithDefaultValue(@"Callback CallthruConnectedMessage", nil, [NSBundle mainBundle],
                                                                  @"The person you were trying to reach answered.\n\n"
                                                                  @"If you're not in the call, the person you're trying to"
                                                                  @"reach is probably connected to your callback number's "

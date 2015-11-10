@@ -259,7 +259,7 @@ typedef enum
                                                 @"....\n"
                                                 @"[iOS alert title size].");
     message = NSLocalizedStringWithDefaultValue(@"Destination SaveErroMessage", nil, [NSBundle mainBundle],
-                                                @"Failed to save this Destination: %@.",
+                                                @"Failed to save this Destination: %@",
                                                 @"...\n"
                                                 @"[iOS alert message size]");
     [BlockAlertView showAlertViewWithTitle:title

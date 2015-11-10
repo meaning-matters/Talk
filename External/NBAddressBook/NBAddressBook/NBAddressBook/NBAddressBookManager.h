@@ -45,8 +45,7 @@
 
 - (NSString*)defaultCallerId;
 
-- (void)getCostForOutgoingNumber:(NSString*)outgoingNumber
-                      completion:(void (^)(NSString* costString))completion;
+- (void)getCostForCallthruNumber:(NSString*)callthruNumber completion:(void (^)(NSString* costString))completion;
 
 @end
 

@@ -44,9 +44,9 @@
                                                           @"[1 line small font].");
             break;
 
-        case CallLegOutgoing:
-            legString = NSLocalizedStringWithDefaultValue(@"Call:Leg Outgoing", nil,
-                                                          [NSBundle mainBundle], @"outgoing ",
+        case CallLegCallthru:
+            legString = NSLocalizedStringWithDefaultValue(@"Call:Leg Callthru", nil,
+                                                          [NSBundle mainBundle], @"callthru ",
                                                           @"\n"
                                                           @"[1 line small font].");
             break;

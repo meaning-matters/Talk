@@ -765,10 +765,9 @@
 }
 
 
-- (void)getCostForOutgoingNumber:(NSString*)outgoingNumber
-                      completion:(void (^)(NSString* costString))completion
+- (void)getCostForCallthruNumber:(NSString*)callthruNumber completion:(void (^)(NSString* costString))completion
 {
-    PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:outgoingNumber];
+    PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:callthruNumber];
     
     if (phoneNumber.isValid && [Settings sharedSettings].callerIdE164.length > 0)
     {

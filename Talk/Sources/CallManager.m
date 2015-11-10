@@ -280,9 +280,9 @@
                                                              CallState state,
                                                              CallLeg   leg,
                                                              int       callbackDuration,
-                                                             int       outgoingDuration,
+                                                             int       callthruDuration,
                                                              float     callbackCost,
-                                                             float     outgoingCost)
+                                                             float     callthruCost)
      {
          if (error == nil)
          {
@@ -292,9 +292,9 @@
              call.state            = state;
              call.leg              = leg;
              call.callbackDuration = callbackDuration;
-             call.outgoingDuration = outgoingDuration;
+             call.callthruDuration = callthruDuration;
              call.callbackCost     = callbackCost;
-             call.outgoingCost     = outgoingCost;
+             call.callthruCost     = callthruCost;
 
              recent.uuid = (state == CallStateEnded) ? nil : recent.uuid;
              [[CallManager sharedManager] updateRecent:recent withCall:call];
@@ -323,21 +323,21 @@
         case CallStateRinging:
         case CallStateConnecting:
         {
-            call.state    = (call.leg == CallLegOutgoing) ? CallStateEnded        : CallStateCancelled;
-            recent.status = (call.leg == CallLegOutgoing) ? @(CallStatusCallback) : @(CallStatusCancelled);
+            call.state    = (call.leg == CallLegCallthru) ? CallStateEnded        : CallStateCancelled;
+            recent.status = (call.leg == CallLegCallthru) ? @(CallStatusCallback) : @(CallStatusCancelled);
             break;
         }
         case CallStateConnected:
         case CallStateEnding:
         {
             call.state    = CallStateEnded;
-            recent.status = (call.leg == CallLegOutgoing) ? @(CallStatusSuccess) : @(CallStatusCallback);
+            recent.status = (call.leg == CallLegCallthru) ? @(CallStatusSuccess) : @(CallStatusCallback);
             break;
         }
         case CallStateEnded:
         {
             recent.status = (call.callbackCost == 0) ? @(CallStatusCancelled)
-                                                     : ((call.outgoingCost == 0) ? @(CallStatusCallback)
+                                                     : ((call.callthruCost == 0) ? @(CallStatusCallback)
                                                                                  : @(CallStatusSuccess));
             break;
         }
@@ -364,9 +364,9 @@
     }
 
     recent.callbackDuration = @(call.callbackDuration);
-    recent.outgoingDuration = @(call.outgoingDuration);
+    recent.callthruDuration = @(call.callthruDuration);
     recent.callbackCost     = @(call.callbackCost);
-    recent.outgoingCost     = @(call.outgoingCost);
+    recent.callthruCost     = @(call.callthruCost);
     recent.e164             = [call.phoneNumber e164Format];
 
     [[DataManager sharedManager].managedObjectContext save:nil];
