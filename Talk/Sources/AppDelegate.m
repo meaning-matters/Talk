@@ -765,7 +765,7 @@
 }
 
 
-- (void)getCostForCallthruNumber:(NSString*)callthruNumber completion:(void (^)(NSString* costString))completion
+- (void)getCostForCallToNumber:(NSString*)callthruNumber completion:(void (^)(NSString* costString))completion
 {
     PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:callthruNumber];
     

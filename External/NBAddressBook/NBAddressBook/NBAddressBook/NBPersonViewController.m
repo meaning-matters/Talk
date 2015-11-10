@@ -747,7 +747,7 @@
                     [spinner startAnimating];
                     cell.accessoryView = spinner;
                     __weak typeof(cell) weakCell = cell;
-                    [[NBAddressBookManager sharedManager].delegate getCostForCallthruNumber:cellInfo.textValue
+                    [[NBAddressBookManager sharedManager].delegate getCostForCallToNumber:cellInfo.textValue
                                                                                  completion:^(NSString *costString)
                     {
                         UILabel* rateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 90, 40)];
