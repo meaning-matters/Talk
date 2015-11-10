@@ -399,50 +399,17 @@
     {
         if (error == nil)
         {
-            [self synchronizeNumbers:^(NSError* error)
+            [self.managedObjectContext save:&error];
+            if (error == nil)
             {
-                if (error == nil)
-                {
-                    [self synchronizeDestinations:^(NSError* error)
-                    {
-                        if (error == nil)
-                        {
-                            [self synchronizeIvrs:^(NSError* error)
-                            {
-                                if (error == nil)
-                                {
-                                       [self.managedObjectContext save:&error];
-                                       if (error == nil)
-                                       {
-                                           completion ? completion(nil) : 0;
-                                       }
-                                       else
-                                       {
-                                           [self handleError:error];
-
-                                           return;
-                                       }
-                                }
-                                else
-                                {
-                                    [self.managedObjectContext rollback];
-                                    completion ? completion(error) : 0;
-                                }
-                            }];
-                        }
-                        else
-                        {
-                            [self.managedObjectContext rollback];
-                            completion ? completion(error) : 0;
-                        }
-                    }];
-                }
-                else
-                {
-                    [self.managedObjectContext rollback];
-                    completion ? completion(error) : 0;
-                }
-            }];
+                completion ? completion(nil) : 0;
+            }
+            else
+            {
+                [self handleError:error];
+                
+                return;
+            }
         }
         else
         {

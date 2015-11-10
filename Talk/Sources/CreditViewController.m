@@ -180,13 +180,12 @@ typedef enum
     switch ([Common nthBitSet:section inValue:self.sections])
     {
         case TableSectionAmount:
-            title = NSLocalizedStringWithDefaultValue(@"CreditAmount:... TableFooterNumbers", nil, [NSBundle mainBundle],
-                                                      @"Credit is used for outgoing calls, for forwarding incoming "
-                                                      @"calls on your NumberBay numbers to your phone(s), and for "
-                                                      @"buying numbers.",
+            title = NSLocalizedStringWithDefaultValue(@"CreditAmount:... TableFooter", nil, [NSBundle mainBundle],
+                                                      @"Credit is used for the two parts of each call: calling back "
+                                                      @"your number, and calling the other person.",
                                                       @"[Multiple lines]");
             break;
-
+            
         case TableSectionBuy:
             title = NSLocalizedStringWithDefaultValue(@"BuyCredit:... TableFooter", nil, [NSBundle mainBundle],
                                                       @"Credit you buy won't expire, and will be available immediately.",

@@ -207,7 +207,7 @@
                                                             @"[iOS alert title size].");
 
                 message = NSLocalizedStringWithDefaultValue(@"Call MissingIndentityMessage", nil, [NSBundle mainBundle],
-                                                            @"Go to the Settings tab to select a Phone or Number as "
+                                                            @"Go to the Settings tab to select a Phone as "
                                                             @"your default caller ID.",
                                                             @"Alert message \n"
                                                             @"[iOS alert message size]");
@@ -222,7 +222,7 @@
 
                 message = NSLocalizedStringWithDefaultValue(@"Call MissingPhonesMessage", nil, [NSBundle mainBundle],
                                                             @"Go to the Settings tab to select the Phone you want to be "
-                                                            @"called back on, and select a Phone or Number as your "
+                                                            @"called back on, and select a Phone as your "
                                                             @"default caller ID.",
                                                             @"Alert message \n"
                                                             @"[iOS alert message size]");

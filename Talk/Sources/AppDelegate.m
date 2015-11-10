@@ -236,8 +236,6 @@
         NSStringFromClass([DialerViewController               class]),
         NSStringFromClass([PhonesViewController               class]),
         NSStringFromClass([RatesViewController                class]),
-        NSStringFromClass([NumbersViewController              class]),
-        NSStringFromClass([DestinationsViewController          class]),
         NSStringFromClass([SettingsViewController             class]),
         NSStringFromClass([HelpsViewController                class]),
         NSStringFromClass([AboutViewController                class]),

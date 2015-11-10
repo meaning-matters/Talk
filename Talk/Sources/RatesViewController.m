@@ -40,7 +40,6 @@ typedef enum
         // The tabBarItem image must be set in my own NavigationController.
 
         self.sections |= TableSectionCallRates;
-        self.sections |= TableSectionNumberRates;
     }
 
     return self;

@@ -252,7 +252,6 @@ typedef enum
     sections |= TableSectionE164;
     sections |= (isNew == NO)                       ? TableSectionUsage        : 0;
     sections |= (self.phone.destinations.count > 0) ? TableSectionDestinations : 0;
-    sections |= (numbersArray.count > 0) ?            TableSectionNumbers      : 0;
     sections |= (namesArray.count > 0) ?              TableSectionCallerIds    : 0;
 
     return [Common bitsSetCount:sections];

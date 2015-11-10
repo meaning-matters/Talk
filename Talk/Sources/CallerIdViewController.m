@@ -65,7 +65,6 @@ typedef enum
         self.completion           = completion;
 
         self.phones               = [self fetchPhones];
-        self.numbers              = [self fetchNumbers];
     }
 
     return self;
