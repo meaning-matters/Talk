@@ -50,71 +50,73 @@ static NSIndexPath* targetLabel;
         {
             defaultLabels = NUMBER_ARRAY;
             customLabels = [userDefaults objectForKey:UD_NUMBER_CUSTOM_LABELS_ARRAY];
-        }
             break;
+        }
         case LT_EMAIL:
         {
             defaultLabels = HWO_ARRAY;
             customLabels = [userDefaults objectForKey:UD_MAIL_CUSTOM_LABELS_ARRAY];
-        }
             break;
+        }
         case LT_WEBSITE:
         {
             defaultLabels = WEB_ARRAY;
             customLabels = [userDefaults objectForKey:UD_WEBSITE_CUSTOM_LABELS_ARRAY];
-        }
             break;
+        }
         case LT_RINGTONE:
         {
 #warning - Replace to read in ringtones from local folder or a static array
             defaultLabels = [RINGTONE_ARRAY arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:@"Ringtone 1", @"Ringtone 2", @"Ringtone 3", nil]];
             customLabels = nil; //Not used for ringtones
-        }
             break;
+        }
         case LT_VIBRATION:
         {
             defaultLabels = VIBRATION_ARRAY;
             customLabels = nil; //Not used for vibrations
-        }
             break;
+        }
         case LT_SOCIAL:
         {
             defaultLabels = SOCIAL_ARRAY;
             customLabels = [userDefaults objectForKey:UD_SOCIAL_CUSTOM_LABELS_ARRAY];
-        }
             break;
+        }
         case LT_IM_LABEL:
         {
             defaultLabels = HWO_ARRAY;
             customLabels = [userDefaults objectForKey:UD_IM_CUSTOM_LABELS_ARRAY];
-        }
             break;
+        }
         case LT_IM_SERVICE:
         {
             defaultLabels = IM_ARRAY;
             customLabels = [userDefaults objectForKey:UD_IM_CUSTOM_SERVICES_ARRAY];
-        }
             break;
+        }
         case LT_RELATED:
         {
             defaultLabels = RELATED_ARRAY;
             customLabels = [userDefaults objectForKey:UD_RELATED_CUSTOM_LABELS_ARRAY];
-        }
             break;
+        }
         case LT_ADDRESS:
         {
             defaultLabels = HWO_ARRAY;
             customLabels = [userDefaults objectForKey:UD_ADDRESS_CUSTOM_LABELS_ARRAY];
-        }
             break;
+        }
         case LT_DATE:
         {
             defaultLabels = DATE_ARRAY;
             customLabels = [userDefaults objectForKey:UD_DATE_CUSTOM_LABELS_ARRAY];
+            break;
         }
-            break;
         default:
+        {
             break;
+        }
     }
     
     //Listen for custom values
@@ -136,50 +138,52 @@ static NSIndexPath* targetLabel;
         case LT_NUMBER:
         {
             arrayKey = UD_NUMBER_CUSTOM_LABELS_ARRAY;
-        }
             break;
+        }
         case LT_EMAIL:
         {
             arrayKey = UD_MAIL_CUSTOM_LABELS_ARRAY;
-        }
             break;
+        }
         case LT_WEBSITE:
         {
             arrayKey = UD_WEBSITE_CUSTOM_LABELS_ARRAY;
-        }
             break;
+        }
         case LT_SOCIAL:
         {
             arrayKey = UD_SOCIAL_CUSTOM_LABELS_ARRAY;
-        }
             break;
+        }
         case LT_IM_LABEL:
         {
             arrayKey = UD_IM_CUSTOM_LABELS_ARRAY;
-        }
             break;
+        }
         case LT_IM_SERVICE:
         {
             arrayKey = UD_IM_CUSTOM_SERVICES_ARRAY;
-        }
             break;
+        }
         case LT_RELATED:
         {
             arrayKey = UD_RELATED_CUSTOM_LABELS_ARRAY;
-        }
             break;
+        }
         case LT_ADDRESS:
         {
             arrayKey = UD_ADDRESS_CUSTOM_LABELS_ARRAY;
-        }
             break;
+        }
         case LT_DATE:
         {
             arrayKey = UD_DATE_CUSTOM_LABELS_ARRAY;
+            break;
         }
-            break;
         default:
+        {
             break;
+        }
     }
     
     //If we didn't have this array before, create it now
@@ -222,13 +226,19 @@ static NSIndexPath* targetLabel;
         case LT_RELATED:
         case LT_ADDRESS:
         case LT_DATE:
+        {
             return 2;
             break;
+        }
         case LT_RINGTONE:
         case LT_VIBRATION:
+        {
             return 1;
+        }
         default:
+        {
             break;
+        }
     }
 }
 

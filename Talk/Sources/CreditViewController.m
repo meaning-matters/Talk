@@ -124,12 +124,14 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
         case TableSectionAmount:
+        {
             cell = [tableView dequeueReusableCellWithIdentifier:@"CreditAmountCell" forIndexPath:indexPath];
             [self updateAmountCell:(CreditAmountCell*)cell];
             self.amountIndexPath = indexPath;
             break;
-
+        }
         case TableSectionBuy:
+        {
             cell = [tableView dequeueReusableCellWithIdentifier:@"CreditBuyCell" forIndexPath:indexPath];
             self.buyCell = (CreditBuyCell*)cell;
             self.buyCell.delegate = self;
@@ -144,6 +146,7 @@ typedef enum
                 }
             }
             break;
+        }
     }
 
     return cell;
@@ -157,16 +160,19 @@ typedef enum
     switch ([Common nthBitSet:section inValue:self.sections])
     {
         case TableSectionAmount:
+        {
             title = NSLocalizedStringWithDefaultValue(@"creditView:... AmountHeader", nil, [NSBundle mainBundle],
                                                       @"Current Credit",
                                                       @"[One line larger font]");
             break;
-
+        }
         case TableSectionBuy:
+        {
             title = NSLocalizedStringWithDefaultValue(@"creditView:... BuyCreditHeader", nil, [NSBundle mainBundle],
                                                       @"Buy More Credit",
                                                       @"[One line larger font]");
             break;
+        }
     }
 
     return title;
@@ -180,18 +186,21 @@ typedef enum
     switch ([Common nthBitSet:section inValue:self.sections])
     {
         case TableSectionAmount:
+        {
             title = NSLocalizedStringWithDefaultValue(@"CreditAmount:... TableFooterNumbers", nil, [NSBundle mainBundle],
                                                       @"Credit is used for outgoing calls, for forwarding incoming "
                                                       @"calls on your NumberBay numbers to your phone(s), and for "
                                                       @"buying numbers.",
                                                       @"[Multiple lines]");
             break;
-
+        }
         case TableSectionBuy:
+        {
             title = NSLocalizedStringWithDefaultValue(@"BuyCredit:... TableFooter", nil, [NSBundle mainBundle],
                                                       @"Credit you buy won't expire, and will be available immediately.",
                                                       @"[Multiple lines]");
             break;
+        }
     }
 
     return title;
@@ -205,6 +214,7 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
         case TableSectionAmount:
+        {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             if ([Settings sharedSettings].haveAccount == YES)
             {
@@ -216,9 +226,11 @@ typedef enum
                 [Common showGetStartedViewController];
             }
             break;
-
+        }
         case TableSectionBuy:
+        {
             break;
+        }
     }
 }
 

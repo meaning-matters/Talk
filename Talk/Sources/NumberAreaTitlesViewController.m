@@ -71,25 +71,29 @@
     switch (indexPath.row)
     {
         case 0:
+        {
             selected            = [purchaseInfo[@"salutation"] isEqualToString:@"MR"];
             selectedIndexPath   = selected ? indexPath : selectedIndexPath;
             cell.accessoryType  = selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             cell.textLabel.text = [Strings mrString];
             break;
-
+        }
         case 1:
+        {
             selected            = [purchaseInfo[@"salutation"] isEqualToString:@"MS"];
             selectedIndexPath   = selected ? indexPath : selectedIndexPath;
             cell.accessoryType  = selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             cell.textLabel.text = [Strings msString];
             break;
-
+        }
         case 2:
+        {
             selected            = [purchaseInfo[@"salutation"] isEqualToString:@"COMPANY"];
             selectedIndexPath   = selected ? indexPath : selectedIndexPath;
             cell.accessoryType  = selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             cell.textLabel.text = [Strings companyString];
             break;
+        }
     }
 
     return cell;
@@ -103,16 +107,20 @@
     switch (indexPath.row)
     {
         case 0:
+        {
             purchaseInfo[@"salutation"] = @"MR";
             break;
-
+        }
         case 1:
+        {
             purchaseInfo[@"salutation"] = @"MS";
             break;
-
+        }
         case 2:
+        {
             purchaseInfo[@"salutation"] = @"COMPANY";
             break;
+        }
     }
 
     UITableViewCell* cell;

@@ -287,6 +287,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     switch (selection)
     {
         case SelectionDestinations:
+        {
             // This overrides button placement of ItemsViewController (the baseclass).
             rightItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                       target:self
@@ -295,8 +296,9 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
             self.tableView.hidden           = NO;
             self.recordingsTableView.hidden = YES;
             break;
-
+        }
         case SelectionRecordings:
+        {
             if (self.recordingsTableView.isEditing == YES)
             {
                 leftItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
@@ -325,6 +327,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
             self.tableView.hidden           = YES;
             self.recordingsTableView.hidden = NO;
             break;
+        }
     }
 
     self.navigationItem.leftBarButtonItem  = leftItem;

@@ -127,18 +127,22 @@
     switch ([recognizer state])
     {
         case UIGestureRecognizerStateBegan:
+        {
             [self.delegate keypadViewPressedEraseKey:self];
             [self.delegate keypadView:self pressedDigitKey:KeypadKeyPlus];
             break;
-
+        }
         case UIGestureRecognizerStateEnded:
+        {
             // Once the gesture recognizer kicked in, digitKeyReleaseAction won't
             // be called anymore.  So we need to enable button here.
             [self digitKeyReleaseAction:nil];
             break;
-            
+        }
         default:
+        {
             break;
+        }
     }
 }
 
@@ -162,20 +166,24 @@
     switch ([recognizer state])
     {
         case UIGestureRecognizerStateBegan:
+        {
             eraseTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
                                                           target:self.delegate
                                                         selector:@selector(keypadViewPressedEraseKey:)
                                                         userInfo:self
                                                          repeats:YES];
             break;
-
+        }
         case UIGestureRecognizerStateEnded:
+        {
             [eraseTimer invalidate];
             eraseTimer = nil;
             break;
-
+        }
         default:
+        {
             break;
+        }
     }
 }
 

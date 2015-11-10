@@ -229,6 +229,7 @@
             switch (state)
             {
                 case CallStateCalling:
+                {
                     callbackPending = YES;
                     checkState      = YES;
                     if (leg == CallLegCallthru)
@@ -240,13 +241,15 @@
                                                                  @"[N lines]");
                     }
                     break;
-
+                }
                 case CallStateRinging:
+                {
                     callbackPending = YES;
                     checkState      = YES;
                     break;
-
+                }
                 case CallStateConnected:
+                {
                     callbackPending = YES;
                     checkState      = YES;
                     if (leg == CallLegCallback)
@@ -271,7 +274,7 @@
                                                                  @"[N lines]");
                     }
                     break;
-
+                }
                 case CallStateEnded:
                 {
                     if (callbackPending == YES)
@@ -291,10 +294,11 @@
                     checkState      = NO;
                     break;
                 }
-
                 default:
+                {
                     checkState = YES;
                     break;
+                }
             }
 
             if (text != nil)

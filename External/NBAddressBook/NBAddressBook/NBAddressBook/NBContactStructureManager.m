@@ -133,40 +133,64 @@
             switch (nameIndex)
             {
                 case NC_PREFIX:
+                {
                     personValue = [NBContact getStringProperty:kABPersonPrefixProperty forContact:person.contactRef];
                     break;
-                case NC_FIRST_NAME: 
+                }
+                case NC_FIRST_NAME:
+                {
                     personValue = [NBContact getStringProperty:kABPersonFirstNameProperty forContact:person.contactRef];
                     break;
+                }
                 case NC_PHONETIC_FIRST:
+                {
                     personValue = [NBContact getStringProperty:kABPersonFirstNamePhoneticProperty forContact:person.contactRef];
                     break;
+                }
                 case NC_MIDDLE_NAME:
+                {
                     personValue = [NBContact getStringProperty:kABPersonMiddleNameProperty forContact:person.contactRef];
                     break;
-                case NC_LAST_NAME: 
+                }
+                case NC_LAST_NAME:
+                {
                     personValue = [NBContact getStringProperty:kABPersonLastNameProperty forContact:person.contactRef];
                     break;
-                case NC_PHONETIC_LAST: 
+                }
+                case NC_PHONETIC_LAST:
+                {
                     personValue = [NBContact getStringProperty:kABPersonLastNamePhoneticProperty forContact:person.contactRef];
                     break;
-                case NC_SUFFIX: 
+                }
+                case NC_SUFFIX:
+                {
                     personValue = [NBContact getStringProperty:kABPersonSuffixProperty forContact:person.contactRef];
                     break;
-                case NC_NICKNAME: 
+                }
+                case NC_NICKNAME:
+                {
                     personValue = [NBContact getStringProperty:kABPersonNicknameProperty forContact:person.contactRef];
                     break;
-                case NC_JOB_TITLE: 
+                }
+                case NC_JOB_TITLE:
+                {
                     personValue = [NBContact getStringProperty:kABPersonJobTitleProperty forContact:person.contactRef];
                     break;
+                }
                 case NC_DEPARTMENT:
+                {
                     personValue = [NBContact getStringProperty:kABPersonDepartmentProperty forContact:person.contactRef];
                     break;
+                }
                 case NC_COMPANY:
+                {
                     personValue = [NBContact getStringProperty:kABPersonOrganizationProperty forContact:person.contactRef];
-                    break;                
-                default:
                     break;
+                }
+                default:
+                {
+                    break;
+                }
             }
             ((NBPersonCellInfo*)[nameArray objectAtIndex:nameIndex]).textValue = personValue;
         }
@@ -477,8 +501,8 @@
                         [cellInfo setVisible:[[cellInfo textValue] length] > 0];
                     }
                 }
-            }
                 break;
+            }
             case CC_NUMBER:
             {
                 //Show all cells that have content
@@ -490,8 +514,8 @@
                 
                 //If we're editing, also show the last cell, which is an adding-number cell
                 [[sectionArray lastObject] setVisible:editing];
-            }
                 break;
+            }
             case CC_EMAIL:
             case CC_HOMEPAGE:
             case CC_SOCIAL:
@@ -506,8 +530,8 @@
                 
                 //Always make sure the last cell is a new line when editing
                 [[sectionArray lastObject] setVisible:editing];
-            }
                 break;
+            }
             case CC_NOTES:
             {
                 if ([sectionArray count] > 0)
@@ -515,10 +539,12 @@
                     NBPersonCellInfo * notesInfo = [sectionArray lastObject];
                     [notesInfo setVisible:([notesInfo.textValue length] > 0) || editing];
                 }
+                break;
             }
-                break;
             default:
+            {
                 break;
+            }
         }
     }
 }
@@ -650,41 +676,43 @@
             {
                 placeHolder = (__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonPhoneProperty));
                 label = [self findNextLabelInArray:NUMBER_ARRAY usingSource:section];
-            }
                 break;
+            }
             case CC_EMAIL:
             {
                 placeHolder = (__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonEmailProperty));
                 label = [self findNextLabelInArray:HWO_ARRAY usingSource:section];
-            }
                 break;
+            }
             case CC_HOMEPAGE:
             {
                 placeHolder = (__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonURLProperty));
                 label = [self findNextLabelInArray:WEB_ARRAY usingSource:section];
-            }
                 break;
+            }
             case CC_SOCIAL:
             {
                 placeHolder = (__bridge NSString *)(ABAddressBookCopyLocalizedLabel(kABPersonInstantMessageUsernameKey));
                 label = [self findNextLabelInArray:SOCIAL_ARRAY usingSource:section];
-            }
                 break;
+            }
             case CC_IM:
             {
                 placeHolder = (__bridge NSString *)(ABAddressBookCopyLocalizedLabel(kABPersonInstantMessageUsernameKey));
                 label = [self findNextLabelInArray:HWO_ARRAY usingSource:section];
                 [newCellInfo setIMType:[IM_ARRAY objectAtIndex:0]];
-            }
                 break;
+            }
             case CC_RELATED_CONTACTS:
             {
                 placeHolder = NSLocalizedString(@"PH_NAME", @"");
                 label = [self findNextLabelInArray:RELATED_ARRAY usingSource:section];
+                break;
             }
-                break;
             default:
+            {
                 break;
+            }
         }
         //Set the shared properties
         [newCellInfo setTextfieldPlaceHolder:placeHolder];

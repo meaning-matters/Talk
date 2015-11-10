@@ -116,7 +116,7 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    DestinationData*  selectedDestination;
+    DestinationData* selectedDestination;
     UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];    // Get here because indexPath is overwritten.
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

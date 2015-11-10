@@ -214,20 +214,24 @@
     switch (buttonIndex)
     {
         case 0:
+        {
             [self clearOneWeekRecents];
             [self reload];
             break;
-
+        }
         case 1:
+        {
             [self clearOneMonthRecents];
             [self reload];
             break;
-
+        }
         case 2:
+        {
             //Clear up the system
             [self clearAllRecents];
             [dataSource removeAllObjects];
             break;
+        }
     }
 
     if (buttonIndex != 3)

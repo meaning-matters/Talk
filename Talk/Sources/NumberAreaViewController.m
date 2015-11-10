@@ -648,51 +648,63 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionArea:
+        {
             title = NSLocalizedStringWithDefaultValue(@"NumberArea:Area SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Current Selection",
                                                       @"...");
             break;
-
+        }
         case TableSectionName:
+        {
             title = NSLocalizedStringWithDefaultValue(@"NumberArea:Naming SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Number's Name In App",
                                                       @"...");
             break;
-
+        }
         case TableSectionContactName:
+        {
             title = NSLocalizedStringWithDefaultValue(@"NumberArea:Name SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Contact Name",
                                                       @"Name and company of someone.");
             break;
-
+        }
         case TableSectionContactAddress:
+        {
             switch (infoType)
             {
                 case InfoTypeNone:
+                {
                     break;
-
+                }
                 case InfoTypeLocal:
+                {
                     title = NSLocalizedStringWithDefaultValue(@"NumberArea:AddressLocal SectionHeader", nil,
                                                               [NSBundle mainBundle], @"Local Contact Address",
                                                               @"Address of someone.");
                     break;
-
+                }
                 case InfoTypeNational:
+                {
                     title = NSLocalizedStringWithDefaultValue(@"NumberArea:AddressNational SectionHeader", nil,
                                                               [NSBundle mainBundle], @"National Contact Address",
                                                               @"Address of someone.");
                     break;
-
+                }
                 case InfoTypeWorldwide:
+                {
                     title = NSLocalizedStringWithDefaultValue(@"NumberArea:AddressWorldwide SectionHeader", nil,
                                                               [NSBundle mainBundle], @"Worldwide Contact Address",
                                                               @"Address of someone.");
                     break;
+                }
             }
+            
             break;
-
+        }
         case TableSectionAction:
+        {
             break;
+        }
     }
 
     return title;
@@ -706,24 +718,29 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionArea:
+        {
             break;
-
+        }
         case TableSectionName:
+        {
             title = [Strings nameFooterString];
             break;
-
+        }
         case TableSectionContactName:
+        {
             break;
-
+        }
         case TableSectionContactAddress:
+        {
             title = NSLocalizedStringWithDefaultValue(@"NumberArea:Address SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"For a phone number in this area, a contact name and address "
                                                       @"are (legally) required.",
                                                       @"Explaining that information must be supplied by user.");
             break;
-
+        }
         case TableSectionAction:
+        {
             if (requireProof == YES && purchaseInfo[@"proofImage"] == nil)
             {
                 title = NSLocalizedStringWithDefaultValue(@"NumberArea:Action SectionFooterTakePicture", nil,
@@ -749,7 +766,9 @@ typedef enum
                                                           @"this phone number.",
                                                           @"Explaining that user can buy more months.");
             }
+            
             break;
+        }
     }
 
     return title;
@@ -763,24 +782,30 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionArea:
+        {
             numberOfRows = [Common bitsSetCount:areaRows];
             break;
-
+        }
         case TableSectionName:
+        {
             numberOfRows = 1;
             break;
-
+        }
         case TableSectionContactName:
+        {
             numberOfRows = (infoType == InfoTypeNone) ? 0 : 4;
             break;
-
+        }
         case TableSectionContactAddress:
+        {
             numberOfRows = (infoType == InfoTypeNone) ? 0 : 5;
             break;
-
+        }
         case TableSectionAction:
+        {
             numberOfRows = 1;
             break;
+        }
     }
 
     return numberOfRows;
@@ -805,26 +830,31 @@ typedef enum
         switch ([Common nthBitSet:indexPath.section inValue:sections])
         {
             case TableSectionContactName:
+            {
                 titlesViewController = [[NumberAreaTitlesViewController alloc] initWithPurchaseInfo:purchaseInfo];
                 [self.navigationController pushViewController:titlesViewController animated:YES];
                 break;
-
+            }
             case TableSectionContactAddress:
+            {
                 switch (indexPath.row)
                 {
                     case 2:
+                    {
                         zipsViewController = [[NumberAreaZipsViewController alloc] initWithCitiesArray:citiesArray
                                                                                           purchaseInfo:purchaseInfo];
                         [self.navigationController pushViewController:zipsViewController animated:YES];
                         break;
-                        
+                    }
                     case 3:
+                    {
                         citiesViewController = [[NumberAreaCitiesViewController alloc] initWithCitiesArray:citiesArray
                                                                                               purchaseInfo:purchaseInfo];
                         [self.navigationController pushViewController:citiesViewController animated:YES];
                         break;
-
+                    }
                     case 4:
+                    {
                         isoCountryCode = purchaseInfo[@"isoCountryCode"];
                         completion = ^(BOOL cancelled, NSString* isoCountryCode)
                         {
@@ -844,10 +874,13 @@ typedef enum
                                                                                                completion:completion];
                         [self.navigationController pushViewController:countriesViewController animated:YES];
                         break;
+                    }
                 }
+                
                 break;
-
+            }
             case TableSectionAction:
+            {
                 if (requireProof == YES && purchaseInfo[@"proofImage"] == nil)
                 {
                     [self takePicture];
@@ -972,7 +1005,9 @@ typedef enum
                                          cancelButtonTitle:[Strings closeString]
                                          otherButtonTitles:nil];
                 }
+                
                 break;
+            }
         }
     }
 }
@@ -985,24 +1020,30 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionArea:
+        {
             cell = [self areaCellForRowAtIndexPath:indexPath];
             break;
-
+        }
         case TableSectionName:
+        {
             cell = [self nameCellForRowAtIndexPath:indexPath];
             break;
-
+        }
         case TableSectionContactName:
+        {
             cell = [self contactNameCellForRowAtIndexPath:indexPath];
             break;
-
+        }
         case TableSectionContactAddress:
+        {
             cell = [self contactAddressCellForRowAtIndexPath:indexPath];
             break;
-            
+        }
         case TableSectionAction:
+        {
             cell = [self actionCellForRowAtIndexPath:indexPath];
             break;
+        }
     }
 
     return cell;
@@ -1027,34 +1068,40 @@ typedef enum
     switch ([Common nthBitSet:indexPath.row inValue:areaRows])
     {
         case AreaRowType:
+        {
             cell.textLabel.text       = [Strings typeString];
             cell.detailTextLabel.text = [NumberType localizedStringForNumberType:numberTypeMask];
             cell.imageView.image      = nil;
             break;
-
+        }
         case AreaRowAreaCode:
+        {
             cell.textLabel.text       = [Strings areaCodeString];
             cell.detailTextLabel.text = area[@"areaCode"];
             cell.imageView.image      = nil;
             break;
-
+        }
         case AreaRowAreaName:
+        {
             cell.textLabel.text       = [Strings areaString];
             cell.detailTextLabel.text = area[@"areaName"];
             cell.imageView.image      = nil;
             break;
-
+        }
         case AreaRowState:
+        {
             cell.textLabel.text       = [Strings stateString];
             cell.detailTextLabel.text = state[@"stateName"];
             cell.imageView.image      = nil;
             break;
-
+        }
         case AreaRowCountry:
+        {
             cell.textLabel.text       = @" ";     // Without this, the detailTextLabel is on the left.
             cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:numberIsoCountryCode];
             [Common addCountryImageToCell:cell isoCountryCode:numberIsoCountryCode];
             break;
+        }
     }
 
     cell.accessoryType  = UITableViewCellAccessoryNone;
@@ -1119,6 +1166,7 @@ typedef enum
     switch (indexPath.row)
     {
         case 0:
+        {
             salutationTextField = textField;
             cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
@@ -1129,8 +1177,9 @@ typedef enum
             textField.userInteractionEnabled = NO;
             objc_setAssociatedObject(textField, @"TextFieldKey", @"salutation", OBJC_ASSOCIATION_RETAIN);
             break;
-
+        }
         case 1:
+        {
             companyTextField    = textField;
             cell.accessoryType  = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -1139,8 +1188,9 @@ typedef enum
             textField.text = [purchaseInfo[@"company"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
             objc_setAssociatedObject(textField, @"TextFieldKey", @"company", OBJC_ASSOCIATION_RETAIN);
             break;
-            
+        }
         case 2:
+        {
             firstNameTextField  = textField;
             cell.accessoryType  = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -1149,8 +1199,9 @@ typedef enum
             textField.text = [purchaseInfo[@"firstName"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
             objc_setAssociatedObject(textField, @"TextFieldKey", @"firstName", OBJC_ASSOCIATION_RETAIN);
             break;
-
+        }
         case 3:
+        {
             lastNameTextField   = textField;
             cell.accessoryType  = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -1159,6 +1210,7 @@ typedef enum
             textField.text = [purchaseInfo[@"lastName"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
             objc_setAssociatedObject(textField, @"TextFieldKey", @"lastName", OBJC_ASSOCIATION_RETAIN);
             break;
+        }
     }
 
     textField.placeholder     = [self placeHolderForTextField:textField];
@@ -1220,13 +1272,15 @@ typedef enum
     switch (indexPath.row)
     {
         case 0:
+        {
             cell.textLabel.text = [Strings streetString];
             textField.placeholder = [Strings requiredString];
             textField.text = [purchaseInfo[@"street"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
             objc_setAssociatedObject(textField, @"TextFieldKey", @"street", OBJC_ASSOCIATION_RETAIN);
             break;
-
+        }
         case 1:
+        {
             cell.textLabel.text = [Strings buildingString];
             textField.placeholder = [Strings requiredString];
             textField.text = [purchaseInfo[@"building"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
@@ -1234,8 +1288,9 @@ typedef enum
             textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
             objc_setAssociatedObject(textField, @"TextFieldKey", @"building", OBJC_ASSOCIATION_RETAIN);
             break;
-
+        }
         case 2:
+        {
             cell.textLabel.text = [Strings zipCodeString];
             if (citiesArray.count == 0)
             {
@@ -1260,8 +1315,9 @@ typedef enum
             zipCodeTextField.text = [purchaseInfo[@"zipCode"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
             objc_setAssociatedObject(zipCodeTextField, @"TextFieldKey", @"zipCode", OBJC_ASSOCIATION_RETAIN);
             break;
-
+        }
         case 3:
+        {
             cell.textLabel.text = [Strings cityString];
             if (citiesArray.count == 0)
             {
@@ -1286,8 +1342,9 @@ typedef enum
             [cityTextField.text stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
             objc_setAssociatedObject(cityTextField, @"TextFieldKey", @"city", OBJC_ASSOCIATION_RETAIN);
             break;
-
+        }
         case 4:
+        {
             textField.placeholder            = [Strings requiredString];
             textField.userInteractionEnabled = NO;
 
@@ -1312,7 +1369,9 @@ typedef enum
             {
                 countryTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:purchaseInfo[@"isoCountryCode"]];
             }
+            
             break;
+        }
     }
 
     [self updateTextField:textField onCell:cell];

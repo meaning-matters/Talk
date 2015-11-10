@@ -262,16 +262,20 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionName:
+        {
             numberOfRows = 1;
             break;
-
+        }
         case TableSectionControls:
+        {
             numberOfRows = 1;
             break;
-
+        }
         case TableSectionDestinations:
+        {
             numberOfRows = self.recording.destinations.count;
             break;
+        }
     }
 
     return numberOfRows;
@@ -285,16 +289,20 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionName:
+        {
             height = 44;
             break;
-
+        }
         case TableSectionControls:
+        {
             height = 150;
             break;
-
+        }
         case TableSectionDestinations:
+        {
             height = 44;
             break;
+        }
     }
 
     return height;
@@ -308,13 +316,16 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionName:
+        {
             if (isNew)
             {
                 title = [Strings nameFooterString];
             }
+            
             break;
-
+        }
         case TableSectionControls:
+        {
             if (isNew)
             {
                 title = NSLocalizedStringWithDefaultValue(@"RecordingView:Controls SectionFooter", nil,
@@ -323,7 +334,9 @@ typedef enum
                                                           @"changed afterwards.",
                                                           @"....");
             }
+            
             break;
+        }
     }
     
     return title;
@@ -337,15 +350,19 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionName:
+        {
             cell = [self nameCellForRowAtIndexPath:indexPath];
             break;
-
+        }
         case TableSectionControls:
+        {
             cell = [self controlsCellForIndexPath:indexPath];
             break;
-
+        }
         case TableSectionDestinations:
+        {
             break;
+        }
     }
     
     return cell;

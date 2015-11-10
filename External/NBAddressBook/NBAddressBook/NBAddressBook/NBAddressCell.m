@@ -81,14 +81,14 @@
         
             //Remember the textfield
             [streetTextfields addObject:textField];
-        }
             break;
+        }
         case TT_CITY:
         {
             cityTextfield = textField;
             [textField setPlaceholder:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel(kABPersonAddressCityKey))];
-        }
             break;
+        }
         case TT_COUNTRY:
         {
             countryTextfield = textField;
@@ -97,8 +97,8 @@
             UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectCountry)];
             singleTap.numberOfTapsRequired = 1;
             [textField addGestureRecognizer:singleTap];
-        }
             break;
+        }
         case TT_POSTAL_CODE:
         {
             [textField setPlaceholder:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel(kABPersonAddressZIPKey))];
@@ -106,14 +106,14 @@
             
             //Set the keyboard type to numbers
             [textField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
-        }
             break;
+        }
         case TT_PROVINCE:
         {
             [textField setPlaceholder:@"Province"];
             stateTextfield = textField;
-        }
             break;
+        }
         case TT_SUBURB:
         {
             [textField setPlaceholder:@"XSuburb"];
@@ -132,8 +132,8 @@
             {
                 stateTextfield = textField;
             }
-        }
             break;
+        }
         case TT_ZIP:
         {
             [textField setPlaceholder:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel(kABPersonAddressZIPKey))];
@@ -141,62 +141,62 @@
             
             //Set the keyboard type to numbers
             [textField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
-        }
             break;
+        }
         case TT_ISLAND_NAME:
         {
             [textField setPlaceholder:@"Island name"];            
             stateTextfield = textField;
-        }
             break;
+        }
         case TT_POSTAL_DISTRICT:
         {
             [textField setPlaceholder:@"Postal district"];
             stateTextfield = textField;
-        }
             break;
+        }
         case TT_GOVERNATE:
         {
             [textField setPlaceholder:@"Governate"];
             stateTextfield = textField;
-        }
             break;
+        }
         case TT_DEPARTMENT:
         {
             [textField setPlaceholder:@"Department"];
             stateTextfield = textField;
-        }
             break;
+        }
         case TT_DISTRICT:
         {
             [textField setPlaceholder:@"District"];
             stateTextfield = textField;
-        }
             break;
+        }
         case TT_PREFECTURE:
         {
             [textField setPlaceholder:@"Prefecture"];
             stateTextfield = textField;
-        }
             break;
+        }
         case TT_FURTHER:
         {
             [textField setPlaceholder:@"Further"];
             stateTextfield = textField;
-        }
             break;
+        }
         case TT_COUNTY:
         {
             [textField setPlaceholder:@"County"];            
             stateTextfield = textField;
-        }
             break;
+        }
         case TT_REGION:
         {
             [textField setPlaceholder:@"Region"];
             stateTextfield = textField;
-        }            
             break;
+        }
         case TT_PIN:
         {
             [textField setPlaceholder:@"Pin Code"];
@@ -204,10 +204,12 @@
             
             //Set the keyboard type to numbers
             [textField setKeyboardType:UIKeyboardTypeNumberPad];
+            break;
         }
-            break;
         default:
+        {
             break;
+        }
     }
     
     //If this is the top textfield, remember it so we can focus on it later on
@@ -353,8 +355,8 @@
             [self addTextfieldForPosition:1 andLineType:LT_FULL andTextfieldType:TT_CITY];
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_1:
         {
             //(Algaria)
@@ -363,8 +365,8 @@
             [self addTextfieldForPosition:1 andLineType:LT_RIGHT andTextfieldType:TT_CITY];
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_2:
         {
             //(Argentina)
@@ -374,8 +376,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_PROVINCE];
             [self addTextfieldForPosition:3 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_3:
         {
             //(Argentina)
@@ -385,8 +387,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_LEFT andTextfieldType:TT_POSTAL_CODE];
             [self addTextfieldForPosition:2 andLineType:LT_RIGHT andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_4:
         {
             //(Belize)
@@ -395,8 +397,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_PROVINCE];
             [self addTextfieldForPosition:3 andLineType:LT_RIGHT andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_5:
         {
             //(The Bahamas)
@@ -405,8 +407,8 @@
             [self addTextfieldForPosition:1 andLineType:LT_RIGHT andTextfieldType:TT_ISLAND_NAME];
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_6:
         {
             //(Bahrain)
@@ -415,8 +417,8 @@
             [self addTextfieldForPosition:1 andLineType:LT_RIGHT andTextfieldType:TT_POSTAL_CODE];
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_7:
         {
             //(Brazil)
@@ -426,8 +428,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_LEFT andTextfieldType:TT_PROVINCE];
             [self addTextfieldForPosition:2 andLineType:LT_RIGHT andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_8:
         {
             //(Canada)
@@ -437,8 +439,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_LEFT andTextfieldType:TT_POSTAL_CODE];
             [self addTextfieldForPosition:2 andLineType:LT_RIGHT andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_9:
         {
             //(Cayman Islands)
@@ -446,8 +448,8 @@
             [self addTextfieldForPosition:1 andLineType:LT_FULL andTextfieldType:TT_ISLAND_NAME];
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_10:
         {
             //(China)
@@ -457,8 +459,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_STREET];
             [self addTextfieldForPosition:3 andLineType:LT_FULL andTextfieldType:TT_POSTAL_CODE];
             textfieldSeparatorPosition = 3;
-        }
             break;
+        }
         case AT_TYPE_11:
         {
             //(Dominican Republic)
@@ -468,8 +470,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_RIGHT andTextfieldType:TT_CITY];
             [self addTextfieldForPosition:3 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_12:
         {
             //(Ecuador)
@@ -478,8 +480,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_CITY];
             [self addTextfieldForPosition:3 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_13:
         {
             //(Egypt)
@@ -488,8 +490,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_GOVERNATE];
             [self addTextfieldForPosition:3 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_14:
         {
             //(El Salvador)
@@ -499,8 +501,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_DEPARTMENT];
             [self addTextfieldForPosition:3 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_15:
         {
             //(Falkland Islands)
@@ -509,8 +511,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_POSTAL_CODE];
             [self addTextfieldForPosition:3 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_16:
         {
             //(Fiji)
@@ -519,8 +521,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_CITY];
             [self addTextfieldForPosition:3 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_17:
         {
             //(French Pol)
@@ -530,8 +532,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_LEFT andTextfieldType:TT_ISLAND_NAME];
             [self addTextfieldForPosition:2 andLineType:LT_RIGHT andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_18:
         {
             //(Greenland)
@@ -540,8 +542,8 @@
             [self addTextfieldForPosition:1 andLineType:LT_RIGHT andTextfieldType:TT_POSTAL_DISTRICT];
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_19:
         {
             //(Hong Kong)
@@ -550,8 +552,8 @@
             [self addTextfieldForPosition:1 andLineType:LT_RIGHT andTextfieldType:TT_DISTRICT];
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_STREET];
             textfieldSeparatorPosition = 3;
-        }
             break;
+        }
         case AT_TYPE_20:
         {
             //(Hungary)
@@ -560,8 +562,8 @@
             [self addTextfieldForPosition:1 andLineType:LT_FULL andTextfieldType:TT_STREET];
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 2;
-        }
             break;
+        }
         case AT_TYPE_21:
         {
             //(India)
@@ -571,8 +573,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_RIGHT andTextfieldType:TT_PIN];
             [self addTextfieldForPosition:3 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_22:
         {
             //(Ireland)
@@ -582,8 +584,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_LEFT andTextfieldType:TT_POSTAL_CODE];
             [self addTextfieldForPosition:2 andLineType:LT_RIGHT andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_23:
         {
             //(Japan)
@@ -593,8 +595,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_FURTHER];
             [self addTextfieldForPosition:3 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = NSIntegerMax;
-        }
             break;
+        }
         case AT_TYPE_24:
         {
             //(Kazakhstan)
@@ -604,8 +606,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             [self addTextfieldForPosition:3 andLineType:LT_FULL andTextfieldType:TT_POSTAL_CODE];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_25:
         {
             //(South Korea)
@@ -615,8 +617,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_RIGHT andTextfieldType:TT_CITY];
             [self addTextfieldForPosition:3 andLineType:LT_FULL andTextfieldType:TT_STREET];
             textfieldSeparatorPosition = 4;
-        }
             break;
+        }
         case AT_TYPE_26:
         {
             //(Macau)
@@ -625,8 +627,8 @@
             [self addTextfieldForPosition:1 andLineType:LT_RIGHT andTextfieldType:TT_CITY];
             [self addTextfieldForPosition:2 andLineType:LT_FULL andTextfieldType:TT_STREET];
             textfieldSeparatorPosition = 3;
-        }
             break;
+        }
         case AT_TYPE_27:
         {
             //(Malaysia)
@@ -636,8 +638,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_LEFT andTextfieldType:TT_STATE];
             [self addTextfieldForPosition:2 andLineType:LT_RIGHT andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_28:
         {
             //(Micronesia)
@@ -647,8 +649,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_LEFT andTextfieldType:TT_ZIP];
             [self addTextfieldForPosition:2 andLineType:LT_RIGHT andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_29:
         {
             //(New Zealand)
@@ -658,8 +660,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_RIGHT andTextfieldType:TT_POSTAL_CODE];
             [self addTextfieldForPosition:3 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_30:
         {
             //(Somalia)
@@ -669,8 +671,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_LEFT andTextfieldType:TT_POSTAL_CODE];
             [self addTextfieldForPosition:2 andLineType:LT_RIGHT andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_31:
         {
             //(Taiwan)
@@ -680,8 +682,8 @@
             [self addTextfieldForPosition:3 andLineType:LT_FULL andTextfieldType:TT_DISTRICT];
             [self addTextfieldForPosition:4 andLineType:LT_FULL andTextfieldType:TT_STREET];
             textfieldSeparatorPosition = 4;
-        }
             break;
+        }
         case AT_TYPE_32:
         {
             //(Thailand)
@@ -691,8 +693,8 @@
             [self addTextfieldForPosition:2 andLineType:LT_RIGHT andTextfieldType:TT_POSTAL_CODE];
             [self addTextfieldForPosition:3 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
-        }
             break;
+        }
         case AT_TYPE_33:
         {
             //(United Kingdom)
@@ -702,10 +704,12 @@
             [self addTextfieldForPosition:3 andLineType:LT_FULL andTextfieldType:TT_POSTAL_CODE];
             [self addTextfieldForPosition:4 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
             textfieldSeparatorPosition = 0;
+            break;
         }
-            break;
         default:
+        {
             break;
+        }
     }
 }
 

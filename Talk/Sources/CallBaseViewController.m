@@ -131,26 +131,31 @@ const NSTimeInterval TransitionDuration = 0.5;
     switch ((int)self.view.frame.size.height)
     {
         case 480:   // 320x480 screen.
+        {
             [Common setY:20  ofView:self.topView];
             [Common setY:126 ofView:self.centerRootView];
             [Common setY:387 ofView:self.bottomView];
             break;
-
+        }
         case 460:   // 320x480 screen with in-call iOS flasher at top.
+        {
             [Common setY:116 ofView:self.centerRootView];
             [Common setY:367 ofView:self.bottomView];
             break;
-
+        }
         case 568:   // 320x568 screen.
+        {
             [Common setY:20  ofView:self.topView];
             [Common setY:170 ofView:self.centerRootView];
             [Common setY:475 ofView:self.bottomView];
             break;
-
+        }
         case 548:   // 320x568 screen with in-call iOS flasher at top.
+        {
             [Common setY:160 ofView:self.centerRootView];
             [Common setY:455 ofView:self.bottomView];
             break;
+        }
     }
 }
 

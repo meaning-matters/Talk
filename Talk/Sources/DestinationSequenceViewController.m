@@ -84,12 +84,15 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionName:
+        {
             numberOfRows = 1;
             break;
-
+        }
         case TableSectionStatements:
+        {
             numberOfRows = sequence.count;
             break;
+        }
     }
 
     return numberOfRows;

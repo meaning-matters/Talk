@@ -123,22 +123,26 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionTexts:
+        {
             title = NSLocalizedStringWithDefaultValue(@"Helps:Texts SectionHeader", nil, [NSBundle mainBundle],
                                                       @"Texts",
                                                       @"Written help.");
             break;
-
+        }
         case TableSectionContactUs:
+        {
             title = NSLocalizedStringWithDefaultValue(@"Helps:ContactUs SectionHeader", nil, [NSBundle mainBundle],
                                                       @"Contact Us",
                                                       @"Ways to contact us.");
             break;
-
+        }
         case TableSectionIntro:
+        {
             title = NSLocalizedStringWithDefaultValue(@"Helps:Intro SectionHeader", nil, [NSBundle mainBundle],
                                                       @"Intro",
                                                       @"Introduction images + text.");
             break;
+        }
     }
     
     return title;
@@ -158,14 +162,17 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionTexts:
+        {
             cell.textLabel.text = [helpsArray[indexPath.row] allKeys][0];
             cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
             break;
-
+        }
         case TableSectionContactUs:
+        {
             switch (indexPath.row)
             {
                 case 0:
+                {
                     text = NSLocalizedStringWithDefaultValue(@"Helps MessageContactUsText", nil, [NSBundle mainBundle],
                                                              @"Give & Receive Feedback",
                                                              @"....\n"
@@ -173,8 +180,9 @@ typedef enum
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.textLabel.textColor = [UIColor blackColor];
                     break;
-
+                }
                 case 1:
+                {
                     text = NSLocalizedStringWithDefaultValue(@"Helps EmailContactUsText", nil, [NSBundle mainBundle],
                                                              @"Send Email",
                                                              @"....\n"
@@ -182,8 +190,9 @@ typedef enum
                     cell.accessoryType = UITableViewCellAccessoryNone;
                     cell.textLabel.textColor = [Skinning tintColor];
                     break;
-
+                }
                 case 2:
+                {
                     text = NSLocalizedStringWithDefaultValue(@"Helps RateTheAppText", nil, [NSBundle mainBundle],
                                                              @"Write an App Store Review...",
                                                              @"....\n"
@@ -191,8 +200,9 @@ typedef enum
                     cell.accessoryType  = UITableViewCellAccessoryNone;
                     cell.textLabel.textColor = [Skinning tintColor];
                     break;
-
+                }
                 case 3:
+                {
                     text = NSLocalizedStringWithDefaultValue(@"Helps CallContactUsText", nil, [NSBundle mainBundle],
                                                              @"Make Mobile Call",
                                                              @"....\n"
@@ -200,18 +210,21 @@ typedef enum
                     cell.accessoryType  = UITableViewCellAccessoryNone;
                     cell.textLabel.textColor = [Skinning tintColor];
                     break;
+                }
             }
 
             cell.textLabel.text = text;
             break;
-
+        }
         case TableSectionIntro:
+        {
             cell.textLabel.text  =NSLocalizedStringWithDefaultValue(@"Helps IntroText", nil, [NSBundle mainBundle],
                                                                     @"Slideshow",
                                                                     @"...\n"
                                                                     @"[1 line larger font].");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
+        }
     }
 
     return cell;
@@ -230,11 +243,13 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionTexts:
+        {
             htmlViewController = [[HtmlViewController alloc] initWithDictionary:helpsArray[indexPath.row] modal:NO];
             [self.navigationController pushViewController:htmlViewController animated:YES];
             break;
-
+        }
         case TableSectionContactUs:
+        {
             switch (indexPath.row)
             {
                 case 0:
@@ -245,8 +260,8 @@ typedef enum
                     [self.navigationController pushViewController:controller animated:YES];
                     break;
                 }
-
                 case 1:
+                {
                     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
                     [Common sendEmailTo:[Settings sharedSettings].companyEmail
@@ -254,14 +269,16 @@ typedef enum
                                    body:nil
                              completion:nil];
                     break;
-
+                }
                 case 2:
+                {
                     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
                     [Common openAppStoreReviewPage];
                     break;
-
+                }
                 case 3:
+                {
                     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
                     title   = NSLocalizedStringWithDefaultValue(@"Helps MobileCallText", nil, [NSBundle mainBundle],
@@ -288,9 +305,11 @@ typedef enum
                                          cancelButtonTitle:[Strings cancelString]
                                          otherButtonTitles:[Strings callString], nil];
                     break;
+                }
             }
+            
             break;
-
+        }
         case TableSectionIntro:
         {
             GetStartedViewController* viewController = [[GetStartedViewController alloc] initShowAsIntro:YES];

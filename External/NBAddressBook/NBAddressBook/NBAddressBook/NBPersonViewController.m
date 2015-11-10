@@ -1383,7 +1383,8 @@
         //Determine the property and, in case of multivalue, the identifier
         ABPropertyID propertyID = 0;
         ABMultiValueIdentifier multiRefIdentifier = kABMultiValueInvalidIdentifier;
-        switch (indexPath.section) {
+        switch (indexPath.section)
+        {
             case CC_NUMBER:
             {
                 //Set the property

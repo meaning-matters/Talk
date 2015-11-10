@@ -168,6 +168,7 @@
     switch ((int)self.view.frame.size.height)
     {
         case 367:   // 320x480 screen, More tab.
+        {
             [Common setY:2        ofView:self.infoLabel];
             [Common setY:10       ofView:self.brandingImageView];
             [Common setY:24       ofView:self.numberLabel];
@@ -175,8 +176,9 @@
             [Common setY:91       ofView:self.keypadView];
             [Common setHeight:275 ofView:self.keypadView];
             break;
-
+        }
         case 347:   // 320x480 screen, More tab, with in-call iOS flasher at top.
+        {
             [Common setY:2        ofView:self.infoLabel];
             [Common setY:10       ofView:self.brandingImageView];
             [Common setY:24       ofView:self.numberLabel];
@@ -184,8 +186,9 @@
             [Common setY:91       ofView:self.keypadView];
             [Common setHeight:255 ofView:self.keypadView];
             break;
-
+        }
         case 431:   // 320x480 screen, regular tab.
+        {
             [Common setY:22       ofView:self.infoLabel];
             [Common setY:30       ofView:self.brandingImageView];
             [Common setY:44       ofView:self.numberLabel];
@@ -193,8 +196,9 @@
             [Common setY:111      ofView:self.keypadView];
             [Common setHeight:320 ofView:self.keypadView];
             break;
-
+        }
         case 311:   // 320x480 screen, regular tab, with in-call iOS flasher at top.
+        {
             [Common setY:22       ofView:self.infoLabel];
             [Common setY:30       ofView:self.brandingImageView];
             [Common setY:44       ofView:self.numberLabel];
@@ -202,8 +206,9 @@
             [Common setY:111      ofView:self.keypadView];
             [Common setHeight:300 ofView:self.keypadView];
             break;
-
+        }
         case 455:   // 320x568 screen, More tab.
+        {
             [Common setY:7        ofView:self.infoLabel];
             [Common setY:15       ofView:self.brandingImageView];
             [Common setY:33       ofView:self.numberLabel];
@@ -211,8 +216,9 @@
             [Common setY:110      ofView:self.keypadView];
             [Common setHeight:345 ofView:self.keypadView];
             break;
-
+        }
         case 435:   // 320x568 screen, More tab, with in-call iOS flasher at top.
+        {
             [Common setY:7        ofView:self.infoLabel];
             [Common setY:15       ofView:self.brandingImageView];
             [Common setY:33       ofView:self.numberLabel];
@@ -220,8 +226,9 @@
             [Common setY:110      ofView:self.keypadView];
             [Common setHeight:325 ofView:self.keypadView];
             break;
-
+        }
         case 519:   // 320x568 screen, regular tab.
+        {
             [Common setY:26       ofView:self.infoLabel];
             [Common setY:34       ofView:self.brandingImageView];
             [Common setY:52       ofView:self.numberLabel];
@@ -229,8 +236,9 @@
             [Common setY:128      ofView:self.keypadView];
             [Common setHeight:390 ofView:self.keypadView];
             break;
-
+        }
         case 499:   // 320x568 screen, regular tab, with in-call iOS flasher at top.
+        {
             [Common setY:26       ofView:self.infoLabel];
             [Common setY:34       ofView:self.brandingImageView];
             [Common setY:52       ofView:self.numberLabel];
@@ -238,6 +246,7 @@
             [Common setY:128      ofView:self.keypadView];
             [Common setHeight:370 ofView:self.keypadView];
             break;
+        }
     }
 }
 

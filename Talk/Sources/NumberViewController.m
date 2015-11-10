@@ -144,26 +144,31 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionSubscription:
+        {
             title = NSLocalizedStringWithDefaultValue(@"Number:Subscription SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Subscription",
                                                       @"....");
             break;
-
+        }
         case TableSectionArea:
+        {
             title = [Strings detailsString];
             break;
-
+        }
         case TableSectionContactName:
+        {
             title = NSLocalizedStringWithDefaultValue(@"Number:Address SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Contact Name",
                                                       @"....");
             break;
-
+        }
         case TableSectionContactAddress:
+        {
             title = NSLocalizedStringWithDefaultValue(@"Number:Name SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Contact Address",
                                                       @"....");
             break;
+        }
     }
 
     return title;
@@ -177,6 +182,7 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionName:
+        {
             title = NSLocalizedStringWithDefaultValue(@"Number:Name SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"Tap to edit. A change will also be saved "
@@ -184,8 +190,9 @@ typedef enum
                                                       @"devices to load changes.",
                                                       @"[* lines]");
             break;
-
+        }
         case TableSectionDestination:
+        {
             title = NSLocalizedStringWithDefaultValue(@"Number:DestinationDefault SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"With 'Default' all devices associated with this number "
@@ -193,8 +200,9 @@ typedef enum
                                                       @"Explanation about which phone will be called.\n"
                                                       @"[* lines]");
             break;
-
+        }
         case TableSectionSubscription:
+        {
             title = NSLocalizedStringWithDefaultValue(@"Number:Subscription SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"IMPORTANT: If you don't extend this subscription in time, "
@@ -204,6 +212,7 @@ typedef enum
                                                       @"using a phone number, will expire\n"
                                                       @"[* lines]");
             break;
+        }
     }
 
     return title;
@@ -223,32 +232,40 @@ typedef enum
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionName:
+        {
             numberOfRows = 1;
             break;
-
+        }
         case TableSectionE164:
+        {
             numberOfRows = 1;
             break;
-
+        }
         case TableSectionDestination:
+        {
             numberOfRows = 1;
             break;
-
+        }
         case TableSectionSubscription:
+        {
             numberOfRows = 2;   // Second row leads to buying extention.
             break;
-
+        }
         case TableSectionArea:
+        {
             numberOfRows = [Common bitsSetCount:areaRows];
             break;
-
+        }
         case TableSectionContactName:
+        {
             numberOfRows = [Common bitsSetCount:contactNameRows];
             break;
-
+        }
         case TableSectionContactAddress:
+        {
             numberOfRows = (number.image == nil) ? 5 : 6;
             break;
+        }
     }
 
     return numberOfRows;
@@ -268,32 +285,41 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionName:
+        {
             break;
-
+        }
         case TableSectionE164:
+        {
             break;
-
+        }
         case TableSectionDestination:
+        {
             destinationsViewController = [[NumberDestinationsViewController alloc] initWithNumber:number];
             [self.navigationController pushViewController:destinationsViewController animated:YES];
             break;
-
+        }
         case TableSectionSubscription:
+        {
             break;
-
+        }
         case TableSectionArea:
+        {
             break;
-
+        }
         case TableSectionContactName:
+        {
             break;
-            
+        }
         case TableSectionContactAddress:
+        {
             if (indexPath.row == 5)
             {
                 proofImageviewController = [[ProofImageViewController alloc] initWithImageData:number.image];
                 [self.navigationController pushViewController:proofImageviewController animated:YES];
             }
+            
             break;
+        }
     }
 }
 
@@ -306,24 +332,29 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionName:
+        {
             return [self nameCellForRowAtIndexPath:indexPath];
             // identifier         = @"TextFieldCell";
             // self.nameIndexPath = indexPath;
             break;
-
+        }
         case TableSectionE164:
+        {
             identifier = @"NumberCell";
             break;
-
+        }
         case TableSectionDestination:
+        {
             identifier = @"DisclosureCell";
             break;
-
+        }
         case TableSectionSubscription:
+        {
             identifier = (indexPath.row == 0) ? @"Value1Cell" : @"DisclosureCell";
             break;
-
+        }
         case TableSectionArea:
+        {
             if ([Common nthBitSet:indexPath.row inValue:areaRows] == AreaRowCountry)
             {
                 identifier = @"CountryCell";
@@ -333,15 +364,18 @@ typedef enum
                 identifier = @"Value1Cell";
             }
             break;
-
+        }
         case TableSectionContactName:
+        {
             identifier = @"Value1Cell";
             break;
-
+        }
         case TableSectionContactAddress:
+        {
             identifier = (indexPath.row == 4) ? @"CountryCell"    : @"Value1Cell";
             identifier = (indexPath.row == 5) ? @"DisclosureCell" : identifier;
             break;
+        }
     }
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
@@ -359,32 +393,40 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionName:
+        {
             //###[self updateNameCell:cell atIndexPath:indexPath];
             break;
-
+        }
         case TableSectionE164:
+        {
             [self updateNumberCell:cell atIndexPath:indexPath];
             break;
-
+        }
         case TableSectionDestination:
+        {
             [self updateDestinationCell:cell atIndexPath:indexPath];
             break;
-
+        }
         case TableSectionSubscription:
+        {
             [self updateSubscriptionCell:cell atIndexPath:indexPath];
             break;
-
+        }
         case TableSectionArea:
+        {
             [self updateAreaCell:cell atIndexPath:indexPath];
             break;
-
+        }
         case TableSectionContactName:
+        {
             [self updateContactNameCell:cell atIndexPath:indexPath];
             break;
-
+        }
         case TableSectionContactAddress:
+        {
             [self updateContactAddressCell:cell atIndexPath:indexPath];
             break;
+        }
     }
 }
 
@@ -451,14 +493,16 @@ typedef enum
     switch (indexPath.row)
     {
         case 0:
+        {
             cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionPurchaseDate Label", nil,
                                                                           [NSBundle mainBundle], @"Purchased",
                                                                           @"....");
             cell.detailTextLabel.text = [dateFormatter stringFromDate:number.purchaseDate];
             cell.selectionStyle       = UITableViewCellSelectionStyleNone;
             break;
-
+        }
         case 1:
+        {
             cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionRenewalDate Label", nil,
                                                                           [NSBundle mainBundle], @"Expiry",
                                                                           @"....");
@@ -466,6 +510,7 @@ typedef enum
             cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
             break;
+        }
     }
 }
 
@@ -476,30 +521,36 @@ typedef enum
     switch ([Common nthBitSet:indexPath.row inValue:areaRows])
     {
         case AreaRowType:
+        {
             cell.textLabel.text       = [Strings typeString];
             numberTypeMask            = [NumberType numberTypeMaskForString:number.numberType];
             cell.detailTextLabel.text = [NumberType localizedStringForNumberType:numberTypeMask];
             break;
-
+        }
         case AreaRowAreaCode:
+        {
             cell.textLabel.text       = [Strings areaCodeString];
             cell.detailTextLabel.text = number.areaCode;
             break;
-
+        }
         case AreaRowAreaName:
+        {
             cell.textLabel.text       = [Strings areaString];
             cell.detailTextLabel.text = number.areaName;
             break;
-
+        }
         case AreaRowStateName:
+        {
             cell.textLabel.text       = [Strings stateString];
             cell.detailTextLabel.text = number.stateName;
             break;
-
+        }
         case AreaRowCountry:
+        {
             cell.textLabel.text       = [Strings countryString];
             cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:number.numberCountry];
             break;
+        }
     }
 
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -512,24 +563,29 @@ typedef enum
     switch ([Common nthBitSet:indexPath.row inValue:contactNameRows])
     {
         case ContactNameRowSalutation:
+        {
             cell.textLabel.text       = [Strings salutationString];
             cell.detailTextLabel.text = [Strings localizedSalutation:number.salutation];
             break;
-
+        }
         case ContactNameRowCompany:
+        {
             cell.textLabel.text       = [Strings companyString];
             cell.detailTextLabel.text = number.company;
             break;
-
+        }
         case ContactNameRowFirstName:
+        {
             cell.textLabel.text       = [Strings firstNameString];
             cell.detailTextLabel.text = number.firstName;
             break;
-
+        }
         case ContactNameRowLastName:
+        {
             cell.textLabel.text       = [Strings lastNameString];
             cell.detailTextLabel.text = number.lastName;
             break;
+        }
     }
 
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -542,35 +598,42 @@ typedef enum
     switch ([Common nthBitSet:indexPath.row inValue:contactAddressRows])
     {
         case ContactAddressRowStreet:
+        {
             cell.textLabel.text       = [Strings streetString];
             cell.detailTextLabel.text = number.street;
             break;
-
+        }
         case ContactAddressRowBuilding:
+        {
             cell.textLabel.text       = [Strings buildingString];
             cell.detailTextLabel.text = number.building;
             break;
-
+        }
         case ContactAddressRowCity:
+        {
             cell.textLabel.text       = [Strings cityString];
             cell.detailTextLabel.text = number.city;
             break;
-
+        }
         case ContactAddressRowZipCode:
+        {
             cell.textLabel.text       = [Strings zipCodeString];
             cell.detailTextLabel.text = number.zipCode;
             break;
-
+        }
         case ContactAddressRowStateName:
+        {
             cell.textLabel.text       = [Strings stateString];
             cell.detailTextLabel.text = number.stateName;
             break;
-
+        }
         case ContactAddressRowCountry:
+        {
             cell.textLabel.text = @" ";  // Without this, detailTextLabel is on the left.
             [Common addCountryImageToCell:cell isoCountryCode:number.addressCountry];
             cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:number.addressCountry];
             break;
+        }
     }
 
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

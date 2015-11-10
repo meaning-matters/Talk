@@ -237,7 +237,7 @@
         NSStringFromClass([PhonesViewController               class]),
         NSStringFromClass([RatesViewController                class]),
         NSStringFromClass([NumbersViewController              class]),
-        NSStringFromClass([DestinationsViewController          class]),
+        NSStringFromClass([DestinationsViewController         class]),
         NSStringFromClass([SettingsViewController             class]),
         NSStringFromClass([HelpsViewController                class]),
         NSStringFromClass([AboutViewController                class]),
@@ -493,10 +493,10 @@
 {
     [[WebInterface sharedInterface] cancelAllHttpOperations];
 
-    [self.numbersViewController.navigationController     popToRootViewControllerAnimated:NO];
+    [self.numbersViewController.navigationController      popToRootViewControllerAnimated:NO];
     [self.destinationsViewController.navigationController popToRootViewControllerAnimated:NO];
-    [self.phonesViewController.navigationController      popToRootViewControllerAnimated:NO];
-    [self.ratesViewController.navigationController       popToRootViewControllerAnimated:NO];
+    [self.phonesViewController.navigationController       popToRootViewControllerAnimated:NO];
+    [self.ratesViewController.navigationController        popToRootViewControllerAnimated:NO];
 
     [[DataManager     sharedManager]  removeAll];
     [[Settings        sharedSettings] resetAll];
