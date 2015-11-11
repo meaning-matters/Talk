@@ -156,7 +156,8 @@
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     NumberData*           number         = [fetchedNumbersController objectAtIndexPath:indexPath];
-    NumberViewController* viewController = [[NumberViewController alloc] initWithNumber:number];
+    NumberViewController* viewController = [[NumberViewController alloc] initWithNumber:number
+                                                                   managedObjectContext:self.managedObjectContext];
 
     [self.navigationController pushViewController:viewController animated:YES];
 }

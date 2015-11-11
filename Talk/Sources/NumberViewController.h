@@ -13,6 +13,7 @@
 
 @interface NumberViewController : ItemViewController <UITextFieldDelegate>
 
-- (instancetype)initWithNumber:(NumberData*)number;
+- (instancetype)initWithNumber:(NumberData*)number
+          managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
 @end
