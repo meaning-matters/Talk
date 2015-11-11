@@ -529,7 +529,8 @@ typedef enum
         case TableSectionNumbers:
         {
             NumberData*           number         = numbersArray[indexPath.row];
-            NumberViewController* viewController = [[NumberViewController alloc] initWithNumber:number];
+            NumberViewController* viewController = [[NumberViewController alloc] initWithNumber:number
+                                                                           managedObjectContext:self.managedObjectContext];
 
             [self.navigationController pushViewController:viewController animated:YES];
             break;

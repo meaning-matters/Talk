@@ -82,10 +82,11 @@ typedef enum
 @implementation NumberViewController
 
 - (instancetype)initWithNumber:(NumberData*)theNumber
+          managedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
     NBLog(@"########## Look at PhoneViewController.m for fixes in handling Save, Keyboard, .... on WED 23 APR 2014");
 
-    if (self = [super init])
+    if (self = [super initWithManagedObjectContext:managedObjectContext])
     {
         number    = theNumber;
         self.name = number.name;
