@@ -36,6 +36,7 @@ typedef enum
 {
     TableSections sections;
     BOOL          isNew;
+    BOOL          isDeleting;
 
     PhoneNumber*  phoneNumber;
 
@@ -131,14 +132,20 @@ typedef enum
         {
             if (destruct == YES)
             {
+                isDeleting = YES;
+                
                 [self.phone deleteFromManagedObjectContext:self.managedObjectContext
                                                 completion:^(BOOL succeeded)
-                 {
-                     if (succeeded)
-                     {
-                         [self.navigationController popViewControllerAnimated:YES];
-                     }
-                 }];
+                {
+                    if (succeeded)
+                    {
+                        [self.navigationController popViewControllerAnimated:YES];
+                    }
+                    else
+                    {
+                        isDeleting = NO;
+                    }
+                }];
             }
         }
                                  cancelButtonTitle:[Strings cancelString]
@@ -170,31 +177,28 @@ typedef enum
         return;
     }
 
-    self.phone.name = self.name;
-    self.phone.e164 = [phoneNumber e164Format];
-
     if (isNew == YES)
     {
         self.navigationItem.rightBarButtonItem.enabled = NO;
     }
 
-    [[WebClient sharedClient] updateVerifiedE164:self.phone.e164
-                                        withName:self.phone.name
-                                           reply:^(NSError *error)
+    [[WebClient sharedClient] updateVerifiedE164:self.phone.e164 withName:self.name reply:^(NSError *error)
     {
         if (error == nil)
         {
+            self.phone.name = self.name;
+            self.phone.e164 = [phoneNumber e164Format];
+            
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
 
+            [self.view endEditing:YES];
             if (isNew == YES)
             {
-                [self.view endEditing:YES];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
         }
         else
         {
-            [self.managedObjectContext rollback];
             self.name = self.phone.name;
             [self showSaveError:error];
         }
@@ -220,7 +224,15 @@ typedef enum
                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
     {
         [self.view endEditing:YES];
-        [self dismissViewControllerAnimated:YES completion:nil];
+        
+        if (isNew)
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        else
+        {
+            [self.tableView reloadRowsAtIndexPaths:@[self.nameIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
     }
                          cancelButtonTitle:[Strings cancelString]
                          otherButtonTitles:nil];
@@ -670,7 +682,7 @@ typedef enum
 
 - (void)save
 {
-    if (isNew == NO)
+    if (isNew == NO && isDeleting == NO)
     {
         [self saveAction];
     }

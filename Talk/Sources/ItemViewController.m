@@ -33,25 +33,11 @@
 }
 
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NSManagedObjectContextObjectsDidChangeNotification
-                                                  object:self.managedObjectContext];
-}
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
     self.clearsSelectionOnViewWillAppear = NO;
-
-    // Can't be in init method because subclass may create/set child managed object context.
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleManagedObjectsChange:)
-                                                 name:NSManagedObjectContextObjectsDidChangeNotification
-                                               object:self.managedObjectContext];
 
     // Let keyboard be hidden when user taps outside text fields.
     UITapGestureRecognizer* gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -84,12 +70,6 @@
 
 
 #pragma mark - Helper Methods
-
-- (void)handleManagedObjectsChange:(NSNotification*)note
-{
-    [self save];
-}
-
 
 - (NSIndexPath*)findCellIndexPathForSubview:(UIView*)subview
 {

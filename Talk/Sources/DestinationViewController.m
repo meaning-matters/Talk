@@ -180,6 +180,10 @@ typedef enum
                 {
                     [self.navigationController popViewControllerAnimated:YES];
                 }
+                else
+                {
+                    isDeleting = NO;
+                }
             }];
         }
     }
@@ -195,6 +199,8 @@ typedef enum
     statementsArray[0][@"call"][@"e164"][0] = phone.e164;
     self.destination.statements = [Common jsonStringWithObject:statementsArray];
 
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+
     NSString* uuid = [[NSUUID UUID] UUIDString];
     self.destination.uuid = uuid;
     [[WebClient sharedClient] createIvrForUuid:uuid
@@ -208,7 +214,6 @@ typedef enum
         }
         else
         {
-            [self.managedObjectContext rollback];
             [self showSaveError:error];
         }
     }];
@@ -227,10 +232,6 @@ typedef enum
         return;
     }
 
-    self.destination.name = self.name;
-    statementsArray[0][@"call"][@"e164"][0] = phone.e164;
-    self.destination.statements = [Common jsonStringWithObject:statementsArray];
-
     [[WebClient sharedClient] updateIvrForUuid:self.destination.uuid
                                           name:self.name
                                     statements:statementsArray
@@ -238,11 +239,15 @@ typedef enum
     {
         if (error == nil)
         {
+            self.destination.name = self.name;
+            statementsArray[0][@"call"][@"e164"][0] = phone.e164;
+            self.destination.statements = [Common jsonStringWithObject:statementsArray];
+            
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
         }
         else
         {
-            [self.managedObjectContext rollback];
+            self.name = self.destination.name;
             [self showSaveError:error];
         }
     }];

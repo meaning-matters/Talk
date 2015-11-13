@@ -41,9 +41,9 @@
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
-         {
-             completion ? completion(NO) : 0;
-         }
+        {
+            completion ? completion(NO) : 0;
+        }
                              cancelButtonTitle:[Strings cancelString]
                              otherButtonTitles:nil];
     }
