@@ -20,6 +20,7 @@
 #import "NumberLabel.h"
 #import "DestinationData.h"
 #import "Skinning.h"
+#import "DataManager.h"
 
 
 typedef enum
@@ -84,8 +85,6 @@ typedef enum
 - (instancetype)initWithNumber:(NumberData*)theNumber
           managedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
-    NBLog(@"########## Look at PhoneViewController.m for fixes in handling Save, Keyboard, .... on WED 23 APR 2014");
-
     if (self = [super initWithManagedObjectContext:managedObjectContext])
     {
         number    = theNumber;
@@ -364,13 +363,13 @@ typedef enum
             break;
 
         case TableSectionE164:
-            [self updateNumberCell:cell atIndexPath:indexPath];
+            [self updateNumberCell:cell];
             break;
-
+            
         case TableSectionDestination:
-            [self updateDestinationCell:cell atIndexPath:indexPath];
+            [self updateDestinationCell:cell];
             break;
-
+            
         case TableSectionSubscription:
             [self updateSubscriptionCell:cell atIndexPath:indexPath];
             break;
@@ -392,7 +391,7 @@ typedef enum
 
 #pragma mark - Cell Methods
 
-- (void)updateNameCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
+- (void)updateNameCell:(UITableViewCell*)cell
 {
     UITextField* textField;
 
@@ -418,7 +417,7 @@ typedef enum
 }
 
 
-- (void)updateNumberCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
+- (void)updateNumberCell:(UITableViewCell*)cell
 {
     NumberLabel* numberLabel = [Common addNumberLabelToCell:cell];
 
@@ -428,7 +427,7 @@ typedef enum
 }
 
 
-- (void)updateDestinationCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
+- (void)updateDestinationCell:(UITableViewCell*)cell
 {
     cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number Destination", nil,
                                                                   [NSBundle mainBundle], @"Destination",
@@ -585,7 +584,6 @@ typedef enum
 {
     if ([self.name isEqualToString:number.name] == YES)
     {
-        // Nothing has changed.
         return;
     }
 
@@ -594,35 +592,43 @@ typedef enum
         if (error == nil)
         {
             number.name = self.name;
+
+            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
         }
         else
         {
-            NSString* title;
-            NSString* message;
-
-            title   = NSLocalizedStringWithDefaultValue(@"Number NameUpdateFailedTitle", nil,
-                                                        [NSBundle mainBundle], @"Name Not Updated",
-                                                        @"Alert title telling that a name was not saved.\n"
-                                                        @"[iOS alert title size].");
-            message = NSLocalizedStringWithDefaultValue(@"Number NameUpdateFailedMessage", nil,
-                                                        [NSBundle mainBundle],
-                                                        @"Saving the name via the internet failed: %@\n\n"
-                                                        @"Please try again later.",
-                                                        @"Alert message telling that a name must be supplied\n"
-                                                        @"[iOS alert message size]");
-            message = [NSString stringWithFormat:message, error.localizedDescription];
-            [BlockAlertView showAlertViewWithTitle:title
-                                           message:message
-                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
-            {
-                self.name = number.name;
-                [self updateNameCell:[self.tableView cellForRowAtIndexPath:self.nameIndexPath]
-                         atIndexPath:self.nameIndexPath];
-            }
-                                 cancelButtonTitle:[Strings closeString]
-                                 otherButtonTitles:nil];
+            self.name = number.name;
+            [self showSaveError:error];
         }
     }];
+}
+
+
+- (void)showSaveError:(NSError*)error
+{
+    NSString* title;
+    NSString* message;
+    
+    title   = NSLocalizedStringWithDefaultValue(@"Number NameUpdateFailedTitle", nil,
+                                                [NSBundle mainBundle], @"Name Not Updated",
+                                                @"Alert title telling that a name was not saved.\n"
+                                                @"[iOS alert title size].");
+    message = NSLocalizedStringWithDefaultValue(@"Number NameUpdateFailedMessage", nil,
+                                                [NSBundle mainBundle],
+                                                @"Saving the name via the internet failed: %@\n\n"
+                                                @"Please try again later.",
+                                                @"Alert message telling that a name must be supplied\n"
+                                                @"[iOS alert message size]");
+    message = [NSString stringWithFormat:message, error.localizedDescription];
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        self.name = number.name;
+        [self updateNameCell:[self.tableView cellForRowAtIndexPath:self.nameIndexPath]];
+     }
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
 }
 
 @end
