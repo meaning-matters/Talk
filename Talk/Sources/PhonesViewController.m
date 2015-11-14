@@ -385,7 +385,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     NSString* message = NSLocalizedStringWithDefaultValue(@"Phone ...", nil, [NSBundle mainBundle],
                                                           @"This caller ID will be used when you did not select "
                                                           @"one for the contact you're calling, or "
-                                                          @"when you call using the dialer.",
+                                                          @"when you call using the Keypad.",
                                                           @"...");
     [BlockAlertView showAlertViewWithTitle:title
                                    message:message

@@ -95,7 +95,7 @@
     personViewController.displayedPerson = contactRef;
     CFRelease(personViewController.displayedPerson);
 
-    personViewController.title = NSLocalizedStringWithDefaultValue(@"Dialer AddToContact", nil, [NSBundle mainBundle],
+    personViewController.title = NSLocalizedStringWithDefaultValue(@"Keypad AddToContact", nil, [NSBundle mainBundle],
                                                                    @"Add to Contacts",
                                                                    @"Title.\n"
                                                                    @"[].");

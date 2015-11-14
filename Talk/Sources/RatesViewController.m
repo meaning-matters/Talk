@@ -140,7 +140,7 @@ typedef enum
                                                       @"only the best prices are shown. These are very close to what "
                                                       @"you'll pay most of the time, but there are exceptions. "
                                                       @"See the Credit section on the Help tab for more info.\n\n"
-                                                      @"(The actual price for calling a number is shown on the Dialer, "
+                                                      @"(The actual price for calling a number is shown on the Keypad, "
                                                       @"and when you make a call.)",
                                                       @"[Multiple lines]");
             break;

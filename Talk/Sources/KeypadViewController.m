@@ -1,12 +1,12 @@
 //
-//  DialerViewController.m
+//  KeypadViewController.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 06/11/12.
 //  Copyright (c) 2012 NumberBay Ltd. All rights reserved.
 //
 
-#import "DialerViewController.h"
+#import "KeypadViewController.h"
 #import "Common.h"
 #import "PhoneNumber.h"
 #import "Settings.h"
@@ -21,7 +21,7 @@
 #import "NBAddressBookManager.h"
 
 
-@interface DialerViewController () <NumberLabelDelegate>
+@interface KeypadViewController () <NumberLabelDelegate>
 {
     PhoneNumber* phoneNumber;           // Holds the current number on screen.
     NSString*    contactId;
@@ -35,17 +35,17 @@
 @end
 
 
-@implementation DialerViewController 
+@implementation KeypadViewController 
 
 @synthesize keypadView  = _keypadView;
 
 - (instancetype)init
 {
-    if (self = [super initWithNibName:@"DialerView" bundle:nil])
+    if (self = [super initWithNibName:@"KeypadMainView" bundle:nil])
     {
         self.edgesForExtendedLayout = UIRectEdgeNone;
 
-        self.title = NSLocalizedString(@"Dialer", @"Dialer tab title");
+        self.title = NSLocalizedString(@"Keypad", @"Keypad tab title");
         // The tabBarItem image must be set in my own NavigationController.
         
         self.specialNumberInfo = [NSMutableDictionary dictionary];
@@ -125,7 +125,7 @@
 {
     [super viewWillAppear:animated];
 
-    // We don't want navigation bar when dialer is on main tabs (i.e., not on More).
+    // We don't want navigation bar when Keypad is on main tabs (i.e., not on More).
     BOOL hidden = (self.navigationController != self.tabBarController.moreNavigationController);
     self.navigationController.navigationBar.hidden = hidden;
 

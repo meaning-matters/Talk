@@ -551,16 +551,16 @@
 		48AF44EB1649479100DFE3D8 /* NumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44E91649479100DFE3D8 /* NumbersViewController.m */; };
 		48AF44EE164947B300DFE3D8 /* CreditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44ED164947B300DFE3D8 /* CreditViewController.m */; };
 		48AF44EF164947B300DFE3D8 /* CreditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44ED164947B300DFE3D8 /* CreditViewController.m */; };
-		48AF44F2164947CE00DFE3D8 /* DialerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F1164947CE00DFE3D8 /* DialerViewController.m */; };
-		48AF44F3164947CE00DFE3D8 /* DialerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F1164947CE00DFE3D8 /* DialerViewController.m */; };
+		48AF44F2164947CE00DFE3D8 /* KeypadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F1164947CE00DFE3D8 /* KeypadViewController.m */; };
+		48AF44F3164947CE00DFE3D8 /* KeypadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F1164947CE00DFE3D8 /* KeypadViewController.m */; };
 		48AF44F6164947E600DFE3D8 /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F5164947E600DFE3D8 /* GroupsViewController.m */; };
 		48AF44F7164947E600DFE3D8 /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F5164947E600DFE3D8 /* GroupsViewController.m */; };
 		48AF44FE1649483600DFE3D8 /* HelpsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44FD1649483600DFE3D8 /* HelpsViewController.m */; };
 		48AF44FF1649483600DFE3D8 /* HelpsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44FD1649483600DFE3D8 /* HelpsViewController.m */; };
 		48AF45021649484600DFE3D8 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF45011649484600DFE3D8 /* AboutViewController.m */; };
 		48AF45031649484600DFE3D8 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF45011649484600DFE3D8 /* AboutViewController.m */; };
-		48AF450B164948CD00DFE3D8 /* DialerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450A164948CD00DFE3D8 /* DialerView.xib */; };
-		48AF450C164948CD00DFE3D8 /* DialerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450A164948CD00DFE3D8 /* DialerView.xib */; };
+		48AF450B164948CD00DFE3D8 /* KeypadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450A164948CD00DFE3D8 /* KeypadView.xib */; };
+		48AF450C164948CD00DFE3D8 /* KeypadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450A164948CD00DFE3D8 /* KeypadView.xib */; };
 		48AF450E164948DC00DFE3D8 /* GroupsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450D164948DC00DFE3D8 /* GroupsView.xib */; };
 		48AF450F164948DC00DFE3D8 /* GroupsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450D164948DC00DFE3D8 /* GroupsView.xib */; };
 		48AF45171649494400DFE3D8 /* AboutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45161649494400DFE3D8 /* AboutView.xib */; };
@@ -569,8 +569,8 @@
 		48AF45301649788A00DFE3D8 /* AboutTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */; };
 		48AF45331649788A00DFE3D8 /* CreditTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451C1649788A00DFE3D8 /* CreditTab@2x.png */; };
 		48AF45341649788A00DFE3D8 /* CreditTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451C1649788A00DFE3D8 /* CreditTab@2x.png */; };
-		48AF45371649788A00DFE3D8 /* DialerTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451E1649788A00DFE3D8 /* DialerTab@2x.png */; };
-		48AF45381649788A00DFE3D8 /* DialerTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451E1649788A00DFE3D8 /* DialerTab@2x.png */; };
+		48AF45371649788A00DFE3D8 /* KeypadTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451E1649788A00DFE3D8 /* KeypadTab@2x.png */; };
+		48AF45381649788A00DFE3D8 /* KeypadTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451E1649788A00DFE3D8 /* KeypadTab@2x.png */; };
 		48AF453B1649788A00DFE3D8 /* DestinationsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45201649788A00DFE3D8 /* DestinationsTab@2x.png */; };
 		48AF453C1649788A00DFE3D8 /* DestinationsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45201649788A00DFE3D8 /* DestinationsTab@2x.png */; };
 		48AF453F1649788A00DFE3D8 /* GroupsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45221649788A00DFE3D8 /* GroupsTab@2x.png */; };
@@ -653,6 +653,7 @@
 		48C97EA01893F2BA00174DE9 /* BlockActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C97E9E1893F2BA00174DE9 /* BlockActionSheet.m */; };
 		48C97EA318943C7300174DE9 /* PhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C97EA218943C7300174DE9 /* PhoneViewController.m */; };
 		48C97EA418943C7300174DE9 /* PhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C97EA218943C7300174DE9 /* PhoneViewController.m */; };
+		48C9A2271BF7C9EC00966F80 /* KeypadMainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48C9A2261BF7C9EC00966F80 /* KeypadMainView.xib */; };
 		48CA5036172AEEB100CB1B7B /* CueRecordBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CA5033172AEEB100CB1B7B /* CueRecordBlack@2x.png */; };
 		48CA5037172AEEB100CB1B7B /* CueRecordBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CA5033172AEEB100CB1B7B /* CueRecordBlack@2x.png */; };
 		48CA503D172C5EB400CB1B7B /* DestinationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CA503C172C5EB400CB1B7B /* DestinationViewController.m */; };
@@ -673,8 +674,6 @@
 		48D0A6EB1654D66200FA2D98 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E81654D66200FA2D98 /* InfoPlist.strings */; };
 		48D0A6F41654D6D700FA2D98 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 48D0A6F31654D6D700FA2D98 /* main.mm */; };
 		48D0A6F51654D6D700FA2D98 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 48D0A6F31654D6D700FA2D98 /* main.mm */; };
-		48D0A6FA1655E2C600FA2D98 /* KeypadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6F91655E2C600FA2D98 /* KeypadView.xib */; };
-		48D0A6FB1655E2C600FA2D98 /* KeypadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6F91655E2C600FA2D98 /* KeypadView.xib */; };
 		48D3F01E164F9284002041A9 /* CountryNames.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F01D164F9284002041A9 /* CountryNames.m */; };
 		48D3F01F164F9284002041A9 /* CountryNames.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F01D164F9284002041A9 /* CountryNames.m */; };
 		48D4FADD1924247A00949894 /* NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D4FADC1924247A00949894 /* NavigationController.m */; };
@@ -1275,20 +1274,20 @@
 		48AF44E91649479100DFE3D8 /* NumbersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumbersViewController.m; sourceTree = "<group>"; };
 		48AF44EC164947B300DFE3D8 /* CreditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditViewController.h; sourceTree = "<group>"; };
 		48AF44ED164947B300DFE3D8 /* CreditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditViewController.m; sourceTree = "<group>"; };
-		48AF44F0164947CD00DFE3D8 /* DialerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialerViewController.h; sourceTree = "<group>"; };
-		48AF44F1164947CE00DFE3D8 /* DialerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DialerViewController.m; sourceTree = "<group>"; };
+		48AF44F0164947CD00DFE3D8 /* KeypadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeypadViewController.h; sourceTree = "<group>"; };
+		48AF44F1164947CE00DFE3D8 /* KeypadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeypadViewController.m; sourceTree = "<group>"; };
 		48AF44F4164947E600DFE3D8 /* GroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupsViewController.h; sourceTree = "<group>"; };
 		48AF44F5164947E600DFE3D8 /* GroupsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupsViewController.m; sourceTree = "<group>"; };
 		48AF44FC1649483600DFE3D8 /* HelpsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpsViewController.h; sourceTree = "<group>"; };
 		48AF44FD1649483600DFE3D8 /* HelpsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpsViewController.m; sourceTree = "<group>"; };
 		48AF45001649484600DFE3D8 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		48AF45011649484600DFE3D8 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
-		48AF450A164948CD00DFE3D8 /* DialerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DialerView.xib; sourceTree = "<group>"; };
+		48AF450A164948CD00DFE3D8 /* KeypadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KeypadView.xib; sourceTree = "<group>"; };
 		48AF450D164948DC00DFE3D8 /* GroupsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupsView.xib; sourceTree = "<group>"; };
 		48AF45161649494400DFE3D8 /* AboutView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutView.xib; sourceTree = "<group>"; };
 		48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AboutTab@2x.png"; sourceTree = "<group>"; };
 		48AF451C1649788A00DFE3D8 /* CreditTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CreditTab@2x.png"; sourceTree = "<group>"; };
-		48AF451E1649788A00DFE3D8 /* DialerTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DialerTab@2x.png"; sourceTree = "<group>"; };
+		48AF451E1649788A00DFE3D8 /* KeypadTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "KeypadTab@2x.png"; sourceTree = "<group>"; };
 		48AF45201649788A00DFE3D8 /* DestinationsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DestinationsTab@2x.png"; sourceTree = "<group>"; };
 		48AF45221649788A00DFE3D8 /* GroupsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GroupsTab@2x.png"; sourceTree = "<group>"; };
 		48AF45241649788A00DFE3D8 /* HelpsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HelpsTab@2x.png"; sourceTree = "<group>"; };
@@ -1394,6 +1393,7 @@
 		48C97E9E1893F2BA00174DE9 /* BlockActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockActionSheet.m; sourceTree = "<group>"; };
 		48C97EA118943C7300174DE9 /* PhoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneViewController.h; sourceTree = "<group>"; };
 		48C97EA218943C7300174DE9 /* PhoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneViewController.m; sourceTree = "<group>"; };
+		48C9A2261BF7C9EC00966F80 /* KeypadMainView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KeypadMainView.xib; sourceTree = "<group>"; };
 		48CA5033172AEEB100CB1B7B /* CueRecordBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CueRecordBlack@2x.png"; sourceTree = "<group>"; };
 		48CA503B172C5EB300CB1B7B /* DestinationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationViewController.h; sourceTree = "<group>"; };
 		48CA503C172C5EB400CB1B7B /* DestinationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationViewController.m; sourceTree = "<group>"; };
@@ -1410,7 +1410,6 @@
 		48D0A6E51654D65200FA2D98 /* SipConfig.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SipConfig.cfg; path = Resources/SipConfig.cfg; sourceTree = "<group>"; };
 		48D0A6E91654D66200FA2D98 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		48D0A6F31654D6D700FA2D98 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
-		48D0A6F91655E2C600FA2D98 /* KeypadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KeypadView.xib; sourceTree = "<group>"; };
 		48D3F01C164F9284002041A9 /* CountryNames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryNames.h; sourceTree = "<group>"; };
 		48D3F01D164F9284002041A9 /* CountryNames.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryNames.m; sourceTree = "<group>"; };
 		48D4FADB1924247A00949894 /* NavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationController.h; sourceTree = "<group>"; };
@@ -1791,7 +1790,7 @@
 				48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */,
 				48CB2C4917E6DB7700E19C3D /* ContactsTab@2x.png */,
 				48AF451C1649788A00DFE3D8 /* CreditTab@2x.png */,
-				48AF451E1649788A00DFE3D8 /* DialerTab@2x.png */,
+				48AF451E1649788A00DFE3D8 /* KeypadTab@2x.png */,
 				48AF45201649788A00DFE3D8 /* DestinationsTab@2x.png */,
 				48AF45221649788A00DFE3D8 /* GroupsTab@2x.png */,
 				48AF45241649788A00DFE3D8 /* HelpsTab@2x.png */,
@@ -2364,12 +2363,12 @@
 				48A261BF16FDE26100007638 /* CallStateView.xib */,
 				4814EA3917CB18DB004B7A3C /* CreditAmountCell.xib */,
 				4814EA3217CA98F4004B7A3C /* CreditBuyCell.xib */,
-				48AF450A164948CD00DFE3D8 /* DialerView.xib */,
+				48C9A2261BF7C9EC00966F80 /* KeypadMainView.xib */,
+				48AF450A164948CD00DFE3D8 /* KeypadView.xib */,
 				4837AF6E18D9B8C400D3AEBC /* GetStartedActionView.xib */,
 				480BEF9418D59ECA00C882E0 /* GetStartedView.xib */,
 				48AF450D164948DC00DFE3D8 /* GroupsView.xib */,
 				485E38A217B7E1960089F0F1 /* HtmlView.xib */,
-				48D0A6F91655E2C600FA2D98 /* KeypadView.xib */,
 				484A94A5171C5065009E22B9 /* NumberAreaActionCell.xib */,
 				484A949C171821CB009E22B9 /* NumberAreasCell.xib */,
 				480CE120193C4D100020F255 /* NumberBuyCell.xib */,
@@ -2404,8 +2403,8 @@
 				48D60EF318B4D7A4000BE5D2 /* CountriesViewController.m */,
 				48AF44EC164947B300DFE3D8 /* CreditViewController.h */,
 				48AF44ED164947B300DFE3D8 /* CreditViewController.m */,
-				48AF44F0164947CD00DFE3D8 /* DialerViewController.h */,
-				48AF44F1164947CE00DFE3D8 /* DialerViewController.m */,
+				48AF44F0164947CD00DFE3D8 /* KeypadViewController.h */,
+				48AF44F1164947CE00DFE3D8 /* KeypadViewController.m */,
 				48030819196AAFC000FDE1A4 /* ExtendNumberViewController.h */,
 				4803081A196AAFC000FDE1A4 /* ExtendNumberViewController.m */,
 				48CA5040172FC6C800CB1B7B /* DestinationSequenceViewController.h */,
@@ -2901,6 +2900,7 @@
 				485F6BCE1637270100D61365 /* SL@2x.png in Resources */,
 				485F6BD01637270100D61365 /* SM@2x.png in Resources */,
 				485F6BD21637270100D61365 /* SN@2x.png in Resources */,
+				48C9A2271BF7C9EC00966F80 /* KeypadMainView.xib in Resources */,
 				485F6BD41637270100D61365 /* SO@2x.png in Resources */,
 				485F6BD61637270100D61365 /* SR@2x.png in Resources */,
 				48CB2C4C17E6DB7700E19C3D /* ContactsTab@2x.png in Resources */,
@@ -2951,12 +2951,12 @@
 				4837AF6218D872D500D3AEBC /* GetStarted3.png in Resources */,
 				485F6C281637270100D61365 /* ZM@2x.png in Resources */,
 				485F6C2A1637270100D61365 /* ZW@2x.png in Resources */,
-				48AF450B164948CD00DFE3D8 /* DialerView.xib in Resources */,
+				48AF450B164948CD00DFE3D8 /* KeypadView.xib in Resources */,
 				48AF450E164948DC00DFE3D8 /* GroupsView.xib in Resources */,
 				48AF45171649494400DFE3D8 /* AboutView.xib in Resources */,
 				48AF452F1649788A00DFE3D8 /* AboutTab@2x.png in Resources */,
 				48AF45331649788A00DFE3D8 /* CreditTab@2x.png in Resources */,
-				48AF45371649788A00DFE3D8 /* DialerTab@2x.png in Resources */,
+				48AF45371649788A00DFE3D8 /* KeypadTab@2x.png in Resources */,
 				48AF453B1649788A00DFE3D8 /* DestinationsTab@2x.png in Resources */,
 				48AF453F1649788A00DFE3D8 /* GroupsTab@2x.png in Resources */,
 				48AF45431649788A00DFE3D8 /* HelpsTab@2x.png in Resources */,
@@ -2970,7 +2970,6 @@
 				48EC6DC016545B1F00394A4B /* AC@2x.png in Resources */,
 				48D0A6E61654D65200FA2D98 /* SipConfig.cfg in Resources */,
 				48D0A6EA1654D66200FA2D98 /* InfoPlist.strings in Resources */,
-				48D0A6FA1655E2C600FA2D98 /* KeypadView.xib in Resources */,
 				48BD8BE81663E7A400F2CB45 /* CallBaseView.xib in Resources */,
 				4837AF8618E24BF100D3AEBC /* Icon-60.png in Resources */,
 				48EDD20D1667652A007B89DA /* AddCall@2x.png in Resources */,
@@ -3046,12 +3045,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				48884AB11615CE920005AA79 /* InfoPlist.strings in Resources */,
-				48AF450C164948CD00DFE3D8 /* DialerView.xib in Resources */,
+				48AF450C164948CD00DFE3D8 /* KeypadView.xib in Resources */,
 				48AF450F164948DC00DFE3D8 /* GroupsView.xib in Resources */,
 				48AF45181649494400DFE3D8 /* AboutView.xib in Resources */,
 				48AF45301649788A00DFE3D8 /* AboutTab@2x.png in Resources */,
 				48AF45341649788A00DFE3D8 /* CreditTab@2x.png in Resources */,
-				48AF45381649788A00DFE3D8 /* DialerTab@2x.png in Resources */,
+				48AF45381649788A00DFE3D8 /* KeypadTab@2x.png in Resources */,
 				48AF453C1649788A00DFE3D8 /* DestinationsTab@2x.png in Resources */,
 				48AF45401649788A00DFE3D8 /* GroupsTab@2x.png in Resources */,
 				48AF45441649788A00DFE3D8 /* HelpsTab@2x.png in Resources */,
@@ -3064,7 +3063,6 @@
 				48EC6DC116545B1F00394A4B /* AC@2x.png in Resources */,
 				48D0A6E71654D65200FA2D98 /* SipConfig.cfg in Resources */,
 				48D0A6EB1654D66200FA2D98 /* InfoPlist.strings in Resources */,
-				48D0A6FB1655E2C600FA2D98 /* KeypadView.xib in Resources */,
 				48EDD20E1667652A007B89DA /* AddCall@2x.png in Resources */,
 				48EDD2101667652A007B89DA /* ColorCurves.png in Resources */,
 				48CB2C4D17E6DB7700E19C3D /* ContactsTab@2x.png in Resources */,
@@ -3177,7 +3175,7 @@
 				48CB0775163D76C300B07199 /* PhoneNumber.m in Sources */,
 				48AF44EA1649479100DFE3D8 /* NumbersViewController.m in Sources */,
 				48AF44EE164947B300DFE3D8 /* CreditViewController.m in Sources */,
-				48AF44F2164947CE00DFE3D8 /* DialerViewController.m in Sources */,
+				48AF44F2164947CE00DFE3D8 /* KeypadViewController.m in Sources */,
 				48AF44F6164947E600DFE3D8 /* GroupsViewController.m in Sources */,
 				48C97E9F1893F2BA00174DE9 /* BlockActionSheet.m in Sources */,
 				48AF44FE1649483600DFE3D8 /* HelpsViewController.m in Sources */,
@@ -3315,7 +3313,7 @@
 				4812727416487E2D00534450 /* LibPhoneNumber.js in Sources */,
 				48AF44EB1649479100DFE3D8 /* NumbersViewController.m in Sources */,
 				48AF44EF164947B300DFE3D8 /* CreditViewController.m in Sources */,
-				48AF44F3164947CE00DFE3D8 /* DialerViewController.m in Sources */,
+				48AF44F3164947CE00DFE3D8 /* KeypadViewController.m in Sources */,
 				48AF44F7164947E600DFE3D8 /* GroupsViewController.m in Sources */,
 				48C97EA01893F2BA00174DE9 /* BlockActionSheet.m in Sources */,
 				48AF44FF1649483600DFE3D8 /* HelpsViewController.m in Sources */,

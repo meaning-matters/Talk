@@ -155,7 +155,7 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
   isFiltered state bug!  vervangen met (table == searchdisplaycontroller.table) zie searchtablevc.
   IS OPGELOST: Je moet isFiltered bepalen met tableView == self.searchDisplCtrl.tableView oid, zie mijn code.  Jasper moet zelfde doen.
 
-* Dialer = US, Dialler = UK!
+* Keypad = US, Dialler = UK!
 
 * Use UIactivitycontroller for Share.
 

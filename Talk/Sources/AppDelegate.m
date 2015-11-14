@@ -233,11 +233,11 @@
         NSStringFromClass([CreditViewController               class]),
         NSStringFromClass([NBRecentsNavigationController      class]),
         NSStringFromClass([NBPeoplePickerNavigationController class]),
-        NSStringFromClass([DialerViewController               class]),
+        NSStringFromClass([KeypadViewController               class]),
         NSStringFromClass([PhonesViewController               class]),
-        NSStringFromClass([RatesViewController                class]),
         NSStringFromClass([NumbersViewController              class]),
         NSStringFromClass([DestinationsViewController         class]),
+        NSStringFromClass([RatesViewController                class]),
         NSStringFromClass([SettingsViewController             class]),
         NSStringFromClass([HelpsViewController                class]),
         NSStringFromClass([AboutViewController                class]),
@@ -449,7 +449,7 @@
 
 - (void)addSpecialDialCodes
 {
-    [self.dialerViewController registerSpecialNumber:@"367#778" action:^(NSString *number)
+    [self.keypadViewController registerSpecialNumber:@"367#778" action:^(NSString *number)
     {
         [BlockAlertView showTextAlertViewWithTitle:@"DNS SRV Name"
                                            message:@"Change the name, or reset to the hard-coded default."

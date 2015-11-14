@@ -11,7 +11,7 @@
 #import "HockeySDK.h"
 #import "AboutViewController.h"
 #import "CreditViewController.h"
-#import "DialerViewController.h"
+#import "KeypadViewController.h"
 #import "DestinationsViewController.h"
 #import "GroupsViewController.h"
 #import "HelpsViewController.h"
@@ -34,19 +34,19 @@
 
 @property (nonatomic, strong) NSString*                           deviceToken;
 
-@property (nonatomic, strong) AboutViewController*                aboutViewController;
 @property (nonatomic, strong) CreditViewController*               creditViewController;
-@property (nonatomic, strong) DialerViewController*               dialerViewController;
-@property (nonatomic, strong) DestinationsViewController*         destinationsViewController;
-@property (nonatomic, strong) GroupsViewController*               groupsViewController;
-@property (nonatomic, strong) HelpsViewController*                helpsViewController;
-@property (nonatomic, strong) NumbersViewController*              numbersViewController;
-@property (nonatomic, strong) ShareViewController*                shareViewController;
-@property (nonatomic, strong) SettingsViewController*             settingsViewController;
-@property (nonatomic, strong) PhonesViewController*               phonesViewController;
-@property (nonatomic, strong) RatesViewController*                ratesViewController;
-@property (nonatomic, strong) NBPeoplePickerNavigationController* peoplePickerViewController;
 @property (nonatomic, strong) NBRecentsNavigationController*      recentsViewController;
+@property (nonatomic, strong) NBPeoplePickerNavigationController* peoplePickerViewController;
+@property (nonatomic, strong) KeypadViewController*               keypadViewController;
+@property (nonatomic, strong) PhonesViewController*               phonesViewController;
+@property (nonatomic, strong) NumbersViewController*              numbersViewController;
+@property (nonatomic, strong) DestinationsViewController*         destinationsViewController;
+@property (nonatomic, strong) RatesViewController*                ratesViewController;
+@property (nonatomic, strong) SettingsViewController*             settingsViewController;
+@property (nonatomic, strong) HelpsViewController*                helpsViewController;
+@property (nonatomic, strong) AboutViewController*                aboutViewController;
+@property (nonatomic, strong) GroupsViewController*               groupsViewController;
+@property (nonatomic, strong) ShareViewController*                shareViewController;
 
 + (AppDelegate*)appDelegate;
 
