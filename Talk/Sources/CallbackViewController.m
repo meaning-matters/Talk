@@ -112,7 +112,7 @@
     [[WebClient sharedClient] initiateCallbackForCallbackE164:[callbackPhoneNumber e164Format]
                                                  callthruE164:callthruE164
                                                  identityE164:[callerIdPhoneNumber e164Format]
-                                                      privacy:self.call.showCallerId
+                                                      privacy:!self.call.showCallerId
                                                         reply:^(NSError* error, NSString* theUuid)
     {
         if (error == nil)
