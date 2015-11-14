@@ -19,7 +19,6 @@
 #import "BlockAlertView.h"
 #import "PhonesViewController.h"
 #import "PhoneViewController.h"
-#import "NumberViewController.h"
 #import "DataManager.h"
 
 
@@ -160,36 +159,60 @@ typedef enum
 
 - (void)deleteAction
 {
-    NSString* buttonTitle = NSLocalizedStringWithDefaultValue(@"DestinationView DeleteTitle", nil,
-                                                              [NSBundle mainBundle], @"Delete Destination",
-                                                              @"...\n"
-                                                              @"[1/3 line small font].");
-
-    [BlockActionSheet showActionSheetWithTitle:nil
-                                    completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
+    if (self.destination.numbers.count == 0)
     {
-        if (destruct == YES)
-        {
-            isDeleting = YES;
+        NSString* buttonTitle = NSLocalizedStringWithDefaultValue(@"DestinationView DeleteTitle", nil,
+                                                                  [NSBundle mainBundle], @"Delete Destination",
+                                                                  @"...\n"
+                                                                  @"[1/3 line small font].");
 
-            [self.destination removePhones:self.destination.phones];
-            [self.destination deleteFromManagedObjectContext:self.managedObjectContext
-                                                 completion:^(BOOL succeeded)
+        [BlockActionSheet showActionSheetWithTitle:nil
+                                        completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
+        {
+            if (destruct == YES)
             {
-                if (succeeded)
+                isDeleting = YES;
+
+                [self.destination removePhones:self.destination.phones];
+                [self.destination deleteFromManagedObjectContext:self.managedObjectContext
+                                                     completion:^(BOOL succeeded)
                 {
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
-                else
-                {
-                    isDeleting = NO;
-                }
-            }];
+                    if (succeeded)
+                    {
+                        [self.navigationController popViewControllerAnimated:YES];
+                    }
+                    else
+                    {
+                        isDeleting = NO;
+                    }
+                }];
+            }
         }
+                                 cancelButtonTitle:[Strings cancelString]
+                            destructiveButtonTitle:buttonTitle
+                                 otherButtonTitles:nil];
     }
-                             cancelButtonTitle:[Strings cancelString]
-                        destructiveButtonTitle:buttonTitle
+    else
+    {
+        NSString* title;
+        NSString* message;
+        
+        title   = NSLocalizedStringWithDefaultValue(@"DestinationView CantDeleteTitle", nil, [NSBundle mainBundle],
+                                                    @"Can't Delete Destination",
+                                                    @"...\n"
+                                                    @"[1/3 line small font].");
+        message = NSLocalizedStringWithDefaultValue(@"DestinationView CantDeleteMessage", nil, [NSBundle mainBundle],
+                                                    @"This Destination can't be deleted because it's used by one "
+                                                    @"or more Numbers.",
+                                                    @"Table footer that app can't be deleted\n"
+                                                    @"[1 line larger font].");
+        
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
+    }
 }
 
 
@@ -298,31 +321,11 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionName:
-        {
-            numberOfRows = 1;
-            break;
-        }
-        case TableSectionPhone:
-        {
-            numberOfRows = 1;
-            break;
-        }
-        case TableSectionStatements:
-        {
-            numberOfRows = 1;
-            break;
-        }
-        case TableSectionNumbers:
-        {
-            numberOfRows = self.destination.numbers.count;
-            break;
-        }
-        case TableSectionRecordings:
-        {
-            numberOfRows = self.destination.recordings.count;
-            break;
-        }
+        case TableSectionName:       numberOfRows = 1;                                 break;
+        case TableSectionPhone:      numberOfRows = 1;                                 break;
+        case TableSectionStatements: numberOfRows = 1;                                 break;
+        case TableSectionNumbers:    numberOfRows = self.destination.numbers.count;    break;
+        case TableSectionRecordings: numberOfRows = self.destination.recordings.count; break;
     }
     
     return numberOfRows;
@@ -364,15 +367,6 @@ typedef enum
             }
             break;
         }
-        case TableSectionNumbers:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"DestinationView CanNotDeleteFooter", nil,
-                                                      [NSBundle mainBundle],
-                                                      @"This Destination can't be deleted because it's in use.",
-                                                      @"Table footer that app can't be deleted\n"
-                                                      @"[1 line larger font].");
-            break;
-        }
     }
 
     return title;
@@ -385,31 +379,11 @@ typedef enum
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
-        case TableSectionName:
-        {
-            cell = [self nameCellForRowAtIndexPath:indexPath];
-            break;
-        }
-        case TableSectionPhone:
-        {
-            cell = [self phoneCellForRowAtIndexPath:indexPath];
-            break;
-        }
-        case TableSectionStatements:
-        {
-            cell = [self statementsCellForRowAtIndexPath:indexPath];
-            break;
-        }
-        case TableSectionNumbers:
-        {
-            cell = [self numbersCellForRowAtIndexPath:indexPath];
-            break;
-        }
-        case TableSectionRecordings:
-        {
-            cell = [self recordingsCellForRowAtIndexPath:indexPath];
-            break;
-        }
+        case TableSectionName:       cell = [self nameCellForRowAtIndexPath:indexPath];       break;
+        case TableSectionPhone:      cell = [self phoneCellForRowAtIndexPath:indexPath];      break;
+        case TableSectionStatements: cell = [self statementsCellForRowAtIndexPath:indexPath]; break;
+        case TableSectionNumbers:    cell = [self numbersCellForRowAtIndexPath:indexPath];    break;
+        case TableSectionRecordings: cell = [self recordingsCellForRowAtIndexPath:indexPath]; break;
     }
 
     return cell;
@@ -469,14 +443,13 @@ typedef enum
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumbersCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NumbersCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NumbersCell"];
     }
 
-    [Common addCountryImageToCell:cell isoCountryCode:number.numberCountry];
-
-    cell.detailTextLabel.text = number.name;
-    cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
-    cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
+    cell.imageView.image = [UIImage imageNamed:number.numberCountry];
+    cell.textLabel.text  = number.name;
+    cell.accessoryType   = UITableViewCellAccessoryNone;
+    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
 
     return cell;
 }
@@ -533,11 +506,6 @@ typedef enum
         }
         case TableSectionNumbers:
         {
-            NumberData*           number         = numbersArray[indexPath.row];
-            NumberViewController* viewController = [[NumberViewController alloc] initWithNumber:number
-                                                                           managedObjectContext:self.managedObjectContext];
-
-            [self.navigationController pushViewController:viewController animated:YES];
             break;
         }
     }
@@ -570,19 +538,14 @@ typedef enum
 
 - (void)updateRightBarButtonItem
 {
-    PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:phone.e164];
-    BOOL         valid;
-
-    valid = [self.name stringByReplacingOccurrencesOfString:@" " withString:@""].length > 0 &&
-            ((phoneNumber.isValid && [Settings sharedSettings].homeCountry.length > 0) || phoneNumber.isInternational);
-
     if (isNew == YES)
     {
+        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:phone.e164];
+        BOOL         valid       = [self.name stringByReplacingOccurrencesOfString:@" " withString:@""].length > 0 &&
+                                   ((phoneNumber.isValid && [Settings sharedSettings].homeCountry.length > 0) ||
+                                    phoneNumber.isInternational);
+
         self.navigationItem.rightBarButtonItem.enabled = valid;
-    }
-    else
-    {
-        self.navigationItem.rightBarButtonItem.enabled = (self.destination.numbers.count == 0);
     }
 }
 

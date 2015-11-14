@@ -120,7 +120,10 @@ typedef enum
 
 - (void)deleteAction
 {
-    if ([self canDelete])
+    if ([self.phone.e164 isEqualToString:[Settings sharedSettings].callbackE164] == NO &&
+        [self.phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164] == NO &&
+        numbersArray.count == 0 &&
+        namesArray.count == 0)
     {
         NSString* buttonTitle = NSLocalizedStringWithDefaultValue(@"PhoneView DeleteTitle", nil, [NSBundle mainBundle],
                                                                   @"Delete Phone",
@@ -162,7 +165,7 @@ typedef enum
                                                     @"[1/3 line small font].");
         
         [BlockAlertView showAlertViewWithTitle:title
-                                       message:[self cantDeleteTitle]
+                                       message:[self cantDeleteMessage]
                                     completion:nil
                              cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
@@ -462,19 +465,18 @@ typedef enum
 {
     UITableViewCell* cell;
     NumberData*      number = numbersArray[indexPath.row];
-
+    
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumbersCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"NumbersCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NumbersCell"];
     }
-
-    [Common addCountryImageToCell:cell isoCountryCode:number.numberCountry];
-
-    cell.detailTextLabel.text = number.name;
-    cell.accessoryType        = UITableViewCellAccessoryNone;
-    cell.selectionStyle       = UITableViewCellSelectionStyleNone;
-
+    
+    cell.imageView.image = [UIImage imageNamed:number.numberCountry];
+    cell.textLabel.text  = number.name;
+    cell.accessoryType   = UITableViewCellAccessoryNone;
+    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
+    
     return cell;
 }
 
@@ -584,16 +586,7 @@ typedef enum
 }
 
 
-- (BOOL)canDelete
-{
-    return [self.phone.e164 isEqualToString:[Settings sharedSettings].callbackE164] == NO &&
-           [self.phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164] == NO &&
-           numbersArray.count == 0 &&
-           namesArray.count == 0;
-}
-
-
-- (NSString*)cantDeleteTitle
+- (NSString*)cantDeleteMessage
 {
     NSString*       title;
     NSMutableArray* useArray = [NSMutableArray array];
@@ -634,7 +627,7 @@ typedef enum
                                                               @"[1 line larger font].")];
     }
     
-    title = NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberFooter", nil,
+    title = NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberMessage", nil,
                                               [NSBundle mainBundle],
                                               @"This Phone can't be deleted because it's used ",
                                               @"Table footer that ....\n"
