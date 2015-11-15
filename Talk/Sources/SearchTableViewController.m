@@ -147,7 +147,7 @@
     self.nameIndexDictionary = [NSMutableDictionary dictionary];
     for (id object in self.objectsArray)
     {
-        NSString*       name = [self nameForObject:object];
+        NSString*       name      = [self nameForObject:object];
         NSString*       nameIndex = [name substringToIndex:self.width];
         NSMutableArray* indexArray;
         if ((indexArray = [self.nameIndexDictionary valueForKey:nameIndex]) != nil)

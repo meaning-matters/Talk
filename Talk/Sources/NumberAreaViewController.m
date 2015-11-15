@@ -163,7 +163,8 @@ typedef enum
         areaRows |= AreaRowCountry;
         
         // Conditionally there Area section rows.
-        BOOL    allCities = [[area objectForKey:@"areaName"] caseInsensitiveCompare:@"All cities"] == NSOrderedSame;
+        BOOL allCities = (area[@"areaName"] != [NSNull null] &&
+                          [area[@"areaName"] caseInsensitiveCompare:@"All cities"] == NSOrderedSame);
         areaRows |= ([area[@"areaCode"] length] > 0)                           ? AreaRowAreaCode : 0;
         areaRows |= (numberTypeMask == NumberTypeGeographicMask && !allCities) ? AreaRowAreaName : 0;
         areaRows |= (state != nil)                                             ? AreaRowState    : 0;
@@ -1084,7 +1085,7 @@ typedef enum
         case AreaRowAreaName:
         {
             cell.textLabel.text       = [Strings areaString];
-            cell.detailTextLabel.text = area[@"areaName"];
+            cell.detailTextLabel.text = [Common capitalizedString:area[@"areaName"]];
             cell.imageView.image      = nil;
             break;
         }

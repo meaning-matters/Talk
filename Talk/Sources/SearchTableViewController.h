@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 
-@interface SearchTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate>
+@interface SearchTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
+                                                         UISearchDisplayDelegate, UISearchBarDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView*  tableView;
 @property (nonatomic, strong) NSArray*             objectsArray;        // The main list of subclass objects.
@@ -28,11 +29,11 @@
 - (void)createIndexOfWidth:(NSUInteger)width;
 
 
-//  Get the name of an object on the table.
+//  Gets the name of an object on the table.
 - (NSString*)nameOnTable:(UITableView*)tableView atIndexPath:(NSIndexPath*)indexPath;
 
 
-//  Takes a subclass specific object from the `objectsArray` and return the name that
+//  Takes a subclass specific object from the `objectsArray` and returns the name that
 //  must be used for the table index.  Must be implemented by subclass.
 - (NSString*)nameForObject:(id)object;
 

@@ -5,6 +5,61 @@
 //  Created by Cornelis van der Bent on 09/03/13.
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
+//  Here are the different Voxbone reply formats we need to deal with:
+//      GEOGRAPHIC:
+//          Brazil (normal)
+//          areaCode = 81
+//          areaId   = 23325
+//          areaName = "ABREU E LIMA"
+//          city     = "ABREU E LIMA"
+//
+//          Denmark (exception)
+//          areaCode = 89
+//          areaId   = 20503
+//          areaName = "ALL CITIES"
+//          city     = "ALL CITIES"
+//
+//      NATIONAL:
+//          Belgium (normal)
+//          areaCode = 78;
+//          areaId   = 8368;
+//          areaName = "<null>"
+//          city     = "<null>"
+//
+//          Bahrain (exception)
+//          areaCode = ""
+//          areaId   = 7362
+//          areaName = "<null>"
+//          city     = "<null>"
+//
+//      TOLL_FREE:
+//          Argentina (normal)
+//          areaCode = 822
+//          areaId   = 6424
+//          areaName = "<null>"
+//          city     = "<null>"
+//
+//      MOBILE:
+//          Belgium (normal)
+//          areaCode = 466
+//          areaId   = 20560
+//          areaName = "<null>"
+//          city     = "<null>"
+//
+//      SHARED_COST:
+//          Australia (normal)
+//          areaCode = 1300
+//          areaId   = 9486
+//          areaName = "<null>"
+//          city     = "<null>"
+//
+//      SPECIAL:
+//          China (normal)
+//          areaCode = 10
+//          areaId   = 23067
+//          areaName = BEIJING
+//          city     = BEIJING
+//
 
 #import "NumberAreasViewController.h"
 #import "NumberType.h"
@@ -17,12 +72,26 @@
 #import "NumberAreasCell.h"
 #import "Settings.h"
 
+typedef NS_ENUM(NSUInteger, AreaFormat)
+{
+    AreaFormatGeographic,
+    AreaFormatGeographicException,
+    AreaFormatNational,
+    AreaFormatNationalException,
+    AreaFormatTollFree,
+    AreaFormatMobile,
+    AreaFormatSharedCost,
+    AreaFormatSpecial,
+    AreaFormatInternational,
+};
+
 
 @interface NumberAreasViewController ()
 {
     NSString*      isoCountryCode;
     NSDictionary*  state;
     NumberTypeMask numberTypeMask;
+    AreaFormat     areaFormat;
 }
 
 @end
@@ -129,47 +198,62 @@
 {
     if ([(NSArray*)content count] > 0)
     {
-        NSMutableArray* areasArray = [NSMutableArray array];
-
-        for (NSDictionary* area in content)
+        // Determine format.
+        NSDictionary* area = [content firstObject];
+        switch (numberTypeMask)
         {
-            NSMutableDictionary* mutableArea = [NSMutableDictionary dictionaryWithDictionary:area];
-
-            if ([mutableArea objectForKey:@"areaName"] != [NSNull null])
+            case NumberTypeGeographicMask:
             {
-                if ([[mutableArea objectForKey:@"areaName"] caseInsensitiveCompare:@"All cities"] == NSOrderedSame)
+                if ([area[@"areaName"] caseInsensitiveCompare:@"All cities"] == NSOrderedSame)
                 {
-                    // Handle special case seen with Denmark: One area for all cities.  We only localize at the moment.
-                    mutableArea[@"areaName"] = NSLocalizedStringWithDefaultValue(@"NumberAreas:Table AllC", nil,
-                                                                                 [NSBundle mainBundle], @"All cities",
-                                                                                 @"Indicates that something applies to all "
-                                                                                 @"cities of a country.\n"
-                                                                                 @"[1 line larger font].");
+                    areaFormat = AreaFormatGeographicException;
                 }
                 else
                 {
-                    mutableArea[@"areaName"] = [Common capitalizedString:mutableArea[@"areaName"]];
+                    areaFormat = AreaFormatGeographic;
                 }
+                break;
             }
-            else if ([[mutableArea objectForKey:@"areaCode"] isEqualToString:@"0"] == NO)
+            case NumberTypeNationalMask:
             {
-                // To support non-geographic numbers with little code change.
-                mutableArea[@"areaName"] = mutableArea[@"areaCode"];
+                if ([area[@"areaCode"] length] == 0)
+                {
+                    areaFormat = AreaFormatNationalException;
+                }
+                else
+                {
+                    areaFormat = AreaFormatNational;
+                }
+                break;
             }
-            else
+            case NumberTypeTollFreeMask:
             {
-                // Both areaName, areaCode and city are null.
-                mutableArea[@"areaName"] = NSLocalizedStringWithDefaultValue(@"NumberAreas:Table NoAreaCode", nil,
-                                                                             [NSBundle mainBundle], @"Unknown area code",
-                                                                             @"Explains that area code is not available.\n"
-                                                                             @"[1 line larger font].");
-                mutableArea[@"areaCode"] = @"";
+                areaFormat = AreaFormatTollFree;
+                break;
             }
-
-            [areasArray addObject:mutableArea];
+            case NumberTypeMobileMask:
+            {
+                areaFormat = AreaFormatMobile;
+                break;
+            }
+            case NumberTypeSharedCostMask:
+            {
+                areaFormat = AreaFormatSharedCost;
+                break;
+            }
+            case NumberTypeSpecialMask:
+            {
+                areaFormat = AreaFormatSpecial;
+                break;
+            }
+            case NumberTypeInternationalMask:
+            {
+                areaFormat = AreaFormatInternational;
+                break;
+            }
         }
-
-        self.objectsArray = areasArray;
+        
+        self.objectsArray = content;
         [self createIndexOfWidth:1];
     }
     else
@@ -262,9 +346,27 @@
 
 - (NSString*)nameForObject:(id)object
 {
-    NSDictionary* area = object;
+    NSString* name;
+    NSString* allCitiesName = NSLocalizedStringWithDefaultValue(@"NumberAreas:Table AllCities", nil, [NSBundle mainBundle],
+                                                                @"All cities",
+                                                                @"Indicates that something applies to all "
+                                                                @"cities of a country.\n"
+                                                                @"[1 line larger font].");
 
-    return area[@"areaName"];
+    switch (areaFormat)
+    {
+        case AreaFormatGeographic:          name = [Common capitalizedString:object[@"areaName"]]; break;
+        case AreaFormatGeographicException: name = allCitiesName;                                  break;
+        case AreaFormatNational:            name = object[@"areaCode"];                            break;
+        case AreaFormatNationalException:   name = @"-";                                           break;
+        case AreaFormatTollFree:            name = object[@"areaCode"];                            break;
+        case AreaFormatMobile:              name = object[@"areaCode"];                            break;
+        case AreaFormatSharedCost:          name = object[@"areaCode"];                            break;
+        case AreaFormatSpecial:             name = object[@"areaCode"];                            break;
+        case AreaFormatInternational:       name = @"-";                                           break;
+    }
+    
+    return name;
 }
 
 
@@ -278,13 +380,13 @@
     // Look up area.
     for (area in self.objectsArray)
     {
-        if ([area[@"areaName"] isEqualToString:name])
+        if ([[self nameForObject:area] isEqualToString:name])
         {
             break;
         }
     }
 
-    NumberAreaViewController*   viewController;
+    NumberAreaViewController* viewController;
     viewController = [[NumberAreaViewController alloc] initWithIsoCountryCode:isoCountryCode
                                                                         state:state
                                                                          area:area
@@ -296,43 +398,43 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     NumberAreasCell* cell;
-    NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
     NSDictionary*    area;
+    NSString*        code;
+    NSString*        name;
+    NSString*        type = [NumberType localizedStringForNumberType:numberTypeMask];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumberAreasCell"];
     if (cell == nil)
     {
         cell = [[NumberAreasCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NumberAreasCell"];
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
 
     // Look up area.
+    name = [self nameOnTable:tableView atIndexPath:indexPath];
     for (area in self.objectsArray)
     {
-        if ([area[@"areaName"] isEqualToString:name])
+        if ([[self nameForObject:area] isEqualToString:name])
         {
             break;
         }
     }
 
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    if ([area[@"areaCode"] length] > 0)
+    switch (areaFormat)
     {
-        if ([area[@"areaCode"] isEqualToString:name] == NO)
-        {
-            cell.areaCode.text = area[@"areaCode"];
-            cell.areaName.text = name;
-        }
-        else
-        {
-            cell.areaCode.text = area[@"areaCode"];
-            cell.areaName.text = [NumberType localizedStringForNumberType:numberTypeMask];
-        }
+        case AreaFormatGeographic:          code = area[@"areaCode"]; name = [self nameForObject:area]; break;
+        case AreaFormatGeographicException: code = area[@"areaCode"]; name = [self nameForObject:area]; break;
+        case AreaFormatNational:            code = area[@"areaCode"]; name = type;                      break;
+        case AreaFormatNationalException:   code = @"---";            name = type;                      break;
+        case AreaFormatTollFree:            code = area[@"areaCode"]; name = type;                      break;
+        case AreaFormatMobile:              code = area[@"areaCode"]; name = type;                      break;
+        case AreaFormatSharedCost:          code = area[@"areaCode"]; name = type;                      break;
+        case AreaFormatSpecial:             code = area[@"areaCode"]; name = [self nameForObject:area]; break;
+        case AreaFormatInternational:       code = @"---";            name = type;                      break;
     }
-    else
-    {
-        cell.areaCode.text = @"---";
-        cell.areaName.text = name;
-    }
+
+    cell.areaCode.text = code;
+    cell.areaName.text = name;
 
     return cell;
 }
