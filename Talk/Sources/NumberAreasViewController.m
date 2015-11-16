@@ -362,7 +362,7 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
         case AreaFormatTollFree:            name = object[@"areaCode"];                            break;
         case AreaFormatMobile:              name = object[@"areaCode"];                            break;
         case AreaFormatSharedCost:          name = object[@"areaCode"];                            break;
-        case AreaFormatSpecial:             name = object[@"areaCode"];                            break;
+        case AreaFormatSpecial:             name = [Common capitalizedString:object[@"areaName"]]; break;
         case AreaFormatInternational:       name = @"-";                                           break;
     }
     

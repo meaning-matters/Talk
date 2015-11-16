@@ -167,6 +167,7 @@ typedef enum
                           [area[@"areaName"] caseInsensitiveCompare:@"All cities"] == NSOrderedSame);
         areaRows |= ([area[@"areaCode"] length] > 0)                           ? AreaRowAreaCode : 0;
         areaRows |= (numberTypeMask == NumberTypeGeographicMask && !allCities) ? AreaRowAreaName : 0;
+        areaRows |= (numberTypeMask == NumberTypeSpecialMask)                  ? AreaRowAreaName : 0;
         areaRows |= (state != nil)                                             ? AreaRowState    : 0;
 
         // Default naming.
