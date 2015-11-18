@@ -219,17 +219,11 @@
 - (void)retrieveCallRateForE164:(NSString*)e164
                           reply:(void (^)(NSError* error, float ratePerMinute))reply;
 
-// 19A. CREATE IVR
-- (void)createIvrForUuid:(NSString*)uuid
-                    name:(NSString*)name
-              statements:(NSArray*)statements
-                   reply:(void (^)(NSError* error))reply;
-
-// 19B. UPDATE IVR
-- (void)updateIvrForUuid:(NSString*)uuid
-                    name:(NSString*)name
-              statements:(NSArray*)statements
-                   reply:(void (^)(NSError* error))reply;
+// 19. CREATE OR UPDATE IVR
+- (void)createOrUpdateIvrForUuid:(NSString*)uuid
+                            name:(NSString*)name
+                      statements:(NSArray*)statements
+                           reply:(void (^)(NSError* error))reply;
 
 // 20. DELETE IVR
 - (void)deleteIvrForUuid:(NSString*)uuid

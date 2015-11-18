@@ -882,11 +882,11 @@
 // ...
 
 
-// 19A. UPLOAD IVR
-- (void)createIvrForUuid:(NSString*)uuid
-                    name:(NSString*)name
-              statements:(NSArray*)statements
-                   reply:(void (^)(NSError* error))reply
+// 19. CREATE OR UPDATE IVR
+- (void)createOrUpdateIvrForUuid:(NSString*)uuid
+                            name:(NSString*)name
+                      statements:(NSArray*)statements
+                           reply:(void (^)(NSError* error))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"name"       : name,
@@ -895,25 +895,6 @@
     [self putPath:[NSString stringWithFormat:@"/users/%@/ivr/%@", username, uuid]
        parameters:parameters
             reply:^(NSError* error, id content)
-    {
-        reply(error);
-    }];
-}
-
-
-// 19B. UPDATE IVR
-- (void)updateIvrForUuid:(NSString*)uuid
-                    name:(NSString*)name
-              statements:(NSArray*)statements
-                   reply:(void (^)(NSError* error))reply
-{
-    NSString*     username   = [Settings sharedSettings].webUsername;
-    NSDictionary* parameters = @{@"name"       : name,
-                                 @"statements" : statements};
-
-    [self postPath:[NSString stringWithFormat:@"/users/%@/ivr/%@", username, uuid]
-        parameters:parameters
-             reply:^(NSError* error, id content)
     {
         reply(error);
     }];

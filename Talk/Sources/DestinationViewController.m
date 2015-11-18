@@ -226,10 +226,10 @@ typedef enum
 
     NSString* uuid = [[NSUUID UUID] UUIDString];
     self.destination.uuid = uuid;
-    [[WebClient sharedClient] createIvrForUuid:uuid
-                                          name:self.name
-                                    statements:statementsArray
-                                         reply:^(NSError* error)
+    [[WebClient sharedClient] createOrUpdateIvrForUuid:uuid
+                                                  name:self.name
+                                            statements:statementsArray
+                                                 reply:^(NSError* error)
     {
         if (error == nil)
         {
@@ -255,10 +255,10 @@ typedef enum
         return;
     }
 
-    [[WebClient sharedClient] updateIvrForUuid:self.destination.uuid
-                                          name:self.name
-                                    statements:statementsArray
-                                         reply:^(NSError* error)
+    [[WebClient sharedClient] createOrUpdateIvrForUuid:self.destination.uuid
+                                                  name:self.name
+                                            statements:statementsArray
+                                                 reply:^(NSError* error)
     {
         if (error == nil)
         {
