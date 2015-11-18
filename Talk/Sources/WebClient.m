@@ -1315,6 +1315,69 @@
 }
 
 
+// 10A.
+- (void)cancelAllretrieveAddresses
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/users/%@/addresses", username]];
+}
+
+// 10B.
+- (void)cancelAllRetrieveAddressWithId:(NSString*)addressId
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+    
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/users/%@/addresses/%@",
+                                                          username, addressId]];
+}
+
+
+// 10C.
+- (void)cancelAllCreateAddress
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+    
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
+                                                    path:[NSString stringWithFormat:@"/users/%@/addresses", username]];
+}
+
+
+// 10D.
+- (void)cancelAllDeleteAddressWithId:(NSString*)addressId
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+    
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
+                                                    path:[NSString stringWithFormat:@"/users/%@/addresses/%@",
+                                                          username, addressId]];
+}
+
+
+// 10E.
+- (void)cancelAllRetrieveImageForAddressId:(NSString*)addressId
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+    
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
+                                                    path:[NSString stringWithFormat:@"/users/%@/addresses/%@/image",
+                                                          username, addressId]];
+}
+
+
+// 10F.
+- (void)cancelAllUpdateImageForAddressId:(NSString*)addressId
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+    
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
+                                                    path:[NSString stringWithFormat:@"/users/%@/addresses/%@/image",
+                                                          username, addressId]];
+}
+
+
 // 11A.
 - (void)cancelAllPurchaseNumber
 {
@@ -1400,23 +1463,12 @@
 }
 
 
-// 19A.
+// 19.
 - (void)cancelAllCreateIvrForUuid:(NSString*)uuid
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
-                                                    path:[NSString stringWithFormat:@"/users/%@/ivr/%@",
-                                                          username, uuid]];
-}
-
-
-// 19B.
-- (void)cancelAllUpdateIvrForUuid:(NSString*)uuid
-{
-    NSString* username = [Settings sharedSettings].webUsername;
-
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
                                                     path:[NSString stringWithFormat:@"/users/%@/ivr/%@",
                                                           username, uuid]];
 }

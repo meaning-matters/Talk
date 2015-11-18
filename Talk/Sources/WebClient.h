@@ -320,71 +320,23 @@
 // 10.
 - (void)cancelAllCheckPurchaseInfo;
 
+// 10A.
+- (void)cancelAllretrieveAddresses;
 
-// 10A. GET LIST OF REGULATION ADDRESSES
-- (void)cancelAllretrieveAddressesForIsoCountryCode:(NSString*)isoCountryCode
-                                  areaCode:(NSString*)areaCode
-                                numberType:(NumberTypeMask)numberTypeMask
-                                     reply:(void (^)(NSError* error, NSArray* addressIds))reply;
+// 10B.
+- (void)cancelAllRetrieveAddressWithId:(NSString*)addressId;
 
-// 10B. GET REGULATION ADDRESS
-- (void)retrieveAddressWithId:(NSString*)addressId
-                        reply:(void (^)(NSError*  error,
-                                        NSString* salutation,
-                                        NSString* addressId,
-                                        NSString* firstName,
-                                        NSString* lastName,
-                                        NSString* companyName,
-                                        NSString* companyDescription,
-                                        NSString* street,
-                                        NSString* buildingNumber,
-                                        NSString* buildingLetter,
-                                        NSString* city,
-                                        NSString* postcode,
-                                        NSString* isoCountryCode,
-                                        BOOL      hasProof,
-                                        NSString* idType,
-                                        NSString* idNumber,
-                                        NSString* fiscalIdCode,
-                                        NSString* streetCode,
-                                        NSString* municipalityCode,
-                                        NSString* status))reply;
+// 10C.
+- (void)cancelAllCreateAddress;
 
-// 10C. CREATE REGULATION ADDRESS
-- (void)createAddressForNumberIsoCountryCode:(NSString*)numberIsoCountryCode
-                                  numberType:(NumberTypeMask)numberTypeMask
-                                  salutation:(NSString*)salutation
-                                   firstName:(NSString*)firstName
-                                    lastName:(NSString*)lastName
-                                 companyName:(NSString*)companyName
-                          companyDescription:(NSString*)companyDescription
-                                      street:(NSString*)street
-                              buildingNumber:(NSString*)buildingNumber
-                              buildingLetter:(NSString*)buildingLetter
-                                        city:(NSString*)city
-                                    postcode:(NSString*)postcode
-                              isoCountryCode:(NSString*)isoCountryCode
-                                  proofImage:(NSString*)proofImage   // Base64 encoded.
-                                      idType:(NSString*)idType
-                                    idNumber:(NSString*)idNumber
-                                fiscalIdCode:(NSString*)fiscalIdCode
-                                  streetCode:(NSString*)streetCode
-                            municipalityCode:(NSString*)municipalityCode
-                                       reply:(void (^)(NSError* error, NSString* addressId, NSArray* missingFields))reply;
+// 10D.
+- (void)cancelAllDeleteAddressWithId:(NSString*)addressId;
 
-// 10D. DELETE REGULATION ADDRESS
-- (void)deleteAddressWithId:(NSString*)addressId
-                      reply:(void (^)(NSError* error))reply;
+// 10E.
+- (void)cancelAllRetrieveImageForAddressId:(NSString*)addressId;
 
-// 10E. GET ADDRESS PROOF IMAGE
-- (void)retrieveImageForAddressId:(NSString*)addressId
-                            reply:(void (^)(NSError* error, NSString* proofImage))reply;
-
-// 10F. UPDATE ADDRESS PROOF IMAGE
-- (void)updateImageForAddressId:(NSString*)addressId
-                          reply:(void (^)(NSError* error))reply;
-
-
+// 10F.
+- (void)cancelAllUpdateImageForAddressId:(NSString*)addressId;
 
 // 11A.
 - (void)cancelAllPurchaseNumber;
@@ -409,6 +361,9 @@
 
 // 16.
 - (void)cancelAllRetrieveCallRateForE164:(NSString*)e164;
+
+// 19.
+- (void)cancelAllCreateIvrForUuid:(NSString*)uuid;
 
 // 32.
 - (void)cancelAllInitiateCallback;
