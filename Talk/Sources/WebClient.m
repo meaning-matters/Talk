@@ -439,6 +439,196 @@
 }
 
 
+// 10A. GET LIST OF REGULATION ADDRESSES
+- (void)retrieveAddressesForIsoCountryCode:(NSString*)isoCountryCode
+                                  areaCode:(NSString*)areaCode
+                                numberType:(NumberTypeMask)numberTypeMask
+                                     reply:(void (^)(NSError* error, NSArray* addressIds))reply
+{
+    NSString*     username   = [Settings sharedSettings].webUsername;
+    NSDictionary* parameters = @{@"isoCountryCode" : isoCountryCode,
+                                 @"areaCode"       : areaCode,
+                                 @"numberType"     : [NumberType stringForNumberType:numberTypeMask]};
+
+    [self getPath:[NSString stringWithFormat:@"/users/%@/addresses", username]
+       parameters:parameters
+            reply:reply];
+}
+
+
+// 10B. GET REGULATION ADDRESS
+- (void)retrieveAddressWithId:(NSString*)addressId
+                        reply:(void (^)(NSError*  error,
+                                        NSString* salutation,
+                                        NSString* addressId,
+                                        NSString* firstName,
+                                        NSString* lastName,
+                                        NSString* companyName,
+                                        NSString* companyDescription,
+                                        NSString* street,
+                                        NSString* buildingNumber,
+                                        NSString* buildingLetter,
+                                        NSString* city,
+                                        NSString* postcode,
+                                        NSString* isoCountryCode,
+                                        BOOL      hasProof,
+                                        NSString* idType,
+                                        NSString* idNumber,
+                                        NSString* fiscalIdCode,
+                                        NSString* streetCode,
+                                        NSString* municipalityCode,
+                                        NSString* status))reply
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self getPath:[NSString stringWithFormat:@"/users/%@/addresses/%@", username, addressId]
+                                  parameters:nil
+                                       reply:^(NSError *error, id content)
+    {
+        if (error == nil)
+        {
+            reply(nil,
+                  content[@"salutation"],
+                  content[@"addressId"],
+                  content[@"firstName"],
+                  content[@"lastName"],
+                  content[@"companyName"],
+                  content[@"companyDescription"],
+                  content[@"street"],
+                  content[@"buildingNumber"],
+                  content[@"buildingLetter"],
+                  content[@"city"],
+                  content[@"postcode"],
+                  content[@"isoCountryCode"],
+                  [content[@"hasProof"] boolValue],
+                  content[@"idType"],
+                  content[@"idNumber"],
+                  content[@"fiscalIdCode"],
+                  content[@"streetCode"],
+                  content[@"municipalityCode"],
+                  content[@"status"]);
+        }
+        else
+        {
+            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, nil, nil, nil, nil, nil, nil);
+        }
+    }];
+}
+
+
+// 10C. CREATE REGULATION ADDRESS
+- (void)createAddressForNumberIsoCountryCode:(NSString*)numberIsoCountryCode
+                                  numberType:(NumberTypeMask)numberTypeMask
+                                  salutation:(NSString*)salutation
+                                   firstName:(NSString*)firstName
+                                    lastName:(NSString*)lastName
+                                 companyName:(NSString*)companyName
+                          companyDescription:(NSString*)companyDescription
+                                      street:(NSString*)street
+                              buildingNumber:(NSString*)buildingNumber
+                              buildingLetter:(NSString*)buildingLetter
+                                        city:(NSString*)city
+                                    postcode:(NSString*)postcode
+                              isoCountryCode:(NSString*)isoCountryCode
+                                  proofImage:(NSString*)proofImage   // Base64 encoded.
+                                      idType:(NSString*)idType
+                                    idNumber:(NSString*)idNumber
+                                fiscalIdCode:(NSString*)fiscalIdCode
+                                  streetCode:(NSString*)streetCode
+                            municipalityCode:(NSString*)municipalityCode
+                                       reply:(void (^)(NSError* error, NSString* addressId, NSArray* missingFields))reply
+{
+    NSString*            username   = [Settings sharedSettings].webUsername;
+    NSString*            numberType = [NumberType stringForNumberType:numberTypeMask];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    
+    (salutation.length         > 0) ? parameters[@"salutation"]         = salutation         : 0;
+    (firstName.length          > 0) ? parameters[@"firstName"]          = firstName          : 0;
+    (lastName.length           > 0) ? parameters[@"lastName"]           = lastName           : 0;
+    (companyName.length        > 0) ? parameters[@"companyName"]        = companyName        : 0;
+    (companyDescription.length > 0) ? parameters[@"companyDescription"] = companyDescription : 0;
+    (street.length             > 0) ? parameters[@"street"]             = street             : 0;
+    (buildingNumber.length     > 0) ? parameters[@"buildingNumber"]     = buildingNumber     : 0;
+    (buildingLetter.length     > 0) ? parameters[@"buildingLetter"]     = buildingLetter     : 0;
+    (city.length               > 0) ? parameters[@"city"]               = city               : 0;
+    (postcode.length           > 0) ? parameters[@"postcode"]           = postcode           : 0;
+    (isoCountryCode.length     > 0) ? parameters[@"isoCountryCode"]     = isoCountryCode     : 0;
+    (proofImage.length         > 0) ? parameters[@"proofImage"]         = proofImage         : 0;
+    (idType.length             > 0) ? parameters[@"idType"]             = idType             : 0;
+    (idNumber.length           > 0) ? parameters[@"idNumber"]           = idNumber           : 0;
+    (fiscalIdCode.length       > 0) ? parameters[@"fiscalIdCode"]       = fiscalIdCode       : 0;
+    (streetCode.length         > 0) ? parameters[@"streetCode"]         = streetCode         : 0;
+    (municipalityCode.length   > 0) ? parameters[@"municipalityCode"]   = municipalityCode   : 0;
+                            
+    [self postPath:[NSString stringWithFormat:@"/users/%@/addresses?isoCountryCode=%@&numberType=%@",
+                                              username, numberIsoCountryCode, numberType]
+        parameters:parameters
+             reply:^(NSError *error, id content)
+     {
+         if (error == nil)
+         {
+             reply(nil, content[@"addressId"], content[@"missingFields"]);
+         }
+         else
+         {
+             reply(error, nil, nil);
+         }
+     }];
+}
+
+
+// 10D. DELETE REGULATION ADDRESS
+- (void)deleteAddressWithId:(NSString*)addressId
+                      reply:(void (^)(NSError* error))reply
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self deletePath:[NSString stringWithFormat:@"/users/%@/addresses/%@", username, addressId]
+          parameters:nil
+               reply:^(NSError *error, id content)
+    {
+        reply(error);
+    }];
+}
+
+
+// 10E. GET ADDRESS PROOF IMAGE
+- (void)retrieveImageForAddressId:(NSString*)addressId
+                            reply:(void (^)(NSError* error, NSString* proofImage))reply
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self getPath:[NSString stringWithFormat:@"/users/%@/addresses/%@/image", username, addressId]
+       parameters:nil
+            reply:^(NSError *error, id content)
+    {
+        if (error == nil)
+        {
+            reply(nil, content[@"proofImage"]);
+        }
+        else
+        {
+            reply(error, nil);
+        }
+    }];
+}
+
+
+// 10F. UPDATE ADDRESS PROOF IMAGE
+- (void)updateImageForAddressId:(NSString*)addressId
+                          reply:(void (^)(NSError* error))reply
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+    
+    [self putPath:[NSString stringWithFormat:@"/users/%@/addresses/%@/image", username, addressId]
+       parameters:nil
+            reply:^(NSError *error, id content)
+    {
+        reply(error);
+    }];
+}
+
+
 // 11A. PURCHASE NUMBER
 - (void)purchaseNumberForMonths:(NSUInteger)months
                            name:(NSString*)name

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="2.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="14F1021" minimumToolsVersion="Automatic">
+    <entity name="Address" representedClassName="AddressData" syncable="YES">
+        <attribute name="addressId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="buildingLetter" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="buildingNumber" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="companyDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="companyName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fiscalIdCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="idNumber" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="idType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isoCountryCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="municipalityCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postcode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="proofimage" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="salutation" attributeType="String" syncable="YES"/>
+        <attribute name="street" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="streetCode" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="numbers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Number" inverseName="address" inverseEntity="Number" syncable="YES"/>
+    </entity>
+    <entity name="Callable" representedClassName="CallableData" isAbstract="YES" syncable="YES">
+        <attribute name="e164" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="callerIds" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CallerId" inverseName="callable" inverseEntity="CallerId" syncable="YES"/>
+    </entity>
+    <entity name="CallerId" representedClassName="CallerIdData" syncable="YES">
+        <attribute name="contactId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="callable" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Callable" inverseName="callerIds" inverseEntity="Callable" syncable="YES"/>
+    </entity>
+    <entity name="Destination" representedClassName="DestinationData" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="statements" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uuid" attributeType="String" syncable="YES"/>
+        <relationship name="numbers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Number" inverseName="destination" inverseEntity="Number" syncable="YES"/>
+        <relationship name="phones" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Phone" inverseName="destinations" inverseEntity="Phone" syncable="YES"/>
+        <relationship name="recordings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Recording" inverseName="destinations" inverseEntity="Recording" syncable="YES"/>
+    </entity>
+    <entity name="Number" representedClassName="NumberData" parentEntity="Callable" syncable="YES">
+        <attribute name="addressCountry" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="areaCode" attributeType="String" syncable="YES"/>
+        <attribute name="areaName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="building" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="company" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="imageAccepted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="numberCountry" attributeType="String" minValueString="2" maxValueString="2" syncable="YES"/>
+        <attribute name="numberType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="purchaseDate" attributeType="Date" syncable="YES"/>
+        <attribute name="renewalDate" attributeType="Date" syncable="YES"/>
+        <attribute name="salutation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stateCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stateName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="street" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zipCode" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="address" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Address" inverseName="numbers" inverseEntity="Address" syncable="YES"/>
+        <relationship name="destination" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Destination" inverseName="numbers" inverseEntity="Destination" syncable="YES"/>
+    </entity>
+    <entity name="Phone" representedClassName="PhoneData" parentEntity="Callable" syncable="YES">
+        <relationship name="destinations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Destination" inverseName="phones" inverseEntity="Destination" syncable="YES"/>
+    </entity>
+    <entity name="Recent" syncable="YES">
+        <attribute name="callbackCost" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="callbackDuration" optional="YES" attributeType="Integer 32" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="callthruCost" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="callthruDuration" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="contactID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="direction" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="e164" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="timeZone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Recording" representedClassName="RecordingData" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uuid" attributeType="String" syncable="YES"/>
+        <relationship name="destinations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Destination" inverseName="recordings" inverseEntity="Destination" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Address" positionX="252" positionY="-324" width="128" height="330"/>
+        <element name="Callable" positionX="117" positionY="-468" width="128" height="88"/>
+        <element name="CallerId" positionX="313" positionY="-451" width="128" height="73"/>
+        <element name="Destination" positionX="268" positionY="-54" width="128" height="135"/>
+        <element name="Number" positionX="52" positionY="-342" width="128" height="360"/>
+        <element name="Phone" positionX="259" positionY="-270" width="128" height="60"/>
+        <element name="Recent" positionX="486" positionY="-342" width="128" height="223"/>
+        <element name="Recording" positionX="484" positionY="-27" width="128" height="105"/>
+    </elements>
+</model>
