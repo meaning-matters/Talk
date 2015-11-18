@@ -32,7 +32,7 @@ typedef enum
 } TableSections;
 
 
-@interface PhoneViewController ()
+@interface PhoneViewController () <UITextFieldDelegate>
 {
     TableSections sections;
     BOOL          isNew;

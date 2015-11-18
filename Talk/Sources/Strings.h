@@ -40,6 +40,12 @@
 
 + (NSString*)numbersString;
 
++ (NSString*)addressString;
+
++ (NSString*)newAddressString;
+
++ (NSString*)addressesString;
+
 + (NSString*)newDestinationString;
 
 + (NSString*)destinationString;

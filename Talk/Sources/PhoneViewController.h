@@ -6,14 +6,14 @@
 //  Copyright (c) 2014 NumberBay Ltd. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "PhoneData.h"
 #import "ItemViewController.h"
+#import "PhoneData.h"
 
 
-@interface PhoneViewController : ItemViewController <UITextFieldDelegate>
+@interface PhoneViewController : ItemViewController
 
 @property (nonatomic, strong) PhoneData* phone;
+
 
 - (instancetype)initWithPhone:(PhoneData*)phone
          managedObjectContext:(NSManagedObjectContext*)managedObjectContext;

@@ -147,6 +147,33 @@
 }
 
 
++ (NSString*)addressString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Address", nil, [NSBundle mainBundle],
+                                             @"Address",
+                                             @"Standard string to label an address\n"
+                                             @"[iOS standard size].");
+}
+
+
++ (NSString*)newAddressString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings New Address", nil, [NSBundle mainBundle],
+                                             @"New Address",
+                                             @"Standard string to label a new address\n"
+                                             @"[iOS standard size].");
+}
+
+
++ (NSString*)addressesString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Addresses", nil, [NSBundle mainBundle],
+                                             @"Addresses",
+                                             @"Standard string to label addresses\n"
+                                             @"[iOS standard size].");
+}
+
+
 + (NSString*)newDestinationString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings New Destination", nil, [NSBundle mainBundle],

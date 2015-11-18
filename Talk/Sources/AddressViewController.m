@@ -7,17 +7,38 @@
 //
 
 #import "AddressViewController.h"
+#import "Strings.h"
+
 
 @interface AddressViewController ()
 
+@property (nonatomic, assign) BOOL isNew;
+
 @end
 
+
 @implementation AddressViewController
+
+- (instancetype)initWithAddress:(AddressData*)address
+           managedObjectContext:(NSManagedObjectContext*)managedObjectContext
+{
+    if (self = [super initWithManagedObjectContext:managedObjectContext])
+    {
+        self.isNew                = (address == nil);
+        self.address              = address;
+        self.managedObjectContext = managedObjectContext;
+        self.title                = self.isNew ? [Strings newAddressString] : [Strings addressesString];
+        
+        self.name                 = address.isoCountryCode;
+    }
+    
+    return self;
+}
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
 }
 
 @end

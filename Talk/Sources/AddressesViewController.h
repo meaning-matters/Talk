@@ -8,14 +8,17 @@
 
 #import "ItemsViewController.h"
 
+@class AddressData;
+
+
 @interface AddressesViewController : ItemsViewController
 
 @property (nonatomic, strong) NSString* headerTitle;
 @property (nonatomic, strong) NSString* footerTitle;
 
-/*
+
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
-                               selectedPhone:(PhoneData*)selectedPhone
-                                  completion:(void (^)(PhoneData* selectedPhone))completion;
-*/
+                             selectedAddress:(AddressData*)selectedAddress
+                                  completion:(void (^)(AddressData* selectedAddress))completion;
+
 @end

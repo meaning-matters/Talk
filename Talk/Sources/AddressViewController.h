@@ -7,7 +7,15 @@
 //
 
 #import "ItemViewController.h"
+#import "AddressData.h"
+
 
 @interface AddressViewController : ItemViewController
+
+@property (nonatomic, strong) AddressData* address;
+
+
+- (instancetype)initWithAddress:(AddressData*)address
+           managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
 @end
