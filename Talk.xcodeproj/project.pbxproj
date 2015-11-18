@@ -60,6 +60,7 @@
 		4816A0A01BF129A300817ED7 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBD917007CC6000ECC71 /* DataManager.m */; };
 		48200D1C16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
 		48200D1D16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
+		48232B721BFC8E5D006D667E /* AddressData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48232B701BFC8E5D006D667E /* AddressData.m */; };
 		48251B9B187F4A8A00E69C3A /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48251B9A187F4A8A00E69C3A /* SettingsViewController.m */; };
 		48251B9C187F4A8A00E69C3A /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48251B9A187F4A8A00E69C3A /* SettingsViewController.m */; };
 		482608EE166A4707007F0844 /* NSTimer+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 482608ED166A4706007F0844 /* NSTimer+Blocks.m */; };
@@ -700,6 +701,8 @@
 		48EDD2201667652A007B89DA /* MuteCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2081667652A007B89DA /* MuteCall@2x.png */; };
 		48EDD2231667652A007B89DA /* SpeakerCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD20A1667652A007B89DA /* SpeakerCall@2x.png */; };
 		48EDD2241667652A007B89DA /* SpeakerCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD20A1667652A007B89DA /* SpeakerCall@2x.png */; };
+		48F14EDE1BF9C62200541EEC /* AddressesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F14EDD1BF9C62200541EEC /* AddressesViewController.m */; };
+		48F14EE61BF9C63A00541EEC /* AddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F14EE51BF9C63A00541EEC /* AddressViewController.m */; };
 		48F1B7E117E63819003A3933 /* NumberDestinationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F1B7E017E63819003A3933 /* NumberDestinationsViewController.m */; };
 		48F1B7E217E63819003A3933 /* NumberDestinationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F1B7E017E63819003A3933 /* NumberDestinationsViewController.m */; };
 		48F47BBF18BE9C01006A6436 /* ItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F47BBE18BE9C01006A6436 /* ItemViewController.m */; };
@@ -798,6 +801,9 @@
 		4816A09F1BF1043E00817ED7 /* Data2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data2.0.xcdatamodel; sourceTree = "<group>"; };
 		48200D1A16EC89BA0069677E /* NumberType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberType.h; sourceTree = "<group>"; };
 		48200D1B16EC89BA0069677E /* NumberType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberType.m; sourceTree = "<group>"; };
+		48232B611BFBC70B006D667E /* Data2.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data2.1.xcdatamodel; sourceTree = "<group>"; };
+		48232B6F1BFC8E5D006D667E /* AddressData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressData.h; sourceTree = "<group>"; };
+		48232B701BFC8E5D006D667E /* AddressData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressData.m; sourceTree = "<group>"; };
 		48251B99187F4A8A00E69C3A /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		48251B9A187F4A8A00E69C3A /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		482608EC166A4706007F0844 /* NSTimer+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Blocks.h"; sourceTree = "<group>"; };
@@ -1433,6 +1439,10 @@
 		48EDD20A1667652A007B89DA /* SpeakerCall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SpeakerCall@2x.png"; sourceTree = "<group>"; };
 		48EDD2341667729E007B89DA /* KeypadKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeypadKey.h; sourceTree = "<group>"; };
 		48EE399816777EEC00823E09 /* libWebRTC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWebRTC.a; path = External/WebRTC/libWebRTC.a; sourceTree = "<group>"; };
+		48F14EDC1BF9C62200541EEC /* AddressesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressesViewController.h; sourceTree = "<group>"; };
+		48F14EDD1BF9C62200541EEC /* AddressesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressesViewController.m; sourceTree = "<group>"; };
+		48F14EE41BF9C63A00541EEC /* AddressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressViewController.h; sourceTree = "<group>"; };
+		48F14EE51BF9C63A00541EEC /* AddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressViewController.m; sourceTree = "<group>"; };
 		48F1B7DF17E63819003A3933 /* NumberDestinationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberDestinationsViewController.h; sourceTree = "<group>"; };
 		48F1B7E017E63819003A3933 /* NumberDestinationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberDestinationsViewController.m; sourceTree = "<group>"; };
 		48F47BBD18BE9C01006A6436 /* ItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemViewController.h; sourceTree = "<group>"; };
@@ -2337,6 +2347,8 @@
 		488FBBD717007C39000ECC71 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				48232B6F1BFC8E5D006D667E /* AddressData.h */,
+				48232B701BFC8E5D006D667E /* AddressData.m */,
 				480CE122194DA0100020F255 /* CallerIdData.h */,
 				480CE123194DA0100020F255 /* CallerIdData.m */,
 				488FBBD817007CC6000ECC71 /* DataManager.h */,
@@ -2386,9 +2398,13 @@
 		48AF45591649790900DFE3D8 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				48F47BC018BEA850006A6436 /* Base */,
 				48AF45001649484600DFE3D8 /* AboutViewController.h */,
 				48AF45011649484600DFE3D8 /* AboutViewController.m */,
-				48F47BC018BEA850006A6436 /* Base */,
+				48F14EDC1BF9C62200541EEC /* AddressesViewController.h */,
+				48F14EDD1BF9C62200541EEC /* AddressesViewController.m */,
+				48F14EE41BF9C63A00541EEC /* AddressViewController.h */,
+				48F14EE51BF9C63A00541EEC /* AddressViewController.m */,
 				4865A9D617926CE00028785F /* BuyNumberViewController.h */,
 				4865A9D717926CE00028785F /* BuyNumberViewController.m */,
 				48A0CE681805CFDC00B8A9F8 /* CallbackViewController.h */,
@@ -2403,16 +2419,14 @@
 				48D60EF318B4D7A4000BE5D2 /* CountriesViewController.m */,
 				48AF44EC164947B300DFE3D8 /* CreditViewController.h */,
 				48AF44ED164947B300DFE3D8 /* CreditViewController.m */,
-				48AF44F0164947CD00DFE3D8 /* KeypadViewController.h */,
-				48AF44F1164947CE00DFE3D8 /* KeypadViewController.m */,
-				48030819196AAFC000FDE1A4 /* ExtendNumberViewController.h */,
-				4803081A196AAFC000FDE1A4 /* ExtendNumberViewController.m */,
 				48CA5040172FC6C800CB1B7B /* DestinationSequenceViewController.h */,
 				48CA5041172FC6C800CB1B7B /* DestinationSequenceViewController.m */,
 				48AF4563164979F300DFE3D8 /* DestinationsViewController.h */,
 				48AF4564164979F400DFE3D8 /* DestinationsViewController.m */,
 				48CA503B172C5EB300CB1B7B /* DestinationViewController.h */,
 				48CA503C172C5EB400CB1B7B /* DestinationViewController.m */,
+				48030819196AAFC000FDE1A4 /* ExtendNumberViewController.h */,
+				4803081A196AAFC000FDE1A4 /* ExtendNumberViewController.m */,
 				4837AF7418D9DAF000D3AEBC /* GetStartedActionViewController.h */,
 				4837AF7518D9DAF000D3AEBC /* GetStartedActionViewController.m */,
 				4837AF6818D9B6EC00D3AEBC /* GetStartedRestoreViewController.h */,
@@ -2427,6 +2441,8 @@
 				48AF44FD1649483600DFE3D8 /* HelpsViewController.m */,
 				485E389E17B7E1390089F0F1 /* HtmlViewController.h */,
 				485E389F17B7E13B0089F0F1 /* HtmlViewController.m */,
+				48AF44F0164947CD00DFE3D8 /* KeypadViewController.h */,
+				48AF44F1164947CE00DFE3D8 /* KeypadViewController.m */,
 				4849432D1752263600E1D5C4 /* LicensesViewController.h */,
 				4849432E1752263600E1D5C4 /* LicensesViewController.m */,
 				484D936A1712FBA1006FA875 /* NumberAreaCitiesViewController.h */,
@@ -3233,7 +3249,9 @@
 				48CB0AFF19DB2E1B00F95369 /* WebInterface.m in Sources */,
 				4896D90016EBE613008A2354 /* NumberAreasViewController.m in Sources */,
 				48200D1C16EC89BA0069677E /* NumberType.m in Sources */,
+				48232B721BFC8E5D006D667E /* AddressData.m in Sources */,
 				4830462416EE269D000F9B05 /* NumberAreaViewController.m in Sources */,
+				48F14EE61BF9C63A00541EEC /* AddressViewController.m in Sources */,
 				48A261C416FDE32400007638 /* CallStateView.m in Sources */,
 				48B813491AADF9380019AF77 /* NBContact.m in Sources */,
 				48B813351AADF8DE0019AF77 /* NBPeopleListViewController.m in Sources */,
@@ -3247,6 +3265,7 @@
 				486D4A2318F06BC8004699C9 /* CallRatesViewController.m in Sources */,
 				48B813421AADF91D0019AF77 /* NBGroupsManager.m in Sources */,
 				4837AF6D18D9B89A00D3AEBC /* GetStartedStartViewController.m in Sources */,
+				48F14EDE1BF9C62200541EEC /* AddressesViewController.m in Sources */,
 				48B8136D1AADF9B20019AF77 /* NBPersonCellInfo.m in Sources */,
 				48ADD0F71706791A001515EB /* UIView+AnimateHidden.m in Sources */,
 				4814D56819E9660200958E33 /* AFHTTPRequestOperationManager.m in Sources */,
@@ -3814,11 +3833,12 @@
 		48DD727F169CD4A200CD7080 /* Data.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				48232B611BFBC70B006D667E /* Data2.1.xcdatamodel */,
 				4816A09F1BF1043E00817ED7 /* Data2.0.xcdatamodel */,
 				48D537B31930ED120095C063 /* Data1.4.xcdatamodel */,
 				48DD7280169CD4A200CD7080 /* Data.xcdatamodel */,
 			);
-			currentVersion = 4816A09F1BF1043E00817ED7 /* Data2.0.xcdatamodel */;
+			currentVersion = 48232B611BFBC70B006D667E /* Data2.1.xcdatamodel */;
 			name = Data.xcdatamodeld;
 			path = Resources/Data.xcdatamodeld;
 			sourceTree = "<group>";

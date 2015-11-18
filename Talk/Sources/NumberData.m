@@ -33,5 +33,6 @@
 @dynamic imageAccepted;
 
 @dynamic destination;
+@dynamic address;
 
 @end

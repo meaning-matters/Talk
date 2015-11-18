@@ -411,17 +411,17 @@
                             {
                                 if (error == nil)
                                 {
-                                       [self.managedObjectContext save:&error];
-                                       if (error == nil)
-                                       {
-                                           completion ? completion(nil) : 0;
-                                       }
-                                       else
-                                       {
-                                           [self handleError:error];
+                                    [self.managedObjectContext save:&error];
+                                    if (error == nil)
+                                    {
+                                        completion ? completion(nil) : 0;
+                                    }
+                                    else
+                                    {
+                                        [self handleError:error];
 
-                                           return;
-                                       }
+                                        return;
+                                    }
                                 }
                                 else
                                 {

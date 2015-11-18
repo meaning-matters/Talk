@@ -11,6 +11,7 @@
 #import "CallableData.h"
 
 @class DestinationData;
+@class AddressData;
 
 
 @interface NumberData : CallableData
@@ -40,5 +41,6 @@
 
 // Relationships.
 @property (nonatomic, retain) DestinationData* destination;
+@property (nonatomic, retain) AddressData*     address;
 
 @end
