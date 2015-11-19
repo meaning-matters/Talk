@@ -206,18 +206,6 @@
 		485E38A417B7E1960089F0F1 /* HtmlView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485E38A217B7E1960089F0F1 /* HtmlView.xib */; };
 		485E38A717C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E38A617C0B7F00089F0F1 /* NumberAreaTitlesViewController.m */; };
 		485E38A817C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E38A617C0B7F00089F0F1 /* NumberAreaTitlesViewController.m */; };
-		485E38C317C40D070089F0F1 /* NumberDuration1.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BD17C40D070089F0F1 /* NumberDuration1.png */; };
-		485E38C417C40D070089F0F1 /* NumberDuration1.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BD17C40D070089F0F1 /* NumberDuration1.png */; };
-		485E38C517C40D070089F0F1 /* NumberDuration12.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BE17C40D070089F0F1 /* NumberDuration12.png */; };
-		485E38C617C40D070089F0F1 /* NumberDuration12.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BE17C40D070089F0F1 /* NumberDuration12.png */; };
-		485E38C717C40D070089F0F1 /* NumberDuration2.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BF17C40D070089F0F1 /* NumberDuration2.png */; };
-		485E38C817C40D070089F0F1 /* NumberDuration2.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38BF17C40D070089F0F1 /* NumberDuration2.png */; };
-		485E38C917C40D070089F0F1 /* NumberDuration3.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38C017C40D070089F0F1 /* NumberDuration3.png */; };
-		485E38CA17C40D070089F0F1 /* NumberDuration3.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38C017C40D070089F0F1 /* NumberDuration3.png */; };
-		485E38CB17C40D070089F0F1 /* NumberDuration6.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38C117C40D070089F0F1 /* NumberDuration6.png */; };
-		485E38CC17C40D070089F0F1 /* NumberDuration6.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38C117C40D070089F0F1 /* NumberDuration6.png */; };
-		485E38CD17C40D070089F0F1 /* NumberDuration9.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38C217C40D070089F0F1 /* NumberDuration9.png */; };
-		485E38CE17C40D070089F0F1 /* NumberDuration9.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E38C217C40D070089F0F1 /* NumberDuration9.png */; };
 		485ECBDA1651C3B700364F08 /* BQ@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBD71651C3B700364F08 /* BQ@2x.png */; };
 		485ECBDB1651C3B700364F08 /* BQ@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBD71651C3B700364F08 /* BQ@2x.png */; };
 		485ECBE216525D3600364F08 /* KeypadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 485ECBE116525D3600364F08 /* KeypadView.m */; };
@@ -908,12 +896,6 @@
 		485E38A217B7E1960089F0F1 /* HtmlView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HtmlView.xib; sourceTree = "<group>"; };
 		485E38A517C0B7EE0089F0F1 /* NumberAreaTitlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaTitlesViewController.h; sourceTree = "<group>"; };
 		485E38A617C0B7F00089F0F1 /* NumberAreaTitlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaTitlesViewController.m; sourceTree = "<group>"; };
-		485E38BD17C40D070089F0F1 /* NumberDuration1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberDuration1.png; sourceTree = "<group>"; };
-		485E38BE17C40D070089F0F1 /* NumberDuration12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberDuration12.png; sourceTree = "<group>"; };
-		485E38BF17C40D070089F0F1 /* NumberDuration2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberDuration2.png; sourceTree = "<group>"; };
-		485E38C017C40D070089F0F1 /* NumberDuration3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberDuration3.png; sourceTree = "<group>"; };
-		485E38C117C40D070089F0F1 /* NumberDuration6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberDuration6.png; sourceTree = "<group>"; };
-		485E38C217C40D070089F0F1 /* NumberDuration9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NumberDuration9.png; sourceTree = "<group>"; };
 		485E38CF17C889350089F0F1 /* WORDS.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = WORDS.txt; sourceTree = "<group>"; };
 		485ECBD71651C3B700364F08 /* BQ@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BQ@2x.png"; sourceTree = "<group>"; };
 		485ECBE016525D3600364F08 /* KeypadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeypadView.h; sourceTree = "<group>"; };
@@ -1774,7 +1756,6 @@
 				48338FB316170D8C0033F4C1 /* App */,
 				48EDD1FC1667652A007B89DA /* Call */,
 				485F68461637270100D61365 /* Flags */,
-				485E38BC17C40D070089F0F1 /* NumberDuration */,
 				483679ED1722F2CF001A02AF /* Other */,
 				4849434C17529D1500E1D5C4 /* Share */,
 				48338FA916170CBA0033F4C1 /* Tabs */,
@@ -1913,19 +1894,6 @@
 				4837AF7918DDDD5500D3AEBC /* GetStarted6.png */,
 			);
 			path = GetStarted;
-			sourceTree = "<group>";
-		};
-		485E38BC17C40D070089F0F1 /* NumberDuration */ = {
-			isa = PBXGroup;
-			children = (
-				485E38BD17C40D070089F0F1 /* NumberDuration1.png */,
-				485E38BF17C40D070089F0F1 /* NumberDuration2.png */,
-				485E38C017C40D070089F0F1 /* NumberDuration3.png */,
-				485E38C117C40D070089F0F1 /* NumberDuration6.png */,
-				485E38C217C40D070089F0F1 /* NumberDuration9.png */,
-				485E38BE17C40D070089F0F1 /* NumberDuration12.png */,
-			);
-			path = NumberDuration;
 			sourceTree = "<group>";
 		};
 		485ECBDF16525D1600364F08 /* Views */ = {
@@ -3029,13 +2997,7 @@
 				480CE119193B604D0020F255 /* RatesTab@2x.png in Resources */,
 				483B078F1908017900E8C42D /* Terms.json in Resources */,
 				485E38A317B7E1960089F0F1 /* HtmlView.xib in Resources */,
-				485E38C317C40D070089F0F1 /* NumberDuration1.png in Resources */,
 				480CE121193C4D100020F255 /* NumberBuyCell.xib in Resources */,
-				485E38C517C40D070089F0F1 /* NumberDuration12.png in Resources */,
-				485E38C717C40D070089F0F1 /* NumberDuration2.png in Resources */,
-				485E38C917C40D070089F0F1 /* NumberDuration3.png in Resources */,
-				485E38CB17C40D070089F0F1 /* NumberDuration6.png in Resources */,
-				485E38CD17C40D070089F0F1 /* NumberDuration9.png in Resources */,
 				4814EA3317CA98F4004B7A3C /* CreditBuyCell.xib in Resources */,
 				4814EA3A17CB18DB004B7A3C /* CreditAmountCell.xib in Resources */,
 				48C1D3C817D3132A004F910D /* ProofImageView.xib in Resources */,
@@ -3119,13 +3081,7 @@
 				484943B11753C44D00E1D5C4 /* ThanksView.xib in Resources */,
 				4864B3F7175668CA0006542F /* LogoFacebook.png in Resources */,
 				485E38A417B7E1960089F0F1 /* HtmlView.xib in Resources */,
-				485E38C417C40D070089F0F1 /* NumberDuration1.png in Resources */,
-				485E38C617C40D070089F0F1 /* NumberDuration12.png in Resources */,
-				485E38C817C40D070089F0F1 /* NumberDuration2.png in Resources */,
 				48B93871187B647F00132535 /* Helps.json in Resources */,
-				485E38CA17C40D070089F0F1 /* NumberDuration3.png in Resources */,
-				485E38CC17C40D070089F0F1 /* NumberDuration6.png in Resources */,
-				485E38CE17C40D070089F0F1 /* NumberDuration9.png in Resources */,
 				4814EA3417CA98F4004B7A3C /* CreditBuyCell.xib in Resources */,
 				4814EA3B17CB18DB004B7A3C /* CreditAmountCell.xib in Resources */,
 				48C1D3C917D3132A004F910D /* ProofImageView.xib in Resources */,
