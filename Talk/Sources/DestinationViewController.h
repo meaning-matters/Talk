@@ -12,10 +12,11 @@
 #import "ItemViewController.h"
 
 
-@interface DestinationViewController : ItemViewController <UITextFieldDelegate>
+@interface DestinationViewController : ItemViewController
 
 @property (nonatomic, strong) DestinationData* destination;
 @property (nonatomic, strong) NSMutableArray*  sequenceArray;
+
 
 - (instancetype)initWithDestination:(DestinationData*)destination
                managedObjectContext:(NSManagedObjectContext*)managedObjectContext;

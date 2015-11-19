@@ -9,6 +9,7 @@
         <attribute name="companyName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fiscalIdCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hasProof" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="idNumber" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="idType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isoCountryCode" optional="YES" attributeType="String" syncable="YES"/>
@@ -16,7 +17,9 @@
         <attribute name="municipalityCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="postcode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="proofimage" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="rejectionReasons" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="salutation" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="street" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="streetCode" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="numbers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Number" inverseName="address" inverseEntity="Number" syncable="YES"/>
@@ -85,7 +88,7 @@
         <relationship name="destinations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Destination" inverseName="recordings" inverseEntity="Destination" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Address" positionX="252" positionY="-324" width="128" height="330"/>
+        <element name="Address" positionX="252" positionY="-324" width="128" height="375"/>
         <element name="Callable" positionX="117" positionY="-468" width="128" height="88"/>
         <element name="CallerId" positionX="313" positionY="-451" width="128" height="73"/>
         <element name="Destination" positionX="268" positionY="-54" width="128" height="135"/>

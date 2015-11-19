@@ -445,10 +445,13 @@
                                 numberType:(NumberTypeMask)numberTypeMask
                                      reply:(void (^)(NSError* error, NSArray* addressIds))reply
 {
-    NSString*     username   = [Settings sharedSettings].webUsername;
-    NSDictionary* parameters = @{@"isoCountryCode" : isoCountryCode,
-                                 @"areaCode"       : areaCode,
-                                 @"numberType"     : [NumberType stringForNumberType:numberTypeMask]};
+    NSString*            username   = [Settings sharedSettings].webUsername;
+    NSString*            numberType = [NumberType stringForNumberType:numberTypeMask];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    
+    (isoCountryCode.length > 0) ? parameters[@"isoCountryCode"] = isoCountryCode : 0;
+    (areaCode.length       > 0) ? parameters[@"areaCode"]       = areaCode       : 0;
+    (numberTypeMask        > 0) ? parameters[@"numberType"]     = numberType     : 0;
 
     [self getPath:[NSString stringWithFormat:@"/users/%@/addresses", username]
        parameters:parameters
@@ -477,7 +480,8 @@
                                         NSString* fiscalIdCode,
                                         NSString* streetCode,
                                         NSString* municipalityCode,
-                                        NSString* status))reply
+                                        NSString* status,
+                                        NSArray*  rejectionReasons))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
@@ -506,11 +510,12 @@
                   content[@"fiscalIdCode"],
                   content[@"streetCode"],
                   content[@"municipalityCode"],
-                  content[@"status"]);
+                  content[@"status"],
+                  content[@"rejectionReasons"]);
         }
         else
         {
-            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, nil, nil, nil, nil, nil, nil);
+            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, nil, nil, nil, nil, nil, nil, nil);
         }
     }];
 }

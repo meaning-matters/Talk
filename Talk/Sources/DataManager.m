@@ -10,6 +10,7 @@
 #import "NumberData.h"
 #import "DestinationData.h"
 #import "PhoneData.h"
+#import "AddressData.h"
 #import "Common.h"
 #import "WebClient.h"
 #import "Settings.h"
@@ -395,33 +396,44 @@
 
 - (void)synchronizeAll:(void (^)(NSError* error))completion
 {
-    [self synchronizePhones:^(NSError* error)
+    [self synchronizeAddresses:^(NSError *error)
     {
         if (error == nil)
         {
-            [self synchronizeNumbers:^(NSError* error)
+            [self synchronizePhones:^(NSError* error)
             {
                 if (error == nil)
                 {
-                    [self synchronizeDestinations:^(NSError* error)
+                    [self synchronizeNumbers:^(NSError* error)
                     {
                         if (error == nil)
                         {
-                            [self synchronizeIvrs:^(NSError* error)
+                            [self synchronizeDestinations:^(NSError* error)
                             {
                                 if (error == nil)
                                 {
-                                    [self.managedObjectContext save:&error];
-                                    if (error == nil)
+                                    [self synchronizeIvrs:^(NSError* error)
                                     {
-                                        completion ? completion(nil) : 0;
-                                    }
-                                    else
-                                    {
-                                        [self handleError:error];
+                                        if (error == nil)
+                                        {
+                                            [self.managedObjectContext save:&error];
+                                            if (error == nil)
+                                            {
+                                                completion ? completion(nil) : 0;
+                                            }
+                                            else
+                                            {
+                                                [self handleError:error];
 
-                                        return;
-                                    }
+                                                return;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            [self.managedObjectContext rollback];
+                                            completion ? completion(error) : 0;
+                                        }
+                                    }];
                                 }
                                 else
                                 {
@@ -447,6 +459,129 @@
         else
         {
             [self.managedObjectContext rollback];
+            completion ? completion(error) : 0;
+        }
+    }];
+}
+
+
+- (void)synchronizeAddresses:(void (^)(NSError* error))completion
+{
+    [[WebClient sharedClient] retrieveAddressesForIsoCountryCode:nil
+                                                        areaCode:nil
+                                                      numberType:NumberTypeGeographicMask
+                                                           reply:^(NSError *error, NSArray *addressIds)
+    {
+        if (error == nil)
+        {
+            // Delete Addresses that are no longer on the server.
+            NSFetchRequest* request     = [NSFetchRequest fetchRequestWithEntityName:@"Address"];
+            [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (addressId IN %@)", addressIds]];
+            NSArray*        deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
+            if (error == nil)
+            {
+                for (NSManagedObject* object in deleteArray)
+                {
+                    [self.managedObjectContext deleteObject:object];
+                }
+            }
+            else
+            {
+                [self handleError:error];
+                
+                return;
+            }
+            
+            __block NSUInteger count = addressIds.count;
+            if (count == 0)
+            {
+                completion ? completion(nil) : 0;
+                
+                return;
+            }
+            
+            for (NSString* addressId in addressIds)
+            {
+                [[WebClient sharedClient] retrieveAddressWithId:addressId
+                                                          reply:^(NSError*  error,
+                                                                  NSString* salutation,
+                                                                  NSString* addressId,
+                                                                  NSString* firstName,
+                                                                  NSString* lastName,
+                                                                  NSString* companyName,
+                                                                  NSString* companyDescription,
+                                                                  NSString* street,
+                                                                  NSString* buildingNumber,
+                                                                  NSString* buildingLetter,
+                                                                  NSString* city,
+                                                                  NSString* postcode,
+                                                                  NSString* isoCountryCode,
+                                                                  BOOL      hasProof,
+                                                                  NSString* idType,
+                                                                  NSString* idNumber,
+                                                                  NSString* fiscalIdCode,
+                                                                  NSString* streetCode,
+                                                                  NSString* municipalityCode,
+                                                                  NSString* status,
+                                                                  NSArray*  rejectionReasons)
+                 {
+                     if (error == nil)
+                     {
+                         NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Address"];
+                         [request setPredicate:[NSPredicate predicateWithFormat:@"addressId == %@", addressId]];
+                         
+                         AddressData* address = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
+                         if (error == nil)
+                         {
+                             if (address == nil)
+                             {
+                                 address = [NSEntityDescription insertNewObjectForEntityForName:@"Address"
+                                                                         inManagedObjectContext:self.managedObjectContext];
+                             }
+                         }
+                         else
+                         {
+                             [self handleError:error];
+                             
+                             return;
+                         }
+                         
+                         address.salutation         = salutation;
+                         address.firstName          = firstName;
+                         address.lastName           = lastName;
+                         address.companyName        = companyName;
+                         address.companyDescription = companyDescription;
+                         address.street             = street;
+                         address.buildingNumber     = buildingNumber;
+                         address.buildingLetter     = buildingLetter;
+                         address.city               = city;
+                         address.postcode           = postcode;
+                         address.isoCountryCode     = isoCountryCode;
+                         address.hasProof           = hasProof;
+                         address.idType             = idType;
+                         address.idNumber           = idNumber;
+                         address.fiscalIdCode       = fiscalIdCode;
+                         address.streetCode         = streetCode;
+                         address.municipalityCode   = municipalityCode;
+                         address.status             = [AddressData addressStatusWithString:status];
+                         address.rejectionReasons   = [AddressData rejectionReasonMaskWithArray:rejectionReasons];
+                     }
+                     else
+                     {
+                         completion ? completion(error) : 0;
+                         
+                         return;
+                     }
+                     
+                     if (--count == 0)
+                     {
+                         completion ? completion(nil) : 0;
+                     }
+                 }];
+            }
+        }
+        else
+        {
             completion ? completion(error) : 0;
         }
     }];

@@ -99,9 +99,9 @@
                     reply:(void (^)(NSError* error, BOOL isValid))reply;
 
 // 10A. GET LIST OF REGULATION ADDRESSES
-- (void)retrieveAddressesForIsoCountryCode:(NSString*)isoCountryCode
-                                  areaCode:(NSString*)areaCode
-                                numberType:(NumberTypeMask)numberTypeMask
+- (void)retrieveAddressesForIsoCountryCode:(NSString*)isoCountryCode        // Optional (i.e. can be nil).
+                                  areaCode:(NSString*)areaCode              // Optional (i.e. can be nil).
+                                numberType:(NumberTypeMask)numberTypeMask   // Mandatory.
                                      reply:(void (^)(NSError* error, NSArray* addressIds))reply;
 
 // 10B. GET REGULATION ADDRESS
@@ -125,7 +125,8 @@
                                         NSString* fiscalIdCode,
                                         NSString* streetCode,
                                         NSString* municipalityCode,
-                                        NSString* status))reply;
+                                        NSString* status,
+                                        NSArray*  rejectionReasons))reply;
 
 // 10C. CREATE REGULATION ADDRESS
 - (void)createAddressForNumberIsoCountryCode:(NSString*)numberIsoCountryCode
