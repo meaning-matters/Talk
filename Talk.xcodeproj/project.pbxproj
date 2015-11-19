@@ -158,26 +158,6 @@
 		4846D8AC1743F47100C40713 /* Logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4846D8A81743F47000C40713 /* Logo@2x.png */; };
 		4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849432E1752263600E1D5C4 /* LicensesViewController.m */; };
 		484943301752263600E1D5C4 /* LicensesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849432E1752263600E1D5C4 /* LicensesViewController.m */; };
-		484943851753252800E1D5C4 /* AppStoreBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943701753252800E1D5C4 /* AppStoreBlack@2x.png */; };
-		484943861753252800E1D5C4 /* AppStoreBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943701753252800E1D5C4 /* AppStoreBlack@2x.png */; };
-		484943891753252800E1D5C4 /* AppStoreWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943721753252800E1D5C4 /* AppStoreWhite@2x.png */; };
-		4849438A1753252800E1D5C4 /* AppStoreWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943721753252800E1D5C4 /* AppStoreWhite@2x.png */; };
-		4849438D1753252800E1D5C4 /* EmailBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943741753252800E1D5C4 /* EmailBlack@2x.png */; };
-		4849438E1753252800E1D5C4 /* EmailBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943741753252800E1D5C4 /* EmailBlack@2x.png */; };
-		484943911753252800E1D5C4 /* EmailWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943761753252800E1D5C4 /* EmailWhite@2x.png */; };
-		484943921753252800E1D5C4 /* EmailWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943761753252800E1D5C4 /* EmailWhite@2x.png */; };
-		484943951753252800E1D5C4 /* FacebookBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943781753252800E1D5C4 /* FacebookBlack@2x.png */; };
-		484943961753252800E1D5C4 /* FacebookBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943781753252800E1D5C4 /* FacebookBlack@2x.png */; };
-		484943991753252800E1D5C4 /* FacebookWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4849437A1753252800E1D5C4 /* FacebookWhite@2x.png */; };
-		4849439A1753252800E1D5C4 /* FacebookWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4849437A1753252800E1D5C4 /* FacebookWhite@2x.png */; };
-		4849439D1753252800E1D5C4 /* MessageBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4849437C1753252800E1D5C4 /* MessageBlack@2x.png */; };
-		4849439E1753252800E1D5C4 /* MessageBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4849437C1753252800E1D5C4 /* MessageBlack@2x.png */; };
-		484943A11753252800E1D5C4 /* MessageWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4849437E1753252800E1D5C4 /* MessageWhite@2x.png */; };
-		484943A21753252800E1D5C4 /* MessageWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4849437E1753252800E1D5C4 /* MessageWhite@2x.png */; };
-		484943A51753252800E1D5C4 /* TwitterBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943801753252800E1D5C4 /* TwitterBlack@2x.png */; };
-		484943A61753252800E1D5C4 /* TwitterBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943801753252800E1D5C4 /* TwitterBlack@2x.png */; };
-		484943A91753252800E1D5C4 /* TwitterWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943821753252800E1D5C4 /* TwitterWhite@2x.png */; };
-		484943AA1753252800E1D5C4 /* TwitterWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943821753252800E1D5C4 /* TwitterWhite@2x.png */; };
 		484943AD1753C00100E1D5C4 /* ThanksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484943AC1753C00000E1D5C4 /* ThanksViewController.m */; };
 		484943AE1753C00100E1D5C4 /* ThanksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484943AC1753C00000E1D5C4 /* ThanksViewController.m */; };
 		484943B01753C44D00E1D5C4 /* ThanksView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484943AF1753C44D00E1D5C4 /* ThanksView.xib */; };
@@ -664,18 +644,8 @@
 		48DD72D6169F5AC600CD7080 /* WebClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DD72D4169F5AC600CD7080 /* WebClient.m */; };
 		48EC6DC016545B1F00394A4B /* AC@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EC6DBD16545B1F00394A4B /* AC@2x.png */; };
 		48EC6DC116545B1F00394A4B /* AC@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EC6DBD16545B1F00394A4B /* AC@2x.png */; };
-		48EDD20D1667652A007B89DA /* AddCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD1FE1667652A007B89DA /* AddCall@2x.png */; };
-		48EDD20E1667652A007B89DA /* AddCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD1FE1667652A007B89DA /* AddCall@2x.png */; };
 		48EDD20F1667652A007B89DA /* ColorCurves.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2001667652A007B89DA /* ColorCurves.png */; };
 		48EDD2101667652A007B89DA /* ColorCurves.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2001667652A007B89DA /* ColorCurves.png */; };
-		48EDD2171667652A007B89DA /* HoldCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2041667652A007B89DA /* HoldCall@2x.png */; };
-		48EDD2181667652A007B89DA /* HoldCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2041667652A007B89DA /* HoldCall@2x.png */; };
-		48EDD21B1667652A007B89DA /* KeypadCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2061667652A007B89DA /* KeypadCall@2x.png */; };
-		48EDD21C1667652A007B89DA /* KeypadCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2061667652A007B89DA /* KeypadCall@2x.png */; };
-		48EDD21F1667652A007B89DA /* MuteCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2081667652A007B89DA /* MuteCall@2x.png */; };
-		48EDD2201667652A007B89DA /* MuteCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2081667652A007B89DA /* MuteCall@2x.png */; };
-		48EDD2231667652A007B89DA /* SpeakerCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD20A1667652A007B89DA /* SpeakerCall@2x.png */; };
-		48EDD2241667652A007B89DA /* SpeakerCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD20A1667652A007B89DA /* SpeakerCall@2x.png */; };
 		48F14EDE1BF9C62200541EEC /* AddressesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F14EDD1BF9C62200541EEC /* AddressesViewController.m */; };
 		48F14EE61BF9C63A00541EEC /* AddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F14EE51BF9C63A00541EEC /* AddressViewController.m */; };
 		48F1B7E117E63819003A3933 /* NumberDestinationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F1B7E017E63819003A3933 /* NumberDestinationsViewController.m */; };
@@ -2943,14 +2913,9 @@
 				48D0A6EA1654D66200FA2D98 /* InfoPlist.strings in Resources */,
 				48BD8BE81663E7A400F2CB45 /* CallBaseView.xib in Resources */,
 				4837AF8618E24BF100D3AEBC /* Icon-60.png in Resources */,
-				48EDD20D1667652A007B89DA /* AddCall@2x.png in Resources */,
 				4837AF8A18E24BF100D3AEBC /* Icon-152.png in Resources */,
 				48EDD20F1667652A007B89DA /* ColorCurves.png in Resources */,
-				48EDD2171667652A007B89DA /* HoldCall@2x.png in Resources */,
-				48EDD21B1667652A007B89DA /* KeypadCall@2x.png in Resources */,
-				48EDD21F1667652A007B89DA /* MuteCall@2x.png in Resources */,
 				48A26DDE18BA904100736CCB /* SearchTableView.xib in Resources */,
-				48EDD2231667652A007B89DA /* SpeakerCall@2x.png in Resources */,
 				4888D51C166D1AEE00572566 /* Flip@2x.png in Resources */,
 				4888D520166D1AEE00572566 /* HangupPhone@2x.png in Resources */,
 				4888D527166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */,
@@ -2982,16 +2947,6 @@
 				4846D8A5174170CF00C40713 /* Branding@2x.png in Resources */,
 				4846D8AB1743F47100C40713 /* Logo@2x.png in Resources */,
 				4837AF8918E24BF100D3AEBC /* Icon-120.png in Resources */,
-				484943851753252800E1D5C4 /* AppStoreBlack@2x.png in Resources */,
-				484943891753252800E1D5C4 /* AppStoreWhite@2x.png in Resources */,
-				4849438D1753252800E1D5C4 /* EmailBlack@2x.png in Resources */,
-				484943911753252800E1D5C4 /* EmailWhite@2x.png in Resources */,
-				484943951753252800E1D5C4 /* FacebookBlack@2x.png in Resources */,
-				484943991753252800E1D5C4 /* FacebookWhite@2x.png in Resources */,
-				4849439D1753252800E1D5C4 /* MessageBlack@2x.png in Resources */,
-				484943A11753252800E1D5C4 /* MessageWhite@2x.png in Resources */,
-				484943A51753252800E1D5C4 /* TwitterBlack@2x.png in Resources */,
-				484943A91753252800E1D5C4 /* TwitterWhite@2x.png in Resources */,
 				484943B01753C44D00E1D5C4 /* ThanksView.xib in Resources */,
 				4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */,
 				480CE119193B604D0020F255 /* RatesTab@2x.png in Resources */,
@@ -3024,13 +2979,8 @@
 				48EC6DC116545B1F00394A4B /* AC@2x.png in Resources */,
 				48D0A6E71654D65200FA2D98 /* SipConfig.cfg in Resources */,
 				48D0A6EB1654D66200FA2D98 /* InfoPlist.strings in Resources */,
-				48EDD20E1667652A007B89DA /* AddCall@2x.png in Resources */,
 				48EDD2101667652A007B89DA /* ColorCurves.png in Resources */,
 				48CB2C4D17E6DB7700E19C3D /* ContactsTab@2x.png in Resources */,
-				48EDD2181667652A007B89DA /* HoldCall@2x.png in Resources */,
-				48EDD21C1667652A007B89DA /* KeypadCall@2x.png in Resources */,
-				48EDD2201667652A007B89DA /* MuteCall@2x.png in Resources */,
-				48EDD2241667652A007B89DA /* SpeakerCall@2x.png in Resources */,
 				48B93873187B647F00132535 /* Licenses.json in Resources */,
 				4888D51D166D1AEE00572566 /* Flip@2x.png in Resources */,
 				4888D521166D1AEE00572566 /* HangupPhone@2x.png in Resources */,
@@ -3066,18 +3016,8 @@
 				4846D8A6174170CF00C40713 /* Branding@2x.png in Resources */,
 				4846D8AC1743F47100C40713 /* Logo@2x.png in Resources */,
 				48995E0E18739F46001395C2 /* Phone@2x.png in Resources */,
-				484943861753252800E1D5C4 /* AppStoreBlack@2x.png in Resources */,
-				4849438A1753252800E1D5C4 /* AppStoreWhite@2x.png in Resources */,
-				4849438E1753252800E1D5C4 /* EmailBlack@2x.png in Resources */,
-				484943921753252800E1D5C4 /* EmailWhite@2x.png in Resources */,
-				484943961753252800E1D5C4 /* FacebookBlack@2x.png in Resources */,
-				4849439A1753252800E1D5C4 /* FacebookWhite@2x.png in Resources */,
 				48B9387B187E1E0E00132535 /* PhonesTab@2x.png in Resources */,
-				4849439E1753252800E1D5C4 /* MessageBlack@2x.png in Resources */,
-				484943A21753252800E1D5C4 /* MessageWhite@2x.png in Resources */,
 				48A0CE71180740F300B8A9F8 /* Welcome.mp3 in Resources */,
-				484943A61753252800E1D5C4 /* TwitterBlack@2x.png in Resources */,
-				484943AA1753252800E1D5C4 /* TwitterWhite@2x.png in Resources */,
 				484943B11753C44D00E1D5C4 /* ThanksView.xib in Resources */,
 				4864B3F7175668CA0006542F /* LogoFacebook.png in Resources */,
 				485E38A417B7E1960089F0F1 /* HtmlView.xib in Resources */,
