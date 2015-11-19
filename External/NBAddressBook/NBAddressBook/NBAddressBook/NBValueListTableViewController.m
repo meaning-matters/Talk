@@ -66,7 +66,7 @@ static NSIndexPath* targetLabel;
         }
         case LT_RINGTONE:
         {
-#warning - Replace to read in ringtones from local folder or a static array
+//### #warning - Replace to read in ringtones from local folder or a static array
             defaultLabels = [RINGTONE_ARRAY arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:@"Ringtone 1", @"Ringtone 2", @"Ringtone 3", nil]];
             customLabels = nil; //Not used for ringtones
             break;

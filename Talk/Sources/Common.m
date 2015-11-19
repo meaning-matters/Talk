@@ -589,8 +589,10 @@ static Common* sharedCommon;
 
 + (BOOL)checkRemoteNotifications
 {
-    UIRemoteNotificationType notificationTypes = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
-    if (!(notificationTypes & UIRemoteNotificationTypeAlert) || !(notificationTypes & UIRemoteNotificationTypeBadge))
+    UIUserNotificationSettings* notificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+    UIUserNotificationType      notificationTypes    = notificationSettings.types;
+    
+    if (!(notificationTypes & UIUserNotificationTypeAlert) || !(notificationTypes & UIUserNotificationTypeBadge))
     {
         NSString*   title;
         NSString*   message;

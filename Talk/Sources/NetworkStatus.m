@@ -25,7 +25,6 @@ NSString* const NetworkStatusReachableNotification              = @"NetworkStatu
 
 @implementation NetworkStatus
 
-static NetworkStatusReachable   previousNetworkStatusReachable;
 static CTTelephonyNetworkInfo*  networkInfo;
 static CTCallCenter*            callCenter;
 static NSTimer*                 loadUrlTestTimer;
