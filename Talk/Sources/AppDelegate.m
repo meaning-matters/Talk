@@ -237,12 +237,11 @@
         NSStringFromClass([PhonesViewController               class]),
         NSStringFromClass([NumbersViewController              class]),
         NSStringFromClass([DestinationsViewController         class]),
+        NSStringFromClass([AddressesViewController            class]),
         NSStringFromClass([RatesViewController                class]),
         NSStringFromClass([SettingsViewController             class]),
         NSStringFromClass([HelpsViewController                class]),
         NSStringFromClass([AboutViewController                class]),
-      //NSStringFromClass([ShareViewController                class]),
-      //NSStringFromClass([GroupsViewController               class]),
     ];
 
     NSSet* preferredSet = [NSSet setWithArray:[Settings sharedSettings].tabBarClassNames];
@@ -496,6 +495,7 @@
     [self.numbersViewController.navigationController      popToRootViewControllerAnimated:NO];
     [self.destinationsViewController.navigationController popToRootViewControllerAnimated:NO];
     [self.phonesViewController.navigationController       popToRootViewControllerAnimated:NO];
+    [self.addressesViewController.navigationController    popToRootViewControllerAnimated:NO];
     [self.ratesViewController.navigationController        popToRootViewControllerAnimated:NO];
 
     [[DataManager     sharedManager]  removeAll];

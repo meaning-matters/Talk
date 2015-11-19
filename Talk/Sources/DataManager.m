@@ -116,7 +116,7 @@
         return _managedObjectModel;
     }
 
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Data2.0"
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Data2.1"
                                               withExtension:@"mom"
                                                subdirectory:@"Data.momd"];
 

@@ -36,6 +36,7 @@
 		480E524A18C5103C0054A791 /* libHockeySDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 480E524518C50F280054A791 /* libHockeySDK.a */; };
 		480E524C18C510510054A791 /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 480E524B18C510510054A791 /* CrashReporter.framework */; };
 		480E524D18C5109D0054A791 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 480E524718C50F280054A791 /* HockeySDKResources.bundle */; };
+		480E7A2E1BFDCA7800F655E8 /* AddressesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 480E7A2D1BFDCA7800F655E8 /* AddressesTab@2x.png */; };
 		4812727316487E2D00534450 /* LibPhoneNumber.js in Resources */ = {isa = PBXBuildFile; fileRef = 4812727216487E2D00534450 /* LibPhoneNumber.js */; };
 		4812727416487E2D00534450 /* LibPhoneNumber.js in Sources */ = {isa = PBXBuildFile; fileRef = 4812727216487E2D00534450 /* LibPhoneNumber.js */; };
 		4814D54D19DCCD7C00958E33 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4814D54C19DCCD7C00958E33 /* libresolv.dylib */; };
@@ -157,8 +158,6 @@
 		4846D8AC1743F47100C40713 /* Logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4846D8A81743F47000C40713 /* Logo@2x.png */; };
 		4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849432E1752263600E1D5C4 /* LicensesViewController.m */; };
 		484943301752263600E1D5C4 /* LicensesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849432E1752263600E1D5C4 /* LicensesViewController.m */; };
-		4849436D17529DE100E1D5C4 /* ShareButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849436C17529DE100E1D5C4 /* ShareButton.m */; };
-		4849436E17529DE100E1D5C4 /* ShareButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4849436C17529DE100E1D5C4 /* ShareButton.m */; };
 		484943851753252800E1D5C4 /* AppStoreBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943701753252800E1D5C4 /* AppStoreBlack@2x.png */; };
 		484943861753252800E1D5C4 /* AppStoreBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943701753252800E1D5C4 /* AppStoreBlack@2x.png */; };
 		484943891753252800E1D5C4 /* AppStoreWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 484943721753252800E1D5C4 /* AppStoreWhite@2x.png */; };
@@ -554,16 +553,12 @@
 		48AF44EF164947B300DFE3D8 /* CreditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44ED164947B300DFE3D8 /* CreditViewController.m */; };
 		48AF44F2164947CE00DFE3D8 /* KeypadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F1164947CE00DFE3D8 /* KeypadViewController.m */; };
 		48AF44F3164947CE00DFE3D8 /* KeypadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F1164947CE00DFE3D8 /* KeypadViewController.m */; };
-		48AF44F6164947E600DFE3D8 /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F5164947E600DFE3D8 /* GroupsViewController.m */; };
-		48AF44F7164947E600DFE3D8 /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F5164947E600DFE3D8 /* GroupsViewController.m */; };
 		48AF44FE1649483600DFE3D8 /* HelpsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44FD1649483600DFE3D8 /* HelpsViewController.m */; };
 		48AF44FF1649483600DFE3D8 /* HelpsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44FD1649483600DFE3D8 /* HelpsViewController.m */; };
 		48AF45021649484600DFE3D8 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF45011649484600DFE3D8 /* AboutViewController.m */; };
 		48AF45031649484600DFE3D8 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF45011649484600DFE3D8 /* AboutViewController.m */; };
 		48AF450B164948CD00DFE3D8 /* KeypadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450A164948CD00DFE3D8 /* KeypadView.xib */; };
 		48AF450C164948CD00DFE3D8 /* KeypadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450A164948CD00DFE3D8 /* KeypadView.xib */; };
-		48AF450E164948DC00DFE3D8 /* GroupsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450D164948DC00DFE3D8 /* GroupsView.xib */; };
-		48AF450F164948DC00DFE3D8 /* GroupsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450D164948DC00DFE3D8 /* GroupsView.xib */; };
 		48AF45171649494400DFE3D8 /* AboutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45161649494400DFE3D8 /* AboutView.xib */; };
 		48AF45181649494400DFE3D8 /* AboutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45161649494400DFE3D8 /* AboutView.xib */; };
 		48AF452F1649788A00DFE3D8 /* AboutTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */; };
@@ -574,8 +569,6 @@
 		48AF45381649788A00DFE3D8 /* KeypadTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451E1649788A00DFE3D8 /* KeypadTab@2x.png */; };
 		48AF453B1649788A00DFE3D8 /* DestinationsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45201649788A00DFE3D8 /* DestinationsTab@2x.png */; };
 		48AF453C1649788A00DFE3D8 /* DestinationsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45201649788A00DFE3D8 /* DestinationsTab@2x.png */; };
-		48AF453F1649788A00DFE3D8 /* GroupsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45221649788A00DFE3D8 /* GroupsTab@2x.png */; };
-		48AF45401649788A00DFE3D8 /* GroupsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45221649788A00DFE3D8 /* GroupsTab@2x.png */; };
 		48AF45431649788A00DFE3D8 /* HelpsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45241649788A00DFE3D8 /* HelpsTab@2x.png */; };
 		48AF45441649788A00DFE3D8 /* HelpsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45241649788A00DFE3D8 /* HelpsTab@2x.png */; };
 		48AF45471649788A00DFE3D8 /* NumbersTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45261649788A00DFE3D8 /* NumbersTab@2x.png */; };
@@ -584,10 +577,6 @@
 		48AF454C1649788A00DFE3D8 /* RecentsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45281649788A00DFE3D8 /* RecentsTab@2x.png */; };
 		48AF454F1649788A00DFE3D8 /* SettingsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF452A1649788A00DFE3D8 /* SettingsTab@2x.png */; };
 		48AF45501649788A00DFE3D8 /* SettingsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF452A1649788A00DFE3D8 /* SettingsTab@2x.png */; };
-		48AF45531649788A00DFE3D8 /* ShareTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF452C1649788A00DFE3D8 /* ShareTab@2x.png */; };
-		48AF45541649788A00DFE3D8 /* ShareTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF452C1649788A00DFE3D8 /* ShareTab@2x.png */; };
-		48AF4557164978BF00DFE3D8 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4556164978BE00DFE3D8 /* ShareViewController.m */; };
-		48AF4558164978BF00DFE3D8 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4556164978BE00DFE3D8 /* ShareViewController.m */; };
 		48AF455B1649794B00DFE3D8 /* ShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF455A1649794B00DFE3D8 /* ShareView.xib */; };
 		48AF455C1649794B00DFE3D8 /* ShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF455A1649794B00DFE3D8 /* ShareView.xib */; };
 		48AF4565164979F400DFE3D8 /* DestinationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4564164979F400DFE3D8 /* DestinationsViewController.m */; };
@@ -691,8 +680,6 @@
 		48EDD20E1667652A007B89DA /* AddCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD1FE1667652A007B89DA /* AddCall@2x.png */; };
 		48EDD20F1667652A007B89DA /* ColorCurves.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2001667652A007B89DA /* ColorCurves.png */; };
 		48EDD2101667652A007B89DA /* ColorCurves.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2001667652A007B89DA /* ColorCurves.png */; };
-		48EDD2131667652A007B89DA /* GroupsCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2021667652A007B89DA /* GroupsCall@2x.png */; };
-		48EDD2141667652A007B89DA /* GroupsCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2021667652A007B89DA /* GroupsCall@2x.png */; };
 		48EDD2171667652A007B89DA /* HoldCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2041667652A007B89DA /* HoldCall@2x.png */; };
 		48EDD2181667652A007B89DA /* HoldCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2041667652A007B89DA /* HoldCall@2x.png */; };
 		48EDD21B1667652A007B89DA /* KeypadCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2061667652A007B89DA /* KeypadCall@2x.png */; };
@@ -769,6 +756,7 @@
 		480CE126194DBEC40020F255 /* CallerIdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallerIdViewController.m; sourceTree = "<group>"; };
 		480E523C18C50F280054A791 /* HockeySDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HockeySDK.xcodeproj; path = "External/HockeySDK-iOS-3.5.4/Support/HockeySDK.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		480E524B18C510510054A791 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CrashReporter.framework; path = "External/HockeySDK-iOS-3.5.4/Vendor/CrashReporter.framework"; sourceTree = "<group>"; };
+		480E7A2D1BFDCA7800F655E8 /* AddressesTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AddressesTab@2x.png"; sourceTree = "<group>"; };
 		4812727216487E2D00534450 /* LibPhoneNumber.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = LibPhoneNumber.js; path = External/LibPhoneNumber/LibPhoneNumber.js; sourceTree = SOURCE_ROOT; };
 		4814D54C19DCCD7C00958E33 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		4814D55419E9660200958E33 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -1798,12 +1786,13 @@
 			isa = PBXGroup;
 			children = (
 				48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */,
+				480E7A2D1BFDCA7800F655E8 /* AddressesTab@2x.png */,
 				48CB2C4917E6DB7700E19C3D /* ContactsTab@2x.png */,
 				48AF451C1649788A00DFE3D8 /* CreditTab@2x.png */,
-				48AF451E1649788A00DFE3D8 /* KeypadTab@2x.png */,
 				48AF45201649788A00DFE3D8 /* DestinationsTab@2x.png */,
 				48AF45221649788A00DFE3D8 /* GroupsTab@2x.png */,
 				48AF45241649788A00DFE3D8 /* HelpsTab@2x.png */,
+				48AF451E1649788A00DFE3D8 /* KeypadTab@2x.png */,
 				48AF45261649788A00DFE3D8 /* NumbersTab@2x.png */,
 				48B93877187E1E0E00132535 /* PhonesTab@2x.png */,
 				480CE118193B604D0020F255 /* RatesTab@2x.png */,
@@ -2731,6 +2720,7 @@
 				485F6A841637270100D61365 /* CA@2x.png in Resources */,
 				485F6A861637270100D61365 /* CC@2x.png in Resources */,
 				485F6A881637270100D61365 /* CD@2x.png in Resources */,
+				480E7A2E1BFDCA7800F655E8 /* AddressesTab@2x.png in Resources */,
 				485F6A8A1637270100D61365 /* CF@2x.png in Resources */,
 				4837AF8518E24BF100D3AEBC /* Icon-40.png in Resources */,
 				4842DA021AADFB53008F35C9 /* outgoingCallInverted.png in Resources */,
@@ -2968,18 +2958,15 @@
 				485F6C281637270100D61365 /* ZM@2x.png in Resources */,
 				485F6C2A1637270100D61365 /* ZW@2x.png in Resources */,
 				48AF450B164948CD00DFE3D8 /* KeypadView.xib in Resources */,
-				48AF450E164948DC00DFE3D8 /* GroupsView.xib in Resources */,
 				48AF45171649494400DFE3D8 /* AboutView.xib in Resources */,
 				48AF452F1649788A00DFE3D8 /* AboutTab@2x.png in Resources */,
 				48AF45331649788A00DFE3D8 /* CreditTab@2x.png in Resources */,
 				48AF45371649788A00DFE3D8 /* KeypadTab@2x.png in Resources */,
 				48AF453B1649788A00DFE3D8 /* DestinationsTab@2x.png in Resources */,
-				48AF453F1649788A00DFE3D8 /* GroupsTab@2x.png in Resources */,
 				48AF45431649788A00DFE3D8 /* HelpsTab@2x.png in Resources */,
 				48AF45471649788A00DFE3D8 /* NumbersTab@2x.png in Resources */,
 				48AF454B1649788A00DFE3D8 /* RecentsTab@2x.png in Resources */,
 				48AF454F1649788A00DFE3D8 /* SettingsTab@2x.png in Resources */,
-				48AF45531649788A00DFE3D8 /* ShareTab@2x.png in Resources */,
 				48CB2C4417E6539000E19C3D /* Target.png in Resources */,
 				48AF455B1649794B00DFE3D8 /* ShareView.xib in Resources */,
 				485ECBDA1651C3B700364F08 /* BQ@2x.png in Resources */,
@@ -2991,7 +2978,6 @@
 				48EDD20D1667652A007B89DA /* AddCall@2x.png in Resources */,
 				4837AF8A18E24BF100D3AEBC /* Icon-152.png in Resources */,
 				48EDD20F1667652A007B89DA /* ColorCurves.png in Resources */,
-				48EDD2131667652A007B89DA /* GroupsCall@2x.png in Resources */,
 				48EDD2171667652A007B89DA /* HoldCall@2x.png in Resources */,
 				48EDD21B1667652A007B89DA /* KeypadCall@2x.png in Resources */,
 				48EDD21F1667652A007B89DA /* MuteCall@2x.png in Resources */,
@@ -3062,18 +3048,15 @@
 			files = (
 				48884AB11615CE920005AA79 /* InfoPlist.strings in Resources */,
 				48AF450C164948CD00DFE3D8 /* KeypadView.xib in Resources */,
-				48AF450F164948DC00DFE3D8 /* GroupsView.xib in Resources */,
 				48AF45181649494400DFE3D8 /* AboutView.xib in Resources */,
 				48AF45301649788A00DFE3D8 /* AboutTab@2x.png in Resources */,
 				48AF45341649788A00DFE3D8 /* CreditTab@2x.png in Resources */,
 				48AF45381649788A00DFE3D8 /* KeypadTab@2x.png in Resources */,
 				48AF453C1649788A00DFE3D8 /* DestinationsTab@2x.png in Resources */,
-				48AF45401649788A00DFE3D8 /* GroupsTab@2x.png in Resources */,
 				48AF45441649788A00DFE3D8 /* HelpsTab@2x.png in Resources */,
 				48AF45481649788A00DFE3D8 /* NumbersTab@2x.png in Resources */,
 				48AF454C1649788A00DFE3D8 /* RecentsTab@2x.png in Resources */,
 				48AF45501649788A00DFE3D8 /* SettingsTab@2x.png in Resources */,
-				48AF45541649788A00DFE3D8 /* ShareTab@2x.png in Resources */,
 				48AF455C1649794B00DFE3D8 /* ShareView.xib in Resources */,
 				485ECBDB1651C3B700364F08 /* BQ@2x.png in Resources */,
 				48EC6DC116545B1F00394A4B /* AC@2x.png in Resources */,
@@ -3082,7 +3065,6 @@
 				48EDD20E1667652A007B89DA /* AddCall@2x.png in Resources */,
 				48EDD2101667652A007B89DA /* ColorCurves.png in Resources */,
 				48CB2C4D17E6DB7700E19C3D /* ContactsTab@2x.png in Resources */,
-				48EDD2141667652A007B89DA /* GroupsCall@2x.png in Resources */,
 				48EDD2181667652A007B89DA /* HoldCall@2x.png in Resources */,
 				48EDD21C1667652A007B89DA /* KeypadCall@2x.png in Resources */,
 				48EDD2201667652A007B89DA /* MuteCall@2x.png in Resources */,
@@ -3192,14 +3174,12 @@
 				48AF44EA1649479100DFE3D8 /* NumbersViewController.m in Sources */,
 				48AF44EE164947B300DFE3D8 /* CreditViewController.m in Sources */,
 				48AF44F2164947CE00DFE3D8 /* KeypadViewController.m in Sources */,
-				48AF44F6164947E600DFE3D8 /* GroupsViewController.m in Sources */,
 				48C97E9F1893F2BA00174DE9 /* BlockActionSheet.m in Sources */,
 				48AF44FE1649483600DFE3D8 /* HelpsViewController.m in Sources */,
 				48B8137B1AADFA090019AF77 /* NSString+Common.m in Sources */,
 				48B813261AADF7AE0019AF77 /* NBRecentUnknownContactViewController.m in Sources */,
 				4814D56F19E9660200958E33 /* AFURLSessionManager.m in Sources */,
 				48AF45021649484600DFE3D8 /* AboutViewController.m in Sources */,
-				48AF4557164978BF00DFE3D8 /* ShareViewController.m in Sources */,
 				48AF4565164979F400DFE3D8 /* DestinationsViewController.m in Sources */,
 				48B8136E1AADF9B20019AF77 /* NBPersonFieldTableCell.m in Sources */,
 				48AF4581164A45A100DFE3D8 /* Settings.m in Sources */,
@@ -3293,7 +3273,6 @@
 				48A26DDC18BA7FB200736CCB /* SearchTableViewController.m in Sources */,
 				4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */,
 				4803081B196AAFC000FDE1A4 /* ExtendNumberViewController.m in Sources */,
-				4849436D17529DE100E1D5C4 /* ShareButton.m in Sources */,
 				484943AD1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
 				4865A9D817926CE00028785F /* BuyNumberViewController.m in Sources */,
 				48ADE7D2185C67EC00E39DA2 /* PhoneData.m in Sources */,
@@ -3333,11 +3312,9 @@
 				48AF44EB1649479100DFE3D8 /* NumbersViewController.m in Sources */,
 				48AF44EF164947B300DFE3D8 /* CreditViewController.m in Sources */,
 				48AF44F3164947CE00DFE3D8 /* KeypadViewController.m in Sources */,
-				48AF44F7164947E600DFE3D8 /* GroupsViewController.m in Sources */,
 				48C97EA01893F2BA00174DE9 /* BlockActionSheet.m in Sources */,
 				48AF44FF1649483600DFE3D8 /* HelpsViewController.m in Sources */,
 				48AF45031649484600DFE3D8 /* AboutViewController.m in Sources */,
-				48AF4558164978BF00DFE3D8 /* ShareViewController.m in Sources */,
 				48AF4566164979F400DFE3D8 /* DestinationsViewController.m in Sources */,
 				48AD95E0164AE582006178E6 /* Skinning.m in Sources */,
 				488268DA164BCF8600EA58AE /* NetworkStatus.m in Sources */,
@@ -3384,7 +3361,6 @@
 				48B0C3FA174989F500DAB3BD /* Keychain.m in Sources */,
 				48A0CE791809BE3100B8A9F8 /* CallBaseViewController.m in Sources */,
 				484943301752263600E1D5C4 /* LicensesViewController.m in Sources */,
-				4849436E17529DE100E1D5C4 /* ShareButton.m in Sources */,
 				484943AE1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
 				4865A9D917926CE00028785F /* BuyNumberViewController.m in Sources */,
 				48ADE7D3185C67EC00E39DA2 /* PhoneData.m in Sources */,
