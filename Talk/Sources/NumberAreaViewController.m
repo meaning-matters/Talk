@@ -229,7 +229,7 @@ typedef enum
                                                                   @"Title of app screen with one area.\n"
                                                                   @"[1 line larger font].");
 
-    UIBarButtonItem*    cancelButton;
+    UIBarButtonItem* cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                  target:self
                                                                  action:@selector(cancel)];
