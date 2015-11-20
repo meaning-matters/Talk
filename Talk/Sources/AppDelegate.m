@@ -769,7 +769,7 @@
 {
     PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:callthruNumber];
     
-    if (phoneNumber.isValid && [Settings sharedSettings].callerIdE164.length > 0)
+    if (phoneNumber.isValid && [Settings sharedSettings].callbackE164.length > 0)
     {
         [Common getCostForCallbackE164:[Settings sharedSettings].callbackE164
                           callthruE164:phoneNumber.e164Format
