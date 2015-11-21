@@ -7,6 +7,7 @@
 //
 
 #import "CreditViewController.h"
+#import "RatesViewController.h"
 #import "PurchaseManager.h"
 #import "CreditAmountCell.h"
 #import "Settings.h"
@@ -21,7 +22,8 @@
 typedef enum
 {
     TableSectionAmount = 1UL << 0,
-    TableSectionBuy    = 1UL << 1,
+    TableSectionRates  = 1UL << 1,
+    TableSectionBuy    = 1UL << 2,
 } TableSection;
 
 
@@ -51,6 +53,7 @@ typedef enum
         // The tabBarItem image must be set in my own NavigationController.
 
         self.sections |= TableSectionAmount;
+        self.sections |= TableSectionRates;
         self.sections |= TableSectionBuy;
     }
     
@@ -130,6 +133,18 @@ typedef enum
             self.amountIndexPath = indexPath;
             break;
         }
+        case TableSectionRates:
+        {
+            cell = [self.tableView dequeueReusableCellWithIdentifier:@"RatesCell"];
+            if (cell == nil)
+            {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"RatesCell"];
+            }
+            
+            cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+            cell.textLabel.text = NSLocalizedString(@"Rates", @"Rates cell title");
+            break;
+        }
         case TableSectionBuy:
         {
             cell = [tableView dequeueReusableCellWithIdentifier:@"CreditBuyCell" forIndexPath:indexPath];
@@ -166,6 +181,11 @@ typedef enum
                                                       @"[One line larger font]");
             break;
         }
+        case TableSectionRates:
+        {
+            title = nil;
+            break;
+        }
         case TableSectionBuy:
         {
             title = NSLocalizedStringWithDefaultValue(@"creditView:... BuyCreditHeader", nil, [NSBundle mainBundle],
@@ -188,10 +208,15 @@ typedef enum
         case TableSectionAmount:
         {
             title = NSLocalizedStringWithDefaultValue(@"CreditAmount:... TableFooterNumbers", nil, [NSBundle mainBundle],
-                                                      @"Credit is used for outgoing calls, for forwarding incoming "
-                                                      @"calls on your NumberBay numbers to your phone(s), and for "
-                                                      @"buying numbers.",
+                                                      @"Credit is used for outgoing calls, for forwarding "
+                                                      @"calls received on your Numbers, and for incoming "
+                                                      @"call charges on your toll-free and special Numbers.",
                                                       @"[Multiple lines]");
+            break;
+        }
+        case TableSectionRates:
+        {
+            title = nil;
             break;
         }
         case TableSectionBuy:
@@ -227,6 +252,12 @@ typedef enum
             }
             break;
         }
+        case TableSectionRates:
+        {
+            RatesViewController* viewController = [[RatesViewController alloc] init];
+            [self.navigationController pushViewController:viewController animated:YES];
+            break;
+        }
         case TableSectionBuy:
         {
             break;
@@ -242,6 +273,7 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
         case TableSectionAmount: height = self.amountCellHeight; break;
+        case TableSectionRates:  height = 45.0f;                 break;
         case TableSectionBuy:    height = self.buyCellHeight;    break;
     }
 

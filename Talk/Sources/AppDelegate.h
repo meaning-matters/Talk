@@ -17,7 +17,6 @@
 #import "NumbersViewController.h"
 #import "DestinationsViewController.h"
 #import "AddressesViewController.h"
-#import "RatesViewController.h"
 #import "SettingsViewController.h"
 #import "HelpsViewController.h"
 #import "AboutViewController.h"
@@ -41,7 +40,6 @@
 @property (nonatomic, strong) NumbersViewController*              numbersViewController;
 @property (nonatomic, strong) DestinationsViewController*         destinationsViewController;
 @property (nonatomic, strong) AddressesViewController*            addressesViewController;
-@property (nonatomic, strong) RatesViewController*                ratesViewController;
 @property (nonatomic, strong) SettingsViewController*             settingsViewController;
 @property (nonatomic, strong) HelpsViewController*                helpsViewController;
 @property (nonatomic, strong) AboutViewController*                aboutViewController;

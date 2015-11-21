@@ -27,7 +27,6 @@
 		480B4FFF1BED4AC20098F3A4 /* WD@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 480B4FFE1BED4AC20098F3A4 /* WD@2x.png */; };
 		480BEF9518D59ECA00C882E0 /* GetStartedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 480BEF9418D59ECA00C882E0 /* GetStartedView.xib */; };
 		480BEF9618D73EF900C882E0 /* GetStartedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480BEF8D18D59E7400C882E0 /* GetStartedViewController.m */; };
-		480CE119193B604D0020F255 /* RatesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 480CE118193B604D0020F255 /* RatesTab@2x.png */; };
 		480CE11C193B67CF0020F255 /* RatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480CE11B193B67CF0020F255 /* RatesViewController.m */; };
 		480CE11F193BA7B20020F255 /* NumberRatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480CE11E193BA7B20020F255 /* NumberRatesViewController.m */; };
 		480CE121193C4D100020F255 /* NumberBuyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 480CE120193C4D100020F255 /* NumberBuyCell.xib */; };
@@ -702,7 +701,6 @@
 		480BEF8C18D59E7400C882E0 /* GetStartedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetStartedViewController.h; sourceTree = "<group>"; };
 		480BEF8D18D59E7400C882E0 /* GetStartedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetStartedViewController.m; sourceTree = "<group>"; };
 		480BEF9418D59ECA00C882E0 /* GetStartedView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GetStartedView.xib; sourceTree = "<group>"; };
-		480CE118193B604D0020F255 /* RatesTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RatesTab@2x.png"; sourceTree = "<group>"; };
 		480CE11A193B67CF0020F255 /* RatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RatesViewController.h; sourceTree = "<group>"; };
 		480CE11B193B67CF0020F255 /* RatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RatesViewController.m; sourceTree = "<group>"; };
 		480CE11D193BA7B20020F255 /* NumberRatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberRatesViewController.h; sourceTree = "<group>"; };
@@ -1746,7 +1744,6 @@
 				48AF451E1649788A00DFE3D8 /* KeypadTab@2x.png */,
 				48AF45261649788A00DFE3D8 /* NumbersTab@2x.png */,
 				48B93877187E1E0E00132535 /* PhonesTab@2x.png */,
-				480CE118193B604D0020F255 /* RatesTab@2x.png */,
 				48AF45281649788A00DFE3D8 /* RecentsTab@2x.png */,
 				48AF452A1649788A00DFE3D8 /* SettingsTab@2x.png */,
 				48AF452C1649788A00DFE3D8 /* ShareTab@2x.png */,
@@ -2949,7 +2946,6 @@
 				4837AF8918E24BF100D3AEBC /* Icon-120.png in Resources */,
 				484943B01753C44D00E1D5C4 /* ThanksView.xib in Resources */,
 				4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */,
-				480CE119193B604D0020F255 /* RatesTab@2x.png in Resources */,
 				483B078F1908017900E8C42D /* Terms.json in Resources */,
 				485E38A317B7E1960089F0F1 /* HtmlView.xib in Resources */,
 				480CE121193C4D100020F255 /* NumberBuyCell.xib in Resources */,
