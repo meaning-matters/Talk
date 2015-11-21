@@ -147,7 +147,7 @@ const NSInteger kUseButtonTag = 123;
     if (self.footerTitle == nil)
     {
         return NSLocalizedStringWithDefaultValue(@"Phone Phones List Title", nil, [NSBundle mainBundle],
-                                                 @"List of phone numbers from which you select (on the Settings tab) "
+                                                 @"List of phone numbers from which you select "
                                                  @"your caller ID, and the number you'll be called back on.\n\n"
                                                  @"Add as many as you like. It can be handy to have an extensive "
                                                  @"list of caller IDs available.",
