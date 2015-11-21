@@ -476,7 +476,7 @@
     }
     else
     {
-        if (indexPath.row < contactsDatasource.count) //### Patches crash from out-of-sync/empty `contactsDatasource`.
+        if (indexPath.row < [[contactsDatasource objectAtIndex:indexPath.section] count]) //### Patches crash from out-of-sync/empty `contactsDatasource`.
         {
             contact = (__bridge ABRecordRef)([[contactsDatasource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]);
         }

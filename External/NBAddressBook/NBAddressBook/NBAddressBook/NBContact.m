@@ -83,7 +83,7 @@
     
     NSRange boldRange = NSMakeRange(-1, 0);
     NSMutableString * listRepresentation = [NSMutableString string];
-    BOOL hasFirstName = [[NBContact getStringProperty:kABPersonLastNameProperty forContact:contactRef] length] > 0;
+    BOOL hasFirstName = [[NBContact getStringProperty:kABPersonFirstNameProperty forContact:contactRef] length] > 0;
     BOOL hasLastName  = [[NBContact getStringProperty:kABPersonLastNameProperty forContact:contactRef] length] > 0;
     for (NSNumber * propertyNum in primaryListRepresentation)
     {
