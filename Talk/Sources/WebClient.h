@@ -108,7 +108,6 @@
 - (void)retrieveAddressWithId:(NSString*)addressId
                         reply:(void (^)(NSError*  error,
                                         NSString* salutation,
-                                        NSString* addressId,
                                         NSString* firstName,
                                         NSString* lastName,
                                         NSString* companyName,

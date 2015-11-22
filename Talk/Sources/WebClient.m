@@ -463,7 +463,6 @@
 - (void)retrieveAddressWithId:(NSString*)addressId
                         reply:(void (^)(NSError*  error,
                                         NSString* salutation,
-                                        NSString* addressId,
                                         NSString* firstName,
                                         NSString* lastName,
                                         NSString* companyName,
@@ -493,7 +492,6 @@
         {
             reply(nil,
                   content[@"salutation"],
-                  content[@"addressId"],
                   content[@"firstName"],
                   content[@"lastName"],
                   content[@"companyName"],
@@ -515,7 +513,7 @@
         }
         else
         {
-            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, nil, nil, nil, nil, nil, nil, nil);
+            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, nil, nil, nil, nil, nil, nil, nil);
         }
     }];
 }
