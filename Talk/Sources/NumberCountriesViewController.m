@@ -122,9 +122,9 @@
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
-             {
-                 [self dismissViewControllerAnimated:YES completion:nil];
-             }
+            {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
                                  cancelButtonTitle:[Strings cancelString]
                                  otherButtonTitles:nil];
         }

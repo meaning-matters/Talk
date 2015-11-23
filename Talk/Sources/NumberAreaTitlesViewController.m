@@ -11,17 +11,16 @@
 
 
 @interface NumberAreaTitlesViewController ()
-{
-    NSMutableDictionary*    purchaseInfo;
-    NSIndexPath*            selectedIndexPath;
-}
+
+@property (nonatomic, strong) AddressData* address;
+@property (nonatomic, strong) NSIndexPath* selectedIndexPath;
 
 @end
 
 
 @implementation NumberAreaTitlesViewController
 
-- (instancetype)initWithPurchaseInfo:(NSMutableDictionary*)info
+- (instancetype)initWithAddress:(AddressData*)address
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
@@ -30,7 +29,7 @@
                                                        @"Title of screen with list of titles: Mr., Ms., ...\n"
                                                        @"[1 line larger font].");
 
-        purchaseInfo = info;
+        self.address = address;
     }
 
     return self;
@@ -72,26 +71,26 @@
     {
         case 0:
         {
-            selected            = [purchaseInfo[@"salutation"] isEqualToString:@"MR"];
-            selectedIndexPath   = selected ? indexPath : selectedIndexPath;
-            cell.accessoryType  = selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            cell.textLabel.text = [Strings mrString];
+            selected               = [self.address.salutation isEqualToString:@"MR"];
+            self.selectedIndexPath = selected ? indexPath : self.selectedIndexPath;
+            cell.accessoryType     = selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.textLabel.text    = [Strings mrString];
             break;
         }
         case 1:
         {
-            selected            = [purchaseInfo[@"salutation"] isEqualToString:@"MS"];
-            selectedIndexPath   = selected ? indexPath : selectedIndexPath;
-            cell.accessoryType  = selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            cell.textLabel.text = [Strings msString];
+            selected               = [self.address.salutation isEqualToString:@"MS"];
+            self.selectedIndexPath = selected ? indexPath : self.selectedIndexPath;
+            cell.accessoryType     = selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.textLabel.text    = [Strings msString];
             break;
         }
         case 2:
         {
-            selected            = [purchaseInfo[@"salutation"] isEqualToString:@"COMPANY"];
-            selectedIndexPath   = selected ? indexPath : selectedIndexPath;
-            cell.accessoryType  = selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            cell.textLabel.text = [Strings companyString];
+            selected               = [self.address.salutation isEqualToString:@"COMPANY"];
+            self.selectedIndexPath = selected ? indexPath : self.selectedIndexPath;
+            cell.accessoryType     = selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.textLabel.text    = [Strings companyString];
             break;
         }
     }
@@ -108,17 +107,17 @@
     {
         case 0:
         {
-            purchaseInfo[@"salutation"] = @"MR";
+            self.address.salutation = @"MR";
             break;
         }
         case 1:
         {
-            purchaseInfo[@"salutation"] = @"MS";
+            self.address.salutation = @"MS";
             break;
         }
         case 2:
         {
-            purchaseInfo[@"salutation"] = @"COMPANY";
+            self.address.salutation = @"COMPANY";
             break;
         }
     }
@@ -128,7 +127,7 @@
     cell               = [tableView cellForRowAtIndexPath:indexPath];
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
-    cell               = [tableView cellForRowAtIndexPath:selectedIndexPath];
+    cell               = [tableView cellForRowAtIndexPath:self.selectedIndexPath];
     cell.accessoryType = UITableViewCellAccessoryNone;
 
     [self.navigationController popViewControllerAnimated:YES];

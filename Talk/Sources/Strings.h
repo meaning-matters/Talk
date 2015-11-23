@@ -82,11 +82,13 @@
 
 + (NSString*)streetString;
 
-+ (NSString*)buildingString;
++ (NSString*)buildingNumberString;
+
++ (NSString*)buildingLetterString;
 
 + (NSString*)cityString;
 
-+ (NSString*)zipCodeString;
++ (NSString*)postcodeString;
 
 + (NSString*)stateString;
 

@@ -56,7 +56,7 @@ typedef enum
     ContactAddressRowStreet    = 1UL << 0,
     ContactAddressRowBuilding  = 1UL << 1,
     ContactAddressRowCity      = 1UL << 2,
-    ContactAddressRowZipCode   = 1UL << 3,
+    ContactAddressRowPostcode  = 1UL << 3,
     ContactAddressRowStateName = 1UL << 4,
     ContactAddressRowCountry   = 1UL << 5,
     ContactAddressRowImage     = 1UL << 6,
@@ -123,7 +123,7 @@ typedef enum
         contactAddressRows |= ContactAddressRowStreet;
         contactAddressRows |= ContactAddressRowBuilding;
         contactAddressRows |= ContactAddressRowCity;
-        contactAddressRows |= ContactAddressRowZipCode;
+        contactAddressRows |= ContactAddressRowPostcode;
         contactAddressRows |= (number.stateName != nil)  ? ContactAddressRowStateName  : 0;
         contactAddressRows |= ContactAddressRowCountry;
         contactAddressRows |= (number.image != nil) ? ContactAddressRowImage : 0;
@@ -605,7 +605,7 @@ typedef enum
         }
         case ContactAddressRowBuilding:
         {
-            cell.textLabel.text       = [Strings buildingString];
+           //#### cell.textLabel.text       = [Strings buildingString];
             cell.detailTextLabel.text = number.building;
             break;
         }
@@ -615,9 +615,9 @@ typedef enum
             cell.detailTextLabel.text = number.city;
             break;
         }
-        case ContactAddressRowZipCode:
+        case ContactAddressRowPostcode:
         {
-            cell.textLabel.text       = [Strings zipCodeString];
+            cell.textLabel.text       = [Strings postcodeString];
             cell.detailTextLabel.text = number.zipCode;
             break;
         }

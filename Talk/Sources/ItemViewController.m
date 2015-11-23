@@ -60,15 +60,6 @@
 }
 
 
-#pragma mark - Navigation Action
-
-- (void)cancelAction
-{
-    [self.view endEditing:YES];
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-
 #pragma mark - Helper Methods
 
 - (NSIndexPath*)findCellIndexPathForSubview:(UIView*)subview

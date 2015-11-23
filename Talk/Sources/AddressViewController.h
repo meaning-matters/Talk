@@ -8,6 +8,7 @@
 
 #import "ItemViewController.h"
 #import "AddressData.h"
+#import "NumberType.h"
 
 
 @interface AddressViewController : ItemViewController
@@ -16,6 +17,10 @@
 
 
 - (instancetype)initWithAddress:(AddressData*)address
-           managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
+           managedObjectContext:(NSManagedObjectContext*)managedObjectContext
+                 isoCountryCode:(NSString*)isoCountryCode
+                           area:(NSDictionary*)area
+                 numberTypeMask:(NumberTypeMask)numberTypeMask
+                      proofType:(NSDictionary*)proofType;
 
 @end

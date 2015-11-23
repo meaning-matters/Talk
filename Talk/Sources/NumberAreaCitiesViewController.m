@@ -13,18 +13,17 @@
 
 
 @interface NumberAreaCitiesViewController ()
-{
-    NSArray*             citiesArray;
-    NSMutableDictionary* purchaseInfo;
-    UITableViewCell*     checkmarkedCell;   // Previous cell with checkmark.
-}
+
+@property (nonatomic, strong) NSArray*         citiesArray;
+@property (nonatomic, strong) AddressData*     address;
+@property (nonatomic, strong) UITableViewCell* checkmarkedCell;   // Previous cell with checkmark.
 
 @end
 
 
 @implementation NumberAreaCitiesViewController
 
-- (instancetype)initWithCitiesArray:(NSArray*)array purchaseInfo:(NSMutableDictionary*)info;
+- (instancetype)initWithCitiesArray:(NSArray*)array address:(AddressData *)address
 {
     if (self = [super init])
     {
@@ -33,8 +32,8 @@
                                                        @"Title of app screen with list of cities\n"
                                                        @"[1 line larger font].");
 
-        citiesArray  = array;
-        purchaseInfo = info;
+        self.citiesArray = array;
+        self.address     = address;
     }
 
     return self;
@@ -51,7 +50,7 @@
                                                                  action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
-    self.objectsArray = citiesArray;
+    self.objectsArray = self.citiesArray;
     [self createIndexOfWidth:1];
 }
 
@@ -77,7 +76,7 @@
 
 - (NSString*)selectedName
 {
-    return purchaseInfo[@"city"];
+    return self.address.city;
 }
 
 
@@ -97,17 +96,17 @@
     NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
 
     // If a ZIP code is already selected, check if it matches the city.
-    NSString*   mismatchZipCode = purchaseInfo[@"zipCode"];
-    if (purchaseInfo[@"zipCode"] != nil)
+    NSString*   mismatchZipCode = self.address.postcode;
+    if (self.address.postcode != nil)
     {
-        for (NSDictionary* city in citiesArray)
+        for (NSDictionary* city in self.citiesArray)
         {
             if ([name isEqualToString:city[@"city"]])
             {
                 // Found selected city, now check if current ZIP code belongs.
-                for (NSString* zipCode in city[@"zipCodes"])
+                for (NSString* zipCode in city[@"postcodes"])
                 {
-                    if ([purchaseInfo[@"zipCode"] isEqualToString:zipCode])
+                    if ([self.address.postcode isEqualToString:zipCode])
                     {
                         // Yes, the selected city matches the current ZIP code, so no problem.
                         mismatchZipCode = nil;
@@ -120,14 +119,14 @@
 
     if (mismatchZipCode.length == 0)
     {
-        if (checkmarkedCell.accessoryType == UITableViewCellAccessoryCheckmark)
+        if (self.checkmarkedCell.accessoryType == UITableViewCellAccessoryCheckmark)
         {
-            checkmarkedCell.accessoryType = UITableViewCellAccessoryNone;
+            self.checkmarkedCell.accessoryType = UITableViewCellAccessoryNone;
         }
 
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
-        purchaseInfo[@"city"] = name;
+        self.address.city = name;
 
         [self.navigationController popViewControllerAnimated:YES];
     }
@@ -153,15 +152,15 @@
          {
              if (buttonIndex == 1)
              {
-                 if (checkmarkedCell.accessoryType == UITableViewCellAccessoryCheckmark)
+                 if (self.checkmarkedCell.accessoryType == UITableViewCellAccessoryCheckmark)
                  {
-                     checkmarkedCell.accessoryType = UITableViewCellAccessoryNone;
+                     self.checkmarkedCell.accessoryType = UITableViewCellAccessoryNone;
                  }
 
                  cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
-                 [purchaseInfo removeObjectForKey:@"zipCode"];
-                 purchaseInfo[@"city"] = name;
+                 self.address.postcode = nil;
+                 self.address.city     = name;
 
                  [self.navigationController popViewControllerAnimated:YES];
              }
@@ -188,10 +187,10 @@
     }
 
     cell.textLabel.text = name;
-    if ([name isEqualToString:purchaseInfo[@"city"]])
+    if ([name isEqualToString:self.address.city])
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        checkmarkedCell = cell;
+        self.checkmarkedCell = cell;
     }
     else
     {

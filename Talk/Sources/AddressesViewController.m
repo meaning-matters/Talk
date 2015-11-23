@@ -148,7 +148,12 @@
     
     if (self.completion == nil)
     {
-        viewController = [[AddressViewController alloc] initWithAddress:address managedObjectContext:self.managedObjectContext];
+        viewController = [[AddressViewController alloc] initWithAddress:address
+                                                   managedObjectContext:self.managedObjectContext
+                                                         isoCountryCode:nil
+                                                                   area:nil
+                                                         numberTypeMask:NumberTypeGeographicMask
+                                                              proofType:nil];
         
         [self.navigationController pushViewController:viewController animated:YES];
     }
@@ -210,6 +215,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     if ([Settings sharedSettings].haveAccount == YES)
     {
+        /*#####
         UINavigationController* modalViewController;
         AddressViewController*  viewController;
         
@@ -221,6 +227,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
         [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
                                                                animated:YES
                                                              completion:nil];
+         */
     }
     else
     {

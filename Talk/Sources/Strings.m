@@ -354,10 +354,19 @@
 }
 
 
-+ (NSString*)buildingString
++ (NSString*)buildingNumberString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings BuildingNumber", nil, [NSBundle mainBundle],
+                                             @"Building Number",
+                                             @"Standard label for building/number (in home/company address).\n"
+                                             @"[One line].");
+}
+
+
++ (NSString*)buildingLetterString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Building", nil, [NSBundle mainBundle],
-                                             @"Building",
+                                             @"Building Letter",
                                              @"Standard label for building/number (in home/company address).\n"
                                              @"[One line].");
 }
@@ -372,11 +381,11 @@
 }
 
 
-+ (NSString*)zipCodeString
++ (NSString*)postcodeString
 {
-    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings ZIPCode", nil, [NSBundle mainBundle],
-                                             @"ZIP Code",
-                                             @"Standard label for ZIP code.\n"
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Postcode", nil, [NSBundle mainBundle],
+                                             @"Postode",
+                                             @"Standard label for postcode.\n"
                                              @"[One line].");
 }
 

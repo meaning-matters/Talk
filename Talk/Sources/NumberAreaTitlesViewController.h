@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AddressData.h"
+
 
 @interface NumberAreaTitlesViewController : UITableViewController
 
-- (instancetype)initWithPurchaseInfo:(NSMutableDictionary*)info;
+- (instancetype)initWithAddress:(AddressData*)address;
 
 @end

@@ -8,11 +8,12 @@
 
 #import <objc/runtime.h>
 #import "NumberAreaViewController.h"
-#import "NumberAreaZipsViewController.h"
+#import "NumberAreaPostcodesViewController.h"
 #import "NumberAreaCitiesViewController.h"
 #import "NumberAreaTitlesViewController.h"
 #import "BuyNumberViewController.h"
 #import "CountriesViewController.h"
+#import "AddressViewController.h"
 #import "Strings.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
@@ -22,6 +23,7 @@
 #import "PurchaseManager.h"
 #import "Base64.h"
 #import "Skinning.h"
+#import "DataManager.h"
 
 
 // Update reloadSections calls when adding/removing sections.
@@ -29,9 +31,10 @@ typedef enum
 {
     TableSectionArea           = 1UL << 0, // Type, area code, area name, state, country.
     TableSectionName           = 1UL << 1, // Name given by user.
-    TableSectionContactName    = 1UL << 2, // Salutation, company, first, last.
-    TableSectionContactAddress = 1UL << 3, // Street, number, city, zipcode.
-    TableSectionAction         = 1UL << 4, // Check info, or Buy.
+    TableSectionAddress        = 1UL << 2,
+    TableSectionContactName    = 1UL << 3, // Salutation, company, first, last.
+    TableSectionContactAddress = 1UL << 4, // Street, number, city, zipcode.
+    TableSectionAction         = 1UL << 5, // Check info, or Buy.
 } TableSections;
 
 typedef enum
@@ -152,6 +155,7 @@ typedef enum
         // Mandatory sections.
         sections |= TableSectionArea;
         sections |= TableSectionName;
+        sections |= TableSectionAddress;
         sections |= TableSectionAction;
 
         // Optional Sections.
@@ -257,7 +261,7 @@ typedef enum
     [super viewWillAppear:animated];
 
     salutationTextField.text = [Strings localizedSalutation:purchaseInfo[@"salutation"]];
-    zipCodeTextField.text    = purchaseInfo[@"zipCode"];
+    zipCodeTextField.text    = purchaseInfo[@"postcode"];
     cityTextField.text       = purchaseInfo[@"city"];
 
     companyTextField.placeholder   = [self placeHolderForTextField:companyTextField];
@@ -268,17 +272,6 @@ typedef enum
     cell.label.text            = [self actionCellText];
 
     [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
-}
-
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    NSString* areaCode = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : @"0";
-
-    [[WebClient sharedClient] cancelAllRetrieveAreaInfoForIsoCountryCode:numberIsoCountryCode
-                                                                areaCode:areaCode];
 }
 
 
@@ -340,8 +333,8 @@ typedef enum
                                                                           @"Title of app screen with one area.\n"
                                                                           @"[1 line larger font].");
             citiesArray = [NSArray arrayWithArray:content];
-            purchaseInfo[@"zipCode"] = @"";     // Resets what user may have typed while loading (on slow internet).
-            purchaseInfo[@"city"]    = @"";     // Resets what user may have typed while loading (on slow internet).
+            purchaseInfo[@"postcode"] = @"";     // Resets what user may have typed while loading (on slow internet).
+            purchaseInfo[@"city"]     = @"";     // Resets what user may have typed while loading (on slow internet).
 
             [self.tableView reloadData];
             self.isLoading = NO;    // Placed here, after processing results, to let reload of search results work.
@@ -423,8 +416,8 @@ typedef enum
         emptyMask |= ([purchaseInfo[@"building"]  length] == 0) << 5;
         if (citiesArray.count == 0)
         {
-            emptyMask |= ([purchaseInfo[@"zipCode"] length] == 0) << 6;
-            emptyMask |= ([purchaseInfo[@"city"]    length] == 0) << 7;
+            emptyMask |= ([purchaseInfo[@"postcode"] length] == 0) << 6;
+            emptyMask |= ([purchaseInfo[@"city"]     length] == 0) << 7;
         }
     }
 
@@ -436,7 +429,7 @@ typedef enum
         currentBit |= [currentKey isEqualToString:@"lastName"]  << 3;
         currentBit |= [currentKey isEqualToString:@"street"]    << 4;
         currentBit |= [currentKey isEqualToString:@"building"]  << 5;
-        currentBit |= [currentKey isEqualToString:@"zipCode"]   << 6;
+        currentBit |= [currentKey isEqualToString:@"postcode"]  << 6;
         currentBit |= [currentKey isEqualToString:@"city"]      << 7;
 
         // Find next bit set in emptyMask.
@@ -503,7 +496,7 @@ typedef enum
                         [purchaseInfo[@"lastName"]       length] > 0 &&
                         [purchaseInfo[@"street"]         length] > 0 &&
                         [purchaseInfo[@"building"]       length] > 0 &&
-                        [purchaseInfo[@"zipCode"]        length] > 0 &&
+                        [purchaseInfo[@"postcode"]        length] > 0 &&
                         [purchaseInfo[@"city"]           length] > 0 &&
                         [purchaseInfo[@"isoCountryCode"] length] > 0);
         }
@@ -793,6 +786,11 @@ typedef enum
             numberOfRows = 1;
             break;
         }
+        case TableSectionAddress:
+        {
+            numberOfRows = 1;
+            break;
+        }
         case TableSectionContactName:
         {
             numberOfRows = (infoType == InfoTypeNone) ? 0 : 4;
@@ -816,7 +814,7 @@ typedef enum
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NumberAreaZipsViewController*   zipsViewController;
+    NumberAreaPostcodesViewController*   zipsViewController;
     NumberAreaCitiesViewController* citiesViewController;
     NumberAreaTitlesViewController* titlesViewController;
     CountriesViewController*        countriesViewController;
@@ -833,17 +831,34 @@ typedef enum
         {
             case TableSectionContactName:
             {
+                /*
                 titlesViewController = [[NumberAreaTitlesViewController alloc] initWithPurchaseInfo:purchaseInfo];
                 [self.navigationController pushViewController:titlesViewController animated:YES];
+                break;
+                 */
+            }
+            case TableSectionAddress:
+            {
+                AddressViewController* viewController;
+                
+                viewController = [[AddressViewController alloc] initWithAddress:nil
+                                                           managedObjectContext:[DataManager sharedManager].managedObjectContext
+                                                                 isoCountryCode:numberIsoCountryCode
+                                                                           area:area
+                                                                 numberTypeMask:numberTypeMask
+                                                                      proofType:nil];
+                
+                [self.navigationController pushViewController:viewController animated:YES];
                 break;
             }
             case TableSectionContactAddress:
             {
+                /*
                 switch (indexPath.row)
                 {
                     case 2:
                     {
-                        zipsViewController = [[NumberAreaZipsViewController alloc] initWithCitiesArray:citiesArray
+                        zipsViewController = [[NumberAreaPostcodesViewController alloc] initWithCitiesArray:citiesArray
                                                                                           purchaseInfo:purchaseInfo];
                         [self.navigationController pushViewController:zipsViewController animated:YES];
                         break;
@@ -880,6 +895,7 @@ typedef enum
                 }
                 
                 break;
+                 */
             }
             case TableSectionAction:
             {
@@ -1031,6 +1047,11 @@ typedef enum
             cell = [self nameCellForRowAtIndexPath:indexPath];
             break;
         }
+        case TableSectionAddress:
+        {
+            cell = [self addressCellForRowAtIndexPath:indexPath];
+            break;
+        }
         case TableSectionContactName:
         {
             cell = [self contactNameCellForRowAtIndexPath:indexPath];
@@ -1147,6 +1168,23 @@ typedef enum
 }
 
 
+- (UITableViewCell*)addressCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell* cell;
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"AddressCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"AddressCell"];
+    }
+    
+    cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.text = NSLocalizedString(@"Address", @"Address cell title");
+
+    return cell;
+}
+
+
 - (UITableViewCell*)contactNameCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell*    cell;
@@ -1244,11 +1282,11 @@ typedef enum
         singleCity = YES;
         purchaseInfo[@"city"] = citiesArray[0][@"city"];
 
-        NSArray*    zipCodes = citiesArray[0][@"zipCodes"];
+        NSArray*    zipCodes = citiesArray[0][@"postcodes"];
         if ([zipCodes count] == 1)
         {
             singleZipCode = YES;
-            purchaseInfo[@"zipCode"] = citiesArray[0][@"zipCodes"][0];
+            purchaseInfo[@"postcode"] = citiesArray[0][@"postcodes"][0];
         }
     }
 
@@ -1283,7 +1321,7 @@ typedef enum
         }
         case 1:
         {
-            cell.textLabel.text = [Strings buildingString];
+           // cell.textLabel.text = [Strings buildingString];
             textField.placeholder = [Strings requiredString];
             textField.text = [purchaseInfo[@"building"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
             textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
@@ -1293,7 +1331,7 @@ typedef enum
         }
         case 2:
         {
-            cell.textLabel.text = [Strings zipCodeString];
+            cell.textLabel.text = [Strings postcodeString];
             if (citiesArray.count == 0)
             {
                 textField.placeholder  = [Strings requiredString];
@@ -1314,8 +1352,8 @@ typedef enum
             }
             
             zipCodeTextField = textField;
-            zipCodeTextField.text = [purchaseInfo[@"zipCode"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            objc_setAssociatedObject(zipCodeTextField, @"TextFieldKey", @"zipCode", OBJC_ASSOCIATION_RETAIN);
+            zipCodeTextField.text = [purchaseInfo[@"postcode"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
+            objc_setAssociatedObject(zipCodeTextField, @"TextFieldKey", @"postcode", OBJC_ASSOCIATION_RETAIN);
             break;
         }
         case 3:

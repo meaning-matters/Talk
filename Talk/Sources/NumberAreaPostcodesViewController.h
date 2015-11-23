@@ -1,5 +1,5 @@
 //
-//  NumberAreaCitiesViewController.h
+//  NumberAreaPostcodesViewController.h
 //  Talk
 //
 //  Created by Cornelis van der Bent on 08/04/13.
@@ -11,8 +11,8 @@
 #import "AddressData.h"
 
 
-@interface NumberAreaCitiesViewController : SearchTableViewController <UITableViewDelegate>
+@interface NumberAreaPostcodesViewController : SearchTableViewController <UITableViewDelegate>
 
-- (instancetype)initWithCitiesArray:(NSArray*)array address:(AddressData *)address;
+- (instancetype)initWithCitiesArray:(NSArray*)array address:(AddressData*)address;
 
 @end

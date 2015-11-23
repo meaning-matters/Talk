@@ -16,6 +16,7 @@
 @dynamic salutation;
 
 // Optional.
+@dynamic name;
 @dynamic addressId;
 @dynamic firstName;
 @dynamic lastName;
@@ -28,7 +29,7 @@
 @dynamic postcode;
 @dynamic isoCountryCode;
 @dynamic hasProof;
-@dynamic proofimage;
+@dynamic proofImage;
 @dynamic idType;
 @dynamic idNumber;
 @dynamic fiscalIdCode;

@@ -774,7 +774,7 @@
                   content[@"info"][@"street"],
                   content[@"info"][@"building"],
                   content[@"info"][@"city"],
-                  content[@"info"][@"zipCode"],
+                  content[@"info"][@"postcode"],
                   content[@"info"][@"stateName"],
                   content[@"info"][@"stateCode"],
                   content[@"info"][@"isoCountryCode"],

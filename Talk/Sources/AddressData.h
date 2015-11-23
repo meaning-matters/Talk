@@ -39,6 +39,7 @@ typedef NS_ENUM(NSUInteger, RejectionReasonMask)
 @property (nonatomic, retain) NSString*           salutation;
 
 // Optional.
+@property (nonatomic, retain) NSString*           name;
 @property (nonatomic, retain) NSString*           addressId;        // Server assigned ID for this address.
 @property (nonatomic, retain) NSString*           firstName;
 @property (nonatomic, retain) NSString*           lastName;
@@ -51,7 +52,7 @@ typedef NS_ENUM(NSUInteger, RejectionReasonMask)
 @property (nonatomic, retain) NSString*           postcode;
 @property (nonatomic, retain) NSString*           isoCountryCode;
 @property (nonatomic, assign) BOOL                hasProof;         // Indicates there's an image available on server.
-@property (nonatomic, retain) NSData*             proofimage;
+@property (nonatomic, retain) NSData*             proofImage;
 @property (nonatomic, retain) NSString*           idType;
 @property (nonatomic, retain) NSString*           idNumber;
 @property (nonatomic, retain) NSString*           fiscalIdCode;

@@ -172,8 +172,8 @@
 		484A94AB171C518D009E22B9 /* NumberAreaActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 484A94A9171C518C009E22B9 /* NumberAreaActionCell.m */; };
 		484D936C1712FBA1006FA875 /* NumberAreaCitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936B1712FBA1006FA875 /* NumberAreaCitiesViewController.m */; };
 		484D936D1712FBA1006FA875 /* NumberAreaCitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936B1712FBA1006FA875 /* NumberAreaCitiesViewController.m */; };
-		484D937017131E97006FA875 /* NumberAreaZipsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936F17131E97006FA875 /* NumberAreaZipsViewController.m */; };
-		484D937117131E97006FA875 /* NumberAreaZipsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936F17131E97006FA875 /* NumberAreaZipsViewController.m */; };
+		484D937017131E97006FA875 /* NumberAreaPostcodesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936F17131E97006FA875 /* NumberAreaPostcodesViewController.m */; };
+		484D937117131E97006FA875 /* NumberAreaPostcodesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936F17131E97006FA875 /* NumberAreaPostcodesViewController.m */; };
 		484F7C3B164C15770059A5A6 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3A164C15770059A5A6 /* CoreTelephony.framework */; };
 		484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */; };
 		485A608918D768880055C176 /* GetStartedLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 485A608818D768880055C176 /* GetStartedLogo.png */; };
@@ -852,8 +852,8 @@
 		484A94A9171C518C009E22B9 /* NumberAreaActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaActionCell.m; sourceTree = "<group>"; };
 		484D936A1712FBA1006FA875 /* NumberAreaCitiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaCitiesViewController.h; sourceTree = "<group>"; };
 		484D936B1712FBA1006FA875 /* NumberAreaCitiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaCitiesViewController.m; sourceTree = "<group>"; };
-		484D936E17131E96006FA875 /* NumberAreaZipsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaZipsViewController.h; sourceTree = "<group>"; };
-		484D936F17131E97006FA875 /* NumberAreaZipsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaZipsViewController.m; sourceTree = "<group>"; };
+		484D936E17131E96006FA875 /* NumberAreaPostcodesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaPostcodesViewController.h; sourceTree = "<group>"; };
+		484D936F17131E97006FA875 /* NumberAreaPostcodesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaPostcodesViewController.m; sourceTree = "<group>"; };
 		484F7C3A164C15770059A5A6 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		485A608818D768880055C176 /* GetStartedLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStartedLogo.png; sourceTree = "<group>"; };
@@ -2377,8 +2377,8 @@
 				485E38A617C0B7F00089F0F1 /* NumberAreaTitlesViewController.m */,
 				4830462216EE269D000F9B05 /* NumberAreaViewController.h */,
 				4830462316EE269D000F9B05 /* NumberAreaViewController.m */,
-				484D936E17131E96006FA875 /* NumberAreaZipsViewController.h */,
-				484D936F17131E97006FA875 /* NumberAreaZipsViewController.m */,
+				484D936E17131E96006FA875 /* NumberAreaPostcodesViewController.h */,
+				484D936F17131E97006FA875 /* NumberAreaPostcodesViewController.m */,
 				48B5AAF016E6A58400BA4084 /* NumberCountriesViewController.h */,
 				48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */,
 				48F1B7DF17E63819003A3933 /* NumberDestinationsViewController.h */,
@@ -3143,7 +3143,7 @@
 				4814D56819E9660200958E33 /* AFHTTPRequestOperationManager.m in Sources */,
 				48A0CE6A1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */,
 				484D936C1712FBA1006FA875 /* NumberAreaCitiesViewController.m in Sources */,
-				484D937017131E97006FA875 /* NumberAreaZipsViewController.m in Sources */,
+				484D937017131E97006FA875 /* NumberAreaPostcodesViewController.m in Sources */,
 				4814D56E19E9660200958E33 /* AFURLResponseSerialization.m in Sources */,
 				48B813461AADF92E0019AF77 /* NBAddressCell.m in Sources */,
 				484A94A1171822D4009E22B9 /* NumberAreasCell.m in Sources */,
@@ -3243,7 +3243,7 @@
 				48ADD0F81706791A001515EB /* UIView+AnimateHidden.m in Sources */,
 				48A0CE6B1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */,
 				484D936D1712FBA1006FA875 /* NumberAreaCitiesViewController.m in Sources */,
-				484D937117131E97006FA875 /* NumberAreaZipsViewController.m in Sources */,
+				484D937117131E97006FA875 /* NumberAreaPostcodesViewController.m in Sources */,
 				484A94A2171822D4009E22B9 /* NumberAreasCell.m in Sources */,
 				484A94AB171C518D009E22B9 /* NumberAreaActionCell.m in Sources */,
 				483679DF1721F2E1001A02AF /* RecordingViewController.m in Sources */,
