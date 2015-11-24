@@ -655,6 +655,38 @@ typedef NS_ENUM(NSUInteger, InfoType)
 }
 
 
+- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
+{
+    NSInteger numberOfRows = 0;
+    
+    switch ([Common nthBitSet:section inValue:self.sections])
+    {
+        case TableSectionName:
+        {
+            numberOfRows = 1;
+            break;
+        }
+        case TableSectionDetails:
+        {
+            numberOfRows = (self.infoType == InfoTypeNone) ? 0 : 4;
+            break;
+        }
+        case TableSectionAddress:
+        {
+            numberOfRows = (self.infoType == InfoTypeNone) ? 0 : 6;
+            break;
+        }
+        case TableSectionProof:
+        {
+            numberOfRows = 1;
+            break;
+        }
+    }
+    
+    return numberOfRows;
+}
+
+
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString*   title = nil;
@@ -775,38 +807,6 @@ typedef NS_ENUM(NSUInteger, InfoType)
     }
     
     return title;
-}
-
-
-- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
-{
-    NSInteger numberOfRows = 0;
-    
-    switch ([Common nthBitSet:section inValue:self.sections])
-    {
-        case TableSectionName:
-        {
-            numberOfRows = 1;
-            break;
-        }
-        case TableSectionDetails:
-        {
-            numberOfRows = (self.infoType == InfoTypeNone) ? 0 : 4;
-            break;
-        }
-        case TableSectionAddress:
-        {
-            numberOfRows = (self.infoType == InfoTypeNone) ? 0 : 5;
-            break;
-        }
-        case TableSectionProof:
-        {
-            numberOfRows = 1;
-            break;
-        }
-    }
-    
-    return numberOfRows;
 }
 
 
@@ -1557,7 +1557,7 @@ typedef NS_ENUM(NSUInteger, InfoType)
                                                     buildingLetter:self.address.buildingLetter
                                                               city:self.address.city
                                                           postcode:self.address.postcode
-                                                    isoCountryCode:self.address.postcode
+                                                    isoCountryCode:self.address.isoCountryCode
                                                         proofImage:self.address.proofImage
                                                             idType:nil //########
                                                           idNumber:nil //########
