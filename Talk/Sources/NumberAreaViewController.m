@@ -32,9 +32,7 @@ typedef enum
     TableSectionArea           = 1UL << 0, // Type, area code, area name, state, country.
     TableSectionName           = 1UL << 1, // Name given by user.
     TableSectionAddress        = 1UL << 2,
-    TableSectionContactName    = 1UL << 3, // Salutation, company, first, last.
-    TableSectionContactAddress = 1UL << 4, // Street, number, city, zipcode.
-    TableSectionAction         = 1UL << 5, // Check info, or Buy.
+    TableSectionAction         = 1UL << 3, // Check info, or Buy.
 } TableSections;
 
 typedef enum
@@ -55,7 +53,7 @@ typedef enum
 } InfoType;
 
 
-@interface NumberAreaViewController ()
+@interface NumberAreaViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate, UINavigationControllerDelegate>
 {
     NSString*               numberIsoCountryCode;
     NSDictionary*           state;
@@ -64,43 +62,24 @@ typedef enum
 
     NSArray*                citiesArray;
     NSString*               name;
-    NSMutableDictionary*    purchaseInfo;
     InfoType                infoType;
     BOOL                    requireProof;
     BOOL                    isChecked;
     TableSections           sections;
     AreaRows                areaRows;
 
-    UITextField*            salutationTextField;
-    UITextField*            companyTextField;
-    UITextField*            firstNameTextField;
-    UITextField*            lastNameTextField;
-    UITextField*            zipCodeTextField;
-    UITextField*            cityTextField;
-    UITextField*            countryTextField;
-
-    NSIndexPath*            nameIndexPath;
-    NSIndexPath*            salutationIndexPath;
-    NSIndexPath*            companyIndexPath;
-    NSIndexPath*            firstNameIndexPath;
-    NSIndexPath*            lastNameIndexPath;
-    NSIndexPath*            streetIndexPath;
-    NSIndexPath*            buildingIndexPath;
-    NSIndexPath*            zipCodeIndexPath;
-    NSIndexPath*            cityIndexPath;
-    NSIndexPath*            countryIndexPath;
     NSIndexPath*            actionIndexPath;
-
-    NSIndexPath*            nextIndexPath;      // Index-path of cell to show after Next button is tapped.
 
     // Keyboard stuff.
     BOOL                    keyboardShown;
     CGFloat                 keyboardOverlap;
-    NSIndexPath*            activeCellIndexPath;
 }
+
+@property (nonatomic, strong) NSIndexPath*             nameIndexPath;
 
 @property (nonatomic, assign) BOOL                     isLoading;
 @property (nonatomic, strong) UIActivityIndicatorView* activityIndicator;
+@property (nonatomic, assign) BOOL                     hasCorrectedInsets;
 
 @end
 
@@ -141,26 +120,13 @@ typedef enum
             infoType = InfoTypeNone;
         }
 
-        if (infoType != InfoTypeNone)
-        {
-            purchaseInfo = [NSMutableDictionary dictionary];
-            purchaseInfo[@"salutation"] = @"MR";
-        }
-
-        if (infoType == InfoTypeLocal || infoType == InfoTypeNational)
-        {
-            purchaseInfo[@"isoCountryCode"] = numberIsoCountryCode;
-        }
-
         // Mandatory sections.
         sections |= TableSectionArea;
         sections |= TableSectionName;
-        sections |= TableSectionAddress;
         sections |= TableSectionAction;
 
         // Optional Sections.
-        sections |= (infoType == InfoTypeNone) ? 0 : TableSectionContactName;
-        sections |= (infoType == InfoTypeNone) ? 0 : TableSectionContactAddress;
+        sections |= (infoType == InfoTypeNone) ? 0 : TableSectionAddress;
 
         // Always there Area section rows.
         areaRows |= AreaRowType;
@@ -216,9 +182,7 @@ typedef enum
                 break;
             }
         }
-
-        [self initializeIndexPaths];
-   }
+    }
 
     return self;
 }
@@ -259,14 +223,6 @@ typedef enum
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    salutationTextField.text = [Strings localizedSalutation:purchaseInfo[@"salutation"]];
-    zipCodeTextField.text    = purchaseInfo[@"postcode"];
-    cityTextField.text       = purchaseInfo[@"city"];
-
-    companyTextField.placeholder   = [self placeHolderForTextField:companyTextField];
-    firstNameTextField.placeholder = [self placeHolderForTextField:firstNameTextField];
-    lastNameTextField.placeholder  = [self placeHolderForTextField:lastNameTextField];
 
     NumberAreaActionCell* cell = (NumberAreaActionCell*)[self.tableView cellForRowAtIndexPath:actionIndexPath];
     cell.label.text            = [self actionCellText];
@@ -313,7 +269,20 @@ typedef enum
 
 - (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
 {
-    [[self.tableView superview] endEditing:YES];
+    if (name.length > 0)
+    {
+        if (self.hasCorrectedInsets == YES)
+        {
+            //### Workaround: http://stackoverflow.com/a/22053349/1971013
+            [self.tableView setContentInset:UIEdgeInsetsMake(64, 0, 265, 0)];
+            [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(64, 0, 265, 0)];
+            
+            self.hasCorrectedInsets = NO;
+        }
+        
+        //####[self save];
+        [[self.tableView superview] endEditing:YES];
+    }
 }
 
 
@@ -321,73 +290,9 @@ typedef enum
 {
     NSString* areaCode = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : @"0";
 
+    //#### load addressIds?
+    
     self.isLoading = YES;
-    [[WebClient sharedClient] retrieveNumberAreaInfoForIsoCountryCode:numberIsoCountryCode
-                                                             areaCode:areaCode
-                                                                reply:^(NSError* error, id content)
-    {
-        if (error == nil)
-        {
-            self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberArea ScreenTitle", nil,
-                                                                          [NSBundle mainBundle], @"Area",
-                                                                          @"Title of app screen with one area.\n"
-                                                                          @"[1 line larger font].");
-            citiesArray = [NSArray arrayWithArray:content];
-            purchaseInfo[@"postcode"] = @"";     // Resets what user may have typed while loading (on slow internet).
-            purchaseInfo[@"city"]     = @"";     // Resets what user may have typed while loading (on slow internet).
-
-            [self.tableView reloadData];
-            self.isLoading = NO;    // Placed here, after processing results, to let reload of search results work.
-        }
-        else if (error.code == WebStatusFailServiceUnavailable)
-        {
-            NSString* title;
-            NSString* message;
-
-            title   = NSLocalizedStringWithDefaultValue(@"NumberArea UnavailableAlertTitle", nil,
-                                                        [NSBundle mainBundle], @"Service Unavailable",
-                                                        @"Alert title telling that an online service is not available.\n"
-                                                        @"[iOS alert title size].");
-            message = NSLocalizedStringWithDefaultValue(@"NumberArea UnavailableAlertMessage", nil,
-                                                        [NSBundle mainBundle],
-                                                        @"The service for buying numbers is temporarily offline."
-                                                        @"\n\nPlease try again later.",
-                                                        @"Alert message telling that an online service is not available.\n"
-                                                        @"[iOS alert message size]");
-            [BlockAlertView showAlertViewWithTitle:title
-                                           message:message
-                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
-            {
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
-                                 cancelButtonTitle:[Strings cancelString]
-                                 otherButtonTitles:nil];
-        }
-        else
-        {
-            NSString* title;
-            NSString* message;
-
-            title   = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertTitle", nil,
-                                                        [NSBundle mainBundle], @"Loading Failed",
-                                                        @"Alert title telling that loading information over internet failed.\n"
-                                                        @"[iOS alert title size].");
-            message = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertMessage", nil,
-                                                        [NSBundle mainBundle],
-                                                        @"Loading the list of cities and ZIP codes failed: %@\n\nPlease try again later.",
-                                                        @"Alert message telling that loading information over internet failed.\n"
-                                                        @"[iOS alert message size - use correct term for ZIP code]");
-            message = [NSString stringWithFormat:message, error.localizedDescription];
-            [BlockAlertView showAlertViewWithTitle:title
-                                           message:message
-                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
-            {
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
-                                 cancelButtonTitle:[Strings cancelString]
-                                 otherButtonTitles:nil];
-        }
-    }];
 }
 
 
@@ -397,234 +302,17 @@ typedef enum
 }
 
 
-- (NSIndexPath*)nextEmptyIndexPathForKey:(NSString*)currentKey
-{
-    unsigned emptyMask  = 0;
-    unsigned currentBit = 0;
-
-    if (infoType == InfoTypeNone)
-    {
-        emptyMask |= ([name length] == 0) << 0;
-    }
-    else
-    {
-        emptyMask |= ([name                       length] == 0) << 0;
-        emptyMask |= ([purchaseInfo[@"company"]   length] == 0) << 1;
-        emptyMask |= ([purchaseInfo[@"firstName"] length] == 0) << 2;
-        emptyMask |= ([purchaseInfo[@"lastName"]  length] == 0) << 3;
-        emptyMask |= ([purchaseInfo[@"street"]    length] == 0) << 4;
-        emptyMask |= ([purchaseInfo[@"building"]  length] == 0) << 5;
-        if (citiesArray.count == 0)
-        {
-            emptyMask |= ([purchaseInfo[@"postcode"] length] == 0) << 6;
-            emptyMask |= ([purchaseInfo[@"city"]     length] == 0) << 7;
-        }
-    }
-
-    if (emptyMask != 0)
-    {
-        currentBit |= [currentKey isEqualToString:@"name"]      << 0;
-        currentBit |= [currentKey isEqualToString:@"company"]   << 1;
-        currentBit |= [currentKey isEqualToString:@"firstName"] << 2;
-        currentBit |= [currentKey isEqualToString:@"lastName"]  << 3;
-        currentBit |= [currentKey isEqualToString:@"street"]    << 4;
-        currentBit |= [currentKey isEqualToString:@"building"]  << 5;
-        currentBit |= [currentKey isEqualToString:@"postcode"]  << 6;
-        currentBit |= [currentKey isEqualToString:@"city"]      << 7;
-
-        // Find next bit set in emptyMask.
-        unsigned nextBit = currentBit << 1;
-        while ((nextBit & emptyMask) == 0 && nextBit != 0)
-        {
-            nextBit <<= 1;
-        }
-
-        // When not found yet, start from begin.
-        if (nextBit == 0)
-        {
-            nextBit = 1;
-            while (((nextBit & emptyMask) == 0 || nextBit == currentBit) && nextBit != 0)
-            {
-                nextBit <<= 1;
-            }
-        }
-
-        NSIndexPath* indexPath = nil;
-        indexPath = (nextBit == (1 << 0)) ? nameIndexPath      : indexPath;
-        indexPath = (nextBit == (1 << 1)) ? companyIndexPath   : indexPath;
-        indexPath = (nextBit == (1 << 2)) ? firstNameIndexPath : indexPath;
-        indexPath = (nextBit == (1 << 3)) ? lastNameIndexPath  : indexPath;
-        indexPath = (nextBit == (1 << 4)) ? streetIndexPath    : indexPath;
-        indexPath = (nextBit == (1 << 5)) ? buildingIndexPath  : indexPath;
-        indexPath = (nextBit == (1 << 6)) ? zipCodeIndexPath   : indexPath;
-        indexPath = (nextBit == (1 << 7)) ? cityIndexPath      : indexPath;
-        
-        return indexPath;
-    }
-    else
-    {
-        return nil;
-    }
-}
-
-
-- (BOOL)isPurchaseInfoComplete
-{
-    BOOL    complete;
-
-    if (infoType == InfoTypeNone)
-    {
-        complete = ([name length] > 0);
-    }
-    else
-    {
-        if ([purchaseInfo[@"salutation"] isEqualToString:@"COMPANY"] == YES)
-        {
-            complete = ([name                            length] > 0 &&
-                        [purchaseInfo[@"salutation"]     length] > 0 &&
-                        [purchaseInfo[@"company"]        length] > 0 &&
-                        [purchaseInfo[@"street"]         length] > 0 &&
-                        [purchaseInfo[@"building"]       length] > 0 &&
-                        [purchaseInfo[@"city"]           length] > 0 &&
-                        [purchaseInfo[@"isoCountryCode"] length] > 0);
-        }
-        else
-        {
-            complete = ([name                            length] > 0 &&
-                        [purchaseInfo[@"salutation"]     length] > 0 &&
-                        [purchaseInfo[@"firstName"]      length] > 0 &&
-                        [purchaseInfo[@"lastName"]       length] > 0 &&
-                        [purchaseInfo[@"street"]         length] > 0 &&
-                        [purchaseInfo[@"building"]       length] > 0 &&
-                        [purchaseInfo[@"postcode"]        length] > 0 &&
-                        [purchaseInfo[@"city"]           length] > 0 &&
-                        [purchaseInfo[@"isoCountryCode"] length] > 0);
-        }
-    }
-
-    return complete;
-}
-
-
-- (void)initializeIndexPaths
-{
-    nameIndexPath       = [NSIndexPath indexPathForRow:0 inSection:1];
-    salutationIndexPath = [NSIndexPath indexPathForRow:0 inSection:2];
-    companyIndexPath    = [NSIndexPath indexPathForRow:1 inSection:2];
-    firstNameIndexPath  = [NSIndexPath indexPathForRow:2 inSection:2];
-    lastNameIndexPath   = [NSIndexPath indexPathForRow:3 inSection:2];
-    streetIndexPath     = [NSIndexPath indexPathForRow:0 inSection:3];
-    buildingIndexPath   = [NSIndexPath indexPathForRow:1 inSection:3];
-    zipCodeIndexPath    = [NSIndexPath indexPathForRow:2 inSection:3];
-    cityIndexPath       = [NSIndexPath indexPathForRow:3 inSection:3];
-    countryIndexPath    = [NSIndexPath indexPathForRow:4 inSection:3];
-    actionIndexPath     = [NSIndexPath indexPathForRow:0 inSection:4];
-}
-
-
-- (NSString*)placeHolderForTextField:(UITextField*)textField
-{
-    NSString* placeHolder;
-
-    // The default is "Required".
-    if ([purchaseInfo[@"salutation"] isEqualToString:@"MR"] || [purchaseInfo[@"salutation"] isEqualToString:@"MS"])
-    {
-        if (textField == companyTextField)
-        {
-            placeHolder = [Strings optionalString];
-        }
-        else if (textField == firstNameTextField || textField == lastNameTextField)
-        {
-            placeHolder = [Strings requiredString];
-        }
-        else
-        {
-            placeHolder = [Strings requiredString];
-        }
-    }
-    else if ([purchaseInfo[@"salutation"] isEqualToString:@"COMPANY"])
-    {
-        if (textField == companyTextField)
-        {
-            placeHolder = [Strings requiredString];
-        }
-        else if (textField == firstNameTextField || textField == lastNameTextField)
-        {
-            placeHolder = [Strings optionalString];
-        }
-        else
-        {
-            placeHolder = [Strings requiredString];
-        }
-    }
-    else
-    {
-        placeHolder = [Strings requiredString];
-    }
-
-    return placeHolder;
-}
-
-
-- (IBAction)takePicture
-
-{
-    UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
-
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-    {
-        [imagePickerController setSourceType:UIImagePickerControllerSourceTypeCamera];
-    }
-
-    imagePickerController.delegate      = self;
-    imagePickerController.allowsEditing = YES;
-    [self presentViewController:imagePickerController animated:YES completion:nil];
-}
-
-
 - (NSString*)actionCellText
 {
     NSString* text;
 
-    if (requireProof == YES && purchaseInfo[@"proofImage"] == nil)
-    {
-        text = NSLocalizedStringWithDefaultValue(@"NumberArea:Action TakePictureLabel", nil,
-                                                 [NSBundle mainBundle],
-                                                 @"Take Picture",
-                                                 @"....");
-    }
-    else if (infoType != InfoTypeNone && isChecked == NO)
-    {
-        text = NSLocalizedStringWithDefaultValue(@"NumberArea:Action ValidateLabel", nil,
-                                                 [NSBundle mainBundle],
-                                                 @"Validate",
-                                                 @"....");
-    }
-    else
-    {
-        text = NSLocalizedStringWithDefaultValue(@"NumberArea:Action BuyLabel", nil,
-                                                 [NSBundle mainBundle],
-                                                 @"Buy",
-                                                 @"....");
-    }
-
+    //#### needed?
+    text = NSLocalizedStringWithDefaultValue(@"NumberArea:Action BuyLabel", nil,
+                                             [NSBundle mainBundle],
+                                             @"Buy",
+                                             @"....");
+    
     return text;
-}
-
-
-- (void)updateReturnKeyTypeOfTextField:(UITextField*)textField
-{
-    UIReturnKeyType returnKeyType = [self isPurchaseInfoComplete] ? UIReturnKeyDone : UIReturnKeyNext;
-
-    if (textField.returnKeyType != returnKeyType)
-    {
-        textField.returnKeyType = returnKeyType;
-        if ([textField isFirstResponder])
-        {
-            #warning The method reloadInputViews messes up two-byte keyboards (e.g. Kanji).
-            [textField reloadInputViews];
-        }
-    }
 }
 
 
@@ -656,46 +344,6 @@ typedef enum
                                                       @"...");
             break;
         }
-        case TableSectionContactName:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"NumberArea:Name SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Contact Name",
-                                                      @"Name and company of someone.");
-            break;
-        }
-        case TableSectionContactAddress:
-        {
-            switch (infoType)
-            {
-                case InfoTypeNone:
-                {
-                    break;
-                }
-                case InfoTypeLocal:
-                {
-                    title = NSLocalizedStringWithDefaultValue(@"NumberArea:AddressLocal SectionHeader", nil,
-                                                              [NSBundle mainBundle], @"Local Contact Address",
-                                                              @"Address of someone.");
-                    break;
-                }
-                case InfoTypeNational:
-                {
-                    title = NSLocalizedStringWithDefaultValue(@"NumberArea:AddressNational SectionHeader", nil,
-                                                              [NSBundle mainBundle], @"National Contact Address",
-                                                              @"Address of someone.");
-                    break;
-                }
-                case InfoTypeWorldwide:
-                {
-                    title = NSLocalizedStringWithDefaultValue(@"NumberArea:AddressWorldwide SectionHeader", nil,
-                                                              [NSBundle mainBundle], @"Worldwide Contact Address",
-                                                              @"Address of someone.");
-                    break;
-                }
-            }
-            
-            break;
-        }
         case TableSectionAction:
         {
             break;
@@ -721,47 +369,13 @@ typedef enum
             title = [Strings nameFooterString];
             break;
         }
-        case TableSectionContactName:
-        {
-            break;
-        }
-        case TableSectionContactAddress:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"NumberArea:Address SectionFooter", nil,
-                                                      [NSBundle mainBundle],
-                                                      @"For a phone number in this area, a contact name and address "
-                                                      @"are (legally) required.",
-                                                      @"Explaining that information must be supplied by user.");
-            break;
-        }
         case TableSectionAction:
         {
-            if (requireProof == YES && purchaseInfo[@"proofImage"] == nil)
-            {
-                title = NSLocalizedStringWithDefaultValue(@"NumberArea:Action SectionFooterTakePicture", nil,
-                                                          [NSBundle mainBundle],
-                                                          @"For this area a proof of address is (legally) required.\n\n"
-                                                          @"Take a picture of a recent utility bill, or bank statement. "
-                                                          @"Make sure the date, your name & address, and the name of "
-                                                          @"the company/bank are clearly visible.",
-                                                          @"Telephone area (or city).");
-            }
-            else if (infoType != InfoTypeNone && isChecked == NO)
-            {
-                title = NSLocalizedStringWithDefaultValue(@"NumberArea:Action SectionFooterCheck", nil,
-                                                          [NSBundle mainBundle],
-                                                          @"The information supplied must first be checked.",
-                                                          @"Telephone area (or city).");
-            }
-            else
-            {
-                title = NSLocalizedStringWithDefaultValue(@"NumberArea:Action SectionFooterBuy", nil,
-                                                          [NSBundle mainBundle],
-                                                          @"You can always buy extra months to use "
-                                                          @"this phone number.",
-                                                          @"Explaining that user can buy more months.");
-            }
-            
+            title = NSLocalizedStringWithDefaultValue(@"NumberArea:Action SectionFooterBuy", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"You can always buy extra months to use "
+                                                      @"this phone number.",
+                                                      @"Explaining that user can buy more months.");
             break;
         }
     }
@@ -791,16 +405,6 @@ typedef enum
             numberOfRows = 1;
             break;
         }
-        case TableSectionContactName:
-        {
-            numberOfRows = (infoType == InfoTypeNone) ? 0 : 4;
-            break;
-        }
-        case TableSectionContactAddress:
-        {
-            numberOfRows = (infoType == InfoTypeNone) ? 0 : 5;
-            break;
-        }
         case TableSectionAction:
         {
             numberOfRows = 1;
@@ -814,13 +418,6 @@ typedef enum
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NumberAreaPostcodesViewController*   zipsViewController;
-    NumberAreaCitiesViewController* citiesViewController;
-    NumberAreaTitlesViewController* titlesViewController;
-    CountriesViewController*        countriesViewController;
-    NSString*                       isoCountryCode;
-    void (^completion)(BOOL cancelled, NSString* isoCountryCode);
-
     if ([self.tableView cellForRowAtIndexPath:indexPath].selectionStyle == UITableViewCellSelectionStyleNone)
     {
         return;
@@ -829,14 +426,6 @@ typedef enum
     {
         switch ([Common nthBitSet:indexPath.section inValue:sections])
         {
-            case TableSectionContactName:
-            {
-                /*
-                titlesViewController = [[NumberAreaTitlesViewController alloc] initWithPurchaseInfo:purchaseInfo];
-                [self.navigationController pushViewController:titlesViewController animated:YES];
-                break;
-                 */
-            }
             case TableSectionAddress:
             {
                 AddressViewController* viewController;
@@ -851,154 +440,21 @@ typedef enum
                 [self.navigationController pushViewController:viewController animated:YES];
                 break;
             }
-            case TableSectionContactAddress:
-            {
-                /*
-                switch (indexPath.row)
-                {
-                    case 2:
-                    {
-                        zipsViewController = [[NumberAreaPostcodesViewController alloc] initWithCitiesArray:citiesArray
-                                                                                          purchaseInfo:purchaseInfo];
-                        [self.navigationController pushViewController:zipsViewController animated:YES];
-                        break;
-                    }
-                    case 3:
-                    {
-                        citiesViewController = [[NumberAreaCitiesViewController alloc] initWithCitiesArray:citiesArray
-                                                                                              purchaseInfo:purchaseInfo];
-                        [self.navigationController pushViewController:citiesViewController animated:YES];
-                        break;
-                    }
-                    case 4:
-                    {
-                        isoCountryCode = purchaseInfo[@"isoCountryCode"];
-                        completion = ^(BOOL cancelled, NSString* isoCountryCode)
-                        {
-                            if (cancelled == NO)
-                            {
-                                purchaseInfo[@"isoCountryCode"] = isoCountryCode;
-
-                                // Update the cell.
-                                UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-                                cell.textLabel.text   = nil;
-                                countryTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:isoCountryCode];
-                            }
-                        };
-                        
-                        countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:isoCountryCode
-                                                                                                    title:[Strings countryString]
-                                                                                               completion:completion];
-                        [self.navigationController pushViewController:countriesViewController animated:YES];
-                        break;
-                    }
-                }
-                
-                break;
-                 */
-            }
             case TableSectionAction:
             {
-                if (requireProof == YES && purchaseInfo[@"proofImage"] == nil)
-                {
-                    [self takePicture];
-                }
-                else if ([self isPurchaseInfoComplete] == YES)
+                if (YES) //########## If require-address and an address was selected from the list ...
                 {
                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-                    if (infoType != InfoTypeNone && isChecked == NO)
-                    {
-                        NumberAreaActionCell* cell;
-                        cell = (NumberAreaActionCell*)[self.tableView cellForRowAtIndexPath:indexPath];
-                        cell.userInteractionEnabled = NO;
-                        cell.label.alpha = 0.5f;
-                        [cell.activityIndicator startAnimating];
-
-                        purchaseInfo[@"numberType"] = [NumberType localizedStringForNumberType:numberTypeMask];
-                        purchaseInfo[@"areaCode"]   = area[@"areaCode"];
-                        [[WebClient sharedClient] checkPurchaseInfo:purchaseInfo
-                                                              reply:^(NSError* error, BOOL isValid)
-                        {
-                            NumberAreaActionCell* cell;
-                            cell = (NumberAreaActionCell*)[self.tableView cellForRowAtIndexPath:indexPath];
-                            cell.userInteractionEnabled = YES;
-                            cell.label.alpha = 1.0f;
-                            [cell.activityIndicator stopAnimating];
-
-                            if (error == nil)
-                            {
-                                NBLog(@"########################### do something with isValid");
-                                isChecked = YES;
-                                [self.tableView beginUpdates];
-                                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section]
-                                              withRowAnimation:UITableViewRowAnimationFade];
-                                [self.tableView endUpdates];
-                            }
-                            else if (error.code == NSURLErrorNotConnectedToInternet)
-                            {
-                                NSString* title;
-                                NSString* message;
-
-                                title   = NSLocalizedStringWithDefaultValue(@"NumberArea CouldNotValidateAlertTitle", nil,
-                                                                            [NSBundle mainBundle], @"Could Not Validate",
-                                                                            @"Alert title telling that there's a "
-                                                                            @"problem with internet connection.\n"
-                                                                            @"[iOS alert title size].");
-                                message = NSLocalizedStringWithDefaultValue(@"NumberArea CouldNotValidateAlertMessage", nil,
-                                                                            [NSBundle mainBundle],
-                                                                            @"There seems to be a problem with the "
-                                                                            @"internet connection.\n\nPlease try again "
-                                                                            @"later.",
-                                                                            @"Alert message telling that there's a "
-                                                                            @"problem with internet connection.\n"
-                                                                            @"[iOS alert message size]");
-                                [BlockAlertView showAlertViewWithTitle:title
-                                                               message:message
-                                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
-                                 {
-                                     [self dismissViewControllerAnimated:YES completion:nil];
-                                 }
-                                                     cancelButtonTitle:[Strings closeString]
-                                                     otherButtonTitles:nil];
-                            }
-                            else //TODO Check with WebStatusFailInvalidInfo, check if server generates this.
-                            {
-                                NSString* title;
-                                NSString* message;
-                                NSString* description;
-
-                                title   = NSLocalizedStringWithDefaultValue(@"NumberArea ValidationFailedAlertTitle", nil,
-                                                                            [NSBundle mainBundle], @"Validation Failed",
-                                                                            @"Alert title telling that validating "
-                                                                            @"name & address of user failed.\n"
-                                                                            @"[iOS alert title size].");
-                                message = NSLocalizedStringWithDefaultValue(@"NumberArea ValidationFailedAlertMessage", nil,
-                                                                            [NSBundle mainBundle],
-                                                                            @"Validating your name and address failed: %@",
-                                                                            @"Alert message telling that validating "
-                                                                            @"name & address of user failed.\n"
-                                                                            @"[iOS alert message size]");
-                                description = error.localizedDescription;
-                                message = [NSString stringWithFormat:message, description];
-                                [BlockAlertView showAlertViewWithTitle:title
-                                                               message:message
-                                                            completion:nil
-                                                     cancelButtonTitle:[Strings closeString]
-                                                     otherButtonTitles:nil];
-                            }
-                        }];
-                    }
-                    else
-                    {
-                        BuyNumberViewController* viewController;
-                        viewController = [[BuyNumberViewController alloc] initWithName:name
-                                                                        isoCountryCode:numberIsoCountryCode
-                                                                                  area:area
-                                                                        numberTypeMask:numberTypeMask
-                                                                                  info:purchaseInfo];
-                        [self.navigationController pushViewController:viewController animated:YES];
-                    }
+                    /*
+                    BuyNumberViewController* viewController;
+                    viewController = [[BuyNumberViewController alloc] initWithName:name
+                                                                    isoCountryCode:numberIsoCountryCode
+                                                                              area:area
+                                                                    numberTypeMask:numberTypeMask
+                                                                              info:purchaseInfo];
+                    [self.navigationController pushViewController:viewController animated:YES];
+                     */
                 }
                 else
                 {
@@ -1050,16 +506,6 @@ typedef enum
         case TableSectionAddress:
         {
             cell = [self addressCellForRowAtIndexPath:indexPath];
-            break;
-        }
-        case TableSectionContactName:
-        {
-            cell = [self contactNameCellForRowAtIndexPath:indexPath];
-            break;
-        }
-        case TableSectionContactAddress:
-        {
-            cell = [self contactAddressCellForRowAtIndexPath:indexPath];
             break;
         }
         case TableSectionAction:
@@ -1185,241 +631,6 @@ typedef enum
 }
 
 
-- (UITableViewCell*)contactNameCellForRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    UITableViewCell*    cell;
-    UITextField*        textField;
-
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"TextFieldCell"];
-    if (cell == nil)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"TextFieldCell"];
-        textField = [Common addTextFieldToCell:cell delegate:self];
-        textField.tag = TextFieldCellTag;
-    }
-    else
-    {
-        textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
-    }
-
-    textField.userInteractionEnabled = YES;
-    switch (indexPath.row)
-    {
-        case 0:
-        {
-            salutationTextField = textField;
-            cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
-            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-            cell.textLabel.text = [Strings salutationString];
-            
-            textField.placeholder = [Strings requiredString];
-            textField.text = [Strings localizedSalutation:purchaseInfo[@"salutation"]];
-            textField.userInteractionEnabled = NO;
-            objc_setAssociatedObject(textField, @"TextFieldKey", @"salutation", OBJC_ASSOCIATION_RETAIN);
-            break;
-        }
-        case 1:
-        {
-            companyTextField    = textField;
-            cell.accessoryType  = UITableViewCellAccessoryNone;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = [Strings companyString];
-
-            textField.text = [purchaseInfo[@"company"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            objc_setAssociatedObject(textField, @"TextFieldKey", @"company", OBJC_ASSOCIATION_RETAIN);
-            break;
-        }
-        case 2:
-        {
-            firstNameTextField  = textField;
-            cell.accessoryType  = UITableViewCellAccessoryNone;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = [Strings firstNameString];
-            
-            textField.text = [purchaseInfo[@"firstName"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            objc_setAssociatedObject(textField, @"TextFieldKey", @"firstName", OBJC_ASSOCIATION_RETAIN);
-            break;
-        }
-        case 3:
-        {
-            lastNameTextField   = textField;
-            cell.accessoryType  = UITableViewCellAccessoryNone;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = [Strings lastNameString];
-            
-            textField.text = [purchaseInfo[@"lastName"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            objc_setAssociatedObject(textField, @"TextFieldKey", @"lastName", OBJC_ASSOCIATION_RETAIN);
-            break;
-        }
-    }
-
-    textField.placeholder     = [self placeHolderForTextField:textField];
-
-    [self updateTextField:textField onCell:cell];
-
-    return cell;
-}
-
-
-- (UITableViewCell*)contactAddressCellForRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    UITableViewCell* cell;
-    UITextField*     textField;
-    BOOL             singleZipCode = NO;
-    BOOL             singleCity    = NO;
-    NSString*        identifier;
-
-    switch (indexPath.row)
-    {
-        case 1:  identifier = @"BuildingCell";         break;
-        case 2:  identifier = @"ZipCodeCell";          break;
-        case 4:  identifier = @"CountryTextFieldCell"; break;
-        default: identifier = @"TextFieldCell";        break;
-    }
-
-    if (citiesArray.count == 1)
-    {
-        singleCity = YES;
-        purchaseInfo[@"city"] = citiesArray[0][@"city"];
-
-        NSArray*    zipCodes = citiesArray[0][@"postcodes"];
-        if ([zipCodes count] == 1)
-        {
-            singleZipCode = YES;
-            purchaseInfo[@"postcode"] = citiesArray[0][@"postcodes"][0];
-        }
-    }
-
-    cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
-    if (cell == nil)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
-        cell.accessoryType  = UITableViewCellAccessoryNone;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-        textField = [Common addTextFieldToCell:cell delegate:self];
-        textField.tag = TextFieldCellTag;
-    }
-    else
-    {
-        cell.accessoryType  = UITableViewCellAccessoryNone;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-        textField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];
-    }
-
-    textField.userInteractionEnabled = YES;
-    switch (indexPath.row)
-    {
-        case 0:
-        {
-            cell.textLabel.text = [Strings streetString];
-            textField.placeholder = [Strings requiredString];
-            textField.text = [purchaseInfo[@"street"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            objc_setAssociatedObject(textField, @"TextFieldKey", @"street", OBJC_ASSOCIATION_RETAIN);
-            break;
-        }
-        case 1:
-        {
-           // cell.textLabel.text = [Strings buildingString];
-            textField.placeholder = [Strings requiredString];
-            textField.text = [purchaseInfo[@"building"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
-            textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-            objc_setAssociatedObject(textField, @"TextFieldKey", @"building", OBJC_ASSOCIATION_RETAIN);
-            break;
-        }
-        case 2:
-        {
-            cell.textLabel.text = [Strings postcodeString];
-            if (citiesArray.count == 0)
-            {
-                textField.placeholder  = [Strings requiredString];
-                textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
-                textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-            }
-            else
-            {
-                if (singleZipCode == NO)
-                {
-                    textField.placeholder = [Strings requiredString];
-                    cell.accessoryType    = UITableViewCellAccessoryDisclosureIndicator;
-                    cell.selectionStyle   = UITableViewCellSelectionStyleDefault;
-                    textField.text        = nil;
-                }
-                
-                textField.userInteractionEnabled = NO;
-            }
-            
-            zipCodeTextField = textField;
-            zipCodeTextField.text = [purchaseInfo[@"postcode"] stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            objc_setAssociatedObject(zipCodeTextField, @"TextFieldKey", @"postcode", OBJC_ASSOCIATION_RETAIN);
-            break;
-        }
-        case 3:
-        {
-            cell.textLabel.text = [Strings cityString];
-            if (citiesArray.count == 0)
-            {
-                textField.placeholder = [Strings requiredString];
-            }
-            else
-            {
-                if (singleCity == NO)
-                {
-                    textField.placeholder = [Strings requiredString];
-                    textField.text        = nil;
-                    cell.accessoryType    = UITableViewCellAccessoryDisclosureIndicator;
-                    cell.selectionStyle   = UITableViewCellSelectionStyleDefault;
-                    textField.text        = nil;
-                }
-
-                textField.userInteractionEnabled = NO;
-            }
-            
-            cityTextField = textField;
-            cityTextField.text = [Common capitalizedString:purchaseInfo[@"city"]];
-            [cityTextField.text stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            objc_setAssociatedObject(cityTextField, @"TextFieldKey", @"city", OBJC_ASSOCIATION_RETAIN);
-            break;
-        }
-        case 4:
-        {
-            textField.placeholder            = [Strings requiredString];
-            textField.userInteractionEnabled = NO;
-
-            if (infoType == InfoTypeLocal || infoType == InfoTypeNational)
-            {
-                cell.accessoryType  = UITableViewCellAccessoryNone;
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            }
-            else
-            {
-                cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
-                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-            }
-
-            countryTextField    = textField;
-            cell.textLabel.text = [Strings countryString];
-            if (purchaseInfo[@"isoCountryCode"] == nil)
-            {
-                countryTextField.text = nil;
-            }
-            else
-            {
-                countryTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:purchaseInfo[@"isoCountryCode"]];
-            }
-            
-            break;
-        }
-    }
-
-    [self updateTextField:textField onCell:cell];
-
-    return cell;
-}
-
-
 - (UITableViewCell*)actionCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     NumberAreaActionCell*   cell;
@@ -1475,10 +686,26 @@ typedef enum
     }
     else
     {
-        [self updateReturnKeyTypeOfTextField:textField];
-
-        activeCellIndexPath = [self findCellIndexPathForSubview:textField];
-
+        //#### Copy-paste from ItemViewController, see if superclass can be used.
+        textField.returnKeyType                 = UIReturnKeyDone;
+        textField.enablesReturnKeyAutomatically = YES;
+        
+        #warning The method reloadInputViews messes up two-byte keyboards (e.g. Kanji).
+        [textField reloadInputViews];
+        
+        //### Workaround: http://stackoverflow.com/a/22053349/1971013
+        dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC));
+        dispatch_after(when, dispatch_get_main_queue(), ^(void)
+        {
+            if (self.tableView.contentInset.bottom == 265)
+            {
+                [self.tableView setContentInset:UIEdgeInsetsMake(64, 0, 216, 0)];
+                [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(64, 0, 216, 0)];
+                
+                self.hasCorrectedInsets = YES;
+            }
+        });
+        
         return YES;
     }
 }
@@ -1505,83 +732,54 @@ typedef enum
     {
         name = @"";
     }
-    else
-    {
-        purchaseInfo[key] = @"";
-    }
-
+    
     return YES;
 }
 
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-    if ([self isPurchaseInfoComplete] == YES)
+    //####[self save];
+    
+    [textField resignFirstResponder];
+    
+    if (self.hasCorrectedInsets == YES)
     {
-        [textField resignFirstResponder];
-
-        return YES;
+        //### Workaround: http://stackoverflow.com/a/22053349/1971013
+        [self.tableView setContentInset:UIEdgeInsetsMake(64, 0, 265, 0)];
+        [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(64, 0, 265, 0)];
+        
+        self.hasCorrectedInsets = NO;
     }
-    else
-    {
-        NSString* key = objc_getAssociatedObject(textField, @"TextFieldKey");
-        nextIndexPath = [self nextEmptyIndexPathForKey:key];
-
-        UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
-
-        if (cell != nil)
-        {
-            UITextField* nextTextField;
-
-            nextTextField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];
-            [nextTextField becomeFirstResponder];
-        }
-
-        return NO;
-    }
+    
+    // we can always return YES, because the Done button will be disabled when there's no text.
+    return YES;
 }
 
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
 {
-    NSString* key = objc_getAssociatedObject(textField, @"TextFieldKey");
-
+    // See http://stackoverflow.com/a/14792880/1971013 for keeping cursor on correct position.
+    UITextPosition* beginning    = textField.beginningOfDocument;
+    UITextPosition* start        = [textField positionFromPosition:beginning offset:range.location];
+    NSInteger       cursorOffset = [textField offsetFromPosition:beginning toPosition:start] + string.length;
+    
     // See http://stackoverflow.com/a/22211018/1971013 why we're using non-breaking spaces @"\u00a0".
     textField.text = [textField.text stringByReplacingCharactersInRange:range withString:string];
     textField.text = [textField.text stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-
-    if ([key isEqualToString:@"name"])
-    {
-        name = [textField.text stringByReplacingOccurrencesOfString:@"\u00a0" withString:@" "];
-    }
-    else
-    {
-        purchaseInfo[key] = [textField.text stringByReplacingOccurrencesOfString:@"\u00a0" withString:@" "];
-    }
-
-    [self updateReturnKeyTypeOfTextField:textField];
-
-    [self.tableView scrollToRowAtIndexPath:activeCellIndexPath
+    
+    name = [textField.text stringByReplacingOccurrencesOfString:@"\u00a0" withString:@" "];
+    
+    [self.tableView scrollToRowAtIndexPath:self.nameIndexPath
                           atScrollPosition:UITableViewScrollPositionNone
                                   animated:YES];
-
+    
+    // See http://stackoverflow.com/a/14792880/1971013 for keeping cursor on correct position.
+    UITextPosition* newCursorPosition = [textField positionFromPosition:textField.beginningOfDocument offset:cursorOffset];
+    UITextRange*    newSelectedRange  = [textField textRangeFromPosition:newCursorPosition toPosition:newCursorPosition];
+    [textField setSelectedTextRange:newSelectedRange];
+    
     return NO;  // Need to return NO, because we've already changed textField.text.
-}
-
-
-#pragma mark - Scrollview Delegate
-
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView*)scrollView
-{
-    if (nextIndexPath != nil)
-    {
-        UITextField*     nextTextField;
-        UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
-        nextIndexPath = nil;
-        
-        nextTextField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];
-        [nextTextField becomeFirstResponder];
-    }
 }
 
 
@@ -1597,28 +795,6 @@ typedef enum
     {
         return YES;
     }
-}
-
-
-#pragma mark - Image Picker Delegate
-
-- (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary*)info
-{
-    UIImage* image = [info objectForKey:UIImagePickerControllerEditedImage];
-    NSData*  data  = UIImageJPEGRepresentation(image, 0.5);
-
-    purchaseInfo[@"proofImage"] = [Base64 encode:data];
-
-    //### When not reloading here, the new footer text will be way too low (iOS 7.0.6).
-    [self.tableView reloadData];
-
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController*)picker
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
