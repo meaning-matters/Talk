@@ -77,7 +77,6 @@ typedef enum
 
 @property (nonatomic, strong) NSIndexPath*             nameIndexPath;
 
-@property (nonatomic, assign) BOOL                     isLoading;
 @property (nonatomic, strong) UIActivityIndicatorView* activityIndicator;
 @property (nonatomic, assign) BOOL                     hasCorrectedInsets;
 
@@ -210,11 +209,6 @@ typedef enum
     gestureRecognizer.delegate = self;
     [self.tableView addGestureRecognizer:gestureRecognizer];
 
-    if (infoType != InfoTypeNone)
-    {
-        [self loadData];
-    }
-
     [self.tableView registerNib:[UINib nibWithNibName:@"NumberAreaActionCell" bundle:nil]
          forCellReuseIdentifier:@"NumberAreaActionCell"];
 }
@@ -242,29 +236,6 @@ typedef enum
 }
 
 
-#pragma mark Property Setter
-
-- (void)setIsLoading:(BOOL)isLoading
-{
-    _isLoading = isLoading;
-
-    if (isLoading == YES && self.activityIndicator == nil)
-    {
-        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        self.activityIndicator.color = [UIColor blackColor];
-
-        [self.activityIndicator startAnimating];
-        [self.view addSubview:self.activityIndicator];
-    }
-    else if (self.isLoading == NO && self.activityIndicator != nil)
-    {
-        [self.activityIndicator stopAnimating];
-        [self.activityIndicator removeFromSuperview];
-        self.activityIndicator = nil;
-    }
-}
-
-
 #pragma mark - Helper Methods
 
 - (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
@@ -283,16 +254,6 @@ typedef enum
         //####[self save];
         [[self.tableView superview] endEditing:YES];
     }
-}
-
-
-- (void)loadData
-{
-    NSString* areaCode = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : @"0";
-
-    //#### load addressIds?
-    
-    self.isLoading = YES;
 }
 
 
@@ -680,34 +641,27 @@ typedef enum
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField*)textField
 {
-    if (self.isLoading == YES)
+    //#### Copy-paste from ItemViewController, see if superclass can be used.
+    textField.returnKeyType                 = UIReturnKeyDone;
+    textField.enablesReturnKeyAutomatically = YES;
+    
+    #warning The method reloadInputViews messes up two-byte keyboards (e.g. Kanji).
+    [textField reloadInputViews];
+    
+    //### Workaround: http://stackoverflow.com/a/22053349/1971013
+    dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC));
+    dispatch_after(when, dispatch_get_main_queue(), ^(void)
     {
-        return NO;
-    }
-    else
-    {
-        //#### Copy-paste from ItemViewController, see if superclass can be used.
-        textField.returnKeyType                 = UIReturnKeyDone;
-        textField.enablesReturnKeyAutomatically = YES;
-        
-        #warning The method reloadInputViews messes up two-byte keyboards (e.g. Kanji).
-        [textField reloadInputViews];
-        
-        //### Workaround: http://stackoverflow.com/a/22053349/1971013
-        dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC));
-        dispatch_after(when, dispatch_get_main_queue(), ^(void)
+        if (self.tableView.contentInset.bottom == 265)
         {
-            if (self.tableView.contentInset.bottom == 265)
-            {
-                [self.tableView setContentInset:UIEdgeInsetsMake(64, 0, 216, 0)];
-                [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(64, 0, 216, 0)];
-                
-                self.hasCorrectedInsets = YES;
-            }
-        });
-        
-        return YES;
-    }
+            [self.tableView setContentInset:UIEdgeInsetsMake(64, 0, 216, 0)];
+            [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(64, 0, 216, 0)];
+            
+            self.hasCorrectedInsets = YES;
+        }
+    });
+    
+    return YES;
 }
 
 
