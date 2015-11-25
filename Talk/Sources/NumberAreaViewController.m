@@ -13,7 +13,7 @@
 #import "NumberAreaTitlesViewController.h"
 #import "BuyNumberViewController.h"
 #import "CountriesViewController.h"
-#import "AddressViewController.h"
+#import "AddressesViewController.h"
 #import "Strings.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
@@ -24,6 +24,7 @@
 #import "Base64.h"
 #import "Skinning.h"
 #import "DataManager.h"
+#import "AddressData.h"
 
 
 // Update reloadSections calls when adding/removing sections.
@@ -44,41 +45,33 @@ typedef enum
     AreaRowCountry  = 1UL << 4,
 } AreaRows;
 
-typedef enum
-{
-    InfoTypeNone,
-    InfoTypeLocal,
-    InfoTypeNational,
-    InfoTypeWorldwide,
-} InfoType;
-
 
 @interface NumberAreaViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate, UINavigationControllerDelegate>
 {
-    NSString*               numberIsoCountryCode;
-    NSDictionary*           state;
-    NSDictionary*           area;
-    NumberTypeMask          numberTypeMask;
+    NSString*      numberIsoCountryCode;
+    NSDictionary*  state;
+    NSDictionary*  area;
+    NumberTypeMask numberTypeMask;
 
-    NSArray*                citiesArray;
-    NSString*               name;
-    InfoType                infoType;
-    BOOL                    requireProof;
-    BOOL                    isChecked;
-    TableSections           sections;
-    AreaRows                areaRows;
+    NSArray*       citiesArray;
+    NSString*      name;
+    BOOL           requireProof;
+    BOOL           isChecked;
+    TableSections  sections;
+    AreaRows       areaRows;
 
-    NSIndexPath*            actionIndexPath;
+    NSIndexPath*   actionIndexPath;
 
     // Keyboard stuff.
-    BOOL                    keyboardShown;
-    CGFloat                 keyboardOverlap;
+    BOOL           keyboardShown;
+    CGFloat        keyboardOverlap;
 }
 
 @property (nonatomic, strong) NSIndexPath*             nameIndexPath;
 
 @property (nonatomic, strong) UIActivityIndicatorView* activityIndicator;
 @property (nonatomic, assign) BOOL                     hasCorrectedInsets;
+@property (nonatomic, strong) AddressData*             address;
 
 @end
 
@@ -98,34 +91,13 @@ typedef enum
         numberTypeMask       = theNumberTypeMask;
         requireProof         = [area[@"requireProof"] boolValue];
 
-        if ([area[@"infoType"] isEqualToString:@"NONE"])
-        {
-            infoType = InfoTypeNone;
-        }
-        else if ([area[@"infoType"] isEqualToString:@"LOCAL"])
-        {
-            infoType = InfoTypeLocal;
-        }
-        else if ([area[@"infoType"] isEqualToString:@"NATIONAL"])
-        {
-            infoType = InfoTypeNational;
-        }
-        else if ([area[@"infoType"] isEqualToString:@"WORLDWIDE"])
-        {
-            infoType = InfoTypeWorldwide;
-        }
-        else
-        {
-            infoType = InfoTypeNone;
-        }
-
         // Mandatory sections.
         sections |= TableSectionArea;
         sections |= TableSectionName;
         sections |= TableSectionAction;
 
         // Optional Sections.
-        sections |= (infoType == InfoTypeNone) ? 0 : TableSectionAddress;
+        sections |= ([area[@"addressType"] isEqualToString:@"NONE"]) ? 0 : TableSectionAddress;
 
         // Always there Area section rows.
         areaRows |= AreaRowType;
@@ -389,14 +361,21 @@ typedef enum
         {
             case TableSectionAddress:
             {
-                AddressViewController* viewController;
+                NSManagedObjectContext*  managedObjectContext = [DataManager sharedManager].managedObjectContext;
+                NSString*                areaCode             = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : nil;
+                AddressesViewController* viewController;
                 
-                viewController = [[AddressViewController alloc] initWithAddress:nil
-                                                           managedObjectContext:[DataManager sharedManager].managedObjectContext
-                                                                 isoCountryCode:numberIsoCountryCode
-                                                                           area:area
-                                                                 numberTypeMask:numberTypeMask
-                                                                      proofType:nil];
+                viewController = [[AddressesViewController alloc] initWithManagedObjectContext:managedObjectContext
+                                                                               selectedAddress:self.address
+                                                                                isoCountryCode:numberIsoCountryCode
+                                                                                      areaCode:areaCode
+                                                                                    numberType:numberTypeMask
+                                                                                   addressType:area[@"addressType"]
+                                                                                     proofType:area[@"proofType"]
+                                                                                    completion:^(AddressData *selectedAddress)
+                {
+                    
+                }];
                 
                 [self.navigationController pushViewController:viewController animated:YES];
                 break;

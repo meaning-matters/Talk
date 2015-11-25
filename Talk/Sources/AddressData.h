@@ -52,7 +52,7 @@ typedef NS_ENUM(NSUInteger, RejectionReasonMask)
 @property (nonatomic, retain) NSString*           postcode;
 @property (nonatomic, retain) NSString*           isoCountryCode;
 @property (nonatomic, assign) BOOL                hasProof;         // Indicates there's an image available on server.
-@property (nonatomic, retain) NSData*             proofImage;
+@property (nonatomic, retain) NSString*           proofImage;
 @property (nonatomic, retain) NSString*           idType;
 @property (nonatomic, retain) NSString*           idNumber;
 @property (nonatomic, retain) NSString*           fiscalIdCode;

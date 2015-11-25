@@ -17,7 +17,7 @@
         <attribute name="municipalityCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="postcode" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="proofImage" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="proofImage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="rejectionReasons" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="salutation" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>

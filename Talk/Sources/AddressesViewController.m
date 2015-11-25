@@ -13,12 +13,21 @@
 #import "Settings.h"
 #import "AppDelegate.h"
 #import "Common.h"
+#import "WebClient.h"
 
 
 @interface AddressesViewController ()
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedAddressesController;
 @property (nonatomic, strong) AddressData*                selectedAddress;
+@property (nonatomic, assign) BOOL                        isFiltered;
+
+@property (nonatomic, strong) NSString*                   isoCountryCode;
+@property (nonatomic, strong) NSString*                   areaCode;
+@property (nonatomic, assign) NumberTypeMask              numberTypeMask;
+@property (nonatomic, strong) NSString*                   addressType;
+@property (nonatomic, strong) NSDictionary*               proofType;
+
 @property (nonatomic, copy) void (^completion)(AddressData* selectedAddress);
 
 @end
@@ -30,21 +39,38 @@
 {
     return [self initWithManagedObjectContext:[DataManager sharedManager].managedObjectContext
                               selectedAddress:nil
+                               isoCountryCode:nil
+                                     areaCode:nil
+                                   numberType:NumberTypeGeographicMask
+                                  addressType:nil
+                                    proofType:nil
                                    completion:nil];
 }
 
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
                              selectedAddress:(AddressData*)selectedAddress
-                                  completion:(void (^)(AddressData* selectedAddress))completion;
+                              isoCountryCode:(NSString*)isoCountryCode
+                                    areaCode:(NSString*)areaCode
+                                  numberType:(NumberTypeMask)numberTypeMask
+                                 addressType:(NSString*)addressType
+                                   proofType:(NSDictionary*)proofType
+                                  completion:(void (^)(AddressData* selectedAddress))completion
 {
     if (self = [super init])
     {
         self.title                = [Strings addressesString];
         // The tabBarItem image must be set in my own NavigationController.
         
+        self.isFiltered           = (isoCountryCode != nil);
+        
         self.managedObjectContext = managedObjectContext;
         self.selectedAddress      = selectedAddress;
+        self.isoCountryCode       = isoCountryCode;
+        self.areaCode             = areaCode;
+        self.numberTypeMask       = numberTypeMask;
+        self.addressType          = addressType;
+        self.proofType            = proofType;
         self.completion           = completion;
     }
     
@@ -52,21 +78,47 @@
 }
 
 
+- (void)loadData
+{
+    [[WebClient sharedClient] retrieveAddressesForIsoCountryCode:self.isoCountryCode
+                                                        areaCode:self.areaCode
+                                                      numberType:self.numberTypeMask
+                                                           reply:^(NSError *error, NSArray *addressIds)
+    {
+        if (error == nil)
+        {
+           //  self.isLoading = NO;
+        }
+        else
+        {
+            
+        }
+    }];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Don't show add button
-    if (self.selectedAddress != nil)
-    {
-        self.navigationItem.rightBarButtonItem = nil;
-    }
-    
+
     self.fetchedAddressesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Address"
                                                                                 withSortKeys:@[@"isoCountryCode",
                                                                                                @"salutation"]
                                                                         managedObjectContext:self.managedObjectContext];
-    self.fetchedAddressesController.delegate = self;
+    
+    // Don't show add button
+    if (self.isFiltered == NO)
+    {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+    else
+    {
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"addressId IN %@", [NSArray array]];
+        [self.fetchedAddressesController.fetchRequest setPredicate:predicate];
+        [self.fetchedAddressesController performFetch:nil];
+    
+        self.fetchedAddressesController.delegate = self;
+    }
 }
 
 
@@ -151,8 +203,9 @@
         viewController = [[AddressViewController alloc] initWithAddress:address
                                                    managedObjectContext:self.managedObjectContext
                                                          isoCountryCode:nil
-                                                                   area:nil
+                                                               areaCode:nil
                                                          numberTypeMask:NumberTypeGeographicMask
+                                                            addressType:nil
                                                               proofType:nil];
         
         [self.navigationController pushViewController:viewController animated:YES];
@@ -215,19 +268,23 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     if ([Settings sharedSettings].haveAccount == YES)
     {
-        /*#####
         UINavigationController* modalViewController;
         AddressViewController*  viewController;
         
-        viewController = [[AddressViewController alloc] initWithAddress:nil managedObjectContext:self.managedObjectContext];
+        viewController = [[AddressViewController alloc] initWithAddress:nil
+                                                   managedObjectContext:self.managedObjectContext
+                                                         isoCountryCode:self.isoCountryCode
+                                                               areaCode:self.areaCode
+                                                         numberTypeMask:self.numberTypeMask
+                                                            addressType:self.addressType
+                                                              proofType:self.proofType];
         
         modalViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
         modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         
-        [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
+        [self presentViewController:modalViewController
                                                                animated:YES
                                                              completion:nil];
-         */
     }
     else
     {

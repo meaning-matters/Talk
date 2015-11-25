@@ -19,8 +19,9 @@
 - (instancetype)initWithAddress:(AddressData*)address
            managedObjectContext:(NSManagedObjectContext*)managedObjectContext
                  isoCountryCode:(NSString*)isoCountryCode
-                           area:(NSDictionary*)area
+                       areaCode:(NSString*)areaCode
                  numberTypeMask:(NumberTypeMask)numberTypeMask
+                    addressType:(NSString*)addressType
                       proofType:(NSDictionary*)proofType;
 
 @end

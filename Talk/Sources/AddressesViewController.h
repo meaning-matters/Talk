@@ -7,6 +7,7 @@
 //
 
 #import "ItemsViewController.h"
+#import "NumberType.h"
 
 @class AddressData;
 
@@ -17,8 +18,15 @@
 @property (nonatomic, strong) NSString* footerTitle;
 
 
+- (instancetype)init;
+
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
                              selectedAddress:(AddressData*)selectedAddress
+                              isoCountryCode:(NSString*)isoCountryCode
+                                    areaCode:(NSString*)areaCode
+                                  numberType:(NumberTypeMask)numberTypeMask
+                                 addressType:(NSString*)addressType
+                                   proofType:(NSDictionary*)proofType
                                   completion:(void (^)(AddressData* selectedAddress))completion;
 
 @end

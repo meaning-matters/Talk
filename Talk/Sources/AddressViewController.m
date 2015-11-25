@@ -29,14 +29,6 @@ typedef NS_ENUM(NSUInteger, TableSections)
     TableSectionProof   = 1UL << 3, // Proof image.
 };
 
-typedef NS_ENUM(NSUInteger, InfoType)
-{
-    InfoTypeNone,
-    InfoTypeLocal,
-    InfoTypeNational,
-    InfoTypeWorldwide,
-};
-
 
 @interface AddressViewController () <UIImagePickerControllerDelegate>
 
@@ -46,12 +38,12 @@ typedef NS_ENUM(NSUInteger, InfoType)
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedAddressesController;
 @property (nonatomic, strong) NSString*                   numberIsoCountryCode;
-@property (nonatomic, strong) NSDictionary*               area;
+@property (nonatomic, strong) NSString*                   areaCode;
 @property (nonatomic, assign) NumberTypeMask              numberTypeMask;
+@property (nonatomic, strong) NSString*                   addressType;
 @property (nonatomic, strong) NSDictionary*               proofType;
 
 @property (nonatomic, strong) NSArray*                    citiesArray;
-@property (nonatomic, assign) InfoType                    infoType;
 @property (nonatomic, assign) BOOL                        isChecked;
 
 @property (nonatomic, strong) UITextField*                salutationTextField;
@@ -92,8 +84,9 @@ typedef NS_ENUM(NSUInteger, InfoType)
 - (instancetype)initWithAddress:(AddressData*)address
            managedObjectContext:(NSManagedObjectContext*)managedObjectContext
                  isoCountryCode:(NSString*)isoCountryCode
-                           area:(NSDictionary*)area
+                       areaCode:(NSString*)areaCode
                  numberTypeMask:(NumberTypeMask)numberTypeMask
+                    addressType:(NSString*)addressType
                       proofType:(NSDictionary*)proofType
 {
     if (self = [super initWithManagedObjectContext:managedObjectContext])
@@ -101,11 +94,12 @@ typedef NS_ENUM(NSUInteger, InfoType)
         self.sections             = TableSectionName | TableSectionDetails | TableSectionAddress;
         self.isNew                = (address == nil);
         self.address              = address;
-        self.title                = self.isNew ? [Strings newAddressString] : [Strings addressesString];
+        self.title                = self.isNew ? [Strings newAddressString] : [Strings addressString];
 
         self.numberIsoCountryCode = isoCountryCode;
-        self.area                 = area;
+        self.areaCode             = areaCode;
         self.numberTypeMask       = numberTypeMask;
+        self.addressType          = addressType;
         self.proofType            = proofType;
         
         if (self.isNew == YES)
@@ -118,94 +112,23 @@ typedef NS_ENUM(NSUInteger, InfoType)
             
             self.address = [NSEntityDescription insertNewObjectForEntityForName:@"Address"
                                                          inManagedObjectContext:self.managedObjectContext];
+            self.address.salutation = @"MR";
         }
         else
         {
             self.managedObjectContext = managedObjectContext;
         }
         
-        
-        if ([area[@"infoType"] isEqualToString:@"NONE"])
-        {
-            self.infoType = InfoTypeNone;
-        }
-        else if ([area[@"infoType"] isEqualToString:@"LOCAL"])
-        {
-            self.infoType = InfoTypeLocal;
-        }
-        else if ([area[@"infoType"] isEqualToString:@"NATIONAL"])
-        {
-            self.infoType = InfoTypeNational;
-        }
-        else if ([area[@"infoType"] isEqualToString:@"WORLDWIDE"])
-        {
-            self.infoType = InfoTypeWorldwide;
-        }
-        else
-        {
-            self.infoType = InfoTypeNone;
-        }
-        
-        if (self.infoType != InfoTypeNone)
-        {
-            self.address.salutation = @"MR";
-        }
-        
-        if (self.infoType == InfoTypeLocal || self.infoType == InfoTypeNational)
+        if ([self.addressType isEqualToString:@"LOCAL"] || [self.addressType isEqualToString:@"NATIONAL"])
         {
             self.address.isoCountryCode = self.numberIsoCountryCode;
         }
         
         // Mandatory sections.
         self.sections |= TableSectionName;
+        self.sections |= TableSectionDetails;
+        self.sections |= TableSectionAddress;
         self.sections |= TableSectionProof;
-        
-        // Optional Sections.
-        self.sections |= (self.infoType == InfoTypeNone) ? 0 : TableSectionDetails;
-        self.sections |= (self.infoType == InfoTypeNone) ? 0 : TableSectionAddress;
-        
-        // Default naming.
-        NSString* city;
-        NSString* countryName = [[CountryNames sharedNames] nameForIsoCountryCode:self.numberIsoCountryCode];
-        switch (numberTypeMask)
-        {
-            case NumberTypeGeographicMask:
-            {
-                city = [Common capitalizedString:area[@"city"]];
-                self.name = [NSString stringWithFormat:@"%@ (%@)", city, self.numberIsoCountryCode];
-                break;
-            }
-            case NumberTypeNationalMask:
-            {
-                self.name = [NSString stringWithFormat:@"%@ (paid)", countryName];
-                break;
-            }
-            case NumberTypeTollFreeMask:
-            {
-                self.name = [NSString stringWithFormat:@"%@ (free)", countryName];
-                break;
-            }
-            case NumberTypeMobileMask:
-            {
-                self.name = [NSString stringWithFormat:@"%@ (mobile)", countryName];
-                break;
-            }
-            case NumberTypeSharedCostMask:
-            {
-                self.name = [NSString stringWithFormat:@"%@ (shared)", countryName];
-                break;
-            }
-            case NumberTypeSpecialMask:
-            {
-                self.name = [NSString stringWithFormat:@"%@ (special)", countryName];
-                break;
-            }
-            case NumberTypeInternationalMask:
-            {
-                self.name = [NSString stringWithFormat:@"International (%@)", area[@"areaCode"]];
-                break;
-            }
-        }
         
         [self initializeIndexPaths];
     }
@@ -223,6 +146,11 @@ typedef NS_ENUM(NSUInteger, InfoType)
     UIBarButtonItem* buttonItem;
     if (self.isNew)
     {
+        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                   target:self
+                                                                   action:@selector(cancelAction)];
+        self.navigationItem.leftBarButtonItem = buttonItem;
+
         buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
                                                                    target:self
                                                                    action:@selector(createAction)];
@@ -238,7 +166,7 @@ typedef NS_ENUM(NSUInteger, InfoType)
     
     [self updateRightBarButtonItem];
     
-    if (self.infoType != InfoTypeNone)
+    if (self.isNew)
     {
         [self loadData];
     }
@@ -271,10 +199,8 @@ typedef NS_ENUM(NSUInteger, InfoType)
 {
     [super viewWillDisappear:animated];
     
-    NSString* areaCode = [self.area[@"areaCode"] length] > 0 ? self.area[@"areaCode"] : @"0";
-    
     [[WebClient sharedClient] cancelAllRetrieveAreaInfoForIsoCountryCode:self.numberIsoCountryCode
-                                                                areaCode:areaCode];
+                                                                areaCode:self.areaCode];
 }
 
 
@@ -333,19 +259,13 @@ typedef NS_ENUM(NSUInteger, InfoType)
 
 - (void)loadData
 {
-    NSString* areaCode = [self.area[@"areaCode"] length] > 0 ? self.area[@"areaCode"] : @"0";
-    
     self.isLoading = YES;
     [[WebClient sharedClient] retrieveNumberAreaInfoForIsoCountryCode:self.numberIsoCountryCode
-                                                             areaCode:areaCode
+                                                             areaCode:self.areaCode
                                                                 reply:^(NSError* error, id content)
     {
         if (error == nil)
         {
-            self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberArea ScreenTitle", nil,
-                                                                          [NSBundle mainBundle], @"Area",
-                                                                          @"Title of app screen with one area.\n"
-                                                                          @"[1 line larger font].");
             self.citiesArray = [NSArray arrayWithArray:content];
             self.address.postcode = @"";     // Resets what user may have typed while loading (on slow internet).
             self.address.city     = @"";     // Resets what user may have typed while loading (on slow internet).
@@ -358,11 +278,11 @@ typedef NS_ENUM(NSUInteger, InfoType)
             NSString* title;
             NSString* message;
             
-            title   = NSLocalizedStringWithDefaultValue(@"NumberArea UnavailableAlertTitle", nil,
+            title   = NSLocalizedStringWithDefaultValue(@"Address UnavailableAlertTitle", nil,
                                                         [NSBundle mainBundle], @"Service Unavailable",
                                                         @"Alert title telling that an online service is not available.\n"
                                                         @"[iOS alert title size].");
-            message = NSLocalizedStringWithDefaultValue(@"NumberArea UnavailableAlertMessage", nil,
+            message = NSLocalizedStringWithDefaultValue(@"Address UnavailableAlertMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"The service for buying numbers is temporarily offline."
                                                         @"\n\nPlease try again later.",
@@ -382,11 +302,11 @@ typedef NS_ENUM(NSUInteger, InfoType)
             NSString* title;
             NSString* message;
             
-            title   = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertTitle", nil,
+            title   = NSLocalizedStringWithDefaultValue(@"Address LoadFailAlertTitle", nil,
                                                         [NSBundle mainBundle], @"Loading Failed",
                                                         @"Alert title telling that loading information over internet failed.\n"
                                                         @"[iOS alert title size].");
-            message = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertMessage", nil,
+            message = NSLocalizedStringWithDefaultValue(@"Address LoadFailAlertMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"Loading the list of cities and postcodes failed: %@\n\nPlease try again later.",
                                                         @"Alert message telling that loading information over internet failed.\n"
@@ -416,11 +336,7 @@ typedef NS_ENUM(NSUInteger, InfoType)
     unsigned emptyMask  = 0;
     unsigned currentBit = 0;
     
-    if (self.infoType == InfoTypeNone)
-    {
-        emptyMask |= ([self.name length] == 0) << 0;
-    }
-    else
+    if (self.isNew == YES)
     {
         emptyMask |= ([self.name                   length] == 0) << 0;
         emptyMask |= ([self.address.companyName    length] == 0) << 1;
@@ -434,6 +350,10 @@ typedef NS_ENUM(NSUInteger, InfoType)
             emptyMask |= ([self.address.city       length] == 0) << 7;
             emptyMask |= ([self.address.postcode   length] == 0) << 8;
         }
+    }
+    else
+    {
+        emptyMask |= ([self.name length] == 0) << 0;
     }
     
     if (emptyMask != 0)
@@ -485,15 +405,11 @@ typedef NS_ENUM(NSUInteger, InfoType)
 }
 
 
-- (BOOL)isPurchaseInfoComplete
+- (BOOL)isAddressComplete
 {
     BOOL    complete;
     
-    if (self.infoType == InfoTypeNone)
-    {
-        complete = ([self.name length] > 0);
-    }
-    else
+    if (self.isNew == YES)
     {
         if ([self.address.salutation isEqualToString:@"COMPANY"] == YES)
         {
@@ -518,6 +434,10 @@ typedef NS_ENUM(NSUInteger, InfoType)
                         [self.address.postcode       length] > 0 &&
                         [self.address.isoCountryCode length] > 0);
         }
+    }
+    else
+    {
+        complete = ([self.name length] > 0);
     }
     
     return complete;
@@ -607,21 +527,21 @@ typedef NS_ENUM(NSUInteger, InfoType)
     
     if (self.proofType != nil && self.address.proofImage == nil)
     {
-        text = NSLocalizedStringWithDefaultValue(@"NumberArea:Action TakePictureLabel", nil,
+        text = NSLocalizedStringWithDefaultValue(@"Address:Action TakePictureLabel", nil,
                                                  [NSBundle mainBundle],
                                                  @"Take Picture",
                                                  @"....");
     }
-    else if (self.infoType != InfoTypeNone && self.isChecked == NO)
+    else if (self.isChecked == NO)
     {
-        text = NSLocalizedStringWithDefaultValue(@"NumberArea:Action ValidateLabel", nil,
+        text = NSLocalizedStringWithDefaultValue(@"Address:Action ValidateLabel", nil,
                                                  [NSBundle mainBundle],
                                                  @"Validate",
                                                  @"....");
     }
     else
     {
-        text = NSLocalizedStringWithDefaultValue(@"NumberArea:Action BuyLabel", nil,
+        text = NSLocalizedStringWithDefaultValue(@"Address:Action BuyLabel", nil,
                                                  [NSBundle mainBundle],
                                                  @"Buy",
                                                  @"....");
@@ -633,7 +553,7 @@ typedef NS_ENUM(NSUInteger, InfoType)
 
 - (void)updateReturnKeyTypeOfTextField:(UITextField*)textField
 {
-    UIReturnKeyType returnKeyType = [self isPurchaseInfoComplete] ? UIReturnKeyDone : UIReturnKeyNext;
+    UIReturnKeyType returnKeyType = [self isAddressComplete] ? UIReturnKeyDone : UIReturnKeyNext;
     
     if (textField.returnKeyType != returnKeyType)
     {
@@ -668,12 +588,12 @@ typedef NS_ENUM(NSUInteger, InfoType)
         }
         case TableSectionDetails:
         {
-            numberOfRows = (self.infoType == InfoTypeNone) ? 0 : 4;
+            numberOfRows = 4;
             break;
         }
         case TableSectionAddress:
         {
-            numberOfRows = (self.infoType == InfoTypeNone) ? 0 : 6;
+            numberOfRows = 6;
             break;
         }
         case TableSectionProof:
@@ -689,53 +609,45 @@ typedef NS_ENUM(NSUInteger, InfoType)
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString*   title = nil;
+    NSString* title = nil;
     
     switch ([Common nthBitSet:section inValue:self.sections])
     {
         case TableSectionName:
         {
-            title = NSLocalizedStringWithDefaultValue(@"NumberArea:Naming SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Number's Name In App",
+            title = NSLocalizedStringWithDefaultValue(@"Address:Naming SectionHeader", nil,
+                                                      [NSBundle mainBundle], @"Address' Name In App",
                                                       @"...");
             break;
         }
         case TableSectionDetails:
         {
-            title = NSLocalizedStringWithDefaultValue(@"NumberArea:Name SectionHeader", nil,
+            title = NSLocalizedStringWithDefaultValue(@"Address:Name SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Contact Name",
                                                       @"Name and company of someone.");
             break;
         }
         case TableSectionAddress:
         {
-            switch (self.infoType)
+            if ([self.addressType isEqualToString:@"LOCAL"])
             {
-                case InfoTypeNone:
-                {
-                    break;
-                }
-                case InfoTypeLocal:
-                {
-                    title = NSLocalizedStringWithDefaultValue(@"NumberArea:AddressLocal SectionHeader", nil,
-                                                              [NSBundle mainBundle], @"Local Contact Address",
-                                                              @"Address of someone.");
-                    break;
-                }
-                case InfoTypeNational:
-                {
-                    title = NSLocalizedStringWithDefaultValue(@"NumberArea:AddressNational SectionHeader", nil,
-                                                              [NSBundle mainBundle], @"National Contact Address",
-                                                              @"Address of someone.");
-                    break;
-                }
-                case InfoTypeWorldwide:
-                {
-                    title = NSLocalizedStringWithDefaultValue(@"NumberArea:AddressWorldwide SectionHeader", nil,
-                                                              [NSBundle mainBundle], @"Worldwide Contact Address",
-                                                              @"Address of someone.");
-                    break;
-                }
+                title = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal SectionHeader", nil,
+                                                          [NSBundle mainBundle], @"Local Contact Address",
+                                                          @"Address of someone.");
+            }
+            
+            if ([self.addressType isEqualToString:@"NATIONAL"])
+            {
+                title = NSLocalizedStringWithDefaultValue(@"Address:AddressNational SectionHeader", nil,
+                                                          [NSBundle mainBundle], @"National Contact Address",
+                                                          @"Address of someone.");
+            }
+            
+            if ([self.addressType isEqualToString:@"WORLDWIDE"])
+            {
+                title = NSLocalizedStringWithDefaultValue(@"Address:AddressWorldwide SectionHeader", nil,
+                                                          [NSBundle mainBundle], @"Worldwide Contact Address",
+                                                          @"Address of someone.");
             }
             
             break;
@@ -767,7 +679,7 @@ typedef NS_ENUM(NSUInteger, InfoType)
         }
         case TableSectionAddress:
         {
-            title = NSLocalizedStringWithDefaultValue(@"NumberArea:Address SectionFooter", nil,
+            title = NSLocalizedStringWithDefaultValue(@"Address:Address SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"For a phone number in this area, a contact name and address "
                                                       @"are (legally) required.",
@@ -778,7 +690,7 @@ typedef NS_ENUM(NSUInteger, InfoType)
         {
             if (self.proofType != nil && self.address.proofImage == nil)
             {
-                title = NSLocalizedStringWithDefaultValue(@"NumberArea:Action SectionFooterTakePicture", nil,
+                title = NSLocalizedStringWithDefaultValue(@"Address:Action SectionFooterTakePicture", nil,
                                                           [NSBundle mainBundle],
                                                           @"For this area a proof of address is (legally) required.\n\n"
                                                           @"Take a picture of a recent utility bill, or bank statement. "
@@ -786,16 +698,16 @@ typedef NS_ENUM(NSUInteger, InfoType)
                                                           @"the company/bank are clearly visible.",
                                                           @"Telephone area (or city).");
             }
-            else if (self.infoType != InfoTypeNone && self.isChecked == NO)
+            else if (self.isChecked == NO)
             {
-                title = NSLocalizedStringWithDefaultValue(@"NumberArea:Action SectionFooterCheck", nil,
+                title = NSLocalizedStringWithDefaultValue(@"Address:Action SectionFooterCheck", nil,
                                                           [NSBundle mainBundle],
                                                           @"The information supplied must first be checked.",
                                                           @"Telephone area (or city).");
             }
             else
             {
-                title = NSLocalizedStringWithDefaultValue(@"NumberArea:Action SectionFooterBuy", nil,
+                title = NSLocalizedStringWithDefaultValue(@"Address:Action SectionFooterBuy", nil,
                                                           [NSBundle mainBundle],
                                                           @"You can always buy extra months to use "
                                                           @"this phone number.",
@@ -883,11 +795,11 @@ typedef NS_ENUM(NSUInteger, InfoType)
                 {
                     [self takePicture];
                 }
-                else if ([self isPurchaseInfoComplete] == YES)
+                else if ([self isAddressComplete] == YES)
                 {
                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                     
-                    if (self.infoType != InfoTypeNone && self.isChecked == NO)
+                    if (self.isChecked == NO)
                     {
                         NumberAreaActionCell* cell;
                         cell = (NumberAreaActionCell*)[self.tableView cellForRowAtIndexPath:indexPath];
@@ -925,12 +837,12 @@ typedef NS_ENUM(NSUInteger, InfoType)
                                 NSString* title;
                                 NSString* message;
                                 
-                                title   = NSLocalizedStringWithDefaultValue(@"NumberArea CouldNotValidateAlertTitle", nil,
+                                title   = NSLocalizedStringWithDefaultValue(@"Address CouldNotValidateAlertTitle", nil,
                                                                             [NSBundle mainBundle], @"Could Not Validate",
                                                                             @"Alert title telling that there's a "
                                                                             @"problem with internet connection.\n"
                                                                             @"[iOS alert title size].");
-                                message = NSLocalizedStringWithDefaultValue(@"NumberArea CouldNotValidateAlertMessage", nil,
+                                message = NSLocalizedStringWithDefaultValue(@"Address CouldNotValidateAlertMessage", nil,
                                                                             [NSBundle mainBundle],
                                                                             @"There seems to be a problem with the "
                                                                             @"internet connection.\n\nPlease try again "
@@ -953,12 +865,12 @@ typedef NS_ENUM(NSUInteger, InfoType)
                                 NSString* message;
                                 NSString* description;
                                 
-                                title   = NSLocalizedStringWithDefaultValue(@"NumberArea ValidationFailedAlertTitle", nil,
+                                title   = NSLocalizedStringWithDefaultValue(@"Address ValidationFailedAlertTitle", nil,
                                                                             [NSBundle mainBundle], @"Validation Failed",
                                                                             @"Alert title telling that validating "
                                                                             @"name & address of user failed.\n"
                                                                             @"[iOS alert title size].");
-                                message = NSLocalizedStringWithDefaultValue(@"NumberArea ValidationFailedAlertMessage", nil,
+                                message = NSLocalizedStringWithDefaultValue(@"Address ValidationFailedAlertMessage", nil,
                                                                             [NSBundle mainBundle],
                                                                             @"Validating your name and address failed: %@",
                                                                             @"Alert message telling that validating "
@@ -995,11 +907,11 @@ typedef NS_ENUM(NSUInteger, InfoType)
                     NSString*   title;
                     NSString*   message;
                     
-                    title   = NSLocalizedStringWithDefaultValue(@"NumberArea InfoIncompleteAlertTitle", nil,
+                    title   = NSLocalizedStringWithDefaultValue(@"Address InfoIncompleteAlertTitle", nil,
                                                                 [NSBundle mainBundle], @"Information Missing",
                                                                 @"Alert title telling that user did not fill in all information.\n"
                                                                 @"[iOS alert title size].");
-                    message = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertMessage", nil,
+                    message = NSLocalizedStringWithDefaultValue(@"Address LoadFailAlertMessage", nil,
                                                                 [NSBundle mainBundle],
                                                                 @"Some of the required information has not been supplied yet.",
                                                                 @"Alert message telling that user did not fill in all information.\n"
@@ -1302,7 +1214,7 @@ typedef NS_ENUM(NSUInteger, InfoType)
             textField.placeholder            = [Strings requiredString];
             textField.userInteractionEnabled = NO;
             
-            if (self.infoType == InfoTypeLocal || self.infoType == InfoTypeNational)
+            if ([self.addressType isEqualToString:@"LOCAL"] || [self.addressType isEqualToString:@"NATIONAL"])
             {
                 cell.accessoryType  = UITableViewCellAccessoryNone;
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -1313,7 +1225,7 @@ typedef NS_ENUM(NSUInteger, InfoType)
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             }
             
-            self.countryTextField    = textField;
+            self.countryTextField = textField;
             cell.textLabel.text = [Strings countryString];
             if (self.address.isoCountryCode == nil)
             {
@@ -1422,7 +1334,6 @@ typedef NS_ENUM(NSUInteger, InfoType)
     else
     {
         [self.address setValue:@"" forKey:key];
-        //#### OLD self.purchaseInfo[key] = @"";
     }
     
     return YES;
@@ -1431,7 +1342,7 @@ typedef NS_ENUM(NSUInteger, InfoType)
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-    if ([self isPurchaseInfoComplete] == YES)
+    if ([self isAddressComplete] == YES)
     {
         [textField resignFirstResponder];
         
@@ -1473,7 +1384,6 @@ typedef NS_ENUM(NSUInteger, InfoType)
     else
     {
         [self.address setValue:text forKey:key];
-        //##### OLD self.purchaseInfo[key] = [textField.text stringByReplacingOccurrencesOfString:@"\u00a0" withString:@" "];
     }
     
     [self updateReturnKeyTypeOfTextField:textField];
