@@ -505,6 +505,7 @@
                 NSLog(@"%@", [addressId class]);
                 [[WebClient sharedClient] retrieveAddressWithId:addressId
                                                           reply:^(NSError*  error,
+                                                                  NSString* name,
                                                                   NSString* salutation,
                                                                   NSString* firstName,
                                                                   NSString* lastName,
@@ -547,6 +548,7 @@
                          }
                          
                          address.addressId          = addressId;
+                         address.name               = name;
                          address.salutation         = salutation;
                          address.firstName          = firstName;
                          address.lastName           = lastName;

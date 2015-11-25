@@ -107,6 +107,7 @@
 // 10B. GET REGULATION ADDRESS
 - (void)retrieveAddressWithId:(NSString*)addressId
                         reply:(void (^)(NSError*  error,
+                                        NSString* name,
                                         NSString* salutation,
                                         NSString* firstName,
                                         NSString* lastName,
@@ -128,26 +129,27 @@
                                         NSArray*  rejectionReasons))reply;
 
 // 10C. CREATE REGULATION ADDRESS
-- (void)createAddressForNumberIsoCountryCode:(NSString*)numberIsoCountryCode
-                                  numberType:(NumberTypeMask)numberTypeMask
-                                  salutation:(NSString*)salutation
-                                   firstName:(NSString*)firstName
-                                    lastName:(NSString*)lastName
-                                 companyName:(NSString*)companyName
-                          companyDescription:(NSString*)companyDescription
-                                      street:(NSString*)street
-                              buildingNumber:(NSString*)buildingNumber
-                              buildingLetter:(NSString*)buildingLetter
-                                        city:(NSString*)city
-                                    postcode:(NSString*)postcode
-                              isoCountryCode:(NSString*)isoCountryCode
-                                  proofImage:(NSString*)proofImage   // Base64 encoded.
-                                      idType:(NSString*)idType
-                                    idNumber:(NSString*)idNumber
-                                fiscalIdCode:(NSString*)fiscalIdCode
-                                  streetCode:(NSString*)streetCode
-                            municipalityCode:(NSString*)municipalityCode
-                                       reply:(void (^)(NSError* error, NSString* addressId, NSArray* missingFields))reply;
+- (void)createAddressForIsoCountryCode:(NSString*)numberIsoCountryCode
+                            numberType:(NumberTypeMask)numberTypeMask
+                                  name:(NSString*)name
+                            salutation:(NSString*)salutation
+                             firstName:(NSString*)firstName
+                              lastName:(NSString*)lastName
+                           companyName:(NSString*)companyName
+                    companyDescription:(NSString*)companyDescription
+                                street:(NSString*)street
+                        buildingNumber:(NSString*)buildingNumber
+                        buildingLetter:(NSString*)buildingLetter
+                                  city:(NSString*)city
+                              postcode:(NSString*)postcode
+                        isoCountryCode:(NSString*)isoCountryCode
+                            proofImage:(NSString*)proofImage   // Base64 encoded.
+                                idType:(NSString*)idType
+                              idNumber:(NSString*)idNumber
+                          fiscalIdCode:(NSString*)fiscalIdCode
+                            streetCode:(NSString*)streetCode
+                      municipalityCode:(NSString*)municipalityCode
+                                 reply:(void (^)(NSError* error, NSString* addressId, NSArray* missingFields))reply;
 
 // 10D. DELETE REGULATION ADDRESS
 - (void)deleteAddressWithId:(NSString*)addressId

@@ -116,9 +116,9 @@
         NSPredicate* predicate = [NSPredicate predicateWithFormat:@"addressId IN %@", [NSArray array]];
         [self.fetchedAddressesController.fetchRequest setPredicate:predicate];
         [self.fetchedAddressesController performFetch:nil];
-    
-        self.fetchedAddressesController.delegate = self;
     }
+    
+    self.fetchedAddressesController.delegate = self;
 }
 
 
