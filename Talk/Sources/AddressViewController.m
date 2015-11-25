@@ -20,6 +20,7 @@
 #import "BlockAlertView.h"
 #import "Base64.h"
 #import "DataManager.h"
+#import "BlockActionSheet.h"
 
 typedef NS_ENUM(NSUInteger, TableSections)
 {
@@ -1523,6 +1524,63 @@ typedef NS_ENUM(NSUInteger, TableSections)
          }
      }];
      */
+}
+
+
+- (void)deleteAction
+{
+    if (self.address.numbers.count == 0)
+    {
+        NSString* buttonTitle = NSLocalizedStringWithDefaultValue(@"AddressView DeleteTitle", nil, [NSBundle mainBundle],
+                                                                  @"Delete Address",
+                                                                  @"...\n"
+                                                                  @"[1/3 line small font].");
+        
+        [BlockActionSheet showActionSheetWithTitle:nil
+                                        completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
+        {
+            if (destruct == YES)
+            {
+                self.isDeleting = YES;
+                 
+                [self.address deleteFromManagedObjectContext:self.managedObjectContext
+                                                  completion:^(BOOL succeeded)
+                {
+                    if (succeeded)
+                    {
+                        [self.navigationController popViewControllerAnimated:YES];
+                    }
+                    else
+                    {
+                        self.isDeleting = NO;
+                    }
+                }];
+            }
+        }
+                                 cancelButtonTitle:[Strings cancelString]
+                            destructiveButtonTitle:buttonTitle
+                                 otherButtonTitles:nil];
+    }
+    else
+    {
+        NSString* title;
+        NSString* message;
+        
+        title   = NSLocalizedStringWithDefaultValue(@"AddressView CantDeleteTitle", nil, [NSBundle mainBundle],
+                                                    @"Can't Delete Address",
+                                                    @"...\n"
+                                                    @"[1/3 line small font].");
+        title   = NSLocalizedStringWithDefaultValue(@"AddressView CantDeleteMessage", nil, [NSBundle mainBundle],
+                                                    @"This Address can't be deleted because it's used by one or more Numbers.",
+                                                    @"...\n"
+                                                    @"[1/3 line small font].");
+        
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+    }
 }
 
 

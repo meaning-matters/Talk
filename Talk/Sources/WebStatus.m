@@ -34,7 +34,9 @@
                      @"FAIL_NO_CREDIT"               : @(WebStatusFailNoCredit),
                      @"FAIL_UNKNOWN_CALLER_ID"       : @(WebStatusFailUnknownCallerId),
                      @"FAIL_UNKNOWN_VERIFIED_NUMBER" : @(WebStatusFailUnknownVerifiedNumber),
-                     @"FAIL_UNKNOWN_BOTH_E164"       : @(WebStatusFailUnknownBothE164)};
+                     @"FAIL_UNKNOWN_BOTH_E164"       : @(WebStatusFailUnknownBothE164),
+                     @"FAIL_ADDRESS_IN_USE"          : @(WebStatusFailAddressInUse),
+                     @"FAIL_ADDRESS_UNKNOWN"         : @(WebStatusFailAddressUnknown)};
     });
     
     NSNumber*     number = statuses[string];
@@ -182,6 +184,22 @@
         {
             string = NSLocalizedStringWithDefaultValue(@"WebClient UnknownBothE164", nil, [NSBundle mainBundle],
                                                        @"Both the caller ID and the phone to be called back are unknown.",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+        }
+        case WebStatusFailAddressInUse:
+        {
+            string = NSLocalizedStringWithDefaultValue(@"WebClient AddressInUse", nil, [NSBundle mainBundle],
+                                                       @"This Address is still being used.",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+        }
+        case WebStatusFailAddressUnknown:
+        {
+            string = NSLocalizedStringWithDefaultValue(@"WebClient AddressUnknown", nil, [NSBundle mainBundle],
+                                                       @"This Address is unknown.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
