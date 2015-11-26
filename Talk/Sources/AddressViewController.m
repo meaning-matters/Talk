@@ -668,27 +668,35 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         }
         case TableSectionAddress:
         {
-            if ([self.addressType isEqualToString:@"LOCAL"])
+            if (self.isNew)
             {
-                title = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal SectionHeader", nil,
-                                                          [NSBundle mainBundle], @"Local Contact Address",
-                                                          @"Address of someone.");
+                if ([self.addressType isEqualToString:@"LOCAL"])
+                {
+                    title = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal SectionHeader", nil,
+                                                              [NSBundle mainBundle], @"Local Contact Address",
+                                                              @"Address of someone.");
+                }
+                
+                if ([self.addressType isEqualToString:@"NATIONAL"])
+                {
+                    title = NSLocalizedStringWithDefaultValue(@"Address:AddressNational SectionHeader", nil,
+                                                              [NSBundle mainBundle], @"National Contact Address",
+                                                              @"Address of someone.");
+                }
+                
+                if ([self.addressType isEqualToString:@"WORLDWIDE"])
+                {
+                    title = NSLocalizedStringWithDefaultValue(@"Address:AddressWorldwide SectionHeader", nil,
+                                                              [NSBundle mainBundle], @"Worldwide Contact Address",
+                                                              @"Address of someone.");
+                }
             }
-            
-            if ([self.addressType isEqualToString:@"NATIONAL"])
+            else
             {
-                title = NSLocalizedStringWithDefaultValue(@"Address:AddressNational SectionHeader", nil,
-                                                          [NSBundle mainBundle], @"National Contact Address",
-                                                          @"Address of someone.");
+                title = NSLocalizedStringWithDefaultValue(@"Address:ContactAddress SectionHeader", nil,
+                                                          [NSBundle mainBundle], @"Contact Address",
+                                                          @"...");
             }
-            
-            if ([self.addressType isEqualToString:@"WORLDWIDE"])
-            {
-                title = NSLocalizedStringWithDefaultValue(@"Address:AddressWorldwide SectionHeader", nil,
-                                                          [NSBundle mainBundle], @"Worldwide Contact Address",
-                                                          @"Address of someone.");
-            }
-            
             break;
         }
         case TableSectionProof:
@@ -709,7 +717,10 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     {
         case TableSectionName:
         {
-            title = [Strings nameFooterString];
+            if (self.isNew)
+            {
+                title = [Strings nameFooterString];
+            }
             break;
         }
         case TableSectionDetails:
