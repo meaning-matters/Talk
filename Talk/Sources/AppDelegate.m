@@ -184,7 +184,7 @@
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)token
 {
-    NSString*   string = [[token description] stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString* string = [[token description] stringByReplacingOccurrencesOfString:@" " withString:@""];
     self.deviceToken = [string substringWithRange:NSMakeRange(1, [string length] - 2)];   // Strip off '<' and '>'.
 
     // When account purchase transaction has not been finished, the PurchaseManager receives

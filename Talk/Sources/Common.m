@@ -1120,6 +1120,60 @@ static Common* sharedCommon;
 }
 
 
++ (UIImage*)maskedImageNamed:(NSString*)name color:(UIColor*)color
+{
+    UIImage* image = [UIImage imageNamed:name];
+    CGRect   rect  = CGRectMake(0, 0, image.size.width, image.size.height);
+    
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, image.scale);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    [image drawInRect:rect];
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextSetBlendMode(context, kCGBlendModeSourceAtop);
+    CGContextFillRect(context, rect);
+    
+    UIImage* result = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return result;
+}
+
+
++ (UIImage*)gradientImageNamed:(NSString*)name startColor:(UIColor*)startColor endColor:(UIColor*)endColor
+{
+    UIImage* image = [UIImage imageNamed:name];
+
+    UIGraphicsBeginImageContextWithOptions(image.size, NO, image.scale);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM(context, 0, image.size.height);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    
+    CGContextSetBlendMode(context, kCGBlendModeNormal);
+    CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
+    
+    // Create gradient
+    NSArray*        colors   = [NSArray arrayWithObjects:(id)endColor.CGColor, (id)startColor.CGColor, nil];
+    CGColorSpaceRef space    = CGColorSpaceCreateDeviceRGB();
+    CGGradientRef   gradient = CGGradientCreateWithColors(space, (__bridge CFArrayRef)colors, NULL);
+    
+    // Apply gradient
+    CGContextClipToMask(context, rect, image.CGImage);
+    CGContextDrawLinearGradient(context, gradient, CGPointMake(0,0), CGPointMake(0, image.size.height), 0);
+    
+    UIImage* gradientImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    CGGradientRelease(gradient);
+    CGColorSpaceRelease(space);
+    
+    return gradientImage;
+}
+
+
 + (void)addCountryImageToCell:(UITableViewCell*)cell isoCountryCode:(NSString*)isoCountryCode
 {
     static const int CountryCellTag = 4321;

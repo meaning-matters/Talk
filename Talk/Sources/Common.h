@@ -129,6 +129,10 @@ static const int TextFieldCellTag = 1111;
 
 + (UIImage*)invertImage:(UIImage*)image;
 
++ (UIImage*)maskedImageNamed:(NSString*)name color:(UIColor*)color;
+
++ (UIImage *)gradientImageNamed:(NSString*)name startColor:(UIColor*)startColor endColor:(UIColor*)endColor;
+
 + (void)addCountryImageToCell:(UITableViewCell*)cell isoCountryCode:(NSString*)isoCountryCode;
 
 + (NumberLabel*)addNumberLabelToCell:(UITableViewCell*)cell;

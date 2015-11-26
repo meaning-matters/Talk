@@ -141,8 +141,9 @@ typedef enum
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"RatesCell"];
             }
             
-            cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.text = NSLocalizedString(@"Rates", @"Rates cell title");
+            cell.imageView.image = [Common maskedImageNamed:@"RatesTab" color:[UIColor colorWithWhite:0.58f alpha:1.00f]];
+            cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
+            cell.textLabel.text  = NSLocalizedString(@"Rates", @"Rates cell title");
             break;
         }
         case TableSectionBuy:

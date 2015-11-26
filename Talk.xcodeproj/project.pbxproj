@@ -58,6 +58,7 @@
 		4814EA3E17CB1924004B7A3C /* CreditAmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */; };
 		4814EA3F17CB1924004B7A3C /* CreditAmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */; };
 		4816A0A01BF129A300817ED7 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBD917007CC6000ECC71 /* DataManager.m */; };
+		48172C021C07017800927BC2 /* RatesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48172C011C07017800927BC2 /* RatesTab@2x.png */; };
 		48200D1C16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
 		48200D1D16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
 		48232B721BFC8E5D006D667E /* AddressData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48232B701BFC8E5D006D667E /* AddressData.m */; };
@@ -743,6 +744,7 @@
 		4814EA3C17CB1923004B7A3C /* CreditAmountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditAmountCell.h; sourceTree = "<group>"; };
 		4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditAmountCell.m; sourceTree = "<group>"; };
 		4816A09F1BF1043E00817ED7 /* Data2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data2.0.xcdatamodel; sourceTree = "<group>"; };
+		48172C011C07017800927BC2 /* RatesTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RatesTab@2x.png"; sourceTree = "<group>"; };
 		48200D1A16EC89BA0069677E /* NumberType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberType.h; sourceTree = "<group>"; };
 		48200D1B16EC89BA0069677E /* NumberType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberType.m; sourceTree = "<group>"; };
 		48232B611BFBC70B006D667E /* Data2.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data2.1.xcdatamodel; sourceTree = "<group>"; };
@@ -1747,6 +1749,7 @@
 				48AF45281649788A00DFE3D8 /* RecentsTab@2x.png */,
 				48AF452A1649788A00DFE3D8 /* SettingsTab@2x.png */,
 				48AF452C1649788A00DFE3D8 /* ShareTab@2x.png */,
+				48172C011C07017800927BC2 /* RatesTab@2x.png */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -2949,6 +2952,7 @@
 				483B078F1908017900E8C42D /* Terms.json in Resources */,
 				485E38A317B7E1960089F0F1 /* HtmlView.xib in Resources */,
 				480CE121193C4D100020F255 /* NumberBuyCell.xib in Resources */,
+				48172C021C07017800927BC2 /* RatesTab@2x.png in Resources */,
 				4814EA3317CA98F4004B7A3C /* CreditBuyCell.xib in Resources */,
 				4814EA3A17CB18DB004B7A3C /* CreditAmountCell.xib in Resources */,
 				48C1D3C817D3132A004F910D /* ProofImageView.xib in Resources */,
