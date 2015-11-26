@@ -30,10 +30,30 @@ typedef NS_ENUM(NSUInteger, TableSections)
     TableSectionProof   = 1UL << 3, // Proof image.
 };
 
+typedef NS_ENUM(NSUInteger, TableRowsDetails)
+{
+    TableRowsDetailsSalutation = 1UL << 0,
+    TableRowsDetailsCompany    = 1UL << 1,
+    TableRowsDetailsFirstName  = 1UL << 2,
+    TableRowsDetailsLastName   = 1UL << 3,
+};
+
+typedef NS_ENUM(NSUInteger, TableRowsAddress)
+{
+    TableRowsAddressStreet         = 1UL << 0,
+    TableRowsAddressBuildingNumber = 1UL << 1,
+    TableRowsAddressBuildingLetter = 1UL << 2,
+    TableRowsAddressCity           = 1UL << 3,
+    TableRowsAddressPostcode       = 1UL << 4,
+    TableRowsAddressCountry        = 1UL << 5,
+};
+
 
 @interface AddressViewController () <UIImagePickerControllerDelegate>
 
 @property (nonatomic, assign) TableSections               sections;
+@property (nonatomic, assign) TableRowsDetails            rowsDetails;
+@property (nonatomic, assign) TableRowsAddress            rowsAddress;
 @property (nonatomic, assign) BOOL                        isNew;
 @property (nonatomic, assign) BOOL                        isDeleting;
 
@@ -92,9 +112,9 @@ typedef NS_ENUM(NSUInteger, TableSections)
 {
     if (self = [super initWithManagedObjectContext:managedObjectContext])
     {
-        self.sections             = TableSectionName | TableSectionDetails | TableSectionAddress;
         self.isNew                = (address == nil);
         self.address              = address;
+        self.name                 = address.name;
         self.title                = self.isNew ? [Strings newAddressString] : [Strings addressString];
 
         self.numberIsoCountryCode = isoCountryCode;
@@ -129,8 +149,38 @@ typedef NS_ENUM(NSUInteger, TableSections)
         self.sections |= TableSectionName;
         self.sections |= TableSectionDetails;
         self.sections |= TableSectionAddress;
-        self.sections |= TableSectionProof;
         
+        // Optional section.
+        self.sections |= ((self.isNew && proofType) || self.address.hasProof) ? TableSectionProof : 0;
+        
+        self.rowsDetails |= TableRowsDetailsSalutation;
+        if (self.isNew == YES)
+        {
+            self.rowsDetails |= TableRowsDetailsCompany;
+            self.rowsDetails |= TableRowsDetailsFirstName;
+            self.rowsDetails |= TableRowsDetailsLastName;
+        }
+        else
+        {
+            self.rowsDetails |= (self.address.companyName.length > 0) ? TableRowsDetailsCompany   : 0;
+            self.rowsDetails |= (self.address.firstName.length   > 0) ? TableRowsDetailsFirstName : 0;
+            self.rowsDetails |= (self.address.lastName.length    > 0) ? TableRowsDetailsLastName  : 0;
+        }
+        
+        self.rowsAddress |= TableRowsAddressStreet;
+        self.rowsAddress |= TableRowsAddressBuildingNumber;
+        self.rowsAddress |= TableRowsAddressCity;
+        self.rowsAddress |= TableRowsAddressPostcode;
+        self.rowsAddress |= TableRowsAddressCountry;
+        if (self.isNew == YES)
+        {
+            self.rowsAddress |= TableRowsAddressBuildingLetter;
+        }
+        else
+        {
+            self.rowsAddress |= (self.address.buildingLetter.length > 0) ? TableRowsAddressBuildingLetter : 0;
+        }
+
         [self initializeIndexPaths];
     }
     
@@ -243,18 +293,18 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (void)updateRightBarButtonItem
 {
+    BOOL complete;
+    
     if (self.isNew == YES)
     {
-        BOOL valid = [self.name stringByReplacingOccurrencesOfString:@" " withString:@""].length > 0;
-        
-        self.navigationItem.rightBarButtonItem.enabled = valid;
+        complete = [self isAddressComplete];
     }
-}
-
-
-- (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
-{
-    [[self.tableView superview] endEditing:YES];
+    else
+    {
+        complete = [self.name stringByRemovingWhiteSpace].length > 0;
+    }
+    
+    self.navigationItem.rightBarButtonItem.enabled = complete;
 }
 
 
@@ -339,22 +389,22 @@ typedef NS_ENUM(NSUInteger, TableSections)
     
     if (self.isNew == YES)
     {
-        emptyMask |= ([self.name                   length] == 0) << 0;
-        emptyMask |= ([self.address.companyName    length] == 0) << 1;
-        emptyMask |= ([self.address.firstName      length] == 0) << 2;
-        emptyMask |= ([self.address.lastName       length] == 0) << 3;
-        emptyMask |= ([self.address.street         length] == 0) << 4;
-        emptyMask |= ([self.address.buildingNumber length] == 0) << 5;
-        emptyMask |= ([self.address.buildingLetter length] == 0) << 6;
+        emptyMask |= ([self.name                   stringByRemovingWhiteSpace].length == 0) << 0;
+        emptyMask |= ([self.address.companyName    stringByRemovingWhiteSpace].length == 0) << 1;
+        emptyMask |= ([self.address.firstName      stringByRemovingWhiteSpace].length == 0) << 2;
+        emptyMask |= ([self.address.lastName       stringByRemovingWhiteSpace].length == 0) << 3;
+        emptyMask |= ([self.address.street         stringByRemovingWhiteSpace].length == 0) << 4;
+        emptyMask |= ([self.address.buildingNumber stringByRemovingWhiteSpace].length == 0) << 5;
+        emptyMask |= ([self.address.buildingLetter stringByRemovingWhiteSpace].length == 0) << 6;
         if (self.citiesArray.count == 0)
         {
-            emptyMask |= ([self.address.city       length] == 0) << 7;
-            emptyMask |= ([self.address.postcode   length] == 0) << 8;
+            emptyMask |= ([self.address.city       stringByRemovingWhiteSpace].length == 0) << 7;
+            emptyMask |= ([self.address.postcode   stringByRemovingWhiteSpace].length == 0) << 8;
         }
     }
     else
     {
-        emptyMask |= ([self.name length] == 0) << 0;
+        emptyMask |= ([self.name stringByRemovingWhiteSpace].length == 0) << 0;
     }
     
     if (emptyMask != 0)
@@ -414,31 +464,31 @@ typedef NS_ENUM(NSUInteger, TableSections)
     {
         if ([self.address.salutation isEqualToString:@"COMPANY"] == YES)
         {
-            complete = ([self.name                   length] > 0 &&
-                        [self.address.salutation     length] > 0 &&
-                        [self.address.companyName    length] > 0 &&
-                        [self.address.street         length] > 0 &&
-                        [self.address.buildingNumber length] > 0 &&
-                        [self.address.city           length] > 0 &&
-                        [self.address.postcode       length] > 0 &&
-                        [self.address.isoCountryCode length] > 0);
+            complete = ([self.name                   stringByRemovingWhiteSpace].length > 0 &&
+                        [self.address.salutation     stringByRemovingWhiteSpace].length > 0 &&
+                        [self.address.companyName    stringByRemovingWhiteSpace].length > 0 &&
+                        [self.address.street         stringByRemovingWhiteSpace].length > 0 &&
+                        [self.address.buildingNumber stringByRemovingWhiteSpace].length > 0 &&
+                        [self.address.city           stringByRemovingWhiteSpace].length > 0 &&
+                        [self.address.postcode       stringByRemovingWhiteSpace].length > 0 &&
+                        [self.address.isoCountryCode stringByRemovingWhiteSpace].length > 0);
         }
         else
         {
-            complete = ([self.name                   length] > 0 &&
-                        [self.address.salutation     length] > 0 &&
-                        [self.address.firstName      length] > 0 &&
-                        [self.address.lastName       length] > 0 &&
-                        [self.address.street         length] > 0 &&
-                        [self.address.buildingNumber length] > 0 &&
-                        [self.address.city           length] > 0 &&
-                        [self.address.postcode       length] > 0 &&
-                        [self.address.isoCountryCode length] > 0);
+            complete = ([self.name                   stringByRemovingWhiteSpace].length > 0 &&
+                        [self.address.salutation     stringByRemovingWhiteSpace].length > 0 &&
+                        [self.address.firstName      stringByRemovingWhiteSpace].length > 0 &&
+                        [self.address.lastName       stringByRemovingWhiteSpace].length > 0 &&
+                        [self.address.street         stringByRemovingWhiteSpace].length > 0 &&
+                        [self.address.buildingNumber stringByRemovingWhiteSpace].length > 0 &&
+                        [self.address.city           stringByRemovingWhiteSpace].length > 0 &&
+                        [self.address.postcode       stringByRemovingWhiteSpace].length > 0 &&
+                        [self.address.isoCountryCode stringByRemovingWhiteSpace].length > 0);
         }
     }
     else
     {
-        complete = ([self.name length] > 0);
+        complete = ([self.name stringByRemovingWhiteSpace].length > 0);
     }
     
     return complete;
@@ -447,18 +497,22 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (void)initializeIndexPaths
 {
-    self.nameIndexPath           = [NSIndexPath indexPathForRow:0 inSection:0];
-    self.salutationIndexPath     = [NSIndexPath indexPathForRow:0 inSection:1];
-    self.companyNameIndexPath    = [NSIndexPath indexPathForRow:1 inSection:1];
-    self.firstNameIndexPath      = [NSIndexPath indexPathForRow:2 inSection:1];
-    self.lastNameIndexPath       = [NSIndexPath indexPathForRow:3 inSection:1];
-    self.streetIndexPath         = [NSIndexPath indexPathForRow:0 inSection:2];
-    self.buildingNumberIndexPath = [NSIndexPath indexPathForRow:1 inSection:2];
-    self.buildingLetterIndexPath = [NSIndexPath indexPathForRow:2 inSection:2];
-    self.cityIndexPath           = [NSIndexPath indexPathForRow:3 inSection:2];
-    self.postcodeIndexPath       = [NSIndexPath indexPathForRow:4 inSection:2];
-    self.countryIndexPath        = [NSIndexPath indexPathForRow:5 inSection:2];
-    self.actionIndexPath         = [NSIndexPath indexPathForRow:0 inSection:3];
+    self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    
+    if (self.isNew)
+    {
+        self.salutationIndexPath     = [NSIndexPath indexPathForRow:0 inSection:1];
+        self.companyNameIndexPath    = [NSIndexPath indexPathForRow:1 inSection:1];
+        self.firstNameIndexPath      = [NSIndexPath indexPathForRow:2 inSection:1];
+        self.lastNameIndexPath       = [NSIndexPath indexPathForRow:3 inSection:1];
+        self.streetIndexPath         = [NSIndexPath indexPathForRow:0 inSection:2];
+        self.buildingNumberIndexPath = [NSIndexPath indexPathForRow:1 inSection:2];
+        self.buildingLetterIndexPath = [NSIndexPath indexPathForRow:2 inSection:2];
+        self.cityIndexPath           = [NSIndexPath indexPathForRow:3 inSection:2];
+        self.postcodeIndexPath       = [NSIndexPath indexPathForRow:4 inSection:2];
+        self.countryIndexPath        = [NSIndexPath indexPathForRow:5 inSection:2];
+        self.actionIndexPath         = [NSIndexPath indexPathForRow:0 inSection:3];
+    }
 }
 
 
@@ -582,26 +636,10 @@ typedef NS_ENUM(NSUInteger, TableSections)
     
     switch ([Common nthBitSet:section inValue:self.sections])
     {
-        case TableSectionName:
-        {
-            numberOfRows = 1;
-            break;
-        }
-        case TableSectionDetails:
-        {
-            numberOfRows = 4;
-            break;
-        }
-        case TableSectionAddress:
-        {
-            numberOfRows = 6;
-            break;
-        }
-        case TableSectionProof:
-        {
-            numberOfRows = 1;
-            break;
-        }
+        case TableSectionName:    numberOfRows = 1;                                      break;
+        case TableSectionDetails: numberOfRows = [Common bitsSetCount:self.rowsDetails]; break;
+        case TableSectionAddress: numberOfRows = [Common bitsSetCount:self.rowsAddress]; break;
+        case TableSectionProof:   numberOfRows = 1;                                      break;
     }
     
     return numberOfRows;
@@ -678,15 +716,6 @@ typedef NS_ENUM(NSUInteger, TableSections)
         {
             break;
         }
-        case TableSectionAddress:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"Address:Address SectionFooter", nil,
-                                                      [NSBundle mainBundle],
-                                                      @"For a phone number in this area, a contact name and address "
-                                                      @"are (legally) required.",
-                                                      @"Explaining that information must be supplied by user.");
-            break;
-        }
         case TableSectionProof:
         {
             if (self.proofType != nil && self.address.proofImage == nil)
@@ -748,23 +777,23 @@ typedef NS_ENUM(NSUInteger, TableSections)
             }
             case TableSectionAddress:
             {
-                switch (indexPath.row)
+                switch ([Common nthBitSet:indexPath.row inValue:self.rowsAddress])
                 {
-                    case 2:
-                    {
-                        zipsViewController = [[NumberAreaPostcodesViewController alloc] initWithCitiesArray:self.citiesArray
-                                                                                               address:self.address];
-                        [self.navigationController pushViewController:zipsViewController animated:YES];
-                        break;
-                    }
-                    case 3:
+                    case TableRowsAddressCity:
                     {
                         citiesViewController = [[NumberAreaCitiesViewController alloc] initWithCitiesArray:self.citiesArray
                                                                                                    address:self.address];
                         [self.navigationController pushViewController:citiesViewController animated:YES];
                         break;
                     }
-                    case 4:
+                    case TableRowsAddressPostcode:
+                    {
+                        zipsViewController = [[NumberAreaPostcodesViewController alloc] initWithCitiesArray:self.citiesArray
+                                                                                                    address:self.address];
+                        [self.navigationController pushViewController:zipsViewController animated:YES];
+                        break;
+                    }
+                    case TableRowsAddressCountry:
                     {
                         isoCountryCode = self.address.isoCountryCode;
                         completion = ^(BOOL cancelled, NSString* isoCountryCode)
@@ -940,26 +969,10 @@ typedef NS_ENUM(NSUInteger, TableSections)
     
     switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
-        case TableSectionName:
-        {
-            cell = [self nameCellForRowAtIndexPath:indexPath];
-            break;
-        }
-        case TableSectionDetails:
-        {
-            cell = [self contactNameCellForRowAtIndexPath:indexPath];
-            break;
-        }
-        case TableSectionAddress:
-        {
-            cell = [self contactAddressCellForRowAtIndexPath:indexPath];
-            break;
-        }
-        case TableSectionProof:
-        {
-            cell = [self actionCellForRowAtIndexPath:indexPath];
-            break;
-        }
+        case TableSectionName:    cell = [self nameCellForRowAtIndexPath:indexPath];    break;
+        case TableSectionDetails: cell = [self detailsCellForRowAtIndexPath:indexPath]; break;
+        case TableSectionAddress: cell = [self addressCellForRowAtIndexPath:indexPath]; break;
+        case TableSectionProof:   cell = [self actionCellForRowAtIndexPath:indexPath];  break;
     }
     
     return cell;
@@ -969,6 +982,19 @@ typedef NS_ENUM(NSUInteger, TableSections)
 #pragma mark - Cell Methods
 
 - (UITableViewCell*)nameCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell* cell      = [super nameCellForRowAtIndexPath:indexPath];
+    UITextField*     textField = [cell viewWithTag:TextFieldCellTag];
+    
+    objc_setAssociatedObject(textField, @"TextFieldKey", @"name", OBJC_ASSOCIATION_RETAIN);
+
+    [self updateTextField:textField onCell:cell];
+
+    return cell;
+}
+
+
+- (UITableViewCell*)detailsCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
     UITextField*     textField;
@@ -985,48 +1011,16 @@ typedef NS_ENUM(NSUInteger, TableSections)
         textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
     }
     
-    cell.textLabel.text              = [Strings nameString];
-    textField.placeholder            = [Strings requiredString];
-    textField.text                   = [self.name stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-    textField.userInteractionEnabled = YES;
-    objc_setAssociatedObject(textField, @"TextFieldKey", @"name", OBJC_ASSOCIATION_RETAIN);
-    
-    cell.detailTextLabel.text = nil;
-    cell.imageView.image      = nil;
-    cell.accessoryType        = UITableViewCellAccessoryNone;
-    cell.selectionStyle       = UITableViewCellSelectionStyleNone;
-    
-    [self updateTextField:textField onCell:cell];
-    
-    return cell;
-}
-
-
-- (UITableViewCell*)contactNameCellForRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    UITableViewCell*    cell;
-    UITextField*        textField;
-    
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"TextFieldCell"];
-    if (cell == nil)
+    textField.userInteractionEnabled = self.isNew;
+    switch ([Common nthBitSet:indexPath.row inValue:self.rowsDetails])
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"TextFieldCell"];
-        textField = [Common addTextFieldToCell:cell delegate:self];
-        textField.tag = TextFieldCellTag;
-    }
-    else
-    {
-        textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
-    }
-    
-    textField.userInteractionEnabled = YES;
-    switch (indexPath.row)
-    {
-        case 0:
+        case TableRowsDetailsSalutation:
         {
             self.salutationTextField = textField;
-            cell.accessoryType       = UITableViewCellAccessoryDisclosureIndicator;
-            cell.selectionStyle      = UITableViewCellSelectionStyleBlue;
+            cell.accessoryType       = self.isNew ? UITableViewCellAccessoryDisclosureIndicator
+                                                  : UITableViewCellAccessoryNone;
+            cell.selectionStyle      = self.isNew ? UITableViewCellSelectionStyleBlue
+                                                  : UITableViewCellSelectionStyleNone;
             cell.textLabel.text      = [Strings salutationString];
             
             textField.placeholder = [Strings requiredString];
@@ -1035,7 +1029,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
             objc_setAssociatedObject(textField, @"TextFieldKey", @"salutation", OBJC_ASSOCIATION_RETAIN);
             break;
         }
-        case 1:
+        case TableRowsDetailsCompany:
         {
             self.companyNameTextField = textField;
             cell.accessoryType    = UITableViewCellAccessoryNone;
@@ -1046,7 +1040,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
             objc_setAssociatedObject(textField, @"TextFieldKey", @"companyName", OBJC_ASSOCIATION_RETAIN);
             break;
         }
-        case 2:
+        case TableRowsDetailsFirstName:
         {
             self.firstNameTextField = textField;
             cell.accessoryType      = UITableViewCellAccessoryNone;
@@ -1057,7 +1051,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
             objc_setAssociatedObject(textField, @"TextFieldKey", @"firstName", OBJC_ASSOCIATION_RETAIN);
             break;
         }
-        case 3:
+        case TableRowsDetailsLastName:
         {
             self.lastNameTextField = textField;
             cell.accessoryType     = UITableViewCellAccessoryNone;
@@ -1078,7 +1072,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 }
 
 
-- (UITableViewCell*)contactAddressCellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)addressCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
     UITextField*     textField;
@@ -1086,12 +1080,13 @@ typedef NS_ENUM(NSUInteger, TableSections)
     BOOL             singleCity     = NO;
     NSString*        identifier;
     
-    switch (indexPath.row)
+    switch ([Common nthBitSet:indexPath.row inValue:self.rowsAddress])
     {
-        case 1:  identifier = @"BuildingCell";         break;
-        case 2:  identifier = @"PostcodeCell";         break;
-        case 4:  identifier = @"CountryTextFieldCell"; break;
-        default: identifier = @"TextFieldCell";        break;
+        case TableRowsAddressBuildingNumber: identifier = @"BuildingNumberCell";   break;
+        case TableRowsAddressBuildingLetter: identifier = @"BuildingLetterCell";   break;
+        case TableRowsAddressPostcode:       identifier = @"PostcodeCell";         break;
+        case TableRowsAddressCountry:        identifier = @"CountryTextFieldCell"; break;
+        default:                             identifier = @"TextFieldCell";        break;
     }
     
     if (self.citiesArray.count == 1)
@@ -1111,24 +1106,22 @@ typedef NS_ENUM(NSUInteger, TableSections)
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
-        cell.accessoryType  = UITableViewCellAccessoryNone;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         textField = [Common addTextFieldToCell:cell delegate:self];
         textField.tag = TextFieldCellTag;
     }
     else
     {
-        cell.accessoryType  = UITableViewCellAccessoryNone;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
         textField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];
     }
-    
-    textField.userInteractionEnabled = YES;
-    switch (indexPath.row)
+
+    cell.accessoryType  = UITableViewCellAccessoryNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+    textField.userInteractionEnabled = self.isNew;
+    switch ([Common nthBitSet:indexPath.row inValue:self.rowsAddress])
     {
-        case 0:
+        case TableRowsAddressStreet:
         {
             cell.textLabel.text = [Strings streetString];
             textField.placeholder = [Strings requiredString];
@@ -1136,7 +1129,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
             objc_setAssociatedObject(textField, @"TextFieldKey", @"street", OBJC_ASSOCIATION_RETAIN);
             break;
         }
-        case 1:
+        case TableRowsAddressBuildingNumber:
         {
             cell.textLabel.text = [Strings buildingNumberString];
             textField.placeholder = [Strings requiredString];
@@ -1146,7 +1139,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
             objc_setAssociatedObject(textField, @"TextFieldKey", @"buildingNumber", OBJC_ASSOCIATION_RETAIN);
             break;
         }
-        case 2:
+        case TableRowsAddressBuildingLetter:
         {
             cell.textLabel.text = [Strings buildingLetterString];
             textField.placeholder = [Strings optionalString];
@@ -1156,7 +1149,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
             objc_setAssociatedObject(textField, @"TextFieldKey", @"buildingLetter", OBJC_ASSOCIATION_RETAIN);
             break;
         }
-        case 3:
+        case TableRowsAddressCity:
         {
             cell.textLabel.text = [Strings cityString];
             if (self.citiesArray.count == 0)
@@ -1169,8 +1162,10 @@ typedef NS_ENUM(NSUInteger, TableSections)
                 {
                     textField.placeholder = [Strings requiredString];
                     textField.text        = nil;
-                    cell.accessoryType    = UITableViewCellAccessoryDisclosureIndicator;
-                    cell.selectionStyle   = UITableViewCellSelectionStyleDefault;
+                    cell.accessoryType    = self.isNew ? UITableViewCellAccessoryDisclosureIndicator
+                                                       : UITableViewCellAccessoryNone;
+                    cell.selectionStyle   = self.isNew ? UITableViewCellSelectionStyleDefault
+                                                       : UITableViewCellSelectionStyleNone;
                     textField.text        = nil;
                 }
                 
@@ -1183,7 +1178,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
             objc_setAssociatedObject(self.cityTextField, @"TextFieldKey", @"city", OBJC_ASSOCIATION_RETAIN);
             break;
         }
-        case 4:
+        case TableRowsAddressPostcode:
         {
             cell.textLabel.text = [Strings postcodeString];
             if (self.citiesArray.count == 0)
@@ -1197,8 +1192,10 @@ typedef NS_ENUM(NSUInteger, TableSections)
                 if (singlePostcode == NO)
                 {
                     textField.placeholder = [Strings requiredString];
-                    cell.accessoryType    = UITableViewCellAccessoryDisclosureIndicator;
-                    cell.selectionStyle   = UITableViewCellSelectionStyleDefault;
+                    cell.accessoryType    = self.isNew ? UITableViewCellAccessoryDisclosureIndicator
+                                                       : UITableViewCellAccessoryNone;
+                    cell.selectionStyle   = self.isNew ? UITableViewCellSelectionStyleDefault
+                                                       : UITableViewCellSelectionStyleNone;
                     textField.text        = nil;
                 }
                 
@@ -1210,12 +1207,12 @@ typedef NS_ENUM(NSUInteger, TableSections)
             objc_setAssociatedObject(self.postcodeTextField, @"TextFieldKey", @"postcode", OBJC_ASSOCIATION_RETAIN);
             break;
         }
-        case 5:
+        case TableRowsAddressCountry:
         {
             textField.placeholder            = [Strings requiredString];
             textField.userInteractionEnabled = NO;
             
-            if ([self.addressType isEqualToString:@"LOCAL"] || [self.addressType isEqualToString:@"NATIONAL"])
+            if ([self.addressType isEqualToString:@"LOCAL"] || [self.addressType isEqualToString:@"NATIONAL"] || !self.isNew)
             {
                 cell.accessoryType  = UITableViewCellAccessoryNone;
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -1343,6 +1340,11 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
+    if (self.isNew == NO)
+    {
+        return [super textFieldShouldReturn:textField];
+    }
+    
     if ([self isAddressComplete] == YES)
     {
         [textField resignFirstResponder];
@@ -1409,21 +1411,6 @@ typedef NS_ENUM(NSUInteger, TableSections)
         
         nextTextField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];
         [nextTextField becomeFirstResponder];
-    }
-}
-
-
-#pragma mark - Gesture Recognizer Delegate
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer shouldReceiveTouch:(UITouch*)touch
-{
-    if ([touch.view isKindOfClass:[UITextField class]] || [touch.view isKindOfClass:[UIButton class]])
-    {
-        return NO;
-    }
-    else
-    {
-        return YES;
     }
 }
 
@@ -1496,35 +1483,36 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (void)saveAction
 {
-    if ([self.name isEqualToString:self.address.name] == YES)
+    if (self.isNew == NO && [self.address.name isEqualToString:self.name] == YES)
     {
-        // Nothing has changed.
         return;
     }
     
+    if (self.isNew == YES)
+    {
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    }
     
-    NSLog(@"################### IMPLEMENT THIS");
-    /*
-    [[WebClient sharedClient] createOrUpdateIvrForUuid:self.destination.uuid
-                                                  name:self.name
-                                            statements:statementsArray
-                                                 reply:^(NSError* error)
-     {
-         if (error == nil)
-         {
-             self.destination.name = self.name;
-             statementsArray[0][@"call"][@"e164"][0] = phone.e164;
-             self.destination.statements = [Common jsonStringWithObject:statementsArray];
-             
-             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-         }
-         else
-         {
-             self.name = self.destination.name;
-             [self showSaveError:error];
-         }
-     }];
-     */
+    [[WebClient sharedClient] updateAddressWithId:self.address.addressId withName:self.name reply:^(NSError *error)
+    {
+        if (error == nil)
+        {
+            self.address.name = self.name;
+            
+            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+            
+            [self.view endEditing:YES];
+            if (self.isNew == YES)
+            {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
+        }
+        else
+        {
+            self.name = self.address.name;
+            [self showSaveError:error];
+        }
+    }];
 }
 
 

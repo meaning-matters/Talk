@@ -541,7 +541,7 @@ typedef enum
     if (isNew == YES)
     {
         PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:phone.e164];
-        BOOL         valid       = [self.name stringByReplacingOccurrencesOfString:@" " withString:@""].length > 0 &&
+        BOOL         valid       = [self.name stringByRemovingWhiteSpace].length > 0 &&
                                    ((phoneNumber.isValid && [Settings sharedSettings].homeCountry.length > 0) ||
                                     phoneNumber.isInternational);
 

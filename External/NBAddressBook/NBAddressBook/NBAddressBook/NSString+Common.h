@@ -12,10 +12,13 @@
 
 - (void)displayToUserWithTitle:(NSString*)title andButton:(NSString*)button;
 
+- (NSString*)stringByRemovingWhiteSpace;
+
 + (NSString*)formatToShortDate:(NSDate*)date;
 
 + (NSString*)formatToSlashSeparatedDate:(NSDate*)date;
 
 + (NSString*)formatToTime:(NSDate*)date;
+
 
 @end

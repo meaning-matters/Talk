@@ -156,7 +156,7 @@
             if (self.headerTitle == nil)
             {
                 return NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
-                                                         @"Addresses to registers your Numbers",
+                                                         @"Your Registered Addresses",
                                                          @"\n"
                                                          @"[1/4 line larger font].");
             }
@@ -182,7 +182,8 @@
     if (self.footerTitle == nil)
     {
         return NSLocalizedStringWithDefaultValue(@"Addresses List Title", nil, [NSBundle mainBundle],
-                                                 @"List of addresses ....",
+                                                 @"In some countries an address is required for "
+                                                 @"using (certain types of) Numbers.",
                                                  @"\n"
                                                  @"[ ].");
     }

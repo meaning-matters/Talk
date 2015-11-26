@@ -32,6 +32,14 @@
 }
 
 
+- (NSString*)stringByRemovingWhiteSpace
+{
+    NSArray* words = [self componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    return [words componentsJoinedByString:@""];
+}
+
+
 #pragma mark - Date formatting
 + (NSString*)formatToShortDate:(NSDate*)date
 {

@@ -20,7 +20,6 @@
 #import "DataManager.h"
 #import "VerifyPhoneViewController.h"
 
-
 typedef enum
 {
     TableSectionName         = 1UL << 0,
@@ -582,7 +581,7 @@ typedef enum
 
 - (void)updateSaveButtonItem
 {
-    self.navigationItem.rightBarButtonItem.enabled = (self.name.length > 0) && ([phoneNumber isValid]);
+    self.navigationItem.rightBarButtonItem.enabled = ([self.name stringByRemovingWhiteSpace].length > 0) && ([phoneNumber isValid]);
 }
 
 

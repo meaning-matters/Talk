@@ -154,6 +154,7 @@
             self.hasCorrectedInsets = NO;
         }
 
+        [self update];
         [self save];
         [[self.tableView superview] endEditing:YES];
     }
@@ -191,6 +192,8 @@
 - (BOOL)textFieldShouldClear:(UITextField*)textField
 {
     self.name = @"";
+    
+    [self update];
 
     return YES;
 }
@@ -198,6 +201,7 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
+    [self update];
     [self save];
 
     [textField resignFirstResponder];
@@ -237,6 +241,8 @@
     UITextPosition* newCursorPosition = [textField positionFromPosition:textField.beginningOfDocument offset:cursorOffset];
     UITextRange*    newSelectedRange  = [textField textRangeFromPosition:newCursorPosition toPosition:newCursorPosition];
     [textField setSelectedTextRange:newSelectedRange];
+    
+    [self update];
     
     return NO;  // Need to return NO, because we've already changed textField.text.
 }

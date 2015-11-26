@@ -163,6 +163,9 @@
 - (void)updateImageForAddressId:(NSString*)addressId
                           reply:(void (^)(NSError* error))reply;
 
+// 10G. UPDATE ADDRESS' NAME
+- (void)updateAddressWithId:(NSString*)addressId withName:(NSString*)name reply:(void (^)(NSError* error))reply;
+
 // 11A. PURCHASE NUMBER
 - (void)purchaseNumberForMonths:(NSUInteger)months
                            name:(NSString*)name

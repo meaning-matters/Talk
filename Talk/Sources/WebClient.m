@@ -636,6 +636,21 @@
 }
 
 
+// 10G. UPDATE ADDRESS' NAME
+- (void)updateAddressWithId:(NSString*)addressId withName:(NSString*)name reply:(void (^)(NSError* error))reply
+{
+    NSString*     username   = [Settings sharedSettings].webUsername;
+    NSDictionary* parameters = @{@"name" : name};
+    
+    [self putPath:[NSString stringWithFormat:@"/users/%@/addresses/%@", username, addressId]
+       parameters:parameters
+            reply:^(NSError* error, id content)
+    {
+        reply(error);
+    }];
+}
+
+
 // 11A. PURCHASE NUMBER
 - (void)purchaseNumberForMonths:(NSUInteger)months
                            name:(NSString*)name

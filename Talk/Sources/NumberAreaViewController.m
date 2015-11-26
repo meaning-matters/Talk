@@ -302,6 +302,15 @@ typedef enum
             title = [Strings nameFooterString];
             break;
         }
+        case TableSectionAddress:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"NumberAre:Address SectionFooter", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"For a phone number in this area, a contact name and address "
+                                                      @"are (legally) required.",
+                                                      @"Explaining that information must be supplied by user.");
+            break;
+        }
         case TableSectionAction:
         {
             title = NSLocalizedStringWithDefaultValue(@"NumberArea:Action SectionFooterBuy", nil,
