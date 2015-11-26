@@ -79,7 +79,7 @@
     {
         [[WebClient sharedClient] deleteAddressWithId:self.addressId reply:^(NSError *error)
         {
-            if (error == nil)
+            if (error == nil || error.code == WebStatusFailAddressUnknown)
             {
                 [managedObjectContext deleteObject:self];
                 completion ? completion(YES) : 0;
@@ -100,19 +100,6 @@
                                                             @"Deleting this Address failed: %@\n\n"
                                                             @"This Address can only be deleted when the Number(s) that "
                                                             @"reference it have expired and are no longer yours.",
-                                                            @"[iOS alert message size]");
-            }
-            else if (error.code == WebStatusFailAddressUnknown)
-            {
-                title   = NSLocalizedStringWithDefaultValue(@"Address UnknownTitle", nil,
-                                                            [NSBundle mainBundle], @"Address Unknown",
-                                                            @"Alert title telling that something could not be deleted.\n"
-                                                            @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"Destination UnknownMessage", nil,
-                                                            [NSBundle mainBundle],
-                                                            @"Deleting this Address failed: %@\n\n"
-                                                            @"This Address may have been deleted earlier from one of "
-                                                            @"your other devices.",
                                                             @"[iOS alert message size]");
             }
             else if (error.code == NSURLErrorNotConnectedToInternet)

@@ -548,6 +548,7 @@
     NSString*            numberType = [NumberType stringForNumberType:numberTypeMask];
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     
+    (name.length               > 0) ? parameters[@"name"]               = name               : 0;
     (salutation.length         > 0) ? parameters[@"salutation"]         = salutation         : 0;
     (firstName.length          > 0) ? parameters[@"firstName"]          = firstName          : 0;
     (lastName.length           > 0) ? parameters[@"lastName"]           = lastName           : 0;
