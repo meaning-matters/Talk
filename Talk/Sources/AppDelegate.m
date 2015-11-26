@@ -447,11 +447,12 @@
 
 - (void)addSpecialDialCodes
 {
-    [self.keypadViewController registerSpecialNumber:@"367#778" action:^(NSString *number)
+    NSString* number = [NSString stringWithFormat:@"%d%d%c%d%d", 36, 7, '#', 77, 8];
+    [self.keypadViewController registerSpecialNumber:number action:^(NSString *number)
     {
         [BlockAlertView showTextAlertViewWithTitle:@"DNS SRV Name"
                                            message:@"Change the name, or reset to the hard-coded default."
-                                              text:[Settings sharedSettings].dnsSrvName
+                                              text:[Settings sharedSettings].dnsSrvPrefix
                                         completion:^(BOOL cancelled, NSInteger buttonIndex, NSString *text)
         {
             switch (buttonIndex)
@@ -460,14 +461,14 @@
                 {
                     if (text.length > 0)
                     {
-                        [Settings sharedSettings].dnsSrvName = text;
+                        [Settings sharedSettings].dnsSrvPrefix = text;
                         [WebInterface sharedInterface].forceServerUpdate = YES;
                     }
                     break;
                 }
                 case 2:
                 {
-                    [Settings sharedSettings].dnsSrvName = nil; // Selects hard-coded default.
+                    [Settings sharedSettings].dnsSrvPrefix = nil; // Selects hard-coded default.
                     [WebInterface sharedInterface].forceServerUpdate = YES;
                     break;
                 }

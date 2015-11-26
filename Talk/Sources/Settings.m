@@ -35,6 +35,7 @@ NSString* const StoreCurrencyCodeKey      = @"StoreCurrencyCode";
 NSString* const StoreCountryCodeKey       = @"StoreCountryCode";
 NSString* const CreditKey                 = @"Credit";
 NSString* const NeedsServerSyncKey        = @"NeedsServerSync";
+NSString* const DnsSrvPrefixKey           = @"DnsSrvPrefix";
 
 
 @implementation Settings
@@ -52,7 +53,6 @@ static NSUserDefaults* userDefaults;
     dispatch_once(&onceToken, ^
     {
         sharedInstance = [[Settings alloc] init];
-        sharedInstance.dnsSrvName = nil;  // Select hard-coded default.
         
         userDefaults = [NSUserDefaults standardUserDefaults];
 
@@ -79,8 +79,6 @@ static NSUserDefaults* userDefaults;
         [userDefaults setObject:[[self defaults] objectForKey:key] forKey:key];
     }
     
-    self.dnsSrvName = nil;  // Select hard-coded default.
-
     [userDefaults synchronize];
 }
 
@@ -129,6 +127,7 @@ static NSUserDefaults* userDefaults;
         [dictionary setObject:@""                                                forKey:StoreCountryCodeKey];
         [dictionary setObject:@(0.0f)                                            forKey:CreditKey];
         [dictionary setObject:@(NO)                                              forKey:NeedsServerSyncKey];
+        [dictionary setObject:@"_api"                                            forKey:DnsSrvPrefixKey];
     });
 
     return dictionary;
@@ -436,18 +435,30 @@ static NSUserDefaults* userDefaults;
 }
 
 
-#pragma mark - Hard-Coded URLs
+#pragma mark - Server URL
 
-- (void)setDnsSrvName:(NSString*)dnsSrvName
+- (NSString*)dnsSrvPrefix
 {
-    if (dnsSrvName.length == 0)
+    return [userDefaults objectForKey:DnsSrvPrefixKey];
+}
+
+
+- (void)setDnsSrvPrefix:(NSString*)dnsSrvPrefix
+{
+    if (dnsSrvPrefix.length == 0)
     {
-        _dnsSrvName = @"_api._tcp.numberbay.com";
+        [userDefaults setObject:@"_api" forKey:DnsSrvPrefixKey];
     }
     else
     {
-        _dnsSrvName = dnsSrvName;
+        [userDefaults setObject:dnsSrvPrefix forKey:DnsSrvPrefixKey];
     }
+}
+
+
+- (NSString*)dnsSrvName
+{
+    return [NSString stringWithFormat:@"%@._tcp.numberbay.com", self.dnsSrvPrefix];
 }
 
 
