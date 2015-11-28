@@ -56,9 +56,12 @@
 
     [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
 
-    [self.tableView scrollToRowAtIndexPath:self.selectedIndexPath
-                          atScrollPosition:UITableViewScrollPositionMiddle
-                                  animated:NO];
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        [self.tableView scrollToRowAtIndexPath:self.selectedIndexPath
+                              atScrollPosition:UITableViewScrollPositionMiddle
+                                      animated:NO];
+    });
 }
 
 

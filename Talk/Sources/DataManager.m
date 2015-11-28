@@ -319,10 +319,10 @@
 }
 
 
-- (PhoneData*)lookupPhoneForE164:(NSString*)e164
+- (CallableData*)lookupCallableForE164:(NSString*)e164
 {
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"e164 == %@", e164];
-    NSArray*     phones    = [self fetchEntitiesWithName:@"Phone"
+    NSArray*     phones    = [self fetchEntitiesWithName:@"Callable"
                                                 sortKeys:@[@"name"]
                                                predicate:predicate
                                     managedObjectContext:nil];

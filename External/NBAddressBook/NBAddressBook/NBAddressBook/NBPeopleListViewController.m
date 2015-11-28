@@ -170,9 +170,12 @@
     {
         NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:scrollToSectionIndex];
 
-        [self.tableView scrollToRowAtIndexPath:indexPath
-                              atScrollPosition:UITableViewScrollPositionTop
-                                      animated:NO];
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            [self.tableView scrollToRowAtIndexPath:indexPath
+                                  atScrollPosition:UITableViewScrollPositionTop
+                                          animated:NO];
+        });
     }
 }
 

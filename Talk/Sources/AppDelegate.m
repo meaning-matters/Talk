@@ -758,7 +758,7 @@
 
 - (NSString*)defaultCallerId
 {
-    return [[DataManager sharedManager] lookupPhoneForE164:[Settings sharedSettings].callerIdE164].name;
+    return [[DataManager sharedManager] lookupCallableForE164:[Settings sharedSettings].callerIdE164].name;
 }
 
 

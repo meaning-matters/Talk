@@ -96,6 +96,28 @@ const NSInteger kUseButtonTag = 123;
 }
 
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (self.selectedPhone != nil)
+    {
+        NSUInteger index = [self.fetchedPhonesController.fetchedObjects indexOfObject:self.selectedPhone];
+        
+        if (index != NSNotFound)
+        {
+            NSIndexPath* indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                [self.tableView scrollToRowAtIndexPath:indexPath
+                                      atScrollPosition:UITableViewScrollPositionMiddle
+                                              animated:YES];
+            });
+        }
+    }
+}
+
+
 - (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
 {
     [[DataManager sharedManager] setSortKeys:[Common sortKeys] ofResultsController:self.fetchedPhonesController];

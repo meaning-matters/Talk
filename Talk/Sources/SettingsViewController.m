@@ -331,7 +331,7 @@ typedef enum
     NSString*                footerTitle;
     NSString*                message;
     NSString*                homeCountry = settings.homeCountry;
-    PhoneData*               phone;
+    CallableData*            callable;
     UITableViewCell*         cell = [self.tableView cellForRowAtIndexPath:indexPath];
     PhonesViewController*    phonesViewController;
     CallerIdViewController*  callerIdViewController;
@@ -342,7 +342,7 @@ typedef enum
     {
         case TableSectionCallback:
         {
-            phone       = [[DataManager sharedManager] lookupPhoneForE164:settings.callbackE164];
+            callable    = [[DataManager sharedManager] lookupCallableForE164:settings.callbackE164];
             headerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
                                                             @"Select Phone To Be Called On",
                                                             @"[1/4 line larger font].");
@@ -360,7 +360,7 @@ typedef enum
                                                             @"[1/4 line larger font].");
             
             phonesViewController = [[PhonesViewController alloc] initWithManagedObjectContext:managedObjectContext
-                                                                                selectedPhone:phone
+                                                                                selectedPhone:(PhoneData*)callable
                                                                                    completion:^(PhoneData* selectedPhone)
             {
                 settings.callbackE164 = selectedPhone.e164;
@@ -378,7 +378,7 @@ typedef enum
         }
         case TableSectionCallerId:
         {
-            phone       = [[DataManager sharedManager] lookupPhoneForE164:settings.callerIdE164];
+            callable    = [[DataManager sharedManager] lookupCallableForE164:settings.callerIdE164];
             headerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
                                                             @"Select Default Caller ID",
                                                             @"[1/4 line larger font].");
@@ -391,7 +391,7 @@ typedef enum
             
             callerIdViewController = [[CallerIdViewController alloc] initWithManagedObjectContext:nil
                                                                                          callerId:nil
-                                                                                 selectedCallable:phone
+                                                                                 selectedCallable:callable
                                                                                         contactId:nil
                                                                                        completion:^(CallableData* selectedCallable,
                                                                                                     BOOL          showCallerId)
@@ -557,8 +557,8 @@ typedef enum
                                                             @"Phone number on which user is reachable.\n"
                                                             @"[1/2 line, abbreviated: Called].");
     
-    PhoneData* phone = [[DataManager sharedManager] lookupPhoneForE164:settings.callbackE164];
-    cell.detailTextLabel.text = (phone != nil) ? phone.name : @"";
+    CallableData* callable = [[DataManager sharedManager] lookupCallableForE164:settings.callbackE164];
+    cell.detailTextLabel.text = (callable != nil) ? callable.name : @"";
 
     cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -585,18 +585,18 @@ typedef enum
                                                                 [NSBundle mainBundle], @"Caller ID",
                                                                 @"Format string showing shown number.\n"
                                                                 @"[1 line].");
-        PhoneData* phone = [[DataManager sharedManager] lookupPhoneForE164:settings.callerIdE164];
-        if (phone != nil)
+        CallableData* callable = [[DataManager sharedManager] lookupCallableForE164:settings.callerIdE164];
+        if (callable != nil)
         {
             if (settings.showCallerId)
             {
                 cell.detailTextLabel.attributedText = nil;
-                cell.detailTextLabel.text = phone.name;
+                cell.detailTextLabel.text = callable.name;
             }
             else
             {
                 NSDictionary*       attributes = @{NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)};
-                NSAttributedString* nameString = [[NSAttributedString alloc] initWithString:phone.name attributes:attributes];
+                NSAttributedString* nameString = [[NSAttributedString alloc] initWithString:callable.name attributes:attributes];
                 cell.detailTextLabel.attributedText = nameString;
             }
         }

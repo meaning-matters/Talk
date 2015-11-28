@@ -99,13 +99,29 @@ typedef enum
 }
 
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (self.selectedCallable != nil)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            [self.tableView scrollToRowAtIndexPath:[self selectedIndexPath]
+                                  atScrollPosition:UITableViewScrollPositionMiddle
+                                          animated:NO];
+        });
+    }
+}
+
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
     if ([self isMovingFromParentViewController])
     {
-        self.completion ? self.completion(self.selectedCallable, [self showCallerId]) : (void)0;
+         self.completion ? self.completion(self.selectedCallable, [self showCallerId]) : (void)0;
     }
 }
 
@@ -448,6 +464,24 @@ typedef enum
                                                      sortKeys:[Common sortKeys]
                                                     predicate:nil
                                          managedObjectContext:self.managedObjectContext];
+}
+
+
+- (NSIndexPath*)selectedIndexPath
+{
+    NSUInteger index;
+    
+    if ((index = [self.phones indexOfObject:self.selectedCallable]) != NSNotFound)
+    {
+        return [NSIndexPath indexPathForItem:index inSection:0];
+    }
+    
+    if ((index = [self.numbers indexOfObject:self.selectedCallable]) != NSNotFound)
+    {
+        return [NSIndexPath indexPathForItem:index inSection:1];
+    }
+
+    return nil;
 }
 
 @end
