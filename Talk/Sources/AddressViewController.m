@@ -561,7 +561,6 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 
 
 - (IBAction)takePicture
-
 {
     UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
     
@@ -1310,6 +1309,12 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     }
     else
     {
+        [super textFieldShouldBeginEditing:textField];
+        if (self.isNew)
+        {
+            textField.enablesReturnKeyAutomatically = NO;
+        }
+        
         [self updateReturnKeyTypeOfTextField:textField];
         
         self.activeCellIndexPath = [self findCellIndexPathForSubview:textField];
@@ -1345,6 +1350,8 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         [self.address setValue:@"" forKey:key];
     }
     
+    [self update];
+    
     return YES;
 }
 
@@ -1376,6 +1383,10 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             nextTextField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];
             [nextTextField becomeFirstResponder];
         }
+        else
+        {
+            [self.tableView scrollToRowAtIndexPath:self.nextIndexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+        }
         
         return NO;
     }
@@ -1385,6 +1396,11 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
 {
     NSString* key = objc_getAssociatedObject(textField, @"TextFieldKey");
+    
+    // See http://stackoverflow.com/a/14792880/1971013 for keeping cursor on correct position.
+    UITextPosition* beginning    = textField.beginningOfDocument;
+    UITextPosition* start        = [textField positionFromPosition:beginning offset:range.location];
+    NSInteger       cursorOffset = [textField offsetFromPosition:beginning toPosition:start] + string.length;
     
     // See http://stackoverflow.com/a/22211018/1971013 why we're using non-breaking spaces @"\u00a0".
     textField.text = [textField.text stringByReplacingCharactersInRange:range withString:string];
@@ -1405,6 +1421,13 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     [self.tableView scrollToRowAtIndexPath:self.activeCellIndexPath
                           atScrollPosition:UITableViewScrollPositionNone
                                   animated:YES];
+    
+    // See http://stackoverflow.com/a/14792880/1971013 for keeping cursor on correct position.
+    UITextPosition* newCursorPosition = [textField positionFromPosition:textField.beginningOfDocument offset:cursorOffset];
+    UITextRange*    newSelectedRange  = [textField textRangeFromPosition:newCursorPosition toPosition:newCursorPosition];
+    [textField setSelectedTextRange:newSelectedRange];
+
+    [self update];
     
     return NO;  // Need to return NO, because we've already changed textField.text.
 }
