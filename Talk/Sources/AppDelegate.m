@@ -237,7 +237,6 @@
         NSStringFromClass([PhonesViewController               class]),
         NSStringFromClass([NumbersViewController              class]),
         NSStringFromClass([DestinationsViewController         class]),
-        NSStringFromClass([AddressesViewController            class]),
         NSStringFromClass([SettingsViewController             class]),
         NSStringFromClass([HelpsViewController                class]),
         NSStringFromClass([AboutViewController                class]),
@@ -495,7 +494,6 @@
     [self.numbersViewController.navigationController      popToRootViewControllerAnimated:NO];
     [self.destinationsViewController.navigationController popToRootViewControllerAnimated:NO];
     [self.phonesViewController.navigationController       popToRootViewControllerAnimated:NO];
-    [self.addressesViewController.navigationController    popToRootViewControllerAnimated:NO];
 
     [[DataManager     sharedManager]  removeAll];
     [[Settings        sharedSettings] resetAll];

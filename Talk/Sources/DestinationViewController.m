@@ -78,7 +78,7 @@ typedef enum
             self.managedObjectContext = managedObjectContext;
 
             [[Settings sharedSettings] addObserver:self
-                                        forKeyPath:@"numbersSortSegment"
+                                        forKeyPath:@"sortSegment"
                                            options:NSKeyValueObservingOptionNew
                                            context:nil];
         }
@@ -94,7 +94,7 @@ typedef enum
 {
     if (isNew == NO)
     {
-        [[Settings sharedSettings] removeObserver:self forKeyPath:@"numbersSortSegment" context:nil];
+        [[Settings sharedSettings] removeObserver:self forKeyPath:@"sortSegment" context:nil];
     }
 }
 
@@ -144,10 +144,7 @@ typedef enum
 }
 
 
-- (void)observeValueForKeyPath:(NSString*)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary*)change
-                       context:(void*)context
+- (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
 {
     [self updateNumbersArray];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:[Common nOfBit:TableSectionNumbers inValue:sections]]
@@ -552,11 +549,11 @@ typedef enum
 
 - (void)updateNumbersArray
 {
-    NSSortDescriptor* sortDescriptorCountry = [[NSSortDescriptor alloc] initWithKey:@"numberCountry" ascending:YES];
-    NSSortDescriptor* sortDescriptorName    = [[NSSortDescriptor alloc] initWithKey:@"name"          ascending:YES];
+    NSSortDescriptor* sortDescriptorCountry = [[NSSortDescriptor alloc] initWithKey:@"e164" ascending:YES];
+    NSSortDescriptor* sortDescriptorName    = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
     NSArray*          sortDescriptors;
 
-    if ([Settings sharedSettings].numbersSortSegment == 0)
+    if ([Settings sharedSettings].sortSegment == 0)
     {
         sortDescriptors = @[sortDescriptorCountry, sortDescriptorName];
     }

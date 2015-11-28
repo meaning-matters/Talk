@@ -9,6 +9,7 @@
 #import "NumbersViewController.h"
 #import "NumberCountriesViewController.h"
 #import "NumberViewController.h"
+#import "AddressesViewController.h"
 #import "AppDelegate.h"
 #import "DataManager.h"
 #import "Settings.h"
@@ -18,13 +19,19 @@
 #import "WebClient.h"
 #import "Base64.h"
 #import "Strings.h"
+#import "Common.h"
+
+typedef NS_ENUM(NSUInteger, TableSections)
+{
+    TableSectionNumbers   = 1UL << 0,
+    TableSectionAddresses = 1UL << 1,
+};
 
 
 @interface NumbersViewController ()
-{
-    NSFetchedResultsController* fetchedNumbersController;
-    UISegmentedControl*         sortSegmentedControl;
-}
+
+@property (nonatomic, strong) NSFetchedResultsController* fetchedNumbersController;
+@property (nonatomic, assign) TableSections               sections;
 
 @end
 
@@ -39,9 +46,18 @@
         // The tabBarItem image must be set in my own NavigationController.
 
         self.managedObjectContext = [DataManager sharedManager].managedObjectContext;
+        
+        self.sections |= TableSectionNumbers;
+        self.sections |= TableSectionAddresses;
     }
 
     return self;
+}
+
+
+- (void)dealloc
+{
+    [[Settings sharedSettings] removeObserver:self forKeyPath:@"sortSegment" context:nil];
 }
 
 
@@ -49,25 +65,15 @@
 {
     [super viewDidLoad];
 
-    fetchedNumbersController = [[DataManager sharedManager] fetchResultsForEntityName:@"Number"
-                                                                         withSortKeys:[self sortKeys]
-                                                                 managedObjectContext:self.managedObjectContext];
-    fetchedNumbersController.delegate = self;
-
-    NSString* byCountries = NSLocalizedStringWithDefaultValue(@"Numbers SortByCountries", nil,
-                                                              [NSBundle mainBundle], @"Countries",
-                                                              @"\n"
-                                                              @"[1/4 line larger font].");
-    NSString* byNames     = NSLocalizedStringWithDefaultValue(@"Numbers SortByNames", nil,
-                                                              [NSBundle mainBundle], @"Names",
-                                                              @"\n"
-                                                              @"[1/4 line larger font].");
-    sortSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[byCountries, byNames]];
-    sortSegmentedControl.selectedSegmentIndex = [Settings sharedSettings].numbersSortSegment;
-    [sortSegmentedControl addTarget:self
-                             action:@selector(sortOrderChangedAction)
-                   forControlEvents:UIControlEventValueChanged];
-    self.navigationItem.titleView = sortSegmentedControl;
+    self.fetchedNumbersController = [[DataManager sharedManager] fetchResultsForEntityName:@"Number"
+                                                                              withSortKeys:[Common sortKeys]
+                                                                      managedObjectContext:self.managedObjectContext];
+    self.fetchedNumbersController.delegate = self;
+    
+    [[Settings sharedSettings] addObserver:self
+                                forKeyPath:@"sortSegment"
+                                   options:NSKeyValueObservingOptionNew
+                                   context:nil];
 }
 
 
@@ -79,7 +85,7 @@
     if (selectedIndexPath != nil)
     {
         [self configureCell:[self.tableView cellForRowAtIndexPath:selectedIndexPath]
-        onResultsController:fetchedNumbersController
+        onResultsController:self.fetchedNumbersController
                 atIndexPath:selectedIndexPath];
 
         [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
@@ -95,13 +101,9 @@
 }
 
 
-#pragma mark - Utility Methods
-
-- (void)sortOrderChangedAction
+- (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
 {
-    [Settings sharedSettings].numbersSortSegment = sortSegmentedControl.selectedSegmentIndex;
-
-    [[DataManager sharedManager] setSortKeys:[self sortKeys] ofResultsController:fetchedNumbersController];
+    [[DataManager sharedManager] setSortKeys:[Common sortKeys] ofResultsController:self.fetchedNumbersController];
     [self.tableView reloadData];
 }
 
@@ -134,30 +136,71 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return fetchedNumbersController.sections.count;
+    return self.fetchedNumbersController.sections.count + 1;
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [fetchedNumbersController.sections[section] numberOfObjects];
+    NSInteger numberOfRows = 0;
+    
+    switch ([Common nthBitSet:section inValue:self.sections])
+    {
+        case TableSectionNumbers:   numberOfRows = [self.fetchedNumbersController.sections[section] numberOfObjects]; break;
+        case TableSectionAddresses: numberOfRows = 1;                                                                 break;
+    }
+    
+    return numberOfRows;
 }
 
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return NSLocalizedStringWithDefaultValue(@"Numbers Number List Title", nil, [NSBundle mainBundle],
-                                             @"You can be reached at",
-                                             @"\n"
-                                             @"[1/4 line larger font].");
+    NSString* title;
+    
+    switch ([Common nthBitSet:section inValue:self.sections])
+    {
+        case TableSectionNumbers:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Numbers Number List Title", nil, [NSBundle mainBundle],
+                                                      @"You can be reached at",
+                                                      @"\n"
+                                                      @"[1/4 line larger font].");
+            break;
+        }
+        case TableSectionAddresses:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Numbers Addresses Title", nil, [NSBundle mainBundle],
+                                                      @"Your Registered Addresses",
+                                                      @"\n"
+                                                      @"[1/4 line larger font].");
+            break;
+        }
+    }
+    
+    return title;
 }
 
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NumberData*           number         = [fetchedNumbersController objectAtIndexPath:indexPath];
-    NumberViewController* viewController = [[NumberViewController alloc] initWithNumber:number
-                                                                   managedObjectContext:self.managedObjectContext];
+    UIViewController* viewController;
+    
+    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
+    {
+        case TableSectionNumbers:
+        {
+            NumberData* number = [self.fetchedNumbersController objectAtIndexPath:indexPath];
+            viewController     = [[NumberViewController alloc] initWithNumber:number
+                                                         managedObjectContext:self.managedObjectContext];
+            break;
+        }
+        case TableSectionAddresses:
+        {
+            viewController = [[AddressesViewController alloc] init];
+            break;
+        }
+    }
 
     [self.navigationController pushViewController:viewController animated:YES];
 }
@@ -167,11 +210,41 @@
 {
     UITableViewCell* cell;
 
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
-    if (cell == nil)
+    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DefaultCell"];
-    }
+        case TableSectionNumbers:
+        {
+            cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
+            if (cell == nil)
+            {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DefaultCell"];
+            }
+            break;
+        }
+        case TableSectionAddresses:
+        {
+            cell = [self.tableView dequeueReusableCellWithIdentifier:@"AddressesCell"];
+            if (cell == nil)
+            {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"AddressesCell"];
+            }
+            
+            cell.imageView.image = [Common maskedImageNamed:@"AddressesTab" color:[UIColor colorWithWhite:0.58f alpha:1.00f]];
+
+            // Horizontal center image with 45x30 flag images of Numbers.
+            CGSize imageSize = CGSizeMake(45.0f, 30.0f);
+            UIGraphicsBeginImageContextWithOptions(imageSize, NO, UIScreen.mainScreen.scale);
+            CGRect imageRect = CGRectMake((45.0f - cell.imageView.image.size.width) / 2.0f, 0.0, cell.imageView.image.size.width, imageSize.height);
+            [cell.imageView.image drawInRect:imageRect];
+            cell.imageView.contentMode = UIViewContentModeCenter;
+            cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            
+            cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
+            cell.textLabel.text  = NSLocalizedString(@"Addresses", @"Addresses cell title");
+            break;
+        }
+     }
 
     return cell;
 }
@@ -179,9 +252,18 @@
 
 - (void)tableView:(UITableView*)tableView willDisplayCell:(UITableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    [self configureCell:cell
-    onResultsController:fetchedNumbersController
-            atIndexPath:indexPath];
+    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
+    {
+        case TableSectionNumbers:
+        {
+            [self configureCell:cell onResultsController:self.fetchedNumbersController atIndexPath:indexPath];
+            break;
+        }
+        case TableSectionAddresses:
+        {
+            break;
+        }
+    }
 }
 
 
@@ -197,27 +279,12 @@
   onResultsController:(NSFetchedResultsController*)controller
           atIndexPath:(NSIndexPath*)indexPath
 {
-    NumberData* number        = [fetchedNumbersController objectAtIndexPath:indexPath];
+    NumberData* number        = [self.fetchedNumbersController objectAtIndexPath:indexPath];
     cell.imageView.image      = [UIImage imageNamed:number.numberCountry];
     cell.textLabel.text       = number.name;
     PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:number.e164];
     cell.detailTextLabel.text = [phoneNumber internationalFormat];
     cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
-}
-
-
-#pragma mark - Helpers
-
-- (NSArray*)sortKeys
-{
-    if ([Settings sharedSettings].numbersSortSegment == 0)
-    {
-        return @[@"numberCountry", @"name"];
-    }
-    else
-    {
-        return @[@"name", @"numberCountry"];
-    }
 }
 
 @end

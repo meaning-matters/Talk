@@ -21,11 +21,9 @@ const NSInteger kUseButtonTag = 123;
 
 
 @interface PhonesViewController ()
-{
-    NSFetchedResultsController* fetchedPhonesController;
-}
 
-@property (nonatomic, strong) PhoneData* selectedPhone;
+@property (nonatomic, strong) NSFetchedResultsController* fetchedPhonesController;
+@property (nonatomic, strong) PhoneData*                  selectedPhone;
 @property (nonatomic, copy) void (^completion)(PhoneData* selectedPhone);
 
 @end
@@ -70,6 +68,12 @@ const NSInteger kUseButtonTag = 123;
 }
 
 
+- (void)dealloc
+{
+    [[Settings sharedSettings] removeObserver:self forKeyPath:@"sortSegment" context:nil];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -80,10 +84,22 @@ const NSInteger kUseButtonTag = 123;
         self.navigationItem.rightBarButtonItem = nil;
     }
 
-    fetchedPhonesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Phone"
-                                                                        withSortKeys:@[@"e164", @"name"]
-                                                                managedObjectContext:self.managedObjectContext];
-    fetchedPhonesController.delegate = self;
+    self.fetchedPhonesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Phone"
+                                                                             withSortKeys:[Common sortKeys]
+                                                                     managedObjectContext:self.managedObjectContext];
+    self.fetchedPhonesController.delegate = self;
+    
+    [[Settings sharedSettings] addObserver:self
+                                forKeyPath:@"sortSegment"
+                                   options:NSKeyValueObservingOptionNew
+                                   context:nil];
+}
+
+
+- (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
+{
+    [[DataManager sharedManager] setSortKeys:[Common sortKeys] ofResultsController:self.fetchedPhonesController];
+    [self.tableView reloadData];
 }
 
 
@@ -91,15 +107,15 @@ const NSInteger kUseButtonTag = 123;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return [[fetchedPhonesController sections] count];
+    return [[self.fetchedPhonesController sections] count];
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ([[fetchedPhonesController sections] count] > 0)
+    if ([[self.fetchedPhonesController sections] count] > 0)
     {
-        id<NSFetchedResultsSectionInfo> sectionInfo = [[fetchedPhonesController sections] objectAtIndex:section];
+        id<NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedPhonesController sections] objectAtIndex:section];
 
         return [sectionInfo numberOfObjects];
     }
@@ -112,9 +128,9 @@ const NSInteger kUseButtonTag = 123;
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if ([[fetchedPhonesController sections] count] > 0)
+    if ([[self.fetchedPhonesController sections] count] > 0)
     {
-        id<NSFetchedResultsSectionInfo> sectionInfo = [[fetchedPhonesController sections] objectAtIndex:section];
+        id<NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedPhonesController sections] objectAtIndex:section];
 
         if ([sectionInfo numberOfObjects] > 0)
         {
@@ -164,7 +180,7 @@ const NSInteger kUseButtonTag = 123;
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     PhoneViewController* viewController;
-    PhoneData*           phone = [fetchedPhonesController objectAtIndexPath:indexPath];
+    PhoneData*           phone = [self.fetchedPhonesController objectAtIndexPath:indexPath];
 
     if (self.completion == nil)
     {
@@ -194,7 +210,7 @@ const NSInteger kUseButtonTag = 123;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SubtitleCell"];
     }
 
-    [self configureCell:cell onResultsController:fetchedPhonesController atIndexPath:indexPath];
+    [self configureCell:cell onResultsController:self.fetchedPhonesController atIndexPath:indexPath];
 
     return cell;
 }
@@ -202,7 +218,7 @@ const NSInteger kUseButtonTag = 123;
 
 - (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    PhoneData*    phone    = [fetchedPhonesController objectAtIndexPath:indexPath];
+    PhoneData*    phone    = [self.fetchedPhonesController objectAtIndexPath:indexPath];
     CallableData* callable = phone;
     
     return [phone.e164 isEqualToString:[Settings sharedSettings].callbackE164] == NO &&
@@ -217,7 +233,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        PhoneData* phone = [fetchedPhonesController objectAtIndexPath:indexPath];
+        PhoneData* phone = [self.fetchedPhonesController objectAtIndexPath:indexPath];
 
         [phone deleteFromManagedObjectContext:self.managedObjectContext completion:^(BOOL succeeded)
         {

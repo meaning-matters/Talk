@@ -29,7 +29,7 @@ NSString* const ShowCallerIdKey           = @"ShowCallerId";
 NSString* const CallerIdE164Key           = @"CallerIdE164";
 NSString* const CallbackE164Key           = @"CallbackE164";
 NSString* const NumberTypeMaskKey         = @"NumberTypeMask";
-NSString* const NumbersSortSegmentKey     = @"NumbersSortSegment";
+NSString* const SortSegmentKey            = @"SortSegment";
 NSString* const DestinationsSelectionKey  = @"DestinationsSelection";
 NSString* const StoreCurrencyCodeKey      = @"StoreCurrencyCode";
 NSString* const StoreCountryCodeKey       = @"StoreCountryCode";
@@ -121,7 +121,7 @@ static NSUserDefaults* userDefaults;
         [dictionary setObject:@""                                                forKey:CallerIdE164Key];
         [dictionary setObject:@""                                                forKey:CallbackE164Key];
         [dictionary setObject:@(NumberTypeGeographicMask)                        forKey:NumberTypeMaskKey];
-        [dictionary setObject:@(0)                                               forKey:NumbersSortSegmentKey];
+        [dictionary setObject:@(0)                                               forKey:SortSegmentKey];
         [dictionary setObject:@(0)                                               forKey:DestinationsSelectionKey];
         [dictionary setObject:@""                                                forKey:StoreCurrencyCodeKey];
         [dictionary setObject:@""                                                forKey:StoreCountryCodeKey];
@@ -284,15 +284,15 @@ static NSUserDefaults* userDefaults;
 }
 
 
-- (NSInteger)numbersSortSegment
+- (NSInteger)sortSegment
 {
-    return [userDefaults integerForKey:NumbersSortSegmentKey];
+    return [userDefaults integerForKey:SortSegmentKey];
 }
 
 
-- (void)setNumbersSortSegment:(NSInteger)numbersSortSegment
+- (void)setSortSegment:(NSInteger)sortSegment
 {
-    [userDefaults setInteger:numbersSortSegment forKey:NumbersSortSegmentKey];
+    [userDefaults setInteger:sortSegment forKey:SortSegmentKey];
 }
 
 

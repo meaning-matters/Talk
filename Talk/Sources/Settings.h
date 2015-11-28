@@ -39,7 +39,7 @@
 @property (nonatomic, strong) NSString*      callbackE164;          // Called back E164, used until Groups are implemented.
 
 @property (nonatomic, assign) NumberTypeMask numberTypeMask;        // Selected numberType in NumberView.
-@property (nonatomic, assign) NSInteger      numbersSortSegment;    // Selected numbers sort segmented control index.
+@property (nonatomic, assign) NSInteger      sortSegment;           // Selected Numbers/Phones sort segmented control index.
 @property (nonatomic, assign) NSInteger      destinationsSelection; // Selected segment/table in DestinationsView.
 
 @property (nonatomic, strong) NSString*      storeCurrencyCode;     // Backup until Store products are received.

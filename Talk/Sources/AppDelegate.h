@@ -39,7 +39,6 @@
 @property (nonatomic, strong) PhonesViewController*               phonesViewController;
 @property (nonatomic, strong) NumbersViewController*              numbersViewController;
 @property (nonatomic, strong) DestinationsViewController*         destinationsViewController;
-@property (nonatomic, strong) AddressesViewController*            addressesViewController;
 @property (nonatomic, strong) SettingsViewController*             settingsViewController;
 @property (nonatomic, strong) HelpsViewController*                helpsViewController;
 @property (nonatomic, strong) AboutViewController*                aboutViewController;

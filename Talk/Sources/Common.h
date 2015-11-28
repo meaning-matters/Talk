@@ -148,4 +148,6 @@ static const int TextFieldCellTag = 1111;
 
 + (NSString*)callingCodeForCountry:(NSString*)isoCountryCode;
 
++ (NSArray*)sortKeys;
+
 @end

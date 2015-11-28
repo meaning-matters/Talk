@@ -68,6 +68,12 @@ typedef enum
 }
 
 
+- (void)dealloc
+{
+    [[Settings sharedSettings] removeObserver:self forKeyPath:@"sortSegment" context:nil];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -112,6 +118,17 @@ typedef enum
     {
         [self updateSaveButtonItem];
     }
+    
+    [[Settings sharedSettings] addObserver:self
+                                forKeyPath:@"sortSegment"
+                                   options:NSKeyValueObservingOptionNew
+                                   context:nil];
+}
+
+
+- (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
+{
+    [self.tableView reloadData];
 }
 
 
@@ -247,7 +264,7 @@ typedef enum
 {
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"ANY destination.phones == %@", self.phone];
     numbersArray = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
-                                                             sortKeys:@[@"name"]
+                                                             sortKeys:[Common sortKeys]
                                                             predicate:predicate
                                                  managedObjectContext:nil];
     

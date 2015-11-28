@@ -1347,4 +1347,17 @@ static Common* sharedCommon;
     return callingCodes[isoCountryCode];
 }
 
+
++ (NSArray*)sortKeys
+{
+    if ([Settings sharedSettings].sortSegment == 0)
+    {
+        return @[@"e164", @"name"];
+    }
+    else
+    {
+        return @[@"name", @"e164"];
+    }
+}
+
 @end

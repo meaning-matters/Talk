@@ -72,6 +72,12 @@ typedef enum
 }
 
 
+- (void)dealloc
+{
+    [[Settings sharedSettings] removeObserver:self forKeyPath:@"sortSegment" context:nil];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -85,6 +91,11 @@ typedef enum
                                                                    action:@selector(deleteAction)];
         self.navigationItem.rightBarButtonItem = buttonItem;
     }
+    
+    [[Settings sharedSettings] addObserver:self
+                                forKeyPath:@"sortSegment"
+                                   options:NSKeyValueObservingOptionNew
+                                   context:nil];
 }
 
 
@@ -96,6 +107,14 @@ typedef enum
     {
         self.completion ? self.completion(self.selectedCallable, [self showCallerId]) : (void)0;
     }
+}
+
+
+- (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
+{
+    self.phones  = [self fetchPhones];
+    self.numbers = [self fetchNumbers];
+    [self.tableView reloadData];
 }
 
 
@@ -417,7 +436,7 @@ typedef enum
 - (NSArray*)fetchPhones
 {
     return [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
-                                                     sortKeys:@[@"e164", @"name"]
+                                                     sortKeys:[Common sortKeys]
                                                     predicate:nil
                                          managedObjectContext:self.managedObjectContext];
 }
@@ -426,7 +445,7 @@ typedef enum
 - (NSArray*)fetchNumbers
 {
     return [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
-                                                     sortKeys:@[@"e164", @"name"]
+                                                     sortKeys:[Common sortKeys]
                                                     predicate:nil
                                          managedObjectContext:self.managedObjectContext];
 }

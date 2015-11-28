@@ -27,7 +27,8 @@ typedef enum
     TableSectionCallback    = 1UL << 0,
     TableSectionCallerId    = 1UL << 1,
     TableSectionHomeCountry = 1UL << 2,
-    TableSectionAccountData = 1UL << 3,
+    TableSectionOptions     = 1UL << 3,
+    TableSectionAccountData = 1UL << 4,
 } TableSections;
 
 
@@ -57,8 +58,9 @@ typedef enum
         // Mandatory sections.
         sections |= TableSectionCallback;
         sections |= TableSectionCallerId;
-        sections |= TableSectionAccountData;
         sections |= TableSectionHomeCountry;
+        sections |= TableSectionOptions;
+        sections |= TableSectionAccountData;
 
         settings = [Settings sharedSettings];
 
@@ -132,10 +134,7 @@ typedef enum
 }
 
 
-- (void)observeValueForKeyPath:(NSString*)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary*)change
-                       context:(void*)context
+- (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
 {
     NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
     
@@ -203,6 +202,13 @@ typedef enum
                                                       @"Country where user lives (used to interpret dialed phone numbers).");
             break;
         }
+        case TableSectionOptions:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Settings:Options SectionHeader", nil,
+                                                      [NSBundle mainBundle], @"Display Options",
+                                                      @"....");
+            break;
+        }
         case TableSectionAccountData:
         {
             title = NSLocalizedStringWithDefaultValue(@"Settings:AccountData SectionHeader", nil,
@@ -250,6 +256,15 @@ typedef enum
                                                       @"[* lines]");
             break;
         }
+        case TableSectionOptions:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Settings:Options SectionFooter", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"Choose to sort lists of Phones and Numbers by country or name.",
+                                                      @"Explanation what the Home Country setting is doing\n"
+                                                      @"[* lines]");
+            break;
+        }
         case TableSectionAccountData:
         {
             title = NSLocalizedStringWithDefaultValue(@"Settings:AccountDataInfoFull SectionFooter", nil,
@@ -286,6 +301,11 @@ typedef enum
         case TableSectionHomeCountry:
         {
             numberOfRows = ([NetworkStatus sharedStatus].simIsoCountryCode != nil) ? 2 : 1;
+            break;
+        }
+        case TableSectionOptions:
+        {
+            numberOfRows = 1;
             break;
         }
         case TableSectionAccountData:
@@ -501,6 +521,11 @@ typedef enum
             cell = [self homeCountryCellForRowAtIndexPath:indexPath];
             break;
         }
+        case TableSectionOptions:
+        {
+            cell = [self optionCellForRowAtIndexPath:indexPath];
+            break;
+        }
         case TableSectionAccountData:
         {
             cell = [self accountDataCellForRowAtIndexPath:indexPath];
@@ -690,6 +715,47 @@ typedef enum
 }
 
 
+- (UITableViewCell*)optionCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell*    cell;
+    UISegmentedControl* segmentedControl;
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"SortOrderCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SortOrderCell"];
+        NSString* byCountries = NSLocalizedStringWithDefaultValue(@"Numbers SortByCountries", nil,
+                                                                  [NSBundle mainBundle], @"Country",
+                                                                  @"\n"
+                                                                  @"[1/4 line larger font].");
+        NSString* byNames     = NSLocalizedStringWithDefaultValue(@"Numbers SortByName", nil,
+                                                                  [NSBundle mainBundle], @"Name",
+                                                                  @"\n"
+                                                                  @"[1/4 line larger font].");
+        segmentedControl = [[UISegmentedControl alloc] initWithItems:@[byCountries, byNames]];
+        segmentedControl.selectedSegmentIndex = [Settings sharedSettings].sortSegment;
+        [segmentedControl addTarget:self
+                             action:@selector(sortOrderChangedAction:)
+                   forControlEvents:UIControlEventValueChanged];
+        
+        cell.accessoryView = segmentedControl;
+    }
+    else
+    {
+        segmentedControl = (UISegmentedControl*)cell.accessoryView;
+    }
+    
+    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:Sort CellText", nil,
+                                                            [NSBundle mainBundle], @"Sort By",
+                                                            @"Title of switch if people called see my number\n"
+                                                            @"[2/3 line - abbreviated: 'Show Caller ID', use "
+                                                            @"exact same term as in iOS].");
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    return cell;
+}
+
+
 - (UITableViewCell*)accountDataCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
@@ -759,6 +825,14 @@ typedef enum
     [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
     [self.tableView endUpdates];
+}
+
+
+#pragma Helpers
+
+- (void)sortOrderChangedAction:(UISegmentedControl*)segmentedControl
+{
+    [Settings sharedSettings].sortSegment = segmentedControl.selectedSegmentIndex;
 }
 
 @end
