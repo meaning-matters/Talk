@@ -168,10 +168,10 @@
 
     if (scrollToSectionIndex != - 1)
     {
-        NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:scrollToSectionIndex];
-
+        // Needs to run on next run loop or else does not properly scroll to bottom items.
         dispatch_async(dispatch_get_main_queue(), ^
         {
+            NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:scrollToSectionIndex];
             [self.tableView scrollToRowAtIndexPath:indexPath
                                   atScrollPosition:UITableViewScrollPositionTop
                                           animated:NO];
