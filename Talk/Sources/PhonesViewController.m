@@ -106,9 +106,10 @@ const NSInteger kUseButtonTag = 123;
         
         if (index != NSNotFound)
         {
-            NSIndexPath* indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+            // Needs to run on next run loop or else does not properly scroll to bottom items.
             dispatch_async(dispatch_get_main_queue(), ^
             {
+                NSIndexPath* indexPath = [NSIndexPath indexPathForItem:index inSection:0];
                 [self.tableView scrollToRowAtIndexPath:indexPath
                                       atScrollPosition:UITableViewScrollPositionMiddle
                                               animated:YES];
