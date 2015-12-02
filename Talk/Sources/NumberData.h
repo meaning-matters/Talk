@@ -32,7 +32,7 @@
 @property (nonatomic, retain) NSString*        street;
 @property (nonatomic, retain) NSString*        building;
 @property (nonatomic, retain) NSString*        city;
-@property (nonatomic, retain) NSString*        zipCode;
+@property (nonatomic, retain) NSString*        postcode;
 @property (nonatomic, retain) NSString*        stateName;
 @property (nonatomic, retain) NSString*        stateCode;
 @property (nonatomic, retain) NSString*        addressCountry; // ISO country code.

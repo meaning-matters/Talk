@@ -14,6 +14,8 @@
 
 + (NSString*)closeString;
 
++ (NSString*)goString;
+
 + (NSString*)okString;
 
 + (NSString*)noString;

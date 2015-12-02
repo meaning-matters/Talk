@@ -642,7 +642,7 @@
                                                                NSString* street,
                                                                NSString* building,
                                                                NSString* city,
-                                                               NSString* zipCode,
+                                                               NSString* postcode,
                                                                NSString* stateName,
                                                                NSString* stateCode,
                                                                NSString* addressCountry,
@@ -685,7 +685,7 @@
                         number.street         = street;
                         number.building       = building;
                         number.city           = city;
-                        number.zipCode        = zipCode;
+                        number.postcode       = postcode;
                         number.stateName      = stateName;
                         number.stateCode      = stateCode;
                         number.addressCountry = addressCountry;

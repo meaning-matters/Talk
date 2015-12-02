@@ -30,6 +30,15 @@
 }
 
 
++ (NSString*)goString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Go", nil, [NSBundle mainBundle],
+                                             @"Go",
+                                             @"Standard string seen on [alert] buttons to indicate action\n"
+                                             @"[iOS standard size].");
+}
+
+
 + (NSString*)okString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings OK", nil, [NSBundle mainBundle],

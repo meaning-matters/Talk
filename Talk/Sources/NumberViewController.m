@@ -618,7 +618,7 @@ typedef enum
         case ContactAddressRowPostcode:
         {
             cell.textLabel.text       = [Strings postcodeString];
-            cell.detailTextLabel.text = number.zipCode;
+            cell.detailTextLabel.text = number.postcode;
             break;
         }
         case ContactAddressRowStateName:

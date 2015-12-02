@@ -206,7 +206,7 @@
                                      NSString* street,
                                      NSString* building,
                                      NSString* city,
-                                     NSString* zipCode,
+                                     NSString* postcode,
                                      NSString* stateName,
                                      NSString* stateCode,
                                      NSString* addressCountry,

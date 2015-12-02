@@ -25,7 +25,7 @@
 @dynamic street;
 @dynamic building;
 @dynamic city;
-@dynamic zipCode;
+@dynamic postcode;
 @dynamic stateName;
 @dynamic stateCode;
 @dynamic addressCountry;    // ISO country code.

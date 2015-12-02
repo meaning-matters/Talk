@@ -95,21 +95,21 @@
     UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
     NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
 
-    // If a ZIP code is already selected, check if it matches the city.
-    NSString*   mismatchZipCode = self.address.postcode;
+    // If a postcode is already selected, check if it matches the city.
+    NSString*   mismatchPostcode = self.address.postcode;
     if (self.address.postcode != nil)
     {
         for (NSDictionary* city in self.citiesArray)
         {
             if ([name isEqualToString:city[@"city"]])
             {
-                // Found selected city, now check if current ZIP code belongs.
-                for (NSString* zipCode in city[@"postcodes"])
+                // Found selected city, now check if current postcode belongs.
+                for (NSString* postcode in city[@"postcodes"])
                 {
-                    if ([self.address.postcode isEqualToString:zipCode])
+                    if ([self.address.postcode isEqualToString:postcode])
                     {
-                        // Yes, the selected city matches the current ZIP code, so no problem.
-                        mismatchZipCode = nil;
+                        // Yes, the selected city matches the current postcode, so no problem.
+                        mismatchPostcode = nil;
                         break;
                     }
                 }
@@ -117,7 +117,7 @@
         }
     }
 
-    if (mismatchZipCode.length == 0)
+    if (mismatchPostcode.length == 0)
     {
         if (self.checkmarkedCell.accessoryType == UITableViewCellAccessoryCheckmark)
         {
@@ -135,17 +135,17 @@
         NSString*   title;
         NSString*   message;
 
-        title = NSLocalizedStringWithDefaultValue(@"NumberAreaCities ZipMismatchAlertTitle", nil,
-                                                  [NSBundle mainBundle], @"ZIP Code Mismatch",
-                                                  @"Alert title saying that ZIP code does not match.\n"
-                                                  @"[iOS alert title size - use correct term for 'ZIP code'].");
+        title = NSLocalizedStringWithDefaultValue(@"NumberAreaCities PostcodeMismatchAlertTitle", nil,
+                                                  [NSBundle mainBundle], @"Postode Mismatch",
+                                                  @"Alert title saying that postcode does not match.\n"
+                                                  @"[iOS alert title size].");
         message = NSLocalizedStringWithDefaultValue(@"NumberAreaCities ZipMismatchAlertMessage", nil,
                                                     [NSBundle mainBundle],
-                                                    @"The current ZIP code: %@, does not match the city "
-                                                    @"you selected.\nYou will have to select a ZIP code again.",
-                                                    @"Alert message telling saying that ZIP code does not match.\n"
-                                                    @"[iOS alert message size - use correct term for 'ZIP code']");
-        message = [NSString stringWithFormat:message, mismatchZipCode];
+                                                    @"The current postcode: %@, does not match the city "
+                                                    @"you selected.\nYou will have to select a postcode again.",
+                                                    @"Alert message telling saying that postcode does not match.\n"
+                                                    @"[iOS alert message size]");
+        message = [NSString stringWithFormat:message, mismatchPostcode];
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)

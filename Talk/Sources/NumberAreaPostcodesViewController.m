@@ -15,7 +15,7 @@
 @interface NumberAreaPostcodesViewController ()
 
 @property (nonatomic, strong) NSArray*             citiesArray;
-@property (nonatomic, strong) NSMutableDictionary* cityLookupDictionary;   // A map between ZIP code and matching city.
+@property (nonatomic, strong) NSMutableDictionary* cityLookupDictionary;   // A map between postcode and matching city.
 
 @property (nonatomic, strong) AddressData*         address;
 
@@ -31,7 +31,7 @@
     if (self = [super init])
     {
         self.title = NSLocalizedStringWithDefaultValue(@"NumbersAreaZips ScreenTitle", nil,
-                                                       [NSBundle mainBundle], @"ZIP Codes",
+                                                       [NSBundle mainBundle], @"Postcodes",
                                                        @"Title of app screen with list of postal codes\n"
                                                        @"[1 line larger font].");
         
@@ -75,13 +75,13 @@
 {
     if ([self.address.postcode length] == 0 && [self.address.city length] > 0)
     {
-        // No ZIP code is selected, but we return the first one matching the city so
-        // that the table is scrolled to the ZIP code(s) of the selected city.
-        NSUInteger index = [self.objectsArray indexOfObjectPassingTest:^BOOL(NSString*  zipCode,
+        // No postcode is selected, but we return the first one matching the city so
+        // that the table is scrolled to the postcode(s) of the selected city.
+        NSUInteger index = [self.objectsArray indexOfObjectPassingTest:^BOOL(NSString*  postcode,
                                                                              NSUInteger index,
                                                                              BOOL*      stop)
         {
-            return [self.cityLookupDictionary[zipCode] isEqualToString:self.address.city];
+            return [self.cityLookupDictionary[postcode] isEqualToString:self.address.city];
         }];
 
         return [self.objectsArray objectAtIndex:index];
@@ -97,27 +97,27 @@
 
 - (void)sortOutArrays
 {
-    NSMutableArray* zipCodesArray = [NSMutableArray array];
+    NSMutableArray* postcodesArray = [NSMutableArray array];
     self.cityLookupDictionary     = [NSMutableDictionary dictionary];
 
-    // Create one big ZIP codes array, and create city lookup dictionary.
+    // Create one big postcodes array, and create city lookup dictionary.
     for (NSMutableDictionary* city in self.citiesArray)
     {
-        [zipCodesArray addObjectsFromArray:city[@"postcodes"]];
+        [postcodesArray addObjectsFromArray:city[@"postcodes"]];
 
-        for (NSString* zipCode in city[@"postcodes"])
+        for (NSString* postcode in city[@"postcodes"])
         {
-            self.cityLookupDictionary[zipCode] = city[@"city"];
+            self.cityLookupDictionary[postcode] = city[@"city"];
         }
     }
 
-    // Find maximum ZIP code size.
+    // Find maximum postcode size.
     NSUInteger maximumSize = 0;
-    for (NSString* zipCode in zipCodesArray)
+    for (NSString* postcode in postcodesArray)
     {
-        if (zipCode.length > maximumSize)
+        if (postcode.length > maximumSize)
         {
-            maximumSize = zipCode.length;
+            maximumSize = postcode.length;
         }
     }
 
@@ -128,16 +128,16 @@
     NSMutableDictionary* nameIndexDictionary = [NSMutableDictionary dictionary];
     for (width = maximumSize; width > 0; width--)
     {
-        for (NSString* zipCode in zipCodesArray)
+        for (NSString* postcode in postcodesArray)
         {
-            NSString* nameIndex = [zipCode substringToIndex:width];
+            NSString* nameIndex = [postcode substringToIndex:width];
             if (([nameIndexDictionary valueForKey:nameIndex]) == nil)
             {
                 nameIndexDictionary[nameIndex] = nameIndex;
             }
         }
 
-        if (nameIndexDictionary.count <= 40 && nameIndexDictionary.count < zipCodesArray.count / 5)
+        if (nameIndexDictionary.count <= 40 && nameIndexDictionary.count < postcodesArray.count / 5)
         {
             [nameIndexDictionary removeAllObjects];
             break;
@@ -146,7 +146,7 @@
         [nameIndexDictionary removeAllObjects];
     }
 
-    self.objectsArray = zipCodesArray;
+    self.objectsArray = postcodesArray;
     [self createIndexOfWidth:width];
 }
 
@@ -164,7 +164,7 @@
     UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
     NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
 
-    // Lookup city that belongs to this ZIP code, and check if it matches with current city.
+    // Lookup city that belongs to this postcode, and check if it matches with current city.
     NSString* mismatchCity = nil;
     if ([self.address.city length] > 0 &&
         [[self.cityLookupDictionary objectForKey:name] isEqualToString:self.address.city] == NO)
@@ -173,7 +173,7 @@
     }
     else
     {
-        // Set city that belongs to selected ZIP code.
+        // Set city that belongs to selected postcode.
         self.address.city = [self.cityLookupDictionary objectForKey:name];
     }
 
@@ -201,12 +201,11 @@
                                                   @"[iOS alert title size].");
         message = NSLocalizedStringWithDefaultValue(@"NumberAreaZips CityMismatchAlertMessage", nil,
                                                     [NSBundle mainBundle],
-                                                    @"The current city: %@, does not match the ZIP code you "
+                                                    @"The current city: %@, does not match the postcode you "
                                                     @"selected.\nDo you also want to select the correctly "
                                                     @"matching city: %@?",
                                                     @"Alert message telling saying that city does not match.\n"
-                                                    @"[iOS alert message size - use correct term for "
-                                                    @"'ZIP code']");
+                                                    @"[iOS alert message size]");
         message = [NSString stringWithFormat:message, [Common capitalizedString:self.address.city],
                                                       [Common capitalizedString:mismatchCity]];
         [BlockAlertView showAlertViewWithTitle:title

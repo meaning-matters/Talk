@@ -306,8 +306,8 @@ typedef enum
         {
             title = NSLocalizedStringWithDefaultValue(@"NumberAre:Address SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"For a phone number in this area, a contact name and address "
-                                                      @"are (legally) required.",
+                                                      @"A contact name and address "
+                                                      @"are legally required.",
                                                       @"Explaining that information must be supplied by user.");
             break;
         }
@@ -391,12 +391,11 @@ typedef enum
             }
             case TableSectionAction:
             {
-                if (YES) //########## If require-address and an address was selected from the list ...
+                if (((sections & TableSectionAddress) && self.address != nil) ||
+                    (sections & TableSectionAddress) == 0)
                 {
-                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-                    /*
                     BuyNumberViewController* viewController;
+                    /*
                     viewController = [[BuyNumberViewController alloc] initWithName:name
                                                                     isoCountryCode:numberIsoCountryCode
                                                                               area:area
@@ -410,23 +409,46 @@ typedef enum
                     NSString*   title;
                     NSString*   message;
 
-                    title   = NSLocalizedStringWithDefaultValue(@"NumberArea InfoIncompleteAlertTitle", nil,
-                                                                [NSBundle mainBundle], @"Information Missing",
+                    title   = NSLocalizedStringWithDefaultValue(@"NumberArea AddressRequiredTitle", nil,
+                                                                [NSBundle mainBundle], @"Address Required",
                                                                 @"Alert title telling that user did not fill in all information.\n"
                                                                 @"[iOS alert title size].");
-                    message = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertMessage", nil,
-                                                                [NSBundle mainBundle],
-                                                                @"Some of the required information has not been supplied yet.",
-                                                                @"Alert message telling that user did not fill in all information.\n"
-                                                                @"[iOS alert message size]");
+                    if (requireProof)
+                    {
+                        message = NSLocalizedStringWithDefaultValue(@"NumberArea AddressWithProofRequiredMessage", nil,
+                                                                    [NSBundle mainBundle],
+                                                                    @"A contact address with verification image are "
+                                                                    @"required for this type of Number in this area."
+                                                                    @"\n\nGo and add or select an address.",
+                                                                    @"Alert message telling that user did not fill in all information.\n"
+                                                                    @"[iOS alert message size]");
+                    }
+                    else
+                    {
+                        message = NSLocalizedStringWithDefaultValue(@"NumberArea IncompleteAlertMessage", nil,
+                                                                    [NSBundle mainBundle],
+                                                                    @"A contact address is required for this Number."
+                                                                    @"\n\nGo and add or select an address.",
+                                                                    @"Alert message telling that user did not fill in all information.\n"
+                                                                    @"[iOS alert message size]");
+                    }
+                    
                     [BlockAlertView showAlertViewWithTitle:title
                                                    message:message
                                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
                     {
-                        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                        if (cancelled)
+                        {
+                            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                        }
+                        else
+                        {
+                            NSIndexPath* indexPath = [NSIndexPath indexPathForItem:1 inSection:TableSectionAddress];
+                            [self tableView:tableView didSelectRowAtIndexPath:indexPath];
+                        }
                     }
                                          cancelButtonTitle:[Strings closeString]
-                                         otherButtonTitles:nil];
+                                         otherButtonTitles:[Strings goString], nil];
                 }
                 
                 break;
@@ -442,26 +464,10 @@ typedef enum
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
-        case TableSectionArea:
-        {
-            cell = [self areaCellForRowAtIndexPath:indexPath];
-            break;
-        }
-        case TableSectionName:
-        {
-            cell = [self nameCellForRowAtIndexPath:indexPath];
-            break;
-        }
-        case TableSectionAddress:
-        {
-            cell = [self addressCellForRowAtIndexPath:indexPath];
-            break;
-        }
-        case TableSectionAction:
-        {
-            cell = [self actionCellForRowAtIndexPath:indexPath];
-            break;
-        }
+        case TableSectionArea:    cell = [self areaCellForRowAtIndexPath:indexPath];    break;
+        case TableSectionName:    cell = [self nameCellForRowAtIndexPath:indexPath];    break;
+        case TableSectionAddress: cell = [self addressCellForRowAtIndexPath:indexPath]; break;
+        case TableSectionAction:  cell = [self actionCellForRowAtIndexPath:indexPath];  break;
     }
 
     return cell;
@@ -566,13 +572,24 @@ typedef enum
 - (UITableViewCell*)addressCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
+    UITextField*     textField;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"AddressCell"];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"AddressCell"];
+        
+        textField = [Common addTextFieldToCell:cell delegate:self];
+        textField.tag = TextFieldCellTag;
+    }
+    else
+    {
+        textField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];
     }
     
+    textField.placeholder            = [Strings requiredString];
+    textField.userInteractionEnabled = NO;
+
     cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = NSLocalizedString(@"Address", @"Address cell title");
 
