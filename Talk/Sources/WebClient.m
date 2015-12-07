@@ -621,10 +621,10 @@
     NSString*     countryCode  = [Settings sharedSettings].storeCountryCode;
     NSDictionary* parameters   = @{@"receipt" : receipt};
     
-    [self postPath:[NSString stringWithFormat:@"/users/%@/credit?currencyCode=%@&countryCode=%@",
-                                              username, currencyCode, countryCode]
-        parameters:parameters
-             reply:^(NSError* error, id content)
+    [self putPath:[NSString stringWithFormat:@"/users/%@/credit?currencyCode=%@&countryCode=%@",
+                   username, currencyCode, countryCode]
+       parameters:parameters
+            reply:^(NSError* error, id content)
     {
         if (error == nil)
         {
