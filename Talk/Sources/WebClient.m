@@ -212,11 +212,11 @@
 - (void)retrieveVerificationCodeForE164:(NSString*)e164
                                   reply:(void (^)(NSError* error, NSString* code))reply
 {
-    NSString* username = [Settings sharedSettings].webUsername;
-    NSString* e164x    = [e164 substringFromIndex:1];
+    NSString*     username   = [Settings sharedSettings].webUsername;
+    NSDictionary* parameters = @{@"e164" : [e164 substringFromIndex:1]};
 
-    [self postPath:[NSString stringWithFormat:@"/users/%@/phones/verification?e164=%@", username, e164x]
-        parameters:nil
+    [self postPath:[NSString stringWithFormat:@"/users/%@/phones", username]
+        parameters:parameters
              reply:^(NSError* error, id content)
     {
         if (error == nil)
@@ -238,7 +238,7 @@
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* e164x    = [e164 substringFromIndex:1];
 
-    [self putPath:[NSString stringWithFormat:@"/users/%@/phones/verification?e164=%@", username, e164x]
+    [self putPath:[NSString stringWithFormat:@"/users/%@/phones/%@/verification", username, e164x]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -251,11 +251,11 @@
 - (void)retrieveVerificationStatusForE164:(NSString*)e164
                                     reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply
 {
-    NSString*     username   = [Settings sharedSettings].webUsername;
-    NSDictionary* parameters = @{@"e164" : [e164 substringFromIndex:1]};
+    NSString* username = [Settings sharedSettings].webUsername;
+    NSString* e164x    = [e164 substringFromIndex:1];
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/phones/verification", username]
-       parameters:parameters
+    [self getPath:[NSString stringWithFormat:@"/users/%@/phones/%@/verification", username, e164x]
+       parameters:nil
             reply:^(NSError* error, id content)
     {
         if (error == nil)
@@ -276,7 +276,7 @@
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* e164x    = [e164 substringFromIndex:1];
 
-    [self deletePath:[NSString stringWithFormat:@"/users/%@/phones/verification?number=%@", username, e164x]
+    [self deletePath:[NSString stringWithFormat:@"/users/%@/phones/%@/verification", username, e164x]
           parameters:nil
                reply:^(NSError* error, id content)
     {
