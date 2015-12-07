@@ -212,10 +212,10 @@
 - (void)retrieveVerificationCodeForE164:(NSString*)e164
                                   reply:(void (^)(NSError* error, NSString* code))reply
 {
-    NSString*     username   = [Settings sharedSettings].webUsername;
-    NSString*     number     = [e164 substringFromIndex:1];
+    NSString* username = [Settings sharedSettings].webUsername;
+    NSString* e164x    = [e164 substringFromIndex:1];
 
-    [self postPath:[NSString stringWithFormat:@"/users/%@/verification?number=%@", username, number]
+    [self postPath:[NSString stringWithFormat:@"/users/%@/phones/verification?e164=%@", username, e164x]
         parameters:nil
              reply:^(NSError* error, id content)
     {
@@ -236,9 +236,9 @@
                                  reply:(void (^)(NSError* error))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
-    NSString* number   = [e164 substringFromIndex:1];
+    NSString* e164x    = [e164 substringFromIndex:1];
 
-    [self putPath:[NSString stringWithFormat:@"/users/%@/verification?number=%@", username, number]
+    [self putPath:[NSString stringWithFormat:@"/users/%@/phones/verification?e164=%@", username, e164x]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -252,10 +252,9 @@
                                     reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
-    NSString*     number     = [e164 substringFromIndex:1];
-    NSDictionary* parameters = @{@"number" : number};
+    NSDictionary* parameters = @{@"e164" : [e164 substringFromIndex:1]};
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/verification", username]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/phones/verification", username]
        parameters:parameters
             reply:^(NSError* error, id content)
     {
@@ -275,9 +274,9 @@
 - (void)stopVerificationForE164:(NSString*)e164 reply:(void (^)(NSError* error))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
-    NSString* number   = [e164 substringFromIndex:1];
+    NSString* e164x    = [e164 substringFromIndex:1];
 
-    [self deletePath:[NSString stringWithFormat:@"/users/%@/verification?number=%@", username, number]
+    [self deletePath:[NSString stringWithFormat:@"/users/%@/phones/verification?number=%@", username, e164x]
           parameters:nil
                reply:^(NSError* error, id content)
     {
@@ -290,12 +289,12 @@
 - (void)updateVerifiedE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
-    NSString*     number     = [e164 substringFromIndex:1];
+    NSString*     e164x      = [e164 substringFromIndex:1];
     NSDictionary* parameters = @{@"name" : name};
 
-    [self postPath:[NSString stringWithFormat:@"/users/%@/verification/numbers/%@", username, number]
-        parameters:parameters
-             reply:^(NSError* error, id content)
+    [self putPath:[NSString stringWithFormat:@"/users/%@/phones/%@", username, e164x]
+       parameters:parameters
+            reply:^(NSError* error, id content)
     {
         reply(error);
     }];
@@ -305,13 +304,19 @@
 // 3. GET VERIFIED NUMBER LIST
 - (void)retrieveVerifiedE164List:(void (^)(NSError* error, NSArray* e164s))reply;
 {
-    [self getPath:[NSString stringWithFormat:@"/users/%@/verification/numbers", [Settings sharedSettings].webUsername]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/phones", [Settings sharedSettings].webUsername]
        parameters:nil
             reply:^(NSError* error, id content)
     {
         if (error == nil)
         {
-            reply(nil, content);
+            NSMutableArray* e164s = [NSMutableArray array];
+            for (NSString* e164x in content)
+            {
+                [e164s addObject:[NSString stringWithFormat:@"+%@", e164x]];
+            }
+            
+            reply(nil, e164s);
         }
         else
         {
@@ -326,9 +331,9 @@
                        reply:(void (^)(NSError* error, NSString* name))reply;
 {
     NSString* username = [Settings sharedSettings].webUsername;
-    NSString* number   = [e164 substringFromIndex:1];
+    NSString* e164x    = [e164 substringFromIndex:1];
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/verification/numbers/%@", username, number]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/phones/%@", username, e164x]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -349,9 +354,9 @@
                      reply:(void (^)(NSError*))reply;
 {
     NSString* username = [Settings sharedSettings].webUsername;
-    NSString* number   = [e164 substringFromIndex:1];
+    NSString* e164x    = [e164 substringFromIndex:1];
 
-    [self deletePath:[NSString stringWithFormat:@"/users/%@/verification/numbers/%@", username, number]
+    [self deletePath:[NSString stringWithFormat:@"/users/%@/phones/%@", username, e164x]
           parameters:nil
                reply:^(NSError *error, id content)
     {
