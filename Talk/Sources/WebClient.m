@@ -878,14 +878,14 @@
 - (void)retrieveCallRateForE164:(NSString*)e164
                           reply:(void (^)(NSError* error, float ratePerMinute))reply
 {
-    NSString* number       = [e164 substringFromIndex:1];
+    NSString* e164x        = [e164 substringFromIndex:1];
     NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
     NSString* countryCode  = [Settings sharedSettings].storeCountryCode;
     
     // Don't call `handleAccount` and get data without needing account.
 
     [self.webInterface getPath:[NSString stringWithFormat:@"/rate/%@?currencyCode=%@&countryCode=%@",
-                                                          number, currencyCode, countryCode]
+                                                          e164x, currencyCode, countryCode]
                     parameters:nil
                          reply:^(NSError *error, id content)
     {
@@ -1045,9 +1045,9 @@
                                   reply:(void (^)(NSError* error, NSString* uuid))reply;
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
-    NSDictionary* parameters = @{@"callbackE164" : callbackE164,
-                                 @"callthruE164" : callthruE164,
-                                 @"identityE164" : identityE164,
+    NSDictionary* parameters = @{@"callbackE164" : [callbackE164 substringFromIndex:1],
+                                 @"callthruE164" : [callthruE164 substringFromIndex:1],
+                                 @"identityE164" : [identityE164 substringFromIndex:1],
                                  @"privacy"      : privacy ? @"true" : @"false"};
     
     [self postPath:[NSString stringWithFormat:@"/users/%@/callback", username]
