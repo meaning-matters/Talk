@@ -514,7 +514,6 @@
 		48ADD0FC170C12CD001515EB /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48ADD0FB170C12CC001515EB /* AddressBook.framework */; };
 		48ADE7D2185C67EC00E39DA2 /* PhoneData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ADE7D1185C67EC00E39DA2 /* PhoneData.m */; };
 		48ADE7D3185C67EC00E39DA2 /* PhoneData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ADE7D1185C67EC00E39DA2 /* PhoneData.m */; };
-		48AE1B1C1BB4A26C0061B92E /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48AE1B1B1BB4A26C0061B92E /* AdSupport.framework */; };
 		48AF44EA1649479100DFE3D8 /* NumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44E91649479100DFE3D8 /* NumbersViewController.m */; };
 		48AF44EB1649479100DFE3D8 /* NumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44E91649479100DFE3D8 /* NumbersViewController.m */; };
 		48AF44EE164947B300DFE3D8 /* CreditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44ED164947B300DFE3D8 /* CreditViewController.m */; };
@@ -1403,7 +1402,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48AE1B1C1BB4A26C0061B92E /* AdSupport.framework in Frameworks */,
 				4814D54D19DCCD7C00958E33 /* libresolv.dylib in Frameworks */,
 				480E524C18C510510054A791 /* CrashReporter.framework in Frameworks */,
 				480E524A18C5103C0054A791 /* libHockeySDK.a in Frameworks */,
@@ -3403,7 +3401,7 @@
 		48884AB81615CE920005AA79 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ATS_DISABLE = YES;
+				ATS_DISABLE = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -3415,14 +3413,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"PJ_IOS=1",
-					"PJ_AUTOCONF=1",
-					"$(inherited)",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				HEADER_SEARCH_PATHS = (
-					"External/pjproject-2.1.0/install/include/",
-					External/WebRTC/GlueLogic,
 					"External/HockeySDK-iOS-3.5.4/Classes",
 					"External/OpenSSL-for-iPhone/include",
 				);
@@ -3431,9 +3423,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
-					"\"$(SRCROOT)/External/WebRTC\"",
-					"\"$(SRCROOT)/External/pjproject-2.1.0/install/lib\"",
-					"\"$(SRCROOT)/External/OpenZRTP/lib/Release\"",
 					"$(SDKROOT)/usr/lib/system",
 				);
 				ONLY_ACTIVE_ARCH = NO;
@@ -3463,9 +3452,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				HEADER_SEARCH_PATHS = (
-					"External/pjproject-2.1.0/install/include/",
-					External/WebRTC/GlueLogic,
 					"External/HockeySDK-iOS-3.5.4/Classes",
 					"External/OpenSSL-for-iPhone/include",
 				);
@@ -3474,9 +3462,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
-					"\"$(SRCROOT)/External/WebRTC\"",
-					"\"$(SRCROOT)/External/pjproject-2.1.0/install/lib\"",
-					"\"$(SRCROOT)/External/OpenZRTP/lib/Release\"",
 					"$(SDKROOT)/usr/lib/system",
 				);
 				ONLY_ACTIVE_ARCH = NO;
@@ -3595,9 +3580,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				HEADER_SEARCH_PATHS = (
-					"External/pjproject-2.1.0/install/include/",
-					External/WebRTC/GlueLogic,
 					"External/HockeySDK-iOS-3.5.4/Classes",
 					"External/OpenSSL-for-iPhone/include",
 				);
@@ -3606,9 +3590,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
-					"\"$(SRCROOT)/External/WebRTC\"",
-					"\"$(SRCROOT)/External/pjproject-2.1.0/install/lib\"",
-					"\"$(SRCROOT)/External/OpenZRTP/lib/Release\"",
 					"$(SDKROOT)/usr/lib/system",
 				);
 				ONLY_ACTIVE_ARCH = NO;
