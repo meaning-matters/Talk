@@ -51,7 +51,7 @@
     
     dispatch_once(&onceToken, ^
     {
-        self.deviceToken = @"unknown";
+        self.deviceToken = nil;
 
         // Trigger singletons.
         [NetworkStatus   sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.
@@ -61,7 +61,7 @@
 
         // Initialize phone number stuff.
         [PhoneNumber setDefaultIsoCountryCode:[Settings sharedSettings].homeCountry];
-        [LibPhoneNumber sharedInstance];    // This loads the JavaScript library.
+        [LibPhoneNumber sharedInstance];  // This loads the JavaScript library.
 
         // Basic UI.
         self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -71,7 +71,7 @@
         // Set address book delegate.
         [NBAddressBookManager sharedManager].delegate = self;
 
-        // Placed here, after processing results,, just before tabs are added.  Otherwise navigation bar
+        // Placed here, after processing results, just before tabs are added.  Otherwise navigation bar
         // will overlap with status bar.
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
 
@@ -105,7 +105,6 @@
     #warning Don't forget to remove, and to switch to NO 'Application supports iTunes file sharing' in .plist.
     [Common redirectStderrToFile];
 #endif
-
     
     UIUserNotificationType types         = UIUserNotificationTypeBadge |
                                            UIUserNotificationTypeSound |
@@ -184,9 +183,14 @@
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)token
 {
-    NSString*   string = [[token description] stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString* string = [[token description] stringByReplacingOccurrencesOfString:@" " withString:@""];
     self.deviceToken = [string substringWithRange:NSMakeRange(1, [string length] - 2)];   // Strip off '<' and '>'.
-
+        
+    if ([Settings sharedSettings].haveAccount)
+    {
+        [self updateAccount];
+    }
+    
     // When account purchase transaction has not been finished, the PurchaseManager receives
     // it again at app startup.  This is however slightly earlier than that device token is
     // received.  Therefore the PurchaseManager is started up here.
@@ -478,6 +482,58 @@
     }];
 }
 
+
+- (void)updateAccount
+{
+    void (^update)(void) = ^void(void)
+    {
+        [[WebClient sharedClient] updateAccountForLanguage:[[NSLocale preferredLanguages] objectAtIndex:0]
+                                         notificationToken:self.deviceToken
+                                         mobileCountryCode:[NetworkStatus sharedStatus].simMobileCountryCode
+                                         mobileNetworkCode:[NetworkStatus sharedStatus].simMobileNetworkCode
+                                                deviceName:[UIDevice currentDevice].name
+                                                  deviceOs:[Common deviceOs]
+                                               deviceModel:[Common deviceModel]
+                                                appVersion:[Settings sharedSettings].appVersion
+                                                  vendorId:[[[UIDevice currentDevice] identifierForVendor] UUIDString]
+                                                     reply:^(NSError *error, NSString *webUsername, NSString *webPassword)
+        {
+            if (error == nil)
+            {
+                [Settings sharedSettings].webUsername = webUsername;
+                [Settings sharedSettings].webPassword = webPassword;
+            }
+            else
+            {
+                NBLog(@"Update account error: %@.", error);
+            }
+        }];
+    };
+    
+    if ([NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableWifi ||
+        [NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableCellular)
+    {
+        update();
+    }
+    else
+    {
+        __block id  observer;
+        observer = [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusReachableNotification
+                                                                     object:nil
+                                                                      queue:[NSOperationQueue mainQueue]
+                                                                 usingBlock:^(NSNotification* notification)
+        {
+            NetworkStatusReachable reachable = [notification.userInfo[@"status"] intValue];
+            
+            if (reachable == NetworkStatusReachableWifi || reachable == NetworkStatusReachableCellular)
+            {
+                update();
+                
+                [[NSNotificationCenter defaultCenter] removeObserver:observer];
+            }
+        }];
+    }
+}
 
 #pragma mark - Utility
 

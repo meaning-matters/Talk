@@ -25,7 +25,7 @@
 // 0B. GET NUMBER RATES
 - (void)retrieveNumberRates:(void (^)(NSError* error, NSArray* rates))reply;
 
-// 1. CREATE/UPDATE ACCOUNT
+// 1A. CREATE/UPDATE ACCOUNT
 - (void)retrieveAccountForReceipt:(NSString*)receipt
                          language:(NSString*)language
                 notificationToken:(NSString*)notificationToken
@@ -39,6 +39,20 @@
                             reply:(void (^)(NSError*  error,
                                             NSString* webUsername,
                                             NSString* webPassword))reply;
+
+// 1B. UPDATE DEVICE INFORMATION
+- (void)updateAccountForLanguage:(NSString*)language
+                 notificationToken:(NSString*)notificationToken
+                 mobileCountryCode:(NSString*)mobileCountryCode
+                 mobileNetworkCode:(NSString*)mobileNetworkCode
+                        deviceName:(NSString*)deviceName
+                          deviceOs:(NSString*)deviceOs
+                       deviceModel:(NSString*)deviceModel
+                        appVersion:(NSString*)appVersion
+                          vendorId:(NSString*)vendorId
+                             reply:(void (^)(NSError*  error,
+                                             NSString* webUsername,
+                                             NSString* webPassword))reply;
 
 // 2A. DO NUMBER VERIFICATION
 - (void)retrieveVerificationCodeForE164:(NSString*)e164

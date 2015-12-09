@@ -152,7 +152,7 @@
 }
 
 
-// 1. CREATE/UPDATE ACCOUNT
+// 1A. CREATE/UPDATE ACCOUNT
 - (void)retrieveAccountForReceipt:(NSString*)receipt
                          language:(NSString*)language
                 notificationToken:(NSString*)notificationToken
@@ -168,6 +168,7 @@
                                             NSString* webPassword))reply;
 {
     NSDictionary* parameters;
+    
     if (mobileCountryCode == nil || mobileNetworkCode == nil)
     {
         parameters = @{@"receipt"           : receipt,
@@ -199,11 +200,60 @@
     // Don't call `handleAccount` and get data without needing account.
 
     [self.webInterface postPath:[NSString stringWithFormat:@"/users?currencyCode=%@&countryCode=%@",
-                                 currencyCode, countryCode]
+                                                           currencyCode, countryCode]
                      parameters:parameters
                           reply:^(NSError *error, id content)
     {
-        reply(error,  content[@"webUsername"], content[@"webPassword"]);
+        reply(error, content[@"webUsername"], content[@"webPassword"]);
+    }];
+}
+
+
+// 1B. UPDATE DEVICE INFORMATION
+- (void)updateAccountForLanguage:(NSString*)language
+               notificationToken:(NSString*)notificationToken
+               mobileCountryCode:(NSString*)mobileCountryCode
+               mobileNetworkCode:(NSString*)mobileNetworkCode
+                      deviceName:(NSString*)deviceName
+                        deviceOs:(NSString*)deviceOs
+                     deviceModel:(NSString*)deviceModel
+                      appVersion:(NSString*)appVersion
+                        vendorId:(NSString*)vendorId
+                           reply:(void (^)(NSError*  error,
+                                           NSString* webUsername,
+                                           NSString* webPassword))reply
+{
+    NSString*     username = [Settings sharedSettings].webUsername;
+    NSDictionary* parameters;
+    
+    if (mobileCountryCode == nil || mobileNetworkCode == nil)
+    {
+        parameters = @{@"language"          : language,
+                       @"notificationToken" : notificationToken,
+                       @"deviceName"        : deviceName,
+                       @"deviceOs"          : deviceOs,
+                       @"deviceModel"       : deviceModel,
+                       @"appVersion"        : appVersion,
+                       @"vendorId"          : vendorId};
+    }
+    else
+    {
+        parameters = @{@"language"          : language,
+                       @"notificationToken" : notificationToken,
+                       @"mobileCountryCode" : mobileCountryCode,
+                       @"mobileNetworkCode" : mobileNetworkCode,
+                       @"deviceName"        : deviceName,
+                       @"deviceOs"          : deviceOs,
+                       @"deviceModel"       : deviceModel,
+                       @"appVersion"        : appVersion,
+                       @"vendorId"          : vendorId};
+    }
+    
+    [self putPath:[NSString stringWithFormat:@"/users/%@", username]
+       parameters:parameters
+            reply:^(NSError *error, id content)
+    {
+        reply(error, content[@"webUsername"], content[@"webPassword"]);
     }];
 }
 
@@ -215,9 +265,9 @@
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"e164" : [e164 substringFromIndex:1]};
 
-    [self postPath:[NSString stringWithFormat:@"/users/%@/phones", username]
-        parameters:parameters
-             reply:^(NSError* error, id content)
+    [self putPath:[NSString stringWithFormat:@"/users/%@/phones", username]
+       parameters:parameters
+            reply:^(NSError* error, id content)
     {
         if (error == nil)
         {
