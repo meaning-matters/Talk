@@ -520,6 +520,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
 - (void)requestWithMethod:(NSString*)method
                      path:(NSString*)path
                parameters:(id)parameters
+                 retrying:(BOOL)retrying
                   success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
                   failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
 {
@@ -551,15 +552,27 @@ static void processDnsReply(DNSServiceRef       sdRef,
                 }
                 else if (error.code != NSURLErrorCancelled)
                 {
-                    // Retry once.
-                    @synchronized(self.servers)
+                    if (retrying == NO)
                     {
-                        [self.servers removeAllObjects];
-                        self.selectedServer = nil;
+                        // Retry once.
+                        @synchronized(self.servers)
+                        {
+                            [self.servers removeAllObjects];
+                            self.selectedServer = nil;
+                        }
+                    
+                        NBLog(@"Retrying: %@", path);
+                        [self requestWithMethod:method
+                                           path:path
+                                     parameters:parameters
+                                       retrying:YES
+                                        success:success
+                                        failure:failure];
                     }
-                
-                    NBLog(@"Retrying: %@", path);
-                    [self requestWithMethod:method path:path parameters:parameters success:success failure:failure];
+                    else
+                    {
+                        failure(operation, error);
+                    }
                 }
             }];
             
@@ -583,7 +596,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
         success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
         failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
 {
-    [self requestWithMethod:@"GET" path:path parameters:parameters success:success failure:failure];
+    [self requestWithMethod:@"GET" path:path parameters:parameters retrying:NO success:success failure:failure];
 }
 
 
@@ -592,7 +605,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
          success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
          failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
 {
-    [self requestWithMethod:@"POST" path:path parameters:parameters success:success failure:failure];
+    [self requestWithMethod:@"POST" path:path parameters:parameters retrying:NO success:success failure:failure];
 }
 
 
@@ -601,7 +614,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
         success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
         failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
 {
-    [self requestWithMethod:@"PUT" path:path parameters:parameters success:success failure:failure];
+    [self requestWithMethod:@"PUT" path:path parameters:parameters retrying:NO success:success failure:failure];
 }
 
 
@@ -610,7 +623,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
            success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
            failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
 {
-    [self requestWithMethod:@"DELETE" path:path parameters:parameters success:success failure:failure];
+    [self requestWithMethod:@"DELETE" path:path parameters:parameters retrying:NO success:success failure:failure];
 }
 
 
