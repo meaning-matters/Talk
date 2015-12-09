@@ -617,7 +617,7 @@ static Common* sharedCommon;
 
         return NO;
     }
-    else if ([[AppDelegate appDelegate].deviceToken length] == 0)
+    else if ([AppDelegate appDelegate].deviceToken.length == 0)
     {
         NSString*   title;
         NSString*   message;

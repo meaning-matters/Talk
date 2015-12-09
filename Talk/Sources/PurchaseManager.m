@@ -259,10 +259,24 @@
 
 - (void)processAccountTransaction:(SKPaymentTransaction*)transaction
 {
+    NSString* deviceToken;
+    
+    // In rare cases iOS' device token is not (yet) available.  In that case we use
+    // a UUID that was generated in Settings, until it's replaced by the real one from
+    // iOS using API #1B.
+    if ([AppDelegate appDelegate].deviceToken.length > 0)
+    {
+        deviceToken = [AppDelegate appDelegate].deviceToken;
+    }
+    else
+    {
+        deviceToken = [Settings sharedSettings].deviceTokenReplacement;
+    }
+    
     //### I tried [NSBundle appStoreReceiptURL] ..., but this requires server-side changes.
     [[WebClient sharedClient] retrieveAccountForReceipt:[Base64 encode:transaction.transactionReceipt]
                                                language:[[NSLocale preferredLanguages] objectAtIndex:0]
-                                      notificationToken:[AppDelegate appDelegate].deviceToken
+                                      notificationToken:deviceToken
                                       mobileCountryCode:[NetworkStatus sharedStatus].simMobileCountryCode
                                       mobileNetworkCode:[NetworkStatus sharedStatus].simMobileNetworkCode
                                              deviceName:[UIDevice currentDevice].name

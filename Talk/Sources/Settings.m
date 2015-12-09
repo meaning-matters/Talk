@@ -25,6 +25,7 @@ NSString* const HomeCountryFromSimKey     = @"HomeCountryFromSim";
 NSString* const LastDialedNumberKey       = @"LastDialedNumber";
 NSString* const WebUsernameKey            = @"WebUsername";            // Used as keychain 'username'.
 NSString* const WebPasswordKey            = @"WebPassword";            // Used as keychain 'username'.
+NSString* const DeviceTokenReplacementKey = @"DeviceTokenReplacement";
 NSString* const ShowCallerIdKey           = @"ShowCallerId";
 NSString* const CallerIdE164Key           = @"CallerIdE164";
 NSString* const CallbackE164Key           = @"CallbackE164";
@@ -36,6 +37,13 @@ NSString* const StoreCountryCodeKey       = @"StoreCountryCode";
 NSString* const CreditKey                 = @"Credit";
 NSString* const NeedsServerSyncKey        = @"NeedsServerSync";
 NSString* const DnsSrvPrefixKey           = @"DnsSrvPrefix";
+
+
+@interface Settings ()
+
+@property (nonatomic, strong) NSString* deviceTokenReplacement;
+
+@end
 
 
 @implementation Settings
@@ -57,6 +65,11 @@ static NSUserDefaults* userDefaults;
         userDefaults = [NSUserDefaults standardUserDefaults];
 
         [userDefaults registerDefaults:[sharedInstance defaults]];
+        
+        if (sharedInstance.deviceTokenReplacement == nil)
+        {
+            sharedInstance.deviceTokenReplacement = [[NSUUID UUID] UUIDString];
+        }
     });
 
     return sharedInstance;
@@ -233,6 +246,18 @@ static NSUserDefaults* userDefaults;
     [Keychain saveString:webPassword forKey:WebPasswordKey];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:nil];
+}
+
+
+- (NSString*)deviceTokenReplacement
+{
+    return [userDefaults objectForKey:DeviceTokenReplacementKey];
+}
+
+
+- (void)setDeviceTokenReplacement:(NSString*)deviceTokenReplacement
+{
+    [userDefaults setObject:deviceTokenReplacement forKey:DeviceTokenReplacementKey];
 }
 
 

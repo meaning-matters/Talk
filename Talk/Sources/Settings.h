@@ -33,6 +33,7 @@
 
 @property (nonatomic, strong) NSString*      webUsername;
 @property (nonatomic, strong) NSString*      webPassword;
+@property (nonatomic, readonly) NSString*    deviceTokenReplacement;
 
 @property (nonatomic, assign) BOOL           showCallerId;
 @property (nonatomic, strong) NSString*      callerIdE164;          // Caller ID E164, used until Groups are implemented.
