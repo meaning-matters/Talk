@@ -265,9 +265,9 @@
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"e164" : [e164 substringFromIndex:1]};
 
-    [self putPath:[NSString stringWithFormat:@"/users/%@/phones", username]
-       parameters:parameters
-            reply:^(NSError* error, id content)
+    [self postPath:[NSString stringWithFormat:@"/users/%@/phones", username]
+        parameters:parameters
+             reply:^(NSError* error, id content)
     {
         if (error == nil)
         {
