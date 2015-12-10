@@ -114,10 +114,14 @@
 
     if ([UIApplication sharedApplication].protectedDataAvailable)
     {
+        AnalysticsTrace(@"protectedDataAvailable");
+        
         [self setUp];
     }
     else
     {
+        AnalysticsTrace(@"abort");
+        
         abort();
     }
 
@@ -130,12 +134,16 @@
 
 - (void)application:(UIApplication*)application didRegisterUserNotificationSettings:(UIUserNotificationSettings*)notificationSettings
 {
+    AnalysticsTrace(@"didRegisterUserNotificationSettings");
+    
     [application registerForRemoteNotifications];
 }
 
 
 - (void)application:(UIApplication*)application handleActionWithIdentifier:(NSString*)identifier forRemoteNotification:(NSDictionary*)userInfo completionHandler:(void(^)())completionHandler
 {
+    AnalysticsTrace(@"handleActionWithIdentifier");
+    
     if ([identifier isEqualToString:@"declineAction"])
     {
     }
@@ -147,6 +155,8 @@
 
 - (void)applicationWillResignActive:(UIApplication*)application
 {
+    AnalysticsTrace(@"applicationWillResignActive");
+    
     // Sent when the application is about to move from active to inactive state. This can occur for
     // certain types of temporary interruptions (such as an incoming phone call or SMS message) or
     // when the user quits the application and it begins the transition to the background state.
@@ -158,6 +168,8 @@
 
 - (void)applicationDidEnterBackground:(UIApplication*)application
 {
+    AnalysticsTrace(@"applicationDidEnterBackground");
+    
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
@@ -165,24 +177,32 @@
 
 - (void)applicationWillEnterForeground:(UIApplication*)application
 {
+    AnalysticsTrace(@"applicationWillEnterForeground");
+    
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
 
 - (void)applicationDidBecomeActive:(UIApplication*)application
 {
+    AnalysticsTrace(@"applicationDidBecomeActive");
+    
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
 
 - (void)applicationWillTerminate:(UIApplication*)application
 {
+    AnalysticsTrace(@"applicationWillTerminate");
+    
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)token
 {
+    AnalysticsTrace(@"didRegisterForRemoteNotificationsWithDeviceToken");
+    
     NSString* string = [[token description] stringByReplacingOccurrencesOfString:@" " withString:@""];
     self.deviceToken = [string substringWithRange:NSMakeRange(1, [string length] - 2)];   // Strip off '<' and '>'.
         
@@ -200,6 +220,8 @@
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
+    AnalysticsTrace(@"didFailToRegisterForRemoteNotificationsWithError");
+
     self.deviceToken = nil;
 
     // When account purchase transaction has not been finished, the PurchaseManager receives
@@ -211,6 +233,8 @@
 
 - (void)application:(UIApplication*)application didReceiveLocalNotification:(UILocalNotification*)notification
 {
+    AnalysticsTrace(@"didReceiveLocalNotification");
+
     if (notification.userInfo != nil)
     {
         NSString*   source = [notification.userInfo objectForKey:@"source"];
@@ -224,6 +248,7 @@
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
+    AnalysticsTrace(@"didReceiveRemoteNotification");
 }
 
 
@@ -315,6 +340,8 @@
 
 - (void)tabBarController:(UITabBarController*)tabBarController willBeginCustomizingViewControllers:(NSArray*)viewControllers
 {
+    AnalysticsTrace(@"willBeginCustomizingViewControllers");
+
     id customizeView = [[tabBarController view] subviews][1];
     if ([customizeView isKindOfClass:NSClassFromString(@"UITabBarCustomizeView")] == YES)
     {
@@ -330,6 +357,8 @@
 - (void)tabBarController:(UITabBarController*)tabBarController willEndCustomizingViewControllers:(NSArray*)viewControllers
                  changed:(BOOL)changed
 {
+    AnalysticsTrace(@"willEndCustomizingViewControllers");
+
     if (changed)
     {
         NSMutableArray* classNames = [NSMutableArray array];
@@ -355,6 +384,8 @@
     {
         [Settings sharedSettings].tabBarSelectedIndex = [self.tabBarController.viewControllers indexOfObject:viewController];
     }
+    
+    AnalysticsTrace([@([Settings sharedSettings].tabBarSelectedIndex) description]);
 }
 
 
@@ -500,11 +531,15 @@
         {
             if (error == nil)
             {
+                AnalysticsTrace(@"updateAccount");
+
                 [Settings sharedSettings].webUsername = webUsername;
                 [Settings sharedSettings].webPassword = webPassword;
             }
             else
             {
+                AnalysticsTrace(@"ERROR_updateAccount");
+
                 NBLog(@"Update account error: %@.", error);
             }
         }];

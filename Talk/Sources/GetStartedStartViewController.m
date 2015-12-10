@@ -17,6 +17,8 @@
 
 - (id)init
 {
+    AnalysticsTrace(@"init");
+
     if (self = [super init])
     {
         self.title = NSLocalizedStringWithDefaultValue(@"GetStartedStart ScreenTitle", nil, [NSBundle mainBundle],
@@ -31,6 +33,8 @@
 
 - (void)viewDidLoad
 {
+    AnalysticsTrace(@"viewDidLoad");
+
     [super viewDidLoad];
 
     self.titleLabel.text = NSLocalizedStringWithDefaultValue(@"GetStartedStart Welcome", nil, [NSBundle mainBundle],
@@ -58,12 +62,16 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    AnalysticsTrace(@"viewDidAppear");
+
     [super viewDidAppear:animated];
 }
 
 
 - (void)getStarted
 {
+    AnalysticsTrace(@"getStarted");
+
     [self setBusy:YES];
 
     [[PurchaseManager sharedManager] buyAccount:^(BOOL success, id object)
@@ -72,14 +80,20 @@
 
         if (success == YES)
         {
+            AnalysticsTrace(@"getStarted_success");
+
             [self restoreUserData];
         }
         else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
         {
+            AnalysticsTrace(@"getStarted_popView");
+
             [self.navigationController popViewControllerAnimated:YES];
         }
         else if (object != nil)
         {
+            AnalysticsTrace(@"getStarted_error_initial_credit");
+
             NSString* title;
             NSString* message;
 

@@ -120,11 +120,15 @@
 {
     if (self.buyCompletion != nil)
     {
+        AnalysticsTrace(@"completeBuyWithSuccess_A");
+
         self.buyCompletion(success, object);
         self.buyCompletion = nil;
     }
     else if (success == YES)
     {
+        AnalysticsTrace(@"completeBuyWithSuccess_B");
+       
         SKPaymentTransaction* transaction = object;
 
         if ([self isCreditProductIdentifier:transaction.payment.productIdentifier])
@@ -158,6 +162,8 @@
 
 - (void)buyProductIdentifier:(NSString*)productIdentifier completion:(void (^)(BOOL success, id object))completion
 {
+    AnalysticsTrace(([NSString stringWithFormat:@"buyProductIdentifier_%@", productIdentifier]));
+
     if ([SKPaymentQueue defaultQueue].transactions.count > 0)
     {
         if ([self retryPendingTransactions] == YES)
@@ -172,10 +178,14 @@
 
     if ([SKPaymentQueue canMakePayments])
     {
+        AnalysticsTrace(@"buyProductIdentifier_A");
+        
         SKProduct* product = [self productForProductIdentifier:productIdentifier];
 
         if (product != nil)
         {
+            AnalysticsTrace(@"buyProductIdentifier_B");
+
             SKPayment*  payment = [SKPayment paymentWithProduct:product];
             [[SKPaymentQueue defaultQueue] addPayment:payment];
             [Common enableNetworkActivityIndicator:YES];
@@ -184,6 +194,8 @@
         }
         else
         {
+            AnalysticsTrace(@"buyProductIdentifier_C");
+
             NSString* title;
             NSString* message;
 
@@ -208,6 +220,8 @@
     }
     else
     {
+        AnalysticsTrace(@"buyProductIdentifier_D");
+
         NSString* title;
         NSString* message;
 
@@ -235,6 +249,8 @@
 
 - (void)finishTransaction:(SKPaymentTransaction*)transaction
 {
+    AnalysticsTrace(@"finishTransaction");
+
     [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
 }
 
@@ -266,10 +282,14 @@
     // iOS using API #1B.
     if ([AppDelegate appDelegate].deviceToken.length > 0)
     {
+        AnalysticsTrace(@"processAccountTransaction_deviceToken");
+
         deviceToken = [AppDelegate appDelegate].deviceToken;
     }
     else
     {
+        AnalysticsTrace(@"processAccountTransaction_deviceTokenReplacement");
+
         deviceToken = [Settings sharedSettings].deviceTokenReplacement;
     }
     
@@ -290,6 +310,8 @@
     {
         if (error == nil)
         {
+            AnalysticsTrace(@"processAccountTransaction_OK");
+
             [Settings sharedSettings].webUsername = webUsername;
             [Settings sharedSettings].webPassword = webPassword;
 
@@ -298,6 +320,8 @@
         }
         else
         {
+            AnalysticsTrace(@"processAccountTransaction_ERROR");
+
             NBLog(@"Retrieve account error: %@.", error);
             
             // If this was a restored transaction, it already been 'finished' in updatedTransactions:.
@@ -313,6 +337,8 @@
 
 - (void)processCreditTransaction:(SKPaymentTransaction*)transaction
 {
+    AnalysticsTrace(@"processCreditTransaction");
+
     // Return when products are not yet loaded.  This method might namely be
     // called early when a transaction was pending.
     if (_products == nil)
@@ -349,6 +375,8 @@
 
 - (void)productsRequest:(SKProductsRequest*)request didReceiveResponse:(SKProductsResponse*)response
 {
+    AnalysticsTrace(@"productsRequest_didReceiveResponse");
+
     self.products = response.products;
     
     for (SKProduct* product in self.products)
@@ -372,6 +400,8 @@
 
 - (void)request:(SKRequest*)request didFailWithError:(NSError*)error
 {
+    AnalysticsTrace(@"request_didFailWithError");
+
     NSString* title;
     NSString* message;
 
@@ -420,11 +450,15 @@
 
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue*)queue
 {
+    AnalysticsTrace(@"paymentQueueRestoreCompletedTransactionsFinished");
+
     NBLog(@"paymentQueueRestoreCompletedTransactionsFinished");
     [Common enableNetworkActivityIndicator:NO];
 
     if (self.restoredAccountTransaction != nil)
     {
+        AnalysticsTrace(@"restoredAccountTransaction_YES");
+
         if ([self isAccountProductIdentifier:self.restoredAccountTransaction.payment.productIdentifier])
         {
             [self processAccountTransaction:self.restoredAccountTransaction];
@@ -436,6 +470,8 @@
     }
     else
     {
+        AnalysticsTrace(@"restoredAccountTransaction_NO");
+
         [self completeBuyWithSuccess:YES object:nil];
         self.restoredAccountTransaction = nil;
     }
@@ -444,6 +480,8 @@
 
 - (void)paymentQueue:(SKPaymentQueue*)queue restoreCompletedTransactionsFailedWithError:(NSError*)error
 {
+    AnalysticsTrace(@"restoreCompletedTransactionsFailedWithError");
+
     NBLog(@"restoreCompletedTransactionsFailedWithError: %@", error.localizedDescription);
     [Common enableNetworkActivityIndicator:NO];
 
@@ -454,16 +492,22 @@
 
 - (void)paymentQueue:(SKPaymentQueue*)queue updatedTransactions:(NSArray*)transactions
 {
+    AnalysticsTrace(@"paymentQueue_updatedTransactions");
+
     for (SKPaymentTransaction* transaction in transactions)
     {
         if ([self isAccountProductIdentifier:transaction.payment.productIdentifier])
         {
             if (transaction.originalTransaction == nil)
             {
+                AnalysticsTrace(@"_isNewAccount");
+
                 _isNewAccount = YES;
             }
             else
             {
+                AnalysticsTrace(@"_isNewAccount_up_to_1_day");
+
                 // A new account: up to 1 day old.
                 _isNewAccount = (-[transaction.originalTransaction.transactionDate timeIntervalSinceNow] < (24 * 3600));
             }
@@ -473,11 +517,15 @@
         {
             case SKPaymentTransactionStatePurchasing:
             {
+                AnalysticsTrace(@"SKPaymentTransactionStatePurchasing");
+
                 NBLog(@"//### Busy purchasing");
                 break;
             }
             case SKPaymentTransactionStatePurchased:
             {
+                AnalysticsTrace(@"SKPaymentTransactionStatePurchased");
+
                 [Common enableNetworkActivityIndicator:NO];
                 if ([self isAccountProductIdentifier:transaction.payment.productIdentifier])
                 {
@@ -491,6 +539,8 @@
             }
             case SKPaymentTransactionStateRestored:
             {
+                AnalysticsTrace(@"SKPaymentTransactionStateRestored");
+
                 [self finishTransaction:transaction];  // Finish multiple times is allowed.
                 self.restoredAccountTransaction = transaction;
                 break;
@@ -499,6 +549,8 @@
             {
                 if (transaction.error.code == 2)
                 {
+                    AnalysticsTrace(@"SKPaymentTransactionStateFailed_2");
+
                     NBLog(@"Did we see Already Purchased?");
                     [Common enableNetworkActivityIndicator:NO];
                     [self finishTransaction:transaction];
@@ -506,6 +558,8 @@
                 }
                 else
                 {
+                    AnalysticsTrace(@"SKPaymentTransactionStateFailed");
+
                     [Common enableNetworkActivityIndicator:NO];
                     [self finishTransaction:transaction];
 
@@ -519,6 +573,8 @@
             }
             case SKPaymentTransactionStateDeferred:
             {
+                AnalysticsTrace(@"SKPaymentTransactionStateDeferred");
+
                 // Waiting for user action (like tapping Buy).  We don't use this now.
                 break;
             }
@@ -529,6 +585,8 @@
 
 - (void)paymentQueue:(SKPaymentQueue*)queue updatedDownloads:(NSArray*)downloads
 {
+    AnalysticsTrace(@"paymentQueue_updatedDownloads");
+
     // We don't have downloads.  (This method is required, that's the only reason it's here.)
 }
 
@@ -537,15 +595,21 @@
 
 - (void)reset
 {
+    AnalysticsTrace(@"reset");
+
     self.loadProductsDate = nil;    // Makes sure reload of products is done
 }
 
 
 - (void)loadProducts:(void (^)(BOOL success))completion
 {
+    AnalysticsTrace(@"loadProducts");
+
     if ((self.loadProductsDate == nil || -[self.loadProductsDate timeIntervalSinceNow] > LOAD_PRODUCTS_INTERVAL) &&
         self.productsRequest == nil)
     {
+        AnalysticsTrace(@"loadProducts_A");
+        
         self.loadCompletion = completion;
 
         self.productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:self.productIdentifiers];
@@ -556,6 +620,8 @@
     }
     else if (self.productsRequest != nil && self.loadCompletion == nil)
     {
+        AnalysticsTrace(@"loadProducts_B");
+
         // The NetworkStatusReachableNotification was fired (when we don't set completion),
         // and we're busy loading.  But any other (making this second invocation, e.g.
         // ProvisioningViewController) does wants to get feedback when done, so we assign
@@ -564,6 +630,8 @@
     }
     else
     {
+        AnalysticsTrace(@"loadProducts_C");
+
         completion ? completion([Settings sharedSettings].storeCurrencyCode.length > 0) : 0;
     }
 }
@@ -571,16 +639,22 @@
 
 - (BOOL)retryPendingTransactions
 {
+    AnalysticsTrace(@"retryPendingTransactions");
+
     BOOL result = YES;
 
     for (SKPaymentTransaction* transaction in [SKPaymentQueue defaultQueue].transactions)
     {
         if ([self isCreditProductIdentifier:transaction.payment.productIdentifier])
         {
+            AnalysticsTrace(@"retryPendingTransactions_credit");
+
             [self processCreditTransaction:transaction];
         }
         else
         {
+            AnalysticsTrace(@"retryPendingTransactions_NO");
+
             result = NO;    // Indicates that caller must continue processing other (i.e., Account) transaction.
         }
     }
@@ -696,6 +770,8 @@
 
 - (void)buyAccount:(void (^)(BOOL success, id object))completion
 {
+    AnalysticsTrace(@"buyAccount");
+
     if (self.buyCompletion != nil)
     {
         completion ? completion(NO, nil) : 0;
@@ -709,6 +785,8 @@
 
 - (void)restoreAccount:(void (^)(BOOL success, id object))completion
 {
+    AnalysticsTrace(@"restoreAccount");
+
     if (self.buyCompletion != nil)
     {
         completion ? completion(NO, nil) : 0;
@@ -725,6 +803,8 @@
 
 - (void)buyCreditForTier:(int)tier completion:(void (^)(BOOL success, id object))completion
 {
+    AnalysticsTrace(@"buyCreditForTier");
+
     if (self.buyCompletion != nil)
     {
         completion ? completion(NO, nil) : 0;

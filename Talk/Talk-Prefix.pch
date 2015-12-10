@@ -13,6 +13,7 @@
     #import <Foundation/Foundation.h>
     #import <CoreData/CoreData.h>
     #import "NBAddressBook.h"
+    #import "AnalyticsTransmitter.h"
 
 #ifdef DEBUG
 #define NBLog(fmt, ...) NSLog(fmt, ##__VA_ARGS__)

@@ -41,6 +41,8 @@
 
 - (void)viewDidLoad
 {
+    AnalysticsTrace(@"viewDidLoad");
+
     [super viewDidLoad];
 
     [self loadProducts];
@@ -66,8 +68,12 @@
 
 - (IBAction)buttonAction:(id)sender
 {
+    AnalysticsTrace(@"buttonAction");
+
     if ([self checkCurrencyCode] == YES)
     {
+        AnalysticsTrace(@"checkCurrencyCode_YES");
+
         NSData*                 data                = [Common dataForResource:@"Terms" ofType:@"json"];
         NSDictionary*           dictionary          = [Common objectWithJsonData:data];
         UINavigationController* modalViewController;
@@ -92,6 +98,8 @@
 
 - (void)agree
 {
+    AnalysticsTrace(@"agree");
+
     NSString* title;
     NSString* message;
 
@@ -113,6 +121,8 @@
         {
             if (buttonIndex == 1)
             {
+                AnalysticsTrace(@"agree_YES");
+
                 [self getStarted];
             }
         }];
@@ -130,6 +140,8 @@
 
 - (void)setBusy:(BOOL)busy
 {
+    AnalysticsTrace(([NSString stringWithFormat:@"setBusy_%@", busy ? @"YES" : @"NO"]));
+
     self.button.enabled = busy ? NO   : YES;
     self.button.alpha   = busy ? 0.5f : 1.0f;
 
@@ -139,6 +151,8 @@
 
 - (void)loadProducts
 {
+    AnalysticsTrace(@"loadProducts");
+
     self.button.enabled = NO;
     self.button.alpha   = 0.5f;
     [[PurchaseManager sharedManager] loadProducts:^(BOOL success)
@@ -147,6 +161,8 @@
         self.button.alpha   = 1.0f;
         if (success == NO)
         {
+            AnalysticsTrace(@"loadProducts_FAIL");
+
             [self.navigationController popViewControllerAnimated:YES];
         }
     }];
@@ -157,6 +173,8 @@
 {
     if ([Settings sharedSettings].storeCurrencyCode.length == 0)
     {
+        AnalysticsTrace(@"checkCurrencyCode_FAIL");
+
         NSString* title;
         NSString* message;
         title   = NSLocalizedStringWithDefaultValue(@"GetStartedAction NoCurrencyCodeTitle", nil, [NSBundle mainBundle],
@@ -183,6 +201,8 @@
     }
     else
     {
+        AnalysticsTrace(@"checkCurrencyCode_OK");
+
         return YES;
     }
 }
@@ -190,6 +210,8 @@
 
 - (void)restoreUserData
 {
+    AnalysticsTrace(@"restoreUserData");
+
     [self setBusy:YES];
 
     [[DataManager sharedManager] synchronizeAll:^(NSError *error)
@@ -198,17 +220,23 @@
 
         if (error == nil)
         {
+            AnalysticsTrace(@"restoreUserData_OK");
+
             NSArray* phones = [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
                                                                         sortKeys:@[@"name"]
                                                                        predicate:nil
                                                             managedObjectContext:nil];
             if (phones.count == 0)
             {
+                AnalysticsTrace(@"restoreUserData_no_phones");
+
                 VerifyPhoneViewController* viewController;
                 viewController = [[VerifyPhoneViewController alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber)
                 {
                     if (verifiedPhoneNumber != nil)
                     {
+                        AnalysticsTrace(@"restoreUserData_verifiedPhoneNumber_OK");
+
                         [self setBusy:YES];
                         [self savePhoneNumber:verifiedPhoneNumber
                                      withName:[UIDevice currentDevice].name
@@ -218,16 +246,22 @@
 
                             if (error == nil)
                             {
+                                AnalysticsTrace(@"restoreUserData_save_OK");
+
                                 [self readyWithE164:[verifiedPhoneNumber e164Format]];
                             }
                             else
                             {
+                                AnalysticsTrace(@"restoreUserData_save_FAIL");
+
                                 [self showSavingPhoneAlert:error];
                             }
                         }];
                     }
                     else
                     {
+                        AnalysticsTrace(@"restoreUserData_resetAll");
+
                         [[AppDelegate appDelegate] resetAll];
                     }
                 }];
@@ -236,11 +270,15 @@
             }
             else
             {
+                AnalysticsTrace(@"restoreUserData_readyWithE164");
+
                 [self readyWithE164:((PhoneData*)phones[0]).e164];
             }
         }
         else
         {
+            AnalysticsTrace(@"restoreUserData_showLoadingPhonesAlert");
+
             [self setBusy:NO];
             [self showLoadingPhonesAlert:error];
         }
@@ -256,6 +294,8 @@
     {
         if (error == nil)
         {
+            AnalysticsTrace(@"savePhoneNumber_OK");
+
             PhoneData*              phone;
             NSManagedObjectContext* context;
 
@@ -271,6 +311,8 @@
         }
         else
         {
+            AnalysticsTrace(@"savePhoneNumber_ERROR");
+
             completion(error);
         }
     }];
