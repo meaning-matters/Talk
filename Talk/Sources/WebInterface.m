@@ -49,11 +49,12 @@
 #import "AFNetworking.h"
 #import "NetworkStatus.h"
 
-const NSTimeInterval kDnsUpdateTimeoutReachable    = 20;
-const NSTimeInterval kDnsUpdateTimeoutNotReachable =  3;  // Limit timeout because of hard `select()` timeout.
-const NSTimeInterval kApiRequestTimeout            = 20;
-const NSTimeInterval kTtlIncrement                 = 10;
-const NSTimeInterval kSelectedServerHoldTime       = 10;
+const NSTimeInterval kDnsUpdateTimeoutReachable    =   20;
+const NSTimeInterval kDnsUpdateTimeoutNotReachable =    3;  // Limit timeout because of hard `select()` timeout.
+const NSTimeInterval kApiRequestTimeout            =   20;
+const NSTimeInterval kTtlIncrement                 =   10;
+const NSTimeInterval kSelectedServerHoldTime       =   10;
+const uint32_t       kFallbackServerTtl            = 3600;  // Retry to load DNS-SRV after an hour.
 
 
 @interface WebInterface ()
@@ -209,6 +210,9 @@ const NSTimeInterval kSelectedServerHoldTime       = 10;
             if (remainingTime == DBL_MIN)
             {
                 NBLog(@"DNS update failed.");
+                
+                self.dnsUpdateDate = [NSDate date];
+                [self useFallbackServer];
             }
             else if (remainingTime <= 0)
             {
@@ -228,6 +232,20 @@ const NSTimeInterval kSelectedServerHoldTime       = 10;
             DNSServiceRefDeallocate(sdRef);
         }
     }
+}
+
+
+- (void)useFallbackServer
+{
+    [WebInterface sharedInterface].ttl = kFallbackServerTtl;
+
+    NSMutableDictionary* server = [@{@"target"   : [Settings sharedSettings].fallbackServer,
+                                     @"port"     : @(443),
+                                     @"priority" : @(10),
+                                     @"weight"   : @(10),
+                                     @"ttl"      : @(kFallbackServerTtl)} mutableCopy];
+    
+    [[WebInterface sharedInterface].servers addObject:server];
 }
 
 
@@ -447,7 +465,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
 - (NSDictionary*)selectServer
 {
     [self updateServers];
-
+    
     // See comment in `testServers` about mutual exclusive access to `self.servers`.
     @synchronized(self.servers)
     {
@@ -489,6 +507,8 @@ static void processDnsReply(DNSServiceRef       sdRef,
         {
             server = nil;
         }
+        
+        NBLog(@"Selected server: %@.", server[@"target"]);
         
         return server;
     }

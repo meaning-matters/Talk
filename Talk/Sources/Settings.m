@@ -487,6 +487,12 @@ static NSUserDefaults* userDefaults;
 }
 
 
+- (NSString*)fallbackServer
+{
+    return @"api.numberbay.com";
+}
+
+
 - (NSString*)serverTestUrlPath
 {
     return @"/test/system";
