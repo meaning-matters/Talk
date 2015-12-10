@@ -65,5 +65,6 @@
 
 @property (nonatomic, strong) NSString*      dnsSrvName;            // DNS-SRV servers name.  Setting to `nil` selects default.
 @property (nonatomic, readonly) NSString*    serverTestUrlPath;     // Path of server test URL.
+@property (nonatomic, readonly) NSString*    fallbackServer;        // Server used when DNS-SRV fails.
 
 @end
