@@ -35,6 +35,8 @@
 
 - (id)initShowAsIntro:(BOOL)showAsIntro
 {
+    AnalysticsTrace(@"initShowAsIntro");
+
     if (self = [super initWithNibName:@"GetStartedView" bundle:nil])
     {
         self.showAsIntro = showAsIntro;
@@ -65,6 +67,8 @@
 
 - (void)viewDidLoad
 {
+    AnalysticsTrace(@"viewDidLoad");
+
     [super viewDidLoad];
 
     if (self.showAsIntro == NO)
@@ -136,6 +140,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    AnalysticsTrace(@"viewWillAppear");
+    
     [super viewWillAppear:animated];
 
     for (int page = 0; page < self.numberOfPages; page++)
@@ -156,6 +162,8 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    AnalysticsTrace(@"viewWillDisappear");
+
     [super viewWillDisappear:animated];
     [self stopSlideShow];
 }
@@ -173,6 +181,8 @@
 
 - (void)cancel
 {
+    AnalysticsTrace(@"cancel");
+
     NSString* title;
     NSString* message;
     NSString* button;
@@ -202,6 +212,8 @@
     {
         if (cancelled == NO)
         {
+            AnalysticsTrace(@"Look");
+
             [self dismissViewControllerAnimated:YES completion:nil];
         }
     }
@@ -340,6 +352,8 @@
 
 - (IBAction)changePage:(id)sender
 {
+    AnalysticsTrace(@"changePage");
+
     self.changingPage = self.pageControl.currentPage;
     [self gotoPage:self.pageControl.currentPage];
     [self stopSlideShow];
@@ -348,6 +362,8 @@
 
 - (IBAction)startAction:(id)sender
 {
+    AnalysticsTrace(@"startAction");
+
     GetStartedStartViewController* viewController = [[GetStartedStartViewController alloc] init];
 
     [self.navigationController pushViewController:viewController animated:YES];
@@ -356,6 +372,8 @@
 
 - (IBAction)restoreAction:(id)sender
 {
+    AnalysticsTrace(@"restoreAction");
+
     GetStartedRestoreViewController* viewController = [[GetStartedRestoreViewController alloc] init];
 
     [self.navigationController pushViewController:viewController animated:YES];

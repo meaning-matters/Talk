@@ -31,6 +31,8 @@
 
 - (void)viewDidLoad
 {
+    AnalysticsTrace(@"viewDidLoad");
+
     [super viewDidLoad];
 
     self.titleLabel.text = NSLocalizedStringWithDefaultValue(@"GetStartedRestore Welcome", nil, [NSBundle mainBundle],
@@ -60,6 +62,8 @@
 
 - (void)getStarted
 {
+    AnalysticsTrace(@"getStarted");
+
     [self setBusy:YES];
 
     [[PurchaseManager sharedManager] restoreAccount:^(BOOL success, id object)
@@ -68,10 +72,14 @@
 
         if (success == YES && object != nil)    // Transaction is passed, but we don't need/use that.
         {
+            AnalysticsTrace(@"restoreAccount_A");
+
             [self restoreUserData];
         }
         else if (success == YES && object == nil)
         {
+            AnalysticsTrace(@"restoreAccount_B");
+
             NSString* title;
             NSString* message;
 
@@ -95,10 +103,14 @@
         }
         else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
         {
+            AnalysticsTrace(@"restoreAccount_C");
+
             [self.navigationController popViewControllerAnimated:YES];
         }
         else if (object != nil)
         {
+            AnalysticsTrace(@"restoreAccount_D");
+
             NSString* title;
             NSString* message;
 

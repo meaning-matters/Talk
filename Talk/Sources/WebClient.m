@@ -125,6 +125,8 @@
 // 0A. GET CALL RATES
 - (void)retrieveCallRates:(void (^)(NSError* error, NSArray* rates))reply
 {
+    AnalysticsTrace(@"API_0A");
+
     NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
     NSString* countryCode  = [Settings sharedSettings].storeCountryCode;
     
@@ -140,6 +142,8 @@
 // 0B. GET NUMBER RATES
 - (void)retrieveNumberRates:(void (^)(NSError* error, NSArray* rates))reply
 {
+    AnalysticsTrace(@"API_0B");
+
     NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
     NSString* countryCode  = [Settings sharedSettings].storeCountryCode;
     
@@ -167,6 +171,8 @@
                                             NSString* webUsername,
                                             NSString* webPassword))reply;
 {
+    AnalysticsTrace(@"API_1A");
+
     NSDictionary* parameters;
     
     if (mobileCountryCode == nil || mobileNetworkCode == nil)
@@ -223,6 +229,8 @@
                                            NSString* webUsername,
                                            NSString* webPassword))reply
 {
+    AnalysticsTrace(@"API_1B");
+
     NSString*     username = [Settings sharedSettings].webUsername;
     NSDictionary* parameters;
     
@@ -262,6 +270,8 @@
 - (void)retrieveVerificationCodeForE164:(NSString*)e164
                                   reply:(void (^)(NSError* error, NSString* code))reply
 {
+    AnalysticsTrace(@"API_2A");
+
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"e164" : [e164 substringFromIndex:1]};
 
@@ -285,6 +295,8 @@
 - (void)requestVerificationCallForE164:(NSString*)e164
                                  reply:(void (^)(NSError* error))reply
 {
+    AnalysticsTrace(@"API_2B");
+
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* e164x    = [e164 substringFromIndex:1];
 
@@ -301,6 +313,8 @@
 - (void)retrieveVerificationStatusForE164:(NSString*)e164
                                     reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply
 {
+    AnalysticsTrace(@"API_2C");
+
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* e164x    = [e164 substringFromIndex:1];
 
@@ -323,6 +337,8 @@
 // 2D. STOP VERIFICATION
 - (void)stopVerificationForE164:(NSString*)e164 reply:(void (^)(NSError* error))reply
 {
+    AnalysticsTrace(@"API_2D");
+
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* e164x    = [e164 substringFromIndex:1];
 
@@ -338,6 +354,8 @@
 // 2E. UPDATE VERIFIED NUMBER
 - (void)updateVerifiedE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply
 {
+    AnalysticsTrace(@"API_2E");
+    
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSString*     e164x      = [e164 substringFromIndex:1];
     NSDictionary* parameters = @{@"name" : name};
@@ -354,6 +372,8 @@
 // 3. GET VERIFIED NUMBER LIST
 - (void)retrieveVerifiedE164List:(void (^)(NSError* error, NSArray* e164s))reply;
 {
+    AnalysticsTrace(@"API_3");
+
     [self getPath:[NSString stringWithFormat:@"/users/%@/phones", [Settings sharedSettings].webUsername]
        parameters:nil
             reply:^(NSError* error, id content)
@@ -380,6 +400,8 @@
 - (void)retrieveVerifiedE164:(NSString*)e164
                        reply:(void (^)(NSError* error, NSString* name))reply;
 {
+    AnalysticsTrace(@"API_3");
+
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* e164x    = [e164 substringFromIndex:1];
 
@@ -403,6 +425,8 @@
 - (void)deleteVerifiedE164:(NSString*)e164
                      reply:(void (^)(NSError*))reply;
 {
+    AnalysticsTrace(@"API_5");
+    
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* e164x    = [e164 substringFromIndex:1];
 
@@ -878,6 +902,8 @@
 - (void)purchaseCreditForReceipt:(NSString*)receipt
                            reply:(void (^)(NSError* error, float credit))reply
 {
+    AnalysticsTrace(@"API_14");
+    
     NSString*     username     = [Settings sharedSettings].webUsername;
     NSString*     currencyCode = [Settings sharedSettings].storeCurrencyCode;
     NSString*     countryCode  = [Settings sharedSettings].storeCountryCode;
@@ -903,6 +929,8 @@
 // 15. GET CURRENT CALLING CREDIT
 - (void)retrieveCreditWithReply:(void (^)(NSError* error, float credit))reply
 {
+    AnalysticsTrace(@"API_15");
+    
     NSString*     username     = [Settings sharedSettings].webUsername;
     NSString*     currencyCode = [Settings sharedSettings].storeCurrencyCode;
     NSString*     countyCode   = [Settings sharedSettings].storeCountryCode;
@@ -928,6 +956,8 @@
 - (void)retrieveCallRateForE164:(NSString*)e164
                           reply:(void (^)(NSError* error, float ratePerMinute))reply
 {
+    AnalysticsTrace(@"API_16");
+    
     NSString* e164x        = [e164 substringFromIndex:1];
     NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
     NSString* countryCode  = [Settings sharedSettings].storeCountryCode;
@@ -1094,6 +1124,8 @@
                                 privacy:(BOOL)privacy
                                   reply:(void (^)(NSError* error, NSString* uuid))reply;
 {
+    AnalysticsTrace(@"API_32");
+    
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"callbackE164" : [callbackE164 substringFromIndex:1],
                                  @"callthruE164" : [callthruE164 substringFromIndex:1],
@@ -1120,6 +1152,8 @@
 - (void)stopCallbackForUuid:(NSString*)uuid
                       reply:(void (^)(NSError* error))reply
 {
+    AnalysticsTrace(@"API_33");
+    
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self deletePath:[NSString stringWithFormat:@"/users/%@/callback/%@", username, uuid]
@@ -1141,6 +1175,8 @@
                                                float     callbackCost,
                                                float     callthruCost))reply
 {
+    AnalysticsTrace(@"API_34");
+    
     NSString* username     = [Settings sharedSettings].webUsername;
     NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
     NSString* countryCode  = [Settings sharedSettings].storeCountryCode;
