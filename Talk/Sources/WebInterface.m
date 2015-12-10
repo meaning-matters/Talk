@@ -49,12 +49,12 @@
 #import "AFNetworking.h"
 #import "NetworkStatus.h"
 
-const NSTimeInterval kDnsUpdateTimeoutReachable    =   20;
-const NSTimeInterval kDnsUpdateTimeoutNotReachable =    3;  // Limit timeout because of hard `select()` timeout.
-const NSTimeInterval kApiRequestTimeout            =   20;
-const NSTimeInterval kTtlIncrement                 =   10;
-const NSTimeInterval kSelectedServerHoldTime       =   10;
-const uint32_t       kFallbackServerTtl            = 3600;  // Retry to load DNS-SRV after an hour.
+const NSTimeInterval kDnsUpdateTimeoutReachable    =  20;
+const NSTimeInterval kDnsUpdateTimeoutNotReachable =   3;  // Limit timeout because of hard `select()` timeout.
+const NSTimeInterval kApiRequestTimeout            =  20;
+const NSTimeInterval kTtlIncrement                 =  10;
+const NSTimeInterval kSelectedServerHoldTime       =  10;
+const uint32_t       kFallbackServerTtl            = 600;  // Retry to load DNS-SRV after an hour.
 
 
 @interface WebInterface ()
@@ -211,8 +211,12 @@ const uint32_t       kFallbackServerTtl            = 3600;  // Retry to load DNS
             {
                 NBLog(@"DNS update failed.");
                 
-                self.dnsUpdateDate = [NSDate date];
-                [self useFallbackServer];
+                if ([NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableWifi ||
+                    [NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableCellular)
+                {
+                    self.dnsUpdateDate = [NSDate date];
+                    [self useFallbackServer];
+                }
             }
             else if (remainingTime <= 0)
             {
@@ -237,7 +241,7 @@ const uint32_t       kFallbackServerTtl            = 3600;  // Retry to load DNS
 
 - (void)useFallbackServer
 {
-    [WebInterface sharedInterface].ttl = kFallbackServerTtl;
+    self.ttl = kFallbackServerTtl;
 
     NSMutableDictionary* server = [@{@"target"   : [Settings sharedSettings].fallbackServer,
                                      @"port"     : @(443),
@@ -245,7 +249,7 @@ const uint32_t       kFallbackServerTtl            = 3600;  // Retry to load DNS
                                      @"weight"   : @(10),
                                      @"ttl"      : @(kFallbackServerTtl)} mutableCopy];
     
-    [[WebInterface sharedInterface].servers addObject:server];
+    [self.servers addObject:server];
 }
 
 
