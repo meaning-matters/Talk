@@ -98,8 +98,6 @@ Make country list diacritic insensitive
 
 * Use capitalized Destinations and Numbers, .... in texts?  currently use "Destinations" & "numbers" -> inconsistent
 
-* Replace DTMF keepalive with something else that always works.
-
 * Do simIsoCountryCode in Settings VC en elders. niet met ==/!= nil maar met length.
 
 * Make NSString properties copy, instead of strong:http://stackoverflow.com/questions/387959/nsstring-property-copy-or-retain
@@ -138,12 +136,6 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Keypad = US, Dialler = UK!
 
 * Use UIactivitycontroller for Share.
-
-* Add iOS 7 HockeySDK
-
-* Make sending email + MF delegate Common  (used in both About and Helps VCs).
-
-* Settings: when changing country name, it's only updated right after pop animation (at at least later then the flag).
 
 * I switched off [Common checkRemoteNotifications] in PurchaseManager !HAS_BUYING_NUMBERS.  May want to check this when we start using notifications for missed calls for example (once we add incoming numbers).
 
