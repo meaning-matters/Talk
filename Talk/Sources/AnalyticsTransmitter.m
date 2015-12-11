@@ -35,7 +35,7 @@ static NSString* const kServerPath = @"http://51.254.118.61/trace";
     NSString*  version   = [Settings sharedSettings].appVersion;
     NSUInteger user      = [[Settings sharedSettings].webUsername hash];
     NSString*  fileName  = [[NSString stringWithUTF8String:file] lastPathComponent];
-    NSString*  urlString = [NSString stringWithFormat:@"%@?order=%04d&version=%@&user=%016tx&file=%@&line=%d&%@",
+    NSString*  urlString = [NSString stringWithFormat:@"%@?order=%04d&version=%@&user=%016tx&file=%@&line=%d&value=%@",
                             kServerPath, order++, version, user, fileName, line, value];
     
     NBLog(@"TRACE: %@", urlString);
