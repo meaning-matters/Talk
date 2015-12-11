@@ -130,17 +130,10 @@ Make country list diacritic insensitive
 
 * Kijk clearsSelectionOnViewWillAppear ff na in alle UITableVC's; eigen code to deselect kan weg denk ik.
 
-* segmentedControlStyle mag niet meer in iOS 7
-
 * Create and use Common method +(NSString*)localizedError:(NSError*)error; that checks userInfo for NSLocalizedDescriptionKey, and if not there, create own description.  Because on sandbox I sometimes get : po error.localizedDescription
 The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load Store products.  But perhaps these things won't occur on real system.
 
 * crash when SIM is exchanged?
-
-* Zat ff met Contacts te spelen (weet dus niet meer wat ik precies deed) en zie een crash:
-  NBPeopleListViewController #466: contactsDatasource heeft 27 items, maar indexPath.section == 31.
-  isFiltered state bug!  vervangen met (table == searchdisplaycontroller.table) zie searchtablevc.
-  IS OPGELOST: Je moet isFiltered bepalen met tableView == self.searchDisplCtrl.tableView oid, zie mijn code.  Jasper moet zelfde doen.
 
 * Keypad = US, Dialler = UK!
 
@@ -158,8 +151,6 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
   enabled again and handled in UIVC's willMoveToParentViewController when parent == nil
 
 * Do Number textFields allow editing halfway the string. When trying to do so, the cursor jumps to the end.  If not see ItemVC #240
-
-* Do something with Advertising/Vendor Identifiers in AppDelegate
 
 * AppDelegate, is this the cause for unavailability of currencyCode sometimes at accoutn creation?    // When account purchase transaction has not been finished, the PurchaseManager receives
 // it again at app startup.  This is however slightly earlier than that device token is

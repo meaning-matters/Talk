@@ -14,8 +14,4 @@
 
 - (void)playCharacter:(char)character atVolume:(float)volume;
 
-- (void)startKeepAlive;
-
-- (void)stopKeepAlive;
-
 @end

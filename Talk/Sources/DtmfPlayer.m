@@ -5,10 +5,6 @@
 //  Created by Cornelis van der Bent on 24/11/12.
 //  Copyright (c) 2012 NumberBay Ltd. All rights reserved.
 //
-//  The keep-alive works around a weird play delay that kicks in after about 5 seconds
-//  of not having played anything.  By playing something silently, the delay is prevented.
-//  Other people have seen similar delays, and the solution given is to use lower
-//  level APIs.  I don't want to spend more time on this, and choose work around.
 
 #import <AVFoundation/AVAudioPlayer.h>
 #import "DtmfPlayer.h"
@@ -17,7 +13,6 @@
 @interface DtmfPlayer ()
 {
     NSMutableDictionary*    audioDataObjects;
-    NSTimer*                keepAliveTimer;
     AVAudioPlayer*          audioPlayer;    // Needed; can't use local, otherwise ARC releases it immediately.
 }
 
@@ -72,36 +67,6 @@
     else
     {
         return NO;
-    }
-}
-
-
-- (void)startKeepAlive
-{
-    if (keepAliveTimer == nil)
-    {
-        keepAliveTimer = [NSTimer scheduledTimerWithTimeInterval:4
-                                                          target:self
-                                                        selector:@selector(playKeepAlive)
-                                                        userInfo:nil
-                                                         repeats:YES];
-        [self playKeepAlive];
-    }
-}
-
-
-- (void)stopKeepAlive
-{
-    [keepAliveTimer invalidate];
-    keepAliveTimer = nil;
-}
-
-
-- (void)playKeepAlive
-{
-    if ([audioPlayer isPlaying] == NO)
-    {
-        [self playCharacter:'0' atVolume:0.00001f];
     }
 }
 
