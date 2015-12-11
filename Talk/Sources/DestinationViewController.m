@@ -539,7 +539,7 @@ typedef enum
     {
         PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:phone.e164];
         BOOL         valid       = [self.name stringByRemovingWhiteSpace].length > 0 &&
-                                   ((phoneNumber.isValid && [Settings sharedSettings].homeCountry.length > 0) ||
+                                   ((phoneNumber.isValid && [Settings sharedSettings].homeIsoCountryCode.length > 0) ||
                                     phoneNumber.isInternational);
 
         self.navigationItem.rightBarButtonItem.enabled = valid;

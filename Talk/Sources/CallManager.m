@@ -101,17 +101,17 @@
                                                     @"Alert message button\n"
                                                     @"[1/2 iOS alert message size]");
         
-        NSString* homeCountry;
-        if ([Settings sharedSettings].homeCountry.length > 0)
+        NSString* homeIsoCountryCode;
+        if ([Settings sharedSettings].homeIsoCountryCode.length > 0)
         {
-            homeCountry = [NSString stringWithFormat:@" (in %@)", [Settings sharedSettings].homeCountry];
+            homeIsoCountryCode = [NSString stringWithFormat:@" (in %@)", [Settings sharedSettings].homeIsoCountryCode];
         }
         else
         {
-            homeCountry = @"";
+            homeIsoCountryCode = @"";
         }
 
-        message = [NSString stringWithFormat:message, homeCountry];
+        message = [NSString stringWithFormat:message, homeIsoCountryCode];
 
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message

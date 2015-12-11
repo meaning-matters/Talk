@@ -103,7 +103,7 @@ static NSTimer*                 loadUrlTestTimer;
             info = @{ @"status" : @(NetworkStatusSimNotAvailable) };
         }
 
-        [Settings sharedSettings].homeCountry = self.simIsoCountryCode;
+        [Settings sharedSettings].homeIsoCountryCode = self.simIsoCountryCode;
         [[NSNotificationCenter defaultCenter] postNotificationName:NetworkStatusSimChangedNotification
                                                             object:nil
                                                           userInfo:info];

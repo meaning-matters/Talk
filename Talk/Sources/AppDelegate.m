@@ -60,7 +60,7 @@
         [PurchaseManager sharedManager];  // Makes sure the currency locale & code are available early.
 
         // Initialize phone number stuff.
-        [PhoneNumber setDefaultIsoCountryCode:[Settings sharedSettings].homeCountry];
+        [PhoneNumber setDefaultIsoCountryCode:[Settings sharedSettings].homeIsoCountryCode];
         [LibPhoneNumber sharedInstance];  // This loads the JavaScript library.
 
         // Basic UI.

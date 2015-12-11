@@ -20,8 +20,8 @@
 NSString* const TabBarClassNamesKey       = @"TabBarClassNames";
 NSString* const TabBarSelectedIndexKey    = @"TabBarSelectedIndex";
 NSString* const ErrorDomainKey            = @"ErrorDomain";
-NSString* const HomeCountryKey            = @"HomeCountry";
-NSString* const HomeCountryFromSimKey     = @"HomeCountryFromSim";
+NSString* const HomeIsoCountryCodeKey     = @"HomeIsoCountryCode";
+NSString* const SimIsoCountryCodeKey      = @"SimIsoCountryCode";
 NSString* const LastDialedNumberKey       = @"LastDialedNumber";
 NSString* const WebUsernameKey            = @"WebUsername";            // Used as keychain 'username'.
 NSString* const WebPasswordKey            = @"WebPassword";            // Used as keychain 'username'.
@@ -120,13 +120,13 @@ static NSUserDefaults* userDefaults;
 
         if ([[NetworkStatus sharedStatus].simIsoCountryCode length] > 0)
         {
-            [dictionary setObject:[NetworkStatus sharedStatus].simIsoCountryCode forKey:HomeCountryKey];
-            [dictionary setObject:@(YES)                                         forKey:HomeCountryFromSimKey];
+            [dictionary setObject:[NetworkStatus sharedStatus].simIsoCountryCode forKey:HomeIsoCountryCodeKey];
+            [dictionary setObject:@(YES)                                         forKey:SimIsoCountryCodeKey];
         }
         else
         {
-            [dictionary setObject:@""                                            forKey:HomeCountryKey];
-            [dictionary setObject:@(NO)                                          forKey:HomeCountryFromSimKey];
+            [dictionary setObject:@""                                            forKey:HomeIsoCountryCodeKey];
+            [dictionary setObject:@(NO)                                          forKey:SimIsoCountryCodeKey];
         }
 
         [dictionary setObject:@""                                                forKey:LastDialedNumberKey];
@@ -185,27 +185,27 @@ static NSUserDefaults* userDefaults;
 }
 
 
-- (NSString*)homeCountry
+- (NSString*)homeIsoCountryCode
 {
-    return [userDefaults objectForKey:HomeCountryKey];
+    return [userDefaults objectForKey:HomeIsoCountryCodeKey];
 }
 
 
-- (void)setHomeCountry:(NSString*)homeCountry
+- (void)setHomeIsoCountryCode:(NSString*)homeIsoCountryCode
 {
-    [userDefaults setObject:homeCountry forKey:HomeCountryKey];
+    [userDefaults setObject:homeIsoCountryCode forKey:HomeIsoCountryCodeKey];
 }
 
 
-- (BOOL)homeCountryFromSim
+- (BOOL)simIsoCountryCode
 {
-    return [userDefaults boolForKey:HomeCountryFromSimKey];
+    return [userDefaults boolForKey:SimIsoCountryCodeKey];
 }
 
 
-- (void)setHomeCountryFromSim:(BOOL)homeCountryFromSim
+- (void)setSimIsoCountryCode:(BOOL)simIsoCountryCode
 {
-    [userDefaults setBool:homeCountryFromSim forKey:HomeCountryFromSimKey];
+    [userDefaults setBool:simIsoCountryCode forKey:SimIsoCountryCodeKey];
 }
 
 

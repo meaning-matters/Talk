@@ -115,7 +115,7 @@ typedef enum
                   options:NSKeyValueObservingOptionNew
                   context:nil];
     [settings addObserver:self
-               forKeyPath:@"homeCountry"
+               forKeyPath:@"homeIsoCountryCode"
                   options:NSKeyValueObservingOptionNew
                   context:nil];
 }
@@ -125,10 +125,10 @@ typedef enum
 {
     [super viewWillAppear:animated];
 
-    // When there's no longer a SIM supplying country, reset the homeCountryFromSim settings.
-    if ([NetworkStatus sharedStatus].simIsoCountryCode == nil && settings.homeCountryFromSim == YES)
+    // When there's no longer a SIM supplying country, reset the simIsoCountryCode settings.
+    if ([NetworkStatus sharedStatus].simIsoCountryCode == nil && settings.simIsoCountryCode == YES)
     {
-        settings.homeCountryFromSim = NO;
+        settings.simIsoCountryCode = NO;
         [self.tableView reloadData];
     }
 }
@@ -146,7 +146,7 @@ typedef enum
     {
         [indexSet addIndex:[Common nOfBit:TableSectionCallerId inValue:sections]];
     }
-    else if ([keyPath isEqualToString:@"homeCountry"])
+    else if ([keyPath isEqualToString:@"homeIsoCountryCode"])
     {
         [indexSet addIndex:[Common nOfBit:TableSectionHomeCountry inValue:sections]];
     }
@@ -330,7 +330,7 @@ typedef enum
     NSString*                headerTitle;
     NSString*                footerTitle;
     NSString*                message;
-    NSString*                homeCountry = settings.homeCountry;
+    NSString*                homeIsoCountryCode = settings.homeIsoCountryCode;
     CallableData*            callable;
     UITableViewCell*         cell = [self.tableView cellForRowAtIndexPath:indexPath];
     PhonesViewController*    phonesViewController;
@@ -410,18 +410,18 @@ typedef enum
         case TableSectionHomeCountry:
         {
             self.countryIndexPath = indexPath;
-            countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:homeCountry
+            countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:homeIsoCountryCode
                                                                                         title:[Strings homeCountryString]
                                                                                    completion:^(BOOL      cancelled,
                                                                                                 NSString* isoCountryCode)
             {
                 if (cancelled == NO)
                 {
-                    settings.homeCountry = isoCountryCode;
+                    settings.homeIsoCountryCode = isoCountryCode;
 
                     // Set the cell to prevent quick update right after animations.
-                    cell.imageView.image      = [UIImage imageNamed:settings.homeCountry];
-                    cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:settings.homeCountry];
+                    cell.imageView.image      = [UIImage imageNamed:settings.homeIsoCountryCode];
+                    cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:settings.homeIsoCountryCode];
                 }
             }];
             
@@ -518,7 +518,7 @@ typedef enum
         }
         case TableSectionHomeCountry:
         {
-            cell = [self homeCountryCellForRowAtIndexPath:indexPath];
+            cell = [self homeIsoCountryCodeCellForRowAtIndexPath:indexPath];
             break;
         }
         case TableSectionOptions:
@@ -641,7 +641,7 @@ typedef enum
 }
 
 
-- (UITableViewCell*)homeCountryCellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)homeIsoCountryCodeCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
     UISwitch*        switchView;
@@ -666,7 +666,7 @@ typedef enum
                                                                 @"Title of switch if home country must be read from SIM card\n"
                                                                 @"[2/3 line - abbreviated: 'From SIM'].");
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        switchView.on = settings.homeCountryFromSim;
+        switchView.on = settings.simIsoCountryCode;
 
         [switchView removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
         [switchView addTarget:self action:@selector(readFromSimSwitchAction:)
@@ -682,13 +682,13 @@ typedef enum
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"DefaultCell"];
         }
 
-        if (settings.homeCountry != nil)
+        if (settings.homeIsoCountryCode != nil)
         {
             // Note: This is also done in CountriesViewController (to update the
             //       selected cell before animation).  So pay a visit there when
             //       changing this.
-            cell.imageView.image      = [UIImage imageNamed:settings.homeCountry];
-            cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:settings.homeCountry];
+            cell.imageView.image      = [UIImage imageNamed:settings.homeIsoCountryCode];
+            cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:settings.homeIsoCountryCode];
         }
         else
         {
@@ -699,7 +699,7 @@ typedef enum
                                                                     @"[1 line - abbreviated: 'Not Selected'");
         }
 
-        if ([NetworkStatus sharedStatus].simIsoCountryCode != nil && settings.homeCountryFromSim)
+        if ([NetworkStatus sharedStatus].simIsoCountryCode != nil && settings.simIsoCountryCode)
         {
             cell.accessoryType  = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -802,10 +802,10 @@ typedef enum
 
 - (void)readFromSimSwitchAction:(id)sender
 {
-    settings.homeCountryFromSim = ((UISwitch*)sender).on;
-    if (settings.homeCountryFromSim)
+    settings.simIsoCountryCode = ((UISwitch*)sender).on;
+    if (settings.simIsoCountryCode)
     {
-        settings.homeCountry = [NetworkStatus sharedStatus].simIsoCountryCode;
+        settings.homeIsoCountryCode = [NetworkStatus sharedStatus].simIsoCountryCode;
     }
 
     [self.tableView beginUpdates];

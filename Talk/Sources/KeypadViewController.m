@@ -56,9 +56,9 @@
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification* note)
         {
-            if ([phoneNumber.isoCountryCode isEqualToString:[Settings sharedSettings].homeCountry] == NO)
+            if ([phoneNumber.isoCountryCode isEqualToString:[Settings sharedSettings].homeIsoCountryCode] == NO)
             {
-                [PhoneNumber setDefaultIsoCountryCode:[Settings sharedSettings].homeCountry];
+                [PhoneNumber setDefaultIsoCountryCode:[Settings sharedSettings].homeIsoCountryCode];
                 phoneNumber = [[PhoneNumber alloc] initWithNumber:phoneNumber.number];
                 [self update];
             }

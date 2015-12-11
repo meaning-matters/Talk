@@ -835,7 +835,7 @@ static Common* sharedCommon;
     NSString*           message;
     NSString*           buttonTitle;
 
-    if ([[Settings sharedSettings].homeCountry length] == 0 && [phoneNumber isInternational] == NO)
+    if ([[Settings sharedSettings].homeIsoCountryCode length] == 0 && [phoneNumber isInternational] == NO)
     {
         // Prevent alert being shown more than once.
         if (alertView != nil)
@@ -868,16 +868,16 @@ static Common* sharedCommon;
             {
                 CountriesViewController* countriesViewController;
                 UINavigationController*  modalViewController;
-                NSString*                homeCountry = [Settings sharedSettings].homeCountry;
+                NSString*                homeIsoCountryCode = [Settings sharedSettings].homeIsoCountryCode;
 
-                countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:homeCountry
+                countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:homeIsoCountryCode
                                                                                             title:[Strings homeCountryString]
                                                                                        completion:^(BOOL      cancelled,
                                                                                                     NSString* isoCountryCode)
                 {
                     if (cancelled == NO)
                     {
-                        [Settings sharedSettings].homeCountry = isoCountryCode;
+                        [Settings sharedSettings].homeIsoCountryCode = isoCountryCode;
                     }
 
                     completion ? completion(cancelled, phoneNumber) : 0;

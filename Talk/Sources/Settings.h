@@ -26,8 +26,8 @@
 
 @property (nonatomic, strong) NSString*      errorDomain;           // Used when creating an NSError.
 
-@property (nonatomic, strong) NSString*      homeCountry;           // ISO Country Code.
-@property (nonatomic, assign) BOOL           homeCountryFromSim;    // ISO Country Code.
+@property (nonatomic, strong) NSString*      homeIsoCountryCode;    // ISO country code selected by user.
+@property (nonatomic, assign) BOOL           simIsoCountryCode;     // ISO country code from SIM card.
 
 @property (nonatomic, strong) NSString*      lastDialedNumber;
 
