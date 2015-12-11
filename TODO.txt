@@ -18,17 +18,6 @@ Make country list diacritic insensitive
 
 * Netherlands Antilles flag not correct, must have 5 instead of 6 stars.
 
-* MobileCountryCodes.json has duplicate keys (e.g. 340), so can't be stored in NSDictionary!  App needs
-  to display choice for ISO country, when MCC has more than one.
-
-# NOTE: The SIP info (username, password, ...) saved in keychain, can only be read back when app is 
-  build with same Apple provisioning profile!!!
-
-* NetworkStatus only recognises WISPr captive portals when checked host does not return
-  the expected data.  Also support other types, or make more general and assume captive
-  portal when host does not return expected data (latter is tricky because bad connection
-  may also have unexpected data).
-  
 * Use special new textfield with format in DestinationVC.
 
 * Revisit "canceled" (iOS preferred?) vs. "cancelled" (current in app, also used in

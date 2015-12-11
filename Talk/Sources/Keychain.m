@@ -18,6 +18,9 @@
 //  Because the problem persisted, I'm now caching the values.  Really unsafe,
 //  but I've also asked Apple for a permanent solution.
 //
+//  Data saved in keychain, can only be read back when app is built with same
+//  Apple provisioning profile!!!
+
 
 #import "Keychain.h"
 #import <Security/Security.h>
