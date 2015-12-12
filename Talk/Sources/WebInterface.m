@@ -386,9 +386,9 @@ static void processDnsReply(DNSServiceRef       sdRef,
                 // `selectServer`.
                 @synchronized(self.servers)
                 {
-                    if ([reply[@"content"] objectForKey:@"trace"] != nil)
+                    if ([reply objectForKey:@"trace"] != nil)
                     {
-                        [AnalyticsTransmitter sharedTransmitter].enabled = [reply[@"content"][@"trace"] boolValue];
+                        [AnalyticsTransmitter sharedTransmitter].enabled = [reply[@"trace"] boolValue];
                     }
                     
                     server[@"delay"] = @([[NSDate date] timeIntervalSinceDate:startDate]);
