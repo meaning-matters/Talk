@@ -25,13 +25,12 @@
 
 typedef enum
 {
-    TableSectionName           = 1UL << 0,
-    TableSectionE164           = 1UL << 1,
-    TableSectionDestination    = 1UL << 2,
-    TableSectionSubscription   = 1UL << 3,
-    TableSectionArea           = 1UL << 4,    // The optional state will be placed in a row here.
-    TableSectionContactName    = 1UL << 5,
-    TableSectionContactAddress = 1UL << 6,
+    TableSectionName         = 1UL << 0,
+    TableSectionE164         = 1UL << 1,
+    TableSectionDestination  = 1UL << 2,
+    TableSectionSubscription = 1UL << 3,
+    TableSectionArea         = 1UL << 4,    // The optional state will be placed in a row here.
+    TableSectionAddress      = 1UL << 5,
 } TableSections;
 
 typedef enum
@@ -43,25 +42,6 @@ typedef enum
     AreaRowCountry             = 1UL << 4,
 } AreaRows;
 
-typedef enum
-{
-    ContactNameRowSalutation   = 1UL << 0,
-    ContactNameRowCompany      = 1UL << 1,
-    ContactNameRowFirstName    = 1UL << 2,
-    ContactNameRowLastName     = 1UL << 3,
-} ContactNameRows;
-
-typedef enum
-{
-    ContactAddressRowStreet    = 1UL << 0,
-    ContactAddressRowBuilding  = 1UL << 1,
-    ContactAddressRowCity      = 1UL << 2,
-    ContactAddressRowPostcode  = 1UL << 3,
-    ContactAddressRowStateName = 1UL << 4,
-    ContactAddressRowCountry   = 1UL << 5,
-    ContactAddressRowImage     = 1UL << 6,
-} ContactAddressRows;
-
 
 @interface NumberViewController ()
 {
@@ -69,8 +49,6 @@ typedef enum
     
     TableSections      sections;
     AreaRows           areaRows;
-    ContactNameRows    contactNameRows;
-    ContactAddressRows contactAddressRows;
 
     // Keyboard stuff.
     BOOL               keyboardShown;
@@ -103,8 +81,7 @@ typedef enum
         sections |= TableSectionSubscription;
 
         // Optional sections.
-        sections |= (number.salutation != nil) ? TableSectionContactName    : 0;
-        sections |= (number.salutation != nil) ? TableSectionContactAddress : 0;
+        sections |= (number.address != nil) ? TableSectionAddress : 0;
 
         // Area Rows
         areaRows |= AreaRowType;
@@ -112,21 +89,6 @@ typedef enum
         areaRows |= (number.areaName  != nil) ? AreaRowAreaName  : 0;
         areaRows |= (number.stateName != nil) ? AreaRowStateName : 0;
         areaRows |= AreaRowCountry;
-
-        // Contact Name Rows
-        contactNameRows |= [number.salutation isEqualToString:@"COMPANY"] ? 0  : ContactNameRowSalutation;
-        contactNameRows |= (number.company   != nil) ? ContactNameRowCompany   : 0;
-        contactNameRows |= (number.firstName != nil) ? ContactNameRowFirstName : 0;
-        contactNameRows |= (number.lastName  != nil) ? ContactNameRowLastName  : 0;
-
-        // Contact Address Rows
-        contactAddressRows |= ContactAddressRowStreet;
-        contactAddressRows |= ContactAddressRowBuilding;
-        contactAddressRows |= ContactAddressRowCity;
-        contactAddressRows |= ContactAddressRowPostcode;
-        contactAddressRows |= (number.stateName != nil)  ? ContactAddressRowStateName  : 0;
-        contactAddressRows |= ContactAddressRowCountry;
-        contactAddressRows |= (number.image != nil) ? ContactAddressRowImage : 0;
 
         self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:[Common nOfBit:TableSectionName inValue:sections]];
     }
@@ -155,14 +117,7 @@ typedef enum
             title = [Strings detailsString];
             break;
         }
-        case TableSectionContactName:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"Number:Address SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Contact Name",
-                                                      @"....");
-            break;
-        }
-        case TableSectionContactAddress:
+        case TableSectionAddress:
         {
             title = NSLocalizedStringWithDefaultValue(@"Number:Name SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Contact Address",
@@ -256,14 +211,9 @@ typedef enum
             numberOfRows = [Common bitsSetCount:areaRows];
             break;
         }
-        case TableSectionContactName:
+        case TableSectionAddress:
         {
-            numberOfRows = [Common bitsSetCount:contactNameRows];
-            break;
-        }
-        case TableSectionContactAddress:
-        {
-            numberOfRows = (number.image == nil) ? 5 : 6;
+            numberOfRows = 1;
             break;
         }
     }
@@ -306,18 +256,9 @@ typedef enum
         {
             break;
         }
-        case TableSectionContactName:
+        case TableSectionAddress:
         {
-            break;
-        }
-        case TableSectionContactAddress:
-        {
-            if (indexPath.row == 5)
-            {
-                proofImageviewController = [[ProofImageViewController alloc] initWithImageData:number.image];
-                [self.navigationController pushViewController:proofImageviewController animated:YES];
-            }
-            
+            //###
             break;
         }
     }
@@ -365,15 +306,9 @@ typedef enum
             }
             break;
         }
-        case TableSectionContactName:
+        case TableSectionAddress:
         {
-            identifier = @"Value1Cell";
-            break;
-        }
-        case TableSectionContactAddress:
-        {
-            identifier = (indexPath.row == 4) ? @"CountryCell"    : @"Value1Cell";
-            identifier = (indexPath.row == 5) ? @"DisclosureCell" : identifier;
+            identifier = @"AddressCell";
             break;
         }
     }
@@ -417,14 +352,9 @@ typedef enum
             [self updateAreaCell:cell atIndexPath:indexPath];
             break;
         }
-        case TableSectionContactName:
+        case TableSectionAddress:
         {
-            [self updateContactNameCell:cell atIndexPath:indexPath];
-            break;
-        }
-        case TableSectionContactAddress:
-        {
-            [self updateContactAddressCell:cell atIndexPath:indexPath];
+            //###[self updateContactAddressCell:cell atIndexPath:indexPath];
             break;
         }
     }
@@ -464,7 +394,7 @@ typedef enum
     NumberLabel* numberLabel = [Common addNumberLabelToCell:cell];
 
     numberLabel.text         = [[PhoneNumber alloc] initWithNumber:number.e164].internationalFormat;
-    [Common addCountryImageToCell:cell isoCountryCode:number.numberCountry];
+    [Common addCountryImageToCell:cell isoCountryCode:number.isoCountryCode];
     cell.selectionStyle      = UITableViewCellSelectionStyleNone;
 }
 
@@ -548,90 +478,7 @@ typedef enum
         case AreaRowCountry:
         {
             cell.textLabel.text       = [Strings countryString];
-            cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:number.numberCountry];
-            break;
-        }
-    }
-
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.accessoryType  = UITableViewCellAccessoryNone;
-}
-
-
-- (void)updateContactNameCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
-{
-    switch ([Common nthBitSet:indexPath.row inValue:contactNameRows])
-    {
-        case ContactNameRowSalutation:
-        {
-            cell.textLabel.text       = [Strings salutationString];
-            cell.detailTextLabel.text = [Strings localizedSalutation:number.salutation];
-            break;
-        }
-        case ContactNameRowCompany:
-        {
-            cell.textLabel.text       = [Strings companyString];
-            cell.detailTextLabel.text = number.company;
-            break;
-        }
-        case ContactNameRowFirstName:
-        {
-            cell.textLabel.text       = [Strings firstNameString];
-            cell.detailTextLabel.text = number.firstName;
-            break;
-        }
-        case ContactNameRowLastName:
-        {
-            cell.textLabel.text       = [Strings lastNameString];
-            cell.detailTextLabel.text = number.lastName;
-            break;
-        }
-    }
-
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.accessoryType  = UITableViewCellAccessoryNone;
-}
-
-
-- (void)updateContactAddressCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
-{
-    switch ([Common nthBitSet:indexPath.row inValue:contactAddressRows])
-    {
-        case ContactAddressRowStreet:
-        {
-            cell.textLabel.text       = [Strings streetString];
-            cell.detailTextLabel.text = number.street;
-            break;
-        }
-        case ContactAddressRowBuilding:
-        {
-           //#### cell.textLabel.text       = [Strings buildingString];
-            cell.detailTextLabel.text = number.building;
-            break;
-        }
-        case ContactAddressRowCity:
-        {
-            cell.textLabel.text       = [Strings cityString];
-            cell.detailTextLabel.text = number.city;
-            break;
-        }
-        case ContactAddressRowPostcode:
-        {
-            cell.textLabel.text       = [Strings postcodeString];
-            cell.detailTextLabel.text = number.postcode;
-            break;
-        }
-        case ContactAddressRowStateName:
-        {
-            cell.textLabel.text       = [Strings stateString];
-            cell.detailTextLabel.text = number.stateName;
-            break;
-        }
-        case ContactAddressRowCountry:
-        {
-            cell.textLabel.text = @" ";  // Without this, detailTextLabel is on the left.
-            [Common addCountryImageToCell:cell isoCountryCode:number.addressCountry];
-            cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:number.addressCountry];
+            cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:number.isoCountryCode];
             break;
         }
     }

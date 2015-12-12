@@ -20,24 +20,13 @@
 @property (nonatomic, retain) NSString*        numberType;
 @property (nonatomic, retain) NSString*        areaCode;
 @property (nonatomic, retain) NSString*        areaName;
-@property (nonatomic, retain) NSString*        numberCountry;  // ISO country code.
+@property (nonatomic, retain) NSString*        isoCountryCode;
 @property (nonatomic, retain) NSDate*          purchaseDate;
 @property (nonatomic, retain) NSDate*          renewalDate;
 
 // Optional.
-@property (nonatomic, retain) NSString*        salutation;
-@property (nonatomic, retain) NSString*        firstName;
-@property (nonatomic, retain) NSString*        lastName;
-@property (nonatomic, retain) NSString*        company;
-@property (nonatomic, retain) NSString*        street;
-@property (nonatomic, retain) NSString*        building;
-@property (nonatomic, retain) NSString*        city;
-@property (nonatomic, retain) NSString*        postcode;
 @property (nonatomic, retain) NSString*        stateName;
 @property (nonatomic, retain) NSString*        stateCode;
-@property (nonatomic, retain) NSString*        addressCountry; // ISO country code.
-@property (nonatomic, retain) NSData*          image;          // Proof of address.
-@property (nonatomic, retain) NSNumber*        imageAccepted;
 
 // Relationships.
 @property (nonatomic, retain) DestinationData* destination;
