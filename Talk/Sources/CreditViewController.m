@@ -209,9 +209,9 @@ typedef enum
         case TableSectionAmount:
         {
             title = NSLocalizedStringWithDefaultValue(@"CreditAmount:... TableFooterNumbers", nil, [NSBundle mainBundle],
-                                                      @"Credit is used for outgoing calls, for forwarding "
-                                                      @"calls received on your Numbers, and for incoming "
-                                                      @"call charges on your toll-free and special Numbers.",
+                                                      @"Credit is used for for both parts (Callback and Callthru) of "
+                                                      @"your calls and for the automatic verification calls for adding "
+                                                      @"your Phones.",
                                                       @"[Multiple lines]");
             break;
         }
