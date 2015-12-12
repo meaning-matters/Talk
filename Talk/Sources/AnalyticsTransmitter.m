@@ -10,7 +10,7 @@
 #import "Settings.h"
 #import "NetworkStatus.h"
 
-static NSString* const kServerPath = @"http://api3.numberbay.com/trace";
+static NSString* const kServerPath = @"http://trace.numberbay.com/trace";
 
 
 @implementation AnalyticsTransmitter
@@ -37,7 +37,7 @@ static NSString* const kServerPath = @"http://api3.numberbay.com/trace";
     NSString*  fileName  = [[NSString stringWithUTF8String:file] lastPathComponent];
     NSString*  urlString = [NSString stringWithFormat:@"%@?order=%04d&version=%@&user=%016tx&file=%@&line=%d&value=%@",
                             kServerPath, order++, version, user, fileName, line, value];
-    
+     
     NBLog(@"TRACE: %@", urlString);
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
