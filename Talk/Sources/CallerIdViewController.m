@@ -215,7 +215,7 @@ typedef enum
             else
             {
                 title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Phones SectionFooterB", nil, [NSBundle mainBundle],
-                                                          @"The selected Phone will be used when dialing a number, or "
+                                                          @"The selected Phone will be used when dialling a number, or "
                                                           @"calling a contact you did not assign an ID.",
                                                           @"...\n"
                                                           @"[* lines]");
@@ -235,7 +235,7 @@ typedef enum
             else
             {
                 title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Numbers SectionFooterB", nil, [NSBundle mainBundle],
-                                                          @"The selected Number will be used when dialing a number, or "
+                                                          @"The selected Number will be used when dialling a number, or "
                                                           @"calling a contact you did not assign an ID.",
                                                           @"...\n"
                                                           @"[* lines]");

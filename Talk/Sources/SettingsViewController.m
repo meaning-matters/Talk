@@ -241,8 +241,8 @@ typedef enum
         {
             title = NSLocalizedStringWithDefaultValue(@"Settings:CallerId SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"Used when dialing a number, or calling a contact "
-                                                      @"you did not assign an ID.",
+                                                      @"Used when calling a number from the Keypad, or a contact "
+                                                      @"you did not assign a caller ID.",
                                                       @"Explanation how Caller ID setting works\n"
                                                       @"[* lines]");
             break;
