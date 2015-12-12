@@ -36,8 +36,6 @@ Make country list diacritic insensitive
   
 * Technical error: 32004?
 
-* Add Helps item about audio quality + the nature of internet connections.
-
 * Check if Common checkCountryOfPhoneNumber is not broken by changes for CountriesVC zie breakpoint
 
 * Create CountryTableCell that takes a iSO country code and use in SettingsVC and NumberAreaVC ...
@@ -130,8 +128,6 @@ Make country list diacritic insensitive
 
 * Create and use Common method +(NSString*)localizedError:(NSError*)error; that checks userInfo for NSLocalizedDescriptionKey, and if not there, create own description.  Because on sandbox I sometimes get : po error.localizedDescription
 The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load Store products.  But perhaps these things won't occur on real system.
-
-* crash when SIM is exchanged?
 
 * Keypad = US, Dialler = UK!
 
