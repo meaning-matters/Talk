@@ -63,7 +63,7 @@ static Common* sharedCommon;
 
 + (NSURL*)audioDirectoryUrl
 {
-    NSURL*  url = [[Common documentsDirectoryUrl] URLByAppendingPathComponent:@"audio/"];
+    NSURL* url = [[Common documentsDirectoryUrl] URLByAppendingPathComponent:@"audio/"];
 
     [[NSFileManager defaultManager] createDirectoryAtURL:url
                              withIntermediateDirectories:YES
@@ -82,8 +82,8 @@ static Common* sharedCommon;
 
 + (NSData*)dataForResource:(NSString*)resourse ofType:(NSString*)type
 {
-    NSString*   path = [[NSBundle mainBundle] pathForResource:resourse ofType:type];
-    NSData*     data = [NSData dataWithContentsOfFile:path];
+    NSString* path = [[NSBundle mainBundle] pathForResource:resourse ofType:type];
+    NSData*   data = [NSData dataWithContentsOfFile:path];
     
     return data;
 }
@@ -103,7 +103,7 @@ static Common* sharedCommon;
 
 + (NSString*)appStoreUrlString
 {
-    NSString*   appName = [[Common bundleName] stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString* appName = [[Common bundleName] stringByReplacingOccurrencesOfString:@" " withString:@""];
 
     return [NSString stringWithFormat:@"http://itunes.com/apps/%@", appName];
 }
@@ -238,9 +238,9 @@ static Common* sharedCommon;
 
 + (NSData*)jsonDataWithObject:(id)object
 {
-    NSError*                error = nil;
-    NSData*                 data;
-    NSJSONWritingOptions    options;
+    NSError*             error = nil;
+    NSData*              data;
+    NSJSONWritingOptions options;
     
 #ifdef  DEBUG
     options = NSJSONWritingPrettyPrinted;
@@ -266,8 +266,8 @@ static Common* sharedCommon;
 
 + (NSString*)jsonStringWithObject:(id)object
 {
-    NSData*     data;
-    NSString*   string;
+    NSData*   data;
+    NSString* string;
     
     data   = [Common jsonDataWithObject:object];
     string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -278,8 +278,13 @@ static Common* sharedCommon;
 
 + (id)objectWithJsonData:(NSData*)data
 {
-    NSError*    error = nil;
-    id          object;
+    NSError* error = nil;
+    id       object;
+    
+    if (data == nil)
+    {
+        return nil;
+    }
     
     object = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
     
@@ -299,8 +304,8 @@ static Common* sharedCommon;
 
 + (id)objectWithJsonString:(NSString*)string
 {
-    id          object;
-    NSData*     data;
+    id      object;
+    NSData* data;
     
     data   = [string dataUsingEncoding:NSUTF8StringEncoding];
     object = [Common objectWithJsonData:data];
@@ -311,9 +316,9 @@ static Common* sharedCommon;
 
 + (id)mutableObjectWithJsonData:(NSData*)data
 {
-    NSError*                error = nil;
-    id                      object;
-    NSJSONReadingOptions    options = NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves;
+    NSError*             error = nil;
+    id                   object;
+    NSJSONReadingOptions options = NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves;
 
     object = [NSJSONSerialization JSONObjectWithData:data options:options error:&error];
 
@@ -494,7 +499,7 @@ static Common* sharedCommon;
 
 + (void)setX:(CGFloat)x ofView:(UIView*)view
 {
-    CGRect  frame;
+    CGRect frame;
 
     frame = view.frame;
     frame.origin.x = x;
@@ -504,7 +509,7 @@ static Common* sharedCommon;
 
 + (void)setY:(CGFloat)y ofView:(UIView*)view
 {
-    CGRect  frame;
+    CGRect frame;
 
     frame = view.frame;
     frame.origin.y = y;
@@ -514,7 +519,7 @@ static Common* sharedCommon;
 
 + (void)setWidth:(CGFloat)width ofView:(UIView*)view;
 {
-    CGRect  frame;
+    CGRect frame;
 
     frame = view.frame;
     frame.size.width = width;
@@ -524,7 +529,7 @@ static Common* sharedCommon;
 
 + (void)setHeight:(CGFloat)height ofView:(UIView*)view
 {
-    CGRect  frame;
+    CGRect frame;
 
     frame = view.frame;
     frame.size.height = height;
@@ -578,7 +583,7 @@ static Common* sharedCommon;
 
 + (NSString*)stringWithOsStatus:(OSStatus)status
 {
-    char    error[sizeof(OSStatus) + 1];
+    char error[sizeof(OSStatus) + 1];
 
     *(OSStatus*)error = status;
     error[sizeof(OSStatus)] = '\0';
@@ -594,8 +599,8 @@ static Common* sharedCommon;
     
     if (!(notificationTypes & UIUserNotificationTypeAlert) || !(notificationTypes & UIUserNotificationTypeBadge))
     {
-        NSString*   title;
-        NSString*   message;
+        NSString* title;
+        NSString* message;
 
         title   = NSLocalizedStringWithDefaultValue(@"General:AppStatus NoNotificationsTitle", nil,
                                                     [NSBundle mainBundle], @"Notifications Disabled",
@@ -619,8 +624,8 @@ static Common* sharedCommon;
     }
     else if ([AppDelegate appDelegate].deviceToken.length == 0)
     {
-        NSString*   title;
-        NSString*   message;
+        NSString* title;
+        NSString* message;
 
         title   = NSLocalizedStringWithDefaultValue(@"General:AppStatus NotificationsUnavailableTitle", nil,
                                                     [NSBundle mainBundle], @"Notifications Unavailable",
@@ -934,10 +939,10 @@ static Common* sharedCommon;
 // parameter to NO before distributing the app (unless it's on intentionally)!
 + (void)redirectStderrToFile
 {
-    NSArray*    paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString*   documentsDirectory = [paths objectAtIndex:0];
-    NSString*   fileName =[NSString stringWithFormat:@"%@.log", [NSDate date]];
-    NSString*   logFilePath = [documentsDirectory stringByAppendingPathComponent:fileName];
+    NSArray*  paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString* documentsDirectory = [paths objectAtIndex:0];
+    NSString* fileName =[NSString stringWithFormat:@"%@.log", [NSDate date]];
+    NSString* logFilePath = [documentsDirectory stringByAppendingPathComponent:fileName];
 
     freopen([logFilePath cStringUsingEncoding:NSASCIIStringEncoding], "a+", stderr);
 }
@@ -960,7 +965,7 @@ static Common* sharedCommon;
 // Returns the bit-mask of the N-th bit that is set in `value`.
 + (unsigned long)nthBitSet:(NSUInteger)n inValue:(unsigned long)value
 {
-    unsigned long   bit = 1;
+    unsigned long bit = 1;
 
     while (value)
     {
