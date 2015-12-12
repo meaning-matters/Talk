@@ -15,6 +15,9 @@
 
 @interface AnalyticsTransmitter : NSObject
 
+@property (nonatomic, assign) BOOL enabled;
+
+
 + (AnalyticsTransmitter*)sharedTransmitter;
 
 - (void)sendTraceAtFile:(char*)file line:(int)line value:(NSString*)v;

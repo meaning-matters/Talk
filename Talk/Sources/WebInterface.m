@@ -48,6 +48,7 @@
 #import "Settings.h"
 #import "AFNetworking.h"
 #import "NetworkStatus.h"
+#import "AnalyticsTransmitter.h"
 
 const NSTimeInterval kDnsUpdateTimeoutReachable    =  20;
 const NSTimeInterval kDnsUpdateTimeoutNotReachable =   3;  // Limit timeout because of hard `select()` timeout.
@@ -375,7 +376,9 @@ static void processDnsReply(DNSServiceRef       sdRef,
                                            queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse* response, NSData* data, NSError* error)
         {
-            if (data != nil && [[Common objectWithJsonData:data][@"status"] isEqualToString:@"OK"])
+            NSDictionary* reply = [Common objectWithJsonData:data];
+            
+            if (reply != nil && [reply[@"status"] isEqualToString:@"OK"])
             {
                 // This method returns as soon a the first response is received, meaning
                 // that any other servers are added after `updateServers` is done.  For that
@@ -383,6 +386,11 @@ static void processDnsReply(DNSServiceRef       sdRef,
                 // `selectServer`.
                 @synchronized(self.servers)
                 {
+                    if ([reply[@"content"] objectForKey:@"trace"] != nil)
+                    {
+                        [AnalyticsTransmitter sharedTransmitter].enabled = [reply[@"content"][@"trace"] boolValue];
+                    }
+                    
                     server[@"delay"] = @([[NSDate date] timeIntervalSinceDate:startDate]);
                     [self.servers addObject:server];
                     
