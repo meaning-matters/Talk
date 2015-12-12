@@ -10,7 +10,7 @@
 #import "Settings.h"
 #import "NetworkStatus.h"
 
-static NSString* const kServerPath = @"http://51.254.118.61/trace";
+static NSString* const kServerPath = @"http://api3.numberbay.com/trace";
 
 
 @implementation AnalyticsTransmitter
