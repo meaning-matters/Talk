@@ -186,10 +186,9 @@ const NSInteger kUseButtonTag = 123;
     if (self.footerTitle == nil)
     {
         return NSLocalizedStringWithDefaultValue(@"Phone Phones List Title", nil, [NSBundle mainBundle],
-                                                 @"List of phone numbers from which you select (on the Settings tab) "
-                                                 @"your caller ID, and the number you'll be called back on.\n\n"
-                                                 @"Add as many as you like. It can be handy to have an extensive "
-                                                 @"list of caller IDs available.",
+                                                 @"List of phone numbers you can use as your Caller ID and/or "
+                                                 @"Callback number. Add as many numbers as you wish, as it "
+                                                 @"can be useful to maintain a healthy list from which to choose.",
                                                  @"\n"
                                                  @"[ ].");
     }
