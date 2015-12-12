@@ -467,6 +467,10 @@
 
 - (void)synchronizeAddresses:(void (^)(NSError* error))completion
 {
+    //### App Store version without Number stuff.
+    completion(nil);
+    return;
+    
     [[WebClient sharedClient] retrieveAddressesForIsoCountryCode:nil
                                                         areaCode:nil
                                                       numberType:NumberTypeGeographicMask
@@ -593,6 +597,10 @@
 
 - (void)synchronizeNumbers:(void (^)(NSError* error))completion
 {
+    //### App Store version without Number stuff.
+    completion(nil);
+    return;
+
     [[WebClient sharedClient] retrieveNumberE164List:^(NSError* error, NSArray* e164s)
     {
         if (error == nil)
@@ -705,6 +713,10 @@
 
 - (void)synchronizeDestinations:(void (^)(NSError* error))completion
 {
+    //### App Store version without Number stuff.
+    completion(nil);
+    return;
+
     [[WebClient sharedClient] retrieveIvrList:^(NSError* error, NSArray* list)
     {
         if (error == nil)
@@ -790,6 +802,10 @@
 
 - (void)synchronizeIvrs:(void (^)(NSError* error))completion
 {
+    //### App Store version without Number stuff.
+    completion(nil);
+    return;
+
     NSError*        error   = nil;
     NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
     NSArray*        array   = [self.managedObjectContext executeFetchRequest:request error:&error];
