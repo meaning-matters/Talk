@@ -80,6 +80,8 @@
 				<false/>
 				<key>NSExceptionMinimumTLSVersion</key>
 				<string>TLSv1.1</string>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
 			</dict>
 		</dict>
 	</dict>
