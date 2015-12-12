@@ -675,21 +675,11 @@
                         number.numberType     = numberType;
                         number.areaCode       = areaCode;
                         number.areaName       = areaName;
-                        number.numberCountry  = numberCountry;
+                        number.isoCountryCode = numberCountry;
                         number.purchaseDate   = purchaseDate;
                         number.renewalDate    = renewalDate;
-                        number.salutation     = salutation;
-                        number.firstName      = firstName;
-                        number.lastName       = lastName;
-                        number.company        = company;
-                        number.street         = street;
-                        number.building       = building;
-                        number.city           = city;
-                        number.postcode       = postcode;
                         number.stateName      = stateName;
                         number.stateCode      = stateCode;
-                        number.addressCountry = addressCountry;
-                        number.imageAccepted  = @(imageAccepted);
                     }
                     else
                     {

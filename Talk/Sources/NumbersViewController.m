@@ -280,7 +280,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
           atIndexPath:(NSIndexPath*)indexPath
 {
     NumberData* number        = [self.fetchedNumbersController objectAtIndexPath:indexPath];
-    cell.imageView.image      = [UIImage imageNamed:number.numberCountry];
+    cell.imageView.image      = [UIImage imageNamed:number.isoCountryCode];
     cell.textLabel.text       = number.name;
     PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:number.e164];
     cell.detailTextLabel.text = [phoneNumber internationalFormat];

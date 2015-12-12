@@ -488,7 +488,7 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NumbersCell"];
     }
     
-    cell.imageView.image = [UIImage imageNamed:number.numberCountry];
+    cell.imageView.image = [UIImage imageNamed:number.isoCountryCode];
     cell.textLabel.text  = number.name;
     cell.accessoryType   = UITableViewCellAccessoryNone;
     cell.selectionStyle  = UITableViewCellSelectionStyleNone;
