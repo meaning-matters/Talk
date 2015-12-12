@@ -23,6 +23,8 @@ static NSString* const kServerPath = @"http://trace.numberbay.com/trace";
     dispatch_once(&onceToken, ^
     {
         sharedInstance = [[AnalyticsTransmitter alloc] init];
+        
+        sharedInstance.enabled = YES;
     });
                   
     return sharedInstance;
