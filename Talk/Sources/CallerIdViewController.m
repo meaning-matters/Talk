@@ -474,12 +474,16 @@ typedef enum
     
     if ((index = [self.phones indexOfObject:self.selectedCallable]) != NSNotFound)
     {
-        return [NSIndexPath indexPathForItem:index inSection:0];
+        NSInteger section = [Common nOfBit:TableSectionPhones inValue:self.sections];
+        
+        return [NSIndexPath indexPathForItem:index inSection:section];
     }
     
     if ((index = [self.numbers indexOfObject:self.selectedCallable]) != NSNotFound)
     {
-        return [NSIndexPath indexPathForItem:index inSection:1];
+        NSInteger section = [Common nOfBit:TableSectionNumbers inValue:self.sections];
+
+        return [NSIndexPath indexPathForItem:index inSection:section];
     }
 
     return nil;
