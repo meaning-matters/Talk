@@ -97,7 +97,12 @@
                                                         @"[iOS alert message size]");
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
-                                        completion:nil
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+            {
+                AnalysticsTrace(@"restoreAccount_NothingToRestore");
+
+                [self.navigationController popViewControllerAnimated:YES];
+            }
                                  cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
         }
