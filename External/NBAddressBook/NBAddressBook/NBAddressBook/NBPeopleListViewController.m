@@ -600,10 +600,10 @@
             kABPersonDepartmentProperty
         };
 
-        for (int i = 0; i < (sizeof(properties) / sizeof(NSInteger)); i++)
+        for (int i = 0; i < (sizeof(properties) / sizeof(int32_t)); i++)
         {
             NSString* property = (__bridge NSString*)(ABRecordCopyValue(contact, properties[i]));
-
+            
             if (property != nil && [property rangeOfString:keyword options:NSCaseInsensitiveSearch].location != NSNotFound)
             {
                 return YES;
