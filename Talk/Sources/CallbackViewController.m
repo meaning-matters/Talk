@@ -61,10 +61,31 @@
                       callthruE164:self.call.phoneNumber.e164Format
                         completion:^(NSString* costString)
     {
-        if (costString != nil)
+        NSString* infoString = [self.call.phoneNumber infoString];
+        
+        switch (((costString != nil) << 1) | ((infoString != nil) << 0))
         {
-            self.infoLabel.text = [NSString stringWithFormat:@"%@ - %@", [self.call.phoneNumber infoString], costString];
-        }
+            case 0:
+            {
+                self.infoLabel.text = nil;
+                break;
+            }
+            case 1:
+            {
+                self.infoLabel.text = [NSString stringWithFormat:@"%@", infoString];
+                break;
+            }
+            case 2:
+            {
+                self.infoLabel.text = [NSString stringWithFormat:@"%@", costString];
+                break;
+            }
+            case 3:
+            {
+                self.infoLabel.text = [NSString stringWithFormat:@"%@ - %@", infoString, costString];
+                break;
+            }
+         }
     }];
 
     [self.calleeLabel setFont:[Common phoneFontOfSize:38]];
