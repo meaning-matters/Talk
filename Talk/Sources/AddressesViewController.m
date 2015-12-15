@@ -30,6 +30,8 @@
 
 @property (nonatomic, copy) void (^completion)(AddressData* selectedAddress);
 
+@property (nonatomic, assign) BOOL                        isLoading;
+
 @end
 
 
@@ -78,16 +80,26 @@
 }
 
 
+- (void)dealloc
+{
+    [[Settings sharedSettings] removeObserver:self forKeyPath:@"sortSegment" context:nil];
+}
+
+
 - (void)loadData
 {
+    self.isLoading = YES;
     [[WebClient sharedClient] retrieveAddressesForIsoCountryCode:self.isoCountryCode
                                                         areaCode:self.areaCode
                                                       numberType:self.numberTypeMask
                                                            reply:^(NSError *error, NSArray *addressIds)
     {
+        self.isLoading = NO;
         if (error == nil)
         {
-           //  self.isLoading = NO;
+            NSPredicate* predicate = [NSPredicate predicateWithFormat:@"addressId IN %@", addressIds];
+            self.fetchedAddressesController.fetchRequest.predicate = predicate;
+            [self.fetchedAddressesController performFetch:nil];
         }
         else
         {
@@ -102,8 +114,7 @@
     [super viewDidLoad];
 
     self.fetchedAddressesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Address"
-                                                                                withSortKeys:@[@"isoCountryCode",
-                                                                                               @"salutation"]
+                                                                                withSortKeys:[self sortKeys]
                                                                         managedObjectContext:self.managedObjectContext];
     
     // Don't show add button
@@ -113,12 +124,45 @@
     }
     else
     {
-        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"addressId IN %@", [NSArray array]];
-        [self.fetchedAddressesController.fetchRequest setPredicate:predicate];
-        [self.fetchedAddressesController performFetch:nil];
+        [self loadData];
     }
     
     self.fetchedAddressesController.delegate = self;
+    
+    [[Settings sharedSettings] addObserver:self
+                                forKeyPath:@"sortSegment"
+                                   options:NSKeyValueObservingOptionNew
+                                   context:nil];
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (self.selectedAddress != nil)
+    {
+        NSUInteger index = [self.fetchedAddressesController.fetchedObjects indexOfObject:self.selectedAddress];
+        
+        if (index != NSNotFound)
+        {
+            // Needs to run on next run loop or else does not properly scroll to bottom items.
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                NSIndexPath* indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+                [self.tableView scrollToRowAtIndexPath:indexPath
+                                      atScrollPosition:UITableViewScrollPositionMiddle
+                                              animated:YES];
+            });
+        }
+    }
+}
+
+
+- (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
+{
+    [[DataManager sharedManager] setSortKeys:[self sortKeys] ofResultsController:self.fetchedAddressesController];
+    [self.tableView reloadData];
 }
 
 
@@ -126,13 +170,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return [[self.fetchedAddressesController sections] count];
+    return self.isLoading ? 0 : [[self.fetchedAddressesController sections] count];
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ([[self.fetchedAddressesController sections] count] > 0)
+    if (!self.isLoading && [[self.fetchedAddressesController sections] count] > 0)
     {
         id<NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedAddressesController sections] objectAtIndex:section];
         
@@ -307,8 +351,8 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
           atIndexPath:(NSIndexPath*)indexPath
 {
     AddressData* address      = [controller objectAtIndexPath:indexPath];
-    cell.textLabel.text       = address.isoCountryCode;
-    cell.detailTextLabel.text = address.salutation;
+    cell.textLabel.text       = address.name;
+    cell.detailTextLabel.text = [self detailTextForAddress:address];
     cell.imageView.image      = [UIImage imageNamed:address.isoCountryCode];
     
     if (self.completion == nil)
@@ -322,6 +366,44 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     else
     {
         cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+}
+
+
+- (NSString*)detailTextForAddress:(AddressData*)address
+{
+    NSString* detailText = nil;
+    
+    if ([address.salutation isEqualToString:@"COMPANY"])
+    {
+        detailText = address.companyName;
+    }
+    else if ([address.salutation isEqualToString:@"MR"])
+    {
+        //### The order of the name elements needs to properly localized.
+        detailText = [NSString stringWithFormat:@"%@ %@ %@", [Strings mrString], address.firstName, address.lastName];
+    }
+    else if ([address.salutation isEqualToString:@"MS"])
+    {
+        //### The order of the name elements needs to properly localized.
+        detailText = [NSString stringWithFormat:@"%@ %@ %@", [Strings msString], address.firstName, address.lastName];
+    }
+    
+    return detailText;
+}
+
+
+#pragma mark - Helpers
+
+- (NSArray*)sortKeys
+{
+    if ([Settings sharedSettings].sortSegment == 0)
+    {
+        return @[@"isoCountryCode", @"name"];
+    }
+    else
+    {
+        return @[@"name", @"isoCountryCode"];
     }
 }
 
