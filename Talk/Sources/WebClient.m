@@ -463,7 +463,7 @@
                                 currencyCode:(NSString*)currencyCode
                                        reply:(void (^)(NSError* error, NSArray* areas))reply
 {
-    NSDictionary* parameters = @{@"numberType"   : [NumberType stringForNumberType:numberTypeMask],
+    NSDictionary* parameters = @{@"numberType"   : [NumberType stringForNumberTypeMask:numberTypeMask],
                                  @"currencyCode" : currencyCode};
 
     [self getPath:[NSString stringWithFormat:@"/numbers/countries/%@/states/%@/areas", isoCountryCode, stateCode]
@@ -478,7 +478,7 @@
                                 currencyCode:(NSString*)currencyCode
                                        reply:(void (^)(NSError* error, NSArray* areas))reply
 {
-    NSDictionary* parameters = @{@"numberType"   : [NumberType stringForNumberType:numberTypeMask],
+    NSDictionary* parameters = @{@"numberType"   : [NumberType stringForNumberTypeMask:numberTypeMask],
                                  @"currencyCode" : currencyCode};
 
     [self getPath:[NSString stringWithFormat:@"/numbers/countries/%@/areas", isoCountryCode]
@@ -525,7 +525,7 @@
                                      reply:(void (^)(NSError* error, NSArray* addressIds))reply
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
-    NSString*            numberType = [NumberType stringForNumberType:numberTypeMask];
+    NSString*            numberType = [NumberType stringForNumberTypeMask:numberTypeMask];
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     
     (isoCountryCode.length > 0) ? parameters[@"isoCountryCode"] = isoCountryCode : 0;
@@ -624,7 +624,7 @@
                                  reply:(void (^)(NSError* error, NSString* addressId, NSArray* missingFields))reply
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
-    NSString*            numberType = [NumberType stringForNumberType:numberTypeMask];
+    NSString*            numberType = [NumberType stringForNumberTypeMask:numberTypeMask];
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     
     (name.length               > 0) ? parameters[@"name"]               = name               : 0;

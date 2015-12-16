@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-
 typedef NS_ENUM(NSUInteger, NumberTypeMask)
 {
     NumberTypeGeographicMask    = 1UL << 0,
@@ -23,13 +22,13 @@ typedef NS_ENUM(NSUInteger, NumberTypeMask)
 
 @interface NumberType : NSObject
 
-+ (NSString*)stringForNumberType:(NumberTypeMask)mask;
++ (NSString*)stringForNumberTypeMask:(NumberTypeMask)mask;
 
 + (NumberTypeMask)numberTypeMaskForString:(NSString*)string;
 
-+ (NSString*)localizedStringForNumberType:(NumberTypeMask)mask;
++ (NSString*)localizedStringForNumberTypeMask:(NumberTypeMask)mask;
 
-+ (NSString*)abbreviatedLocalizedStringForNumberType:(NumberTypeMask)mask;
++ (NSString*)abbreviatedLocalizedStringForNumberTypeMask:(NumberTypeMask)mask;
 
 + (NSUInteger)numberTypeMaskToIndex:(NumberTypeMask)mask;
 

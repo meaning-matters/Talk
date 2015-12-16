@@ -62,12 +62,12 @@
         if (error == nil)
         {
             // Added number type selector.
-            NSArray* items = @[[NumberType abbreviatedLocalizedStringForNumberType:NumberTypeGeographicMask],
-                               [NumberType abbreviatedLocalizedStringForNumberType:NumberTypeNationalMask],
-                               [NumberType abbreviatedLocalizedStringForNumberType:NumberTypeTollFreeMask],
-                               [NumberType abbreviatedLocalizedStringForNumberType:NumberTypeMobileMask],
-                               [NumberType abbreviatedLocalizedStringForNumberType:NumberTypeSharedCostMask],
-                               [NumberType abbreviatedLocalizedStringForNumberType:NumberTypeSpecialMask]];
+            NSArray* items = @[[NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeGeographicMask],
+                               [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeNationalMask],
+                               [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeTollFreeMask],
+                               [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeMobileMask],
+                               [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeSharedCostMask],
+                               [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeSpecialMask]];
             self.numberTypeSegmentedControl = [[UISegmentedControl alloc] initWithItems:items];
             [self.numberTypeSegmentedControl addTarget:self
                                                 action:@selector(numberTypeChangedAction:)
@@ -203,7 +203,7 @@
 
 - (NSString*)searchBarPlaceHolder
 {
-    NSString* numberType = [NumberType localizedStringForNumberType:[Settings sharedSettings].numberTypeMask];
+    NSString* numberType = [NumberType localizedStringForNumberTypeMask:[Settings sharedSettings].numberTypeMask];
     NSString* format     = NSLocalizedStringWithDefaultValue(@"NumberCountries Placeholder", nil, [NSBundle mainBundle],
                                                              @"Countries With %@ Numbers",
                                                              @"...");

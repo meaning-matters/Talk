@@ -586,7 +586,7 @@
 		48B813781AADFA030019AF77 /* NSMutableString+Appending.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B813771AADFA030019AF77 /* NSMutableString+Appending.m */; };
 		48B8137B1AADFA090019AF77 /* NSString+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B8137A1AADFA090019AF77 /* NSString+Common.m */; };
 		48B813811AADFA290019AF77 /* NBUnknownPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B813801AADFA290019AF77 /* NBUnknownPersonViewController.m */; };
-		48B813841AADFA430019AF77 /* AddressTypeForCountry.plist in Resources */ = {isa = PBXBuildFile; fileRef = 48B813831AADFA430019AF77 /* AddressTypeForCountry.plist */; };
+		48B813841AADFA430019AF77 /* NBAddressCellTypes.plist in Resources */ = {isa = PBXBuildFile; fileRef = 48B813831AADFA430019AF77 /* NBAddressCellTypes.plist */; };
 		48B93870187B647F00132535 /* Helps.json in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386B187B647F00132535 /* Helps.json */; };
 		48B93871187B647F00132535 /* Helps.json in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386B187B647F00132535 /* Helps.json */; };
 		48B93872187B647F00132535 /* Licenses.json in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386C187B647F00132535 /* Licenses.json */; };
@@ -653,6 +653,8 @@
 		48F47BBF18BE9C01006A6436 /* ItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F47BBE18BE9C01006A6436 /* ItemViewController.m */; };
 		48F5D2ED16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
 		48F5D2EE16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
+		48FC30BD1C220E300032387E /* AddressType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FC30BC1C220E300032387E /* AddressType.m */; };
+		48FC30C51C2221360032387E /* ProofType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FC30C41C2221360032387E /* ProofType.m */; };
 		48FD99D5161855D30061191B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D4161855D30061191B /* CoreMedia.framework */; };
 		48FD99D9161855EF0061191B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D8161855EF0061191B /* AVFoundation.framework */; };
 		48FD99DB161856070061191B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99DA161856070061191B /* AudioToolbox.framework */; };
@@ -1320,7 +1322,7 @@
 		48B8137F1AADFA290019AF77 /* NBUnknownPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBUnknownPersonViewController.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBUnknownPersonViewController.h; sourceTree = SOURCE_ROOT; };
 		48B813801AADFA290019AF77 /* NBUnknownPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBUnknownPersonViewController.m; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBUnknownPersonViewController.m; sourceTree = SOURCE_ROOT; };
 		48B813821AADFA320019AF77 /* NBUnknownPersonViewControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NBUnknownPersonViewControllerDelegate.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBUnknownPersonViewControllerDelegate.h; sourceTree = SOURCE_ROOT; };
-		48B813831AADFA430019AF77 /* AddressTypeForCountry.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AddressTypeForCountry.plist; path = External/NBAddressBook/NBAddressBook/NBAddressBook/AddressTypeForCountry.plist; sourceTree = SOURCE_ROOT; };
+		48B813831AADFA430019AF77 /* NBAddressCellTypes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = NBAddressCellTypes.plist; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBAddressCellTypes.plist; sourceTree = SOURCE_ROOT; };
 		48B9386B187B647F00132535 /* Helps.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Helps.json; path = Resources/Helps.json; sourceTree = "<group>"; };
 		48B9386C187B647F00132535 /* Licenses.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Licenses.json; path = Resources/Licenses.json; sourceTree = "<group>"; };
 		48B9386D187B647F00132535 /* Thanks.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = Thanks.html; path = Resources/Thanks.html; sourceTree = "<group>"; };
@@ -1391,6 +1393,10 @@
 		48F47BBE18BE9C01006A6436 /* ItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemViewController.m; sourceTree = "<group>"; };
 		48F5D2EB16B9A380001576E1 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
 		48F5D2EC16B9A380001576E1 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
+		48FC30BB1C220E300032387E /* AddressType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressType.h; sourceTree = "<group>"; };
+		48FC30BC1C220E300032387E /* AddressType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressType.m; sourceTree = "<group>"; };
+		48FC30C31C2221360032387E /* ProofType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProofType.h; sourceTree = "<group>"; };
+		48FC30C41C2221360032387E /* ProofType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProofType.m; sourceTree = "<group>"; };
 		48FD99D4161855D30061191B /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		48FD99D6161855E10061191B /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		48FD99D8161855EF0061191B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -1620,6 +1626,10 @@
 		482A639A165F922E00325B3F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				48FC30BB1C220E300032387E /* AddressType.h */,
+				48FC30BC1C220E300032387E /* AddressType.m */,
+				48E61EF31C1A1BB900973FB2 /* AnalyticsTransmitter.h */,
+				48E61EF41C1A1BB900973FB2 /* AnalyticsTransmitter.m */,
 				48F5D2EB16B9A380001576E1 /* Base64.h */,
 				48F5D2EC16B9A380001576E1 /* Base64.m */,
 				48C97E9D1893F2BA00174DE9 /* BlockActionSheet.h */,
@@ -1628,9 +1638,9 @@
 				4837BB65165F726300E46C36 /* BlockAlertView.m */,
 				48FD99E51618CC370061191B /* Common.h */,
 				48FD99E61618CC370061191B /* Common.m */,
-				482A6395165F903900325B3F /* Strings.h */,
-				482A6396165F903900325B3F /* Strings.m */,
 				48EDD2341667729E007B89DA /* KeypadKey.h */,
+				48D4FADB1924247A00949894 /* NavigationController.h */,
+				48D4FADC1924247A00949894 /* NavigationController.m */,
 				488AD1EF16E80A60004D3A2A /* NSObject+Blocks.h */,
 				488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */,
 				482608EC166A4706007F0844 /* NSTimer+Blocks.h */,
@@ -1639,14 +1649,14 @@
 				482A63A0165FF73400325B3F /* NumberLabel.m */,
 				48200D1A16EC89BA0069677E /* NumberType.h */,
 				48200D1B16EC89BA0069677E /* NumberType.m */,
-				48ADD0F517067919001515EB /* UIView+AnimateHidden.h */,
-				48ADD0F61706791A001515EB /* UIView+AnimateHidden.m */,
 				4877EDBA17AD27700013B18F /* PhoneNumberTextFieldDelegate.h */,
 				4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */,
-				48D4FADB1924247A00949894 /* NavigationController.h */,
-				48D4FADC1924247A00949894 /* NavigationController.m */,
-				48E61EF31C1A1BB900973FB2 /* AnalyticsTransmitter.h */,
-				48E61EF41C1A1BB900973FB2 /* AnalyticsTransmitter.m */,
+				48FC30C31C2221360032387E /* ProofType.h */,
+				48FC30C41C2221360032387E /* ProofType.m */,
+				482A6395165F903900325B3F /* Strings.h */,
+				482A6396165F903900325B3F /* Strings.m */,
+				48ADD0F517067919001515EB /* UIView+AnimateHidden.h */,
+				48ADD0F61706791A001515EB /* UIView+AnimateHidden.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -1832,7 +1842,7 @@
 		483ED00417A4F6860032B8FF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				48B813831AADFA430019AF77 /* AddressTypeForCountry.plist */,
+				48B813831AADFA430019AF77 /* NBAddressCellTypes.plist */,
 				4842D9EC1AADFB00008F35C9 /* Localizable.strings */,
 			);
 			name = Resources;
@@ -2792,7 +2802,7 @@
 				485F6B6A1637270100D61365 /* MT@2x.png in Resources */,
 				485F6B6C1637270100D61365 /* MU@2x.png in Resources */,
 				485F6B6E1637270100D61365 /* MV@2x.png in Resources */,
-				48B813841AADFA430019AF77 /* AddressTypeForCountry.plist in Resources */,
+				48B813841AADFA430019AF77 /* NBAddressCellTypes.plist in Resources */,
 				485F6B701637270100D61365 /* MW@2x.png in Resources */,
 				485F6B721637270100D61365 /* MX@2x.png in Resources */,
 				485F6B741637270100D61365 /* MY@2x.png in Resources */,
@@ -3097,6 +3107,7 @@
 				48D0A6F41654D6D700FA2D98 /* main.mm in Sources */,
 				4837BB3C165D701F00E46C36 /* LibPhoneNumber.m in Sources */,
 				48B813291AADF7BB0019AF77 /* NBRecentCallCell.m in Sources */,
+				48FC30BD1C220E300032387E /* AddressType.m in Sources */,
 				4837BB66165F726400E46C36 /* BlockAlertView.m in Sources */,
 				482A6397165F903900325B3F /* Strings.m in Sources */,
 				482A639D165FA94400325B3F /* CallManager.m in Sources */,
@@ -3128,6 +3139,7 @@
 				48CB0AFF19DB2E1B00F95369 /* WebInterface.m in Sources */,
 				4896D90016EBE613008A2354 /* NumberAreasViewController.m in Sources */,
 				48200D1C16EC89BA0069677E /* NumberType.m in Sources */,
+				48FC30C51C2221360032387E /* ProofType.m in Sources */,
 				48232B721BFC8E5D006D667E /* AddressData.m in Sources */,
 				4830462416EE269D000F9B05 /* NumberAreaViewController.m in Sources */,
 				48F14EE61BF9C63A00541EEC /* AddressViewController.m in Sources */,

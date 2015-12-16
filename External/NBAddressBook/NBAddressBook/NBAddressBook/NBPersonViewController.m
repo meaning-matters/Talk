@@ -754,7 +754,7 @@
                         rateLabel.textAlignment = NSTextAlignmentRight;
                         rateLabel.font          = [UIFont systemFontOfSize:14.0f];
                         rateLabel.text          = costString;
-                        rateLabel.textColor     = [UIColor colorWithWhite:0.75f alpha:1.00f];
+                        rateLabel.textColor     = [Skinning contactRateColor];
                         weakCell.accessoryView  = rateLabel;
                     }];
                 }

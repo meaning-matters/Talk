@@ -12,41 +12,41 @@
 //All possible celltypes
 typedef enum
 {
-    AT_TYPE_0   = 0,
-    AT_TYPE_1   = 1,
-    AT_TYPE_2   = 2,
-    AT_TYPE_3   = 3,
-    AT_TYPE_4   = 4,
-    AT_TYPE_5   = 5,
-    AT_TYPE_6   = 6,
-    AT_TYPE_7   = 7,
-    AT_TYPE_8   = 8,
-    AT_TYPE_9   = 9,
-    AT_TYPE_10   = 10,
-    AT_TYPE_11   = 11,
-    AT_TYPE_12   = 12,
-    AT_TYPE_13   = 13,
-    AT_TYPE_14   = 14,
-    AT_TYPE_15   = 15,
-    AT_TYPE_16   = 16,
-    AT_TYPE_17   = 17,
-    AT_TYPE_18   = 18,
-    AT_TYPE_19   = 19,
-    AT_TYPE_20   = 20,
-    AT_TYPE_21   = 21,
-    AT_TYPE_22   = 22,
-    AT_TYPE_23   = 23,
-    AT_TYPE_24   = 24,
-    AT_TYPE_25   = 25,
-    AT_TYPE_26   = 26,
-    AT_TYPE_27   = 27,
-    AT_TYPE_28   = 28,
-    AT_TYPE_29   = 29,
-    AT_TYPE_30   = 30,
-    AT_TYPE_31   = 31,
-    AT_TYPE_32   = 32,
-    AT_TYPE_33   = 33
-} AddressType;
+    AC_TYPE_0   = 0,
+    AC_TYPE_1   = 1,
+    AC_TYPE_2   = 2,
+    AC_TYPE_3   = 3,
+    AC_TYPE_4   = 4,
+    AC_TYPE_5   = 5,
+    AC_TYPE_6   = 6,
+    AC_TYPE_7   = 7,
+    AC_TYPE_8   = 8,
+    AC_TYPE_9   = 9,
+    AC_TYPE_10   = 10,
+    AC_TYPE_11   = 11,
+    AC_TYPE_12   = 12,
+    AC_TYPE_13   = 13,
+    AC_TYPE_14   = 14,
+    AC_TYPE_15   = 15,
+    AC_TYPE_16   = 16,
+    AC_TYPE_17   = 17,
+    AC_TYPE_18   = 18,
+    AC_TYPE_19   = 19,
+    AC_TYPE_20   = 20,
+    AC_TYPE_21   = 21,
+    AC_TYPE_22   = 22,
+    AC_TYPE_23   = 23,
+    AC_TYPE_24   = 24,
+    AC_TYPE_25   = 25,
+    AC_TYPE_26   = 26,
+    AC_TYPE_27   = 27,
+    AC_TYPE_28   = 28,
+    AC_TYPE_29   = 29,
+    AC_TYPE_30   = 30,
+    AC_TYPE_31   = 31,
+    AC_TYPE_32   = 32,
+    AC_TYPE_33   = 33
+} AddressCellType;
 
 //All possible celltypes
 typedef enum
@@ -96,7 +96,7 @@ typedef enum
     int horiLineStartPosition;
     
     //The current address type
-    AddressType currentType;
+    AddressCellType currentType;
 }
 
 //Collection of street-textfields
@@ -132,6 +132,6 @@ typedef enum
 //Public methods for formatting and height
 - (void)formatUsingType:(NSString*)countryCode;
 + (CGFloat)determineAddressCellHeight:(NSString*)countryCode;
-+ (int)determineAddressTypeCountryCode:(NSString*)countryCode;
++ (AddressCellType)determineAddressCellTypeCountryCode:(NSString*)countryCode;
 + (NSString*)getStringForStreets:(NSArray*)streets andState:(NSString*)state andZipCode:(NSString*)zipCode andCity:(NSString*)city andCountry:(NSString*)country;
 @end

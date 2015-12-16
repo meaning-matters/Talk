@@ -345,10 +345,10 @@
     [separators removeAllObjects];
     
     //Determine type based on locale
-    currentType = [NBAddressCell determineAddressTypeCountryCode:countryCode];
+    currentType = [NBAddressCell determineAddressCellTypeCountryCode:countryCode];
     switch (currentType)
     {
-        case AT_TYPE_0:
+        case AC_TYPE_0:
         {
             //(Albania)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -357,7 +357,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_1:
+        case AC_TYPE_1:
         {
             //(Algaria)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -367,7 +367,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_2:
+        case AC_TYPE_2:
         {
             //(Argentina)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -378,7 +378,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_3:
+        case AC_TYPE_3:
         {
             //(Argentina)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -389,7 +389,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_4:
+        case AC_TYPE_4:
         {
             //(Belize)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -399,7 +399,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_5:
+        case AC_TYPE_5:
         {
             //(The Bahamas)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -409,7 +409,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_6:
+        case AC_TYPE_6:
         {
             //(Bahrain)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -419,7 +419,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_7:
+        case AC_TYPE_7:
         {
             //(Brazil)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -430,7 +430,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_8:
+        case AC_TYPE_8:
         {
             //(Canada)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -441,7 +441,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_9:
+        case AC_TYPE_9:
         {
             //(Cayman Islands)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -450,7 +450,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_10:
+        case AC_TYPE_10:
         {
             //(China)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
@@ -461,7 +461,7 @@
             textfieldSeparatorPosition = 3;
             break;
         }
-        case AT_TYPE_11:
+        case AC_TYPE_11:
         {
             //(Dominican Republic)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -472,7 +472,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_12:
+        case AC_TYPE_12:
         {
             //(Ecuador)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -482,7 +482,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_13:
+        case AC_TYPE_13:
         {
             //(Egypt)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -492,7 +492,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_14:
+        case AC_TYPE_14:
         {
             //(El Salvador)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -503,7 +503,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_15:
+        case AC_TYPE_15:
         {
             //(Falkland Islands)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -513,7 +513,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_16:
+        case AC_TYPE_16:
         {
             //(Fiji)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -523,7 +523,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_17:
+        case AC_TYPE_17:
         {
             //(French Pol)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -534,7 +534,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_18:
+        case AC_TYPE_18:
         {
             //(Greenland)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -544,7 +544,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_19:
+        case AC_TYPE_19:
         {
             //(Hong Kong)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
@@ -554,7 +554,7 @@
             textfieldSeparatorPosition = 3;
             break;
         }
-        case AT_TYPE_20:
+        case AC_TYPE_20:
         {
             //(Hungary)
             [self addTextfieldForPosition:0 andLineType:LT_LEFT andTextfieldType:TT_POSTAL_CODE];
@@ -564,7 +564,7 @@
             textfieldSeparatorPosition = 2;
             break;
         }
-        case AT_TYPE_21:
+        case AC_TYPE_21:
         {
             //(India)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -575,7 +575,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_22:
+        case AC_TYPE_22:
         {
             //(Ireland)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -586,7 +586,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_23:
+        case AC_TYPE_23:
         {
             //(Japan)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_POSTAL_CODE];
@@ -597,7 +597,7 @@
             textfieldSeparatorPosition = NSIntegerMax;
             break;
         }
-        case AT_TYPE_24:
+        case AC_TYPE_24:
         {
             //(Kazakhstan)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -608,7 +608,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_25:
+        case AC_TYPE_25:
         {
             //(South Korea)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_POSTAL_CODE];
@@ -619,7 +619,7 @@
             textfieldSeparatorPosition = 4;
             break;
         }
-        case AT_TYPE_26:
+        case AC_TYPE_26:
         {
             //(Macau)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
@@ -629,7 +629,7 @@
             textfieldSeparatorPosition = 3;
             break;
         }
-        case AT_TYPE_27:
+        case AC_TYPE_27:
         {
             //(Malaysia)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -640,7 +640,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_28:
+        case AC_TYPE_28:
         {
             //(Micronesia)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -651,7 +651,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_29:
+        case AC_TYPE_29:
         {
             //(New Zealand)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];            
@@ -662,7 +662,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_30:
+        case AC_TYPE_30:
         {
             //(Somalia)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -673,7 +673,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_31:
+        case AC_TYPE_31:
         {
             //(Taiwan)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_COUNTRY];
@@ -684,7 +684,7 @@
             textfieldSeparatorPosition = 4;
             break;
         }
-        case AT_TYPE_32:
+        case AC_TYPE_32:
         {
             //(Thailand)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -695,7 +695,7 @@
             textfieldSeparatorPosition = 0;
             break;
         }
-        case AT_TYPE_33:
+        case AC_TYPE_33:
         {
             //(United Kingdom)
             [self addTextfieldForPosition:0 andLineType:LT_FULL andTextfieldType:TT_STREET];
@@ -785,10 +785,10 @@
 
 //These methods are static, because cells might not yet exist when we request the height and type
 #pragma mark - Determining address cell type and height
-+ (int)determineAddressTypeCountryCode:(NSString*)countryCode
++ (AddressCellType)determineAddressCellTypeCountryCode:(NSString*)countryCode
 {
     //Read in mapping from country to address cell type
-    NSDictionary * typeForCountryDictionary = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"AddressTypeForCountry" ofType:@"plist"]];
+    NSDictionary * typeForCountryDictionary = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"NBAddressCellTypes" ofType:@"plist"]];
     return [[typeForCountryDictionary objectForKey:countryCode] intValue];
 }
 
@@ -834,51 +834,51 @@
 
 + (CGFloat)determineAddressCellHeight:(NSString*)countryCode
 {
-    AddressType type = [NBAddressCell determineAddressTypeCountryCode:countryCode];
+    AddressCellType type = [NBAddressCell determineAddressCellTypeCountryCode:countryCode];
     switch (type)
     {
-        case AT_TYPE_0:
-        case AT_TYPE_1:
-        case AT_TYPE_3:
-        case AT_TYPE_5:
-        case AT_TYPE_6:
-        case AT_TYPE_7:
-        case AT_TYPE_8:
-        case AT_TYPE_9:
-        case AT_TYPE_17:
-        case AT_TYPE_18:
-        case AT_TYPE_19:
-        case AT_TYPE_20:
-        case AT_TYPE_22:
-        case AT_TYPE_26:
-        case AT_TYPE_27:
-        case AT_TYPE_28:
-        case AT_TYPE_30:
+        case AC_TYPE_0:
+        case AC_TYPE_1:
+        case AC_TYPE_3:
+        case AC_TYPE_5:
+        case AC_TYPE_6:
+        case AC_TYPE_7:
+        case AC_TYPE_8:
+        case AC_TYPE_9:
+        case AC_TYPE_17:
+        case AC_TYPE_18:
+        case AC_TYPE_19:
+        case AC_TYPE_20:
+        case AC_TYPE_22:
+        case AC_TYPE_26:
+        case AC_TYPE_27:
+        case AC_TYPE_28:
+        case AC_TYPE_30:
         {
             return 3 * SIZE_CELL_HEIGHT;
             break;
         }
-        case AT_TYPE_2:
-        case AT_TYPE_4:
-        case AT_TYPE_10:
-        case AT_TYPE_11:
-        case AT_TYPE_12:
-        case AT_TYPE_13:
-        case AT_TYPE_14:
-        case AT_TYPE_15:
-        case AT_TYPE_16:
-        case AT_TYPE_21:
-        case AT_TYPE_23:
-        case AT_TYPE_24:
-        case AT_TYPE_25:
-        case AT_TYPE_29:
-        case AT_TYPE_32:
+        case AC_TYPE_2:
+        case AC_TYPE_4:
+        case AC_TYPE_10:
+        case AC_TYPE_11:
+        case AC_TYPE_12:
+        case AC_TYPE_13:
+        case AC_TYPE_14:
+        case AC_TYPE_15:
+        case AC_TYPE_16:
+        case AC_TYPE_21:
+        case AC_TYPE_23:
+        case AC_TYPE_24:
+        case AC_TYPE_25:
+        case AC_TYPE_29:
+        case AC_TYPE_32:
         {
             return 4 * SIZE_CELL_HEIGHT;
             break;
         }
-        case AT_TYPE_31:
-        case AT_TYPE_33:
+        case AC_TYPE_31:
+        case AC_TYPE_33:
         {
             return 5*SIZE_CELL_HEIGHT;
             break;

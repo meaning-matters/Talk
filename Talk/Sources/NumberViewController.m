@@ -454,7 +454,7 @@ typedef enum
         {
             cell.textLabel.text       = [Strings typeString];
             numberTypeMask            = [NumberType numberTypeMaskForString:number.numberType];
-            cell.detailTextLabel.text = [NumberType localizedStringForNumberType:numberTypeMask];
+            cell.detailTextLabel.text = [NumberType localizedStringForNumberTypeMask:numberTypeMask];
             break;
         }
         case AreaRowAreaCode:

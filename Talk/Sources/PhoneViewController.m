@@ -400,7 +400,7 @@ typedef enum
     if (isNew)
     {
         cell.detailTextLabel.text      = [Strings requiredString];
-        cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
+        cell.detailTextLabel.textColor = [Skinning placeholderColor];
         cell.selectionStyle            = UITableViewCellSelectionStyleDefault;
         cell.accessoryType             = UITableViewCellAccessoryDisclosureIndicator;
     }
@@ -541,7 +541,7 @@ typedef enum
                     else
                     {
                         cell.detailTextLabel.text      = [Strings requiredString];
-                        cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
+                        cell.detailTextLabel.textColor = [Skinning placeholderColor];
                     }
 
                     [self updateSaveButtonItem];

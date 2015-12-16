@@ -25,7 +25,7 @@
 @property (nonatomic, strong) NSString*                   isoCountryCode;
 @property (nonatomic, strong) NSString*                   areaCode;
 @property (nonatomic, assign) NumberTypeMask              numberTypeMask;
-@property (nonatomic, strong) NSString*                   addressType;
+@property (nonatomic, assign) AddressTypeMask             addressTypeMask;
 @property (nonatomic, strong) NSDictionary*               proofType;
 
 @property (nonatomic, copy) void (^completion)(AddressData* selectedAddress);
@@ -44,7 +44,7 @@
                                isoCountryCode:nil
                                      areaCode:nil
                                    numberType:NumberTypeGeographicMask
-                                  addressType:nil
+                                  addressType:0
                                     proofType:nil
                                    completion:nil];
 }
@@ -55,7 +55,7 @@
                               isoCountryCode:(NSString*)isoCountryCode
                                     areaCode:(NSString*)areaCode
                                   numberType:(NumberTypeMask)numberTypeMask
-                                 addressType:(NSString*)addressType
+                                 addressType:(AddressTypeMask)addressTypeMask
                                    proofType:(NSDictionary*)proofType
                                   completion:(void (^)(AddressData* selectedAddress))completion
 {
@@ -71,7 +71,7 @@
         self.isoCountryCode       = isoCountryCode;
         self.areaCode             = areaCode;
         self.numberTypeMask       = numberTypeMask;
-        self.addressType          = addressType;
+        self.addressTypeMask      = addressTypeMask;
         self.proofType            = proofType;
         self.completion           = completion;
     }
@@ -88,6 +88,13 @@
 
 - (void)loadData
 {
+    /*
+    No requirement - whole list
+    Worldwide      - whole list
+    National       - query using country code and numberType
+    Local          -             country code and areaCode   numberType
+     */
+    
     self.isLoading = YES;
     [[WebClient sharedClient] retrieveAddressesForIsoCountryCode:self.isoCountryCode
                                                         areaCode:self.areaCode
@@ -249,8 +256,8 @@
                                                    managedObjectContext:self.managedObjectContext
                                                          isoCountryCode:nil
                                                                areaCode:nil
-                                                         numberTypeMask:NumberTypeGeographicMask
-                                                            addressType:nil
+                                                             numberType:NumberTypeGeographicMask
+                                                            addressType:0
                                                               proofType:nil];
         
         [self.navigationController pushViewController:viewController animated:YES];
@@ -320,8 +327,8 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                                                    managedObjectContext:self.managedObjectContext
                                                          isoCountryCode:self.isoCountryCode
                                                                areaCode:self.areaCode
-                                                         numberTypeMask:self.numberTypeMask
-                                                            addressType:self.addressType
+                                                             numberType:self.numberTypeMask
+                                                            addressType:self.addressTypeMask
                                                               proofType:self.proofType];
         
         modalViewController = [[UINavigationController alloc] initWithRootViewController:viewController];

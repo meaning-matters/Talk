@@ -54,4 +54,22 @@
     return [UIColor colorWithRed:0.935 green:0.937 blue:0.958 alpha:1.0f];  // Color seen on grouped table views.
 }
 
+
++ (UIColor*)placeholderColor
+{
+    return [UIColor colorWithWhite:0.80f alpha:1.00f];
+}
+
+
++ (UIColor*)valueColor
+{
+    return [UIColor colorWithWhite:0.55f alpha:1.00f];
+}
+
+
++ (UIColor*)contactRateColor
+{
+    return [UIColor colorWithWhite:0.80f alpha:1.00f];
+}
+
 @end

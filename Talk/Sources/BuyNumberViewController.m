@@ -187,7 +187,7 @@
                                                  areaName:hasAreaName ? self.area[@"areaName"] : nil
                                                 stateCode:self.area[@"stateCode"]
                                                 stateName:self.area[@"stateName"]
-                                               numberType:[NumberType stringForNumberType:self.numberTypeMask]
+                                               numberType:[NumberType stringForNumberTypeMask:self.numberTypeMask]
                                                      info:self.info
                                                     reply:^(NSError* error, NSString *e164)
         {

@@ -549,7 +549,7 @@ typedef enum
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallbackCell"];
-        cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+        cell.detailTextLabel.textColor = [Skinning valueColor];
     }
 
     cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings Callback Number", nil,
@@ -578,7 +578,7 @@ typedef enum
         if (cell == nil)
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CallerIDCell"];
-            cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+            cell.detailTextLabel.textColor = [Skinning valueColor];
         }
         
         cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Setting Shown Number Format", nil,

@@ -8,6 +8,7 @@
 
 #import "ItemsViewController.h"
 #import "NumberType.h"
+#import "AddressType.h"
 
 @class AddressData;
 
@@ -25,7 +26,7 @@
                               isoCountryCode:(NSString*)isoCountryCode
                                     areaCode:(NSString*)areaCode
                                   numberType:(NumberTypeMask)numberTypeMask
-                                 addressType:(NSString*)addressType
+                                 addressType:(AddressTypeMask)addressTypeMask
                                    proofType:(NSDictionary*)proofType
                                   completion:(void (^)(AddressData* selectedAddress))completion;
 

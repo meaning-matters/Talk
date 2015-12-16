@@ -373,13 +373,14 @@ typedef enum
                 NSManagedObjectContext*  managedObjectContext = [DataManager sharedManager].managedObjectContext;
                 NSString*                areaCode             = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : nil;
                 AddressesViewController* viewController;
+                AddressTypeMask          addressTypeMask      = [AddressType addressTypeMaskForString:area[@"addressType"]];
                 
                 viewController = [[AddressesViewController alloc] initWithManagedObjectContext:managedObjectContext
                                                                                selectedAddress:self.address
                                                                                 isoCountryCode:numberIsoCountryCode
                                                                                       areaCode:areaCode
                                                                                     numberType:numberTypeMask
-                                                                                   addressType:area[@"addressType"]
+                                                                                   addressType:addressTypeMask
                                                                                      proofType:area[@"proofType"]
                                                                                     completion:^(AddressData *selectedAddress)
                 {
@@ -494,7 +495,7 @@ typedef enum
         case AreaRowType:
         {
             cell.textLabel.text       = [Strings typeString];
-            cell.detailTextLabel.text = [NumberType localizedStringForNumberType:numberTypeMask];
+            cell.detailTextLabel.text = [NumberType localizedStringForNumberTypeMask:numberTypeMask];
             cell.imageView.image      = nil;
             break;
         }
@@ -572,26 +573,19 @@ typedef enum
 - (UITableViewCell*)addressCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
-    UITextField*     textField;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"AddressCell"];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"AddressCell"];
-        
-        textField = [Common addTextFieldToCell:cell delegate:self];
-        textField.tag = TextFieldCellTag;
-    }
-    else
-    {
-        textField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];
     }
     
-    textField.placeholder            = [Strings requiredString];
-    textField.userInteractionEnabled = NO;
-
-    cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
-    cell.textLabel.text = NSLocalizedString(@"Address", @"Address cell title");
+    cell.textLabel.text            = NSLocalizedString(@"Address", @"Address cell title");
+    
+    cell.detailTextLabel.textColor = self.address ? [Skinning valueColor] : [Skinning placeholderColor];
+    cell.detailTextLabel.text      = self.address ? self.address.name     : [Strings requiredString];
+    
+    cell.accessoryType             = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
 }

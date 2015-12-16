@@ -12,6 +12,7 @@
 #import "CreditViewController.h"
 #import "NBRecentsNavigationController.h"
 #import "NBPeoplePickerNavigationController.h"
+#import "NBAddressBookManager.h"
 #import "KeypadViewController.h"
 #import "PhonesViewController.h"
 #import "NumbersViewController.h"
@@ -20,7 +21,6 @@
 #import "SettingsViewController.h"
 #import "HelpsViewController.h"
 #import "AboutViewController.h"
-#import "NBAddressBookManager.h"
 
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, AVAudioPlayerDelegate,

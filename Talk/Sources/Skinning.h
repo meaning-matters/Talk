@@ -14,10 +14,16 @@
 
 + (UIColor*)tintColor;
 
-+ (UIColor*)onTintColor;    // Used for call button and UISwitch.
++ (UIColor*)onTintColor;        // Used for call button and UISwitch.
 
 + (UIColor*)deleteTintColor;
 
 + (UIColor*)backgroundTintColor;
+
++ (UIColor*)placeholderColor;   // Color for placeholder texts at right side of cells (e.g. Settings).
+
++ (UIColor*)valueColor;         // Color for texts at right side of cells when having a value (idem.).
+
++ (UIColor*)contactRateColor;   // Color of call rate shown on Contact detail.
 
 @end

@@ -61,7 +61,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 @property (nonatomic, strong) NSString*                   numberIsoCountryCode;
 @property (nonatomic, strong) NSString*                   areaCode;
 @property (nonatomic, assign) NumberTypeMask              numberTypeMask;
-@property (nonatomic, strong) NSString*                   addressType;
+@property (nonatomic, assign) AddressTypeMask             addressTypeMask;
 @property (nonatomic, strong) NSDictionary*               proofType;
 
 @property (nonatomic, strong) NSArray*                    citiesArray;
@@ -106,8 +106,8 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
            managedObjectContext:(NSManagedObjectContext*)managedObjectContext
                  isoCountryCode:(NSString*)isoCountryCode
                        areaCode:(NSString*)areaCode
-                 numberTypeMask:(NumberTypeMask)numberTypeMask
-                    addressType:(NSString*)addressType
+                     numberType:(NumberTypeMask)numberTypeMask
+                    addressType:(AddressTypeMask)addressTypeMask
                       proofType:(NSDictionary*)proofType
 {
     if (self = [super initWithManagedObjectContext:managedObjectContext])
@@ -120,7 +120,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         self.numberIsoCountryCode = isoCountryCode;
         self.areaCode             = areaCode;
         self.numberTypeMask       = numberTypeMask;
-        self.addressType          = addressType;
+        self.addressTypeMask      = addressTypeMask;
         self.proofType            = proofType;
         
         if (self.isNew == YES)
@@ -140,7 +140,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             self.managedObjectContext = managedObjectContext;
         }
         
-        if ([self.addressType isEqualToString:@"LOCAL"] || [self.addressType isEqualToString:@"NATIONAL"])
+        if (self.addressTypeMask == AddressTypeLocalMask || self.addressTypeMask == AddressTypeNationalMask)
         {
             self.address.isoCountryCode = self.numberIsoCountryCode;
         }
@@ -669,25 +669,33 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         {
             if (self.isNew)
             {
-                if ([self.addressType isEqualToString:@"LOCAL"])
+                switch (self.addressTypeMask)
                 {
-                    title = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal SectionHeader", nil,
-                                                              [NSBundle mainBundle], @"Local Contact Address",
-                                                              @"Address of someone.");
-                }
-                
-                if ([self.addressType isEqualToString:@"NATIONAL"])
-                {
-                    title = NSLocalizedStringWithDefaultValue(@"Address:AddressNational SectionHeader", nil,
-                                                              [NSBundle mainBundle], @"National Contact Address",
-                                                              @"Address of someone.");
-                }
-                
-                if ([self.addressType isEqualToString:@"WORLDWIDE"])
-                {
-                    title = NSLocalizedStringWithDefaultValue(@"Address:AddressWorldwide SectionHeader", nil,
-                                                              [NSBundle mainBundle], @"Worldwide Contact Address",
-                                                              @"Address of someone.");
+                    case AddressTypeNoneMask:
+                    {
+                        title = nil;
+                    }
+                    case AddressTypeLocalMask:
+                    {
+                        title = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal SectionHeader", nil,
+                                                                  [NSBundle mainBundle], @"Local Contact Address",
+                                                                  @"Address of someone.");
+                        break;
+                    }
+                    case AddressTypeNationalMask:
+                    {
+                        title = NSLocalizedStringWithDefaultValue(@"Address:AddressNational SectionHeader", nil,
+                                                                  [NSBundle mainBundle], @"National Contact Address",
+                                                                  @"Address of someone.");
+                        break;
+                    }
+                    case AddressTypeWorldwideMask:
+                    {
+                        title = NSLocalizedStringWithDefaultValue(@"Address:AddressWorldwide SectionHeader", nil,
+                                                                  [NSBundle mainBundle], @"Worldwide Contact Address",
+                                                                  @"Address of someone.");
+                        break;
+                    }
                 }
             }
             else
@@ -852,7 +860,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
                         
                         /*
                         
-                        self.address.numberType = [NumberType localizedStringForNumberType:self.numberTypeMask];
+                        self.address.numberType = [NumberType localizedStringForNumberTypeMask:self.numberTypeMask];
                         self.address.areaCode   = self.area[@"areaCode"];
                         [[WebClient sharedClient] checkPurchaseInfo:self.purchaseInfo
                                                               reply:^(NSError* error, BOOL isValid)
@@ -1222,7 +1230,9 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             textField.placeholder            = [Strings requiredString];
             textField.userInteractionEnabled = NO;
             
-            if ([self.addressType isEqualToString:@"LOCAL"] || [self.addressType isEqualToString:@"NATIONAL"] || !self.isNew)
+            if (self.addressTypeMask == AddressTypeLocalMask    ||
+                self.addressTypeMask == AddressTypeNationalMask ||
+                !self.isNew)
             {
                 cell.accessoryType  = UITableViewCellAccessoryNone;
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;

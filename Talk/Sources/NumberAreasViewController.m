@@ -401,7 +401,7 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
     NSDictionary*    area;
     NSString*        code;
     NSString*        name;
-    NSString*        type = [NumberType localizedStringForNumberType:numberTypeMask];
+    NSString*        type = [NumberType localizedStringForNumberTypeMask:numberTypeMask];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumberAreasCell"];
     if (cell == nil)
