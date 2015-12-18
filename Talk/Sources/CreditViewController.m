@@ -440,8 +440,6 @@ typedef enum
         case 3: tier = 10; break;
         case 4: tier = 20; break;
         case 5: tier = 50; break;
-        case 6: tier = 60; break;
-        case 7: tier = 72; break;
     }
 
     return tier;
@@ -459,8 +457,6 @@ typedef enum
         case 3: button = self.buyCell.button10;  break;
         case 4: button = self.buyCell.button20;  break;
         case 5: button = self.buyCell.button50;  break;
-        case 6: button = self.buyCell.button100; break;
-        case 7: button = self.buyCell.button200; break;
     }
 
     return button;
@@ -478,8 +474,6 @@ typedef enum
         case 3: indicator = self.buyCell.activityIndicator10;  break;
         case 4: indicator = self.buyCell.activityIndicator20;  break;
         case 5: indicator = self.buyCell.activityIndicator50;  break;
-        case 6: indicator = self.buyCell.activityIndicator100; break;
-        case 7: indicator = self.buyCell.activityIndicator200; break;
     }
 
     return indicator;
@@ -518,7 +512,7 @@ typedef enum
 
 - (void)updateBuyCell
 {
-    for (int n = 0; n <= 7; n++)
+    for (int n = 0; n <= 5; n++)
     {
         int       tier              = [self tierForN:n];
         NSString* productIdentifier = [[PurchaseManager sharedManager] productIdentifierForCreditTier:tier];
