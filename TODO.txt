@@ -144,5 +144,6 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 // it again at app startup.  This is however slightly earlier than that device token is
 // received.  Therefore the PurchaseManager is started up here.
 
+* Assign ivars in init and dealloc methods: https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/mmPractical.html
 
 

@@ -88,16 +88,20 @@
 
 - (void)loadData
 {
-    /*
-    No requirement - whole list
-    Worldwide      - whole list
-    National       - query using country code and numberType
-    Local          -             country code and areaCode   numberType
-     */
+    NSString* isoCountryCode;
+    NSString* areaCode;
+
+    switch (self.addressTypeMask)
+    {
+        case AddressTypeNoneMask:      isoCountryCode = nil;                 areaCode = nil;           break;
+        case AddressTypeWorldwideMask: isoCountryCode = nil;                 areaCode = nil;           break;
+        case AddressTypeNationalMask:  isoCountryCode = self.isoCountryCode; areaCode = nil;           break;
+        case AddressTypeLocalMask:     isoCountryCode = self.isoCountryCode; areaCode = self.areaCode; break;
+    }
     
     self.isLoading = YES;
-    [[WebClient sharedClient] retrieveAddressesForIsoCountryCode:self.isoCountryCode
-                                                        areaCode:self.areaCode
+    [[WebClient sharedClient] retrieveAddressesForIsoCountryCode:isoCountryCode
+                                                        areaCode:areaCode
                                                       numberType:self.numberTypeMask
                                                            reply:^(NSError *error, NSArray *addressIds)
     {
@@ -106,7 +110,9 @@
         {
             NSPredicate* predicate = [NSPredicate predicateWithFormat:@"addressId IN %@", addressIds];
             self.fetchedAddressesController.fetchRequest.predicate = predicate;
+
             [self.fetchedAddressesController performFetch:nil];
+            [self.tableView reloadData];
         }
         else
         {
@@ -293,8 +299,8 @@
 - (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AddressData* address = [self.fetchedAddressesController objectAtIndexPath:indexPath];
-    
-    return NO;//######
+
+    return address.numbers.count == 0;
 }
 
 

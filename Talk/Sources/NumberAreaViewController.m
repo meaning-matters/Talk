@@ -372,8 +372,8 @@ typedef enum
             {
                 NSManagedObjectContext*  managedObjectContext = [DataManager sharedManager].managedObjectContext;
                 NSString*                areaCode             = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : nil;
-                AddressesViewController* viewController;
                 AddressTypeMask          addressTypeMask      = [AddressType addressTypeMaskForString:area[@"addressType"]];
+                AddressesViewController* viewController;
                 
                 viewController = [[AddressesViewController alloc] initWithManagedObjectContext:managedObjectContext
                                                                                selectedAddress:self.address
