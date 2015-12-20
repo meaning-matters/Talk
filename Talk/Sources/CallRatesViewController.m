@@ -56,11 +56,6 @@
 {
     [super viewDidLoad];
 
-    if ([self checkCurrencyCode] == NO)
-    {
-        return;
-    }
-
     [self retrieveCallRates];
 }
 
@@ -221,40 +216,6 @@
     NSDictionary* rate      = [[self.objectsArray filteredArrayUsingPredicate:predicate] firstObject];
 
     return rate;
-}
-
-
-- (BOOL)checkCurrencyCode
-{
-    if ([Settings sharedSettings].storeCurrencyCode.length == 0)
-    {
-        NSString* title;
-        NSString* message;
-        title   = NSLocalizedStringWithDefaultValue(@"CallRates NoCurrencyCodeTitle", nil, [NSBundle mainBundle],
-                                                    @"Currency Not Known",
-                                                    @"...\n"
-                                                    @"...");
-        message = NSLocalizedStringWithDefaultValue(@"CallRates NoCurrencyCodeMessage", nil, [NSBundle mainBundle],
-                                                    @"The currency code has not been loaded from the iTunes Store (yet).\n\n"
-                                                    @"Please make sure your iTunes Store account is active on this device, "
-                                                    @"and you're connected to internet.",
-                                                    @"...\n"
-                                                    @"...");
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-        {
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-                             cancelButtonTitle:[Strings closeString]
-                             otherButtonTitles:nil];
-
-        return NO;
-    }
-    else
-    {
-        return YES;
-    }
 }
 
 

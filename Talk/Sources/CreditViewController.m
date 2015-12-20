@@ -86,6 +86,14 @@ typedef enum
     self.amountCellHeight = cell.bounds.size.height;
     self.buyCell          = [self.tableView dequeueReusableCellWithIdentifier:@"CreditBuyCell"];
     self.buyCellHeight    = self.buyCell.bounds.size.height;
+
+    [[NSNotificationCenter defaultCenter] addObserverForName:PurchaseManagerProductsLoadedNotification
+                                                      object:nil
+                                                       queue:[NSOperationQueue mainQueue]
+                                                  usingBlock:^(NSNotification* note)
+    {
+        [self updateBuyCell];
+    }];
 }
 
 
@@ -101,7 +109,10 @@ typedef enum
 
     [[PurchaseManager sharedManager] loadProducts:^(BOOL success)
     {
-        [self updateBuyCell];
+        if (success == YES)
+        {
+            [self updateBuyCell];
+        }
     }];
 }
 

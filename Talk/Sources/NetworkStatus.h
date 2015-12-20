@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-
 extern NSString* const NetworkStatusSimChangedNotification;
 extern NSString* const NetworkStatusMobileCallStateChangedNotification;
 extern NSString* const NetworkStatusReachableNotification;

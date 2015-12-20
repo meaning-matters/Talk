@@ -111,6 +111,8 @@ static NSUserDefaults* userDefaults;
 
     dispatch_once(&onceToken, ^
     {
+        NSLocale* locale = [NSLocale currentLocale];
+
         dictionary = [NSMutableDictionary dictionary];
 
         // Default for tabBarClassNames is handled in AppDelegate.
@@ -136,8 +138,8 @@ static NSUserDefaults* userDefaults;
         [dictionary setObject:@(NumberTypeGeographicMask)                        forKey:NumberTypeMaskKey];
         [dictionary setObject:@(0)                                               forKey:SortSegmentKey];
         [dictionary setObject:@(0)                                               forKey:DestinationsSelectionKey];
-        [dictionary setObject:@""                                                forKey:StoreCurrencyCodeKey];
-        [dictionary setObject:@""                                                forKey:StoreCountryCodeKey];
+        [dictionary setObject:[locale objectForKey:NSLocaleCurrencyCode]         forKey:StoreCurrencyCodeKey];
+        [dictionary setObject:[locale objectForKey:NSLocaleCountryCode]          forKey:StoreCountryCodeKey];
         [dictionary setObject:@(0.0f)                                            forKey:CreditKey];
         [dictionary setObject:@(NO)                                              forKey:NeedsServerSyncKey];
         [dictionary setObject:@"_api"                                            forKey:DnsSrvPrefixKey];
