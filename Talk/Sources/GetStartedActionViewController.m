@@ -70,29 +70,24 @@
 {
     AnalysticsTrace(@"buttonAction");
 
-    if ([self checkCurrencyCode] == YES)
-    {
-        AnalysticsTrace(@"checkCurrencyCode_YES");
+    NSData*                 data                = [Common dataForResource:@"Terms" ofType:@"json"];
+    NSDictionary*           dictionary          = [Common objectWithJsonData:data];
+    UINavigationController* modalViewController;
 
-        NSData*                 data                = [Common dataForResource:@"Terms" ofType:@"json"];
-        NSDictionary*           dictionary          = [Common objectWithJsonData:data];
-        UINavigationController* modalViewController;
+    self.termsViewController = [[HtmlViewController alloc] initWithDictionary:dictionary modal:YES];
 
-        self.termsViewController = [[HtmlViewController alloc] initWithDictionary:dictionary modal:YES];
+    modalViewController = [[UINavigationController alloc] initWithRootViewController:self.termsViewController];
+    modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:modalViewController
+                       animated:YES
+                     completion:nil];
 
-        modalViewController = [[UINavigationController alloc] initWithRootViewController:self.termsViewController];
-        modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        [self presentViewController:modalViewController
-                           animated:YES
-                         completion:nil];
-
-        UIBarButtonItem* buttonItem;
-        buttonItem = [[UIBarButtonItem alloc] initWithTitle:[Strings agreeString]
-                                                      style:UIBarButtonItemStylePlain
-                                                     target:self
-                                                     action:@selector(agree)];
-        self.termsViewController.navigationItem.rightBarButtonItem = buttonItem;
-    }
+    UIBarButtonItem* buttonItem;
+    buttonItem = [[UIBarButtonItem alloc] initWithTitle:[Strings agreeString]
+                                                  style:UIBarButtonItemStylePlain
+                                                 target:self
+                                                 action:@selector(agree)];
+    self.termsViewController.navigationItem.rightBarButtonItem = buttonItem;
 }
 
 
@@ -157,8 +152,8 @@
     self.button.alpha   = 0.5f;
     [[PurchaseManager sharedManager] loadProducts:^(BOOL success)
     {
-        self.button.enabled = YES;
-        self.button.alpha   = 1.0f;
+        self.button.enabled = success;
+        self.button.alpha   = success ? 1.0f : 0.5f;
         if (success == NO)
         {
             AnalysticsTrace(@"loadProducts_FAIL");
@@ -166,45 +161,6 @@
             [self.navigationController popViewControllerAnimated:YES];
         }
     }];
-}
-
-
-- (BOOL)checkCurrencyCode
-{
-    if ([Settings sharedSettings].storeCurrencyCode.length == 0)
-    {
-        AnalysticsTrace(@"checkCurrencyCode_FAIL");
-
-        NSString* title;
-        NSString* message;
-        title   = NSLocalizedStringWithDefaultValue(@"GetStartedAction NoCurrencyCodeTitle", nil, [NSBundle mainBundle],
-                                                    @"No Connection",
-                                                    @"...\n"
-                                                    @"...");
-        message = NSLocalizedStringWithDefaultValue(@"GetStartedAction NoCurrencyCodeMessage", nil, [NSBundle mainBundle],
-                                                    @"Information from the iTunes Store has not been loaded (yet).\n\n"
-                                                    @"Please make sure your iTunes Store account is active on this device, "
-                                                    @"and you're connected to internet.",
-                                                    @"...\n"
-                                                    @"...");
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-        {
-            [[AppDelegate appDelegate] resetAll];
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
-                             cancelButtonTitle:[Strings closeString]
-                             otherButtonTitles:nil];
-
-        return NO;
-    }
-    else
-    {
-        AnalysticsTrace(@"checkCurrencyCode_OK");
-
-        return YES;
-    }
 }
 
 

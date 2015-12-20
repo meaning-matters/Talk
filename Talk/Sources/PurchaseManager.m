@@ -18,13 +18,14 @@
 #import "Settings.h"
 #import "CallManager.h"
 
-
 // These must match perfectly to what's in iTunesConnect.
 #define PRODUCT_IDENTIFIER_BASE @"com.numberbay."
 #define ACCOUNT                 @"Account"
 #define CREDIT                  @"Credit"
 #define NUMBER                  @"Number"
-#define LOAD_PRODUCTS_INTERVAL  3600
+#define LOAD_PRODUCTS_INTERVAL  (24 * 3600)
+
+NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerProductsLoadedNotification";
 
 
 @interface PurchaseManager () <SKProductsRequestDelegate, SKPaymentTransactionObserver>
@@ -32,7 +33,7 @@
 @property (nonatomic, strong) NSMutableSet*         productIdentifiers;
 @property (atomic, strong) SKProductsRequest*       productsRequest;
 @property (nonatomic, copy) void (^buyCompletion)(BOOL success, id object);
-@property (nonatomic, copy) void (^loadCompletion)(BOOL success);
+@property (nonatomic, strong) NSMutableArray*       loadProductsCompletions;
 @property (nonatomic, strong) SKPaymentTransaction* restoredAccountTransaction;
 @property (nonatomic, strong) NSDate*               loadProductsDate;
 
@@ -52,7 +53,8 @@
     {
         sharedInstance = [[PurchaseManager alloc] init];
 
-        sharedInstance.productIdentifiers = [NSMutableSet set];
+        sharedInstance.loadProductsCompletions = [NSMutableArray array];
+        sharedInstance.productIdentifiers      = [NSMutableSet set];
         [sharedInstance addProductIdentifiers];
 
         [[SKPaymentQueue defaultQueue] addTransactionObserver:sharedInstance];
@@ -261,10 +263,33 @@
     }
     else
     {
-        NSDictionary* localeInfo = @{NSLocaleCurrencyCode : [Settings sharedSettings].storeCurrencyCode,
-                                     NSLocaleLanguageCode : [[NSLocale preferredLanguages] objectAtIndex:0]};
+        return [NSLocale currentLocale];
+    }
+}
 
-        return [[NSLocale alloc] initWithLocaleIdentifier:[NSLocale localeIdentifierFromComponents:localeInfo]];
+
+- (void)addLoadProductCompletion:(void (^)(BOOL success))completion
+{
+    if (completion != nil)
+    {
+        @synchronized(self.loadProductsCompletions)
+        {
+            [self.loadProductsCompletions addObject:[completion copy]];
+        }
+    }
+}
+
+
+- (void)executeLoadProductCompletionsWithSuccess:(BOOL)success
+{
+    @synchronized(self.loadProductsCompletions)
+    {
+        for (void (^completion)(BOOL success) in self.loadProductsCompletions)
+        {
+            completion(success);
+        }
+
+        [self.loadProductsCompletions removeAllObjects];
     }
 }
 
@@ -376,23 +401,21 @@
     AnalysticsTrace(@"productsRequest_didReceiveResponse");
 
     self.products = response.products;
-    
-    for (SKProduct* product in self.products)
-    {
-        if ([self isCreditProductIdentifier:product.productIdentifier])
-        {
-            [Settings sharedSettings].storeCurrencyCode = [product.priceLocale objectForKey:NSLocaleCurrencyCode];
-            [Settings sharedSettings].storeCountryCode  = [product.priceLocale objectForKey:NSLocaleCountryCode];
-            break;
-        }
-    }
+
+    SKProduct* product = [response.products lastObject];
+
+    [Settings sharedSettings].storeCurrencyCode = [product.priceLocale objectForKey:NSLocaleCurrencyCode];
+    [Settings sharedSettings].storeCountryCode  = [product.priceLocale objectForKey:NSLocaleCountryCode];
 
     [Common enableNetworkActivityIndicator:NO];
     self.loadProductsDate = [NSDate date];
     self.productsRequest  = nil;
 
-    self.loadCompletion ? self.loadCompletion(YES) : 0;
-    self.loadCompletion   = nil;
+    [self executeLoadProductCompletionsWithSuccess:YES];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:PurchaseManagerProductsLoadedNotification
+                                                        object:nil
+                                                      userInfo:nil];
 }
 
 
@@ -433,8 +456,7 @@
         [Common enableNetworkActivityIndicator:NO];
         self.productsRequest = nil;
 
-        self.loadCompletion ? self.loadCompletion(NO) : 0;
-        self.loadCompletion  = nil;
+        [self executeLoadProductCompletionsWithSuccess:NO];
     }
                          cancelButtonTitle:[Strings closeString]
                          otherButtonTitles:nil];
@@ -603,12 +625,12 @@
 {
     AnalysticsTrace(@"loadProducts");
 
+    [self addLoadProductCompletion:completion];
+
     if ((self.loadProductsDate == nil || -[self.loadProductsDate timeIntervalSinceNow] > LOAD_PRODUCTS_INTERVAL) &&
         self.productsRequest == nil)
     {
         AnalysticsTrace(@"loadProducts_A");
-        
-        self.loadCompletion = completion;
 
         self.productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:self.productIdentifiers];
         self.productsRequest.delegate = self;
@@ -616,21 +638,19 @@
 
         [Common enableNetworkActivityIndicator:YES];
     }
-    else if (self.productsRequest != nil && self.loadCompletion == nil)
+    else if (self.productsRequest != nil)
     {
         AnalysticsTrace(@"loadProducts_B");
 
-        // The NetworkStatusReachableNotification was fired (when we don't set completion),
-        // and we're busy loading.  But any other (making this second invocation, e.g.
-        // ProvisioningViewController) does wants to get feedback when done, so we assign
-        // that here.
-        self.loadCompletion = completion;
+        // We received a product request for which we already added the completion above.
+        // Because a request is already pending, there's nothing else to do than wait
+        // for the App Store's response.
     }
     else
     {
         AnalysticsTrace(@"loadProducts_C");
 
-        completion ? completion([Settings sharedSettings].storeCurrencyCode.length > 0) : 0;
+        [self executeLoadProductCompletionsWithSuccess:(self.loadProductsDate != nil)];
     }
 }
 
@@ -852,7 +872,7 @@
 
 - (int)tierForCredit:(float)credit
 {
-    NSArray* tierNumbers = @[ @(1), @(2), @(5), @(10), @(20), @(50), @(75) ];
+    NSArray* tierNumbers = @[ @(1), @(2), @(5), @(10), @(20), @(50) ];
 
     for (NSNumber* tierNumber in tierNumbers)
     {
@@ -900,22 +920,18 @@
 
     // Collect tier number.
     [scanner scanCharactersFromSet:numbers intoString:&tierString];
-
     tier = [tierString intValue];
 
+    // Currently there's a one-to-one relationship; this changes for higher tiers (we may add in future).
     switch (tier)
     {
-        case  0: amount =    0; break;
-        case  1: amount =    1; break;
-        case  2: amount =    2; break;
-        case  5: amount =    5; break;
-        case 10: amount =   10; break;
-        case 20: amount =   20; break;
-        case 50: amount =   50; break;
-        case 60: amount =  100; break;
-        case 72: amount =  200; break;
-        case 82: amount =  500; break;
-        case 87: amount = 1000; break;
+        case  1: amount =  1; break;
+        case  2: amount =  2; break;
+        case  5: amount =  5; break;
+        case 10: amount = 10; break;
+        case 20: amount = 20; break;
+        case 50: amount = 50; break;
+        default: assert(0);   break;
     }
 
     return amount;

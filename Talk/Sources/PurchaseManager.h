@@ -10,6 +10,8 @@
 #import <StoreKit/StoreKit.h>
 #import "NumberType.h"
 
+extern NSString* const PurchaseManagerProductsLoadedNotification;
+
 
 @interface PurchaseManager : NSObject
 

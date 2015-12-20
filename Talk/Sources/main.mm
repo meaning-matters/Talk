@@ -15,7 +15,8 @@ int main(int argc, char* argv[])
     @autoreleasepool
     {
         // Force use of English.  (When changed check CountryNames.m and other locale dependencies.)
-        [[NSUserDefaults standardUserDefaults] setObject:[NSArray arrayWithObjects:@"en-GB", nil] forKey:@"AppleLanguages"];
+        [[NSUserDefaults standardUserDefaults] setObject:[NSArray arrayWithObject:@"en"] forKey:@"AppleLanguages"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
 
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
