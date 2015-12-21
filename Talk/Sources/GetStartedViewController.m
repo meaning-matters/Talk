@@ -8,7 +8,6 @@
 
 #import "GetStartedViewController.h"
 #import "Common.h"
-#import "PurchaseManager.h"
 #import "Settings.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
