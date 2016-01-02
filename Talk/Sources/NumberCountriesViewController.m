@@ -37,7 +37,7 @@
 
         self.countriesArray = [NSMutableArray array];
 
-        self.navigationItem.title = [Strings countriesString];
+        self.navigationItem.title = [Strings newNumberString];
     }
 
     return self;
@@ -54,7 +54,7 @@
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                  target:self
                                                                  action:@selector(cancel)];
-    self.navigationItem.rightBarButtonItem = cancelButton;
+    self.navigationItem.leftBarButtonItem = cancelButton;
 
     self.isLoading = YES;
     [[WebClient sharedClient] retrieveNumberCountries:^(NSError* error, id content)

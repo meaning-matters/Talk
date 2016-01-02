@@ -417,15 +417,6 @@
 }
 
 
-+ (NSString*)countriesString
-{
-    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Countries", nil, [NSBundle mainBundle],
-                                             @"Countries",
-                                             @"Standard label for a list of countries.\n"
-                                             @"[No size contraint].");
-}
-
-
 + (NSString*)homeCountryString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings HomeCountry", nil, [NSBundle mainBundle],
