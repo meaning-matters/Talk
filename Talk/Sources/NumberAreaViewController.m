@@ -72,6 +72,8 @@ typedef enum
 @property (nonatomic, strong) UIActivityIndicatorView* activityIndicator;
 @property (nonatomic, assign) BOOL                     hasCorrectedInsets;
 @property (nonatomic, strong) AddressData*             address;
+@property (nonatomic, strong) NSPredicate*             addressesPredicate;
+@property (nonatomic, assign) BOOL                     isLoading;
 
 @end
 
@@ -171,7 +173,7 @@ typedef enum
     UIBarButtonItem* cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                  target:self
-                                                                 action:@selector(cancel)];
+                                                                 action:@selector(cancelAction)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
     // Let keyboard be hidden when user taps outside text fields.
@@ -183,6 +185,8 @@ typedef enum
 
     [self.tableView registerNib:[UINib nibWithNibName:@"NumberAreaActionCell" bundle:nil]
          forCellReuseIdentifier:@"NumberAreaActionCell"];
+
+    [self loadAddressesPredicate];
 }
 
 
@@ -229,8 +233,9 @@ typedef enum
 }
 
 
-- (void)cancel
+- (void)cancelAction
 {
+    [self.view endEditing:YES];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -248,6 +253,68 @@ typedef enum
     return text;
 }
 
+
+- (void)loadAddressesPredicate
+{
+    NSString* areaCode = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : nil;
+
+    self.isLoading = YES;
+    [self reloadAddressCell];
+    [[WebClient sharedClient] retrieveAddressesForIsoCountryCode:numberIsoCountryCode
+                                                        areaCode:areaCode
+                                                      numberType:numberTypeMask
+                                                           reply:^(NSError *error, NSArray *addressIds)
+    {
+        self.isLoading = NO;
+
+        if (error == nil)
+        {
+            [self reloadAddressCell];
+            self.addressesPredicate = [NSPredicate predicateWithFormat:@"addressId IN %@", addressIds];
+        }
+        else
+        {
+            [self showError:error];
+        }
+    }];
+}
+
+
+- (void)reloadAddressCell
+{
+    NSArray* indexPaths = @[[NSIndexPath indexPathForItem:0
+                                                inSection:[Common nOfBit:TableSectionAddress inValue:sections]]];
+
+    [self.tableView reloadRowsAtIndexPaths:indexPaths
+                          withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+
+- (void)showError:(NSError*)error
+{
+    NSString* title;
+    NSString* message;
+
+    title   = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertTitle", nil,
+                                                [NSBundle mainBundle], @"Loading Failed",
+                                                @"Alert title telling that loading countries over internet failed.\n"
+                                                @"[iOS alert title size].");
+    message = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertMessage", nil,
+                                                [NSBundle mainBundle],
+                                                @"Loading the list of valid addresses for this area failed: %@\n\n"
+                                                @"Please try again later.",
+                                                @"Alert message telling that loading areas over internet failed.\n"
+                                                @"[iOS alert message size!]");
+    message = [NSString stringWithFormat:message, error.localizedDescription];
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+                         cancelButtonTitle:[Strings cancelString]
+                         otherButtonTitles:nil];
+}
 
 #pragma mark - Table View Delegates
 
@@ -364,96 +431,113 @@ typedef enum
     {
         return;
     }
-    else
+
+    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+
+    switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
-        switch ([Common nthBitSet:indexPath.section inValue:sections])
+        case TableSectionAddress:
         {
-            case TableSectionAddress:
+            NSManagedObjectContext*  managedObjectContext = [DataManager sharedManager].managedObjectContext;
+            NSString*                areaCode             = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : nil;
+            AddressTypeMask          addressTypeMask      = [AddressType addressTypeMaskForString:area[@"addressType"]];
+            AddressesViewController* viewController;
+            NSString*                headerTitle;
+            NSString*                footerTitle;
+
+            headerTitle = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
+                                                            @"Select Address",
+                                                            @"[1/4 line larger font].");
+            footerTitle = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
+                                                            @"You need to supply an address to use a Number "
+                                                            @"in this area. Select one from the list or add a new "
+                                                            @"address by tapping the + button.",
+                                                            @"[1/4 line larger font].");
+
+            viewController = [[AddressesViewController alloc] initWithManagedObjectContext:managedObjectContext
+                                                                           selectedAddress:self.address
+                                                                            isoCountryCode:numberIsoCountryCode
+                                                                                  areaCode:areaCode
+                                                                                numberType:numberTypeMask
+                                                                               addressType:addressTypeMask
+                                                                                 proofType:area[@"proofType"]
+                                                                                 predicate:self.addressesPredicate
+                                                                                completion:^(AddressData *selectedAddress)
             {
-                NSManagedObjectContext*  managedObjectContext = [DataManager sharedManager].managedObjectContext;
-                NSString*                areaCode             = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : nil;
-                AddressTypeMask          addressTypeMask      = [AddressType addressTypeMaskForString:area[@"addressType"]];
-                AddressesViewController* viewController;
-                
-                viewController = [[AddressesViewController alloc] initWithManagedObjectContext:managedObjectContext
-                                                                               selectedAddress:self.address
-                                                                                isoCountryCode:numberIsoCountryCode
-                                                                                      areaCode:areaCode
-                                                                                    numberType:numberTypeMask
-                                                                                   addressType:addressTypeMask
-                                                                                     proofType:area[@"proofType"]
-                                                                                    completion:^(AddressData *selectedAddress)
-                {
-                    
-                }];
-                
+                self.address = selectedAddress;
+                [self reloadAddressCell];
+            }];
+
+            viewController.title       = cell.textLabel.text;
+            viewController.headerTitle = headerTitle;
+            viewController.footerTitle = footerTitle;
+
+            [self.navigationController pushViewController:viewController animated:YES];
+            break;
+        }
+        case TableSectionAction:
+        {
+            if (((sections & TableSectionAddress) && self.address != nil) ||
+                (sections & TableSectionAddress) == 0)
+            {
+                BuyNumberViewController* viewController;
+                /*
+                viewController = [[BuyNumberViewController alloc] initWithName:name
+                                                                isoCountryCode:numberIsoCountryCode
+                                                                          area:area
+                                                                numberTypeMask:numberTypeMask
+                                                                          info:purchaseInfo];
                 [self.navigationController pushViewController:viewController animated:YES];
-                break;
+                 */
             }
-            case TableSectionAction:
+            else
             {
-                if (((sections & TableSectionAddress) && self.address != nil) ||
-                    (sections & TableSectionAddress) == 0)
+                NSString*   title;
+                NSString*   message;
+
+                title   = NSLocalizedStringWithDefaultValue(@"NumberArea AddressRequiredTitle", nil,
+                                                            [NSBundle mainBundle], @"Address Required",
+                                                            @"Alert title telling that user did not fill in all information.\n"
+                                                            @"[iOS alert title size].");
+                if (requireProof)
                 {
-                    BuyNumberViewController* viewController;
-                    /*
-                    viewController = [[BuyNumberViewController alloc] initWithName:name
-                                                                    isoCountryCode:numberIsoCountryCode
-                                                                              area:area
-                                                                    numberTypeMask:numberTypeMask
-                                                                              info:purchaseInfo];
-                    [self.navigationController pushViewController:viewController animated:YES];
-                     */
+                    message = NSLocalizedStringWithDefaultValue(@"NumberArea AddressWithProofRequiredMessage", nil,
+                                                                [NSBundle mainBundle],
+                                                                @"A contact address with verification image are "
+                                                                @"required for this type of Number in this area."
+                                                                @"\n\nGo and add or select an address.",
+                                                                @"Alert message telling that user did not fill in all information.\n"
+                                                                @"[iOS alert message size]");
                 }
                 else
                 {
-                    NSString*   title;
-                    NSString*   message;
-
-                    title   = NSLocalizedStringWithDefaultValue(@"NumberArea AddressRequiredTitle", nil,
-                                                                [NSBundle mainBundle], @"Address Required",
-                                                                @"Alert title telling that user did not fill in all information.\n"
-                                                                @"[iOS alert title size].");
-                    if (requireProof)
+                    message = NSLocalizedStringWithDefaultValue(@"NumberArea IncompleteAlertMessage", nil,
+                                                                [NSBundle mainBundle],
+                                                                @"A contact address is required for this Number."
+                                                                @"\n\nGo and add or select an address.",
+                                                                @"Alert message telling that user did not fill in all information.\n"
+                                                                @"[iOS alert message size]");
+                }
+                
+                [BlockAlertView showAlertViewWithTitle:title
+                                               message:message
+                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                {
+                    if (cancelled)
                     {
-                        message = NSLocalizedStringWithDefaultValue(@"NumberArea AddressWithProofRequiredMessage", nil,
-                                                                    [NSBundle mainBundle],
-                                                                    @"A contact address with verification image are "
-                                                                    @"required for this type of Number in this area."
-                                                                    @"\n\nGo and add or select an address.",
-                                                                    @"Alert message telling that user did not fill in all information.\n"
-                                                                    @"[iOS alert message size]");
+                        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                     }
                     else
                     {
-                        message = NSLocalizedStringWithDefaultValue(@"NumberArea IncompleteAlertMessage", nil,
-                                                                    [NSBundle mainBundle],
-                                                                    @"A contact address is required for this Number."
-                                                                    @"\n\nGo and add or select an address.",
-                                                                    @"Alert message telling that user did not fill in all information.\n"
-                                                                    @"[iOS alert message size]");
+                        NSIndexPath* indexPath = [NSIndexPath indexPathForItem:1 inSection:TableSectionAddress];
+                        [self tableView:tableView didSelectRowAtIndexPath:indexPath];
                     }
-                    
-                    [BlockAlertView showAlertViewWithTitle:title
-                                                   message:message
-                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
-                    {
-                        if (cancelled)
-                        {
-                            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                        }
-                        else
-                        {
-                            NSIndexPath* indexPath = [NSIndexPath indexPathForItem:1 inSection:TableSectionAddress];
-                            [self tableView:tableView didSelectRowAtIndexPath:indexPath];
-                        }
-                    }
-                                         cancelButtonTitle:[Strings closeString]
-                                         otherButtonTitles:[Strings goString], nil];
                 }
-                
-                break;
+                                     cancelButtonTitle:[Strings closeString]
+                                     otherButtonTitles:[Strings goString], nil];
             }
+            
+            break;
         }
     }
 }
@@ -581,11 +665,25 @@ typedef enum
     }
     
     cell.textLabel.text            = NSLocalizedString(@"Address", @"Address cell title");
-    
     cell.detailTextLabel.textColor = self.address ? [Skinning valueColor] : [Skinning placeholderColor];
-    cell.detailTextLabel.text      = self.address ? self.address.name     : [Strings requiredString];
-    
     cell.accessoryType             = UITableViewCellAccessoryDisclosureIndicator;
+
+    if (self.isLoading)
+    {
+        UIActivityIndicatorView* spinner;
+        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [spinner startAnimating];
+
+        cell.accessoryView          = spinner;
+        cell.userInteractionEnabled = NO;
+        cell.detailTextLabel.text   = nil;
+    }
+    else
+    {
+        cell.accessoryView          = nil;
+        cell.userInteractionEnabled = YES;
+        cell.detailTextLabel.text   = self.address ? self.address.name : [Strings requiredString];
+    }
 
     return cell;
 }

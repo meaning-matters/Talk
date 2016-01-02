@@ -30,7 +30,7 @@
 
 @property (nonatomic, copy) void (^completion)(AddressData* selectedAddress);
 
-@property (nonatomic, assign) BOOL                        isLoading;
+@property (nonatomic, strong) NSPredicate*                predicate;
 
 @end
 
@@ -46,6 +46,7 @@
                                    numberType:NumberTypeGeographicMask
                                   addressType:0
                                     proofType:nil
+                                    predicate:nil
                                    completion:nil];
 }
 
@@ -57,6 +58,7 @@
                                   numberType:(NumberTypeMask)numberTypeMask
                                  addressType:(AddressTypeMask)addressTypeMask
                                    proofType:(NSDictionary*)proofType
+                                   predicate:(NSPredicate*)predicate
                                   completion:(void (^)(AddressData* selectedAddress))completion
 {
     if (self = [super init])
@@ -73,6 +75,7 @@
         self.numberTypeMask       = numberTypeMask;
         self.addressTypeMask      = addressTypeMask;
         self.proofType            = proofType;
+        self.predicate            = predicate;
         self.completion           = completion;
     }
     
@@ -98,27 +101,14 @@
         case AddressTypeNationalMask:  isoCountryCode = self.isoCountryCode; areaCode = nil;           break;
         case AddressTypeLocalMask:     isoCountryCode = self.isoCountryCode; areaCode = self.areaCode; break;
     }
-    
-    self.isLoading = YES;
-    [[WebClient sharedClient] retrieveAddressesForIsoCountryCode:isoCountryCode
-                                                        areaCode:areaCode
-                                                      numberType:self.numberTypeMask
-                                                           reply:^(NSError *error, NSArray *addressIds)
-    {
-        self.isLoading = NO;
-        if (error == nil)
-        {
-            NSPredicate* predicate = [NSPredicate predicateWithFormat:@"addressId IN %@", addressIds];
-            self.fetchedAddressesController.fetchRequest.predicate = predicate;
 
-            [self.fetchedAddressesController performFetch:nil];
-            [self.tableView reloadData];
-        }
-        else
-        {
-            
-        }
-    }];
+    if (self.predicate != nil)
+    {
+        self.fetchedAddressesController.fetchRequest.predicate = self.predicate;
+    }
+
+    [self.fetchedAddressesController performFetch:nil];
+    [self.tableView reloadData];
 }
 
 
@@ -146,6 +136,11 @@
                                 forKeyPath:@"sortSegment"
                                    options:NSKeyValueObservingOptionNew
                                    context:nil];
+
+    if (self.predicate != nil && [self tableView:self.tableView numberOfRowsInSection:0] == 0)
+    {
+        [self addAction];
+    }
 }
 
 
@@ -183,13 +178,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return self.isLoading ? 0 : [[self.fetchedAddressesController sections] count];
+    return [[self.fetchedAddressesController sections] count];
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (!self.isLoading && [[self.fetchedAddressesController sections] count] > 0)
+    if ([[self.fetchedAddressesController sections] count] > 0)
     {
         id<NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedAddressesController sections] objectAtIndex:section];
         

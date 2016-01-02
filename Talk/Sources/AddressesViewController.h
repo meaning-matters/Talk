@@ -28,6 +28,7 @@
                                   numberType:(NumberTypeMask)numberTypeMask
                                  addressType:(AddressTypeMask)addressTypeMask
                                    proofType:(NSDictionary*)proofType
+                                   predicate:(NSPredicate*)predicate
                                   completion:(void (^)(AddressData* selectedAddress))completion;
 
 @end
