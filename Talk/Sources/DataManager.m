@@ -476,7 +476,7 @@
         {
             // Delete Addresses that are no longer on the server.
             NSFetchRequest* request     = [NSFetchRequest fetchRequestWithEntityName:@"Address"];
-            [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (addressId IN %@)", addressIds]];
+            [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (addressId IN %@)) OR (addressId == nil)", addressIds]];
             NSArray*        deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
             if (error == nil)
             {
@@ -599,7 +599,7 @@
         {
             // Delete Numbers that are no longer on the server.
             NSFetchRequest*  request     = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
-            [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (e164 IN %@)", e164s]];
+            [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (e164 IN %@)) OR (e164 == nil)", e164s]];
             NSArray*         deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
             if (error == nil)
             {
@@ -711,7 +711,7 @@
         {
             // Delete IVRs that are no longer on the server.
             NSFetchRequest* request     = [NSFetchRequest fetchRequestWithEntityName:@"Destination"];
-            [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (uuid IN %@)", list]];
+            [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (uuid IN %@)) OR (uuid == nil)", list]];
             NSArray*        deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
             if (error == nil)
             {
@@ -865,7 +865,7 @@
         {
             // Delete phone E164's that are no longer on the server.
             NSFetchRequest*  request     = [NSFetchRequest fetchRequestWithEntityName:@"Phone"];
-            [request setPredicate:[NSPredicate predicateWithFormat:@"NOT (e164 IN %@)", e164s]];
+            [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (e164 IN %@)) OR (e164 == nil)", e164s]];
             NSArray*         deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
             if (error == nil)
             {
