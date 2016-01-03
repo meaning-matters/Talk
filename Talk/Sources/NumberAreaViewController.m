@@ -442,17 +442,6 @@ typedef enum
             NSString*                areaCode             = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : nil;
             AddressTypeMask          addressTypeMask      = [AddressType addressTypeMaskForString:area[@"addressType"]];
             AddressesViewController* viewController;
-            NSString*                headerTitle;
-            NSString*                footerTitle;
-
-            headerTitle = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
-                                                            @"Select Address",
-                                                            @"[1/4 line larger font].");
-            footerTitle = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
-                                                            @"You need to supply an address to use a Number "
-                                                            @"in this area. Select one from the list or add a new "
-                                                            @"address by tapping the + button.",
-                                                            @"[1/4 line larger font].");
 
             viewController = [[AddressesViewController alloc] initWithManagedObjectContext:managedObjectContext
                                                                            selectedAddress:self.address
@@ -467,10 +456,6 @@ typedef enum
                 self.address = selectedAddress;
                 [self reloadAddressCell];
             }];
-
-            viewController.title       = cell.textLabel.text;
-            viewController.headerTitle = headerTitle;
-            viewController.footerTitle = footerTitle;
 
             [self.navigationController pushViewController:viewController animated:YES];
             break;

@@ -15,10 +15,6 @@
 
 @interface AddressesViewController : ItemsViewController
 
-@property (nonatomic, strong) NSString* headerTitle;
-@property (nonatomic, strong) NSString* footerTitle;
-
-
 - (instancetype)init;
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
@@ -28,7 +24,7 @@
                                   numberType:(NumberTypeMask)numberTypeMask
                                  addressType:(AddressTypeMask)addressTypeMask
                                    proofType:(NSDictionary*)proofType
-                                   predicate:(NSPredicate*)predicate
+                                   predicate:(NSPredicate*)predicate    // Used to select between modes.
                                   completion:(void (^)(AddressData* selectedAddress))completion;
 
 @end

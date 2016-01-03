@@ -63,9 +63,8 @@
 {
     if (self = [super init])
     {
-        self.title                = [Strings addressesString];
-        // The tabBarItem image must be set in my own NavigationController.
-        
+        self.title                = (predicate == nil) ? [Strings addressesString] : [Strings addressString];
+
         self.isFiltered           = (isoCountryCode != nil);
         
         self.managedObjectContext = managedObjectContext;
@@ -136,11 +135,6 @@
                                 forKeyPath:@"sortSegment"
                                    options:NSKeyValueObservingOptionNew
                                    context:nil];
-
-    if (self.predicate != nil && [self tableView:self.tableView numberOfRowsInSection:0] == 0)
-    {
-        [self addAction];
-    }
 }
 
 
@@ -205,7 +199,7 @@
         
         if ([sectionInfo numberOfObjects] > 0)
         {
-            if (self.headerTitle == nil)
+            if (self.predicate == nil)
             {
                 return NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
                                                          @"Your Registered Addresses",
@@ -214,7 +208,9 @@
             }
             else
             {
-                return self.headerTitle;
+                return NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
+                                                         @"Select Address",
+                                                         @"[1/4 line larger font].");
             }
         }
         else
@@ -231,7 +227,7 @@
 
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    if (self.footerTitle == nil)
+    if (self.predicate == nil)
     {
         return NSLocalizedStringWithDefaultValue(@"Addresses List Title", nil, [NSBundle mainBundle],
                                                  @"In some countries an address is required for "
@@ -241,7 +237,136 @@
     }
     else
     {
-        return self.footerTitle;
+        NSString* title;
+        NSString* text;
+
+        title = NSLocalizedStringWithDefaultValue(@"Addresses List ...", nil, [NSBundle mainBundle],
+                                                  @"When using %@ Numbers in this country, "
+                                                  @"supplying a name plus address is legally required.",
+                                                  @"....");
+        switch (self.addressTypeMask)
+        {
+            case AddressTypeNoneMask:
+            {
+                // Does not occur.
+                title = nil;
+                break;
+            }
+            case AddressTypeWorldwideMask:
+            {
+                text  = NSLocalizedStringWithDefaultValue(@"Addresses List TitleWorldwide", nil, [NSBundle mainBundle],
+                                                          @"The address can be anywhere in the world.",
+                                                          @"....");
+                break;
+            }
+            case AddressTypeNationalMask:
+            {
+                text  = NSLocalizedStringWithDefaultValue(@"Addresses List TitleNational", nil, [NSBundle mainBundle],
+                                                          @"The address must be in the same country.",
+                                                          @"....");
+                break;
+            }
+            case AddressTypeLocalMask:
+            {
+                text  = NSLocalizedStringWithDefaultValue(@"Addresses List TitleLocal", nil, [NSBundle mainBundle],
+                                                          @"The address must be in the same area.",
+                                                          @"....");
+                break;
+            }
+        }
+
+        NSString* numberType = [[NumberType stringForNumberTypeMask:self.numberTypeMask] lowercaseString];
+        title = [title stringByAppendingFormat:@" %@", text];
+        title = [NSString stringWithFormat:title, numberType];
+        title = [title stringByAppendingString:@"\n\n"];
+
+        NSArray* addresses    = [[DataManager sharedManager] fetchEntitiesWithName:@"Address"
+                                                                          sortKeys:nil
+                                                                         predicate:nil
+                                                              managedObjectContext:self.managedObjectContext];
+        NSUInteger totalCount = addresses.count;
+        NSUInteger matchCount = [self tableView:self.tableView numberOfRowsInSection:0];
+
+        if (totalCount == 0)
+        {
+            // The user has no addresses.
+            text  = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
+                                                      @"You don't have an address available yet. Tap on + to "
+                                                      @"add an address.",
+                                                      @"[1/4 line larger font].");
+            title = [title stringByAppendingString:text];
+        }
+        else
+        {
+            if (matchCount == 0)
+            {
+                // The user has addresses, but none of them match.
+                if (totalCount == 1)
+                {
+                    text  = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
+                                                              @"Your address does not match the requirements for "
+                                                              @"this Number. Tap on + to add a new address.",
+                                                              @"[1/4 line larger font].");
+                    title = [title stringByAppendingString:text];
+                }
+                else
+                {
+                    text  = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
+                                                              @"None of your %d addresses match the requirements for "
+                                                              @"this Number. Tap on + to add a new address.",
+                                                              @"[1/4 line larger font].");
+                    title = [title stringByAppendingFormat:text, totalCount];
+                }
+            }
+            else
+            {
+                if (matchCount == totalCount)
+                {
+                    // The user has addresses and all of them match.
+                    if (totalCount == 1)
+                    {
+                        text  = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
+                                                                  @"Your address matches the requirements for this "
+                                                                  @"Number. Select it, or tap on + to add a new address.",
+                                                                  @"[1/4 line larger font].");
+                        title = [title stringByAppendingString:text];
+                    }
+                    else
+                    {
+                        text  = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
+                                                                  @"All your %d addresses match the requirements for "
+                                                                  @"this Number. Select one of them, or tap on + to "
+                                                                  @"add a new address.",
+                                                                  @"[1/4 line larger font].");
+                        title = [title stringByAppendingFormat:text, totalCount];
+                    }
+                }
+                else
+                {
+                    // The user has addresses but only a few match.
+                    if (matchCount == 1)
+                    {
+                        text  = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
+                                                                  @"One of your %d addresses matches the requirements "
+                                                                  @"for this Number. Select it, or tap on + to "
+                                                                  @"add a new address.",
+                                                                  @"[1/4 line larger font].");
+                        title = [title stringByAppendingFormat:text, totalCount];
+                    }
+                    else
+                    {
+                        text  = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
+                                                                  @"%d of your %d addresses match the requirements "
+                                                                  @"for this Number. Select it, or tap on + to "
+                                                                  @"add a new address.",
+                                                                  @"[1/4 line larger font].");
+                        title = [title stringByAppendingFormat:text, matchCount, totalCount];
+                    }
+                }
+            }
+        }
+
+        return title;
     }
 }
 
