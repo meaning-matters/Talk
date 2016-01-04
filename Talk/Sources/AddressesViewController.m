@@ -241,8 +241,8 @@
         NSString* text;
 
         title = NSLocalizedStringWithDefaultValue(@"Addresses List ...", nil, [NSBundle mainBundle],
-                                                  @"When using %@ Numbers in this country, "
-                                                  @"supplying a name plus address is legally required.",
+                                                  @"For %@ Numbers in this country, supplying "
+                                                  @"a name plus address is legally required.",
                                                   @"....");
         switch (self.addressTypeMask)
         {

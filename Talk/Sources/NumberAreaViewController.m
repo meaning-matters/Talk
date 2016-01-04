@@ -256,12 +256,10 @@ typedef enum
 
 - (void)loadAddressesPredicate
 {
-    NSString* areaCode = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : nil;
-
     self.isLoading = YES;
     [self reloadAddressCell];
     [[WebClient sharedClient] retrieveAddressesForIsoCountryCode:numberIsoCountryCode
-                                                        areaCode:areaCode
+                                                        areaCode:nil
                                                       numberType:numberTypeMask
                                                            reply:^(NSError *error, NSArray *addressIds)
     {
