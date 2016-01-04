@@ -291,7 +291,7 @@
         {
             // The user has no addresses.
             text  = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
-                                                      @"You don't have an address available yet. Tap on + to "
+                                                      @"You don't have an address available yet. Tap + to "
                                                       @"add an address.",
                                                       @"[1/4 line larger font].");
             title = [title stringByAppendingString:text];
@@ -305,7 +305,7 @@
                 {
                     text  = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
                                                               @"Your address does not match the requirements for "
-                                                              @"this Number. Tap on + to add a new address.",
+                                                              @"this Number. Tap + to add a new address.",
                                                               @"[1/4 line larger font].");
                     title = [title stringByAppendingString:text];
                 }
@@ -313,7 +313,7 @@
                 {
                     text  = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
                                                               @"None of your %d addresses match the requirements for "
-                                                              @"this Number. Tap on + to add a new address.",
+                                                              @"this Number. Tap + to add a new address.",
                                                               @"[1/4 line larger font].");
                     title = [title stringByAppendingFormat:text, totalCount];
                 }
@@ -327,7 +327,7 @@
                     {
                         text  = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
                                                                   @"Your address matches the requirements for this "
-                                                                  @"Number. Select it, or tap on + to add a new address.",
+                                                                  @"Number. Select it, or tap + to add a new address.",
                                                                   @"[1/4 line larger font].");
                         title = [title stringByAppendingString:text];
                     }
@@ -335,7 +335,7 @@
                     {
                         text  = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
                                                                   @"All your %d addresses match the requirements for "
-                                                                  @"this Number. Select one of them, or tap on + to "
+                                                                  @"this Number. Select one of them, or tap + to "
                                                                   @"add a new address.",
                                                                   @"[1/4 line larger font].");
                         title = [title stringByAppendingFormat:text, totalCount];
@@ -348,7 +348,7 @@
                     {
                         text  = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
                                                                   @"One of your %d addresses matches the requirements "
-                                                                  @"for this Number. Select it, or tap on + to "
+                                                                  @"for this Number. Select it, or tap + to "
                                                                   @"add a new address.",
                                                                   @"[1/4 line larger font].");
                         title = [title stringByAppendingFormat:text, totalCount];
@@ -357,7 +357,7 @@
                     {
                         text  = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
                                                                   @"%d of your %d addresses match the requirements "
-                                                                  @"for this Number. Select it, or tap on + to "
+                                                                  @"for this Number. Select it, or tap + to "
                                                                   @"add a new address.",
                                                                   @"[1/4 line larger font].");
                         title = [title stringByAppendingFormat:text, matchCount, totalCount];
