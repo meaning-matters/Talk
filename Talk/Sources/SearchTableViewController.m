@@ -101,10 +101,25 @@
 
 #pragma mark Property Setter
 
+- (void)didSetIsLoading
+{
+    if (self.isLoading == NO)
+    {
+        self.searchDisplayController.searchBar.text = self.searchDisplayController.searchBar.text;
+    }
+}
+
+/*
 - (void)setIsLoading:(BOOL)isLoading
 {
-    _isLoading = isLoading;
+    isLoading = isLoading;
 
+    if (self.isLoading == NO && self.activityIndicator != nil)
+    {
+        self.searchDisplayController.searchBar.text = self.searchDisplayController.searchBar.text;
+    }
+
+/*
     if (isLoading == YES && self.activityIndicator == nil)
     {
         self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -122,7 +137,7 @@
         self.searchDisplayController.searchBar.text = self.searchDisplayController.searchBar.text;
     }
 }
-
+*/
 
 #pragma mark - Supporting Methods
 

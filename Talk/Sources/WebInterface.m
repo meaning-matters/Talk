@@ -39,7 +39,6 @@
 //  neither on HTTP timeout, ...
 //
 
-#import <objc/runtime.h>
 #import <dns_sd.h>
 #import <dns_util.h>
 #import "WebInterface.h"

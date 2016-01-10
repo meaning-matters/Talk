@@ -7,8 +7,6 @@
 //
 
 #import <QuartzCore/QuartzCore.h>
-#import <objc/runtime.h>
-#import <objc/message.h>
 #import <sys/utsname.h>
 #import <sys/sysctl.h>
 #import "Common.h"

@@ -90,24 +90,13 @@
 
 - (void)loadData
 {
-    NSString* isoCountryCode;
-    NSString* areaCode;
-
-    switch (self.addressTypeMask)
-    {
-        case AddressTypeNoneMask:      isoCountryCode = nil;                 areaCode = nil;           break;
-        case AddressTypeWorldwideMask: isoCountryCode = nil;                 areaCode = nil;           break;
-        case AddressTypeNationalMask:  isoCountryCode = self.isoCountryCode; areaCode = nil;           break;
-        case AddressTypeLocalMask:     isoCountryCode = self.isoCountryCode; areaCode = self.areaCode; break;
-    }
-
     if (self.predicate != nil)
     {
         self.fetchedAddressesController.fetchRequest.predicate = self.predicate;
     }
 
     [self.fetchedAddressesController performFetch:nil];
-    [self.tableView reloadData];
+    [self.tableView reloadData];//####### Needed, isn't this done by performFetch????
 }
 
 
@@ -165,6 +154,34 @@
 {
     [[DataManager sharedManager] setSortKeys:[self sortKeys] ofResultsController:self.fetchedAddressesController];
     [self.tableView reloadData];
+}
+
+
+#pragma mark - Public
+
++ (void)loadAddressesPredicateWithAddressType:(AddressTypeMask)addressTypeMask
+                               isoCountryCode:(NSString*)isoCountryCode
+                                     areaCode:(NSString*)areaCode
+                                   numberType:(NumberTypeMask)numberTypeMask
+                                   completion:(void (^)(NSPredicate* predicate, NSError* error))completion
+{
+    switch (addressTypeMask)
+    {
+        case AddressTypeNoneMask:      isoCountryCode = nil; areaCode = nil; numberTypeMask = 0; break;
+        case AddressTypeWorldwideMask: isoCountryCode = nil; areaCode = nil; numberTypeMask = 0; break;
+        case AddressTypeNationalMask:                        areaCode = nil;                     break;
+        case AddressTypeLocalMask:                                           numberTypeMask = 0; break;
+    }
+
+    [[WebClient sharedClient] retrieveAddressesForIsoCountryCode:isoCountryCode
+                                                        areaCode:areaCode
+                                                      numberType:numberTypeMask
+                                                           reply:^(NSError *error, NSArray *addressIds)
+    {
+        NSPredicate* predicate = (error == nil) ? [NSPredicate predicateWithFormat:@"addressId IN %@", addressIds] : nil;
+
+        completion ? completion(predicate, error) : (void)0;
+    }];
 }
 
 
@@ -380,11 +397,12 @@
     {
         viewController = [[AddressViewController alloc] initWithAddress:address
                                                    managedObjectContext:self.managedObjectContext
+                                                            addressType:0
                                                          isoCountryCode:nil
                                                                areaCode:nil
                                                              numberType:NumberTypeGeographicMask
-                                                            addressType:0
-                                                              proofType:nil];
+                                                              proofType:nil
+                                                             completion:nil];
         
         [self.navigationController pushViewController:viewController animated:YES];
     }
@@ -451,18 +469,38 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
         
         viewController = [[AddressViewController alloc] initWithAddress:nil
                                                    managedObjectContext:self.managedObjectContext
+                                                            addressType:self.addressTypeMask
                                                          isoCountryCode:self.isoCountryCode
                                                                areaCode:self.areaCode
                                                              numberType:self.numberTypeMask
-                                                            addressType:self.addressTypeMask
-                                                              proofType:self.proofType];
+                                                              proofType:self.proofType
+                                                             completion:^(AddressData *address)
+        {
+            if (address != nil)
+            {
+                [AddressesViewController loadAddressesPredicateWithAddressType:self.addressTypeMask
+                                                                isoCountryCode:self.isoCountryCode
+                                                                      areaCode:self.areaCode
+                                                                    numberType:self.numberTypeMask
+                                                                    completion:^(NSPredicate *predicate, NSError *error)
+                {
+                    if (error == nil)
+                    {
+                        self.predicate = predicate;
+                        self.fetchedAddressesController.fetchRequest.predicate = self.predicate;
+                        [self.fetchedAddressesController performFetch:nil];
+                        [self.tableView reloadData];//##### Needed?
+                    }
+                }];
+            }
+        }];
         
         modalViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
         modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         
         [self presentViewController:modalViewController
-                                                               animated:YES
-                                                             completion:nil];
+                           animated:YES
+                         completion:nil];
     }
     else
     {
@@ -503,10 +541,12 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 }
 
 
+#pragma mark - Helpers
+
 - (NSString*)detailTextForAddress:(AddressData*)address
 {
     NSString* detailText = nil;
-    
+
     if ([address.salutation isEqualToString:@"COMPANY"])
     {
         detailText = address.companyName;
@@ -521,12 +561,10 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
         //### The order of the name elements needs to properly localized.
         detailText = [NSString stringWithFormat:@"%@ %@ %@", [Strings msString], address.firstName, address.lastName];
     }
-    
+
     return detailText;
 }
 
-
-#pragma mark - Helpers
 
 - (NSArray*)sortKeys
 {

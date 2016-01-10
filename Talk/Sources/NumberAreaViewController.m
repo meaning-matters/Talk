@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
-#import <objc/runtime.h>
 #import "NumberAreaViewController.h"
 #import "NumberAreaPostcodesViewController.h"
 #import "NumberAreaCitiesViewController.h"
@@ -48,10 +47,13 @@ typedef enum
 
 @interface NumberAreaViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate, UINavigationControllerDelegate>
 {
-    NSString*      numberIsoCountryCode;
-    NSDictionary*  state;
-    NSDictionary*  area;
-    NumberTypeMask numberTypeMask;
+    NSString*       numberIsoCountryCode;
+    NSString*       areaCode;
+    AddressTypeMask addressTypeMask;
+    NSDictionary*   state;
+    NSDictionary*   area;
+    NumberTypeMask  numberTypeMask;
+
 
     NSArray*       citiesArray;
     NSString*      name;
@@ -92,6 +94,8 @@ typedef enum
         area                 = theArea;
         numberTypeMask       = theNumberTypeMask;
         requireProof         = [area[@"requireProof"] boolValue];
+        areaCode             = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : nil;
+        addressTypeMask      = [AddressType addressTypeMaskForString:area[@"addressType"]];
 
         // Mandatory sections.
         sections |= TableSectionArea;
@@ -99,7 +103,7 @@ typedef enum
         sections |= TableSectionAction;
 
         // Optional Sections.
-        sections |= ([area[@"addressType"] isEqualToString:@"NONE"]) ? 0 : TableSectionAddress;
+        sections |= (addressTypeMask == AddressTypeNoneMask) ? 0 : TableSectionAddress;
 
         // Always there Area section rows.
         areaRows |= AreaRowType;
@@ -185,8 +189,6 @@ typedef enum
 
     [self.tableView registerNib:[UINib nibWithNibName:@"NumberAreaActionCell" bundle:nil]
          forCellReuseIdentifier:@"NumberAreaActionCell"];
-
-    [self loadAddressesPredicate];
 }
 
 
@@ -198,6 +200,8 @@ typedef enum
     cell.label.text            = [self actionCellText];
 
     [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+
+    [self loadAddressesPredicate];
 }
 
 
@@ -256,19 +260,23 @@ typedef enum
 
 - (void)loadAddressesPredicate
 {
-    self.isLoading = YES;
-    [self reloadAddressCell];
-    [[WebClient sharedClient] retrieveAddressesForIsoCountryCode:numberIsoCountryCode
-                                                        areaCode:nil
-                                                      numberType:numberTypeMask
-                                                           reply:^(NSError *error, NSArray *addressIds)
+    if (self.address == nil)
+    {
+        self.isLoading = YES;
+        [self reloadAddressCell];
+    }
+
+    [AddressesViewController loadAddressesPredicateWithAddressType:addressTypeMask
+                                                    isoCountryCode:numberIsoCountryCode
+                                                          areaCode:areaCode
+                                                        numberType:numberTypeMask
+                                                        completion:^(NSPredicate *predicate, NSError *error)
     {
         self.isLoading = NO;
-
         if (error == nil)
         {
             [self reloadAddressCell];
-            self.addressesPredicate = [NSPredicate predicateWithFormat:@"addressId IN %@", addressIds];
+            self.addressesPredicate = predicate;
         }
         else
         {
@@ -283,8 +291,7 @@ typedef enum
     NSArray* indexPaths = @[[NSIndexPath indexPathForItem:0
                                                 inSection:[Common nOfBit:TableSectionAddress inValue:sections]]];
 
-    [self.tableView reloadRowsAtIndexPaths:indexPaths
-                          withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 
@@ -313,6 +320,7 @@ typedef enum
                          cancelButtonTitle:[Strings cancelString]
                          otherButtonTitles:nil];
 }
+
 
 #pragma mark - Table View Delegates
 
@@ -430,15 +438,11 @@ typedef enum
         return;
     }
 
-    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
         case TableSectionAddress:
         {
             NSManagedObjectContext*  managedObjectContext = [DataManager sharedManager].managedObjectContext;
-            NSString*                areaCode             = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : nil;
-            AddressTypeMask          addressTypeMask      = [AddressType addressTypeMaskForString:area[@"addressType"]];
             AddressesViewController* viewController;
 
             viewController = [[AddressesViewController alloc] initWithManagedObjectContext:managedObjectContext

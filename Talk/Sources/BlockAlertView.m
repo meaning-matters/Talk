@@ -82,7 +82,7 @@
     textField.text                     = [phoneNumber asYouTypeFormat];         // Note, can't use this to init a string; can be nil.
     [textField setKeyboardType:UIKeyboardTypePhonePad];
 
-    alert->_phoneNumberCompletion      = completion;
+    alert->_phoneNumberCompletion      = [completion copy];
     alert.phoneNumberTextFieldDelegate = [[PhoneNumberTextFieldDelegate alloc] initWithTextField:textField];
     textField.delegate                 = alert.phoneNumberTextFieldDelegate;
                           
@@ -127,7 +127,7 @@
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
     textField.text               = text;
     
-    alert->_textCompletion       = completion;
+    alert->_textCompletion       = [completion copy];
     
     [alert show];
     textField.font               = [UIFont systemFontOfSize:18.0f];   // Needs to be placed after `show` to work.
@@ -153,7 +153,7 @@
 
     if (self)
     {
-        _completion = completion;
+        _completion = [completion copy];
 
         for (NSString* title = otherButtonTitles; title != nil; title = (__bridge NSString*)va_arg(arguments, void*))
         {
@@ -165,7 +165,7 @@
 }
 
 
-#pragma  Alert View Delegate
+#pragma mark - Alert View Delegate
 
 - (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {

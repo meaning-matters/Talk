@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		48017A12194E554C0059A53B /* CallableData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48017A11194E554C0059A53B /* CallableData.m */; };
+		48021B341C3A693200C40B58 /* UIViewController+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48021B331C3A693100C40B58 /* UIViewController+Common.m */; };
 		4803081B196AAFC000FDE1A4 /* ExtendNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4803081A196AAFC000FDE1A4 /* ExtendNumberViewController.m */; };
 		480B4FFA1BED1A890098F3A4 /* CountryCallingCodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 480B4FF91BED1A890098F3A4 /* CountryCallingCodes.json */; };
 		480B4FFF1BED4AC20098F3A4 /* WD@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 480B4FFE1BED4AC20098F3A4 /* WD@2x.png */; };
@@ -697,6 +698,8 @@
 /* Begin PBXFileReference section */
 		48017A10194E554C0059A53B /* CallableData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallableData.h; sourceTree = "<group>"; };
 		48017A11194E554C0059A53B /* CallableData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallableData.m; sourceTree = "<group>"; };
+		48021B321C3A693100C40B58 /* UIViewController+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Common.h"; sourceTree = "<group>"; };
+		48021B331C3A693100C40B58 /* UIViewController+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Common.m"; sourceTree = "<group>"; };
 		48030819196AAFC000FDE1A4 /* ExtendNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtendNumberViewController.h; sourceTree = "<group>"; };
 		4803081A196AAFC000FDE1A4 /* ExtendNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtendNumberViewController.m; sourceTree = "<group>"; };
 		480B4FF91BED1A890098F3A4 /* CountryCallingCodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryCallingCodes.json; path = Resources/CountryCallingCodes.json; sourceTree = "<group>"; };
@@ -2509,6 +2512,8 @@
 				48F47BBE18BE9C01006A6436 /* ItemViewController.m */,
 				48A26DDA18BA7FB200736CCB /* SearchTableViewController.h */,
 				48A26DDB18BA7FB200736CCB /* SearchTableViewController.m */,
+				48021B321C3A693100C40B58 /* UIViewController+Common.h */,
+				48021B331C3A693100C40B58 /* UIViewController+Common.m */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -3121,6 +3126,7 @@
 				48B813811AADFA290019AF77 /* NBUnknownPersonViewController.m in Sources */,
 				48B813571AADF9590019AF77 /* NBDetailLineSeparatedCell.m in Sources */,
 				48B8131C1AADF7390019AF77 /* NBRecentContactEntry.m in Sources */,
+				48021B341C3A693200C40B58 /* UIViewController+Common.m in Sources */,
 				482608EE166A4707007F0844 /* NSTimer+Blocks.m in Sources */,
 				4888D1FA166E865400B55B22 /* Call.m in Sources */,
 				48B8132E1AADF7CC0019AF77 /* NBRecentsListViewController.m in Sources */,

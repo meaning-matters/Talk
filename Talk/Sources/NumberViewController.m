@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
-#import <objc/runtime.h>
 #import "NumberViewController.h"
 #import "BuyNumberViewController.h"
 #import "ProofImageViewController.h"

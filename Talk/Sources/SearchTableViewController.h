@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 NumberBay Ltd. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "UIViewController+Common.h"
 
 
 @interface SearchTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
@@ -18,8 +18,6 @@
 @property (nonatomic, strong) NSArray*             nameIndexArray;      // Array with all first letters of object names.
 @property (nonatomic, strong) NSMutableDictionary* nameIndexDictionary; // Dictionary with array of names per letter.
 @property (nonatomic, strong) NSMutableArray*      filteredNamesArray;  // List of names selected by search.
-
-@property (nonatomic, assign) BOOL                 isLoading;
 
 @property (nonatomic, weak) UISearchBar*           searchBar;
 

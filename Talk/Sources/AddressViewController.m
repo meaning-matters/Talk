@@ -6,7 +6,6 @@
 //  Copyright © 2015 NumberBay Ltd. All rights reserved.
 //
 
-#import <objc/runtime.h>
 #import "AddressViewController.h"
 #import "NumberAreaPostcodesViewController.h"
 #import "NumberAreaCitiesViewController.h"
@@ -89,6 +88,8 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 
 @property (nonatomic, strong) NSIndexPath*                nextIndexPath;      // Index-path of cell to show after Next button is tapped.
 
+@property (nonatomic, copy) void (^createCompletion)(AddressData* address);
+
 // Keyboard stuff.
 @property (nonatomic, assign) BOOL                        keyboardShown;
 @property (nonatomic, assign) CGFloat                     keyboardOverlap;
@@ -104,11 +105,12 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 
 - (instancetype)initWithAddress:(AddressData*)address
            managedObjectContext:(NSManagedObjectContext*)managedObjectContext
+                    addressType:(AddressTypeMask)addressTypeMask
                  isoCountryCode:(NSString*)isoCountryCode
                        areaCode:(NSString*)areaCode
                      numberType:(NumberTypeMask)numberTypeMask
-                    addressType:(AddressTypeMask)addressTypeMask
                       proofType:(NSDictionary*)proofType
+                     completion:(void (^)(AddressData* address))completion;
 {
     if (self = [super initWithManagedObjectContext:managedObjectContext])
     {
@@ -122,6 +124,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         self.numberTypeMask       = numberTypeMask;
         self.addressTypeMask      = addressTypeMask;
         self.proofType            = proofType;
+        self.createCompletion     = completion;
         
         if (self.isNew == YES)
         {
@@ -1513,10 +1516,14 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
          {
              self.address.addressId = addressId;
              [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+
+             self.createCompletion ? self.createCompletion(self.address) : (void)0;
          }
          else
          {
              [self showSaveError:error];
+
+             self.createCompletion ? self.createCompletion(nil) : (void)0;
          }
      }];
     

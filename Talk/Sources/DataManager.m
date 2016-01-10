@@ -469,7 +469,7 @@
 {
     [[WebClient sharedClient] retrieveAddressesForIsoCountryCode:nil
                                                         areaCode:nil
-                                                      numberType:NumberTypeGeographicMask
+                                                      numberType:0
                                                            reply:^(NSError *error, NSArray *addressIds)
     {
         if (error == nil)

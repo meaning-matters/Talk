@@ -17,12 +17,13 @@
 @property (nonatomic, strong) AddressData* address;
 
 
-- (instancetype)initWithAddress:(AddressData*)address
+- (instancetype)initWithAddress:(AddressData*)address                       // With nil a new address is created.
            managedObjectContext:(NSManagedObjectContext*)managedObjectContext
+                    addressType:(AddressTypeMask)addressTypeMask
                  isoCountryCode:(NSString*)isoCountryCode
                        areaCode:(NSString*)areaCode
                      numberType:(NumberTypeMask)numberTypeMask
-                    addressType:(AddressTypeMask)addressTypeMask
-                      proofType:(NSDictionary*)proofType;
+                      proofType:(NSDictionary*)proofType
+                     completion:(void (^)(AddressData* address))completion; // Only if new address was created.
 
 @end

@@ -6,7 +6,8 @@
 //  Copyright (c) 2014 NumberBay Ltd. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "UIViewController+Common.h"
+
 
 @interface ItemsViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 
