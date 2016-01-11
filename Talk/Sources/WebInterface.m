@@ -39,6 +39,7 @@
 //  neither on HTTP timeout, ...
 //
 
+#import <Foundation/Foundation.h>
 #import <dns_sd.h>
 #import <dns_util.h>
 #import "WebInterface.h"

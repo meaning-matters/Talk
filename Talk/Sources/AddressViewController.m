@@ -6,6 +6,7 @@
 //  Copyright © 2015 NumberBay Ltd. All rights reserved.
 //
 
+#import <objc/runtime.h>
 #import "AddressViewController.h"
 #import "NumberAreaPostcodesViewController.h"
 #import "NumberAreaCitiesViewController.h"

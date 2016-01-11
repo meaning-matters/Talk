@@ -15,6 +15,7 @@
 #import "NBDateCell.h"
 #import "NBPersonIMCell.h"
 
+
 @interface NBPersonCellInfo : NSObject
 
 //Indicate wether this cell should be visible

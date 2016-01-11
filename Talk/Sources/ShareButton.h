@@ -6,10 +6,11 @@
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
 @interface ShareButton : UIButton
 
-@property (nonatomic, strong) UIColor*  color;
+@property (nonatomic, strong) UIColor* color;
 
 @end

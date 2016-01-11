@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 NumberBay Ltd. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 typedef enum
 {
     KeypadKey1      = '1',

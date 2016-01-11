@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "NBGroup.h"
 
+
 @interface NBGroupsManager : NSObject
 
 @property (nonatomic) NSMutableArray* userGroups;

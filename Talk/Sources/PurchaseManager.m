@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <AdSupport/AdSupport.h>
 #import "PurchaseManager.h"
+#import "AnalyticsTransmitter.h"
 #import "NetworkStatus.h"
 #import "Common.h"
 #import "Strings.h"

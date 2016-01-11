@@ -7,6 +7,7 @@
 //
 
 #import "GetStartedViewController.h"
+#import "AnalyticsTransmitter.h"
 #import "Common.h"
 #import "Settings.h"
 #import "BlockAlertView.h"

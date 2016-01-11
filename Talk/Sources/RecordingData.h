@@ -11,6 +11,7 @@
 
 @class DestinationData;
 
+
 @interface RecordingData : NSManagedObject
 
 @property (nonatomic, retain) NSString* uuid;
@@ -19,6 +20,7 @@
 @property (nonatomic, retain) NSSet*    destinations;
 
 @end
+
 
 @interface RecordingData (CoreDataGeneratedAccessors)
 

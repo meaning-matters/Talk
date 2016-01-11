@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "PhoneNumber.h" // Needed for PhoneNumberType.  Circular dependency; but not a big deal.
 
 

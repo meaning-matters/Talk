@@ -12,6 +12,7 @@
 #import "WebClient.h"
 #import "WebInterface.h"
 #import "AFNetworkActivityIndicatorManager.h"
+#import "AnalyticsTransmitter.h"
 #import "Settings.h"
 #import "Common.h"
 #import "PurchaseManager.h"

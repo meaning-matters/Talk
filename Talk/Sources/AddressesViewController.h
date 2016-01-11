@@ -6,6 +6,7 @@
 //  Copyright © 2015 NumberBay Ltd. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import "ItemsViewController.h"
 #import "NumberType.h"
 #import "AddressType.h"

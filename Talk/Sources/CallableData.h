@@ -11,6 +11,7 @@
 
 @class CallerIdData;
 
+
 @interface CallableData : NSManagedObject
 
 @property (nonatomic, retain) NSString* e164;

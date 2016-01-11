@@ -11,6 +11,7 @@
 
 @class CallableData;
 
+
 @interface CallerIdData : NSManagedObject
 
 @property (nonatomic, retain) NSString*     contactId;

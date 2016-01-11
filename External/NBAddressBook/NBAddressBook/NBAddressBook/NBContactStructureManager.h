@@ -9,12 +9,13 @@
 //  First level is the sections, second level are the cells
 
 #import <Foundation/Foundation.h>
-#import "NBPersonCellInfo.h"
 #import <AddressBook/AddressBook.h>
+#import "NBPersonCellInfo.h"
 #import "NBDetailLineSeparatedCell.h"
 #import "NBNameTableViewCell.h"
 #import "NBContact.h"
 #import "NBPersonCellAddressInfo.h"
+
 
 @interface NBContactStructureManager : NSObject
 

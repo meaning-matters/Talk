@@ -7,6 +7,7 @@
 //
 
 #import "GetStartedRestoreViewController.h"
+#import "AnalyticsTransmitter.h"
 #import "PurchaseManager.h"
 #import "BlockAlertView.h"
 #import "Strings.h"

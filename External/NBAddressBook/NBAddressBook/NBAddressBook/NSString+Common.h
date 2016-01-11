@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface NSString (NSString_Common)
 
 - (void)displayToUserWithTitle:(NSString*)title andButton:(NSString*)button;

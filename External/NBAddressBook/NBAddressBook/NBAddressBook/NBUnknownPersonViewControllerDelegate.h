@@ -11,9 +11,15 @@
 
 @class NBUnknownPersonViewController;
 
+
 @protocol NBUnknownPersonViewControllerDelegate <NSObject>
 
-- (void)unknownPersonViewController:(NBUnknownPersonViewController *)unknownPersonView didResolveToPerson:(ABRecordRef)person;
-- (BOOL)unknownPersonViewController:(NBUnknownPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier;
+- (void)unknownPersonViewController:(NBUnknownPersonViewController*)unknownPersonView
+                 didResolveToPerson:(ABRecordRef)person;
+
+- (BOOL)unknownPersonViewController:(NBUnknownPersonViewController*)personViewController
+shouldPerformDefaultActionForPerson:(ABRecordRef)person
+                           property:(ABPropertyID)property
+                         identifier:(ABMultiValueIdentifier)identifier;
 
 @end

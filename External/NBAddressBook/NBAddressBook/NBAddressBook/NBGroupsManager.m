@@ -7,7 +7,9 @@
 //
 
 #import <AddressBook/AddressBook.h>
+#import "NBAddressBook.h"
 #import "NBGroupsManager.h"
+
 
 @implementation NBGroupsManager
 

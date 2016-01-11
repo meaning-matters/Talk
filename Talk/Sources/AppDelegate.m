@@ -9,6 +9,7 @@
 //### Want to remove CoreData? http://www.gravitywell.co.uk/blog/post/how-to-quickly-add-core-data-to-an-app-in-xcode-4
 
 #import <MediaPlayer/MediaPlayer.h>
+#import "AnalyticsTransmitter.h"
 #import "HockeySDK.h"
 #import "AppDelegate.h"
 #import "Settings.h"

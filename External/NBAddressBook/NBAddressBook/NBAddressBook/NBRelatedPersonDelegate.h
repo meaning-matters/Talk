@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+
 @protocol NBRelatedPersonDelegate <NSObject>
+
 - (void)relatedPersonSelected:(NSString*)personName;
+
 @end

@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+
 @protocol NBAddUnknownContactDelegate <NSObject>
+
 - (void)replaceViewController:(UIViewController*)viewController;
+
 @end

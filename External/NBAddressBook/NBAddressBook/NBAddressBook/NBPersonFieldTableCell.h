@@ -7,13 +7,16 @@
 //
 //  Extended tableviewcell for the custom Person animations and cell properties
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "NBAddressBook.h"
 
 typedef enum
 {
     CT_ADD     = 0,
     CT_EDIT    = 1
 } CellType;
+
 
 @interface NBPersonFieldTableCell : UITableViewCell <UIGestureRecognizerDelegate>
 {

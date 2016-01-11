@@ -7,9 +7,11 @@
 //
 //  Class for selecting a new label or ringtone value
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "NBContactStructureManager.h"
 #import "NBCustomValueTableViewController.h"
+
 
 @interface NBValueListTableViewController : UITableViewController
 {

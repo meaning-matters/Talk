@@ -7,11 +7,13 @@
 //
 //  Displaying an unknown contact
 
+#import <Foundation/Foundation.h>
 #import "NBPersonViewController.h"
 #import "NBPeopleListViewController.h"
 #import "NBPeoplePickerNavigationController.h"
 #import "NBUnknownPersonViewControllerDelegate.h"
 #import "NBRecentContactViewController.h"
+
 
 @interface NBUnknownPersonViewController : NBPersonViewController
 {

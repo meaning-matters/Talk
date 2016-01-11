@@ -7,6 +7,7 @@
 //
 //  http://nshipster.com/method-swizzling/
 
+#import <objc/runtime.h>
 #import "UIViewController+Common.h"
 
 

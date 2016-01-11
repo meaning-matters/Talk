@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface NSMutableString (Appending)
+
 - (void)attemptToAppend:(NSString*)toAdd withNewline:(BOOL)newLine;
+
 @end

@@ -6,7 +6,9 @@
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
+#import "NBAddressBook.h"
 #import "NBCustomValueTableViewController.h"
+
 
 @implementation NBCustomValueTableViewController
 

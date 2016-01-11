@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 NumberBay Ltd. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 #import "UIViewController+Common.h"
 
 

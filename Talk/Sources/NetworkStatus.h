@@ -34,8 +34,8 @@ typedef NS_ENUM(NSInteger, NetworkStatusReachable)
     NetworkStatusReachableWifi         =  2,
 };
 
-
 @class CTCallCenter;
+
 
 @interface NetworkStatus : NSObject
 

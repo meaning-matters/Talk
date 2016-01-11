@@ -6,8 +6,10 @@
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import "NBPersonCellInfo.h"
 #import "NBAddressCell.h"
+
 
 @interface NBPersonCellAddressInfo : NBPersonCellInfo
 

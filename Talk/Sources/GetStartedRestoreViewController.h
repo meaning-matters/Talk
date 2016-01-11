@@ -6,8 +6,10 @@
 //  Copyright (c) 2014 NumberBay Ltd. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "GetStartedActionViewController.h"
+
 
 @interface GetStartedRestoreViewController : GetStartedActionViewController
 

@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 NumberBay Ltd. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "KeypadKey.h"
 
@@ -27,27 +28,27 @@
 
 @interface KeypadView : UIView
 
-@property (nonatomic, strong) IBOutlet UIView*              view;
-@property (nonatomic, weak) IBOutlet UIButton*              key1Button;
-@property (nonatomic, weak) IBOutlet UIButton*              key2Button;
-@property (nonatomic, weak) IBOutlet UIButton*              key3Button;
-@property (nonatomic, weak) IBOutlet UIButton*              key4Button;
-@property (nonatomic, weak) IBOutlet UIButton*              key5Button;
-@property (nonatomic, weak) IBOutlet UIButton*              key6Button;
-@property (nonatomic, weak) IBOutlet UIButton*              key7Button;
-@property (nonatomic, weak) IBOutlet UIButton*              key8Button;
-@property (nonatomic, weak) IBOutlet UIButton*              key9Button;
-@property (nonatomic, weak) IBOutlet UIButton*              keyStarButton;
-@property (nonatomic, weak) IBOutlet UIButton*              key0Button;         // '0' or '+'
-@property (nonatomic, weak) IBOutlet UIButton*              keyHashButton;
-@property (nonatomic, weak) IBOutlet UIButton*              keyOptionButton;
-@property (nonatomic, weak) IBOutlet UIButton*              keyCallButton;
-@property (nonatomic, weak) IBOutlet UIButton*              keyEraseButton;
+@property (nonatomic, strong) IBOutlet UIView*            view;
+@property (nonatomic, weak) IBOutlet UIButton*            key1Button;
+@property (nonatomic, weak) IBOutlet UIButton*            key2Button;
+@property (nonatomic, weak) IBOutlet UIButton*            key3Button;
+@property (nonatomic, weak) IBOutlet UIButton*            key4Button;
+@property (nonatomic, weak) IBOutlet UIButton*            key5Button;
+@property (nonatomic, weak) IBOutlet UIButton*            key6Button;
+@property (nonatomic, weak) IBOutlet UIButton*            key7Button;
+@property (nonatomic, weak) IBOutlet UIButton*            key8Button;
+@property (nonatomic, weak) IBOutlet UIButton*            key9Button;
+@property (nonatomic, weak) IBOutlet UIButton*            keyStarButton;
+@property (nonatomic, weak) IBOutlet UIButton*            key0Button;         // '0' or '+'
+@property (nonatomic, weak) IBOutlet UIButton*            keyHashButton;
+@property (nonatomic, weak) IBOutlet UIButton*            keyOptionButton;
+@property (nonatomic, weak) IBOutlet UIButton*            keyCallButton;
+@property (nonatomic, weak) IBOutlet UIButton*            keyEraseButton;
 
-@property (nonatomic, weak) IBOutlet UIGestureRecognizer*   longPress0Recognizer;
-@property (nonatomic, weak) IBOutlet UIGestureRecognizer*   longPressEraseRecognizer;
+@property (nonatomic, weak) IBOutlet UIGestureRecognizer* longPress0Recognizer;
+@property (nonatomic, weak) IBOutlet UIGestureRecognizer* longPressEraseRecognizer;
 
-@property (nonatomic, assign) id<KeypadViewDelegate>        delegate;
+@property (nonatomic, assign) id<KeypadViewDelegate>      delegate;
 
 
 - (IBAction)digitKeyPressAction:(id)sender;

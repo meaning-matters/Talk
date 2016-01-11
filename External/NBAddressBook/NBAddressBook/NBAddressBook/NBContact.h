@@ -16,6 +16,7 @@
 #import "NBAppDelegate.h"
 #import "NBRecentContactEntry.h"
 
+
 @interface NBContact : NSObject
 {
     UIImage * selectedImage;

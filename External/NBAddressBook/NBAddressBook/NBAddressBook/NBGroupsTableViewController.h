@@ -7,10 +7,12 @@
 //
 //  Displaying the existing groups and selecting/deselecting them
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <AddressBook/AddressBook.h>
 #import "NBAddressBookManager.h"
 #import "NBGroup.h"
+
 
 @interface NBGroupsTableViewController : UITableViewController
 {

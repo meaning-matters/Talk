@@ -6,11 +6,13 @@
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
 
 @interface CallStateView : UIView
 
-@property (nonatomic, strong) IBOutlet UIView*  view;
-@property (nonatomic, weak) IBOutlet UILabel*   label;
+@property (nonatomic, strong) IBOutlet UIView* view;
+@property (nonatomic, weak) IBOutlet UILabel*  label;
 
 @end

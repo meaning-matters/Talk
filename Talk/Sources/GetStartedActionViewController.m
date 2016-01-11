@@ -7,6 +7,7 @@
 //
 
 #import "GetStartedActionViewController.h"
+#import "AnalyticsTransmitter.h"
 #import "Common.h"
 #import "WebClient.h"
 #import "Settings.h"

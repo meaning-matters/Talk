@@ -6,7 +6,9 @@
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import "NBDetailLineSeparatedCell.h"
+
 
 @interface NBNotesCell : NBDetailLineSeparatedCell
 {

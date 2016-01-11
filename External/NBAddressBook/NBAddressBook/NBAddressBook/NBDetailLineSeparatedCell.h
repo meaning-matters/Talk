@@ -7,9 +7,13 @@
 //
 //  A cell with a line separator between them
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "NBPersonFieldTableCell.h"
 
+
 @interface NBDetailLineSeparatedCell : NBPersonFieldTableCell
+
 @property (nonatomic) UIView * lineView;
+
 @end

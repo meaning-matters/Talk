@@ -24,7 +24,10 @@
 #define FACEBOOK_SUFFIX @"(Facebook)"
 
 
-@interface NBPersonViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, NBRelatedPersonDelegate>
+@interface NBPersonViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate,
+                                                      UINavigationControllerDelegate, UITableViewDataSource,
+                                                      UITableViewDelegate, UIActionSheetDelegate,
+                                                      NBRelatedPersonDelegate>
 {
     //The bar button items
     UIBarButtonItem * backButton;

@@ -6,11 +6,13 @@
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
 #define SIZE_NUMBER_LABEL               200
 #define POSITION_NUMBER_LABEL           10
 #define POSITION_NUMBER_LABEL_EDITING   40
+
 
 @interface NBRecentCallCell : UITableViewCell
 {

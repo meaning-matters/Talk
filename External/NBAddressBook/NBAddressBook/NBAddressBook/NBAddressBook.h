@@ -9,6 +9,7 @@
 #ifndef Talk_NBAddressBook_h
 #define Talk_NBAddressBook_h
 
+#import <Foundation/Foundation.h>
 #import "Skinning.h"
 
 

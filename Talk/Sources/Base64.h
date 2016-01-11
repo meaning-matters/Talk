@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface Base64 : NSObject
 
 + (NSString*)encode:(const uint8_t*)input length:(size_t)length;

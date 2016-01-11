@@ -6,8 +6,10 @@
 //  Copyright (c) 2012 NumberBay Ltd. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
+
 
 @interface HelpsViewController : UITableViewController
 

@@ -6,8 +6,9 @@
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
-#import "NBDetailLineSeparatedCell.h"
+#import <Foundation/Foundation.h>
 #import <math.h>
+#import "NBDetailLineSeparatedCell.h"
 
 //All possible celltypes
 typedef enum
@@ -86,6 +87,7 @@ typedef enum
 
 //Measure size for the label
 #define HEIGHT_MEASURE_SIZE     20
+
 
 @interface NBAddressCell : NBDetailLineSeparatedCell
 {    

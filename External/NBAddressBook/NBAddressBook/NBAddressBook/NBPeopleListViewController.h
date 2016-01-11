@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "NBPersonViewController.h"
 #import <QuartzCore/QuartzCore.h>
@@ -17,6 +18,7 @@
 #import "NBPeopleTableViewCell.h"
 
 #define SECTION_TITLES @[@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", @"#"]
+
 
 @interface NBPeopleListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate>
 {

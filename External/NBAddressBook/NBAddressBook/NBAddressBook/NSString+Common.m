@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import "NSString+Common.h"
 
 @implementation NSString (NSString_Common)

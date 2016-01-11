@@ -9,6 +9,7 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface NBGroup : NSObject
 
 @property (nonatomic) NSString*       groupName;
