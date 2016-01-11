@@ -384,7 +384,7 @@
             NSMutableArray* e164s = [NSMutableArray array];
             for (NSString* e164x in content)
             {
-                [e164s addObject:[NSString stringWithFormat:@"+%@", e164x]];
+                [e164s addObject:[@"+" stringByAppendingString:e164x]];
             }
             
             reply(nil, e164s);
@@ -769,7 +769,7 @@
     {
         if (error == nil)
         {
-            reply(nil, content[@"e164"]);
+            reply(nil, [@"+" stringByAppendingString:content[@"e164"]]);
         }
         else
         {
@@ -816,7 +816,23 @@
 {
     [self getPath:[NSString stringWithFormat:@"/users/%@/numbers", [Settings sharedSettings].webUsername]
        parameters:nil
-            reply:reply];
+            reply:^(NSError* error, id content)
+    {
+        if (error == nil)
+        {
+            NSMutableArray* e164s = [NSMutableArray array];
+            for (NSString* e164x in content)
+            {
+                [e164s addObject:[@"+" stringByAppendingString:e164x]];
+            }
+
+            reply(nil, e164s);
+        }
+        else
+        {
+            reply(error, nil);
+        }
+    }];
 }
 
 
