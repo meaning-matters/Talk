@@ -96,7 +96,6 @@
     }
 
     [self.fetchedAddressesController performFetch:nil];
-    [self.tableView reloadData];//####### Needed, isn't this done by performFetch????
 }
 
 
@@ -478,18 +477,23 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
         {
             if (address != nil)
             {
+                self.isLoading = YES;
                 [AddressesViewController loadAddressesPredicateWithAddressType:self.addressTypeMask
                                                                 isoCountryCode:self.isoCountryCode
                                                                       areaCode:self.areaCode
                                                                     numberType:self.numberTypeMask
                                                                     completion:^(NSPredicate *predicate, NSError *error)
                 {
+                    self.isLoading = NO;
                     if (error == nil)
                     {
                         self.predicate = predicate;
                         self.fetchedAddressesController.fetchRequest.predicate = self.predicate;
                         [self.fetchedAddressesController performFetch:nil];
-                        [self.tableView reloadData];//##### Needed?
+
+                        NSRange     range    = NSMakeRange(0, [self numberOfSectionsInTableView:self.tableView]);
+                        NSIndexSet* sections = [NSIndexSet indexSetWithIndexesInRange:range];
+                        [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationAutomatic];
                     }
                 }];
             }

@@ -1516,6 +1516,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
          {
              self.address.addressId = addressId;
              [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+             [[DataManager sharedManager] saveManagedObjectContext:nil];
 
              self.createCompletion ? self.createCompletion(self.address) : (void)0;
          }
