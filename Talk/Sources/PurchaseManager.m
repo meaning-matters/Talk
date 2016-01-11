@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <AdSupport/AdSupport.h>
 #import "PurchaseManager.h"
 #import "AnalyticsTransmitter.h"
