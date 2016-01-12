@@ -21,8 +21,7 @@
 @property (nonatomic, retain) NSSet*    recordings;
 @property (nonatomic, retain) NSSet*    phones;
 
-- (void)deleteFromManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
-                            completion:(void (^)(BOOL succeeded))completion;
+- (void)deleteWithCompletion:(void (^)(BOOL succeeded))completion;
 
 @end
 

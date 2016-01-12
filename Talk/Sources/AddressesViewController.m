@@ -254,7 +254,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     {
         AddressData* address = [self.fetchedAddressesController objectAtIndexPath:indexPath];
         
-        [address deleteFromManagedObjectContext:self.managedObjectContext completion:^(BOOL succeeded)
+        [address deleteWithCompletion:^(BOOL succeeded)
         {
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
         }];

@@ -171,8 +171,7 @@ typedef enum
                 isDeleting = YES;
 
                 [self.destination removePhones:self.destination.phones];
-                [self.destination deleteFromManagedObjectContext:self.managedObjectContext
-                                                     completion:^(BOOL succeeded)
+                [self.destination deleteWithCompletion:^(BOOL succeeded)
                 {
                     if (succeeded)
                     {
