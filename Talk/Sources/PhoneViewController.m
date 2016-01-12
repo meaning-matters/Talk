@@ -136,10 +136,9 @@ typedef enum
 
 - (void)deleteAction
 {
-    if ([self.phone.e164 isEqualToString:[Settings sharedSettings].callbackE164] == NO &&
-        [self.phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164] == NO &&
-        numbersArray.count == 0 &&
-        namesArray.count == 0)
+    NSString* cantDeleteMessage = [self.phone cantDeleteMessage];
+
+    if (cantDeleteMessage == nil)
     {
         NSString* buttonTitle = NSLocalizedStringWithDefaultValue(@"PhoneView DeleteTitle", nil, [NSBundle mainBundle],
                                                                   @"Delete Phone",
@@ -181,7 +180,7 @@ typedef enum
                                                     @"[1/3 line small font].");
         
         [BlockAlertView showAlertViewWithTitle:title
-                                       message:[self cantDeleteMessage]
+                                       message:cantDeleteMessage
                                     completion:nil
                              cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
@@ -598,92 +597,8 @@ typedef enum
 
 - (void)updateSaveButtonItem
 {
-    self.navigationItem.rightBarButtonItem.enabled = ([self.name stringByRemovingWhiteSpace].length > 0) && ([phoneNumber isValid]);
-}
-
-
-- (NSString*)cantDeleteMessage
-{
-    NSString*       title;
-    NSMutableArray* useArray = [NSMutableArray array];
-    
-    if ([self.phone.e164 isEqualToString:[Settings sharedSettings].callbackE164])
-    {
-        [useArray addObject:NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberFooter", nil,
-                                                              [NSBundle mainBundle],
-                                                              @"for callback",
-                                                              @"Table footer that ....\n"
-                                                              @"[1 line larger font].")];
-    }
-    
-    if ([self.phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164])
-    {
-        [useArray addObject:NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberFooter", nil,
-                                                              [NSBundle mainBundle],
-                                                              @"as default caller ID",
-                                                              @"Table footer that ....\n"
-                                                              @"[1 line larger font].")];
-    }
-    
-    if (numbersArray.count > 0)
-    {
-        [useArray addObject:NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberFooter", nil,
-                                                              [NSBundle mainBundle],
-                                                              @"in one or more Destinations",
-                                                              @"Table footer that ....\n"
-                                                              @"[1 line larger font].")];
-    }
-    
-    if (namesArray.count > 0)
-    {
-        [useArray addObject:NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberFooter", nil,
-                                                              [NSBundle mainBundle],
-                                                              @"as caller ID for contacts",
-                                                              @"Table footer that ....\n"
-                                                              @"[1 line larger font].")];
-    }
-    
-    title = NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberMessage", nil,
-                                              [NSBundle mainBundle],
-                                              @"This Phone can't be deleted because it's used ",
-                                              @"Table footer that ....\n"
-                                              @"[1 line larger font].");
-    
-    for (int i = 0; i < useArray.count; i++)
-    {
-        if (useArray.count == 1)
-        {
-            title = [title stringByAppendingFormat:@"%@.", useArray[i]];
-        }
-        else if (useArray.count == 2)
-        {
-            if (i == 0)
-            {
-                title = [title stringByAppendingFormat:@"%@ and ", useArray[i]];
-            }
-            else
-            {
-                title = [title stringByAppendingFormat:@"%@.", useArray[i]];
-            }
-        }
-        else
-        {
-            if (i == (useArray.count - 2))
-            {
-                title = [title stringByAppendingFormat:@"%@, and ", useArray[i]];
-            }
-            else if (i == (useArray.count - 1))
-            {
-                title = [title stringByAppendingFormat:@"%@.", useArray[i]];
-            }
-            else
-            {
-                title = [title stringByAppendingFormat:@"%@, ", useArray[i]];
-            }
-        }
-    }
-    
-    return title;
+    self.navigationItem.rightBarButtonItem.enabled = ([self.name stringByRemovingWhiteSpace].length > 0) &&
+                                                     [phoneNumber isValid];
 }
 
 

@@ -10,11 +10,122 @@
 #import "WebClient.h"
 #import "Strings.h"
 #import "BlockAlertView.h"
+#import "Settings.h"
+#import "DataManager.h"
 
 
 @implementation PhoneData
 
 @dynamic destinations;
+
+
+- (NSString*)cantDeleteMessage
+{
+    NSString*       message;
+    NSArray*        numbersArray;
+    CallableData*   callable  = self;
+    NSMutableArray* useArray  = [NSMutableArray array];
+
+    NSPredicate*    predicate = [NSPredicate predicateWithFormat:@"ANY destination.phones == %@", self];
+    numbersArray = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
+                                                             sortKeys:nil
+                                                            predicate:predicate
+                                                 managedObjectContext:nil];
+
+    if ([self.e164 isEqualToString:[Settings sharedSettings].callbackE164])
+    {
+        [useArray addObject:NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberFooter", nil,
+                                                              [NSBundle mainBundle],
+                                                              @"for Callback",
+                                                              @"Table footer that ....\n"
+                                                              @"[1 line larger font].")];
+    }
+
+    if ([self.e164 isEqualToString:[Settings sharedSettings].callerIdE164])
+    {
+        [useArray addObject:NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberFooter", nil,
+                                                              [NSBundle mainBundle],
+                                                              @"as default Caller ID",
+                                                              @"Table footer that ....\n"
+                                                              @"[1 line larger font].")];
+    }
+
+    if (numbersArray.count > 0)
+    {
+        [useArray addObject:NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberFooter", nil,
+                                                              [NSBundle mainBundle],
+                                                              @"in one or more Destinations",
+                                                              @"Table footer that ....\n"
+                                                              @"[1 line larger font].")];
+    }
+
+    if (callable.callerIds.count == 1)
+    {
+        [useArray addObject:NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberFooter", nil,
+                                                              [NSBundle mainBundle],
+                                                              @"as Caller ID for a contact",
+                                                              @"Table footer that ....\n"
+                                                              @"[1 line larger font].")];
+    }
+
+    if (callable.callerIds.count > 1)
+    {
+        [useArray addObject:NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberFooter", nil,
+                                                              [NSBundle mainBundle],
+                                                              @"as Caller ID for contacts",
+                                                              @"Table footer that ....\n"
+                                                              @"[1 line larger font].")];
+    }
+
+    if (useArray.count > 0)
+    {
+        message = NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"This Phone can't be deleted because it's used ",
+                                                    @"Table footer that ....\n"
+                                                    @"[1 line larger font].");
+
+        for (int i = 0; i < useArray.count; i++)
+        {
+            if (useArray.count == 1)
+            {
+                message = [message stringByAppendingFormat:@"%@.", useArray[i]];
+            }
+            else if (useArray.count == 2)
+            {
+                if (i == 0)
+                {
+                    message = [message stringByAppendingFormat:@"%@ and ", useArray[i]];
+                }
+                else
+                {
+                    message = [message stringByAppendingFormat:@"%@.", useArray[i]];
+                }
+            }
+            else
+            {
+                if (i == (useArray.count - 2))
+                {
+                    message = [message stringByAppendingFormat:@"%@, and ", useArray[i]];
+                }
+                else if (i == (useArray.count - 1))
+                {
+                    message = [message stringByAppendingFormat:@"%@.", useArray[i]];
+                }
+                else
+                {
+                    message = [message stringByAppendingFormat:@"%@, ", useArray[i]];
+                }
+            }
+        }
+    }
+    else
+    {
+        message = nil;
+    }
+
+    return message;
+}
 
 
 - (void)deleteFromManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
