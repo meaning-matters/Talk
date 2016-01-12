@@ -17,6 +17,8 @@
 
 @property (nonatomic, retain) NSSet* destinations;
 
+- (NSString*)cantDeleteMessage;
+
 - (void)deleteFromManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
                             completion:(void (^)(BOOL succeeded))completion;
 
