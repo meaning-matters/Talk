@@ -121,6 +121,81 @@
 }
 
 
+- (NSArray*)stripE164InStatements:(NSArray*)statements
+{
+    NSMutableArray* mutableStatements = [Common mutableObjectWithJsonString:[Common jsonStringWithObject:statements]];
+
+    [self traverseStatements:mutableStatements strip:YES];
+
+    return mutableStatements;
+}
+
+
+- (NSArray*)restoreE164InStatements:(NSArray*)statements
+{
+    NSMutableArray* mutableStatements = [Common mutableObjectWithJsonString:[Common jsonStringWithObject:statements]];
+
+    [self traverseStatements:mutableStatements strip:NO];
+
+    return mutableStatements;
+}
+
+
+- (void)traverseStatements:(id)object strip:(BOOL)strip
+{
+    if ([object isKindOfClass:[NSMutableDictionary class]])
+    {
+        for (NSString* key in [object allKeys])
+        {
+            if ([key isEqualToString:@"e164s"])
+            {
+                NSMutableArray* e164s = [NSMutableArray array];
+                for (NSString* e164 in object[key])
+                {
+                    if (strip)
+                    {
+                        [e164s addObject:[e164 substringFromIndex:1]];
+                    }
+                    else
+                    {
+                        [e164s addObject:[@"+" stringByAppendingString:e164]];
+                    }
+                }
+
+                object[key] = e164s;
+            }
+            else if ([key isEqualToString:@"e164"])
+            {
+                if (strip)
+                {
+                    object[key] = [object[key] substringFromIndex:1];
+                }
+                else
+                {
+                    object[key] = [@"+" stringByAppendingString:object[key]];
+                }
+            }
+            else
+            {
+                id child = object[key];
+                [self traverseStatements:child strip:strip];
+            }
+        }
+    }
+    else if ([object isKindOfClass:[NSMutableArray class]])
+    {
+        for (id child in object)
+        {
+            [self traverseStatements:child strip:strip];
+        }
+    }
+    else
+    {
+        // Not a container.
+    }
+}
+
+
 #pragma mark - Public API
 
 // 0A. GET CALL RATES
@@ -1014,7 +1089,7 @@
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"name"       : name,
-                                 @"statements" : statements};
+                                 @"statements" : [self stripE164InStatements:statements]};
 
     [self putPath:[NSString stringWithFormat:@"/users/%@/ivr/%@", username, uuid]
        parameters:parameters
@@ -1063,7 +1138,9 @@
     {
         if (error == nil)
         {
-            reply(nil, content[@"name"], content[@"statements"]);
+            NSArray* statements = content[@"statements"];
+            statements = [self restoreE164InStatements:statements];
+            reply(nil, content[@"name"], statements);
         }
         else
         {

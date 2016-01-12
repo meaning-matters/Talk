@@ -71,7 +71,7 @@ typedef enum
             self.destination = [NSEntityDescription insertNewObjectForEntityForName:@"Destination"
                                                              inManagedObjectContext:self.managedObjectContext];
 
-            self.destination.statements = [Common jsonStringWithObject:@[@{@"call" : @{@"e164" : @[@""]}}]];
+            self.destination.statements = [Common jsonStringWithObject:@[@{@"call" : @{@"e164s" : @[@""]}}]];
         }
         else
         {
@@ -216,7 +216,7 @@ typedef enum
 - (void)createAction
 {
     self.destination.name = self.name;
-    statementsArray[0][@"call"][@"e164"][0] = phone.e164;
+    statementsArray[0][@"call"][@"e164s"][0] = phone.e164;
     self.destination.statements = [Common jsonStringWithObject:statementsArray];
 
     self.navigationItem.rightBarButtonItem.enabled = NO;
@@ -260,7 +260,7 @@ typedef enum
         if (error == nil)
         {
             self.destination.name = self.name;
-            statementsArray[0][@"call"][@"e164"][0] = phone.e164;
+            statementsArray[0][@"call"][@"e164s"][0] = phone.e164;
             self.destination.statements = [Common jsonStringWithObject:statementsArray];
             
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
@@ -487,7 +487,7 @@ typedef enum
                                                                              completion:^(PhoneData* selectedPhone)
             {
                 phone = selectedPhone;
-                self.destination.statements = [Common jsonStringWithObject:@[@{@"call" : @{@"e164" : @[phone.e164]}}]];
+                self.destination.statements = [Common jsonStringWithObject:@[@{@"call" : @{@"e164s" : @[phone.e164]}}]];
 
                 [self updateRightBarButtonItem];
                 [self updateTable];

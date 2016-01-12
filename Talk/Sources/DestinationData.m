@@ -138,7 +138,7 @@
 - (void)updateDependenciesWithStatements:(NSString*)statements
 {
     NSArray*     statementsArray = [Common mutableObjectWithJsonString:statements];
-    NSString*    e164            = statementsArray[0][@"call"][@"e164"][0];
+    NSString*    e164            = statementsArray[0][@"call"][@"e164s"][0];
 
     if ([e164 length] == 0)
     {
