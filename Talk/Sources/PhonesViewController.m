@@ -242,7 +242,9 @@ const NSInteger kUseButtonTag = 123;
 {
     PhoneData*    phone    = [self.fetchedPhonesController objectAtIndexPath:indexPath];
     CallableData* callable = phone;
-    
+
+    return YES;
+
     return [phone.e164 isEqualToString:[Settings sharedSettings].callbackE164] == NO &&
            [phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164] == NO &&
            phone.destinations.count == 0 &&
@@ -257,9 +259,16 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     {
         PhoneData* phone = [self.fetchedPhonesController objectAtIndexPath:indexPath];
 
-        [phone deleteFromManagedObjectContext:self.managedObjectContext completion:^(BOOL succeeded)
+        [phone deleteWithCompletion:^(BOOL succeeded)
         {
-            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+            if (succeeded)
+            {
+                [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+            }
+            else
+            {
+                [self.tableView setEditing:NO animated:YES];
+            }
         }];
     }
 }

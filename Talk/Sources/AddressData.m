@@ -45,8 +45,7 @@
 @dynamic numbers;
 
 
-- (void)deleteFromManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
-                            completion:(void (^)(BOOL succeeded))completion
+- (void)deleteWithCompletion:(void (^)(BOOL succeeded))completion
 {
     if (self.numbers.count > 0)
     {
@@ -81,7 +80,7 @@
         {
             if (error == nil || error.code == WebStatusFailAddressUnknown)
             {
-                [managedObjectContext deleteObject:self];
+                [self.managedObjectContext deleteObject:self];
                 completion ? completion(YES) : 0;
                 
                 return;

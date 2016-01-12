@@ -243,7 +243,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
         {
             DestinationData* destination = [fetchedDestinationsController objectAtIndexPath:indexPath];
 
-            [destination deleteFromManagedObjectContext:self.managedObjectContext completion:^(BOOL succeeded)
+            [destination deleteWithCompletion:^(BOOL succeeded)
             {
                 [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
             }];

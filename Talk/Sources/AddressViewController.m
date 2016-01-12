@@ -1585,8 +1585,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             {
                 self.isDeleting = YES;
                  
-                [self.address deleteFromManagedObjectContext:self.managedObjectContext
-                                                  completion:^(BOOL succeeded)
+                [self.address deleteWithCompletion:^(BOOL succeeded)
                 {
                     if (succeeded)
                     {
