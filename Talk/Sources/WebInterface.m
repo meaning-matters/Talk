@@ -49,8 +49,8 @@
 #import "NetworkStatus.h"
 #import "AnalyticsTransmitter.h"
 
-const NSTimeInterval kDnsUpdateTimeoutReachable    =  20;
-const NSTimeInterval kDnsUpdateTimeoutNotReachable =   3;  // Limit timeout because of hard `select()` timeout.
+const NSTimeInterval kDnsUpdateTimeoutReachable    =   4;  // Keep this low to switch to fallback server soon.
+const NSTimeInterval kDnsUpdateTimeoutNotReachable =   2;  // Limit timeout because of hard `select()` timeout.
 const NSTimeInterval kApiRequestTimeout            =  20;
 const NSTimeInterval kTtlIncrement                 =  10;
 const NSTimeInterval kSelectedServerHoldTime       =  10;
