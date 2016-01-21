@@ -674,12 +674,21 @@
                         number.e164           = e164;
                         number.numberType     = numberType;
                         number.areaCode       = areaCode;
-                        number.areaName       = [areaName isEqual:[NSNull null]] ? nil : areaName; // Mobile/... lack areaName.
                         number.isoCountryCode = numberCountry;
                         number.purchaseDate   = purchaseDate;
                         number.renewalDate    = renewalDate;
                         number.stateName      = stateName;
                         number.stateCode      = stateCode;
+
+                        // For non-geograpic numbers, areaName is <null>.
+                        if ([areaName isEqual:[NSNull null]] || areaName.length == 0)
+                        {
+                            number.areaName = nil;
+                        }
+                        else
+                        {
+                            number.areaName = [areaName capitalizedString];
+                        }
                     }
                     else
                     {
