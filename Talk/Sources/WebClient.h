@@ -186,12 +186,7 @@
                            name:(NSString*)name
                  isoCountryCode:(NSString*)isoCountryCode
                          areaId:(NSString*)areaId
-                       areaCode:(NSString*)areaCode
-                       areaName:(NSString*)areaName
-                      stateCode:(NSString*)stateCode
-                      stateName:(NSString*)stateName
-                     numberType:(NSString*)numberType
-                           info:(NSDictionary*)info
+                      addressId:(NSString*)addressId
                           reply:(void (^)(NSError* error, NSString* e164))reply;
 
 // 11B. UPDATE NUMBER'S NAME

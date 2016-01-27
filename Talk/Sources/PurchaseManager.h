@@ -43,18 +43,6 @@ extern NSString* const PurchaseManagerProductsLoadedNotification;
 
 - (void)buyCreditForTier:(int)tier completion:(void (^)(BOOL success, id object))completion;
 
-- (void)buyNumberForMonths:(NSUInteger)months
-                      name:(NSString*)name
-            isoCountryCode:(NSString*)isoCountryCode
-                    areaId:(NSString*)areaId
-                  areaCode:(NSString*)areaCode
-                  areaName:(NSString*)areaName
-                 stateCode:(NSString*)stateCode
-                 stateName:(NSString*)stateName
-                numberType:(NSString*)numberType
-                      info:(NSDictionary*)info
-                completion:(void (^)(BOOL success, id object))completion;
-
 - (int)tierForCredit:(float)credit;
 
 - (int)tierOfProductIdentifier:(NSString*)identifier;

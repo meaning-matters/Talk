@@ -811,31 +811,15 @@
                            name:(NSString*)name
                  isoCountryCode:(NSString*)isoCountryCode
                          areaId:(NSString*)areaId
-                       areaCode:(NSString*)areaCode
-                       areaName:(NSString*)areaName
-                      stateCode:(NSString*)stateCode
-                      stateName:(NSString*)stateName
-                     numberType:(NSString*)numberType
-                           info:(NSDictionary*)info
-                          reply:(void (^)(NSError* error, NSString* e164))reply;
+                      addressId:(NSString*)addressId
+                          reply:(void (^)(NSError* error, NSString* e164))reply
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
     NSMutableDictionary* parameters = [@{@"durationMonths" : @(months),
                                          @"name"           : name,
                                          @"isoCountryCode" : isoCountryCode,
-                                         @"areaId"         : areaId,
-                                         @"numberType"     : numberType} mutableCopy];
-    (areaCode  != nil) ? parameters[@"areaCode"]  = areaCode  : 0;
-    (areaName  != nil) ? parameters[@"areaName"]  = areaName  : 0;
-    (stateCode != nil) ? parameters[@"stateCode"] = stateCode : 0;
-    (stateName != nil) ? parameters[@"stateName"] = stateName : 0;
-    (info      != nil) ? parameters[@"info"]      = info      : 0;
-
-    /*
-    NSLog(@"##################### DUMMY RETURN purchaseNumberForReceipt #########");
-    reply(nil, @"+3215666666");
-    return;
-*/
+                                         @"areaId"         : areaId} mutableCopy];
+    (addressId != nil) ? parameters[@"addressId"] = addressId : 0;
     // parameters[@"debug"] = @(false);
 
     [self postPath:[NSString stringWithFormat:@"/users/%@/numbers", username]
@@ -871,7 +855,7 @@
 
 
 // 11C. EXTEND NUMBER
-- (void)extendNumberE164:(NSString*)e164 forMonths:(NSUInteger)months reply:(void (^)(NSError* error))reply;
+- (void)extendNumberE164:(NSString*)e164 forMonths:(NSUInteger)months reply:(void (^)(NSError* error))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSString*     number     = [e164 substringFromIndex:1];

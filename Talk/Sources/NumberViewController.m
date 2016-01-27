@@ -7,7 +7,6 @@
 //
 
 #import "NumberViewController.h"
-#import "BuyNumberViewController.h"
 #import "ProofImageViewController.h"
 #import "NumberDestinationsViewController.h"
 #import "Common.h"

@@ -21,9 +21,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		480176671C5821DF00902197 /* UITableViewController+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 480176661C5821DF00902197 /* UITableViewController+Common.m */; };
 		48017A12194E554C0059A53B /* CallableData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48017A11194E554C0059A53B /* CallableData.m */; };
 		48021B341C3A693200C40B58 /* UIViewController+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48021B331C3A693100C40B58 /* UIViewController+Common.m */; };
-		4803081B196AAFC000FDE1A4 /* ExtendNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4803081A196AAFC000FDE1A4 /* ExtendNumberViewController.m */; };
 		480B4FFA1BED1A890098F3A4 /* CountryCallingCodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 480B4FF91BED1A890098F3A4 /* CountryCallingCodes.json */; };
 		480B4FFF1BED4AC20098F3A4 /* WD@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 480B4FFE1BED4AC20098F3A4 /* WD@2x.png */; };
 		480BEF9518D59ECA00C882E0 /* GetStartedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 480BEF9418D59ECA00C882E0 /* GetStartedView.xib */; };
@@ -437,8 +437,6 @@
 		4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3F5175668CA0006542F /* LogoFacebook.png */; };
 		4864B3F7175668CA0006542F /* LogoFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3F5175668CA0006542F /* LogoFacebook.png */; };
 		4864B3F917566E950006542F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4864B3F817566E950006542F /* MessageUI.framework */; };
-		4865A9D817926CE00028785F /* BuyNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9D717926CE00028785F /* BuyNumberViewController.m */; };
-		4865A9D917926CE00028785F /* BuyNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9D717926CE00028785F /* BuyNumberViewController.m */; };
 		4865A9DF1792C8B70028785F /* NumberBuyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberBuyCell.m */; };
 		4865A9E01792C8B70028785F /* NumberBuyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberBuyCell.m */; };
 		486D4A2318F06BC8004699C9 /* CallRatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 486D4A2218F06BC8004699C9 /* CallRatesViewController.m */; };
@@ -696,12 +694,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		480176651C5821DF00902197 /* UITableViewController+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewController+Common.h"; sourceTree = "<group>"; };
+		480176661C5821DF00902197 /* UITableViewController+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewController+Common.m"; sourceTree = "<group>"; };
 		48017A10194E554C0059A53B /* CallableData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallableData.h; sourceTree = "<group>"; };
 		48017A11194E554C0059A53B /* CallableData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallableData.m; sourceTree = "<group>"; };
 		48021B321C3A693100C40B58 /* UIViewController+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Common.h"; sourceTree = "<group>"; };
 		48021B331C3A693100C40B58 /* UIViewController+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Common.m"; sourceTree = "<group>"; };
-		48030819196AAFC000FDE1A4 /* ExtendNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtendNumberViewController.h; sourceTree = "<group>"; };
-		4803081A196AAFC000FDE1A4 /* ExtendNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtendNumberViewController.m; sourceTree = "<group>"; };
 		480B4FF91BED1A890098F3A4 /* CountryCallingCodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryCallingCodes.json; path = Resources/CountryCallingCodes.json; sourceTree = "<group>"; };
 		480B4FFE1BED4AC20098F3A4 /* WD@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WD@2x.png"; sourceTree = "<group>"; };
 		480BEF8C18D59E7400C882E0 /* GetStartedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetStartedViewController.h; sourceTree = "<group>"; };
@@ -1120,8 +1118,6 @@
 		485F6A381637270100D61365 /* ZW@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ZW@2x.png"; sourceTree = "<group>"; };
 		4864B3F5175668CA0006542F /* LogoFacebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LogoFacebook.png; sourceTree = "<group>"; };
 		4864B3F817566E950006542F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		4865A9D617926CE00028785F /* BuyNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyNumberViewController.h; sourceTree = "<group>"; };
-		4865A9D717926CE00028785F /* BuyNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyNumberViewController.m; sourceTree = "<group>"; };
 		4865A9DD1792C8B70028785F /* NumberBuyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberBuyCell.h; sourceTree = "<group>"; };
 		4865A9DE1792C8B70028785F /* NumberBuyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberBuyCell.m; sourceTree = "<group>"; };
 		486D4A2118F06BC8004699C9 /* CallRatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallRatesViewController.h; sourceTree = "<group>"; };
@@ -2348,8 +2344,6 @@
 				48F14EDD1BF9C62200541EEC /* AddressesViewController.m */,
 				48F14EE41BF9C63A00541EEC /* AddressViewController.h */,
 				48F14EE51BF9C63A00541EEC /* AddressViewController.m */,
-				4865A9D617926CE00028785F /* BuyNumberViewController.h */,
-				4865A9D717926CE00028785F /* BuyNumberViewController.m */,
 				48A0CE681805CFDC00B8A9F8 /* CallbackViewController.h */,
 				48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */,
 				48A0CE761809BE3100B8A9F8 /* CallBaseViewController.h */,
@@ -2368,8 +2362,6 @@
 				48AF4564164979F400DFE3D8 /* DestinationsViewController.m */,
 				48CA503B172C5EB300CB1B7B /* DestinationViewController.h */,
 				48CA503C172C5EB400CB1B7B /* DestinationViewController.m */,
-				48030819196AAFC000FDE1A4 /* ExtendNumberViewController.h */,
-				4803081A196AAFC000FDE1A4 /* ExtendNumberViewController.m */,
 				4837AF7418D9DAF000D3AEBC /* GetStartedActionViewController.h */,
 				4837AF7518D9DAF000D3AEBC /* GetStartedActionViewController.m */,
 				4837AF6818D9B6EC00D3AEBC /* GetStartedRestoreViewController.h */,
@@ -2514,6 +2506,8 @@
 				48A26DDB18BA7FB200736CCB /* SearchTableViewController.m */,
 				48021B321C3A693100C40B58 /* UIViewController+Common.h */,
 				48021B331C3A693100C40B58 /* UIViewController+Common.m */,
+				480176651C5821DF00902197 /* UITableViewController+Common.h */,
+				480176661C5821DF00902197 /* UITableViewController+Common.m */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -3190,9 +3184,8 @@
 				48B8136C1AADF9B20019AF77 /* NBPersonCellAddressInfo.m in Sources */,
 				48A26DDC18BA7FB200736CCB /* SearchTableViewController.m in Sources */,
 				4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */,
-				4803081B196AAFC000FDE1A4 /* ExtendNumberViewController.m in Sources */,
+				480176671C5821DF00902197 /* UITableViewController+Common.m in Sources */,
 				484943AD1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
-				4865A9D817926CE00028785F /* BuyNumberViewController.m in Sources */,
 				48ADE7D2185C67EC00E39DA2 /* PhoneData.m in Sources */,
 				4865A9DF1792C8B70028785F /* NumberBuyCell.m in Sources */,
 				4837AF6A18D9B6EC00D3AEBC /* GetStartedRestoreViewController.m in Sources */,
@@ -3280,7 +3273,6 @@
 				48A0CE791809BE3100B8A9F8 /* CallBaseViewController.m in Sources */,
 				484943301752263600E1D5C4 /* LicensesViewController.m in Sources */,
 				484943AE1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
-				4865A9D917926CE00028785F /* BuyNumberViewController.m in Sources */,
 				48ADE7D3185C67EC00E39DA2 /* PhoneData.m in Sources */,
 				4865A9E01792C8B70028785F /* NumberBuyCell.m in Sources */,
 				4879336A185C6A5800C08C8C /* PhonesViewController.m in Sources */,

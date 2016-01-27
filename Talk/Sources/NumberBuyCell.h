@@ -12,29 +12,16 @@
 
 @protocol NumberBuyCellDelegate <NSObject>
 
-- (void)buyNumberForMonths:(NSUInteger)months;
+- (void)buyNumber;
 
 @end
 
 
 @interface NumberBuyCell : UITableViewCell
 
-@property (nonatomic, weak) IBOutlet UIButton*                button1;
-@property (nonatomic, weak) IBOutlet UIButton*                button2;
-@property (nonatomic, weak) IBOutlet UIButton*                button3;
-@property (nonatomic, weak) IBOutlet UIButton*                button6;
-@property (nonatomic, weak) IBOutlet UIButton*                button9;
-@property (nonatomic, weak) IBOutlet UIButton*                button12;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator1;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator2;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator3;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator6;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator9;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator12;
+@property (nonatomic, weak) IBOutlet UIButton*                button;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator;
 
 @property (nonatomic, weak) id<NumberBuyCellDelegate>         delegate;
-
-
-- (IBAction)buyAction:(id)sender;
 
 @end

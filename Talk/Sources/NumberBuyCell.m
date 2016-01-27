@@ -12,7 +12,7 @@
 
 - (IBAction)buyAction:(id)sender
 {
-    [self.delegate buyNumberForMonths:((UIButton*)sender).tag];
+    [self.delegate buyNumber];
 }
 
 @end

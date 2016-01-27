@@ -29,6 +29,7 @@ typedef enum
     WebStatusFailUnknownBothE164       = 911016,  // Callback: When both called ID and called back number unknown.
     WebStatusFailAddressInUse          = 911017,
     WebStatusFailAddressUnknown        = 911018,
+    WebStatusFailNoNumbersInStock      = 911019,
     WebStatusFailNoAccount             = 911051,  // Indirect: not sent by server.
     WebStatusFailUnspecified           = 911052,  // Indirect: not sent by server.
     WebStatusFailInvalidResponse       = 911053,  // Indirect: not sent by server.

@@ -7,6 +7,7 @@
 //
 
 #import "CreditViewController.h"
+#import "UITableViewController+Common.h"
 #import "RatesViewController.h"
 #import "PurchaseManager.h"
 #import "CreditAmountCell.h"
@@ -65,7 +66,7 @@ typedef enum
 {
     [super viewDidLoad];
 
-    self.tableView.delaysContentTouches = NO;
+    [self disableDelayedContentTouches];
 
     if (self.presentingViewController != nil)
     {
@@ -163,15 +164,6 @@ typedef enum
             self.buyCell = (CreditBuyCell*)cell;
             self.buyCell.delegate = self;
             [self updateBuyCell];
-
-            // Needed to remove button touch delay: http://stackoverflow.com/a/19671114/1971013
-            for (id object in cell.subviews)
-            {
-                if ([object respondsToSelector:@selector(setDelaysContentTouches:)])
-                {
-                    [object setDelaysContentTouches:NO];
-                }
-            }
             break;
         }
     }

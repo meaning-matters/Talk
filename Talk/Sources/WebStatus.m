@@ -36,7 +36,8 @@
                      @"FAIL_UNKNOWN_VERIFIED_NUMBER" : @(WebStatusFailUnknownVerifiedNumber),
                      @"FAIL_UNKNOWN_BOTH_E164"       : @(WebStatusFailUnknownBothE164),
                      @"FAIL_ADDRESS_IN_USE"          : @(WebStatusFailAddressInUse),
-                     @"FAIL_ADDRESS_UNKNOWN"         : @(WebStatusFailAddressUnknown)};
+                     @"FAIL_ADDRESS_UNKNOWN"         : @(WebStatusFailAddressUnknown),
+                     @"FAIL_NO_NUMBERS_IN_STOCK"     : @(WebStatusFailNoNumbersInStock)};
     });
     
     NSNumber*     number = statuses[string];
@@ -200,6 +201,14 @@
         {
             string = NSLocalizedStringWithDefaultValue(@"WebClient AddressUnknown", nil, [NSBundle mainBundle],
                                                        @"This Address is unknown.",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+        }
+        case WebStatusFailNoNumbersInStock:
+        {
+            string = NSLocalizedStringWithDefaultValue(@"WebClient NoNumbersInStock", nil, [NSBundle mainBundle],
+                                                       @"Numbers in this area are out of stock. Please try again later.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;

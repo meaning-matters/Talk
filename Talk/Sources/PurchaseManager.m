@@ -834,42 +834,6 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
 }
 
 
-- (void)buyNumberForMonths:(NSUInteger)months
-                      name:(NSString*)name
-            isoCountryCode:(NSString*)isoCountryCode
-                    areaId:(NSString*)areaId
-                  areaCode:(NSString*)areaCode
-                  areaName:(NSString*)areaName
-                 stateCode:(NSString*)stateCode
-                 stateName:(NSString*)stateName
-                numberType:(NSString*)numberType
-                      info:(NSDictionary*)info
-                completion:(void (^)(BOOL success, id object))completion
-{
-    [[WebClient sharedClient] purchaseNumberForMonths:months
-                                                 name:name
-                                       isoCountryCode:isoCountryCode
-                                               areaId:areaId
-                                             areaCode:areaCode
-                                             areaName:areaName
-                                            stateCode:stateCode
-                                            stateName:stateName
-                                           numberType:numberType
-                                                 info:info
-                                                reply:^(NSError* error, NSString *e164)
-    {
-        if (error == nil)
-        {
-            completion ? completion(YES, nil) : 0;
-        }
-        else
-        {
-            completion ? completion(NO, error) : 0;
-        }
-    }];
-}
-
-
 - (int)tierForCredit:(float)credit
 {
     NSArray* tierNumbers = @[ @(1), @(2), @(5), @(10), @(20), @(50) ];
