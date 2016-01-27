@@ -888,16 +888,17 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
     [scanner scanCharactersFromSet:numbers intoString:&tierString];
     tier = [tierString intValue];
 
-    // Currently there's a one-to-one relationship; this changes for higher tiers (we may add in future).
     switch (tier)
     {
-        case  1: amount =  1; break;
-        case  2: amount =  2; break;
-        case  5: amount =  5; break;
-        case 10: amount = 10; break;
-        case 20: amount = 20; break;
-        case 50: amount = 50; break;
-        default: assert(0);   break;
+        case  1: amount =    1; break;
+        case  2: amount =    2; break;
+        case  5: amount =    5; break;
+        case 10: amount =   10; break;
+        case 20: amount =   20; break;
+        case 50: amount =   50; break;
+        case 60: amount =  100; break;
+        case 72: amount =  200; break;
+        default: assert(0);     break;
     }
 
     return amount;
