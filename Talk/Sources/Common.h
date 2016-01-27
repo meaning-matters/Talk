@@ -150,4 +150,6 @@ static const int TextFieldCellTag = 1111;
 
 + (NSArray*)sortKeys;
 
++ (NSAttributedString*)strikethroughAttributedString:(NSString*)string;
+
 @end

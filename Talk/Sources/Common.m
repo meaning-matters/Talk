@@ -1363,4 +1363,14 @@ static Common* sharedCommon;
     }
 }
 
+
++ (NSAttributedString*)strikethroughAttributedString:(NSString*)string
+{
+    NSDictionary*       attributes       = @{NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)};
+    NSAttributedString* attributedString = [[NSAttributedString alloc] initWithString:string
+                                                                           attributes:attributes];
+
+    return attributedString;
+}
+
 @end

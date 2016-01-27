@@ -386,6 +386,33 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
         }
     }
 
+    if ([area[@"stock"] intValue] == 0)
+    {
+        NSString* title;
+        NSString* message;
+
+        title   = NSLocalizedStringWithDefaultValue(@"NumberAreas NoStockTitle", nil,
+                                                    [NSBundle mainBundle], @"No Stock",
+                                                    @"Alert title telling that loading countries over internet failed.\n"
+                                                    @"[iOS alert title size].");
+        message = NSLocalizedStringWithDefaultValue(@"NumberAreas NoStockMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"Numbers in this area are currently out of stock.\n\n"
+                                                    @"Please check back later.",
+                                                    @"....\n"
+                                                    @"[iOS alert message size!]");
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        }
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+
+        return;
+    }
+
     NumberAreaViewController* viewController;
     viewController = [[NumberAreaViewController alloc] initWithIsoCountryCode:isoCountryCode
                                                                         state:state
@@ -433,8 +460,16 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
         case AreaFormatInternational:       code = @"---";            name = type;                      break;
     }
 
-    cell.areaCode.text = code;
-    cell.areaName.text = name;
+    if ([area[@"stock"] intValue] > 0)
+    {
+        cell.areaCode.text = code;
+        cell.areaName.text = name;
+    }
+    else
+    {
+        cell.areaCode.attributedText = [Common strikethroughAttributedString:code];
+        cell.areaName.attributedText = [Common strikethroughAttributedString:name];
+    }
 
     return cell;
 }
