@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1509" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="CreditBuyCell" rowHeight="211" id="6v2-a6-6AT" customClass="CreditBuyCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="217"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="281"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6v2-a6-6AT" id="oCj-x2-EBl">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="216.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="280"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="gI2-I0-zdw" userLabel="Button 1">
@@ -79,6 +79,28 @@
                             <action selector="buyAction:" destination="6v2-a6-6AT" eventType="touchUpInside" id="cvT-Uv-7aS"/>
                         </connections>
                     </button>
+                    <button opaque="NO" tag="60" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="u6l-KM-jTr" userLabel="Button 100">
+                        <rect key="frame" x="20" y="217" width="130" height="45"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                        <state key="normal" title="Button">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="buyAction:" destination="6v2-a6-6AT" eventType="touchUpInside" id="maf-ir-LBZ"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" tag="72" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="QIF-Jd-vrq" userLabel="Button 200">
+                        <rect key="frame" x="170" y="217" width="130" height="45"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                        <state key="normal" title="Button">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="buyAction:" destination="6v2-a6-6AT" eventType="touchUpInside" id="u8V-bl-Vv4"/>
+                        </connections>
+                    </button>
                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="lzZ-bF-33w" userLabel="Indicator 1">
                         <rect key="frame" x="68" y="27" width="37" height="37"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -109,19 +131,33 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </activityIndicatorView>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="A1o-lC-OV9" userLabel="Indicator 100">
+                        <rect key="frame" x="66" y="221" width="37" height="37"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </activityIndicatorView>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="iHd-7v-ioq" userLabel="Indicator 200">
+                        <rect key="frame" x="216" y="221" width="37" height="37"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </activityIndicatorView>
                 </subviews>
             </tableViewCellContentView>
             <connections>
                 <outlet property="activityIndicator1" destination="lzZ-bF-33w" id="7qu-QA-yn1"/>
                 <outlet property="activityIndicator10" destination="sps-fb-SVs" id="iQL-RW-bkl"/>
+                <outlet property="activityIndicator100" destination="A1o-lC-OV9" id="UTi-ul-Sld"/>
                 <outlet property="activityIndicator2" destination="7x9-iz-tHF" id="xnP-Le-A71"/>
                 <outlet property="activityIndicator20" destination="0xR-8v-Beb" id="crv-jr-43R"/>
+                <outlet property="activityIndicator200" destination="iHd-7v-ioq" id="hSH-e0-nty"/>
                 <outlet property="activityIndicator5" destination="NT3-hi-YuY" id="Vw2-QI-iK6"/>
                 <outlet property="activityIndicator50" destination="SC5-lc-PY5" id="iHX-Wu-GWT"/>
                 <outlet property="button1" destination="gI2-I0-zdw" id="gsd-bp-RGC"/>
                 <outlet property="button10" destination="bru-yn-obn" id="9Zo-1f-71D"/>
+                <outlet property="button100" destination="u6l-KM-jTr" id="miH-HA-dNd"/>
                 <outlet property="button2" destination="V3S-7u-h6m" id="krl-46-yP8"/>
                 <outlet property="button20" destination="WAn-e3-fkP" id="X1A-g2-Uv5"/>
+                <outlet property="button200" destination="QIF-Jd-vrq" id="yv8-xI-shn"/>
                 <outlet property="button5" destination="zhj-oC-8dh" id="Khm-Fn-r6Y"/>
                 <outlet property="button50" destination="YPk-tG-lbI" id="JUY-YD-4RR"/>
             </connections>
