@@ -97,6 +97,8 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
     [self.productIdentifiers addObject:[self productIdentifierForCreditTier:10]];   //  10 amounts.
     [self.productIdentifiers addObject:[self productIdentifierForCreditTier:20]];   //  20 amounts.
     [self.productIdentifiers addObject:[self productIdentifierForCreditTier:50]];   //  50 amounts.
+    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:60]];   // 100 amounts.
+    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:72]];   // 200 amounts.
 }
 
 
