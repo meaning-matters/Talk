@@ -317,12 +317,12 @@ typedef enum
 
 - (float)updateBuyCell
 {
-    float setupFee   = [area[@"setupFee"]   floatValue];
-    float monthPrice = [area[@"monthPrice"] floatValue];
-    float totalPrice = 0.0f;
+    float setupFee = [area[@"setupFee"] floatValue];
+    float monthFee = [area[@"monthFee"] floatValue];
+    float totalFee = 0.0f;
 
-    NSString* totalPriceString = [[PurchaseManager sharedManager] localizedFormattedPrice:setupFee + monthPrice];
-    NSString* title            = [NSString stringWithFormat:@"1 %@ %@", [Strings monthString], totalPriceString];
+    NSString* totalFeeString = [[PurchaseManager sharedManager] localizedFormattedPrice:setupFee + monthFee];
+    NSString* title          = [NSString stringWithFormat:@"1 %@ %@", [Strings monthString], totalFeeString];
 
     [self.buyCell.button setTitle:title forState: UIControlStateNormal];
     [Common styleButton:self.buyCell.button];
@@ -331,9 +331,9 @@ typedef enum
     self.buyCell.button.userInteractionEnabled = (self.isBuying == 0);
     self.isBuying ? [self.buyCell.activityIndicator startAnimating] : [self.buyCell.activityIndicator stopAnimating];
 
-    totalPrice = setupFee + monthPrice;
+    totalFee = setupFee + monthFee;
 
-    return totalPrice;
+    return totalFee;
 }
 
 

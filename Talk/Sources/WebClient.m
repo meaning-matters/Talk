@@ -895,30 +895,20 @@
 }
 
 
-// 13A. GET NUMBER INFO
+// 13. GET NUMBER INFO
 - (void)retrieveNumberE164:(NSString*)e164
                      reply:(void (^)(NSError*  error,
                                      NSString* name,
                                      NSString* numberType,
                                      NSString* areaCode,
                                      NSString* areaName,
-                                     NSString* numberCountry,
+                                     NSString* stateCode,
+                                     NSString* stateName,
+                                     NSString* isoCountryCode,
                                      NSDate*   purchaseDate,
                                      NSDate*   renewalDate,
-                                     float     monthPrice,
-                                     NSString* salutation,
-                                     NSString* firstName,
-                                     NSString* lastName,
-                                     NSString* company,
-                                     NSString* street,
-                                     NSString* building,
-                                     NSString* city,
-                                     NSString* postcode,
-                                     NSString* stateName,
-                                     NSString* stateCode,
-                                     NSString* addressCountry,
-                                     BOOL      hasImage,
-                                     BOOL      imageAccepted))reply
+                                     float     monthFee,
+                                     NSString* addressId))reply
 {
     NSString*     username     = [Settings sharedSettings].webUsername;
     NSString*     number       = [e164 substringFromIndex:1];
@@ -937,28 +927,17 @@
                   content[@"numberType"],
                   content[@"areaCode"],
                   content[@"areaName"],
+                  content[@"stateCode"],
+                  content[@"stateName"],
                   content[@"isoCountryCode"],
                   [self dateWithString:content[@"purchaseDateTime"]],
                   [self dateWithString:content[@"renewalDateTime"]],
-                  [content[@"monthPrice"] floatValue],
-                  content[@"info"][@"salutation"],
-                  content[@"info"][@"firstName"],
-                  content[@"info"][@"lastName"],
-                  content[@"info"][@"company"],
-                  content[@"info"][@"street"],
-                  content[@"info"][@"building"],
-                  content[@"info"][@"city"],
-                  content[@"info"][@"postcode"],
-                  content[@"info"][@"stateName"],
-                  content[@"info"][@"stateCode"],
-                  content[@"info"][@"isoCountryCode"],
-                  [content[@"info"][@"hasImage"] boolValue],
-                  [content[@"info"][@"imageAccepted"] boolValue]);
+                  [content[@"monthFee"] floatValue],
+                  content[@"addressId"]);
         }
         else
         {
-            reply(error,
-                  nil, nil, nil, nil, nil, nil, nil, 0.0f, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, NO);
+            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, 0.0f, nil);
         }
     }];
 }

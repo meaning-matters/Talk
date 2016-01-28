@@ -145,8 +145,8 @@
                                                          @"....\n"
                                                          @"[iOS alert title size].");
 
-    float         outgoingFixedPrice  = [rate[@"fixedPrice"]  floatValue];
-    float         outgoingMobilePrice = [rate[@"mobilePrice"] floatValue];
+    float         outgoingFixedPrice  = [rate[@"fixedRate"]  floatValue];
+    float         outgoingMobilePrice = [rate[@"mobileRate"] floatValue];
     float         fixedPrice          = self.callbackPrice + outgoingFixedPrice;
     float         mobilePrice         = self.callbackPrice + outgoingMobilePrice;
     NSString*     fixedPriceString    = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:fixedPrice];

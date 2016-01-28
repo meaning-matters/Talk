@@ -631,23 +631,13 @@
                                                                NSString* numberType,
                                                                NSString* areaCode,
                                                                NSString* areaName,
-                                                               NSString* numberCountry,
+                                                               NSString* stateCode,
+                                                               NSString* stateName,
+                                                               NSString* isoCountryCode,
                                                                NSDate*   purchaseDate,
                                                                NSDate*   renewalDate,
-                                                               float     monthPrice,
-                                                               NSString* salutation,
-                                                               NSString* firstName,
-                                                               NSString* lastName,
-                                                               NSString* company,
-                                                               NSString* street,
-                                                               NSString* building,
-                                                               NSString* city,
-                                                               NSString* postcode,
-                                                               NSString* stateName,
-                                                               NSString* stateCode,
-                                                               NSString* addressCountry,
-                                                               BOOL      hasImage,
-                                                               BOOL      imageAccepted)
+                                                               float     monthFee,
+                                                               NSString* addressId)
                 {
                     if (error == nil)
                     {
@@ -674,11 +664,14 @@
                         number.e164           = e164;
                         number.numberType     = numberType;
                         number.areaCode       = areaCode;
-                        number.isoCountryCode = numberCountry;
+                        number.stateCode      = stateCode;
+                        number.stateName      = stateName;
+                        number.isoCountryCode = isoCountryCode;
                         number.purchaseDate   = purchaseDate;
                         number.renewalDate    = renewalDate;
-                        number.stateName      = stateName;
                         number.stateCode      = stateCode;
+                        number.stateName      = stateName;
+                        //### missing are addressId and monthFee
 
                         // For non-geograpic numbers, areaName is <null>.
                         if ([areaName isEqual:[NSNull null]] || areaName.length == 0)

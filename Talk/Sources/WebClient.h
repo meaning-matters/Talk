@@ -205,23 +205,13 @@
                                      NSString* numberType,
                                      NSString* areaCode,
                                      NSString* areaName,
-                                     NSString* numberCountry,
+                                     NSString* stateCode,
+                                     NSString* stateName,
+                                     NSString* isoCountryCode,
                                      NSDate*   purchaseDate,
                                      NSDate*   renewalDate,
-                                     float     monthPrice,
-                                     NSString* salutation,
-                                     NSString* firstName,
-                                     NSString* lastName,
-                                     NSString* company,
-                                     NSString* street,
-                                     NSString* building,
-                                     NSString* city,
-                                     NSString* postcode,
-                                     NSString* stateName,
-                                     NSString* stateCode,
-                                     NSString* addressCountry,
-                                     BOOL      hasImage,
-                                     BOOL      imageAccepted))reply;
+                                     float     monthFee,
+                                     NSString* addressId))reply;
 
 // 14. BUY CREDIT
 - (void)purchaseCreditForReceipt:(NSString*)receipt
