@@ -12,7 +12,7 @@
 
 @protocol CreditBuyCellDelegate <NSObject>
 
-- (void)buyCreditForTier:(int)tier;
+- (void)buyCreditAmount:(int)amount;
 
 @end
 

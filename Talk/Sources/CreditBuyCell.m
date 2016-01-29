@@ -13,7 +13,7 @@
 
 - (IBAction)buyAction:(id)sender
 {
-    [self.delegate buyCreditForTier:(int)((UIButton*)sender).tag];
+    [self.delegate buyCreditAmount:(int)((UIButton*)sender).tag];
 }
 
 @end

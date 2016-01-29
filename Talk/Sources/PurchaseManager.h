@@ -27,9 +27,7 @@ extern NSString* const PurchaseManagerProductsLoadedNotification;
 
 - (BOOL)retryPendingTransactions;
 
-- (NSString*)productIdentifierForCreditTier:(int)tier;
-
-- (NSString*)productIdentifierForNumberTier:(int)tier;
+- (NSString*)productIdentifierForCreditAmount:(int)amount;
 
 - (NSString*)localizedFormattedPrice:(float)price;
 
@@ -41,16 +39,12 @@ extern NSString* const PurchaseManagerProductsLoadedNotification;
 
 - (void)restoreAccount:(void (^)(BOOL success, id object))completion;
 
-- (void)buyCreditForTier:(int)tier completion:(void (^)(BOOL success, id object))completion;
+- (void)buyCreditAmount:(int)amount completion:(void (^)(BOOL success, id object))completion;
 
-- (int)tierForCredit:(float)credit;
-
-- (int)tierOfProductIdentifier:(NSString*)identifier;
+- (int)amountForCredit:(float)credit;
 
 - (BOOL)isAccountProductIdentifier:(NSString*)productIdentifier;
 
 - (BOOL)isCreditProductIdentifier:(NSString*)productIdentifier;
-
-- (BOOL)isNumberProductIdentifier:(NSString*)productIdentifier;
 
 @end

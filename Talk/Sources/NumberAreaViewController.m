@@ -397,8 +397,8 @@ typedef enum
             }
             else
             {
-                int extraCreditTier = [[PurchaseManager sharedManager] tierForCredit:totalPrice - credit];
-                if (extraCreditTier > 0)
+                int extraCreditAmount = [[PurchaseManager sharedManager] amountForCredit:totalPrice - credit];
+                if (extraCreditAmount > 0)
                 {
                     NSString* productIdentifier;
                     NSString* extraString;
@@ -406,7 +406,7 @@ typedef enum
                     NSString* title;
                     NSString* message;
 
-                    productIdentifier = [[PurchaseManager sharedManager] productIdentifierForCreditTier:extraCreditTier];
+                    productIdentifier = [[PurchaseManager sharedManager] productIdentifierForCreditAmount:extraCreditAmount];
                     extraString       = [[PurchaseManager sharedManager] localizedPriceForProductIdentifier:productIdentifier];
                     creditString      = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
 
@@ -417,7 +417,7 @@ typedef enum
                     message = NSLocalizedStringWithDefaultValue(@"BuyNumber NeedExtraCreditMessage", nil,
                                                                 [NSBundle mainBundle],
                                                                 @"The price is more than your current "
-                                                                @"credit: %@.\nYou can buy %@ extra credit now.",
+                                                                @"credit: %@.\n\nYou can buy %@ extra credit now.",
                                                                 @"Alert message: buying extra credit id needed.\n"
                                                                 @"[iOS alert message size]");
                     message = [NSString stringWithFormat:message, creditString, extraString];
@@ -427,8 +427,8 @@ typedef enum
                     {
                         if (cancelled == NO)
                         {
-                            [[PurchaseManager sharedManager] buyCreditForTier:extraCreditTier
-                                                                   completion:^(BOOL success, id object)
+                            [[PurchaseManager sharedManager] buyCreditAmount:extraCreditAmount
+                                                                  completion:^(BOOL success, id object)
                             {
                                 if (success == YES)
                                 {

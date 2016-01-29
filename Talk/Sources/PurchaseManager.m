@@ -89,16 +89,16 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
 
 - (void)addProductIdentifiers
 {
-    [self.productIdentifiers addObject:[self productIdentifierForAccountTier:1]];
+    [self.productIdentifiers addObject:[self productIdentifierForAccountAmount:1]];
 
-    [self.productIdentifiers addObject:[self productIdentifierForCreditTier: 1]];   //   1 amount.
-    [self.productIdentifiers addObject:[self productIdentifierForCreditTier: 2]];   //   2 amounts.
-    [self.productIdentifiers addObject:[self productIdentifierForCreditTier: 5]];   //   5 amounts.
-    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:10]];   //  10 amounts.
-    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:20]];   //  20 amounts.
-    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:50]];   //  50 amounts.
-    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:60]];   // 100 amounts.
-    [self.productIdentifiers addObject:[self productIdentifierForCreditTier:72]];   // 200 amounts.
+    [self.productIdentifiers addObject:[self productIdentifierForCreditAmount:  1]];
+    [self.productIdentifiers addObject:[self productIdentifierForCreditAmount:  2]];
+    [self.productIdentifiers addObject:[self productIdentifierForCreditAmount:  5]];
+    [self.productIdentifiers addObject:[self productIdentifierForCreditAmount: 10]];
+    [self.productIdentifiers addObject:[self productIdentifierForCreditAmount: 20]];
+    [self.productIdentifiers addObject:[self productIdentifierForCreditAmount: 50]];
+    [self.productIdentifiers addObject:[self productIdentifierForCreditAmount:100]];
+    [self.productIdentifiers addObject:[self productIdentifierForCreditAmount:200]];
 }
 
 
@@ -683,21 +683,15 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
 }
 
 
-- (NSString*)productIdentifierForAccountTier:(int)tier
+- (NSString*)productIdentifierForAccountAmount:(int)amount
 {
-    return [NSString stringWithFormat:PRODUCT_IDENTIFIER_BASE ACCOUNT @"%d", tier];
+    return [NSString stringWithFormat:PRODUCT_IDENTIFIER_BASE ACCOUNT @"%d", amount];
 }
 
 
-- (NSString*)productIdentifierForCreditTier:(int)tier
+- (NSString*)productIdentifierForCreditAmount:(int)amount
 {
-    return [NSString stringWithFormat:PRODUCT_IDENTIFIER_BASE CREDIT @"%d", tier];
-}
-
-
-- (NSString*)productIdentifierForNumberTier:(int)tier
-{
-    return [NSString stringWithFormat:PRODUCT_IDENTIFIER_BASE NUMBER @"%d", tier];
+    return [NSString stringWithFormat:PRODUCT_IDENTIFIER_BASE CREDIT @"%d", amount];
 }
 
 
@@ -799,7 +793,7 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
         return;
     }
 
-    [self buyProductIdentifier:[self productIdentifierForAccountTier:1] completion:completion];
+    [self buyProductIdentifier:[self productIdentifierForAccountAmount:1] completion:completion];
 }
 
 
@@ -821,9 +815,9 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
 }
 
 
-- (void)buyCreditForTier:(int)tier completion:(void (^)(BOOL success, id object))completion
+- (void)buyCreditAmount:(int)amount completion:(void (^)(BOOL success, id object))completion
 {
-    AnalysticsTrace(@"buyCreditForTier");
+    AnalysticsTrace(@"buyCreditAmount");
 
     if (self.buyCompletion != nil)
     {
@@ -832,24 +826,24 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
         return;
     }
 
-    [self buyProductIdentifier:[self productIdentifierForCreditTier:tier] completion:completion];
+    [self buyProductIdentifier:[self productIdentifierForCreditAmount:amount] completion:completion];
 }
 
 
-- (int)tierForCredit:(float)credit
+- (int)amountForCredit:(float)credit
 {
-    NSArray* tierNumbers = @[ @(1), @(2), @(5), @(10), @(20), @(50) ];
+    NSArray* amountNumbers = @[ @(1), @(2), @(5), @(10), @(20), @(50), @(100), @(200) ];
 
-    for (NSNumber* tierNumber in tierNumbers)
+    for (NSNumber* amountNumber in amountNumbers)
     {
-        int        tier              = [tierNumber intValue];
-        NSString*  productIdentifier = [self productIdentifierForCreditTier:tier];
+        int        amount            = [amountNumber intValue];
+        NSString*  productIdentifier = [self productIdentifierForCreditAmount:amount];
         SKProduct* product           = [self productForProductIdentifier:productIdentifier];
         float      price             = [product.price floatValue];
 
         if (price > credit)
         {
-            return tier;
+            return amount;
         }
     }
 
@@ -857,49 +851,19 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
 }
 
 
-- (int)tierOfProductIdentifier:(NSString*)identifier
-{
-    NSString*       tierString;
-    NSScanner*      scanner = [NSScanner scannerWithString:identifier];
-    NSCharacterSet* numbers = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
-
-    // Throw away characters before the tier number.
-    [scanner scanUpToCharactersFromSet:numbers intoString:NULL];
-
-    // Collect tier number.
-    [scanner scanCharactersFromSet:numbers intoString:&tierString];
-
-    return [tierString intValue];
-}
-
-
 - (int)amountOfProductIdentifier:(NSString*)identifier
 {
-    NSString*       tierString;
-    int             tier;
+    NSString*       amountString;
     int             amount;
     NSScanner*      scanner = [NSScanner scannerWithString:identifier];
     NSCharacterSet* numbers = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
 
-    // Throw away characters before the tier number.
+    // Throw away characters before the amount number.
     [scanner scanUpToCharactersFromSet:numbers intoString:NULL];
 
-    // Collect tier number.
-    [scanner scanCharactersFromSet:numbers intoString:&tierString];
-    tier = [tierString intValue];
-
-    switch (tier)
-    {
-        case  1: amount =    1; break;
-        case  2: amount =    2; break;
-        case  5: amount =    5; break;
-        case 10: amount =   10; break;
-        case 20: amount =   20; break;
-        case 50: amount =   50; break;
-        case 60: amount =  100; break;
-        case 72: amount =  200; break;
-        default: assert(0);     break;
-    }
+    // Collect number.
+    [scanner scanCharactersFromSet:numbers intoString:&amountString];
+    amount = [amountString intValue];
 
     return amount;
 }
@@ -914,12 +878,6 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
 - (BOOL)isCreditProductIdentifier:(NSString*)productIdentifier
 {
     return ([productIdentifier rangeOfString:CREDIT].location != NSNotFound);
-}
-
-
-- (BOOL)isNumberProductIdentifier:(NSString*)productIdentifier
-{
-    return ([productIdentifier rangeOfString:NUMBER].location != NSNotFound);
 }
 
 @end

@@ -37,7 +37,7 @@ typedef enum
 @property (nonatomic, assign) BOOL           mustShowLoadingError;
 @property (nonatomic, strong) NSIndexPath*   amountIndexPath;
 @property (nonatomic, strong) CreditBuyCell* buyCell;
-@property (nonatomic, assign) int            buyTier;
+@property (nonatomic, assign) int            buyAmount;
 @property (nonatomic, assign) TableSection   sections;
 @property (nonatomic, strong) PhoneNumber*   callbackPhoneNumber;
 
@@ -355,7 +355,7 @@ typedef enum
 
 #pragma mark - Credit Buy Cell Delegate
 
-- (void)buyCreditForTier:(int)tier
+- (void)buyCreditAmount:(int)amount
 {
     if ([Settings sharedSettings].haveAccount == NO)
     {
@@ -388,10 +388,10 @@ typedef enum
         return;
     }
 
-    self.buyTier = tier;
+    self.buyAmount = amount;
     [self updateBuyCell];
 
-    [[PurchaseManager sharedManager] buyCreditForTier:tier completion:^(BOOL success, id object)
+    [[PurchaseManager sharedManager] buyCreditAmount:amount completion:^(BOOL success, id object)
     {
         if (success == YES)
         {
@@ -426,28 +426,28 @@ typedef enum
                                  otherButtonTitles:nil];
         }
 
-        self.buyTier = 0;
+        self.buyAmount = 0;
         [self updateBuyCell];
     }];
 }
 
 
-- (int)tierForN:(int)n
+- (int)amountForN:(int)n
 {
-    int tier;
+    int amount;
     switch (n)
     {
-        case 0: tier =  1; break;
-        case 1: tier =  2; break;
-        case 2: tier =  5; break;
-        case 3: tier = 10; break;
-        case 4: tier = 20; break;
-        case 5: tier = 50; break;
-        case 6: tier = 60; break;
-        case 7: tier = 72; break;
+        case 0: amount =   1; break;
+        case 1: amount =   2; break;
+        case 2: amount =   5; break;
+        case 3: amount =  10; break;
+        case 4: amount =  20; break;
+        case 5: amount =  50; break;
+        case 6: amount = 100; break;
+        case 7: amount = 200; break;
     }
 
-    return tier;
+    return amount;
 }
 
 
@@ -523,8 +523,8 @@ typedef enum
 {
     for (int n = 0; n <= 7; n++)
     {
-        int       tier              = [self tierForN:n];
-        NSString* productIdentifier = [[PurchaseManager sharedManager] productIdentifierForCreditTier:tier];
+        int       amount            = [self amountForN:n];
+        NSString* productIdentifier = [[PurchaseManager sharedManager] productIdentifierForCreditAmount:amount];
         NSString* priceString       = [[PurchaseManager sharedManager] localizedPriceForProductIdentifier:productIdentifier];
 
         UIButton*                button    = [self buttonForN:n];
@@ -533,9 +533,9 @@ typedef enum
         [Common styleButton:button];
         [button setTitle:priceString forState:UIControlStateNormal];
 
-        button.alpha                  = (self.buyTier != 0) ? 0.5 : 1.0;
-        button.userInteractionEnabled = (self.buyTier == 0);
-        (tier == self.buyTier) ? [indicator startAnimating] : [indicator stopAnimating];
+        button.alpha                  = (self.buyAmount != 0) ? 0.5 : 1.0;
+        button.userInteractionEnabled = (self.buyAmount == 0);
+        (amount == self.buyAmount) ? [indicator startAnimating] : [indicator stopAnimating];
     }
 }
 
