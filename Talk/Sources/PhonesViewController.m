@@ -238,20 +238,6 @@ const NSInteger kUseButtonTag = 123;
 }
 
 
-- (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    PhoneData*    phone    = [self.fetchedPhonesController objectAtIndexPath:indexPath];
-    CallableData* callable = phone;
-
-    return YES;
-
-    return [phone.e164 isEqualToString:[Settings sharedSettings].callbackE164] == NO &&
-           [phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164] == NO &&
-           phone.destinations.count == 0 &&
-           callable.callerIds.count == 0;
-}
-
-
 - (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
 forRowAtIndexPath:(NSIndexPath*)indexPath
 {
