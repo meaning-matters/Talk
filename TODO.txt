@@ -148,3 +148,4 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 
 * Make sub-UIViews weak properties: http://stackoverflow.com/questions/23076260/creating-views-programmatically-strong-vs-weak-subviews-in-controller
 
+* Make code to check if Phone and Destination can be deleted (and deletion itself) the same and place more in XyzData module perhaps.
