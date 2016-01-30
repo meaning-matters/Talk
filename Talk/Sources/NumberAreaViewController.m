@@ -315,35 +315,132 @@ typedef enum
 }
 
 
-- (float)updateBuyCell
+- (void)updateBuyCell
 {
-    float setupFee = [area[@"setupFee"] floatValue];
-    float monthFee = [area[@"monthFee"] floatValue];
-    float totalFee = 0.0f;
+    NSString* monthTitle = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertMessage", nil, [NSBundle mainBundle],
+                                                             @"%@ monthly fee",
+                                                             @"£2.34 monthly fee");
+    NSString* setupTitle;
 
-    NSString* totalFeeString = [[PurchaseManager sharedManager] localizedFormattedPrice:setupFee + monthFee];
-    NSString* title          = [NSString stringWithFormat:@"1 %@ %@", [Strings monthString], totalFeeString];
+    monthTitle = [NSString stringWithFormat:monthTitle, [self stringForFee:[self monthFee]]];
+    if ([self setupFee] > 0.0f)
+    {
+        setupTitle = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertMessage", nil, [NSBundle mainBundle],
+                                                       @"%@ setup fee",
+                                                       @"£2.34 setup fee");
+        setupTitle = [NSString stringWithFormat:setupTitle, [self stringForFee:[self setupFee]]];
+    }
+    else
+    {
+        setupTitle = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertMessage", nil, [NSBundle mainBundle],
+                                                       @"(no setup fee)",
+                                                       @"");
+    }
 
+    NSString* title = [NSString stringWithFormat:@"%@\n%@", monthTitle, setupTitle];
     [self.buyCell.button setTitle:title forState: UIControlStateNormal];
     [Common styleButton:self.buyCell.button];
 
     self.buyCell.button.alpha                  = (self.isBuying != 0) ? 0.5 : 1.0;
     self.buyCell.button.userInteractionEnabled = (self.isBuying == 0);
     self.isBuying ? [self.buyCell.activityIndicator startAnimating] : [self.buyCell.activityIndicator stopAnimating];
+}
 
-    totalFee = setupFee + monthFee;
 
-    return totalFee;
+
+- (float)setupFee
+{
+    return [area[@"setupFee"] floatValue];
+}
+
+
+- (float)monthFee
+{
+    return [area[@"monthFee"] floatValue];
+}
+
+
+- (NSString*)stringForFee:(float)fee
+{
+    return [[PurchaseManager sharedManager] localizedFormattedPrice:fee];
 }
 
 
 #pragma mark - Buy Cell Delegate
 
+- (void)buyNumberAction
+{
+    NSString* title;
+    NSString* message;
+
+    if ([self checkBuyRequirements] == NO)
+    {
+        title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                    @"Information Missing",
+                                                    @"....\n"
+                                                    @"[iOS alert title size].");
+        message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                    @"Please complete the information for all required fields.",
+                                                    @"....\n"
+                                                    @"[iOS alert message size]");
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+    }
+    else
+    {
+        title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                    @"Buy Number",
+                                                    @"....\n"
+                                                    @"[iOS alert title size].");
+        if ([self setupFee] > 0.0f)
+        {
+            message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                        @"Are you sure you want to buy this number for %@ per month, "
+                                                        @"plus a one-time setup fee of %@?\n\n",
+                                                        @"....\n"
+                                                        @"[iOS alert message size]");
+            message = [NSString stringWithFormat:message, [self stringForFee:[self monthFee]],
+                                                          [self stringForFee:[self setupFee]]];
+        }
+        else
+        {
+            message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                        @"Are you sure you want to buy this number for %@ per month? "
+                                                        @"(There is no one-time setup fee.)\n\n",
+                                                        @"....\n"
+                                                        @"[iOS alert message size]");
+            message = [NSString stringWithFormat:message, [self stringForFee:[self monthFee]]];
+        }
+
+        NSString* monthlyMessage = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                                     @"%@The monthly fee is taking from your Credit "
+                                                                     @"until you cancel.",
+                                                                     @"....\n"
+                                                                     @"[iOS alert message size]");
+        message = [NSString stringWithFormat:monthlyMessage, message];
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            if (buttonIndex == 1)
+            {
+                [self buyNumber];
+            }
+        }
+                             cancelButtonTitle:[Strings cancelString]
+                             otherButtonTitles:[Strings buyString], nil];
+    }
+}
+
+
 - (void)buyNumber
 {
     self.isBuying = YES;
     self.navigationItem.rightBarButtonItem.enabled = NO;
-    float totalPrice = [self updateBuyCell];
+    [self updateBuyCell];
     void (^buyNumberBlock)(void) = ^
     {
         [[WebClient sharedClient] purchaseNumberForMonths:1
@@ -389,15 +486,16 @@ typedef enum
     // Check if there's enough credit.
     [[WebClient sharedClient] retrieveCreditWithReply:^(NSError* error, float credit)
     {
+        float totalFee = [self setupFee] + [self monthFee];
         if (error == nil)
         {
-            if (totalPrice < credit)
+            if (totalFee < credit)
             {
                 buyNumberBlock();
             }
             else
             {
-                int extraCreditAmount = [[PurchaseManager sharedManager] amountForCredit:totalPrice - credit];
+                int extraCreditAmount = [[PurchaseManager sharedManager] amountForCredit:totalFee - credit];
                 if (extraCreditAmount > 0)
                 {
                     NSString* productIdentifier;
@@ -508,6 +606,16 @@ typedef enum
 }
 
 
+- (BOOL)checkBuyRequirements
+{
+    BOOL canBuy = YES;
+
+    canBuy = canBuy && (name.length > 0);
+
+    return canBuy;
+}
+
+
 #pragma mark - Table View Delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
@@ -524,20 +632,23 @@ typedef enum
     {
         case TableSectionArea:
         {
-            title = NSLocalizedStringWithDefaultValue(@"NumberArea:Area SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Current Selection",
+            title = NSLocalizedStringWithDefaultValue(@"NumberArea:Area SectionHeader", nil, [NSBundle mainBundle],
+                                                      @"Current Selection",
                                                       @"...");
             break;
         }
         case TableSectionName:
         {
-            title = NSLocalizedStringWithDefaultValue(@"NumberArea:Naming SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Number's Name In App",
+            title = NSLocalizedStringWithDefaultValue(@"NumberArea:Naming SectionHeader", nil, [NSBundle mainBundle],
+                                                      @"Number's Name In App",
                                                       @"...");
             break;
         }
         case TableSectionBuy:
         {
+            title = NSLocalizedStringWithDefaultValue(@"NumberArea:Buy SectionHeader", nil, [NSBundle mainBundle],
+                                                      @"Buy Number In This Area",
+                                                      @"...");
             break;
         }
     }
@@ -574,19 +685,18 @@ typedef enum
         {
             float setupFee = [self->area[@"setupFee"] floatValue];
 
-            if (setupFee == 0)
+            if (setupFee == 0.0f)
             {
                 title = NSLocalizedStringWithDefaultValue(@"NumberArea:... NoSetupFeeTableFooter", nil, [NSBundle mainBundle],
-                                                          @"The shown price will be taken from your credit.\n\n"
-                                                          @"You can extend your number at any time.",
+                                                          @"The fee will be taken from your Credit. If your Credit "
+                                                          @"is too low, you'll be warned and asked to buy more.",
                                                           @"[Multiple lines]");
             }
             else
             {
                 title = NSLocalizedStringWithDefaultValue(@"NumberArea:... TableFooter", nil, [NSBundle mainBundle],
-                                                          @"The prices include a one-time setup fee of %@. The shown "
-                                                          @"price will be taken from your credit.\n\n"
-                                                          @"You can extend your number at any time.",
+                                                          @"The fee(s) will be taken from your Credit. If your Credit "
+                                                          @"is too low, you'll be warned and asked to buy more.",
                                                           @"[Multiple lines]");
                 
                 title = [NSString stringWithFormat:title, [[PurchaseManager sharedManager] localizedFormattedPrice:setupFee]];

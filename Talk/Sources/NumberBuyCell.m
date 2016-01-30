@@ -10,9 +10,18 @@
 
 @implementation NumberBuyCell
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+
+    self.button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.button.titleLabel.textAlignment = NSTextAlignmentCenter;
+}
+
+
 - (IBAction)buyAction:(id)sender
 {
-    [self.delegate buyNumber];
+    [self.delegate buyNumberAction];
 }
 
 @end

@@ -12,7 +12,7 @@
 
 @protocol NumberBuyCellDelegate <NSObject>
 
-- (void)buyNumber;
+- (void)buyNumberAction;
 
 @end
 
