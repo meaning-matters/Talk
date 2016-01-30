@@ -140,10 +140,10 @@
     {
         NSString* title;
 
-        title   = NSLocalizedStringWithDefaultValue(@"PhoneView CantDeleteTitle", nil, [NSBundle mainBundle],
-                                                    @"Can't Delete Phone",
-                                                    @"...\n"
-                                                    @"[1/3 line small font].");
+        title = NSLocalizedStringWithDefaultValue(@"PhoneView CantDeleteTitle", nil, [NSBundle mainBundle],
+                                                  @"Can't Delete Phone",
+                                                  @"...\n"
+                                                  @"[1/3 line small font].");
 
         [BlockAlertView showAlertViewWithTitle:title
                                        message:cantDeleteMessage
@@ -181,7 +181,7 @@
                                                         [NSBundle mainBundle],
                                                         @"Deleting this Phone failed: %@\n\n"
                                                         @"Choose another Destination for each number that uses this one.",
-                                                        @"Alert message telling that an online service is not available.\n"
+                                                        @"Alert message telling ....\n"
                                                         @"[iOS alert message size]");
         }
         else if (error.code == NSURLErrorNotConnectedToInternet)

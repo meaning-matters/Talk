@@ -218,22 +218,6 @@ typedef enum
 }
 
 
-- (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (tableView == self.tableView)
-    {
-        DestinationData* destination = [fetchedDestinationsController objectAtIndexPath:indexPath];
-
-        return (destination.numbers.count == 0);
-    }
-    else
-    {
-        //###
-        return NO;
-    }
-}
-
-
 - (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
 forRowAtIndexPath:(NSIndexPath*)indexPath
 {
@@ -245,7 +229,14 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
             [destination deleteWithCompletion:^(BOOL succeeded)
             {
-                [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+                if (succeeded)
+                {
+                    [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+                }
+                else
+                {
+                    [self.tableView setEditing:NO animated:YES];
+                }
             }];
         }
         else
