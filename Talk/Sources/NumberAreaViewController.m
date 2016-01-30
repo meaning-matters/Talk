@@ -398,7 +398,7 @@ typedef enum
         if ([self setupFee] > 0.0f)
         {
             message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                        @"Are you sure you want to buy this number for %@ per month, "
+                                                        @"You want to buy this number for %@ per month, "
                                                         @"plus a one-time setup fee of %@?\n\n",
                                                         @"....\n"
                                                         @"[iOS alert message size]");
@@ -408,7 +408,7 @@ typedef enum
         else
         {
             message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                        @"Are you sure you want to buy this number for %@ per month? "
+                                                        @"You want to buy this number for %@ per month? "
                                                         @"(There is no one-time setup fee.)\n\n",
                                                         @"....\n"
                                                         @"[iOS alert message size]");
