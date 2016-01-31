@@ -671,13 +671,12 @@ static Common* sharedCommon;
         message = NSLocalizedStringWithDefaultValue(@"General NoEmailAccountMessage", nil,
                                                     [NSBundle mainBundle],
                                                     @"There is no email account configured.\n\nSet up your email "
-                                                    @"account now in iOS Settings > Mail, Contacts, Calendars > "
-                                                    @"Add Account, or cancel.",
+                                                    @"account now in iOS Mail, or cancel.",
                                                     @"Alert message that no email can be send\n"
                                                     @"[iOS alert message size]");
 
         button  = NSLocalizedStringWithDefaultValue(@"General GoToiOSSettingButtonTitle", nil,
-                                                    [NSBundle mainBundle], @"Settings",
+                                                    [NSBundle mainBundle], @"iOS Mail",
                                                     @"...\n"
                                                     @"[iOS alert title size].");
 
@@ -1371,6 +1370,12 @@ static Common* sharedCommon;
                                                                            attributes:attributes];
 
     return attributedString;
+}
+
+
++ (void)openApplicationSettings
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
 }
 
 @end

@@ -497,4 +497,13 @@
                                              @"[Button size].");
 }
 
+
++ (NSString*)iOsSettingsString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings iOS Settings", nil, [NSBundle mainBundle],
+                                             @"Settings",
+                                             @"Name of the iOS Settings app\n"
+                                             @"[Button size].");
+}
+
 @end

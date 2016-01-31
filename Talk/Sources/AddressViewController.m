@@ -7,6 +7,7 @@
 //
 
 #import <objc/runtime.h>
+#import <Photos/Photos.h>
 #import "AddressViewController.h"
 #import "NumberAreaPostcodesViewController.h"
 #import "NumberAreaCitiesViewController.h"
@@ -21,6 +22,7 @@
 #import "Base64.h"
 #import "DataManager.h"
 #import "BlockActionSheet.h"
+#import "Settings.h"
 
 typedef NS_ENUM(NSUInteger, TableSections)
 {
@@ -49,7 +51,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 };
 
 
-@interface AddressViewController () <UIImagePickerControllerDelegate>
+@interface AddressViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, assign) TableSections               sections;
 @property (nonatomic, assign) TableRowsDetails            rowsDetails;
@@ -566,18 +568,140 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 
 - (IBAction)takePicture
 {
-    UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
+    NSString* takePhotoTitle    = NSLocalizedStringWithDefaultValue(@"....", nil, [NSBundle mainBundle],
+                                                                    @"Take Photo",
+                                                                    @"...\n"
+                                                                    @"[1/3 line small font].");
+    NSString* photoLibraryTitle = NSLocalizedStringWithDefaultValue(@"....", nil, [NSBundle mainBundle],
+                                                                    @"Photo Library",
+                                                                    @"...\n"
+                                                                    @"[1/3 line small font].");
     
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    [BlockActionSheet showActionSheetWithTitle:nil
+                                    completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
     {
-        [imagePickerController setSourceType:UIImagePickerControllerSourceTypeCamera];
+        switch (buttonIndex)
+        {
+            case 0:
+            {
+                [self checkCameraAccessWithCompletion:^(BOOL success)
+                {
+                    if (success)
+                    {
+                        UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
+
+                        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+                        {
+                            [imagePickerController setSourceType:UIImagePickerControllerSourceTypeCamera];
+                        }
+
+                        imagePickerController.delegate      = self;
+                        imagePickerController.allowsEditing = NO;
+                        [self presentViewController:imagePickerController animated:YES completion:nil];
+                    }
+                }];
+                break;
+            }
+            case 1:
+            {
+                break;
+            }
+            case 2:
+            {
+                // Cancelled.
+                break;
+            }
+        }
     }
-    
-    imagePickerController.delegate      = self;
-    imagePickerController.allowsEditing = YES;
-    [self presentViewController:imagePickerController animated:YES completion:nil];
+                             cancelButtonTitle:[Strings cancelString]
+                        destructiveButtonTitle:nil
+                             otherButtonTitles:takePhotoTitle, photoLibraryTitle, nil];
 }
 
+
+- (void)checkCameraAccessWithCompletion:(void (^)(BOOL success))completion
+{
+    NSString* title;
+    NSString* message;
+
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+
+        switch (status)
+        {
+            case AVAuthorizationStatusAuthorized:
+            {
+                completion ? completion(YES) : 0;
+                break;
+            }
+            case AVAuthorizationStatusDenied:
+            {
+                title   = NSLocalizedStringWithDefaultValue(@"", nil, [NSBundle mainBundle],
+                                                            @"No Camera Access",
+                                                            @"[iOS alert title size].");
+                message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                            @"%@ does not have access to the camera.\n\n"
+                                                            @"To enable access, tap Settings and turn on Camera.",
+                                                            @"");
+                message = [NSString stringWithFormat:message, [Settings sharedSettings].appDisplayName];
+                [BlockAlertView showAlertViewWithTitle:title
+                                               message:message
+                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                {
+                    if (!cancelled)
+                    {
+                        [Common openApplicationSettings];
+                    }
+                }
+                                     cancelButtonTitle:[Strings cancelString]
+                                     otherButtonTitles:[Strings iOsSettingsString], nil];
+                break;
+            }
+            case AVAuthorizationStatusRestricted:
+            {
+                title   = NSLocalizedStringWithDefaultValue(@"", nil, [NSBundle mainBundle],
+                                                            @"Camera Restriction",
+                                                            @"[iOS alert title size].");
+                message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                            @"The use of the camera is restricted on this device\n\n"
+                                                            @"To enable access, go to iOS Settings > General > "
+                                                            @"Restrictions and turn on Camera.",
+                                                            @"");
+                message = [NSString stringWithFormat:message, [Settings sharedSettings].appDisplayName];
+                [BlockAlertView showAlertViewWithTitle:title
+                                               message:message
+                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                {
+                    completion ? completion(NO) : 0;
+                }
+                                     cancelButtonTitle:[Strings cancelString]
+                                     otherButtonTitles:nil];
+                break;
+            }
+            case AVAuthorizationStatusNotDetermined:
+            {
+                [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted)
+                {
+                    completion ? completion(granted) : 0;
+                }];
+                break;
+            }
+        }
+    }
+}
+
+
+- (BOOL)checkPhotosAccess
+{
+    BOOL hasGalleryPermission = NO;
+    PHAuthorizationStatus authorizationStatus = [PHPhotoLibrary authorizationStatus];
+
+    if (authorizationStatus == PHAuthorizationStatusAuthorized) {
+        hasGalleryPermission = YES;
+    }
+    return hasGalleryPermission;
+}
 
 - (NSString*)actionCellText
 {

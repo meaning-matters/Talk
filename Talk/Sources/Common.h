@@ -152,4 +152,6 @@ static const int TextFieldCellTag = 1111;
 
 + (NSAttributedString*)strikethroughAttributedString:(NSString*)string;
 
++ (void)openApplicationSettings;
+
 @end

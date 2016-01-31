@@ -115,4 +115,6 @@
 
 + (NSString*)agreeString;
 
++ (NSString*)iOsSettingsString; // Name of the iOS Settings app.
+
 @end
