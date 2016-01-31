@@ -59,7 +59,6 @@ typedef enum
 
     NSArray*       citiesArray;
     NSString*      name;
-    BOOL           requireProof;
     BOOL           isChecked;
     TableSections  sections;
     AreaRows       areaRows;
@@ -81,6 +80,9 @@ typedef enum
 @property (nonatomic, assign) CGFloat                  buyCellHeight;
 @property (nonatomic, strong) NumberBuyCell*           buyCell;
 @property (nonatomic, assign) BOOL                     isBuying;
+@property (nonatomic, assign) float                    setupFee;
+@property (nonatomic, assign) float                    monthFee;
+@property (nonatomic, strong) NSString*                areaName;
 
 @end
 
@@ -97,10 +99,13 @@ typedef enum
         numberIsoCountryCode = isoCountryCode;
         state                = theState;
         area                 = theArea;
-        numberTypeMask       = theNumberTypeMask;
-        requireProof         = [area[@"requireProof"] boolValue];
         areaCode             = [area[@"areaCode"] length] > 0 ? area[@"areaCode"] : nil;
+        numberTypeMask       = theNumberTypeMask;
         addressTypeMask      = [AddressType addressTypeMaskForString:area[@"addressType"]];
+
+        self.setupFee        = [area[@"setupFee"] floatValue];
+        self.monthFee        = [area[@"monthFee"] floatValue];
+        self.areaName        = area[@"areaName"];
 
         // Mandatory sections.
         sections |= TableSectionArea;
@@ -116,8 +121,8 @@ typedef enum
         
         // Conditionally there Area section rows.
         BOOL allCities = (area[@"areaName"] != [NSNull null] &&
-                          [area[@"areaName"] caseInsensitiveCompare:@"All cities"] == NSOrderedSame);
-        areaRows |= ([area[@"areaCode"] length] > 0)                           ? AreaRowAreaCode : 0;
+                          [self.areaName caseInsensitiveCompare:@"all cities"] == NSOrderedSame);
+        areaRows |= (areaCode != nil)                                          ? AreaRowAreaCode : 0;
         areaRows |= (numberTypeMask == NumberTypeGeographicMask && !allCities) ? AreaRowAreaName : 0;
         areaRows |= (numberTypeMask == NumberTypeSpecialMask)                  ? AreaRowAreaName : 0;
         areaRows |= (state != nil)                                             ? AreaRowState    : 0;
@@ -160,7 +165,7 @@ typedef enum
             }
             case NumberTypeInternationalMask:
             {
-                name = [NSString stringWithFormat:@"International (%@)", area[@"areaCode"]];
+                name = [NSString stringWithFormat:@"International (%@)", areaCode];
                 break;
             }
         }
@@ -322,13 +327,13 @@ typedef enum
                                                              @"£2.34 monthly fee");
     NSString* setupTitle;
 
-    monthTitle = [NSString stringWithFormat:monthTitle, [self stringForFee:[self monthFee]]];
-    if ([self setupFee] > 0.0f)
+    monthTitle = [NSString stringWithFormat:monthTitle, [self stringForFee:self.monthFee]];
+    if (self.setupFee > 0.0f)
     {
         setupTitle = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertMessage", nil, [NSBundle mainBundle],
                                                        @"%@ setup fee",
                                                        @"£2.34 setup fee");
-        setupTitle = [NSString stringWithFormat:setupTitle, [self stringForFee:[self setupFee]]];
+        setupTitle = [NSString stringWithFormat:setupTitle, [self stringForFee:self.setupFee]];
     }
     else
     {
@@ -344,19 +349,6 @@ typedef enum
     self.buyCell.button.alpha                  = (self.isBuying != 0) ? 0.5 : 1.0;
     self.buyCell.button.userInteractionEnabled = (self.isBuying == 0);
     self.isBuying ? [self.buyCell.activityIndicator startAnimating] : [self.buyCell.activityIndicator stopAnimating];
-}
-
-
-
-- (float)setupFee
-{
-    return [area[@"setupFee"] floatValue];
-}
-
-
-- (float)monthFee
-{
-    return [area[@"monthFee"] floatValue];
 }
 
 
@@ -395,24 +387,24 @@ typedef enum
                                                     @"Buy Number",
                                                     @"....\n"
                                                     @"[iOS alert title size].");
-        if ([self setupFee] > 0.0f)
+        if (self.setupFee > 0.0f)
         {
             message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
                                                         @"Yes, buy this Number for %@ per month, "
                                                         @"plus a one-time setup fee of %@.\n\n",
                                                         @"....\n"
                                                         @"[iOS alert message size]");
-            message = [NSString stringWithFormat:message, [self stringForFee:[self monthFee]],
-                                                          [self stringForFee:[self setupFee]]];
+            message = [NSString stringWithFormat:message, [self stringForFee:self.monthFee],
+                                                          [self stringForFee:self.setupFee]];
         }
         else
         {
             message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                        @"Yes, buy this Number for %@ per month. "
-                                                        @"(There is no one-time setup fee.)\n\n",
+                                                        @"Yes, buy this Number for %@ per month ("
+                                                        @"(without one-time setup fee).\n\n",
                                                         @"....\n"
                                                         @"[iOS alert message size]");
-            message = [NSString stringWithFormat:message, [self stringForFee:[self monthFee]]];
+            message = [NSString stringWithFormat:message, [self stringForFee:self.monthFee]];
         }
 
         NSString* monthlyMessage = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
@@ -486,7 +478,7 @@ typedef enum
     // Check if there's enough credit.
     [[WebClient sharedClient] retrieveCreditWithReply:^(NSError* error, float credit)
     {
-        float totalFee = [self setupFee] + [self monthFee];
+        float totalFee = self.setupFee + self.monthFee;
         if (error == nil)
         {
             if (totalFee < credit)
@@ -612,6 +604,21 @@ typedef enum
 
     canBuy = canBuy && (name.length > 0);
 
+    if (addressTypeMask != AddressTypeNoneMask)
+    {
+        canBuy = canBuy && (self.address != nil);
+        if (area[@"proofType"] == nil)
+        {
+            // No proof is required.
+            canBuy = canBuy && (self.address.status == AddressStatusNotVerified);
+        }
+        else
+        {
+            // Proof is required, which much be verified.
+            canBuy = canBuy && (self.address.status == AddressStatusVerified);
+        }
+    }
+
     return canBuy;
 }
 
@@ -683,9 +690,7 @@ typedef enum
         }
         case TableSectionBuy:
         {
-            float setupFee = [self->area[@"setupFee"] floatValue];
-
-            if (setupFee == 0.0f)
+            if (self.setupFee == 0.0f)
             {
                 title = NSLocalizedStringWithDefaultValue(@"NumberArea:... NoSetupFeeTableFooter", nil, [NSBundle mainBundle],
                                                           @"The fee will be taken from your Credit. If your Credit "
@@ -699,7 +704,7 @@ typedef enum
                                                           @"is too low, you'll be warned and asked to buy more.",
                                                           @"[Multiple lines]");
                 
-                title = [NSString stringWithFormat:title, [[PurchaseManager sharedManager] localizedFormattedPrice:setupFee]];
+                title = [NSString stringWithFormat:title, [self stringForFee:self.setupFee]];
             }
             
             break;
@@ -789,7 +794,7 @@ typedef enum
                                                             [NSBundle mainBundle], @"Address Required",
                                                             @"Alert title telling that user did not fill in all information.\n"
                                                             @"[iOS alert title size].");
-                if (requireProof)
+                if (/*requireProof//#####*/YES)
                 {
                     message = NSLocalizedStringWithDefaultValue(@"NumberArea AddressWithProofRequiredMessage", nil,
                                                                 [NSBundle mainBundle],
@@ -892,14 +897,14 @@ typedef enum
         case AreaRowAreaCode:
         {
             cell.textLabel.text       = [Strings areaCodeString];
-            cell.detailTextLabel.text = area[@"areaCode"];
+            cell.detailTextLabel.text = areaCode;
             cell.imageView.image      = nil;
             break;
         }
         case AreaRowAreaName:
         {
             cell.textLabel.text       = [Strings areaString];
-            cell.detailTextLabel.text = [Common capitalizedString:area[@"areaName"]];
+            cell.detailTextLabel.text = [Common capitalizedString:self.areaName];
             cell.imageView.image      = nil;
             break;
         }
