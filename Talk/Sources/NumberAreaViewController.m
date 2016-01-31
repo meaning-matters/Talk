@@ -558,6 +558,7 @@ typedef enum
                         else
                         {
                             self.isBuying = NO;
+                            self.navigationItem.rightBarButtonItem.enabled = YES;
                             [self updateBuyCell];
                         }
                     }
