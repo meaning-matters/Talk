@@ -557,7 +557,8 @@ typedef enum
                         }
                         else
                         {
-                            [self dismissViewControllerAnimated:YES completion:nil];
+                            self.isBuying = NO;
+                            [self updateBuyCell];
                         }
                     }
                                          cancelButtonTitle:[Strings cancelString]
