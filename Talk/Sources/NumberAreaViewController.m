@@ -9,10 +9,6 @@
 #import <objc/runtime.h>
 #import "NumberAreaViewController.h"
 #import "UITableViewController+Common.h"
-#import "NumberAreaPostcodesViewController.h"
-#import "NumberAreaCitiesViewController.h"
-#import "NumberAreaTitlesViewController.h"
-#import "CountriesViewController.h"
 #import "AddressesViewController.h"
 #import "Strings.h"
 #import "WebClient.h"
@@ -609,7 +605,7 @@ typedef enum
     if (addressTypeMask != AddressTypeNoneMask)
     {
         canBuy = canBuy && (self.address != nil);
-        if (area[@"proofType"] == nil)
+        if (area[@"proofTypes"] == nil)
         {
             // No proof is required.
             canBuy = canBuy && (self.address.status == AddressStatusNotVerified);
@@ -769,7 +765,7 @@ typedef enum
                                                                                   areaCode:areaCode
                                                                                 numberType:numberTypeMask
                                                                                addressType:addressTypeMask
-                                                                                 proofType:area[@"proofType"]
+                                                                                proofTypes:area[@"proofTypes"]
                                                                                  predicate:self.addressesPredicate
                                                                                 completion:^(AddressData *selectedAddress)
             {

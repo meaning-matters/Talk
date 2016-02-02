@@ -579,7 +579,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
             {
                 if (error.code == NSURLErrorNotConnectedToInternet)
                 {
-                    failure ? failure(operation, error) : (void)0;
+                    failure ? failure(operation, error) : 0;
                 }
                 else if (error.code != NSURLErrorCancelled)
                 {
@@ -615,7 +615,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
             {
                 NSError* error = [Common errorWithCode:WebStatusFailNoServer
                                            description:[WebStatus localizedStringForStatus:WebStatusFailNoServer]];
-                failure ? failure(nil, error) : (void)0;
+                failure ? failure(nil, error) : 0;
             });
         }
     });

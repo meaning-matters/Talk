@@ -14,6 +14,7 @@
 #import "AppDelegate.h"
 #import "Common.h"
 #import "WebClient.h"
+#import "Salutation.h"
 
 
 @interface AddressesViewController ()
@@ -26,7 +27,7 @@
 @property (nonatomic, strong) NSString*                   areaCode;
 @property (nonatomic, assign) NumberTypeMask              numberTypeMask;
 @property (nonatomic, assign) AddressTypeMask             addressTypeMask;
-@property (nonatomic, strong) NSDictionary*               proofType;
+@property (nonatomic, strong) NSDictionary*               proofTypes;
 
 @property (nonatomic, copy) void (^completion)(AddressData* selectedAddress);
 
@@ -45,7 +46,7 @@
                                      areaCode:nil
                                    numberType:NumberTypeGeographicMask
                                   addressType:0
-                                    proofType:nil
+                                   proofTypes:nil
                                     predicate:nil
                                    completion:nil];
 }
@@ -57,7 +58,7 @@
                                     areaCode:(NSString*)areaCode
                                   numberType:(NumberTypeMask)numberTypeMask
                                  addressType:(AddressTypeMask)addressTypeMask
-                                   proofType:(NSDictionary*)proofType
+                                  proofTypes:(NSDictionary*)proofTypes
                                    predicate:(NSPredicate*)predicate
                                   completion:(void (^)(AddressData* selectedAddress))completion
 {
@@ -73,7 +74,7 @@
         self.areaCode             = areaCode;
         self.numberTypeMask       = numberTypeMask;
         self.addressTypeMask      = addressTypeMask;
-        self.proofType            = proofType;
+        self.proofTypes           = proofTypes;
         self.predicate            = predicate;
         self.completion           = completion;
     }
@@ -179,7 +180,7 @@
     {
         NSPredicate* predicate = (error == nil) ? [NSPredicate predicateWithFormat:@"addressId IN %@", addressIds] : nil;
 
-        completion ? completion(predicate, error) : (void)0;
+        completion ? completion(predicate, error) : 0;
     }];
 }
 
@@ -400,7 +401,7 @@
                                                          isoCountryCode:nil
                                                                areaCode:nil
                                                              numberType:NumberTypeGeographicMask
-                                                              proofType:nil
+                                                             proofTypes:nil
                                                              completion:nil];
         
         [self.navigationController pushViewController:viewController animated:YES];
@@ -472,7 +473,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                                                          isoCountryCode:self.isoCountryCode
                                                                areaCode:self.areaCode
                                                              numberType:self.numberTypeMask
-                                                              proofType:self.proofType
+                                                             proofTypes:self.proofTypes
                                                              completion:^(AddressData *address)
         {
             if (address != nil)
@@ -549,21 +550,26 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
 - (NSString*)detailTextForAddress:(AddressData*)address
 {
-    NSString* detailText = nil;
+    NSString* detailText   = nil;
+    Salutation* salutation = [[Salutation alloc] initWithString:address.salutation];
 
-    if ([address.salutation isEqualToString:@"COMPANY"])
+    switch (salutation.value)
     {
-        detailText = address.companyName;
-    }
-    else if ([address.salutation isEqualToString:@"MR"])
-    {
-        //### The order of the name elements needs to properly localized.
-        detailText = [NSString stringWithFormat:@"%@ %@ %@", [Strings mrString], address.firstName, address.lastName];
-    }
-    else if ([address.salutation isEqualToString:@"MS"])
-    {
-        //### The order of the name elements needs to properly localized.
-        detailText = [NSString stringWithFormat:@"%@ %@ %@", [Strings msString], address.firstName, address.lastName];
+        case SalutationValueMs:
+        case SalutationValueMr:
+        {
+            //### The order of the name elements needs to properly localized.
+            detailText = [NSString stringWithFormat:@"%@ %@ %@",
+                                                    salutation.localizedString,
+                                                    address.firstName,
+                                                    address.lastName];
+            break;
+        }
+        case SalutationValueCompany:
+        {
+            detailText = address.companyName;
+            break;
+        }
     }
 
     return detailText;

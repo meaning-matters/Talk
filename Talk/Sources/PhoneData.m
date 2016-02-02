@@ -149,7 +149,7 @@
                                        message:cantDeleteMessage
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
         {
-            completion ? completion(NO) : (void)0;
+            completion ? completion(NO) : 0;
         }
                              cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];

@@ -24,7 +24,7 @@
                                     areaCode:(NSString*)areaCode
                                   numberType:(NumberTypeMask)numberTypeMask
                                  addressType:(AddressTypeMask)addressTypeMask
-                                   proofType:(NSDictionary*)proofType
+                                  proofTypes:(NSDictionary*)proofTypes
                                    predicate:(NSPredicate*)predicate    // Used to select between modes.
                                   completion:(void (^)(AddressData* selectedAddress))completion;
 

@@ -11,7 +11,7 @@
 #import "AddressViewController.h"
 #import "NumberAreaPostcodesViewController.h"
 #import "NumberAreaCitiesViewController.h"
-#import "NumberAreaTitlesViewController.h"
+#import "NumberAreaSalutationsViewController.h"
 #import "CountriesViewController.h"
 #import "Strings.h"
 #import "Common.h"
@@ -23,6 +23,8 @@
 #import "DataManager.h"
 #import "BlockActionSheet.h"
 #import "Settings.h"
+#import "Salutation.h"
+#import "ProofType.h"
 
 typedef NS_ENUM(NSUInteger, TableSections)
 {
@@ -64,7 +66,8 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 @property (nonatomic, strong) NSString*                   areaCode;
 @property (nonatomic, assign) NumberTypeMask              numberTypeMask;
 @property (nonatomic, assign) AddressTypeMask             addressTypeMask;
-@property (nonatomic, strong) NSDictionary*               proofType;
+@property (nonatomic, strong) Salutation*                 salutation;
+@property (nonatomic, strong) ProofType*                  proofType;
 
 @property (nonatomic, strong) NSArray*                    citiesArray;
 @property (nonatomic, assign) BOOL                        isChecked;
@@ -112,7 +115,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
                  isoCountryCode:(NSString*)isoCountryCode
                        areaCode:(NSString*)areaCode
                      numberType:(NumberTypeMask)numberTypeMask
-                      proofType:(NSDictionary*)proofType
+                     proofTypes:(NSDictionary*)proofTypes
                      completion:(void (^)(AddressData* address))completion;
 {
     if (self = [super initWithManagedObjectContext:managedObjectContext])
@@ -126,7 +129,6 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         self.areaCode             = areaCode;
         self.numberTypeMask       = numberTypeMask;
         self.addressTypeMask      = addressTypeMask;
-        self.proofType            = proofType;
         self.createCompletion     = completion;
         
         if (self.isNew == YES)
@@ -139,13 +141,19 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             
             self.address = [NSEntityDescription insertNewObjectForEntityForName:@"Address"
                                                          inManagedObjectContext:self.managedObjectContext];
-            self.address.salutation = @"MR";
+            self.address.salutation = @"MS";
         }
         else
         {
             self.managedObjectContext = managedObjectContext;
         }
-        
+
+        self.salutation = [[Salutation alloc] initWithString:self.address.salutation];
+        if (proofTypes != nil)
+        {
+            self.proofType  = [[ProofType alloc] initWithProofTypes:proofTypes salutation:self.salutation];
+        }
+
         if (self.addressTypeMask == AddressTypeLocalMask || self.addressTypeMask == AddressTypeNationalMask)
         {
             self.address.isoCountryCode = self.numberIsoCountryCode;
@@ -157,7 +165,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         self.sections |= TableSectionAddress;
         
         // Optional section.
-        self.sections |= ((self.isNew && proofType) || self.address.hasProof) ? TableSectionProof : 0;
+        self.sections |= ((self.isNew && self.proofType != nil) || self.address.hasProof) ? TableSectionProof : 0;
         
         self.rowsDetails |= TableRowsDetailsSalutation;
         if (self.isNew == YES)
@@ -237,7 +245,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 {
     [super viewWillAppear:animated];
     
-    self.salutationTextField.text = [Strings localizedSalutation:self.address.salutation];
+    self.salutationTextField.text = self.salutation.localizedString;
     self.postcodeTextField.text   = self.address.postcode;
     self.cityTextField.text       = self.address.city;
     
@@ -468,23 +476,22 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     
     if (self.isNew == YES)
     {
-        if ([self.address.salutation isEqualToString:@"COMPANY"] == YES)
+        if (self.salutation.isPerson)
         {
             complete = ([self.name                   stringByRemovingWhiteSpace].length > 0 &&
-                        [self.address.salutation     stringByRemovingWhiteSpace].length > 0 &&
-                        [self.address.companyName    stringByRemovingWhiteSpace].length > 0 &&
+                        [self.address.firstName      stringByRemovingWhiteSpace].length > 0 &&
+                        [self.address.lastName       stringByRemovingWhiteSpace].length > 0 &&
                         [self.address.street         stringByRemovingWhiteSpace].length > 0 &&
                         [self.address.buildingNumber stringByRemovingWhiteSpace].length > 0 &&
                         [self.address.city           stringByRemovingWhiteSpace].length > 0 &&
                         [self.address.postcode       stringByRemovingWhiteSpace].length > 0 &&
                         [self.address.isoCountryCode stringByRemovingWhiteSpace].length > 0);
         }
-        else
+
+        if (self.salutation.isCompany)
         {
             complete = ([self.name                   stringByRemovingWhiteSpace].length > 0 &&
-                        [self.address.salutation     stringByRemovingWhiteSpace].length > 0 &&
-                        [self.address.firstName      stringByRemovingWhiteSpace].length > 0 &&
-                        [self.address.lastName       stringByRemovingWhiteSpace].length > 0 &&
+                        [self.address.companyName    stringByRemovingWhiteSpace].length > 0 &&
                         [self.address.street         stringByRemovingWhiteSpace].length > 0 &&
                         [self.address.buildingNumber stringByRemovingWhiteSpace].length > 0 &&
                         [self.address.city           stringByRemovingWhiteSpace].length > 0 &&
@@ -524,10 +531,11 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 
 - (NSString*)placeHolderForTextField:(UITextField*)textField
 {
-    NSString* placeHolder;
+    NSString* placeHolder = nil;
     
     // The default is "Required".
-    if ([self.address.salutation isEqualToString:@"MR"] || [self.address.salutation isEqualToString:@"MS"])
+
+    if (self.salutation.isPerson)
     {
         if (textField == self.companyNameTextField)
         {
@@ -542,7 +550,8 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             placeHolder = [Strings requiredString];
         }
     }
-    else if ([self.address.salutation isEqualToString:@"COMPANY"])
+
+    if (self.salutation.isCompany)
     {
         if (textField == self.companyNameTextField)
         {
@@ -557,11 +566,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             placeHolder = [Strings requiredString];
         }
     }
-    else
-    {
-        placeHolder = [Strings requiredString];
-    }
-    
+
     return placeHolder;
 }
 
@@ -703,32 +708,26 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     return hasGalleryPermission;
 }
 
+
 - (NSString*)actionCellText
 {
     NSString* text;
     
-    if (self.proofType != nil && self.address.proofImage == nil)
+    if (self.address.proofImage == nil)
     {
-        text = NSLocalizedStringWithDefaultValue(@"Address:Action TakePictureLabel", nil,
+        text = NSLocalizedStringWithDefaultValue(@"Address:Action TakePhotoLabel", nil,
                                                  [NSBundle mainBundle],
-                                                 @"Take Picture",
-                                                 @"....");
-    }
-    else if (self.isChecked == NO)
-    {
-        text = NSLocalizedStringWithDefaultValue(@"Address:Action ValidateLabel", nil,
-                                                 [NSBundle mainBundle],
-                                                 @"Validate",
+                                                 @"Take Photo",
                                                  @"....");
     }
     else
     {
-        text = NSLocalizedStringWithDefaultValue(@"Address:Action BuyLabel", nil,
+        text = NSLocalizedStringWithDefaultValue(@"Address:Action RetakePhotoLabel", nil,
                                                  [NSBundle mainBundle],
-                                                 @"Buy",
+                                                 @"Retake Photo",
                                                  @"....");
     }
-    
+
     return text;
 }
 
@@ -901,10 +900,10 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     NumberAreaPostcodesViewController*   zipsViewController;
-    NumberAreaCitiesViewController* citiesViewController;
-    NumberAreaTitlesViewController* titlesViewController;
-    CountriesViewController*        countriesViewController;
-    NSString*                       isoCountryCode;
+    NumberAreaCitiesViewController*      citiesViewController;
+    NumberAreaSalutationsViewController* salutationsViewController;
+    CountriesViewController*             countriesViewController;
+    NSString*                            isoCountryCode;
     void (^completion)(BOOL cancelled, NSString* isoCountryCode);
     
     if ([self.tableView cellForRowAtIndexPath:indexPath].selectionStyle == UITableViewCellSelectionStyleNone)
@@ -917,8 +916,13 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         {
             case TableSectionDetails:
             {
-                titlesViewController = [[NumberAreaTitlesViewController alloc] initWithAddress:self.address];
-                [self.navigationController pushViewController:titlesViewController animated:YES];
+                salutationsViewController = [[NumberAreaSalutationsViewController alloc] initWithSalutation:self.salutation
+                                                                                                 completion:^
+                {
+                    self.address.salutation = self.salutation.string;
+                }];
+
+                [self.navigationController pushViewController:salutationsViewController animated:YES];
                 break;
             }
             case TableSectionAddress:
@@ -1169,8 +1173,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
                                                   : UITableViewCellSelectionStyleNone;
             cell.textLabel.text      = [Strings salutationString];
             
-            textField.placeholder = [Strings requiredString];
-            textField.text = [Strings localizedSalutation:self.address.salutation];
+            textField.text = self.salutation.localizedString;
             textField.userInteractionEnabled = NO;
             objc_setAssociatedObject(textField, @"TextFieldKey", @"salutation", OBJC_ASSOCIATION_RETAIN);
             break;
@@ -1210,7 +1213,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         }
     }
     
-    textField.placeholder     = [self placeHolderForTextField:textField];
+    textField.placeholder = [self placeHolderForTextField:textField];
     
     [self updateTextField:textField onCell:cell];
     
@@ -1643,13 +1646,13 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
              [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
              [[DataManager sharedManager] saveManagedObjectContext:nil];
 
-             self.createCompletion ? self.createCompletion(self.address) : (void)0;
+             self.createCompletion ? self.createCompletion(self.address) : 0;
          }
          else
          {
              [self showSaveError:error];
 
-             self.createCompletion ? self.createCompletion(nil) : (void)0;
+             self.createCompletion ? self.createCompletion(nil) : 0;
          }
      }];
     

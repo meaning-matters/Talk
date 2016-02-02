@@ -842,7 +842,7 @@
                                                                        completion:^(CallableData* selectedCallable,
                                                                                     BOOL          showCallerId)
     {
-        completion ? completion(selectedCallable, showCallerId) : (void)0;
+        completion ? completion(selectedCallable, showCallerId) : 0;
     }];
     
     [navigationController pushViewController:viewController animated:YES];

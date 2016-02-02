@@ -68,6 +68,7 @@
 		48251B9C187F4A8A00E69C3A /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48251B9A187F4A8A00E69C3A /* SettingsViewController.m */; };
 		482608EE166A4707007F0844 /* NSTimer+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 482608ED166A4706007F0844 /* NSTimer+Blocks.m */; };
 		482608EF166A4707007F0844 /* NSTimer+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 482608ED166A4706007F0844 /* NSTimer+Blocks.m */; };
+		482881591C5F5E4C00210DF1 /* Salutation.m in Sources */ = {isa = PBXBuildFile; fileRef = 482881581C5F5E4C00210DF1 /* Salutation.m */; };
 		482A6397165F903900325B3F /* Strings.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A6396165F903900325B3F /* Strings.m */; };
 		482A6398165F903900325B3F /* Strings.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A6396165F903900325B3F /* Strings.m */; };
 		482A639D165FA94400325B3F /* CallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A639C165FA94400325B3F /* CallManager.m */; };
@@ -186,8 +187,8 @@
 		485E38A117B7E13C0089F0F1 /* HtmlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E389F17B7E13B0089F0F1 /* HtmlViewController.m */; };
 		485E38A317B7E1960089F0F1 /* HtmlView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485E38A217B7E1960089F0F1 /* HtmlView.xib */; };
 		485E38A417B7E1960089F0F1 /* HtmlView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485E38A217B7E1960089F0F1 /* HtmlView.xib */; };
-		485E38A717C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E38A617C0B7F00089F0F1 /* NumberAreaTitlesViewController.m */; };
-		485E38A817C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E38A617C0B7F00089F0F1 /* NumberAreaTitlesViewController.m */; };
+		485E38A717C0B7F30089F0F1 /* NumberAreaSalutationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E38A617C0B7F00089F0F1 /* NumberAreaSalutationsViewController.m */; };
+		485E38A817C0B7F30089F0F1 /* NumberAreaSalutationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E38A617C0B7F00089F0F1 /* NumberAreaSalutationsViewController.m */; };
 		485ECBDA1651C3B700364F08 /* BQ@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBD71651C3B700364F08 /* BQ@2x.png */; };
 		485ECBDB1651C3B700364F08 /* BQ@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBD71651C3B700364F08 /* BQ@2x.png */; };
 		485ECBE216525D3600364F08 /* KeypadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 485ECBE116525D3600364F08 /* KeypadView.m */; };
@@ -759,6 +760,8 @@
 		48251B9A187F4A8A00E69C3A /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		482608EC166A4706007F0844 /* NSTimer+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Blocks.h"; sourceTree = "<group>"; };
 		482608ED166A4706007F0844 /* NSTimer+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Blocks.m"; sourceTree = "<group>"; };
+		482881571C5F5E4C00210DF1 /* Salutation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Salutation.h; sourceTree = "<group>"; };
+		482881581C5F5E4C00210DF1 /* Salutation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Salutation.m; sourceTree = "<group>"; };
 		482A6395165F903900325B3F /* Strings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Strings.h; sourceTree = "<group>"; };
 		482A6396165F903900325B3F /* Strings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Strings.m; sourceTree = "<group>"; };
 		482A639B165FA94400325B3F /* CallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallManager.h; sourceTree = "<group>"; };
@@ -869,8 +872,8 @@
 		485E389E17B7E1390089F0F1 /* HtmlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HtmlViewController.h; sourceTree = "<group>"; };
 		485E389F17B7E13B0089F0F1 /* HtmlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HtmlViewController.m; sourceTree = "<group>"; };
 		485E38A217B7E1960089F0F1 /* HtmlView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HtmlView.xib; sourceTree = "<group>"; };
-		485E38A517C0B7EE0089F0F1 /* NumberAreaTitlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaTitlesViewController.h; sourceTree = "<group>"; };
-		485E38A617C0B7F00089F0F1 /* NumberAreaTitlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaTitlesViewController.m; sourceTree = "<group>"; };
+		485E38A517C0B7EE0089F0F1 /* NumberAreaSalutationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaSalutationsViewController.h; sourceTree = "<group>"; };
+		485E38A617C0B7F00089F0F1 /* NumberAreaSalutationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaSalutationsViewController.m; sourceTree = "<group>"; };
 		485E38CF17C889350089F0F1 /* WORDS.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = WORDS.txt; sourceTree = "<group>"; };
 		485ECBD71651C3B700364F08 /* BQ@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BQ@2x.png"; sourceTree = "<group>"; };
 		485ECBE016525D3600364F08 /* KeypadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeypadView.h; sourceTree = "<group>"; };
@@ -1659,6 +1662,8 @@
 				482A6396165F903900325B3F /* Strings.m */,
 				48ADD0F517067919001515EB /* UIView+AnimateHidden.h */,
 				48ADD0F61706791A001515EB /* UIView+AnimateHidden.m */,
+				482881571C5F5E4C00210DF1 /* Salutation.h */,
+				482881581C5F5E4C00210DF1 /* Salutation.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -2388,8 +2393,8 @@
 				484D936B1712FBA1006FA875 /* NumberAreaCitiesViewController.m */,
 				4896D8FE16EBE612008A2354 /* NumberAreasViewController.h */,
 				4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */,
-				485E38A517C0B7EE0089F0F1 /* NumberAreaTitlesViewController.h */,
-				485E38A617C0B7F00089F0F1 /* NumberAreaTitlesViewController.m */,
+				485E38A517C0B7EE0089F0F1 /* NumberAreaSalutationsViewController.h */,
+				485E38A617C0B7F00089F0F1 /* NumberAreaSalutationsViewController.m */,
 				4830462216EE269D000F9B05 /* NumberAreaViewController.h */,
 				4830462316EE269D000F9B05 /* NumberAreaViewController.m */,
 				484D936E17131E96006FA875 /* NumberAreaPostcodesViewController.h */,
@@ -3122,6 +3127,7 @@
 				48C97EA318943C7300174DE9 /* PhoneViewController.m in Sources */,
 				48B813431AADF91D0019AF77 /* NBGroupsTableViewController.m in Sources */,
 				48B813811AADFA290019AF77 /* NBUnknownPersonViewController.m in Sources */,
+				482881591C5F5E4C00210DF1 /* Salutation.m in Sources */,
 				48B813571AADF9590019AF77 /* NBDetailLineSeparatedCell.m in Sources */,
 				48B8131C1AADF7390019AF77 /* NBRecentContactEntry.m in Sources */,
 				48021B341C3A693200C40B58 /* UIViewController+Common.m in Sources */,
@@ -3210,7 +3216,7 @@
 				48B8135B1AADF96F0019AF77 /* NBNameTableViewCell.m in Sources */,
 				4877EDBC17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */,
 				485E38A017B7E13C0089F0F1 /* HtmlViewController.m in Sources */,
-				485E38A717C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */,
+				485E38A717C0B7F30089F0F1 /* NumberAreaSalutationsViewController.m in Sources */,
 				4814EA3717CA993F004B7A3C /* CreditBuyCell.m in Sources */,
 				4814EA3E17CB1924004B7A3C /* CreditAmountCell.m in Sources */,
 				48C1D3C517D31309004F910D /* ProofImageViewController.m in Sources */,
@@ -3283,7 +3289,7 @@
 				48251B9C187F4A8A00E69C3A /* SettingsViewController.m in Sources */,
 				4877EDBD17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */,
 				485E38A117B7E13C0089F0F1 /* HtmlViewController.m in Sources */,
-				485E38A817C0B7F30089F0F1 /* NumberAreaTitlesViewController.m in Sources */,
+				485E38A817C0B7F30089F0F1 /* NumberAreaSalutationsViewController.m in Sources */,
 				4814EA3817CA993F004B7A3C /* CreditBuyCell.m in Sources */,
 				4814EA3F17CB1924004B7A3C /* CreditAmountCell.m in Sources */,
 				48C1D3C617D31309004F910D /* ProofImageViewController.m in Sources */,

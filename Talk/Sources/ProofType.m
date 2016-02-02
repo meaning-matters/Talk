@@ -8,7 +8,79 @@
 
 #import "ProofType.h"
 
+typedef NS_ENUM(NSUInteger, ProofTypeMask)
+{
+    ProofTypeUtilityMask      = 1UL << 0,
+    ProofTypeCompanyMask      = 1UL << 1,
+    ProofTypePassportMask     = 1UL << 2,
+    ProofTypeIdOrPassportMask = 1UL << 3,
+};
+
+
+
+@interface ProofType ()
+
+@property (nonatomic, strong) NSDictionary* proofTypes;
+@property (nonatomic, strong) Salutation*   salutation;
+
+@end
+
+
 @implementation ProofType
+
+- (instancetype)initWithProofTypes:(NSDictionary*)proofTypes salutation:(Salutation*)salutation
+{
+    if (self = [super init])
+    {
+        _proofTypes = proofTypes;
+        _salutation = salutation;
+    }
+
+    return self;
+}
+
+
+- (NSString*)localizedString
+{
+    NSString* key       = self.salutation.isPerson ? @"person" : @"company";
+    NSString* proofType = self.proofTypes[key];
+    NSString* string    = nil;
+
+    if ([proofType isEqualToString:@"UTILITY"])
+    {
+        string = NSLocalizedStringWithDefaultValue(@"ProofType Utility", nil, [NSBundle mainBundle],
+                                                   @"Utility Bill",
+                                                   @"\n"
+                                                   @"[One line].");
+    }
+
+    if ([proofType isEqualToString:@"COMPANY"])
+    {
+        string = NSLocalizedStringWithDefaultValue(@"ProofType Company", nil, [NSBundle mainBundle],
+                                                   @"Company Registration",
+                                                   @"\n"
+                                                   @"[One line].");
+    }
+
+    if ([proofType isEqualToString:@"PASSPORT"])
+    {
+        string = NSLocalizedStringWithDefaultValue(@"ProofType Passport", nil, [NSBundle mainBundle],
+                                                   @"Passport",
+                                                   @"\n"
+                                                   @"[One line].");
+    }
+
+    if ([proofType isEqualToString:@"ID_OR_PASSPORT"])
+    {
+        string = NSLocalizedStringWithDefaultValue(@"ProofType ID or Passport", nil, [NSBundle mainBundle],
+                                                   @"Identity Card or Passport",
+                                                   @"\n"
+                                                   @"[One line].");
+    }
+
+    return string;
+}
+
 
 + (NSString*)stringForProofTypeMask:(ProofTypeMask)mask
 {

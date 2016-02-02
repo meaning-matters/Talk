@@ -76,7 +76,7 @@
 {
     if ([phoneNumber isValid] == YES)
     {
-        completion ? completion() : (void)0;
+        completion ? completion() : 0;
     }
     else
     {
@@ -119,7 +119,7 @@
         {
             if (buttonIndex == 1)
             {
-                completion ? completion() : (void)0;
+                completion ? completion() : 0;
             }
         }
                              cancelButtonTitle:[Strings cancelString]
@@ -440,7 +440,7 @@
                     
                 call = [self callPhoneNumber:phoneNumber fromIdentity:identity showCallerId:showCallerId contactId:contactId];
                 
-                completion ? completion(call) : (void)0;
+                completion ? completion(call) : 0;
             }];
         }];
     }

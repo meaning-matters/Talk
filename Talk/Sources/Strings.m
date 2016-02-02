@@ -274,56 +274,12 @@
 }
 
 
-+ (NSString*)mrString
-{
-    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Mister", nil, [NSBundle mainBundle],
-                                             @"Mr.",
-                                             @"Title for man (mister), both married or not married.\n"
-                                             @"[One line].");
-}
-
-
-+ (NSString*)msString
-{
-    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Miss", nil, [NSBundle mainBundle],
-                                             @"Ms.",
-                                             @"Title for woman (miss), both married or not married.\n"
-                                             @"[One line].");
-}
-
-
 + (NSString*)companyString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Company", nil, [NSBundle mainBundle],
                                              @"Company",
                                              @"Title indicating a company (opposed to personal Mr. or Ms.).\n"
                                              @"[One line].");
-}
-
-
-//### Perhaps move elsewhere.
-+ (NSString*)localizedSalutation:(NSString*)salutation
-{
-    NSString* localized;
-
-    if ([salutation rangeOfString:@"MR" options:NSCaseInsensitiveSearch].location != NSNotFound)
-    {
-        localized = [Strings mrString];
-    }
-    else if ([salutation rangeOfString:@"MS" options:NSCaseInsensitiveSearch].location != NSNotFound)
-    {
-        localized = [Strings msString];
-    }
-    else if ([salutation rangeOfString:@"COMPANY" options:NSCaseInsensitiveSearch].location != NSNotFound)
-    {
-        localized = [Strings companyString];
-    }
-    else
-    {
-        localized = nil;
-    }
-
-    return localized;
 }
 
 

@@ -24,7 +24,7 @@
                  isoCountryCode:(NSString*)isoCountryCode
                        areaCode:(NSString*)areaCode
                      numberType:(NumberTypeMask)numberTypeMask
-                      proofType:(NSDictionary*)proofType
+                     proofTypes:(NSDictionary*)proofTypes
                      completion:(void (^)(AddressData* address))completion; // Only if new address was created.
 
 @end

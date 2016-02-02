@@ -7,20 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-
-typedef NS_ENUM(NSUInteger, ProofTypeMask)
-{
-    ProofTypeUtilityMask      = 1UL << 0,
-    ProofTypeCompanyMask      = 1UL << 1,
-    ProofTypePassportMask     = 1UL << 2,
-    ProofTypeIdOrPassportMask = 1UL << 3,
-};
+#import "Salutation.h"
 
 
 @interface ProofType : NSObject
 
-+ (NSString*)stringForProofTypeMask:(ProofTypeMask)mask;
+@property (nonatomic, readonly) NSString* localizedString;
 
-+ (ProofTypeMask)proofTypeMaskForString:(NSString*)string;
+- (instancetype)initWithProofTypes:(NSDictionary*)proofTypes salutation:(Salutation*)salutation;
 
 @end

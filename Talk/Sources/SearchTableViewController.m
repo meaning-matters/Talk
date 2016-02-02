@@ -109,7 +109,7 @@
     }
 }
 
-/*
+/*//###
 - (void)setIsLoading:(BOOL)isLoading
 {
     isLoading = isLoading;

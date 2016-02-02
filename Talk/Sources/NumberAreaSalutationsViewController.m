@@ -1,26 +1,27 @@
 //
-//  NumberAreaTitlesViewController.m
+//  NumberAreaSalutationsViewController.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 18/08/13.
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
-#import "NumberAreaTitlesViewController.h"
+#import "NumberAreaSalutationsViewController.h"
 #import "Strings.h"
 
 
-@interface NumberAreaTitlesViewController ()
+@interface NumberAreaSalutationsViewController ()
 
-@property (nonatomic, strong) AddressData* address;
 @property (nonatomic, strong) NSIndexPath* selectedIndexPath;
+@property (nonatomic, strong) Salutation*  salutation;
+@property (nonatomic, copy) void (^completion)(void);
 
 @end
 
 
-@implementation NumberAreaTitlesViewController
+@implementation NumberAreaSalutationsViewController
 
-- (instancetype)initWithAddress:(AddressData*)address
+- (instancetype)initWithSalutation:(Salutation*)salutation completion:(void (^)(void))completion
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
@@ -29,16 +30,11 @@
                                                        @"Title of screen with list of titles: Mr., Ms., ...\n"
                                                        @"[1 line larger font].");
 
-        self.address = address;
+        _salutation = salutation;
+        _completion = [completion copy];
     }
 
     return self;
-}
-
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
 }
 
 
@@ -58,8 +54,8 @@
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
-    BOOL                selected;
+    UITableViewCell* cell;
+    BOOL             selected;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
@@ -71,29 +67,26 @@
     {
         case 0:
         {
-            selected               = [self.address.salutation isEqualToString:@"MR"];
-            self.selectedIndexPath = selected ? indexPath : self.selectedIndexPath;
-            cell.accessoryType     = selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            cell.textLabel.text    = [Strings mrString];
+            selected = (self.salutation.value == SalutationValueMs);
+            cell.textLabel.text = [Salutation localizedStringForValue:SalutationValueMs];
             break;
         }
         case 1:
         {
-            selected               = [self.address.salutation isEqualToString:@"MS"];
-            self.selectedIndexPath = selected ? indexPath : self.selectedIndexPath;
-            cell.accessoryType     = selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            cell.textLabel.text    = [Strings msString];
+            selected = (self.salutation.value == SalutationValueMr);
+            cell.textLabel.text = [Salutation localizedStringForValue:SalutationValueMr];
             break;
         }
         case 2:
         {
-            selected               = [self.address.salutation isEqualToString:@"COMPANY"];
-            self.selectedIndexPath = selected ? indexPath : self.selectedIndexPath;
-            cell.accessoryType     = selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            cell.textLabel.text    = [Strings companyString];
+            selected = (self.salutation.value == SalutationValueCompany);
+            cell.textLabel.text = [Salutation localizedStringForValue:SalutationValueCompany];
             break;
         }
     }
+
+    self.selectedIndexPath = selected ? indexPath : self.selectedIndexPath;
+    cell.accessoryType     = selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 
     return cell;
 }
@@ -107,17 +100,17 @@
     {
         case 0:
         {
-            self.address.salutation = @"MR";
+            self.salutation.value = SalutationValueMs;
             break;
         }
         case 1:
         {
-            self.address.salutation = @"MS";
+            self.salutation.value = SalutationValueMr;
             break;
         }
         case 2:
         {
-            self.address.salutation = @"COMPANY";
+            self.salutation.value = SalutationValueCompany;
             break;
         }
     }
@@ -130,6 +123,7 @@
     cell               = [tableView cellForRowAtIndexPath:self.selectedIndexPath];
     cell.accessoryType = UITableViewCellAccessoryNone;
 
+    self.completion ? self.completion() : 0;
     [self.navigationController popViewControllerAnimated:YES];
 }
 

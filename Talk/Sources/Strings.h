@@ -69,13 +69,7 @@
 
 + (NSString*)callString;
 
-+ (NSString*)mrString;
-
-+ (NSString*)msString;
-
 + (NSString*)companyString;
-
-+ (NSString*)localizedSalutation:(NSString*)salutation;
 
 + (NSString*)salutationString;
 

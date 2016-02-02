@@ -122,7 +122,7 @@ typedef enum
     
     if ([self isMovingFromParentViewController])
     {
-         self.completion ? self.completion(self.selectedCallable, [self showCallerId]) : (void)0;
+         self.completion ? self.completion(self.selectedCallable, [self showCallerId]) : 0;
     }
 }
 
@@ -382,7 +382,7 @@ typedef enum
     self.callerId = nil;
     self.selectedCallable = nil;
     
-    self.completion ? self.completion(nil, [self showCallerId]) : (void)0;
+    self.completion ? self.completion(nil, [self showCallerId]) : 0;
     
     [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
     
