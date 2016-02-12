@@ -222,7 +222,7 @@
 
     if ([state[@"geographics"] intValue] > 0)
     {
-        cell.textLabel.text  = name;
+        cell.textLabel.text = name;
     }
     else
     {
