@@ -11,6 +11,7 @@
 #import "BlockAlertView.h"
 #import "Strings.h"
 #import "NumberAreasViewController.h"
+#import "Common.h"
 
 
 @interface NumberStatesViewController ()
@@ -160,6 +161,33 @@
         }
     }
 
+    if ([state[@"geographics"] intValue] == 0)
+    {
+        NSString* title;
+        NSString* message;
+
+        title   = NSLocalizedStringWithDefaultValue(@"NumberStates UnavailableTitle", nil,
+                                                    [NSBundle mainBundle], @"Not Available",
+                                                    @".\n"
+                                                    @"[iOS alert title size].");
+        message = NSLocalizedStringWithDefaultValue(@"NumberStates UnavailableMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"There are no geographic numbers available in this state.\n\n"
+                                                    @"This may change in the future.",
+                                                    @"....\n"
+                                                    @"[iOS alert message size!]");
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+         {
+             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+         }
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+
+        return;
+    }
+
     NumberAreasViewController* viewController;
     viewController = [[NumberAreasViewController alloc] initWithIsoCountryCode:isoCountryCode
                                                                          state:state
@@ -180,7 +208,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
-    // Look up country.
+    // Look up state.
     for (state in self.objectsArray)
     {
         if ([state[@"stateName"] isEqualToString:name])
@@ -190,8 +218,16 @@
     }
 
     cell.imageView.image = [UIImage imageNamed:isoCountryCode];
-    cell.textLabel.text  = name;
     cell.accessoryType   = UITableViewCellAccessoryNone;
+
+    if ([state[@"geographics"] intValue] > 0)
+    {
+        cell.textLabel.text  = name;
+    }
+    else
+    {
+        cell.textLabel.attributedText = [Common strikethroughAttributedString:name];
+    }
 
     return cell;
 }

@@ -376,7 +376,9 @@ static void processDnsReply(DNSServiceRef       sdRef,
                                completionHandler:^(NSURLResponse* response, NSData* data, NSError* error)
         {
             NSDictionary* reply = [Common objectWithJsonData:data];
-            
+
+// Got this error here at GENEVA airport (also did not select the fallback api.numberbay.com): Error Domain=NSURLErrorDomain Code=-1202 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “api3.numberbay.com” which could put your confidential information at risk." UserInfo=0x1703a3aa0 {NSURLErrorFailingURLPeerTrustErrorKey=<SecTrustRef: 0x1742c4910>, NSLocalizedRecoverySuggestion=Would you like to connect to the server anyway?, _kCFStreamErrorCodeKey=-9843
+
             if (reply != nil && [reply[@"status"] isEqualToString:@"OK"])
             {
                 // This method returns as soon a the first response is received, meaning
@@ -516,7 +518,8 @@ static void processDnsReply(DNSServiceRef       sdRef,
         }
         else
         {
-            server = nil;
+            [self useFallbackServer];
+            server = [self.servers firstObject];
         }
         
         NBLog(@"Selected server: %@.", server[@"target"]);

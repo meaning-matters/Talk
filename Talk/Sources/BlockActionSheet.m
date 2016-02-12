@@ -67,9 +67,9 @@
             self.destructiveButtonIndex = index;
         }
 
-        for (NSString* title = otherButtonTitles; title != nil; title = (__bridge NSString*)va_arg(arguments, void*))
+        for (NSString* buttonTitle = otherButtonTitles; title != nil; title = (__bridge NSString*)va_arg(arguments, void*))
         {
-            [self addButtonWithTitle:title];
+            [self addButtonWithTitle:buttonTitle];
             self.otherNumberOfButtons++;
         }
 
@@ -84,7 +84,7 @@
 }
 
 
-#pragma Action Sheet Delegate
+#pragma mark - Action Sheet Delegate
 
 - (void)willPresentActionSheet:(UIActionSheet*)actionSheet
 {
