@@ -51,7 +51,6 @@ typedef enum
 
 @property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
 
-
 @end
 
 
@@ -61,8 +60,9 @@ typedef enum
 - (instancetype)initWithRecording:(RecordingData*)recording
              managedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
-    self.recording = recording;
-    isNew          = (recording == nil);
+    self.recording            = recording;
+    self.managedObjectContext = managedObjectContext;
+    isNew                     = (recording == nil);
 
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
@@ -78,7 +78,7 @@ typedef enum
         // Select initial audio route.
         audioRouteChangeListener(NULL, kAudioSessionProperty_AudioRouteChange, 0, NULL);
 
-        NSNotificationCenter*   center = [NSNotificationCenter defaultCenter];
+        NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
         willResignActiveObserver = [center addObserverForName:UIApplicationWillResignActiveNotification
                                                        object:nil
                                                         queue:[NSOperationQueue mainQueue]
@@ -145,9 +145,9 @@ typedef enum
         duration = audioPlayer.duration;
     }
 
-    self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                                                            target:self
-                                                                                            action:@selector(saveAction)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                                                           target:self
+                                                                                           action:@selector(saveAction)];
 
     NSArray*    topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"RecordingControlsCell" owner:self options:nil];
     controlsCell = [topLevelObjects objectAtIndex:0];
@@ -198,7 +198,7 @@ typedef enum
 {
     [super viewWillAppear:animated];
 
-    [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+  //  [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
 
     OSStatus result = AudioSessionAddPropertyListener(kAudioSessionProperty_AudioRouteChange,
                                                       audioRouteChangeListener,
@@ -523,7 +523,7 @@ typedef enum
 {
     if (isPausedPlaying == NO && isNew)
     {
-        NSError*    error;
+        NSError* error;
         audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioRecorder.url error:&error];
         if (error == nil)
         {
@@ -857,8 +857,10 @@ typedef enum
     self.meterProgressView.hidden = !((isNew && !canPlay) || isRecording || isPausedRecording);
     self.timeSlider.hidden        = !self.meterProgressView.hidden;
     self.recordButton.hidden      = !(isNew && !isRecording && !isPausedRecording && !isPlaying && !isPausedPlaying);
+    self.stopButton.hidden        = !self.recordButton.hidden;
     self.pauseButton.hidden       = !(isRecording || isPlaying);
     self.continueButton.hidden    = !(isPausedRecording);
+    self.playButton.hidden        = (isRecording || isPlaying || isPausedRecording);
 
     // These expressions are only correct for when the UI item is visible.
     self.timeSlider.enabled       = isPlaying && !isForwarding && !isReversing && !isPausedPlaying;

@@ -95,7 +95,7 @@ typedef enum
 #if HAS_FULL_DESTINATIONS
     fetchedRecordingsController  = [[DataManager sharedManager] fetchResultsForEntityName:@"Recording"
                                                                              withSortKeys:@[@"name"]
-                                                                                    error:&error];
+                                                                     managedObjectContext:self.managedObjectContext];
     fetchedRecordingsController.delegate = self;
 #endif
 }
