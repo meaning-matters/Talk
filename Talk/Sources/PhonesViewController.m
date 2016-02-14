@@ -126,7 +126,7 @@ const NSInteger kUseButtonTag = 123;
 }
 
 
-#pragma mark - Table view data source
+#pragma mark - Table View Delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {

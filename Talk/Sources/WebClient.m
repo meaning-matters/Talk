@@ -1050,6 +1050,8 @@
                       statements:(NSArray*)statements
                            reply:(void (^)(NSError* error))reply
 {
+    AnalysticsTrace(@"API_19");
+
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"name"       : name,
                                  @"statements" : [self stripE164InStatements:statements]};
@@ -1067,6 +1069,8 @@
 - (void)deleteIvrForUuid:(NSString*)uuid
                    reply:(void (^)(NSError* error))reply
 {
+    AnalysticsTrace(@"API_20");
+
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self deletePath:[NSString stringWithFormat:@"/users/%@/ivr/%@", username, uuid]
@@ -1081,6 +1085,8 @@
 // 21. GET LIST OF IVRS
 - (void)retrieveIvrList:(void (^)(NSError* error, NSArray* uuids))reply
 {
+    AnalysticsTrace(@"API_21");
+
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self getPath:[NSString stringWithFormat:@"/users/%@/ivr", username]
@@ -1089,10 +1095,12 @@
 }
 
 
-// 22. Download IVR
+// 22. DOWNLOAD IVR
 - (void)retrieveIvrForUuid:(NSString*)uuid
                      reply:(void (^)(NSError* error, NSString* name, NSArray* statements))reply
 {
+    AnalysticsTrace(@"API_22");
+
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self getPath:[NSString stringWithFormat:@"/users/%@/ivr/%@", username, uuid]
@@ -1118,6 +1126,8 @@
                 uuid:(NSString*)uuid
                reply:(void (^)(NSError* error))reply
 {
+    AnalysticsTrace(@"API_23");
+
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSString*     number     = [e164 substringFromIndex:1];
     NSDictionary* parameters = @{@"uuid" : uuid};
@@ -1135,6 +1145,8 @@
 - (void)retrieveIvrOfE164:(NSString*)e164
                     reply:(void (^)(NSError* error, NSString* uuid))reply
 {
+    AnalysticsTrace(@"API_24");
+
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
@@ -1154,24 +1166,118 @@
 }
 
 
-// 25. UPLOAD AUDIO OR RENAME AUDIO FILE
-// ...
+// 25. UPDATE AUDIO
+- (void)updateAudioForUuid:(NSString*)uuid
+                      data:(NSData*)data
+                  mimeType:(NSString*)mimeType
+                      name:(NSString*)name
+                     reply:(void (^)(NSError* error))reply
+{
+    AnalysticsTrace(@"API_25");
+
+    NSString*            username   = [Settings sharedSettings].webUsername;
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+
+    (data        != nil) ? parameters[@"data"]     = [Base64 encode:data] : 0;
+    (mimeType    != nil) ? parameters[@"mimeType"] = mimeType             : 0;
+    (name.length  > 0)   ? parameters[@"name"]     = name                 : 0;
+
+    [self putPath:[NSString stringWithFormat:@"/users/%@/audio/%@", username, uuid]
+       parameters:parameters
+            reply:^(NSError* error, id content)
+    {
+        reply(error);
+    }];
+}
 
 
-// 26. DOWNLOAD AUDIO FILE
-// ...
+// 26. DOWNLOAD AUDIO
+- (void)retrieveAudioForUuid:(NSString*)uuid
+                       reply:(void (^)(NSError*  error,
+                                       NSString* name,
+                                       NSData*   data,
+                                       NSString* mimeType))reply
+{
+    AnalysticsTrace(@"API_26");
+
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self getPath:[NSString stringWithFormat:@"/users/%@/audio/%@", username, uuid]
+       parameters:nil
+            reply:^(NSError* error, id content)
+    {
+        if (error == nil)
+        {
+            reply(nil,
+                  content[@"name"],
+                  [Base64 decode:content[@"data"]],
+                  content[@"mimeType"]);
+        }
+        else
+        {
+            reply(error, nil, nil, nil);
+        }
+    }];
+}
 
 
-// 27. DELETE AUDIO FILE
-// ...
+// 27. DELETE AUDIO
+- (void)deleteAudioForUuid:(NSString*)uuid
+                     reply:(void (^)(NSError*  error))reply
+{
+    AnalysticsTrace(@"API_27");
+
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self deletePath:[NSString stringWithFormat:@"/users/%@/audio/%@", username, uuid]
+          parameters:nil
+               reply:^(NSError *error, id content)
+    {
+        reply(error);
+    }];
+}
 
 
-// 28. GET LIST OF AUDIO UUID'S ON SERVER
-// ...
+// 28. GET LIST OF AUDIO UUID'S
+- (void)retrieveAudioList:(void (^)(NSError* error, NSArray* uuids))reply
+{
+    AnalysticsTrace(@"API_28");
+
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self getPath:[NSString stringWithFormat:@"/users/%@/audio", username]
+       parameters:nil
+            reply:reply];
+}
 
 
-// 29. USER FEEDBACK
-// ...
+// 29. CREATE AUDIO
+- (void)createAudioWithData:(NSData*)data
+                   mimeType:(NSString*)mimeType
+                       name:(NSString*)name
+                      reply:(void (^)(NSError* error, NSString* uuid))reply
+{
+    AnalysticsTrace(@"API_29");
+
+    NSString*     username   = [Settings sharedSettings].webUsername;
+    NSDictionary* parameters = @{@"data"     : [Base64 encode:data],
+                                 @"mimeType" : mimeType,
+                                 @"name"     : name};
+
+    [self postPath:[NSString stringWithFormat:@"/users/%@/audio", username]
+        parameters:parameters
+             reply:^(NSError* error, id content)
+    {
+        if (error == nil)
+        {
+            reply(nil, content[@"uuid"]);
+        }
+        else
+        {
+            reply(error, nil);
+        }
+    }];
+}
 
 
 // 32. INITIATE CALLBACK
@@ -1686,6 +1792,60 @@
     [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
                                                     path:[NSString stringWithFormat:@"/users/%@/numbers/%@/ivr",
                                                           username, number]];
+}
+
+
+// 25.
+- (void)cancellAllUpdateAudioForUuid:(NSString*)uuid
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
+                                                    path:[NSString stringWithFormat:@"/users/%@/audio/%@",
+                                                          username, uuid]];
+}
+
+
+// 26.
+- (void)cancelAllRetrieveAudioForUuid:(NSString*)uuid
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/users/%@/audio/%@",
+                                                          username, uuid]];
+}
+
+
+// 27.
+- (void)cancelAllDeleteAudioForUuid:(NSString*)uuid
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
+                                                    path:[NSString stringWithFormat:@"/users/%@/audio/%@",
+                                                          username, uuid]];}
+
+
+// 28.
+- (void)cancelAllRetrieveAudioList
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/users/%@/audio",
+                                                          username]];
+}
+
+
+// 29.
+- (void)cancelAllCreateAudio
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
+                                                    path:[NSString stringWithFormat:@"/users/%@/audio",
+                                                          username]];
 }
 
 

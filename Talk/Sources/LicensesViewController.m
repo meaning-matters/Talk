@@ -59,7 +59,7 @@
 }
 
 
-#pragma mark - Table view data source
+#pragma mark - Table View Data Source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
@@ -102,7 +102,7 @@
 }
 
 
-#pragma mark - Table view delegate
+#pragma mark - Table View Delegate
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {

@@ -37,7 +37,8 @@
                      @"FAIL_UNKNOWN_BOTH_E164"       : @(WebStatusFailUnknownBothE164),
                      @"FAIL_ADDRESS_IN_USE"          : @(WebStatusFailAddressInUse),
                      @"FAIL_ADDRESS_UNKNOWN"         : @(WebStatusFailAddressUnknown),
-                     @"FAIL_NO_NUMBERS_IN_STOCK"     : @(WebStatusFailNoNumbersInStock)};
+                     @"FAIL_NO_NUMBERS_IN_STOCK"     : @(WebStatusFailNoNumbersInStock),
+                     @"FAIL_AUDIO_IN_USE"            : @(WebStatusFailAudioInUse)};
     });
     
     NSNumber*     number = statuses[string];
@@ -209,6 +210,14 @@
         {
             string = NSLocalizedStringWithDefaultValue(@"WebClient NoNumbersInStock", nil, [NSBundle mainBundle],
                                                        @"Numbers in this area are out of stock. Please try again later.",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+        }
+        case WebStatusFailAudioInUse:
+        {
+            string = NSLocalizedStringWithDefaultValue(@"WebClient AudioInUse", nil, [NSBundle mainBundle],
+                                                       @"This Recording is still being used.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;

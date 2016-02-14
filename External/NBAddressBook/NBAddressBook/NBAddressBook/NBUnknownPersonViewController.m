@@ -98,7 +98,7 @@
     //Leave empty, nothing needs to happen
 }
 
-#pragma mark - Table view data source
+#pragma mark - Table View Data Source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     //Four sections (plus the first one to bump down the cells for the name)
@@ -227,7 +227,7 @@
     }
 }
 
-#pragma mark - Table view delegate
+#pragma mark - Table View Delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

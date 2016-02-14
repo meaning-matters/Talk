@@ -61,6 +61,7 @@
 		4814EA3F17CB1924004B7A3C /* CreditAmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */; };
 		4816A0A01BF129A300817ED7 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBD917007CC6000ECC71 /* DataManager.m */; };
 		48172C021C07017800927BC2 /* RatesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48172C011C07017800927BC2 /* RatesTab@2x.png */; };
+		481DFBAB1C70CAC1009191B0 /* RecordingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 481DFBAA1C70CAC1009191B0 /* RecordingsViewController.m */; };
 		48200D1C16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
 		48200D1D16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
 		48232B721BFC8E5D006D667E /* AddressData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48232B701BFC8E5D006D667E /* AddressData.m */; };
@@ -751,6 +752,8 @@
 		4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditAmountCell.m; sourceTree = "<group>"; };
 		4816A09F1BF1043E00817ED7 /* Data2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data2.0.xcdatamodel; sourceTree = "<group>"; };
 		48172C011C07017800927BC2 /* RatesTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RatesTab@2x.png"; sourceTree = "<group>"; };
+		481DFBA91C70CAC1009191B0 /* RecordingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingsViewController.h; sourceTree = "<group>"; };
+		481DFBAA1C70CAC1009191B0 /* RecordingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordingsViewController.m; sourceTree = "<group>"; };
 		48200D1A16EC89BA0069677E /* NumberType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberType.h; sourceTree = "<group>"; };
 		48200D1B16EC89BA0069677E /* NumberType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberType.m; sourceTree = "<group>"; };
 		48232B611BFBC70B006D667E /* Data2.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data2.1.xcdatamodel; sourceTree = "<group>"; };
@@ -2429,6 +2432,8 @@
 				484943AC1753C00000E1D5C4 /* ThanksViewController.m */,
 				48C4319F189EDFB40008FE01 /* VerifyPhoneViewController.h */,
 				48C431A0189EDFB40008FE01 /* VerifyPhoneViewController.m */,
+				481DFBA91C70CAC1009191B0 /* RecordingsViewController.h */,
+				481DFBAA1C70CAC1009191B0 /* RecordingsViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -3185,6 +3190,7 @@
 				48367A47172552D2001A02AF /* RecordingControlsCell.m in Sources */,
 				48B8134F1AADF9460019AF77 /* NBCustomValueTableViewController.m in Sources */,
 				48CA503D172C5EB400CB1B7B /* DestinationViewController.m in Sources */,
+				481DFBAB1C70CAC1009191B0 /* RecordingsViewController.m in Sources */,
 				48CA5042172FC6C800CB1B7B /* DestinationSequenceViewController.m in Sources */,
 				48B0C3F9174989F500DAB3BD /* Keychain.m in Sources */,
 				48A0CE781809BE3100B8A9F8 /* CallBaseViewController.m in Sources */,

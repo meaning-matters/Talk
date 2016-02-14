@@ -84,7 +84,7 @@
 }
 
 
-#pragma mark - Table View Delegate
+#pragma mark - Table View Delegates
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {

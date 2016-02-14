@@ -615,7 +615,7 @@
 }
 
 
-#pragma mark - Table view data source
+#pragma mark - Table View Data Source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return [personStructureManager.tableStructure count];
@@ -1366,7 +1366,7 @@
 }
 
 
-#pragma mark - Table view delegate
+#pragma mark - Table View Delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NBPersonCellInfo * cellInfo = [personStructureManager getVisibleCellForIndexPath:indexPath];
@@ -1730,7 +1730,7 @@
 }
 
 
-#pragma mark - Tableview footer button delegates
+#pragma mark - Tableview Footer Button Delegates
 - (void)firstFooterButtonPressed
 {
 #warning - ReplaceMe : Used to add the user to the first dummy group

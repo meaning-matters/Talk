@@ -224,7 +224,7 @@
 - (void)retrieveCallRateForE164:(NSString*)e164
                           reply:(void (^)(NSError* error, float ratePerMinute))reply;
 
-// 19. CREATE OR UPDATE IVR
+// 19. CREATE OR UPDATE IVRI
 - (void)createOrUpdateIvrForUuid:(NSString*)uuid
                             name:(NSString*)name
                       statements:(NSArray*)statements
@@ -250,6 +250,32 @@
 - (void)retrieveIvrOfE164:(NSString*)e164
                     reply:(void (^)(NSError* error, NSString* uuid))reply;
 
+// 25. UPDATE AUDIO
+- (void)updateAudioForUuid:(NSString*)uuid
+                      data:(NSData*)data
+                  mimeType:(NSString*)mimeType
+                      name:(NSString*)name
+                     reply:(void (^)(NSError* error))reply;
+
+// 26. DOWNLOAD AUDIO
+- (void)retrieveAudioForUuid:(NSString*)uuid
+                       reply:(void (^)(NSError*  error,
+                                       NSString* name,
+                                       NSData*   data,
+                                       NSString* mimeType))reply;
+
+// 27. DELETE AUDIO
+- (void)deleteAudioForUuid:(NSString*)uuid
+                     reply:(void (^)(NSError*  error))reply;
+
+// 28. GET LIST OF AUDIO UUID'S
+- (void)retrieveAudioList:(void (^)(NSError* error, NSArray* uuids))reply;
+
+// 29. CREATE AUDIO
+- (void)createAudioWithData:(NSData*)data
+                   mimeType:(NSString*)mimeType
+                       name:(NSString*)name
+                      reply:(void (^)(NSError* error, NSString* uuid))reply;
 
 // 32. INITIATE CALLBACK
 - (void)initiateCallbackForCallbackE164:(NSString*)callbackE164
@@ -369,6 +395,33 @@
 
 // 19.
 - (void)cancelAllCreateIvrForUuid:(NSString*)uuid;
+
+// 20.
+- (void)cancelAllDeleteIvrForUuid:(NSString*)uuid;
+
+// 21.
+- (void)cancelAllRetrieveIvrList;
+
+// 22.
+- (void)cancelAllRetrieveIvrForUuid:(NSString*)uuid;
+
+// 23.
+- (void)cancelAllSetIvrOfE164:(NSString*)e164;
+
+// 25.
+- (void)cancellAllUpdateAudioForUuid:(NSString*)uuid;
+
+// 26.
+- (void)cancelAllRetrieveAudioForUuid:(NSString*)uuid;
+
+// 27.
+- (void)cancelAllDeleteAudioForUuid:(NSString*)uuid;
+
+// 28.
+- (void)cancelAllRetrieveAudioList;
+
+// 29.
+- (void)cancelAllCreateAudio;
 
 // 32.
 - (void)cancelAllInitiateCallback;

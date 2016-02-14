@@ -382,7 +382,7 @@
 }
 
 
-#pragma mark - Tableview delegate
+#pragma mark - Tableview Delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //Get the ref of the selected person
@@ -429,7 +429,7 @@
 }
 
 
-#pragma mark - Tableview datasource
+#pragma mark - Table View Data Source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     //If we're filtering, just show the contacts

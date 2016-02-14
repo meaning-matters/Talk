@@ -78,7 +78,7 @@
 }
  */
 
-#pragma mark - Tableview methods overloaded for the calls-section
+#pragma mark - Tableview Methods Overloaded For The Calls-section
 - (CGFloat)tableView:(UITableView*)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == CC_NAME  && !self.tableView.isEditing )

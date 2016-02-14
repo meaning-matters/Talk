@@ -10,10 +10,10 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import "RecordingData.h"
+#import "ItemViewController.h"
 
 
-@interface RecordingViewController : UITableViewController <UITextFieldDelegate, UIGestureRecognizerDelegate,
-                                                            AVAudioRecorderDelegate, AVAudioPlayerDelegate>
+@interface RecordingViewController : ItemViewController <AVAudioRecorderDelegate, AVAudioPlayerDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel*               timeLabel;
 @property (nonatomic, weak) IBOutlet UIProgressView*        meterProgressView;

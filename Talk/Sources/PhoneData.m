@@ -180,7 +180,7 @@
             message = NSLocalizedStringWithDefaultValue(@"Destination InUseMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"Deleting this Phone failed: %@\n\n"
-                                                        @"Choose another Destination for each number that uses this one.",
+                                                        @"Choose another Destination for each Number that uses this one.",
                                                         @"Alert message telling ....\n"
                                                         @"[iOS alert message size]");
         }

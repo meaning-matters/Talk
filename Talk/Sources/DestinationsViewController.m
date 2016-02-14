@@ -256,7 +256,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
             if (fetchedRecordingsController.fetchedObjects.count == 0)
             {
-                [self doneRecordingsAction];
+              //###  [self doneRecordingsAction];
             }
         }
     }
@@ -264,6 +264,25 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
 
 #pragma mark - Actions
+
+// Is called from ItemsViewController (the baseclass).
+- (void)addAction
+{
+    switch (selectionSegmentedControl.selectedSegmentIndex)
+    {
+        case SelectionDestinations:
+        {
+            [self addDestinationAction];
+            break;
+        }
+        case SelectionRecordings:
+        {
+            [self addRecordingAction];
+            break;
+        }
+    }
+}
+
 
 - (void)selectionUpdateAction
 {
@@ -273,72 +292,21 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
         [Settings sharedSettings].destinationsSelection = selection;
     }
 
-    UIBarButtonItem* leftItem;
-    UIBarButtonItem* rightItem;
     switch (selection)
     {
         case SelectionDestinations:
         {
-            // This overrides button placement of ItemsViewController (the baseclass).
-            rightItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                      target:self
-                                                                      action:@selector(addDestinationAction)];
-
             self.tableView.hidden           = NO;
             self.recordingsTableView.hidden = YES;
             break;
         }
         case SelectionRecordings:
         {
-            if (self.recordingsTableView.isEditing == YES)
-            {
-                leftItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                         target:self
-                                                                         action:@selector(doneRecordingsAction)];
-                rightItem = nil;
-            }
-            else
-            {
-                if (fetchedRecordingsController.fetchedObjects.count > 0)
-                {
-                    leftItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                              target:self
-                                                                              action:@selector(editRecordingsAction)];
-                }
-                else
-                {
-                    rightItem = nil;
-                }
-
-                rightItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                          target:self
-                                                                          action:@selector(addRecordingAction)];
-            }
-
             self.tableView.hidden           = YES;
             self.recordingsTableView.hidden = NO;
             break;
         }
     }
-
-    self.navigationItem.leftBarButtonItem  = leftItem;
-    self.navigationItem.rightBarButtonItem = rightItem;
-}
-
-
-- (void)editRecordingsAction
-{
-    [self.recordingsTableView setEditing:YES animated:YES];
-
-    [self selectionUpdateAction];
-}
-
-
-- (void)doneRecordingsAction
-{
-    [self.recordingsTableView setEditing:NO animated:YES];
-
-    [self selectionUpdateAction];
 }
 
 
@@ -368,11 +336,25 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
 - (void)addRecordingAction
 {
-    RecordingViewController*    viewController;
-    viewController = [[RecordingViewController alloc] initWithRecording:nil
-                                                   managedObjectContext:self.managedObjectContext];
+    if ([Settings sharedSettings].haveAccount == YES)
+    {
+        UINavigationController*  modalViewController;
+        RecordingViewController* viewController;
 
-    [self.navigationController pushViewController:viewController animated:YES];
+        viewController = [[RecordingViewController alloc] initWithRecording:nil
+                                                       managedObjectContext:self.managedObjectContext];
+
+        modalViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
+        modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+
+        [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
+                                                               animated:YES
+                                                             completion:nil];
+    }
+    else
+    {
+        [Common showGetStartedViewController];
+    }
 }
 
 

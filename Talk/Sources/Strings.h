@@ -55,6 +55,10 @@
 
 + (NSString*)destinationsString;
 
++ (NSString*)recordingString;
+
++ (NSString*)recordingsString;
+
 + (NSString*)newPhoneString;
 
 + (NSString*)phoneString;

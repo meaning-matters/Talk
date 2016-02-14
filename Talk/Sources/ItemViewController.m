@@ -143,21 +143,18 @@
 
 - (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
 {
-    if (self.name.length > 0)
+    if (self.hasCorrectedInsets == YES)
     {
-        if (self.hasCorrectedInsets == YES)
-        {
-            //### Workaround: http://stackoverflow.com/a/22053349/1971013
-            [self.tableView setContentInset:UIEdgeInsetsMake(64, 0, 265, 0)];
-            [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(64, 0, 265, 0)];
+        //### Workaround: http://stackoverflow.com/a/22053349/1971013
+        [self.tableView setContentInset:UIEdgeInsetsMake(64, 0, 265, 0)];
+        [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(64, 0, 265, 0)];
 
-            self.hasCorrectedInsets = NO;
-        }
-
-        [self update];
-        [self save];
-        [[self.tableView superview] endEditing:YES];
+        self.hasCorrectedInsets = NO;
     }
+
+    [self update];
+    [self save];
+    [[self.tableView superview] endEditing:YES];
 }
 
 

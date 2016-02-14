@@ -19,6 +19,10 @@
 @property (nonatomic, retain) NSString* urlString;
 @property (nonatomic, retain) NSSet*    destinations;
 
+- (NSString*)cantDeleteMessage;
+
+- (void)deleteWithCompletion:(void (^)(BOOL succeeded))completion;
+
 @end
 
 

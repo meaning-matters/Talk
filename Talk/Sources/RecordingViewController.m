@@ -152,13 +152,6 @@ typedef enum
     NSArray*    topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"RecordingControlsCell" owner:self options:nil];
     controlsCell = [topLevelObjects objectAtIndex:0];
 
-    // Let keyboard be hidden when user taps outside text fields.
-    UITapGestureRecognizer* gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                        action:@selector(hideKeyboard:)];
-    gestureRecognizer.cancelsTouchesInView = NO;
-    gestureRecognizer.delegate = self;
-    [self.tableView addGestureRecognizer:gestureRecognizer];
-
     self.meterProgressView.progress = 0;
     self.timeSlider.value = 0;
 
@@ -931,12 +924,6 @@ static void audioRouteChangeListener(
             }
         }
     }
-}
-
-
-- (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
-{
-    [[self.tableView superview] endEditing:YES];
 }
 
 @end

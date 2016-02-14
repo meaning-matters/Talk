@@ -210,6 +210,24 @@
 }
 
 
++ (NSString*)recordingString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Recording", nil, [NSBundle mainBundle],
+                                             @"Recording",
+                                             @"Standard string to label voice recording\n"
+                                             @"[iOS standard size].");
+}
+
+
++ (NSString*)recordingsString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Recordings", nil, [NSBundle mainBundle],
+                                             @"Recordings",
+                                             @"Standard string to label voice recordings\n"
+                                             @"[iOS standard size].");
+}
+
+
 + (NSString*)newPhoneString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings New Phone", nil, [NSBundle mainBundle],
