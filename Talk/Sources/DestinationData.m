@@ -136,19 +136,19 @@
 
 - (void)updateDependenciesWithStatements:(NSString*)statements
 {
-    NSArray*     statementsArray = [Common mutableObjectWithJsonString:statements];
-    NSString*    e164            = statementsArray[0][@"call"][@"e164s"][0];
+    NSDictionary* action = [Common mutableObjectWithJsonString:statements];
+    NSString*     e164   = action[@"call"][@"e164s"][0];
 
     if ([e164 length] == 0)
     {
         return;
     }
 
-    NSPredicate* predicate       = [NSPredicate predicateWithFormat:@"e164 == %@", e164];
-    NSArray*     phones          = [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
-                                                                             sortKeys:nil
-                                                                            predicate:predicate
-                                                                 managedObjectContext:self.managedObjectContext];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"e164 == %@", e164];
+    NSArray*     phones    = [[DataManager sharedManager] fetchEntitiesWithName:@"Phone"
+                                                                       sortKeys:nil
+                                                                      predicate:predicate
+                                                           managedObjectContext:self.managedObjectContext];
 
     if (phones.count == 0)
     {

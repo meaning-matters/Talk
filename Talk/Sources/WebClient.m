@@ -121,23 +121,23 @@
 }
 
 
-- (NSArray*)stripE164InStatements:(NSArray*)statements
+- (NSDictionary*)stripE164InAction:(NSDictionary*)action
 {
-    NSMutableArray* mutableStatements = [Common mutableObjectWithJsonString:[Common jsonStringWithObject:statements]];
+    NSMutableDictionary* mutableAction = [Common mutableObjectWithJsonString:[Common jsonStringWithObject:action]];
 
-    [self traverseStatements:mutableStatements strip:YES];
+    [self traverseStatements:mutableAction strip:YES];
 
-    return mutableStatements;
+    return mutableAction;
 }
 
 
-- (NSArray*)restoreE164InStatements:(NSArray*)statements
+- (NSDictionary*)restoreE164InAction:(NSDictionary*)action
 {
-    NSMutableArray* mutableStatements = [Common mutableObjectWithJsonString:[Common jsonStringWithObject:statements]];
+    NSMutableDictionary* mutableAction = [Common mutableObjectWithJsonString:[Common jsonStringWithObject:action]];
 
-    [self traverseStatements:mutableStatements strip:NO];
+    [self traverseStatements:mutableAction strip:NO];
 
-    return mutableStatements;
+    return mutableAction;
 }
 
 
@@ -1044,17 +1044,44 @@
 // ...
 
 
-// 19. CREATE OR UPDATE IVR
-- (void)createOrUpdateIvrForUuid:(NSString*)uuid
-                            name:(NSString*)name
-                      statements:(NSArray*)statements
-                           reply:(void (^)(NSError* error))reply
+// 19A. CREATE IVR
+- (void)createIvrWithName:(NSString*)name
+                   action:(NSDictionary*)action
+                    reply:(void (^)(NSError* error, NSString* uuid))reply
 {
-    AnalysticsTrace(@"API_19");
+    AnalysticsTrace(@"API_19A");
 
     NSString*     username   = [Settings sharedSettings].webUsername;
-    NSDictionary* parameters = @{@"name"       : name,
-                                 @"statements" : [self stripE164InStatements:statements]};
+    NSDictionary* parameters = @{@"name"   : name,
+                                 @"action" : [self stripE164InAction:action]};
+
+    [self postPath:[NSString stringWithFormat:@"/users/%@/ivr", username]
+        parameters:parameters
+             reply:^(NSError* error, id content)
+    {
+        if (error == nil)
+        {
+            reply(nil, content[@"uuid"]);
+        }
+        else
+        {
+            reply(error, nil);
+        }
+    }];
+}
+
+
+// 19B. CREATE OR UPDATE IVR
+- (void)updateIvrForUuid:(NSString*)uuid
+                    name:(NSString*)name
+                  action:(NSDictionary*)action
+                   reply:(void (^)(NSError* error))reply
+{
+    AnalysticsTrace(@"API_19B");
+
+    NSString*     username   = [Settings sharedSettings].webUsername;
+    NSDictionary* parameters = @{@"name"   : name,
+                                 @"action" : [self stripE164InAction:action]};
 
     [self putPath:[NSString stringWithFormat:@"/users/%@/ivr/%@", username, uuid]
        parameters:parameters
@@ -1097,7 +1124,7 @@
 
 // 22. DOWNLOAD IVR
 - (void)retrieveIvrForUuid:(NSString*)uuid
-                     reply:(void (^)(NSError* error, NSString* name, NSArray* statements))reply
+                     reply:(void (^)(NSError* error, NSString* name, NSDictionary* action))reply
 {
     AnalysticsTrace(@"API_22");
 
@@ -1109,9 +1136,9 @@
     {
         if (error == nil)
         {
-            NSArray* statements = content[@"statements"];
-            statements = [self restoreE164InStatements:statements];
-            reply(nil, content[@"name"], statements);
+            NSDictionary* action = content[@"action"];
+            action = [self restoreE164InAction:action];
+            reply(nil, content[@"name"], action);
         }
         else
         {

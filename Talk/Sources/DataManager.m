@@ -740,7 +740,7 @@
             for (NSString* uuid in list)
             {
                 [[WebClient sharedClient] retrieveIvrForUuid:uuid
-                                                       reply:^(NSError* error, NSString* name, NSArray* statements)
+                                                       reply:^(NSError* error, NSString* name, NSDictionary* action)
                 {
                     if (error == nil)
                     {
@@ -766,7 +766,7 @@
 
                         destination.uuid       = uuid;
                         destination.name       = name;
-                        destination.statements = [Common jsonStringWithObject:statements];
+                        destination.statements = [Common jsonStringWithObject:action];
                     }
                     else
                     {

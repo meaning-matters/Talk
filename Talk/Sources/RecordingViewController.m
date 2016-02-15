@@ -49,8 +49,6 @@ typedef enum
     id                     willResignActiveObserver;
 }
 
-@property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
-
 @end
 
 

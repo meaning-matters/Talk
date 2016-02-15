@@ -34,13 +34,13 @@ typedef enum
 
 @interface DestinationViewController ()
 {
-    TableSections   sections;
-    BOOL            isNew;
-    BOOL            isDeleting;
+    TableSections        sections;
+    BOOL                 isNew;
+    BOOL                 isDeleting;
 
-    PhoneData*      phone;
-    NSMutableArray* statementsArray;
-    NSArray*        numbersArray;
+    PhoneData*           phone;
+    NSMutableDictionary* action;
+    NSArray*             numbersArray;
 }
 
 @end
@@ -71,7 +71,7 @@ typedef enum
             self.destination = [NSEntityDescription insertNewObjectForEntityForName:@"Destination"
                                                              inManagedObjectContext:self.managedObjectContext];
 
-            self.destination.statements = [Common jsonStringWithObject:@[@{@"call" : @{@"e164s" : @[@""]}}]];
+            self.destination.statements = [Common jsonStringWithObject:@{@"call" : @{@"e164s" : @[@""]}}];
         }
         else
         {
@@ -83,7 +83,7 @@ typedef enum
                                            context:nil];
         }
 
-        statementsArray = [Common mutableObjectWithJsonString:self.destination.statements];
+        action = [Common mutableObjectWithJsonString:self.destination.statements];
     }
     
     return self;
@@ -215,20 +215,18 @@ typedef enum
 - (void)createAction
 {
     self.destination.name = self.name;
-    statementsArray[0][@"call"][@"e164s"][0] = phone.e164;
-    self.destination.statements = [Common jsonStringWithObject:statementsArray];
+    action[@"call"][@"e164s"][0] = phone.e164;
+    self.destination.statements = [Common jsonStringWithObject:action];
 
     self.navigationItem.rightBarButtonItem.enabled = NO;
 
-    NSString* uuid = [[NSUUID UUID] UUIDString];
-    self.destination.uuid = uuid;
-    [[WebClient sharedClient] createOrUpdateIvrForUuid:uuid
-                                                  name:self.name
-                                            statements:statementsArray
-                                                 reply:^(NSError* error)
+    [[WebClient sharedClient] createIvrWithName:self.name
+                                         action:action
+                                          reply:^(NSError* error, NSString* uuid)
     {
         if (error == nil)
         {
+            self.destination.uuid = uuid;
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
         }
         else
@@ -245,22 +243,22 @@ typedef enum
 - (void)saveAction
 {
     if ([self.name isEqualToString:self.destination.name] == YES &&
-        [Common object:statementsArray isEqualToJsonString:self.destination.statements] == YES)
+        [Common object:action isEqualToJsonString:self.destination.statements] == YES)
     {
         // Nothing has changed.
         return;
     }
 
-    [[WebClient sharedClient] createOrUpdateIvrForUuid:self.destination.uuid
-                                                  name:self.name
-                                            statements:statementsArray
-                                                 reply:^(NSError* error)
+    [[WebClient sharedClient] updateIvrForUuid:self.destination.uuid
+                                          name:self.name
+                                        action:action
+                                         reply:^(NSError* error)
     {
         if (error == nil)
         {
             self.destination.name = self.name;
-            statementsArray[0][@"call"][@"e164s"][0] = phone.e164;
-            self.destination.statements = [Common jsonStringWithObject:statementsArray];
+            action[@"call"][@"e164s"][0] = phone.e164;
+            self.destination.statements = [Common jsonStringWithObject:action];
             
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
         }
@@ -486,7 +484,7 @@ typedef enum
                                                                              completion:^(PhoneData* selectedPhone)
             {
                 phone = selectedPhone;
-                self.destination.statements = [Common jsonStringWithObject:@[@{@"call" : @{@"e164s" : @[phone.e164]}}]];
+                self.destination.statements = [Common jsonStringWithObject:@{@"call" : @{@"e164s" : @[phone.e164]}}];
 
                 [self updateRightBarButtonItem];
                 [self updateTable];
