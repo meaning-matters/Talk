@@ -451,7 +451,14 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
         
         [address deleteWithCompletion:^(BOOL succeeded)
         {
-            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+            if (succeeded)
+            {
+                [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+            }
+            else
+            {
+                [self.tableView setEditing:NO animated:YES];
+            }
         }];
     }
 }
