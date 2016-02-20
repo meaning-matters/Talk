@@ -93,14 +93,6 @@ typedef NS_ENUM(NSUInteger, TableSections)
 }
 
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-}
-
-
 - (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
 {
     [[DataManager sharedManager] setSortKeys:[Common sortKeys] ofResultsController:self.fetchedNumbersController];
@@ -163,7 +155,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
         case TableSectionNumbers:
         {
             title = NSLocalizedStringWithDefaultValue(@"Numbers Number List Title", nil, [NSBundle mainBundle],
-                                                      @"You can be reached at",
+                                                      @"You Can Be Reached At",
                                                       @"\n"
                                                       @"[1/4 line larger font].");
             break;
@@ -219,6 +211,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
             {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DefaultCell"];
             }
+
             break;
         }
         case TableSectionAddresses:
@@ -228,20 +221,11 @@ typedef NS_ENUM(NSUInteger, TableSections)
             {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"AddressesCell"];
             }
-            
-            cell.imageView.image = [Common maskedImageNamed:@"AddressesTab" color:[UIColor colorWithWhite:0.58f alpha:1.00f]];
 
-            // Horizontal center image with 45x30 flag images of Numbers.
-            CGSize imageSize = CGSizeMake(45.0f, 30.0f);
-            UIGraphicsBeginImageContextWithOptions(imageSize, NO, UIScreen.mainScreen.scale);
-            CGRect imageRect = CGRectMake((45.0f - cell.imageView.image.size.width) / 2.0f, 0.0, cell.imageView.image.size.width, imageSize.height);
-            [cell.imageView.image drawInRect:imageRect];
-            cell.imageView.contentMode = UIViewContentModeCenter;
-            cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
-            
-            cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.text  = NSLocalizedString(@"Addresses", @"Addresses cell title");
+            cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+            cell.textLabel.text = [Strings addressesString];
+
+            [Common setImageNamed:@"AddressesTab" ofCell:cell];
             break;
         }
      }

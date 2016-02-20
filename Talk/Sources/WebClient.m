@@ -1291,6 +1291,8 @@
                                  @"mimeType" : mimeType,
                                  @"name"     : name};
 
+    NSLog(@"%d", [parameters[@"data"] length]);
+
     [self postPath:[NSString stringWithFormat:@"/users/%@/audio", username]
         parameters:parameters
              reply:^(NSError* error, id content)

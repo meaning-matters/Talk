@@ -65,16 +65,16 @@ static Common* sharedCommon;
 
     [[NSFileManager defaultManager] createDirectoryAtURL:url
                              withIntermediateDirectories:YES
-                                                     attributes:nil
+                                              attributes:nil
                                                    error:nil];
 
     return url;
 }
 
 
-+ (NSURL*)audioUrl:(NSString*)name
++ (NSURL*)audioUrlForFileName:(NSString*)fileName
 {
-    return [[Common audioDirectoryUrl] URLByAppendingPathComponent:name];
+    return [[Common audioDirectoryUrl] URLByAppendingPathComponent:fileName];
 }
 
 
@@ -1378,4 +1378,50 @@ static Common* sharedCommon;
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
 }
 
+
++ (BOOL)moveFileFromUrlString:(NSString*)fromUrlString toUrlString:(NSString*)toUrlString
+{
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:toUrlString])
+    {
+        return NO;
+    }
+
+    if ([fileManager fileExistsAtPath:fromUrlString])
+    {
+        NSError*  error       = nil;
+        NSString* toDirectory = [toUrlString stringByDeletingLastPathComponent];
+        [fileManager createDirectoryAtPath:toDirectory withIntermediateDirectories:YES attributes:nil error:nil];
+
+        if ([[NSFileManager defaultManager] copyItemAtPath:fromUrlString toPath:toUrlString error:&error] == NO)
+        {
+            NSLog(@"failure declassing %@", fromUrlString);
+            
+            return NO;
+        }
+        else
+        {
+            [fileManager removeItemAtPath:fromUrlString error:nil];
+
+            return YES;
+        }
+    }
+
+    return NO;
+}
+
+
++ (void)setImageNamed:(NSString*)name ofCell:(UITableViewCell*)cell
+{
+    cell.imageView.image = [Common maskedImageNamed:name color:[UIColor colorWithWhite:0.58f alpha:1.00f]];
+
+    // Horizontal center image with 45x30 flag images of Numbers.
+    CGSize imageSize = CGSizeMake(45.0f, 30.0f);
+    UIGraphicsBeginImageContextWithOptions(imageSize, NO, UIScreen.mainScreen.scale);
+    CGRect imageRect = CGRectMake((45.0f - cell.imageView.image.size.width) / 2.0f, 0.0, cell.imageView.image.size.width, imageSize.height);
+    [cell.imageView.image drawInRect:imageRect];
+    cell.imageView.contentMode = UIViewContentModeCenter;
+    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+}
 @end

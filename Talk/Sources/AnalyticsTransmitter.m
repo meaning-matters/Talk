@@ -51,7 +51,7 @@ static NSString* const kServerPath = @"http://trace.numberbay.com/trace";
         {
             if (error != nil)
             {
-                NBLog(@"Error sending trace: %@.", [error localizedDescription]);
+                NBLog(@"Error sending trace: %@", [error localizedDescription]);
             }
         }];
     }

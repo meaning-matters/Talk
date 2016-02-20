@@ -55,13 +55,28 @@ typedef enum
     {
         isNew                     = (phone == nil);
         self.phone                = phone;
-        self.managedObjectContext = managedObjectContext;
         self.title                = isNew ? [Strings newPhoneString] : [Strings phoneString];
         
         self.name                 = phone.name;
         phoneNumber               = [[PhoneNumber alloc] initWithNumber:self.phone.e164];
 
         namesArray                = [NSMutableArray array];
+
+        if (isNew)
+        {
+            // Create a new managed object context; set its parent to the fetched results controller's context.
+            NSManagedObjectContext* managedObjectContext;
+            managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+            [managedObjectContext setParentContext:self.managedObjectContext];
+            self.managedObjectContext = managedObjectContext;
+
+            self.phone = [NSEntityDescription insertNewObjectForEntityForName:@"Phone"
+                                                       inManagedObjectContext:self.managedObjectContext];
+        }
+        else
+        {
+            self.managedObjectContext = managedObjectContext;
+        }
     }
 
     return self;
@@ -79,18 +94,6 @@ typedef enum
     [super viewDidLoad];
 
     self.clearsSelectionOnViewWillAppear = YES;
-
-    if (isNew)
-    {
-        // Create a new managed object context; set its parent to the fetched results controller's context.
-        NSManagedObjectContext* managedObjectContext;
-        managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        [managedObjectContext setParentContext:self.managedObjectContext];
-        self.managedObjectContext = managedObjectContext;
-
-        self.phone = [NSEntityDescription insertNewObjectForEntityForName:@"Phone"
-                                                   inManagedObjectContext:self.managedObjectContext];
-    }
 
     if (isNew)
     {

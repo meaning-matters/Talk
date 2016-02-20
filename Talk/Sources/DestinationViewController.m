@@ -299,9 +299,7 @@ typedef enum
     sections  = 0;
     sections |= TableSectionName;
     sections |= TableSectionPhone;
-#if HAS_FULL_DESTINATIONS
     sections |= TableSectionStatements;
-#endif
     sections |= (self.destination.numbers.count    > 0) ? TableSectionNumbers    : 0;
     sections |= (self.destination.recordings.count > 0) ? TableSectionRecordings : 0;
 

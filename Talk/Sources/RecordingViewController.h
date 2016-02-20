@@ -15,16 +15,16 @@
 
 @interface RecordingViewController : ItemViewController <AVAudioRecorderDelegate, AVAudioPlayerDelegate>
 
-@property (nonatomic, weak) IBOutlet UILabel*               timeLabel;
-@property (nonatomic, weak) IBOutlet UIProgressView*        meterProgressView;
-@property (nonatomic, weak) IBOutlet UISlider*              timeSlider;
-@property (nonatomic, weak) IBOutlet UIButton*              reverseButton;
-@property (nonatomic, weak) IBOutlet UIButton*              recordButton;
-@property (nonatomic, weak) IBOutlet UIButton*              stopButton;
-@property (nonatomic, weak) IBOutlet UIButton*              playButton;
-@property (nonatomic, weak) IBOutlet UIButton*              pauseButton;
-@property (nonatomic, weak) IBOutlet UIButton*              continueButton; // Continue recording.
-@property (nonatomic, weak) IBOutlet UIButton*              forwardButton;
+@property (nonatomic, weak) IBOutlet UILabel*        timeLabel;
+@property (nonatomic, weak) IBOutlet UIProgressView* meterProgressView;
+@property (nonatomic, weak) IBOutlet UISlider*       timeSlider;
+@property (nonatomic, weak) IBOutlet UIButton*       reverseButton;
+@property (nonatomic, weak) IBOutlet UIButton*       recordButton;
+@property (nonatomic, weak) IBOutlet UIButton*       stopButton;
+@property (nonatomic, weak) IBOutlet UIButton*       playButton;
+@property (nonatomic, weak) IBOutlet UIButton*       pauseButton;
+@property (nonatomic, weak) IBOutlet UIButton*       continueButton; // Continue recording.
+@property (nonatomic, weak) IBOutlet UIButton*       forwardButton;
 
 @property (nonatomic, strong) RecordingData*                recording;
 

@@ -19,6 +19,4 @@
 #define NBLog(fmt, ...)
 #endif
 
-#define HAS_FULL_DESTINATIONS 1
-
 #endif

@@ -55,15 +55,6 @@
 }
 
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [self.searchDisplayController setActive:NO animated:YES];
-}
-
-
 #pragma mark - Base Class Override
 
 - (NSString*)nameForObject:(id)object

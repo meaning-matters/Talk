@@ -7,33 +7,27 @@
 //
 
 #import "DestinationsViewController.h"
-#import "RecordingViewController.h"
 #import "DestinationViewController.h"
+#import "RecordingsViewController.h"
 #import "DataManager.h"
 #import "Common.h"
 #import "Settings.h"
 #import "DestinationData.h"
-#import "RecordingData.h"
 #import "WebClient.h"
 #import "Strings.h"
 
 
-typedef enum
+typedef NS_ENUM(NSUInteger, TableSections)
 {
-    SelectionDestinations,
-    SelectionRecordings,
-} Selection;
+    TableSectionDestinations = 1UL << 0,
+    TableSectionRecordings   = 1UL << 1,
+};
 
 
 @interface DestinationsViewController ()
-{
-    UISegmentedControl*         selectionSegmentedControl;
 
-    NSFetchedResultsController* fetchedDestinationsController;
-    NSFetchedResultsController* fetchedRecordingsController;
-
-    Selection                   selection;
-}
+@property (nonatomic, strong) NSFetchedResultsController* fetchedDestinationsController;
+@property (nonatomic, assign) TableSections               sections;
 
 @end
 
@@ -54,6 +48,9 @@ typedef enum
         // The tabBarItem image must be set in my own NavigationController.
 
         self.managedObjectContext = managedObjectContext;
+
+        self.sections |= TableSectionDestinations;
+        self.sections |= TableSectionRecordings;
     }
 
     return self;
@@ -64,48 +61,16 @@ typedef enum
 {
     [super viewDidLoad];
 
-    NSString* destinationsTitle;
-    NSString* recordingsTitle;
-
-    destinationsTitle = NSLocalizedStringWithDefaultValue(@"DestinationsView DestinationsButtonTitle", nil,
-                                                          [NSBundle mainBundle], @"Logic",
-                                                          @"Title of button selecting call destinations logic.\n"
-                                                          @"[1/2 line larger font].");
-
-    recordingsTitle = NSLocalizedStringWithDefaultValue(@"DestinationsView RecordingsButtonTitle", nil,
-                                                        [NSBundle mainBundle], @"Audio",
-                                                        @"Title of button selecting recordings.\n"
-                                                        @"[1/2 line larger font].");
-
-    selectionSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[destinationsTitle, recordingsTitle]];
-    [selectionSegmentedControl addTarget:self
-                                  action:@selector(selectionUpdateAction)
-                        forControlEvents:UIControlEventValueChanged];
-    NSInteger index = [Settings sharedSettings].destinationsSelection;
-    [selectionSegmentedControl setSelectedSegmentIndex:index];
-#if HAS_FULL_DESTINATIONS
-    self.navigationItem.titleView = selectionSegmentedControl;
-#endif
-
-    fetchedDestinationsController = [[DataManager sharedManager] fetchResultsForEntityName:@"Destination"
+    self.fetchedDestinationsController = [[DataManager sharedManager] fetchResultsForEntityName:@"Destination"
                                                                               withSortKeys:@[@"name"]
                                                                       managedObjectContext:self.managedObjectContext];
-    fetchedDestinationsController.delegate = self;
-
-#if HAS_FULL_DESTINATIONS
-    fetchedRecordingsController  = [[DataManager sharedManager] fetchResultsForEntityName:@"Recording"
-                                                                             withSortKeys:@[@"name"]
-                                                                     managedObjectContext:self.managedObjectContext];
-    fetchedRecordingsController.delegate = self;
-#endif
+    self.fetchedDestinationsController.delegate = self;
 }
 
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    [self selectionUpdateAction];
 }
 
 
@@ -113,51 +78,73 @@ typedef enum
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    NSFetchedResultsController* controller = [self resultsControllerForTableView:tableView];
-
-    return controller.sections.count;
+    return self.fetchedDestinationsController.sections.count + 1;
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSFetchedResultsController* controller  = [self resultsControllerForTableView:tableView];
+    NSInteger numberOfRows = 0;
 
-    return [controller.sections[section] numberOfObjects];
+    switch ([Common nthBitSet:section inValue:self.sections])
+    {
+        case TableSectionDestinations: numberOfRows = [self.fetchedDestinationsController.sections[section] numberOfObjects]; break;
+        case TableSectionRecordings:   numberOfRows = 1;                                                                      break;
+    }
+
+    return numberOfRows;
 }
 
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Title", nil, [NSBundle mainBundle],
-                                             @"Incoming calls go to",
-                                             @"\n"
-                                             @"[1/4 line larger font].");
+    NSString* title;
+
+    switch ([Common nthBitSet:section inValue:self.sections])
+    {
+        case TableSectionDestinations:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Title", nil, [NSBundle mainBundle],
+                                                      @"Incoming Calls Go To",
+                                                      @"\n"
+                                                      @"[1/4 line larger font].");
+            break;
+        }
+        case TableSectionRecordings:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Destinations Recordings Title", nil, [NSBundle mainBundle],
+                                                      @"Your Voice Prompts",
+                                                      @"\n"
+                                                      @"[1/4 line larger font].");
+            break;
+        }
+    }
+
+    return title;
 }
 
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    if (tableView == self.tableView)
+    UIViewController* viewController;
+
+    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
-        DestinationViewController* viewController;
-        DestinationData*           destination = [fetchedDestinationsController objectAtIndexPath:indexPath];
-
-        viewController = [[DestinationViewController alloc] initWithDestination:destination
-                                                           managedObjectContext:self.managedObjectContext];
-
-        [self.navigationController pushViewController:viewController animated:YES];
+        case TableSectionDestinations:
+        {
+            DestinationData* destination = [self.fetchedDestinationsController objectAtIndexPath:indexPath];
+            viewController = [[DestinationViewController alloc] initWithDestination:destination
+                                                               managedObjectContext:self.managedObjectContext];
+            break;
+        }
+        case TableSectionRecordings:
+        {
+            viewController = [[RecordingsViewController alloc] init];
+            break;
+        }
     }
-    else
-    {
-        RecordingViewController* viewController;
-        RecordingData*           recording = [fetchedRecordingsController objectAtIndexPath:indexPath];
-        
-        viewController = [[RecordingViewController alloc] initWithRecording:recording
-                                                       managedObjectContext:self.managedObjectContext];
 
-        [self.navigationController pushViewController:viewController animated:YES];
-    }
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 
@@ -165,20 +152,17 @@ typedef enum
 {
     UITableViewCell* cell;
 
-    if (tableView == self.tableView)
+    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
-        cell = [self distinationCellForIndexPath:indexPath];
-    }
-    else
-    {
-        cell = [self recordingCellForIndexPath:indexPath];
+        case TableSectionDestinations: cell = [self destinationCellForIndexPath:indexPath]; break;
+        case TableSectionRecordings:   cell = [self recordingsCellForIndexPath:indexPath];  break;
     }
 
     return cell;
 }
 
 
-- (UITableViewCell*)distinationCellForIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)destinationCellForIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
 
@@ -188,33 +172,47 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
-    DestinationData* destination    = [fetchedDestinationsController objectAtIndexPath:indexPath];
-    cell.textLabel.text             = destination.name;
-    cell.imageView.image            = [UIImage imageNamed:@"List"];
-    cell.imageView.highlightedImage = [Common invertImage:cell.imageView.image];
-    cell.accessoryType              = UITableViewCellAccessoryDisclosureIndicator;
+    DestinationData* destination = [self.fetchedDestinationsController objectAtIndexPath:indexPath];
+    cell.textLabel.text          = destination.name;
+    cell.accessoryType           = UITableViewCellAccessoryDisclosureIndicator;
+
+    [Common setImageNamed:@"List" ofCell:cell];
 
     return cell;
 }
 
 
-- (UITableViewCell*)recordingCellForIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)recordingsCellForIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell* cell;
-
-    cell = [self.recordingsTableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
+    UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"RecordingsCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"RecordingsCell"];
     }
 
-    RecordingData* recording        = [fetchedRecordingsController objectAtIndexPath:indexPath];
-    cell.textLabel.text             = recording.name;
-    cell.imageView.image            = [UIImage imageNamed:@"Microphone"];
-    cell.imageView.highlightedImage = [Common invertImage:cell.imageView.image];
-    cell.accessoryType              = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.text = [Strings recordingsString];
+
+    [Common setImageNamed:@"RecordingsTab" ofCell:cell];
 
     return cell;
+}
+
+
+- (void)tableView:(UITableView*)tableView willDisplayCell:(UITableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
+    {
+        case TableSectionDestinations:
+        {
+            [self configureCell:cell onResultsController:self.fetchedDestinationsController atIndexPath:indexPath];
+            break;
+        }
+        case TableSectionRecordings:
+        {
+            break;
+        }
+    }
 }
 
 
@@ -223,42 +221,19 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        if (tableView == self.tableView)
+        DestinationData* destination = [self.fetchedDestinationsController objectAtIndexPath:indexPath];
+
+        [destination deleteWithCompletion:^(BOOL succeeded)
         {
-            DestinationData* destination = [fetchedDestinationsController objectAtIndexPath:indexPath];
-
-            [destination deleteWithCompletion:^(BOOL succeeded)
+            if (succeeded)
             {
-                if (succeeded)
-                {
-                    [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-                }
-                else
-                {
-                    [self.tableView setEditing:NO animated:YES];
-                }
-            }];
-        }
-        else
-        {
-            RecordingData* recording = [fetchedRecordingsController objectAtIndexPath:indexPath];
-
-            if (recording.destinations.count > 0)
-            {
-
+                [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
             }
             else
             {
-                [self.managedObjectContext deleteObject:recording];
+                [self.tableView setEditing:NO animated:YES];
             }
-
-            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-
-            if (fetchedRecordingsController.fetchedObjects.count == 0)
-            {
-              //###  [self doneRecordingsAction];
-            }
-        }
+        }];
     }
 }
 
@@ -267,50 +242,6 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
 // Is called from ItemsViewController (the baseclass).
 - (void)addAction
-{
-    switch (selectionSegmentedControl.selectedSegmentIndex)
-    {
-        case SelectionDestinations:
-        {
-            [self addDestinationAction];
-            break;
-        }
-        case SelectionRecordings:
-        {
-            [self addRecordingAction];
-            break;
-        }
-    }
-}
-
-
-- (void)selectionUpdateAction
-{
-    if (selection != selectionSegmentedControl.selectedSegmentIndex)
-    {
-        selection = (Selection)selectionSegmentedControl.selectedSegmentIndex;
-        [Settings sharedSettings].destinationsSelection = selection;
-    }
-
-    switch (selection)
-    {
-        case SelectionDestinations:
-        {
-            self.tableView.hidden           = NO;
-            self.recordingsTableView.hidden = YES;
-            break;
-        }
-        case SelectionRecordings:
-        {
-            self.tableView.hidden           = YES;
-            self.recordingsTableView.hidden = NO;
-            break;
-        }
-    }
-}
-
-
-- (void)addDestinationAction
 {
     if ([Settings sharedSettings].haveAccount == YES)
     {
@@ -334,42 +265,11 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 }
 
 
-- (void)addRecordingAction
-{
-    if ([Settings sharedSettings].haveAccount == YES)
-    {
-        UINavigationController*  modalViewController;
-        RecordingViewController* viewController;
-
-        viewController = [[RecordingViewController alloc] initWithRecording:nil
-                                                       managedObjectContext:self.managedObjectContext];
-
-        modalViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
-        modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-
-        [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
-                                                               animated:YES
-                                                             completion:nil];
-    }
-    else
-    {
-        [Common showGetStartedViewController];
-    }
-}
-
-
 #pragma mark - ItemsViewController Overrides/Implementations
 
 - (UITableView*)tableViewForResultsController:(NSFetchedResultsController*)controller
 {
-    if (controller == fetchedDestinationsController)
-    {
-        return self.tableView;
-    }
-    else
-    {
-        return self.recordingsTableView;
-    }
+    return self.tableView;
 }
 
 
@@ -377,35 +277,10 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
   onResultsController:(NSFetchedResultsController*)controller
           atIndexPath:(NSIndexPath*)indexPath
 {
-    UITableView*     tableView = [self tableViewForResultsController:controller];
-    RecordingData*   recording;
     DestinationData* destination;
 
-    if (tableView == self.tableView)
-    {
-        destination = [controller objectAtIndexPath:indexPath];
-        cell.textLabel.text = destination.name;
-    }
-    else
-    {
-        recording = [controller objectAtIndexPath:indexPath];
-        cell.textLabel.text = recording.name;
-    }
-}
-
-
-#pragma mark - Helper Methods
-
-- (NSFetchedResultsController*)resultsControllerForTableView:(UITableView*)tableView
-{
-    if (tableView == self.tableView)
-    {
-        return fetchedDestinationsController;
-    }
-    else
-    {
-        return fetchedRecordingsController;
-    }
+    destination = [controller objectAtIndexPath:indexPath];
+    cell.textLabel.text = destination.name;
 }
 
 @end

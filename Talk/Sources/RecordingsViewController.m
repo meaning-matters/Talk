@@ -194,6 +194,27 @@
 {
     UITableViewCell* cell;
 
+
+    /*- (UITableViewCell*)recordingCellForIndexPath:(NSIndexPath*)indexPath
+     {
+     UITableViewCell* cell;
+
+     cell = [self.recordingsTableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
+     if (cell == nil)
+     {
+     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
+     }
+
+     RecordingData* recording        = [fetchedRecordingsController objectAtIndexPath:indexPath];
+     cell.textLabel.text             = recording.name;
+     cell.imageView.image            = [UIImage imageNamed:@"Microphone"];
+     cell.imageView.highlightedImage = [Common invertImage:cell.imageView.image];
+     cell.accessoryType              = UITableViewCellAccessoryDisclosureIndicator;
+     
+     return cell;
+    }*/
+
+
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"SubtitleCell"];
     if (cell == nil)
     {

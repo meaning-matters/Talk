@@ -91,10 +91,8 @@
 		483679F31722F2CF001A02AF /* List.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679EE1722F2CF001A02AF /* List.png */; };
 		483679F41722F2CF001A02AF /* List@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679EF1722F2CF001A02AF /* List@2x.png */; };
 		483679F51722F2CF001A02AF /* List@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679EF1722F2CF001A02AF /* List@2x.png */; };
-		483679F61722F2CF001A02AF /* Microphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679F01722F2CF001A02AF /* Microphone.png */; };
-		483679F71722F2CF001A02AF /* Microphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679F01722F2CF001A02AF /* Microphone.png */; };
-		483679F81722F2CF001A02AF /* Microphone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679F11722F2CF001A02AF /* Microphone@2x.png */; };
-		483679F91722F2CF001A02AF /* Microphone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679F11722F2CF001A02AF /* Microphone@2x.png */; };
+		483679F81722F2CF001A02AF /* RecordingsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679F11722F2CF001A02AF /* RecordingsTab@2x.png */; };
+		483679F91722F2CF001A02AF /* RecordingsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679F11722F2CF001A02AF /* RecordingsTab@2x.png */; };
 		483679FB17246977001A02AF /* RecordingControlsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 483679FA17246977001A02AF /* RecordingControlsCell.xib */; };
 		483679FC17246977001A02AF /* RecordingControlsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 483679FA17246977001A02AF /* RecordingControlsCell.xib */; };
 		48367A1717247B2D001A02AF /* CueForwardBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679FE17247B2B001A02AF /* CueForwardBlack@2x.png */; };
@@ -784,8 +782,7 @@
 		483679DD1721F2E0001A02AF /* RecordingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordingViewController.m; sourceTree = "<group>"; };
 		483679EE1722F2CF001A02AF /* List.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = List.png; sourceTree = "<group>"; };
 		483679EF1722F2CF001A02AF /* List@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "List@2x.png"; sourceTree = "<group>"; };
-		483679F01722F2CF001A02AF /* Microphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Microphone.png; sourceTree = "<group>"; };
-		483679F11722F2CF001A02AF /* Microphone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Microphone@2x.png"; sourceTree = "<group>"; };
+		483679F11722F2CF001A02AF /* RecordingsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "RecordingsTab@2x.png"; path = "../Other/RecordingsTab@2x.png"; sourceTree = "<group>"; };
 		483679FA17246977001A02AF /* RecordingControlsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecordingControlsCell.xib; sourceTree = "<group>"; };
 		483679FE17247B2B001A02AF /* CueForwardBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CueForwardBlack@2x.png"; sourceTree = "<group>"; };
 		48367A0017247B2B001A02AF /* CueForwardWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CueForwardWhite@2x.png"; sourceTree = "<group>"; };
@@ -1769,10 +1766,11 @@
 				48AF451E1649788A00DFE3D8 /* KeypadTab@2x.png */,
 				48AF45261649788A00DFE3D8 /* NumbersTab@2x.png */,
 				48B93877187E1E0E00132535 /* PhonesTab@2x.png */,
+				48172C011C07017800927BC2 /* RatesTab@2x.png */,
 				48AF45281649788A00DFE3D8 /* RecentsTab@2x.png */,
+				483679F11722F2CF001A02AF /* RecordingsTab@2x.png */,
 				48AF452A1649788A00DFE3D8 /* SettingsTab@2x.png */,
 				48AF452C1649788A00DFE3D8 /* ShareTab@2x.png */,
-				48172C011C07017800927BC2 /* RatesTab@2x.png */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -1810,8 +1808,6 @@
 				48367A1417247B2D001A02AF /* CueStopWhite@2x.png */,
 				483679EE1722F2CF001A02AF /* List.png */,
 				483679EF1722F2CF001A02AF /* List@2x.png */,
-				483679F01722F2CF001A02AF /* Microphone.png */,
-				483679F11722F2CF001A02AF /* Microphone@2x.png */,
 				48995E0918739F46001395C2 /* Phone.png */,
 				48995E0A18739F46001395C2 /* Phone@2x.png */,
 				48CB2C4217E6539000E19C3D /* Target.png */,
@@ -2953,8 +2949,7 @@
 				483679F21722F2CF001A02AF /* List.png in Resources */,
 				4842D9F91AADFB53008F35C9 /* deleteButton.png in Resources */,
 				483679F41722F2CF001A02AF /* List@2x.png in Resources */,
-				483679F61722F2CF001A02AF /* Microphone.png in Resources */,
-				483679F81722F2CF001A02AF /* Microphone@2x.png in Resources */,
+				483679F81722F2CF001A02AF /* RecordingsTab@2x.png in Resources */,
 				483679FB17246977001A02AF /* RecordingControlsCell.xib in Resources */,
 				48367A1717247B2D001A02AF /* CueForwardBlack@2x.png in Resources */,
 				48367A1B17247B2D001A02AF /* CueForwardWhite@2x.png in Resources */,
@@ -3020,8 +3015,7 @@
 				483679F31722F2CF001A02AF /* List.png in Resources */,
 				483679F51722F2CF001A02AF /* List@2x.png in Resources */,
 				48CB2C4517E6539000E19C3D /* Target.png in Resources */,
-				483679F71722F2CF001A02AF /* Microphone.png in Resources */,
-				483679F91722F2CF001A02AF /* Microphone@2x.png in Resources */,
+				483679F91722F2CF001A02AF /* RecordingsTab@2x.png in Resources */,
 				483679FC17246977001A02AF /* RecordingControlsCell.xib in Resources */,
 				48367A1817247B2D001A02AF /* CueForwardBlack@2x.png in Resources */,
 				48367A1C17247B2D001A02AF /* CueForwardWhite@2x.png in Resources */,

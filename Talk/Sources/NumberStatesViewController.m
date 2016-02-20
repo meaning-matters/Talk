@@ -120,9 +120,6 @@
 {
     [super viewWillDisappear:animated];
 
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [self.searchDisplayController setActive:NO animated:YES];
-
     [[WebClient sharedClient] cancelAllRetrieveNumberStatesForIsoCountryCode:isoCountryCode];
 }
 
