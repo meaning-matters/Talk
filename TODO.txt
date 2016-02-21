@@ -153,3 +153,5 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Dismiss keyboards when tapping table and when scrolling down (possibly with swizzling in a viewDidLoad in UIViewController+Common).
 
 * Subdevide countries in 5 region: https://en.wikipedia.org/wiki/United_Nations_geoscheme + All. And add Radio button on Call Rates.
+
+* New datamodel (2.2 or something): RENAME Destination.statements --> Destination.action, DELETE Recording.urlString (because can be generated from uuid).

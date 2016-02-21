@@ -72,9 +72,9 @@ static Common* sharedCommon;
 }
 
 
-+ (NSURL*)audioUrlForFileName:(NSString*)fileName
++ (NSString*)audioPathForFileName:(NSString*)fileName
 {
-    return [[Common audioDirectoryUrl] URLByAppendingPathComponent:fileName];
+    return [[[Common audioDirectoryUrl] URLByAppendingPathComponent:fileName] path];
 }
 
 
@@ -1379,31 +1379,38 @@ static Common* sharedCommon;
 }
 
 
-+ (BOOL)moveFileFromUrlString:(NSString*)fromUrlString toUrlString:(NSString*)toUrlString
++ (BOOL)moveFileFromPath:(NSString*)fromPath toPath:(NSString*)toPath
 {
     NSFileManager* fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:toUrlString])
+    if ([fileManager fileExistsAtPath:toPath])
     {
         return NO;
     }
 
-    if ([fileManager fileExistsAtPath:fromUrlString])
+    if ([fileManager fileExistsAtPath:fromPath])
     {
         NSError*  error       = nil;
-        NSString* toDirectory = [toUrlString stringByDeletingLastPathComponent];
+        NSString* toDirectory = [toPath stringByDeletingLastPathComponent];
         [fileManager createDirectoryAtPath:toDirectory withIntermediateDirectories:YES attributes:nil error:nil];
 
-        if ([[NSFileManager defaultManager] copyItemAtPath:fromUrlString toPath:toUrlString error:&error] == NO)
+        if ([[NSFileManager defaultManager] copyItemAtPath:fromPath toPath:toPath error:&error] == NO)
         {
-            NSLog(@"failure declassing %@", fromUrlString);
+            NBLog(@"Error copying audio file: %@", [error localizedDescription]);
             
             return NO;
         }
         else
         {
-            [fileManager removeItemAtPath:fromUrlString error:nil];
+            if ([fileManager removeItemAtPath:fromPath error:&error] == NO)
+            {
+                NBLog(@"Error deleting temporary audio file: %@", [error localizedDescription]);
 
-            return YES;
+                return NO;
+            }
+            else
+            {
+                return YES;
+            }
         }
     }
 
@@ -1424,4 +1431,19 @@ static Common* sharedCommon;
     cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 }
+
+
++ (NSString*)pathForTemporaryFileWithExtension:(NSString*)extension
+{
+    CFUUIDRef   uuid       = CFUUIDCreate(NULL);
+    CFStringRef uuidString = CFUUIDCreateString(NULL, uuid);
+    NSString*   name       = [NSString stringWithFormat:@"%@.%@", uuidString, extension];
+    NSString*   path       = [NSTemporaryDirectory() stringByAppendingPathComponent:name];
+
+    CFRelease(uuidString);
+    CFRelease(uuid);
+
+    return path;
+}
+
 @end

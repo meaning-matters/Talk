@@ -20,7 +20,7 @@
 
 @dynamic uuid;
 @dynamic name;
-@dynamic statements;
+@dynamic statements;   //### Rename to `action`.
 @dynamic numbers;
 @dynamic recordings;
 @dynamic phones;

@@ -126,8 +126,8 @@
         {
             if (self.headerTitle == nil)
             {
-                return NSLocalizedStringWithDefaultValue(@"Phones ...", nil, [NSBundle mainBundle],
-                                                         @"The phones you use",
+                return NSLocalizedStringWithDefaultValue(@"Recordings ...", nil, [NSBundle mainBundle],
+                                                         @"Your Voice Recordings",
                                                          @"\n"
                                                          @"[1/4 line larger font].");
             }
@@ -152,10 +152,9 @@
 {
     if (self.footerTitle == nil)
     {
-        return NSLocalizedStringWithDefaultValue(@"Phone Phones List Title", nil, [NSBundle mainBundle],
-                                                 @"List of phone numbers you can use as your Caller ID and/or "
-                                                 @"Callback number. Add as many numbers as you wish, as it "
-                                                 @"can be useful to maintain a healthy list from which to choose.",
+        return NSLocalizedStringWithDefaultValue(@"Recordings List Title", nil, [NSBundle mainBundle],
+                                                 @"List of voice Recordings you can chose to play in your "
+                                                 @"Destination actions.",
                                                  @"\n"
                                                  @"[ ].");
     }

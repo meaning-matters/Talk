@@ -16,7 +16,7 @@
 
 @property (nonatomic, retain) NSString* uuid;
 @property (nonatomic, retain) NSString* name;
-@property (nonatomic, retain) NSString* urlString;
+@property (nonatomic, retain) NSString* urlString;     //### Must be deleted from data model; can be recreated using `uuid`
 @property (nonatomic, retain) NSSet*    destinations;
 
 - (NSString*)cantDeleteMessage;

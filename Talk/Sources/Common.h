@@ -27,7 +27,7 @@ static const int TextFieldCellTag = 1111;
 
 + (NSURL*)audioDirectoryUrl;
 
-+ (NSURL*)audioUrlForFileName:(NSString*)fileName;
++ (NSString*)audioPathForFileName:(NSString*)fileName;
 
 + (NSData*)dataForResource:(NSString*)resourse ofType:(NSString*)type;
 
@@ -154,8 +154,10 @@ static const int TextFieldCellTag = 1111;
 
 + (void)openApplicationSettings;
 
-+ (BOOL)moveFileFromUrlString:(NSString*)destinationUrlString toUrlString:(NSString*)destinationUrlString;
++ (BOOL)moveFileFromPath:(NSString*)fromPath toPath:(NSString*)toPath;
 
 + (void)setImageNamed:(NSString*)name ofCell:(UITableViewCell*)cell;
+
++ (NSString*)pathForTemporaryFileWithExtension:(NSString*)extension;
 
 @end

@@ -1196,7 +1196,6 @@
 // 25. UPDATE AUDIO
 - (void)updateAudioForUuid:(NSString*)uuid
                       data:(NSData*)data
-                  mimeType:(NSString*)mimeType
                       name:(NSString*)name
                      reply:(void (^)(NSError* error))reply
 {
@@ -1206,7 +1205,6 @@
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
 
     (data        != nil) ? parameters[@"data"]     = [Base64 encode:data] : 0;
-    (mimeType    != nil) ? parameters[@"mimeType"] = mimeType             : 0;
     (name.length  > 0)   ? parameters[@"name"]     = name                 : 0;
 
     [self putPath:[NSString stringWithFormat:@"/users/%@/audio/%@", username, uuid]
@@ -1222,8 +1220,7 @@
 - (void)retrieveAudioForUuid:(NSString*)uuid
                        reply:(void (^)(NSError*  error,
                                        NSString* name,
-                                       NSData*   data,
-                                       NSString* mimeType))reply
+                                       NSData*   data))reply
 {
     AnalysticsTrace(@"API_26");
 
@@ -1237,12 +1234,11 @@
         {
             reply(nil,
                   content[@"name"],
-                  [Base64 decode:content[@"data"]],
-                  content[@"mimeType"]);
+                  [Base64 decode:content[@"data"]]);
         }
         else
         {
-            reply(error, nil, nil, nil);
+            reply(error, nil, nil);
         }
     }];
 }
@@ -1280,7 +1276,6 @@
 
 // 29. CREATE AUDIO
 - (void)createAudioWithData:(NSData*)data
-                   mimeType:(NSString*)mimeType
                        name:(NSString*)name
                       reply:(void (^)(NSError* error, NSString* uuid))reply
 {
@@ -1288,10 +1283,7 @@
 
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"data"     : [Base64 encode:data],
-                                 @"mimeType" : mimeType,
                                  @"name"     : name};
-
-    NSLog(@"%d", [parameters[@"data"] length]);
 
     [self postPath:[NSString stringWithFormat:@"/users/%@/audio", username]
         parameters:parameters

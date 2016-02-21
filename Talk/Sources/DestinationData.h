@@ -16,7 +16,7 @@
 
 @property (nonatomic, retain) NSString* uuid;
 @property (nonatomic, retain) NSString* name;
-@property (nonatomic, retain) NSString* statements; // JSON formatted string.
+@property (nonatomic, retain) NSString* statements; // JSON formatted string.  //### Rename to `action`.
 @property (nonatomic, retain) NSSet*    numbers;
 @property (nonatomic, retain) NSSet*    recordings;
 @property (nonatomic, retain) NSSet*    phones;

@@ -113,7 +113,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
         case TableSectionRecordings:
         {
             title = NSLocalizedStringWithDefaultValue(@"Destinations Recordings Title", nil, [NSBundle mainBundle],
-                                                      @"Your Voice Prompts",
+                                                      @"Your Voice Recordings",
                                                       @"\n"
                                                       @"[1/4 line larger font].");
             break;

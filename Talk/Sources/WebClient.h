@@ -258,7 +258,6 @@
 // 25. UPDATE AUDIO
 - (void)updateAudioForUuid:(NSString*)uuid
                       data:(NSData*)data
-                  mimeType:(NSString*)mimeType
                       name:(NSString*)name
                      reply:(void (^)(NSError* error))reply;
 
@@ -266,8 +265,7 @@
 - (void)retrieveAudioForUuid:(NSString*)uuid
                        reply:(void (^)(NSError*  error,
                                        NSString* name,
-                                       NSData*   data,
-                                       NSString* mimeType))reply;
+                                       NSData*   data))reply;
 
 // 27. DELETE AUDIO
 - (void)deleteAudioForUuid:(NSString*)uuid
@@ -278,7 +276,6 @@
 
 // 29. CREATE AUDIO
 - (void)createAudioWithData:(NSData*)data
-                   mimeType:(NSString*)mimeType
                        name:(NSString*)name
                       reply:(void (^)(NSError* error, NSString* uuid))reply;
 

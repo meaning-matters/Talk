@@ -14,6 +14,7 @@
 #import "Strings.h"
 #import "DataManager.h"
 #import "WebClient.h"
+#import "BlockActionSheet.h"
 
 
 typedef enum
@@ -26,27 +27,31 @@ typedef enum
 
 @interface RecordingViewController ()
 {
-    TableSections           sections;
-    BOOL                    isNew;
-    BOOL                    isForwarding;
-    BOOL                    isReversing;
-    BOOL                    isSliding;
-    BOOL                    isPausedRecording;
-    BOOL                    isPausedPlaying;
-    float                   duration;
-    BOOL                    tappedSave;
+    TableSections          sections;
+    BOOL                   isNew;
+    BOOL                   isForwarding;
+    BOOL                   isReversing;
+    BOOL                   isSliding;
+    BOOL                   isPausedRecording;
+    BOOL                   isPausedPlaying;
+    float                  duration;
+    BOOL                   tappedSave;
 
-    AVAudioRecorder*        audioRecorder;
-    AVAudioPlayer*          audioPlayer;
-    NSTimer*                sliderTimer;
-    NSTimer*                meteringTimer;
+    AVAudioRecorder*       audioRecorder;
+    AVAudioPlayer*         audioPlayer;
+    NSTimer*               sliderTimer;
+    NSTimer*               meteringTimer;
 
     RecordingControlsCell* controlsCell;
 
     NSMutableArray*        meterProgressViewsArray;
 
     id                     willResignActiveObserver;
+    BOOL                   isDeleting;
 }
+
+@property (nonatomic, strong) NSURL* temporaryUrl;
+@property (nonatomic, assign) BOOL   hasRecorded;
 
 @end
 
@@ -74,6 +79,12 @@ typedef enum
         sections |= (self.recording.destinations.count > 0) ? TableSectionDestinations : 0;
 
         // Select initial audio route.
+        NSError* error = nil;
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
+        if (error != nil)
+        {
+            NBLog(@"//### Failed to set audio-session category: %@", error.localizedDescription);
+        }
         audioRouteChangeListener(NULL, kAudioSessionProperty_AudioRouteChange, 0, NULL);
 
         NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
@@ -94,26 +105,28 @@ typedef enum
 {
     [super viewDidLoad];
 
+    self.temporaryUrl      = [NSURL fileURLWithPath:[Common pathForTemporaryFileWithExtension:@"m4a"]];
+    NSDictionary* settings = @{ AVSampleRateKey          : @(16000.0),
+                                AVNumberOfChannelsKey    : @(1),
+                                AVFormatIDKey            : @(kAudioFormatMPEG4AAC) };
+    NSError*      error;
+
+    audioRecorder = [[AVAudioRecorder alloc] initWithURL:self.temporaryUrl settings:settings error:&error];
+    [audioRecorder prepareToRecord];
+    if (error == nil)
+    {
+        audioRecorder.meteringEnabled = YES;
+        audioRecorder.delegate = self;
+    }
+    else
+    {
+        //### Check if user allowed use of microphone.
+        //### Add microphone to device properties in .plist.
+        NBLog(@"//### Failed to create audio recorder: %@", error.localizedDescription);
+    }
+
     if (isNew)
     {
-        NSURL*        url = [Common audioUrlForFileName:@"Recording.m4a"];
-        NSError*      error;
-        NSDictionary* settings = @{ AVSampleRateKey          : @(16000.0),
-                                    AVNumberOfChannelsKey    : @(1),
-                                    AVFormatIDKey            : @(kAudioFormatMPEG4AAC) };
-
-        audioRecorder = [[AVAudioRecorder alloc] initWithURL:url settings:settings error:&error];
-        [audioRecorder prepareToRecord];
-        if (error == nil)
-        {
-            audioRecorder.meteringEnabled = YES;
-            audioRecorder.delegate = self;
-        }
-        else
-        {
-            NBLog(@"//### Failed to create audio recorder: %@", error.localizedDescription);
-        }
-
         // Create a new managed object context for the new recording; set its parent to the fetched results controller's context.
         NSManagedObjectContext* managedObjectContext;
         managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
@@ -122,12 +135,12 @@ typedef enum
 
         self.recording = [NSEntityDescription insertNewObjectForEntityForName:@"Recording"
                                                        inManagedObjectContext:self.managedObjectContext];
-        self.recording.urlString = [url absoluteString];
     }
     else
     {
-        NSError* error;
-        NSURL*   url = [NSURL URLWithString:self.recording.urlString];
+        NSError*  error;
+        NSString* path = [Common audioPathForFileName:[NSString stringWithFormat:@"%@.m4a", self.recording.uuid]];
+        NSURL*    url  = [NSURL fileURLWithPath:path];
         audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
         if (error == nil)
         {
@@ -152,7 +165,7 @@ typedef enum
 
         buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
                                                                    target:self
-                                                                   action:@selector(saveAction)];
+                                                                   action:@selector(createAction)];
         self.navigationItem.rightBarButtonItem = buttonItem;
     }
     else
@@ -166,17 +179,13 @@ typedef enum
 
     [self updateRightBarButtonItem];
 
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                                                           target:self
-                                                                                           action:@selector(saveAction)];
-
-    NSArray*    topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"RecordingControlsCell" owner:self options:nil];
+    NSArray* topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"RecordingControlsCell" owner:self options:nil];
     controlsCell = [topLevelObjects objectAtIndex:0];
 
     self.meterProgressView.progress = 0;
     self.timeSlider.value = 0;
 
-    if (isNew)
+   // if (isNew)
     {
         meterProgressViewsArray = [NSMutableArray array];
         self.meterProgressView.progressTintColor = [UIColor greenColor];
@@ -390,52 +399,69 @@ typedef enum
 
 
 #pragma mark - Actions
-/*
+
 - (void)createAction
 {
     self.recording.name = self.name;
     self.navigationItem.rightBarButtonItem.enabled = NO;
 
-    [[WebClient sharedClient] createIvrWithName:self.name
-                                         action:action
-                                          reply:^(NSError* error, NSString* uuid)
-     {
-         if (error == nil)
-         {
-             self.destination.uuid = uuid;
-             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-         }
-         else
-         {
-             [self showSaveError:error];
-         }
-     }];
-
-    [self.view endEditing:YES];
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-*/
-
-- (void)saveAction
-{
-    if ([self.name isEqualToString:self.recording.name] == YES)
-    {
-        // Nothing has changed.
-        return;
-    }
-
-    NSURL*  url  = [Common audioUrlForFileName:@"Recording.m4a"];
-    NSData* data = [NSData dataWithContentsOfURL:url];
-    [[WebClient sharedClient] createAudioWithData:data mimeType:@""
+    NSData* data = [NSData dataWithContentsOfURL:self.temporaryUrl];
+    [[WebClient sharedClient] createAudioWithData:data
                                              name:self.name
                                             reply:^(NSError *error, NSString *uuid)
     {
         if (error == nil)
         {
-            self.recording.name = self.name;
             self.recording.uuid = uuid;
-            NSURL* url = [Common audioUrlForFileName:[NSString stringWithFormat:@"%@.m4a", uuid]];
-            [Common moveFileFromUrlString:self.recording.urlString toUrlString:[url absoluteString]];
+
+            NSString* path = [Common audioPathForFileName:[NSString stringWithFormat:@"%@.m4a", uuid]];
+            [Common moveFileFromPath:[self.temporaryUrl path] toPath:path];
+
+
+            NSURL*    url  = [NSURL URLWithString:path];
+            audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+
+
+            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+        }
+        else
+        {
+            [self showSaveError:error];
+        }
+    }];
+
+    [self.view endEditing:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (void)saveAction
+{
+    NSData* data = nil;
+
+    if ([self.name isEqualToString:self.recording.name] == YES || self.hasRecorded == NO)
+    {
+        // Nothing has changed.
+        return;
+    }
+
+    if (self.hasRecorded)
+    {
+        NSString* path = [Common audioPathForFileName:[NSString stringWithFormat:@"%@.m4a", self.recording.uuid]];
+        data           = [NSData dataWithContentsOfFile:path];
+    }
+
+    [[WebClient sharedClient] updateAudioForUuid:self.recording.uuid
+                                            data:data
+                                            name:self.name
+                                           reply:^(NSError *error)
+    {
+        if (error == nil)
+        {
+            self.recording.name = self.name;
+
+            NSString* path = [Common audioPathForFileName:[NSString stringWithFormat:@"%@.m4a", self.recording.uuid]];
+            [Common moveFileFromPath:[self.temporaryUrl absoluteString] toPath:path];
 
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
         }
@@ -445,6 +471,63 @@ typedef enum
             [self showSaveError:error];
         }
     }];
+}
+
+
+- (void)deleteAction
+{
+    if (self.recording.destinations.count == 0)
+    {
+        NSString* buttonTitle = NSLocalizedStringWithDefaultValue(@"RecordingView DeleteTitle", nil,
+                                                                  [NSBundle mainBundle], @"Delete Recording",
+                                                                  @"...\n"
+                                                                  @"[1/3 line small font].");
+
+        [BlockActionSheet showActionSheetWithTitle:nil
+                                        completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
+        {
+            if (destruct == YES)
+            {
+                isDeleting = YES;
+
+                [self.recording deleteWithCompletion:^(BOOL succeeded)
+                 {
+                     if (succeeded)
+                     {
+                         [self.navigationController popViewControllerAnimated:YES];
+                     }
+                     else
+                     {
+                         isDeleting = NO;
+                     }
+                 }];
+            }
+        }
+                                 cancelButtonTitle:[Strings cancelString]
+                            destructiveButtonTitle:buttonTitle
+                                 otherButtonTitles:nil];
+    }
+    else
+    {
+        NSString* title;
+        NSString* message;
+
+        title   = NSLocalizedStringWithDefaultValue(@"RecordingView CantDeleteTitle", nil, [NSBundle mainBundle],
+                                                    @"Can't Delete Recording",
+                                                    @"...\n"
+                                                    @"[1/3 line small font].");
+        message = NSLocalizedStringWithDefaultValue(@"RecordingView CantDeleteMessage", nil, [NSBundle mainBundle],
+                                                    @"This Recording can't be deleted because it's used by one "
+                                                    @"or more Destinations.",
+                                                    @"Table footer that app can't be deleted\n"
+                                                    @"[1 line larger font].");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+    }
 }
 
 
@@ -513,7 +596,7 @@ typedef enum
 
 - (IBAction)recordButtonAction:(id)sender
 {
-    if ([audioRecorder.url checkResourceIsReachableAndReturnError:nil] == YES)
+    if (self.hasRecorded)
     {
         NSString* title;
         NSString* message;
@@ -681,12 +764,10 @@ typedef enum
 }
 
 
-- (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
+- (void)audioRecorderDidFinishRecording:(AVAudioRecorder*)recorder successfully:(BOOL)flag
 {
-    NSURL*  url  = [Common audioUrlForFileName:@"Recording.m4a"];
-    NSData* data = [NSData dataWithContentsOfURL:url];
-
-    NSLog(@"%lu", data.length);
+    self.hasRecorded = flag;
+    [self updateControls];
 }
 
 
@@ -756,18 +837,7 @@ typedef enum
 
 - (void)startRecording
 {
-    AVAudioSession* audioSession = [AVAudioSession sharedInstance];
-    NSError*        error = nil;
-
-    [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
-    if (error != nil)
-    {
-        NBLog(@"//### Failed to set audio-session category: %@", error.localizedDescription);
-
-        return;
-    }
-
-    [audioSession setActive:YES error:nil];
+    [[AVAudioSession sharedInstance] setActive:YES error:nil];
     if ([audioRecorder record] == NO)
     {
         NBLog(@"//### Failed to start recording.");
@@ -776,9 +846,9 @@ typedef enum
     }
 
     meteringTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 repeats:YES block:^
-                     {
-                         [self updateMeter];
-                     }];
+    {
+        [self updateMeter];
+    }];
 
     [self updateControls];
 }
@@ -801,9 +871,8 @@ typedef enum
 - (void)stopRecording
 {
     [audioRecorder stop];
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     int options = AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation;
-    [audioSession setActive:NO withOptions:options error:nil];
+    [[AVAudioSession sharedInstance] setActive:NO withOptions:options error:nil];
 
     isPausedRecording = NO;
 
@@ -934,12 +1003,13 @@ typedef enum
 {
     BOOL isPlaying   = audioPlayer.isPlaying;
     BOOL isRecording = audioRecorder.isRecording;
-    BOOL canPlay     = ([audioRecorder.url checkResourceIsReachableAndReturnError:nil] == YES) || !isNew;
+    BOOL canPlay     = (isNew && self.hasRecorded) ||
+                       ([audioRecorder.url checkResourceIsReachableAndReturnError:nil] && !isNew);
 
     // These expressions are negated so that they are about when an UI item is visible (instead of hidden). 
-    self.meterProgressView.hidden = !((isNew && !canPlay) || isRecording || isPausedRecording);
+    self.meterProgressView.hidden = !(!canPlay || isRecording || isPausedRecording);
     self.timeSlider.hidden        = !self.meterProgressView.hidden;
-    self.recordButton.hidden      = !(isNew && !isRecording && !isPausedRecording && !isPlaying && !isPausedPlaying);
+    self.recordButton.hidden      = !(!isRecording && !isPausedRecording && !isPlaying && !isPausedPlaying);
     self.stopButton.hidden        = !self.recordButton.hidden;
     self.pauseButton.hidden       = !(isRecording || isPlaying);
     self.continueButton.hidden    = !(isPausedRecording);
@@ -949,8 +1019,8 @@ typedef enum
     self.timeSlider.enabled       = isPlaying && !isForwarding && !isReversing && !isPausedPlaying;
     self.reverseButton.enabled    = isPlaying && !isForwarding && !isSliding;
     self.stopButton.enabled       = (isRecording || isPausedRecording || isPlaying || isPausedPlaying) &&
-                                      !isForwarding && !isReversing && !isSliding;
-    self.recordButton.enabled     = isNew && !isPlaying;
+                                     !isForwarding && !isReversing && !isSliding;
+    self.recordButton.enabled     = !isPlaying;
     self.playButton.enabled       = canPlay;
     self.pauseButton.enabled      = (isRecording || isPlaying) && !isForwarding && !isReversing && !isSliding;
     self.forwardButton.enabled    = isPlaying && !isReversing && !isSliding;
@@ -993,10 +1063,10 @@ typedef enum
 
 
 static void audioRouteChangeListener(
-    void*                   inClientData,
-    AudioSessionPropertyID  inID,
-    UInt32                  inDataSize,
-    const void*             inData)
+    void*                  inClientData,
+    AudioSessionPropertyID inID,
+    UInt32                 inDataSize,
+    const void*            inData)
 {
     if (inID == kAudioSessionProperty_AudioRouteChange)
     {
@@ -1029,7 +1099,7 @@ static void audioRouteChangeListener(
 
 - (void)save
 {
-    if (isNew == NO /*###&& isDeleting == NO*/)
+    if (isNew == NO && isDeleting == NO)
     {
         [self saveAction];
     }
