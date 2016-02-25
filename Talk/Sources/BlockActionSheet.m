@@ -67,7 +67,9 @@
             self.destructiveButtonIndex = index;
         }
 
-        for (NSString* buttonTitle = otherButtonTitles; title != nil; title = (__bridge NSString*)va_arg(arguments, void*))
+        for (NSString* buttonTitle = otherButtonTitles;
+             buttonTitle != nil;
+             buttonTitle = (__bridge NSString*)va_arg(arguments, void*))
         {
             [self addButtonWithTitle:buttonTitle];
             self.otherNumberOfButtons++;
