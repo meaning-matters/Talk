@@ -43,14 +43,10 @@ typedef enum
 
 @interface NumberViewController ()
 {
-    NumberData*        number;
+    NumberData*   number;
     
-    TableSections      sections;
-    AreaRows           areaRows;
-
-    // Keyboard stuff.
-    BOOL               keyboardShown;
-    CGFloat            keyboardOverlap;
+    TableSections sections;
+    AreaRows      areaRows;
 }
 
 @end

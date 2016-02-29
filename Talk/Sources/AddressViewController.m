@@ -8,6 +8,7 @@
 
 #import <objc/runtime.h>
 #import <Photos/Photos.h>
+#import "UITableViewController+Common.h"
 #import "AddressViewController.h"
 #import "NumberAreaPostcodesViewController.h"
 #import "NumberAreaCitiesViewController.h"
@@ -16,7 +17,7 @@
 #import "Strings.h"
 #import "Common.h"
 #import "CountryNames.h"
-#import "NumberAreaActionCell.h"
+#import "AddressPhotoCell.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
 #import "Base64.h"
@@ -90,16 +91,15 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 @property (nonatomic, strong) NSIndexPath*                cityIndexPath;
 @property (nonatomic, strong) NSIndexPath*                postcodeIndexPath;
 @property (nonatomic, strong) NSIndexPath*                countryIndexPath;
-@property (nonatomic, strong) NSIndexPath*                actionIndexPath;
 
 @property (nonatomic, strong) NSIndexPath*                nextIndexPath;      // Index-path of cell to show after Next button is tapped.
 
 @property (nonatomic, copy) void (^createCompletion)(AddressData* address);
 
-// Keyboard stuff.
-@property (nonatomic, assign) BOOL                        keyboardShown;
-@property (nonatomic, assign) CGFloat                     keyboardOverlap;
 @property (nonatomic, strong) NSIndexPath*                activeCellIndexPath;
+
+@property (nonatomic, strong) AddressPhotoCell*           photoCell;
+@property (nonatomic, assign) CGFloat                     photoCellHeight;
 
 @property (nonatomic, assign) BOOL                        isLoading;
 @property (nonatomic, strong) UIActivityIndicatorView*    activityIndicator;
@@ -206,6 +206,8 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 {
     [super viewDidLoad];
 
+    [self disableDelayedContentTouches];
+
     self.clearsSelectionOnViewWillAppear = YES;
     
     UIBarButtonItem* buttonItem;
@@ -236,8 +238,12 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         [self loadData];
     }
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"NumberAreaActionCell" bundle:nil]
-         forCellReuseIdentifier:@"NumberAreaActionCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"AddressPhotoCell" bundle:nil]
+         forCellReuseIdentifier:@"AddressPhotoCell"];
+
+    UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"AddressPhotoCell"];
+    self.photoCellHeight  = cell.bounds.size.height;
+
 }
 
 
@@ -252,10 +258,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     self.companyNameTextField.placeholder = [self placeHolderForTextField:self.companyNameTextField];
     self.firstNameTextField.placeholder   = [self placeHolderForTextField:self.firstNameTextField];
     self.lastNameTextField.placeholder    = [self placeHolderForTextField:self.lastNameTextField];
-    
-    NumberAreaActionCell* cell = (NumberAreaActionCell*)[self.tableView cellForRowAtIndexPath:self.actionIndexPath];
-    cell.label.text            = [self actionCellText];
-    
+
     [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
 }
 
@@ -304,6 +307,30 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 
 
 #pragma mark - Helpers
+
+- (void)updatePhotoCell
+{
+    NSString* title;
+
+    if (self.address.proofImage == nil)
+    {
+        title = NSLocalizedStringWithDefaultValue(@"Address:Action TakePhotoLabel", nil,
+                                                  [NSBundle mainBundle],
+                                                  @"Take Photo",
+                                                  @"....");
+    }
+    else
+    {
+        title = NSLocalizedStringWithDefaultValue(@"Address:Action RetakePhotoLabel", nil,
+                                                  [NSBundle mainBundle],
+                                                  @"Retake Photo",
+                                                  @"....");
+    }
+
+    [self.photoCell.button setTitle:title forState:UIControlStateNormal];
+    [Common styleButton:self.photoCell.button];
+}
+
 
 - (void)updateRightBarButtonItem
 {
@@ -524,7 +551,6 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         self.cityIndexPath           = [NSIndexPath indexPathForRow:3 inSection:2];
         self.postcodeIndexPath       = [NSIndexPath indexPathForRow:4 inSection:2];
         self.countryIndexPath        = [NSIndexPath indexPathForRow:5 inSection:2];
-        self.actionIndexPath         = [NSIndexPath indexPathForRow:0 inSection:3];
     }
 }
 
@@ -709,29 +735,6 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 }
 
 
-- (NSString*)actionCellText
-{
-    NSString* text;
-    
-    if (self.address.proofImage == nil)
-    {
-        text = NSLocalizedStringWithDefaultValue(@"Address:Action TakePhotoLabel", nil,
-                                                 [NSBundle mainBundle],
-                                                 @"Take Photo",
-                                                 @"....");
-    }
-    else
-    {
-        text = NSLocalizedStringWithDefaultValue(@"Address:Action RetakePhotoLabel", nil,
-                                                 [NSBundle mainBundle],
-                                                 @"Retake Photo",
-                                                 @"....");
-    }
-
-    return text;
-}
-
-
 - (void)updateReturnKeyTypeOfTextField:(UITextField*)textField
 {
     UIReturnKeyType returnKeyType = [self isAddressComplete] ? UIReturnKeyDone : UIReturnKeyNext;
@@ -769,6 +772,22 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     }
     
     return numberOfRows;
+}
+
+
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    CGFloat height;
+
+    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
+    {
+        case TableSectionName:    height = [super tableView:tableView heightForRowAtIndexPath:indexPath]; break;
+        case TableSectionDetails: height = [super tableView:tableView heightForRowAtIndexPath:indexPath]; break;
+        case TableSectionAddress: height = [super tableView:tableView heightForRowAtIndexPath:indexPath]; break;
+        case TableSectionProof:   height = self.photoCellHeight;                                          break;
+    }
+
+    return height;
 }
 
 
@@ -981,13 +1000,11 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
                     
                     if (self.isChecked == NO)
                     {
-                        NumberAreaActionCell* cell;
-                        cell = (NumberAreaActionCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+                        AddressPhotoCell* cell;
+                        cell = (AddressPhotoCell*)[self.tableView cellForRowAtIndexPath:indexPath];
                         cell.userInteractionEnabled = NO;
-                        cell.label.alpha = 0.5f;
-                        [cell.activityIndicator startAnimating];
-                        
-                        
+                        cell.button.alpha = 0.5f;
+
                         [self createAction];
                         
                         /*
@@ -997,8 +1014,8 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
                         [[WebClient sharedClient] checkPurchaseInfo:self.purchaseInfo
                                                               reply:^(NSError* error, BOOL isValid)
                         {
-                            NumberAreaActionCell* cell;
-                            cell = (NumberAreaActionCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+                            AddressPhotoCell* cell;
+                            cell = (AddressPhotoCell*)[self.tableView cellForRowAtIndexPath:indexPath];
                             cell.userInteractionEnabled = YES;
                             cell.label.alpha = 1.0f;
                             [cell.activityIndicator stopAnimating];
@@ -1397,21 +1414,10 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 
 - (UITableViewCell*)actionCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NumberAreaActionCell*   cell;
-    
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumberAreaActionCell"];
-    if (cell == nil)
-    {
-        cell = [[NumberAreaActionCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                           reuseIdentifier:@"NumberAreaActionCell"];
-    }
-    
-    cell.label.text      = [self actionCellText];
-    cell.label.textColor = [Skinning tintColor];
-    
-    self.actionIndexPath = indexPath;
-    
-    return cell;
+    self.photoCell = [self.tableView dequeueReusableCellWithIdentifier:@"AddressPhotoCell" forIndexPath:indexPath];
+    [self updatePhotoCell];
+
+    return self.photoCell;
 }
 
 

@@ -60,10 +60,6 @@ typedef enum
     AreaRows       areaRows;
 
     NSIndexPath*   actionIndexPath;
-
-    // Keyboard stuff.
-    BOOL           keyboardShown;
-    CGFloat        keyboardOverlap;
 }
 
 @property (nonatomic, strong) NSIndexPath*             nameIndexPath;
@@ -339,7 +335,7 @@ typedef enum
     }
 
     NSString* title = [NSString stringWithFormat:@"%@\n%@", monthTitle, setupTitle];
-    [self.buyCell.button setTitle:title forState: UIControlStateNormal];
+    [self.buyCell.button setTitle:title forState:UIControlStateNormal];
     [Common styleButton:self.buyCell.button];
 
     self.buyCell.button.alpha                  = (self.isBuying != 0) ? 0.5 : 1.0;
@@ -1000,12 +996,11 @@ typedef enum
 
 - (UITableViewCell*)actionCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NumberBuyCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumberBuyCell" forIndexPath:indexPath];
-    self.buyCell = cell;
+    self.buyCell = [self.tableView dequeueReusableCellWithIdentifier:@"NumberBuyCell" forIndexPath:indexPath];
     self.buyCell.delegate = self;
     [self updateBuyCell];
 
-    return cell;
+    return self.buyCell;
 }
 
 
