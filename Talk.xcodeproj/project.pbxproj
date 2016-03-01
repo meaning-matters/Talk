@@ -596,8 +596,6 @@
 		48BD8BE81663E7A400F2CB45 /* CallBaseView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */; };
 		48C1D3C517D31309004F910D /* ProofImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C1D3C417D31309004F910D /* ProofImageViewController.m */; };
 		48C1D3C617D31309004F910D /* ProofImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C1D3C417D31309004F910D /* ProofImageViewController.m */; };
-		48C1D3C817D3132A004F910D /* ProofImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48C1D3C717D3132A004F910D /* ProofImageView.xib */; };
-		48C1D3C917D3132A004F910D /* ProofImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48C1D3C717D3132A004F910D /* ProofImageView.xib */; };
 		48C431A1189EDFB40008FE01 /* VerifyPhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C431A0189EDFB40008FE01 /* VerifyPhoneViewController.m */; };
 		48C431A2189EDFB40008FE01 /* VerifyPhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C431A0189EDFB40008FE01 /* VerifyPhoneViewController.m */; };
 		48C431A4189EE0310008FE01 /* VerifyPhoneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48C431A3189EE0310008FE01 /* VerifyPhoneView.xib */; };
@@ -1329,7 +1327,6 @@
 		48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallBaseView.xib; sourceTree = "<group>"; };
 		48C1D3C317D31308004F910D /* ProofImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProofImageViewController.h; sourceTree = "<group>"; };
 		48C1D3C417D31309004F910D /* ProofImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProofImageViewController.m; sourceTree = "<group>"; };
-		48C1D3C717D3132A004F910D /* ProofImageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProofImageView.xib; sourceTree = "<group>"; };
 		48C4319F189EDFB40008FE01 /* VerifyPhoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifyPhoneViewController.h; sourceTree = "<group>"; };
 		48C431A0189EDFB40008FE01 /* VerifyPhoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifyPhoneViewController.m; sourceTree = "<group>"; };
 		48C431A3189EE0310008FE01 /* VerifyPhoneView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VerifyPhoneView.xib; sourceTree = "<group>"; };
@@ -2322,7 +2319,6 @@
 				484A949C171821CB009E22B9 /* NumberAreasCell.xib */,
 				480CE120193C4D100020F255 /* NumberBuyCell.xib */,
 				488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */,
-				48C1D3C717D3132A004F910D /* ProofImageView.xib */,
 				483679FA17246977001A02AF /* RecordingControlsCell.xib */,
 				48A26DDD18BA904100736CCB /* SearchTableView.xib */,
 				48AF455A1649794B00DFE3D8 /* ShareView.xib */,
@@ -2965,7 +2961,6 @@
 				48172C021C07017800927BC2 /* RatesTab@2x.png in Resources */,
 				4814EA3317CA98F4004B7A3C /* CreditBuyCell.xib in Resources */,
 				4814EA3A17CB18DB004B7A3C /* CreditAmountCell.xib in Resources */,
-				48C1D3C817D3132A004F910D /* ProofImageView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3032,7 +3027,6 @@
 				48B93871187B647F00132535 /* Helps.json in Resources */,
 				4814EA3417CA98F4004B7A3C /* CreditBuyCell.xib in Resources */,
 				4814EA3B17CB18DB004B7A3C /* CreditAmountCell.xib in Resources */,
-				48C1D3C917D3132A004F910D /* ProofImageView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

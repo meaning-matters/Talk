@@ -13,6 +13,7 @@
 #import "NumberAreaPostcodesViewController.h"
 #import "NumberAreaCitiesViewController.h"
 #import "NumberAreaSalutationsViewController.h"
+#import "ProofImageViewController.h"
 #import "CountriesViewController.h"
 #import "Strings.h"
 #import "Common.h"
@@ -1023,7 +1024,19 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             }
             case TableSectionProof:
             {
-                [self addProofImage];
+                if (self.address.proofImage == nil)
+                {
+                    [self addProofImage];
+                }
+                else
+                {
+                    ProofImageViewController* viewController;
+                    NSData* data = [Base64 decode:self.address.proofImage];
+                    viewController = [[ProofImageViewController alloc] initWithImageData:data];
+                    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                    viewController.title = cell.textLabel.text;
+                    [self.navigationController pushViewController:viewController animated:YES];
+                }
                 break;
             }
         }

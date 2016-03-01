@@ -218,7 +218,7 @@ typedef enum
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    ProofImageViewController*        proofImageviewController;
+    ProofImageViewController*         proofImageviewController;
     NumberDestinationsViewController* destinationsViewController;
 
     if ([self.tableView cellForRowAtIndexPath:indexPath].selectionStyle == UITableViewCellSelectionStyleNone)

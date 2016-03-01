@@ -12,9 +12,6 @@
 
 @interface ProofImageViewController : UIViewController
 
-@property (nonatomic, weak) IBOutlet UIImageView*   imageView;
-
-
 - (instancetype)initWithImageData:(NSData*)imageData;
 
 @end
