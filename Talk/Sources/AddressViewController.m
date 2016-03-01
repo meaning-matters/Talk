@@ -54,7 +54,9 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 };
 
 
-@interface AddressViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface AddressViewController () <UIImagePickerControllerDelegate,
+                                     UINavigationControllerDelegate,
+                                     AddressPhotoCellDelegate>
 
 @property (nonatomic, assign) TableSections               sections;
 @property (nonatomic, assign) TableRowsDetails            rowsDetails;
@@ -597,59 +599,6 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 }
 
 
-- (IBAction)takePicture
-{
-    NSString* takePhotoTitle    = NSLocalizedStringWithDefaultValue(@"....", nil, [NSBundle mainBundle],
-                                                                    @"Take Photo",
-                                                                    @"...\n"
-                                                                    @"[1/3 line small font].");
-    NSString* photoLibraryTitle = NSLocalizedStringWithDefaultValue(@"....", nil, [NSBundle mainBundle],
-                                                                    @"Photo Library",
-                                                                    @"...\n"
-                                                                    @"[1/3 line small font].");
-    
-    [BlockActionSheet showActionSheetWithTitle:nil
-                                    completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
-    {
-        switch (buttonIndex)
-        {
-            case 0:
-            {
-                [self checkCameraAccessWithCompletion:^(BOOL success)
-                {
-                    if (success)
-                    {
-                        UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
-
-                        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-                        {
-                            [imagePickerController setSourceType:UIImagePickerControllerSourceTypeCamera];
-                        }
-
-                        imagePickerController.delegate      = self;
-                        imagePickerController.allowsEditing = NO;
-                        [self presentViewController:imagePickerController animated:YES completion:nil];
-                    }
-                }];
-                break;
-            }
-            case 1:
-            {
-                break;
-            }
-            case 2:
-            {
-                // Cancelled.
-                break;
-            }
-        }
-    }
-                             cancelButtonTitle:[Strings cancelString]
-                        destructiveButtonTitle:nil
-                             otherButtonTitles:takePhotoTitle, photoLibraryTitle, nil];
-}
-
-
 - (void)checkCameraAccessWithCompletion:(void (^)(BOOL success))completion
 {
     NSString* title;
@@ -673,7 +622,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
                                                             @"[iOS alert title size].");
                 message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
                                                             @"%@ does not have access to the camera.\n\n"
-                                                            @"To enable access, tap Settings and turn on Camera.",
+                                                            @"To enable access, tap Settings and switch on Camera.",
                                                             @"");
                 message = [NSString stringWithFormat:message, [Settings sharedSettings].appDisplayName];
                 [BlockAlertView showAlertViewWithTitle:title
@@ -691,23 +640,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             }
             case AVAuthorizationStatusRestricted:
             {
-                title   = NSLocalizedStringWithDefaultValue(@"", nil, [NSBundle mainBundle],
-                                                            @"Camera Restriction",
-                                                            @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                            @"The use of the camera is restricted on this device\n\n"
-                                                            @"To enable access, go to iOS Settings > General > "
-                                                            @"Restrictions and turn on Camera.",
-                                                            @"");
-                message = [NSString stringWithFormat:message, [Settings sharedSettings].appDisplayName];
-                [BlockAlertView showAlertViewWithTitle:title
-                                               message:message
-                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
-                {
-                    completion ? completion(NO) : 0;
-                }
-                                     cancelButtonTitle:[Strings cancelString]
-                                     otherButtonTitles:nil];
+                // Won't happen, because UIImagePickerControllerSourceTypeCamera won't be available first (see above).
                 break;
             }
             case AVAuthorizationStatusNotDetermined:
@@ -720,18 +653,96 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             }
         }
     }
+    else
+    {
+        title   = NSLocalizedStringWithDefaultValue(@"", nil, [NSBundle mainBundle],
+                                                    @"Camera Restriction",
+                                                    @"[iOS alert title size].");
+        message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                    @"The use of the camera is restricted on this device\n\n"
+                                                    @"To enable access, go to iOS Settings > General > "
+                                                    @"Restrictions and switch on Camera.",
+                                                    @"");
+        message = [NSString stringWithFormat:message, [Settings sharedSettings].appDisplayName];
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            completion ? completion(NO) : 0;
+        }
+                             cancelButtonTitle:[Strings cancelString]
+                             otherButtonTitles:nil];
+    }
 }
 
 
-- (BOOL)checkPhotosAccess
+- (void)checkPhotosAccessWithCompletion:(void (^)(BOOL success))completion
 {
-    BOOL hasGalleryPermission = NO;
-    PHAuthorizationStatus authorizationStatus = [PHPhotoLibrary authorizationStatus];
+    NSString* title;
+    NSString* message;
 
-    if (authorizationStatus == PHAuthorizationStatusAuthorized) {
-        hasGalleryPermission = YES;
+    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+
+    switch (status)
+    {
+        case PHAuthorizationStatusAuthorized:
+        {
+            completion ? completion(YES) : 0;
+            break;
+        }
+        case PHAuthorizationStatusDenied:
+        {
+            title   = NSLocalizedStringWithDefaultValue(@"", nil, [NSBundle mainBundle],
+                                                        @"No Photos Access",
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                        @"%@ does not have access to your photos.\n\n"
+                                                        @"To enable access, tap Settings and switch on Photos.",
+                                                        @"");
+            message = [NSString stringWithFormat:message, [Settings sharedSettings].appDisplayName];
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+             {
+                 if (!cancelled)
+                 {
+                     [Common openApplicationSettings];
+                 }
+             }
+                                 cancelButtonTitle:[Strings cancelString]
+                                 otherButtonTitles:[Strings iOsSettingsString], nil];
+            break;
+        }
+        case PHAuthorizationStatusRestricted:
+        {
+            title   = NSLocalizedStringWithDefaultValue(@"", nil, [NSBundle mainBundle],
+                                                        @"Photos Restriction",
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                        @"Access to the photo library is restricted on this device\n\n"
+                                                        @"To enable access, go to iOS Settings > General > "
+                                                        @"Restrictions > Photos and switch on Camera.",
+                                                        @"");
+            message = [NSString stringWithFormat:message, [Settings sharedSettings].appDisplayName];
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+             {
+                 completion ? completion(NO) : 0;
+             }
+                                 cancelButtonTitle:[Strings cancelString]
+                                 otherButtonTitles:nil];
+            break;
+        }
+        case PHAuthorizationStatusNotDetermined:
+        {
+            [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status)
+            {
+                completion ? completion(status == PHAuthorizationStatusAuthorized) : 0;
+            }];
+            break;
+        }
     }
-    return hasGalleryPermission;
 }
 
 
@@ -748,6 +759,21 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             [textField reloadInputViews];
         }
     }
+}
+
+
+- (UIImage*)scaledImageWithImage:(UIImage*)image
+{
+    CGFloat  maximumDimension = MAX(image.size.width, image.size.height);
+    CGFloat  scaleFactor      = MIN(1440.0f / maximumDimension, 1.0f);  // Image will be 1440x1080 or 1080x1440.
+    CGSize   scaledSize       = CGSizeMake(image.size.width * scaleFactor, image.size.height * scaleFactor);
+
+    UIGraphicsBeginImageContext(scaledSize);
+    [image drawInRect:CGRectMake(0, 0, scaledSize.width, scaledSize.height)];
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return image;
 }
 
 
@@ -990,139 +1016,6 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             }
             case TableSectionProof:
             {
-                if (self.proofType != nil && self.address.proofImage == nil)
-                {
-                    [self takePicture];
-                }
-                else if ([self isAddressComplete] == YES)
-                {
-                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                    
-                    if (self.isChecked == NO)
-                    {
-                        AddressPhotoCell* cell;
-                        cell = (AddressPhotoCell*)[self.tableView cellForRowAtIndexPath:indexPath];
-                        cell.userInteractionEnabled = NO;
-                        cell.button.alpha = 0.5f;
-
-                        [self createAction];
-                        
-                        /*
-                        
-                        self.address.numberType = [NumberType localizedStringForNumberTypeMask:self.numberTypeMask];
-                        self.address.areaCode   = self.area[@"areaCode"];
-                        [[WebClient sharedClient] checkPurchaseInfo:self.purchaseInfo
-                                                              reply:^(NSError* error, BOOL isValid)
-                        {
-                            AddressPhotoCell* cell;
-                            cell = (AddressPhotoCell*)[self.tableView cellForRowAtIndexPath:indexPath];
-                            cell.userInteractionEnabled = YES;
-                            cell.label.alpha = 1.0f;
-                            [cell.activityIndicator stopAnimating];
-                            
-                            if (error == nil)
-                            {
-                                NBLog(@"########################### do something with isValid");
-                                self.isChecked = YES;
-                                [self.tableView beginUpdates];
-                                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section]
-                                              withRowAnimation:UITableViewRowAnimationFade];
-                                [self.tableView endUpdates];
-                            }
-                            else if (error.code == NSURLErrorNotConnectedToInternet)
-                            {
-                                NSString* title;
-                                NSString* message;
-                                
-                                title   = NSLocalizedStringWithDefaultValue(@"Address CouldNotValidateAlertTitle", nil,
-                                                                            [NSBundle mainBundle], @"Could Not Validate",
-                                                                            @"Alert title telling that there's a "
-                                                                            @"problem with internet connection.\n"
-                                                                            @"[iOS alert title size].");
-                                message = NSLocalizedStringWithDefaultValue(@"Address CouldNotValidateAlertMessage", nil,
-                                                                            [NSBundle mainBundle],
-                                                                            @"There seems to be a problem with the "
-                                                                            @"internet connection.\n\nPlease try again "
-                                                                            @"later.",
-                                                                            @"Alert message telling that there's a "
-                                                                            @"problem with internet connection.\n"
-                                                                            @"[iOS alert message size]");
-                                [BlockAlertView showAlertViewWithTitle:title
-                                                               message:message
-                                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
-                                {
-                                    [self dismissViewControllerAnimated:YES completion:nil];
-                                }
-                                                     cancelButtonTitle:[Strings closeString]
-                                                     otherButtonTitles:nil];
-                            }
-                            else //TODO Check with WebStatusFailInvalidInfo, check if server generates this.
-                            {
-                                NSString* title;
-                                NSString* message;
-                                NSString* description;
-                                
-                                title   = NSLocalizedStringWithDefaultValue(@"Address ValidationFailedAlertTitle", nil,
-                                                                            [NSBundle mainBundle], @"Validation Failed",
-                                                                            @"Alert title telling that validating "
-                                                                            @"name & address of user failed.\n"
-                                                                            @"[iOS alert title size].");
-                                message = NSLocalizedStringWithDefaultValue(@"Address ValidationFailedAlertMessage", nil,
-                                                                            [NSBundle mainBundle],
-                                                                            @"Validating your name and address failed: %@",
-                                                                            @"Alert message telling that validating "
-                                                                            @"name & address of user failed.\n"
-                                                                            @"[iOS alert message size]");
-                                description = error.localizedDescription;
-                                message = [NSString stringWithFormat:message, description];
-                                [BlockAlertView showAlertViewWithTitle:title
-                                                               message:message
-                                                            completion:nil
-                                                     cancelButtonTitle:[Strings closeString]
-                                                     otherButtonTitles:nil];
-                            }
-                        }];
-                         
-                         */
-                    }
-                    else
-                    {
-                        NSLog(@"###########################");
-                        /*
-                         BuyNumberViewController* viewController;
-                         viewController = [[BuyNumberViewController alloc] initWithName:name
-                         isoCountryCode:numberIsoCountryCode
-                         area:area
-                         numberTypeMask:numberTypeMask
-                         info:purchaseInfo];
-                         [self.navigationController pushViewController:viewController animated:YES];
-                         */
-                    }
-                }
-                else
-                {
-                    NSString*   title;
-                    NSString*   message;
-                    
-                    title   = NSLocalizedStringWithDefaultValue(@"Address InfoIncompleteAlertTitle", nil,
-                                                                [NSBundle mainBundle], @"Information Missing",
-                                                                @"Alert title telling that user did not fill in all information.\n"
-                                                                @"[iOS alert title size].");
-                    message = NSLocalizedStringWithDefaultValue(@"Address LoadFailAlertMessage", nil,
-                                                                [NSBundle mainBundle],
-                                                                @"Some of the required information has not been supplied yet.",
-                                                                @"Alert message telling that user did not fill in all information.\n"
-                                                                @"[iOS alert message size]");
-                    [BlockAlertView showAlertViewWithTitle:title
-                                                   message:message
-                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
-                    {
-                        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                    }
-                                         cancelButtonTitle:[Strings closeString]
-                                         otherButtonTitles:nil];
-                }
-                
                 break;
             }
         }
@@ -1139,7 +1032,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         case TableSectionName:    cell = [self nameCellForRowAtIndexPath:indexPath];    break;
         case TableSectionDetails: cell = [self detailsCellForRowAtIndexPath:indexPath]; break;
         case TableSectionAddress: cell = [self addressCellForRowAtIndexPath:indexPath]; break;
-        case TableSectionProof:   cell = [self actionCellForRowAtIndexPath:indexPath];  break;
+        case TableSectionProof:   cell = [self photoCellForRowAtIndexPath:indexPath];   break;
     }
     
     return cell;
@@ -1412,9 +1305,10 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 }
 
 
-- (UITableViewCell*)actionCellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)photoCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     self.photoCell = [self.tableView dequeueReusableCellWithIdentifier:@"AddressPhotoCell" forIndexPath:indexPath];
+    self.photoCell.delegate = self;
     [self updatePhotoCell];
 
     return self.photoCell;
@@ -1443,6 +1337,68 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             textField.textColor = [UIColor grayColor];
         }
     }
+}
+
+
+#pragma mark - Photo Cell Delegate
+
+- (void)takePhotoAction
+{
+    NSString* takePhotoTitle    = NSLocalizedStringWithDefaultValue(@"....", nil, [NSBundle mainBundle],
+                                                                    @"Take Photo",
+                                                                    @"...\n"
+                                                                    @"[1/3 line small font].");
+    NSString* photoLibraryTitle = NSLocalizedStringWithDefaultValue(@"....", nil, [NSBundle mainBundle],
+                                                                    @"Photo Library",
+                                                                    @"...\n"
+                                                                    @"[1/3 line small font].");
+
+    [BlockActionSheet showActionSheetWithTitle:nil
+                                    completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
+    {
+        switch (buttonIndex)
+        {
+            case 0:
+            {
+                [self checkCameraAccessWithCompletion:^(BOOL success)
+                {
+                    if (success)
+                    {
+                        UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
+
+                        imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+                        imagePickerController.delegate      = self;
+                        imagePickerController.allowsEditing = NO;
+                        [self presentViewController:imagePickerController animated:YES completion:nil];
+                    }
+                }];
+                break;
+            }
+            case 1:
+            {
+                [self checkPhotosAccessWithCompletion:^(BOOL success)
+                {
+                    if (success)
+                    {
+                        UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
+
+                        imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                        imagePickerController.delegate   = self;
+                        [self presentViewController:imagePickerController animated:YES completion:nil];
+                    }
+                }];
+                break;
+            }
+            case 2:
+            {
+                // Cancelled.
+                break;
+            }
+        }
+    }
+                             cancelButtonTitle:[Strings cancelString]
+                        destructiveButtonTitle:nil
+                             otherButtonTitles:takePhotoTitle, photoLibraryTitle, nil];
 }
 
 
@@ -1600,12 +1556,14 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 
 - (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary*)info
 {
-    UIImage* image = [info objectForKey:UIImagePickerControllerEditedImage];
+    UIImage* image = info[UIImagePickerControllerOriginalImage];
+
+    image = [self scaledImageWithImage:image];
+
     NSData*  data  = UIImageJPEGRepresentation(image, 0.5);
     
     self.address.proofImage = [Base64 encode:data];
     
-    //### When not reloading here, the new footer text will be way too low (iOS 7.0.6).
     [self.tableView reloadData];
     
     [self dismissViewControllerAnimated:YES completion:nil];
