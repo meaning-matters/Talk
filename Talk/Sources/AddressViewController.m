@@ -17,7 +17,6 @@
 #import "Strings.h"
 #import "Common.h"
 #import "CountryNames.h"
-#import "AddressPhotoCell.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
 #import "Base64.h"
@@ -54,9 +53,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 };
 
 
-@interface AddressViewController () <UIImagePickerControllerDelegate,
-                                     UINavigationControllerDelegate,
-                                     AddressPhotoCellDelegate>
+@interface AddressViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, assign) TableSections               sections;
 @property (nonatomic, assign) TableRowsDetails            rowsDetails;
@@ -99,9 +96,6 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 @property (nonatomic, copy) void (^createCompletion)(AddressData* address);
 
 @property (nonatomic, strong) NSIndexPath*                activeCellIndexPath;
-
-@property (nonatomic, strong) AddressPhotoCell*           photoCell;
-@property (nonatomic, assign) CGFloat                     photoCellHeight;
 
 @property (nonatomic, assign) BOOL                        isLoading;
 @property (nonatomic, strong) UIActivityIndicatorView*    activityIndicator;
@@ -239,13 +233,6 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     {
         [self loadData];
     }
-    
-    [self.tableView registerNib:[UINib nibWithNibName:@"AddressPhotoCell" bundle:nil]
-         forCellReuseIdentifier:@"AddressPhotoCell"];
-
-    UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"AddressPhotoCell"];
-    self.photoCellHeight  = cell.bounds.size.height;
-
 }
 
 
@@ -309,30 +296,6 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 
 
 #pragma mark - Helpers
-
-- (void)updatePhotoCell
-{
-    NSString* title;
-
-    if (self.address.proofImage == nil)
-    {
-        title = NSLocalizedStringWithDefaultValue(@"Address:Action TakePhotoLabel", nil,
-                                                  [NSBundle mainBundle],
-                                                  @"Take Photo",
-                                                  @"....");
-    }
-    else
-    {
-        title = NSLocalizedStringWithDefaultValue(@"Address:Action RetakePhotoLabel", nil,
-                                                  [NSBundle mainBundle],
-                                                  @"Retake Photo",
-                                                  @"....");
-    }
-
-    [self.photoCell.button setTitle:title forState:UIControlStateNormal];
-    [Common styleButton:self.photoCell.button];
-}
-
 
 - (void)updateRightBarButtonItem
 {
@@ -777,6 +740,66 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 }
 
 
+- (void)addProofImage
+{
+    NSString* takePhotoTitle    = NSLocalizedStringWithDefaultValue(@"....", nil, [NSBundle mainBundle],
+                                                                    @"Take Photo",
+                                                                    @"...\n"
+                                                                    @"[1/3 line small font].");
+    NSString* photoLibraryTitle = NSLocalizedStringWithDefaultValue(@"....", nil, [NSBundle mainBundle],
+                                                                    @"Photo Library",
+                                                                    @"...\n"
+                                                                    @"[1/3 line small font].");
+
+    [BlockActionSheet showActionSheetWithTitle:nil
+                                    completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
+     {
+         switch (buttonIndex)
+         {
+             case 0:
+             {
+                 [self checkCameraAccessWithCompletion:^(BOOL success)
+                  {
+                      if (success)
+                      {
+                          UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
+
+                          imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+                          imagePickerController.delegate      = self;
+                          imagePickerController.allowsEditing = NO;
+                          [self presentViewController:imagePickerController animated:YES completion:nil];
+                      }
+                  }];
+                 break;
+             }
+             case 1:
+             {
+                 [self checkPhotosAccessWithCompletion:^(BOOL success)
+                  {
+                      if (success)
+                      {
+                          UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
+
+                          imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                          imagePickerController.delegate   = self;
+                          [self presentViewController:imagePickerController animated:YES completion:nil];
+                      }
+                  }];
+                 break;
+             }
+             case 2:
+             {
+                 // Cancelled.
+                 break;
+             }
+         }
+     }
+                             cancelButtonTitle:[Strings cancelString]
+                        destructiveButtonTitle:nil
+                             otherButtonTitles:takePhotoTitle, photoLibraryTitle, nil];
+}
+
+
 #pragma mark - Table View Delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
@@ -798,22 +821,6 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     }
     
     return numberOfRows;
-}
-
-
-- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    CGFloat height;
-
-    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
-    {
-        case TableSectionName:    height = [super tableView:tableView heightForRowAtIndexPath:indexPath]; break;
-        case TableSectionDetails: height = [super tableView:tableView heightForRowAtIndexPath:indexPath]; break;
-        case TableSectionAddress: height = [super tableView:tableView heightForRowAtIndexPath:indexPath]; break;
-        case TableSectionProof:   height = self.photoCellHeight;                                          break;
-    }
-
-    return height;
 }
 
 
@@ -1016,6 +1023,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             }
             case TableSectionProof:
             {
+                [self addProofImage];
                 break;
             }
         }
@@ -1032,7 +1040,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         case TableSectionName:    cell = [self nameCellForRowAtIndexPath:indexPath];    break;
         case TableSectionDetails: cell = [self detailsCellForRowAtIndexPath:indexPath]; break;
         case TableSectionAddress: cell = [self addressCellForRowAtIndexPath:indexPath]; break;
-        case TableSectionProof:   cell = [self photoCellForRowAtIndexPath:indexPath];   break;
+        case TableSectionProof:   cell = [self proofCellForRowAtIndexPath:indexPath];   break;
     }
     
     return cell;
@@ -1305,13 +1313,23 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 }
 
 
-- (UITableViewCell*)photoCellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)proofCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    self.photoCell = [self.tableView dequeueReusableCellWithIdentifier:@"AddressPhotoCell" forIndexPath:indexPath];
-    self.photoCell.delegate = self;
-    [self updatePhotoCell];
+    UITableViewCell* cell;
 
-    return self.photoCell;
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"ProofCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"ProofCell"];
+    }
+
+    cell.textLabel.text            = NSLocalizedString(@"Proof Image", @"Proof cell title");
+    cell.detailTextLabel.textColor = [Skinning placeholderColor];
+    cell.detailTextLabel.text      = self.address.proofImage ? nil : [Strings requiredString];
+    cell.accessoryType             = self.address.proofImage ? UITableViewCellAccessoryDisclosureIndicator :
+                                                               UITableViewCellAccessoryNone;
+
+    return cell;
 }
 
 
@@ -1337,68 +1355,6 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             textField.textColor = [UIColor grayColor];
         }
     }
-}
-
-
-#pragma mark - Photo Cell Delegate
-
-- (void)takePhotoAction
-{
-    NSString* takePhotoTitle    = NSLocalizedStringWithDefaultValue(@"....", nil, [NSBundle mainBundle],
-                                                                    @"Take Photo",
-                                                                    @"...\n"
-                                                                    @"[1/3 line small font].");
-    NSString* photoLibraryTitle = NSLocalizedStringWithDefaultValue(@"....", nil, [NSBundle mainBundle],
-                                                                    @"Photo Library",
-                                                                    @"...\n"
-                                                                    @"[1/3 line small font].");
-
-    [BlockActionSheet showActionSheetWithTitle:nil
-                                    completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
-    {
-        switch (buttonIndex)
-        {
-            case 0:
-            {
-                [self checkCameraAccessWithCompletion:^(BOOL success)
-                {
-                    if (success)
-                    {
-                        UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
-
-                        imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-                        imagePickerController.delegate      = self;
-                        imagePickerController.allowsEditing = NO;
-                        [self presentViewController:imagePickerController animated:YES completion:nil];
-                    }
-                }];
-                break;
-            }
-            case 1:
-            {
-                [self checkPhotosAccessWithCompletion:^(BOOL success)
-                {
-                    if (success)
-                    {
-                        UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
-
-                        imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-                        imagePickerController.delegate   = self;
-                        [self presentViewController:imagePickerController animated:YES completion:nil];
-                    }
-                }];
-                break;
-            }
-            case 2:
-            {
-                // Cancelled.
-                break;
-            }
-        }
-    }
-                             cancelButtonTitle:[Strings cancelString]
-                        destructiveButtonTitle:nil
-                             otherButtonTitles:takePhotoTitle, photoLibraryTitle, nil];
 }
 
 
