@@ -41,12 +41,11 @@
     CGFloat height    = self.view.frame.size.height - topHeight;
     if (self.tabBarController)
     {
-        height -= self.tabBarController.view.frame.size.height;
+        height -= self.tabBarController.tabBar.frame.size.height;
     }
 
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
-
-    self.imageView.frame = CGRectMake(0.0f, topHeight, self.view.frame.size.width, height);
+    self.imageView.frame       = CGRectMake(0.0f, topHeight, self.view.frame.size.width, height);
 
     [self.view addSubview:self.imageView];
 

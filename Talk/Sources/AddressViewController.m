@@ -1050,7 +1050,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 
                     viewController          = [[ProofImageViewController alloc] initWithImageData:data];
                     viewController.title    = cell.textLabel.text;
-                    viewController.delegate = self;
+                    viewController.delegate = self.isNew ? self : nil;
 
                     [self.navigationController pushViewController:viewController animated:YES];
                 }
