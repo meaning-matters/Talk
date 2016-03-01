@@ -54,7 +54,9 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 };
 
 
-@interface AddressViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface AddressViewController () <UIImagePickerControllerDelegate,
+                                     UINavigationControllerDelegate,
+                                     ProofImageViewControllerDelegate>
 
 @property (nonatomic, assign) TableSections               sections;
 @property (nonatomic, assign) TableRowsDetails            rowsDetails;
@@ -100,6 +102,8 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 
 @property (nonatomic, assign) BOOL                        isLoading;
 @property (nonatomic, strong) UIActivityIndicatorView*    activityIndicator;
+
+@property (nonatomic, copy) void (^redoProofImageCompletion)(UIImage*);
 
 @end
 
@@ -754,50 +758,60 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 
     [BlockActionSheet showActionSheetWithTitle:nil
                                     completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
-     {
-         switch (buttonIndex)
-         {
-             case 0:
-             {
-                 [self checkCameraAccessWithCompletion:^(BOOL success)
-                  {
-                      if (success)
-                      {
-                          UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
+    {
+        switch (buttonIndex)
+        {
+            case 0:
+            {
+                [self checkCameraAccessWithCompletion:^(BOOL success)
+                {
+                    if (success)
+                    {
+                        UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
 
-                          imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-                          imagePickerController.delegate      = self;
-                          imagePickerController.allowsEditing = NO;
-                          [self presentViewController:imagePickerController animated:YES completion:nil];
-                      }
-                  }];
-                 break;
-             }
-             case 1:
-             {
-                 [self checkPhotosAccessWithCompletion:^(BOOL success)
-                  {
-                      if (success)
-                      {
-                          UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
+                        imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+                        imagePickerController.delegate      = self;
+                        imagePickerController.allowsEditing = NO;
+                        [self presentViewController:imagePickerController animated:YES completion:nil];
+                    }
+                }];
+                break;
+            }
+            case 1:
+            {
+                [self checkPhotosAccessWithCompletion:^(BOOL success)
+                {
+                    if (success)
+                    {
+                        UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
 
-                          imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-                          imagePickerController.delegate   = self;
-                          [self presentViewController:imagePickerController animated:YES completion:nil];
-                      }
-                  }];
-                 break;
-             }
-             case 2:
-             {
-                 // Cancelled.
-                 break;
-             }
-         }
-     }
+                        imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                        imagePickerController.delegate   = self;
+                        [self presentViewController:imagePickerController animated:YES completion:nil];
+                    }
+                }];
+                break;
+            }
+            case 2:
+            {
+                // Cancelled.
+                break;
+            }
+        }
+    }
                              cancelButtonTitle:[Strings cancelString]
                         destructiveButtonTitle:nil
                              otherButtonTitles:takePhotoTitle, photoLibraryTitle, nil];
+}
+
+
+#pragma Proof Image View Controller Delegate
+
+- (void)redoProofImageWithCompletion:(void (^)(UIImage*))completion
+{
+    self.redoProofImageCompletion = completion;
+
+    [self addProofImage];
 }
 
 
@@ -1030,11 +1044,14 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
                 }
                 else
                 {
+                    UITableViewCell*          cell = [self.tableView cellForRowAtIndexPath:indexPath];
                     ProofImageViewController* viewController;
-                    NSData* data = [Base64 decode:self.address.proofImage];
-                    viewController = [[ProofImageViewController alloc] initWithImageData:data];
-                    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-                    viewController.title = cell.textLabel.text;
+                    NSData*                   data = [Base64 decode:self.address.proofImage];
+
+                    viewController          = [[ProofImageViewController alloc] initWithImageData:data];
+                    viewController.title    = cell.textLabel.text;
+                    viewController.delegate = self;
+
                     [self.navigationController pushViewController:viewController animated:YES];
                 }
                 break;
@@ -1529,19 +1546,31 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 
     image = [self scaledImageWithImage:image];
 
-    NSData*  data  = UIImageJPEGRepresentation(image, 0.5);
+    NSData* data = UIImageJPEGRepresentation(image, 0.5);
     
     self.address.proofImage = [Base64 encode:data];
     
     [self.tableView reloadData];
     
     [self dismissViewControllerAnimated:YES completion:nil];
+
+    if (self.redoProofImageCompletion != nil)
+    {
+        self.redoProofImageCompletion(image);
+        self.redoProofImageCompletion = nil;
+    }
 }
 
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController*)picker
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+
+    if (self.redoProofImageCompletion != nil)
+    {
+        self.redoProofImageCompletion(nil);
+        self.redoProofImageCompletion = nil;
+    }
 }
 
 

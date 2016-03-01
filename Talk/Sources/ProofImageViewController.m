@@ -13,7 +13,6 @@
 @interface ProofImageViewController ()
 
 @property (nonatomic, strong) UIImageView* imageView;
-@property (nonatomic, strong) UIImage*     image;
 
 @end
 
@@ -24,7 +23,8 @@
 {
     if (self = [super init])
     {
-        self.image = [UIImage imageWithData:imageData];
+        UIImage* image = [UIImage imageWithData:imageData];
+        self.imageView = [[UIImageView alloc] initWithImage:image];
     }
 
     return self;
@@ -44,12 +44,31 @@
         height -= self.tabBarController.view.frame.size.height;
     }
 
-    self.imageView = [[UIImageView alloc] initWithImage:self.image];
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
 
     self.imageView.frame = CGRectMake(0.0f, topHeight, self.view.frame.size.width, height);
 
     [self.view addSubview:self.imageView];
+
+    if (self.delegate != nil)
+    {
+        UIBarButtonItem* buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
+                                                                                    target:self
+                                                                                    action:@selector(redoAction)];
+        self.navigationItem.rightBarButtonItem = buttonItem;
+    }
+}
+
+
+- (void)redoAction
+{
+    [self.delegate redoProofImageWithCompletion:^(UIImage* image)
+    {
+        if (image != nil)
+        {
+            self.imageView.image = image;
+        }
+    }];
 }
 
 @end
