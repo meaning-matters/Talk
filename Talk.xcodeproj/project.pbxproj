@@ -655,6 +655,7 @@
 		48FD99DD161856120061191B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99DC161856120061191B /* CFNetwork.framework */; };
 		48FD99E71618CC370061191B /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FD99E61618CC370061191B /* Common.m */; };
 		48FD99E81618CC370061191B /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FD99E61618CC370061191B /* Common.m */; };
+		48FE4F591C8752C100CC0873 /* ImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FE4F581C8752C100CC0873 /* ImagePicker.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1398,6 +1399,8 @@
 		48FD99DC161856120061191B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		48FD99E51618CC370061191B /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		48FD99E61618CC370061191B /* Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Common.m; sourceTree = "<group>"; };
+		48FE4F571C8752C100CC0873 /* ImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePicker.h; sourceTree = "<group>"; };
+		48FE4F581C8752C100CC0873 /* ImagePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePicker.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1633,6 +1636,10 @@
 				4837BB65165F726300E46C36 /* BlockAlertView.m */,
 				48FD99E51618CC370061191B /* Common.h */,
 				48FD99E61618CC370061191B /* Common.m */,
+				48D3F01C164F9284002041A9 /* CountryNames.h */,
+				48D3F01D164F9284002041A9 /* CountryNames.m */,
+				48B0C3F7174989F400DAB3BD /* Keychain.h */,
+				48B0C3F8174989F400DAB3BD /* Keychain.m */,
 				48EDD2341667729E007B89DA /* KeypadKey.h */,
 				48D4FADB1924247A00949894 /* NavigationController.h */,
 				48D4FADC1924247A00949894 /* NavigationController.m */,
@@ -1648,12 +1655,20 @@
 				4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */,
 				48FC30C31C2221360032387E /* ProofType.h */,
 				48FC30C41C2221360032387E /* ProofType.m */,
+				4895D19B16B1C4F100BCA581 /* PurchaseManager.h */,
+				4895D19C16B1C4F200BCA581 /* PurchaseManager.m */,
+				482881571C5F5E4C00210DF1 /* Salutation.h */,
+				482881581C5F5E4C00210DF1 /* Salutation.m */,
+				48AF457F164A45A000DFE3D8 /* Settings.h */,
+				48AF4580164A45A100DFE3D8 /* Settings.m */,
+				48AD95DD164AE581006178E6 /* Skinning.h */,
+				48AD95DE164AE582006178E6 /* Skinning.m */,
 				482A6395165F903900325B3F /* Strings.h */,
 				482A6396165F903900325B3F /* Strings.m */,
 				48ADD0F517067919001515EB /* UIView+AnimateHidden.h */,
 				48ADD0F61706791A001515EB /* UIView+AnimateHidden.m */,
-				482881571C5F5E4C00210DF1 /* Salutation.h */,
-				482881581C5F5E4C00210DF1 /* Salutation.m */,
+				48FE4F571C8752C100CC0873 /* ImagePicker.h */,
+				48FE4F581C8752C100CC0873 /* ImagePicker.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -1698,26 +1713,7 @@
 				48D0A6F31654D6D700FA2D98 /* main.mm */,
 				48338F9F16170CA80033F4C1 /* AppDelegate.h */,
 				48338FA016170CA80033F4C1 /* AppDelegate.m */,
-				4888D1F8166E865400B55B22 /* Call.h */,
-				4888D1F9166E865400B55B22 /* Call.m */,
-				482A639B165FA94400325B3F /* CallManager.h */,
-				482A639C165FA94400325B3F /* CallManager.m */,
-				48D3F01C164F9284002041A9 /* CountryNames.h */,
-				48D3F01D164F9284002041A9 /* CountryNames.m */,
-				4882748C1660E20C00B41EA1 /* DtmfPlayer.h */,
-				4882748D1660E20C00B41EA1 /* DtmfPlayer.m */,
-				48B0C3F7174989F400DAB3BD /* Keychain.h */,
-				48B0C3F8174989F400DAB3BD /* Keychain.m */,
-				4837BB3A165D701F00E46C36 /* LibPhoneNumber.h */,
-				4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */,
-				48CB0773163D76C300B07199 /* PhoneNumber.h */,
-				48CB0774163D76C300B07199 /* PhoneNumber.m */,
-				4895D19B16B1C4F100BCA581 /* PurchaseManager.h */,
-				4895D19C16B1C4F200BCA581 /* PurchaseManager.m */,
-				48AF457F164A45A000DFE3D8 /* Settings.h */,
-				48AF4580164A45A100DFE3D8 /* Settings.m */,
-				48AD95DD164AE581006178E6 /* Skinning.h */,
-				48AD95DE164AE582006178E6 /* Skinning.m */,
+				48FE4F511C87525000CC0873 /* Calling */,
 				482A639A165F922E00325B3F /* Common */,
 				488FBBD717007C39000ECC71 /* CoreData */,
 				488268D1164BCF6300EA58AE /* Networking */,
@@ -2508,6 +2504,23 @@
 			name = Base;
 			sourceTree = "<group>";
 		};
+		48FE4F511C87525000CC0873 /* Calling */ = {
+			isa = PBXGroup;
+			children = (
+				4888D1F8166E865400B55B22 /* Call.h */,
+				4888D1F9166E865400B55B22 /* Call.m */,
+				482A639B165FA94400325B3F /* CallManager.h */,
+				482A639C165FA94400325B3F /* CallManager.m */,
+				4882748C1660E20C00B41EA1 /* DtmfPlayer.h */,
+				4882748D1660E20C00B41EA1 /* DtmfPlayer.m */,
+				4837BB3A165D701F00E46C36 /* LibPhoneNumber.h */,
+				4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */,
+				48CB0773163D76C300B07199 /* PhoneNumber.h */,
+				48CB0774163D76C300B07199 /* PhoneNumber.m */,
+			);
+			name = Calling;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3123,6 +3136,7 @@
 				48DD72D5169F5AC600CD7080 /* WebClient.m in Sources */,
 				48B813411AADF91D0019AF77 /* NBGroup.m in Sources */,
 				4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */,
+				48FE4F591C8752C100CC0873 /* ImagePicker.m in Sources */,
 				48F5D2ED16B9A380001576E1 /* Base64.m in Sources */,
 				48B5AAF216E6A58700BA4084 /* NumberCountriesViewController.m in Sources */,
 				488AD1EA16E799C3004D3A2A /* NumberStatesViewController.m in Sources */,

@@ -11,12 +11,14 @@
 #import "Skinning.h"
 #import "WebClient.h"
 #import "Base64.h"
+#import "ImagePicker.h"
 
 
 @interface ProofImageViewController ()
 
 @property (nonatomic, strong) AddressData* address;
 @property (nonatomic, strong) UIImageView* imageView;
+@property (nonatomic, strong) ImagePicker* imagePicker;
 
 @end
 
@@ -72,13 +74,10 @@
 
     [self.view addSubview:self.imageView];
 
-    if (self.delegate != nil)
-    {
-        UIBarButtonItem* buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
-                                                                                    target:self
-                                                                                    action:@selector(redoAction)];
-        self.navigationItem.rightBarButtonItem = buttonItem;
-    }
+    UIBarButtonItem* buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
+                                                                                target:self
+                                                                                action:@selector(redoAction)];
+    self.navigationItem.rightBarButtonItem = buttonItem;
 }
 
 
@@ -100,11 +99,18 @@
 
 - (void)redoAction
 {
-    [self.delegate redoProofImageWithCompletion:^(UIImage* image)
+    if (self.imagePicker == nil)
     {
-        if (image != nil)
+        self.imagePicker = [[ImagePicker alloc] initWithPresentingViewController:self];
+    }
+
+    [self.imagePicker pickImageWithCompletion:^(NSData* imageData)
+    {
+        if (imageData != nil)
         {
-            self.imageView.image = image;
+            self.imageView.image    = [UIImage imageWithData:imageData];
+            
+            self.address.proofImage = [Base64 encode:imageData];
         }
     }];
 }

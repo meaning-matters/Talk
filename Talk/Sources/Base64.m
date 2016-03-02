@@ -53,14 +53,28 @@ static uint8_t decodingTable[128];
         output[index + 2] = (i + 1) < length ? encodingTable[(value >> 6)  & 0x3F] : '=';
         output[index + 3] = (i + 2) < length ? encodingTable[(value >> 0)  & 0x3F] : '=';
     }
-    
-    return [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+
+    if (input == NULL)
+    {
+        return nil;
+    }
+    else
+    {
+        return [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+    }
 }
 
 
 + (NSString*)encode:(NSData*)rawBytes
 {
-    return [self encode:(const uint8_t*) rawBytes.bytes length:rawBytes.length];
+    if (rawBytes == nil)
+    {
+        return nil;
+    }
+    else
+    {
+        return [self encode:(const uint8_t*)rawBytes.bytes length:rawBytes.length];
+    }
 }
 
 

@@ -20,12 +20,13 @@
 #import "CountryNames.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
-#import "Base64.h"
 #import "DataManager.h"
 #import "BlockActionSheet.h"
 #import "Settings.h"
 #import "Salutation.h"
 #import "ProofType.h"
+#import "ImagePicker.h"
+#import "Base64.h"
 
 typedef NS_ENUM(NSUInteger, TableSections)
 {
@@ -54,9 +55,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 };
 
 
-@interface AddressViewController () <UIImagePickerControllerDelegate,
-                                     UINavigationControllerDelegate,
-                                     ProofImageViewControllerDelegate>
+@interface AddressViewController ()
 
 @property (nonatomic, assign) TableSections               sections;
 @property (nonatomic, assign) TableRowsDetails            rowsDetails;
@@ -103,7 +102,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 @property (nonatomic, assign) BOOL                        isLoading;
 @property (nonatomic, strong) UIActivityIndicatorView*    activityIndicator;
 
-@property (nonatomic, copy) void (^redoProofImageCompletion)(UIImage*);
+@property (nonatomic, strong) ImagePicker*                imagePicker;
 
 @end
 
@@ -131,6 +130,8 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         self.numberTypeMask       = numberTypeMask;
         self.addressTypeMask      = addressTypeMask;
         self.createCompletion     = completion;
+
+        self.imagePicker          = [[ImagePicker alloc] initWithPresentingViewController:self];
         
         if (self.isNew == YES)
         {
@@ -567,152 +568,6 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 }
 
 
-- (void)checkCameraAccessWithCompletion:(void (^)(BOOL success))completion
-{
-    NSString* title;
-    NSString* message;
-
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-    {
-        AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-
-        switch (status)
-        {
-            case AVAuthorizationStatusAuthorized:
-            {
-                completion ? completion(YES) : 0;
-                break;
-            }
-            case AVAuthorizationStatusDenied:
-            {
-                title   = NSLocalizedStringWithDefaultValue(@"", nil, [NSBundle mainBundle],
-                                                            @"No Camera Access",
-                                                            @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                            @"%@ does not have access to the camera.\n\n"
-                                                            @"To enable access, tap Settings and switch on Camera.",
-                                                            @"");
-                message = [NSString stringWithFormat:message, [Settings sharedSettings].appDisplayName];
-                [BlockAlertView showAlertViewWithTitle:title
-                                               message:message
-                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
-                {
-                    if (!cancelled)
-                    {
-                        [Common openApplicationSettings];
-                    }
-                }
-                                     cancelButtonTitle:[Strings cancelString]
-                                     otherButtonTitles:[Strings iOsSettingsString], nil];
-                break;
-            }
-            case AVAuthorizationStatusRestricted:
-            {
-                // Won't happen, because UIImagePickerControllerSourceTypeCamera won't be available first (see above).
-                break;
-            }
-            case AVAuthorizationStatusNotDetermined:
-            {
-                [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted)
-                {
-                    completion ? completion(granted) : 0;
-                }];
-                break;
-            }
-        }
-    }
-    else
-    {
-        title   = NSLocalizedStringWithDefaultValue(@"", nil, [NSBundle mainBundle],
-                                                    @"Camera Restriction",
-                                                    @"[iOS alert title size].");
-        message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                    @"The use of the camera is restricted on this device\n\n"
-                                                    @"To enable access, go to iOS Settings > General > "
-                                                    @"Restrictions and switch on Camera.",
-                                                    @"");
-        message = [NSString stringWithFormat:message, [Settings sharedSettings].appDisplayName];
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-        {
-            completion ? completion(NO) : 0;
-        }
-                             cancelButtonTitle:[Strings cancelString]
-                             otherButtonTitles:nil];
-    }
-}
-
-
-- (void)checkPhotosAccessWithCompletion:(void (^)(BOOL success))completion
-{
-    NSString* title;
-    NSString* message;
-
-    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
-
-    switch (status)
-    {
-        case PHAuthorizationStatusAuthorized:
-        {
-            completion ? completion(YES) : 0;
-            break;
-        }
-        case PHAuthorizationStatusDenied:
-        {
-            title   = NSLocalizedStringWithDefaultValue(@"", nil, [NSBundle mainBundle],
-                                                        @"No Photos Access",
-                                                        @"[iOS alert title size].");
-            message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                        @"%@ does not have access to your photos.\n\n"
-                                                        @"To enable access, tap Settings and switch on Photos.",
-                                                        @"");
-            message = [NSString stringWithFormat:message, [Settings sharedSettings].appDisplayName];
-            [BlockAlertView showAlertViewWithTitle:title
-                                           message:message
-                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
-             {
-                 if (!cancelled)
-                 {
-                     [Common openApplicationSettings];
-                 }
-             }
-                                 cancelButtonTitle:[Strings cancelString]
-                                 otherButtonTitles:[Strings iOsSettingsString], nil];
-            break;
-        }
-        case PHAuthorizationStatusRestricted:
-        {
-            title   = NSLocalizedStringWithDefaultValue(@"", nil, [NSBundle mainBundle],
-                                                        @"Photos Restriction",
-                                                        @"[iOS alert title size].");
-            message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                        @"Access to the photo library is restricted on this device\n\n"
-                                                        @"To enable access, go to iOS Settings > General > "
-                                                        @"Restrictions > Photos and switch on Camera.",
-                                                        @"");
-            message = [NSString stringWithFormat:message, [Settings sharedSettings].appDisplayName];
-            [BlockAlertView showAlertViewWithTitle:title
-                                           message:message
-                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
-             {
-                 completion ? completion(NO) : 0;
-             }
-                                 cancelButtonTitle:[Strings cancelString]
-                                 otherButtonTitles:nil];
-            break;
-        }
-        case PHAuthorizationStatusNotDetermined:
-        {
-            [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status)
-            {
-                completion ? completion(status == PHAuthorizationStatusAuthorized) : 0;
-            }];
-            break;
-        }
-    }
-}
-
 
 - (void)updateReturnKeyTypeOfTextField:(UITextField*)textField
 {
@@ -727,91 +582,6 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             [textField reloadInputViews];
         }
     }
-}
-
-
-- (UIImage*)scaledImageWithImage:(UIImage*)image
-{
-    CGFloat  maximumDimension = MAX(image.size.width, image.size.height);
-    CGFloat  scaleFactor      = MIN(1440.0f / maximumDimension, 1.0f);  // Image will be 1440x1080 or 1080x1440.
-    CGSize   scaledSize       = CGSizeMake(image.size.width * scaleFactor, image.size.height * scaleFactor);
-
-    UIGraphicsBeginImageContext(scaledSize);
-    [image drawInRect:CGRectMake(0, 0, scaledSize.width, scaledSize.height)];
-    image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-
-    return image;
-}
-
-
-- (void)addProofImage
-{
-    NSString* takePhotoTitle    = NSLocalizedStringWithDefaultValue(@"....", nil, [NSBundle mainBundle],
-                                                                    @"Take Photo",
-                                                                    @"...\n"
-                                                                    @"[1/3 line small font].");
-    NSString* photoLibraryTitle = NSLocalizedStringWithDefaultValue(@"....", nil, [NSBundle mainBundle],
-                                                                    @"Photo Library",
-                                                                    @"...\n"
-                                                                    @"[1/3 line small font].");
-
-    [BlockActionSheet showActionSheetWithTitle:nil
-                                    completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
-    {
-        switch (buttonIndex)
-        {
-            case 0:
-            {
-                [self checkCameraAccessWithCompletion:^(BOOL success)
-                {
-                    if (success)
-                    {
-                        UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
-
-                        imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-                        imagePickerController.delegate      = self;
-                        imagePickerController.allowsEditing = NO;
-                        [self presentViewController:imagePickerController animated:YES completion:nil];
-                    }
-                }];
-                break;
-            }
-            case 1:
-            {
-                [self checkPhotosAccessWithCompletion:^(BOOL success)
-                {
-                    if (success)
-                    {
-                        UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
-
-                        imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-                        imagePickerController.delegate   = self;
-                        [self presentViewController:imagePickerController animated:YES completion:nil];
-                    }
-                }];
-                break;
-            }
-            case 2:
-            {
-                // Cancelled.
-                break;
-            }
-        }
-    }
-                             cancelButtonTitle:[Strings cancelString]
-                        destructiveButtonTitle:nil
-                             otherButtonTitles:takePhotoTitle, photoLibraryTitle, nil];
-}
-
-
-#pragma Proof Image View Controller Delegate
-
-- (void)redoProofImageWithCompletion:(void (^)(UIImage*))completion
-{
-    self.redoProofImageCompletion = completion;
-
-    [self addProofImage];
 }
 
 
@@ -1040,16 +810,24 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             {
                 if (self.isNew && self.address.proofImage == nil)
                 {
-                    [self addProofImage];
+                    [self.imagePicker pickImageWithCompletion:^(NSData* imageData)
+                    {
+                        self.address.proofImage = [Base64 encode:imageData];
+                        NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
+                        [indexSet addIndex:[Common nOfBit:TableSectionProof inValue:self.sections]];
+
+                        [self.tableView beginUpdates];
+                        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+                        [self.tableView endUpdates];
+                    }];
                 }
                 else
                 {
                     UITableViewCell*          cell = [self.tableView cellForRowAtIndexPath:indexPath];
                     ProofImageViewController* viewController;
 
-                    viewController          = [[ProofImageViewController alloc] initWithAddress:self.address];
-                    viewController.title    = cell.textLabel.text;
-                    viewController.delegate = self.isNew ? self : nil;
+                    viewController       = [[ProofImageViewController alloc] initWithAddress:self.address];
+                    viewController.title = cell.textLabel.text;
 
                     [self.navigationController pushViewController:viewController animated:YES];
                 }
@@ -1544,41 +1322,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 }
 
 
-#pragma mark - Image Picker Delegate
-
-- (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary*)info
-{
-    UIImage* image = info[UIImagePickerControllerOriginalImage];
-
-    image = [self scaledImageWithImage:image];
-
-    NSData* data = UIImageJPEGRepresentation(image, 0.5);
-    
-    self.address.proofImage = [Base64 encode:data];
-    
-    [self.tableView reloadData];
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
-
-    if (self.redoProofImageCompletion != nil)
-    {
-        self.redoProofImageCompletion(image);
-        self.redoProofImageCompletion = nil;
-    }
-}
-
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController*)picker
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-
-    if (self.redoProofImageCompletion != nil)
-    {
-        self.redoProofImageCompletion(nil);
-        self.redoProofImageCompletion = nil;
-    }
-}
-
+#pragma mark - Actions 
 
 - (void)createAction
 {

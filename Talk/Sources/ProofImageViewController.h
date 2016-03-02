@@ -11,16 +11,7 @@
 #import "AddressData.h"
 
 
-@protocol ProofImageViewControllerDelegate <NSObject>
-
-- (void)redoProofImageWithCompletion:(void (^)(UIImage* image))completion;
-
-@end
-
-
 @interface ProofImageViewController : UIViewController
-
-@property (nonatomic, weak) id<ProofImageViewControllerDelegate> delegate;
 
 - (instancetype)initWithAddress:(AddressData*)address;
 

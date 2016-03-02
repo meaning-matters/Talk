@@ -65,6 +65,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
 {
     [super viewDidLoad];
 
+    self.clearsSelectionOnViewWillAppear = YES;
+
     self.fetchedNumbersController = [[DataManager sharedManager] fetchResultsForEntityName:@"Number"
                                                                               withSortKeys:[Common sortKeys]
                                                                       managedObjectContext:self.managedObjectContext];
@@ -263,12 +265,15 @@ typedef NS_ENUM(NSUInteger, TableSections)
   onResultsController:(NSFetchedResultsController*)controller
           atIndexPath:(NSIndexPath*)indexPath
 {
-    NumberData* number        = [self.fetchedNumbersController objectAtIndexPath:indexPath];
-    cell.imageView.image      = [UIImage imageNamed:number.isoCountryCode];
-    cell.textLabel.text       = number.name;
-    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:number.e164];
-    cell.detailTextLabel.text = [phoneNumber internationalFormat];
-    cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+    if ([Common nthBitSet:indexPath.section inValue:self.sections] == TableSectionNumbers)
+    {
+        NumberData* number        = [self.fetchedNumbersController objectAtIndexPath:indexPath];
+        cell.imageView.image      = [UIImage imageNamed:number.isoCountryCode];
+        cell.textLabel.text       = number.name;
+        PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:number.e164];
+        cell.detailTextLabel.text = [phoneNumber internationalFormat];
+        cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+    }
 }
 
 @end

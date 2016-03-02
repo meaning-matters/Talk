@@ -357,23 +357,7 @@ typedef enum
     NSString* title;
     NSString* message;
 
-    if ([self checkBuyRequirements] == NO)
-    {
-        title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                    @"Information Missing",
-                                                    @"....\n"
-                                                    @"[iOS alert title size].");
-        message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                    @"Please complete the information for all required fields.",
-                                                    @"....\n"
-                                                    @"[iOS alert message size]");
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:nil
-                             cancelButtonTitle:[Strings closeString]
-                             otherButtonTitles:nil];
-    }
-    else
+    if ([self checkBuyRequirements] == YES)
     {
         title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
                                                     @"Buy Number",
@@ -594,26 +578,126 @@ typedef enum
 
 - (BOOL)checkBuyRequirements
 {
-    BOOL canBuy = YES;
+    NSString* title = nil;
+    NSString* message;
 
-    canBuy = canBuy && (name.length > 0);
-
-    if (addressTypeMask != AddressTypeNoneMask)
+    if (name.length == 0 || (addressTypeMask != AddressTypeNoneMask && self.address == nil))
     {
-        canBuy = canBuy && (self.address != nil);
+        title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                    @"Information Missing",
+                                                    @"....\n"
+                                                    @"[iOS alert title size].");
+        message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                    @"Please complete the information for all required fields.",
+                                                    @"....\n"
+                                                    @"[iOS alert message size]");
+    }
+    else if (addressTypeMask != AddressTypeNoneMask)
+    {
         if (area[@"proofTypes"] == nil)
         {
             // No proof is required.
-            canBuy = canBuy && (self.address.status == AddressStatusNotVerified);
+            if (self.address.status != AddressStatusNotVerified)
+            {
+                title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                            @"Unexpected Address Status",
+                                                            @"....\n"
+                                                            @"[iOS alert title size].");
+                message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                            @"The selected address has an unexpected status.",
+                                                            @"....\n"
+                                                            @"[iOS alert message size]");
+            }
         }
         else
         {
             // Proof is required, which much be verified.
-            canBuy = canBuy && (self.address.status == AddressStatusVerified);
+            switch (self.address.status)
+            {
+                case AddressStatusUnknown:
+                {
+                    title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                                @"Unknown Address Status",
+                                                                @"....\n"
+                                                                @"[iOS alert title size].");
+                    message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                                @"Your proof of address image needs to be verified, "
+                                                                @"but it's state is unknown at the moment.",
+                                                                @"....\n"
+                                                                @"[iOS alert message size]");
+                    break;
+                }
+                case AddressStatusNotVerified:
+                {
+                    // This can't occur, if we understand Voxbone correctly.
+                    title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                                @"Address Not Verified",
+                                                                @"....\n"
+                                                                @"[iOS alert title size].");
+                    message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                                @"Your proof of address image has not been verified.",
+                                                                @"....\n"
+                                                                @"[iOS alert message size]");
+                    break;
+                }
+                case AddressStatusDisabled:
+                {
+                    // Don't know when this occurs, it at all.
+                    title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                                @"Address Disabled",
+                                                                @"....\n"
+                                                                @"[iOS alert title size].");
+                    message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                                @"Your proof of address image has not been verified.",
+                                                                @"....\n"
+                                                                @"[iOS alert message size]");
+                    break;
+                }
+                case AddressStatusVerified:
+                {
+                    break;
+                }
+                case AddressStatusVerificationRequested:
+                {
+                    title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                                @"Address Waiting Verification",
+                                                                @"....\n"
+                                                                @"[iOS alert title size].");
+                    message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                                @"Your proof of address image is waiting to be verified.",
+                                                                @"....\n"
+                                                                @"[iOS alert message size]");
+                    break;
+                }
+                case AddressStatusRejected:
+                {
+                    title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                                @"Address Rejected",
+                                                                @"....\n"
+                                                                @"[iOS alert title size].");
+                    message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                                @"Your proof of address image has been rejected.",
+                                                                @"....\n"
+                                                                @"[iOS alert message size]");
+                    break;
+                }
+            }
         }
     }
 
-    return canBuy;
+    if (title != nil)
+    {
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+        return NO;
+    }
+    else
+    {
+        return YES;
+    }
 }
 
 
