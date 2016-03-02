@@ -7,11 +7,15 @@
 //
 
 #import "ProofImageViewController.h"
+#import "UIViewController+Common.h"
 #import "Skinning.h"
+#import "WebClient.h"
+#import "Base64.h"
 
 
 @interface ProofImageViewController ()
 
+@property (nonatomic, strong) AddressData* address;
 @property (nonatomic, strong) UIImageView* imageView;
 
 @end
@@ -19,15 +23,44 @@
 
 @implementation ProofImageViewController
 
-- (instancetype)initWithImageData:(NSData*)imageData
+- (instancetype)initWithAddress:(AddressData*)address
 {
     if (self = [super init])
     {
-        UIImage* image = [UIImage imageWithData:imageData];
-        self.imageView = [[UIImageView alloc] initWithImage:image];
+        self.address   = address;
+        self.imageView = [[UIImageView alloc] init];
+
+        if (self.address.proofImage != nil)
+        {
+            self.imageView.image = [UIImage imageWithData:[Base64 decode:self.address.proofImage]];
+        }
+        else
+        {
+            self.isLoading = YES;
+
+            __weak typeof(self) weakSelf = self;
+            [self.address loadProofImageWithCompletion:^(BOOL succeeded)
+            {
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+                strongSelf.isLoading = NO;
+
+                strongSelf.imageView.image = [UIImage imageWithData:[Base64 decode:strongSelf.address.proofImage]];
+            }];
+        }
     }
 
     return self;
+}
+
+
+- (void)dealloc
+{
+    if (self.isLoading)
+    {
+        [self.address cancelLoadProofImage];
+
+        self.isLoading = NO;
+    }
 }
 
 
@@ -36,16 +69,6 @@
     [super viewDidLoad];
 
     self.view.backgroundColor = [Skinning backgroundTintColor];
-
-    CGFloat topHeight = 64.0f;  // iOS status bar plus navigation bar.
-    CGFloat height    = self.view.frame.size.height - topHeight;
-    if (self.tabBarController)
-    {
-        height -= self.tabBarController.tabBar.frame.size.height;
-    }
-
-    self.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    self.imageView.frame       = CGRectMake(0.0f, topHeight, self.view.frame.size.width, height);
 
     [self.view addSubview:self.imageView];
 
@@ -56,6 +79,22 @@
                                                                                     action:@selector(redoAction)];
         self.navigationItem.rightBarButtonItem = buttonItem;
     }
+}
+
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+
+    CGFloat topHeight = 64.0f;  // iOS status bar plus navigation bar.
+    CGFloat height    = self.view.frame.size.height - topHeight;
+    if (self.tabBarController)
+    {
+        height -= self.tabBarController.tabBar.frame.size.height;
+    }
+
+    self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    self.imageView.frame       = CGRectMake(0.0f, topHeight, self.view.frame.size.width, height);
 }
 
 

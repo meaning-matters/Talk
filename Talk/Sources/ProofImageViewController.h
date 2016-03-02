@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "AddressData.h"
 
 
 @protocol ProofImageViewControllerDelegate <NSObject>
@@ -21,6 +22,6 @@
 
 @property (nonatomic, weak) id<ProofImageViewControllerDelegate> delegate;
 
-- (instancetype)initWithImageData:(NSData*)imageData;
+- (instancetype)initWithAddress:(AddressData*)address;
 
 @end

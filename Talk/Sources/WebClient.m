@@ -1613,13 +1613,14 @@
 
 
 // 10A.
-- (void)cancelAllretrieveAddresses
+- (void)cancelAllRetrieveAddresses
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/users/%@/addresses", username]];
 }
+
 
 // 10B.
 - (void)cancelAllRetrieveAddressWithId:(NSString*)addressId
@@ -1658,7 +1659,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
     
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/users/%@/addresses/%@/image",
                                                           username, addressId]];
 }

@@ -87,7 +87,7 @@ const NSTimeInterval TransitionDuration = 0.5;
 
 - (void)animateView:(UIView*)view fromHidden:(BOOL)fromHide toHidden:(BOOL)toHide
 {
-    __weak UIView*  weakView = view;
+    __weak UIView* weakView = view;
 
     [weakView setHiddenAnimated:fromHide withDuration:(TransitionDuration / 2) completion:^
     {

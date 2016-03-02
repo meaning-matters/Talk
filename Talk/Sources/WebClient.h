@@ -354,7 +354,7 @@
 - (void)cancelAllCheckPurchaseInfo;
 
 // 10A.
-- (void)cancelAllretrieveAddresses;
+- (void)cancelAllRetrieveAddresses;
 
 // 10B.
 - (void)cancelAllRetrieveAddressWithId:(NSString*)addressId;

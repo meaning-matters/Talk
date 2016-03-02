@@ -142,6 +142,30 @@
 }
 
 
+- (void)loadProofImageWithCompletion:(void (^)(BOOL succeeded))completion
+{
+    [[WebClient sharedClient] retrieveImageForAddressId:self.addressId
+                                                  reply:^(NSError *error, NSString *proofImage)
+    {
+        if (error == nil)
+        {
+            self.proofImage = proofImage;
+            completion ? completion(YES) : 0;
+        }
+        else
+        {
+            completion ? completion(NO) : 0;
+        }
+    }];
+}
+
+
+- (void)cancelLoadProofImage
+{
+    [[WebClient sharedClient] cancelAllRetrieveImageForAddressId:self.addressId];
+}
+
+
 + (AddressStatus)addressStatusWithString:(NSString*)addressStatusString
 {
     if ([addressStatusString isEqualToString:@"NOT_VERIFIED"])

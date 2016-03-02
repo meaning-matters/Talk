@@ -67,6 +67,10 @@ typedef NS_ENUM(NSUInteger, RejectionReasonMask)
 
 - (void)deleteWithCompletion:(void (^)(BOOL succeeded))completion;
 
+- (void)loadProofImageWithCompletion:(void (^)(BOOL succeeded))completion;
+
+- (void)cancelLoadProofImage;
+
 + (AddressStatus)addressStatusWithString:(NSString*)addressStatusString;
 
 + (RejectionReasonMask)rejectionReasonMaskWithArray:(NSArray*)rejectionReasons;

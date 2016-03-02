@@ -1038,7 +1038,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             }
             case TableSectionProof:
             {
-                if (self.address.proofImage == nil)
+                if (self.isNew && self.address.proofImage == nil)
                 {
                     [self addProofImage];
                 }
@@ -1046,9 +1046,8 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
                 {
                     UITableViewCell*          cell = [self.tableView cellForRowAtIndexPath:indexPath];
                     ProofImageViewController* viewController;
-                    NSData*                   data = [Base64 decode:self.address.proofImage];
 
-                    viewController          = [[ProofImageViewController alloc] initWithImageData:data];
+                    viewController          = [[ProofImageViewController alloc] initWithAddress:self.address];
                     viewController.title    = cell.textLabel.text;
                     viewController.delegate = self.isNew ? self : nil;
 
@@ -1355,9 +1354,16 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 
     cell.textLabel.text            = NSLocalizedString(@"Proof Image", @"Proof cell title");
     cell.detailTextLabel.textColor = [Skinning placeholderColor];
-    cell.detailTextLabel.text      = self.address.proofImage ? nil : [Strings requiredString];
-    cell.accessoryType             = self.address.proofImage ? UITableViewCellAccessoryDisclosureIndicator :
-                                                               UITableViewCellAccessoryNone;
+    if (self.isNew && self.address.proofImage == nil)
+    {
+        cell.detailTextLabel.text = [Strings requiredString];
+        cell.accessoryType        = UITableViewCellAccessoryNone;
+    }
+    else
+    {
+        cell.detailTextLabel.text = nil;
+        cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+    }
 
     return cell;
 }
