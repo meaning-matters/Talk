@@ -415,7 +415,7 @@ typedef enum
                                                      name:self->name
                                            isoCountryCode:numberIsoCountryCode
                                                    areaId:self->area[@"areaId"]
-                                                addressId:self.address.idNumber
+                                                addressId:self.address.addressId
                                                     reply:^(NSError* error, NSString *e164)
         {
             if (error == nil)
