@@ -635,7 +635,7 @@
                                         NSString* fiscalIdCode,
                                         NSString* streetCode,
                                         NSString* municipalityCode,
-                                        NSString* status,
+                                        NSString* addressStatus,
                                         NSArray*  rejectionReasons))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
@@ -665,7 +665,7 @@
                   content[@"fiscalIdCode"],
                   content[@"streetCode"],
                   content[@"municipalityCode"],
-                  content[@"status"],
+                  content[@"addressStatus"],
                   content[@"rejectionReasons"]);
         }
         else
@@ -697,7 +697,10 @@
                           fiscalIdCode:(NSString*)fiscalIdCode
                             streetCode:(NSString*)streetCode
                       municipalityCode:(NSString*)municipalityCode
-                                 reply:(void (^)(NSError* error, NSString* addressId, NSArray* missingFields))reply
+                                 reply:(void (^)(NSError*  error,
+                                                 NSString* addressId,
+                                                 NSString* addressStatus,
+                                                 NSArray*  missingFields))reply
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
     NSString*            numberType = [NumberType stringForNumberTypeMask:numberTypeMask];
@@ -729,11 +732,11 @@
      {
          if (error == nil)
          {
-             reply(nil, content[@"addressId"], content[@"missingFields"]);
+             reply(nil, content[@"addressId"], content[@"addressStatus"], content[@"missingFields"]);
          }
          else
          {
-             reply(error, nil, nil);
+             reply(error, nil, nil, nil);
          }
      }];
 }

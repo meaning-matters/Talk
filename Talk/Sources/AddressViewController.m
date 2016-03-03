@@ -1351,11 +1351,16 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
                                                 fiscalIdCode:nil //########
                                                   streetCode:nil //########
                                             municipalityCode:nil //########
-                                                       reply:^(NSError *error, NSString *addressId, NSArray *missingFields)
+                                                       reply:^(NSError*  error,
+                                                               NSString* addressId,
+                                                               NSString* status,
+                                                               NSArray*  missingFields)
     {
          if (error == nil)
          {
              self.address.addressId = addressId;
+             self.address.status    = [AddressData addressStatusWithString:status];
+
              [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
              [[DataManager sharedManager] saveManagedObjectContext:nil];
 

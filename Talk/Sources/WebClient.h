@@ -140,7 +140,7 @@
                                         NSString* fiscalIdCode,
                                         NSString* streetCode,
                                         NSString* municipalityCode,
-                                        NSString* status,
+                                        NSString* addressStatus,
                                         NSArray*  rejectionReasons))reply;
 
 // 10C. CREATE REGULATION ADDRESS
@@ -164,7 +164,10 @@
                           fiscalIdCode:(NSString*)fiscalIdCode
                             streetCode:(NSString*)streetCode
                       municipalityCode:(NSString*)municipalityCode
-                                 reply:(void (^)(NSError* error, NSString* addressId, NSArray* missingFields))reply;
+                                 reply:(void (^)(NSError*  error,
+                                                 NSString* addressId,
+                                                 NSString* addressStatus,
+                                                 NSArray*  missingFields))reply;
 
 // 10D. DELETE REGULATION ADDRESS
 - (void)deleteAddressWithId:(NSString*)addressId
