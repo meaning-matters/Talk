@@ -357,7 +357,7 @@ typedef enum
     NSString* title;
     NSString* message;
 
-    if ([self checkBuyRequirements] == YES)
+    if ([self canBuy] == YES)
     {
         title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
                                                     @"Buy Number",
@@ -576,7 +576,7 @@ typedef enum
 }
 
 
-- (BOOL)checkBuyRequirements
+- (BOOL)canBuy
 {
     NSString* title = nil;
     NSString* message;
@@ -648,7 +648,7 @@ typedef enum
                                                                 @"....\n"
                                                                 @"[iOS alert title size].");
                     message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                                @"Your proof of address image has not been verified.",
+                                                                @"Your address has been disabled.",
                                                                 @"....\n"
                                                                 @"[iOS alert message size]");
                     break;

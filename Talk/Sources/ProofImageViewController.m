@@ -12,6 +12,8 @@
 #import "WebClient.h"
 #import "Base64.h"
 #import "ImagePicker.h"
+#import "BlockAlertView.h"
+#import "Strings.h"
 
 
 @interface ProofImageViewController ()
@@ -76,7 +78,7 @@
 
     UIBarButtonItem* buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
                                                                                 target:self
-                                                                                action:@selector(redoAction)];
+                                                                                action:@selector(pickImageAction)];
     self.navigationItem.rightBarButtonItem = buttonItem;
 }
 
@@ -97,22 +99,94 @@
 }
 
 
-- (void)redoAction
+- (void)pickImageAction
 {
-    if (self.imagePicker == nil)
+    if ([self canPickImage])
     {
-        self.imagePicker = [[ImagePicker alloc] initWithPresentingViewController:self];
+        if (self.imagePicker == nil)
+        {
+            self.imagePicker = [[ImagePicker alloc] initWithPresentingViewController:self];
+        }
+
+        [self.imagePicker pickImageWithCompletion:^(NSData* imageData)
+        {
+            if (imageData != nil)
+            {
+                self.imageView.image    = [UIImage imageWithData:imageData];
+
+                self.address.proofImage = [Base64 encode:imageData];
+                self.address.hasProof   = YES;
+            }
+        }];
+    }
+}
+
+
+- (BOOL)canPickImage
+{
+    NSString* title;
+    NSString* message;
+
+    switch (self.address.status)
+    {
+        case AddressStatusUnknown:
+        {
+            break;
+        }
+        case AddressStatusNotVerified:
+        {
+            break;
+        }
+        case AddressStatusDisabled:
+        {
+            // Don't know when this occurs, it at all.
+            title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                        @"Can't Take Photo",
+                                                        @"....\n"
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                        @"You can't take a proof image because your address has been "
+                                                        @"disabled.",
+                                                        @"....\n"
+                                                        @"[iOS alert message size]");
+            break;
+        }
+        case AddressStatusVerified:
+        {
+            break;
+        }
+        case AddressStatusVerificationRequested:
+        {
+            title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                        @"Can't Take Photo",
+                                                        @"....\n"
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                        @"You can't take a new proof image because your address is "
+                                                        @"waiting to be verified.",
+                                                        @"....\n"
+                                                        @"[iOS alert message size]");
+            break;
+        }
+        case AddressStatusRejected:
+        {
+            break;
+        }
     }
 
-    [self.imagePicker pickImageWithCompletion:^(NSData* imageData)
+    if (title != nil)
     {
-        if (imageData != nil)
-        {
-            self.imageView.image    = [UIImage imageWithData:imageData];
-            
-            self.address.proofImage = [Base64 encode:imageData];
-        }
-    }];
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+        return NO;
+    }
+    else
+    {
+        return YES;
+    }
 }
 
 @end

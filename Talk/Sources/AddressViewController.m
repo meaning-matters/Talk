@@ -700,7 +700,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         }
         case TableSectionProof:
         {
-            if (self.proofType != nil && self.address.proofImage == nil)
+            if (self.proofType != nil && self.address.hasProof == NO)
             {
                 title = NSLocalizedStringWithDefaultValue(@"Address:Action SectionFooterTakePicture", nil,
                                                           [NSBundle mainBundle],
@@ -808,11 +808,12 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             }
             case TableSectionProof:
             {
-                if (self.isNew && self.address.proofImage == nil)
+                if (self.isNew && self.address.hasProof == NO)
                 {
                     [self.imagePicker pickImageWithCompletion:^(NSData* imageData)
                     {
                         self.address.proofImage = [Base64 encode:imageData];
+                        self.address.hasProof   = YES;
                         NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
                         [indexSet addIndex:[Common nOfBit:TableSectionProof inValue:self.sections]];
 
@@ -1132,7 +1133,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 
     cell.textLabel.text            = NSLocalizedString(@"Proof Image", @"Proof cell title");
     cell.detailTextLabel.textColor = [Skinning placeholderColor];
-    if (self.isNew && self.address.proofImage == nil)
+    if (self.isNew && self.address.hasProof == NO)
     {
         cell.detailTextLabel.text = [Strings requiredString];
         cell.accessoryType        = UITableViewCellAccessoryNone;
