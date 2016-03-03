@@ -208,10 +208,10 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 {
     [super viewDidLoad];
 
+    self.clearsSelectionOnViewWillAppear = YES;
+
     [self disableDelayedContentTouches];
 
-    self.clearsSelectionOnViewWillAppear = YES;
-    
     UIBarButtonItem* buttonItem;
     if (self.isNew)
     {
@@ -254,7 +254,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     self.firstNameTextField.placeholder   = [self placeHolderForTextField:self.firstNameTextField];
     self.lastNameTextField.placeholder    = [self placeHolderForTextField:self.lastNameTextField];
 
-    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+    [self updateRightBarButtonItem];
 }
 
 
@@ -310,6 +310,11 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     if (self.isNew == YES)
     {
         complete = [self isAddressComplete];
+
+        if (self.proofType != nil)
+        {
+            complete = complete && self.address.hasProof;
+        }
     }
     else
     {
@@ -470,7 +475,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 
 - (BOOL)isAddressComplete
 {
-    BOOL    complete;
+    BOOL complete;
     
     if (self.isNew == YES)
     {
