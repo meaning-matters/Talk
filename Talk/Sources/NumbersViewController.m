@@ -20,6 +20,7 @@
 #import "Base64.h"
 #import "Strings.h"
 #import "Common.h"
+#import "BadgeHandler.h"
 
 typedef NS_ENUM(NSUInteger, TableSections)
 {
@@ -123,6 +124,14 @@ typedef NS_ENUM(NSUInteger, TableSections)
     {
         [Common showGetStartedViewController];
     }
+}
+
+
+#pragma mark - Process Push Notification
+
+- (void)processNotificationAddressUpdates:(NSArray*)addressUpdates
+{
+    [BadgeHandler sharedHandler].numbersBadgeCount = addressUpdates.count;
 }
 
 

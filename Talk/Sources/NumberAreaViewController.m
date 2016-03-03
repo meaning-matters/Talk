@@ -376,7 +376,7 @@ typedef enum
         else
         {
             message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                        @"Yes, buy this Number for %@ per month ("
+                                                        @"Yes, buy this Number for %@ per month "
                                                         @"(without one-time setup fee).\n\n",
                                                         @"....\n"
                                                         @"[iOS alert message size]");

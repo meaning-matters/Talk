@@ -446,6 +446,7 @@
 		488268DA164BCF8600EA58AE /* NetworkStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 488268D8164BCF8600EA58AE /* NetworkStatus.m */; };
 		4882748E1660E20D00B41EA1 /* DtmfPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4882748D1660E20C00B41EA1 /* DtmfPlayer.m */; };
 		4882748F1660E20D00B41EA1 /* DtmfPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4882748D1660E20C00B41EA1 /* DtmfPlayer.m */; };
+		488763F61C8893B300527723 /* BadgeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 488763F51C8893B300527723 /* BadgeHandler.m */; };
 		48884A751615CE920005AA79 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A741615CE920005AA79 /* UIKit.framework */; };
 		48884A771615CE920005AA79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A761615CE920005AA79 /* Foundation.framework */; };
 		48884A791615CE920005AA79 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48884A781615CE920005AA79 /* CoreGraphics.framework */; };
@@ -1128,6 +1129,8 @@
 		488268D8164BCF8600EA58AE /* NetworkStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkStatus.m; sourceTree = "<group>"; };
 		4882748C1660E20C00B41EA1 /* DtmfPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DtmfPlayer.h; sourceTree = "<group>"; };
 		4882748D1660E20C00B41EA1 /* DtmfPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DtmfPlayer.m; sourceTree = "<group>"; };
+		488763F41C8893B300527723 /* BadgeHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeHandler.h; sourceTree = "<group>"; };
+		488763F51C8893B300527723 /* BadgeHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeHandler.m; sourceTree = "<group>"; };
 		48884A701615CE920005AA79 /* NumberBay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NumberBay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48884A741615CE920005AA79 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		48884A761615CE920005AA79 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1713,6 +1716,8 @@
 				48D0A6F31654D6D700FA2D98 /* main.mm */,
 				48338F9F16170CA80033F4C1 /* AppDelegate.h */,
 				48338FA016170CA80033F4C1 /* AppDelegate.m */,
+				488763F41C8893B300527723 /* BadgeHandler.h */,
+				488763F51C8893B300527723 /* BadgeHandler.m */,
 				48FE4F511C87525000CC0873 /* Calling */,
 				482A639A165F922E00325B3F /* Common */,
 				488FBBD717007C39000ECC71 /* CoreData */,
@@ -3101,6 +3106,7 @@
 				48D3F01E164F9284002041A9 /* CountryNames.m in Sources */,
 				48B813751AADF9F90019AF77 /* NBValueListTableViewController.m in Sources */,
 				48B813701AADF9B20019AF77 /* NBPersonViewController.m in Sources */,
+				488763F61C8893B300527723 /* BadgeHandler.m in Sources */,
 				48C431A1189EDFB40008FE01 /* VerifyPhoneViewController.m in Sources */,
 				480CE11C193B67CF0020F255 /* RatesViewController.m in Sources */,
 				485ECBE216525D3600364F08 /* KeypadView.m in Sources */,

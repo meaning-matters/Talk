@@ -49,6 +49,8 @@
 
 @property (nonatomic, assign) BOOL           needsServerSync;       // YES when CoreData was wiped after error.
 
+@property (nonatomic, assign) NSUInteger     numbersBadgeCount;     // The count on the Numbers tab's badge.
+
 @property (nonatomic, readonly) NSString*    appId;                 // Used in rate-app URL.
 @property (nonatomic, readonly) NSString*    appVersion;
 @property (nonatomic, readonly) NSString*    appDisplayName;

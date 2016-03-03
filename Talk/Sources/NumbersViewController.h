@@ -13,4 +13,6 @@
 
 @interface NumbersViewController : ItemsViewController
 
+- (void)processNotificationAddressUpdates:(NSArray*)addressUpdates;
+
 @end

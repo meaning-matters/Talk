@@ -32,6 +32,7 @@
 #import "CallableData.h"
 #import "PhoneData.h"
 #import "CallerIdViewController.h"
+#import "BadgeHandler.h"
 
 
 @interface AppDelegate ()
@@ -83,6 +84,9 @@
 
         // Apply skinning.
         [Skinning sharedSkinning];
+
+        // Restore the badges.
+        [BadgeHandler sharedHandler];
 
         // Reset status bar style. Without this the status bar becomes white sometimes.
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
@@ -250,6 +254,11 @@
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
     AnalysticsTrace(@"didReceiveRemoteNotification");
+
+    if (userInfo[@"addressUpdates"] != nil)
+    {
+        [self.numbersViewController processNotificationAddressUpdates:userInfo[@"addressUpdates"]];
+    }
 }
 
 
@@ -369,6 +378,8 @@
         }
 
         [Settings sharedSettings].tabBarClassNames = classNames;
+
+        [[BadgeHandler sharedHandler] updateMoreBadgeCount];
     }
 }
 

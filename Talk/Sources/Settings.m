@@ -36,6 +36,7 @@ NSString* const StoreCurrencyCodeKey      = @"StoreCurrencyCode";
 NSString* const StoreCountryCodeKey       = @"StoreCountryCode";
 NSString* const CreditKey                 = @"Credit";
 NSString* const NeedsServerSyncKey        = @"NeedsServerSync";
+NSString* const NumbersBadgeCountKey      = @"NumbersBadgeCount";
 NSString* const DnsSrvPrefixKey           = @"DnsSrvPrefix";
 
 
@@ -142,6 +143,7 @@ static NSUserDefaults* userDefaults;
         [dictionary setObject:[locale objectForKey:NSLocaleCountryCode]          forKey:StoreCountryCodeKey];
         [dictionary setObject:@(0.0f)                                            forKey:CreditKey];
         [dictionary setObject:@(NO)                                              forKey:NeedsServerSyncKey];
+        [dictionary setObject:@(0)                                               forKey:NumbersBadgeCountKey];
         [dictionary setObject:@"_api"                                            forKey:DnsSrvPrefixKey];
     });
 
@@ -381,6 +383,18 @@ static NSUserDefaults* userDefaults;
 {
     [userDefaults setBool:needsServerSync forKey:NeedsServerSyncKey];
     [userDefaults synchronize];
+}
+
+
+- (NSUInteger)numbersBadgeCount
+{
+    return [userDefaults integerForKey:NumbersBadgeCountKey];
+}
+
+
+- (void)setNumbersBadgeCount:(NSUInteger)numbersBadgeCount
+{
+    [userDefaults setInteger:numbersBadgeCount forKey:NumbersBadgeCountKey];
 }
 
 
