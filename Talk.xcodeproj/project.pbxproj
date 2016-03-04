@@ -64,6 +64,7 @@
 		481DFBAB1C70CAC1009191B0 /* RecordingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 481DFBAA1C70CAC1009191B0 /* RecordingsViewController.m */; };
 		48200D1C16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
 		48200D1D16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
+		4823019C1C897E7000ECD32E /* BadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4823019B1C897E7000ECD32E /* BadgeView.m */; };
 		48232B721BFC8E5D006D667E /* AddressData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48232B701BFC8E5D006D667E /* AddressData.m */; };
 		48251B9B187F4A8A00E69C3A /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48251B9A187F4A8A00E69C3A /* SettingsViewController.m */; };
 		48251B9C187F4A8A00E69C3A /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48251B9A187F4A8A00E69C3A /* SettingsViewController.m */; };
@@ -750,6 +751,8 @@
 		481DFBAA1C70CAC1009191B0 /* RecordingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordingsViewController.m; sourceTree = "<group>"; };
 		48200D1A16EC89BA0069677E /* NumberType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberType.h; sourceTree = "<group>"; };
 		48200D1B16EC89BA0069677E /* NumberType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberType.m; sourceTree = "<group>"; };
+		4823019A1C897E7000ECD32E /* BadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeView.h; sourceTree = "<group>"; };
+		4823019B1C897E7000ECD32E /* BadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeView.m; sourceTree = "<group>"; };
 		48232B611BFBC70B006D667E /* Data2.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data2.1.xcdatamodel; sourceTree = "<group>"; };
 		48232B6F1BFC8E5D006D667E /* AddressData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressData.h; sourceTree = "<group>"; };
 		48232B701BFC8E5D006D667E /* AddressData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressData.m; sourceTree = "<group>"; };
@@ -1879,20 +1882,22 @@
 		485ECBDF16525D1600364F08 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				4865A9DD1792C8B70028785F /* NumberBuyCell.h */,
-				4865A9DE1792C8B70028785F /* NumberBuyCell.m */,
 				48A261C216FDE32400007638 /* CallStateView.h */,
 				48A261C316FDE32400007638 /* CallStateView.m */,
+				4823019A1C897E7000ECD32E /* BadgeView.h */,
+				4823019B1C897E7000ECD32E /* BadgeView.m */,
 				4814EA3C17CB1923004B7A3C /* CreditAmountCell.h */,
 				4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */,
 				4814EA3517CA993F004B7A3C /* CreditBuyCell.h */,
 				4814EA3617CA993F004B7A3C /* CreditBuyCell.m */,
-				485ECBE016525D3600364F08 /* KeypadView.h */,
-				485ECBE116525D3600364F08 /* KeypadView.m */,
 				485ECBE41652B9BD00364F08 /* KeypadButton.h */,
 				485ECBE51652B9BE00364F08 /* KeypadButton.m */,
+				485ECBE016525D3600364F08 /* KeypadView.h */,
+				485ECBE116525D3600364F08 /* KeypadView.m */,
 				484A949F171822D4009E22B9 /* NumberAreasCell.h */,
 				484A94A0171822D4009E22B9 /* NumberAreasCell.m */,
+				4865A9DD1792C8B70028785F /* NumberBuyCell.h */,
+				4865A9DE1792C8B70028785F /* NumberBuyCell.m */,
 				48367A45172552D2001A02AF /* RecordingControlsCell.h */,
 				48367A46172552D2001A02AF /* RecordingControlsCell.m */,
 				4849436B17529DE100E1D5C4 /* ShareButton.h */,
@@ -3218,6 +3223,7 @@
 				4877EDBC17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */,
 				485E38A017B7E13C0089F0F1 /* HtmlViewController.m in Sources */,
 				485E38A717C0B7F30089F0F1 /* NumberAreaSalutationsViewController.m in Sources */,
+				4823019C1C897E7000ECD32E /* BadgeView.m in Sources */,
 				4814EA3717CA993F004B7A3C /* CreditBuyCell.m in Sources */,
 				4814EA3E17CB1924004B7A3C /* CreditAmountCell.m in Sources */,
 				48C1D3C517D31309004F910D /* ProofImageViewController.m in Sources */,

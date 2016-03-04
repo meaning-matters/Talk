@@ -10,11 +10,11 @@
 
 @interface BadgeHandler : NSObject
 
-@property (nonatomic, assign) NSUInteger numbersBadgeCount;
+@property (nonatomic, assign) NSUInteger addressesBadgeCount;
 
 + (BadgeHandler*)sharedHandler;
 
-- (void)decrementNumbersBadgeCount;
+- (void)decrementAddressesBadgeCount;
 
 - (void)updateMoreBadgeCount;
 

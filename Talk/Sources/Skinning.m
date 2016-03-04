@@ -57,7 +57,7 @@
 
 + (UIColor*)placeholderColor
 {
-    return [UIColor colorWithWhite:0.80f alpha:1.00f];
+    return [UIColor colorWithRed:0.78f green:0.78f blue:0.80f alpha:1.00f];
 }
 
 
@@ -69,7 +69,7 @@
 
 + (UIColor*)contactRateColor
 {
-    return [UIColor colorWithWhite:0.80f alpha:1.00f];
+    return [UIColor colorWithRed:0.78f green:0.78f blue:0.80f alpha:1.00f];
 }
 
 @end

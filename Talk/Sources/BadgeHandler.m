@@ -29,9 +29,9 @@
 }
 
 
-- (void)setNumbersBadgeCount:(NSUInteger)count
+- (void)setAddressesBadgeCount:(NSUInteger)count
 {
-    [Settings sharedSettings].numbersBadgeCount = count;
+    [Settings sharedSettings].addressesBadgeCount = count;
 
     [self numbersTabBarItem].badgeValue = [self badgeValueForCount:count];
 
@@ -39,15 +39,15 @@
 }
 
 
-- (NSUInteger)numbersBadgeCount
+- (NSUInteger)addressesBadgeCount
 {
-    return [Settings sharedSettings].numbersBadgeCount;
+    return [Settings sharedSettings].addressesBadgeCount;
 }
 
 
-- (void)decrementNumbersBadgeCount
+- (void)decrementAddressesBadgeCount
 {
-    self.numbersBadgeCount -= 1;
+    self.addressesBadgeCount -= 1;
 
     [self updateMoreBadgeCount];
 }
@@ -61,7 +61,7 @@
     // Numbers.
     if ([self indexOfTabBarItem:[self numbersTabBarItem]] > 4)
     {
-        count += [Settings sharedSettings].numbersBadgeCount;
+        count += [Settings sharedSettings].addressesBadgeCount;
     }
 
     // ... <add tabs here in future>
@@ -82,9 +82,9 @@
 
 - (void)updateAllBadgeCounts
 {
-    NSLog(@"updateAllBadgeCounts: %d", (int)[Settings sharedSettings].numbersBadgeCount);
+    [self numbersTabBarItem].badgeValue = [self badgeValueForCount:[Settings sharedSettings].addressesBadgeCount];
 
-    [self setNumbersBadgeCount:[Settings sharedSettings].numbersBadgeCount];
+    [self updateMoreBadgeCount];
 
     // ... <add tabs here in future>
 }

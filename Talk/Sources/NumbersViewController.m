@@ -21,6 +21,7 @@
 #import "Strings.h"
 #import "Common.h"
 #import "BadgeHandler.h"
+#import "BadgeView.h"
 
 typedef NS_ENUM(NSUInteger, TableSections)
 {
@@ -33,6 +34,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedNumbersController;
 @property (nonatomic, assign) TableSections               sections;
+@property (nonatomic, strong) BadgeView*                  badgeView;
 
 @end
 
@@ -131,7 +133,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (void)processNotificationAddressUpdates:(NSArray*)addressUpdates
 {
-    [BadgeHandler sharedHandler].numbersBadgeCount = addressUpdates.count;
+    [BadgeHandler sharedHandler].addressesBadgeCount = addressUpdates.count;
 }
 
 
@@ -235,6 +237,9 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
             cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.text = [Strings addressesString];
+            self.badgeView = [[BadgeView alloc] init];
+            [self.badgeView addToCell:cell];
+            self.badgeView.count = [BadgeHandler sharedHandler].addressesBadgeCount;
 
             [Common setImageNamed:@"AddressesTab" ofCell:cell];
             break;
