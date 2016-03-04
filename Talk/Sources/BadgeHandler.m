@@ -22,7 +22,7 @@
     {
         sharedInstance = [[BadgeHandler alloc] init];
 
-        [sharedInstance setNumbersBadgeCount:[Settings sharedSettings].numbersBadgeCount];
+        [sharedInstance updateAllBadgeCounts];
     });
 
     return sharedInstance;
@@ -53,26 +53,6 @@
 }
 
 
-#pragma mark - Helpers
-
-- (UITabBarItem*)numbersTabBarItem
-{
-    return [AppDelegate appDelegate].numbersViewController.navigationController.tabBarItem;
-}
-
-
-- (UITabBarItem*)moreTabBarItem
-{
-    return [AppDelegate appDelegate].tabBarController.tabBar.items[4];
-}
-
-
-- (NSString*)badgeValueForCount:(NSUInteger)count
-{
-    return [NSString stringWithFormat:@"%d", (int)count];
-}
-
-
 - (void)updateMoreBadgeCount
 {
     // Determine the total count of all tabs on More with a badge count.
@@ -97,6 +77,36 @@
 
     UITableView* tableView = (UITableView*)[AppDelegate appDelegate].tabBarController.moreNavigationController.topViewController.view;
     [tableView reloadData];
+}
+
+
+- (void)updateAllBadgeCounts
+{
+    NSLog(@"updateAllBadgeCounts: %d", (int)[Settings sharedSettings].numbersBadgeCount);
+
+    [self setNumbersBadgeCount:[Settings sharedSettings].numbersBadgeCount];
+
+    // ... <add tabs here in future>
+}
+
+
+#pragma mark - Helpers
+
+- (UITabBarItem*)numbersTabBarItem
+{
+    return [AppDelegate appDelegate].numbersViewController.navigationController.tabBarItem;
+}
+
+
+- (UITabBarItem*)moreTabBarItem
+{
+    return [AppDelegate appDelegate].tabBarController.tabBar.items[4];
+}
+
+
+- (NSString*)badgeValueForCount:(NSUInteger)count
+{
+    return [NSString stringWithFormat:@"%d", (int)count];
 }
 
 

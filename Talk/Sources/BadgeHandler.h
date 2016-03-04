@@ -18,4 +18,6 @@
 
 - (void)updateMoreBadgeCount;
 
+- (void)updateAllBadgeCounts;
+
 @end
