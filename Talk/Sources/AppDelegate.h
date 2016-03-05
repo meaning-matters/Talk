@@ -23,6 +23,8 @@
 #import "HelpsViewController.h"
 #import "AboutViewController.h"
 
+extern NSString* const AppDelegateRemoteNotification;
+
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, AVAudioPlayerDelegate,
                                       UINavigationControllerDelegate,

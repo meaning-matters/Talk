@@ -9,6 +9,9 @@
 #import "BadgeHandler.h"
 #import "AppDelegate.h"
 #import "Settings.h"
+#import "Common.h"
+
+NSString* const BadgeHandlerAddressUpdatesNotification = @"BadgeHandlerAddressUpdatesNotification";
 
 
 @implementation BadgeHandler
@@ -22,34 +25,80 @@
     {
         sharedInstance = [[BadgeHandler alloc] init];
 
-        [sharedInstance updateAllBadgeCounts];
+        [[NSNotificationCenter defaultCenter] addObserverForName:AppDelegateRemoteNotification
+                                                          object:nil
+                                                           queue:[NSOperationQueue mainQueue]
+                                                      usingBlock:^(NSNotification* note)
+        {
+            if (note.userInfo[@"addressUpdates"] != nil)
+            {
+                [sharedInstance processAddressUpdatesNotificationArray:note.userInfo[@"addressUpdates"]];
+            }
+        }];
     });
 
     return sharedInstance;
 }
 
 
-- (void)setAddressesBadgeCount:(NSUInteger)count
+- (void)processAddressUpdatesNotificationArray:(NSArray*)array
 {
-    [Settings sharedSettings].addressesBadgeCount = count;
+    // Address updates are received as an array of dictionaries.  We convert
+    // this to one dictionary because that's an easier to handle form in the app.
+    NSMutableDictionary* addressUpdates = [self mutableDictionaryWithArray:array];
 
-    [self numbersTabBarItem].badgeValue = [self badgeValueForCount:count];
+    // Settings contains the up-to-date state of address updates seen by user.
+    // The server however only sends updates once, so the new set of updates
+    // received by a notification must be OR-ed with the local set.
+    for (NSString* addressId in [[Settings sharedSettings].addressUpdates allKeys])
+    {
+        if (addressUpdates[addressId] == nil)
+        {
+            addressUpdates[addressId] = [Settings sharedSettings].addressUpdates[addressId];
+        }
+    }
 
-    [self updateMoreBadgeCount];
+    [self saveAddressUpdates:addressUpdates];
 }
 
 
-- (NSUInteger)addressesBadgeCount
+- (void)saveAddressUpdates:(NSDictionary*)addressUpdates
 {
-    return [Settings sharedSettings].addressesBadgeCount;
+    [Settings sharedSettings].addressUpdates = addressUpdates;
+    [self update];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:BadgeHandlerAddressUpdatesNotification
+                                                        object:self
+                                                      userInfo:addressUpdates];
 }
 
 
-- (void)decrementAddressesBadgeCount
+- (void)removeAddressUpdate:(NSString*)addressId
 {
-    self.addressesBadgeCount -= 1;
+    NSMutableDictionary* addressUpdates = [[Settings sharedSettings].addressUpdates mutableCopy];
 
+    addressUpdates[addressId] = nil;
+
+    [self saveAddressUpdates:addressUpdates];
+}
+
+
+- (NSDictionary*)addressUpdates
+{
+    return [Settings sharedSettings].addressUpdates;
+}
+
+
+- (NSUInteger)addressUpdatesCount
+{
+    return [[Settings sharedSettings].addressUpdates allKeys].count;
+}
+
+
+- (void)update
+{
     [self updateMoreBadgeCount];
+    [self updateAppBadgeCount];
 }
 
 
@@ -59,44 +108,77 @@
     NSUInteger count = 0;
 
     // Numbers.
-    if ([self indexOfTabBarItem:[self numbersTabBarItem]] > 4)
+    if ([self isOnMoreViewController:[AppDelegate appDelegate].numbersViewController])
     {
-        count += [Settings sharedSettings].addressesBadgeCount;
+        count += [self addressUpdatesCount];
     }
 
     // ... <add tabs here in future>
 
     if (count > 0)
     {
-        [self moreTabBarItem].badgeValue = [self badgeValueForCount:count];
+        [self moreTabBarItem].badgeValue = [NSString stringWithFormat:@"%d", (int)count];
     }
     else
     {
         [self moreTabBarItem].badgeValue = nil;
     }
 
-    UITableView* tableView = (UITableView*)[AppDelegate appDelegate].tabBarController.moreNavigationController.topViewController.view;
+    UITableView* tableView;
+    tableView = (UITableView*)[AppDelegate appDelegate].tabBarController.moreNavigationController.topViewController.view;
     [tableView reloadData];
+
+    // Force view controllers with a badge to load.
+    (void)[AppDelegate appDelegate].numbersViewController.view;
 }
 
 
-- (void)updateAllBadgeCounts
+- (void)updateAppBadgeCount
 {
-    [self numbersTabBarItem].badgeValue = [self badgeValueForCount:[Settings sharedSettings].addressesBadgeCount];
+    NSUInteger count = 0;
 
-    [self updateMoreBadgeCount];
+    count += [self addressUpdatesCount];
 
     // ... <add tabs here in future>
+
+    [UIApplication sharedApplication].applicationIconBadgeNumber = count;
+}
+
+
+- (UITabBarItem*)tabBarItemForViewController:(UIViewController*)viewController
+{
+    UITabBarItem* tabBarItem = nil;
+
+    // When a view controller on the More tab is visible, its own navigation controller
+    // has been replaced by that of the tab bar.  Of course this makes sense because it has
+    // has been pushed on the More's navigation stack.
+    //
+    // The nasty thing is that we can now no longer reach the view controller tabBarItem.
+    // However, as a side-effect of the above, the original navigation controller no longer
+    // has children; because of course his only child is now More's child.
+    //
+    // By iterating all tab bar view controllers, we can still find the original navigation
+    // controller and with that the tabBarItem; we simply search for the one with no children.
+    if (viewController.navigationController == [AppDelegate appDelegate].tabBarController.moreNavigationController)
+    {
+        for (UINavigationController* navigationController in [AppDelegate appDelegate].tabBarController.viewControllers)
+        {
+            if (navigationController.childViewControllers.count == 0)
+            {
+                tabBarItem = navigationController.tabBarItem;
+            }
+        }
+    }
+    else
+    {
+        tabBarItem = viewController.navigationController.tabBarItem;
+    }
+
+    return tabBarItem;
 }
 
 
 #pragma mark - Helpers
-
-- (UITabBarItem*)numbersTabBarItem
-{
-    return [AppDelegate appDelegate].numbersViewController.navigationController.tabBarItem;
-}
-
 
 - (UITabBarItem*)moreTabBarItem
 {
@@ -104,15 +186,26 @@
 }
 
 
-- (NSString*)badgeValueForCount:(NSUInteger)count
+- (NSUInteger)isOnMoreViewController:(UIViewController*)viewController
 {
-    return [NSString stringWithFormat:@"%d", (int)count];
+    NSUInteger index;
+
+    index = [[AppDelegate appDelegate].tabBarController.viewControllers indexOfObject:viewController.parentViewController];
+
+    return (index > 4) || (index == NSNotFound); // NSNotFound occurs if view controller is on More and is visible.
 }
 
 
-- (NSUInteger)indexOfTabBarItem:(UITabBarItem*)tabBarItem
+- (NSMutableDictionary*)mutableDictionaryWithArray:(NSArray*)array
 {
-    return [[AppDelegate appDelegate].tabBarController.tabBar.items indexOfObject:tabBarItem];
+    NSMutableDictionary* mutableDictionary = [NSMutableDictionary dictionary];
+
+    for (NSDictionary* dictionary in array)
+    {
+        [mutableDictionary addEntriesFromDictionary:dictionary];
+    }
+
+    return mutableDictionary;
 }
 
 @end

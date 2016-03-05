@@ -83,12 +83,7 @@ typedef enum
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification* note)
     {
-        NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
-        [indexSet addIndex:[Common nOfBit:TableSectionHomeCountry inValue:sections]];
-        
-        [self.tableView beginUpdates];
-        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView endUpdates];
+        [Common reloadSections:TableSectionHomeCountry allSections:sections tableView:self.tableView];
     }];
 
     // Refresh the Phone or Number names used.
@@ -97,13 +92,9 @@ typedef enum
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification* note)
     {
-        NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
-        [indexSet addIndex:[Common nOfBit:TableSectionCallback inValue:sections]];
-        [indexSet addIndex:[Common nOfBit:TableSectionCallerId inValue:sections]];
-
-        [self.tableView beginUpdates];
-        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView endUpdates];
+        [Common reloadSections:(TableSectionCallback | TableSectionCallerId)
+                   allSections:sections
+                     tableView:self.tableView];
     }];
 
     [settings addObserver:self
@@ -136,19 +127,19 @@ typedef enum
 
 - (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
 {
-    NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
+    NSUInteger reloadSections = 0;
     
     if ([keyPath isEqualToString:@"callbackE164"])
     {
-        [indexSet addIndex:[Common nOfBit:TableSectionCallback inValue:sections]];
+        reloadSections |= TableSectionCallback;
     }
     else if ([keyPath isEqualToString:@"callerIdE164"])
     {
-        [indexSet addIndex:[Common nOfBit:TableSectionCallerId inValue:sections]];
+        reloadSections |= TableSectionCallerId;
     }
     else if ([keyPath isEqualToString:@"homeIsoCountryCode"])
     {
-        [indexSet addIndex:[Common nOfBit:TableSectionHomeCountry inValue:sections]];
+        reloadSections |= TableSectionHomeCountry;
     }
     
     if ([keyPath isEqualToString:@"callbackE164"] || [keyPath isEqualToString:@"callerIdE164"])
@@ -156,14 +147,12 @@ typedef enum
         if (accountDataUpdated == NO)
         {
             // To update when provisioned.
-            [indexSet addIndex:[Common nOfBit:TableSectionAccountData inValue:sections]];
+            reloadSections |= TableSectionAccountData;
             accountDataUpdated = YES;
         }
     }
 
-    [self.tableView beginUpdates];
-    [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];
+    [Common reloadSections:reloadSections allSections:sections tableView:self.tableView];
 }
 
 

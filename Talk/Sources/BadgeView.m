@@ -57,6 +57,14 @@ const CGFloat kHeight = 20.0f;
 }
 
 
++ (BadgeView*)getFromCell:(UITableViewCell*)cell
+{
+    BadgeView* subview = [cell.contentView.subviews firstObject];
+
+    return [subview isKindOfClass:[self class]] ? subview : nil;
+}
+
+
 - (void)setCount:(NSUInteger)count
 {
     _count = count;

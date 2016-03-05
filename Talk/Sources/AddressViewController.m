@@ -27,6 +27,7 @@
 #import "ProofType.h"
 #import "ImagePicker.h"
 #import "Base64.h"
+#import "BadgeHandler.h"
 
 typedef NS_ENUM(NSUInteger, TableSections)
 {
@@ -255,6 +256,14 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     self.lastNameTextField.placeholder    = [self placeHolderForTextField:self.lastNameTextField];
 
     [self updateRightBarButtonItem];
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    [[BadgeHandler sharedHandler] removeAddressUpdate:self.address.addressId];
 }
 
 
@@ -819,12 +828,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
                     {
                         self.address.proofImage = [Base64 encode:imageData];
                         self.address.hasProof   = YES;
-                        NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
-                        [indexSet addIndex:[Common nOfBit:TableSectionProof inValue:self.sections]];
-
-                        [self.tableView beginUpdates];
-                        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
-                        [self.tableView endUpdates];
+                        [Common reloadSections:TableSectionProof allSections:self.sections tableView:self.tableView];
                     }];
                 }
                 else

@@ -34,7 +34,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedNumbersController;
 @property (nonatomic, assign) TableSections               sections;
-@property (nonatomic, strong) BadgeView*                  badgeView;
+@property (nonatomic, weak) id<NSObject>                  observer;
 
 @end
 
@@ -52,15 +52,34 @@ typedef NS_ENUM(NSUInteger, TableSections)
         
         self.sections |= TableSectionNumbers;
         self.sections |= TableSectionAddresses;
+
+        __weak typeof(self) weakSelf = self;
+        self.observer = [[NSNotificationCenter defaultCenter] addObserverForName:BadgeHandlerAddressUpdatesNotification
+                                                                          object:nil
+                                                                           queue:[NSOperationQueue mainQueue]
+                                                                      usingBlock:^(NSNotification* note)
+        {
+            [weakSelf updateBadgeValue];
+            [Common reloadSections:TableSectionAddresses allSections:weakSelf.sections tableView:weakSelf.tableView];
+        }];
     }
 
     return self;
 }
 
 
+- (void)updateBadgeValue
+{
+    NSUInteger count = [[BadgeHandler sharedHandler] addressUpdatesCount];
+    UITabBarItem* tabBarItem = [[BadgeHandler sharedHandler] tabBarItemForViewController:self];
+    tabBarItem.badgeValue = (count > 0) ? [NSString stringWithFormat:@"%d", (int)count] : nil;
+}
+
+
 - (void)dealloc
 {
     [[Settings sharedSettings] removeObserver:self forKeyPath:@"sortSegment" context:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
 }
 
 
@@ -69,6 +88,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
     [super viewDidLoad];
 
     self.clearsSelectionOnViewWillAppear = YES;
+
+    [self updateBadgeValue];
 
     self.fetchedNumbersController = [[DataManager sharedManager] fetchResultsForEntityName:@"Number"
                                                                               withSortKeys:[Common sortKeys]
@@ -94,6 +115,11 @@ typedef NS_ENUM(NSUInteger, TableSections)
                 atIndexPath:selectedIndexPath];
 
         [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+    }
+
+    if ([self isMovingToParentViewController] == NO)
+    {
+
     }
 }
 
@@ -126,14 +152,6 @@ typedef NS_ENUM(NSUInteger, TableSections)
     {
         [Common showGetStartedViewController];
     }
-}
-
-
-#pragma mark - Process Push Notification
-
-- (void)processNotificationAddressUpdates:(NSArray*)addressUpdates
-{
-    [BadgeHandler sharedHandler].addressesBadgeCount = addressUpdates.count;
 }
 
 
@@ -229,17 +247,23 @@ typedef NS_ENUM(NSUInteger, TableSections)
         }
         case TableSectionAddresses:
         {
+            BadgeView* badgeView;
+
             cell = [self.tableView dequeueReusableCellWithIdentifier:@"AddressesCell"];
             if (cell == nil)
             {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"AddressesCell"];
+                badgeView = [[BadgeView alloc] init];
+                [badgeView addToCell:cell];
+            }
+            else
+            {
+                badgeView = [BadgeView getFromCell:cell];
             }
 
             cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.text = [Strings addressesString];
-            self.badgeView = [[BadgeView alloc] init];
-            [self.badgeView addToCell:cell];
-            self.badgeView.count = [BadgeHandler sharedHandler].addressesBadgeCount;
+            badgeView.count = [BadgeHandler sharedHandler].addressUpdatesCount;
 
             [Common setImageNamed:@"AddressesTab" ofCell:cell];
             break;

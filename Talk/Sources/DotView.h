@@ -1,5 +1,5 @@
 //
-//  BadgeView.h
+//  DotView.h
 //  Talk
 //
 //  Created by Cornelis van der Bent on 04/03/16.
@@ -9,14 +9,12 @@
 #import <UIKit/UIKit.h>
 
 
-@interface BadgeView : UIView
-
-@property (nonatomic, assign) NSUInteger count;
+@interface DotView : UIView
 
 - (instancetype)init;
 
 - (void)addToCell:(UITableViewCell*)cell;
 
-+ (BadgeView*)getFromCell:(UITableViewCell*)cell;
++ (DotView*)getFromCell:(UITableViewCell*)cell;
 
 @end

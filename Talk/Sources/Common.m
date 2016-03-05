@@ -1446,4 +1446,25 @@ static Common* sharedCommon;
     return path;
 }
 
+
++ (void)reloadSections:(NSUInteger)sections allSections:(NSUInteger)allSections tableView:(UITableView*)tableView
+{
+    NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
+    NSUInteger         section  = 1;
+
+    while (section <= allSections)
+    {
+        if (section & sections)
+        {
+            [indexSet addIndex:[Common nOfBit:section inValue:allSections]];
+        }
+
+        section <<= 1;
+    }
+
+    [tableView beginUpdates];
+    [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+    [tableView endUpdates];
+}
+
 @end

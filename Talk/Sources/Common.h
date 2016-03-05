@@ -160,4 +160,6 @@ static const int TextFieldCellTag = 1111;
 
 + (NSString*)pathForTemporaryFileWithExtension:(NSString*)extension;
 
++ (void)reloadSections:(NSUInteger)sections allSections:(NSUInteger)allSections tableView:(UITableView*)tableView;
+
 @end

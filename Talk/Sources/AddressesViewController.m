@@ -11,10 +11,11 @@
 #import "DataManager.h"
 #import "Strings.h"
 #import "Settings.h"
-#import "AppDelegate.h"
 #import "Common.h"
 #import "WebClient.h"
 #import "Salutation.h"
+#import "DotView.h"
+#import "BadgeHandler.h"
 
 
 @interface AddressesViewController ()
@@ -32,6 +33,8 @@
 @property (nonatomic, copy) void (^completion)(AddressData* selectedAddress);
 
 @property (nonatomic, strong) NSPredicate*                predicate;
+
+@property (nonatomic, weak) id<NSObject>                  observer;
 
 @end
 
@@ -77,6 +80,15 @@
         self.proofTypes           = proofTypes;
         self.predicate            = predicate;
         self.completion           = completion;
+
+        __weak typeof(self) weakSelf = self;
+        self.observer = [[NSNotificationCenter defaultCenter] addObserverForName:BadgeHandlerAddressUpdatesNotification
+                                                                          object:nil
+                                                                           queue:[NSOperationQueue mainQueue]
+                                                                      usingBlock:^(NSNotification* note)
+        {
+            [weakSelf.tableView reloadData];
+        }];
     }
     
     return self;
@@ -86,6 +98,7 @@
 - (void)dealloc
 {
     [[Settings sharedSettings] removeObserver:self forKeyPath:@"sortSegment" context:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
 }
 
 
@@ -426,6 +439,8 @@
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SubtitleCell"];
+        DotView* dotView = [[DotView alloc] init];
+        [dotView addToCell:cell];
     }
     
     [self configureCell:cell onResultsController:self.fetchedAddressesController atIndexPath:indexPath];
@@ -550,6 +565,9 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
+
+    DotView* dotView = [DotView getFromCell:cell];
+    dotView.hidden = ([BadgeHandler sharedHandler].addressUpdates[address.addressId] == nil);
 }
 
 

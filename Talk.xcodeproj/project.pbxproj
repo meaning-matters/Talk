@@ -651,6 +651,7 @@
 		48F5D2EE16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
 		48FC30BD1C220E300032387E /* AddressType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FC30BC1C220E300032387E /* AddressType.m */; };
 		48FC30C51C2221360032387E /* ProofType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FC30C41C2221360032387E /* ProofType.m */; };
+		48FC54321C89EDA3007658FE /* DotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FC54311C89EDA3007658FE /* DotView.m */; };
 		48FD99D5161855D30061191B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D4161855D30061191B /* CoreMedia.framework */; };
 		48FD99D9161855EF0061191B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D8161855EF0061191B /* AVFoundation.framework */; };
 		48FD99DB161856070061191B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99DA161856070061191B /* AudioToolbox.framework */; };
@@ -1398,6 +1399,8 @@
 		48FC30BC1C220E300032387E /* AddressType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressType.m; sourceTree = "<group>"; };
 		48FC30C31C2221360032387E /* ProofType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProofType.h; sourceTree = "<group>"; };
 		48FC30C41C2221360032387E /* ProofType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProofType.m; sourceTree = "<group>"; };
+		48FC54301C89EDA3007658FE /* DotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DotView.h; sourceTree = "<group>"; };
+		48FC54311C89EDA3007658FE /* DotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DotView.m; sourceTree = "<group>"; };
 		48FD99D4161855D30061191B /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		48FD99D6161855E10061191B /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		48FD99D8161855EF0061191B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -1882,14 +1885,16 @@
 		485ECBDF16525D1600364F08 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				48A261C216FDE32400007638 /* CallStateView.h */,
-				48A261C316FDE32400007638 /* CallStateView.m */,
 				4823019A1C897E7000ECD32E /* BadgeView.h */,
 				4823019B1C897E7000ECD32E /* BadgeView.m */,
+				48A261C216FDE32400007638 /* CallStateView.h */,
+				48A261C316FDE32400007638 /* CallStateView.m */,
 				4814EA3C17CB1923004B7A3C /* CreditAmountCell.h */,
 				4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */,
 				4814EA3517CA993F004B7A3C /* CreditBuyCell.h */,
 				4814EA3617CA993F004B7A3C /* CreditBuyCell.m */,
+				48FC54301C89EDA3007658FE /* DotView.h */,
+				48FC54311C89EDA3007658FE /* DotView.m */,
 				485ECBE41652B9BD00364F08 /* KeypadButton.h */,
 				485ECBE51652B9BE00364F08 /* KeypadButton.m */,
 				485ECBE016525D3600364F08 /* KeypadView.h */,
@@ -3161,6 +3166,7 @@
 				48F14EE61BF9C63A00541EEC /* AddressViewController.m in Sources */,
 				48A261C416FDE32400007638 /* CallStateView.m in Sources */,
 				48B813491AADF9380019AF77 /* NBContact.m in Sources */,
+				48FC54321C89EDA3007658FE /* DotView.m in Sources */,
 				48B813351AADF8DE0019AF77 /* NBPeopleListViewController.m in Sources */,
 				488FBBE21700852F000ECC71 /* NumberData.m in Sources */,
 				4814D56B19E9660200958E33 /* AFSecurityPolicy.m in Sources */,

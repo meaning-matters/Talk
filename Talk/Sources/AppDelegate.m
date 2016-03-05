@@ -34,6 +34,8 @@
 #import "CallerIdViewController.h"
 #import "BadgeHandler.h"
 
+NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification";
+
 
 @interface AppDelegate ()
 {
@@ -134,6 +136,8 @@
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 
+    [[BadgeHandler sharedHandler] update];
+
     return YES;
 }
 
@@ -192,8 +196,6 @@
 - (void)applicationDidBecomeActive:(UIApplication*)application
 {
     AnalysticsTrace(@"applicationDidBecomeActive");
-
-    [[BadgeHandler sharedHandler] updateAllBadgeCounts];
 
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
@@ -258,10 +260,9 @@
 {
     AnalysticsTrace(@"didReceiveRemoteNotification");
 
-    if (userInfo[@"addressUpdates"] != nil)
-    {
-        [self.numbersViewController processNotificationAddressUpdates:userInfo[@"addressUpdates"]];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:AppDelegateRemoteNotification
+                                                        object:nil
+                                                      userInfo:userInfo];
 }
 
 
@@ -382,7 +383,7 @@
 
         [Settings sharedSettings].tabBarClassNames = classNames;
 
-        [[BadgeHandler sharedHandler] updateMoreBadgeCount];
+        [[BadgeHandler sharedHandler] update];
     }
 }
 
