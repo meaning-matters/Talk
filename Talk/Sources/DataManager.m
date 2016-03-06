@@ -11,6 +11,7 @@
 #import "DestinationData.h"
 #import "PhoneData.h"
 #import "AddressData.h"
+#import "RecordingData.h"
 #import "Common.h"
 #import "WebClient.h"
 #import "Settings.h"
@@ -412,21 +413,32 @@
                             {
                                 if (error == nil)
                                 {
-                                    [self synchronizeIvrs:^(NSError* error)
+                                    [self synchronizeRecordings:^(NSError *error)
                                     {
                                         if (error == nil)
                                         {
-                                            [self.managedObjectContext save:&error];
-                                            if (error == nil)
+                                            [self synchronizeIvrs:^(NSError* error)
                                             {
-                                                completion ? completion(nil) : 0;
-                                            }
-                                            else
-                                            {
-                                                [self handleError:error];
+                                                if (error == nil)
+                                                {
+                                                    [self.managedObjectContext save:&error];
+                                                    if (error == nil)
+                                                    {
+                                                        completion ? completion(nil) : 0;
+                                                    }
+                                                    else
+                                                    {
+                                                        [self handleError:error];
 
-                                                return;
-                                            }
+                                                        return;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    [self.managedObjectContext rollback];
+                                                    completion ? completion(error) : 0;
+                                                }
+                                            }];
                                         }
                                         else
                                         {
@@ -767,6 +779,91 @@
                         destination.uuid       = uuid;
                         destination.name       = name;
                         destination.statements = [Common jsonStringWithObject:action];
+                    }
+                    else
+                    {
+                        completion ? completion(error) : 0;
+
+                        return;
+                    }
+
+                    if (--count == 0)
+                    {
+                        completion ? completion(nil) : 0;
+                    }
+                }];
+            }
+        }
+        else
+        {
+            completion ? completion(error) : 0;
+        }
+    }];
+}
+
+
+- (void)synchronizeRecordings:(void (^)(NSError* error))completion
+{
+    [[WebClient sharedClient] retrieveAudioList:^(NSError* error, NSArray* list)
+    {
+        if (error == nil)
+        {
+            // Delete Recordings that are no longer on the server.
+            NSFetchRequest* request     = [NSFetchRequest fetchRequestWithEntityName:@"Recording"];
+            [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (uuid IN %@)) OR (uuid == nil)", list]];
+            NSArray*        deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
+            if (error == nil)
+            {
+                for (NSManagedObject* object in deleteArray)
+                {
+                    [self.managedObjectContext deleteObject:object];
+                }
+            }
+            else
+            {
+                [self handleError:error];
+
+                return;
+            }
+
+            __block NSUInteger count = list.count;
+            if (count == 0)
+            {
+                completion ? completion(nil) : 0;
+
+                return;
+            }
+
+            for (NSString* uuid in list)
+            {
+                [[WebClient sharedClient] retrieveAudioForUuid:uuid
+                                                         reply:^(NSError *error, NSString *name, NSData *data)
+                {
+                    if (error == nil)
+                    {
+                        NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Recording"];
+                        [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
+
+                        RecordingData* recording;
+                        recording = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
+                        if (error == nil)
+                        {
+                            if (recording == nil)
+                            {
+                                recording = [NSEntityDescription insertNewObjectForEntityForName:@"Recording"
+                                                                          inManagedObjectContext:self.managedObjectContext];
+                            }
+                        }
+                        else
+                        {
+                            [self handleError:error];
+
+                            return;
+                        }
+
+                        recording.name = name;
+                        //#### Save file on disk, or even better in the DB (like the proofImage): Change DB: remove URL
+                        // recording.urlString, and add NSData.
                     }
                     else
                     {
