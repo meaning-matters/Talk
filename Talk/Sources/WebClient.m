@@ -691,7 +691,7 @@
                                   city:(NSString*)city
                               postcode:(NSString*)postcode
                         isoCountryCode:(NSString*)isoCountryCode
-                            proofImage:(NSString*)proofImage   // Base64 encoded.
+                            proofImage:(NSData*)proofImage
                                 idType:(NSString*)idType
                               idNumber:(NSString*)idNumber
                           fiscalIdCode:(NSString*)fiscalIdCode
@@ -706,24 +706,24 @@
     NSString*            numberType = [NumberType stringForNumberTypeMask:numberTypeMask];
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     
-    (name.length               > 0) ? parameters[@"name"]               = name               : 0;
-    (salutation.length         > 0) ? parameters[@"salutation"]         = salutation         : 0;
-    (firstName.length          > 0) ? parameters[@"firstName"]          = firstName          : 0;
-    (lastName.length           > 0) ? parameters[@"lastName"]           = lastName           : 0;
-    (companyName.length        > 0) ? parameters[@"companyName"]        = companyName        : 0;
-    (companyDescription.length > 0) ? parameters[@"companyDescription"] = companyDescription : 0;
-    (street.length             > 0) ? parameters[@"street"]             = street             : 0;
-    (buildingNumber.length     > 0) ? parameters[@"buildingNumber"]     = buildingNumber     : 0;
-    (buildingLetter.length     > 0) ? parameters[@"buildingLetter"]     = buildingLetter     : 0;
-    (city.length               > 0) ? parameters[@"city"]               = city               : 0;
-    (postcode.length           > 0) ? parameters[@"postcode"]           = postcode           : 0;
-    (isoCountryCode.length     > 0) ? parameters[@"isoCountryCode"]     = isoCountryCode     : 0;
-    (proofImage.length         > 0) ? parameters[@"proofImage"]         = proofImage         : 0;
-    (idType.length             > 0) ? parameters[@"idType"]             = idType             : 0;
-    (idNumber.length           > 0) ? parameters[@"idNumber"]           = idNumber           : 0;
-    (fiscalIdCode.length       > 0) ? parameters[@"fiscalIdCode"]       = fiscalIdCode       : 0;
-    (streetCode.length         > 0) ? parameters[@"streetCode"]         = streetCode         : 0;
-    (municipalityCode.length   > 0) ? parameters[@"municipalityCode"]   = municipalityCode   : 0;
+    (name.length               > 0) ? parameters[@"name"]               = name                       : 0;
+    (salutation.length         > 0) ? parameters[@"salutation"]         = salutation                 : 0;
+    (firstName.length          > 0) ? parameters[@"firstName"]          = firstName                  : 0;
+    (lastName.length           > 0) ? parameters[@"lastName"]           = lastName                   : 0;
+    (companyName.length        > 0) ? parameters[@"companyName"]        = companyName                : 0;
+    (companyDescription.length > 0) ? parameters[@"companyDescription"] = companyDescription         : 0;
+    (street.length             > 0) ? parameters[@"street"]             = street                     : 0;
+    (buildingNumber.length     > 0) ? parameters[@"buildingNumber"]     = buildingNumber             : 0;
+    (buildingLetter.length     > 0) ? parameters[@"buildingLetter"]     = buildingLetter             : 0;
+    (city.length               > 0) ? parameters[@"city"]               = city                       : 0;
+    (postcode.length           > 0) ? parameters[@"postcode"]           = postcode                   : 0;
+    (isoCountryCode.length     > 0) ? parameters[@"isoCountryCode"]     = isoCountryCode             : 0;
+    (proofImage.length         > 0) ? parameters[@"proofImage"]         = [Base64 encode:proofImage] : 0;
+    (idType.length             > 0) ? parameters[@"idType"]             = idType                     : 0;
+    (idNumber.length           > 0) ? parameters[@"idNumber"]           = idNumber                   : 0;
+    (fiscalIdCode.length       > 0) ? parameters[@"fiscalIdCode"]       = fiscalIdCode               : 0;
+    (streetCode.length         > 0) ? parameters[@"streetCode"]         = streetCode                 : 0;
+    (municipalityCode.length   > 0) ? parameters[@"municipalityCode"]   = municipalityCode           : 0;
                             
     [self postPath:[NSString stringWithFormat:@"/users/%@/addresses?isoCountryCode=%@&numberType=%@",
                                               username, numberIsoCountryCode, numberType]
@@ -759,7 +759,7 @@
 
 // 10E. GET ADDRESS PROOF IMAGE
 - (void)retrieveImageForAddressId:(NSString*)addressId
-                            reply:(void (^)(NSError* error, NSString* proofImage))reply
+                            reply:(void (^)(NSError* error, NSData* proofImage))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
@@ -769,7 +769,7 @@
     {
         if (error == nil)
         {
-            reply(nil, content[@"proofImage"]);
+            reply(nil, [Base64 decode:content[@"proofImage"]]);
         }
         else
         {

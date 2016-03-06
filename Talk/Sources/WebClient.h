@@ -158,7 +158,7 @@
                                   city:(NSString*)city
                               postcode:(NSString*)postcode
                         isoCountryCode:(NSString*)isoCountryCode
-                            proofImage:(NSString*)proofImage   // Base64 encoded.
+                            proofImage:(NSData*)proofImage
                                 idType:(NSString*)idType
                               idNumber:(NSString*)idNumber
                           fiscalIdCode:(NSString*)fiscalIdCode
@@ -175,7 +175,7 @@
 
 // 10E. GET ADDRESS PROOF IMAGE
 - (void)retrieveImageForAddressId:(NSString*)addressId
-                            reply:(void (^)(NSError* error, NSString* proofImage))reply;
+                            reply:(void (^)(NSError* error, NSData* proofImage))reply;
 
 // 10F. UPDATE ADDRESS PROOF IMAGE
 - (void)updateImageForAddressId:(NSString*)addressId

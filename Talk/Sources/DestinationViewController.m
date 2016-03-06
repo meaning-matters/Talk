@@ -71,7 +71,7 @@ typedef enum
             self.destination = [NSEntityDescription insertNewObjectForEntityForName:@"Destination"
                                                              inManagedObjectContext:self.managedObjectContext];
 
-            self.destination.statements = [Common jsonStringWithObject:@{@"call" : @{@"e164s" : @[@""]}}];
+            self.destination.action = [Common jsonStringWithObject:@{@"call" : @{@"e164s" : @[@""]}}];
         }
         else
         {
@@ -83,7 +83,7 @@ typedef enum
                                            context:nil];
         }
 
-        action = [Common mutableObjectWithJsonString:self.destination.statements];
+        action = [Common mutableObjectWithJsonString:self.destination.action];
     }
     
     return self;
@@ -216,7 +216,7 @@ typedef enum
 {
     self.destination.name = self.name;
     action[@"call"][@"e164s"][0] = phone.e164;
-    self.destination.statements = [Common jsonStringWithObject:action];
+    self.destination.action = [Common jsonStringWithObject:action];
 
     self.navigationItem.rightBarButtonItem.enabled = NO;
 
@@ -243,7 +243,7 @@ typedef enum
 - (void)saveAction
 {
     if ([self.name isEqualToString:self.destination.name] == YES &&
-        [Common object:action isEqualToJsonString:self.destination.statements] == YES)
+        [Common object:action isEqualToJsonString:self.destination.action] == YES)
     {
         // Nothing has changed.
         return;
@@ -258,7 +258,7 @@ typedef enum
         {
             self.destination.name = self.name;
             action[@"call"][@"e164s"][0] = phone.e164;
-            self.destination.statements = [Common jsonStringWithObject:action];
+            self.destination.action = [Common jsonStringWithObject:action];
             
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
         }
@@ -482,7 +482,7 @@ typedef enum
                                                                              completion:^(PhoneData* selectedPhone)
             {
                 phone = selectedPhone;
-                self.destination.statements = [Common jsonStringWithObject:@{@"call" : @{@"e164s" : @[phone.e164]}}];
+                self.destination.action = [Common jsonStringWithObject:@{@"call" : @{@"e164s" : @[phone.e164]}}];
 
                 [self updateRightBarButtonItem];
                 [self updateTable];

@@ -16,7 +16,6 @@
 #import "PhoneNumber.h"
 #import "CountriesViewController.h"
 #import "CallbackViewController.h"
-#import "Base64.h"
 #import "SettingsViewController.h"
 #import "AppDelegate.h"
 #import "DataManager.h"

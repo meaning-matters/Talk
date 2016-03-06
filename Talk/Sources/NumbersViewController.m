@@ -17,7 +17,6 @@
 #import "BlockAlertView.h"
 #import "Common.h"
 #import "WebClient.h"
-#import "Base64.h"
 #import "Strings.h"
 #import "Common.h"
 #import "BadgeHandler.h"

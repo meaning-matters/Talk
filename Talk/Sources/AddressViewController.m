@@ -26,7 +26,6 @@
 #import "Salutation.h"
 #import "ProofType.h"
 #import "ImagePicker.h"
-#import "Base64.h"
 #import "BadgeHandler.h"
 
 typedef NS_ENUM(NSUInteger, TableSections)
@@ -826,7 +825,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
                 {
                     [self.imagePicker pickImageWithCompletion:^(NSData* imageData)
                     {
-                        self.address.proofImage = [Base64 encode:imageData];
+                        self.address.proofImage = imageData;
                         self.address.hasProof   = YES;
                         [Common reloadSections:TableSectionProof allSections:self.sections tableView:self.tableView];
                     }];

@@ -20,7 +20,7 @@
 
 @dynamic uuid;
 @dynamic name;
-@dynamic statements;   //### Rename to `action`.
+@dynamic action;
 @dynamic numbers;
 @dynamic recordings;
 @dynamic phones;
@@ -121,23 +121,23 @@
 
 
 // Overrides a NSManagedObject setter.
-- (void)setStatements:(NSString*)statements
+- (void)setAction:(NSString*)action
 {
     // Required for the override.
-    [self willChangeValueForKey:@"statements"];
-    [self setPrimitiveValue:statements forKey:@"statements"];
+    [self willChangeValueForKey:@"action"];
+    [self setPrimitiveValue:action forKey:@"action"];
 
-    [self updateDependenciesWithStatements:statements];
+    [self updateDependenciesWithAction:action];
 
     // Required for the override.
-    [self didChangeValueForKey:@"statements"];
+    [self didChangeValueForKey:@"action"];
 }
 
 
-- (void)updateDependenciesWithStatements:(NSString*)statements
+- (void)updateDependenciesWithAction:(NSString*)action
 {
-    NSDictionary* action = [Common mutableObjectWithJsonString:statements];
-    NSString*     e164   = action[@"call"][@"e164s"][0];
+    NSDictionary* dictionary = [Common mutableObjectWithJsonString:action];
+    NSString*     e164       = dictionary[@"call"][@"e164s"][0];
 
     if ([e164 length] == 0)
     {

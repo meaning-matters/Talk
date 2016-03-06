@@ -699,6 +699,7 @@
 		48017A11194E554C0059A53B /* CallableData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallableData.m; sourceTree = "<group>"; };
 		48021B321C3A693100C40B58 /* UIViewController+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Common.h"; sourceTree = "<group>"; };
 		48021B331C3A693100C40B58 /* UIViewController+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Common.m"; sourceTree = "<group>"; };
+		4802621C1C8CCD0F00AAB11B /* Data2.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data2.2.xcdatamodel; sourceTree = "<group>"; };
 		4805E5181C5EA7FD00BA1924 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		480B4FF91BED1A890098F3A4 /* CountryCallingCodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryCallingCodes.json; path = Resources/CountryCallingCodes.json; sourceTree = "<group>"; };
 		480B4FFE1BED4AC20098F3A4 /* WD@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WD@2x.png"; sourceTree = "<group>"; };
@@ -3716,12 +3717,13 @@
 		48DD727F169CD4A200CD7080 /* Data.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				4802621C1C8CCD0F00AAB11B /* Data2.2.xcdatamodel */,
 				48232B611BFBC70B006D667E /* Data2.1.xcdatamodel */,
 				4816A09F1BF1043E00817ED7 /* Data2.0.xcdatamodel */,
 				48D537B31930ED120095C063 /* Data1.4.xcdatamodel */,
 				48DD7280169CD4A200CD7080 /* Data.xcdatamodel */,
 			);
-			currentVersion = 48232B611BFBC70B006D667E /* Data2.1.xcdatamodel */;
+			currentVersion = 4802621C1C8CCD0F00AAB11B /* Data2.2.xcdatamodel */;
 			name = Data.xcdatamodeld;
 			path = Resources/Data.xcdatamodeld;
 			sourceTree = "<group>";

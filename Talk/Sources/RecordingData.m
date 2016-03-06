@@ -19,7 +19,7 @@
 
 @dynamic uuid;
 @dynamic name;
-@dynamic urlString;     //### Must be deleted from data model; can be recreated using `uuid`.
+@dynamic audio;
 @dynamic destinations;
 
 

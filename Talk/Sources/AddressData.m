@@ -145,7 +145,7 @@
 - (void)loadProofImageWithCompletion:(void (^)(BOOL succeeded))completion
 {
     [[WebClient sharedClient] retrieveImageForAddressId:self.addressId
-                                                  reply:^(NSError *error, NSString *proofImage)
+                                                  reply:^(NSError* error, NSData* proofImage)
     {
         if (error == nil)
         {

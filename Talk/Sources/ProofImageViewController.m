@@ -10,7 +10,6 @@
 #import "UIViewController+Common.h"
 #import "Skinning.h"
 #import "WebClient.h"
-#import "Base64.h"
 #import "ImagePicker.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
@@ -36,7 +35,7 @@
 
         if (self.address.proofImage != nil)
         {
-            self.imageView.image = [UIImage imageWithData:[Base64 decode:self.address.proofImage]];
+            self.imageView.image = [UIImage imageWithData:self.address.proofImage];
         }
         else
         {
@@ -48,7 +47,7 @@
                 __strong typeof(weakSelf) strongSelf = weakSelf;
                 strongSelf.isLoading = NO;
 
-                strongSelf.imageView.image = [UIImage imageWithData:[Base64 decode:strongSelf.address.proofImage]];
+                strongSelf.imageView.image = [UIImage imageWithData:strongSelf.address.proofImage];
             }];
         }
     }
@@ -114,7 +113,7 @@
             {
                 self.imageView.image    = [UIImage imageWithData:imageData];
 
-                self.address.proofImage = [Base64 encode:imageData];
+                self.address.proofImage = imageData;
                 self.address.hasProof   = YES;
             }
         }];

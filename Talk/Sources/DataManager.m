@@ -15,7 +15,6 @@
 #import "Common.h"
 #import "WebClient.h"
 #import "Settings.h"
-#import "Base64.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
 #import "NetworkStatus.h"
@@ -118,7 +117,7 @@
         return _managedObjectModel;
     }
 
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Data2.1"
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Data2.2"
                                               withExtension:@"mom"
                                                subdirectory:@"Data.momd"];
 
@@ -776,9 +775,9 @@
                             return;
                         }
 
-                        destination.uuid       = uuid;
-                        destination.name       = name;
-                        destination.statements = [Common jsonStringWithObject:action];
+                        destination.uuid   = uuid;
+                        destination.name   = name;
+                        destination.action = [Common jsonStringWithObject:action];
                     }
                     else
                     {
@@ -836,6 +835,7 @@
 
             for (NSString* uuid in list)
             {
+                /*
                 [[WebClient sharedClient] retrieveAudioForUuid:uuid
                                                          reply:^(NSError *error, NSString *name, NSData *data)
                 {
@@ -877,7 +877,10 @@
                         completion ? completion(nil) : 0;
                     }
                 }];
+                 *///### temp
             }
+            completion ? completion(nil) : 0;//#### temp
+
         }
         else
         {
