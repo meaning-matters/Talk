@@ -72,4 +72,16 @@
     return [UIColor colorWithRed:0.78f green:0.78f blue:0.80f alpha:1.00f];
 }
 
+
++ (UIColor*)tabBadgeColor
+{
+    return [self tintColor];
+}
+
+
++ (UIColor*)cellBadgeColor
+{
+    return [UIColor colorWithRed:0.67f green:0.67f blue:0.68f alpha:1.00f];
+}
+
 @end

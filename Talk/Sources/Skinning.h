@@ -28,4 +28,8 @@
 
 + (UIColor*)contactRateColor;   // Color of call rate shown on Contact detail.
 
++ (UIColor*)tabBadgeColor;
+
++ (UIColor*)cellBadgeColor;
+
 @end

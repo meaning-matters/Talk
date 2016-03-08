@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "Settings.h"
 #import "Common.h"
+#import "BadgeView.h"
 
 NSString* const BadgeHandlerAddressUpdatesNotification = @"BadgeHandlerAddressUpdatesNotification";
 
@@ -35,6 +36,8 @@ NSString* const BadgeHandlerAddressUpdatesNotification = @"BadgeHandlerAddressUp
                 [sharedInstance processAddressUpdatesNotificationArray:note.userInfo[@"addressUpdates"]];
             }
         }];
+
+        [sharedInstance replaceMoreTableDataSource];
     });
 
     return sharedInstance;
@@ -206,6 +209,60 @@ NSString* const BadgeHandlerAddressUpdatesNotification = @"BadgeHandlerAddressUp
     }
 
     return mutableDictionary;
+}
+
+
+#pragma mark - More Tab Magic
+
+- (void)replaceMoreTableDataSource
+{
+    UINavigationController* navigationController = [AppDelegate appDelegate].tabBarController.moreNavigationController;
+    UIViewController*       listViewController   = navigationController.viewControllers[0];
+
+    UITableView* moreTableView = (UITableView*)listViewController.view;
+
+    self.moreTableDataSource = moreTableView.dataSource;
+    moreTableView.dataSource = self;
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [moreTableView reloadData];
+    });
+}
+
+
+- (id)forwardingTargetForSelector:(SEL)selector
+{
+    if ([self.moreTableDataSource respondsToSelector:selector])
+    {
+        return self.moreTableDataSource;
+    }
+    else
+    {
+        return [super forwardingTargetForSelector:selector];
+    }
+}
+
+
+- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // this is just to quiet the compiler
+    return [self.moreTableDataSource tableView:tableView numberOfRowsInSection:section];
+}
+
+
+- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell* cell = [self.moreTableDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
+
+    if (indexPath.row == 1)
+    {
+        BadgeView* badgeView = [[BadgeView alloc] init];
+        [badgeView addToCell:cell];
+        badgeView.count = 2;
+        [badgeView addToCell:cell];
+    }
+
+    return cell;
 }
 
 @end

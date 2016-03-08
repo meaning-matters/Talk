@@ -11,7 +11,9 @@
 extern NSString* const BadgeHandlerAddressUpdatesNotification;
 
 
-@interface BadgeHandler : NSObject
+@interface BadgeHandler : NSObject <UITableViewDataSource>
+
+@property (nonatomic, weak) id<UITableViewDataSource> moreTableDataSource;
 
 + (BadgeHandler*)sharedHandler;
 

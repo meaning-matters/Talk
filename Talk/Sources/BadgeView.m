@@ -30,7 +30,7 @@ const CGFloat kHeight = 20.0f;
     if (self = [super initWithFrame:CGRectMake(0.0f, 0.0f, kWidth, kHeight)])
     {
         self.isSettingBackgroundColor = YES;
-        self.backgroundColor          = [Skinning placeholderColor];
+        self.backgroundColor          = [Skinning cellBadgeColor];
         self.isSettingBackgroundColor = NO;
         self.layer.cornerRadius       = self.frame.size.height / 2.0f;
 
