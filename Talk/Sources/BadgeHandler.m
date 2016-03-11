@@ -5,6 +5,7 @@
 //  Created by Cornelis van der Bent on 03/03/16.
 //  Copyright © 2016 NumberBay Ltd. All rights reserved.
 //
+//  The More-tab magic was found here: http://www.apeth.com/iOSBook/ch25.html#_uitabbar
 
 #import "BadgeHandler.h"
 #import "AppDelegate.h"
@@ -212,7 +213,7 @@ NSString* const BadgeHandlerAddressUpdatesNotification = @"BadgeHandlerAddressUp
 }
 
 
-#pragma mark - More Tab Magic
+#pragma mark - More-Tab Magic
 
 - (void)replaceMoreTableDataSource
 {
