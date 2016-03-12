@@ -8,6 +8,7 @@
 
 #import "NBRecentsListViewController.h"
 #import "NBTestDelegate.h"
+#import "Strings.h"
 #ifndef NB_STANDALONE
 #import "DataManager.h"
 #endif
@@ -41,8 +42,11 @@
 #pragma mark - Initialization
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContextParam
 {
-    if( self = [super init] )
+    if (self = [super init])
     {
+        self.title = [Strings recentsString];
+        // The tabBarItem image must be set in my own NavigationController.
+
         managedObjectContext = managedObjectContextParam;
     }
 

@@ -17,6 +17,8 @@ extern NSString* const BadgeHandlerAddressUpdatesNotification;
 
 + (BadgeHandler*)sharedHandler;
 
+- (void)setBadgeCount:(NSUInteger)count forViewController:(UIViewController*)viewController;
+
 - (NSDictionary*)addressUpdates;
 
 - (NSUInteger)addressUpdatesCount;

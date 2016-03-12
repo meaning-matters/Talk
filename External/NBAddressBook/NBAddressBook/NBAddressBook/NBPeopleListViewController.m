@@ -8,6 +8,7 @@
 
 #import <AddressBookUI/AddressBookUI.h>
 #import "NBPeopleListViewController.h"
+#import "Strings.h"
 
 @interface NBPeopleListViewController () <ABNewPersonViewControllerDelegate>
 {
@@ -25,6 +26,9 @@
 {
     if (self = [super initWithNibName:@"NBPeopleListView" bundle:nil])
     {
+        self.title = [Strings contactsString];
+        // The tabBarItem image must be set in my own NavigationController.
+
         self.edgesForExtendedLayout = UIRectEdgeNone;
 
         searchQueue = dispatch_queue_create("Contact Search", DISPATCH_QUEUE_SERIAL);

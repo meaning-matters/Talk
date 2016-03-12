@@ -32,12 +32,14 @@ const CGFloat kHeight = 20.0f;
         self.isSettingBackgroundColor = YES;
         self.backgroundColor          = [Skinning cellBadgeColor];
         self.isSettingBackgroundColor = NO;
-        self.layer.cornerRadius       = self.frame.size.height / 2.0f;
+        self.layer.cornerRadius       = kHeight / 2.0f;
+        self.userInteractionEnabled   = NO;  // Let touch events through to tab bar
 
         self.label = [[UILabel alloc] initWithFrame:self.frame];
         self.label.textAlignment = NSTextAlignmentCenter;
         self.label.font          = [UIFont boldSystemFontOfSize:17.0f];
         self.label.textColor     = [UIColor whiteColor];
+        self.label.lineBreakMode = NSLineBreakByTruncatingTail;
 
         [self addSubview:self.label];
 

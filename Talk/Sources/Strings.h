@@ -67,6 +67,10 @@
 
 + (NSString*)creditString;
 
++ (NSString*)recentsString;
+
++ (NSString*)contactsString;
+
 + (NSString*)monthString;
 
 + (NSString*)monthsString;

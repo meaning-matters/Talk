@@ -257,9 +257,27 @@
 
 + (NSString*)creditString
 {
-    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Number", nil, [NSBundle mainBundle],
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Credit", nil, [NSBundle mainBundle],
                                              @"Credit",
                                              @"Standard string to label a (calling) credit\n"
+                                             @"[iOS standard size].");
+}
+
+
++ (NSString*)recentsString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Recents", nil, [NSBundle mainBundle],
+                                             @"Recents",
+                                             @"Standard string to label recent calls\n"
+                                             @"[iOS standard size].");
+}
+
+
++ (NSString*)contactsString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Contacts", nil, [NSBundle mainBundle],
+                                             @"Contacts",
+                                             @"Standard string to label people\n"
                                              @"[iOS standard size].");
 }
 

@@ -42,6 +42,6 @@
     int numRecentCalls;
 }
 
-- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
+- (instancetype)init;
 
 @end

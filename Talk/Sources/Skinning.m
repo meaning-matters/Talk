@@ -75,7 +75,7 @@
 
 + (UIColor*)tabBadgeColor
 {
-    return [self tintColor];
+    return [self deleteTintColor];
 }
 
 

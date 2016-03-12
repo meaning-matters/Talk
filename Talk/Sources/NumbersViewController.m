@@ -44,7 +44,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 {
     if (self = [super init])
     {
-        self.title                = [Strings numbersString]; // Not used, because we're having a segmented control.
+        self.title                = [Strings numbersString]; // Not visible, because of segmented control.
         // The tabBarItem image must be set in my own NavigationController.
 
         self.managedObjectContext = [DataManager sharedManager].managedObjectContext;

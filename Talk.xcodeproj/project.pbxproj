@@ -64,6 +64,7 @@
 		481DFBAB1C70CAC1009191B0 /* RecordingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 481DFBAA1C70CAC1009191B0 /* RecordingsViewController.m */; };
 		48200D1C16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
 		48200D1D16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
+		4822B42A1C92EB7C004BD2F5 /* TabBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4822B4291C92EB7C004BD2F5 /* TabBadgeView.m */; };
 		4823019C1C897E7000ECD32E /* BadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4823019B1C897E7000ECD32E /* BadgeView.m */; };
 		48232B721BFC8E5D006D667E /* AddressData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48232B701BFC8E5D006D667E /* AddressData.m */; };
 		48251B9B187F4A8A00E69C3A /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48251B9A187F4A8A00E69C3A /* SettingsViewController.m */; };
@@ -538,8 +539,8 @@
 		48AF45441649788A00DFE3D8 /* HelpsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45241649788A00DFE3D8 /* HelpsTab@2x.png */; };
 		48AF45471649788A00DFE3D8 /* NumbersTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45261649788A00DFE3D8 /* NumbersTab@2x.png */; };
 		48AF45481649788A00DFE3D8 /* NumbersTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45261649788A00DFE3D8 /* NumbersTab@2x.png */; };
-		48AF454B1649788A00DFE3D8 /* RecentsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45281649788A00DFE3D8 /* RecentsTab@2x.png */; };
-		48AF454C1649788A00DFE3D8 /* RecentsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45281649788A00DFE3D8 /* RecentsTab@2x.png */; };
+		48AF454B1649788A00DFE3D8 /* NBRecentsListTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45281649788A00DFE3D8 /* NBRecentsListTab@2x.png */; };
+		48AF454C1649788A00DFE3D8 /* NBRecentsListTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45281649788A00DFE3D8 /* NBRecentsListTab@2x.png */; };
 		48AF454F1649788A00DFE3D8 /* SettingsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF452A1649788A00DFE3D8 /* SettingsTab@2x.png */; };
 		48AF45501649788A00DFE3D8 /* SettingsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF452A1649788A00DFE3D8 /* SettingsTab@2x.png */; };
 		48AF455B1649794B00DFE3D8 /* ShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF455A1649794B00DFE3D8 /* ShareView.xib */; };
@@ -558,7 +559,6 @@
 		48B813261AADF7AE0019AF77 /* NBRecentUnknownContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B813251AADF7AE0019AF77 /* NBRecentUnknownContactViewController.m */; };
 		48B813291AADF7BB0019AF77 /* NBRecentCallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B813281AADF7BB0019AF77 /* NBRecentCallCell.m */; };
 		48B8132E1AADF7CC0019AF77 /* NBRecentsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B8132B1AADF7CC0019AF77 /* NBRecentsListViewController.m */; };
-		48B8132F1AADF7CC0019AF77 /* NBRecentsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B8132D1AADF7CC0019AF77 /* NBRecentsNavigationController.m */; };
 		48B813321AADF88E0019AF77 /* NBAddressBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B813311AADF88E0019AF77 /* NBAddressBookManager.m */; };
 		48B813351AADF8DE0019AF77 /* NBPeopleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B813341AADF8DE0019AF77 /* NBPeopleListViewController.m */; };
 		48B813371AADF8E30019AF77 /* NBPeopleListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B813361AADF8E30019AF77 /* NBPeopleListView.xib */; };
@@ -619,8 +619,8 @@
 		48CB2C4517E6539000E19C3D /* Target.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4217E6539000E19C3D /* Target.png */; };
 		48CB2C4617E6539000E19C3D /* Target@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4317E6539000E19C3D /* Target@2x.png */; };
 		48CB2C4717E6539000E19C3D /* Target@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4317E6539000E19C3D /* Target@2x.png */; };
-		48CB2C4C17E6DB7700E19C3D /* ContactsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4917E6DB7700E19C3D /* ContactsTab@2x.png */; };
-		48CB2C4D17E6DB7700E19C3D /* ContactsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4917E6DB7700E19C3D /* ContactsTab@2x.png */; };
+		48CB2C4C17E6DB7700E19C3D /* NBPeopleListTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4917E6DB7700E19C3D /* NBPeopleListTab@2x.png */; };
+		48CB2C4D17E6DB7700E19C3D /* NBPeopleListTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4917E6DB7700E19C3D /* NBPeopleListTab@2x.png */; };
 		48D0A6E61654D65200FA2D98 /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E51654D65200FA2D98 /* SipConfig.cfg */; };
 		48D0A6E71654D65200FA2D98 /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E51654D65200FA2D98 /* SipConfig.cfg */; };
 		48D0A6EA1654D66200FA2D98 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E81654D66200FA2D98 /* InfoPlist.strings */; };
@@ -753,6 +753,8 @@
 		481DFBAA1C70CAC1009191B0 /* RecordingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordingsViewController.m; sourceTree = "<group>"; };
 		48200D1A16EC89BA0069677E /* NumberType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberType.h; sourceTree = "<group>"; };
 		48200D1B16EC89BA0069677E /* NumberType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberType.m; sourceTree = "<group>"; };
+		4822B4281C92EB7C004BD2F5 /* TabBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBadgeView.h; sourceTree = "<group>"; };
+		4822B4291C92EB7C004BD2F5 /* TabBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBadgeView.m; sourceTree = "<group>"; };
 		4823019A1C897E7000ECD32E /* BadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeView.h; sourceTree = "<group>"; };
 		4823019B1C897E7000ECD32E /* BadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeView.m; sourceTree = "<group>"; };
 		48232B611BFBC70B006D667E /* Data2.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data2.1.xcdatamodel; sourceTree = "<group>"; };
@@ -1244,7 +1246,7 @@
 		48AF45221649788A00DFE3D8 /* GroupsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GroupsTab@2x.png"; sourceTree = "<group>"; };
 		48AF45241649788A00DFE3D8 /* HelpsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HelpsTab@2x.png"; sourceTree = "<group>"; };
 		48AF45261649788A00DFE3D8 /* NumbersTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NumbersTab@2x.png"; sourceTree = "<group>"; };
-		48AF45281649788A00DFE3D8 /* RecentsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RecentsTab@2x.png"; sourceTree = "<group>"; };
+		48AF45281649788A00DFE3D8 /* NBRecentsListTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NBRecentsListTab@2x.png"; sourceTree = "<group>"; };
 		48AF452A1649788A00DFE3D8 /* SettingsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingsTab@2x.png"; sourceTree = "<group>"; };
 		48AF452C1649788A00DFE3D8 /* ShareTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShareTab@2x.png"; sourceTree = "<group>"; };
 		48AF4555164978BE00DFE3D8 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
@@ -1273,8 +1275,6 @@
 		48B813281AADF7BB0019AF77 /* NBRecentCallCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBRecentCallCell.m; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBRecentCallCell.m; sourceTree = SOURCE_ROOT; };
 		48B8132A1AADF7CC0019AF77 /* NBRecentsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBRecentsListViewController.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBRecentsListViewController.h; sourceTree = SOURCE_ROOT; };
 		48B8132B1AADF7CC0019AF77 /* NBRecentsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBRecentsListViewController.m; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBRecentsListViewController.m; sourceTree = SOURCE_ROOT; };
-		48B8132C1AADF7CC0019AF77 /* NBRecentsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBRecentsNavigationController.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBRecentsNavigationController.h; sourceTree = SOURCE_ROOT; };
-		48B8132D1AADF7CC0019AF77 /* NBRecentsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBRecentsNavigationController.m; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBRecentsNavigationController.m; sourceTree = SOURCE_ROOT; };
 		48B813301AADF88E0019AF77 /* NBAddressBookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBAddressBookManager.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBAddressBookManager.h; sourceTree = SOURCE_ROOT; };
 		48B813311AADF88E0019AF77 /* NBAddressBookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBAddressBookManager.m; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBAddressBookManager.m; sourceTree = SOURCE_ROOT; };
 		48B813331AADF8DE0019AF77 /* NBPeopleListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPeopleListViewController.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBPeopleListViewController.h; sourceTree = SOURCE_ROOT; };
@@ -1357,7 +1357,7 @@
 		48CB0B0319DCC8DC00F95369 /* libsystem_dnssd.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsystem_dnssd.dylib; path = usr/lib/system/libsystem_dnssd.dylib; sourceTree = SDKROOT; };
 		48CB2C4217E6539000E19C3D /* Target.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Target.png; path = Talk/Images/Other/Target.png; sourceTree = SOURCE_ROOT; };
 		48CB2C4317E6539000E19C3D /* Target@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Target@2x.png"; path = "Talk/Images/Other/Target@2x.png"; sourceTree = SOURCE_ROOT; };
-		48CB2C4917E6DB7700E19C3D /* ContactsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ContactsTab@2x.png"; sourceTree = "<group>"; };
+		48CB2C4917E6DB7700E19C3D /* NBPeopleListTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NBPeopleListTab@2x.png"; sourceTree = "<group>"; };
 		48D0A6E51654D65200FA2D98 /* SipConfig.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SipConfig.cfg; path = Resources/SipConfig.cfg; sourceTree = "<group>"; };
 		48D0A6E91654D66200FA2D98 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		48D0A6F31654D6D700FA2D98 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
@@ -1521,8 +1521,6 @@
 				48B813201AADF7830019AF77 /* NBAddUnknownContactDelegate.h */,
 				48B8132A1AADF7CC0019AF77 /* NBRecentsListViewController.h */,
 				48B8132B1AADF7CC0019AF77 /* NBRecentsListViewController.m */,
-				48B8132C1AADF7CC0019AF77 /* NBRecentsNavigationController.h */,
-				48B8132D1AADF7CC0019AF77 /* NBRecentsNavigationController.m */,
 			);
 			name = Recents;
 			sourceTree = "<group>";
@@ -1756,7 +1754,7 @@
 			children = (
 				48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */,
 				480E7A2D1BFDCA7800F655E8 /* AddressesTab@2x.png */,
-				48CB2C4917E6DB7700E19C3D /* ContactsTab@2x.png */,
+				48CB2C4917E6DB7700E19C3D /* NBPeopleListTab@2x.png */,
 				48AF451C1649788A00DFE3D8 /* CreditTab@2x.png */,
 				48AF45201649788A00DFE3D8 /* DestinationsTab@2x.png */,
 				48AF45221649788A00DFE3D8 /* GroupsTab@2x.png */,
@@ -1765,7 +1763,7 @@
 				48AF45261649788A00DFE3D8 /* NumbersTab@2x.png */,
 				48B93877187E1E0E00132535 /* PhonesTab@2x.png */,
 				48172C011C07017800927BC2 /* RatesTab@2x.png */,
-				48AF45281649788A00DFE3D8 /* RecentsTab@2x.png */,
+				48AF45281649788A00DFE3D8 /* NBRecentsListTab@2x.png */,
 				483679F11722F2CF001A02AF /* RecordingsTab@2x.png */,
 				48AF452A1649788A00DFE3D8 /* SettingsTab@2x.png */,
 				48AF452C1649788A00DFE3D8 /* ShareTab@2x.png */,
@@ -1908,6 +1906,8 @@
 				48367A46172552D2001A02AF /* RecordingControlsCell.m */,
 				4849436B17529DE100E1D5C4 /* ShareButton.h */,
 				4849436C17529DE100E1D5C4 /* ShareButton.m */,
+				4822B4281C92EB7C004BD2F5 /* TabBadgeView.h */,
+				4822B4291C92EB7C004BD2F5 /* TabBadgeView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2884,7 +2884,7 @@
 				48C9A2271BF7C9EC00966F80 /* KeypadMainView.xib in Resources */,
 				485F6BD41637270100D61365 /* SO@2x.png in Resources */,
 				485F6BD61637270100D61365 /* SR@2x.png in Resources */,
-				48CB2C4C17E6DB7700E19C3D /* ContactsTab@2x.png in Resources */,
+				48CB2C4C17E6DB7700E19C3D /* NBPeopleListTab@2x.png in Resources */,
 				485F6BD81637270100D61365 /* SS@2x.png in Resources */,
 				485F6BDA1637270100D61365 /* ST@2x.png in Resources */,
 				485F6BDC1637270100D61365 /* SV@2x.png in Resources */,
@@ -2940,7 +2940,7 @@
 				48AF453B1649788A00DFE3D8 /* DestinationsTab@2x.png in Resources */,
 				48AF45431649788A00DFE3D8 /* HelpsTab@2x.png in Resources */,
 				48AF45471649788A00DFE3D8 /* NumbersTab@2x.png in Resources */,
-				48AF454B1649788A00DFE3D8 /* RecentsTab@2x.png in Resources */,
+				48AF454B1649788A00DFE3D8 /* NBRecentsListTab@2x.png in Resources */,
 				48AF454F1649788A00DFE3D8 /* SettingsTab@2x.png in Resources */,
 				48CB2C4417E6539000E19C3D /* Target.png in Resources */,
 				48AF455B1649794B00DFE3D8 /* ShareView.xib in Resources */,
@@ -3006,7 +3006,7 @@
 				48AF453C1649788A00DFE3D8 /* DestinationsTab@2x.png in Resources */,
 				48AF45441649788A00DFE3D8 /* HelpsTab@2x.png in Resources */,
 				48AF45481649788A00DFE3D8 /* NumbersTab@2x.png in Resources */,
-				48AF454C1649788A00DFE3D8 /* RecentsTab@2x.png in Resources */,
+				48AF454C1649788A00DFE3D8 /* NBRecentsListTab@2x.png in Resources */,
 				48AF45501649788A00DFE3D8 /* SettingsTab@2x.png in Resources */,
 				48AF455C1649794B00DFE3D8 /* ShareView.xib in Resources */,
 				485ECBDB1651C3B700364F08 /* BQ@2x.png in Resources */,
@@ -3014,7 +3014,7 @@
 				48D0A6E71654D65200FA2D98 /* SipConfig.cfg in Resources */,
 				48D0A6EB1654D66200FA2D98 /* InfoPlist.strings in Resources */,
 				48EDD2101667652A007B89DA /* ColorCurves.png in Resources */,
-				48CB2C4D17E6DB7700E19C3D /* ContactsTab@2x.png in Resources */,
+				48CB2C4D17E6DB7700E19C3D /* NBPeopleListTab@2x.png in Resources */,
 				48B93873187B647F00132535 /* Licenses.json in Resources */,
 				4888D51D166D1AEE00572566 /* Flip@2x.png in Resources */,
 				4888D521166D1AEE00572566 /* HangupPhone@2x.png in Resources */,
@@ -3161,6 +3161,7 @@
 				48CB0AFF19DB2E1B00F95369 /* WebInterface.m in Sources */,
 				4896D90016EBE613008A2354 /* NumberAreasViewController.m in Sources */,
 				48200D1C16EC89BA0069677E /* NumberType.m in Sources */,
+				4822B42A1C92EB7C004BD2F5 /* TabBadgeView.m in Sources */,
 				48FC30C51C2221360032387E /* ProofType.m in Sources */,
 				48232B721BFC8E5D006D667E /* AddressData.m in Sources */,
 				4830462416EE269D000F9B05 /* NumberAreaViewController.m in Sources */,
@@ -3217,7 +3218,6 @@
 				48B813561AADF9590019AF77 /* NBDateCell.m in Sources */,
 				4814D56719E9660200958E33 /* AFHTTPRequestOperation.m in Sources */,
 				480CE11F193BA7B20020F255 /* NumberRatesViewController.m in Sources */,
-				48B8132F1AADF7CC0019AF77 /* NBRecentsNavigationController.m in Sources */,
 				4814D56919E9660200958E33 /* AFHTTPSessionManager.m in Sources */,
 				48D4FADD1924247A00949894 /* NavigationController.m in Sources */,
 				48793369185C6A5800C08C8C /* PhonesViewController.m in Sources */,

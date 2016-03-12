@@ -12,8 +12,19 @@
 #import "Settings.h"
 #import "Common.h"
 #import "BadgeView.h"
+#import "TabBadgeView.h"
 
 NSString* const BadgeHandlerAddressUpdatesNotification = @"BadgeHandlerAddressUpdatesNotification";
+
+
+@interface BadgeHandler ()
+
+@property (nonatomic, strong) UITabBarController* tabBarController;
+@property (nonatomic, strong) NSArray*            tabBadgeViews;
+@property (nonatomic, strong) NSMapTable*         viewControllerCounts;
+@property (nonatomic, strong) UITableView*        moreTableView;
+
+@end
 
 
 @implementation BadgeHandler
@@ -26,6 +37,12 @@ NSString* const BadgeHandlerAddressUpdatesNotification = @"BadgeHandlerAddressUp
     dispatch_once(&onceToken, ^
     {
         sharedInstance = [[BadgeHandler alloc] init];
+
+        sharedInstance.tabBarController = [AppDelegate appDelegate].tabBarController;
+
+        [sharedInstance createTabBadgeViews];
+        sharedInstance.viewControllerCounts = [NSMapTable mapTableWithKeyOptions:NSMapTableWeakMemory
+                                                                    valueOptions:NSMapTableStrongMemory];
 
         [[NSNotificationCenter defaultCenter] addObserverForName:AppDelegateRemoteNotification
                                                           object:nil
@@ -43,6 +60,53 @@ NSString* const BadgeHandlerAddressUpdatesNotification = @"BadgeHandlerAddressUp
 
     return sharedInstance;
 }
+
+
+- (void)createTabBadgeViews
+{
+    self.tabBadgeViews = @[[[TabBadgeView alloc] init],
+                           [[TabBadgeView alloc] init],
+                           [[TabBadgeView alloc] init],
+                           [[TabBadgeView alloc] init],
+                           [[TabBadgeView alloc] init]];
+
+    CGFloat width = self.tabBarController.view.frame.size.width;
+    for (NSUInteger index = 0; index < self.tabBadgeViews.count; index++)
+    {
+        TabBadgeView* tabBadgeView = self.tabBadgeViews[index];
+        tabBadgeView.frame = CGRectMake(index * (width / 5.0f) + 42.0f,
+                                        3.0f,
+                                        tabBadgeView.frame.size.width,
+                                        tabBadgeView.frame.size.height);
+    }
+}
+
+
+- (void)setBadgeCount:(NSUInteger)count forViewController:(UIViewController*)viewController
+{
+    [self.viewControllerCounts setObject:@(count) forKey:viewController];
+
+    if ([self isOnMoreViewController:viewController])
+    {
+        [self.moreTableView reloadData];
+    }
+    else
+    {
+        NSUInteger index = [self.tabBarController.viewControllers indexOfObject:viewController.navigationController];
+
+        TabBadgeView* tabBadgeView = self.tabBadgeViews[index];
+        if (count == 0)
+        {
+            [tabBadgeView removeFromSuperview];
+        }
+        else
+        {
+            [self.tabBarController.tabBar addSubview:tabBadgeView];
+            tabBadgeView.count = count;
+        }
+    }
+}
+
 
 
 - (void)processAddressUpdatesNotificationArray:(NSArray*)array
@@ -108,6 +172,8 @@ NSString* const BadgeHandlerAddressUpdatesNotification = @"BadgeHandlerAddressUp
 
 - (void)updateMoreBadgeCount
 {
+    return;//######
+
     // Determine the total count of all tabs on More with a badge count.
     NSUInteger count = 0;
 
@@ -129,7 +195,7 @@ NSString* const BadgeHandlerAddressUpdatesNotification = @"BadgeHandlerAddressUp
     }
 
     UITableView* tableView;
-    tableView = (UITableView*)[AppDelegate appDelegate].tabBarController.moreNavigationController.topViewController.view;
+    tableView = (UITableView*)self.tabBarController.moreNavigationController.topViewController.view;
     [tableView reloadData];
 
     // Force view controllers with a badge to load.
@@ -163,9 +229,9 @@ NSString* const BadgeHandlerAddressUpdatesNotification = @"BadgeHandlerAddressUp
     //
     // By iterating all tab bar view controllers, we can still find the original navigation
     // controller and with that the tabBarItem; we simply search for the one with no children.
-    if (viewController.navigationController == [AppDelegate appDelegate].tabBarController.moreNavigationController)
+    if (viewController.navigationController == self.tabBarController.moreNavigationController)
     {
-        for (UINavigationController* navigationController in [AppDelegate appDelegate].tabBarController.viewControllers)
+        for (UINavigationController* navigationController in self.tabBarController.viewControllers)
         {
             if (navigationController.childViewControllers.count == 0)
             {
@@ -186,7 +252,7 @@ NSString* const BadgeHandlerAddressUpdatesNotification = @"BadgeHandlerAddressUp
 
 - (UITabBarItem*)moreTabBarItem
 {
-    return [AppDelegate appDelegate].tabBarController.tabBar.items[4];
+    return self.tabBarController.tabBar.items[4];
 }
 
 
@@ -194,7 +260,7 @@ NSString* const BadgeHandlerAddressUpdatesNotification = @"BadgeHandlerAddressUp
 {
     NSUInteger index;
 
-    index = [[AppDelegate appDelegate].tabBarController.viewControllers indexOfObject:viewController.parentViewController];
+    index = [self.tabBarController.viewControllers indexOfObject:viewController.parentViewController];
 
     return (index > 4) || (index == NSNotFound); // NSNotFound occurs if view controller is on More and is visible.
 }
@@ -217,16 +283,17 @@ NSString* const BadgeHandlerAddressUpdatesNotification = @"BadgeHandlerAddressUp
 
 - (void)replaceMoreTableDataSource
 {
-    UINavigationController* navigationController = [AppDelegate appDelegate].tabBarController.moreNavigationController;
+    UINavigationController* navigationController = self.tabBarController.moreNavigationController;
     UIViewController*       listViewController   = navigationController.viewControllers[0];
 
-    UITableView* moreTableView = (UITableView*)listViewController.view;
+    self.moreTableView = (UITableView*)listViewController.view;
 
-    self.moreTableDataSource = moreTableView.dataSource;
-    moreTableView.dataSource = self;
+    self.moreTableDataSource = self.moreTableView.dataSource;
+    self.moreTableView.dataSource = self;
 
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [moreTableView reloadData];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    {
+        [self.moreTableView reloadData];
     });
 }
 
@@ -244,9 +311,9 @@ NSString* const BadgeHandlerAddressUpdatesNotification = @"BadgeHandlerAddressUp
 }
 
 
+// Silence the compiler.
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // this is just to quiet the compiler
     return [self.moreTableDataSource tableView:tableView numberOfRowsInSection:section];
 }
 
@@ -264,6 +331,12 @@ NSString* const BadgeHandlerAddressUpdatesNotification = @"BadgeHandlerAddressUp
     }
 
     return cell;
+}
+
+
+- (NSUInteger)moreIndexOfViewController:(UIViewController*)viewController
+{
+//    if ([self isOnMoreViewController:])
 }
 
 @end

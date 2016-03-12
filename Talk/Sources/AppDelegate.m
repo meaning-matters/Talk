@@ -23,7 +23,6 @@
 #import "Common.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
-#import "NBPeopleListViewController.h"
 #import "WebClient.h"
 #import "WebInterface.h"
 #import "NavigationController.h"
@@ -137,6 +136,14 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 
     [[BadgeHandler sharedHandler] update];
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                   {
+                       [[BadgeHandler sharedHandler] setBadgeCount:2 forViewController:self.keypadViewController];
+                       [[BadgeHandler sharedHandler] setBadgeCount:2 forViewController:self.creditViewController];
+                       [[BadgeHandler sharedHandler] setBadgeCount:2 forViewController:self.nBPeopleListViewController];
+                   });
+    
 
     return YES;
 }
@@ -270,19 +277,19 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
 - (void)addViewControllersToTabBar
 {
-    // The order in this aryay defines the default tabs order.
+    // The order in this array defines the default tabs order.
     NSArray* tabBarClassNames =
     @[
-        NSStringFromClass([CreditViewController               class]),
-        NSStringFromClass([NBRecentsNavigationController      class]),
-        NSStringFromClass([NBPeoplePickerNavigationController class]),
-        NSStringFromClass([KeypadViewController               class]),
-        NSStringFromClass([PhonesViewController               class]),
-        NSStringFromClass([NumbersViewController              class]),
-        NSStringFromClass([DestinationsViewController         class]),
-        NSStringFromClass([SettingsViewController             class]),
-        NSStringFromClass([HelpsViewController                class]),
-        NSStringFromClass([AboutViewController                class]),
+        NSStringFromClass([CreditViewController        class]),
+        NSStringFromClass([NBRecentsListViewController class]),
+        NSStringFromClass([NBPeopleListViewController  class]),
+        NSStringFromClass([KeypadViewController        class]),
+        NSStringFromClass([PhonesViewController        class]),
+        NSStringFromClass([NumbersViewController       class]),
+        NSStringFromClass([DestinationsViewController  class]),
+        NSStringFromClass([SettingsViewController      class]),
+        NSStringFromClass([HelpsViewController         class]),
+        NSStringFromClass([AboutViewController         class]),
     ];
 
     NSSet* preferredSet = [NSSet setWithArray:[Settings sharedSettings].tabBarClassNames];
@@ -299,36 +306,25 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
         [Settings sharedSettings].tabBarClassNames = tabBarClassNames;
     }
 
+    // In the loop below, the automatic creation of the view controllers takes
+    // place, including the creation of the navigation controllers in which each
+    // view controller is embedded.
     NSMutableArray* viewControllers = [NSMutableArray array];
     for (NSString* className in tabBarClassNames)
     {
-        UIViewController* viewController = [[NSClassFromString(className) alloc] init];
+        UIViewController*       viewController = [[NSClassFromString(className) alloc] init];
+        UINavigationController* navigationController;
 
-        if ([className isEqualToString:NSStringFromClass([NBPeoplePickerNavigationController class])])
-        {
-            [viewControllers addObject:viewController];
-            [self setPeoplePickerViewController:[viewControllers lastObject]];
-        }
-        else if ([className isEqualToString:NSStringFromClass([NBRecentsNavigationController class])])
-        {
-            [viewControllers addObject:viewController];
-            [self setRecentsViewController:[viewControllers lastObject]];
-        }
-        else
-        {
-            UINavigationController* navigationController;
+        // NavigationController is workaround a nasty iOS bug: http://stackoverflow.com/a/23666520/1971013
+        navigationController = [[NavigationController alloc] initWithRootViewController:viewController];
+        [viewControllers addObject:navigationController];
 
-            // NavigationController is workaround a nasty iOS bug: http://stackoverflow.com/a/23666520/1971013
-            navigationController = [[NavigationController alloc] initWithRootViewController:viewController];
-            [viewControllers addObject:navigationController];
-
-            // Set appropriate AppDelegate property.
-            SEL selector = NSSelectorFromString([@"set" stringByAppendingFormat:@"%@:", className]);
+        // Set appropriate AppDelegate property.
+        SEL selector = NSSelectorFromString([@"set" stringByAppendingFormat:@"%@:", className]);
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            [self performSelector:selector withObject:[[viewControllers lastObject] topViewController]];
+        [self performSelector:selector withObject:[[viewControllers lastObject] topViewController]];
 #pragma clang diagnostic pop
-        }
     }
 
     self.tabBarController.viewControllers = viewControllers;
@@ -378,7 +374,7 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
         for (UINavigationController* navigationController in self.tabBarController.viewControllers)
         {
             UIViewController* viewController = navigationController.topViewController;
-            [classNames addObject:[self classNameFromViewController:viewController]];
+            [classNames addObject:NSStringFromClass([viewController class])];
         }
 
         [Settings sharedSettings].tabBarClassNames = classNames;
@@ -414,7 +410,7 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     }
     else
     {
-        NSString*  className = [self classNameFromViewController:viewController];
+        NSString*  className = NSStringFromClass([viewController class]);
         NSUInteger index     = [[Settings sharedSettings].tabBarClassNames indexOfObject:className];
 
         // When NSNotFound or when count != 2, we are a level deeper; but we only remember top level choice.
@@ -422,25 +418,6 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
         {
             [Settings sharedSettings].tabBarSelectedIndex = index;
         }
-    }
-}
-
-
-- (NSString*)classNameFromViewController:(UIViewController*)viewController
-{
-    NSString* className = NSStringFromClass([viewController class]);
-
-    if ([className isEqualToString:@"NBPeopleListViewController"])
-    {
-        return @"NBPeoplePickerNavigationController";
-    }
-    else if ([className isEqualToString:@"NBRecentsListViewController"])
-    {
-        return @"NBRecentsNavigationController";
-    }
-    else
-    {
-        return className;
     }
 }
 
@@ -783,9 +760,7 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
 - (void)findContactsHavingNumber:(NSString*)number completion:(void(^)(NSArray* contactIds))completion
 {
-    NBPeopleListViewController* viewController = [self.peoplePickerViewController listViewController];
-
-    return [viewController findContactsHavingNumber:number completion:completion];
+    return [self.nBPeopleListViewController findContactsHavingNumber:number completion:completion];
 }
 
 
@@ -805,9 +780,7 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
 - (NSString*)contactNameForId:(NSString*)contactId
 {
-    NBPeopleListViewController* viewController = [self.peoplePickerViewController listViewController];
-
-    NSString* contactName = [viewController contactNameForId:contactId];
+    NSString* contactName = [self.nBPeopleListViewController contactNameForId:contactId];
     
     if (contactName == nil)
     {
