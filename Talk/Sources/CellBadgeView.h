@@ -1,5 +1,5 @@
 //
-//  BadgeView.h
+//  CellBadgeView.h
 //  Talk
 //
 //  Created by Cornelis van der Bent on 04/03/16.
@@ -9,14 +9,10 @@
 #import <UIKit/UIKit.h>
 
 
-@interface BadgeView : UIView
+@interface CellBadgeView : UIView
 
 @property (nonatomic, assign) NSUInteger count;
 
-- (instancetype)init;
-
-- (void)addToCell:(UITableViewCell*)cell;
-
-+ (BadgeView*)getFromCell:(UITableViewCell*)cell;
++ (void)addToCell:(UITableViewCell*)cell count:(NSUInteger)count;
 
 @end

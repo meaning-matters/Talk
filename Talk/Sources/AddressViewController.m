@@ -26,7 +26,7 @@
 #import "Salutation.h"
 #import "ProofType.h"
 #import "ImagePicker.h"
-#import "BadgeHandler.h"
+#import "AddressUpdatesHandler.h"
 
 typedef NS_ENUM(NSUInteger, TableSections)
 {
@@ -262,7 +262,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 {
     [super viewDidAppear:animated];
 
-    [[BadgeHandler sharedHandler] removeAddressUpdate:self.address.addressId];
+    [[AddressUpdatesHandler sharedHandler] removeAddressUpdate:self.address.addressId];
 }
 
 

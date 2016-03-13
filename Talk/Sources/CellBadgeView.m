@@ -1,19 +1,20 @@
 //
-//  BadgeView.m
+//  CellBadgeView.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 04/03/16.
 //  Copyright © 2016 NumberBay Ltd. All rights reserved.
 //
 
-#import "BadgeView.h"
+#import "CellBadgeView.h"
 #import "Skinning.h"
 
-const CGFloat kWidth  = 30.0f;
-const CGFloat kHeight = 20.0f;
+const CGFloat kWidth   =  30.0f;
+const CGFloat kHeight  =  20.0f;
+const CGFloat kXOffset = 255.0f;
 
 
-@interface BadgeView ()
+@interface CellBadgeView ()
 
 @property (nonatomic, strong) UILabel* label;
 @property (nonatomic, assign) BOOL     isSettingBackgroundColor;
@@ -21,7 +22,7 @@ const CGFloat kHeight = 20.0f;
 @end
 
 
-@implementation BadgeView
+@implementation CellBadgeView
 
 @synthesize count = _count;
 
@@ -35,7 +36,7 @@ const CGFloat kHeight = 20.0f;
         self.layer.cornerRadius       = kHeight / 2.0f;
         self.userInteractionEnabled   = NO;  // Let touch events through to tab bar
 
-        self.label = [[UILabel alloc] initWithFrame:self.frame];
+        self.label = [[UILabel alloc] initWithFrame:self.bounds];
         self.label.textAlignment = NSTextAlignmentCenter;
         self.label.font          = [UIFont boldSystemFontOfSize:17.0f];
         self.label.textColor     = [UIColor whiteColor];
@@ -50,18 +51,26 @@ const CGFloat kHeight = 20.0f;
 }
 
 
-- (void)addToCell:(UITableViewCell*)cell
++ (void)addToCell:(UITableViewCell*)cell count:(NSUInteger)count
 {
-    [cell.contentView addSubview:self];
+    CellBadgeView* badgeView = [CellBadgeView getFromCell:cell];
 
-    self.frame = CGRectMake(241.0f, (cell.contentView.frame.size.height - kHeight) / 2.0f,
-                            self.frame.size.width, self.frame.size.height);
+    if (badgeView == nil)
+    {
+        badgeView = [[CellBadgeView alloc] init];
+        badgeView.frame = CGRectMake(kXOffset, (cell.contentView.frame.size.height - kHeight) / 2.0f, kWidth, kHeight);
+        [cell.contentView addSubview:badgeView];
+    }
+
+    [cell.contentView bringSubviewToFront:badgeView];
+
+    badgeView.count = count;
 }
 
 
-+ (BadgeView*)getFromCell:(UITableViewCell*)cell
++ (CellBadgeView*)getFromCell:(UITableViewCell*)cell
 {
-    BadgeView* subview = [cell.contentView.subviews firstObject];
+    CellBadgeView* subview = [cell.contentView.subviews firstObject];
 
     return [subview isKindOfClass:[self class]] ? subview : nil;
 }

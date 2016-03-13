@@ -15,7 +15,7 @@
 #import "WebClient.h"
 #import "Salutation.h"
 #import "DotView.h"
-#import "BadgeHandler.h"
+#import "AddressUpdatesHandler.h"
 
 
 @interface AddressesViewController ()
@@ -82,7 +82,7 @@
         self.completion           = completion;
 
         __weak typeof(self) weakSelf = self;
-        self.observer = [[NSNotificationCenter defaultCenter] addObserverForName:BadgeHandlerAddressUpdatesNotification
+        self.observer = [[NSNotificationCenter defaultCenter] addObserverForName:AddressUpdatesNotification
                                                                           object:nil
                                                                            queue:[NSOperationQueue mainQueue]
                                                                       usingBlock:^(NSNotification* note)
@@ -567,7 +567,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     }
 
     DotView* dotView = [DotView getFromCell:cell];
-    dotView.hidden = ([BadgeHandler sharedHandler].addressUpdates[address.addressId] == nil);
+    dotView.hidden = ([[AddressUpdatesHandler sharedHandler] addressUpdates][address.addressId] == nil);
 }
 
 

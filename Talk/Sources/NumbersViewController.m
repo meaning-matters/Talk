@@ -20,7 +20,8 @@
 #import "Strings.h"
 #import "Common.h"
 #import "BadgeHandler.h"
-#import "BadgeView.h"
+#import "AddressUpdatesHandler.h"
+#import "CellBadgeView.h"
 
 typedef NS_ENUM(NSUInteger, TableSections)
 {
@@ -53,7 +54,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
         self.sections |= TableSectionAddresses;
 
         __weak typeof(self) weakSelf = self;
-        self.observer = [[NSNotificationCenter defaultCenter] addObserverForName:BadgeHandlerAddressUpdatesNotification
+        self.observer = [[NSNotificationCenter defaultCenter] addObserverForName:AddressUpdatesNotification
                                                                           object:nil
                                                                            queue:[NSOperationQueue mainQueue]
                                                                       usingBlock:^(NSNotification* note)
@@ -69,9 +70,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (void)updateBadgeValue
 {
-    NSUInteger count = [[BadgeHandler sharedHandler] addressUpdatesCount];
-    UITabBarItem* tabBarItem = [[BadgeHandler sharedHandler] tabBarItemForViewController:self];
-    tabBarItem.badgeValue = (count > 0) ? [NSString stringWithFormat:@"%d", (int)count] : nil;
+    NSUInteger count = [[AddressUpdatesHandler sharedHandler] addressUpdatesCount];
+    [[BadgeHandler sharedHandler] setBadgeCount:count forViewController:self];
 }
 
 
@@ -246,23 +246,15 @@ typedef NS_ENUM(NSUInteger, TableSections)
         }
         case TableSectionAddresses:
         {
-            BadgeView* badgeView;
-
             cell = [self.tableView dequeueReusableCellWithIdentifier:@"AddressesCell"];
             if (cell == nil)
             {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"AddressesCell"];
-                badgeView = [[BadgeView alloc] init];
-                [badgeView addToCell:cell];
-            }
-            else
-            {
-                badgeView = [BadgeView getFromCell:cell];
             }
 
             cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.text = [Strings addressesString];
-            badgeView.count = [BadgeHandler sharedHandler].addressUpdatesCount;
+            [CellBadgeView addToCell:cell count:[AddressUpdatesHandler sharedHandler].addressUpdatesCount];
 
             [Common setImageNamed:@"AddressesTab" ofCell:cell];
             break;

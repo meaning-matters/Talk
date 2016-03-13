@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString* const BadgeHandlerAddressUpdatesNotification;
-
 
 @interface BadgeHandler : NSObject <UITableViewDataSource>
 
@@ -19,14 +17,6 @@ extern NSString* const BadgeHandlerAddressUpdatesNotification;
 
 - (void)setBadgeCount:(NSUInteger)count forViewController:(UIViewController*)viewController;
 
-- (NSDictionary*)addressUpdates;
-
-- (NSUInteger)addressUpdatesCount;
-
-- (void)removeAddressUpdate:(NSString*)addressId;
-
 - (void)update;
-
-- (UITabBarItem*)tabBarItemForViewController:(UIViewController*)viewController;
 
 @end

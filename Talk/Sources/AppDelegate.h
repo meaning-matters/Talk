@@ -32,6 +32,7 @@ extern NSString* const AppDelegateRemoteNotification;
 
 @property (nonatomic, strong) UIWindow*                    window;
 @property (nonatomic, strong) UITabBarController*          tabBarController;
+@property (nonatomic, strong) NSArray*                     viewControllers; // Array with the app's view controllers.
 
 @property (nonatomic, strong) NSString*                    deviceToken;
 

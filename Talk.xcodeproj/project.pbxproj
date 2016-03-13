@@ -65,7 +65,8 @@
 		48200D1C16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
 		48200D1D16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
 		4822B42A1C92EB7C004BD2F5 /* TabBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4822B4291C92EB7C004BD2F5 /* TabBadgeView.m */; };
-		4823019C1C897E7000ECD32E /* BadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4823019B1C897E7000ECD32E /* BadgeView.m */; };
+		4822B4321C9615FB004BD2F5 /* AddressUpdatesHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 4822B4311C9615FB004BD2F5 /* AddressUpdatesHandler.m */; };
+		4823019C1C897E7000ECD32E /* CellBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4823019B1C897E7000ECD32E /* CellBadgeView.m */; };
 		48232B721BFC8E5D006D667E /* AddressData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48232B701BFC8E5D006D667E /* AddressData.m */; };
 		48251B9B187F4A8A00E69C3A /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48251B9A187F4A8A00E69C3A /* SettingsViewController.m */; };
 		48251B9C187F4A8A00E69C3A /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48251B9A187F4A8A00E69C3A /* SettingsViewController.m */; };
@@ -755,8 +756,10 @@
 		48200D1B16EC89BA0069677E /* NumberType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberType.m; sourceTree = "<group>"; };
 		4822B4281C92EB7C004BD2F5 /* TabBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBadgeView.h; sourceTree = "<group>"; };
 		4822B4291C92EB7C004BD2F5 /* TabBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBadgeView.m; sourceTree = "<group>"; };
-		4823019A1C897E7000ECD32E /* BadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeView.h; sourceTree = "<group>"; };
-		4823019B1C897E7000ECD32E /* BadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeView.m; sourceTree = "<group>"; };
+		4822B4301C9615FB004BD2F5 /* AddressUpdatesHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressUpdatesHandler.h; sourceTree = "<group>"; };
+		4822B4311C9615FB004BD2F5 /* AddressUpdatesHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressUpdatesHandler.m; sourceTree = "<group>"; };
+		4823019A1C897E7000ECD32E /* CellBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellBadgeView.h; sourceTree = "<group>"; };
+		4823019B1C897E7000ECD32E /* CellBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellBadgeView.m; sourceTree = "<group>"; };
 		48232B611BFBC70B006D667E /* Data2.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data2.1.xcdatamodel; sourceTree = "<group>"; };
 		48232B6F1BFC8E5D006D667E /* AddressData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressData.h; sourceTree = "<group>"; };
 		48232B701BFC8E5D006D667E /* AddressData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressData.m; sourceTree = "<group>"; };
@@ -1721,6 +1724,8 @@
 				48D0A6F31654D6D700FA2D98 /* main.mm */,
 				48338F9F16170CA80033F4C1 /* AppDelegate.h */,
 				48338FA016170CA80033F4C1 /* AppDelegate.m */,
+				4822B4301C9615FB004BD2F5 /* AddressUpdatesHandler.h */,
+				4822B4311C9615FB004BD2F5 /* AddressUpdatesHandler.m */,
 				488763F41C8893B300527723 /* BadgeHandler.h */,
 				488763F51C8893B300527723 /* BadgeHandler.m */,
 				48FE4F511C87525000CC0873 /* Calling */,
@@ -1884,8 +1889,8 @@
 		485ECBDF16525D1600364F08 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				4823019A1C897E7000ECD32E /* BadgeView.h */,
-				4823019B1C897E7000ECD32E /* BadgeView.m */,
+				4823019A1C897E7000ECD32E /* CellBadgeView.h */,
+				4823019B1C897E7000ECD32E /* CellBadgeView.m */,
 				48A261C216FDE32400007638 /* CallStateView.h */,
 				48A261C316FDE32400007638 /* CallStateView.m */,
 				4814EA3C17CB1923004B7A3C /* CreditAmountCell.h */,
@@ -3207,6 +3212,7 @@
 				4816A0A01BF129A300817ED7 /* DataManager.m in Sources */,
 				48B8136C1AADF9B20019AF77 /* NBPersonCellAddressInfo.m in Sources */,
 				48A26DDC18BA7FB200736CCB /* SearchTableViewController.m in Sources */,
+				4822B4321C9615FB004BD2F5 /* AddressUpdatesHandler.m in Sources */,
 				4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */,
 				480176671C5821DF00902197 /* UITableViewController+Common.m in Sources */,
 				484943AD1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
@@ -3230,7 +3236,7 @@
 				4877EDBC17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */,
 				485E38A017B7E13C0089F0F1 /* HtmlViewController.m in Sources */,
 				485E38A717C0B7F30089F0F1 /* NumberAreaSalutationsViewController.m in Sources */,
-				4823019C1C897E7000ECD32E /* BadgeView.m in Sources */,
+				4823019C1C897E7000ECD32E /* CellBadgeView.m in Sources */,
 				4814EA3717CA993F004B7A3C /* CreditBuyCell.m in Sources */,
 				4814EA3E17CB1924004B7A3C /* CreditAmountCell.m in Sources */,
 				48C1D3C517D31309004F910D /* ProofImageViewController.m in Sources */,

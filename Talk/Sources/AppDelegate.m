@@ -137,14 +137,6 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
     [[BadgeHandler sharedHandler] update];
 
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                   {
-                       [[BadgeHandler sharedHandler] setBadgeCount:2 forViewController:self.keypadViewController];
-                       [[BadgeHandler sharedHandler] setBadgeCount:2 forViewController:self.creditViewController];
-                       [[BadgeHandler sharedHandler] setBadgeCount:2 forViewController:self.nBPeopleListViewController];
-                   });
-    
-
     return YES;
 }
 
@@ -309,7 +301,8 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     // In the loop below, the automatic creation of the view controllers takes
     // place, including the creation of the navigation controllers in which each
     // view controller is embedded.
-    NSMutableArray* viewControllers = [NSMutableArray array];
+    NSMutableArray* viewControllers       = [NSMutableArray array];
+    NSMutableArray* navigationControllers = [NSMutableArray array];
     for (NSString* className in tabBarClassNames)
     {
         UIViewController*       viewController = [[NSClassFromString(className) alloc] init];
@@ -317,30 +310,32 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
         // NavigationController is workaround a nasty iOS bug: http://stackoverflow.com/a/23666520/1971013
         navigationController = [[NavigationController alloc] initWithRootViewController:viewController];
-        [viewControllers addObject:navigationController];
+        [navigationControllers addObject:navigationController];
+        [viewControllers       addObject:viewController];
 
         // Set appropriate AppDelegate property.
         SEL selector = NSSelectorFromString([@"set" stringByAppendingFormat:@"%@:", className]);
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        [self performSelector:selector withObject:[[viewControllers lastObject] topViewController]];
+        [self performSelector:selector withObject:[[navigationControllers lastObject] topViewController]];
 #pragma clang diagnostic pop
     }
 
-    self.tabBarController.viewControllers = viewControllers;
+    self.viewControllers = [viewControllers copy];
+    self.tabBarController.viewControllers = navigationControllers;
     if ([Settings sharedSettings].tabBarSelectedIndex == NSNotFound)
     {
         self.tabBarController.selectedViewController = self.tabBarController.moreNavigationController;
     }
     else
     {
-        if ([Settings sharedSettings].tabBarSelectedIndex >= viewControllers.count)
+        if ([Settings sharedSettings].tabBarSelectedIndex >= navigationControllers.count)
         {
             // We may get here if the number of tabs has becomes less.
             [Settings sharedSettings].tabBarSelectedIndex = 2;
         }
         
-        self.tabBarController.selectedViewController = viewControllers[[Settings sharedSettings].tabBarSelectedIndex];
+        self.tabBarController.selectedViewController = navigationControllers[[Settings sharedSettings].tabBarSelectedIndex];
     }
 
     self.tabBarController.moreNavigationController.delegate = self;
