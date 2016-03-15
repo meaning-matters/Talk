@@ -1498,15 +1498,6 @@
             {
                 NSString * phoneNumber = [((NBPersonCellInfo*)[[personStructureManager.tableStructure objectAtIndex:CC_NUMBER] objectAtIndex:indexPath.row]) textValue];
                 [NBContact makePhoneCall:phoneNumber withContactID:[self contactId]];
-
-                if ([self isKindOfClass:[NBRecentContactViewController class]])
-                {
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)),
-                                   dispatch_get_main_queue(), ^
-                    {
-                        [self.navigationController popToRootViewControllerAnimated:NO];
-                    });
-                }
                 break;
             }
             case CC_EMAIL:
