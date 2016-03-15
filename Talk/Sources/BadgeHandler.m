@@ -224,12 +224,15 @@
     // is now pointing to the tab bar's `moreNavigationController`.
     //
     // By iterating all tab bar view controllers, we can still find the original navigation
-    // controller; it's the one that has `moreNavigationController` as navigation controller.
+    // controller; it's the one that has `moreNavigationController` as navigation controller;
+    // this is when the user tapped that More list cell.  Alternatively, the view controller's
+    // navigation controller is nil when the user pops back to the More list.
     if (navigationController.viewControllers.count == 0)
     {
         for (viewController in [AppDelegate appDelegate].viewControllers)
         {
-            if (viewController.navigationController == self.tabBarController.moreNavigationController)
+            if (viewController.navigationController == self.tabBarController.moreNavigationController ||
+                viewController.navigationController == nil)
             {
                 break;
             }

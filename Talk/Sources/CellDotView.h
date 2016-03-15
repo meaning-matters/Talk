@@ -1,5 +1,5 @@
 //
-//  DotView.h
+//  CellDotView.h
 //  Talk
 //
 //  Created by Cornelis van der Bent on 04/03/16.
@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 
 
-@interface DotView : UIView
+@interface CellDotView : UIView
 
 - (instancetype)init;
 
 - (void)addToCell:(UITableViewCell*)cell;
 
-+ (DotView*)getFromCell:(UITableViewCell*)cell;
++ (CellDotView*)getFromCell:(UITableViewCell*)cell;
 
 @end

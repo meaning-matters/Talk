@@ -9,9 +9,10 @@
 #import "CellBadgeView.h"
 #import "Skinning.h"
 
-const CGFloat kWidth   =  30.0f;
-const CGFloat kHeight  =  20.0f;
-const CGFloat kXOffset = 255.0f;
+const CGFloat   kWidth        =  30.0f;
+const CGFloat   kHeight       =  20.0f;
+const CGFloat   kXOffset      = 255.0f;
+const NSInteger kCellBadgeTag = 777;
 
 
 @interface CellBadgeView ()
@@ -30,6 +31,8 @@ const CGFloat kXOffset = 255.0f;
 {
     if (self = [super initWithFrame:CGRectMake(0.0f, 0.0f, kWidth, kHeight)])
     {
+        self.tag = kCellBadgeTag;
+
         self.isSettingBackgroundColor = YES;
         self.backgroundColor          = [Skinning cellBadgeColor];
         self.isSettingBackgroundColor = NO;
@@ -70,7 +73,7 @@ const CGFloat kXOffset = 255.0f;
 
 + (CellBadgeView*)getFromCell:(UITableViewCell*)cell
 {
-    CellBadgeView* subview = [cell.contentView.subviews firstObject];
+    CellBadgeView* subview = [cell.contentView viewWithTag:kCellBadgeTag];
 
     return [subview isKindOfClass:[self class]] ? subview : nil;
 }

@@ -14,7 +14,7 @@
 #import "Common.h"
 #import "WebClient.h"
 #import "Salutation.h"
-#import "DotView.h"
+#import "CellDotView.h"
 #import "AddressUpdatesHandler.h"
 
 
@@ -439,7 +439,7 @@
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SubtitleCell"];
-        DotView* dotView = [[DotView alloc] init];
+        CellDotView* dotView = [[CellDotView alloc] init];
         [dotView addToCell:cell];
     }
     
@@ -566,7 +566,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
 
-    DotView* dotView = [DotView getFromCell:cell];
+    CellDotView* dotView = [CellDotView getFromCell:cell];
     dotView.hidden = ([[AddressUpdatesHandler sharedHandler] addressUpdates][address.addressId] == nil);
 }
 

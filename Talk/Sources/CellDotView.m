@@ -1,34 +1,37 @@
 //
-//  DotView.m
+//  CellDotView.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 04/03/16.
 //  Copyright © 2016 NumberBay Ltd. All rights reserved.
 //
 
-#import "DotView.h"
+#import "CellDotView.h"
 #import "Skinning.h"
 
-const CGFloat kDiameter = 6.0f;
+const CGFloat   kDiameter       = 10.0f;
+const NSInteger kCellDotViewTag = 123;
 
 
-@interface DotView ()
+@interface CellDotView ()
 
 @property (nonatomic, assign) BOOL isSettingBackgroundColor;
 
 @end
 
 
-@implementation DotView
+@implementation CellDotView
 
 - (instancetype)init
 {
     if (self = [super initWithFrame:CGRectMake(0.0f, 0.0f, kDiameter, kDiameter)])
     {
+        self.tag = kCellDotViewTag;
+
         self.isSettingBackgroundColor = YES;
-        self.backgroundColor    = [Skinning tintColor];
+        self.backgroundColor          = [Skinning cellBadgeColor];
         self.isSettingBackgroundColor = NO;
-        self.layer.cornerRadius = self.frame.size.height / 2.0f;
+        self.layer.cornerRadius       = self.frame.size.height / 2.0f;
     }
 
     return self;
@@ -39,14 +42,14 @@ const CGFloat kDiameter = 6.0f;
 {
     [cell.contentView addSubview:self];
 
-    self.frame = CGRectMake(5.0f, (cell.contentView.frame.size.height - kDiameter) / 2.0f,
+    self.frame = CGRectMake(3.0f, (cell.contentView.frame.size.height - kDiameter) / 2.0f,
                             self.frame.size.width, self.frame.size.height);
 }
 
 
-+ (DotView*)getFromCell:(UITableViewCell*)cell
++ (CellDotView*)getFromCell:(UITableViewCell*)cell
 {
-    DotView* subview = [cell.contentView.subviews firstObject];
+    CellDotView* subview = [cell.contentView viewWithTag:kCellDotViewTag];
 
     return [subview isKindOfClass:[self class]] ? subview : nil;
 }
