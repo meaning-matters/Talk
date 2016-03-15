@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSArray*            tabBadgeViews;
 @property (nonatomic, strong) NSMapTable*         viewControllerCounts;
 @property (nonatomic, strong) UITableView*        moreTableView;
+@property (nonatomic, assign) BOOL                isHidingBadges;
 
 @end
 
@@ -86,6 +87,11 @@
 
 - (void)setBadgeCount:(NSUInteger)count atIndex:(NSUInteger)index
 {
+    if (self.isHidingBadges)
+    {
+        return;
+    }
+
     TabBadgeView* tabBadgeView = self.tabBadgeViews[index];
     if (count == 0)
     {
@@ -103,6 +109,25 @@
 {
     [self updateMoreBadgeCount];
     [self updateAppBadgeCount];
+}
+
+
+- (void)hideBadges
+{
+    for (NSUInteger index = 0; index <= 4; index++)
+    {
+        [self setBadgeCount:0 atIndex:index];
+    }
+
+    self.isHidingBadges = YES;
+}
+
+
+- (void)showBadges
+{
+    self.isHidingBadges = NO;
+
+    [self update];
 }
 
 

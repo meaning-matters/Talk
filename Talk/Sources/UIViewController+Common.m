@@ -120,6 +120,10 @@
 
 - (void)viewWillLayoutSubviewsSwizzled
 {
+    NSLog(@"################################################################# CODE BELOW CAN BE DELETED ELSEWHERE???");
+    //#### And delete custom spinners and isLoading stuff from VCs.
+
+
     [self viewWillLayoutSubviewsSwizzled];
 
     if (self.activityIndicator != nil && self.hasCenteredActivityIndicator == NO)

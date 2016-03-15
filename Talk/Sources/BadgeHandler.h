@@ -19,4 +19,8 @@
 
 - (void)update;
 
+- (void)hideBadges; // Used when editing More.
+
+- (void)showBadges; // Used when editing More.
+
 @end

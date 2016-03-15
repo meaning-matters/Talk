@@ -346,6 +346,8 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 {
     AnalysticsTrace(@"willBeginCustomizingViewControllers");
 
+    [[BadgeHandler sharedHandler] hideBadges];
+
     id customizeView = [[tabBarController view] subviews][1];
     if ([customizeView isKindOfClass:NSClassFromString(@"UITabBarCustomizeView")] == YES)
     {
@@ -362,6 +364,8 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
                  changed:(BOOL)changed
 {
     AnalysticsTrace(@"willEndCustomizingViewControllers");
+
+    [[BadgeHandler sharedHandler] showBadges];
 
     if (changed)
     {
