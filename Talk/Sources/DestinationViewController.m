@@ -216,7 +216,6 @@ typedef enum
 {
     self.destination.name = self.name;
     action[@"call"][@"e164s"][0] = phone.e164;
-    self.destination.action = [Common jsonStringWithObject:action];
 
     self.navigationItem.rightBarButtonItem.enabled = NO;
 
@@ -226,7 +225,8 @@ typedef enum
     {
         if (error == nil)
         {
-            self.destination.uuid = uuid;
+            self.destination.uuid   = uuid;
+            self.destination.action = [Common jsonStringWithObject:action];
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
         }
         else
@@ -256,8 +256,7 @@ typedef enum
     {
         if (error == nil)
         {
-            self.destination.name = self.name;
-            action[@"call"][@"e164s"][0] = phone.e164;
+            self.destination.name   = self.name;
             self.destination.action = [Common jsonStringWithObject:action];
             
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
@@ -482,7 +481,7 @@ typedef enum
                                                                              completion:^(PhoneData* selectedPhone)
             {
                 phone = selectedPhone;
-                self.destination.action = [Common jsonStringWithObject:@{@"call" : @{@"e164s" : @[phone.e164]}}];
+                action[@"call"][@"e164s"][0] = phone.e164;
 
                 [self updateRightBarButtonItem];
                 [self updateTable];
@@ -501,15 +500,6 @@ typedef enum
             break;
         }
     }
-}
-
-
-- (void)tableView:(UITableView*)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath*)indexPath
-{
-    PhoneViewController* viewController;
-    viewController = [[PhoneViewController alloc] initWithPhone:phone
-                                           managedObjectContext:self.managedObjectContext];
-    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 
