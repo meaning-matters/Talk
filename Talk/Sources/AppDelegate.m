@@ -406,6 +406,9 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     if ([viewController isKindOfClass:NSClassFromString(@"UIMoreListController")])
     {
         [Settings sharedSettings].tabBarSelectedIndex = NSNotFound;
+
+        // Without this, badges' left side is invisible when badge set with More tab not shown.
+        [(UITableView*)viewController.view reloadData];
     }
     else
     {
