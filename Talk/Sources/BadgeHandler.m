@@ -44,6 +44,14 @@
                                                                     valueOptions:NSMapTableStrongMemory];
 
         [sharedInstance replaceMoreTableDataSource];
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+        {
+            // Force all view controllers that can have a badge to load.
+            (void)[AppDelegate appDelegate].numbersViewController.view;
+
+            [sharedInstance update];
+        });
     });
 
     return sharedInstance;
@@ -150,9 +158,6 @@
     UITableView* tableView;
     tableView = (UITableView*)self.tabBarController.moreNavigationController.viewControllers[0].view;
     [tableView reloadData];
-
-    // Force view controllers with a badge to load.
-    (void)[AppDelegate appDelegate].numbersViewController.view;
 }
 
 

@@ -32,6 +32,7 @@
 #import "PhoneData.h"
 #import "CallerIdViewController.h"
 #import "BadgeHandler.h"
+#import "AddressUpdatesHandler.h"
 
 NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification";
 
@@ -87,7 +88,8 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
         [Skinning sharedSkinning];
 
         // Restore the badges.
-        [BadgeHandler sharedHandler];
+        [BadgeHandler          sharedHandler];
+        [AddressUpdatesHandler sharedHandler];
 
         // Reset status bar style. Without this the status bar becomes white sometimes.
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
@@ -134,8 +136,6 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"6abff73fa5eb64771ac8a5124ebc33f5" delegate:self];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
-
-    [[BadgeHandler sharedHandler] update];
 
     return YES;
 }
@@ -377,8 +377,6 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
         }
 
         [Settings sharedSettings].tabBarClassNames = classNames;
-
-        [[BadgeHandler sharedHandler] update];
     }
 }
 

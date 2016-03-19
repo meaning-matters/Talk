@@ -17,10 +17,10 @@
 
 - (void)setBadgeCount:(NSUInteger)count forViewController:(UIViewController*)viewController;
 
+- (void)hideBadges;
+
+- (void)showBadges;
+
 - (void)update;
-
-- (void)hideBadges; // Used when editing More.
-
-- (void)showBadges; // Used when editing More.
 
 @end
