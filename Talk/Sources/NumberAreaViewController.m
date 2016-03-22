@@ -20,6 +20,7 @@
 #import "Skinning.h"
 #import "DataManager.h"
 #import "AddressData.h"
+#import "AddressStatus.h"
 
 
 // Update reloadSections calls when adding/removing sections.
@@ -596,7 +597,7 @@ typedef enum
         if (area[@"proofTypes"] == nil)
         {
             // No proof is required.
-            if (self.address.status != AddressStatusNotVerified)
+            if (self.address.addressStatus != AddressStatusNotVerifiedMask)
             {
                 title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
                                                             @"Unexpected Address Status",
@@ -611,7 +612,7 @@ typedef enum
         else
         {
             // Proof is required, which much be verified.
-            switch (self.address.status)
+            switch (self.address.addressStatus)
             {
                 case AddressStatusUnknown:
                 {
@@ -626,7 +627,7 @@ typedef enum
                                                                 @"[iOS alert message size]");
                     break;
                 }
-                case AddressStatusNotVerified:
+                case AddressStatusNotVerifiedMask:
                 {
                     // This can't occur, if we understand Voxbone correctly.
                     title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
@@ -639,7 +640,7 @@ typedef enum
                                                                 @"[iOS alert message size]");
                     break;
                 }
-                case AddressStatusDisabled:
+                case AddressStatusDisabledMask:
                 {
                     // Don't know when this occurs, it at all.
                     title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
@@ -652,11 +653,11 @@ typedef enum
                                                                 @"[iOS alert message size]");
                     break;
                 }
-                case AddressStatusVerified:
+                case AddressStatusVerifiedMask:
                 {
                     break;
                 }
-                case AddressStatusVerificationRequested:
+                case AddressStatusVerificationRequestedMask:
                 {
                     title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
                                                                 @"Address Waiting Verification",
@@ -668,7 +669,7 @@ typedef enum
                                                                 @"[iOS alert message size]");
                     break;
                 }
-                case AddressStatusRejected:
+                case AddressStatusRejectedMask:
                 {
                     title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
                                                                 @"Address Rejected",

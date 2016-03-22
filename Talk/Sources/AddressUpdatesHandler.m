@@ -31,7 +31,7 @@ NSString* const AddressUpdatesNotification = @"AddressUpdatesNotification";
         {
             if (note.userInfo[@"addressUpdates"] != nil)
             {
-                [sharedInstance processAddressUpdatesNotificationArray:note.userInfo[@"addressUpdates"]];
+                [sharedInstance processAddressUpdatesNotificationDictionary:note.userInfo[@"addressUpdates"]];
             }
         }];
     });
@@ -40,11 +40,9 @@ NSString* const AddressUpdatesNotification = @"AddressUpdatesNotification";
 }
 
 
-- (void)processAddressUpdatesNotificationArray:(NSArray*)array
+- (void)processAddressUpdatesNotificationDictionary:(NSDictionary*)dictionary
 {
-    // Address updates are received as an array of dictionaries.  We convert
-    // this to one dictionary because that's an easier to handle form in the app.
-    NSMutableDictionary* addressUpdates = [self mutableDictionaryWithArray:array];
+    NSMutableDictionary* addressUpdates = [dictionary mutableCopy];
 
     // Settings contains the up-to-date state of address updates seen by user.
     // The server however only sends updates once, so the new set of updates
@@ -90,19 +88,6 @@ NSString* const AddressUpdatesNotification = @"AddressUpdatesNotification";
 - (NSUInteger)addressUpdatesCount
 {
     return [[Settings sharedSettings].addressUpdates allKeys].count;
-}
-
-
-- (NSMutableDictionary*)mutableDictionaryWithArray:(NSArray*)array
-{
-    NSMutableDictionary* mutableDictionary = [NSMutableDictionary dictionary];
-
-    for (NSDictionary* dictionary in array)
-    {
-        [mutableDictionary addEntriesFromDictionary:dictionary];
-    }
-
-    return mutableDictionary;
 }
 
 @end

@@ -18,6 +18,7 @@
 #import "BlockAlertView.h"
 #import "Strings.h"
 #import "NetworkStatus.h"
+#import "AddressStatus.h"
 
 
 @interface DataManager ()
@@ -534,7 +535,7 @@
                                                                   NSString* fiscalIdCode,
                                                                   NSString* streetCode,
                                                                   NSString* municipalityCode,
-                                                                  NSString* status,
+                                                                  NSString* addressStatus,
                                                                   NSArray*  rejectionReasons)
                  {
                      if (error == nil)
@@ -577,8 +578,8 @@
                          address.fiscalIdCode       = fiscalIdCode;
                          address.streetCode         = streetCode;
                          address.municipalityCode   = municipalityCode;
-                         address.status             = [AddressData addressStatusWithString:status];
-                         address.rejectionReasons   = [AddressData rejectionReasonMaskWithArray:rejectionReasons];
+                         address.addressStatus      = [AddressStatus addressStatusMaskForString:addressStatus];
+                         address.rejectionReasons   = [AddressStatus rejectionReasonsMaskForArray:rejectionReasons];
                      }
                      else
                      {

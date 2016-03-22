@@ -639,6 +639,7 @@
 		48DD72D5169F5AC600CD7080 /* WebClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DD72D4169F5AC600CD7080 /* WebClient.m */; };
 		48DD72D6169F5AC600CD7080 /* WebClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DD72D4169F5AC600CD7080 /* WebClient.m */; };
 		48E61EF51C1A1BB900973FB2 /* AnalyticsTransmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E61EF41C1A1BB900973FB2 /* AnalyticsTransmitter.m */; };
+		48E678C91C9DD89000471BDE /* AddressStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E678C81C9DD89000471BDE /* AddressStatus.m */; };
 		48EC6DC016545B1F00394A4B /* AC@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EC6DBD16545B1F00394A4B /* AC@2x.png */; };
 		48EC6DC116545B1F00394A4B /* AC@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EC6DBD16545B1F00394A4B /* AC@2x.png */; };
 		48EDD20F1667652A007B89DA /* ColorCurves.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2001667652A007B89DA /* ColorCurves.png */; };
@@ -1379,6 +1380,8 @@
 		48E4AB8B170DCFCF00A4B236 /* libOpenZRTP.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOpenZRTP.a; path = External/OpenZRTP/lib/Release/libOpenZRTP.a; sourceTree = "<group>"; };
 		48E61EF31C1A1BB900973FB2 /* AnalyticsTransmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsTransmitter.h; sourceTree = "<group>"; };
 		48E61EF41C1A1BB900973FB2 /* AnalyticsTransmitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsTransmitter.m; sourceTree = "<group>"; };
+		48E678C71C9DD89000471BDE /* AddressStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressStatus.h; sourceTree = "<group>"; };
+		48E678C81C9DD89000471BDE /* AddressStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressStatus.m; sourceTree = "<group>"; };
 		48EC6DBD16545B1F00394A4B /* AC@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AC@2x.png"; sourceTree = "<group>"; };
 		48EDD1FE1667652A007B89DA /* AddCall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AddCall@2x.png"; sourceTree = "<group>"; };
 		48EDD2001667652A007B89DA /* ColorCurves.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ColorCurves.png; sourceTree = "<group>"; };
@@ -1635,6 +1638,8 @@
 		482A639A165F922E00325B3F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				48E678C71C9DD89000471BDE /* AddressStatus.h */,
+				48E678C81C9DD89000471BDE /* AddressStatus.m */,
 				48FC30BB1C220E300032387E /* AddressType.h */,
 				48FC30BC1C220E300032387E /* AddressType.m */,
 				48E61EF31C1A1BB900973FB2 /* AnalyticsTransmitter.h */,
@@ -1649,6 +1654,8 @@
 				48FD99E61618CC370061191B /* Common.m */,
 				48D3F01C164F9284002041A9 /* CountryNames.h */,
 				48D3F01D164F9284002041A9 /* CountryNames.m */,
+				48FE4F571C8752C100CC0873 /* ImagePicker.h */,
+				48FE4F581C8752C100CC0873 /* ImagePicker.m */,
 				48B0C3F7174989F400DAB3BD /* Keychain.h */,
 				48B0C3F8174989F400DAB3BD /* Keychain.m */,
 				48EDD2341667729E007B89DA /* KeypadKey.h */,
@@ -1678,8 +1685,6 @@
 				482A6396165F903900325B3F /* Strings.m */,
 				48ADD0F517067919001515EB /* UIView+AnimateHidden.h */,
 				48ADD0F61706791A001515EB /* UIView+AnimateHidden.m */,
-				48FE4F571C8752C100CC0873 /* ImagePicker.h */,
-				48FE4F581C8752C100CC0873 /* ImagePicker.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -3184,6 +3189,7 @@
 				489387FF17039165005CC795 /* RecordingData.m in Sources */,
 				486D4A2318F06BC8004699C9 /* CallRatesViewController.m in Sources */,
 				48B813421AADF91D0019AF77 /* NBGroupsManager.m in Sources */,
+				48E678C91C9DD89000471BDE /* AddressStatus.m in Sources */,
 				4837AF6D18D9B89A00D3AEBC /* GetStartedStartViewController.m in Sources */,
 				48F14EDE1BF9C62200541EEC /* AddressesViewController.m in Sources */,
 				48B8136D1AADF9B20019AF77 /* NBPersonCellInfo.m in Sources */,

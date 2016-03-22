@@ -2,6 +2,7 @@
 <model userDefinedModelVersionIdentifier="2.2" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="14F1509" minimumToolsVersion="Automatic">
     <entity name="Address" representedClassName="AddressData" syncable="YES">
         <attribute name="addressId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="addressStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="buildingLetter" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="buildingNumber" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
@@ -18,9 +19,8 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="postcode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="proofImage" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
-        <attribute name="rejectionReasons" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="rejectionReasons" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="salutation" attributeType="String" syncable="YES"/>
-        <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="street" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="streetCode" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="numbers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Number" inverseName="address" inverseEntity="Number" syncable="YES"/>

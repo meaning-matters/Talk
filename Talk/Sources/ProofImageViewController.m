@@ -13,6 +13,7 @@
 #import "ImagePicker.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
+#import "AddressStatus.h"
 
 
 @interface ProofImageViewController ()
@@ -126,17 +127,17 @@
     NSString* title;
     NSString* message;
 
-    switch (self.address.status)
+    switch (self.address.addressStatus)
     {
         case AddressStatusUnknown:
         {
             break;
         }
-        case AddressStatusNotVerified:
+        case AddressStatusNotVerifiedMask:
         {
             break;
         }
-        case AddressStatusDisabled:
+        case AddressStatusDisabledMask:
         {
             // Don't know when this occurs, it at all.
             title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
@@ -150,11 +151,11 @@
                                                         @"[iOS alert message size]");
             break;
         }
-        case AddressStatusVerified:
+        case AddressStatusVerifiedMask:
         {
             break;
         }
-        case AddressStatusVerificationRequested:
+        case AddressStatusVerificationRequestedMask:
         {
             title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
                                                         @"Can't Take Photo",
@@ -167,7 +168,7 @@
                                                         @"[iOS alert message size]");
             break;
         }
-        case AddressStatusRejected:
+        case AddressStatusRejectedMask:
         {
             break;
         }

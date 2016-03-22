@@ -27,6 +27,7 @@
 #import "ProofType.h"
 #import "ImagePicker.h"
 #import "AddressUpdatesHandler.h"
+#import "AddressStatus.h"
 
 typedef NS_ENUM(NSUInteger, TableSections)
 {
@@ -262,7 +263,93 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 {
     [super viewDidAppear:animated];
 
-    [[AddressUpdatesHandler sharedHandler] removeAddressUpdate:self.address.addressId];
+    NSString*     title = nil;
+    NSString*     message;
+    NSDictionary* addressUpdate = [[AddressUpdatesHandler sharedHandler] addressUpdates][self.address.addressId];
+    if (addressUpdate != nil)
+    {
+        NSString*         status = addressUpdate[@"addressStatus"];
+        AddressStatusMask mask   = [AddressStatus addressStatusMaskForString:status];
+        switch (mask)
+        {
+            case AddressStatusUnknown:
+            {
+                break;
+            }
+            case AddressStatusNotVerifiedMask:
+            {
+                // Ignore.
+                break;
+            }
+            case AddressStatusVerificationRequestedMask:
+            {
+                // Ignore.
+                break;
+            }
+            case AddressStatusVerifiedMask:
+            {
+                title   = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
+                                                            @"Address Is Verified",
+                                                            @"...");
+                message = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
+                                                            @"Your address plus the proof image have been "
+                                                            @"checked and all is okay.\n\nYou can now "
+                                                            @"buy Numbers that require an address in this area.",
+                                                            @"...");
+                break;
+            }
+            case AddressStatusRejectedMask:
+            {
+                title   = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
+                                                            @"Address Is Rejected",
+                                                            @"...");
+                message = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
+                                                            @"Your address plus the proof image have been "
+                                                            @"checked, but something is not correct yet: %@.\n\n"
+                                                            @"Please add a new image or create a new Address.",
+                                                            @"...");
+                message = [NSString stringWithFormat:message, [self rejectionReasonMessageForAddressUpdate:addressUpdate]];
+                break;
+            }
+            case AddressStatusDisabledMask:
+            {
+                //### Ignore for now; don't know when this occurs.
+                break;
+            }
+        }
+    }
+
+    if (title != nil)
+    {
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            [[AddressUpdatesHandler sharedHandler] removeAddressUpdate:self.address.addressId];
+        }
+                             cancelButtonTitle:[Strings okString]
+                             otherButtonTitles:nil];
+    }
+    else
+    {
+        [[AddressUpdatesHandler sharedHandler] removeAddressUpdate:self.address.addressId];
+    }
+}
+
+
+- (NSString*)rejectionReasonMessageForAddressUpdate:(NSDictionary*)addressUpdate
+{
+    NSString*       message;
+    NSMutableArray* messages = [NSMutableArray array];
+
+    for (NSString* string in addressUpdate[@"rejectionReasons"])
+    {
+        message = [AddressStatus rejectionReasonMessageForString:string];
+
+        [messages addObject:message];
+    }
+
+    return [messages componentsJoinedByString:@", "];
 }
 
 
@@ -1361,13 +1448,13 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
                                             municipalityCode:nil //########
                                                        reply:^(NSError*  error,
                                                                NSString* addressId,
-                                                               NSString* status,
+                                                               NSString* addressStatus,
                                                                NSArray*  missingFields)
     {
          if (error == nil)
          {
-             self.address.addressId = addressId;
-             self.address.status    = [AddressData addressStatusWithString:status];
+             self.address.addressId     = addressId;
+             self.address.addressStatus = [AddressStatus addressStatusMaskForString:addressStatus];
 
              [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
              [[DataManager sharedManager] saveManagedObjectContext:nil];
