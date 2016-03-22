@@ -365,6 +365,12 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
         case AreaFormatSpecial:             name = [Common capitalizedString:object[@"areaName"]]; break;
         case AreaFormatInternational:       name = @"-";                                           break;
     }
+
+    // To allow searching for area code, add it behind the name. Before display it will be stripped away again below.
+    if (areaFormat == AreaFormatGeographic)
+    {
+        name = [NSString stringWithFormat:@"%@ %@", name, object[@"areaCode"]];
+    }
     
     return name;
 }
@@ -458,6 +464,14 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
         case AreaFormatSharedCost:          code = area[@"areaCode"]; name = type;                      break;
         case AreaFormatSpecial:             code = area[@"areaCode"]; name = [self nameForObject:area]; break;
         case AreaFormatInternational:       code = @"---";            name = type;                      break;
+    }
+
+    // Strip away area code that was only added to the names to allow searching for it.
+    if (areaFormat == AreaFormatGeographic)
+    {
+        NSMutableArray* components = [[name componentsSeparatedByString:@" "] mutableCopy];
+        [components removeObjectAtIndex:(components.count - 1)];
+        name = [components componentsJoinedByString:@" "];
     }
 
     if ([area[@"stock"] intValue] > 0)

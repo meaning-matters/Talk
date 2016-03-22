@@ -109,35 +109,6 @@
     }
 }
 
-/*//###
-- (void)setIsLoading:(BOOL)isLoading
-{
-    isLoading = isLoading;
-
-    if (self.isLoading == NO && self.activityIndicator != nil)
-    {
-        self.searchDisplayController.searchBar.text = self.searchDisplayController.searchBar.text;
-    }
-
-/*
-    if (isLoading == YES && self.activityIndicator == nil)
-    {
-        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        self.activityIndicator.color = [UIColor blackColor];
-
-        [self.activityIndicator startAnimating];
-        [self.view addSubview:self.activityIndicator];
-    }
-    else if (self.isLoading == NO && self.activityIndicator != nil)
-    {
-        [self.activityIndicator stopAnimating];
-        [self.activityIndicator removeFromSuperview];
-        self.activityIndicator = nil;
-
-        self.searchDisplayController.searchBar.text = self.searchDisplayController.searchBar.text;
-    }
-}
-*/
 
 #pragma mark - Supporting Methods
 
