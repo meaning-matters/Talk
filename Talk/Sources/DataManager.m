@@ -19,6 +19,7 @@
 #import "Strings.h"
 #import "NetworkStatus.h"
 #import "AddressStatus.h"
+#import "AddressUpdatesHandler.h"
 
 
 @interface DataManager ()
@@ -494,6 +495,7 @@
             {
                 for (NSManagedObject* object in deleteArray)
                 {
+                    [[AddressUpdatesHandler sharedHandler] removeAddressUpdate:((AddressData*)object).addressId];
                     [self.managedObjectContext deleteObject:object];
                 }
             }

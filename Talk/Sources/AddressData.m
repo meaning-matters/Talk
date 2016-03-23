@@ -11,6 +11,7 @@
 #import "Strings.h"
 #import "BlockAlertView.h"
 #import "WebClient.h"
+#import "AddressUpdatesHandler.h"
 
 
 @implementation AddressData
@@ -81,6 +82,7 @@
             if (error == nil || error.code == WebStatusFailAddressUnknown)
             {
                 [self.managedObjectContext deleteObject:self];
+                [[AddressUpdatesHandler sharedHandler] removeAddressUpdate:self.addressId];
                 completion ? completion(YES) : 0;
                 
                 return;
