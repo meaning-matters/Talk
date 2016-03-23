@@ -68,7 +68,7 @@ typedef enum
 @property (nonatomic, assign) BOOL                     hasCorrectedInsets;
 @property (nonatomic, strong) AddressData*             address;
 @property (nonatomic, strong) NSPredicate*             addressesPredicate;
-@property (nonatomic, assign) BOOL                     isLoading;
+@property (nonatomic, assign) BOOL                     isLoadingAddress;
 @property (nonatomic, assign) CGFloat                  buyCellHeight;
 @property (nonatomic, strong) NumberBuyCell*           buyCell;
 @property (nonatomic, assign) BOOL                     isBuying;
@@ -209,17 +209,6 @@ typedef enum
 }
 
 
-- (void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-
-    UIView* topView = [[[[UIApplication sharedApplication] keyWindow] subviews] lastObject];
-    CGPoint center = topView.center;
-    center = [topView convertPoint:center toView:self.view];
-    self.activityIndicator.center = center;
-}
-
-
 #pragma mark - Helper Methods
 
 - (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
@@ -252,7 +241,7 @@ typedef enum
 {
     if (self.address == nil)
     {
-        self.isLoading = YES;
+        self.isLoadingAddress = YES;
         [self reloadAddressCell];
     }
 
@@ -262,7 +251,7 @@ typedef enum
                                                         numberType:numberTypeMask
                                                         completion:^(NSPredicate *predicate, NSError *error)
     {
-        self.isLoading = NO;
+        self.isLoadingAddress = NO;
         if (error == nil)
         {
             [self reloadAddressCell];
@@ -1057,7 +1046,7 @@ typedef enum
     cell.detailTextLabel.textColor = self.address ? [Skinning valueColor] : [Skinning placeholderColor];
     cell.accessoryType             = UITableViewCellAccessoryDisclosureIndicator;
 
-    if (self.isLoading)
+    if (self.isLoadingAddress)
     {
         UIActivityIndicatorView* spinner;
         spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];

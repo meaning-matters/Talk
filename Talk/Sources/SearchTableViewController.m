@@ -14,8 +14,6 @@
 
 @property (nonatomic, assign) NSUInteger               width;
 @property (nonatomic, strong) NSIndexPath*             selectedIndexPath;
-@property (nonatomic, strong) UIActivityIndicatorView* activityIndicator;
-@property (nonatomic, assign) BOOL                     hasCenteredActivityIndicator;
 
 @end
 
@@ -63,22 +61,6 @@
                               atScrollPosition:UITableViewScrollPositionMiddle
                                       animated:NO];
     });
-}
-
-
-- (void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-
-    if (self.hasCenteredActivityIndicator == NO)
-    {
-        UIView* topView = [[[[UIApplication sharedApplication] keyWindow] subviews] lastObject];
-        CGPoint center = topView.center;
-        center = [topView convertPoint:center toView:self.view];
-        self.activityIndicator.center = center;
-
-        self.hasCenteredActivityIndicator = YES;
-    }
 }
 
 

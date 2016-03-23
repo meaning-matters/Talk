@@ -100,9 +100,6 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 
 @property (nonatomic, strong) NSIndexPath*                activeCellIndexPath;
 
-@property (nonatomic, assign) BOOL                        isLoading;
-@property (nonatomic, strong) UIActivityIndicatorView*    activityIndicator;
-
 @property (nonatomic, strong) ImagePicker*                imagePicker;
 
 @end
@@ -263,6 +260,15 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 {
     [super viewDidAppear:animated];
 
+    if (self.isNew == NO)
+    {
+        [self doAddressUpdate];
+    }
+}
+
+
+- (void)doAddressUpdate
+{
     NSString*     title = nil;
     NSString*     message;
     NSDictionary* addressUpdate = [[AddressUpdatesHandler sharedHandler] addressUpdates][self.address.addressId];
@@ -359,40 +365,6 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     
     [[WebClient sharedClient] cancelAllRetrieveAreaInfoForIsoCountryCode:self.numberIsoCountryCode
                                                                 areaCode:self.areaCode];
-}
-
-
-- (void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-    
-    UIView* topView = [[[[UIApplication sharedApplication] keyWindow] subviews] lastObject];
-    CGPoint center = topView.center;
-    center = [topView convertPoint:center toView:self.view];
-    self.activityIndicator.center = center;
-}
-
-
-#pragma mark Property Setter
-
-- (void)setIsLoading:(BOOL)isLoading
-{
-    _isLoading = isLoading;
-    
-    if (isLoading == YES && self.activityIndicator == nil)
-    {
-        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        self.activityIndicator.color = [UIColor blackColor];
-        
-        [self.activityIndicator startAnimating];
-        [self.view addSubview:self.activityIndicator];
-    }
-    else if (self.isLoading == NO && self.activityIndicator != nil)
-    {
-        [self.activityIndicator stopAnimating];
-        [self.activityIndicator removeFromSuperview];
-        self.activityIndicator = nil;
-    }
 }
 
 
