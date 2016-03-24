@@ -62,7 +62,6 @@
 
         // Remove countries for which we don't have a flag icon yet.
         [namesDictionary removeObjectForKey:@"AQ"]; // Antartica
-        [namesDictionary removeObjectForKey:@"BV"]; // Bouvet Island
         [namesDictionary removeObjectForKey:@"TF"]; // French Southern Territories
         [namesDictionary removeObjectForKey:@"HM"]; // Heard & MacDonald Island
         [namesDictionary removeObjectForKey:@"PN"]; // Pitcairn Island

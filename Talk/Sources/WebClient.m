@@ -145,7 +145,7 @@
 {
     if ([object isKindOfClass:[NSMutableDictionary class]])
     {
-        for (NSString* key in [object allKeys])
+        for (NSString* key in object)
         {
             if ([key isEqualToString:@"e164s"])
             {

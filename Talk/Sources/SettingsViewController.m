@@ -117,9 +117,9 @@ typedef enum
     [super viewWillAppear:animated];
 
     // When there's no longer a SIM supplying country, reset the simIsoCountryCode settings.
-    if ([NetworkStatus sharedStatus].simIsoCountryCode == nil && settings.simIsoCountryCode == YES)
+    if ([NetworkStatus sharedStatus].simIsoCountryCode == nil && settings.useSimIsoCountryCode == YES)
     {
-        settings.simIsoCountryCode = NO;
+        settings.useSimIsoCountryCode = NO;
         [self.tableView reloadData];
     }
 }
@@ -655,7 +655,7 @@ typedef enum
                                                                 @"Title of switch if home country must be read from SIM card\n"
                                                                 @"[2/3 line - abbreviated: 'From SIM'].");
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        switchView.on = settings.simIsoCountryCode;
+        switchView.on = settings.useSimIsoCountryCode;
 
         [switchView removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
         [switchView addTarget:self action:@selector(readFromSimSwitchAction:)
@@ -688,7 +688,7 @@ typedef enum
                                                                     @"[1 line - abbreviated: 'Not Selected'");
         }
 
-        if ([NetworkStatus sharedStatus].simIsoCountryCode != nil && settings.simIsoCountryCode)
+        if ([NetworkStatus sharedStatus].simIsoCountryCode != nil && settings.useSimIsoCountryCode)
         {
             cell.accessoryType  = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -791,8 +791,8 @@ typedef enum
 
 - (void)readFromSimSwitchAction:(id)sender
 {
-    settings.simIsoCountryCode = ((UISwitch*)sender).on;
-    if (settings.simIsoCountryCode)
+    settings.useSimIsoCountryCode = ((UISwitch*)sender).on;
+    if (settings.useSimIsoCountryCode)
     {
         settings.homeIsoCountryCode = [NetworkStatus sharedStatus].simIsoCountryCode;
     }

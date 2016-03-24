@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "NumberType.h"
+#import "CountryRegions.h"
 
 
 @interface Settings : NSObject
@@ -27,7 +28,7 @@
 @property (nonatomic, strong) NSString*      errorDomain;           // Used when creating an NSError.
 
 @property (nonatomic, strong) NSString*      homeIsoCountryCode;    // ISO country code selected by user.
-@property (nonatomic, assign) BOOL           simIsoCountryCode;     // ISO country code from SIM card.
+@property (nonatomic, assign) BOOL           useSimIsoCountryCode;  // Use ISO country code from SIM card.
 
 @property (nonatomic, strong) NSString*      lastDialedNumber;
 
@@ -39,7 +40,8 @@
 @property (nonatomic, strong) NSString*      callerIdE164;          // Caller ID E164, used until Groups are implemented.
 @property (nonatomic, strong) NSString*      callbackE164;          // Called back E164, used until Groups are implemented.
 
-@property (nonatomic, assign) NumberTypeMask numberTypeMask;        // Selected numberType in NumberView.
+@property (nonatomic, assign) NumberTypeMask numberTypeMask;        // Selected numberType in NumberBuyView.
+@property (nonatomic, assign) CountryRegion  countryRegion;         // Selected region in CallRatesView.
 @property (nonatomic, assign) NSInteger      sortSegment;           // Selected Numbers/Phones sort segmented control index.
 @property (nonatomic, assign) NSInteger      destinationsSelection; // Selected segment/table in DestinationsView.
 

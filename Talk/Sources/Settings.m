@@ -21,7 +21,7 @@ NSString* const TabBarClassNamesKey       = @"TabBarClassNames";
 NSString* const TabBarSelectedIndexKey    = @"TabBarSelectedIndex";
 NSString* const ErrorDomainKey            = @"ErrorDomain";
 NSString* const HomeIsoCountryCodeKey     = @"HomeIsoCountryCode";
-NSString* const SimIsoCountryCodeKey      = @"SimIsoCountryCode";
+NSString* const UseSimIsoCountryCodeKey   = @"UseSimIsoCountryCode";
 NSString* const LastDialedNumberKey       = @"LastDialedNumber";
 NSString* const WebUsernameKey            = @"WebUsername";            // Used as keychain 'username'.
 NSString* const WebPasswordKey            = @"WebPassword";            // Used as keychain 'username'.
@@ -30,6 +30,7 @@ NSString* const ShowCallerIdKey           = @"ShowCallerId";
 NSString* const CallerIdE164Key           = @"CallerIdE164";
 NSString* const CallbackE164Key           = @"CallbackE164";
 NSString* const NumberTypeMaskKey         = @"NumberTypeMask";
+NSString* const CountryRegionKey          = @"CountryRegion";
 NSString* const SortSegmentKey            = @"SortSegment";
 NSString* const DestinationsSelectionKey  = @"DestinationsSelection";
 NSString* const StoreCurrencyCodeKey      = @"StoreCurrencyCode";
@@ -124,12 +125,12 @@ static NSUserDefaults* userDefaults;
         if ([[NetworkStatus sharedStatus].simIsoCountryCode length] > 0)
         {
             [dictionary setObject:[NetworkStatus sharedStatus].simIsoCountryCode forKey:HomeIsoCountryCodeKey];
-            [dictionary setObject:@(YES)                                         forKey:SimIsoCountryCodeKey];
+            [dictionary setObject:@(YES)                                         forKey:UseSimIsoCountryCodeKey];
         }
         else
         {
             [dictionary setObject:@""                                            forKey:HomeIsoCountryCodeKey];
-            [dictionary setObject:@(NO)                                          forKey:SimIsoCountryCodeKey];
+            [dictionary setObject:@(NO)                                          forKey:UseSimIsoCountryCodeKey];
         }
 
         [dictionary setObject:@""                                                forKey:LastDialedNumberKey];
@@ -137,6 +138,7 @@ static NSUserDefaults* userDefaults;
         [dictionary setObject:@""                                                forKey:CallerIdE164Key];
         [dictionary setObject:@""                                                forKey:CallbackE164Key];
         [dictionary setObject:@(NumberTypeGeographicMask)                        forKey:NumberTypeMaskKey];
+        [dictionary setObject:@(CountryRegionEurope)                             forKey:CountryRegionKey];
         [dictionary setObject:@(0)                                               forKey:SortSegmentKey];
         [dictionary setObject:@(0)                                               forKey:DestinationsSelectionKey];
         [dictionary setObject:[locale objectForKey:NSLocaleCurrencyCode]         forKey:StoreCurrencyCodeKey];
@@ -200,15 +202,15 @@ static NSUserDefaults* userDefaults;
 }
 
 
-- (BOOL)simIsoCountryCode
+- (BOOL)useSimIsoCountryCode
 {
-    return [userDefaults boolForKey:SimIsoCountryCodeKey];
+    return [userDefaults boolForKey:UseSimIsoCountryCodeKey];
 }
 
 
-- (void)setSimIsoCountryCode:(BOOL)simIsoCountryCode
+- (void)setUseSimIsoCountryCode:(BOOL)useSimIsoCountryCode
 {
-    [userDefaults setBool:simIsoCountryCode forKey:SimIsoCountryCodeKey];
+    [userDefaults setBool:useSimIsoCountryCode forKey:UseSimIsoCountryCodeKey];
 }
 
 
@@ -309,6 +311,18 @@ static NSUserDefaults* userDefaults;
 - (void)setNumberTypeMask:(NumberTypeMask)numberTypeMask
 {
     [userDefaults setInteger:numberTypeMask forKey:NumberTypeMaskKey];
+}
+
+
+- (CountryRegion)countryRegion
+{
+    return (CountryRegion)[userDefaults integerForKey:CountryRegionKey];
+}
+
+
+- (void)setCountryRegion:(CountryRegion)countryRegion
+{
+    [userDefaults setInteger:countryRegion forKey:CountryRegionKey];
 }
 
 

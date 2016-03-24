@@ -11,14 +11,19 @@
 #import "WebClient.h"
 #import "BlockAlertView.h"
 #import "CountryNames.h"
+#import "CountryRegions.h"
 #import "PurchaseManager.h"
 #import "Settings.h"
+#import "CountryRegions.h"
+#import "NetworkStatus.h"
 
 
 @interface CallRatesViewController ()
 
-@property (nonatomic, strong) PhoneNumber* callbackPhoneNumber;
-@property (nonatomic, assign) float        callbackPrice;
+@property (nonatomic, strong) PhoneNumber*        callbackPhoneNumber;
+@property (nonatomic, assign) float               callbackPrice;
+@property (nonatomic, strong) UISegmentedControl* regionSegmentedControl;
+@property (nonatomic, strong) NSArray*            ratesArray;
 
 @end
 
@@ -29,6 +34,8 @@
 {
     if (self = [super init])
     {
+        [CountryRegions sharedRegions];
+
         self.tableView.dataSource = self;
         self.tableView.delegate   = self;
 
@@ -57,6 +64,8 @@
     [super viewDidLoad];
 
     [self retrieveCallRates];
+
+    self.searchBar.placeholder = [self searchBarPlaceHolder];
 }
 
 
@@ -173,10 +182,13 @@
             {
                 if (error == nil)
                 {
+                    [self addSegmentedControl];
+
                     self.callbackPrice = ratePerMinute;
-                    self.objectsArray  = [self filterRates:rates];
+                    self.ratesArray    = [self filterRates:rates];
                     [self createIndexOfWidth:1];
 
+                    [self selectArray];
                     self.isLoading = NO;    // Placed here, after processing results, to let reload of search results work.
                 }
                 else
@@ -190,6 +202,52 @@
             [self handleError:error];
         }
     }];
+}
+
+
+- (void)selectArray
+{
+    NSMutableArray* currentObjectsArray = [NSMutableArray array];
+    CountryRegion   region              = self.regionSegmentedControl.selectedSegmentIndex;
+    NSArray*        isoCountryCodes     = [[CountryRegions sharedRegions] isoCountryCodesForRegion:region];
+
+    for (NSDictionary* rate in self.ratesArray)
+    {
+        if ([isoCountryCodes containsObject:rate[@"isoCountryCode"]])
+        {
+            [currentObjectsArray addObject:rate];
+        }
+    }
+
+    self.objectsArray = currentObjectsArray;
+    [self createIndexOfWidth:1];
+}
+
+
+- (void)addSegmentedControl
+{
+    // Added number type selector.
+    NSArray* items = @[[[CountryRegions sharedRegions] abbreviatedLocalizedStringForRegion:CountryRegionAfrica],
+                       [[CountryRegions sharedRegions] abbreviatedLocalizedStringForRegion:CountryRegionAmericas],
+                       [[CountryRegions sharedRegions] abbreviatedLocalizedStringForRegion:CountryRegionAsia],
+                       [[CountryRegions sharedRegions] abbreviatedLocalizedStringForRegion:CountryRegionEurope],
+                       [[CountryRegions sharedRegions] abbreviatedLocalizedStringForRegion:CountryRegionOceania]];
+    self.regionSegmentedControl = [[UISegmentedControl alloc] initWithItems:items];
+    [self.regionSegmentedControl addTarget:self
+                                    action:@selector(regionChangedAction:)
+                          forControlEvents:UIControlEventValueChanged];
+    self.navigationItem.titleView = self.regionSegmentedControl;
+
+    CountryRegion region         = CountryRegionInvalid;
+    NSString*     isoCountryCode = [NetworkStatus sharedStatus].simIsoCountryCode;
+    if (isoCountryCode.length > 0)
+    {
+        region = [[CountryRegions sharedRegions] regionForIsoCountryCode:isoCountryCode];
+    }
+
+    [self.regionSegmentedControl setSelectedSegmentIndex:[Settings sharedSettings].countryRegion];
+
+    [self selectArray];
 }
 
 
@@ -269,6 +327,29 @@
                              cancelButtonTitle:[Strings cancelString]
                              otherButtonTitles:nil];
     }
+}
+
+
+- (NSString*)searchBarPlaceHolder
+{
+    CountryRegion region     = [Settings sharedSettings].countryRegion;
+    NSString*     regionName = [[CountryRegions sharedRegions] localizedStringForRegion:region];
+    NSString*     format     = NSLocalizedStringWithDefaultValue(@"NumberCountries Placeholder", nil, [NSBundle mainBundle],
+                                                                 @"Search Rates In %@",
+                                                                 @"...");
+
+    return [NSString stringWithFormat:format, regionName];
+}
+
+
+#pragma mark - UI Actions
+
+- (void)regionChangedAction:(id)sender
+{
+    [Settings sharedSettings].countryRegion = self.regionSegmentedControl.selectedSegmentIndex;
+    [self selectArray];
+
+    self.searchBar.placeholder = [self searchBarPlaceHolder];
 }
 
 @end
