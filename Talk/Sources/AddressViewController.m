@@ -271,11 +271,10 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 {
     NSString*     title = nil;
     NSString*     message;
-    NSDictionary* addressUpdate = [[AddressUpdatesHandler sharedHandler] addressUpdates][self.address.addressId];
+    NSDictionary* addressUpdate = [[AddressUpdatesHandler sharedHandler] addressUpdateWithId:self.address.addressId];
     if (addressUpdate != nil)
     {
-        NSString*         status = addressUpdate[@"addressStatus"];
-        AddressStatusMask mask   = [AddressStatus addressStatusMaskForString:status];
+        AddressStatusMask mask = [addressUpdate[@"addressStatus"] integerValue];
         switch (mask)
         {
             case AddressStatusUnknown:
@@ -331,29 +330,21 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
                                        message:message
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
         {
-            [[AddressUpdatesHandler sharedHandler] removeAddressUpdate:self.address.addressId];
+            [[AddressUpdatesHandler sharedHandler] removeAddressUpdateWithId:self.address.addressId];
         }
                              cancelButtonTitle:[Strings okString]
                              otherButtonTitles:nil];
     }
     else
     {
-        [[AddressUpdatesHandler sharedHandler] removeAddressUpdate:self.address.addressId];
+        [[AddressUpdatesHandler sharedHandler] removeAddressUpdateWithId:self.address.addressId];
     }
 }
 
 
 - (NSString*)rejectionReasonMessageForAddressUpdate:(NSDictionary*)addressUpdate
 {
-    NSString*       message;
-    NSMutableArray* messages = [NSMutableArray array];
-
-    for (NSString* string in addressUpdate[@"rejectionReasons"])
-    {
-        message = [AddressStatus rejectionReasonMessageForString:string];
-
-        [messages addObject:message];
-    }
+    NSArray* messages = [AddressStatus rejectionReasonMessagesForMask:[addressUpdate[@"rejectionReasons"] integerValue]];
 
     return [messages componentsJoinedByString:@", "];
 }

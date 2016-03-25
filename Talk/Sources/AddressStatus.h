@@ -41,14 +41,12 @@ typedef NS_ENUM(NSUInteger, RejectionReasonMask)
 
 @interface AddressStatus : NSObject
 
-+ (NSString*)stringForAddressStatusMask:(AddressStatusMask)mask;
-
 + (AddressStatusMask)addressStatusMaskForString:(NSString*)string;
 
 + (RejectionReasonMask)rejectionReasonMaskForString:(NSString*)string;
 
 + (RejectionReasonMask)rejectionReasonsMaskForArray:(NSArray*)array;
 
-+ (NSString*)rejectionReasonMessageForString:(NSString*)string;
++ (NSArray*)rejectionReasonMessagesForMask:(RejectionReasonMask)mask;
 
 @end

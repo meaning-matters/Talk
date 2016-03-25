@@ -15,10 +15,10 @@ extern NSString* const AddressUpdatesNotification;
 
 + (AddressUpdatesHandler*)sharedHandler;
 
-- (NSDictionary*)addressUpdates;
-
 - (NSUInteger)addressUpdatesCount;
 
-- (void)removeAddressUpdate:(NSString*)addressId;
+- (NSDictionary*)addressUpdateWithId:(NSString*)addressId;
+
+- (void)removeAddressUpdateWithId:(NSString*)addressId;
 
 @end

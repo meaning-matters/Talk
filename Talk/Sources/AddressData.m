@@ -11,7 +11,6 @@
 #import "Strings.h"
 #import "BlockAlertView.h"
 #import "WebClient.h"
-#import "AddressUpdatesHandler.h"
 
 
 @implementation AddressData
@@ -69,9 +68,9 @@
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
-         {
-             completion ? completion(NO) : 0;
-         }
+        {
+            completion ? completion(NO) : 0;
+        }
                              cancelButtonTitle:[Strings cancelString]
                              otherButtonTitles:nil];
     }
@@ -81,8 +80,7 @@
         {
             if (error == nil || error.code == WebStatusFailAddressUnknown)
             {
-                [self.managedObjectContext deleteObject:self];
-                [[AddressUpdatesHandler sharedHandler] removeAddressUpdate:self.addressId];
+                [self.managedObjectContext deleteObject:self]; // This notifies AddressUpdatesHandler.
                 completion ? completion(YES) : 0;
                 
                 return;

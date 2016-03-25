@@ -11,6 +11,7 @@
 #import "NumberType.h"
 #import "Call.h"
 #import "WebStatus.h"
+#import "AddressStatus.h"
 
 
 @interface WebClient : NSObject
@@ -121,27 +122,27 @@
 
 // 10B. GET REGULATION ADDRESS
 - (void)retrieveAddressWithId:(NSString*)addressId
-                        reply:(void (^)(NSError*  error,
-                                        NSString* name,
-                                        NSString* salutation,
-                                        NSString* firstName,
-                                        NSString* lastName,
-                                        NSString* companyName,
-                                        NSString* companyDescription,
-                                        NSString* street,
-                                        NSString* buildingNumber,
-                                        NSString* buildingLetter,
-                                        NSString* city,
-                                        NSString* postcode,
-                                        NSString* isoCountryCode,
-                                        BOOL      hasProof,
-                                        NSString* idType,
-                                        NSString* idNumber,
-                                        NSString* fiscalIdCode,
-                                        NSString* streetCode,
-                                        NSString* municipalityCode,
-                                        NSString* addressStatus,
-                                        NSArray*  rejectionReasons))reply;
+                        reply:(void (^)(NSError*            error,
+                                        NSString*           name,
+                                        NSString*           salutation,
+                                        NSString*           firstName,
+                                        NSString*           lastName,
+                                        NSString*           companyName,
+                                        NSString*           companyDescription,
+                                        NSString*           street,
+                                        NSString*           buildingNumber,
+                                        NSString*           buildingLetter,
+                                        NSString*           city,
+                                        NSString*           postcode,
+                                        NSString*           isoCountryCode,
+                                        BOOL                hasProof,
+                                        NSString*           idType,
+                                        NSString*           idNumber,
+                                        NSString*           fiscalIdCode,
+                                        NSString*           streetCode,
+                                        NSString*           municipalityCode,
+                                        AddressStatusMask   addressStatus,
+                                        RejectionReasonMask rejectionReasons))reply;
 
 // 10C. CREATE REGULATION ADDRESS
 - (void)createAddressForIsoCountryCode:(NSString*)numberIsoCountryCode

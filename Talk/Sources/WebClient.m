@@ -616,27 +616,27 @@
 
 // 10B. GET REGULATION ADDRESS
 - (void)retrieveAddressWithId:(NSString*)addressId
-                        reply:(void (^)(NSError*  error,
-                                        NSString* name,
-                                        NSString* salutation,
-                                        NSString* firstName,
-                                        NSString* lastName,
-                                        NSString* companyName,
-                                        NSString* companyDescription,
-                                        NSString* street,
-                                        NSString* buildingNumber,
-                                        NSString* buildingLetter,
-                                        NSString* city,
-                                        NSString* postcode,
-                                        NSString* isoCountryCode,
-                                        BOOL      hasProof,
-                                        NSString* idType,
-                                        NSString* idNumber,
-                                        NSString* fiscalIdCode,
-                                        NSString* streetCode,
-                                        NSString* municipalityCode,
-                                        NSString* addressStatus,
-                                        NSArray*  rejectionReasons))reply
+                        reply:(void (^)(NSError*            error,
+                                        NSString*           name,
+                                        NSString*           salutation,
+                                        NSString*           firstName,
+                                        NSString*           lastName,
+                                        NSString*           companyName,
+                                        NSString*           companyDescription,
+                                        NSString*           street,
+                                        NSString*           buildingNumber,
+                                        NSString*           buildingLetter,
+                                        NSString*           city,
+                                        NSString*           postcode,
+                                        NSString*           isoCountryCode,
+                                        BOOL                hasProof,
+                                        NSString*           idType,
+                                        NSString*           idNumber,
+                                        NSString*           fiscalIdCode,
+                                        NSString*           streetCode,
+                                        NSString*           municipalityCode,
+                                        AddressStatusMask   addressStatus,
+                                        RejectionReasonMask rejectionReasons))reply;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
@@ -665,12 +665,12 @@
                   content[@"fiscalIdCode"],
                   content[@"streetCode"],
                   content[@"municipalityCode"],
-                  content[@"addressStatus"],
-                  content[@"rejectionReasons"]);
+                  [AddressStatus addressStatusMaskForString:content[@"addressStatus"]],
+                  [AddressStatus rejectionReasonsMaskForArray:content[@"rejectionReasons"]]);
         }
         else
         {
-            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, nil, nil, nil, nil, nil, nil, nil);
+            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, nil, nil, nil, nil, nil, 0, 0);
         }
     }];
 }

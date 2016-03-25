@@ -567,7 +567,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     }
 
     CellDotView* dotView = [CellDotView getFromCell:cell];
-    dotView.hidden = ([[AddressUpdatesHandler sharedHandler] addressUpdates][address.addressId] == nil);
+    dotView.hidden = ([[AddressUpdatesHandler sharedHandler] addressUpdateWithId:address.addressId] == nil);
 }
 
 

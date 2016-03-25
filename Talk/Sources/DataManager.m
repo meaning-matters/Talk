@@ -495,8 +495,7 @@
             {
                 for (NSManagedObject* object in deleteArray)
                 {
-                    [[AddressUpdatesHandler sharedHandler] removeAddressUpdate:((AddressData*)object).addressId];
-                    [self.managedObjectContext deleteObject:object];
+                    [self.managedObjectContext deleteObject:object]; // This notifies AddressUpdatesHandler.
                 }
             }
             else
@@ -505,7 +504,15 @@
                 
                 return;
             }
-            
+
+            // Delete Address Updates that are no longer on server.
+            NSMutableSet* complement = [NSMutableSet setWithArray:[[Settings sharedSettings].addressUpdates allKeys]];
+            [complement minusSet:[NSSet setWithArray:addressIds]];
+            for (NSString* addressId in [complement allObjects])
+            {
+                [[AddressUpdatesHandler sharedHandler] removeAddressUpdateWithId:addressId];
+            }
+
             __block NSUInteger count = addressIds.count;
             if (count == 0)
             {
@@ -516,85 +523,84 @@
             
             for (NSString* addressId in addressIds)
             {
-                NSLog(@"%@", [addressId class]);
                 [[WebClient sharedClient] retrieveAddressWithId:addressId
-                                                          reply:^(NSError*  error,
-                                                                  NSString* name,
-                                                                  NSString* salutation,
-                                                                  NSString* firstName,
-                                                                  NSString* lastName,
-                                                                  NSString* companyName,
-                                                                  NSString* companyDescription,
-                                                                  NSString* street,
-                                                                  NSString* buildingNumber,
-                                                                  NSString* buildingLetter,
-                                                                  NSString* city,
-                                                                  NSString* postcode,
-                                                                  NSString* isoCountryCode,
-                                                                  BOOL      hasProof,
-                                                                  NSString* idType,
-                                                                  NSString* idNumber,
-                                                                  NSString* fiscalIdCode,
-                                                                  NSString* streetCode,
-                                                                  NSString* municipalityCode,
-                                                                  NSString* addressStatus,
-                                                                  NSArray*  rejectionReasons)
-                 {
-                     if (error == nil)
-                     {
-                         NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Address"];
-                         [request setPredicate:[NSPredicate predicateWithFormat:@"addressId == %@", addressId]];
-                         
-                         AddressData* address = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
-                         if (error == nil)
-                         {
-                             if (address == nil)
-                             {
-                                 address = [NSEntityDescription insertNewObjectForEntityForName:@"Address"
-                                                                         inManagedObjectContext:self.managedObjectContext];
-                             }
-                         }
-                         else
-                         {
-                             [self handleError:error];
-                             
-                             return;
-                         }
-                         
-                         address.addressId          = addressId;
-                         address.name               = name;
-                         address.salutation         = salutation;
-                         address.firstName          = firstName;
-                         address.lastName           = lastName;
-                         address.companyName        = companyName;
-                         address.companyDescription = companyDescription;
-                         address.street             = street;
-                         address.buildingNumber     = buildingNumber;
-                         address.buildingLetter     = buildingLetter;
-                         address.city               = city;
-                         address.postcode           = postcode;
-                         address.isoCountryCode     = isoCountryCode;
-                         address.hasProof           = hasProof;
-                         address.idType             = idType;
-                         address.idNumber           = idNumber;
-                         address.fiscalIdCode       = fiscalIdCode;
-                         address.streetCode         = streetCode;
-                         address.municipalityCode   = municipalityCode;
-                         address.addressStatus      = [AddressStatus addressStatusMaskForString:addressStatus];
-                         address.rejectionReasons   = [AddressStatus rejectionReasonsMaskForArray:rejectionReasons];
-                     }
-                     else
-                     {
-                         completion ? completion(error) : 0;
-                         
-                         return;
-                     }
-                     
-                     if (--count == 0)
-                     {
-                         completion ? completion(nil) : 0;
-                     }
-                 }];
+                                                          reply:^(NSError*            error,
+                                                                  NSString*           name,
+                                                                  NSString*           salutation,
+                                                                  NSString*           firstName,
+                                                                  NSString*           lastName,
+                                                                  NSString*           companyName,
+                                                                  NSString*           companyDescription,
+                                                                  NSString*           street,
+                                                                  NSString*           buildingNumber,
+                                                                  NSString*           buildingLetter,
+                                                                  NSString*           city,
+                                                                  NSString*           postcode,
+                                                                  NSString*           isoCountryCode,
+                                                                  BOOL                hasProof,
+                                                                  NSString*           idType,
+                                                                  NSString*           idNumber,
+                                                                  NSString*           fiscalIdCode,
+                                                                  NSString*           streetCode,
+                                                                  NSString*           municipalityCode,
+                                                                  AddressStatusMask   addressStatus,
+                                                                  RejectionReasonMask rejectionReasons)
+                {
+                    if (error == nil)
+                    {
+                        NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Address"];
+                        [request setPredicate:[NSPredicate predicateWithFormat:@"addressId == %@", addressId]];
+
+                        AddressData* address = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
+                        if (error == nil)
+                        {
+                            if (address == nil)
+                            {
+                                address = [NSEntityDescription insertNewObjectForEntityForName:@"Address"
+                                                                        inManagedObjectContext:self.managedObjectContext];
+                            }
+                        }
+                        else
+                        {
+                            [self handleError:error];
+
+                            return;
+                        }
+
+                        address.addressId          = addressId;
+                        address.name               = name;
+                        address.salutation         = salutation;
+                        address.firstName          = firstName;
+                        address.lastName           = lastName;
+                        address.companyName        = companyName;
+                        address.companyDescription = companyDescription;
+                        address.street             = street;
+                        address.buildingNumber     = buildingNumber;
+                        address.buildingLetter     = buildingLetter;
+                        address.city               = city;
+                        address.postcode           = postcode;
+                        address.isoCountryCode     = isoCountryCode;
+                        address.hasProof           = hasProof;
+                        address.idType             = idType;
+                        address.idNumber           = idNumber;
+                        address.fiscalIdCode       = fiscalIdCode;
+                        address.streetCode         = streetCode;
+                        address.municipalityCode   = municipalityCode;
+                        address.addressStatus      = addressStatus;
+                        address.rejectionReasons   = rejectionReasons;
+                    }
+                    else
+                    {
+                        completion ? completion(error) : 0;
+
+                        return;
+                    }
+
+                    if (--count == 0)
+                    {
+                        completion ? completion(nil) : 0;
+                    }
+                }];
             }
         }
         else
