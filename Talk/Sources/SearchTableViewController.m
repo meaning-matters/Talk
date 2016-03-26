@@ -14,7 +14,7 @@
 
 @property (nonatomic, strong) NSArray*             nameIndexArray;            // Array with all first letter(s) of object names.
 @property (nonatomic, strong) NSMutableDictionary* indexedObjectsDictionary;  // Dictionary with array of objects per index string.
-@property (nonatomic, strong) NSMutableArray*      filteredNamesArray;        // List of names selected by search.
+@property (nonatomic, strong) NSMutableArray*      filteredObjectsArray;      // List of names selected by search.
 
 @property (nonatomic, assign) NSUInteger           width;
 @property (nonatomic, strong) NSIndexPath*         selectedIndexPath;
@@ -32,8 +32,8 @@
     {
         self.edgesForExtendedLayout = UIRectEdgeNone;
 
-        self.objectsArray       = [NSMutableArray array];
-        self.filteredNamesArray = [NSMutableArray array];
+        self.objectsArray         = [NSMutableArray array];
+        self.filteredObjectsArray = [NSMutableArray array];
     }
 
     return self;
@@ -100,7 +100,7 @@
 
 - (void)filterContentForSearchText:(NSString*)searchText
 {
-    self.filteredNamesArray = [NSMutableArray array];
+    self.filteredObjectsArray = [NSMutableArray array];
 
     for (NSString* nameIndex in self.nameIndexArray)
     {
@@ -110,7 +110,7 @@
             NSRange range = [name rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch];
             if (range.location != NSNotFound)
             {
-                [self.filteredNamesArray addObject:name];
+                [self.filteredObjectsArray addObject:object];
             }
         }
     }
@@ -176,7 +176,7 @@
 
     if (isFiltered)
     {
-        return self.filteredNamesArray[indexPath.row];
+        return [self nameForObject:self.filteredObjectsArray[indexPath.row]];
     }
     else
     {
@@ -193,7 +193,7 @@
 
     if (isFiltered)
     {
-        return self.filteredNamesArray[indexPath.row];
+        return self.filteredObjectsArray[indexPath.row];
     }
     else
     {
@@ -283,7 +283,7 @@
 {
     BOOL isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
 
-    return isFiltered ? self.filteredNamesArray.count : [self.indexedObjectsDictionary[self.nameIndexArray[section]] count];
+    return isFiltered ? self.filteredObjectsArray.count : [self.indexedObjectsDictionary[self.nameIndexArray[section]] count];
 }
 
 @end
