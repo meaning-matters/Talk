@@ -134,14 +134,14 @@ typedef enum
                 name = [NSString stringWithFormat:@"%@ (paid)", countryName];
                 break;
             }
-            case NumberTypeTollFreeMask:
-            {
-                name = [NSString stringWithFormat:@"%@ (free)", countryName];
-                break;
-            }
             case NumberTypeMobileMask:
             {
                 name = [NSString stringWithFormat:@"%@ (mobile)", countryName];
+                break;
+            }
+            case NumberTypeTollFreeMask:
+            {
+                name = [NSString stringWithFormat:@"%@ (free)", countryName];
                 break;
             }
             case NumberTypeSharedCostMask:

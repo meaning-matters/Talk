@@ -12,8 +12,8 @@ typedef NS_ENUM(NSUInteger, NumberTypeMask)
 {
     NumberTypeGeographicMask    = 1UL << 0,
     NumberTypeNationalMask      = 1UL << 1,
-    NumberTypeTollFreeMask      = 1UL << 2,
-    NumberTypeMobileMask        = 1UL << 3,
+    NumberTypeMobileMask        = 1UL << 2,
+    NumberTypeTollFreeMask      = 1UL << 3,
     NumberTypeSharedCostMask    = 1UL << 4,
     NumberTypeSpecialMask       = 1UL << 5,
     NumberTypeInternationalMask = 1UL << 6,

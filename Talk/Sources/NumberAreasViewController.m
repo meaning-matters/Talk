@@ -226,14 +226,14 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
                 }
                 break;
             }
-            case NumberTypeTollFreeMask:
-            {
-                areaFormat = AreaFormatTollFree;
-                break;
-            }
             case NumberTypeMobileMask:
             {
                 areaFormat = AreaFormatMobile;
+                break;
+            }
+            case NumberTypeTollFreeMask:
+            {
+                areaFormat = AreaFormatTollFree;
                 break;
             }
             case NumberTypeSharedCostMask:

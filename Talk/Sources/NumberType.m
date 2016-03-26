@@ -24,13 +24,13 @@
         {
             return @"NATIONAL";
         }
-        case NumberTypeTollFreeMask:
-        {
-            return @"TOLL_FREE";
-        }
         case NumberTypeMobileMask:
         {
             return @"MOBILE";
+        }
+        case NumberTypeTollFreeMask:
+        {
+            return @"TOLL_FREE";
         }
         case NumberTypeSharedCostMask:
         {
@@ -65,13 +65,13 @@
     {
         mask = NumberTypeNationalMask;
     }
-    else if ([string isEqualToString:@"TOLL_FREE"])
-    {
-        mask = NumberTypeTollFreeMask;
-    }
     else if ([string isEqualToString:@"MOBILE"])
     {
         mask = NumberTypeMobileMask;
+    }
+    else if ([string isEqualToString:@"TOLL_FREE"])
+    {
+        mask = NumberTypeTollFreeMask;
     }
     else if ([string isEqualToString:@"SHARED_COST"])
     {
@@ -112,17 +112,17 @@
                                                      @"Standard term for national phone number (not in a certain city)\n"
                                                      @"[iOS standard size].");
         }
-        case NumberTypeTollFreeMask:
-        {
-            return NSLocalizedStringWithDefaultValue(@"NumberType:Strings Toll-free", nil,
-                                                     [NSBundle mainBundle], @"Toll-free",
-                                                     @"Standard term for a free phone number (e.g. starting with 0800)\n"
-                                                     @"[iOS standard size].");
-        }
         case NumberTypeMobileMask:
         {
             return NSLocalizedStringWithDefaultValue(@"NumberType:Strings Mobile", nil,
                                                      [NSBundle mainBundle], @"Mobile",
+                                                     @"Standard term for a free phone number (e.g. starting with 0800)\n"
+                                                     @"[iOS standard size].");
+        }
+        case NumberTypeTollFreeMask:
+        {
+            return NSLocalizedStringWithDefaultValue(@"NumberType:Strings Toll-free", nil,
+                                                     [NSBundle mainBundle], @"Toll-free",
                                                      @"Standard term for a free phone number (e.g. starting with 0800)\n"
                                                      @"[iOS standard size].");
         }
@@ -169,17 +169,17 @@
                                                      @"Standard term for national phone number (not in a certain city)\n"
                                                      @"[iOS standard size].");
         }
-        case NumberTypeTollFreeMask:
-        {
-            return NSLocalizedStringWithDefaultValue(@"NumberType:StringsAbbreviated Toll-free", nil,
-                                                     [NSBundle mainBundle], @"Free",
-                                                     @"Standard term for a free phone number (e.g. starting with 0800)\n"
-                                                     @"[iOS standard size].");
-        }
         case NumberTypeMobileMask:
         {
             return NSLocalizedStringWithDefaultValue(@"NumberType:StringsAbbreviated Mobile", nil,
                                                      [NSBundle mainBundle], @"Mob",
+                                                     @"Standard term for a free phone number (e.g. starting with 0800)\n"
+                                                     @"[iOS standard size].");
+        }
+        case NumberTypeTollFreeMask:
+        {
+            return NSLocalizedStringWithDefaultValue(@"NumberType:StringsAbbreviated Toll-free", nil,
+                                                     [NSBundle mainBundle], @"Free",
                                                      @"Standard term for a free phone number (e.g. starting with 0800)\n"
                                                      @"[iOS standard size].");
         }

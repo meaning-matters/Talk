@@ -64,8 +64,8 @@
             // Added number type selector.
             NSArray* items = @[[NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeGeographicMask],
                                [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeNationalMask],
-                               [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeTollFreeMask],
                                [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeMobileMask],
+                               [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeTollFreeMask],
                                [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeSharedCostMask],
                                [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeSpecialMask]];
             self.numberTypeSegmentedControl = [[UISegmentedControl alloc] initWithItems:items];
