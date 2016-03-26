@@ -904,7 +904,7 @@ typedef enum
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
+    UITableViewCell* cell;
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
