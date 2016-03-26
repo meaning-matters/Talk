@@ -80,7 +80,7 @@
 }
 
 
-- (NSString*)selectedName
+- (id)selectedObject
 {
     return [[CountryNames sharedNames] nameForIsoCountryCode:self.isoCountryCode];
 }
@@ -91,7 +91,7 @@
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSString*        name = [self nameOnTableView:tableView atIndexPath:indexPath];
 
     selectedCell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -117,7 +117,7 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
-    NSString*        name           = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSString*        name           = [self nameOnTableView:tableView atIndexPath:indexPath];
     NSString*        isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];

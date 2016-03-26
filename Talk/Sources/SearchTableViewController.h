@@ -25,7 +25,10 @@
 
 
 //  Gets the name of an object on the table.
-- (NSString*)nameOnTable:(UITableView*)tableView atIndexPath:(NSIndexPath*)indexPath;
+- (NSString*)nameOnTableView:(UITableView*)tableView atIndexPath:(NSIndexPath*)indexPath;
+
+
+- (id)objectOnTableView:(UITableView*)tableView atIndexPath:(NSIndexPath*)indexPath;
 
 
 //  Takes a subclass specific object from the `objectsArray` and returns the name that
@@ -36,6 +39,6 @@
 - (UIKeyboardType)searchBarKeyboardType;
 
 
-- (NSString*)selectedName;
+- (NSString*)selectedObject;
 
 @end

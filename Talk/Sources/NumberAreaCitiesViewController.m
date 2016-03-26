@@ -23,7 +23,7 @@
 
 @implementation NumberAreaCitiesViewController
 
-- (instancetype)initWithCitiesArray:(NSArray*)array address:(AddressData *)address
+- (instancetype)initWithCitiesArray:(NSArray*)citiesArray address:(AddressData *)address
 {
     if (self = [super init])
     {
@@ -32,7 +32,7 @@
                                                        @"Title of app screen with list of cities\n"
                                                        @"[1 line larger font].");
 
-        self.citiesArray = array;
+        self.citiesArray = citiesArray;
         self.address     = address;
     }
 
@@ -44,7 +44,7 @@
 {
     [super viewDidLoad];
 
-    UIBarButtonItem*    cancelButton;
+    UIBarButtonItem* cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                  target:self
                                                                  action:@selector(cancel)];
@@ -65,9 +65,12 @@
 }
 
 
-- (NSString*)selectedName
+- (id)selectedObject
 {
-    return self.address.city;
+    NSPredicate* predicate     = [NSPredicate predicateWithFormat:@"(city == %@)", self.address.city];
+    NSArray*     filteredArray = [self.citiesArray filteredArrayUsingPredicate:predicate];
+
+    return [filteredArray firstObject];
 }
 
 
@@ -84,7 +87,7 @@
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSString*        name = [self nameOnTableView:tableView atIndexPath:indexPath];
 
     // If a postcode is already selected, check if it matches the city.
     NSString*   mismatchPostcode = self.address.postcode;
@@ -169,7 +172,7 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
-    NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSString*        name = [self nameOnTableView:tableView atIndexPath:indexPath];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)

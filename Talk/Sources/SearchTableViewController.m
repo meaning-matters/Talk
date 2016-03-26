@@ -12,9 +12,9 @@
 
 @interface SearchTableViewController ()
 
-@property (nonatomic, strong) NSArray*             nameIndexArray;        // Array with all first letter(s) of object names.
-@property (nonatomic, strong) NSMutableDictionary* nameIndexDictionary;   // Dictionary with array of names per index string.
-@property (nonatomic, strong) NSMutableArray*      filteredNamesArray;    // List of names selected by search.
+@property (nonatomic, strong) NSArray*             nameIndexArray;            // Array with all first letter(s) of object names.
+@property (nonatomic, strong) NSMutableDictionary* indexedObjectsDictionary;  // Dictionary with array of objects per index string.
+@property (nonatomic, strong) NSMutableArray*      filteredNamesArray;        // List of names selected by search.
 
 @property (nonatomic, assign) NSUInteger           width;
 @property (nonatomic, strong) NSIndexPath*         selectedIndexPath;
@@ -104,8 +104,9 @@
 
     for (NSString* nameIndex in self.nameIndexArray)
     {
-        for (NSString* name in self.nameIndexDictionary[nameIndex])
+        for (id object in self.indexedObjectsDictionary[nameIndex])
         {
+            NSString* name = [self nameForObject:object];
             NSRange range = [name rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch];
             if (range.location != NSNotFound)
             {
@@ -120,41 +121,44 @@
 {
     self.width = width;
 
-    self.nameIndexDictionary = [NSMutableDictionary dictionary];
+    self.indexedObjectsDictionary = [NSMutableDictionary dictionary];
     for (id object in self.objectsArray)
     {
         NSString*       name      = [self nameForObject:object];
         NSString*       nameIndex = [name substringToIndex:self.width];
         NSMutableArray* indexArray;
-        if ((indexArray = [self.nameIndexDictionary valueForKey:nameIndex]) != nil)
-        {
-            [indexArray addObject:name];
-        }
-        else
+        if ((indexArray = self.indexedObjectsDictionary[nameIndex]) == nil)
         {
             indexArray = [NSMutableArray array];
-            self.nameIndexDictionary[nameIndex] = indexArray;
-            [indexArray addObject:name];
+            self.indexedObjectsDictionary[nameIndex] = indexArray;
         }
+
+        [indexArray addObject:object];
     }
 
     // Sort indexes.
-    self.nameIndexArray = [[self.nameIndexDictionary allKeys] sortedArrayUsingSelector:@selector(localizedCompare:)];
+    self.nameIndexArray = [[self.indexedObjectsDictionary allKeys] sortedArrayUsingSelector:@selector(localizedCompare:)];
     for (NSString* nameIndex in self.nameIndexArray)
     {
-        self.nameIndexDictionary[nameIndex] = [self.nameIndexDictionary[nameIndex] sortedArrayUsingSelector:@selector(localizedCompare:)];
+        NSArray* indexArray = self.indexedObjectsDictionary[nameIndex];
+        indexArray = [indexArray sortedArrayUsingComparator:^NSComparisonResult(id object1, id object2)
+        {
+            return [[self nameForObject:object1] localizedCompare:[self nameForObject:object2]];
+        }];
+
+        self.indexedObjectsDictionary[nameIndex] = indexArray;
     }
 
     // Now find the index path of the selected name, so we can scroll to it.
-    if ([self selectedName] != nil)
+    if ([self selectedObject] != nil)
     {
         for (int section = 0; section < self.nameIndexArray.count; section++)
         {
             NSString* nameIndex = self.nameIndexArray[section];
-            for (int row = 0; row < [self.nameIndexDictionary[nameIndex] count]; row++)
+            for (int row = 0; row < [self.indexedObjectsDictionary[nameIndex] count]; row++)
             {
-                NSString* name = self.nameIndexDictionary[nameIndex][row];
-                if ([name isEqualToString:[self selectedName]])
+                id object = self.indexedObjectsDictionary[nameIndex][row];
+                if (object == [self selectedObject])
                 {
                     self.selectedIndexPath = [NSIndexPath indexPathForRow:row inSection:section];
                 }
@@ -166,7 +170,7 @@
 }
 
 
-- (NSString*)nameOnTable:(UITableView*)tableView atIndexPath:(NSIndexPath*)indexPath
+- (NSString*)nameOnTableView:(UITableView*)tableView atIndexPath:(NSIndexPath*)indexPath
 {
     BOOL isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
 
@@ -176,7 +180,24 @@
     }
     else
     {
-        return self.nameIndexDictionary[self.nameIndexArray[indexPath.section]][indexPath.row];
+        id object = self.indexedObjectsDictionary[self.nameIndexArray[indexPath.section]][indexPath.row];
+
+        return [self nameForObject:object];
+    }
+}
+
+
+- (id)objectOnTableView:(UITableView*)tableView atIndexPath:(NSIndexPath*)indexPath
+{
+    BOOL isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
+
+    if (isFiltered)
+    {
+        return self.filteredNamesArray[indexPath.row];
+    }
+    else
+    {
+        return self.indexedObjectsDictionary[self.nameIndexArray[indexPath.section]][indexPath.row];
     }
 }
 
@@ -196,7 +217,7 @@
 
 
 //  Placeholder for subclass implementation.
-- (NSString*)selectedName
+- (NSString*)selectedObject
 {
     return nil;
 }
@@ -262,7 +283,7 @@
 {
     BOOL isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
 
-    return isFiltered ? self.filteredNamesArray.count : [self.nameIndexDictionary[self.nameIndexArray[section]] count];
+    return isFiltered ? self.filteredNamesArray.count : [self.indexedObjectsDictionary[self.nameIndexArray[section]] count];
 }
 
 @end

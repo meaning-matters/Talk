@@ -380,7 +380,7 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString*     name = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSString*     name = [self nameOnTableView:tableView atIndexPath:indexPath];
     NSDictionary* area;
 
     // Look up area.
@@ -444,7 +444,7 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
     }
 
     // Look up area.
-    name = [self nameOnTable:tableView atIndexPath:indexPath];
+    name = [self nameOnTableView:tableView atIndexPath:indexPath];
     for (area in self.objectsArray)
     {
         if ([[self nameForObject:area] isEqualToString:name])

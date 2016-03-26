@@ -63,7 +63,7 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString*     name                = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSString*     name                = [self nameOnTableView:tableView atIndexPath:indexPath];
     NSString*     isoCountryCode      = [[CountryNames sharedNames] isoCountryCodeForName:name];
     NSDictionary* rate                = [self rateForIsoCountryCode:isoCountryCode];
 
@@ -99,7 +99,7 @@
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString*        name           = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSString*        name           = [self nameOnTableView:tableView atIndexPath:indexPath];
     NSString*        isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
     NSDictionary*    rate           = [self rateForIsoCountryCode:isoCountryCode];
     UITableViewCell* cell;

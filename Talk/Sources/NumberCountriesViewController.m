@@ -168,7 +168,7 @@
 
 - (NSString*)nameForObject:(id)object
 {
-    NSMutableDictionary* country = object;
+    NSDictionary* country = object;
 
     return [[CountryNames sharedNames] nameForIsoCountryCode:country[@"isoCountryCode"]];
 }
@@ -216,7 +216,7 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString*     name           = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSString*     name           = [self nameOnTableView:tableView atIndexPath:indexPath];
     NSString*     isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
     NSDictionary* country;
 
@@ -251,7 +251,7 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
-    NSString*        name           = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSString*        name           = [self nameOnTableView:tableView atIndexPath:indexPath];
     NSString*        isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];

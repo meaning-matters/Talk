@@ -146,7 +146,7 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString*     name = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSString*     name = [self nameOnTableView:tableView atIndexPath:indexPath];
     NSDictionary* state;
 
     // Look up state.
@@ -196,7 +196,7 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
-    NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSString*        name = [self nameOnTableView:tableView atIndexPath:indexPath];
     NSDictionary*    state;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];

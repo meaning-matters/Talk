@@ -14,12 +14,9 @@
 
 @interface NumberAreaPostcodesViewController ()
 
-@property (nonatomic, strong) NSArray*             citiesArray;
-@property (nonatomic, strong) NSMutableDictionary* cityLookupDictionary;   // A map between postcode and matching city.
-
-@property (nonatomic, strong) AddressData*         address;
-
-@property (nonatomic, strong) UITableViewCell*     checkmarkedCell;        // Previous cell with checkmark.
+@property (nonatomic, strong) NSArray*         citiesArray;
+@property (nonatomic, strong) AddressData*     address;
+@property (nonatomic, strong) UITableViewCell* checkmarkedCell;        // Previous cell with checkmark.
 
 @end
 
@@ -61,7 +58,7 @@
 
 - (NSString*)nameForObject:(id)object
 {
-    return object;
+    return object[@"postcode"];
 }
 
 
@@ -71,30 +68,27 @@
 }
 
 
-- (NSString*)selectedName
+- (id)selectedObject
 {
     if ([self.address.postcode length] == 0 && [self.address.city length] > 0)
     {
         // No postcode is selected, but we return the first one matching the city so
         // that the table is scrolled to the postcode(s) of the selected city.
-        NSUInteger index = [self.objectsArray indexOfObjectPassingTest:^BOOL(NSString*  postcode,
-                                                                             NSUInteger index,
-                                                                             BOOL*      stop)
+        NSUInteger index = [self.objectsArray indexOfObjectPassingTest:^BOOL(NSDictionary* object,
+                                                                             NSUInteger    index,
+                                                                             BOOL*         stop)
         {
-            return [self.cityLookupDictionary[postcode] isEqualToString:self.address.city];
+            return [object[@"city"] isEqualToString:self.address.city];
         }];
-
-        if (index == NSNotFound)
-        {
-            //### Same postcode for multiple cities.
-            index = 0;
-        }
 
         return [self.objectsArray objectAtIndex:index];
     }
     else
     {
-        return self.address.postcode;
+        NSPredicate* predicate     = [NSPredicate predicateWithFormat:@"(postcode == %@)", self.address.postcode];
+        NSArray*     filteredArray = [self.objectsArray filteredArrayUsingPredicate:predicate];
+
+        return [filteredArray firstObject];
     }
 }
 
@@ -103,27 +97,25 @@
 
 - (void)sortOutArrays
 {
-    NSMutableArray* postcodesArray = [NSMutableArray array];
-    self.cityLookupDictionary      = [NSMutableDictionary dictionary];
+    NSMutableArray* objectsArray = [NSMutableArray array];
 
     // Create one big postcodes array, and create city lookup dictionary.
     for (NSMutableDictionary* city in self.citiesArray)
     {
-        [postcodesArray addObjectsFromArray:city[@"postcodes"]];
-
         for (NSString* postcode in city[@"postcodes"])
         {
-            self.cityLookupDictionary[postcode] = city[@"city"];
+            [objectsArray addObject:@{@"postcode" : postcode,
+                                      @"city"     : city[@"city"]}];
         }
     }
 
     // Find maximum postcode size.
     NSUInteger maximumSize = 0;
-    for (NSString* postcode in postcodesArray)
+    for (NSDictionary* object in objectsArray)
     {
-        if (postcode.length > maximumSize)
+        if ([object[@"postcode"] length] > maximumSize)
         {
-            maximumSize = postcode.length;
+            maximumSize = [object[@"postcode"] length];
         }
     }
 
@@ -134,16 +126,16 @@
     NSMutableDictionary* nameIndexDictionary = [NSMutableDictionary dictionary];
     for (width = maximumSize; width > 0; width--)
     {
-        for (NSString* postcode in postcodesArray)
+        for (NSDictionary* object in objectsArray)
         {
-            NSString* nameIndex = [postcode substringToIndex:width];
+            NSString* nameIndex = [object[@"postcode"] substringToIndex:width];
             if (([nameIndexDictionary valueForKey:nameIndex]) == nil)
             {
                 nameIndexDictionary[nameIndex] = nameIndex;
             }
         }
 
-        if (nameIndexDictionary.count <= 40 && nameIndexDictionary.count < postcodesArray.count / 5)
+        if (nameIndexDictionary.count <= 40 && nameIndexDictionary.count < objectsArray.count / 5)
         {
             [nameIndexDictionary removeAllObjects];
             break;
@@ -152,7 +144,7 @@
         [nameIndexDictionary removeAllObjects];
     }
 
-    self.objectsArray = postcodesArray;
+    self.objectsArray = objectsArray;
     [self createIndexOfWidth:width];
 }
 
@@ -167,20 +159,20 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell* cell     = [self.tableView cellForRowAtIndexPath:indexPath];
-    NSString*        postcode = [self nameOnTable:tableView atIndexPath:indexPath];
+    UITableViewCell* cell   = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSDictionary*    object = [self objectOnTableView:tableView atIndexPath:indexPath];
 
     // Lookup city that belongs to this postcode, and check if it matches with current city.
     NSString* mismatchCity = nil;
     if ([self.address.city length] > 0 &&
-        [self.cityLookupDictionary[postcode] isEqualToString:self.address.city] == NO)
+        [object[@"city"] isEqualToString:self.address.city] == NO)
     {
-        mismatchCity = self.cityLookupDictionary[postcode];
+        mismatchCity = object[@"city"];
     }
     else
     {
         // Set city that belongs to selected postcode.
-        self.address.city = self.cityLookupDictionary[postcode];
+        self.address.city = object[@"city"];
     }
 
     if (mismatchCity == nil)
@@ -192,7 +184,7 @@
 
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
-        self.address.postcode = postcode;
+        self.address.postcode = object[@"postcode"];
 
         [self.navigationController popViewControllerAnimated:YES];
     }
@@ -227,7 +219,7 @@
 
                  cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
-                 self.address.postcode = postcode;
+                 self.address.postcode = object[@"postcode"];
                  self.address.city     = mismatchCity;
 
                  [self.navigationController popViewControllerAnimated:YES];
@@ -246,7 +238,7 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
-    NSString*        postcode = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSDictionary*    object = [self objectOnTableView:tableView atIndexPath:indexPath];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"SubtitleCell"];
     if (cell == nil)
@@ -254,9 +246,9 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SubtitleCell"];
     }
 
-    cell.textLabel.text = postcode;
-    cell.detailTextLabel.text = self.cityLookupDictionary[postcode];
-    if ([postcode isEqualToString:self.address.postcode])
+    cell.textLabel.text       = object[@"postcode"];
+    cell.detailTextLabel.text = object[@"city"];
+    if ([object[@"postcode"] isEqualToString:self.address.postcode])
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
         self.checkmarkedCell = cell;
