@@ -177,7 +177,8 @@
 
     cell.textLabel.text       = object[@"postcode"];
     cell.detailTextLabel.text = object[@"city"];
-    if ([object[@"postcode"] isEqualToString:self.address.postcode])
+    if ([object[@"postcode"] isEqualToString:self.address.postcode] &&
+        [object[@"city"]     isEqualToString:self.address.city])
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
         self.checkmarkedCell = cell;

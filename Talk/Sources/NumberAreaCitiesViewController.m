@@ -72,30 +72,8 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    NSString*        name = [self nameOnTableView:tableView atIndexPath:indexPath];
-
-    // If a postcode is already selected, check if it matches the city.
-    NSString* mismatchPostcode = self.address.postcode;
-    if (self.address.postcode != nil)
-    {
-        for (NSDictionary* city in self.citiesArray)
-        {
-            if ([name isEqualToString:city[@"city"]])
-            {
-                // Found selected city, now check if current postcode belongs.
-                for (NSString* postcode in city[@"postcodes"])
-                {
-                    if ([self.address.postcode isEqualToString:postcode])
-                    {
-                        // Yes, the selected city matches the current postcode, so no problem.
-                        mismatchPostcode = nil;
-                        break;
-                    }
-                }
-            }
-        }
-    }
+    UITableViewCell* cell   = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSDictionary*    object = [self objectOnTableView:tableView atIndexPath:indexPath];
 
     if (self.checkmarkedCell.accessoryType == UITableViewCellAccessoryCheckmark)
     {
@@ -104,8 +82,18 @@
 
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
-    self.address.city     = name;
-    self.address.postcode = (mismatchPostcode.length == 0) ? self.address.postcode : nil;
+    self.address.city = object[@"city"];
+    if ([object[@"postcodes"] containsObject:self.address.postcode] == NO)
+    {
+        if ([object[@"postcodes"] count] == 1)
+        {
+            self.address.postcode = [object[@"postcodes"] firstObject];
+        }
+        else
+        {
+            self.address.postcode = nil;
+        }
+    }
 
     [self.navigationController popViewControllerAnimated:YES];
 }
