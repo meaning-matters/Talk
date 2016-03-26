@@ -162,76 +162,17 @@
     UITableViewCell* cell   = [self.tableView cellForRowAtIndexPath:indexPath];
     NSDictionary*    object = [self objectOnTableView:tableView atIndexPath:indexPath];
 
-    // Lookup city that belongs to this postcode, and check if it matches with current city.
-    NSString* mismatchCity = nil;
-    if ([self.address.city length] > 0 &&
-        [object[@"city"] isEqualToString:self.address.city] == NO)
+    self.address.city     = object[@"city"];
+    self.address.postcode = object[@"postcode"];
+
+    if (self.checkmarkedCell.accessoryType == UITableViewCellAccessoryCheckmark)
     {
-        mismatchCity = object[@"city"];
-    }
-    else
-    {
-        // Set city that belongs to selected postcode.
-        self.address.city = object[@"city"];
+        self.checkmarkedCell.accessoryType = UITableViewCellAccessoryNone;
     }
 
-    if (mismatchCity == nil)
-    {
-        if (self.checkmarkedCell.accessoryType == UITableViewCellAccessoryCheckmark)
-        {
-            self.checkmarkedCell.accessoryType = UITableViewCellAccessoryNone;
-        }
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-
-        self.address.postcode = object[@"postcode"];
-
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else
-    {
-        NSString* title;
-        NSString* message;
-
-        title = NSLocalizedStringWithDefaultValue(@"NumberAreaZips CityMismatchAlertTitle", nil,
-                                                  [NSBundle mainBundle], @"City Mismatch",
-                                                  @"Alert title saying that city does not match.\n"
-                                                  @"[iOS alert title size].");
-        message = NSLocalizedStringWithDefaultValue(@"NumberAreaZips CityMismatchAlertMessage", nil,
-                                                    [NSBundle mainBundle],
-                                                    @"The current city: %@, does not match the postcode you "
-                                                    @"selected.\nDo you also want to select the correctly "
-                                                    @"matching city: %@?",
-                                                    @"Alert message telling saying that city does not match.\n"
-                                                    @"[iOS alert message size]");
-        message = [NSString stringWithFormat:message, [Common capitalizedString:self.address.city],
-                                                      [Common capitalizedString:mismatchCity]];
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-         {
-             if (buttonIndex == 1)
-             {
-                 if (self.checkmarkedCell.accessoryType == UITableViewCellAccessoryCheckmark)
-                 {
-                     self.checkmarkedCell.accessoryType = UITableViewCellAccessoryNone;
-                 }
-
-                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
-
-                 self.address.postcode = object[@"postcode"];
-                 self.address.city     = mismatchCity;
-
-                 [self.navigationController popViewControllerAnimated:YES];
-             }
-             else
-             {
-                 [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-             }
-         }
-                             cancelButtonTitle:[Strings cancelString]
-                             otherButtonTitles:[Strings okString], nil];
-    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
