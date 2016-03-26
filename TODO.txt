@@ -157,3 +157,5 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * New datamodel (2.2 or something): RENAME Destination.statements --> Destination.action, DELETE Recording.urlString (because can be generated from uuid).
 
 * Do something with NBLog(@"//### Received notification about address that's unknown to app."); AddressUpdatesHandler
+
+* Disable Accessibility / "Dynamic Type" in app, and select one (or multiple in app Settings) font size for all standard cells.
