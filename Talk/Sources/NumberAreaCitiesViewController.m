@@ -44,12 +44,6 @@
 {
     [super viewDidLoad];
 
-    UIBarButtonItem* cancelButton;
-    cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                 target:self
-                                                                 action:@selector(cancel)];
-    self.navigationItem.rightBarButtonItem = cancelButton;
-
     self.objectsArray = self.citiesArray;
     [self createIndexOfWidth:1];
 }
@@ -71,14 +65,6 @@
     NSArray*     filteredArray = [self.citiesArray filteredArrayUsingPredicate:predicate];
 
     return [filteredArray firstObject];
-}
-
-
-#pragma mark - Helper Methods
-
-- (void)cancel
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

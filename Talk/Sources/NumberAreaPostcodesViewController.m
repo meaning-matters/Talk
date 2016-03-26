@@ -44,12 +44,6 @@
 {
     [super viewDidLoad];
 
-    UIBarButtonItem* cancelButton;
-    cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                 target:self
-                                                                 action:@selector(cancel)];
-    self.navigationItem.rightBarButtonItem = cancelButton;
-
     [self sortOutArrays];
 }
 
@@ -146,12 +140,6 @@
 
     self.objectsArray = objectsArray;
     [self createIndexOfWidth:width];
-}
-
-
-- (void)cancel
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
