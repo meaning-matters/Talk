@@ -8,7 +8,6 @@
 
 #import <objc/runtime.h>
 #import <Photos/Photos.h>
-#import "UITableViewController+Common.h"
 #import "AddressViewController.h"
 #import "NumberAreaPostcodesViewController.h"
 #import "NumberAreaCitiesViewController.h"
@@ -207,8 +206,6 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     [super viewDidLoad];
 
     self.clearsSelectionOnViewWillAppear = YES;
-
-    [self disableDelayedContentTouches];
 
     UIBarButtonItem* buttonItem;
     if (self.isNew)

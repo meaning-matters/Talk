@@ -21,7 +21,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		480176671C5821DF00902197 /* UITableViewController+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 480176661C5821DF00902197 /* UITableViewController+Common.m */; };
 		48017A12194E554C0059A53B /* CallableData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48017A11194E554C0059A53B /* CallableData.m */; };
 		48021B341C3A693200C40B58 /* UIViewController+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48021B331C3A693100C40B58 /* UIViewController+Common.m */; };
 		4805E5191C5EA7FD00BA1924 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4805E5181C5EA7FD00BA1924 /* Photos.framework */; };
@@ -698,8 +697,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		480176651C5821DF00902197 /* UITableViewController+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewController+Common.h"; sourceTree = "<group>"; };
-		480176661C5821DF00902197 /* UITableViewController+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewController+Common.m"; sourceTree = "<group>"; };
 		48017A10194E554C0059A53B /* CallableData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallableData.h; sourceTree = "<group>"; };
 		48017A11194E554C0059A53B /* CallableData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallableData.m; sourceTree = "<group>"; };
 		48021B321C3A693100C40B58 /* UIViewController+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Common.h"; sourceTree = "<group>"; };
@@ -2535,8 +2532,6 @@
 				48A26DDB18BA7FB200736CCB /* SearchTableViewController.m */,
 				48021B321C3A693100C40B58 /* UIViewController+Common.h */,
 				48021B331C3A693100C40B58 /* UIViewController+Common.m */,
-				480176651C5821DF00902197 /* UITableViewController+Common.h */,
-				480176661C5821DF00902197 /* UITableViewController+Common.m */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -3234,7 +3229,6 @@
 				48A26DDC18BA7FB200736CCB /* SearchTableViewController.m in Sources */,
 				4822B4321C9615FB004BD2F5 /* AddressUpdatesHandler.m in Sources */,
 				4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */,
-				480176671C5821DF00902197 /* UITableViewController+Common.m in Sources */,
 				484943AD1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
 				48ADE7D2185C67EC00E39DA2 /* PhoneData.m in Sources */,
 				4865A9DF1792C8B70028785F /* NumberBuyCell.m in Sources */,

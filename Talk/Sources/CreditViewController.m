@@ -7,7 +7,6 @@
 //
 
 #import "CreditViewController.h"
-#import "UITableViewController+Common.h"
 #import "RatesViewController.h"
 #import "PurchaseManager.h"
 #import "CreditAmountCell.h"
@@ -65,8 +64,6 @@ typedef enum
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [self disableDelayedContentTouches];
 
     if (self.presentingViewController != nil)
     {

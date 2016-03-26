@@ -8,7 +8,6 @@
 
 #import <objc/runtime.h>
 #import "NumberAreaViewController.h"
-#import "UITableViewController+Common.h"
 #import "AddressesViewController.h"
 #import "Strings.h"
 #import "WebClient.h"
@@ -170,8 +169,6 @@ typedef enum
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [self disableDelayedContentTouches];
 
     self.navigationItem.title = NSLocalizedStringWithDefaultValue(@"NumberArea ScreenTitle", nil,
                                                                   [NSBundle mainBundle], @"Area",
