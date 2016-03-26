@@ -90,7 +90,7 @@
     NSString*        name = [self nameOnTableView:tableView atIndexPath:indexPath];
 
     // If a postcode is already selected, check if it matches the city.
-    NSString*   mismatchPostcode = self.address.postcode;
+    NSString* mismatchPostcode = self.address.postcode;
     if (self.address.postcode != nil)
     {
         for (NSDictionary* city in self.citiesArray)
@@ -111,61 +111,17 @@
         }
     }
 
-    if (mismatchPostcode.length == 0)
+    if (self.checkmarkedCell.accessoryType == UITableViewCellAccessoryCheckmark)
     {
-        if (self.checkmarkedCell.accessoryType == UITableViewCellAccessoryCheckmark)
-        {
-            self.checkmarkedCell.accessoryType = UITableViewCellAccessoryNone;
-        }
-
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-
-        self.address.city = name;
-
-        [self.navigationController popViewControllerAnimated:YES];
+        self.checkmarkedCell.accessoryType = UITableViewCellAccessoryNone;
     }
-    else
-    {
-        NSString*   title;
-        NSString*   message;
 
-        title = NSLocalizedStringWithDefaultValue(@"NumberAreaCities PostcodeMismatchAlertTitle", nil,
-                                                  [NSBundle mainBundle], @"Postode Mismatch",
-                                                  @"Alert title saying that postcode does not match.\n"
-                                                  @"[iOS alert title size].");
-        message = NSLocalizedStringWithDefaultValue(@"NumberAreaCities ZipMismatchAlertMessage", nil,
-                                                    [NSBundle mainBundle],
-                                                    @"The current postcode: %@, does not match the city "
-                                                    @"you selected.\nYou will have to select a postcode again.",
-                                                    @"Alert message telling saying that postcode does not match.\n"
-                                                    @"[iOS alert message size]");
-        message = [NSString stringWithFormat:message, mismatchPostcode];
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-         {
-             if (buttonIndex == 1)
-             {
-                 if (self.checkmarkedCell.accessoryType == UITableViewCellAccessoryCheckmark)
-                 {
-                     self.checkmarkedCell.accessoryType = UITableViewCellAccessoryNone;
-                 }
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
-                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    self.address.city     = name;
+    self.address.postcode = (mismatchPostcode.length == 0) ? self.address.postcode : nil;
 
-                 self.address.postcode = nil;
-                 self.address.city     = name;
-
-                 [self.navigationController popViewControllerAnimated:YES];
-             }
-             else
-             {
-                 [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-             }
-         }
-                             cancelButtonTitle:[Strings cancelString]
-                             otherButtonTitles:[Strings okString], nil];
-    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
