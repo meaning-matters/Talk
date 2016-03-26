@@ -246,7 +246,7 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
     if (notification.userInfo != nil)
     {
-        NSString*   source = [notification.userInfo objectForKey:@"source"];
+        NSString*   source = notification.userInfo[@"source"];
         if (source != nil && [source isEqualToString:@"databaseError"])
         {
             [self restore];

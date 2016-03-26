@@ -26,7 +26,7 @@
 
 @implementation NumberAreaPostcodesViewController
 
-- (instancetype)initWithCitiesArray:(NSArray*)array address:(AddressData*)address
+- (instancetype)initWithCitiesArray:(NSArray*)citiesArray address:(AddressData*)address
 {
     if (self = [super init])
     {
@@ -35,7 +35,7 @@
                                                        @"Title of app screen with list of postal codes\n"
                                                        @"[1 line larger font].");
         
-        self.citiesArray = array;
+        self.citiesArray = citiesArray;
         self.address     = address;
     }
     
@@ -47,7 +47,7 @@
 {
     [super viewDidLoad];
 
-    UIBarButtonItem*    cancelButton;
+    UIBarButtonItem* cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                  target:self
                                                                  action:@selector(cancel)];
@@ -84,6 +84,12 @@
             return [self.cityLookupDictionary[postcode] isEqualToString:self.address.city];
         }];
 
+        if (index == NSNotFound)
+        {
+            //### Same postcode for multiple cities.
+            index = 0;
+        }
+
         return [self.objectsArray objectAtIndex:index];
     }
     else
@@ -98,7 +104,7 @@
 - (void)sortOutArrays
 {
     NSMutableArray* postcodesArray = [NSMutableArray array];
-    self.cityLookupDictionary     = [NSMutableDictionary dictionary];
+    self.cityLookupDictionary      = [NSMutableDictionary dictionary];
 
     // Create one big postcodes array, and create city lookup dictionary.
     for (NSMutableDictionary* city in self.citiesArray)
@@ -161,20 +167,20 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
+    UITableViewCell* cell     = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSString*        postcode = [self nameOnTable:tableView atIndexPath:indexPath];
 
     // Lookup city that belongs to this postcode, and check if it matches with current city.
     NSString* mismatchCity = nil;
     if ([self.address.city length] > 0 &&
-        [[self.cityLookupDictionary objectForKey:name] isEqualToString:self.address.city] == NO)
+        [self.cityLookupDictionary[postcode] isEqualToString:self.address.city] == NO)
     {
-        mismatchCity = [self.cityLookupDictionary objectForKey:name];
+        mismatchCity = self.cityLookupDictionary[postcode];
     }
     else
     {
         // Set city that belongs to selected postcode.
-        self.address.city = [self.cityLookupDictionary objectForKey:name];
+        self.address.city = self.cityLookupDictionary[postcode];
     }
 
     if (mismatchCity == nil)
@@ -186,14 +192,14 @@
 
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
-        self.address.postcode = name;
+        self.address.postcode = postcode;
 
         [self.navigationController popViewControllerAnimated:YES];
     }
     else
     {
-        NSString*   title;
-        NSString*   message;
+        NSString* title;
+        NSString* message;
 
         title = NSLocalizedStringWithDefaultValue(@"NumberAreaZips CityMismatchAlertTitle", nil,
                                                   [NSBundle mainBundle], @"City Mismatch",
@@ -221,7 +227,7 @@
 
                  cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
-                 self.address.postcode = name;
+                 self.address.postcode = postcode;
                  self.address.city     = mismatchCity;
 
                  [self.navigationController popViewControllerAnimated:YES];
@@ -240,7 +246,7 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
-    NSString*        name = [self nameOnTable:tableView atIndexPath:indexPath];
+    NSString*        postcode = [self nameOnTable:tableView atIndexPath:indexPath];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"SubtitleCell"];
     if (cell == nil)
@@ -248,9 +254,9 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SubtitleCell"];
     }
 
-    cell.textLabel.text = name;
-    cell.detailTextLabel.text = [self.cityLookupDictionary objectForKey:name];
-    if ([name isEqualToString:self.address.postcode])
+    cell.textLabel.text = postcode;
+    cell.detailTextLabel.text = self.cityLookupDictionary[postcode];
+    if ([postcode isEqualToString:self.address.postcode])
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
         self.checkmarkedCell = cell;

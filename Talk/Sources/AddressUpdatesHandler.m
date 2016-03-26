@@ -98,9 +98,9 @@ NSString* const AddressUpdatesNotification = @"AddressUpdatesNotification";
 
 - (void)processDataUpdatesNotificationDictionary:(NSDictionary*)dictionary
 {
-    NSSet*           insertedObjects = [dictionary objectForKey:NSInsertedObjectsKey];
-    NSSet*           updatedObjects  = [dictionary objectForKey:NSUpdatedObjectsKey];
-    NSSet*           deletedObjects  = [dictionary objectForKey:NSDeletedObjectsKey];
+    NSSet*           insertedObjects = dictionary[NSInsertedObjectsKey];
+    NSSet*           updatedObjects  = dictionary[NSUpdatedObjectsKey];
+    NSSet*           deletedObjects  = dictionary[NSDeletedObjectsKey];
     NSManagedObject* object;
 
     for (object in [insertedObjects allObjects])

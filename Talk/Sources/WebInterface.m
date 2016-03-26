@@ -387,7 +387,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
                 // `selectServer`.
                 @synchronized(self.servers)
                 {
-                    if ([reply objectForKey:@"trace"] != nil)
+                    if (reply[@"trace"] != nil)
                     {
                         [AnalyticsTransmitter sharedTransmitter].enabled = [reply[@"trace"] boolValue];
                     }

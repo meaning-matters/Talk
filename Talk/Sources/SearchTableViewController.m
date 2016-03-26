@@ -12,8 +12,12 @@
 
 @interface SearchTableViewController ()
 
-@property (nonatomic, assign) NSUInteger               width;
-@property (nonatomic, strong) NSIndexPath*             selectedIndexPath;
+@property (nonatomic, strong) NSArray*             nameIndexArray;        // Array with all first letter(s) of object names.
+@property (nonatomic, strong) NSMutableDictionary* nameIndexDictionary;   // Dictionary with array of names per index string.
+@property (nonatomic, strong) NSMutableArray*      filteredNamesArray;    // List of names selected by search.
+
+@property (nonatomic, assign) NSUInteger           width;
+@property (nonatomic, strong) NSIndexPath*         selectedIndexPath;
 
 @end
 
@@ -217,7 +221,7 @@
 
 #pragma mark - Table View Data Source
 
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+- (void)tableView:(UITableView*)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
     view.tintColor = [Skinning backgroundTintColor];
 }

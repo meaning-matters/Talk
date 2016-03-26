@@ -31,10 +31,10 @@
 
 typedef NS_ENUM(NSUInteger, TableSections)
 {
-    TableSectionName    = 1UL << 0, // Name given by user.
-    TableSectionDetails = 1UL << 1, // Salutation, company, first, last.
-    TableSectionAddress = 1UL << 2, // Street, number, city, postcode.
-    TableSectionProof   = 1UL << 3, // Proof image.
+    TableSectionName         = 1UL << 0, // Name given by user.
+    TableSectionVerification = 1UL << 1, // Proof image.
+    TableSectionDetails      = 1UL << 2, // Salutation, company, first, last.
+    TableSectionAddress      = 1UL << 3, // Street, number, city, postcode.
 };
 
 typedef NS_ENUM(NSUInteger, TableRowsDetails)
@@ -165,7 +165,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         self.sections |= TableSectionAddress;
         
         // Optional section.
-        self.sections |= ((self.isNew && self.proofType != nil) || self.address.hasProof) ? TableSectionProof : 0;
+        self.sections |= ((self.isNew && self.proofType != nil) || self.address.hasProof) ? TableSectionVerification : 0;
         
         self.rowsDetails |= TableRowsDetailsSalutation;
         if (self.isNew == YES)
@@ -662,10 +662,10 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     
     switch ([Common nthBitSet:section inValue:self.sections])
     {
-        case TableSectionName:    numberOfRows = 1;                                      break;
-        case TableSectionDetails: numberOfRows = [Common bitsSetCount:self.rowsDetails]; break;
-        case TableSectionAddress: numberOfRows = [Common bitsSetCount:self.rowsAddress]; break;
-        case TableSectionProof:   numberOfRows = 1;                                      break;
+        case TableSectionName:         numberOfRows = 1;                                      break;
+        case TableSectionVerification: numberOfRows = 1;                                      break;
+        case TableSectionDetails:      numberOfRows = [Common bitsSetCount:self.rowsDetails]; break;
+        case TableSectionAddress:      numberOfRows = [Common bitsSetCount:self.rowsAddress]; break;
     }
     
     return numberOfRows;
@@ -731,10 +731,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
                                                           [NSBundle mainBundle], @"Contact Address",
                                                           @"...");
             }
-            break;
-        }
-        case TableSectionProof:
-        {
+
             break;
         }
     }
@@ -755,13 +752,10 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             {
                 title = [Strings nameFooterString];
             }
+
             break;
         }
-        case TableSectionDetails:
-        {
-            break;
-        }
-        case TableSectionProof:
+        case TableSectionVerification:
         {
             if (self.proofType != nil && self.address.hasProof == NO)
             {
@@ -788,7 +782,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
                                                           @"this phone number.",
                                                           @"Explaining that user can buy more months.");
             }
-            
+
             break;
         }
     }
@@ -814,6 +808,30 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     {
         switch ([Common nthBitSet:indexPath.section inValue:self.sections])
         {
+            case TableSectionVerification:
+            {
+                if (self.isNew && self.address.hasProof == NO)
+                {
+                    [self.imagePicker pickImageWithCompletion:^(NSData* imageData)
+                     {
+                         self.address.proofImage = imageData;
+                         self.address.hasProof   = YES;
+                         [Common reloadSections:TableSectionVerification allSections:self.sections tableView:self.tableView];
+                     }];
+                }
+                else
+                {
+                    UITableViewCell*          cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                    ProofImageViewController* viewController;
+
+                    viewController       = [[ProofImageViewController alloc] initWithAddress:self.address];
+                    viewController.title = cell.textLabel.text;
+
+                    [self.navigationController pushViewController:viewController animated:YES];
+                }
+
+                break;
+            }
             case TableSectionDetails:
             {
                 salutationsViewController = [[NumberAreaSalutationsViewController alloc] initWithSalutation:self.salutation
@@ -866,30 +884,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
                         break;
                     }
                 }
-                
-                break;
-            }
-            case TableSectionProof:
-            {
-                if (self.isNew && self.address.hasProof == NO)
-                {
-                    [self.imagePicker pickImageWithCompletion:^(NSData* imageData)
-                    {
-                        self.address.proofImage = imageData;
-                        self.address.hasProof   = YES;
-                        [Common reloadSections:TableSectionProof allSections:self.sections tableView:self.tableView];
-                    }];
-                }
-                else
-                {
-                    UITableViewCell*          cell = [self.tableView cellForRowAtIndexPath:indexPath];
-                    ProofImageViewController* viewController;
 
-                    viewController       = [[ProofImageViewController alloc] initWithAddress:self.address];
-                    viewController.title = cell.textLabel.text;
-
-                    [self.navigationController pushViewController:viewController animated:YES];
-                }
                 break;
             }
         }
@@ -903,10 +898,10 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     
     switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
-        case TableSectionName:    cell = [self nameCellForRowAtIndexPath:indexPath];    break;
-        case TableSectionDetails: cell = [self detailsCellForRowAtIndexPath:indexPath]; break;
-        case TableSectionAddress: cell = [self addressCellForRowAtIndexPath:indexPath]; break;
-        case TableSectionProof:   cell = [self proofCellForRowAtIndexPath:indexPath];   break;
+        case TableSectionName:         cell = [self nameCellForRowAtIndexPath:indexPath];    break;
+        case TableSectionVerification: cell = [self proofCellForRowAtIndexPath:indexPath];   break;
+        case TableSectionDetails:      cell = [self detailsCellForRowAtIndexPath:indexPath]; break;
+        case TableSectionAddress:      cell = [self addressCellForRowAtIndexPath:indexPath]; break;
     }
     
     return cell;
