@@ -169,8 +169,12 @@
 - (NSString*)nameForObject:(id)object
 {
     NSDictionary* country = object;
+    NSString*     name    = [[CountryNames sharedNames] nameForIsoCountryCode:country[@"isoCountryCode"]];
 
-    return [[CountryNames sharedNames] nameForIsoCountryCode:country[@"isoCountryCode"]];
+    // To allow searching for country code, add it behind the name. Before display it will be stripped away again below.
+    name = [NSString stringWithFormat:@"%@ +%@", name, [Common callingCodeForCountry:country[@"isoCountryCode"]]];
+
+    return name;
 }
 
 
@@ -216,18 +220,8 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString*     name           = [self nameOnTableView:tableView atIndexPath:indexPath];
-    NSString*     isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
-    NSDictionary* country;
-
-    // Look up country.
-    for (country in self.objectsArray)
-    {
-        if ([country[@"isoCountryCode"] isEqualToString:isoCountryCode])
-        {
-            break;
-        }
-    }
+    NSDictionary* country        = [self objectOnTableView:tableView atIndexPath:indexPath];
+    NSString*     isoCountryCode = country[@"isoCountryCode"];
 
     NumberTypeMask  numberTypeMask = (NumberTypeMask)(1UL << self.numberTypeSegmentedControl.selectedSegmentIndex);
     if ([country[@"hasStates"] boolValue] && numberTypeMask == NumberTypeGeographicMask)
@@ -251,18 +245,24 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
-    NSString*        name           = [self nameOnTableView:tableView atIndexPath:indexPath];
-    NSString*        isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
+    id               object = [self objectOnTableView:tableView atIndexPath:indexPath];
+    NSString*        name   = [self nameForObject:object];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DefaultCell"];
     }
- 
-    cell.imageView.image = [UIImage imageNamed:isoCountryCode];
-    cell.textLabel.text  = name;
-    cell.accessoryType   = UITableViewCellAccessoryNone;
+
+    // Strip away country code that was only added to the names to allow searching for it.
+    NSMutableArray* components = [[name componentsSeparatedByString:@" "] mutableCopy];
+    [components removeObjectAtIndex:(components.count - 1)];
+    name = [components componentsJoinedByString:@" "];
+
+    cell.imageView.image      = [UIImage imageNamed:object[@"isoCountryCode"]];
+    cell.textLabel.text       = name;
+    cell.detailTextLabel.text = [@"+" stringByAppendingString:[Common callingCodeForCountry:object[@"isoCountryCode"]]];
+    cell.accessoryType        = UITableViewCellAccessoryNone;
 
     return cell;
 }

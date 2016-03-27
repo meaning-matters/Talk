@@ -975,7 +975,9 @@ typedef enum
         case AreaRowAreaCode:
         {
             cell.textLabel.text       = [Strings areaCodeString];
-            cell.detailTextLabel.text = areaCode;
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"+%@ %@",
+                                                                   [Common callingCodeForCountry:numberIsoCountryCode],
+                                                                   areaCode];
             cell.imageView.image      = nil;
             break;
         }

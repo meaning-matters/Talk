@@ -69,7 +69,6 @@
 #import "Strings.h"
 #import "Common.h"
 #import "NumberAreaViewController.h"
-#import "NumberAreasCell.h"
 #import "Settings.h"
 
 typedef NS_ENUM(NSUInteger, AreaFormat)
@@ -122,9 +121,6 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
                                                                   [NSBundle mainBundle], @"Areas",
                                                                   @"Title of app screen with list of areas.\n"
                                                                   @"[1 line larger font].");
-
-    [self.tableView registerNib:[UINib nibWithNibName:@"NumberAreasCell" bundle:nil]
-         forCellReuseIdentifier:@"NumberAreasCell"];
 
     UIBarButtonItem* cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
@@ -380,17 +376,7 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString*     name = [self nameOnTableView:tableView atIndexPath:indexPath];
-    NSDictionary* area;
-
-    // Look up area.
-    for (area in self.objectsArray)
-    {
-        if ([[self nameForObject:area] isEqualToString:name])
-        {
-            break;
-        }
-    }
+    NSDictionary* area = [self objectOnTableView:tableView atIndexPath:indexPath];
 
     if ([area[@"stock"] intValue] == 0)
     {
@@ -430,27 +416,17 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NumberAreasCell* cell;
-    NSDictionary*    area;
+    UITableViewCell* cell;
+    NSDictionary*    area = [self objectOnTableView:tableView atIndexPath:indexPath];
     NSString*        code;
     NSString*        name;
     NSString*        type = [NumberType localizedStringForNumberTypeMask:numberTypeMask];
 
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumberAreasCell"];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
     {
-        cell = [[NumberAreasCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NumberAreasCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DefaultCell"];
         cell.accessoryType = UITableViewCellAccessoryNone;
-    }
-
-    // Look up area.
-    name = [self nameOnTableView:tableView atIndexPath:indexPath];
-    for (area in self.objectsArray)
-    {
-        if ([[self nameForObject:area] isEqualToString:name])
-        {
-            break;
-        }
     }
 
     switch (areaFormat)
@@ -474,15 +450,15 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
         name = [components componentsJoinedByString:@" "];
     }
 
+    cell.imageView.image      = [UIImage imageNamed:isoCountryCode];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"+%@ %@", [Common callingCodeForCountry:isoCountryCode], code];
     if ([area[@"stock"] intValue] > 0)
     {
-        cell.areaCode.text = code;
-        cell.areaName.text = name;
+        cell.textLabel.text = name;
     }
     else
     {
-        cell.areaCode.attributedText = [Common strikethroughAttributedString:code];
-        cell.areaName.attributedText = [Common strikethroughAttributedString:name];
+        cell.textLabel.attributedText = [Common strikethroughAttributedString:name];
     }
 
     return cell;

@@ -146,17 +146,7 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString*     name = [self nameOnTableView:tableView atIndexPath:indexPath];
-    NSDictionary* state;
-
-    // Look up state.
-    for (state in self.objectsArray)
-    {
-        if ([state[@"stateName"] isEqualToString:name])
-        {
-            break;
-        }
-    }
+    NSDictionary* state = [self objectOnTableView:tableView atIndexPath:indexPath];
 
     if ([state[@"geographics"] intValue] == 0)
     {
@@ -196,27 +186,18 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
-    NSString*        name = [self nameOnTableView:tableView atIndexPath:indexPath];
-    NSDictionary*    state;
+    NSString*        name  = [self nameOnTableView:tableView atIndexPath:indexPath];
+    NSDictionary*    state = [self objectOnTableView:tableView atIndexPath:indexPath];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DefaultCell"];
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
 
-    // Look up state.
-    for (state in self.objectsArray)
-    {
-        if ([state[@"stateName"] isEqualToString:name])
-        {
-            break;
-        }
-    }
-
-    cell.imageView.image = [UIImage imageNamed:isoCountryCode];
-    cell.accessoryType   = UITableViewCellAccessoryNone;
-
+    cell.imageView.image      = [UIImage imageNamed:isoCountryCode];
+    cell.detailTextLabel.text = [@"+" stringByAppendingString:[Common callingCodeForCountry:isoCountryCode]];
     if ([state[@"geographics"] intValue] > 0)
     {
         cell.textLabel.text = name;

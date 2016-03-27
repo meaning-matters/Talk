@@ -169,10 +169,6 @@
 		484943B01753C44D00E1D5C4 /* ThanksView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484943AF1753C44D00E1D5C4 /* ThanksView.xib */; };
 		484943B11753C44D00E1D5C4 /* ThanksView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484943AF1753C44D00E1D5C4 /* ThanksView.xib */; };
 		484943B617551EB100E1D5C4 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484943B517551EB100E1D5C4 /* Social.framework */; };
-		484A949D171821CB009E22B9 /* NumberAreasCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484A949C171821CB009E22B9 /* NumberAreasCell.xib */; };
-		484A949E171821CB009E22B9 /* NumberAreasCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484A949C171821CB009E22B9 /* NumberAreasCell.xib */; };
-		484A94A1171822D4009E22B9 /* NumberAreasCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 484A94A0171822D4009E22B9 /* NumberAreasCell.m */; };
-		484A94A2171822D4009E22B9 /* NumberAreasCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 484A94A0171822D4009E22B9 /* NumberAreasCell.m */; };
 		484D936C1712FBA1006FA875 /* NumberAreaCitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936B1712FBA1006FA875 /* NumberAreaCitiesViewController.m */; };
 		484D936D1712FBA1006FA875 /* NumberAreaCitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936B1712FBA1006FA875 /* NumberAreaCitiesViewController.m */; };
 		484D937017131E97006FA875 /* NumberAreaPostcodesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936F17131E97006FA875 /* NumberAreaPostcodesViewController.m */; };
@@ -864,9 +860,6 @@
 		484943AC1753C00000E1D5C4 /* ThanksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThanksViewController.m; sourceTree = "<group>"; };
 		484943AF1753C44D00E1D5C4 /* ThanksView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThanksView.xib; sourceTree = "<group>"; };
 		484943B517551EB100E1D5C4 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		484A949C171821CB009E22B9 /* NumberAreasCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberAreasCell.xib; sourceTree = "<group>"; };
-		484A949F171822D4009E22B9 /* NumberAreasCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreasCell.h; sourceTree = "<group>"; };
-		484A94A0171822D4009E22B9 /* NumberAreasCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreasCell.m; sourceTree = "<group>"; };
 		484D936A1712FBA1006FA875 /* NumberAreaCitiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaCitiesViewController.h; sourceTree = "<group>"; };
 		484D936B1712FBA1006FA875 /* NumberAreaCitiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaCitiesViewController.m; sourceTree = "<group>"; };
 		484D936E17131E96006FA875 /* NumberAreaPostcodesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaPostcodesViewController.h; sourceTree = "<group>"; };
@@ -1917,8 +1910,6 @@
 				485ECBE51652B9BE00364F08 /* KeypadButton.m */,
 				485ECBE016525D3600364F08 /* KeypadView.h */,
 				485ECBE116525D3600364F08 /* KeypadView.m */,
-				484A949F171822D4009E22B9 /* NumberAreasCell.h */,
-				484A94A0171822D4009E22B9 /* NumberAreasCell.m */,
 				4865A9DD1792C8B70028785F /* NumberBuyCell.h */,
 				4865A9DE1792C8B70028785F /* NumberBuyCell.m */,
 				48367A45172552D2001A02AF /* RecordingControlsCell.h */,
@@ -2348,7 +2339,6 @@
 				480BEF9418D59ECA00C882E0 /* GetStartedView.xib */,
 				48AF450D164948DC00DFE3D8 /* GroupsView.xib */,
 				485E38A217B7E1960089F0F1 /* HtmlView.xib */,
-				484A949C171821CB009E22B9 /* NumberAreasCell.xib */,
 				480CE120193C4D100020F255 /* NumberBuyCell.xib */,
 				488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */,
 				483679FA17246977001A02AF /* RecordingControlsCell.xib */,
@@ -2981,7 +2971,6 @@
 				488AD1ED16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
 				48A261C016FDE26100007638 /* CallStateView.xib in Resources */,
 				48ADD0F31706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
-				484A949D171821CB009E22B9 /* NumberAreasCell.xib in Resources */,
 				483679F21722F2CF001A02AF /* List.png in Resources */,
 				4842D9F91AADFB53008F35C9 /* deleteButton.png in Resources */,
 				483679F41722F2CF001A02AF /* List@2x.png in Resources */,
@@ -3045,7 +3034,6 @@
 				48A261C116FDE26100007638 /* CallStateView.xib in Resources */,
 				48ADD0F41706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
 				48995E0C18739F46001395C2 /* Phone.png in Resources */,
-				484A949E171821CB009E22B9 /* NumberAreasCell.xib in Resources */,
 				483679F31722F2CF001A02AF /* List.png in Resources */,
 				483679F51722F2CF001A02AF /* List@2x.png in Resources */,
 				48CB2C4517E6539000E19C3D /* Target.png in Resources */,
@@ -3214,7 +3202,6 @@
 				4814D56E19E9660200958E33 /* AFURLResponseSerialization.m in Sources */,
 				48B813461AADF92E0019AF77 /* NBAddressCell.m in Sources */,
 				48E61EF51C1A1BB900973FB2 /* AnalyticsTransmitter.m in Sources */,
-				484A94A1171822D4009E22B9 /* NumberAreasCell.m in Sources */,
 				48D60EF418B4D7A4000BE5D2 /* CountriesViewController.m in Sources */,
 				483679DE1721F2E1001A02AF /* RecordingViewController.m in Sources */,
 				480CE127194DBEC40020F255 /* CallerIdViewController.m in Sources */,
@@ -3311,7 +3298,6 @@
 				48A0CE6B1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */,
 				484D936D1712FBA1006FA875 /* NumberAreaCitiesViewController.m in Sources */,
 				484D937117131E97006FA875 /* NumberAreaPostcodesViewController.m in Sources */,
-				484A94A2171822D4009E22B9 /* NumberAreasCell.m in Sources */,
 				483679DF1721F2E1001A02AF /* RecordingViewController.m in Sources */,
 				48367A48172552D2001A02AF /* RecordingControlsCell.m in Sources */,
 				48CA503E172C5EB400CB1B7B /* DestinationViewController.m in Sources */,
