@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		4800379A1CA7CD050083D24B /* Favorites@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 480037991CA7CD050083D24B /* Favorites@2x.png */; };
+		480037A11CA840210083D24B /* TableLoading@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 480037A01CA840210083D24B /* TableLoading@2x.png */; };
 		48017A12194E554C0059A53B /* CallableData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48017A11194E554C0059A53B /* CallableData.m */; };
 		48021B341C3A693200C40B58 /* UIViewController+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48021B331C3A693100C40B58 /* UIViewController+Common.m */; };
 		4805E5191C5EA7FD00BA1924 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4805E5181C5EA7FD00BA1924 /* Photos.framework */; };
@@ -695,6 +696,7 @@
 
 /* Begin PBXFileReference section */
 		480037991CA7CD050083D24B /* Favorites@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Favorites@2x.png"; sourceTree = "<group>"; };
+		480037A01CA840210083D24B /* TableLoading@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TableLoading@2x.png"; sourceTree = "<group>"; };
 		48017A10194E554C0059A53B /* CallableData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallableData.h; sourceTree = "<group>"; };
 		48017A11194E554C0059A53B /* CallableData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallableData.m; sourceTree = "<group>"; };
 		48021B321C3A693100C40B58 /* UIViewController+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Common.h"; sourceTree = "<group>"; };
@@ -1818,6 +1820,7 @@
 				483679EF1722F2CF001A02AF /* List@2x.png */,
 				48995E0918739F46001395C2 /* Phone.png */,
 				48995E0A18739F46001395C2 /* Phone@2x.png */,
+				480037A01CA840210083D24B /* TableLoading@2x.png */,
 				48CB2C4217E6539000E19C3D /* Target.png */,
 				48CB2C4317E6539000E19C3D /* Target@2x.png */,
 			);
@@ -2925,6 +2928,7 @@
 				485F6C021637270100D61365 /* TZ@2x.png in Resources */,
 				485F6C041637270100D61365 /* UA@2x.png in Resources */,
 				485F6C061637270100D61365 /* UG@2x.png in Resources */,
+				480037A11CA840210083D24B /* TableLoading@2x.png in Resources */,
 				48B93870187B647F00132535 /* Helps.json in Resources */,
 				485F6C0A1637270100D61365 /* US@2x.png in Resources */,
 				485F6C0C1637270100D61365 /* UY@2x.png in Resources */,

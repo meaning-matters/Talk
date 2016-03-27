@@ -63,6 +63,21 @@
 }
 
 
+- (UIImageView*)imageView
+{
+    return  objc_getAssociatedObject(self, @selector(imageView));
+}
+
+
+- (void)setImageView:(UIImageView*)imageView
+{
+    objc_setAssociatedObject(self,
+                             @selector(imageView),
+                             imageView,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+
 - (BOOL)hasCenteredActivityIndicator
 {
     return [objc_getAssociatedObject(self, @selector(hasCenteredActivityIndicator)) boolValue];
@@ -93,6 +108,10 @@
 
     if (isLoading == YES && self.activityIndicator == nil)
     {
+        self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TableLoading"]];
+        self.imageView.alpha = 0.13f;  // Desaturated logo needs this to get (almost) equal shade as table headers.
+        [self.view addSubview:self.imageView];
+
         self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         self.activityIndicator.color = [UIColor blackColor];
 
@@ -104,6 +123,9 @@
         [self.activityIndicator stopAnimating];
         [self.activityIndicator removeFromSuperview];
         self.activityIndicator = nil;
+
+        [self.imageView removeFromSuperview];
+        self.imageView = nil;
     }
 
     [self didSetIsLoading];
@@ -127,6 +149,12 @@
         UIView* topView = [[[[UIApplication sharedApplication] keyWindow] subviews] lastObject];
         CGPoint center = topView.center;
         center = [topView convertPoint:center toView:self.view];
+
+        self.imageView.center = center;
+
+        // For some reason iOS' spinner is on pixels off in both X and Y.
+        center.x += 1.0f;
+        center.y += 1.0f;
         self.activityIndicator.center = center;
 
         self.hasCenteredActivityIndicator = YES;

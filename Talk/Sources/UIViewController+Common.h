@@ -13,6 +13,7 @@
 @interface UIViewController (Common)
 
 @property (nonatomic, strong) UIActivityIndicatorView* activityIndicator;
+@property (nonatomic, strong) UIImageView*             imageView;
 @property (nonatomic, assign) BOOL                     hasCenteredActivityIndicator;
 @property (nonatomic, assign) BOOL                     isLoading;   // Show/Hide spinner.
 
