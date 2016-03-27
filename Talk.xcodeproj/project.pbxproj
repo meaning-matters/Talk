@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		4800379A1CA7CD050083D24B /* Favorites@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 480037991CA7CD050083D24B /* Favorites@2x.png */; };
 		48017A12194E554C0059A53B /* CallableData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48017A11194E554C0059A53B /* CallableData.m */; };
 		48021B341C3A693200C40B58 /* UIViewController+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48021B331C3A693100C40B58 /* UIViewController+Common.m */; };
 		4805E5191C5EA7FD00BA1924 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4805E5181C5EA7FD00BA1924 /* Photos.framework */; };
@@ -697,6 +698,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		480037991CA7CD050083D24B /* Favorites@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Favorites@2x.png"; sourceTree = "<group>"; };
 		48017A10194E554C0059A53B /* CallableData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallableData.h; sourceTree = "<group>"; };
 		48017A11194E554C0059A53B /* CallableData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallableData.m; sourceTree = "<group>"; };
 		48021B321C3A693100C40B58 /* UIViewController+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Common.h"; sourceTree = "<group>"; };
@@ -1773,6 +1775,7 @@
 				48CB2C4917E6DB7700E19C3D /* NBPeopleListTab@2x.png */,
 				48AF451C1649788A00DFE3D8 /* CreditTab@2x.png */,
 				48AF45201649788A00DFE3D8 /* DestinationsTab@2x.png */,
+				480037991CA7CD050083D24B /* Favorites@2x.png */,
 				48AF45221649788A00DFE3D8 /* GroupsTab@2x.png */,
 				48AF45241649788A00DFE3D8 /* HelpsTab@2x.png */,
 				48AF451E1649788A00DFE3D8 /* KeypadTab@2x.png */,
@@ -2694,6 +2697,7 @@
 				485A609018D771F60055C176 /* GetStarted1.png in Resources */,
 				485F6A6A1637270100D61365 /* BI@2x.png in Resources */,
 				485F6A6C1637270100D61365 /* BJ@2x.png in Resources */,
+				4800379A1CA7CD050083D24B /* Favorites@2x.png in Resources */,
 				485F6A6E1637270100D61365 /* BL@2x.png in Resources */,
 				4837AF6418D89E8600D3AEBC /* GetStarted.json in Resources */,
 				485F6A701637270100D61365 /* BM@2x.png in Resources */,
