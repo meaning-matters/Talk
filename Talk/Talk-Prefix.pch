@@ -19,4 +19,6 @@
 #define NBLog(fmt, ...)
 #endif
 
+#define HAS_WORLD_COUNTRY 0
+
 #endif

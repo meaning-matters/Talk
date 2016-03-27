@@ -55,10 +55,12 @@
         [namesDictionary setValue:countryName forKey:@"AC"];
         countryName = NSLocalizedStringWithDefaultValue(@"Country:AN", nil, [NSBundle mainBundle], @"Netherlands Antilles", @"AN");
         [namesDictionary setValue:countryName forKey:@"AN"];
-        
+
+#if HAS_WORLD_COUNTRY
         // Add country for iNum and other non-country stuff.
         countryName = NSLocalizedStringWithDefaultValue(@"Country:WD", nil, [NSBundle mainBundle], @"World", @"WD");
         [namesDictionary setValue:countryName forKey:@"WD"];
+#endif
 
         // Remove countries for which we don't have a flag icon yet.
         [namesDictionary removeObjectForKey:@"AQ"]; // Antartica
