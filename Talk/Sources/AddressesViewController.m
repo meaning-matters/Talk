@@ -255,7 +255,7 @@
 }
 
 
-- (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+- (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
     if (self.predicate == nil)
     {
@@ -270,16 +270,29 @@
         NSString* title;
         NSString* text;
 
-        title = NSLocalizedStringWithDefaultValue(@"Addresses List ...", nil, [NSBundle mainBundle],
-                                                  @"For %@ Numbers in this country, supplying "
-                                                  @"a name plus address is legally required.",
-                                                  @"....");
+        if ([self isAddressRequired])
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Addresses List ...", nil, [NSBundle mainBundle],
+                                                      @"For %@ Numbers in this country, supplying "
+                                                      @"a name plus address is legally required.",
+                                                      @"....");
+        }
+        else
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Addresses List ...", nil, [NSBundle mainBundle],
+                                                      @"For %@ Numbers in this country, supplying "
+                                                      @"a name plus address is optional.",
+                                                      @"....");
+        }
+
         switch (self.addressTypeMask)
         {
             case AddressTypeNoneMask:
             {
-                // Does not occur.
-                title = nil;
+                // Address is optional.
+                text  = NSLocalizedStringWithDefaultValue(@"Addresses List TitleWorldwide", nil, [NSBundle mainBundle],
+                                                          @"The address can be anywhere in the world.",
+                                                          @"....");
                 break;
             }
             case AddressTypeWorldwideMask:
@@ -572,6 +585,12 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
 
 #pragma mark - Helpers
+
+- (BOOL)isAddressRequired
+{
+    return (self.addressTypeMask != AddressTypeNoneMask);
+}
+
 
 - (NSString*)detailTextForAddress:(AddressData*)address
 {

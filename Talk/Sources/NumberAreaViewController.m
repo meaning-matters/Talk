@@ -101,10 +101,8 @@ typedef enum
         // Mandatory sections.
         sections |= TableSectionArea;
         sections |= TableSectionName;
+        sections |= TableSectionAddress;
         sections |= TableSectionBuy;
-
-        // Optional Sections.
-        sections |= (addressTypeMask == AddressTypeNoneMask) ? 0 : TableSectionAddress;
 
         // Always there Area section rows.
         areaRows |= AreaRowType;
@@ -207,6 +205,12 @@ typedef enum
 
 
 #pragma mark - Helper Methods
+
+- (BOOL)isAddressRequired
+{
+    return (addressTypeMask != AddressTypeNoneMask);
+}
+
 
 - (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
 {
@@ -745,11 +749,22 @@ typedef enum
         }
         case TableSectionAddress:
         {
-            title = NSLocalizedStringWithDefaultValue(@"NumberArea:Address SectionFooter", nil,
-                                                      [NSBundle mainBundle],
-                                                      @"A contact name and address "
-                                                      @"are legally required.",
-                                                      @"Explaining that information must be supplied by user.");
+            if ([self isAddressRequired])
+            {
+                title = NSLocalizedStringWithDefaultValue(@"NumberArea:Address SectionFooter", nil,
+                                                          [NSBundle mainBundle],
+                                                          @"A contact name and address "
+                                                          @"are legally required.",
+                                                          @"Explaining that information must be supplied by user.");
+            }
+            else
+            {
+                title = NSLocalizedStringWithDefaultValue(@"NumberArea:Address SectionFooter", nil,
+                                                          [NSBundle mainBundle],
+                                                          @"A contact name and address "
+                                                          @"are optional, and could be asked later.",
+                                                          @"Explaining that information must be supplied by user.");
+            }
             break;
         }
         case TableSectionBuy:
@@ -844,8 +859,7 @@ typedef enum
         }
         case TableSectionBuy:
         {
-            if (((sections & TableSectionAddress) && self.address != nil) ||
-                (sections & TableSectionAddress) == 0)
+            if (([self isAddressRequired] && self.address != nil) || ![self isAddressRequired])
             {
                 NSLog(@"//#### Do the work earlier done in BuyNumberViewController.");
             }
@@ -1057,7 +1071,8 @@ typedef enum
     {
         cell.accessoryView          = nil;
         cell.userInteractionEnabled = YES;
-        cell.detailTextLabel.text   = self.address ? self.address.name : [Strings requiredString];
+        NSString* placeholder = [self isAddressRequired] ? [Strings requiredString] : [Strings optionalString];
+        cell.detailTextLabel.text   = self.address ? self.address.name : placeholder;
     }
 
     return cell;
