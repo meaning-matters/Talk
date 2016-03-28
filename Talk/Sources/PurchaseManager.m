@@ -665,7 +665,12 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
 
     for (SKPaymentTransaction* transaction in [SKPaymentQueue defaultQueue].transactions)
     {
-        if ([self isCreditProductIdentifier:transaction.payment.productIdentifier])
+        if (transaction.transactionState == SKPaymentTransactionStateFailed)
+        {
+            [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+        }
+        else if ([self isCreditProductIdentifier:transaction.payment.productIdentifier] &&
+                 transaction.transactionState == SKPaymentTransactionStatePurchased)
         {
             AnalysticsTrace(@"retryPendingTransactions_credit");
 
