@@ -106,20 +106,12 @@
                              @(isLoading),
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
-    BOOL showImage;
-    if ([self respondsToSelector:NSSelectorFromString(@"tableView")] &&
-        [self respondsToSelector:NSSelectorFromString(@"tableView:numberOfRowsInSection:")])
-    {
-        showImage = ([(id)self tableView:[(id)self tableView] numberOfRowsInSection:0] == 0);
-    }
-    else
-    {
-        showImage = NO;
-    }
-
     if (isLoading == YES && self.activityIndicator == nil)
     {
-        if (showImage)
+        // Only show image when there's a tableView which is empty.
+        if ([self respondsToSelector:NSSelectorFromString(@"tableView")] &&
+            [self respondsToSelector:NSSelectorFromString(@"tableView:numberOfRowsInSection:")] &&
+            ([(id)self tableView:[(id)self tableView] numberOfRowsInSection:0] == 0))
         {
             self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TableLoading"]];
             self.imageView.alpha = 0.13f;  // Desaturated logo needs this to get (almost) equal shade as table headers.
