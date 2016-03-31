@@ -32,17 +32,17 @@
     va_list arguments;
     va_start(arguments, otherButtonTitles);
 
-    BlockAlertView* alert = [[BlockAlertView alloc] initWithTitle:title
-                                                          message:message
-                                                        completion:completion
-                                                cancelButtonTitle:cancelButtonTitle
-                                                otherButtonTitles:otherButtonTitles
-                                                        arguments:arguments];
-    [alert show];
+    BlockAlertView* alertView = [[BlockAlertView alloc] initWithTitle:title
+                                                              message:message
+                                                           completion:completion
+                                                    cancelButtonTitle:cancelButtonTitle
+                                                    otherButtonTitles:otherButtonTitles
+                                                            arguments:arguments];
+    [alertView show];
 
     va_end(arguments);
 
-    return alert;
+    return alertView;
 }
 
 
@@ -57,41 +57,41 @@
     va_list arguments;
     va_start(arguments, otherButtonTitles);
 
-    __block BlockAlertView* alert = [[BlockAlertView alloc] initWithTitle:title
-                                                                  message:message
-                                                               completion:^(BOOL cancelled, NSInteger buttonIndex)
+    __block BlockAlertView* alertView = [[BlockAlertView alloc] initWithTitle:title
+                                                                      message:message
+                                                                   completion:^(BOOL cancelled, NSInteger buttonIndex)
     {
-        UITextField* textField = [alert textFieldAtIndex:0];
+        UITextField* textField = [alertView textFieldAtIndex:0];
         [textField resignFirstResponder];
         
         // Only the cancel must be handled here.
         if (cancelled == YES)
         {
-            alert->_phoneNumberCompletion ? alert->_phoneNumberCompletion(cancelled, phoneNumber) : 0;
+            alertView->_phoneNumberCompletion ? alertView->_phoneNumberCompletion(cancelled, phoneNumber) : 0;
         }
     }
                                                         cancelButtonTitle:cancelButtonTitle
                                                         otherButtonTitles:otherButtonTitles
                                                                 arguments:arguments];
 
-    alert.alertViewStyle               = UIAlertViewStylePlainTextInput;
+    alertView.alertViewStyle               = UIAlertViewStylePlainTextInput;
     
-    UITextField* textField             = [alert textFieldAtIndex:0];
-    textField.textAlignment            = NSTextAlignmentCenter;
-    textField.autocorrectionType       = UITextAutocorrectionTypeNo;
-    textField.text                     = [phoneNumber asYouTypeFormat];         // Note, can't use this to init a string; can be nil.
+    UITextField* textField                 = [alertView textFieldAtIndex:0];
+    textField.textAlignment                = NSTextAlignmentCenter;
+    textField.autocorrectionType           = UITextAutocorrectionTypeNo;
+    textField.text                         = [phoneNumber asYouTypeFormat]; // Note, can't use this to init a string; can be nil.
     [textField setKeyboardType:UIKeyboardTypePhonePad];
 
-    alert->_phoneNumberCompletion      = [completion copy];
-    alert.phoneNumberTextFieldDelegate = [[PhoneNumberTextFieldDelegate alloc] initWithTextField:textField];
-    textField.delegate                 = alert.phoneNumberTextFieldDelegate;
+    alertView->_phoneNumberCompletion      = [completion copy];
+    alertView.phoneNumberTextFieldDelegate = [[PhoneNumberTextFieldDelegate alloc] initWithTextField:textField];
+    textField.delegate                     = alertView.phoneNumberTextFieldDelegate;
                           
-    [alert show];
-    textField.font                     = [UIFont boldSystemFontOfSize:18.0f];   // Needs to be placed after `show` to work.
+    [alertView show];
+    textField.font                         = [UIFont boldSystemFontOfSize:18.0f]; // Needs to be placed after `show` to work.
 
     va_end(arguments);
     
-    return alert;
+    return alertView;
 }
 
 
@@ -107,34 +107,34 @@
     va_list arguments;
     va_start(arguments, otherButtonTitles);
     
-    __block BlockAlertView* alert = [[BlockAlertView alloc] initWithTitle:title
-                                                                  message:message
-                                                               completion:^(BOOL cancelled, NSInteger buttonIndex)
+    __block BlockAlertView* alertView = [[BlockAlertView alloc] initWithTitle:title
+                                                                      message:message
+                                                                   completion:^(BOOL cancelled, NSInteger buttonIndex)
     {
-        UITextField* textField = [alert textFieldAtIndex:0];
+        UITextField* textField = [alertView textFieldAtIndex:0];
         [textField resignFirstResponder];
         
-        alert->_textCompletion ? alert->_textCompletion(cancelled, buttonIndex, textField.text) : 0;
+        alertView->_textCompletion ? alertView->_textCompletion(cancelled, buttonIndex, textField.text) : 0;
     }
                                                         cancelButtonTitle:cancelButtonTitle
                                                         otherButtonTitles:otherButtonTitles
                                                                 arguments:arguments];
     
-    alert.alertViewStyle         = UIAlertViewStylePlainTextInput;
+    alertView.alertViewStyle     = UIAlertViewStylePlainTextInput;
     
-    UITextField* textField       = [alert textFieldAtIndex:0];
+    UITextField* textField       = [alertView textFieldAtIndex:0];
     textField.textAlignment      = NSTextAlignmentCenter;
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
     textField.text               = text;
     
-    alert->_textCompletion       = [completion copy];
+    alertView->_textCompletion   = [completion copy];
     
-    [alert show];
+    [alertView show];
     textField.font               = [UIFont systemFontOfSize:18.0f];   // Needs to be placed after `show` to work.
     
     va_end(arguments);
     
-    return alert;
+    return alertView;
 }
 
 

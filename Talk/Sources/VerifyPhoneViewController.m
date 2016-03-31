@@ -253,12 +253,24 @@
                                                                 [NSBundle mainBundle], @"Couldn't Get Code",
                                                                 @"Something went wrong.\n"
                                                                 @"[iOS alert title size].");
-                    message = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyCodeErrorMessage", nil,
-                                                                [NSBundle mainBundle],
-                                                                @"Failed to get a verification code: %@\n\n"
-                                                                @"Please try again later.",
-                                                                @"Alert message if user wants.\n"
-                                                                @"[iOS alert message size]");
+                    if (error.code == WebStatusFailDisallowedNumber)
+                    {
+                        message = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyCodeErrorMessage", nil,
+                                                                    [NSBundle mainBundle],
+                                                                    @"Failed to get a verification code: %@",
+                                                                    @"Alert message if user wants.\n"
+                                                                    @"[iOS alert message size]");
+                    }
+                    else
+                    {
+                        message = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyCodeErrorMessage", nil,
+                                                                    [NSBundle mainBundle],
+                                                                    @"Failed to get a verification code: %@\n\n"
+                                                                    @"Please try again later.",
+                                                                    @"Alert message if user wants.\n"
+                                                                    @"[iOS alert message size]");
+                    }
+
                     message = [NSString stringWithFormat:message, error.localizedDescription];
                     [BlockAlertView showAlertViewWithTitle:title
                                                    message:message
@@ -266,7 +278,14 @@
                     {
                         self.completion(nil);
                         self.completion = nil;
-                        [self.navigationController popViewControllerAnimated:YES];
+
+                        // Without this delay, a keyboard appears briefly after popping.
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)),
+                                       dispatch_get_main_queue(),
+                                       ^
+                        {
+                            [self.navigationController popViewControllerAnimated:YES];
+                        });
                     }
                                          cancelButtonTitle:[Strings closeString]
                                          otherButtonTitles:nil];

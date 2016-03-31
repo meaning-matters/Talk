@@ -29,6 +29,7 @@
                      @"FAIL_INSUFFICIENT_CREDIT"     : @(WebStatusFailInsufficientCredit),
                      @"FAIL_IVR_IN_USE"              : @(WebStatusFailIvrInUse),
                      @"FAIL_VERIFIED_NUMBER_IN_USE"  : @(WebStatusFailVerfiedNumberInUse),
+                     @"FAIL_DISALLOWED_NUMBER"       : @(WebStatusFailDisallowedNumber),
                      @"FAIL_CALLBACK_ALREADY_ACTIVE" : @(WebStatusFailCallbackAlreadyActive),
                      @"FAIL_NO_CALLBACK_FOUND"       : @(WebStatusFailNoCallbackFound),
                      @"FAIL_NO_CREDIT"               : @(WebStatusFailNoCredit),
@@ -138,6 +139,14 @@
         {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailVerifiedNumberInUse", nil, [NSBundle mainBundle],
                                                        @"This Phone is still being used.",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+        }
+        case WebStatusFailDisallowedNumber:
+        {
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailDisallowedNumbe", nil, [NSBundle mainBundle],
+                                                       @"This number can't be added as a Phone.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;
