@@ -14,8 +14,6 @@
 
 @interface CallbackViewController : CallBaseViewController
 
-@property (nonatomic, strong) Call* call;
-
 - (instancetype)initWithCall:(Call*)call;
 
 @end

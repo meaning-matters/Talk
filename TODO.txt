@@ -152,14 +152,10 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 
 * Dismiss keyboards when tapping table and when scrolling down (possibly with swizzling in a viewDidLoad in UIViewController+Common).
 
-* Subdevide countries in 5 region: https://en.wikipedia.org/wiki/United_Nations_geoscheme + All. And add Radio button on Call Rates.
-
 * New datamodel (2.2 or something): RENAME Destination.statements --> Destination.action, DELETE Recording.urlString (because can be generated from uuid).
 
 * Do something with NBLog(@"//### Received notification about address that's unknown to app."); AddressUpdatesHandler
 
 * Disable Accessibility / "Dynamic Type" in app, and select one (or multiple in app Settings) font size for all standard cells.
-
-* There was a crash in WebClient > traverseStatements when iterating "for (NSString* key in object)", instread of "for (NSString* key in [object allKeys])" see http://stackoverflow.com/q/14457369/1971013  It occurred only with longer/different IVR JSON, that was the weird thing.  Let's see what happens with larger/complex IVRs.
 
 

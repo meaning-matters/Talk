@@ -12,13 +12,6 @@
 #import "NBRecentContactEntry.h"
 
 
-@protocol CallManagerDelegate <NSObject>
-
-//### Place methods in here that are now part of CallViewController.  like addCall, changedStateOfCall, ...
-
-@end
-
-
 @interface CallManager : NSObject
 
 @property (nonatomic, strong) NSMutableArray* activeCalls;

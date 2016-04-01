@@ -145,6 +145,10 @@
 {
     if ([object isKindOfClass:[NSMutableDictionary class]])
     {
+        //### When iterating "for (NSString* key in object)" got app crash.
+        //### It occurred only with some IVR JSON; very weird.
+        //### http://stackoverflow.com/q/14457369/1971013
+        //### Let's see what happens here when we have longer IVRs.
         for (NSString* key in [object allKeys])
         {
             if ([key isEqualToString:@"e164s"])

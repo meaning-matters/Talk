@@ -30,6 +30,8 @@
     NSString*        uuid;              // Needed to give endAction an independent copy from call's uuid.
 }
 
+@property (nonatomic, strong) Call* call;
+
 @end
 
 
