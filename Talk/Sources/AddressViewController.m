@@ -315,7 +315,14 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
             }
             case AddressStatusDisabledMask:
             {
-                //### Ignore for now; don't know when this occurs.
+                title   = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
+                                                            @"Address Is Disabled",
+                                                            @"...");
+                message = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
+                                                            @"Your address has been disabled.\n\n"
+                                                            @"Please contact us, via Help > Contact Us, "
+                                                            @"to receive more details.",
+                                                            @"...");
                 break;
             }
         }
