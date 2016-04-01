@@ -76,6 +76,4 @@ typedef enum
 
 - (NSString*)stateString;
 
-- (NSString*)failedString;
-
 @end

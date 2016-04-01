@@ -152,14 +152,4 @@
     return string;
 }
 
-
-- (NSString*)failedString
-{
-    NSString*   string;
-
-    string = @"failed";//###
-
-    return string;
-}
-
 @end
