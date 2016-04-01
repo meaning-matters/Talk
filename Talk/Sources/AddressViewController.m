@@ -1403,11 +1403,11 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
                                                     postcode:self.address.postcode
                                               isoCountryCode:self.address.isoCountryCode
                                                   proofImage:self.address.proofImage
-                                                      idType:nil //########
-                                                    idNumber:nil //########
-                                                fiscalIdCode:nil //########
-                                                  streetCode:nil //########
-                                            municipalityCode:nil //########
+                                                      idType:self.address.idType
+                                                    idNumber:self.address.idNumber
+                                                fiscalIdCode:self.address.fiscalIdCode
+                                                  streetCode:self.address.streetCode
+                                            municipalityCode:self.address.municipalityCode
                                                        reply:^(NSError*  error,
                                                                NSString* addressId,
                                                                NSString* addressStatus,
