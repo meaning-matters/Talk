@@ -15,8 +15,8 @@
 
 #define CFReleaseSafe(x)                                { if ((x) != NULL) CFRelease(x); }
 
-
-static const int TextFieldCellTag = 1111;
+static const NSInteger CommonTextFieldCellTag = 1111;
+static const NSInteger CommonUseButtonTag     =  123;
 
 
 @interface Common : NSObject <MFMailComposeViewControllerDelegate>
@@ -161,5 +161,13 @@ static const int TextFieldCellTag = 1111;
 + (NSString*)pathForTemporaryFileWithExtension:(NSString*)extension;
 
 + (void)reloadSections:(NSUInteger)sections allSections:(NSUInteger)allSections tableView:(UITableView*)tableView;
+
++ (UIButton*)addUseButtonWithText:(NSString*)text
+                           toCell:(UITableViewCell*)cell
+                       atPosition:(int)position;
+
++ (void)showCallbackAlert;
+
++ (void)showCallerIdAlert;
 
 @end

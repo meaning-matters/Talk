@@ -910,7 +910,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
 - (UITableViewCell*)nameCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell      = [super nameCellForRowAtIndexPath:indexPath];
-    UITextField*     textField = [cell viewWithTag:TextFieldCellTag];
+    UITextField*     textField = [cell viewWithTag:CommonTextFieldCellTag];
     
     objc_setAssociatedObject(textField, @"TextFieldKey", @"name", OBJC_ASSOCIATION_RETAIN);
 
@@ -930,11 +930,11 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"TextFieldCell"];
         textField = [Common addTextFieldToCell:cell delegate:self];
-        textField.tag = TextFieldCellTag;
+        textField.tag = CommonTextFieldCellTag;
     }
     else
     {
-        textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
+        textField = (UITextField*)[cell viewWithTag:CommonTextFieldCellTag];
     }
     
     textField.userInteractionEnabled = self.isNew;
@@ -1033,11 +1033,11 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
         
         textField = [Common addTextFieldToCell:cell delegate:self];
-        textField.tag = TextFieldCellTag;
+        textField.tag = CommonTextFieldCellTag;
     }
     else
     {
-        textField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];
+        textField = (UITextField*)[cell.contentView viewWithTag:CommonTextFieldCellTag];
     }
 
     cell.accessoryType  = UITableViewCellAccessoryNone;
@@ -1304,7 +1304,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         {
             UITextField* nextTextField;
             
-            nextTextField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];
+            nextTextField = (UITextField*)[cell.contentView viewWithTag:CommonTextFieldCellTag];
             [nextTextField becomeFirstResponder];
         }
         else
@@ -1367,7 +1367,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
         UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:self.nextIndexPath];
         self.nextIndexPath = nil;
         
-        nextTextField = (UITextField*)[cell.contentView viewWithTag:TextFieldCellTag];
+        nextTextField = (UITextField*)[cell.contentView viewWithTag:CommonTextFieldCellTag];
         [nextTextField becomeFirstResponder];
     }
 }

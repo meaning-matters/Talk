@@ -1021,11 +1021,11 @@ typedef enum
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"TextFieldCell"];
         textField = [Common addTextFieldToCell:cell delegate:self];
-        textField.tag = TextFieldCellTag;
+        textField.tag = CommonTextFieldCellTag;
     }
     else
     {
-        textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
+        textField = (UITextField*)[cell viewWithTag:CommonTextFieldCellTag];
     }
 
     cell.textLabel.text              = [Strings nameString];

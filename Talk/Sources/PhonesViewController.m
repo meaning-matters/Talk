@@ -17,14 +17,13 @@
 #import "Skinning.h"
 #import "BlockAlertView.h"
 
-const NSInteger kUseButtonTag = 123;
-
 
 @interface PhonesViewController ()
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedPhonesController;
 @property (nonatomic, strong) PhoneData*                  selectedPhone;
 @property (nonatomic, copy) void (^completion)(PhoneData* selectedPhone);
+@property (nonatomic, strong) id<NSObject>                defaultsObserver;
 
 @end
 
@@ -52,10 +51,10 @@ const NSInteger kUseButtonTag = 123;
         self.selectedPhone        = selectedPhone;
         self.completion           = completion;
         
-        [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
-                                                          object:nil
-                                                           queue:[NSOperationQueue mainQueue]
-                                                      usingBlock:^(NSNotification* note)
+        self.defaultsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
+                                                                                  object:nil
+                                                                                   queue:[NSOperationQueue mainQueue]
+                                                                              usingBlock:^(NSNotification* note)
         {
             if ([Settings sharedSettings].haveAccount)
             {
@@ -70,6 +69,8 @@ const NSInteger kUseButtonTag = 123;
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self.defaultsObserver];
+
     [[Settings sharedSettings] removeObserver:self forKeyPath:@"sortSegment" context:nil];
 }
 
@@ -334,11 +335,10 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                                                                @"CB", @"Abbreviation for Callback");
     NSString* callerIdText = NSLocalizedStringWithDefaultValue(@"Phones ...", nil, [NSBundle mainBundle],
                                                                @"ID", @"Abbreviation for Caller ID");
-    CGFloat   fontSize     = cell.detailTextLabel.font.pointSize;
-    
+
     for (UIView* subview in cell.subviews)
     {
-        if (subview.tag == kUseButtonTag)
+        if (subview.tag == CommonUseButtonTag)
         {
             [subview removeFromSuperview];
         }
@@ -348,83 +348,15 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     
     if (isCallerId)
     {
-        UIButton* button = [self addUseButtonWithText:callerIdText fontSize:fontSize toCell:cell atPosition:position++];
-        [button addTarget:self action:@selector(showCallerIdAlert) forControlEvents:UIControlEventTouchUpInside];
+        UIButton* button = [Common addUseButtonWithText:callerIdText toCell:cell atPosition:position++];
+        [button addTarget:[Common class] action:@selector(showCallerIdAlert) forControlEvents:UIControlEventTouchUpInside];
     }
 
     if (isCallback)
     {
-        UIButton* button = [self addUseButtonWithText:callbackText fontSize:fontSize toCell:cell atPosition:position++];
-        [button addTarget:self action:@selector(showCallbackAlert) forControlEvents:UIControlEventTouchUpInside];
+        UIButton* button = [Common addUseButtonWithText:callbackText toCell:cell atPosition:position++];
+        [button addTarget:[Common class] action:@selector(showCallbackAlert) forControlEvents:UIControlEventTouchUpInside];
     }
-}
-
-
-- (UIButton*)addUseButtonWithText:(NSString*)text
-                         fontSize:(CGFloat)fontSize
-                           toCell:(UITableViewCell*)cell
-                       atPosition:(int)position
-{
-    CGFloat width    = 27.0f;
-    CGFloat height   = 17.0f;
-    CGFloat gap      =  6.0f;   // Horizontal gap between buttons.
-    CGFloat trailing = 38.0f;   // Space between right most button and right side of cell.
-    CGFloat x;
-    CGFloat y        = 25.0f;
-    
-    // Assumes there are at most 2 buttons.
-    if (position == 0)
-    {
-        x = cell.frame.size.width - trailing - width;
-    }
-    else
-    {
-        x = cell.frame.size.width - trailing - width - gap - width;
-    }
-    
-    UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-    button.frame           = CGRectMake(x, y, width, height);
-    button.tag             = kUseButtonTag;
-    button.titleLabel.font = [UIFont systemFontOfSize:fontSize];
-    [button setTitle:text forState:UIControlStateNormal];
-    [Common styleButton:button];
-    
-    [cell addSubview:button];
-    
-    return button;
-}
-
-
-- (void)showCallbackAlert
-{
-    NSString* title   = NSLocalizedStringWithDefaultValue(@"Phones ...", nil, [NSBundle mainBundle],
-                                                          @"Callback Phone", @"...");
-    NSString* message = NSLocalizedStringWithDefaultValue(@"Phone ...", nil, [NSBundle mainBundle],
-                                                          @"When making a call, you're first being called back on this phone.",
-                                                          @"...");
-    [BlockAlertView showAlertViewWithTitle:title
-                                   message:message
-                                completion:nil
-                         cancelButtonTitle:[Strings closeString]
-                         otherButtonTitles:nil];
-}
-
-
-- (void)showCallerIdAlert
-{
-    NSString* title   = NSLocalizedStringWithDefaultValue(@"Phones ...", nil, [NSBundle mainBundle],
-                                                          @"Default Caller ID", @"...");
-    NSString* message = NSLocalizedStringWithDefaultValue(@"Phone ...", nil, [NSBundle mainBundle],
-                                                          @"This caller ID will be used when you did not select "
-                                                          @"one for the contact you're calling, or "
-                                                          @"when you call using the Keypad.",
-                                                          @"...");
-    [BlockAlertView showAlertViewWithTitle:title
-                                   message:message
-                                completion:nil
-                         cancelButtonTitle:[Strings closeString]
-                         otherButtonTitles:nil];
 }
 
 @end

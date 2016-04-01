@@ -246,6 +246,7 @@ typedef enum
 
     if ([self.navigationController.viewControllers indexOfObject:self] != NSNotFound)   // May not be future proof.
     {
+        //###### Always do this and ...
         if (audioRecorder.isRecording || audioPlayer.isPlaying)
         {
             [self pauseButtonAction:nil];
@@ -253,6 +254,8 @@ typedef enum
     }
     else
     {
+        //###### move this to dealloc???
+
         // We're being popped, because self is no longer in the navigation stack.
         [audioRecorder stop];
         [audioPlayer stop];

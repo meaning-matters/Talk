@@ -107,11 +107,11 @@
     {
         cell          = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"NameCell"];
         textField     = [Common addTextFieldToCell:cell delegate:(id<UITextFieldDelegate>)self]; // The subclass must implement this delegate.
-        textField.tag = TextFieldCellTag;
+        textField.tag = CommonTextFieldCellTag;
     }
     else
     {
-        textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
+        textField = (UITextField*)[cell viewWithTag:CommonTextFieldCellTag];
     }
 
     textField.placeholder = [Strings requiredString];

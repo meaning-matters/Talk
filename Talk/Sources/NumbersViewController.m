@@ -34,7 +34,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedNumbersController;
 @property (nonatomic, assign) TableSections               sections;
-@property (nonatomic, weak) id<NSObject>                  observer;
+@property (nonatomic, weak) id<NSObject>                  addressesObserver;
+@property (nonatomic, weak) id<NSObject>                  defaultsObserver;
 
 @end
 
@@ -54,13 +55,24 @@ typedef NS_ENUM(NSUInteger, TableSections)
         self.sections |= TableSectionAddresses;
 
         __weak typeof(self) weakSelf = self;
-        self.observer = [[NSNotificationCenter defaultCenter] addObserverForName:AddressUpdatesNotification
-                                                                          object:nil
-                                                                           queue:[NSOperationQueue mainQueue]
-                                                                      usingBlock:^(NSNotification* note)
+        self.addressesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AddressUpdatesNotification
+                                                                                   object:nil
+                                                                                    queue:[NSOperationQueue mainQueue]
+                                                                               usingBlock:^(NSNotification* note)
         {
             [weakSelf updateBadgeValue];
             [Common reloadSections:TableSectionAddresses allSections:weakSelf.sections tableView:weakSelf.tableView];
+        }];
+
+        self.defaultsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
+                                                                                  object:nil
+                                                                                   queue:[NSOperationQueue mainQueue]
+                                                                              usingBlock:^(NSNotification* note)
+        {
+            if ([Settings sharedSettings].haveAccount)
+            {
+                [self.tableView reloadData];
+            }
         }];
     }
 
@@ -78,7 +90,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
 - (void)dealloc
 {
     [[Settings sharedSettings] removeObserver:self forKeyPath:@"sortSegment" context:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
+    [[NSNotificationCenter defaultCenter] removeObserver:self.addressesObserver];
+    [[NSNotificationCenter defaultCenter] removeObserver:self.defaultsObserver];
 }
 
 
@@ -302,6 +315,32 @@ typedef NS_ENUM(NSUInteger, TableSections)
         PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:number.e164];
         cell.detailTextLabel.text = [phoneNumber internationalFormat];
         cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+
+        [self addUseButtonWithNumber:number toCell:cell];
+    }
+}
+
+
+#pragma mark - Helpers
+
+- (void)addUseButtonWithNumber:(NumberData*)number toCell:(UITableViewCell*)cell
+{
+    BOOL      isCallerId   = [number.e164 isEqualToString:[Settings sharedSettings].callerIdE164];
+    NSString* callerIdText = NSLocalizedStringWithDefaultValue(@"Numbers ...", nil, [NSBundle mainBundle],
+                                                               @"ID", @"Abbreviation for Caller ID");
+
+    for (UIView* subview in cell.subviews)
+    {
+        if (subview.tag == CommonUseButtonTag)
+        {
+            [subview removeFromSuperview];
+        }
+    }
+
+    if (isCallerId)
+    {
+        UIButton* button = [Common addUseButtonWithText:callerIdText toCell:cell atPosition:0];
+        [button addTarget:[Common class] action:@selector(showCallerIdAlert) forControlEvents:UIControlEventTouchUpInside];
     }
 }
 

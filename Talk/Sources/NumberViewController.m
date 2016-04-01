@@ -7,7 +7,6 @@
 //
 
 #import "NumberViewController.h"
-#import "ProofImageViewController.h"
 #import "NumberDestinationsViewController.h"
 #import "Common.h"
 #import "PhoneNumber.h"
@@ -19,6 +18,7 @@
 #import "DestinationData.h"
 #import "Skinning.h"
 #import "DataManager.h"
+#import "Settings.h"
 
 
 typedef enum
@@ -26,9 +26,10 @@ typedef enum
     TableSectionName         = 1UL << 0,
     TableSectionE164         = 1UL << 1,
     TableSectionDestination  = 1UL << 2,
-    TableSectionSubscription = 1UL << 3,
-    TableSectionArea         = 1UL << 4,    // The optional state will be placed in a row here.
-    TableSectionAddress      = 1UL << 5,
+    TableSectionUsage        = 1UL << 3,
+    TableSectionSubscription = 1UL << 4,
+    TableSectionArea         = 1UL << 5,    // The optional state will be placed in a row here.
+    TableSectionAddress      = 1UL << 6,
 } TableSections;
 
 typedef enum
@@ -71,6 +72,8 @@ typedef enum
         sections |= TableSectionName;
         sections |= TableSectionE164;
         sections |= TableSectionDestination;
+        sections |= TableSectionUsage;
+        
         sections |= TableSectionArea;
         sections |= TableSectionSubscription;
 
@@ -180,36 +183,13 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionName:
-        {
-            numberOfRows = 1;
-            break;
-        }
-        case TableSectionE164:
-        {
-            numberOfRows = 1;
-            break;
-        }
-        case TableSectionDestination:
-        {
-            numberOfRows = 1;
-            break;
-        }
-        case TableSectionSubscription:
-        {
-            numberOfRows = 2;   // Second row leads to buying extention.
-            break;
-        }
-        case TableSectionArea:
-        {
-            numberOfRows = [Common bitsSetCount:areaRows];
-            break;
-        }
-        case TableSectionAddress:
-        {
-            numberOfRows = 1;
-            break;
-        }
+        case TableSectionName:         numberOfRows = 1;                              break;
+        case TableSectionE164:         numberOfRows = 1;                              break;
+        case TableSectionDestination:  numberOfRows = 1;                              break;
+        case TableSectionUsage:        numberOfRows = 1;                              break;
+        case TableSectionSubscription: numberOfRows = 2;                              break;  // Second row leads to buying extention.
+        case TableSectionArea:         numberOfRows = [Common bitsSetCount:areaRows]; break;
+        case TableSectionAddress:      numberOfRows = 1;                              break;
     }
 
     return numberOfRows;
@@ -218,7 +198,6 @@ typedef enum
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    ProofImageViewController*         proofImageviewController;
     NumberDestinationsViewController* destinationsViewController;
 
     if ([self.tableView cellForRowAtIndexPath:indexPath].selectionStyle == UITableViewCellSelectionStyleNone)
@@ -240,6 +219,15 @@ typedef enum
         {
             destinationsViewController = [[NumberDestinationsViewController alloc] initWithNumber:number];
             [self.navigationController pushViewController:destinationsViewController animated:YES];
+            break;
+        }
+        case TableSectionUsage:
+        {
+            [Settings sharedSettings].callerIdE164 = number.e164;
+
+            UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
         }
         case TableSectionSubscription:
@@ -282,6 +270,10 @@ typedef enum
         {
             identifier = @"DisclosureCell";
             break;
+        }
+        case TableSectionUsage:
+        {
+            identifier = @"UsageCell";
         }
         case TableSectionSubscription:
         {
@@ -336,6 +328,11 @@ typedef enum
             [self updateDestinationCell:cell];
             break;
         }
+        case TableSectionUsage:
+        {
+            [self updateUsageCell:cell];
+            break;
+        }
         case TableSectionSubscription:
         {
             [self updateSubscriptionCell:cell atIndexPath:indexPath];
@@ -361,11 +358,11 @@ typedef enum
 {
     UITextField* textField;
 
-    textField = (UITextField*)[cell viewWithTag:TextFieldCellTag];
+    textField = (UITextField*)[cell viewWithTag:CommonTextFieldCellTag];
     if (textField == nil)
     {
         textField = [Common addTextFieldToCell:cell delegate:self];
-        textField.tag = TextFieldCellTag;
+        textField.tag = CommonTextFieldCellTag;
         textField.enablesReturnKeyAutomatically = YES;
     }
 
@@ -402,6 +399,21 @@ typedef enum
     cell.detailTextLabel.text = (number.destination == nil) ? [Strings defaultString] : number.destination.name;
     cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
     cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+}
+
+
+- (void)updateUsageCell:(UITableViewCell*)cell
+{
+    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:UseDefaultCallerId CellText", nil,
+                                                            [NSBundle mainBundle], @"Use As Default Caller ID",
+                                                            @"..."
+                                                            @"[....");
+    if ([[Settings sharedSettings].callerIdE164 isEqualToString:number.e164])
+    {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
+
+    cell.textLabel.textColor = [Skinning tintColor];
 }
 
 
