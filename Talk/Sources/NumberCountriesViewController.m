@@ -54,7 +54,7 @@
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                  target:self
                                                                  action:@selector(cancel)];
-    self.navigationItem.leftBarButtonItem = cancelButton;
+    self.navigationItem.rightBarButtonItem = cancelButton;
 
     self.isLoading = YES;
     [[WebClient sharedClient] retrieveNumberCountries:^(NSError* error, id content)

@@ -98,14 +98,14 @@ typedef enum
     if (isNew)
     {
         UIBarButtonItem* buttonItem;
-        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                   target:self
-                                                                   action:@selector(cancelAction)];
-        self.navigationItem.leftBarButtonItem = buttonItem;
-
         buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
                                                                    target:self
                                                                    action:@selector(saveAction)];
+        self.navigationItem.leftBarButtonItem = buttonItem;
+
+        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                   target:self
+                                                                   action:@selector(cancelAction)];
         self.navigationItem.rightBarButtonItem = buttonItem;
     }
     else
@@ -199,7 +199,7 @@ typedef enum
 
     if (isNew == YES)
     {
-        self.navigationItem.rightBarButtonItem.enabled = NO;
+        self.navigationItem.leftBarButtonItem.enabled = NO;
     }
 
     [[WebClient sharedClient] updateVerifiedE164:[phoneNumber e164Format] withName:self.name reply:^(NSError *error)
@@ -599,8 +599,8 @@ typedef enum
 
 - (void)updateSaveButtonItem
 {
-    self.navigationItem.rightBarButtonItem.enabled = ([self.name stringByRemovingWhiteSpace].length > 0) &&
-                                                     [phoneNumber isValid];
+    self.navigationItem.leftBarButtonItem.enabled = ([self.name stringByRemovingWhiteSpace].length > 0) &&
+                                                    [phoneNumber isValid];
 }
 
 
