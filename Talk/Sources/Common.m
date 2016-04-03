@@ -1285,8 +1285,8 @@ static Common* sharedCommon;
     message = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyCancelMessage", nil, [NSBundle mainBundle],
                                                 @"To show correct rates, enter a number you'd be called "
                                                 @"back on.\n\n"
-                                                @"(This popup won't show up when you're a user, and the Callback Number "
-                                                @"on Settings is selected.)",
+                                                @"(This popup won't show up when you're a user and your Callback "
+                                                @"Phone is selected on Settings.)",
                                                 @"Message explaining about the phone number they need to enter.\n"
                                                 @"[iOS alert message size]");
     alert   = [BlockAlertView showPhoneNumberAlertViewWithTitle:title
@@ -1322,12 +1322,12 @@ static Common* sharedCommon;
                                      cancelButtonTitle:[Strings closeString]
                                      otherButtonTitles:nil];
 
-                completion(NO, phoneNumber);
+                completion(cancelled, phoneNumber);
             }
         }
         else
         {
-            completion(NO, phoneNumber);
+            completion(cancelled, phoneNumber);
         }
     }
                                               cancelButtonTitle:[Strings cancelString]

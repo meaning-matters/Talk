@@ -30,8 +30,6 @@
 		480B4FFF1BED4AC20098F3A4 /* WD@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 480B4FFE1BED4AC20098F3A4 /* WD@2x.png */; };
 		480BEF9518D59ECA00C882E0 /* GetStartedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 480BEF9418D59ECA00C882E0 /* GetStartedView.xib */; };
 		480BEF9618D73EF900C882E0 /* GetStartedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480BEF8D18D59E7400C882E0 /* GetStartedViewController.m */; };
-		480CE11C193B67CF0020F255 /* RatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480CE11B193B67CF0020F255 /* RatesViewController.m */; };
-		480CE11F193BA7B20020F255 /* NumberRatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480CE11E193BA7B20020F255 /* NumberRatesViewController.m */; };
 		480CE121193C4D100020F255 /* NumberBuyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 480CE120193C4D100020F255 /* NumberBuyCell.xib */; };
 		480CE124194DA0100020F255 /* CallerIdData.m in Sources */ = {isa = PBXBuildFile; fileRef = 480CE123194DA0100020F255 /* CallerIdData.m */; };
 		480CE127194DBEC40020F255 /* CallerIdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480CE126194DBEC40020F255 /* CallerIdViewController.m */; };
@@ -710,10 +708,6 @@
 		480BEF8C18D59E7400C882E0 /* GetStartedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetStartedViewController.h; sourceTree = "<group>"; };
 		480BEF8D18D59E7400C882E0 /* GetStartedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetStartedViewController.m; sourceTree = "<group>"; };
 		480BEF9418D59ECA00C882E0 /* GetStartedView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GetStartedView.xib; sourceTree = "<group>"; };
-		480CE11A193B67CF0020F255 /* RatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RatesViewController.h; sourceTree = "<group>"; };
-		480CE11B193B67CF0020F255 /* RatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RatesViewController.m; sourceTree = "<group>"; };
-		480CE11D193BA7B20020F255 /* NumberRatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberRatesViewController.h; sourceTree = "<group>"; };
-		480CE11E193BA7B20020F255 /* NumberRatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberRatesViewController.m; sourceTree = "<group>"; };
 		480CE120193C4D100020F255 /* NumberBuyCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberBuyCell.xib; sourceTree = "<group>"; };
 		480CE122194DA0100020F255 /* CallerIdData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallerIdData.h; sourceTree = "<group>"; };
 		480CE123194DA0100020F255 /* CallerIdData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallerIdData.m; sourceTree = "<group>"; };
@@ -2417,8 +2411,6 @@
 				48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */,
 				48F1B7DF17E63819003A3933 /* NumberDestinationsViewController.h */,
 				48F1B7E017E63819003A3933 /* NumberDestinationsViewController.m */,
-				480CE11D193BA7B20020F255 /* NumberRatesViewController.h */,
-				480CE11E193BA7B20020F255 /* NumberRatesViewController.m */,
 				488AD1E816E799C3004D3A2A /* NumberStatesViewController.h */,
 				488AD1E916E799C3004D3A2A /* NumberStatesViewController.m */,
 				48AF44E81649479100DFE3D8 /* NumbersViewController.h */,
@@ -2431,8 +2423,6 @@
 				48C97EA218943C7300174DE9 /* PhoneViewController.m */,
 				48C1D3C317D31308004F910D /* ProofImageViewController.h */,
 				48C1D3C417D31309004F910D /* ProofImageViewController.m */,
-				480CE11A193B67CF0020F255 /* RatesViewController.h */,
-				480CE11B193B67CF0020F255 /* RatesViewController.m */,
 				483679DC1721F2DF001A02AF /* RecordingViewController.h */,
 				483679DD1721F2E0001A02AF /* RecordingViewController.m */,
 				48251B99187F4A8A00E69C3A /* SettingsViewController.h */,
@@ -3141,7 +3131,6 @@
 				48B813701AADF9B20019AF77 /* NBPersonViewController.m in Sources */,
 				488763F61C8893B300527723 /* BadgeHandler.m in Sources */,
 				48C431A1189EDFB40008FE01 /* VerifyPhoneViewController.m in Sources */,
-				480CE11C193B67CF0020F255 /* RatesViewController.m in Sources */,
 				485ECBE216525D3600364F08 /* KeypadView.m in Sources */,
 				489765C41BCC4F4800D77FD7 /* WebStatus.m in Sources */,
 				485ECBE61652B9BE00364F08 /* KeypadButton.m in Sources */,
@@ -3240,7 +3229,6 @@
 				48B8133A1AADF8F10019AF77 /* NBPeopleTableViewCell.m in Sources */,
 				48B813561AADF9590019AF77 /* NBDateCell.m in Sources */,
 				4814D56719E9660200958E33 /* AFHTTPRequestOperation.m in Sources */,
-				480CE11F193BA7B20020F255 /* NumberRatesViewController.m in Sources */,
 				4814D56919E9660200958E33 /* AFHTTPSessionManager.m in Sources */,
 				48D4FADD1924247A00949894 /* NavigationController.m in Sources */,
 				48793369185C6A5800C08C8C /* PhonesViewController.m in Sources */,

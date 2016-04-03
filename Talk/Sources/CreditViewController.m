@@ -7,7 +7,7 @@
 //
 
 #import "CreditViewController.h"
-#import "RatesViewController.h"
+#import "CallRatesViewController.h"
 #import "PurchaseManager.h"
 #import "CreditAmountCell.h"
 #import "Settings.h"
@@ -152,7 +152,7 @@ typedef enum
             
             cell.imageView.image = [Common maskedImageNamed:@"RatesTab" color:[UIColor colorWithWhite:0.58f alpha:1.00f]];
             cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.text  = NSLocalizedString(@"Rates", @"Rates cell title");
+            cell.textLabel.text  = NSLocalizedString(@"Call Rates", @"Rates cell title");
             break;
         }
         case TableSectionBuy:
@@ -255,8 +255,7 @@ typedef enum
         }
         case TableSectionRates:
         {
-            RatesViewController* viewController = [[RatesViewController alloc] init];
-            [self.navigationController pushViewController:viewController animated:YES];
+            [self showCallRates];
             break;
         }
         case TableSectionBuy:
@@ -347,6 +346,40 @@ typedef enum
         self.isLoadingCredit = NO;
         [self updateAmountCell:(CreditAmountCell*)[self.tableView cellForRowAtIndexPath:self.amountIndexPath]];
     }];
+}
+
+
+- (void)showCallRates
+{
+    if ([Settings sharedSettings].callbackE164.length > 0)
+    {
+        CallRatesViewController* viewController;
+        PhoneNumber*             phoneNumber;
+
+        phoneNumber    = [[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].callbackE164];
+        viewController = [[CallRatesViewController alloc] initWithCallbackPhoneNumber:phoneNumber];
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
+    else
+    {
+        [Common aksForCallbackPhoneNumber:self.callbackPhoneNumber
+                               completion:^(BOOL cancelled, PhoneNumber* phoneNumber)
+        {
+            self.callbackPhoneNumber = phoneNumber;
+
+            if (cancelled == NO && phoneNumber.isValid)
+            {
+                CallRatesViewController* viewController;
+
+                viewController = [[CallRatesViewController alloc] initWithCallbackPhoneNumber:phoneNumber];
+                [self.navigationController pushViewController:viewController animated:YES];
+            }
+            else
+            {
+                [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+            }
+        }];
+    }
 }
 
 
