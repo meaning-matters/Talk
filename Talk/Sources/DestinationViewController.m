@@ -108,14 +108,14 @@ typedef enum
     if (isNew)
     {
         UIBarButtonItem* buttonItem;
-        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                   target:self
-                                                                   action:@selector(cancelAction)];
-        self.navigationItem.leftBarButtonItem = buttonItem;
-
         buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
                                                                    target:self
                                                                    action:@selector(createAction)];
+        self.navigationItem.leftBarButtonItem = buttonItem;
+
+        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                   target:self
+                                                                   action:@selector(cancelAction)];
         self.navigationItem.rightBarButtonItem = buttonItem;
     }
     else
@@ -127,7 +127,7 @@ typedef enum
         self.navigationItem.rightBarButtonItem = buttonItem;
     }
 
-    [self updateRightBarButtonItem];
+    [self updateSaveButtonItem];
     [self updateNumbersArray];
 }
 
@@ -483,7 +483,7 @@ typedef enum
                 phone = selectedPhone;
                 action[@"call"][@"e164s"][0] = phone.e164;
 
-                [self updateRightBarButtonItem];
+                [self updateSaveButtonItem];
                 [self updateTable];
 
                 [self save];
@@ -509,8 +509,7 @@ typedef enum
 {
     BOOL shouldChange = [super textField:textField shouldChangeCharactersInRange:range replacementString:string];
 
-    self.name = textField.text;
-    [self updateRightBarButtonItem];
+    [self updateSaveButtonItem];
 
     return shouldChange;
 }
@@ -518,7 +517,7 @@ typedef enum
 
 #pragma mark - Helper Methods
 
-- (void)updateRightBarButtonItem
+- (void)updateSaveButtonItem
 {
     if (isNew == YES)
     {
@@ -527,7 +526,7 @@ typedef enum
                                    ((phoneNumber.isValid && [Settings sharedSettings].homeIsoCountryCode.length > 0) ||
                                     phoneNumber.isInternational);
 
-        self.navigationItem.rightBarButtonItem.enabled = valid;
+        self.navigationItem.leftBarButtonItem.enabled = valid;
     }
 }
 
@@ -578,7 +577,7 @@ typedef enum
 
 - (void)update
 {
-    [self updateRightBarButtonItem];
+    [self updateSaveButtonItem];
 }
 
 @end

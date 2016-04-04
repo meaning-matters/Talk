@@ -117,11 +117,8 @@ typedef enum
         self.navigationItem.rightBarButtonItem = buttonItem;
     }
 
-    if (isNew)
-    {
-        [self updateSaveButtonItem];
-    }
-    
+    [self updateSaveButtonItem];
+
     [[Settings sharedSettings] addObserver:self
                                 forKeyPath:@"sortSegment"
                                    options:NSKeyValueObservingOptionNew
@@ -586,10 +583,7 @@ typedef enum
 {
     BOOL shouldChange = [super textField:textField shouldChangeCharactersInRange:range replacementString:string];
 
-    if (isNew == YES)
-    {
-        [self updateSaveButtonItem];
-    }
+    [self updateSaveButtonItem];
 
     return shouldChange;
 }
@@ -599,8 +593,11 @@ typedef enum
 
 - (void)updateSaveButtonItem
 {
-    self.navigationItem.leftBarButtonItem.enabled = ([self.name stringByRemovingWhiteSpace].length > 0) &&
-                                                    [phoneNumber isValid];
+    if (isNew == YES)
+    {
+        self.navigationItem.leftBarButtonItem.enabled = ([self.name stringByRemovingWhiteSpace].length > 0) &&
+                                                        [phoneNumber isValid];
+    }
 }
 
 
@@ -612,6 +609,12 @@ typedef enum
     {
         [self saveAction];
     }
+}
+
+
+- (void)update
+{
+    [self updateSaveButtonItem];
 }
 
 @end
