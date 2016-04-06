@@ -66,6 +66,17 @@
             [sharedInstance saveManagedObjectContext:nil];
         }];
 
+        [[NSNotificationCenter defaultCenter] addObserverForName:AppDelegateRemoteNotification
+                                                          object:nil
+                                                           queue:[NSOperationQueue mainQueue]
+                                                      usingBlock:^(NSNotification* note)
+        {
+            if ([note.userInfo[@"synchronize"] boolValue] == YES)
+            {
+                [sharedInstance synchronizeAll:nil];
+            }
+        }];
+
         if ([Settings sharedSettings].needsServerSync == YES)
         {
             __block id observer = [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusReachableNotification
@@ -656,6 +667,7 @@
                                                                NSString* isoCountryCode,
                                                                NSDate*   purchaseDate,
                                                                NSDate*   renewalDate,
+                                                               BOOL      autoRenew,
                                                                float     monthFee,
                                                                NSString* addressId)
                 {
@@ -689,6 +701,7 @@
                         number.isoCountryCode = isoCountryCode;
                         number.purchaseDate   = purchaseDate;
                         number.renewalDate    = renewalDate;
+                        number.autoRenew      = autoRenew;
                         number.stateCode      = stateCode;
                         number.stateName      = stateName;
                         //### missing are addressId and monthFee

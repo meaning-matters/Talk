@@ -191,10 +191,14 @@
                  isoCountryCode:(NSString*)isoCountryCode
                          areaId:(NSString*)areaId
                       addressId:(NSString*)addressId
+                      autoRenew:(BOOL)autoRenew
                           reply:(void (^)(NSError* error, NSString* e164))reply;
 
 // 11B. UPDATE NUMBER'S NAME
-- (void)updateNumberE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply;
+- (void)updateNumberE164:(NSString*)e164
+                withName:(NSString*)name
+               autoRenew:(BOOL)autoRenew
+                   reply:(void (^)(NSError* error))reply;
 
 // 11C. EXTEND NUMBER
 - (void)extendNumberE164:(NSString*)e164 forMonths:(NSUInteger)months reply:(void (^)(NSError* error))reply;
@@ -214,6 +218,7 @@
                                      NSString* isoCountryCode,
                                      NSDate*   purchaseDate,
                                      NSDate*   renewalDate,
+                                     BOOL      autoRenew,
                                      float     monthFee,
                                      NSString* addressId))reply;
 

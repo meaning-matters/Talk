@@ -158,8 +158,8 @@ typedef enum
             title = NSLocalizedStringWithDefaultValue(@"Number:Subscription SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"IMPORTANT: If you don't extend this subscription in time, "
-                                                      @"your number can't be used anymore after it expires. An "
-                                                      @"expired number can not be reactivated.",
+                                                      @"your Number can't be used anymore after it expires. Once "
+                                                      @"expired a Number can often not be reactivated.",
                                                       @"Explanation how/when the subscription, for "
                                                       @"using a phone number, will expire\n"
                                                       @"[* lines]");
@@ -187,7 +187,7 @@ typedef enum
         case TableSectionE164:         numberOfRows = 1;                              break;
         case TableSectionDestination:  numberOfRows = 1;                              break;
         case TableSectionUsage:        numberOfRows = 1;                              break;
-        case TableSectionSubscription: numberOfRows = 2;                              break;  // Second row leads to buying extention.
+        case TableSectionSubscription: numberOfRows = 3;                              break;  // Second row leads to buying extention.
         case TableSectionArea:         numberOfRows = [Common bitsSetCount:areaRows]; break;
         case TableSectionAddress:      numberOfRows = 1;                              break;
     }
@@ -277,7 +277,7 @@ typedef enum
         }
         case TableSectionSubscription:
         {
-            identifier = (indexPath.row == 0) ? @"Value1Cell" : @"DisclosureCell";
+            identifier = @[@"Value1Cell", @"DisclosureCell", @"RenewCell"][indexPath.row];
             break;
         }
         case TableSectionArea:
@@ -303,6 +303,17 @@ typedef enum
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
+
+        if ([identifier isEqualToString:@"RenewCell"])
+        {
+            UISwitch* switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+            switchView.onTintColor = [Skinning onTintColor];
+            cell.accessoryView = switchView;
+
+            [switchView addTarget:self
+                           action:@selector(autoRenewSwitchAction:)
+                 forControlEvents:UIControlEventValueChanged];
+        }
     }
 
     return cell;
@@ -349,6 +360,37 @@ typedef enum
             break;
         }
     }
+}
+
+
+#pragma mark - Actions
+
+- (void)autoRenewSwitchAction:(UISwitch*)switchView
+{
+    [[WebClient sharedClient] updateNumberE164:number.e164
+                                      withName:number.name
+                                     autoRenew:switchView.isOn
+                                         reply:^(NSError* error)
+    {
+        if (error == nil)
+        {
+            number.name      = self.name;
+            number.autoRenew = switchView.isOn;
+
+            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+
+            NSIndexSet* indexSet = [NSIndexSet indexSetWithIndex:[Common nOfBit:TableSectionSubscription
+                                                                        inValue:sections]];
+            [self.tableView beginUpdates];
+            [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView endUpdates];
+        }
+        else
+        {
+            self.name = number.name;
+            [self showAutoRenewSaveError:error];
+        }
+    }];
 }
 
 
@@ -431,7 +473,7 @@ typedef enum
         case 0:
         {
             cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionPurchaseDate Label", nil,
-                                                                          [NSBundle mainBundle], @"Purchased",
+                                                                          [NSBundle mainBundle], @"Purchase",
                                                                           @"....");
             cell.detailTextLabel.text = [dateFormatter stringFromDate:number.purchaseDate];
             cell.selectionStyle       = UITableViewCellSelectionStyleNone;
@@ -439,12 +481,31 @@ typedef enum
         }
         case 1:
         {
-            cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionRenewalDate Label", nil,
+            if (number.autoRenew)
+            {
+                cell.textLabel.text   = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionRenewalDate Label", nil,
+                                                                          [NSBundle mainBundle], @"Renewal",
+                                                                          @"....");
+            }
+            else
+            {
+                cell.textLabel.text   = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionRenewalDate Label", nil,
                                                                           [NSBundle mainBundle], @"Expiry",
                                                                           @"....");
+            }
+
             cell.detailTextLabel.text = [dateFormatter stringFromDate:number.renewalDate];
             cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
+            break;
+        }
+        case 2:
+        {
+            cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionRenewalChoice Label", nil,
+                                                                          [NSBundle mainBundle], @"Renew Automatically",
+                                                                          @"....");
+            UISwitch* switchView = (UISwitch*)cell.accessoryView;
+            switchView.on = number.autoRenew;
             break;
         }
     }
@@ -503,7 +564,10 @@ typedef enum
         return;
     }
 
-    [[WebClient sharedClient] updateNumberE164:number.e164 withName:self.name reply:^(NSError* error)
+    [[WebClient sharedClient] updateNumberE164:number.e164
+                                      withName:self.name
+                                     autoRenew:number.autoRenew
+                                         reply:^(NSError* error)
     {
         if (error == nil)
         {
@@ -514,13 +578,13 @@ typedef enum
         else
         {
             self.name = number.name;
-            [self showSaveError:error];
+            [self showNameSaveError:error];
         }
     }];
 }
 
 
-- (void)showSaveError:(NSError*)error
+- (void)showNameSaveError:(NSError*)error
 {
     NSString* title;
     NSString* message;
@@ -531,7 +595,7 @@ typedef enum
                                                 @"[iOS alert title size].");
     message = NSLocalizedStringWithDefaultValue(@"Number NameUpdateFailedMessage", nil,
                                                 [NSBundle mainBundle],
-                                                @"Saving the name via the internet failed: %@\n\n"
+                                                @"Saving the name failed: %@\n\n"
                                                 @"Please try again later.",
                                                 @"Alert message telling that a name must be supplied\n"
                                                 @"[iOS alert message size]");
@@ -543,6 +607,38 @@ typedef enum
         self.name = number.name;
         [self updateNameCell:[self.tableView cellForRowAtIndexPath:self.nameIndexPath]];
      }
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
+}
+
+
+- (void)showAutoRenewSaveError:(NSError*)error
+{
+    NSString* title;
+    NSString* message;
+
+    title   = NSLocalizedStringWithDefaultValue(@"Number AutoRenewUpdateFailedTitle", nil,
+                                                [NSBundle mainBundle], @"Auto Renew Not Updated",
+                                                @"Alert title telling that a setting was not saved.\n"
+                                                @"[iOS alert title size].");
+    message = NSLocalizedStringWithDefaultValue(@"Number AutoRenewUpdateFailedMessage", nil,
+                                                [NSBundle mainBundle],
+                                                @"Saving the auto renew setting failed: %@\n\n"
+                                                @"Please try again later.",
+                                                @"Alert message telling that a setting must be supplied\n"
+                                                @"[iOS alert message size]");
+    message = [NSString stringWithFormat:message, error.localizedDescription];
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        NSInteger        section    = [Common nOfBit:TableSectionSubscription inValue:sections];
+        NSIndexPath*     indexPath  = [NSIndexPath indexPathForItem:2 inSection:section];
+        UITableViewCell* cell       = [self.tableView cellForRowAtIndexPath:indexPath];
+        UISwitch*        switchView = (UISwitch*)cell.accessoryView;
+
+        [switchView setOn:number.autoRenew animated:YES];
+    }
                          cancelButtonTitle:[Strings closeString]
                          otherButtonTitles:nil];
 }

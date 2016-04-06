@@ -406,6 +406,7 @@ typedef enum
                                            isoCountryCode:numberIsoCountryCode
                                                    areaId:self->area[@"areaId"]
                                                 addressId:self.address.addressId
+                                                autoRenew:YES
                                                     reply:^(NSError* error, NSString *e164)
         {
             if (error == nil)

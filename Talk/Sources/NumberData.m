@@ -17,6 +17,7 @@
 @dynamic isoCountryCode;
 @dynamic purchaseDate;
 @dynamic renewalDate;
+@dynamic autoRenew;
 
 @dynamic stateName;
 @dynamic stateCode;

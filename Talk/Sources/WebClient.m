@@ -254,6 +254,13 @@
     AnalysticsTrace(@"API_1A");
 
     NSDictionary* parameters;
+    NSString*     buildType;
+
+#ifdef DEBUG
+    buildType = @"debug";
+#else
+    buildType = @"release";
+#endif
     
     if (mobileCountryCode == nil || mobileNetworkCode == nil)
     {
@@ -264,6 +271,7 @@
                        @"deviceOs"          : deviceOs,
                        @"deviceModel"       : deviceModel,
                        @"appVersion"        : appVersion,
+                       @"buildType"         : buildType,
                        @"vendorId"          : vendorId};
     }
     else
@@ -277,6 +285,7 @@
                        @"deviceOs"          : deviceOs,
                        @"deviceModel"       : deviceModel,
                        @"appVersion"        : appVersion,
+                       @"buildType"         : buildType,
                        @"vendorId"          : vendorId};
     }
 
@@ -313,7 +322,14 @@
 
     NSString*     username = [Settings sharedSettings].webUsername;
     NSDictionary* parameters;
-    
+    NSString*     buildType;
+
+#ifdef DEBUG
+    buildType = @"debug";
+#else
+    buildType = @"release";
+#endif
+
     if (mobileCountryCode == nil || mobileNetworkCode == nil)
     {
         parameters = @{@"language"          : language,
@@ -322,6 +338,7 @@
                        @"deviceOs"          : deviceOs,
                        @"deviceModel"       : deviceModel,
                        @"appVersion"        : appVersion,
+                       @"buildType"         : buildType,
                        @"vendorId"          : vendorId};
     }
     else
@@ -334,6 +351,7 @@
                        @"deviceOs"          : deviceOs,
                        @"deviceModel"       : deviceModel,
                        @"appVersion"        : appVersion,
+                       @"buildType"         : buildType,
                        @"vendorId"          : vendorId};
     }
     
@@ -819,13 +837,15 @@
                  isoCountryCode:(NSString*)isoCountryCode
                          areaId:(NSString*)areaId
                       addressId:(NSString*)addressId
+                      autoRenew:(BOOL)autoRenew
                           reply:(void (^)(NSError* error, NSString* e164))reply
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
     NSMutableDictionary* parameters = [@{@"durationMonths" : @(months),
                                          @"name"           : name,
                                          @"isoCountryCode" : isoCountryCode,
-                                         @"areaId"         : areaId} mutableCopy];
+                                         @"areaId"         : areaId,
+                                         @"autoRenew"      : @(autoRenew)} mutableCopy];
     (addressId != nil) ? parameters[@"addressId"] = addressId : 0;
     // parameters[@"debug"] = @(false);
 
@@ -846,11 +866,15 @@
 
 
 // 11B. UPDATE NUMBER'S NAME
-- (void)updateNumberE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply
+- (void)updateNumberE164:(NSString*)e164
+                withName:(NSString*)name
+               autoRenew:(BOOL)autoRenew
+                   reply:(void (^)(NSError* error))reply;
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSString*     number     = [e164 substringFromIndex:1];
-    NSDictionary* parameters = @{@"name" : name};
+    NSDictionary* parameters = @{@"name"      : name,
+                                 @"autoRenew" : @(autoRenew)};
 
     [self postPath:[NSString stringWithFormat:@"/users/%@/numbers/%@", username, number]
         parameters:parameters
@@ -914,6 +938,7 @@
                                      NSString* isoCountryCode,
                                      NSDate*   purchaseDate,
                                      NSDate*   renewalDate,
+                                     BOOL      autoRenew,
                                      float     monthFee,
                                      NSString* addressId))reply
 {
@@ -939,12 +964,13 @@
                   content[@"isoCountryCode"],
                   [self dateWithString:content[@"purchaseDateTime"]],
                   [self dateWithString:content[@"renewalDateTime"]],
+                  [content[@"autoRenew"] boolValue],
                   [content[@"monthFee"] floatValue],
                   content[@"addressId"]);
         }
         else
         {
-            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, 0.0f, nil);
+            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, 0.0f, nil);
         }
     }];
 }

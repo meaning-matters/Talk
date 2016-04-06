@@ -45,6 +45,7 @@
     <entity name="Number" representedClassName="NumberData" parentEntity="Callable" syncable="YES">
         <attribute name="areaCode" attributeType="String" syncable="YES"/>
         <attribute name="areaName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="autoRenew" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isoCountryCode" attributeType="String" minValueString="2" maxValueString="2" syncable="YES"/>
         <attribute name="numberType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="purchaseDate" attributeType="Date" syncable="YES"/>
@@ -82,7 +83,7 @@
         <element name="Callable" positionX="117" positionY="-468" width="128" height="88"/>
         <element name="CallerId" positionX="313" positionY="-451" width="128" height="73"/>
         <element name="Destination" positionX="72" positionY="297" width="128" height="135"/>
-        <element name="Number" positionX="97" positionY="-306" width="128" height="193"/>
+        <element name="Number" positionX="97" positionY="-306" width="128" height="208"/>
         <element name="Phone" positionX="-110" positionY="-387" width="128" height="60"/>
         <element name="Recent" positionX="486" positionY="-342" width="128" height="223"/>
         <element name="Recording" positionX="484" positionY="-27" width="128" height="105"/>
