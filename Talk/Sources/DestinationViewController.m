@@ -43,6 +43,8 @@ typedef enum
     NSArray*             numbersArray;
 }
 
+@property (nonatomic, assign) BOOL showCalledId;
+
 @end
 
 
@@ -84,8 +86,10 @@ typedef enum
         }
 
         action = [Common mutableObjectWithJsonString:self.destination.action];
+
+        self.showCalledId = [action[@"call"][@"showCalledId"] boolValue];
     }
-    
+
     return self;
 }
 
@@ -215,7 +219,8 @@ typedef enum
 - (void)createAction
 {
     self.destination.name = self.name;
-    action[@"call"][@"e164s"][0] = phone.e164;
+    action[@"call"][@"e164s"][0]     = phone.e164;
+    action[@"call"][@"showCalledId"] = self.showCalledId ? @"true" : @"false";
 
     self.navigationItem.rightBarButtonItem.enabled = NO;
 
@@ -256,6 +261,7 @@ typedef enum
     {
         if (error == nil)
         {
+            self.showCalledId       = [action[@"call"][@"showCalledId"] boolValue];
             self.destination.name   = self.name;
             self.destination.action = [Common jsonStringWithObject:action];
             
@@ -285,7 +291,18 @@ typedef enum
                                                 @"[iOS alert message size]");
     [BlockAlertView showAlertViewWithTitle:title
                                    message:[NSString stringWithFormat:message, [error localizedDescription]]
-                                completion:nil
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        if (isNew == NO)
+        {
+            NSInteger        section    = [Common nOfBit:TableSectionStatements inValue:sections];
+            NSIndexPath*     indexPath  = [NSIndexPath indexPathForItem:0 inSection:section];
+            UITableViewCell* cell       = [self.tableView cellForRowAtIndexPath:indexPath];
+            UISwitch*        switchView = (UISwitch*)cell.accessoryView;
+
+            [switchView setOn:self.showCalledId animated:YES];
+        }
+    }
                          cancelButtonTitle:[Strings closeString]
                          otherButtonTitles:nil];
 }
@@ -358,6 +375,19 @@ typedef enum
             }
             break;
         }
+        case TableSectionStatements:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"DestinationView RulesFooter", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"By default you'll see the number of the person that's "
+                                                      @"calling you as caller ID on your Phone. When switching on "
+                                                      @"this option you'll see your Number as Caller ID instead. "
+                                                      @"This can be useful when you have several Numbers and you "
+                                                      @"want to know from which Number a call originates.",
+                                                      @"Table footer ...\n"
+                                                      @"[1 line larger font].");
+            break;
+        }
     }
 
     return title;
@@ -406,16 +436,31 @@ typedef enum
 
 - (UITableViewCell*)statementsCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell*    cell;
+    UITableViewCell* cell;
+    UISwitch*        switchView;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"StatementsCell"];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"StatementsCell"];
+
+        switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+        switchView.onTintColor = [Skinning onTintColor];
+        cell.accessoryView = switchView;
+
+        [switchView addTarget:self
+                       action:@selector(showCalledIdSwitchAction:)
+             forControlEvents:UIControlEventValueChanged];
+    }
+    else
+    {
+        switchView = (UISwitch*)cell.accessoryView;
     }
 
+    switchView.on = self.showCalledId;
+
     cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"DestinationView RulesTitle", nil,
-                                                            [NSBundle mainBundle], @"Rules",
+                                                            [NSBundle mainBundle], @"Show Called Number",
                                                             @"Title of an table row\n"
                                                             @"[1/3 line small font].");
     cell.imageView.image = nil;
@@ -512,6 +557,23 @@ typedef enum
     [self updateSaveButtonItem];
 
     return shouldChange;
+}
+
+
+#pragma mark - Action
+
+- (void)showCalledIdSwitchAction:(UISwitch*)switchView
+{
+    action[@"call"][@"showCalledId"] = switchView.on ? @"true" : @"false";
+
+    if (isNew == YES)
+    {
+        self.showCalledId = switchView.on;
+    }
+    else
+    {
+        [self saveAction];
+    }
 }
 
 
