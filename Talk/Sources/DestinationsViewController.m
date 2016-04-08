@@ -50,7 +50,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
         self.managedObjectContext = managedObjectContext;
 
         self.sections |= TableSectionDestinations;
-        self.sections |= TableSectionRecordings;
+        //self.sections |= TableSectionRecordings;
     }
 
     return self;
@@ -78,7 +78,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return self.fetchedDestinationsController.sections.count + 1;
+    return self.fetchedDestinationsController.sections.count +  ([Common bitsSetCount:self.sections] - 1);
 }
 
 
