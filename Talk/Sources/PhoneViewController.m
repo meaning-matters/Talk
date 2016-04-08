@@ -26,8 +26,7 @@ typedef enum
     TableSectionE164         = 1UL << 1,
     TableSectionUsage        = 1UL << 2,
     TableSectionDestinations = 1UL << 3,
-    TableSectionNumbers      = 1UL << 4,
-    TableSectionCallerIds    = 1UL << 5,
+    TableSectionCallerIds    = 1UL << 4,
 } TableSections;
 
 
@@ -39,7 +38,6 @@ typedef enum
 
     PhoneNumber*  phoneNumber;
 
-    NSArray*      numbersArray;
     NSArray*      namesArray;
 }
 
@@ -260,12 +258,6 @@ typedef enum
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"ANY destination.phones == %@", self.phone];
-    numbersArray = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
-                                                             sortKeys:[Common sortKeys]
-                                                            predicate:predicate
-                                                 managedObjectContext:nil];
-    
     NSMutableArray* array = [NSMutableArray array];
     CallableData* callable = self.phone;
     for (CallerIdData* callerId in [callable.callerIds allObjects])
@@ -281,7 +273,6 @@ typedef enum
     sections |= TableSectionE164;
     sections |= (isNew == NO)                       ? TableSectionUsage        : 0;
     sections |= (self.phone.destinations.count > 0) ? TableSectionDestinations : 0;
-    sections |= (numbersArray.count > 0) ?            TableSectionNumbers      : 0;
     sections |= (namesArray.count > 0) ?              TableSectionCallerIds    : 0;
 
     return [Common bitsSetCount:sections];
@@ -298,7 +289,6 @@ typedef enum
         case TableSectionE164:         numberOfRows = 1;                             break;
         case TableSectionUsage:        numberOfRows = 2;                             break;
         case TableSectionDestinations: numberOfRows = self.phone.destinations.count; break;
-        case TableSectionNumbers:      numberOfRows = numbersArray.count;            break;
         case TableSectionCallerIds:    numberOfRows = namesArray.count;              break;
     }
 
@@ -318,15 +308,6 @@ typedef enum
                                                       [NSBundle mainBundle],
                                                       @"Used By Destinations",
                                                       @"Table header above destinations\n"
-                                                      @"[1 line larger font].");
-            break;
-        }
-        case TableSectionNumbers:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"PhoneView NumbersHeader", nil,
-                                                      [NSBundle mainBundle],
-                                                      @"Used By Numbers",
-                                                      @"Table header above phone numbers\n"
                                                       @"[1 line larger font].");
             break;
         }
@@ -375,7 +356,6 @@ typedef enum
         case TableSectionE164:         cell = [self numberCellForRowAtIndexPath:indexPath];       break;
         case TableSectionUsage:        cell = [self usageCellForRowAtIndexPath:indexPath];        break;
         case TableSectionDestinations: cell = [self destinationsCellForRowAtIndexPath:indexPath]; break;
-        case TableSectionNumbers:      cell = [self numbersCellForRowAtIndexPath:indexPath];      break;
         case TableSectionCallerIds:    cell = [self callerIdsCellForRowAtIndexPath:indexPath];    break;
     }
 
@@ -475,26 +455,6 @@ typedef enum
 }
 
 
-- (UITableViewCell*)numbersCellForRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    UITableViewCell* cell;
-    NumberData*      number = numbersArray[indexPath.row];
-    
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumbersCell"];
-    if (cell == nil)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NumbersCell"];
-    }
-    
-    cell.imageView.image = [UIImage imageNamed:number.isoCountryCode];
-    cell.textLabel.text  = number.name;
-    cell.accessoryType   = UITableViewCellAccessoryNone;
-    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
-    
-    return cell;
-}
-
-
 - (UITableViewCell*)callerIdsCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
@@ -517,10 +477,6 @@ typedef enum
 {
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
-        case TableSectionName:
-        {
-            break;
-        }
         case TableSectionE164:
         {
             if (isNew == YES)
@@ -563,14 +519,6 @@ typedef enum
             UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-            break;
-        }
-        case TableSectionDestinations:
-        {
-            break;
-        }
-        case TableSectionNumbers:
-        {
             break;
         }
     }
