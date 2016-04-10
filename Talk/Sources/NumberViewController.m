@@ -133,16 +133,6 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionName:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"Number:Name SectionFooter", nil,
-                                                      [NSBundle mainBundle],
-                                                      @"Tap to edit. A change will also be saved "
-                                                      @"online. Refresh the overview Numbers list on other "
-                                                      @"devices to load changes.",
-                                                      @"[* lines]");
-            break;
-        }
         case TableSectionDestination:
         {
             title = NSLocalizedStringWithDefaultValue(@"Number:DestinationDefault SectionFooter", nil,
