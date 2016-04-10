@@ -33,6 +33,7 @@
 #import "CallerIdViewController.h"
 #import "BadgeHandler.h"
 #import "AddressUpdatesHandler.h"
+#import "WebViewController.h"
 
 NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification";
 
@@ -137,6 +138,11 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    {
+        [self openWebSiteFromNotification:@{@"url":@"http://www.apple.com"}];
+    });
+
     return YES;
 }
 
@@ -144,7 +150,7 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 - (void)application:(UIApplication*)application didRegisterUserNotificationSettings:(UIUserNotificationSettings*)notificationSettings
 {
     AnalysticsTrace(@"didRegisterUserNotificationSettings");
-    
+
     [application registerForRemoteNotifications];
 }
 
@@ -262,6 +268,26 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     [[NSNotificationCenter defaultCenter] postNotificationName:AppDelegateRemoteNotification
                                                         object:nil
                                                       userInfo:userInfo];
+
+    [self openWebSiteFromNotification:userInfo];
+}
+
+
+- (void)openWebSiteFromNotification:(NSDictionary*)userInfo
+{
+    NSString* urlString = userInfo[@"url"];
+
+    if (urlString != nil)
+    {
+        WebViewController*      webViewController = [[WebViewController alloc] initWithUrlString:urlString];
+        UINavigationController* modalViewController;
+
+        modalViewController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+        modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [[Common topViewController] presentViewController:modalViewController
+                                                 animated:YES
+                                               completion:nil];
+    }
 }
 
 

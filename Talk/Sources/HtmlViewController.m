@@ -11,8 +11,9 @@
 
 @interface HtmlViewController ()
 
-@property (nonatomic, strong) NSString* htmlBody;
-@property (nonatomic, assign) BOOL      modal;
+@property (nonatomic, weak) IBOutlet UIWebView* webView;
+@property (nonatomic, strong) NSString*         htmlBody;
+@property (nonatomic, assign) BOOL              modal;
 
 @end
 

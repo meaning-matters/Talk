@@ -71,6 +71,8 @@
 		4822B4321C9615FB004BD2F5 /* AddressUpdatesHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 4822B4311C9615FB004BD2F5 /* AddressUpdatesHandler.m */; };
 		4823019C1C897E7000ECD32E /* CellBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4823019B1C897E7000ECD32E /* CellBadgeView.m */; };
 		48232B721BFC8E5D006D667E /* AddressData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48232B701BFC8E5D006D667E /* AddressData.m */; };
+		4823C0C51CBA7F0E00030FC7 /* WebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4823C0C41CBA7F0E00030FC7 /* WebView.xib */; };
+		4823C0CD1CBA7F3800030FC7 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4823C0CC1CBA7F3800030FC7 /* WebViewController.m */; };
 		48251B9B187F4A8A00E69C3A /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48251B9A187F4A8A00E69C3A /* SettingsViewController.m */; };
 		48251B9C187F4A8A00E69C3A /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48251B9A187F4A8A00E69C3A /* SettingsViewController.m */; };
 		482608EE166A4707007F0844 /* NSTimer+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 482608ED166A4706007F0844 /* NSTimer+Blocks.m */; };
@@ -766,6 +768,9 @@
 		48232B611BFBC70B006D667E /* Data2.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data2.1.xcdatamodel; sourceTree = "<group>"; };
 		48232B6F1BFC8E5D006D667E /* AddressData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressData.h; sourceTree = "<group>"; };
 		48232B701BFC8E5D006D667E /* AddressData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressData.m; sourceTree = "<group>"; };
+		4823C0C41CBA7F0E00030FC7 /* WebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebView.xib; sourceTree = "<group>"; };
+		4823C0CB1CBA7F3800030FC7 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		4823C0CC1CBA7F3800030FC7 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		48251B99187F4A8A00E69C3A /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		48251B9A187F4A8A00E69C3A /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		482608EC166A4706007F0844 /* NSTimer+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Blocks.h"; sourceTree = "<group>"; };
@@ -2350,6 +2355,7 @@
 				48AF455A1649794B00DFE3D8 /* ShareView.xib */,
 				484943AF1753C44D00E1D5C4 /* ThanksView.xib */,
 				48C431A3189EE0310008FE01 /* VerifyPhoneView.xib */,
+				4823C0C41CBA7F0E00030FC7 /* WebView.xib */,
 			);
 			path = XIBs;
 			sourceTree = "<group>";
@@ -2376,6 +2382,8 @@
 				48D60EF318B4D7A4000BE5D2 /* CountriesViewController.m */,
 				48AF44EC164947B300DFE3D8 /* CreditViewController.h */,
 				48AF44ED164947B300DFE3D8 /* CreditViewController.m */,
+				4817A6101CB7EA9D00F14EED /* DestinationNumbersViewController.h */,
+				4817A6111CB7EA9D00F14EED /* DestinationNumbersViewController.m */,
 				48CA5040172FC6C800CB1B7B /* DestinationSequenceViewController.h */,
 				48CA5041172FC6C800CB1B7B /* DestinationSequenceViewController.m */,
 				48AF4563164979F300DFE3D8 /* DestinationsViewController.h */,
@@ -2402,14 +2410,14 @@
 				4849432E1752263600E1D5C4 /* LicensesViewController.m */,
 				484D936A1712FBA1006FA875 /* NumberAreaCitiesViewController.h */,
 				484D936B1712FBA1006FA875 /* NumberAreaCitiesViewController.m */,
-				4896D8FE16EBE612008A2354 /* NumberAreasViewController.h */,
-				4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */,
-				485E38A517C0B7EE0089F0F1 /* NumberAreaSalutationsViewController.h */,
-				485E38A617C0B7F00089F0F1 /* NumberAreaSalutationsViewController.m */,
-				4830462216EE269D000F9B05 /* NumberAreaViewController.h */,
-				4830462316EE269D000F9B05 /* NumberAreaViewController.m */,
 				484D936E17131E96006FA875 /* NumberAreaPostcodesViewController.h */,
 				484D936F17131E97006FA875 /* NumberAreaPostcodesViewController.m */,
+				485E38A517C0B7EE0089F0F1 /* NumberAreaSalutationsViewController.h */,
+				485E38A617C0B7F00089F0F1 /* NumberAreaSalutationsViewController.m */,
+				4896D8FE16EBE612008A2354 /* NumberAreasViewController.h */,
+				4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */,
+				4830462216EE269D000F9B05 /* NumberAreaViewController.h */,
+				4830462316EE269D000F9B05 /* NumberAreaViewController.m */,
 				48B5AAF016E6A58400BA4084 /* NumberCountriesViewController.h */,
 				48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */,
 				48F1B7DF17E63819003A3933 /* NumberDestinationsViewController.h */,
@@ -2426,6 +2434,8 @@
 				48C97EA218943C7300174DE9 /* PhoneViewController.m */,
 				48C1D3C317D31308004F910D /* ProofImageViewController.h */,
 				48C1D3C417D31309004F910D /* ProofImageViewController.m */,
+				481DFBA91C70CAC1009191B0 /* RecordingsViewController.h */,
+				481DFBAA1C70CAC1009191B0 /* RecordingsViewController.m */,
 				483679DC1721F2DF001A02AF /* RecordingViewController.h */,
 				483679DD1721F2E0001A02AF /* RecordingViewController.m */,
 				48251B99187F4A8A00E69C3A /* SettingsViewController.h */,
@@ -2436,10 +2446,8 @@
 				484943AC1753C00000E1D5C4 /* ThanksViewController.m */,
 				48C4319F189EDFB40008FE01 /* VerifyPhoneViewController.h */,
 				48C431A0189EDFB40008FE01 /* VerifyPhoneViewController.m */,
-				481DFBA91C70CAC1009191B0 /* RecordingsViewController.h */,
-				481DFBAA1C70CAC1009191B0 /* RecordingsViewController.m */,
-				4817A6101CB7EA9D00F14EED /* DestinationNumbersViewController.h */,
-				4817A6111CB7EA9D00F14EED /* DestinationNumbersViewController.m */,
+				4823C0CB1CBA7F3800030FC7 /* WebViewController.h */,
+				4823C0CC1CBA7F3800030FC7 /* WebViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -2900,6 +2908,7 @@
 				485F6BD01637270100D61365 /* SM@2x.png in Resources */,
 				485F6BD21637270100D61365 /* SN@2x.png in Resources */,
 				48C9A2271BF7C9EC00966F80 /* KeypadMainView.xib in Resources */,
+				4823C0C51CBA7F0E00030FC7 /* WebView.xib in Resources */,
 				485F6BD41637270100D61365 /* SO@2x.png in Resources */,
 				485F6BD61637270100D61365 /* SR@2x.png in Resources */,
 				48CB2C4C17E6DB7700E19C3D /* NBPeopleListTab@2x.png in Resources */,
@@ -3183,6 +3192,7 @@
 				48232B721BFC8E5D006D667E /* AddressData.m in Sources */,
 				4830462416EE269D000F9B05 /* NumberAreaViewController.m in Sources */,
 				48F14EE61BF9C63A00541EEC /* AddressViewController.m in Sources */,
+				4823C0CD1CBA7F3800030FC7 /* WebViewController.m in Sources */,
 				48A261C416FDE32400007638 /* CallStateView.m in Sources */,
 				48B813491AADF9380019AF77 /* NBContact.m in Sources */,
 				48FC54321C89EDA3007658FE /* CellDotView.m in Sources */,
