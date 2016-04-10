@@ -138,11 +138,6 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-    {
-        [self openWebSiteFromNotification:@{@"url":@"http://www.apple.com"}];
-    });
-
     return YES;
 }
 
@@ -279,14 +274,17 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
     if (urlString != nil)
     {
-        WebViewController*      webViewController = [[WebViewController alloc] initWithUrlString:urlString];
-        UINavigationController* modalViewController;
+        [Common dispatchAfterInterval:4 onMain:^
+        {
+            WebViewController*      webViewController = [[WebViewController alloc] initWithUrlString:urlString];
+            UINavigationController* modalViewController;
 
-        modalViewController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-        modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        [[Common topViewController] presentViewController:modalViewController
-                                                 animated:YES
-                                               completion:nil];
+            modalViewController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+            modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+            [[Common topViewController] presentViewController:modalViewController
+                                                     animated:YES
+                                                   completion:nil];
+        }];
     }
 }
 
