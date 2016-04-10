@@ -128,11 +128,6 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
         [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
     }
-
-    if ([self isMovingToParentViewController] == NO)
-    {
-
-    }
 }
 
 

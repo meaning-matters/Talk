@@ -28,7 +28,7 @@
 
 - (instancetype)initWithNumber:(NumberData*)theNumber
 {
-    if (self = [super initWithStyle:UITableViewStylePlain])
+    if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
         self.title = [Strings destinationsString];
 
@@ -167,7 +167,10 @@
                 message = [NSString stringWithFormat:message, error.localizedDescription];
                 [BlockAlertView showAlertViewWithTitle:title
                                                message:message
-                                            completion:nil
+                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                {
+                    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+                }
                                      cancelButtonTitle:[Strings closeString]
                                      otherButtonTitles:nil];
             }

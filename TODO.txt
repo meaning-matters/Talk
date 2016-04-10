@@ -158,4 +158,11 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 
 * Disable Accessibility / "Dynamic Type" in app, and select one (or multiple in app Settings) font size for all standard cells.
 
+* Replace observing all NSUserDefaultsDidChangeNotification with specific Settings property observers like:
+    [[Settings sharedSettings] addObserver:self
+                                forKeyPath:@"sortSegment"
+                                   options:NSKeyValueObservingOptionNew
+                                   context:nil];
+  The app is refreshing too much at the moment (e.g. every tab change is saved in Defaults firing various table refreshes)
 
+* Clean up (i.e. generalize: using one method instread of several slightly different ones) view controllers: The way that cells are deselected when coming back to view, the way tables are reloaded, the way table cells are recreated and filled with data.

@@ -19,6 +19,7 @@
 #import "BlockAlertView.h"
 #import "PhonesViewController.h"
 #import "PhoneViewController.h"
+#import "DestinationNumbersViewController.h"
 #import "DataManager.h"
 
 
@@ -138,13 +139,13 @@ typedef enum
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
-
     NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
     if (selectedIndexPath != nil)
     {
         [self.tableView reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
+
+    [super viewWillAppear:animated];
 }
 
 
@@ -316,7 +317,7 @@ typedef enum
     sections |= TableSectionName;
     sections |= TableSectionPhone;
     sections |= TableSectionStatements;
-    sections |= (self.destination.numbers.count    > 0) ? TableSectionNumbers    : 0;
+    sections |= TableSectionNumbers;
     sections |= (self.destination.recordings.count > 0) ? TableSectionRecordings : 0;
 
     return [Common bitsSetCount:sections];
@@ -332,32 +333,11 @@ typedef enum
         case TableSectionName:       numberOfRows = 1;                                 break;
         case TableSectionPhone:      numberOfRows = 1;                                 break;
         case TableSectionStatements: numberOfRows = 1;                                 break;
-        case TableSectionNumbers:    numberOfRows = self.destination.numbers.count;    break;
+        case TableSectionNumbers:    numberOfRows = 1;                                 break;
         case TableSectionRecordings: numberOfRows = self.destination.recordings.count; break;
     }
     
     return numberOfRows;
-}
-
-
-- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
-{
-    NSString* title = nil;
-
-    switch ([Common nthBitSet:section inValue:sections])
-    {
-        case TableSectionNumbers:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"DestinationView NumbersHeader", nil,
-                                                      [NSBundle mainBundle],
-                                                      @"Used By Numbers",
-                                                      @"Table header above phone numbers\n"
-                                                      @"[1 line larger font].");
-            break;
-        }
-    }
-    
-    return title;
 }
 
 
@@ -474,18 +454,20 @@ typedef enum
 - (UITableViewCell*)numbersCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
-    NumberData*      number = numbersArray[indexPath.row];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumbersCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NumbersCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"NumbersCell"];
     }
 
-    cell.imageView.image = [UIImage imageNamed:number.isoCountryCode];
-    cell.textLabel.text  = number.name;
-    cell.accessoryType   = UITableViewCellAccessoryNone;
-    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
+    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"DestinationView NumbersTitle", nil,
+                                                            [NSBundle mainBundle], @"Used By Numbers",
+                                                            @"Title of an table row\n"
+                                                            @"[1/3 line small font].");
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)self.destination.numbers.count];
+    cell.accessoryType   = UITableViewCellAccessoryDisclosureIndicator;
+    cell.selectionStyle  = UITableViewCellSelectionStyleDefault;
 
     return cell;
 }
@@ -542,7 +524,10 @@ typedef enum
         }
         case TableSectionNumbers:
         {
-            break;
+            DestinationNumbersViewController* viewController;
+            viewController = [[DestinationNumbersViewController alloc] initWithDestination:self.destination];
+
+            [self.navigationController pushViewController:viewController animated:YES];
         }
     }
 }

@@ -60,6 +60,7 @@
 		4814EA3F17CB1924004B7A3C /* CreditAmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */; };
 		4816A0A01BF129A300817ED7 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBD917007CC6000ECC71 /* DataManager.m */; };
 		48172C021C07017800927BC2 /* RatesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48172C011C07017800927BC2 /* RatesTab@2x.png */; };
+		4817A6181CB80B4700F14EED /* DestinationNumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4817A6111CB7EA9D00F14EED /* DestinationNumbersViewController.m */; };
 		4818DB611CAB0D380044AFE6 /* CountryRegions.json in Resources */ = {isa = PBXBuildFile; fileRef = 4818DB601CAB0D380044AFE6 /* CountryRegions.json */; };
 		4818DB631CAB0D410044AFE6 /* DenmarkMunicipalities.json in Resources */ = {isa = PBXBuildFile; fileRef = 4818DB621CAB0D410044AFE6 /* DenmarkMunicipalities.json */; };
 		4818DB661CAC696D0044AFE6 /* DenmarkAddresses.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4818DB651CAC696D0044AFE6 /* DenmarkAddresses.txt */; };
@@ -747,6 +748,8 @@
 		4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditAmountCell.m; sourceTree = "<group>"; };
 		4816A09F1BF1043E00817ED7 /* Data2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data2.0.xcdatamodel; sourceTree = "<group>"; };
 		48172C011C07017800927BC2 /* RatesTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RatesTab@2x.png"; sourceTree = "<group>"; };
+		4817A6101CB7EA9D00F14EED /* DestinationNumbersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationNumbersViewController.h; sourceTree = "<group>"; };
+		4817A6111CB7EA9D00F14EED /* DestinationNumbersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationNumbersViewController.m; sourceTree = "<group>"; };
 		4818DB601CAB0D380044AFE6 /* CountryRegions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryRegions.json; path = Resources/CountryRegions.json; sourceTree = "<group>"; };
 		4818DB621CAB0D410044AFE6 /* DenmarkMunicipalities.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DenmarkMunicipalities.json; path = Resources/DenmarkMunicipalities.json; sourceTree = "<group>"; };
 		4818DB651CAC696D0044AFE6 /* DenmarkAddresses.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = DenmarkAddresses.txt; path = Resources/DenmarkAddresses.txt; sourceTree = "<group>"; };
@@ -2435,6 +2438,8 @@
 				48C431A0189EDFB40008FE01 /* VerifyPhoneViewController.m */,
 				481DFBA91C70CAC1009191B0 /* RecordingsViewController.h */,
 				481DFBAA1C70CAC1009191B0 /* RecordingsViewController.m */,
+				4817A6101CB7EA9D00F14EED /* DestinationNumbersViewController.h */,
+				4817A6111CB7EA9D00F14EED /* DestinationNumbersViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -3137,6 +3142,7 @@
 				48D0A6F41654D6D700FA2D98 /* main.mm in Sources */,
 				4837BB3C165D701F00E46C36 /* LibPhoneNumber.m in Sources */,
 				48B813291AADF7BB0019AF77 /* NBRecentCallCell.m in Sources */,
+				4817A6181CB80B4700F14EED /* DestinationNumbersViewController.m in Sources */,
 				48FC30BD1C220E300032387E /* AddressType.m in Sources */,
 				4837BB66165F726400E46C36 /* BlockAlertView.m in Sources */,
 				482A6397165F903900325B3F /* Strings.m in Sources */,
