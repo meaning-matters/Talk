@@ -280,9 +280,9 @@
         
         //Group the recent contacts into a datasource
         [dataSource removeAllObjects];
-        NBRecentContactEntry * lastEntry;
-        NSMutableArray * entryArray;
-        for (NBRecentContactEntry * entry in allRecentContacts)
+        NBRecentContactEntry* lastEntry;
+        NSMutableArray* entryArray;
+        for (NBRecentContactEntry* entry in allRecentContacts)
         {
             //If we don't have a last entry or it doesn't match the record or number, create a new entry
             BOOL entryAdded = NO;
@@ -319,7 +319,9 @@
         
         //If we have more than one contact, show the edit button
         if ([allRecentContacts count] > 0 && !self.tableView.editing)
+        {
             [self.navigationItem setRightBarButtonItem:editButton];
+        }
         
         //Animate in/out the rows
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
