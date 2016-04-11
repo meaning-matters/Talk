@@ -48,15 +48,29 @@
         // The tabBarItem image must be set in my own NavigationController.
 
         managedObjectContext = managedObjectContextParam;
+
+        //Listen for reloads
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doLoad) name:NF_RELOAD_CONTACTS object:nil];
     }
 
     return self;
 }
 
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+
+- (void)doLoad
+{
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        [self.tableView reloadData];
+    });
+}
+
 
 - (void)viewDidLoad
 {
