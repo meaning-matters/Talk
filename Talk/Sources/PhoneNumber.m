@@ -358,6 +358,26 @@ static NSString* defaultIsoCountryCode = @"";
 }
 
 
+- (NSString*)nationalDigits
+{
+    NSString* e164            = [self e164Format];
+    NSString* callCountryCode = [self callCountryCode];
+
+    if (e164.length > 0 && callCountryCode.length > 0)
+    {
+        return [e164 substringFromIndex:1 + callCountryCode.length];
+    }
+    else if ([self.number hasPrefix:@"0"])
+    {
+        return [self.number substringFromIndex:1];
+    }
+    else
+    {
+        return self.number;
+    }
+}
+
+
 - (NSString*)outOfCountryFormatFromIsoCountryCode:(NSString*)isoCountryCode
 {
     return [self validateFormat:[[LibPhoneNumber sharedInstance] outOfCountryFormatOfNumber:self.number

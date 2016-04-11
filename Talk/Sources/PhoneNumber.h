@@ -78,6 +78,8 @@ typedef enum
 
 - (NSString*)nationalFormat;
 
+- (NSString*)nationalDigits;    // National format without leading 0.
+
 - (NSString*)outOfCountryFormatFromIsoCountryCode:(NSString*)isoCountryCode;
 
 - (NSString*)asYouTypeFormat;

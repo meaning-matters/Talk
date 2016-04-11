@@ -168,3 +168,6 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Clean up (i.e. generalize: using one method instread of several slightly different ones) view controllers: The way that cells are deselected when coming back to view, the way tables are reloaded, the way table cells are recreated and filled with data.  Also doing a [super viewDidAppear] before accessing self.tableView.selectedCellIndexPath (or something), clears this variable, [super viewDidAppear] must be placed at the bottom of the method.
 
 * Place Cancel button on HtmlViewController on right side (like New Phone/Number/Destination).
+
+* Fix findContactsHavingNumber: Currently, only valid numbers are searched and only national part is compared. Also look at     PhoneNumber:nationalDigits;
+

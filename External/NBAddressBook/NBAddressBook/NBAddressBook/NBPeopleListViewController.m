@@ -673,7 +673,7 @@
                     NSString* contactNumber = (__bridge NSString*)(ABMultiValueCopyValueAtIndex(numberArray, i));
                     contactNumber = [[contactNumber componentsSeparatedByCharactersInSet:stripSet] componentsJoinedByString:@""];
                     
-                    if ([contactNumber rangeOfString:number].location != NSNotFound)
+                    if ([contactNumber hasSuffix:number])
                     {
                         return YES;
                     }

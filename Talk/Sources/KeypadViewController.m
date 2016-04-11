@@ -320,8 +320,7 @@
     {
         contactIdUpdated = NO;
         contactId        = nil;
-        //[[AppDelegate appDelegate] findContactsHavingNumber:phoneNumber.e164Format
-        [[AppDelegate appDelegate] findContactsHavingNumber:[[phoneNumber nationalFormat] substringFromIndex:1]
+        [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
                                                  completion:^(NSArray* contactIds)
         {
             contactIdUpdated = YES;
@@ -345,6 +344,7 @@
     else
     {
         self.nameLabel.text = @"";
+        contactId           = nil;
     }
 }
 
