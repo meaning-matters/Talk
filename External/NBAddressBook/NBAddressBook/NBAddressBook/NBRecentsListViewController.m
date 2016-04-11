@@ -413,7 +413,7 @@
         [cell addSubview:numberLabel];
 
 #ifdef NB_STANDALONE
-        //Add an outgoing-call imageview
+        // Add an outgoing-call imageview
         UIImageView * outgoingImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"outgoingCall"]];
         [outgoingImageView setFrame:CGRectMake(0, 0, 10, 10)];
         [outgoingImageView setHidden:YES];
@@ -421,7 +421,7 @@
         [cell addSubview:outgoingImageView];
 #endif
 
-        //Add a number type label
+        // Add a number type label
         UILabel* typeLabel = [[UILabel alloc]initWithFrame:CGRectMake(POSITION_NUMBER_LABEL,
                                                                       22,
                                                                       SIZE_NUMBER_LABEL,
@@ -433,23 +433,31 @@
         [cell addSubview:typeLabel];
     }
 
-    //Set the number and description
+    // Set the number and description
     UILabel* numberLabel = cell.numberLabel;
     UILabel* numberType  = cell.numberTypeLabel;
-    
+
     NBRecentContactEntry* latestEntry = [entryRowArray objectAtIndex:0];
+    ABRecordRef           contact;
     if (latestEntry.contactID != nil)
     {
-        //Get all the numbers of this person
-        ABRecordRef contact = [self getContactForID:latestEntry.contactID];
-        
-        //Set the name
+        contact = [self getContactForID:latestEntry.contactID];
+        if (contact == nil)
+        {
+            // Contact appears to be gone, clear it.
+            latestEntry.contactID = nil;
+        }
+    }
+
+    if (latestEntry.contactID != nil)
+    {
+        // Set the name
         NSString* representation = [[NBContact getListRepresentation:contact] string];
         [numberLabel setText:representation];
 
         numberType.text = nil;
 
-        //Determine and set the label
+        // Determine and set the label
         ABMultiValueRef* datasource = (ABMultiValueRef*)ABRecordCopyValue(contact, kABPersonPhoneProperty);
         for (CFIndex i = 0; i < ABMultiValueGetCount(datasource); i++)
         {

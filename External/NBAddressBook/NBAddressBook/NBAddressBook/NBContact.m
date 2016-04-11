@@ -37,7 +37,9 @@
     return nil;
 }
 
+
 #pragma mark - Support for labeling
+
 + (NSMutableAttributedString*)getListRepresentation:(ABRecordRef)contactRef
 {
     /*
