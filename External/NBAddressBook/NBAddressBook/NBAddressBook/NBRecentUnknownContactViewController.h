@@ -12,7 +12,6 @@
 #import "NBRecentContactViewController.h"
 #import "NBAddressBookManager.h"
 #import <AddressBook/AddressBook.h>
-#import "NBAppDelegate.h"
 #import "NSString+Common.h"
 #import "NBCallsView.h"
 #import "NBAddUnknownContactDelegate.h"

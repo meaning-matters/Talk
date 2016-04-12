@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <AddressBook/AddressBook.h>
-#import "NBAppDelegate.h"
 #import "NBRecentContactEntry.h"
 #import "NBRecentCallCell.h"
 #import "NSString+Common.h"
