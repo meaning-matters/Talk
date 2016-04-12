@@ -13,7 +13,6 @@
 #import "NBPersonCellInfo.h"
 #import "NBPersonCellAddressInfo.h"
 #import "NBAddressBookManager.h"
-#import "NBAppDelegate.h"
 #import "NBRecentContactEntry.h"
 
 
