@@ -9,6 +9,8 @@
 #import "NBRecentsListViewController.h"
 #import "NBTestDelegate.h"
 #import "Strings.h"
+#import "AppDelegate.h"
+#import "PhoneNumber.h"
 #ifndef NB_STANDALONE
 #import "DataManager.h"
 #endif
@@ -69,6 +71,31 @@
     {
         [self.tableView reloadData];
     });
+}
+
+
+//### Not used.
+- (void)findContactsForAnonymousItems
+{
+    for (NSArray* entryRowArray in dataSource)
+    {
+        NBRecentContactEntry* entry = entryRowArray[0];
+        if (entry.contactID == nil)
+        {
+            PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:entry.e164];
+            [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
+                                                     completion:^(NSArray* contactIds)
+            {
+                if (contactIds.count == 1)
+                {
+                    for (NBRecentContactEntry* entry in entryRowArray)
+                    {
+                        entry.contactID = contactIds[0];
+                    }
+                }
+            }];
+        }
+    }
 }
 
 
@@ -393,11 +420,11 @@
     return [dataSource count];
 }
 
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSArray*          entryRowArray = [dataSource objectAtIndex:indexPath.row];
-
+    NSArray*          entryRowArray  = [dataSource objectAtIndex:indexPath.row];
     static NSString*  CellIdentifier = @"Cell";
+
     NBRecentCallCell* cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
     {
@@ -447,7 +474,10 @@
         if (contact == nil)
         {
             // Contact appears to be gone, clear it.
-            latestEntry.contactID = nil;
+            for (NBRecentContactEntry* entry in entryRowArray)
+            {
+                entry.contactID = nil;
+            }
         }
     }
 

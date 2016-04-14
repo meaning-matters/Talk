@@ -169,5 +169,7 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 
 * Place Cancel button on HtmlViewController on right side (like New Phone/Number/Destination).
 
-* Fix findContactsHavingNumber: Currently, only valid numbers are searched and only national part is compared. Also look at     PhoneNumber:nationalDigits;
+* Fix findContactsHavingNumber: Currently, only valid numbers are searched and only national part is compared. Also look at PhoneNumber:nationalDigits;
+
+* Add feature: Find contact IDs for anonymous Recents numbers. See not used findContactsForAnonymousItems.  App crashed when trying something in this direction; similar crash as documented in one of the NBAddress modules (where I thought that synchonize would help)
 

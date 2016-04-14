@@ -105,6 +105,11 @@
 //### Check if number is valid in itself (does not look at ISO code???)
 - (BOOL)isValidNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode
 {
+    if (number.length == 0)
+    {
+        return NO;
+    }
+
     NSString* function = [[NSString alloc] initWithFormat: @"isValidNumber('%@','%@')", number, isoCountryCode];
     BOOL      result   = [[webView stringByEvaluatingJavaScriptFromString:function] boolValue];
 
