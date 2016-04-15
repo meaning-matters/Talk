@@ -317,7 +317,7 @@ typedef enum
     sections |= TableSectionName;
     sections |= TableSectionPhone;
     sections |= TableSectionStatements;
-    sections |= TableSectionNumbers;
+    sections |= isNew ? 0 : TableSectionNumbers;
     sections |= (self.destination.recordings.count > 0) ? TableSectionRecordings : 0;
 
     return [Common bitsSetCount:sections];
