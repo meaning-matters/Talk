@@ -274,6 +274,11 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
     if (urlString != nil)
     {
+        if ([userInfo[@"deleteCookies"] boolValue] == YES)
+        {
+            [self deleteWebCookies];
+        }
+
         [Common dispatchAfterInterval:4 onMain:^
         {
             WebViewController*      webViewController = [[WebViewController alloc] initWithUrlString:urlString];
@@ -288,6 +293,16 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     }
 }
 
+
+- (void)deleteWebCookies
+{
+    for (NSHTTPCookie* cookie in [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies])
+    {
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+    }
+
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 #pragma mark - General & TabBar Delegate & More Navigation Delegate
 
