@@ -149,7 +149,7 @@ typedef enum
                                                       [NSBundle mainBundle],
                                                       @"IMPORTANT: If you don't extend this subscription in time, "
                                                       @"your Number can't be used anymore after it expires. Once "
-                                                      @"expired a Number can often not be reactivated.",
+                                                      @"expired a Number can not be reactivated.",
                                                       @"Explanation how/when the subscription, for "
                                                       @"using a phone number, will expire\n"
                                                       @"[* lines]");
