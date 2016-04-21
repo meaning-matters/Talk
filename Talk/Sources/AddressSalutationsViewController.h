@@ -1,5 +1,5 @@
 //
-//  NumberAreaSalutationsViewController.h
+//  AddressSalutationsViewController.h
 //  Talk
 //
 //  Created by Cornelis van der Bent on 18/08/13.
@@ -11,7 +11,7 @@
 #import "Salutation.h"
 
 
-@interface NumberAreaSalutationsViewController : UITableViewController
+@interface AddressSalutationsViewController : UITableViewController
 
 - (instancetype)initWithSalutation:(Salutation*)salutation completion:(void (^)(void))completion;
 

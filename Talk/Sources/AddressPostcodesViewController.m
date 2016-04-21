@@ -1,18 +1,18 @@
 //
-//  NumberAreaPostcodesViewController.m
+//  AddressPostcodesViewController.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 08/04/13.
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
-#import "NumberAreaPostcodesViewController.h"
+#import "AddressPostcodesViewController.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
 #import "Common.h"
 
 
-@interface NumberAreaPostcodesViewController ()
+@interface AddressPostcodesViewController ()
 
 @property (nonatomic, strong) NSArray*         citiesArray;
 @property (nonatomic, strong) AddressData*     address;
@@ -21,7 +21,7 @@
 @end
 
 
-@implementation NumberAreaPostcodesViewController
+@implementation AddressPostcodesViewController
 
 - (instancetype)initWithCitiesArray:(NSArray*)citiesArray address:(AddressData*)address
 {

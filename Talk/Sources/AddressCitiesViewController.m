@@ -1,18 +1,18 @@
 //
-//  NumberAreaCitiesViewController.m
+//  AddressCitiesViewController.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 08/04/13.
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
-#import "NumberAreaCitiesViewController.h"
+#import "AddressCitiesViewController.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
 #import "Common.h"
 
 
-@interface NumberAreaCitiesViewController ()
+@interface AddressCitiesViewController ()
 
 @property (nonatomic, strong) NSArray*         citiesArray;
 @property (nonatomic, strong) AddressData*     address;
@@ -21,7 +21,7 @@
 @end
 
 
-@implementation NumberAreaCitiesViewController
+@implementation AddressCitiesViewController
 
 - (instancetype)initWithCitiesArray:(NSArray*)citiesArray address:(AddressData *)address
 {

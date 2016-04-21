@@ -1,16 +1,16 @@
 //
-//  NumberAreaSalutationsViewController.m
+//  AddressSalutationsViewController.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 18/08/13.
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
-#import "NumberAreaSalutationsViewController.h"
+#import "AddressSalutationsViewController.h"
 #import "Strings.h"
 
 
-@interface NumberAreaSalutationsViewController ()
+@interface AddressSalutationsViewController ()
 
 @property (nonatomic, strong) NSIndexPath* selectedIndexPath;
 @property (nonatomic, strong) Salutation*  salutation;
@@ -19,17 +19,12 @@
 @end
 
 
-@implementation NumberAreaSalutationsViewController
+@implementation AddressSalutationsViewController
 
 - (instancetype)initWithSalutation:(Salutation*)salutation completion:(void (^)(void))completion
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
-        self.title = NSLocalizedStringWithDefaultValue(@"NumbersAreaTitles ScreenTitle", nil,
-                                                       [NSBundle mainBundle], @"Titles",
-                                                       @"Title of screen with list of titles: Mr., Ms., ...\n"
-                                                       @"[1 line larger font].");
-
         _salutation = salutation;
         _completion = [completion copy];
     }

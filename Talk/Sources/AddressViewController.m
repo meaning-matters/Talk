@@ -9,9 +9,9 @@
 #import <objc/runtime.h>
 #import <Photos/Photos.h>
 #import "AddressViewController.h"
-#import "NumberAreaPostcodesViewController.h"
-#import "NumberAreaCitiesViewController.h"
-#import "NumberAreaSalutationsViewController.h"
+#import "AddressPostcodesViewController.h"
+#import "AddressCitiesViewController.h"
+#import "AddressSalutationsViewController.h"
 #import "ProofImageViewController.h"
 #import "CountriesViewController.h"
 #import "Strings.h"
@@ -218,7 +218,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                @{
                    @"numberTypes" : @[ @"MOBILE" ],
                    @"idTypes"     : @[ @"DNI", @"NIF", @"NIE", @"Passport" ],
-                   @"fields"      : @[ @"idNumber", @"nationality", @"fiscalIdCode" ]
+                   @"fields"      : @[ @"idType", @"idNumber", @"nationality", @"fiscalIdCode" ]
                },
                @"DK" :
                @{
@@ -912,14 +912,16 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NumberAreaPostcodesViewController*   zipsViewController;
-    NumberAreaCitiesViewController*      citiesViewController;
-    NumberAreaSalutationsViewController* salutationsViewController;
-    CountriesViewController*             countriesViewController;
-    NSString*                            isoCountryCode;
+    AddressPostcodesViewController*   zipsViewController;
+    AddressCitiesViewController*      citiesViewController;
+    AddressSalutationsViewController* salutationsViewController;
+    CountriesViewController*          countriesViewController;
+    NSString*                         isoCountryCode;
+    UITableViewCell*                  cell;
     void (^completion)(BOOL cancelled, NSString* isoCountryCode);
-    
-    if ([self.tableView cellForRowAtIndexPath:indexPath].selectionStyle == UITableViewCellSelectionStyleNone)
+
+    cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    if (cell.selectionStyle == UITableViewCellSelectionStyleNone)
     {
         return;
     }
@@ -980,12 +982,13 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             }
             case TableSectionDetails:
             {
-                salutationsViewController = [[NumberAreaSalutationsViewController alloc] initWithSalutation:self.salutation
+                salutationsViewController = [[AddressSalutationsViewController alloc] initWithSalutation:self.salutation
                                                                                                  completion:^
                 {
                     self.address.salutation = self.salutation.string;
                 }];
 
+                salutationsViewController.title = cell.textLabel.text;
                 [self.navigationController pushViewController:salutationsViewController animated:YES];
                 break;
             }
@@ -995,14 +998,14 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                 {
                     case TableRowAddressCity:
                     {
-                        citiesViewController = [[NumberAreaCitiesViewController alloc] initWithCitiesArray:self.citiesArray
+                        citiesViewController = [[AddressCitiesViewController alloc] initWithCitiesArray:self.citiesArray
                                                                                                    address:self.address];
                         [self.navigationController pushViewController:citiesViewController animated:YES];
                         break;
                     }
                     case TableRowAddressPostcode:
                     {
-                        zipsViewController = [[NumberAreaPostcodesViewController alloc] initWithCitiesArray:self.citiesArray
+                        zipsViewController = [[AddressPostcodesViewController alloc] initWithCitiesArray:self.citiesArray
                                                                                                     address:self.address];
                         [self.navigationController pushViewController:zipsViewController animated:YES];
                         break;
