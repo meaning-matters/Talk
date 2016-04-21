@@ -418,6 +418,15 @@
 }
 
 
++ (NSString*)nationalityString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Nationality", nil, [NSBundle mainBundle],
+                                             @"Nationality",
+                                             @"Standard label for a nationality name.\n"
+                                             @"[No size contraint].");
+}
+
+
 + (NSString*)callerIdString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings CallerID", nil, [NSBundle mainBundle],

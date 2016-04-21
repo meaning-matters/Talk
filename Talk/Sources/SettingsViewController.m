@@ -668,7 +668,7 @@ typedef enum
         cell = [self.tableView dequeueReusableCellWithIdentifier:@"CountryCell"];
         if (cell == nil)
         {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"DefaultCell"];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CountryCell"];
         }
 
         if (settings.homeIsoCountryCode != nil)

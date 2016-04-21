@@ -101,6 +101,8 @@
 
 + (NSString*)homeCountryString;
 
++ (NSString*)nationalityString;
+
 + (NSString*)callerIdString;
 
 + (NSString*)typeString;

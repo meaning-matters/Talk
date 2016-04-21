@@ -34,6 +34,7 @@
 @property (nonatomic, retain) NSData*   proofImage;
 @property (nonatomic, retain) NSString* idType;
 @property (nonatomic, retain) NSString* idNumber;
+@property (nonatomic, retain) NSString* nationality;     // ISO country code of nationality.
 @property (nonatomic, retain) NSString* fiscalIdCode;
 @property (nonatomic, retain) NSString* streetCode;
 @property (nonatomic, retain) NSString* municipalityCode;

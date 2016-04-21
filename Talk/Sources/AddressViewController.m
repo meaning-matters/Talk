@@ -86,6 +86,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 @property (nonatomic, strong) NSArray*                    citiesArray;
 @property (nonatomic, assign) BOOL                        isChecked;
 
+@property (nonatomic, strong) UITextField*                nationalityTextField;
 @property (nonatomic, strong) UITextField*                salutationTextField;
 @property (nonatomic, strong) UITextField*                companyNameTextField;
 @property (nonatomic, strong) UITextField*                firstNameTextField;
@@ -950,6 +951,33 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
                 break;
             }
+            case TableSectionExtraFields:
+            {
+                switch ([Common nthBitSet:indexPath.row inValue:self.rowsAddress])
+                {
+                    case TableRowExtraFieldsNationality:
+                    {
+                        isoCountryCode = self.address.nationality;
+                        completion = ^(BOOL cancelled, NSString* isoCountryCode)
+                        {
+                            if (cancelled == NO)
+                            {
+                                self.address.nationality = isoCountryCode;
+
+                                // Update the cell.
+                                self.nationalityTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:isoCountryCode];
+                            }
+                        };
+
+                        countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:isoCountryCode
+                                                                                                    title:[Strings nationalityString]
+                                                                                               completion:completion];
+                        [self.navigationController pushViewController:countriesViewController animated:YES];
+                        break;
+                    }
+                }
+                break;
+            }
             case TableSectionDetails:
             {
                 salutationsViewController = [[NumberAreaSalutationsViewController alloc] initWithSalutation:self.salutation
@@ -989,8 +1017,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                 self.address.isoCountryCode = isoCountryCode;
                                 
                                 // Update the cell.
-                                UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-                                cell.textLabel.text   = nil;
                                 self.countryTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:isoCountryCode];
                             }
                         };
@@ -1072,14 +1098,74 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 - (UITableViewCell*)extraFieldsCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
+    UITextField*     textField;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"TextFieldCell"];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"TextFieldCell"];
+
+        textField = [Common addTextFieldToCell:cell delegate:self];
+        textField.tag = CommonTextFieldCellTag;
+    }
+    else
+    {
+        textField = (UITextField*)[cell viewWithTag:CommonTextFieldCellTag];
+    }
+
+    textField.userInteractionEnabled = self.isNew;
+    switch ([Common nthBitSet:indexPath.row inValue:self.rowsDetails])
+    {
+        case TableRowExtraFieldsIdNumber:
+        {
+            break;
+        }
+        case TableRowExtraFieldsNationality:
+        {
+            textField.placeholder            = [Strings requiredString];
+            textField.userInteractionEnabled = NO;
+
+            if (self.isNew)
+            {
+                cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            }
+            else
+            {
+                cell.accessoryType  = UITableViewCellAccessoryNone;
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+
+            self.nationalityTextField = textField;
+            cell.textLabel.text = [Strings nationalityString];
+            if (self.address.nationality == nil)
+            {
+                self.nationalityTextField.text = nil;
+            }
+            else
+            {
+                self.nationalityTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:self.address.nationality];
+            }
+
+            break;
+        }
+        case TableRowExtraFieldsFiscalIdCode:
+        {
+            break;
+        }
+        case TableRowExtraFieldsStreetCode:
+        {
+            break;
+        }
+        case TableRowExtraFieldsMunicipalityCode:
+        {
+            break;
+        }
     }
 
     cell.textLabel.text = [self localizedExtraFieldTitleForRow:indexPath.row];
+
+    [self updateTextField:textField onCell:cell];
 
     return cell;
 }
@@ -1094,6 +1180,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"TextFieldCell"];
+
         textField = [Common addTextFieldToCell:cell delegate:self];
         textField.tag = CommonTextFieldCellTag;
     }
