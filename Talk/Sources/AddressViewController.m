@@ -1072,21 +1072,11 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 - (UITableViewCell*)extraFieldsCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
-    NSString*        identifier;
 
-    switch ([Common nthBitSet:indexPath.row inValue:self.rowsExtraFields])
-    {
-        case TableRowExtraFieldsIdNumber:     identifier = @"BuildingNumberCell";   break;
-        case TableRowExtraFieldsNationality:  identifier = @"BuildingLetterCell";   break;
-        case TableRowExtraFieldsFiscalIdCode: identifier = @"PostcodeCell";         break;
-        case TableRowAddressCountry:          identifier = @"CountryTextFieldCell"; break;
-        default:                              identifier = @"TextFieldCell";        break;
-    }
-
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"ExtraFieldCell"];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"TextFieldCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"ExtraFieldCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"TextFieldCell"];
     }
 
     cell.textLabel.text = [self localizedExtraFieldTitleForRow:indexPath.row];
@@ -1099,7 +1089,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 {
     UITableViewCell* cell;
     UITextField*     textField;
-    
+
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"TextFieldCell"];
     if (cell == nil)
     {
@@ -1178,17 +1168,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     UITextField*     textField;
     BOOL             singlePostcode = NO;
     BOOL             singleCity     = NO;
-    NSString*        identifier;
-    
-    switch ([Common nthBitSet:indexPath.row inValue:self.rowsAddress])
-    {
-        case TableRowAddressBuildingNumber: identifier = @"BuildingNumberCell";   break;
-        case TableRowAddressBuildingLetter: identifier = @"BuildingLetterCell";   break;
-        case TableRowAddressPostcode:       identifier = @"PostcodeCell";         break;
-        case TableRowAddressCountry:        identifier = @"CountryTextFieldCell"; break;
-        default:                            identifier = @"TextFieldCell";        break;
-    }
-    
+
     if (self.citiesArray.count == 1)
     {
         singleCity = YES;
@@ -1202,10 +1182,10 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         }
     }
     
-    cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"TextFieldCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"TextFieldCell"];
         
         textField = [Common addTextFieldToCell:cell delegate:self];
         textField.tag = CommonTextFieldCellTag;
