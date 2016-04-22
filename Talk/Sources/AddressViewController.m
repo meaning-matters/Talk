@@ -56,11 +56,12 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     TableRowAddressCountry        = 1UL << 5,
 };
 
+// https://developers.voxbone.com/docs/v3/regulation/#extra-fields-list
 typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 {
-    TableRowExtraFieldsIdType           = 1UL << 0,
-    TableRowExtraFieldsIdNumber         = 1UL << 1,
-    TableRowExtraFieldsNationality      = 1UL << 2,
+    TableRowExtraFieldsNationality      = 1UL << 0,
+    TableRowExtraFieldsIdType           = 1UL << 1,
+    TableRowExtraFieldsIdNumber         = 1UL << 2,
     TableRowExtraFieldsFiscalIdCode     = 1UL << 3,
     TableRowExtraFieldsStreetCode       = 1UL << 4,
     TableRowExtraFieldsMunicipalityCode = 1UL << 5,
@@ -181,9 +182,9 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
         self.idType = [[IdType alloc] initWithString:self.address.idType];
         NSArray* fields = self.extraFieldsInfo[@"fields"];
+        self.rowsExtraFields |= [fields containsObject:@"nationality"]      ? TableRowExtraFieldsNationality      : 0;
         self.rowsExtraFields |= [fields containsObject:@"idType"]           ? TableRowExtraFieldsIdType           : 0;
         self.rowsExtraFields |= [fields containsObject:@"idNumber"]         ? TableRowExtraFieldsIdNumber         : 0;
-        self.rowsExtraFields |= [fields containsObject:@"nationality"]      ? TableRowExtraFieldsNationality      : 0;
         self.rowsExtraFields |= [fields containsObject:@"fiscalIdCode"]     ? TableRowExtraFieldsFiscalIdCode     : 0;
         self.rowsExtraFields |= [fields containsObject:@"streetCode"]       ? TableRowExtraFieldsStreetCode       : 0;
         self.rowsExtraFields |= [fields containsObject:@"municipalityCode"] ? TableRowExtraFieldsMunicipalityCode : 0;
@@ -252,6 +253,13 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
     switch ([Common nthBitSet:row inValue:self.rowsExtraFields])
     {
+        case TableRowExtraFieldsNationality:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Address Nationality", nil, [NSBundle mainBundle],
+                                                      @"Nationality",
+                                                      @"...");
+            break;
+        }
         case TableRowExtraFieldsIdType:
         {
             title = NSLocalizedStringWithDefaultValue(@"Address ID Type", nil, [NSBundle mainBundle],
@@ -263,13 +271,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         {
             title = NSLocalizedStringWithDefaultValue(@"Address ID Number", nil, [NSBundle mainBundle],
                                                       @"ID Number",
-                                                      @"...");
-            break;
-        }
-        case TableRowExtraFieldsNationality:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"Address Nationality", nil, [NSBundle mainBundle],
-                                                      @"Nationality",
                                                       @"...");
             break;
         }
@@ -343,6 +344,9 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     self.postcodeTextField.text = self.address.postcode;
     self.cityTextField.text     = self.address.city;
 
+    self.idTypeTextField.placeholder       = [self placeHolderForTextField:self.idTypeTextField];
+    self.idNumberTextField.placeholder     = [self placeHolderForTextField:self.idNumberTextField];
+    self.nationalityTextField.placeholder  = [self placeHolderForTextField:self.nationalityTextField];
     self.fiscalIdCodeTextField.placeholder = [self placeHolderForTextField:self.fiscalIdCodeTextField];
     self.companyNameTextField.placeholder  = [self placeHolderForTextField:self.companyNameTextField];
     self.firstNameTextField.placeholder    = [self placeHolderForTextField:self.firstNameTextField];
@@ -717,6 +721,18 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         {
             placeHolder = [Strings requiredString];
         }
+        else if (textField == self.idTypeTextField)
+        {
+            placeHolder = [Strings requiredString];
+        }
+        else if (textField == self.idNumberTextField)
+        {
+            placeHolder = [Strings requiredString];
+        }
+        else if (textField == self.nationalityTextField)
+        {
+            placeHolder = [Strings requiredString];
+        }
         else if (textField == self.fiscalIdCodeTextField)
         {
             placeHolder = [Strings optionalString];
@@ -734,6 +750,18 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             placeHolder = [Strings requiredString];
         }
         else if (textField == self.firstNameTextField || textField == self.lastNameTextField)
+        {
+            placeHolder = [Strings optionalString];
+        }
+        else if (textField == self.idTypeTextField)
+        {
+            placeHolder = [Strings optionalString];
+        }
+        else if (textField == self.idNumberTextField)
+        {
+            placeHolder = [Strings optionalString];
+        }
+        else if (textField == self.nationalityTextField)
         {
             placeHolder = [Strings optionalString];
         }
@@ -833,6 +861,13 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             title = NSLocalizedStringWithDefaultValue(@"Address:Naming SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Address' Name In App",
                                                       @"...");
+            break;
+        }
+        case TableSectionExtraFields:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Address:ExtraFields SectionHeader", nil,
+                                                      [NSBundle mainBundle], @"Additional Information",
+                                                      @"Name and company of someone.");
             break;
         }
         case TableSectionDetails:
@@ -989,21 +1024,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             {
                 switch ([Common nthBitSet:indexPath.row inValue:self.rowsAddress])
                 {
-                    case TableRowExtraFieldsIdType:
-                    {
-                        idTypesViewController = [[AddressIdTypesViewController alloc] initWithIdType:self.idType
-                                                                                          completion:^
-                        {
-                            self.address.idType = self.idType.string;
-
-                            // Update the cell.
-                            self.idTypeTextField.text = self.idType.localizedString;
-                        }];
-
-                        idTypesViewController.title = cell.textLabel.text;
-                        [self.navigationController pushViewController:idTypesViewController animated:YES];
-                        break;
-                    }
                     case TableRowExtraFieldsNationality:
                     {
                         isoCountryCode = self.address.nationality;
@@ -1022,6 +1042,21 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                                                                     title:[Strings nationalityString]
                                                                                                completion:completion];
                         [self.navigationController pushViewController:countriesViewController animated:YES];
+                        break;
+                    }
+                    case TableRowExtraFieldsIdType:
+                    {
+                        idTypesViewController = [[AddressIdTypesViewController alloc] initWithIdType:self.idType
+                                                                                          completion:^
+                        {
+                            self.address.idType = self.idType.string;
+
+                            // Update the cell.
+                            self.idTypeTextField.text = self.idType.localizedString;
+                        }];
+
+                        idTypesViewController.title = cell.textLabel.text;
+                        [self.navigationController pushViewController:idTypesViewController animated:YES];
                         break;
                     }
                 }
@@ -1167,6 +1202,34 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     textField.userInteractionEnabled = self.isNew;
     switch ([Common nthBitSet:indexPath.row inValue:self.rowsDetails])
     {
+        case TableRowExtraFieldsNationality:
+        {
+            textField.placeholder            = [Strings requiredString];
+            textField.userInteractionEnabled = NO;
+
+            if (self.isNew)
+            {
+                cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            }
+            else
+            {
+                cell.accessoryType  = UITableViewCellAccessoryNone;
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+
+            self.nationalityTextField = textField;
+            if (self.address.nationality == nil)
+            {
+                self.nationalityTextField.text = nil;
+            }
+            else
+            {
+                self.nationalityTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:self.address.nationality];
+            }
+
+            break;
+        }
         case TableRowExtraFieldsIdType:
         {
             textField.placeholder            = [Strings requiredString];
@@ -1204,34 +1267,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             textField.text = [self.address.idNumber stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
             textField.placeholder = [Strings requiredString];
             objc_setAssociatedObject(textField, @"TextFieldKey", @"idNumber", OBJC_ASSOCIATION_RETAIN);
-            break;
-        }
-        case TableRowExtraFieldsNationality:
-        {
-            textField.placeholder            = [Strings requiredString];
-            textField.userInteractionEnabled = NO;
-
-            if (self.isNew)
-            {
-                cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
-                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-            }
-            else
-            {
-                cell.accessoryType  = UITableViewCellAccessoryNone;
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            }
-
-            self.nationalityTextField = textField;
-            if (self.address.nationality == nil)
-            {
-                self.nationalityTextField.text = nil;
-            }
-            else
-            {
-                self.nationalityTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:self.address.nationality];
-            }
-
             break;
         }
         case TableRowExtraFieldsFiscalIdCode:
