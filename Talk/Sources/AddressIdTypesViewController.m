@@ -1,30 +1,30 @@
 //
-//  AddressSalutationsViewController.m
+//  AddressIdTypesViewController.m
 //  Talk
 //
-//  Created by Cornelis van der Bent on 18/08/13.
-//  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
+//  Created by Cornelis van der Bent on 21/04/16.
+//  Copyright © 2016 NumberBay Ltd. All rights reserved.
 //
 
-#import "AddressSalutationsViewController.h"
+#import "AddressIdTypesViewController.h"
 
 
-@interface AddressSalutationsViewController ()
+@interface AddressIdTypesViewController ()
 
 @property (nonatomic, strong) NSIndexPath* selectedIndexPath;
-@property (nonatomic, strong) Salutation*  salutation;
+@property (nonatomic, strong) IdType*      idType;
 @property (nonatomic, copy) void (^completion)(void);
 
 @end
 
 
-@implementation AddressSalutationsViewController
+@implementation AddressIdTypesViewController
 
-- (instancetype)initWithSalutation:(Salutation*)salutation completion:(void (^)(void))completion
+- (instancetype)initWithIdType:(IdType*)idType completion:(void (^)(void))completion;
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
-        _salutation = salutation;
+        _idType     = idType;
         _completion = [completion copy];
     }
 
@@ -42,7 +42,7 @@
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 4;
 }
 
 
@@ -61,20 +61,26 @@
     {
         case 0:
         {
-            selected = (self.salutation.value == SalutationValueMs);
-            cell.textLabel.text = [Salutation localizedStringForValue:SalutationValueMs];
+            selected = (self.idType.value == IdTypeValueDni);
+            cell.textLabel.text = [IdType localizedStringForValue:IdTypeValueDni];
             break;
         }
         case 1:
         {
-            selected = (self.salutation.value == SalutationValueMr);
-            cell.textLabel.text = [Salutation localizedStringForValue:SalutationValueMr];
+            selected = (self.idType.value == IdTypeValueNif);
+            cell.textLabel.text = [IdType localizedStringForValue:IdTypeValueNif];
             break;
         }
         case 2:
         {
-            selected = (self.salutation.value == SalutationValueCompany);
-            cell.textLabel.text = [Salutation localizedStringForValue:SalutationValueCompany];
+            selected = (self.idType.value == IdTypeValueNie);
+            cell.textLabel.text = [IdType localizedStringForValue:IdTypeValueNie];
+            break;
+        }
+        case 3:
+        {
+            selected = (self.idType.value == IdTypeValuePassport);
+            cell.textLabel.text = [IdType localizedStringForValue:IdTypeValuePassport];
             break;
         }
     }
@@ -94,17 +100,22 @@
     {
         case 0:
         {
-            self.salutation.value = SalutationValueMs;
+            self.idType.value = IdTypeValueDni;
             break;
         }
         case 1:
         {
-            self.salutation.value = SalutationValueMr;
+            self.idType.value = IdTypeValueNif;
             break;
         }
         case 2:
         {
-            self.salutation.value = SalutationValueCompany;
+            self.idType.value = IdTypeValueNie;
+            break;
+        }
+        case 3:
+        {
+            self.idType.value = IdTypeValuePassport;
             break;
         }
     }

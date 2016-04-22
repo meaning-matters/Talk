@@ -492,6 +492,8 @@
 		48995E0D18739F46001395C2 /* Phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0A18739F46001395C2 /* Phone@2x.png */; };
 		48995E0E18739F46001395C2 /* Phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0A18739F46001395C2 /* Phone@2x.png */; };
 		48995E1018742206001395C2 /* AppledocSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0F18742206001395C2 /* AppledocSettings.plist */; };
+		489B4B3A1CC95ED3002E8F54 /* AddressIdTypesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 489B4B391CC95ED3002E8F54 /* AddressIdTypesViewController.m */; };
+		489B4B3D1CC95F51002E8F54 /* IdType.m in Sources */ = {isa = PBXBuildFile; fileRef = 489B4B3C1CC95F51002E8F54 /* IdType.m */; };
 		48A0CE6A1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */; };
 		48A0CE6B1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */; };
 		48A0CE70180740F300B8A9F8 /* Welcome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */; };
@@ -1190,6 +1192,10 @@
 		48995E0918739F46001395C2 /* Phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Phone.png; sourceTree = "<group>"; };
 		48995E0A18739F46001395C2 /* Phone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Phone@2x.png"; sourceTree = "<group>"; };
 		48995E0F18742206001395C2 /* AppledocSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AppledocSettings.plist; sourceTree = "<group>"; };
+		489B4B381CC95ED3002E8F54 /* AddressIdTypesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressIdTypesViewController.h; sourceTree = "<group>"; };
+		489B4B391CC95ED3002E8F54 /* AddressIdTypesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressIdTypesViewController.m; sourceTree = "<group>"; };
+		489B4B3B1CC95F51002E8F54 /* IdType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdType.h; sourceTree = "<group>"; };
+		489B4B3C1CC95F51002E8F54 /* IdType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdType.m; sourceTree = "<group>"; };
 		48A0CE681805CFDC00B8A9F8 /* CallbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallbackViewController.h; sourceTree = "<group>"; };
 		48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallbackViewController.m; sourceTree = "<group>"; };
 		48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Welcome.mp3; path = Resources/Welcome.mp3; sourceTree = "<group>"; };
@@ -1645,10 +1651,7 @@
 		482A639A165F922E00325B3F /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				48E678C71C9DD89000471BDE /* AddressStatus.h */,
-				48E678C81C9DD89000471BDE /* AddressStatus.m */,
-				48FC30BB1C220E300032387E /* AddressType.h */,
-				48FC30BC1C220E300032387E /* AddressType.m */,
+				489B4B3E1CC95F78002E8F54 /* Enums */,
 				48E61EF31C1A1BB900973FB2 /* AnalyticsTransmitter.h */,
 				48E61EF41C1A1BB900973FB2 /* AnalyticsTransmitter.m */,
 				48F5D2EB16B9A380001576E1 /* Base64.h */,
@@ -1676,16 +1679,10 @@
 				482608ED166A4706007F0844 /* NSTimer+Blocks.m */,
 				482A639F165FF73400325B3F /* NumberLabel.h */,
 				482A63A0165FF73400325B3F /* NumberLabel.m */,
-				48200D1A16EC89BA0069677E /* NumberType.h */,
-				48200D1B16EC89BA0069677E /* NumberType.m */,
 				4877EDBA17AD27700013B18F /* PhoneNumberTextFieldDelegate.h */,
 				4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */,
-				48FC30C31C2221360032387E /* ProofType.h */,
-				48FC30C41C2221360032387E /* ProofType.m */,
 				4895D19B16B1C4F100BCA581 /* PurchaseManager.h */,
 				4895D19C16B1C4F200BCA581 /* PurchaseManager.m */,
-				482881571C5F5E4C00210DF1 /* Salutation.h */,
-				482881581C5F5E4C00210DF1 /* Salutation.m */,
 				48AF457F164A45A000DFE3D8 /* Settings.h */,
 				48AF4580164A45A100DFE3D8 /* Settings.m */,
 				48AD95DD164AE581006178E6 /* Skinning.h */,
@@ -2334,6 +2331,25 @@
 			name = CoreData;
 			sourceTree = "<group>";
 		};
+		489B4B3E1CC95F78002E8F54 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				48E678C71C9DD89000471BDE /* AddressStatus.h */,
+				48E678C81C9DD89000471BDE /* AddressStatus.m */,
+				48FC30BB1C220E300032387E /* AddressType.h */,
+				48FC30BC1C220E300032387E /* AddressType.m */,
+				489B4B3B1CC95F51002E8F54 /* IdType.h */,
+				489B4B3C1CC95F51002E8F54 /* IdType.m */,
+				48200D1A16EC89BA0069677E /* NumberType.h */,
+				48200D1B16EC89BA0069677E /* NumberType.m */,
+				48FC30C31C2221360032387E /* ProofType.h */,
+				48FC30C41C2221360032387E /* ProofType.m */,
+				482881571C5F5E4C00210DF1 /* Salutation.h */,
+				482881581C5F5E4C00210DF1 /* Salutation.m */,
+			);
+			name = Enums;
+			sourceTree = "<group>";
+		};
 		48AF44E116490FF200DFE3D8 /* XIBs */ = {
 			isa = PBXGroup;
 			children = (
@@ -2366,8 +2382,16 @@
 				48F47BC018BEA850006A6436 /* Base */,
 				48AF45001649484600DFE3D8 /* AboutViewController.h */,
 				48AF45011649484600DFE3D8 /* AboutViewController.m */,
+				484D936A1712FBA1006FA875 /* AddressCitiesViewController.h */,
+				484D936B1712FBA1006FA875 /* AddressCitiesViewController.m */,
 				48F14EDC1BF9C62200541EEC /* AddressesViewController.h */,
 				48F14EDD1BF9C62200541EEC /* AddressesViewController.m */,
+				489B4B381CC95ED3002E8F54 /* AddressIdTypesViewController.h */,
+				489B4B391CC95ED3002E8F54 /* AddressIdTypesViewController.m */,
+				484D936E17131E96006FA875 /* AddressPostcodesViewController.h */,
+				484D936F17131E97006FA875 /* AddressPostcodesViewController.m */,
+				485E38A517C0B7EE0089F0F1 /* AddressSalutationsViewController.h */,
+				485E38A617C0B7F00089F0F1 /* AddressSalutationsViewController.m */,
 				48F14EE41BF9C63A00541EEC /* AddressViewController.h */,
 				48F14EE51BF9C63A00541EEC /* AddressViewController.m */,
 				48A0CE681805CFDC00B8A9F8 /* CallbackViewController.h */,
@@ -2408,12 +2432,6 @@
 				48AF44F1164947CE00DFE3D8 /* KeypadViewController.m */,
 				4849432D1752263600E1D5C4 /* LicensesViewController.h */,
 				4849432E1752263600E1D5C4 /* LicensesViewController.m */,
-				484D936A1712FBA1006FA875 /* AddressCitiesViewController.h */,
-				484D936B1712FBA1006FA875 /* AddressCitiesViewController.m */,
-				484D936E17131E96006FA875 /* AddressPostcodesViewController.h */,
-				484D936F17131E97006FA875 /* AddressPostcodesViewController.m */,
-				485E38A517C0B7EE0089F0F1 /* AddressSalutationsViewController.h */,
-				485E38A617C0B7F00089F0F1 /* AddressSalutationsViewController.m */,
 				4896D8FE16EBE612008A2354 /* NumberAreasViewController.h */,
 				4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */,
 				4830462216EE269D000F9B05 /* NumberAreaViewController.h */,
@@ -3235,6 +3253,7 @@
 				4816A0A01BF129A300817ED7 /* DataManager.m in Sources */,
 				48B8136C1AADF9B20019AF77 /* NBPersonCellAddressInfo.m in Sources */,
 				48A26DDC18BA7FB200736CCB /* SearchTableViewController.m in Sources */,
+				489B4B3A1CC95ED3002E8F54 /* AddressIdTypesViewController.m in Sources */,
 				4822B4321C9615FB004BD2F5 /* AddressUpdatesHandler.m in Sources */,
 				4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */,
 				484943AD1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
@@ -3244,6 +3263,7 @@
 				4814D57219E9674E00958E33 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				48B8133A1AADF8F10019AF77 /* NBPeopleTableViewCell.m in Sources */,
 				48B813561AADF9590019AF77 /* NBDateCell.m in Sources */,
+				489B4B3D1CC95F51002E8F54 /* IdType.m in Sources */,
 				4814D56719E9660200958E33 /* AFHTTPRequestOperation.m in Sources */,
 				4814D56919E9660200958E33 /* AFHTTPSessionManager.m in Sources */,
 				48D4FADD1924247A00949894 /* NavigationController.m in Sources */,

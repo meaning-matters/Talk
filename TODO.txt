@@ -173,3 +173,4 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 
 * Add feature: Find contact IDs for anonymous Recents numbers. See not used findContactsForAnonymousItems.  App crashed when trying something in this direction; similar crash as documented in one of the NBAddress modules (where I thought that synchonize would help)
 
+* IdType.m Check entered data using regex's.
