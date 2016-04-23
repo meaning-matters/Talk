@@ -652,25 +652,27 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     {
         if (self.salutation.isPerson)
         {
-            complete = ([self.name                   stringByRemovingWhiteSpace].length > 0 &&
-                        [self.address.firstName      stringByRemovingWhiteSpace].length > 0 &&
-                        [self.address.lastName       stringByRemovingWhiteSpace].length > 0 &&
-                        [self.address.street         stringByRemovingWhiteSpace].length > 0 &&
-                        [self.address.buildingNumber stringByRemovingWhiteSpace].length > 0 &&
-                        [self.address.city           stringByRemovingWhiteSpace].length > 0 &&
-                        [self.address.postcode       stringByRemovingWhiteSpace].length > 0 &&
-                        [self.address.isoCountryCode stringByRemovingWhiteSpace].length > 0);
+            complete = [self.name                   stringByRemovingWhiteSpace].length > 0 &&
+                       [self.address.firstName      stringByRemovingWhiteSpace].length > 0 &&
+                       [self.address.lastName       stringByRemovingWhiteSpace].length > 0 &&
+                       [self.address.street         stringByRemovingWhiteSpace].length > 0 &&
+                       [self.address.buildingNumber stringByRemovingWhiteSpace].length > 0 &&
+                       [self.address.city           stringByRemovingWhiteSpace].length > 0 &&
+                       [self.address.postcode       stringByRemovingWhiteSpace].length > 0 &&
+                       [self.address.isoCountryCode stringByRemovingWhiteSpace].length > 0 &&
+                       [self areExtraFieldsComplete];
         }
 
         if (self.salutation.isCompany)
         {
-            complete = ([self.name                   stringByRemovingWhiteSpace].length > 0 &&
-                        [self.address.companyName    stringByRemovingWhiteSpace].length > 0 &&
-                        [self.address.street         stringByRemovingWhiteSpace].length > 0 &&
-                        [self.address.buildingNumber stringByRemovingWhiteSpace].length > 0 &&
-                        [self.address.city           stringByRemovingWhiteSpace].length > 0 &&
-                        [self.address.postcode       stringByRemovingWhiteSpace].length > 0 &&
-                        [self.address.isoCountryCode stringByRemovingWhiteSpace].length > 0);
+            complete = [self.name                   stringByRemovingWhiteSpace].length > 0 &&
+                       [self.address.companyName    stringByRemovingWhiteSpace].length > 0 &&
+                       [self.address.street         stringByRemovingWhiteSpace].length > 0 &&
+                       [self.address.buildingNumber stringByRemovingWhiteSpace].length > 0 &&
+                       [self.address.city           stringByRemovingWhiteSpace].length > 0 &&
+                       [self.address.postcode       stringByRemovingWhiteSpace].length > 0 &&
+                       [self.address.isoCountryCode stringByRemovingWhiteSpace].length > 0 &&
+                       [self areExtraFieldsComplete];
         }
     }
     else
@@ -678,6 +680,45 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         complete = ([self.name stringByRemovingWhiteSpace].length > 0);
     }
     
+    return complete;
+}
+
+
+- (BOOL)areExtraFieldsComplete
+{
+    BOOL complete;
+
+    if (self.isNew == YES)
+    {
+        if (self.salutation.isPerson)
+        {
+            complete = !((self.rowsExtraFields & TableRowExtraFieldsNationality) &&
+                         ([self.address.nationality stringByRemovingWhiteSpace].length == 0)) &&
+                       !((self.rowsExtraFields & TableRowExtraFieldsIdType) &&
+                         ([self.address.idType stringByRemovingWhiteSpace].length == 0)) &&
+                       !((self.rowsExtraFields & TableRowExtraFieldsIdNumber) &&
+                         ([self.address.idNumber stringByRemovingWhiteSpace].length == 0)) &&
+                       !((self.rowsExtraFields & TableRowExtraFieldsStreetCode) &&
+                         ([self.address.streetCode stringByRemovingWhiteSpace].length == 0)) &&
+                       !((self.rowsExtraFields & TableRowExtraFieldsMunicipalityCode) &&
+                         ([self.address.municipalityCode stringByRemovingWhiteSpace].length == 0));
+        }
+
+        if (self.salutation.isCompany)
+        {
+            complete = !((self.rowsExtraFields & TableRowExtraFieldsFiscalIdCode) &&
+                         ([self.address.fiscalIdCode stringByRemovingWhiteSpace].length == 0)) &&
+                       !((self.rowsExtraFields & TableRowExtraFieldsStreetCode) &&
+                         ([self.address.streetCode stringByRemovingWhiteSpace].length == 0)) &&
+                       !((self.rowsExtraFields & TableRowExtraFieldsMunicipalityCode) &&
+                         ([self.address.municipalityCode stringByRemovingWhiteSpace].length == 0));
+        }
+    }
+    else
+    {
+        complete = YES;
+    }
+
     return complete;
 }
 
