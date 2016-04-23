@@ -104,7 +104,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 @property (nonatomic, strong) UITextField*                postcodeTextField;
 @property (nonatomic, strong) UITextField*                countryTextField;
 
-@property (nonatomic, strong) NSIndexPath*                salutationIndexPath;
 @property (nonatomic, strong) NSIndexPath*                companyNameIndexPath;
 @property (nonatomic, strong) NSIndexPath*                firstNameIndexPath;
 @property (nonatomic, strong) NSIndexPath*                lastNameIndexPath;
@@ -113,7 +112,10 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 @property (nonatomic, strong) NSIndexPath*                buildingLetterIndexPath;
 @property (nonatomic, strong) NSIndexPath*                cityIndexPath;
 @property (nonatomic, strong) NSIndexPath*                postcodeIndexPath;
-@property (nonatomic, strong) NSIndexPath*                countryIndexPath;
+@property (nonatomic, strong) NSIndexPath*                idNumberIndexPath;
+@property (nonatomic, strong) NSIndexPath*                fiscalIdCodeIndexPath;
+@property (nonatomic, strong) NSIndexPath*                streetCodeIndexPath;
+@property (nonatomic, strong) NSIndexPath*                municipalityCodeIndexPath;
 
 @property (nonatomic, strong) NSIndexPath*                nextIndexPath;      // Index-path of cell to show after Next button is tapped.
 
@@ -224,7 +226,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                    @{
                        @"numberTypes" : @[ @"MOBILE" ],
                        @"idTypes"     : @[ @"DNI", @"NIF", @"NIE", @"Passport" ],
-                       @"fields"      : @[ @"idType", @"idNumber", @"nationality", @"fiscalIdCode" ]
+                       @"fields"      : @[ @"nationality", @"idType", @"idNumber", @"fiscalIdCode" ]
                    },
                    @"DK" :
                    @{
@@ -236,7 +238,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                    @{
                        @"numberTypes" : @[ @"GEOGRAPHIC", @"NATIONAL", @"MOBILE", @"TOLL_FREE", @"SHARED_COST", @"SPECIAL"],
                        @"idTypes"     : @[ ],
-                       @"fields"      : @[ @"idType", @"idNumber", @"nationality", @"fiscalIdCode" ]
+                       @"fields"      : @[ @"nationality", @"idType", @"idNumber", @"fiscalIdCode" ]
                    }
                }[self.address.isoCountryCode];
     }
@@ -574,7 +576,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 {
     unsigned emptyMask  = 0;
     unsigned currentBit = 0;
-    
+
     if (self.isNew == YES)
     {
         emptyMask |= ([self.name                   stringByRemovingWhiteSpace].length == 0) << 0;
@@ -589,23 +591,36 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             emptyMask |= ([self.address.city       stringByRemovingWhiteSpace].length == 0) << 7;
             emptyMask |= ([self.address.postcode   stringByRemovingWhiteSpace].length == 0) << 8;
         }
+
+        emptyMask |= ((self.rowsExtraFields & TableRowExtraFieldsIdNumber) &&
+                      ([self.address.idNumber stringByRemovingWhiteSpace].length == 0)) << 9;
+        emptyMask |= ((self.rowsExtraFields & TableRowExtraFieldsFiscalIdCode) &&
+                      ([self.address.fiscalIdCode stringByRemovingWhiteSpace].length == 0)) << 10;
+        emptyMask |= ((self.rowsExtraFields & TableRowExtraFieldsStreetCode) &&
+                      ([self.address.streetCode stringByRemovingWhiteSpace].length == 0)) << 11;
+        emptyMask |= ((self.rowsExtraFields & TableRowExtraFieldsMunicipalityCode) &&
+                      ([self.address.municipalityCode stringByRemovingWhiteSpace].length == 0)) << 12;
     }
     else
     {
         emptyMask |= ([self.name stringByRemovingWhiteSpace].length == 0) << 0;
     }
-    
+
     if (emptyMask != 0)
     {
-        currentBit |= [currentKey isEqualToString:@"name"]           << 0;
-        currentBit |= [currentKey isEqualToString:@"companyName"]    << 1;
-        currentBit |= [currentKey isEqualToString:@"firstName"]      << 2;
-        currentBit |= [currentKey isEqualToString:@"lastName"]       << 3;
-        currentBit |= [currentKey isEqualToString:@"street"]         << 4;
-        currentBit |= [currentKey isEqualToString:@"buildingNumber"] << 5;
-        currentBit |= [currentKey isEqualToString:@"buildingLetter"] << 6;
-        currentBit |= [currentKey isEqualToString:@"city"]           << 7;
-        currentBit |= [currentKey isEqualToString:@"postcode"]       << 8;
+        currentBit |= [currentKey isEqualToString:@"name"]             <<  0;
+        currentBit |= [currentKey isEqualToString:@"companyName"]      <<  1;
+        currentBit |= [currentKey isEqualToString:@"firstName"]        <<  2;
+        currentBit |= [currentKey isEqualToString:@"lastName"]         <<  3;
+        currentBit |= [currentKey isEqualToString:@"street"]           <<  4;
+        currentBit |= [currentKey isEqualToString:@"buildingNumber"]   <<  5;
+        currentBit |= [currentKey isEqualToString:@"buildingLetter"]   <<  6;
+        currentBit |= [currentKey isEqualToString:@"city"]             <<  7;
+        currentBit |= [currentKey isEqualToString:@"postcode"]         <<  8;
+        currentBit |= [currentKey isEqualToString:@"idNumber"]         <<  9;
+        currentBit |= [currentKey isEqualToString:@"fiscalIdCode"]     << 10;
+        currentBit |= [currentKey isEqualToString:@"streetCode"]       << 11;
+        currentBit |= [currentKey isEqualToString:@"municipalityCode"] << 12;
         
         // Find next bit set in emptyMask.
         unsigned nextBit = currentBit << 1;
@@ -625,16 +640,20 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         }
         
         NSIndexPath* indexPath = nil;
-        indexPath = (nextBit == (1 << 0)) ? self.nameIndexPath           : indexPath;
-        indexPath = (nextBit == (1 << 1)) ? self.companyNameIndexPath    : indexPath;
-        indexPath = (nextBit == (1 << 2)) ? self.firstNameIndexPath      : indexPath;
-        indexPath = (nextBit == (1 << 3)) ? self.lastNameIndexPath       : indexPath;
-        indexPath = (nextBit == (1 << 4)) ? self.streetIndexPath         : indexPath;
-        indexPath = (nextBit == (1 << 5)) ? self.buildingNumberIndexPath : indexPath;
-        indexPath = (nextBit == (1 << 6)) ? self.buildingLetterIndexPath : indexPath;
-        indexPath = (nextBit == (1 << 7)) ? self.cityIndexPath           : indexPath;
-        indexPath = (nextBit == (1 << 8)) ? self.postcodeIndexPath       : indexPath;
-        
+        indexPath = (nextBit == (1 <<  0)) ? self.nameIndexPath             : indexPath;
+        indexPath = (nextBit == (1 <<  1)) ? self.companyNameIndexPath      : indexPath;
+        indexPath = (nextBit == (1 <<  2)) ? self.firstNameIndexPath        : indexPath;
+        indexPath = (nextBit == (1 <<  3)) ? self.lastNameIndexPath         : indexPath;
+        indexPath = (nextBit == (1 <<  4)) ? self.streetIndexPath           : indexPath;
+        indexPath = (nextBit == (1 <<  5)) ? self.buildingNumberIndexPath   : indexPath;
+        indexPath = (nextBit == (1 <<  6)) ? self.buildingLetterIndexPath   : indexPath;
+        indexPath = (nextBit == (1 <<  7)) ? self.cityIndexPath             : indexPath;
+        indexPath = (nextBit == (1 <<  8)) ? self.postcodeIndexPath         : indexPath;
+        indexPath = (nextBit == (1 <<  9)) ? self.idNumberIndexPath         : indexPath;
+        indexPath = (nextBit == (1 << 10)) ? self.fiscalIdCodeIndexPath     : indexPath;
+        indexPath = (nextBit == (1 << 11)) ? self.streetCodeIndexPath       : indexPath;
+        indexPath = (nextBit == (1 << 12)) ? self.municipalityCodeIndexPath : indexPath;
+
         return indexPath;
     }
     else
@@ -729,19 +748,23 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     
     if (self.isNew)
     {
-        NSInteger detailsSection = [Common nOfBit:TableSectionDetails inValue:self.sections];
-        NSInteger addressSection = [Common nOfBit:TableSectionAddress inValue:self.sections];
+        NSInteger detailsSection     = [Common nOfBit:TableSectionDetails     inValue:self.sections];
+        NSInteger addressSection     = [Common nOfBit:TableSectionAddress     inValue:self.sections];
 
-        self.salutationIndexPath     = [self indexPathForRowMask:TableRowDetailsSalutation     inSection:detailsSection];
-        self.companyNameIndexPath    = [self indexPathForRowMask:TableRowDetailsCompany        inSection:detailsSection];
-        self.firstNameIndexPath      = [self indexPathForRowMask:TableRowDetailsFirstName      inSection:detailsSection];
-        self.lastNameIndexPath       = [self indexPathForRowMask:TableRowDetailsLastName       inSection:detailsSection];
-        self.streetIndexPath         = [self indexPathForRowMask:TableRowAddressStreet         inSection:addressSection];
-        self.buildingNumberIndexPath = [self indexPathForRowMask:TableRowAddressBuildingNumber inSection:addressSection];
-        self.buildingLetterIndexPath = [self indexPathForRowMask:TableRowAddressBuildingLetter inSection:addressSection];
-        self.cityIndexPath           = [self indexPathForRowMask:TableRowAddressCity           inSection:addressSection];
-        self.postcodeIndexPath       = [self indexPathForRowMask:TableRowAddressPostcode       inSection:addressSection];
-        self.countryIndexPath        = [self indexPathForRowMask:TableRowAddressCountry        inSection:addressSection];
+        self.companyNameIndexPath      = [self indexPathForRowMask:TableRowDetailsCompany        inSection:detailsSection];
+        self.firstNameIndexPath        = [self indexPathForRowMask:TableRowDetailsFirstName      inSection:detailsSection];
+        self.lastNameIndexPath         = [self indexPathForRowMask:TableRowDetailsLastName       inSection:detailsSection];
+
+        self.streetIndexPath           = [self indexPathForRowMask:TableRowAddressStreet         inSection:addressSection];
+        self.buildingNumberIndexPath   = [self indexPathForRowMask:TableRowAddressBuildingNumber inSection:addressSection];
+        self.buildingLetterIndexPath   = [self indexPathForRowMask:TableRowAddressBuildingLetter inSection:addressSection];
+        self.cityIndexPath             = [self indexPathForRowMask:TableRowAddressCity           inSection:addressSection];
+        self.postcodeIndexPath         = [self indexPathForRowMask:TableRowAddressPostcode       inSection:addressSection];
+
+        self.idNumberIndexPath         = [self indexPathForExtraFieldsRowMask:TableRowExtraFieldsIdNumber];
+        self.fiscalIdCodeIndexPath     = [self indexPathForExtraFieldsRowMask:TableRowExtraFieldsFiscalIdCode];
+        self.streetCodeIndexPath       = [self indexPathForExtraFieldsRowMask:TableRowExtraFieldsStreetCode];
+        self.municipalityCodeIndexPath = [self indexPathForExtraFieldsRowMask:TableRowExtraFieldsMunicipalityCode];
     }
 }
 
@@ -749,6 +772,15 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 - (NSIndexPath*)indexPathForRowMask:(NSInteger)rowMask inSection:(NSInteger)section
 {
     return [NSIndexPath indexPathForRow:[Common bitIndexOfMask:rowMask] inSection:section];
+}
+
+
+- (NSIndexPath*)indexPathForExtraFieldsRowMask:(NSInteger)rowMask
+{
+    NSInteger section = [Common nOfBit:TableSectionExtraFields inValue:self.sections];
+    NSInteger row     = [Common nOfBit:rowMask                 inValue:self.rowsExtraFields];
+
+    return [NSIndexPath indexPathForRow:row inSection:section];
 }
 
 
