@@ -33,9 +33,9 @@ typedef NS_ENUM(NSUInteger, TableSections)
 {
     TableSectionName         = 1UL << 0, // Name given by user.
     TableSectionVerification = 1UL << 1, // Proof image.
-    TableSectionExtraFields  = 1UL << 2, // Exceptions for a few countries.
-    TableSectionDetails      = 1UL << 3, // Salutation, company, first, last.
-    TableSectionAddress      = 1UL << 4, // Street, number, city, postcode.
+    TableSectionDetails      = 1UL << 2, // Salutation, company, first, last.
+    TableSectionAddress      = 1UL << 3, // Street, number, city, postcode.
+    TableSectionExtraFields  = 1UL << 4, // Extra for few countries.  Assumed last section in updateExtraFieldsSection.
 };
 
 typedef NS_ENUM(NSUInteger, TableRowsDetails)
@@ -181,13 +181,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         }
 
         self.idType = [[IdType alloc] initWithString:self.address.idType];
-        NSArray* fields = self.extraFieldsInfo[@"fields"];
-        self.rowsExtraFields |= [fields containsObject:@"nationality"]      ? TableRowExtraFieldsNationality      : 0;
-        self.rowsExtraFields |= [fields containsObject:@"idType"]           ? TableRowExtraFieldsIdType           : 0;
-        self.rowsExtraFields |= [fields containsObject:@"idNumber"]         ? TableRowExtraFieldsIdNumber         : 0;
-        self.rowsExtraFields |= [fields containsObject:@"fiscalIdCode"]     ? TableRowExtraFieldsFiscalIdCode     : 0;
-        self.rowsExtraFields |= [fields containsObject:@"streetCode"]       ? TableRowExtraFieldsStreetCode       : 0;
-        self.rowsExtraFields |= [fields containsObject:@"municipalityCode"] ? TableRowExtraFieldsMunicipalityCode : 0;
 
         self.rowsDetails |= TableRowDetailsSalutation;
         if (self.isNew == YES)
@@ -224,26 +217,33 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (NSDictionary*)extraFieldsInfo
 {
-    return @{
-               @"ES" :
-               @{
-                   @"numberTypes" : @[ @"MOBILE" ],
-                   @"idTypes"     : @[ @"DNI", @"NIF", @"NIE", @"Passport" ],
-                   @"fields"      : @[ @"idType", @"idNumber", @"nationality", @"fiscalIdCode" ]
-               },
-               @"DK" :
-               @{
-                   @"numberTypes" : @[ @"GEOGRAPHIC", @"NATIONAL", @"MOBILE", @"TOLL_FREE", @"SHARED_COST", @"SPECIAL"],
-                   @"idTypes"     : @[ ],
-                   @"fields"      : @[ @"streetCode", @"municipalityCode" ]
-               },
-               @"SA" :
-               @{
-                   @"numberTypes" : @[ @"GEOGRAPHIC", @"NATIONAL", @"MOBILE", @"TOLL_FREE", @"SHARED_COST", @"SPECIAL"],
-                   @"idTypes"     : @[ ],
-                   @"fields"      : @[ @"idType", @"idNumber", @"nationality", @"fiscalIdCode" ]
-               }
-           }[self.numberIsoCountryCode];
+    if ([self.address.isoCountryCode isEqualToString:self.numberIsoCountryCode])
+    {
+        return @{
+                   @"ES" :
+                   @{
+                       @"numberTypes" : @[ @"MOBILE" ],
+                       @"idTypes"     : @[ @"DNI", @"NIF", @"NIE", @"Passport" ],
+                       @"fields"      : @[ @"idType", @"idNumber", @"nationality", @"fiscalIdCode" ]
+                   },
+                   @"DK" :
+                   @{
+                       @"numberTypes" : @[ @"GEOGRAPHIC", @"NATIONAL", @"MOBILE", @"TOLL_FREE", @"SHARED_COST", @"SPECIAL"],
+                       @"idTypes"     : @[ ],
+                       @"fields"      : @[ @"streetCode", @"municipalityCode" ]
+                   },
+                   @"ZA" :
+                   @{
+                       @"numberTypes" : @[ @"GEOGRAPHIC", @"NATIONAL", @"MOBILE", @"TOLL_FREE", @"SHARED_COST", @"SPECIAL"],
+                       @"idTypes"     : @[ ],
+                       @"fields"      : @[ @"idType", @"idNumber", @"nationality", @"fiscalIdCode" ]
+                   }
+               }[self.address.isoCountryCode];
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 
@@ -291,7 +291,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         case TableRowExtraFieldsMunicipalityCode:
         {
             title = NSLocalizedStringWithDefaultValue(@"Address Denmark Municipality Code", nil, [NSBundle mainBundle],
-                                                      @"Municipality",
+                                                      @"Municipality Code",
                                                       @"...");
             break;
         }
@@ -467,6 +467,12 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 
 #pragma mark - Helpers
+
+- (NSString*)stringByStrippingNonBreakingSpaces:(NSString*)string
+{
+    return [string stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
+}
+
 
 - (void)updateRightBarButtonItem
 {
@@ -801,6 +807,39 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 }
 
 
+- (void)updateExtraFieldsSection
+{
+    if (self.extraFieldsInfo != nil)
+    {
+        // Assumes that Extra Fields section is bottom one.
+        NSUInteger  index    = [self numberOfSectionsInTableView:self.tableView] - 1;
+        NSIndexSet* indexSet = [NSIndexSet indexSetWithIndex:index];
+
+        [self.tableView beginUpdates];
+        [self.tableView insertSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+    }
+    else
+    {
+        // Assumes that Extra Fields section is bottom one.
+        NSUInteger  index    = [self numberOfSectionsInTableView:self.tableView];
+        NSIndexSet* indexSet = [NSIndexSet indexSetWithIndex:index];
+
+        [self.tableView beginUpdates];
+        [self.tableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+
+        // Clear Extra Fields data.
+        self.address.idType           = nil;
+        self.address.idNumber         = nil;
+        self.address.nationality      = nil;
+        self.address.fiscalIdCode     = nil;
+        self.address.streetCode       = nil;
+        self.address.municipalityCode = nil;
+    }
+}
+
+
 #pragma mark - Table View Delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
@@ -827,6 +866,15 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         }
     }
 
+    NSArray* fields = self.extraFieldsInfo[@"fields"];
+    self.rowsExtraFields = 0;
+    self.rowsExtraFields |= [fields containsObject:@"nationality"]      ? TableRowExtraFieldsNationality      : 0;
+    self.rowsExtraFields |= [fields containsObject:@"idType"]           ? TableRowExtraFieldsIdType           : 0;
+    self.rowsExtraFields |= [fields containsObject:@"idNumber"]         ? TableRowExtraFieldsIdNumber         : 0;
+    self.rowsExtraFields |= [fields containsObject:@"fiscalIdCode"]     ? TableRowExtraFieldsFiscalIdCode     : 0;
+    self.rowsExtraFields |= [fields containsObject:@"streetCode"]       ? TableRowExtraFieldsStreetCode       : 0;
+    self.rowsExtraFields |= [fields containsObject:@"municipalityCode"] ? TableRowExtraFieldsMunicipalityCode : 0;
+
     [self initializeIndexPaths];
 
     return [Common bitsSetCount:self.sections];
@@ -841,9 +889,9 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     {
         case TableSectionName:         numberOfRows = 1;                                          break;
         case TableSectionVerification: numberOfRows = 1;                                          break;
-        case TableSectionExtraFields:  numberOfRows = [Common bitsSetCount:self.rowsExtraFields]; break;
         case TableSectionDetails:      numberOfRows = [Common bitsSetCount:self.rowsDetails];     break;
         case TableSectionAddress:      numberOfRows = [Common bitsSetCount:self.rowsAddress];     break;
+        case TableSectionExtraFields:  numberOfRows = [Common bitsSetCount:self.rowsExtraFields]; break;
     }
     
     return numberOfRows;
@@ -861,13 +909,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             title = NSLocalizedStringWithDefaultValue(@"Address:Naming SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Address' Name In App",
                                                       @"...");
-            break;
-        }
-        case TableSectionExtraFields:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"Address:ExtraFields SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Additional Information",
-                                                      @"Name and company of someone.");
             break;
         }
         case TableSectionDetails:
@@ -917,6 +958,13 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                           @"...");
             }
 
+            break;
+        }
+        case TableSectionExtraFields:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Address:ExtraFields SectionHeader", nil,
+                                                      [NSBundle mainBundle], @"Additional Information",
+                                                      @"Name and company of someone.");
             break;
         }
     }
@@ -1020,48 +1068,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
                 break;
             }
-            case TableSectionExtraFields:
-            {
-                switch ([Common nthBitSet:indexPath.row inValue:self.rowsAddress])
-                {
-                    case TableRowExtraFieldsNationality:
-                    {
-                        isoCountryCode = self.address.nationality;
-                        completion = ^(BOOL cancelled, NSString* isoCountryCode)
-                        {
-                            if (cancelled == NO)
-                            {
-                                self.address.nationality = isoCountryCode;
-
-                                // Update the cell.
-                                self.nationalityTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:isoCountryCode];
-                            }
-                        };
-
-                        countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:isoCountryCode
-                                                                                                    title:[Strings nationalityString]
-                                                                                               completion:completion];
-                        [self.navigationController pushViewController:countriesViewController animated:YES];
-                        break;
-                    }
-                    case TableRowExtraFieldsIdType:
-                    {
-                        idTypesViewController = [[AddressIdTypesViewController alloc] initWithIdType:self.idType
-                                                                                          completion:^
-                        {
-                            self.address.idType = self.idType.string;
-
-                            // Update the cell.
-                            self.idTypeTextField.text = self.idType.localizedString;
-                        }];
-
-                        idTypesViewController.title = cell.textLabel.text;
-                        [self.navigationController pushViewController:idTypesViewController animated:YES];
-                        break;
-                    }
-                }
-                break;
-            }
             case TableSectionDetails:
             {
                 salutationsViewController = [[AddressSalutationsViewController alloc] initWithSalutation:self.salutation
@@ -1094,6 +1100,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                     }
                     case TableRowAddressCountry:
                     {
+                        BOOL hadExtraFields = (self.extraFieldsInfo != nil);
                         isoCountryCode = self.address.isoCountryCode;
                         completion = ^(BOOL cancelled, NSString* isoCountryCode)
                         {
@@ -1103,6 +1110,11 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                 
                                 // Update the cell.
                                 self.countryTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:isoCountryCode];
+
+                                if (hadExtraFields != (self.extraFieldsInfo != nil))
+                                {
+                                    [self updateExtraFieldsSection];
+                                }
                             }
                         };
                         
@@ -1114,6 +1126,48 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                     }
                 }
 
+                break;
+            }
+            case TableSectionExtraFields:
+            {
+                switch ([Common nthBitSet:indexPath.row inValue:self.rowsAddress])
+                {
+                    case TableRowExtraFieldsNationality:
+                    {
+                        isoCountryCode = self.address.nationality;
+                        completion = ^(BOOL cancelled, NSString* isoCountryCode)
+                        {
+                            if (cancelled == NO)
+                            {
+                                self.address.nationality = isoCountryCode;
+
+                                // Update the cell.
+                                self.nationalityTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:isoCountryCode];
+                            }
+                        };
+
+                        countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:isoCountryCode
+                                                                                                    title:[Strings nationalityString]
+                                                                                               completion:completion];
+                        [self.navigationController pushViewController:countriesViewController animated:YES];
+                        break;
+                    }
+                    case TableRowExtraFieldsIdType:
+                    {
+                        idTypesViewController = [[AddressIdTypesViewController alloc] initWithIdType:self.idType
+                                                                                          completion:^
+                                                 {
+                                                     self.address.idType = self.idType.string;
+
+                                                     // Update the cell.
+                                                     self.idTypeTextField.text = self.idType.localizedString;
+                                                 }];
+
+                        idTypesViewController.title = cell.textLabel.text;
+                        [self.navigationController pushViewController:idTypesViewController animated:YES];
+                        break;
+                    }
+                }
                 break;
             }
         }
@@ -1129,9 +1183,9 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     {
         case TableSectionName:         cell = [self nameCellForRowAtIndexPath:indexPath];        break;
         case TableSectionVerification: cell = [self proofCellForRowAtIndexPath:indexPath];       break;
-        case TableSectionExtraFields:  cell = [self extraFieldsCellForRowAtIndexPath:indexPath]; break;
         case TableSectionDetails:      cell = [self detailsCellForRowAtIndexPath:indexPath];     break;
         case TableSectionAddress:      cell = [self addressCellForRowAtIndexPath:indexPath];     break;
+        case TableSectionExtraFields:  cell = [self extraFieldsCellForRowAtIndexPath:indexPath]; break;
     }
     
     return cell;
@@ -1180,6 +1234,255 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 }
 
 
+- (UITableViewCell*)detailsCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell* cell;
+    UITextField*     textField;
+    NSString*        identifier = [self cellIdentifierForIndexPath:indexPath];
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
+
+        textField = [Common addTextFieldToCell:cell delegate:self];
+        textField.tag = CommonTextFieldCellTag;
+    }
+    else
+    {
+        textField = (UITextField*)[cell viewWithTag:CommonTextFieldCellTag];
+    }
+    
+    textField.userInteractionEnabled = self.isNew;
+    switch ([Common nthBitSet:indexPath.row inValue:self.rowsDetails])
+    {
+        case TableRowDetailsSalutation:
+        {
+            self.salutationTextField = textField;
+            cell.accessoryType       = self.isNew ? UITableViewCellAccessoryDisclosureIndicator
+                                                  : UITableViewCellAccessoryNone;
+            cell.selectionStyle      = self.isNew ? UITableViewCellSelectionStyleBlue
+                                                  : UITableViewCellSelectionStyleNone;
+            cell.textLabel.text      = [Strings salutationString];
+            
+            textField.text = self.salutation.localizedString;
+            textField.userInteractionEnabled = NO;
+            objc_setAssociatedObject(textField, @"TextFieldKey", @"salutation", OBJC_ASSOCIATION_RETAIN);
+            break;
+        }
+        case TableRowDetailsCompany:
+        {
+            self.companyNameTextField = textField;
+            cell.accessoryType    = UITableViewCellAccessoryNone;
+            cell.selectionStyle   = UITableViewCellSelectionStyleNone;
+            cell.textLabel.text   = [Strings companyString];
+            
+            textField.text         = [self stringByStrippingNonBreakingSpaces:self.address.companyName];
+            textField.keyboardType = UIKeyboardTypeAlphabet;
+            objc_setAssociatedObject(textField, @"TextFieldKey", @"companyName", OBJC_ASSOCIATION_RETAIN);
+            break;
+        }
+        case TableRowDetailsFirstName:
+        {
+            self.firstNameTextField = textField;
+            cell.accessoryType      = UITableViewCellAccessoryNone;
+            cell.selectionStyle     = UITableViewCellSelectionStyleNone;
+            cell.textLabel.text     = [Strings firstNameString];
+            
+            textField.text         = [self stringByStrippingNonBreakingSpaces:self.address.firstName];
+            textField.keyboardType = UIKeyboardTypeAlphabet;
+            objc_setAssociatedObject(textField, @"TextFieldKey", @"firstName", OBJC_ASSOCIATION_RETAIN);
+            break;
+        }
+        case TableRowDetailsLastName:
+        {
+            self.lastNameTextField = textField;
+            cell.accessoryType     = UITableViewCellAccessoryNone;
+            cell.selectionStyle    = UITableViewCellSelectionStyleNone;
+            cell.textLabel.text    = [Strings lastNameString];
+            
+            textField.text         = [self stringByStrippingNonBreakingSpaces:self.address.lastName];
+            textField.keyboardType = UIKeyboardTypeAlphabet;
+            objc_setAssociatedObject(textField, @"TextFieldKey", @"lastName", OBJC_ASSOCIATION_RETAIN);
+            break;
+        }
+    }
+    
+    textField.placeholder = [self placeHolderForTextField:textField];
+    
+    [self updateTextField:textField onCell:cell];
+    
+    return cell;
+}
+
+
+- (UITableViewCell*)addressCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell* cell;
+    UITextField*     textField;
+    BOOL             singlePostcode = NO;
+    BOOL             singleCity     = NO;
+    NSString*        identifier = [self cellIdentifierForIndexPath:indexPath];
+
+    if (self.citiesArray.count == 1)
+    {
+        singleCity = YES;
+        self.address.city = self.citiesArray[0][@"city"];
+        
+        NSArray*    postcodes = self.citiesArray[0][@"postcodes"];
+        if ([postcodes count] == 1)
+        {
+            singlePostcode = YES;
+            self.address.postcode = self.citiesArray[0][@"postcodes"][0];
+        }
+    }
+    
+    cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
+        
+        textField = [Common addTextFieldToCell:cell delegate:self];
+        textField.tag = CommonTextFieldCellTag;
+    }
+    else
+    {
+        textField = (UITextField*)[cell.contentView viewWithTag:CommonTextFieldCellTag];
+    }
+
+    cell.accessoryType  = UITableViewCellAccessoryNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+    textField.userInteractionEnabled = self.isNew;
+    switch ([Common nthBitSet:indexPath.row inValue:self.rowsAddress])
+    {
+        case TableRowAddressStreet:
+        {
+            cell.textLabel.text = [Strings streetString];
+            textField.placeholder  = [Strings requiredString];
+            textField.text         = [self stringByStrippingNonBreakingSpaces:self.address.street];
+            textField.keyboardType = UIKeyboardTypeAlphabet;
+            objc_setAssociatedObject(textField, @"TextFieldKey", @"street", OBJC_ASSOCIATION_RETAIN);
+            break;
+        }
+        case TableRowAddressBuildingNumber:
+        {
+            cell.textLabel.text = [Strings buildingNumberString];
+            textField.placeholder            = [Strings requiredString];
+            textField.text                   = [self stringByStrippingNonBreakingSpaces:self.address.buildingNumber];
+            textField.keyboardType           = UIKeyboardTypeNumbersAndPunctuation;
+            textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+            objc_setAssociatedObject(textField, @"TextFieldKey", @"buildingNumber", OBJC_ASSOCIATION_RETAIN);
+            break;
+        }
+        case TableRowAddressBuildingLetter:
+        {
+            cell.textLabel.text = [Strings buildingLetterString];
+            textField.placeholder            = [Strings optionalString];
+            textField.text                   = [self stringByStrippingNonBreakingSpaces:self.address.buildingLetter];
+            textField.keyboardType           = UIKeyboardTypeAlphabet;
+            textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+            objc_setAssociatedObject(textField, @"TextFieldKey", @"buildingLetter", OBJC_ASSOCIATION_RETAIN);
+            break;
+        }
+        case TableRowAddressCity:
+        {
+            cell.textLabel.text = [Strings cityString];
+            if (self.citiesArray.count == 0)
+            {
+                textField.placeholder  = [Strings requiredString];
+                textField.keyboardType = UIKeyboardTypeAlphabet;
+            }
+            else
+            {
+                if (singleCity == NO)
+                {
+                    textField.placeholder = [Strings requiredString];
+                    textField.text        = nil;
+                    cell.accessoryType    = self.isNew ? UITableViewCellAccessoryDisclosureIndicator
+                                                       : UITableViewCellAccessoryNone;
+                    cell.selectionStyle   = self.isNew ? UITableViewCellSelectionStyleDefault
+                                                       : UITableViewCellSelectionStyleNone;
+                    textField.text        = nil;
+                }
+                
+                textField.userInteractionEnabled = NO;
+            }
+
+            self.cityTextField = textField;
+            self.cityTextField.text = [Common capitalizedString:self.address.city];
+            self.cityTextField.text = [self stringByStrippingNonBreakingSpaces:self.cityTextField.text];
+            objc_setAssociatedObject(self.cityTextField, @"TextFieldKey", @"city", OBJC_ASSOCIATION_RETAIN);
+            break;
+        }
+        case TableRowAddressPostcode:
+        {
+            cell.textLabel.text = [Strings postcodeString];
+            if (self.citiesArray.count == 0)
+            {
+                textField.placeholder            = [Strings requiredString];
+                textField.keyboardType           = UIKeyboardTypeNumbersAndPunctuation;
+                textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+            }
+            else
+            {
+                if (singlePostcode == NO)
+                {
+                    textField.placeholder = [Strings requiredString];
+                    cell.accessoryType    = self.isNew ? UITableViewCellAccessoryDisclosureIndicator
+                                                       : UITableViewCellAccessoryNone;
+                    cell.selectionStyle   = self.isNew ? UITableViewCellSelectionStyleDefault
+                                                       : UITableViewCellSelectionStyleNone;
+                    textField.text        = nil;
+                }
+                
+                textField.userInteractionEnabled = NO;
+            }
+            
+            self.postcodeTextField = textField;
+            self.postcodeTextField.text = [self stringByStrippingNonBreakingSpaces:self.address.postcode];
+            objc_setAssociatedObject(self.postcodeTextField, @"TextFieldKey", @"postcode", OBJC_ASSOCIATION_RETAIN);
+            break;
+        }
+        case TableRowAddressCountry:
+        {
+            textField.placeholder            = [Strings requiredString];
+            textField.userInteractionEnabled = NO;
+            
+            if (self.addressTypeMask == AddressTypeLocalMask    ||
+                self.addressTypeMask == AddressTypeNationalMask ||
+                !self.isNew)
+            {
+                cell.accessoryType  = UITableViewCellAccessoryNone;
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+            else
+            {
+                cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            }
+            
+            self.countryTextField = textField;
+            cell.textLabel.text = [Strings countryString];
+            if (self.address.isoCountryCode == nil)
+            {
+                self.countryTextField.text = nil;
+            }
+            else
+            {
+                self.countryTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:self.address.isoCountryCode];
+            }
+            
+            break;
+        }
+    }
+    
+    [self updateTextField:textField onCell:cell];
+    
+    return cell;
+}
+
+
 - (UITableViewCell*)extraFieldsCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
@@ -1200,7 +1503,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     }
 
     textField.userInteractionEnabled = self.isNew;
-    switch ([Common nthBitSet:indexPath.row inValue:self.rowsDetails])
+    switch ([Common nthBitSet:indexPath.row inValue:self.rowsExtraFields])
     {
         case TableRowExtraFieldsNationality:
         {
@@ -1264,8 +1567,10 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             cell.accessoryType     = UITableViewCellAccessoryNone;
             cell.selectionStyle    = UITableViewCellSelectionStyleNone;
 
-            textField.text = [self.address.idNumber stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            textField.placeholder = [Strings requiredString];
+            textField.text                   = [self stringByStrippingNonBreakingSpaces:self.address.idNumber ];
+            textField.placeholder            = [Strings requiredString];
+            textField.keyboardType           = UIKeyboardTypeNumbersAndPunctuation;
+            textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
             objc_setAssociatedObject(textField, @"TextFieldKey", @"idNumber", OBJC_ASSOCIATION_RETAIN);
             break;
         }
@@ -1275,9 +1580,11 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             cell.accessoryType         = UITableViewCellAccessoryNone;
             cell.selectionStyle        = UITableViewCellSelectionStyleNone;
 
-            textField.text = [self.address.fiscalIdCode stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            textField.placeholder = [self placeHolderForTextField:textField];
-            objc_setAssociatedObject(textField, @"TextFieldKey", @"fiscalIdCode", OBJC_ASSOCIATION_RETAIN);
+            textField.text                   = [self stringByStrippingNonBreakingSpaces:self.address.fiscalIdCode];
+            textField.placeholder            = [self placeHolderForTextField:textField];
+            textField.keyboardType           = UIKeyboardTypeNumbersAndPunctuation;
+            textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+           objc_setAssociatedObject(textField, @"TextFieldKey", @"fiscalIdCode", OBJC_ASSOCIATION_RETAIN);
             break;
         }
         case TableRowExtraFieldsStreetCode:
@@ -1286,8 +1593,10 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             cell.accessoryType       = UITableViewCellAccessoryNone;
             cell.selectionStyle      = UITableViewCellSelectionStyleNone;
 
-            textField.text = [self.address.streetCode stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            textField.placeholder = [Strings requiredString];
+            textField.text                   = [self stringByStrippingNonBreakingSpaces:self.address.streetCode];
+            textField.placeholder            = [Strings requiredString];
+            textField.keyboardType           = UIKeyboardTypeNumbersAndPunctuation;
+            textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
             objc_setAssociatedObject(textField, @"TextFieldKey", @"streetCode", OBJC_ASSOCIATION_RETAIN);
             break;
         }
@@ -1297,258 +1606,16 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             cell.accessoryType             = UITableViewCellAccessoryNone;
             cell.selectionStyle            = UITableViewCellSelectionStyleNone;
 
-            textField.text = [self.address.municipalityCode stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            textField.placeholder = [Strings requiredString];
+            textField.text                   = [self stringByStrippingNonBreakingSpaces:self.address.municipalityCode];
+            textField.placeholder            = [Strings requiredString];
+            textField.keyboardType           = UIKeyboardTypeNumbersAndPunctuation;
+            textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
             objc_setAssociatedObject(textField, @"TextFieldKey", @"municipalityCode", OBJC_ASSOCIATION_RETAIN);
             break;
         }
     }
 
     cell.textLabel.text = [self localizedExtraFieldTitleForRow:indexPath.row];
-
-    [self updateTextField:textField onCell:cell];
-
-    return cell;
-}
-
-
-- (UITableViewCell*)detailsCellForRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    UITableViewCell* cell;
-    UITextField*     textField;
-    NSString*        identifier = [self cellIdentifierForIndexPath:indexPath];
-
-    cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
-    if (cell == nil)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
-
-        textField = [Common addTextFieldToCell:cell delegate:self];
-        textField.tag = CommonTextFieldCellTag;
-    }
-    else
-    {
-        textField = (UITextField*)[cell viewWithTag:CommonTextFieldCellTag];
-    }
-    
-    textField.userInteractionEnabled = self.isNew;
-    switch ([Common nthBitSet:indexPath.row inValue:self.rowsDetails])
-    {
-        case TableRowDetailsSalutation:
-        {
-            self.salutationTextField = textField;
-            cell.accessoryType       = self.isNew ? UITableViewCellAccessoryDisclosureIndicator
-                                                  : UITableViewCellAccessoryNone;
-            cell.selectionStyle      = self.isNew ? UITableViewCellSelectionStyleBlue
-                                                  : UITableViewCellSelectionStyleNone;
-            cell.textLabel.text      = [Strings salutationString];
-            
-            textField.text = self.salutation.localizedString;
-            textField.userInteractionEnabled = NO;
-            objc_setAssociatedObject(textField, @"TextFieldKey", @"salutation", OBJC_ASSOCIATION_RETAIN);
-            break;
-        }
-        case TableRowDetailsCompany:
-        {
-            self.companyNameTextField = textField;
-            cell.accessoryType    = UITableViewCellAccessoryNone;
-            cell.selectionStyle   = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text   = [Strings companyString];
-            
-            textField.text = [self.address.companyName stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            objc_setAssociatedObject(textField, @"TextFieldKey", @"companyName", OBJC_ASSOCIATION_RETAIN);
-            break;
-        }
-        case TableRowDetailsFirstName:
-        {
-            self.firstNameTextField = textField;
-            cell.accessoryType      = UITableViewCellAccessoryNone;
-            cell.selectionStyle     = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text     = [Strings firstNameString];
-            
-            textField.text = [self.address.firstName stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            objc_setAssociatedObject(textField, @"TextFieldKey", @"firstName", OBJC_ASSOCIATION_RETAIN);
-            break;
-        }
-        case TableRowDetailsLastName:
-        {
-            self.lastNameTextField = textField;
-            cell.accessoryType     = UITableViewCellAccessoryNone;
-            cell.selectionStyle    = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text    = [Strings lastNameString];
-            
-            textField.text = [self.address.lastName stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            objc_setAssociatedObject(textField, @"TextFieldKey", @"lastName", OBJC_ASSOCIATION_RETAIN);
-            break;
-        }
-    }
-    
-    textField.placeholder = [self placeHolderForTextField:textField];
-    
-    [self updateTextField:textField onCell:cell];
-    
-    return cell;
-}
-
-
-- (UITableViewCell*)addressCellForRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    UITableViewCell* cell;
-    UITextField*     textField;
-    BOOL             singlePostcode = NO;
-    BOOL             singleCity     = NO;
-    NSString*        identifier = [self cellIdentifierForIndexPath:indexPath];
-
-    if (self.citiesArray.count == 1)
-    {
-        singleCity = YES;
-        self.address.city = self.citiesArray[0][@"city"];
-        
-        NSArray*    postcodes = self.citiesArray[0][@"postcodes"];
-        if ([postcodes count] == 1)
-        {
-            singlePostcode = YES;
-            self.address.postcode = self.citiesArray[0][@"postcodes"][0];
-        }
-    }
-    
-    cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
-    if (cell == nil)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
-        
-        textField = [Common addTextFieldToCell:cell delegate:self];
-        textField.tag = CommonTextFieldCellTag;
-    }
-    else
-    {
-        textField = (UITextField*)[cell.contentView viewWithTag:CommonTextFieldCellTag];
-    }
-
-    cell.accessoryType  = UITableViewCellAccessoryNone;
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-    textField.userInteractionEnabled = self.isNew;
-    switch ([Common nthBitSet:indexPath.row inValue:self.rowsAddress])
-    {
-        case TableRowAddressStreet:
-        {
-            cell.textLabel.text = [Strings streetString];
-            textField.placeholder = [Strings requiredString];
-            textField.text = [self.address.street stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            objc_setAssociatedObject(textField, @"TextFieldKey", @"street", OBJC_ASSOCIATION_RETAIN);
-            break;
-        }
-        case TableRowAddressBuildingNumber:
-        {
-            cell.textLabel.text = [Strings buildingNumberString];
-            textField.placeholder = [Strings requiredString];
-            textField.text = [self.address.buildingNumber stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
-            textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-            objc_setAssociatedObject(textField, @"TextFieldKey", @"buildingNumber", OBJC_ASSOCIATION_RETAIN);
-            break;
-        }
-        case TableRowAddressBuildingLetter:
-        {
-            cell.textLabel.text = [Strings buildingLetterString];
-            textField.placeholder = [Strings optionalString];
-            textField.text = [self.address.buildingLetter stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            textField.keyboardType = UIKeyboardTypeAlphabet;
-            textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-            objc_setAssociatedObject(textField, @"TextFieldKey", @"buildingLetter", OBJC_ASSOCIATION_RETAIN);
-            break;
-        }
-        case TableRowAddressCity:
-        {
-            cell.textLabel.text = [Strings cityString];
-            if (self.citiesArray.count == 0)
-            {
-                textField.placeholder = [Strings requiredString];
-            }
-            else
-            {
-                if (singleCity == NO)
-                {
-                    textField.placeholder = [Strings requiredString];
-                    textField.text        = nil;
-                    cell.accessoryType    = self.isNew ? UITableViewCellAccessoryDisclosureIndicator
-                                                       : UITableViewCellAccessoryNone;
-                    cell.selectionStyle   = self.isNew ? UITableViewCellSelectionStyleDefault
-                                                       : UITableViewCellSelectionStyleNone;
-                    textField.text        = nil;
-                }
-                
-                textField.userInteractionEnabled = NO;
-            }
-            
-            self.cityTextField = textField;
-            self.cityTextField.text = [Common capitalizedString:self.address.city];
-            [self.cityTextField.text stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            objc_setAssociatedObject(self.cityTextField, @"TextFieldKey", @"city", OBJC_ASSOCIATION_RETAIN);
-            break;
-        }
-        case TableRowAddressPostcode:
-        {
-            cell.textLabel.text = [Strings postcodeString];
-            if (self.citiesArray.count == 0)
-            {
-                textField.placeholder  = [Strings requiredString];
-                textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
-                textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-            }
-            else
-            {
-                if (singlePostcode == NO)
-                {
-                    textField.placeholder = [Strings requiredString];
-                    cell.accessoryType    = self.isNew ? UITableViewCellAccessoryDisclosureIndicator
-                                                       : UITableViewCellAccessoryNone;
-                    cell.selectionStyle   = self.isNew ? UITableViewCellSelectionStyleDefault
-                                                       : UITableViewCellSelectionStyleNone;
-                    textField.text        = nil;
-                }
-                
-                textField.userInteractionEnabled = NO;
-            }
-            
-            self.postcodeTextField = textField;
-            self.postcodeTextField.text = [self.address.postcode stringByReplacingOccurrencesOfString:@" " withString:@"\u00a0"];
-            objc_setAssociatedObject(self.postcodeTextField, @"TextFieldKey", @"postcode", OBJC_ASSOCIATION_RETAIN);
-            break;
-        }
-        case TableRowAddressCountry:
-        {
-            textField.placeholder            = [Strings requiredString];
-            textField.userInteractionEnabled = NO;
-            
-            if (self.addressTypeMask == AddressTypeLocalMask    ||
-                self.addressTypeMask == AddressTypeNationalMask ||
-                !self.isNew)
-            {
-                cell.accessoryType  = UITableViewCellAccessoryNone;
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            }
-            else
-            {
-                cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
-                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-            }
-            
-            self.countryTextField = textField;
-            cell.textLabel.text = [Strings countryString];
-            if (self.address.isoCountryCode == nil)
-            {
-                self.countryTextField.text = nil;
-            }
-            else
-            {
-                self.countryTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:self.address.isoCountryCode];
-            }
-            
-            break;
-        }
-    }
     
     [self updateTextField:textField onCell:cell];
     
