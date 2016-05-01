@@ -31,12 +31,12 @@ NSString* const AddressUpdatesNotification = @"AddressUpdatesNotification";
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification* note)
-         {
-             if (note.userInfo[@"addressUpdates"] != nil)
-             {
-                 [sharedInstance processAddressUpdatesNotificationDictionary:note.userInfo[@"addressUpdates"]];
-             }
-         }];
+        {
+            if (note.userInfo[@"addressUpdates"] != nil)
+            {
+                [sharedInstance processAddressUpdatesNotificationDictionary:note.userInfo[@"addressUpdates"]];
+            }
+        }];
         
         [[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextDidSaveNotification
                                                           object:nil

@@ -264,10 +264,12 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
                                                         object:nil
                                                       userInfo:userInfo];
 
+    //### For Martin'd testing OAuth only.
     [self openWebSiteFromNotification:userInfo];
 }
 
 
+//### For Martin'd testing OAuth only.
 - (void)openWebSiteFromNotification:(NSDictionary*)userInfo
 {
     NSString* urlString = userInfo[@"url"];
