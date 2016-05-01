@@ -274,9 +274,21 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
 - (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-    [[DataManager sharedManager] synchronizeAll:^(NSError *error)
+    [[WebClient sharedClient] retrieveCreditWithReply:^(NSError* error, float credit)
     {
-        completionHandler((error == nil) ? UIBackgroundFetchResultNewData : UIBackgroundFetchResultFailed);
+        if (error == nil)
+        {
+            [Settings sharedSettings].credit = credit;
+
+            [[DataManager sharedManager] synchronizeAll:^(NSError *error)
+            {
+                completionHandler((error == nil) ? UIBackgroundFetchResultNewData : UIBackgroundFetchResultFailed);
+            }];
+        }
+        else
+        {
+            completionHandler(UIBackgroundFetchResultFailed);
+        }
     }];
 }
 
