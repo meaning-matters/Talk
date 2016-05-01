@@ -138,6 +138,9 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 
+    // Tell iOS we would like to get a background fetch daily.
+    [application setMinimumBackgroundFetchInterval:(3600 * 24)];
+
     return YES;
 }
 
@@ -266,6 +269,15 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
     //### For Martin'd testing OAuth only.
     [self openWebSiteFromNotification:userInfo];
+}
+
+
+- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    [[DataManager sharedManager] synchronizeAll:^(NSError *error)
+    {
+        completionHandler((error == nil) ? UIBackgroundFetchResultNewData : UIBackgroundFetchResultFailed);
+    }];
 }
 
 
