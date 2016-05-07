@@ -12,25 +12,25 @@
 
 @implementation NSTimer (Blocks)
 
-+ (id)scheduledTimerWithTimeInterval:(NSTimeInterval)seconds repeats:(BOOL)repeats block:(void (^)())block
++ (NSTimer *)scheduledTimerWithTimeInterval:(NSTimeInterval)seconds repeats:(BOOL)repeats block:(void (^)())block
 {
-    id timer = [self scheduledTimerWithTimeInterval:seconds
-                                             target:self
-                                           selector:@selector(executeBlock:)
-                                           userInfo:[block copy]
-                                            repeats:repeats];
+    NSTimer* timer = [self scheduledTimerWithTimeInterval:seconds
+                                                   target:self
+                                                 selector:@selector(executeBlock:)
+                                                 userInfo:[block copy]
+                                                  repeats:repeats];
     
     return timer;
 }
 
 
-+ (id)timerWithTimeInterval:(NSTimeInterval)seconds repeats:(BOOL)repeats block:(void (^)())block
++ (NSTimer *)timerWithTimeInterval:(NSTimeInterval)seconds repeats:(BOOL)repeats block:(void (^)())block
 {
-    id timer = [self timerWithTimeInterval:seconds
-                                    target:self
-                                  selector:@selector(executeBlock:)
-                                  userInfo:[block copy]
-                                   repeats:repeats];
+    NSTimer* timer = [self timerWithTimeInterval:seconds
+                                          target:self
+                                        selector:@selector(executeBlock:)
+                                        userInfo:[block copy]
+                                         repeats:repeats];
     
     return timer;
 }

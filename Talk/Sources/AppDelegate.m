@@ -141,6 +141,13 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     // Tell iOS we would like to get a background fetch daily.
     [application setMinimumBackgroundFetchInterval:(3600 * 24)];
 
+
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    notification.repeatInterval = NSCalendarUnitDay;
+    [notification setAlertBody:@"Hello world"];
+    [notification setFireDate:[NSDate dateWithTimeIntervalSinceNow:10]];
+    [application setScheduledLocalNotifications:[NSArray arrayWithObject:notification]];
+
     return YES;
 }
 
