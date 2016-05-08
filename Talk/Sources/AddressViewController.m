@@ -913,6 +913,55 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 }
 
 
+- (void)updateAddressSectionForDenmark
+{
+    if ([self.address.isoCountryCode isEqualToString:@"DK"])
+    {
+        NSData* data     = [Common dataForResource:@"DenmarkCitiesArray" ofType:@"json"];
+        self.citiesArray = [Common objectWithJsonData:data];
+
+        if (self.address.postcode != nil)
+        {
+            NSPredicate* predicate;
+            predicate = [NSPredicate predicateWithFormat:@"ANY postcodes == %@", self.address.postcode];
+            NSDictionary* city = [[self.citiesArray filteredArrayUsingPredicate:predicate] firstObject];
+
+            if (city == nil)
+            {
+                self.address.postcode = nil;
+            }
+            else
+            {
+                self.address.city = city[@"city"];
+            }
+        }
+
+        if (self.address.city != nil)
+        {
+            NSPredicate* predicate;
+            predicate = [NSPredicate predicateWithFormat:@"city == %@", self.address.city];
+            NSDictionary* city = [[self.citiesArray filteredArrayUsingPredicate:predicate] firstObject];
+
+            if (city == nil)
+            {
+                self.address.city = nil;
+            }
+            else if ([city[@"postcodes"] count] == 1)
+            {
+                self.address.postcode = city[@"postcodes"][0];
+            }
+        }
+    }
+    else
+    {
+        self.citiesArray = nil;
+    }
+
+    [self.tableView reloadData];
+
+}
+
+
 #pragma mark - Table View Delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
@@ -1188,6 +1237,11 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                 {
                                     [self updateExtraFieldsSection];
                                 }
+
+                                if ([self.numberIsoCountryCode isEqualToString:@"DK"])
+                                {
+                                    [self updateAddressSectionForDenmark];
+                                }
                             }
                         };
                         
@@ -1229,12 +1283,12 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                     {
                         idTypesViewController = [[AddressIdTypesViewController alloc] initWithIdType:self.idType
                                                                                           completion:^
-                                                 {
-                                                     self.address.idType = self.idType.string;
+                        {
+                            self.address.idType = self.idType.string;
 
-                                                     // Update the cell.
-                                                     self.idTypeTextField.text = self.idType.localizedString;
-                                                 }];
+                            // Update the cell.
+                            self.idTypeTextField.text = self.idType.localizedString;
+                        }];
 
                         idTypesViewController.title = cell.textLabel.text;
                         [self.navigationController pushViewController:idTypesViewController animated:YES];
@@ -1402,7 +1456,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         singleCity = YES;
         self.address.city = self.citiesArray[0][@"city"];
         
-        NSArray*    postcodes = self.citiesArray[0][@"postcodes"];
+        NSArray* postcodes = self.citiesArray[0][@"postcodes"];
         if ([postcodes count] == 1)
         {
             singlePostcode = YES;

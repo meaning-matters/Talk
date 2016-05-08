@@ -52,6 +52,8 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
 - (void)setUp
 {
+    [self denmark];
+
     static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^
@@ -929,6 +931,54 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     {
         completion(@"");
     }
+}
+
+
+- (void)denmark
+{
+    return;
+    NSData* data;
+
+    data                     = [Common dataForResource:@"Muni-StrCode-Str" ofType:@"json"];
+    NSArray* muniStrcodeStr  = [Common objectWithJsonData:data];
+
+    data                     = [Common dataForResource:@"Muni-Post-City" ofType:@"json"];
+    NSArray* muniPostCity    = [Common objectWithJsonData:data];
+
+    data                     = [Common dataForResource:@"StrCode-Post-City" ofType:@"json"];
+    NSArray* strcodePostCity = [Common objectWithJsonData:data];
+
+    int n = 0;
+    NSMutableArray* citiesArray = [NSMutableArray new];
+    for (NSDictionary* item in strcodePostCity)
+    {
+        NSLog(@"%d", n++);
+
+        @autoreleasepool
+        {
+            NSPredicate* predicate = [NSPredicate predicateWithFormat:@"city == %@", item[@"city"]];
+            NSDictionary* city;
+            if ([citiesArray filteredArrayUsingPredicate:predicate].count > 0)
+            {
+                city = [citiesArray filteredArrayUsingPredicate:predicate][0];
+            }
+            else
+            {
+                city = @{@"city" : item[@"city"],
+                         @"postcodes" : [NSMutableArray new]};
+                [citiesArray addObject:city];
+            }
+
+            if (![city[@"postcodes"] containsObject:item[@"postcode"]])
+            {
+                [city[@"postcodes"] addObject:item[@"postcode"]];
+            }
+        }
+    }
+
+    NSString* json = [Common jsonStringWithObject:citiesArray];
+
+    NSLog(@"done:");
 }
 
 @end

@@ -9,10 +9,10 @@
 #import "CellBadgeView.h"
 #import "Skinning.h"
 
-const CGFloat   kWidth        =  30.0f;
-const CGFloat   kHeight       =  20.0f;
-const CGFloat   kXOffset      = 255.0f;
-const NSInteger kCellBadgeTag = 777;
+const CGFloat   CellBadgeWidth   =  30.0f;
+const CGFloat   CellBadgeHeight  =  20.0f;
+const CGFloat   CellBadgeXOffset = 255.0f;
+const NSInteger CellBadgeTag     = 777;
 
 
 @interface CellBadgeView ()
@@ -29,14 +29,14 @@ const NSInteger kCellBadgeTag = 777;
 
 - (instancetype)init
 {
-    if (self = [super initWithFrame:CGRectMake(0.0f, 0.0f, kWidth, kHeight)])
+    if (self = [super initWithFrame:CGRectMake(0.0f, 0.0f, CellBadgeWidth, CellBadgeHeight)])
     {
-        self.tag = kCellBadgeTag;
+        self.tag = CellBadgeTag;
 
         self.isSettingBackgroundColor = YES;
         self.backgroundColor          = [Skinning cellBadgeColor];
         self.isSettingBackgroundColor = NO;
-        self.layer.cornerRadius       = kHeight / 2.0f;
+        self.layer.cornerRadius       = CellBadgeHeight / 2.0f;
         self.userInteractionEnabled   = NO;  // Let touch events through to tab bar
 
         self.label = [[UILabel alloc] initWithFrame:self.bounds];
@@ -61,7 +61,7 @@ const NSInteger kCellBadgeTag = 777;
     if (badgeView == nil)
     {
         badgeView = [[CellBadgeView alloc] init];
-        badgeView.frame = CGRectMake(kXOffset, (cell.contentView.frame.size.height - kHeight) / 2.0f, kWidth, kHeight);
+        badgeView.frame = CGRectMake(CellBadgeXOffset, (cell.contentView.frame.size.height - CellBadgeHeight) / 2.0f, CellBadgeWidth, CellBadgeHeight);
         [cell.contentView addSubview:badgeView];
     }
 
@@ -73,7 +73,7 @@ const NSInteger kCellBadgeTag = 777;
 
 + (CellBadgeView*)getFromCell:(UITableViewCell*)cell
 {
-    CellBadgeView* subview = [cell.contentView viewWithTag:kCellBadgeTag];
+    CellBadgeView* subview = [cell.contentView viewWithTag:CellBadgeTag];
 
     return [subview isKindOfClass:[self class]] ? subview : nil;
 }

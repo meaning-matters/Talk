@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSArray*         citiesArray;
 @property (nonatomic, strong) AddressData*     address;
 @property (nonatomic, strong) UITableViewCell* checkmarkedCell;        // Previous cell with checkmark.
+@property (nonatomic, strong) NSDictionary*    selectedObject;
 
 @end
 
@@ -64,26 +65,31 @@
 
 - (id)selectedObject
 {
-    if ([self.address.postcode length] == 0 && [self.address.city length] > 0)
+    if (_selectedObject == nil)
     {
-        // No postcode is selected, but we return the first one matching the city so
-        // that the table is scrolled to the postcode(s) of the selected city.
-        NSUInteger index = [self.objectsArray indexOfObjectPassingTest:^BOOL(NSDictionary* object,
-                                                                             NSUInteger    index,
-                                                                             BOOL*         stop)
+        if ([self.address.postcode length] == 0 && [self.address.city length] > 0)
         {
-            return [object[@"city"] isEqualToString:self.address.city];
-        }];
+            // No postcode is selected, but we return the first one matching the city so
+            // that the table is scrolled to the postcode(s) of the selected city.
+            NSUInteger index = [self.objectsArray indexOfObjectPassingTest:^BOOL(NSDictionary* object,
+                                                                                 NSUInteger    index,
+                                                                                 BOOL*         stop)
+            {
+                return [object[@"city"] isEqualToString:self.address.city];
+            }];
 
-        return [self.objectsArray objectAtIndex:index];
-    }
-    else
-    {
-        NSPredicate* predicate     = [NSPredicate predicateWithFormat:@"(postcode == %@)", self.address.postcode];
-        NSArray*     filteredArray = [self.objectsArray filteredArrayUsingPredicate:predicate];
+            _selectedObject = [self.objectsArray objectAtIndex:index];
+        }
+        else
+        {
+            NSPredicate* predicate     = [NSPredicate predicateWithFormat:@"(postcode == %@)", self.address.postcode];
+            NSArray*     filteredArray = [self.objectsArray filteredArrayUsingPredicate:predicate];
 
-        return [filteredArray firstObject];
+            _selectedObject = [filteredArray firstObject];
+        }
     }
+
+    return _selectedObject;
 }
 
 
@@ -110,6 +116,11 @@
         if ([object[@"postcode"] length] > maximumSize)
         {
             maximumSize = [object[@"postcode"] length];
+        }
+
+        if ([object[@"postcode"] length] == 5)
+        {
+            NSLog(@"%@", object);
         }
     }
 

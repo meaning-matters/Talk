@@ -1,0 +1,4614 @@
+[
+    {
+        "city"      : "Charlottenlund",
+        "postcodes" :
+        [
+            "2920"
+        ]
+    },
+    {
+        "city"      : "Karrebæksminde",
+        "postcodes" :
+        [
+            "4736"
+        ]
+    },
+    {
+        "city"      : "Christiansfeld",
+        "postcodes" :
+        [
+            "6070"
+        ]
+    },
+    {
+        "city"      : "Frederiksberg",
+        "postcodes" :
+        [
+            "2000",
+            "1810",
+            "1826",
+            "1875",
+            "1852",
+            "1811",
+            "1808",
+            "1804",
+            "1868",
+            "1963",
+            "1872",
+            "1822",
+            "1803",
+            "1870",
+            "1817",
+            "1951",
+            "1860",
+            "1915",
+            "1910",
+            "1820",
+            "1854",
+            "1816",
+            "1965",
+            "1959",
+            "1952",
+            "1957",
+            "1904",
+            "1809",
+            "1962",
+            "1850",
+            "1864",
+            "1802",
+            "1874",
+            "1825",
+            "1823",
+            "1873",
+            "1813",
+            "1866",
+            "1855",
+            "1950",
+            "1964",
+            "1806",
+            "1925",
+            "1876",
+            "1818",
+            "1812",
+            "1877",
+            "1829",
+            "1828",
+            "1926",
+            "1827",
+            "1911",
+            "1815",
+            "1958",
+            "1970",
+            "1922",
+            "1824",
+            "1807",
+            "1924",
+            "1966",
+            "1967",
+            "1917",
+            "1912",
+            "1961",
+            "1871",
+            "1901",
+            "1878",
+            "1800",
+            "1900",
+            "1819",
+            "1879",
+            "1801",
+            "1814",
+            "1851",
+            "1853",
+            "1856",
+            "1857",
+            "1861",
+            "1862",
+            "1863",
+            "1865",
+            "1867",
+            "1902",
+            "1903",
+            "1905",
+            "1906",
+            "1908",
+            "1909",
+            "1913",
+            "1914",
+            "1916",
+            "1920",
+            "1921",
+            "1923",
+            "1927",
+            "1928",
+            "1953",
+            "1954",
+            "1955",
+            "1956",
+            "1971",
+            "1972",
+            "1973",
+            "1805",
+            "1960",
+            "1974"
+        ]
+    },
+    {
+        "city"      : "Frederikssund",
+        "postcodes" :
+        [
+            "3600"
+        ]
+    },
+    {
+        "city"      : "Frederiksværk",
+        "postcodes" :
+        [
+            "3300"
+        ]
+    },
+    {
+        "city"      : "Dronningmølle",
+        "postcodes" :
+        [
+            "3120"
+        ]
+    },
+    {
+        "city"      : "Frederikshavn",
+        "postcodes" :
+        [
+            "9900"
+        ]
+    },
+    {
+        "city"      : "Tisvildeleje",
+        "postcodes" :
+        [
+            "3220"
+        ]
+    },
+    {
+        "city"      : "Stubbekøbing",
+        "postcodes" :
+        [
+            "4850"
+        ]
+    },
+    {
+        "city"      : "Blommenslyst",
+        "postcodes" :
+        [
+            "5491"
+        ]
+    },
+    {
+        "city"      : "Augustenborg",
+        "postcodes" :
+        [
+            "6440"
+        ]
+    },
+    {
+        "city"      : "Løgumkloster",
+        "postcodes" :
+        [
+            "6240"
+        ]
+    },
+    {
+        "city"      : "Bylderup-Bov",
+        "postcodes" :
+        [
+            "6372"
+        ]
+    },
+    {
+        "city"      : "Bøvlingbjerg",
+        "postcodes" :
+        [
+            "7650"
+        ]
+    },
+    {
+        "city"      : "Dronninglund",
+        "postcodes" :
+        [
+            "9330"
+        ]
+    },
+    {
+        "city"      : "Ikerasassuaq",
+        "postcodes" :
+        [
+            "3924"
+        ]
+    },
+    {
+        "city"      : "Albertslund",
+        "postcodes" :
+        [
+            "2620"
+        ]
+    },
+    {
+        "city"      : "Klampenborg",
+        "postcodes" :
+        [
+            "2930"
+        ]
+    },
+    {
+        "city"      : "Fredensborg",
+        "postcodes" :
+        [
+            "3480"
+        ]
+    },
+    {
+        "city"      : "Snekkersten",
+        "postcodes" :
+        [
+            "3070"
+        ]
+    },
+    {
+        "city"      : "Stokkemarke",
+        "postcodes" :
+        [
+            "4952"
+        ]
+    },
+    {
+        "city"      : "Herlufmagle",
+        "postcodes" :
+        [
+            "4160"
+        ]
+    },
+    {
+        "city"      : "Vordingborg",
+        "postcodes" :
+        [
+            "4760"
+        ]
+    },
+    {
+        "city"      : "Vissenbjerg",
+        "postcodes" :
+        [
+            "5492"
+        ]
+    },
+    {
+        "city"      : "Gredstedbro",
+        "postcodes" :
+        [
+            "6771"
+        ]
+    },
+    {
+        "city"      : "Skanderborg",
+        "postcodes" :
+        [
+            "8660"
+        ]
+    },
+    {
+        "city"      : "Bækmarksbro",
+        "postcodes" :
+        [
+            "7660"
+        ]
+    },
+    {
+        "city"      : "Bjerringbro",
+        "postcodes" :
+        [
+            "8850"
+        ]
+    },
+    {
+        "city"      : "Ejstrupholm",
+        "postcodes" :
+        [
+            "7361"
+        ]
+    },
+    {
+        "city"      : "Brønderslev",
+        "postcodes" :
+        [
+            "9700"
+        ]
+    },
+    {
+        "city"      : "Nørresundby",
+        "postcodes" :
+        [
+            "9400"
+        ]
+    },
+    {
+        "city"      : "Ittoqqortoormiit",
+        "postcodes" :
+        [
+            "3980"
+        ]
+    },
+    {
+        "city"      : "Hedehusene",
+        "postcodes" :
+        [
+            "2640"
+        ]
+    },
+    {
+        "city"      : "Espergærde",
+        "postcodes" :
+        [
+            "3060"
+        ]
+    },
+    {
+        "city"      : "Jægerspris",
+        "postcodes" :
+        [
+            "3630"
+        ]
+    },
+    {
+        "city"      : "Karlslunde",
+        "postcodes" :
+        [
+            "2690"
+        ]
+    },
+    {
+        "city"      : "Bjæverskov",
+        "postcodes" :
+        [
+            "4632"
+        ]
+    },
+    {
+        "city"      : "Tappernøje",
+        "postcodes" :
+        [
+            "4733"
+        ]
+    },
+    {
+        "city"      : "Kalundborg",
+        "postcodes" :
+        [
+            "4400"
+        ]
+    },
+    {
+        "city"      : "Føllenslev",
+        "postcodes" :
+        [
+            "4591"
+        ]
+    },
+    {
+        "city"      : "Fuglebjerg",
+        "postcodes" :
+        [
+            "4250"
+        ]
+    },
+    {
+        "city"      : "Fjenneslev",
+        "postcodes" :
+        [
+            "4173"
+        ]
+    },
+    {
+        "city"      : "Vesterborg",
+        "postcodes" :
+        [
+            "4953"
+        ]
+    },
+    {
+        "city"      : "Holmegaard",
+        "postcodes" :
+        [
+            "4684"
+        ]
+    },
+    {
+        "city"      : "Væggerløse",
+        "postcodes" :
+        [
+            "4873"
+        ]
+    },
+    {
+        "city"      : "Sakskøbing",
+        "postcodes" :
+        [
+            "4990"
+        ]
+    },
+    {
+        "city"      : "Eskilstrup",
+        "postcodes" :
+        [
+            "4863"
+        ]
+    },
+    {
+        "city"      : "Klemensker",
+        "postcodes" :
+        [
+            "3782"
+        ]
+    },
+    {
+        "city"      : "Østermarie",
+        "postcodes" :
+        [
+            "3751"
+        ]
+    },
+    {
+        "city"      : "Middelfart",
+        "postcodes" :
+        [
+            "5500"
+        ]
+    },
+    {
+        "city"      : "Glamsbjerg",
+        "postcodes" :
+        [
+            "5620"
+        ]
+    },
+    {
+        "city"      : "Ferritslev",
+        "postcodes" :
+        [
+            "5863"
+        ]
+    },
+    {
+        "city"      : "Kerteminde",
+        "postcodes" :
+        [
+            "5300"
+        ]
+    },
+    {
+        "city"      : "Hesselager",
+        "postcodes" :
+        [
+            "5874"
+        ]
+    },
+    {
+        "city"      : "Ærøskøbing",
+        "postcodes" :
+        [
+            "5970"
+        ]
+    },
+    {
+        "city"      : "Sommersted",
+        "postcodes" :
+        [
+            "6560"
+        ]
+    },
+    {
+        "city"      : "Sønderborg",
+        "postcodes" :
+        [
+            "6400"
+        ]
+    },
+    {
+        "city"      : "Bolderslev",
+        "postcodes" :
+        [
+            "6392"
+        ]
+    },
+    {
+        "city"      : "Fredericia",
+        "postcodes" :
+        [
+            "7000"
+        ]
+    },
+    {
+        "city"      : "Lunderskov",
+        "postcodes" :
+        [
+            "6640"
+        ]
+    },
+    {
+        "city"      : "Allingåbro",
+        "postcodes" :
+        [
+            "8961"
+        ]
+    },
+    {
+        "city"      : "Rødkærsbro",
+        "postcodes" :
+        [
+            "8840"
+        ]
+    },
+    {
+        "city"      : "Ringkøbing",
+        "postcodes" :
+        [
+            "6950"
+        ]
+    },
+    {
+        "city"      : "Sjællands",
+        "postcodes" :
+        [
+            "4583"
+        ]
+    },
+    {
+        "city"      : "Svenstrup",
+        "postcodes" :
+        [
+            "9230"
+        ]
+    },
+    {
+        "city"      : "København",
+        "postcodes" :
+        [
+            "1440",
+            "2450",
+            "1060",
+            "1215",
+            "1400",
+            "1553",
+            "1601",
+            "1705",
+            "2100",
+            "2200",
+            "2300",
+            "2400",
+            "1353",
+            "1170",
+            "1460",
+            "1621",
+            "1635",
+            "1207",
+            "1472",
+            "1110",
+            "1055",
+            "1455",
+            "1441",
+            "1402",
+            "1409",
+            "1434",
+            "1435",
+            "1436",
+            "1437",
+            "1438",
+            "1439",
+            "1051",
+            "1168",
+            "1200",
+            "1212",
+            "1214",
+            "1219",
+            "1307",
+            "1360",
+            "1401",
+            "1604",
+            "1704",
+            "1050",
+            "1052",
+            "1053",
+            "1054",
+            "1056",
+            "1057",
+            "1058",
+            "1059",
+            "1061",
+            "1062",
+            "1063",
+            "1064",
+            "1065",
+            "1066",
+            "1067",
+            "1068",
+            "1069",
+            "1070",
+            "1071",
+            "1072",
+            "1073",
+            "1074",
+            "1100",
+            "1101",
+            "1102",
+            "1103",
+            "1104",
+            "1105",
+            "1106",
+            "1107",
+            "1111",
+            "1112",
+            "1113",
+            "1114",
+            "1115",
+            "1116",
+            "1117",
+            "1118",
+            "1119",
+            "1120",
+            "1121",
+            "1122",
+            "1123",
+            "1124",
+            "1125",
+            "1126",
+            "1127",
+            "1128",
+            "1129",
+            "1130",
+            "1131",
+            "1150",
+            "1151",
+            "1152",
+            "1153",
+            "1154",
+            "1155",
+            "1156",
+            "1157",
+            "1158",
+            "1159",
+            "1160",
+            "1161",
+            "1162",
+            "1164",
+            "1165",
+            "1166",
+            "1167",
+            "1169",
+            "1171",
+            "1172",
+            "1173",
+            "1174",
+            "1175",
+            "1201",
+            "1202",
+            "1203",
+            "1204",
+            "1205",
+            "1206",
+            "1208",
+            "1209",
+            "1210",
+            "1211",
+            "1213",
+            "1216",
+            "1218",
+            "1220",
+            "1221",
+            "1250",
+            "1251",
+            "1252",
+            "1253",
+            "1254",
+            "1255",
+            "1256",
+            "1257",
+            "1259",
+            "1260",
+            "1261",
+            "1263",
+            "1264",
+            "1265",
+            "1266",
+            "1267",
+            "1268",
+            "1270",
+            "1271",
+            "1300",
+            "1301",
+            "1302",
+            "1303",
+            "1304",
+            "1306",
+            "1308",
+            "1309",
+            "1310",
+            "1311",
+            "1312",
+            "1313",
+            "1314",
+            "1315",
+            "1316",
+            "1317",
+            "1318",
+            "1319",
+            "1320",
+            "1321",
+            "1322",
+            "1323",
+            "1324",
+            "1325",
+            "1326",
+            "1327",
+            "1328",
+            "1350",
+            "1352",
+            "1354",
+            "1355",
+            "1356",
+            "1357",
+            "1358",
+            "1359",
+            "1361",
+            "1362",
+            "1363",
+            "1364",
+            "1365",
+            "1366",
+            "1367",
+            "1368",
+            "1369",
+            "1371",
+            "1403",
+            "1406",
+            "1407",
+            "1408",
+            "1410",
+            "1411",
+            "1412",
+            "1413",
+            "1415",
+            "1416",
+            "1417",
+            "1418",
+            "1419",
+            "1420",
+            "1421",
+            "1422",
+            "1423",
+            "1424",
+            "1425",
+            "1426",
+            "1427",
+            "1428",
+            "1429",
+            "1430",
+            "1431",
+            "1432",
+            "1433",
+            "1451",
+            "1452",
+            "1453",
+            "1454",
+            "1456",
+            "1457",
+            "1458",
+            "1459",
+            "1461",
+            "1462",
+            "1463",
+            "1464",
+            "1465",
+            "1466",
+            "1467",
+            "1468",
+            "1470",
+            "1471",
+            "1473",
+            "1550",
+            "1551",
+            "1552",
+            "1554",
+            "1555",
+            "1556",
+            "1557",
+            "1558",
+            "1559",
+            "1560",
+            "1561",
+            "1562",
+            "1563",
+            "1564",
+            "1567",
+            "1568",
+            "1569",
+            "1570",
+            "1571",
+            "1572",
+            "1573",
+            "1574",
+            "1575",
+            "1576",
+            "1577",
+            "1602",
+            "1603",
+            "1605",
+            "1606",
+            "1607",
+            "1608",
+            "1609",
+            "1610",
+            "1611",
+            "1612",
+            "1613",
+            "1614",
+            "1615",
+            "1616",
+            "1617",
+            "1618",
+            "1619",
+            "1620",
+            "1623",
+            "1624",
+            "1631",
+            "1632",
+            "1633",
+            "1634",
+            "1650",
+            "1651",
+            "1652",
+            "1653",
+            "1654",
+            "1655",
+            "1656",
+            "1657",
+            "1658",
+            "1659",
+            "1660",
+            "1661",
+            "1662",
+            "1663",
+            "1664",
+            "1665",
+            "1666",
+            "1667",
+            "1668",
+            "1669",
+            "1670",
+            "1671",
+            "1672",
+            "1673",
+            "1674",
+            "1675",
+            "1676",
+            "1677",
+            "1699",
+            "1700",
+            "1701",
+            "1702",
+            "1703",
+            "1706",
+            "1707",
+            "1708",
+            "1709",
+            "1710",
+            "1711",
+            "1712",
+            "1714",
+            "1715",
+            "1716",
+            "1717",
+            "1718",
+            "1719",
+            "1720",
+            "1721",
+            "1722",
+            "1723",
+            "1724",
+            "1725",
+            "1726",
+            "1727",
+            "1728",
+            "1729",
+            "1730",
+            "1731",
+            "1732",
+            "1733",
+            "1734",
+            "1735",
+            "1736",
+            "1737",
+            "1738",
+            "1739",
+            "1750",
+            "1751",
+            "1752",
+            "1753",
+            "1754",
+            "1755",
+            "1756",
+            "1757",
+            "1758",
+            "1759",
+            "1760",
+            "1761",
+            "1762",
+            "1763",
+            "1764",
+            "1765",
+            "1766",
+            "1770",
+            "1771",
+            "1772",
+            "1773",
+            "1774",
+            "1775",
+            "1777",
+            "1799",
+            "1258",
+            "1329",
+            "1370",
+            "1414",
+            "1450",
+            "1600",
+            "1622",
+            "1749"
+        ]
+    },
+    {
+        "city"      : "Dyssegård",
+        "postcodes" :
+        [
+            "2870"
+        ]
+    },
+    {
+        "city"      : "Slangerup",
+        "postcodes" :
+        [
+            "3550"
+        ]
+    },
+    {
+        "city"      : "Gilleleje",
+        "postcodes" :
+        [
+            "3250"
+        ]
+    },
+    {
+        "city"      : "Fårevejle",
+        "postcodes" :
+        [
+            "4540"
+        ]
+    },
+    {
+        "city"      : "Svinninge",
+        "postcodes" :
+        [
+            "4520"
+        ]
+    },
+    {
+        "city"      : "Dianalund",
+        "postcodes" :
+        [
+            "4293"
+        ]
+    },
+    {
+        "city"      : "Stenlille",
+        "postcodes" :
+        [
+            "4295"
+        ]
+    },
+    {
+        "city"      : "Dannemare",
+        "postcodes" :
+        [
+            "4983"
+        ]
+    },
+    {
+        "city"      : "Langeskov",
+        "postcodes" :
+        [
+            "5550"
+        ]
+    },
+    {
+        "city"      : "Ullerslev",
+        "postcodes" :
+        [
+            "5540"
+        ]
+    },
+    {
+        "city"      : "Kværndrup",
+        "postcodes" :
+        [
+            "5772"
+        ]
+    },
+    {
+        "city"      : "Svendborg",
+        "postcodes" :
+        [
+            "5700"
+        ]
+    },
+    {
+        "city"      : "Grindsted",
+        "postcodes" :
+        [
+            "7200"
+        ]
+    },
+    {
+        "city"      : "Brædstrup",
+        "postcodes" :
+        [
+            "8740"
+        ]
+    },
+    {
+        "city"      : "Hovedgård",
+        "postcodes" :
+        [
+            "8732"
+        ]
+    },
+    {
+        "city"      : "Vildbjerg",
+        "postcodes" :
+        [
+            "7480"
+        ]
+    },
+    {
+        "city"      : "Holstebro",
+        "postcodes" :
+        [
+            "7500"
+        ]
+    },
+    {
+        "city"      : "Silkeborg",
+        "postcodes" :
+        [
+            "8600"
+        ]
+    },
+    {
+        "city"      : "Kjellerup",
+        "postcodes" :
+        [
+            "8620"
+        ]
+    },
+    {
+        "city"      : "Engesvang",
+        "postcodes" :
+        [
+            "7442"
+        ]
+    },
+    {
+        "city"      : "Hedensted",
+        "postcodes" :
+        [
+            "8722"
+        ]
+    },
+    {
+        "city"      : "Vestervig",
+        "postcodes" :
+        [
+            "7770"
+        ]
+    },
+    {
+        "city"      : "Hanstholm",
+        "postcodes" :
+        [
+            "7730"
+        ]
+    },
+    {
+        "city"      : "Aalestrup",
+        "postcodes" :
+        [
+            "9620"
+        ]
+    },
+    {
+        "city"      : "Storvorde",
+        "postcodes" :
+        [
+            "9280"
+        ]
+    },
+    {
+        "city"      : "Hirtshals",
+        "postcodes" :
+        [
+            "9850"
+        ]
+    },
+    {
+        "city"      : "Gudbjerg",
+        "postcodes" :
+        [
+            "5892"
+        ]
+    },
+    {
+        "city"      : "Rungsted",
+        "postcodes" :
+        [
+            "2960"
+        ]
+    },
+    {
+        "city"      : "Nykøbing",
+        "postcodes" :
+        [
+            "4800",
+            "4500",
+            "7900"
+        ]
+    },
+    {
+        "city"      : "Glostrup",
+        "postcodes" :
+        [
+            "2600"
+        ]
+    },
+    {
+        "city"      : "Hvidovre",
+        "postcodes" :
+        [
+            "2650"
+        ]
+    },
+    {
+        "city"      : "Birkerød",
+        "postcodes" :
+        [
+            "3460"
+        ]
+    },
+    {
+        "city"      : "Kokkedal",
+        "postcodes" :
+        [
+            "2980"
+        ]
+    },
+    {
+        "city"      : "Humlebæk",
+        "postcodes" :
+        [
+            "3050"
+        ]
+    },
+    {
+        "city"      : "Hillerød",
+        "postcodes" :
+        [
+            "3400"
+        ]
+    },
+    {
+        "city"      : "Skævinge",
+        "postcodes" :
+        [
+            "3320"
+        ]
+    },
+    {
+        "city"      : "Hørsholm",
+        "postcodes" :
+        [
+            "2970"
+        ]
+    },
+    {
+        "city"      : "Ballerup",
+        "postcodes" :
+        [
+            "2750"
+        ]
+    },
+    {
+        "city"      : "Ølstykke",
+        "postcodes" :
+        [
+            "3650"
+        ]
+    },
+    {
+        "city"      : "Jyllinge",
+        "postcodes" :
+        [
+            "4040"
+        ]
+    },
+    {
+        "city"      : "Helsinge",
+        "postcodes" :
+        [
+            "3200"
+        ]
+    },
+    {
+        "city"      : "Grevinge",
+        "postcodes" :
+        [
+            "4571"
+        ]
+    },
+    {
+        "city"      : "Gislinge",
+        "postcodes" :
+        [
+            "4532"
+        ]
+    },
+    {
+        "city"      : "Regstrup",
+        "postcodes" :
+        [
+            "4420"
+        ]
+    },
+    {
+        "city"      : "Svebølle",
+        "postcodes" :
+        [
+            "4470"
+        ]
+    },
+    {
+        "city"      : "Ringsted",
+        "postcodes" :
+        [
+            "4100"
+        ]
+    },
+    {
+        "city"      : "Slagelse",
+        "postcodes" :
+        [
+            "4200"
+        ]
+    },
+    {
+        "city"      : "Skælskør",
+        "postcodes" :
+        [
+            "4230"
+        ]
+    },
+    {
+        "city"      : "Roskilde",
+        "postcodes" :
+        [
+            "4000"
+        ]
+    },
+    {
+        "city"      : "Kettinge",
+        "postcodes" :
+        [
+            "4892"
+        ]
+    },
+    {
+        "city"      : "Horbelev",
+        "postcodes" :
+        [
+            "4871"
+        ]
+    },
+    {
+        "city"      : "Martofte",
+        "postcodes" :
+        [
+            "5390"
+        ]
+    },
+    {
+        "city"      : "Agerskov",
+        "postcodes" :
+        [
+            "6534"
+        ]
+    },
+    {
+        "city"      : "Hejnsvig",
+        "postcodes" :
+        [
+            "7250"
+        ]
+    },
+    {
+        "city"      : "Nordborg",
+        "postcodes" :
+        [
+            "6430"
+        ]
+    },
+    {
+        "city"      : "Bredebro",
+        "postcodes" :
+        [
+            "6261"
+        ]
+    },
+    {
+        "city"      : "Aabenraa",
+        "postcodes" :
+        [
+            "6200"
+        ]
+    },
+    {
+        "city"      : "Bredsten",
+        "postcodes" :
+        [
+            "7182"
+        ]
+    },
+    {
+        "city"      : "Vinderup",
+        "postcodes" :
+        [
+            "7830"
+        ]
+    },
+    {
+        "city"      : "Ebeltoft",
+        "postcodes" :
+        [
+            "8400"
+        ]
+    },
+    {
+        "city"      : "Nimtofte",
+        "postcodes" :
+        [
+            "8581"
+        ]
+    },
+    {
+        "city"      : "Ryomgård",
+        "postcodes" :
+        [
+            "8550"
+        ]
+    },
+    {
+        "city"      : "Glesborg",
+        "postcodes" :
+        [
+            "8585"
+        ]
+    },
+    {
+        "city"      : "Spøttrup",
+        "postcodes" :
+        [
+            "7860"
+        ]
+    },
+    {
+        "city"      : "Hjørring",
+        "postcodes" :
+        [
+            "9800"
+        ]
+    },
+    {
+        "city"      : "Jerslev",
+        "postcodes" :
+        [
+            "4490",
+            "9740"
+        ]
+    },
+    {
+        "city"      : "Brøndby",
+        "postcodes" :
+        [
+            "2660",
+            "2605"
+        ]
+    },
+    {
+        "city"      : "Stoholm",
+        "postcodes" :
+        [
+            "7850"
+        ]
+    },
+    {
+        "city"      : "Randers",
+        "postcodes" :
+        [
+            "8930",
+            "8960",
+            "8920",
+            "8900",
+            "8940"
+        ]
+    },
+    {
+        "city"      : "Aalborg",
+        "postcodes" :
+        [
+            "9210",
+            "9200",
+            "9000",
+            "9220"
+        ]
+    },
+    {
+        "city"      : "Gjerlev",
+        "postcodes" :
+        [
+            "8983"
+        ]
+    },
+    {
+        "city"      : "Esbjerg",
+        "postcodes" :
+        [
+            "6715",
+            "6705",
+            "6710",
+            "6700"
+        ]
+    },
+    {
+        "city"      : "Rødovre",
+        "postcodes" :
+        [
+            "2610"
+        ]
+    },
+    {
+        "city"      : "Kastrup",
+        "postcodes" :
+        [
+            "2770"
+        ]
+    },
+    {
+        "city"      : "Værløse",
+        "postcodes" :
+        [
+            "3500"
+        ]
+    },
+    {
+        "city"      : "Allerød",
+        "postcodes" :
+        [
+            "3450"
+        ]
+    },
+    {
+        "city"      : "Græsted",
+        "postcodes" :
+        [
+            "3230"
+        ]
+    },
+    {
+        "city"      : "Hornbæk",
+        "postcodes" :
+        [
+            "3100"
+        ]
+    },
+    {
+        "city"      : "Tølløse",
+        "postcodes" :
+        [
+            "4340"
+        ]
+    },
+    {
+        "city"      : "Rønnede",
+        "postcodes" :
+        [
+            "4683"
+        ]
+    },
+    {
+        "city"      : "Jyderup",
+        "postcodes" :
+        [
+            "4450"
+        ]
+    },
+    {
+        "city"      : "Dalmose",
+        "postcodes" :
+        [
+            "4261"
+        ]
+    },
+    {
+        "city"      : "Nakskov",
+        "postcodes" :
+        [
+            "4900"
+        ]
+    },
+    {
+        "city"      : "Sandved",
+        "postcodes" :
+        [
+            "4262"
+        ]
+    },
+    {
+        "city"      : "Næstved",
+        "postcodes" :
+        [
+            "4700"
+        ]
+    },
+    {
+        "city"      : "Allinge",
+        "postcodes" :
+        [
+            "3770"
+        ]
+    },
+    {
+        "city"      : "Asperup",
+        "postcodes" :
+        [
+            "5466"
+        ]
+    },
+    {
+        "city"      : "Munkebo",
+        "postcodes" :
+        [
+            "5330"
+        ]
+    },
+    {
+        "city"      : "Rynkeby",
+        "postcodes" :
+        [
+            "5350"
+        ]
+    },
+    {
+        "city"      : "Otterup",
+        "postcodes" :
+        [
+            "5450"
+        ]
+    },
+    {
+        "city"      : "Billund",
+        "postcodes" :
+        [
+            "7190"
+        ]
+    },
+    {
+        "city"      : "Gråsten",
+        "postcodes" :
+        [
+            "6300"
+        ]
+    },
+    {
+        "city"      : "Holsted",
+        "postcodes" :
+        [
+            "6670"
+        ]
+    },
+    {
+        "city"      : "Rødding",
+        "postcodes" :
+        [
+            "6630"
+        ]
+    },
+    {
+        "city"      : "Føvling",
+        "postcodes" :
+        [
+            "6683"
+        ]
+    },
+    {
+        "city"      : "Lintrup",
+        "postcodes" :
+        [
+            "6660"
+        ]
+    },
+    {
+        "city"      : "Tinglev",
+        "postcodes" :
+        [
+            "6360"
+        ]
+    },
+    {
+        "city"      : "Padborg",
+        "postcodes" :
+        [
+            "6330"
+        ]
+    },
+    {
+        "city"      : "Østbirk",
+        "postcodes" :
+        [
+            "8752"
+        ]
+    },
+    {
+        "city"      : "Horsens",
+        "postcodes" :
+        [
+            "8700"
+        ]
+    },
+    {
+        "city"      : "Vamdrup",
+        "postcodes" :
+        [
+            "6580"
+        ]
+    },
+    {
+        "city"      : "Kolding",
+        "postcodes" :
+        [
+            "6000"
+        ]
+    },
+    {
+        "city"      : "Randbøl",
+        "postcodes" :
+        [
+            "7183"
+        ]
+    },
+    {
+        "city"      : "Jelling",
+        "postcodes" :
+        [
+            "7300"
+        ]
+    },
+    {
+        "city"      : "Daugård",
+        "postcodes" :
+        [
+            "8721"
+        ]
+    },
+    {
+        "city"      : "Haderup",
+        "postcodes" :
+        [
+            "7540"
+        ]
+    },
+    {
+        "city"      : "Herning",
+        "postcodes" :
+        [
+            "7400"
+        ]
+    },
+    {
+        "city"      : "Thyholm",
+        "postcodes" :
+        [
+            "7790"
+        ]
+    },
+    {
+        "city"      : "Ulstrup",
+        "postcodes" :
+        [
+            "8860"
+        ]
+    },
+    {
+        "city"      : "Hadsten",
+        "postcodes" :
+        [
+            "8370"
+        ]
+    },
+    {
+        "city"      : "Sorring",
+        "postcodes" :
+        [
+            "8641"
+        ]
+    },
+    {
+        "city"      : "Hørning",
+        "postcodes" :
+        [
+            "8362"
+        ]
+    },
+    {
+        "city"      : "Bording",
+        "postcodes" :
+        [
+            "7441"
+        ]
+    },
+    {
+        "city"      : "Thisted",
+        "postcodes" :
+        [
+            "7700"
+        ]
+    },
+    {
+        "city"      : "Møldrup",
+        "postcodes" :
+        [
+            "9632"
+        ]
+    },
+    {
+        "city"      : "Løgstør",
+        "postcodes" :
+        [
+            "9670"
+        ]
+    },
+    {
+        "city"      : "Gedsted",
+        "postcodes" :
+        [
+            "9631"
+        ]
+    },
+    {
+        "city"      : "Gandrup",
+        "postcodes" :
+        [
+            "9362"
+        ]
+    },
+    {
+        "city"      : "Vodskov",
+        "postcodes" :
+        [
+            "9310"
+        ]
+    },
+    {
+        "city"      : "Gistrup",
+        "postcodes" :
+        [
+            "9260"
+        ]
+    },
+    {
+        "city"      : "Kongerslev",
+        "postcodes" :
+        [
+            "9293"
+        ]
+    },
+    {
+        "city"      : "Juelsminde",
+        "postcodes" :
+        [
+            "7130"
+        ]
+    },
+    {
+        "city"      : "Hasselager",
+        "postcodes" :
+        [
+            "8361"
+        ]
+    },
+    {
+        "city"      : "Nanortalik",
+        "postcodes" :
+        [
+            "3922"
+        ]
+    },
+    {
+        "city"      : "Vester",
+        "postcodes" :
+        [
+            "5762"
+        ]
+    },
+    {
+        "city"      : "Solrød",
+        "postcodes" :
+        [
+            "2680"
+        ]
+    },
+    {
+        "city"      : "Odense",
+        "postcodes" :
+        [
+            "5240",
+            "5210",
+            "5220",
+            "5250",
+            "5000",
+            "5230",
+            "5270",
+            "5260",
+            "5200"
+        ]
+    },
+    {
+        "city"      : "Toreby",
+        "postcodes" :
+        [
+            "4891"
+        ]
+    },
+    {
+        "city"      : "Aarhus",
+        "postcodes" :
+        [
+            "8200",
+            "8000",
+            "8210"
+        ]
+    },
+    {
+        "city"      : "Dragør",
+        "postcodes" :
+        [
+            "2791"
+        ]
+    },
+    {
+        "city"      : "Søborg",
+        "postcodes" :
+        [
+            "2860"
+        ]
+    },
+    {
+        "city"      : "Herlev",
+        "postcodes" :
+        [
+            "2730"
+        ]
+    },
+    {
+        "city"      : "Vedbæk",
+        "postcodes" :
+        [
+            "2950"
+        ]
+    },
+    {
+        "city"      : "Smørum",
+        "postcodes" :
+        [
+            "2765"
+        ]
+    },
+    {
+        "city"      : "Skibby",
+        "postcodes" :
+        [
+            "4050"
+        ]
+    },
+    {
+        "city"      : "Tureby",
+        "postcodes" :
+        [
+            "4682"
+        ]
+    },
+    {
+        "city"      : "Holbæk",
+        "postcodes" :
+        [
+            "4300"
+        ]
+    },
+    {
+        "city"      : "Haslev",
+        "postcodes" :
+        [
+            "4690"
+        ]
+    },
+    {
+        "city"      : "Karise",
+        "postcodes" :
+        [
+            "4653"
+        ]
+    },
+    {
+        "city"      : "Sejerø",
+        "postcodes" :
+        [
+            "4592"
+        ]
+    },
+    {
+        "city"      : "Korsør",
+        "postcodes" :
+        [
+            "4220"
+        ]
+    },
+    {
+        "city"      : "Holeby",
+        "postcodes" :
+        [
+            "4960"
+        ]
+    },
+    {
+        "city"      : "Maribo",
+        "postcodes" :
+        [
+            "4930"
+        ]
+    },
+    {
+        "city"      : "Nysted",
+        "postcodes" :
+        [
+            "4880"
+        ]
+    },
+    {
+        "city"      : "Præstø",
+        "postcodes" :
+        [
+            "4720"
+        ]
+    },
+    {
+        "city"      : "Årslev",
+        "postcodes" :
+        [
+            "5792"
+        ]
+    },
+    {
+        "city"      : "Nyborg",
+        "postcodes" :
+        [
+            "5800"
+        ]
+    },
+    {
+        "city"      : "Frørup",
+        "postcodes" :
+        [
+            "5871"
+        ]
+    },
+    {
+        "city"      : "Sydals",
+        "postcodes" :
+        [
+            "6470"
+        ]
+    },
+    {
+        "city"      : "Tønder",
+        "postcodes" :
+        [
+            "6270"
+        ]
+    },
+    {
+        "city"      : "Oksbøl",
+        "postcodes" :
+        [
+            "6840"
+        ]
+    },
+    {
+        "city"      : "Brørup",
+        "postcodes" :
+        [
+            "6650"
+        ]
+    },
+    {
+        "city"      : "Gedved",
+        "postcodes" :
+        [
+            "8751"
+        ]
+    },
+    {
+        "city"      : "Crhistiansfeld",
+        "postcodes" :
+        [
+            "6070"
+        ]
+    },
+    {
+        "city"      : "Børkop",
+        "postcodes" :
+        [
+            "7080"
+        ]
+    },
+    {
+        "city"      : "Ørnhøj",
+        "postcodes" :
+        [
+            "6973"
+        ]
+    },
+    {
+        "city"      : "Lemvig",
+        "postcodes" :
+        [
+            "7620"
+        ]
+    },
+    {
+        "city"      : "Kolind",
+        "postcodes" :
+        [
+            "8560"
+        ]
+    },
+    {
+        "city"      : "Grenaa",
+        "postcodes" :
+        [
+            "8500"
+        ]
+    },
+    {
+        "city"      : "Hammel",
+        "postcodes" :
+        [
+            "8450"
+        ]
+    },
+    {
+        "city"      : "Thorsø",
+        "postcodes" :
+        [
+            "8881"
+        ]
+    },
+    {
+        "city"      : "Bryrup",
+        "postcodes" :
+        [
+            "8654"
+        ]
+    },
+    {
+        "city"      : "Åbyhøj",
+        "postcodes" :
+        [
+            "8230"
+        ]
+    },
+    {
+        "city"      : "Skjern",
+        "postcodes" :
+        [
+            "6900"
+        ]
+    },
+    {
+        "city"      : "Barrit",
+        "postcodes" :
+        [
+            "7150"
+        ]
+    },
+    {
+        "city"      : "Stouby",
+        "postcodes" :
+        [
+            "7140"
+        ]
+    },
+    {
+        "city"      : "Viborg",
+        "postcodes" :
+        [
+            "8800"
+        ]
+    },
+    {
+        "city"      : "Skagen",
+        "postcodes" :
+        [
+            "9990"
+        ]
+    },
+    {
+        "city"      : "Brovst",
+        "postcodes" :
+        [
+            "9460"
+        ]
+    },
+    {
+        "city"      : "Klarup",
+        "postcodes" :
+        [
+            "9270"
+        ]
+    },
+    {
+        "city"      : "Eskebjerg",
+        "postcodes" :
+        [
+            "4593"
+        ]
+    },
+    {
+        "city"      : "Haderslev",
+        "postcodes" :
+        [
+            "6100"
+        ]
+    },
+    {
+        "city"      : "Helsingør",
+        "postcodes" :
+        [
+            "3000"
+        ]
+    },
+    {
+        "city"      : "Hjallerup",
+        "postcodes" :
+        [
+            "9320"
+        ]
+    },
+    {
+        "city"      : "Stenderupp",
+        "postcodes" :
+        [
+            "8781"
+        ]
+    },
+    {
+        "city"      : "Hundested",
+        "postcodes" :
+        [
+            "3390"
+        ]
+    },
+    {
+        "city"      : "Kvistgård",
+        "postcodes" :
+        [
+            "3490"
+        ]
+    },
+    {
+        "city"      : "Klippinge",
+        "postcodes" :
+        [
+            "4672"
+        ]
+    },
+    {
+        "city"      : "Skødstrup",
+        "postcodes" :
+        [
+            "8541"
+        ]
+    },
+    {
+        "city"      : "Glejbjerg",
+        "postcodes" :
+        [
+            "6752"
+        ]
+    },
+    {
+        "city"      : "Rudkøbing",
+        "postcodes" :
+        [
+            "5900"
+        ]
+    },
+    {
+        "city"      : "Snertinge",
+        "postcodes" :
+        [
+            "4460"
+        ]
+    },
+    {
+        "city"      : "Branderup",
+        "postcodes" :
+        [
+            "6535"
+        ]
+    },
+    {
+        "city"      : "Tranbjerg",
+        "postcodes" :
+        [
+            "8310"
+        ]
+    },
+    {
+        "city"      : "Brenderup",
+        "postcodes" :
+        [
+            "5464"
+        ]
+    },
+    {
+        "city"      : "Aakirkeby",
+        "postcodes" :
+        [
+            "3720"
+        ]
+    },
+    {
+        "city"      : "Boeslunde",
+        "postcodes" :
+        [
+            "4242"
+        ]
+    },
+    {
+        "city"      : "Søllested",
+        "postcodes" :
+        [
+            "4920"
+        ]
+    },
+    {
+        "city"      : "Hundslund",
+        "postcodes" :
+        [
+            "8350"
+        ]
+    },
+    {
+        "city"      : "Hjortshøj",
+        "postcodes" :
+        [
+            "8530"
+        ]
+    },
+    {
+        "city"      : "Stenstrup",
+        "postcodes" :
+        [
+            "5771"
+        ]
+    },
+    {
+        "city"      : "Errindlev",
+        "postcodes" :
+        [
+            "4895"
+        ]
+    },
+    {
+        "city"      : "Tjæreborg",
+        "postcodes" :
+        [
+            "6731"
+        ]
+    },
+    {
+        "city"      : "Horslunde",
+        "postcodes" :
+        [
+            "4913"
+        ]
+    },
+    {
+        "city"      : "Skodsborg",
+        "postcodes" :
+        [
+            "2942"
+        ]
+    },
+    {
+        "city"      : "Alluitsup",
+        "postcodes" :
+        [
+            "3919"
+        ]
+    },
+    {
+        "city"      : "Ilulissat",
+        "postcodes" :
+        [
+            "3952"
+        ]
+    },
+    {
+        "city"      : "Kangerlussuaq",
+        "postcodes" :
+        [
+            "3910"
+        ]
+    },
+    {
+        "city"      : "Kangilinnguit",
+        "postcodes" :
+        [
+            "3930"
+        ]
+    },
+    {
+        "city"      : "Qasigiannguit",
+        "postcodes" :
+        [
+            "3951"
+        ]
+    },
+    {
+        "city"      : "Qeqertarssuaq",
+        "postcodes" :
+        [
+            "3953"
+        ]
+    },
+    {
+        "city"      : "Slædep.Sirius",
+        "postcodes" :
+        [
+            "3992"
+        ]
+    },
+    {
+        "city"      : "Store",
+        "postcodes" :
+        [
+            "4480",
+            "4370",
+            "4660"
+        ]
+    },
+    {
+        "city"      : "Nørre",
+        "postcodes" :
+        [
+            "4840",
+            "8766",
+            "4572",
+            "5580",
+            "6830"
+        ]
+    },
+    {
+        "city"      : "Kirke",
+        "postcodes" :
+        [
+            "4060",
+            "4360",
+            "4070"
+        ]
+    },
+    {
+        "city"      : "Karup",
+        "postcodes" :
+        [
+            "7470"
+        ]
+    },
+    {
+        "city"      : "Virum",
+        "postcodes" :
+        [
+            "2830"
+        ]
+    },
+    {
+        "city"      : "Holte",
+        "postcodes" :
+        [
+            "2840"
+        ]
+    },
+    {
+        "city"      : "Farum",
+        "postcodes" :
+        [
+            "3520"
+        ]
+    },
+    {
+        "city"      : "Greve",
+        "postcodes" :
+        [
+            "2670"
+        ]
+    },
+    {
+        "city"      : "Vejby",
+        "postcodes" :
+        [
+            "3210"
+        ]
+    },
+    {
+        "city"      : "Nyrup",
+        "postcodes" :
+        [
+            "4296"
+        ]
+    },
+    {
+        "city"      : "Lejre",
+        "postcodes" :
+        [
+            "4320"
+        ]
+    },
+    {
+        "city"      : "Rødby",
+        "postcodes" :
+        [
+            "4970"
+        ]
+    },
+    {
+        "city"      : "Stege",
+        "postcodes" :
+        [
+            "4780"
+        ]
+    },
+    {
+        "city"      : "Borre",
+        "postcodes" :
+        [
+            "4791"
+        ]
+    },
+    {
+        "city"      : "Hasle",
+        "postcodes" :
+        [
+            "3790"
+        ]
+    },
+    {
+        "city"      : "Aarup",
+        "postcodes" :
+        [
+            "5560"
+        ]
+    },
+    {
+        "city"      : "Ringe",
+        "postcodes" :
+        [
+            "5750"
+        ]
+    },
+    {
+        "city"      : "Ørbæk",
+        "postcodes" :
+        [
+            "5853"
+        ]
+    },
+    {
+        "city"      : "Højer",
+        "postcodes" :
+        [
+            "6280"
+        ]
+    },
+    {
+        "city"      : "Varde",
+        "postcodes" :
+        [
+            "6800"
+        ]
+    },
+    {
+        "city"      : "Vejen",
+        "postcodes" :
+        [
+            "6600"
+        ]
+    },
+    {
+        "city"      : "Kruså",
+        "postcodes" :
+        [
+            "6340"
+        ]
+    },
+    {
+        "city"      : "Hejls",
+        "postcodes" :
+        [
+            "6094"
+        ]
+    },
+    {
+        "city"      : "Vejle",
+        "postcodes" :
+        [
+            "7100",
+            "7120"
+        ]
+    },
+    {
+        "city"      : "Aulum",
+        "postcodes" :
+        [
+            "7490"
+        ]
+    },
+    {
+        "city"      : "Sunds",
+        "postcodes" :
+        [
+            "7451"
+        ]
+    },
+    {
+        "city"      : "Rønde",
+        "postcodes" :
+        [
+            "8410"
+        ]
+    },
+    {
+        "city"      : "Mørke",
+        "postcodes" :
+        [
+            "8544"
+        ]
+    },
+    {
+        "city"      : "Langå",
+        "postcodes" :
+        [
+            "8870"
+        ]
+    },
+    {
+        "city"      : "Låsby",
+        "postcodes" :
+        [
+            "8670"
+        ]
+    },
+    {
+        "city"      : "Skive",
+        "postcodes" :
+        [
+            "7800"
+        ]
+    },
+    {
+        "city"      : "Hurup",
+        "postcodes" :
+        [
+            "7760"
+        ]
+    },
+    {
+        "city"      : "Tjele",
+        "postcodes" :
+        [
+            "8830"
+        ]
+    },
+    {
+        "city"      : "Skals",
+        "postcodes" :
+        [
+            "8832"
+        ]
+    },
+    {
+        "city"      : "Farsø",
+        "postcodes" :
+        [
+            "9640"
+        ]
+    },
+    {
+        "city"      : "Vadum",
+        "postcodes" :
+        [
+            "9430"
+        ]
+    },
+    {
+        "city"      : "Tranekær",
+        "postcodes" :
+        [
+            "5953"
+        ]
+    },
+    {
+        "city"      : "Toftlund",
+        "postcodes" :
+        [
+            "6520"
+        ]
+    },
+    {
+        "city"      : "Vorbasse",
+        "postcodes" :
+        [
+            "6623"
+        ]
+    },
+    {
+        "city"      : "Gadstrup",
+        "postcodes" :
+        [
+            "4621"
+        ]
+    },
+    {
+        "city"      : "Stakroge",
+        "postcodes" :
+        [
+            "7270"
+        ]
+    },
+    {
+        "city"      : "Snedsted",
+        "postcodes" :
+        [
+            "7752"
+        ]
+    },
+    {
+        "city"      : "Bindslev",
+        "postcodes" :
+        [
+            "9881"
+        ]
+    },
+    {
+        "city"      : "Taastrup",
+        "postcodes" :
+        [
+            "2630"
+        ]
+    },
+    {
+        "city"      : "Bagenkop",
+        "postcodes" :
+        [
+            "5935"
+        ]
+    },
+    {
+        "city"      : "Ålsgårde",
+        "postcodes" :
+        [
+            "3140"
+        ]
+    },
+    {
+        "city"      : "Hornsyld",
+        "postcodes" :
+        [
+            "8783"
+        ]
+    },
+    {
+        "city"      : "Hinnerup",
+        "postcodes" :
+        [
+            "8382"
+        ]
+    },
+    {
+        "city"      : "Spentrup",
+        "postcodes" :
+        [
+            "8981"
+        ]
+    },
+    {
+        "city"      : "Hornslet",
+        "postcodes" :
+        [
+            "8543"
+        ]
+    },
+    {
+        "city"      : "Skørping",
+        "postcodes" :
+        [
+            "9520"
+        ]
+    },
+    {
+        "city"      : "Stenløse",
+        "postcodes" :
+        [
+            "3660"
+        ]
+    },
+    {
+        "city"      : "Hellebæk",
+        "postcodes" :
+        [
+            "3150"
+        ]
+    },
+    {
+        "city"      : "Herfølge",
+        "postcodes" :
+        [
+            "4681"
+        ]
+    },
+    {
+        "city"      : "Harndrup",
+        "postcodes" :
+        [
+            "5463"
+        ]
+    },
+    {
+        "city"      : "Brabrand",
+        "postcodes" :
+        [
+            "8220"
+        ]
+    },
+    {
+        "city"      : "Tommerup",
+        "postcodes" :
+        [
+            "5690"
+        ]
+    },
+    {
+        "city"      : "Bramming",
+        "postcodes" :
+        [
+            "6740"
+        ]
+    },
+    {
+        "city"      : "Søndersø",
+        "postcodes" :
+        [
+            "5471"
+        ]
+    },
+    {
+        "city"      : "Liseleje",
+        "postcodes" :
+        [
+            "3360"
+        ]
+    },
+    {
+        "city"      : "Millinge",
+        "postcodes" :
+        [
+            "5642"
+        ]
+    },
+    {
+        "city"      : "Solbjerg",
+        "postcodes" :
+        [
+            "8355"
+        ]
+    },
+    {
+        "city"      : "Stensved",
+        "postcodes" :
+        [
+            "4773"
+        ]
+    },
+    {
+        "city"      : "Trustrup",
+        "postcodes" :
+        [
+            "8570"
+        ]
+    },
+    {
+        "city"      : "Tylstrup",
+        "postcodes" :
+        [
+            "9382"
+        ]
+    },
+    {
+        "city"      : "Terndrup",
+        "postcodes" :
+        [
+            "9575"
+        ]
+    },
+    {
+        "city"      : "Flemming",
+        "postcodes" :
+        [
+            "8762"
+        ]
+    },
+    {
+        "city"      : "Ugerløse",
+        "postcodes" :
+        [
+            "4350"
+        ]
+    },
+    {
+        "city"      : "Mariager",
+        "postcodes" :
+        [
+            "9550"
+        ]
+    },
+    {
+        "city"      : "Gadbjerg",
+        "postcodes" :
+        [
+            "7321"
+        ]
+    },
+    {
+        "city"      : "Klovborg",
+        "postcodes" :
+        [
+            "8765"
+        ]
+    },
+    {
+        "city"      : "Vipperød",
+        "postcodes" :
+        [
+            "4390"
+        ]
+    },
+    {
+        "city"      : "Frøstrup",
+        "postcodes" :
+        [
+            "7741"
+        ]
+    },
+    {
+        "city"      : "Veflinge",
+        "postcodes" :
+        [
+            "5474"
+        ]
+    },
+    {
+        "city"      : "Vejstrup",
+        "postcodes" :
+        [
+            "5882"
+        ]
+    },
+    {
+        "city"      : "Gentofte",
+        "postcodes" :
+        [
+            "2820"
+        ]
+    },
+    {
+        "city"      : "Højbjerg",
+        "postcodes" :
+        [
+            "8270"
+        ]
+    },
+    {
+        "city"      : "Idestrup",
+        "postcodes" :
+        [
+            "4872"
+        ]
+    },
+    {
+        "city"      : "Langebæk",
+        "postcodes" :
+        [
+            "4772"
+        ]
+    },
+    {
+        "city"      : "Støvring",
+        "postcodes" :
+        [
+            "9530"
+        ]
+    },
+    {
+        "city"      : "Vemmelev",
+        "postcodes" :
+        [
+            "4241"
+        ]
+    },
+    {
+        "city"      : "Brønshøj",
+        "postcodes" :
+        [
+            "2700"
+        ]
+    },
+    {
+        "city"      : "Bagsværd",
+        "postcodes" :
+        [
+            "2880"
+        ]
+    },
+    {
+        "city"      : "Janderup",
+        "postcodes" :
+        [
+            "6851"
+        ]
+    },
+    {
+        "city"      : "Strandby",
+        "postcodes" :
+        [
+            "9970"
+        ]
+    },
+    {
+        "city"      : "Hellerup",
+        "postcodes" :
+        [
+            "2900"
+        ]
+    },
+    {
+        "city"      : "Løgstrup",
+        "postcodes" :
+        [
+            "8831"
+        ]
+    },
+    {
+        "city"      : "Thyborøn",
+        "postcodes" :
+        [
+            "7680"
+        ]
+    },
+    {
+        "city"      : "Bandholm",
+        "postcodes" :
+        [
+            "4941"
+        ]
+    },
+    {
+        "city"      : "Nuussuaq",
+        "postcodes" :
+        [
+            "3905"
+        ]
+    },
+    {
+        "city"      : "Harboøre",
+        "postcodes" :
+        [
+            "7673"
+        ]
+    },
+    {
+        "city"      : "Nordhavn",
+        "postcodes" :
+        [
+            "2150"
+        ]
+    },
+    {
+        "city"      : "Qaqortoq",
+        "postcodes" :
+        [
+            "3920"
+        ]
+    },
+    {
+        "city"      : "Angissoq",
+        "postcodes" :
+        [
+            "3927"
+        ]
+    },
+    {
+        "city"      : "Danmarkshavn",
+        "postcodes" :
+        [
+            "3984"
+        ]
+    },
+    {
+        "city"      : "Faxe",
+        "postcodes" :
+        [
+            "4640"
+        ]
+    },
+    {
+        "city"      : "Faxe Ladeplads",
+        "postcodes" :
+        [
+            "4654"
+        ]
+    },
+    {
+        "city"      : "Kongens Lyngby",
+        "postcodes" :
+        [
+            "2800"
+        ]
+    },
+    {
+        "city"      : "Ørum",
+        "postcodes" :
+        [
+            "8586"
+        ]
+    },
+    {
+        "city"      : "Ruds",
+        "postcodes" :
+        [
+            "4291"
+        ]
+    },
+    {
+        "city"      : "Nivå",
+        "postcodes" :
+        [
+            "2990"
+        ]
+    },
+    {
+        "city"      : "Sorø",
+        "postcodes" :
+        [
+            "4180"
+        ]
+    },
+    {
+        "city"      : "Mern",
+        "postcodes" :
+        [
+            "4735"
+        ]
+    },
+    {
+        "city"      : "Gram",
+        "postcodes" :
+        [
+            "6510"
+        ]
+    },
+    {
+        "city"      : "Årre",
+        "postcodes" :
+        [
+            "6818"
+        ]
+    },
+    {
+        "city"      : "Ribe",
+        "postcodes" :
+        [
+            "6760"
+        ]
+    },
+    {
+        "city"      : "Fanø",
+        "postcodes" :
+        [
+            "6720"
+        ]
+    },
+    {
+        "city"      : "Give",
+        "postcodes" :
+        [
+            "7323"
+        ]
+    },
+    {
+        "city"      : "Tarm",
+        "postcodes" :
+        [
+            "6880"
+        ]
+    },
+    {
+        "city"      : "Aars",
+        "postcodes" :
+        [
+            "9600"
+        ]
+    },
+    {
+        "city"      : "Nibe",
+        "postcodes" :
+        [
+            "9240"
+        ]
+    },
+    {
+        "city"      : "Hals",
+        "postcodes" :
+        [
+            "9370"
+        ]
+    },
+    {
+        "city"      : "Tasiilaq",
+        "postcodes" :
+        [
+            "3913"
+        ]
+    },
+    {
+        "city"      : "Gudhjem",
+        "postcodes" :
+        [
+            "3760"
+        ]
+    },
+    {
+        "city"      : "Videbæk",
+        "postcodes" :
+        [
+            "6920"
+        ]
+    },
+    {
+        "city"      : "Ulfborg",
+        "postcodes" :
+        [
+            "6990"
+        ]
+    },
+    {
+        "city"      : "Hadsund",
+        "postcodes" :
+        [
+            "9560"
+        ]
+    },
+    {
+        "city"      : "Bedsted",
+        "postcodes" :
+        [
+            "7755"
+        ]
+    },
+    {
+        "city"      : "Løsning",
+        "postcodes" :
+        [
+            "8723"
+        ]
+    },
+    {
+        "city"      : "Nørager",
+        "postcodes" :
+        [
+            "9610"
+        ]
+    },
+    {
+        "city"      : "Ansager",
+        "postcodes" :
+        [
+            "6823"
+        ]
+    },
+    {
+        "city"      : "Havdrup",
+        "postcodes" :
+        [
+            "4622"
+        ]
+    },
+    {
+        "city"      : "Mesinge",
+        "postcodes" :
+        [
+            "5370"
+        ]
+    },
+    {
+        "city"      : "Rødekro",
+        "postcodes" :
+        [
+            "6230"
+        ]
+    },
+    {
+        "city"      : "Lystrup",
+        "postcodes" :
+        [
+            "8520"
+        ]
+    },
+    {
+        "city"      : "Svaneke",
+        "postcodes" :
+        [
+            "3740"
+        ]
+    },
+    {
+        "city"      : "Risskov",
+        "postcodes" :
+        [
+            "8240"
+        ]
+    },
+    {
+        "city"      : "Faaborg",
+        "postcodes" :
+        [
+            "5600"
+        ]
+    },
+    {
+        "city"      : "Agerbæk",
+        "postcodes" :
+        [
+            "6753"
+        ]
+    },
+    {
+        "city"      : "Lemming",
+        "postcodes" :
+        [
+            "8632"
+        ]
+    },
+    {
+        "city"      : "Broager",
+        "postcodes" :
+        [
+            "6310"
+        ]
+    },
+    {
+        "city"      : "Malling",
+        "postcodes" :
+        [
+            "8340"
+        ]
+    },
+    {
+        "city"      : "Hovborg",
+        "postcodes" :
+        [
+            "6682"
+        ]
+    },
+    {
+        "city"      : "Fårvang",
+        "postcodes" :
+        [
+            "8882"
+        ]
+    },
+    {
+        "city"      : "Gelsted",
+        "postcodes" :
+        [
+            "5591"
+        ]
+    },
+    {
+        "city"      : "Marslev",
+        "postcodes" :
+        [
+            "5290"
+        ]
+    },
+    {
+        "city"      : "Højslev",
+        "postcodes" :
+        [
+            "7840"
+        ]
+    },
+    {
+        "city"      : "Aabybro",
+        "postcodes" :
+        [
+            "9440"
+        ]
+    },
+    {
+        "city"      : "Ebberup",
+        "postcodes" :
+        [
+            "5631"
+        ]
+    },
+    {
+        "city"      : "Skærbæk",
+        "postcodes" :
+        [
+            "6780"
+        ]
+    },
+    {
+        "city"      : "Jordrup",
+        "postcodes" :
+        [
+            "6064"
+        ]
+    },
+    {
+        "city"      : "Mårslet",
+        "postcodes" :
+        [
+            "8320"
+        ]
+    },
+    {
+        "city"      : "Gørløse",
+        "postcodes" :
+        [
+            "3330"
+        ]
+    },
+    {
+        "city"      : "Havndal",
+        "postcodes" :
+        [
+            "8970"
+        ]
+    },
+    {
+        "city"      : "Tørring",
+        "postcodes" :
+        [
+            "7160"
+        ]
+    },
+    {
+        "city"      : "Agedrup",
+        "postcodes" :
+        [
+            "5320"
+        ]
+    },
+    {
+        "city"      : "Blåvand",
+        "postcodes" :
+        [
+            "6857"
+        ]
+    },
+    {
+        "city"      : "Bogense",
+        "postcodes" :
+        [
+            "5400"
+        ]
+    },
+    {
+        "city"      : "Gørding",
+        "postcodes" :
+        [
+            "6690"
+        ]
+    },
+    {
+        "city"      : "Sulsted",
+        "postcodes" :
+        [
+            "9381"
+        ]
+    },
+    {
+        "city"      : "Jystrup",
+        "postcodes" :
+        [
+            "4174"
+        ]
+    },
+    {
+        "city"      : "Sjølund",
+        "postcodes" :
+        [
+            "6093"
+        ]
+    },
+    {
+        "city"      : "Vanløse",
+        "postcodes" :
+        [
+            "2720"
+        ]
+    },
+    {
+        "city"      : "Kangaatsiaq",
+        "postcodes" :
+        [
+            "3955"
+        ]
+    },
+    {
+        "city"      : "Fjerritslev",
+        "postcodes" :
+        [
+            "9690"
+        ]
+    },
+    {
+        "city"      : "Tim",
+        "postcodes" :
+        [
+            "6980"
+        ]
+    },
+    {
+        "city"      : "Sønder",
+        "postcodes" :
+        [
+            "7260",
+            "7280",
+            "6092"
+        ]
+    },
+    {
+        "city"      : "Knebel",
+        "postcodes" :
+        [
+            "8420"
+        ]
+    },
+    {
+        "city"      : "Ølsted",
+        "postcodes" :
+        [
+            "3310"
+        ]
+    },
+    {
+        "city"      : "Mørkøv",
+        "postcodes" :
+        [
+            "4440"
+        ]
+    },
+    {
+        "city"      : "Assens",
+        "postcodes" :
+        [
+            "5610"
+        ]
+    },
+    {
+        "city"      : "Hårlev",
+        "postcodes" :
+        [
+            "4652"
+        ]
+    },
+    {
+        "city"      : "Ørsted",
+        "postcodes" :
+        [
+            "8950"
+        ]
+    },
+    {
+        "city"      : "Hemmet",
+        "postcodes" :
+        [
+            "6893"
+        ]
+    },
+    {
+        "city"      : "Vandel",
+        "postcodes" :
+        [
+            "7184"
+        ]
+    },
+    {
+        "city"      : "Roslev",
+        "postcodes" :
+        [
+            "7870"
+        ]
+    },
+    {
+        "city"      : "Askeby",
+        "postcodes" :
+        [
+            "4792"
+        ]
+    },
+    {
+        "city"      : "Egtved",
+        "postcodes" :
+        [
+            "6040"
+        ]
+    },
+    {
+        "city"      : "Billum",
+        "postcodes" :
+        [
+            "6852"
+        ]
+    },
+    {
+        "city"      : "Brande",
+        "postcodes" :
+        [
+            "7330"
+        ]
+    },
+    {
+        "city"      : "Gørlev",
+        "postcodes" :
+        [
+            "4281"
+        ]
+    },
+    {
+        "city"      : "Vojens",
+        "postcodes" :
+        [
+            "6500"
+        ]
+    },
+    {
+        "city"      : "Galten",
+        "postcodes" :
+        [
+            "8464"
+        ]
+    },
+    {
+        "city"      : "Glumsø",
+        "postcodes" :
+        [
+            "4171"
+        ]
+    },
+    {
+        "city"      : "Gedser",
+        "postcodes" :
+        [
+            "4874"
+        ]
+    },
+    {
+        "city"      : "Humble",
+        "postcodes" :
+        [
+            "5932"
+        ]
+    },
+    {
+        "city"      : "Sørvad",
+        "postcodes" :
+        [
+            "7550"
+        ]
+    },
+    {
+        "city"      : "Lundby",
+        "postcodes" :
+        [
+            "4750"
+        ]
+    },
+    {
+        "city"      : "Auning",
+        "postcodes" :
+        [
+            "8963"
+        ]
+    },
+    {
+        "city"      : "Struer",
+        "postcodes" :
+        [
+            "7600"
+        ]
+    },
+    {
+        "city"      : "Haarby",
+        "postcodes" :
+        [
+            "5683"
+        ]
+    },
+    {
+        "city"      : "Skårup",
+        "postcodes" :
+        [
+            "5881"
+        ]
+    },
+    {
+        "city"      : "Løkken",
+        "postcodes" :
+        [
+            "9480"
+        ]
+    },
+    {
+        "city"      : "Erslev",
+        "postcodes" :
+        [
+            "7950"
+        ]
+    },
+    {
+        "city"      : "Vesløs",
+        "postcodes" :
+        [
+            "7742"
+        ]
+    },
+    {
+        "city"      : "Saltum",
+        "postcodes" :
+        [
+            "9493"
+        ]
+    },
+    {
+        "city"      : "Harlev",
+        "postcodes" :
+        [
+            "8462"
+        ]
+    },
+    {
+        "city"      : "Spjald",
+        "postcodes" :
+        [
+            "6971"
+        ]
+    },
+    {
+        "city"      : "Gesten",
+        "postcodes" :
+        [
+            "6621"
+        ]
+    },
+    {
+        "city"      : "Almind",
+        "postcodes" :
+        [
+            "6051"
+        ]
+    },
+    {
+        "city"      : "Hampen",
+        "postcodes" :
+        [
+            "7362"
+        ]
+    },
+    {
+        "city"      : "Sporup",
+        "postcodes" :
+        [
+            "8472"
+        ]
+    },
+    {
+        "city"      : "Skamby",
+        "postcodes" :
+        [
+            "5485"
+        ]
+    },
+    {
+        "city"      : "Rødvig",
+        "postcodes" :
+        [
+            "4673"
+        ]
+    },
+    {
+        "city"      : "Outrup",
+        "postcodes" :
+        [
+            "6855"
+        ]
+    },
+    {
+        "city"      : "Hvalsø",
+        "postcodes" :
+        [
+            "4330"
+        ]
+    },
+    {
+        "city"      : "Ukendt",
+        "postcodes" :
+        [
+            "9999"
+        ]
+    },
+    {
+        "city"      : "Vallensbæk",
+        "postcodes" :
+        [
+            "2625",
+            "2665"
+        ]
+    },
+    {
+        "city"      : "Narsarsuaq",
+        "postcodes" :
+        [
+            "3923"
+        ]
+    },
+    {
+        "city"      : "Harpelunde",
+        "postcodes" :
+        [
+            "4912"
+        ]
+    },
+    {
+        "city"      : "Nørreballe",
+        "postcodes" :
+        [
+            "4951"
+        ]
+    },
+    {
+        "city"      : "Marmorilik",
+        "postcodes" :
+        [
+            "3963"
+        ]
+    },
+    {
+        "city"      : "Skovlunde",
+        "postcodes" :
+        [
+            "2740"
+        ]
+    },
+    {
+        "city"      : "Maniitsoq",
+        "postcodes" :
+        [
+            "3912"
+        ]
+    },
+    {
+        "city"      : "Uummannaq",
+        "postcodes" :
+        [
+            "3961"
+        ]
+    },
+    {
+        "city"      : "Upernavik",
+        "postcodes" :
+        [
+            "3962"
+        ]
+    },
+    {
+        "city"      : "Constable",
+        "postcodes" :
+        [
+            "3985"
+        ]
+    },
+    {
+        "city"      : "Kalvehave",
+        "postcodes" :
+        [
+            "4771"
+        ]
+    },
+    {
+        "city"      : "Egernsund",
+        "postcodes" :
+        [
+            "6320"
+        ]
+    },
+    {
+        "city"      : "Vestbjerg",
+        "postcodes" :
+        [
+            "9380"
+        ]
+    },
+    {
+        "city"      : "Sisimiut",
+        "postcodes" :
+        [
+            "3911"
+        ]
+    },
+    {
+        "city"      : "Pituffik",
+        "postcodes" :
+        [
+            "3970"
+        ]
+    },
+    {
+        "city"      : "Daneborg",
+        "postcodes" :
+        [
+            "3983"
+        ]
+    },
+    {
+        "city"      : "Guldborg",
+        "postcodes" :
+        [
+            "4862"
+        ]
+    },
+    {
+        "city"      : "Ryslinge",
+        "postcodes" :
+        [
+            "5856"
+        ]
+    },
+    {
+        "city"      : "Østervrå",
+        "postcodes" :
+        [
+            "9750"
+        ]
+    },
+    {
+        "city"      : "Viby",
+        "postcodes" :
+        [
+            "8260",
+            "4130"
+        ]
+    },
+    {
+        "city"      : "Nuuk",
+        "postcodes" :
+        [
+            "3900"
+        ]
+    },
+    {
+        "city"      : "Vig",
+        "postcodes" :
+        [
+            "4560"
+        ]
+    },
+    {
+        "city"      : "Vrå",
+        "postcodes" :
+        [
+            "9760"
+        ]
+    },
+    {
+        "city"      : "Lem",
+        "postcodes" :
+        [
+            "6940"
+        ]
+    },
+    {
+        "city"      : "Fur",
+        "postcodes" :
+        [
+            "7884"
+        ]
+    },
+    {
+        "city"      : "Ans",
+        "postcodes" :
+        [
+            "8643"
+        ]
+    },
+    {
+        "city"      : "Egå",
+        "postcodes" :
+        [
+            "8250"
+        ]
+    },
+    {
+        "city"      : "Kulusuk",
+        "postcodes" :
+        [
+            "3915"
+        ]
+    },
+    {
+        "city"      : "Qutdleq",
+        "postcodes" :
+        [
+            "3926"
+        ]
+    },
+    {
+        "city"      : "Paamiut",
+        "postcodes" :
+        [
+            "3940"
+        ]
+    },
+    {
+        "city"      : "Aasiaat",
+        "postcodes" :
+        [
+            "3950"
+        ]
+    },
+    {
+        "city"      : "Nipisat",
+        "postcodes" :
+        [
+            "3954"
+        ]
+    },
+    {
+        "city"      : "Qaarsut",
+        "postcodes" :
+        [
+            "3964"
+        ]
+    },
+    {
+        "city"      : "Qaanaaq",
+        "postcodes" :
+        [
+            "3971"
+        ]
+    },
+    {
+        "city"      : "Mesters",
+        "postcodes" :
+        [
+            "3982"
+        ]
+    },
+    {
+        "city"      : "Marstal",
+        "postcodes" :
+        [
+            "5960"
+        ]
+    },
+    {
+        "city"      : "Bevtoft",
+        "postcodes" :
+        [
+            "6541"
+        ]
+    },
+    {
+        "city"      : "Tistrup",
+        "postcodes" :
+        [
+            "6862"
+        ]
+    },
+    {
+        "city"      : "Redsted",
+        "postcodes" :
+        [
+            "7970"
+        ]
+    },
+    {
+        "city"      : "Pandrup",
+        "postcodes" :
+        [
+            "9490"
+        ]
+    },
+    {
+        "city"      : "Blokhus",
+        "postcodes" :
+        [
+            "9492"
+        ]
+    },
+    {
+        "city"      : "Suldrup",
+        "postcodes" :
+        [
+            "9541"
+        ]
+    },
+    {
+        "city"      : "Narsaq",
+        "postcodes" :
+        [
+            "3921"
+        ]
+    },
+    {
+        "city"      : "Rørvig",
+        "postcodes" :
+        [
+            "4581"
+        ]
+    },
+    {
+        "city"      : "Strøby",
+        "postcodes" :
+        [
+            "4671"
+        ]
+    },
+    {
+        "city"      : "Torrig",
+        "postcodes" :
+        [
+            "4943"
+        ]
+    },
+    {
+        "city"      : "Gislev",
+        "postcodes" :
+        [
+            "5854"
+        ]
+    },
+    {
+        "city"      : "Vejers",
+        "postcodes" :
+        [
+            "6853"
+        ]
+    },
+    {
+        "city"      : "Anholt",
+        "postcodes" :
+        [
+            "8592"
+        ]
+    },
+    {
+        "city"      : "Dybvad",
+        "postcodes" :
+        [
+            "9352"
+        ]
+    },
+    {
+        "city"      : "Sindal",
+        "postcodes" :
+        [
+            "9870"
+        ]
+    },
+    {
+        "city"      : "Valby",
+        "postcodes" :
+        [
+            "2500"
+        ]
+    },
+    {
+        "city"      : "Ishøj",
+        "postcodes" :
+        [
+            "2635"
+        ]
+    },
+    {
+        "city"      : "Måløv",
+        "postcodes" :
+        [
+            "2760"
+        ]
+    },
+    {
+        "city"      : "Nærum",
+        "postcodes" :
+        [
+            "2850"
+        ]
+    },
+    {
+        "city"      : "Melby",
+        "postcodes" :
+        [
+            "3370"
+        ]
+    },
+    {
+        "city"      : "Lynge",
+        "postcodes" :
+        [
+            "3540"
+        ]
+    },
+    {
+        "city"      : "Veksø",
+        "postcodes" :
+        [
+            "3670"
+        ]
+    },
+    {
+        "city"      : "Rønne",
+        "postcodes" :
+        [
+            "3700"
+        ]
+    },
+    {
+        "city"      : "Arsuk",
+        "postcodes" :
+        [
+            "3932"
+        ]
+    },
+    {
+        "city"      : "Borup",
+        "postcodes" :
+        [
+            "4140"
+        ]
+    },
+    {
+        "city"      : "Munke",
+        "postcodes" :
+        [
+            "4190"
+        ]
+    },
+    {
+        "city"      : "Hørve",
+        "postcodes" :
+        [
+            "4534"
+        ]
+    },
+    {
+        "city"      : "Asnæs",
+        "postcodes" :
+        [
+            "4550"
+        ]
+    },
+    {
+        "city"      : "Højby",
+        "postcodes" :
+        [
+            "4573"
+        ]
+    },
+    {
+        "city"      : "Lille",
+        "postcodes" :
+        [
+            "4623"
+        ]
+    },
+    {
+        "city"      : "Øster",
+        "postcodes" :
+        [
+            "4894",
+            "7990"
+        ]
+    },
+    {
+        "city"      : "Dalby",
+        "postcodes" :
+        [
+            "5380"
+        ]
+    },
+    {
+        "city"      : "Morud",
+        "postcodes" :
+        [
+            "5462"
+        ]
+    },
+    {
+        "city"      : "Broby",
+        "postcodes" :
+        [
+            "5672"
+        ]
+    },
+    {
+        "city"      : "Gudme",
+        "postcodes" :
+        [
+            "5884"
+        ]
+    },
+    {
+        "city"      : "Bjert",
+        "postcodes" :
+        [
+            "6091"
+        ]
+    },
+    {
+        "city"      : "Bække",
+        "postcodes" :
+        [
+            "6622"
+        ]
+    },
+    {
+        "city"      : "Henne",
+        "postcodes" :
+        [
+            "6854"
+        ]
+    },
+    {
+        "city"      : "Ølgod",
+        "postcodes" :
+        [
+            "6870"
+        ]
+    },
+    {
+        "city"      : "Kibæk",
+        "postcodes" :
+        [
+            "6933"
+        ]
+    },
+    {
+        "city"      : "Hvide",
+        "postcodes" :
+        [
+            "6960"
+        ]
+    },
+    {
+        "city"      : "Uldum",
+        "postcodes" :
+        [
+            "7171"
+        ]
+    },
+    {
+        "city"      : "Vonge",
+        "postcodes" :
+        [
+            "7173"
+        ]
+    },
+    {
+        "city"      : "Ikast",
+        "postcodes" :
+        [
+            "7430"
+        ]
+    },
+    {
+        "city"      : "Hjerm",
+        "postcodes" :
+        [
+            "7560"
+        ]
+    },
+    {
+        "city"      : "Karby",
+        "postcodes" :
+        [
+            "7960"
+        ]
+    },
+    {
+        "city"      : "Odder",
+        "postcodes" :
+        [
+            "8300"
+        ]
+    },
+    {
+        "city"      : "Samsø",
+        "postcodes" :
+        [
+            "8305"
+        ]
+    },
+    {
+        "city"      : "Trige",
+        "postcodes" :
+        [
+            "8380"
+        ]
+    },
+    {
+        "city"      : "Balle",
+        "postcodes" :
+        [
+            "8444"
+        ]
+    },
+    {
+        "city"      : "Sabro",
+        "postcodes" :
+        [
+            "8471"
+        ]
+    },
+    {
+        "city"      : "Gjern",
+        "postcodes" :
+        [
+            "8883"
+        ]
+    },
+    {
+        "city"      : "Fårup",
+        "postcodes" :
+        [
+            "8990"
+        ]
+    },
+    {
+        "city"      : "Hobro",
+        "postcodes" :
+        [
+            "9500"
+        ]
+    },
+    {
+        "city"      : "Arden",
+        "postcodes" :
+        [
+            "9510"
+        ]
+    },
+    {
+        "city"      : "Bælum",
+        "postcodes" :
+        [
+            "9574"
+        ]
+    },
+    {
+        "city"      : "Ranum",
+        "postcodes" :
+        [
+            "9681"
+        ]
+    },
+    {
+        "city"      : "Jerup",
+        "postcodes" :
+        [
+            "9981"
+        ]
+    },
+    {
+        "city"      : "Ålbæk",
+        "postcodes" :
+        [
+            "9982"
+        ]
+    },
+    {
+        "city"      : "Nexø",
+        "postcodes" :
+        [
+            "3730"
+        ]
+    },
+    {
+        "city"      : "Nord",
+        "postcodes" :
+        [
+            "3972"
+        ]
+    },
+    {
+        "city"      : "Høng",
+        "postcodes" :
+        [
+            "4270"
+        ]
+    },
+    {
+        "city"      : "Køge",
+        "postcodes" :
+        [
+            "4600"
+        ]
+    },
+    {
+        "city"      : "Bogø",
+        "postcodes" :
+        [
+            "4793"
+        ]
+    },
+    {
+        "city"      : "Fejø",
+        "postcodes" :
+        [
+            "4944"
+        ]
+    },
+    {
+        "city"      : "Ejby",
+        "postcodes" :
+        [
+            "5592"
+        ]
+    },
+    {
+        "city"      : "Oure",
+        "postcodes" :
+        [
+            "5883"
+        ]
+    },
+    {
+        "city"      : "Søby",
+        "postcodes" :
+        [
+            "5985"
+        ]
+    },
+    {
+        "city"      : "Viuf",
+        "postcodes" :
+        [
+            "6052"
+        ]
+    },
+    {
+        "city"      : "Rømø",
+        "postcodes" :
+        [
+            "6792"
+        ]
+    },
+    {
+        "city"      : "Vemb",
+        "postcodes" :
+        [
+            "7570"
+        ]
+    },
+    {
+        "city"      : "Vils",
+        "postcodes" :
+        [
+            "7980"
+        ]
+    },
+    {
+        "city"      : "Them",
+        "postcodes" :
+        [
+            "8653"
+        ]
+    },
+    {
+        "city"      : "Rask",
+        "postcodes" :
+        [
+            "8763"
+        ]
+    },
+    {
+        "city"      : "Sæby",
+        "postcodes" :
+        [
+            "9300"
+        ]
+    },
+    {
+        "city"      : "Asaa",
+        "postcodes" :
+        [
+            "9340"
+        ]
+    },
+    {
+        "city"      : "Tårs",
+        "postcodes" :
+        [
+            "9830"
+        ]
+    },
+    {
+        "city"      : "Læsø",
+        "postcodes" :
+        [
+            "9940"
+        ]
+    },
+    {
+        "city"      : "Tune",
+        "postcodes" :
+        [
+            "4030"
+        ]
+    },
+    {
+        "city"      : "Rude",
+        "postcodes" :
+        [
+            "4243"
+        ]
+    },
+    {
+        "city"      : "Ry",
+        "postcodes" :
+        [
+            "8680"
+        ]
+    }
+]

@@ -62,8 +62,6 @@
 		48172C021C07017800927BC2 /* RatesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48172C011C07017800927BC2 /* RatesTab@2x.png */; };
 		4817A6181CB80B4700F14EED /* DestinationNumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4817A6111CB7EA9D00F14EED /* DestinationNumbersViewController.m */; };
 		4818DB611CAB0D380044AFE6 /* CountryRegions.json in Resources */ = {isa = PBXBuildFile; fileRef = 4818DB601CAB0D380044AFE6 /* CountryRegions.json */; };
-		4818DB631CAB0D410044AFE6 /* DenmarkMunicipalities.json in Resources */ = {isa = PBXBuildFile; fileRef = 4818DB621CAB0D410044AFE6 /* DenmarkMunicipalities.json */; };
-		4818DB661CAC696D0044AFE6 /* DenmarkAddresses.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4818DB651CAC696D0044AFE6 /* DenmarkAddresses.txt */; };
 		481DFBAB1C70CAC1009191B0 /* RecordingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 481DFBAA1C70CAC1009191B0 /* RecordingsViewController.m */; };
 		48200D1C16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
 		48200D1D16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
@@ -440,6 +438,10 @@
 		4864B3F917566E950006542F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4864B3F817566E950006542F /* MessageUI.framework */; };
 		4865A9DF1792C8B70028785F /* NumberBuyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberBuyCell.m */; };
 		4865A9E01792C8B70028785F /* NumberBuyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberBuyCell.m */; };
+		486B95181CDE413A004CFD8A /* Muni-StrCode-Str.json in Resources */ = {isa = PBXBuildFile; fileRef = 486B95171CDE413A004CFD8A /* Muni-StrCode-Str.json */; };
+		486B95201CDE44E4004CFD8A /* Muni-Post-City.json in Resources */ = {isa = PBXBuildFile; fileRef = 486B951E1CDE44E4004CFD8A /* Muni-Post-City.json */; };
+		486B95211CDE44E4004CFD8A /* StrCode-Post-City.json in Resources */ = {isa = PBXBuildFile; fileRef = 486B951F1CDE44E4004CFD8A /* StrCode-Post-City.json */; };
+		486B95261CDE80F2004CFD8A /* DenmarkCitiesArray.json in Resources */ = {isa = PBXBuildFile; fileRef = 486B95251CDE80F2004CFD8A /* DenmarkCitiesArray.json */; };
 		486D4A2318F06BC8004699C9 /* CallRatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 486D4A2218F06BC8004699C9 /* CallRatesViewController.m */; };
 		4877EDBC17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */; };
 		4877EDBD17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */; };
@@ -755,8 +757,6 @@
 		4817A6101CB7EA9D00F14EED /* DestinationNumbersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationNumbersViewController.h; sourceTree = "<group>"; };
 		4817A6111CB7EA9D00F14EED /* DestinationNumbersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationNumbersViewController.m; sourceTree = "<group>"; };
 		4818DB601CAB0D380044AFE6 /* CountryRegions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryRegions.json; path = Resources/CountryRegions.json; sourceTree = "<group>"; };
-		4818DB621CAB0D410044AFE6 /* DenmarkMunicipalities.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DenmarkMunicipalities.json; path = Resources/DenmarkMunicipalities.json; sourceTree = "<group>"; };
-		4818DB651CAC696D0044AFE6 /* DenmarkAddresses.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = DenmarkAddresses.txt; path = Resources/DenmarkAddresses.txt; sourceTree = "<group>"; };
 		481DFBA91C70CAC1009191B0 /* RecordingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingsViewController.h; sourceTree = "<group>"; };
 		481DFBAA1C70CAC1009191B0 /* RecordingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordingsViewController.m; sourceTree = "<group>"; };
 		48200D1A16EC89BA0069677E /* NumberType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberType.h; sourceTree = "<group>"; };
@@ -1135,6 +1135,10 @@
 		4864B3F817566E950006542F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		4865A9DD1792C8B70028785F /* NumberBuyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberBuyCell.h; sourceTree = "<group>"; };
 		4865A9DE1792C8B70028785F /* NumberBuyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberBuyCell.m; sourceTree = "<group>"; };
+		486B95171CDE413A004CFD8A /* Muni-StrCode-Str.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Muni-StrCode-Str.json"; path = "Resources/Muni-StrCode-Str.json"; sourceTree = "<group>"; };
+		486B951E1CDE44E4004CFD8A /* Muni-Post-City.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Muni-Post-City.json"; path = "Resources/Muni-Post-City.json"; sourceTree = "<group>"; };
+		486B951F1CDE44E4004CFD8A /* StrCode-Post-City.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "StrCode-Post-City.json"; path = "Resources/StrCode-Post-City.json"; sourceTree = "<group>"; };
+		486B95251CDE80F2004CFD8A /* DenmarkCitiesArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DenmarkCitiesArray.json; path = Resources/DenmarkCitiesArray.json; sourceTree = "<group>"; };
 		486D4A2118F06BC8004699C9 /* CallRatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallRatesViewController.h; sourceTree = "<group>"; };
 		486D4A2218F06BC8004699C9 /* CallRatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallRatesViewController.m; sourceTree = "<group>"; };
 		4877EDBA17AD27700013B18F /* PhoneNumberTextFieldDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumberTextFieldDelegate.h; sourceTree = "<group>"; };
@@ -2481,13 +2485,15 @@
 				48D0A6E51654D65200FA2D98 /* SipConfig.cfg */,
 				4818DB601CAB0D380044AFE6 /* CountryRegions.json */,
 				480B4FF91BED1A890098F3A4 /* CountryCallingCodes.json */,
-				4818DB651CAC696D0044AFE6 /* DenmarkAddresses.txt */,
-				4818DB621CAB0D410044AFE6 /* DenmarkMunicipalities.json */,
+				486B95171CDE413A004CFD8A /* Muni-StrCode-Str.json */,
+				486B951E1CDE44E4004CFD8A /* Muni-Post-City.json */,
+				486B951F1CDE44E4004CFD8A /* StrCode-Post-City.json */,
 				48B9386B187B647F00132535 /* Helps.json */,
 				48B9386C187B647F00132535 /* Licenses.json */,
 				483B078E1908017900E8C42D /* Terms.json */,
 				48B9386D187B647F00132535 /* Thanks.html */,
 				4837AF6318D89E8600D3AEBC /* GetStarted.json */,
+				486B95251CDE80F2004CFD8A /* DenmarkCitiesArray.json */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2718,6 +2724,7 @@
 				485F6A6A1637270100D61365 /* BI@2x.png in Resources */,
 				485F6A6C1637270100D61365 /* BJ@2x.png in Resources */,
 				4800379A1CA7CD050083D24B /* Favorites@2x.png in Resources */,
+				486B95261CDE80F2004CFD8A /* DenmarkCitiesArray.json in Resources */,
 				485F6A6E1637270100D61365 /* BL@2x.png in Resources */,
 				4837AF6418D89E8600D3AEBC /* GetStarted.json in Resources */,
 				485F6A701637270100D61365 /* BM@2x.png in Resources */,
@@ -2730,6 +2737,7 @@
 				485F6A7E1637270100D61365 /* BW@2x.png in Resources */,
 				4837AF8818E24BF100D3AEBC /* Icon-80.png in Resources */,
 				485F6A801637270100D61365 /* BY@2x.png in Resources */,
+				486B95201CDE44E4004CFD8A /* Muni-Post-City.json in Resources */,
 				485F6A821637270100D61365 /* BZ@2x.png in Resources */,
 				4842D9FC1AADFB53008F35C9 /* editPhotoLeftButtonHighlighted.png in Resources */,
 				485F6A841637270100D61365 /* CA@2x.png in Resources */,
@@ -2788,6 +2796,7 @@
 				48B813371AADF8E30019AF77 /* NBPeopleListView.xib in Resources */,
 				485F6AE21637270100D61365 /* GM@2x.png in Resources */,
 				485F6AE41637270100D61365 /* GN@2x.png in Resources */,
+				486B95211CDE44E4004CFD8A /* StrCode-Post-City.json in Resources */,
 				485F6AE61637270100D61365 /* GP@2x.png in Resources */,
 				485F6AE81637270100D61365 /* GQ@2x.png in Resources */,
 				485F6AEA1637270100D61365 /* GR@2x.png in Resources */,
@@ -2810,7 +2819,6 @@
 				4842DA031AADFB53008F35C9 /* portraitBackground.png in Resources */,
 				485F6B0E1637270100D61365 /* IQ@2x.png in Resources */,
 				4818DB611CAB0D380044AFE6 /* CountryRegions.json in Resources */,
-				4818DB661CAC696D0044AFE6 /* DenmarkAddresses.txt in Resources */,
 				485F6B101637270100D61365 /* IR@2x.png in Resources */,
 				4842DA041AADFB53008F35C9 /* portraitLine.png in Resources */,
 				485F6B121637270100D61365 /* IS@2x.png in Resources */,
@@ -2828,6 +2836,7 @@
 				485F6B261637270100D61365 /* KM@2x.png in Resources */,
 				485F6B281637270100D61365 /* KN@2x.png in Resources */,
 				485F6B2A1637270100D61365 /* KP@2x.png in Resources */,
+				486B95181CDE413A004CFD8A /* Muni-StrCode-Str.json in Resources */,
 				485F6B2C1637270100D61365 /* KR@2x.png in Resources */,
 				485F6B2E1637270100D61365 /* KW@2x.png in Resources */,
 				485F6B301637270100D61365 /* KY@2x.png in Resources */,
@@ -2846,7 +2855,6 @@
 				485F6B441637270100D61365 /* LU@2x.png in Resources */,
 				485F6B461637270100D61365 /* LV@2x.png in Resources */,
 				485F6B481637270100D61365 /* LY@2x.png in Resources */,
-				4818DB631CAB0D410044AFE6 /* DenmarkMunicipalities.json in Resources */,
 				485F6B4A1637270100D61365 /* MA@2x.png in Resources */,
 				485F6B4C1637270100D61365 /* MC@2x.png in Resources */,
 				485F6B4E1637270100D61365 /* MD@2x.png in Resources */,
