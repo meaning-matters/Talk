@@ -1,4 +1,4 @@
-[
+ [
     {
         "city"      : "Charlottenlund",
         "postcodes" :
@@ -2423,9 +2423,7 @@
         "city"      : "Kirke",
         "postcodes" :
         [
-            "4060",
-            "4360",
-            "4070"
+            "4060"
         ]
     },
     {
@@ -3783,13 +3781,6 @@
         ]
     },
     {
-        "city"      : "Ukendt",
-        "postcodes" :
-        [
-            "9999"
-        ]
-    },
-    {
         "city"      : "Vallensbæk",
         "postcodes" :
         [
@@ -3823,6 +3814,13 @@
         "postcodes" :
         [
             "3963"
+        ]
+    },
+    {
+        "city"      : "Kirke Eskilstrup",
+        "postcodes" :
+        [
+            "4360"
         ]
     },
     {
@@ -4209,6 +4207,20 @@
         "postcodes" :
         [
             "3932"
+        ]
+    },
+    {
+        "city"      : "Kirke Såby",
+        "postcodes" :
+        [
+            "4060"
+        ]
+    },
+    {
+        "city"      : "Kirke Hyllinge",
+        "postcodes" :
+        [
+            "4070"
         ]
     },
     {

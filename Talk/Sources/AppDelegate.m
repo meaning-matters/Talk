@@ -936,7 +936,6 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
 - (void)denmark
 {
-    return;
     NSData* data;
 
     data                     = [Common dataForResource:@"StrCode-Post-City" ofType:@"json"];
@@ -949,13 +948,11 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     NSArray* muniStrcodeStr  = [Common objectWithJsonData:data];
 
 
-#if 0 // Generates cities array
-    int n = 0;
+#if 1 // Generates cities array
+    int n = 1;
     NSMutableArray* citiesArray = [NSMutableArray new];
     for (NSDictionary* item in strcodePostCity)
     {
-        NSLog(@"%d", n++);
-
         @autoreleasepool
         {
             NSPredicate* predicate = [NSPredicate predicateWithFormat:@"city == %@", item[@"city"]];
