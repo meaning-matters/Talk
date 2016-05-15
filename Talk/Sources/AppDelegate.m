@@ -939,15 +939,17 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     return;
     NSData* data;
 
-    data                     = [Common dataForResource:@"Muni-StrCode-Str" ofType:@"json"];
-    NSArray* muniStrcodeStr  = [Common objectWithJsonData:data];
+    data                     = [Common dataForResource:@"StrCode-Post-City" ofType:@"json"];
+    NSArray* strcodePostCity = [Common objectWithJsonData:data];
 
     data                     = [Common dataForResource:@"Muni-Post-City" ofType:@"json"];
     NSArray* muniPostCity    = [Common objectWithJsonData:data];
 
-    data                     = [Common dataForResource:@"StrCode-Post-City" ofType:@"json"];
-    NSArray* strcodePostCity = [Common objectWithJsonData:data];
+    data                     = [Common dataForResource:@"Muni-StrCode-Str" ofType:@"json"];
+    NSArray* muniStrcodeStr  = [Common objectWithJsonData:data];
 
+
+#if 0 // Generates cities array
     int n = 0;
     NSMutableArray* citiesArray = [NSMutableArray new];
     for (NSDictionary* item in strcodePostCity)
@@ -977,7 +979,109 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     }
 
     NSString* json = [Common jsonStringWithObject:citiesArray];
+#endif
 
+#if 0  // muni nested
+    NSMutableDictionary* muniDictionary = [NSMutableDictionary new];
+    NSMutableDictionary* postcodeMap    = [NSMutableDictionary new]; // maps all postcodes to postcode item in muniDictionary
+    NSMutableDictionary* streetMap      = [NSMutableDictionary new]; // maps muni code to all street code objects
+    for (NSDictionary* item in muniPostCity)
+    {
+        if ([item[@"postcode"] isEqualToString:@"9999"])
+        {
+            continue;
+        }
+
+        @autoreleasepool
+        {
+            NSMutableDictionary* muni = muniDictionary[item[@"municipalityCode"]];
+            if (muni == nil)
+            {
+                muni = [NSMutableDictionary new];
+                muni[@"postcodes"] = [NSMutableDictionary new];
+                muniDictionary[item[@"municipalityCode"]] = muni;
+            }
+
+            NSMutableDictionary* postcode = muni[@"postcodes"][item[@"postcode"]];
+            if (postcode == nil)
+            {
+                postcode = [NSMutableDictionary new];
+                muni[@"postcodes"][item[@"postcode"]] = postcode;
+                postcodeMap[item[@"postcode"]] = postcode;
+            }
+        }
+    }
+
+    for (NSDictionary* item in strcodePostCity)
+    {
+        @autoreleasepool
+        {
+            if (postcodeMap[item[@"postcode"]][item[@"streetCode"]] != nil)
+            {
+                NSLog(@"Duplicate");
+            }
+            else
+            {
+                postcodeMap[item[@"postcode"]][item[@"streetCode"]] = @"---";
+            }
+        }
+    }
+
+    for (NSDictionary* item in muniStrcodeStr)
+    {
+        @autoreleasepool
+        {
+            NSMutableDictionary* muni = muniDictionary[item[@"municipalityCode"]];
+
+            BOOL found = NO;
+            for (NSString* postcode in [muni[@"postcodes"] allKeys])
+            {
+                if (muni[@"postcodes"][postcode][item[@"streetCode"]] != nil)
+                {
+                    found = YES;
+                    muni[@"postcodes"][postcode][item[@"streetCode"]] = item[@"street"];
+                }
+            }
+
+            if (found == NO)
+            {
+                NSLog(@"not found");
+            }
+        }
+    }
+
+#endif
+
+#if 0
+
+    NSMutableDictionary* munis = [NSMutableDictionary new];
+    for (NSDictionary* item in muniStrcodeStr)
+    {
+        @autoreleasepool
+        {
+            NSMutableDictionary* muni = munis[item[@"municipalityCode"]];
+            if (muni == nil)
+            {
+                muni = [NSMutableDictionary new];
+                munis[item[@"municipalityCode"]] = muni;
+            }
+
+            NSString *streetCode = [NSString stringWithFormat:@"%04d", [item[@"streetCode"] intValue]];
+
+            NSDictionary* street = muni[streetCode];
+            if (street != nil)
+            {
+                NSLog(@"Duplicate");
+            }
+            else
+            {
+                muni[streetCode] = item[@"street"];
+            }
+        }
+    }
+
+
+#endif
     NSLog(@"done:");
 }
 

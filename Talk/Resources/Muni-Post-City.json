@@ -1,25 +1,5 @@
 [
  {
-   "municipalityCode":10,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":11,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":12,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":19,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":101,
    "postcode":"1050",
    "city":"København"
@@ -423,11 +403,6 @@
    "municipalityCode":101,
    "postcode":"1200",
    "city":"København"
- },
- {
-   "municipalityCode":101,
-   "postcode":"1200",
-   "city":"2500Valby"
  },
  {
    "municipalityCode":101,
@@ -2030,16 +2005,6 @@
    "city":"Hellerup"
  },
  {
-   "municipalityCode":101,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":147,
-   "postcode":"1200",
-   "city":"2500Valby"
- },
- {
    "municipalityCode":147,
    "postcode":"1800",
    "city":"Frederiksberg"
@@ -2585,11 +2550,6 @@
    "city":"Vanløse"
  },
  {
-   "municipalityCode":147,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":151,
    "postcode":"2730",
    "city":"Herlev"
@@ -2613,11 +2573,6 @@
    "municipalityCode":151,
    "postcode":"3500",
    "city":"Værløse"
- },
- {
-   "municipalityCode":151,
-   "postcode":"9999",
-   "city":"Ukendt"
  },
  {
    "municipalityCode":153,
@@ -2645,24 +2600,9 @@
    "city":"Brøndby"
  },
  {
-   "municipalityCode":153,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":155,
    "postcode":"2791",
    "city":"Dragør"
- },
- {
-   "municipalityCode":155,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":157,
-   "postcode":"2800",
-   "city":"Kgs."
  },
  {
    "municipalityCode":157,
@@ -2691,23 +2631,13 @@
  },
  {
    "municipalityCode":157,
-   "postcode":"9999",
-   "city":"Ukendt"
+   "postcode":"2930",
+   "city":"Klampenborg"
  },
  {
-   "municipalityCode":157,
-   "postcode":"lott",
-   "city":"enlund"
- },
- {
-   "municipalityCode":159,
-   "postcode":"1228",
-   "city":"2800Kgs."
- },
- {
-   "municipalityCode":159,
+   "municipalityCode":173,
    "postcode":"2800",
-   "city":"Kgs."
+   "city":"Kongens Lyngby"
  },
  {
    "municipalityCode":159,
@@ -2730,11 +2660,6 @@
    "city":"Værløse"
  },
  {
-   "municipalityCode":159,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":161,
    "postcode":"2600",
    "city":"Glostrup"
@@ -2743,11 +2668,6 @@
    "municipalityCode":161,
    "postcode":"2605",
    "city":"Brøndby"
- },
- {
-   "municipalityCode":161,
-   "postcode":"9999",
-   "city":"Ukendt"
  },
  {
    "municipalityCode":163,
@@ -2765,11 +2685,6 @@
    "city":"Bagsværd"
  },
  {
-   "municipalityCode":163,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":165,
    "postcode":"2600",
    "city":"Glostrup"
@@ -2785,11 +2700,6 @@
    "city":"Ballerup"
  },
  {
-   "municipalityCode":165,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":167,
    "postcode":"2610",
    "city":"Rødovre"
@@ -2803,11 +2713,6 @@
    "municipalityCode":167,
    "postcode":"2660",
    "city":"Brøndby"
- },
- {
-   "municipalityCode":167,
-   "postcode":"9999",
-   "city":"Ukendt"
  },
  {
    "municipalityCode":169,
@@ -2830,26 +2735,6 @@
    "city":"Roskilde"
  },
  {
-   "municipalityCode":169,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":173,
-   "postcode":"1200",
-   "city":"2830Virum"
- },
- {
-   "municipalityCode":173,
-   "postcode":"1228",
-   "city":"2800Kgs."
- },
- {
-   "municipalityCode":173,
-   "postcode":"2800",
-   "city":"Kgs."
- },
- {
    "municipalityCode":173,
    "postcode":"2830",
    "city":"Virum"
@@ -2870,29 +2755,9 @@
    "city":"Værløse"
  },
  {
-   "municipalityCode":173,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":173,
-   "postcode":"82800",
-   "city":"Kgs."
- },
- {
    "municipalityCode":175,
    "postcode":"2610",
    "city":"Rødovre"
- },
- {
-   "municipalityCode":175,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":183,
-   "postcode":"1200",
-   "city":"2635Ishøj"
  },
  {
    "municipalityCode":183,
@@ -2910,11 +2775,6 @@
    "city":"Hedehusene"
  },
  {
-   "municipalityCode":183,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":185,
    "postcode":"2300",
    "city":"København"
@@ -2930,11 +2790,6 @@
    "city":"Dragør"
  },
  {
-   "municipalityCode":185,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":187,
    "postcode":"2625",
    "city":"Vallensbæk"
@@ -2943,16 +2798,6 @@
    "municipalityCode":187,
    "postcode":"2665",
    "city":"Vallensbæk"
- },
- {
-   "municipalityCode":187,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":190,
-   "postcode":"1200",
-   "city":"3520Farum"
  },
  {
    "municipalityCode":190,
@@ -2978,16 +2823,6 @@
    "municipalityCode":190,
    "postcode":"3540",
    "city":"Lynge"
- },
- {
-   "municipalityCode":190,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":201,
-   "postcode":"1200",
-   "city":"3540Lynge"
  },
  {
    "municipalityCode":201,
@@ -3018,16 +2853,6 @@
    "municipalityCode":201,
    "postcode":"3550",
    "city":"Slangerup"
- },
- {
-   "municipalityCode":201,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":210,
-   "postcode":"1200",
-   "city":"2990Nivå"
  },
  {
    "municipalityCode":210,
@@ -3075,16 +2900,6 @@
    "city":"Kvistgård"
  },
  {
-   "municipalityCode":210,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":217,
-   "postcode":"1200",
-   "city":"3080Tikøb"
- },
- {
    "municipalityCode":217,
    "postcode":"3000",
    "city":"Helsingør"
@@ -3128,16 +2943,6 @@
    "municipalityCode":217,
    "postcode":"3490",
    "city":"Kvistgård"
- },
- {
-   "municipalityCode":217,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":219,
-   "postcode":"1200",
-   "city":"3540Lynge"
  },
  {
    "municipalityCode":219,
@@ -3195,11 +3000,6 @@
    "city":"Frederikssund"
  },
  {
-   "municipalityCode":219,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":223,
    "postcode":"2950",
    "city":"Vedbæk"
@@ -3218,26 +3018,6 @@
    "municipalityCode":223,
    "postcode":"2980",
    "city":"Kokkedal"
- },
- {
-   "municipalityCode":223,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":230,
-   "postcode":"1200",
-   "city":"2840Holte"
- },
- {
-   "municipalityCode":230,
-   "postcode":"1200",
-   "city":"2850Nærum"
- },
- {
-   "municipalityCode":230,
-   "postcode":"2800",
-   "city":"Kgs."
  },
  {
    "municipalityCode":230,
@@ -3273,11 +3053,6 @@
    "municipalityCode":230,
    "postcode":"3460",
    "city":"Birkerød"
- },
- {
-   "municipalityCode":230,
-   "postcode":"9999",
-   "city":"Ukendt"
  },
  {
    "municipalityCode":240,
@@ -3330,11 +3105,6 @@
    "city":"Veksø"
  },
  {
-   "municipalityCode":240,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":250,
    "postcode":"3550",
    "city":"Slangerup"
@@ -3360,21 +3130,6 @@
    "city":"Skibby"
  },
  {
-   "municipalityCode":250,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":253,
-   "postcode":"908",
-   "city":"4030Tune"
- },
- {
-   "municipalityCode":253,
-   "postcode":"1200",
-   "city":"2670Greve"
- },
- {
    "municipalityCode":253,
    "postcode":"2640",
    "city":"Hedehusene"
@@ -3393,26 +3148,6 @@
    "municipalityCode":253,
    "postcode":"4030",
    "city":"Tune"
- },
- {
-   "municipalityCode":253,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":259,
-   "postcode":"1200",
-   "city":"4623Lille"
- },
- {
-   "municipalityCode":259,
-   "postcode":"1200",
-   "city":"4140Borup"
- },
- {
-   "municipalityCode":259,
-   "postcode":"1200",
-   "city":"4600Køge"
  },
  {
    "municipalityCode":259,
@@ -3465,16 +3200,6 @@
    "city":"Tureby"
  },
  {
-   "municipalityCode":259,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":260,
-   "postcode":"1200",
-   "city":"3370Melby"
- },
- {
    "municipalityCode":260,
    "postcode":"3300",
    "city":"Frederiksværk"
@@ -3508,36 +3233,6 @@
    "municipalityCode":260,
    "postcode":"3600",
    "city":"Frederikssund"
- },
- {
-   "municipalityCode":260,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":265,
-   "postcode":"908",
-   "city":"4030Tune"
- },
- {
-   "municipalityCode":265,
-   "postcode":"1200",
-   "city":"4320Lejre"
- },
- {
-   "municipalityCode":265,
-   "postcode":"1200",
-   "city":"3670Veksø"
- },
- {
-   "municipalityCode":265,
-   "postcode":"1200",
-   "city":"4140Borup"
- },
- {
-   "municipalityCode":265,
-   "postcode":"1200",
-   "city":"4130Viby"
  },
  {
    "municipalityCode":265,
@@ -3580,11 +3275,6 @@
    "city":"Lille"
  },
  {
-   "municipalityCode":265,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":269,
    "postcode":"2680",
    "city":"Solrød"
@@ -3603,16 +3293,6 @@
    "municipalityCode":269,
    "postcode":"4623",
    "city":"Lille"
- },
- {
-   "municipalityCode":269,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":270,
-   "postcode":"1200",
-   "city":"3210Vejby"
  },
  {
    "municipalityCode":270,
@@ -3653,36 +3333,6 @@
    "municipalityCode":270,
    "postcode":"3300",
    "city":"Frederiksværk"
- },
- {
-   "municipalityCode":270,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":306,
-   "postcode":"909",
-   "city":"12004560Vig"
- },
- {
-   "municipalityCode":306,
-   "postcode":"1200",
-   "city":"4573Højby"
- },
- {
-   "municipalityCode":306,
-   "postcode":"1200",
-   "city":"4534Hørve"
- },
- {
-   "municipalityCode":306,
-   "postcode":"1200",
-   "city":"4550Asnæs"
- },
- {
-   "municipalityCode":306,
-   "postcode":"1200",
-   "city":"4572Nørre"
  },
  {
    "municipalityCode":306,
@@ -3740,16 +3390,6 @@
    "city":"Føllenslev"
  },
  {
-   "municipalityCode":306,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":316,
-   "postcode":"1200",
-   "city":"4370Store"
- },
- {
    "municipalityCode":316,
    "postcode":"4100",
    "city":"Ringsted"
@@ -3787,7 +3427,7 @@
  {
    "municipalityCode":316,
    "postcode":"4360",
-   "city":"Kirke"
+   "city":"Kirke Eskilstrup"
  },
  {
    "municipalityCode":316,
@@ -3833,21 +3473,6 @@
    "municipalityCode":316,
    "postcode":"4532",
    "city":"Gislinge"
- },
- {
-   "municipalityCode":316,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":320,
-   "postcode":"1527",
-   "city":"4640Faxe"
- },
- {
-   "municipalityCode":320,
-   "postcode":"1528",
-   "city":"4654Faxe"
  },
  {
    "municipalityCode":320,
@@ -3903,31 +3528,6 @@
    "municipalityCode":320,
    "postcode":"4733",
    "city":"Tappernøje"
- },
- {
-   "municipalityCode":320,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":320,
-   "postcode":"84654",
-   "city":"Faxe"
- },
- {
-   "municipalityCode":326,
-   "postcode":"1200",
-   "city":"4480Store"
- },
- {
-   "municipalityCode":326,
-   "postcode":"1200",
-   "city":"4270Høng"
- },
- {
-   "municipalityCode":326,
-   "postcode":"1200",
-   "city":"4291Ruds"
  },
  {
    "municipalityCode":326,
@@ -4005,16 +3605,6 @@
    "city":"Eskebjerg"
  },
  {
-   "municipalityCode":326,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":329,
-   "postcode":"1200",
-   "city":"4140Borup"
- },
- {
    "municipalityCode":329,
    "postcode":"4100",
    "city":"Ringsted"
@@ -4046,11 +3636,6 @@
  },
  {
    "municipalityCode":329,
-   "postcode":"4360",
-   "city":"Kirke"
- },
- {
-   "municipalityCode":329,
    "postcode":"4370",
    "city":"Store"
  },
@@ -4058,41 +3643,6 @@
    "municipalityCode":329,
    "postcode":"4690",
    "city":"Haslev"
- },
- {
-   "municipalityCode":329,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":330,
-   "postcode":"1200",
-   "city":"4220Korsør"
- },
- {
-   "municipalityCode":330,
-   "postcode":"1200",
-   "city":"9999Ukendt"
- },
- {
-   "municipalityCode":330,
-   "postcode":"1200",
-   "city":"4190Munke"
- },
- {
-   "municipalityCode":330,
-   "postcode":"1200",
-   "city":"4270Høng"
- },
- {
-   "municipalityCode":330,
-   "postcode":"1200",
-   "city":"4180Sorø"
- },
- {
-   "municipalityCode":330,
-   "postcode":"1200",
-   "city":"4243Rude"
  },
  {
    "municipalityCode":330,
@@ -4145,21 +3695,6 @@
    "city":"Sandved"
  },
  {
-   "municipalityCode":330,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":336,
-   "postcode":"1200",
-   "city":"4660Store"
- },
- {
-   "municipalityCode":336,
-   "postcode":"1200",
-   "city":"4600Køge"
- },
- {
    "municipalityCode":336,
    "postcode":"4600",
    "city":"Køge"
@@ -4198,26 +3733,6 @@
    "municipalityCode":336,
    "postcode":"4682",
    "city":"Tureby"
- },
- {
-   "municipalityCode":336,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":340,
-   "postcode":"1200",
-   "city":"4190Munke"
- },
- {
-   "municipalityCode":340,
-   "postcode":"1200",
-   "city":"4296Nyrup"
- },
- {
-   "municipalityCode":340,
-   "postcode":"1200",
-   "city":"4180Sorø"
  },
  {
    "municipalityCode":340,
@@ -4270,21 +3785,6 @@
    "city":"Store"
  },
  {
-   "municipalityCode":340,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":350,
-   "postcode":"1200",
-   "city":"4320Lejre"
- },
- {
-   "municipalityCode":350,
-   "postcode":"1200",
-   "city":"4060Kirke"
- },
- {
    "municipalityCode":350,
    "postcode":"4000",
    "city":"Roskilde"
@@ -4297,12 +3797,12 @@
  {
    "municipalityCode":350,
    "postcode":"4060",
-   "city":"Kirke"
+   "city":"Kirke Såby"
  },
  {
    "municipalityCode":350,
    "postcode":"4070",
-   "city":"Kirke"
+   "city":"Kirke Hyllinge"
  },
  {
    "municipalityCode":350,
@@ -4323,16 +3823,6 @@
    "municipalityCode":350,
    "postcode":"4340",
    "city":"Tølløse"
- },
- {
-   "municipalityCode":350,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":360,
-   "postcode":"1200",
-   "city":"4970Rødby"
  },
  {
    "municipalityCode":360,
@@ -4415,16 +3905,6 @@
    "city":"Dannemare"
  },
  {
-   "municipalityCode":360,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":370,
-   "postcode":"1200",
-   "city":"4250Fuglebjerg"
- },
- {
    "municipalityCode":370,
    "postcode":"4100",
    "city":"Ringsted"
@@ -4505,21 +3985,6 @@
    "city":"Lundby"
  },
  {
-   "municipalityCode":370,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":376,
-   "postcode":"1200",
-   "city":"4840Nørre"
- },
- {
-   "municipalityCode":376,
-   "postcode":"1200",
-   "city":"4894Øster"
- },
- {
    "municipalityCode":376,
    "postcode":"4800",
    "city":"Nykøbing"
@@ -4595,26 +4060,6 @@
    "city":"Sakskøbing"
  },
  {
-   "municipalityCode":376,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":390,
-   "postcode":"1200",
-   "city":"4780Stege"
- },
- {
-   "municipalityCode":390,
-   "postcode":"1200",
-   "city":"4791Borre"
- },
- {
-   "municipalityCode":390,
-   "postcode":"1200",
-   "city":"4735Mern"
- },
- {
    "municipalityCode":390,
    "postcode":"4720",
    "city":"Præstø"
@@ -4675,26 +4120,6 @@
    "city":"Bogø"
  },
  {
-   "municipalityCode":390,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":400,
-   "postcode":"1200",
-   "city":"3700Rønne"
- },
- {
-   "municipalityCode":400,
-   "postcode":"1200",
-   "city":"3790Hasle"
- },
- {
-   "municipalityCode":400,
-   "postcode":"1200",
-   "city":"3730Nexø"
- },
- {
    "municipalityCode":400,
    "postcode":"3700",
    "city":"Rønne"
@@ -4738,21 +4163,6 @@
    "municipalityCode":400,
    "postcode":"3790",
    "city":"Hasle"
- },
- {
-   "municipalityCode":400,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":410,
-   "postcode":"1200",
-   "city":"5580Nørre"
- },
- {
-   "municipalityCode":410,
-   "postcode":"1200",
-   "city":"5592Ejby"
  },
  {
    "municipalityCode":410,
@@ -4800,24 +4210,9 @@
    "city":"Assens"
  },
  {
-   "municipalityCode":410,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":411,
    "postcode":"3760",
    "city":"Gudhjem"
- },
- {
-   "municipalityCode":411,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":420,
-   "postcode":"1200",
-   "city":"5560Aarup"
  },
  {
    "municipalityCode":420,
@@ -4858,21 +4253,6 @@
    "municipalityCode":420,
    "postcode":"5690",
    "city":"Tommerup"
- },
- {
-   "municipalityCode":420,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":430,
-   "postcode":"1200",
-   "city":"5672Broby"
- },
- {
-   "municipalityCode":430,
-   "postcode":"1200",
-   "city":"5750Ringe"
  },
  {
    "municipalityCode":430,
@@ -4940,21 +4320,6 @@
    "city":"Ferritslev"
  },
  {
-   "municipalityCode":430,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":440,
-   "postcode":"1200",
-   "city":"5290Marslev"
- },
- {
-   "municipalityCode":440,
-   "postcode":"1200",
-   "city":"5380Dalby"
- },
- {
    "municipalityCode":440,
    "postcode":"5290",
    "city":"Marslev"
@@ -5000,16 +4365,6 @@
    "city":"Langeskov"
  },
  {
-   "municipalityCode":440,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":450,
-   "postcode":"1200",
-   "city":"5853Ørbæk"
- },
- {
    "municipalityCode":450,
    "postcode":"5540",
    "city":"Ullerslev"
@@ -5038,11 +4393,6 @@
    "municipalityCode":450,
    "postcode":"5874",
    "city":"Hesselager"
- },
- {
-   "municipalityCode":450,
-   "postcode":"9999",
-   "city":"Ukendt"
  },
  {
    "municipalityCode":461,
@@ -5110,21 +4460,6 @@
    "city":"Vissenbjerg"
  },
  {
-   "municipalityCode":461,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":479,
-   "postcode":"1200",
-   "city":"5884Gudme"
- },
- {
-   "municipalityCode":479,
-   "postcode":"1200",
-   "city":"5883Oure"
- },
- {
    "municipalityCode":479,
    "postcode":"5700",
    "city":"Svendborg"
@@ -5180,16 +4515,6 @@
    "city":"Gudbjerg"
  },
  {
-   "municipalityCode":479,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":480,
-   "postcode":"1200",
-   "city":"5462Morud"
- },
- {
    "municipalityCode":480,
    "postcode":"5270",
    "city":"Odense"
@@ -5240,11 +4565,6 @@
    "city":"Aarup"
  },
  {
-   "municipalityCode":480,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":482,
    "postcode":"5900",
    "city":"Rudkøbing"
@@ -5265,16 +4585,6 @@
    "city":"Tranekær"
  },
  {
-   "municipalityCode":482,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":492,
-   "postcode":"1200",
-   "city":"5985Søby"
- },
- {
    "municipalityCode":492,
    "postcode":"5960",
    "city":"Marstal"
@@ -5288,16 +4598,6 @@
    "municipalityCode":492,
    "postcode":"5985",
    "city":"Søby"
- },
- {
-   "municipalityCode":492,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":510,
-   "postcode":"1200",
-   "city":"6510Gram"
  },
  {
    "municipalityCode":510,
@@ -5350,11 +4650,6 @@
    "city":"Rødding"
  },
  {
-   "municipalityCode":510,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":530,
    "postcode":"6623",
    "city":"Vorbasse"
@@ -5400,11 +4695,6 @@
    "city":"Stakroge"
  },
  {
-   "municipalityCode":530,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":540,
    "postcode":"6300",
    "city":"Gråsten"
@@ -5438,21 +4728,6 @@
    "municipalityCode":540,
    "postcode":"6470",
    "city":"Sydals"
- },
- {
-   "municipalityCode":540,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":550,
-   "postcode":"1200",
-   "city":"6280Højer"
- },
- {
-   "municipalityCode":550,
-   "postcode":"1200",
-   "city":"6792Rømø"
  },
  {
    "municipalityCode":550,
@@ -5508,21 +4783,6 @@
    "municipalityCode":550,
    "postcode":"6792",
    "city":"Rømø"
- },
- {
-   "municipalityCode":550,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":561,
-   "postcode":"1200",
-   "city":"6760Ribe"
- },
- {
-   "municipalityCode":561,
-   "postcode":"1200",
-   "city":"6818Årre"
  },
  {
    "municipalityCode":561,
@@ -5585,49 +4845,9 @@
    "city":"Årre"
  },
  {
-   "municipalityCode":561,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":563,
-   "postcode":"1200",
-   "city":"6720Fanø"
- },
- {
    "municipalityCode":563,
    "postcode":"6720",
    "city":"Fanø"
- },
- {
-   "municipalityCode":563,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":573,
-   "postcode":"1200",
-   "city":"6800Varde"
- },
- {
-   "municipalityCode":573,
-   "postcode":"1200",
-   "city":"6870Ølgod"
- },
- {
-   "municipalityCode":573,
-   "postcode":"1200",
-   "city":"6830Nørre"
- },
- {
-   "municipalityCode":573,
-   "postcode":"1200",
-   "city":"6854Henne"
- },
- {
-   "municipalityCode":573,
-   "postcode":"1200",
-   "city":"6818Årre"
  },
  {
    "municipalityCode":573,
@@ -5715,21 +4935,6 @@
    "city":"Grindsted"
  },
  {
-   "municipalityCode":573,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":575,
-   "postcode":"1200",
-   "city":"6622Bække"
- },
- {
-   "municipalityCode":575,
-   "postcode":"1200",
-   "city":"6600Vejen"
- },
- {
    "municipalityCode":575,
    "postcode":"6560",
    "city":"Sommersted"
@@ -5800,16 +5005,6 @@
    "city":"Agerbæk"
  },
  {
-   "municipalityCode":575,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":580,
-   "postcode":"1200",
-   "city":"6340Kruså"
- },
- {
    "municipalityCode":580,
    "postcode":"6200",
    "city":"Aabenraa"
@@ -5850,24 +5045,9 @@
    "city":"Agerskov"
  },
  {
-   "municipalityCode":580,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":607,
    "postcode":"7000",
    "city":"Fredericia"
- },
- {
-   "municipalityCode":607,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":615,
-   "postcode":"909",
-   "city":"12008680Ry"
  },
  {
    "municipalityCode":615,
@@ -5933,26 +5113,6 @@
    "municipalityCode":615,
    "postcode":"8783",
    "city":"Hornsyld"
- },
- {
-   "municipalityCode":615,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":621,
-   "postcode":"1200",
-   "city":"6094Hejls"
- },
- {
-   "municipalityCode":621,
-   "postcode":"1200",
-   "city":"6091Bjert"
- },
- {
-   "municipalityCode":621,
-   "postcode":"1200",
-   "city":"6052Viuf"
  },
  {
    "municipalityCode":621,
@@ -6028,41 +5188,6 @@
    "municipalityCode":621,
    "postcode":"6640",
    "city":"Lunderskov"
- },
- {
-   "municipalityCode":621,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":630,
-   "postcode":"1200",
-   "city":"7300Jelling"
- },
- {
-   "municipalityCode":630,
-   "postcode":"1200",
-   "city":"6040Egtved"
- },
- {
-   "municipalityCode":630,
-   "postcode":"1200",
-   "city":"7100Vejle"
- },
- {
-   "municipalityCode":630,
-   "postcode":"1200",
-   "city":"7173Vonge"
- },
- {
-   "municipalityCode":630,
-   "postcode":"1200",
-   "city":"7120Vejle"
- },
- {
-   "municipalityCode":630,
-   "postcode":"1200",
-   "city":"7323Give"
  },
  {
    "municipalityCode":630,
@@ -6165,31 +5290,6 @@
    "city":"Daugård"
  },
  {
-   "municipalityCode":630,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":657,
-   "postcode":"1200",
-   "city":"6933Kibæk"
- },
- {
-   "municipalityCode":657,
-   "postcode":"1200",
-   "city":"7451Sunds"
- },
- {
-   "municipalityCode":657,
-   "postcode":"1200",
-   "city":"7490Aulum"
- },
- {
-   "municipalityCode":657,
-   "postcode":"1200",
-   "city":"7470Karup"
- },
- {
    "municipalityCode":657,
    "postcode":"6933",
    "city":"Kibæk"
@@ -6270,21 +5370,6 @@
    "city":"Vinderup"
  },
  {
-   "municipalityCode":657,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":661,
-   "postcode":"1200",
-   "city":"7800Skive"
- },
- {
-   "municipalityCode":661,
-   "postcode":"1200",
-   "city":"7570Vemb"
- },
- {
    "municipalityCode":661,
    "postcode":"6990",
    "city":"Ulfborg"
@@ -6323,16 +5408,6 @@
    "municipalityCode":661,
    "postcode":"7830",
    "city":"Vinderup"
- },
- {
-   "municipalityCode":661,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":665,
-   "postcode":"1200",
-   "city":"7570Vemb"
  },
  {
    "municipalityCode":665,
@@ -6375,11 +5450,6 @@
    "city":"Thyborøn"
  },
  {
-   "municipalityCode":665,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":671,
    "postcode":"7500",
    "city":"Holstebro"
@@ -6413,26 +5483,6 @@
    "municipalityCode":671,
    "postcode":"7830",
    "city":"Vinderup"
- },
- {
-   "municipalityCode":671,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":706,
-   "postcode":"1200",
-   "city":"8444Balle"
- },
- {
-   "municipalityCode":706,
-   "postcode":"1200",
-   "city":"8410Rønde"
- },
- {
-   "municipalityCode":706,
-   "postcode":"1200",
-   "city":"8544Mørke"
  },
  {
    "municipalityCode":706,
@@ -6495,16 +5545,6 @@
    "city":"Auning"
  },
  {
-   "municipalityCode":706,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":707,
-   "postcode":"1200",
-   "city":"8586Ørum"
- },
- {
    "municipalityCode":707,
    "postcode":"8444",
    "city":"Balle"
@@ -6563,21 +5603,6 @@
    "municipalityCode":707,
    "postcode":"8963",
    "city":"Auning"
- },
- {
-   "municipalityCode":707,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":710,
-   "postcode":"1200",
-   "city":"8870Langå"
- },
- {
-   "municipalityCode":710,
-   "postcode":"1200",
-   "city":"8471Sabro"
  },
  {
    "municipalityCode":710,
@@ -6650,16 +5675,6 @@
    "city":"Randers"
  },
  {
-   "municipalityCode":710,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":727,
-   "postcode":"1200",
-   "city":"8300Odder"
- },
- {
    "municipalityCode":727,
    "postcode":"8300",
    "city":"Odder"
@@ -6678,21 +5693,6 @@
    "municipalityCode":727,
    "postcode":"8660",
    "city":"Skanderborg"
- },
- {
-   "municipalityCode":727,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":730,
-   "postcode":"1200",
-   "city":"8870Langå"
- },
- {
-   "municipalityCode":730,
-   "postcode":"1200",
-   "city":"8990Fårup"
  },
  {
    "municipalityCode":730,
@@ -6753,26 +5753,6 @@
    "municipalityCode":730,
    "postcode":"9550",
    "city":"Mariager"
- },
- {
-   "municipalityCode":730,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":740,
-   "postcode":"1200",
-   "city":"8883Gjern"
- },
- {
-   "municipalityCode":740,
-   "postcode":"1200",
-   "city":"7470Karup"
- },
- {
-   "municipalityCode":740,
-   "postcode":"1200",
-   "city":"8653Them"
  },
  {
    "municipalityCode":740,
@@ -6880,34 +5860,9 @@
    "city":"Gjern"
  },
  {
-   "municipalityCode":740,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":741,
    "postcode":"8305",
    "city":"Samsø"
- },
- {
-   "municipalityCode":741,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":746,
-   "postcode":"909",
-   "city":"12008680Ry"
- },
- {
-   "municipalityCode":746,
-   "postcode":"1200",
-   "city":"8471Sabro"
- },
- {
-   "municipalityCode":746,
-   "postcode":"1200",
-   "city":"8680Ry"
  },
  {
    "municipalityCode":746,
@@ -6953,66 +5908,6 @@
    "municipalityCode":746,
    "postcode":"8751",
    "city":"Gedved"
- },
- {
-   "municipalityCode":746,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":751,
-   "postcode":"850",
-   "city":"8000Aarhus"
- },
- {
-   "municipalityCode":751,
-   "postcode":"851",
-   "city":"8200Aarhus"
- },
- {
-   "municipalityCode":751,
-   "postcode":"851",
-   "city":"8210Aarhus"
- },
- {
-   "municipalityCode":751,
-   "postcode":"1200",
-   "city":"8462Harlev"
- },
- {
-   "municipalityCode":751,
-   "postcode":"1200",
-   "city":"8230Åbyhøj"
- },
- {
-   "municipalityCode":751,
-   "postcode":"1200",
-   "city":"8380Trige"
- },
- {
-   "municipalityCode":751,
-   "postcode":"1200",
-   "city":"8300Odder"
- },
- {
-   "municipalityCode":751,
-   "postcode":"1200",
-   "city":"8381Tilst"
- },
- {
-   "municipalityCode":751,
-   "postcode":"1200",
-   "city":"8471Sabro"
- },
- {
-   "municipalityCode":751,
-   "postcode":"1200",
-   "city":"8330Beder"
- },
- {
-   "municipalityCode":751,
-   "postcode":"1200",
-   "city":"8260Viby"
  },
  {
    "municipalityCode":751,
@@ -7135,21 +6030,6 @@
    "city":"Skanderborg"
  },
  {
-   "municipalityCode":751,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":756,
-   "postcode":"1200",
-   "city":"8766Nørre"
- },
- {
-   "municipalityCode":756,
-   "postcode":"1200",
-   "city":"7430Ikast"
- },
- {
    "municipalityCode":756,
    "postcode":"7160",
    "city":"Tørring"
@@ -7223,31 +6103,6 @@
    "municipalityCode":756,
    "postcode":"8766",
    "city":"Nørre"
- },
- {
-   "municipalityCode":756,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":760,
-   "postcode":"1200",
-   "city":"6933Kibæk"
- },
- {
-   "municipalityCode":760,
-   "postcode":"1200",
-   "city":"6830Nørre"
- },
- {
-   "municipalityCode":760,
-   "postcode":"1200",
-   "city":"6960Hvide"
- },
- {
-   "municipalityCode":760,
-   "postcode":"1200",
-   "city":"6880Tarm"
  },
  {
    "municipalityCode":760,
@@ -7345,26 +6200,6 @@
    "city":"Vildbjerg"
  },
  {
-   "municipalityCode":760,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":766,
-   "postcode":"1200",
-   "city":"7100Vejle"
- },
- {
-   "municipalityCode":766,
-   "postcode":"1200",
-   "city":"7171Uldum"
- },
- {
-   "municipalityCode":766,
-   "postcode":"1200",
-   "city":"7323Give"
- },
- {
    "municipalityCode":766,
    "postcode":"7100",
    "city":"Vejle"
@@ -7450,16 +6285,6 @@
    "city":"Hornsyld"
  },
  {
-   "municipalityCode":766,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":773,
-   "postcode":"1200",
-   "city":"7980Vils"
- },
- {
    "municipalityCode":773,
    "postcode":"7900",
    "city":"Nykøbing"
@@ -7490,16 +6315,6 @@
    "city":"Øster"
  },
  {
-   "municipalityCode":773,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":779,
-   "postcode":"1200",
-   "city":"7800Skive"
- },
- {
    "municipalityCode":779,
    "postcode":"7800",
    "city":"Skive"
@@ -7528,16 +6343,6 @@
    "municipalityCode":779,
    "postcode":"7884",
    "city":"Fur"
- },
- {
-   "municipalityCode":779,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":787,
-   "postcode":"1200",
-   "city":"7760Hurup"
  },
  {
    "municipalityCode":787,
@@ -7578,41 +6383,6 @@
    "municipalityCode":787,
    "postcode":"7770",
    "city":"Vestervig"
- },
- {
-   "municipalityCode":787,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":791,
-   "postcode":"1200",
-   "city":"8800Viborg"
- },
- {
-   "municipalityCode":791,
-   "postcode":"1200",
-   "city":"7800Skive"
- },
- {
-   "municipalityCode":791,
-   "postcode":"1200",
-   "city":"9500Hobro"
- },
- {
-   "municipalityCode":791,
-   "postcode":"1200",
-   "city":"8830Tjele"
- },
- {
-   "municipalityCode":791,
-   "postcode":"1200",
-   "city":"8832Skals"
- },
- {
-   "municipalityCode":791,
-   "postcode":"1200",
-   "city":"7470Karup"
  },
  {
    "municipalityCode":791,
@@ -7715,16 +6485,6 @@
    "city":"Møldrup"
  },
  {
-   "municipalityCode":791,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":810,
-   "postcode":"1200",
-   "city":"9340Asaa"
- },
- {
    "municipalityCode":810,
    "postcode":"9320",
    "city":"Hjallerup"
@@ -7795,26 +6555,6 @@
    "city":"Vrå"
  },
  {
-   "municipalityCode":810,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":813,
-   "postcode":"1200",
-   "city":"9982Ålbæk"
- },
- {
-   "municipalityCode":813,
-   "postcode":"1200",
-   "city":"9981Jerup"
- },
- {
-   "municipalityCode":813,
-   "postcode":"1200",
-   "city":"9300Sæby"
- },
- {
    "municipalityCode":813,
    "postcode":"9300",
    "city":"Sæby"
@@ -7880,26 +6620,6 @@
    "city":"Skagen"
  },
  {
-   "municipalityCode":813,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":820,
-   "postcode":"1200",
-   "city":"9681Ranum"
- },
- {
-   "municipalityCode":820,
-   "postcode":"1200",
-   "city":"9240Nibe"
- },
- {
-   "municipalityCode":820,
-   "postcode":"1200",
-   "city":"9600Aars"
- },
- {
    "municipalityCode":820,
    "postcode":"9240",
    "city":"Nibe"
@@ -7945,39 +6665,9 @@
    "city":"Ranum"
  },
  {
-   "municipalityCode":820,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":825,
-   "postcode":"1200",
-   "city":"9940Læsø"
- },
- {
    "municipalityCode":825,
    "postcode":"9940",
    "city":"Læsø"
- },
- {
-   "municipalityCode":825,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":840,
-   "postcode":"1200",
-   "city":"9500Hobro"
- },
- {
-   "municipalityCode":840,
-   "postcode":"1200",
-   "city":"9574Bælum"
- },
- {
-   "municipalityCode":840,
-   "postcode":"1200",
-   "city":"9600Aars"
  },
  {
    "municipalityCode":840,
@@ -8055,26 +6745,6 @@
    "city":"Aalestrup"
  },
  {
-   "municipalityCode":840,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":846,
-   "postcode":"1200",
-   "city":"9500Hobro"
- },
- {
-   "municipalityCode":846,
-   "postcode":"1200",
-   "city":"9510Arden"
- },
- {
-   "municipalityCode":846,
-   "postcode":"1200",
-   "city":"8990Fårup"
- },
- {
    "municipalityCode":846,
    "postcode":"8970",
    "city":"Havndal"
@@ -8113,16 +6783,6 @@
    "municipalityCode":846,
    "postcode":"9632",
    "city":"Møldrup"
- },
- {
-   "municipalityCode":846,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":849,
-   "postcode":"1200",
-   "city":"9430Vadum"
  },
  {
    "municipalityCode":849,
@@ -8188,21 +6848,6 @@
    "municipalityCode":849,
    "postcode":"9700",
    "city":"Brønderslev"
- },
- {
-   "municipalityCode":849,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":851,
-   "postcode":"1200",
-   "city":"9240Nibe"
- },
- {
-   "municipalityCode":851,
-   "postcode":"1200",
-   "city":"9370Hals"
  },
  {
    "municipalityCode":851,
@@ -8310,26 +6955,6 @@
    "city":"Støvring"
  },
  {
-   "municipalityCode":851,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":860,
-   "postcode":"909",
-   "city":"12009760Vrå"
- },
- {
-   "municipalityCode":860,
-   "postcode":"1200",
-   "city":"9982Ålbæk"
- },
- {
-   "municipalityCode":860,
-   "postcode":"1200",
-   "city":"9830Tårs"
- },
- {
    "municipalityCode":860,
    "postcode":"9480",
    "city":"Løkken"
@@ -8385,11 +7010,6 @@
    "city":"Ålbæk"
  },
  {
-   "municipalityCode":860,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":955,
    "postcode":"3919",
    "city":"Alluitsup"
@@ -8423,16 +7043,6 @@
    "municipalityCode":955,
    "postcode":"3927",
    "city":"Angissoq"
- },
- {
-   "municipalityCode":955,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
-   "municipalityCode":956,
-   "postcode":"1200",
-   "city":"3900Nuuk"
  },
  {
    "municipalityCode":956,
@@ -8480,11 +7090,6 @@
    "city":"Constable"
  },
  {
-   "municipalityCode":956,
-   "postcode":"9999",
-   "city":"Ukendt"
- },
- {
    "municipalityCode":957,
    "postcode":"3910",
    "city":"Kangerlussuaq"
@@ -8498,11 +7103,6 @@
    "municipalityCode":957,
    "postcode":"3912",
    "city":"Maniitsoq"
- },
- {
-   "municipalityCode":957,
-   "postcode":"9999",
-   "city":"Ukendt"
  },
  {
    "municipalityCode":958,
@@ -8563,11 +7163,6 @@
    "municipalityCode":958,
    "postcode":"3971",
    "city":"Qaanaaq"
- },
- {
-   "municipalityCode":958,
-   "postcode":"9999",
-   "city":"Ukendt"
  },
  {
    "municipalityCode":961,
