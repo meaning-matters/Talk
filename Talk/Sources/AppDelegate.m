@@ -52,7 +52,7 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
 - (void)setUp
 {
-    [self denmark];
+   // [self denmark];
 
     static dispatch_once_t onceToken;
     
@@ -948,7 +948,7 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     NSArray* muniStrcodeStr  = [Common objectWithJsonData:data];
 
 
-#if 1 // Generates cities array
+#if 0 // Generates cities array
     int n = 1;
     NSMutableArray* citiesArray = [NSMutableArray new];
     for (NSDictionary* item in strcodePostCity)
@@ -978,8 +978,8 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     NSString* json = [Common jsonStringWithObject:citiesArray];
 #endif
 
-#if 0  // muni nested
-    NSMutableDictionary* muniDictionary = [NSMutableDictionary new];
+#if 1  // muni nested
+    NSMutableDictionary* muniDictionary = [NSMutableDictionary new]; // dictionary of municipalities with dictionary of postcodes inside
     NSMutableDictionary* postcodeMap    = [NSMutableDictionary new]; // maps all postcodes to postcode item in muniDictionary
     NSMutableDictionary* streetMap      = [NSMutableDictionary new]; // maps muni code to all street code objects
     for (NSDictionary* item in muniPostCity)
@@ -1013,13 +1013,14 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     {
         @autoreleasepool
         {
-            if (postcodeMap[item[@"postcode"]][item[@"streetCode"]] != nil)
+            NSString* streetCode = [NSString stringWithFormat:@"%04d", [item[@"streetCode"] intValue]];
+            if (postcodeMap[item[@"postcode"]][streetCode] != nil)
             {
-                NSLog(@"Duplicate");
+              //  NSLog(@"Duplicate");
             }
             else
             {
-                postcodeMap[item[@"postcode"]][item[@"streetCode"]] = @"---";
+                postcodeMap[item[@"postcode"]][streetCode] = @"---";
             }
         }
     }
@@ -1033,10 +1034,12 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
             BOOL found = NO;
             for (NSString* postcode in [muni[@"postcodes"] allKeys])
             {
-                if (muni[@"postcodes"][postcode][item[@"streetCode"]] != nil)
+                NSString* streetCode = [NSString stringWithFormat:@"%04d", [item[@"streetCode"] intValue]];
+
+                if (muni[@"postcodes"][postcode][streetCode] != nil)
                 {
                     found = YES;
-                    muni[@"postcodes"][postcode][item[@"streetCode"]] = item[@"street"];
+                    muni[@"postcodes"][postcode][streetCode] = item[@"street"];
                 }
             }
 
@@ -1049,7 +1052,7 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
 #endif
 
-#if 0
+#if 1
 
     NSMutableDictionary* munis = [NSMutableDictionary new];
     for (NSDictionary* item in muniStrcodeStr)
