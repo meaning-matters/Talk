@@ -46,8 +46,6 @@
 
     [super viewDidLoad];
 
-    [self loadProducts];
-
     CGFloat topInset    = 12.0f;
     CGFloat leftInset   = 10.0f;
     CGFloat bottomInset = 12.0f;
@@ -141,27 +139,7 @@
     self.button.enabled = busy ? NO   : YES;
     self.button.alpha   = busy ? 0.5f : 1.0f;
 
-    busy ? [self.activityIndicator startAnimating] : [self.activityIndicator stopAnimating];
-}
-
-
-- (void)loadProducts
-{
-    AnalysticsTrace(@"loadProducts");
-
-    self.button.enabled = NO;
-    self.button.alpha   = 0.5f;
-    [[PurchaseManager sharedManager] loadProducts:^(BOOL success)
-    {
-        self.button.enabled = success;
-        self.button.alpha   = success ? 1.0f : 0.5f;
-        if (success == NO)
-        {
-            AnalysticsTrace(@"loadProducts_FAIL");
-
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-    }];
+    busy ? [self.busyIndicator startAnimating] : [self.busyIndicator stopAnimating];
 }
 
 

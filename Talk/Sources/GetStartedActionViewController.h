@@ -15,7 +15,7 @@
 @property (nonatomic, weak) IBOutlet UILabel*                 titleLabel;
 @property (nonatomic, weak) IBOutlet UITextView*              textView;
 @property (nonatomic, weak) IBOutlet UIButton*                button;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* busyIndicator;
 
 - (IBAction)buttonAction:(id)sender;
 

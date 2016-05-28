@@ -24,6 +24,7 @@
 #define CREDIT                  @"Credit"
 #define NUMBER                  @"Number"
 #define LOAD_PRODUCTS_INTERVAL  (24 * 3600)
+#define ACCOUNT_AMOUNT          1
 
 NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerProductsLoadedNotification";
 
@@ -89,7 +90,7 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
 
 - (void)addProductIdentifiers
 {
-    [self.productIdentifiers addObject:[self productIdentifierForAccountAmount:1]];
+    [self.productIdentifiers addObject:[self productIdentifierForAccountAmount:ACCOUNT_AMOUNT]];
 
     [self.productIdentifiers addObject:[self productIdentifierForCreditAmount:  1]];
     [self.productIdentifiers addObject:[self productIdentifierForCreditAmount:  2]];
@@ -787,6 +788,13 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
 }
 
 
+- (NSString*)localizedPriceForAccount
+{
+    NSString* productIdentifier = [self productIdentifierForAccountAmount:ACCOUNT_AMOUNT];
+    return [self localizedPriceForProductIdentifier:productIdentifier];
+}
+
+
 - (void)buyAccount:(void (^)(BOOL success, id object))completion
 {
     AnalysticsTrace(@"buyAccount");
@@ -798,7 +806,7 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
         return;
     }
 
-    [self buyProductIdentifier:[self productIdentifierForAccountAmount:1] completion:completion];
+    [self buyProductIdentifier:[self productIdentifierForAccountAmount:ACCOUNT_AMOUNT] completion:completion];
 }
 
 

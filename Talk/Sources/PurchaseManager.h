@@ -35,6 +35,8 @@ extern NSString* const PurchaseManagerProductsLoadedNotification;
 
 - (NSString*)localizedPriceForProductIdentifier:(NSString*)identifier;
 
+- (NSString*)localizedPriceForAccount;
+
 - (void)buyAccount:(void (^)(BOOL success, id object))completion;
 
 - (void)restoreAccount:(void (^)(BOOL success, id object))completion;

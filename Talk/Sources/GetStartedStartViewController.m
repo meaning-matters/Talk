@@ -38,6 +38,8 @@
 
     [super viewDidLoad];
 
+    [self loadProducts];
+
     self.titleLabel.text = NSLocalizedStringWithDefaultValue(@"GetStartedStart Welcome", nil, [NSBundle mainBundle],
                                                              @"Welcome!",
                                                              @"...\n"
@@ -53,11 +55,7 @@
                                                            @"....\n"
                                                            @"[iOS alert title size].");
 
-    [self.button setTitle:NSLocalizedStringWithDefaultValue(@"GetStartedStart Button", nil, [NSBundle mainBundle],
-                                                            @"Buy Some Credit",
-                                                            @"...\n"
-                                                            @"[1 line larger font].")
-                 forState:UIControlStateNormal];
+    [self setButtonTitle];
 }
 
 
@@ -66,6 +64,43 @@
     AnalysticsTrace(@"viewDidAppear");
 
     [super viewDidAppear:animated];
+}
+
+
+- (void)loadProducts
+{
+    AnalysticsTrace(@"loadProducts");
+
+    self.isLoading      = YES;
+    self.button.enabled = NO;
+    self.button.alpha   = 0.5f;
+    [[PurchaseManager sharedManager] loadProducts:^(BOOL success)
+    {
+         self.button.enabled = success;
+         self.button.alpha   = success ? 1.0f : 0.5f;
+         if (success == NO)
+         {
+             AnalysticsTrace(@"loadProducts_FAIL");
+
+             [self.navigationController popViewControllerAnimated:YES];
+         }
+         else
+         {
+             self.isLoading = NO;
+             [self setButtonTitle];
+         }
+    }];
+}
+
+
+- (void)setButtonTitle
+{
+    NSString* title = NSLocalizedStringWithDefaultValue(@"GetStartedStart Button", nil, [NSBundle mainBundle],
+                                                        @"Buy %@ Credit",
+                                                        @"...\n"
+                                                        @"[1 line larger font].");
+    title = [NSString stringWithFormat:title, [[PurchaseManager sharedManager] localizedPriceForAccount]];
+    [self.button setTitle:title forState:UIControlStateNormal];
 }
 
 
