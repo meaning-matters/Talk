@@ -438,9 +438,6 @@
 		4864B3F917566E950006542F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4864B3F817566E950006542F /* MessageUI.framework */; };
 		4865A9DF1792C8B70028785F /* NumberBuyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberBuyCell.m */; };
 		4865A9E01792C8B70028785F /* NumberBuyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberBuyCell.m */; };
-		486B95181CDE413A004CFD8A /* Muni-StrCode-Str.json in Resources */ = {isa = PBXBuildFile; fileRef = 486B95171CDE413A004CFD8A /* Muni-StrCode-Str.json */; };
-		486B95201CDE44E4004CFD8A /* Muni-Post-City.json in Resources */ = {isa = PBXBuildFile; fileRef = 486B951E1CDE44E4004CFD8A /* Muni-Post-City.json */; };
-		486B95211CDE44E4004CFD8A /* StrCode-Post-City.json in Resources */ = {isa = PBXBuildFile; fileRef = 486B951F1CDE44E4004CFD8A /* StrCode-Post-City.json */; };
 		486B95261CDE80F2004CFD8A /* DenmarkCitiesArray.json in Resources */ = {isa = PBXBuildFile; fileRef = 486B95251CDE80F2004CFD8A /* DenmarkCitiesArray.json */; };
 		486D4A2318F06BC8004699C9 /* CallRatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 486D4A2218F06BC8004699C9 /* CallRatesViewController.m */; };
 		4877EDBC17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */; };
@@ -2737,7 +2734,6 @@
 				485F6A7E1637270100D61365 /* BW@2x.png in Resources */,
 				4837AF8818E24BF100D3AEBC /* Icon-80.png in Resources */,
 				485F6A801637270100D61365 /* BY@2x.png in Resources */,
-				486B95201CDE44E4004CFD8A /* Muni-Post-City.json in Resources */,
 				485F6A821637270100D61365 /* BZ@2x.png in Resources */,
 				4842D9FC1AADFB53008F35C9 /* editPhotoLeftButtonHighlighted.png in Resources */,
 				485F6A841637270100D61365 /* CA@2x.png in Resources */,
@@ -2796,7 +2792,6 @@
 				48B813371AADF8E30019AF77 /* NBPeopleListView.xib in Resources */,
 				485F6AE21637270100D61365 /* GM@2x.png in Resources */,
 				485F6AE41637270100D61365 /* GN@2x.png in Resources */,
-				486B95211CDE44E4004CFD8A /* StrCode-Post-City.json in Resources */,
 				485F6AE61637270100D61365 /* GP@2x.png in Resources */,
 				485F6AE81637270100D61365 /* GQ@2x.png in Resources */,
 				485F6AEA1637270100D61365 /* GR@2x.png in Resources */,
@@ -2836,7 +2831,6 @@
 				485F6B261637270100D61365 /* KM@2x.png in Resources */,
 				485F6B281637270100D61365 /* KN@2x.png in Resources */,
 				485F6B2A1637270100D61365 /* KP@2x.png in Resources */,
-				486B95181CDE413A004CFD8A /* Muni-StrCode-Str.json in Resources */,
 				485F6B2C1637270100D61365 /* KR@2x.png in Resources */,
 				485F6B2E1637270100D61365 /* KW@2x.png in Resources */,
 				485F6B301637270100D61365 /* KY@2x.png in Resources */,

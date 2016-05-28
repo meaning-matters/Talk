@@ -56,7 +56,7 @@
 {
     NSError*    error = nil;
     NSString*   path = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/dtmf-%@.caf", name];
-    NSData*     data = [NSData dataWithContentsOfFile:path options:NSDataReadingMapped error:&error] ;
+    NSData*     data = [NSData dataWithContentsOfFile:path options:NSDataReadingUncached error:&error] ;
 
     if (error == nil && data != nil)
     {
