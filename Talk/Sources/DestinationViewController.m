@@ -18,7 +18,6 @@
 #import "BlockActionSheet.h"
 #import "BlockAlertView.h"
 #import "PhonesViewController.h"
-#import "PhoneViewController.h"
 #import "DestinationNumbersViewController.h"
 #import "DataManager.h"
 
@@ -34,15 +33,13 @@ typedef enum
 
 
 @interface DestinationViewController ()
-{
-    TableSections        sections;
-    BOOL                 isNew;
-    BOOL                 isDeleting;
 
-    PhoneData*           phone;
-    NSMutableDictionary* action;
-    NSArray*             numbersArray;
-}
+@property (nonatomic, assign) TableSections sections;
+@property (nonatomic, assign) BOOL          isNew;
+@property (nonatomic, assign) BOOL          isDeleting;
+@property (nonatomic, strong) PhoneData*    phone;
+@property (nonatomic, strong) NSMutableDictionary* action;
+@property (nonatomic, strong) NSArray*      numbersArray;
 
 @property (nonatomic, assign) BOOL showCalledId;
 
@@ -57,13 +54,13 @@ typedef enum
     if (self = [super initWithManagedObjectContext:managedObjectContext])
     {
         self.name        = destination.name;
-        phone            = [destination.phones anyObject];
+        self.phone       = [destination.phones anyObject];
 
         self.destination = destination;
-        isNew            = (destination == nil);
-        self.title       = isNew ? [Strings newDestinationString] : [Strings destinationString];
+        self.isNew       = (destination == nil);
+        self.title       = self.isNew ? [Strings newDestinationString] : [Strings destinationString];
 
-        if (isNew == YES)
+        if (self.isNew == YES)
         {
             // Create a new managed object context; set its parent to the fetched results controller's context.
             NSManagedObjectContext* managedObjectContext;
@@ -73,8 +70,6 @@ typedef enum
 
             self.destination = [NSEntityDescription insertNewObjectForEntityForName:@"Destination"
                                                              inManagedObjectContext:self.managedObjectContext];
-
-            self.destination.action = [Common jsonStringWithObject:@{@"call" : @{@"e164s" : @[@""]}}];
         }
         else
         {
@@ -84,11 +79,10 @@ typedef enum
                                         forKeyPath:@"sortSegment"
                                            options:NSKeyValueObservingOptionNew
                                            context:nil];
+
+            self.action       = [Common mutableObjectWithJsonString:self.destination.action];
+            self.showCalledId = [self.action[@"call"][@"showCalledId"] boolValue];
         }
-
-        action = [Common mutableObjectWithJsonString:self.destination.action];
-
-        self.showCalledId = [action[@"call"][@"showCalledId"] boolValue];
     }
 
     return self;
@@ -97,7 +91,7 @@ typedef enum
 
 - (void)dealloc
 {
-    if (isNew == NO)
+    if (self.isNew == NO)
     {
         [[Settings sharedSettings] removeObserver:self forKeyPath:@"sortSegment" context:nil];
     }
@@ -110,7 +104,7 @@ typedef enum
 
     self.clearsSelectionOnViewWillAppear = YES;
 
-    if (isNew)
+    if (self.isNew)
     {
         UIBarButtonItem* buttonItem;
         buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
@@ -152,7 +146,7 @@ typedef enum
 - (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
 {
     [self updateNumbersArray];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:[Common nOfBit:TableSectionNumbers inValue:sections]]
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:[Common nOfBit:TableSectionNumbers inValue:self.sections]]
                   withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
@@ -173,7 +167,7 @@ typedef enum
         {
             if (destruct == YES)
             {
-                isDeleting = YES;
+                self.isDeleting = YES;
 
                 [self.destination removePhones:self.destination.phones];
                 [self.destination deleteWithCompletion:^(BOOL succeeded)
@@ -184,7 +178,7 @@ typedef enum
                     }
                     else
                     {
-                        isDeleting = NO;
+                        self.isDeleting = NO;
                     }
                 }];
             }
@@ -219,23 +213,11 @@ typedef enum
 
 - (void)createAction
 {
-    self.destination.name = self.name;
-    action[@"call"][@"e164s"][0]     = phone.e164;
-    action[@"call"][@"showCalledId"] = self.showCalledId ? @"true" : @"false";
-
     self.navigationItem.rightBarButtonItem.enabled = NO;
 
-    [[WebClient sharedClient] createIvrWithName:self.name
-                                         action:action
-                                          reply:^(NSError* error, NSString* uuid)
+    [self.destination createForE164:self.phone.e164 name:self.name showCalledId:self.showCalledId completion:^(NSError* error)
     {
-        if (error == nil)
-        {
-            self.destination.uuid   = uuid;
-            self.destination.action = [Common jsonStringWithObject:action];
-            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-        }
-        else
+        if (error != nil)
         {
             [self showSaveError:error];
         }
@@ -249,7 +231,7 @@ typedef enum
 - (void)saveAction
 {
     if ([self.name isEqualToString:self.destination.name] == YES &&
-        [Common object:action isEqualToJsonString:self.destination.action] == YES)
+        [Common object:self.action isEqualToJsonString:self.destination.action] == YES)
     {
         // Nothing has changed.
         return;
@@ -257,14 +239,14 @@ typedef enum
 
     [[WebClient sharedClient] updateIvrForUuid:self.destination.uuid
                                           name:self.name
-                                        action:action
+                                        action:self.action
                                          reply:^(NSError* error)
     {
         if (error == nil)
         {
-            self.showCalledId       = [action[@"call"][@"showCalledId"] boolValue];
+            self.showCalledId       = [self.action[@"call"][@"showCalledId"] boolValue];
             self.destination.name   = self.name;
-            self.destination.action = [Common jsonStringWithObject:action];
+            self.destination.action = [Common jsonStringWithObject:self.action];
             
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
         }
@@ -294,9 +276,9 @@ typedef enum
                                    message:[NSString stringWithFormat:message, [error localizedDescription]]
                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
     {
-        if (isNew == NO)
+        if (self.isNew == NO)
         {
-            NSInteger        section    = [Common nOfBit:TableSectionStatements inValue:sections];
+            NSInteger        section    = [Common nOfBit:TableSectionStatements inValue:self.sections];
             NSIndexPath*     indexPath  = [NSIndexPath indexPathForItem:0 inSection:section];
             UITableViewCell* cell       = [self.tableView cellForRowAtIndexPath:indexPath];
             UISwitch*        switchView = (UISwitch*)cell.accessoryView;
@@ -313,14 +295,14 @@ typedef enum
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    sections  = 0;
-    sections |= TableSectionName;
-    sections |= TableSectionPhone;
-    sections |= TableSectionStatements;
-    sections |= isNew ? 0 : TableSectionNumbers;
-    sections |= (self.destination.recordings.count > 0) ? TableSectionRecordings : 0;
+    self.sections  = 0;
+    self.sections |= TableSectionName;
+    self.sections |= TableSectionPhone;
+    self.sections |= TableSectionStatements;
+    self.sections |= self.isNew ? 0 : TableSectionNumbers;
+    self.sections |= (self.destination.recordings.count > 0) ? TableSectionRecordings : 0;
 
-    return [Common bitsSetCount:sections];
+    return [Common bitsSetCount:self.sections];
 }
 
 
@@ -328,7 +310,7 @@ typedef enum
 {
     NSInteger numberOfRows = 0;
 
-    switch ([Common nthBitSet:section inValue:sections])
+    switch ([Common nthBitSet:section inValue:self.sections])
     {
         case TableSectionName:       numberOfRows = 1;                                 break;
         case TableSectionPhone:      numberOfRows = 1;                                 break;
@@ -345,11 +327,11 @@ typedef enum
 {
     NSString* title = nil;
 
-    switch ([Common nthBitSet:section inValue:sections])
+    switch ([Common nthBitSet:section inValue:self.sections])
     {
         case TableSectionName:
         {
-            if (isNew)
+            if (self.isNew)
             {
                 title = [Strings nameFooterString];
             }
@@ -378,7 +360,7 @@ typedef enum
 {
     UITableViewCell* cell;
 
-    switch ([Common nthBitSet:indexPath.section inValue:sections])
+    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
         case TableSectionName:       cell = [self nameCellForRowAtIndexPath:indexPath];       break;
         case TableSectionPhone:      cell = [self phoneCellForRowAtIndexPath:indexPath];      break;
@@ -405,7 +387,7 @@ typedef enum
                                                             @"Forward To",
                                                             @"Title of a table row\n"
                                                             @"[1/3 line small font].");
-    cell.detailTextLabel.text = phone.name;
+    cell.detailTextLabel.text = self.phone.name;
 
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
@@ -498,7 +480,7 @@ typedef enum
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    switch ([Common nthBitSet:indexPath.section inValue:sections])
+    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
         case TableSectionPhone:
         {
@@ -507,8 +489,8 @@ typedef enum
                                                                           selectedPhone:[self.destination.phones anyObject]
                                                                              completion:^(PhoneData* selectedPhone)
             {
-                phone = selectedPhone;
-                action[@"call"][@"e164s"][0] = phone.e164;
+                self.phone = selectedPhone;
+                self.action[@"call"][@"e164s"][0] = self.phone.e164;
 
                 [self updateSaveButtonItem];
                 [self updateTable];
@@ -549,9 +531,9 @@ typedef enum
 
 - (void)showCalledIdSwitchAction:(UISwitch*)switchView
 {
-    action[@"call"][@"showCalledId"] = switchView.on ? @"true" : @"false";
+    self.action[@"call"][@"showCalledId"] = switchView.on ? @"true" : @"false";
 
-    if (isNew == YES)
+    if (self.isNew == YES)
     {
         self.showCalledId = switchView.on;
     }
@@ -566,9 +548,9 @@ typedef enum
 
 - (void)updateSaveButtonItem
 {
-    if (isNew == YES)
+    if (self.isNew == YES)
     {
-        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:phone.e164];
+        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:self.phone.e164];
         BOOL         valid       = [self.name stringByRemovingWhiteSpace].length > 0 &&
                                    ((phoneNumber.isValid && [Settings sharedSettings].homeIsoCountryCode.length > 0) ||
                                     phoneNumber.isInternational);
@@ -593,7 +575,7 @@ typedef enum
         sortDescriptors = @[sortDescriptorName, sortDescriptorCountry];
     }
 
-    numbersArray = [self.destination.numbers sortedArrayUsingDescriptors:sortDescriptors];
+    self.numbersArray = [self.destination.numbers sortedArrayUsingDescriptors:sortDescriptors];
 }
 
 
@@ -615,7 +597,7 @@ typedef enum
 
 - (void)save
 {
-    if (isNew == NO && isDeleting == NO)
+    if (self.isNew == NO && self.isDeleting == NO)
     {
         [self saveAction];
     }

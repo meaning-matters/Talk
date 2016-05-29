@@ -50,7 +50,8 @@
         self.managedObjectContext = managedObjectContext;
         self.selectedPhone        = selectedPhone;
         self.completion           = completion;
-        
+
+        __weak typeof(self) weakSelf = self;
         self.defaultsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
                                                                                   object:nil
                                                                                    queue:[NSOperationQueue mainQueue]
@@ -58,7 +59,7 @@
         {
             if ([Settings sharedSettings].haveAccount)
             {
-                [self.tableView reloadData];
+                [weakSelf.tableView reloadData];
             }
         }];
     }

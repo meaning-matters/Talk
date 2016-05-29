@@ -71,7 +71,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
         {
             if ([Settings sharedSettings].haveAccount)
             {
-                [self.tableView reloadData];
+                [weakSelf.tableView reloadData];
             }
         }];
     }

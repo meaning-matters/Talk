@@ -120,6 +120,35 @@
 }
 
 
+- (void)createForE164:(NSString*)e164
+                 name:(NSString*)name
+         showCalledId:(BOOL)showCalledId
+           completion:(void (^)(NSError* error))completion
+{
+    NSMutableDictionary* action;
+
+    self.action = [Common jsonStringWithObject:@{@"call" : @{@"e164s" : @[@""]}}];
+    action      = [Common mutableObjectWithJsonString:self.action];
+
+    self.name = name;
+    action[@"call"][@"e164s"][0]     = e164;
+    action[@"call"][@"showCalledId"] = showCalledId ? @"true" : @"false";
+
+    [[WebClient sharedClient] createIvrWithName:self.name
+                                         action:action
+                                          reply:^(NSError* error, NSString* uuid)
+    {
+        if (error == nil)
+        {
+            self.uuid   = uuid;
+            self.action = [Common jsonStringWithObject:action];
+        }
+
+        completion ? completion(error) : 0;
+    }];
+}
+
+
 // Overrides a NSManagedObject setter.
 - (void)setAction:(NSString*)action
 {

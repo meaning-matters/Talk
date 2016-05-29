@@ -23,6 +23,11 @@
 
 - (void)deleteWithCompletion:(void (^)(BOOL succeeded))completion;
 
+- (void)createForE164:(NSString*)e164
+                 name:(NSString*)name
+         showCalledId:(BOOL)showCalledId
+           completion:(void (^)(NSError* error))completion;
+
 @end
 
 

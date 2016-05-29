@@ -17,6 +17,7 @@
 #import "DestinationData.h"
 #import "NumberData.h"
 #import "CallerIdData.h"
+#import "DestinationData.h"
 #import "DataManager.h"
 #import "VerifyPhoneViewController.h"
 
@@ -203,13 +204,27 @@ typedef enum
         {
             self.phone.name = self.name;
             self.phone.e164 = [phoneNumber e164Format];
-            
-            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
 
-            [self.view endEditing:YES];
-            if (isNew == YES)
+            if (isNew)
             {
-                [self dismissViewControllerAnimated:YES completion:nil];
+                [self createDefaultDestinationWithCompletion:^(NSError *error)
+                {
+                    if (error == nil)
+                    {
+                        [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+
+                        [self.view endEditing:YES];
+                        if (isNew == YES)
+                        {
+                            [self dismissViewControllerAnimated:YES completion:nil];
+                        }
+                    }
+                    else
+                    {
+                        self.name = self.phone.name;
+                        [self showSaveError:error];
+                    }
+                }];
             }
         }
         else
@@ -218,6 +233,16 @@ typedef enum
             [self showSaveError:error];
         }
     }];
+}
+
+
+- (void)createDefaultDestinationWithCompletion:(void (^)(NSError* error))completion
+{
+    DestinationData* destination = [NSEntityDescription insertNewObjectForEntityForName:@"Destination"
+                                                                 inManagedObjectContext:self.managedObjectContext];
+
+    NSString* name = [NSString stringWithFormat:@"<%@>", self.name];
+    [destination createForE164:[phoneNumber e164Format] name:name showCalledId:false completion:completion];
 }
 
 
