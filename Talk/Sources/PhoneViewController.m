@@ -241,7 +241,7 @@ typedef enum
     DestinationData* destination = [NSEntityDescription insertNewObjectForEntityForName:@"Destination"
                                                                  inManagedObjectContext:self.managedObjectContext];
 
-    NSString* name = [NSString stringWithFormat:@"<%@>", self.name];
+    NSString* name = [NSString stringWithFormat:@"\u2794 %@", self.name];
     [destination createForE164:[phoneNumber e164Format] name:name showCalledId:false completion:completion];
 }
 

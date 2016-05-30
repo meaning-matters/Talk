@@ -186,16 +186,19 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString* title;
+    NSString* title = nil;
     
     switch ([Common nthBitSet:section inValue:self.sections])
     {
         case TableSectionNumbers:
         {
-            title = NSLocalizedStringWithDefaultValue(@"Numbers Number List Title", nil, [NSBundle mainBundle],
-                                                      @"You Can Be Reached At",
-                                                      @"\n"
-                                                      @"[1/4 line larger font].");
+            if ([self tableView:tableView numberOfRowsInSection:section] > 0)
+            {
+                title = NSLocalizedStringWithDefaultValue(@"Numbers Number List Title", nil, [NSBundle mainBundle],
+                                                          @"You Can Be Reached At",
+                                                          @"\n"
+                                                          @"[1/4 line larger font].");
+            }
             break;
         }
         case TableSectionAddresses:
@@ -208,6 +211,29 @@ typedef NS_ENUM(NSUInteger, TableSections)
         }
     }
     
+    return title;
+}
+
+
+- (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
+{
+    NSString* title = nil;
+
+    switch ([Common nthBitSet:section inValue:self.sections])
+    {
+        case TableSectionNumbers:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Numbers Number List Footer", nil, [NSBundle mainBundle],
+                                                      @"List of your purchased Numbers anywhere in the world. "
+                                                      @"You can forward calls on a Number to one of your Phones "
+                                                      @"(using a Destination). When making calls, you can use a Number "
+                                                      @"as Caller ID.",
+                                                      @"\n"
+                                                      @"[1/4 line larger font].");
+            break;
+        }
+    }
+
     return title;
 }
 

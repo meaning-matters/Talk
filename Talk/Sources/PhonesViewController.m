@@ -155,9 +155,7 @@
 {
     if ([[self.fetchedPhonesController sections] count] > 0)
     {
-        id<NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedPhonesController sections] objectAtIndex:section];
-
-        if ([sectionInfo numberOfObjects] > 0)
+        if ([self tableView:tableView numberOfRowsInSection:section] > 0)
         {
             if (self.headerTitle == nil)
             {
@@ -188,9 +186,9 @@
     if (self.footerTitle == nil)
     {
         return NSLocalizedStringWithDefaultValue(@"Phone Phones List Title", nil, [NSBundle mainBundle],
-                                                 @"List of phone numbers you can use as your Caller ID and/or "
-                                                 @"Callback number. Add as many numbers as you wish, as it "
-                                                 @"can be useful to maintain a healthy list from which to choose.",
+                                                 @"List of your fixed or mobile Phones. You can use any of them as "
+                                                 @"your Caller ID, for Callback, and for receiving calls to your "
+                                                 @"Numbers.",
                                                  @"\n"
                                                  @"[ ].");
     }

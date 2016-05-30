@@ -104,16 +104,44 @@ typedef NS_ENUM(NSUInteger, TableSections)
     {
         case TableSectionDestinations:
         {
-            title = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Title", nil, [NSBundle mainBundle],
-                                                      @"Incoming Calls Go To",
-                                                      @"\n"
-                                                      @"[1/4 line larger font].");
+            if ([self tableView:tableView numberOfRowsInSection:section] > 0)
+            {
+                title = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Title", nil, [NSBundle mainBundle],
+                                                          @"Incoming Calls Can Go To",
+                                                          @"\n"
+                                                          @"[1/4 line larger font].");
+            }
             break;
         }
         case TableSectionRecordings:
         {
             title = NSLocalizedStringWithDefaultValue(@"Destinations Recordings Title", nil, [NSBundle mainBundle],
                                                       @"Your Voice Recordings",
+                                                      @"\n"
+                                                      @"[1/4 line larger font].");
+            break;
+        }
+    }
+
+    return title;
+}
+
+
+- (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
+{
+    NSString* title = nil;
+
+    switch ([Common nthBitSet:section inValue:self.sections])
+    {
+        case TableSectionDestinations:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Footer", nil, [NSBundle mainBundle],
+                                                      @"List of Destinations that detemine where you "
+                                                      @"receive calls to your purchased Numbers. You can assign a "
+                                                      @"Destination to each of your Numbers.\n\n"
+                                                      @"(Currently a Destination simply forwards calls to one of "
+                                                      @"your Phones. You can expect more capabilities in coming app "
+                                                      @"versions.)",
                                                       @"\n"
                                                       @"[1/4 line larger font].");
             break;
@@ -175,8 +203,6 @@ typedef NS_ENUM(NSUInteger, TableSections)
     DestinationData* destination = [self.fetchedDestinationsController objectAtIndexPath:indexPath];
     cell.textLabel.text          = destination.name;
     cell.accessoryType           = UITableViewCellAccessoryDisclosureIndicator;
-
-    [Common setImageNamed:@"List" ofCell:cell];
 
     return cell;
 }

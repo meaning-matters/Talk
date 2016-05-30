@@ -28,7 +28,7 @@
                      @"FAIL_DATA_TOO_LARGE"          : @(WebStatusFailDataTooLarge),
                      @"FAIL_INSUFFICIENT_CREDIT"     : @(WebStatusFailInsufficientCredit),
                      @"FAIL_IVR_IN_USE"              : @(WebStatusFailIvrInUse),
-                     @"FAIL_VERIFIED_NUMBER_IN_USE"  : @(WebStatusFailVerfiedNumberInUse),
+                     @"FAIL_NUMBER_IN_USE"           : @(WebStatusFailVerfiedNumberInUse),
                      @"FAIL_DISALLOWED_NUMBER"       : @(WebStatusFailDisallowedNumber),
                      @"FAIL_CALLBACK_ALREADY_ACTIVE" : @(WebStatusFailCallbackAlreadyActive),
                      @"FAIL_NO_CALLBACK_FOUND"       : @(WebStatusFailNoCallbackFound),

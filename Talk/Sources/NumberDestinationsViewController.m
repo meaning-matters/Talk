@@ -46,6 +46,11 @@
     fetchedResultsController = [[DataManager sharedManager] fetchResultsForEntityName:@"Destination"
                                                                          withSortKeys:@[@"name"]
                                                                  managedObjectContext:nil];
+
+    UIBarButtonItem* item;
+    item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
+                                                         target:self action:@selector(deleteAction)];
+    self.navigationItem.rightBarButtonItem = item;
 }
 
 
@@ -61,7 +66,7 @@
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [[fetchedResultsController sections] objectAtIndex:section];
 
-    return [sectionInfo numberOfObjects] + 1;
+    return [sectionInfo numberOfObjects];
 }
 
 
@@ -75,37 +80,17 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
-    if (indexPath.row == 0)
-    {
-        cell.textLabel.text  = [Strings defaultString];
-        cell.imageView.image = [UIImage imageNamed:@"Target"];
+    DestinationData* destination = [fetchedResultsController objectAtIndexPath:indexPath];
+    cell.textLabel.text  = destination.name;
 
-        if (number.destination == nil)
-        {
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            selectedCell       = cell;
-        }
-        else
-        {
-            cell.accessoryType = UITableViewCellAccessoryNone;
-        }
+    if (number.destination == destination)
+    {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        selectedCell       = cell;
     }
     else
     {
-        indexPath = [NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section];
-        DestinationData* destination = [fetchedResultsController objectAtIndexPath:indexPath];
-        cell.textLabel.text  = destination.name;
-        cell.imageView.image = [UIImage imageNamed:@"List"];
-
-        if (number.destination == destination)
-        {
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            selectedCell       = cell;
-        }
-        else
-        {
-            cell.accessoryType = UITableViewCellAccessoryNone;
-        }
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
 
     return cell;
@@ -116,36 +101,32 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    DestinationData* selectedDestination;
-    UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];    // Get here because indexPath is overwritten.
-
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (indexPath.row == 0)
-    {
-        selectedDestination = nil;
-    }
-    else
-    {
-        indexPath = [NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section];
-        selectedDestination = [fetchedResultsController objectAtIndexPath:indexPath];
-    }
+    DestinationData* selectedDestination = [fetchedResultsController objectAtIndexPath:indexPath];
+    [self setDestination:selectedDestination atIndexPath:indexPath];
+}
 
-    if (number.destination != selectedDestination)
+
+- (void)setDestination:(DestinationData*)destination atIndexPath:(NSIndexPath*)indexPath
+{
+    if (number.destination != destination)
     {
+        UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];    // Get here because indexPath is overwritten.
+
         [[WebClient sharedClient] setIvrOfE164:number.e164
-                                          uuid:(selectedDestination == nil) ? @"" : selectedDestination.uuid
+                                          uuid:(destination == nil) ? @"" : destination.uuid
                                          reply:^(NSError* error)
         {
             if (error == nil)
             {
-                number.destination = selectedDestination;
+                number.destination = destination;
                 [[DataManager sharedManager] saveManagedObjectContext:nil];
 
                 selectedCell.accessoryType = UITableViewCellAccessoryNone;
                 cell.accessoryType         = UITableViewCellAccessoryCheckmark;
 
-                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+                [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
 
                 [self.navigationController popViewControllerAnimated:YES];
             }
@@ -169,13 +150,21 @@
                                                message:message
                                             completion:^(BOOL cancelled, NSInteger buttonIndex)
                 {
-                    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                 }
                                      cancelButtonTitle:[Strings closeString]
                                      otherButtonTitles:nil];
             }
         }];
     }
+}
+
+
+#pragma mark - Actions
+
+- (void)deleteAction
+{
+    [self setDestination:nil atIndexPath:nil];
 }
 
 @end

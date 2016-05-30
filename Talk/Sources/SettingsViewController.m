@@ -258,9 +258,9 @@ typedef enum
         {
             title = NSLocalizedStringWithDefaultValue(@"Settings:AccountDataInfoFull SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"With a reset you only lose these settings and your call history. "
-                                                      @"You can always restore your account credit, verified "
-                                                      @"phones, purchased numbers, and destinations on other devices.",
+                                                      @"With a reset you only lose these Settings and your call Recents. "
+                                                      @"You can always restore your account Credit, verified "
+                                                      @"Phones, purchased Numbers, and Destinations on other devices.",
                                                       @"Explanation what the Reset setting is doing\n"
                                                       @"[* lines]");
             break;
