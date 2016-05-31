@@ -61,16 +61,16 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 {
    // [self denmark];
 
-    // The app can look horrible after changing iOS Settings > General > Accessibility > Large Text.
-    // We override this accessibility setting here to show slightly larger text always.
-    Method originalMethod = class_getInstanceMethod([UIApplication class], @selector(preferredContentSizeCategory));
-    method_setImplementation(originalMethod, (IMP)swizzled_preferredContentSizeCategory);
-
     static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^
     {
         self.deviceToken = nil;
+
+        // The app can look horrible after changing iOS Settings > General > Accessibility > Large Text.
+        // We override this accessibility setting here to show slightly larger text always.
+        Method originalMethod = class_getInstanceMethod([UIApplication class], @selector(preferredContentSizeCategory));
+        method_setImplementation(originalMethod, (IMP)swizzled_preferredContentSizeCategory);
 
         // Trigger singletons.
         [NetworkStatus   sharedStatus];   // Called early: because it needs UIApplicationDidBecomeActiveNotification.
