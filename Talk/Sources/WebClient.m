@@ -364,9 +364,9 @@
 }
 
 
-// 2A. GET NUMBER VERIFICATION CODE
-- (void)retrieveVerificationCodeForE164:(NSString*)e164
-                                  reply:(void (^)(NSError* error, NSString* code))reply
+// 2A. GET PHONE VERIFICATION CODE
+- (void)retrievePhoneVerificationCodeForE164:(NSString*)e164
+                                       reply:(void (^)(NSError* error, NSString* code))reply
 {
     AnalysticsTrace(@"API_2A");
 
@@ -389,9 +389,9 @@
 }
 
 
-// 2B. REQUEST VERIFICATION CALL
-- (void)requestVerificationCallForE164:(NSString*)e164
-                                 reply:(void (^)(NSError* error))reply
+// 2B. REQUEST PHONE VERIFICATION CALL
+- (void)requestPhoneVerificationCallForE164:(NSString*)e164
+                                      reply:(void (^)(NSError* error))reply
 {
     AnalysticsTrace(@"API_2B");
 
@@ -407,9 +407,9 @@
 }
 
 
-// 2C. CHECK VERIFICATION STATUS
-- (void)retrieveVerificationStatusForE164:(NSString*)e164
-                                    reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply
+// 2C. CHECK PHONE VERIFICATION STATUS
+- (void)retrievePhoneVerificationStatusForE164:(NSString*)e164
+                                         reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply
 {
     AnalysticsTrace(@"API_2C");
 
@@ -433,7 +433,7 @@
 
 
 // 2D. STOP VERIFICATION
-- (void)stopVerificationForE164:(NSString*)e164 reply:(void (^)(NSError* error))reply
+- (void)stopPhoneVerificationForE164:(NSString*)e164 reply:(void (^)(NSError* error))reply
 {
     AnalysticsTrace(@"API_2D");
 
@@ -450,7 +450,7 @@
 
 
 // 2E. UPDATE VERIFIED NUMBER
-- (void)updateVerifiedE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply
+- (void)updatePhoneVerificationForE164:(NSString*)e164 name:(NSString*)name reply:(void (^)(NSError* error))reply
 {
     AnalysticsTrace(@"API_2E");
     
@@ -468,7 +468,7 @@
 
 
 // 3. GET VERIFIED NUMBER LIST
-- (void)retrieveVerifiedE164List:(void (^)(NSError* error, NSArray* e164s))reply;
+- (void)retrievePhonesList:(void (^)(NSError* error, NSArray* e164s))reply;
 {
     AnalysticsTrace(@"API_3");
 
@@ -495,7 +495,7 @@
 
 
 // 4. GET VERIFIED NUMBER INFO
-- (void)retrieveVerifiedE164:(NSString*)e164
+- (void)retrievePhoneWithE164:(NSString*)e164
                        reply:(void (^)(NSError* error, NSString* name))reply;
 {
     AnalysticsTrace(@"API_3");
@@ -902,7 +902,7 @@
 
 
 // 12. GET LIST OF NUMBERS
-- (void)retrieveNumberE164List:(void (^)(NSError* error, NSArray* e164s))reply
+- (void)retrieveNumbersList:(void (^)(NSError* error, NSArray* e164s))reply
 {
     [self getPath:[NSString stringWithFormat:@"/users/%@/numbers", [Settings sharedSettings].webUsername]
        parameters:nil
@@ -927,20 +927,20 @@
 
 
 // 13. GET NUMBER INFO
-- (void)retrieveNumberE164:(NSString*)e164
-                     reply:(void (^)(NSError*  error,
-                                     NSString* name,
-                                     NSString* numberType,
-                                     NSString* areaCode,
-                                     NSString* areaName,
-                                     NSString* stateCode,
-                                     NSString* stateName,
-                                     NSString* isoCountryCode,
-                                     NSDate*   purchaseDate,
-                                     NSDate*   renewalDate,
-                                     BOOL      autoRenew,
-                                     float     monthFee,
-                                     NSString* addressId))reply
+- (void)retrieveNumberWithE164:(NSString*)e164
+                         reply:(void (^)(NSError*  error,
+                                         NSString* name,
+                                         NSString* numberType,
+                                         NSString* areaCode,
+                                         NSString* areaName,
+                                         NSString* stateCode,
+                                         NSString* stateName,
+                                         NSString* isoCountryCode,
+                                         NSDate*   purchaseDate,
+                                         NSDate*   renewalDate,
+                                         BOOL      autoRenew,
+                                         float     monthFee,
+                                         NSString* addressId))reply
 {
     NSString*     username     = [Settings sharedSettings].webUsername;
     NSString*     number       = [e164 substringFromIndex:1];
@@ -1503,7 +1503,7 @@
 
 
 // 2A.
-- (void)cancelAllRetrieveVerificationCode
+- (void)cancelAllRetrievePhoneVerificationCode
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
@@ -1514,7 +1514,7 @@
 
 
 // 2B.
-- (void)cancelAllRequestVerificationCall
+- (void)cancelAllRequestPhoneVerificationCall
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
@@ -1525,7 +1525,7 @@
 
 
 // 2C.
-- (void)cancelAllRetrieveVerificationStatus
+- (void)cancelAllRetrievePhoneVerificationStatus
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
@@ -1536,7 +1536,7 @@
 
 
 // 2D.
-- (void)cancelAllStopVerification
+- (void)cancelAllStopPhoneVerification
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
@@ -1547,7 +1547,7 @@
 
 
 // 2E.
-- (void)cancelAllUpdateVerifiedE164:(NSString*)e164
+- (void)cancelAllUpdatePhoneVerificationForE164:(NSString*)e164
 {
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
@@ -1559,7 +1559,7 @@
 
 
 // 3.
-- (void)cancelAllRetrieveVerifiedE164List
+- (void)cancelAllRetrievePhonesList
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
@@ -1570,7 +1570,7 @@
 
 
 // 4.
-- (void)cancelAllRetrieveVerifiedE164:(NSString*)e164
+- (void)cancelAllRetrievePhoneWithE164:(NSString*)e164
 {
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
@@ -1745,7 +1745,7 @@
 
 
 // 12.
-- (void)cancelAllRetrieveNumberE164List
+- (void)cancelAllRetrieveNumbersList
 {
     [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/users/%@/numbers",
@@ -1754,7 +1754,7 @@
 
 
 // 13.
-- (void)cancelAllRetrieveNumberE164:(NSString*)e164
+- (void)cancelAllRetrieveNumberWithE164:(NSString*)e164
 {
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];

@@ -223,9 +223,9 @@
 
 - (void)savePhoneNumber:(PhoneNumber*)phoneNumber withName:(NSString*)name completion:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] updateVerifiedE164:[phoneNumber e164Format]
-                                        withName:name
-                                           reply:^(NSError* error)
+    [[WebClient sharedClient] updatePhoneVerificationForE164:[phoneNumber e164Format]
+                                                        name:name
+                                                       reply:^(NSError* error)
     {
         if (error == nil)
         {

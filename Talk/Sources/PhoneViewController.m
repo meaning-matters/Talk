@@ -198,7 +198,7 @@ typedef enum
         self.navigationItem.leftBarButtonItem.enabled = NO;
     }
 
-    [[WebClient sharedClient] updateVerifiedE164:[phoneNumber e164Format] withName:self.name reply:^(NSError *error)
+    [[WebClient sharedClient] updatePhoneVerificationForE164:[phoneNumber e164Format] name:self.name reply:^(NSError *error)
     {
         if (error == nil)
         {

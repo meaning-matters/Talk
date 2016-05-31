@@ -109,12 +109,12 @@
 
         WebClient* webClient = [WebClient sharedClient];
 
-        [webClient cancelAllRetrieveVerificationCode];
-        [webClient cancelAllRetrieveVerificationStatus];
-        [webClient cancelAllRequestVerificationCall];
+        [webClient cancelAllRetrievePhoneVerificationCode];
+        [webClient cancelAllRetrievePhoneVerificationStatus];
+        [webClient cancelAllRequestPhoneVerificationCall];
         if ([self.phoneNumber isValid] == YES)
         {
-            [webClient stopVerificationForE164:[self.phoneNumber e164Format] reply:nil];
+            [webClient stopPhoneVerificationForE164:[self.phoneNumber e164Format] reply:nil];
         }
 
         self.completion(nil);
@@ -146,7 +146,7 @@
     {
         if (cancelled == NO)
         {
-            [[WebClient sharedClient] retrieveVerifiedE164:phoneNumber.e164Format reply:^(NSError *error, NSString *name)
+            [[WebClient sharedClient] retrievePhoneWithE164:phoneNumber.e164Format reply:^(NSError *error, NSString *name)
             {
                 if (error.code == WebStatusFailPhoneUnknown)
                 {
@@ -212,8 +212,8 @@
             
             [self.codeActivityIndicator startAnimating];
             WebClient* webClient = [WebClient sharedClient];
-            [webClient retrieveVerificationCodeForE164:[phoneNumber e164Format]
-                                                 reply:^(NSError* error, NSString* code)
+            [webClient retrievePhoneVerificationCodeForE164:[phoneNumber e164Format]
+                                                      reply:^(NSError* error, NSString* code)
             {
                 if (self.isCancelled)
                 {
@@ -327,7 +327,7 @@
     [self setStep:4];
 
     // Initiate call.
-    [webClient requestVerificationCallForE164:[self.phoneNumber e164Format] reply:^(NSError* error)
+    [webClient requestPhoneVerificationCallForE164:[self.phoneNumber e164Format] reply:^(NSError* error)
     {
         if (self.isCancelled)
         {
@@ -444,7 +444,7 @@
         return;
     }
 
-    [webClient retrieveVerificationStatusForE164:[self.phoneNumber e164Format]
+    [webClient retrievePhoneVerificationStatusForE164:[self.phoneNumber e164Format]
                                            reply:^(NSError* error, BOOL calling, BOOL verified)
     {
         if (self.isCancelled)

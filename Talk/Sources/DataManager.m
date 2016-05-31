@@ -624,7 +624,7 @@
 
 - (void)synchronizeNumbers:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] retrieveNumberE164List:^(NSError* error, NSArray* e164s)
+    [[WebClient sharedClient] retrieveNumbersList:^(NSError* error, NSArray* e164s)
     {
         if (error == nil)
         {
@@ -656,20 +656,20 @@
 
             for (NSString* e164 in e164s)
             {
-                [[WebClient sharedClient] retrieveNumberE164:e164
-                                                       reply:^(NSError*  error,
-                                                               NSString* name,
-                                                               NSString* numberType,
-                                                               NSString* areaCode,
-                                                               NSString* areaName,
-                                                               NSString* stateCode,
-                                                               NSString* stateName,
-                                                               NSString* isoCountryCode,
-                                                               NSDate*   purchaseDate,
-                                                               NSDate*   renewalDate,
-                                                               BOOL      autoRenew,
-                                                               float     monthFee,
-                                                               NSString* addressId)
+                [[WebClient sharedClient] retrieveNumberWithE164:e164
+                                                           reply:^(NSError*  error,
+                                                                   NSString* name,
+                                                                   NSString* numberType,
+                                                                   NSString* areaCode,
+                                                                   NSString* areaName,
+                                                                   NSString* stateCode,
+                                                                   NSString* stateName,
+                                                                   NSString* isoCountryCode,
+                                                                   NSDate*   purchaseDate,
+                                                                   NSDate*   renewalDate,
+                                                                   BOOL      autoRenew,
+                                                                   float     monthFee,
+                                                                   NSString* addressId)
                 {
                     if (error == nil)
                     {
@@ -983,11 +983,11 @@
 
 - (void)synchronizePhones:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] retrieveVerifiedE164List:^(NSError* error, NSArray* e164s)
+    [[WebClient sharedClient] retrievePhonesList:^(NSError* error, NSArray* e164s)
     {
         if (error == nil)
         {
-            // Delete phone E164's that are no longer on the server.
+            // Delete Phones that are no longer on the server.
             NSFetchRequest*  request     = [NSFetchRequest fetchRequestWithEntityName:@"Phone"];
             [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (e164 IN %@)) OR (e164 == nil)", e164s]];
             NSArray*         deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
@@ -1024,8 +1024,7 @@
                     continue;
                 }
 
-                [[WebClient sharedClient] retrieveVerifiedE164:e164
-                                                         reply:^(NSError* error, NSString* name)
+                [[WebClient sharedClient] retrievePhoneWithE164:e164 reply:^(NSError* error, NSString* name)
                 {
                     if (error == nil)
                     {

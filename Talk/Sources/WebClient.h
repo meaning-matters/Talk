@@ -57,29 +57,29 @@
                                              NSString* webPassword))reply;
 
 // 2A. DO NUMBER VERIFICATION
-- (void)retrieveVerificationCodeForE164:(NSString*)e164
-                                  reply:(void (^)(NSError* error, NSString* code))reply;
+- (void)retrievePhoneVerificationCodeForE164:(NSString*)e164
+                                       reply:(void (^)(NSError* error, NSString* code))reply;
 
 // 2B. DO NUMBER VERIFICATION
-- (void)requestVerificationCallForE164:(NSString*)e164
+- (void)requestPhoneVerificationCallForE164:(NSString*)e164
                                  reply:(void (^)(NSError* error))reply;
 
 // 2C. DO NUMBER VERIFICATION
-- (void)retrieveVerificationStatusForE164:(NSString*)e164
+- (void)retrievePhoneVerificationStatusForE164:(NSString*)e164
                                     reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply;
 
 // 2D. STOP VERIFICATION
-- (void)stopVerificationForE164:(NSString*)e164 reply:(void (^)(NSError* error))reply;
+- (void)stopPhoneVerificationForE164:(NSString*)e164 reply:(void (^)(NSError* error))reply;
 
 // 2E. UPDATE VERIFIED NUMBER
-- (void)updateVerifiedE164:(NSString*)e164 withName:(NSString*)name reply:(void (^)(NSError* error))reply;
+- (void)updatePhoneVerificationForE164:(NSString*)e164 name:(NSString*)name reply:(void (^)(NSError* error))reply;
 
 // 3. GET VERIFIED NUMBER LIST
-- (void)retrieveVerifiedE164List:(void (^)(NSError* error, NSArray* e164s))reply;
+- (void)retrievePhonesList:(void (^)(NSError* error, NSArray* e164s))reply;
 
 // 4. GET VERIFIED NUMBER INFO
-- (void)retrieveVerifiedE164:(NSString*)e164
-                       reply:(void (^)(NSError* error, NSString* name))reply;
+- (void)retrievePhoneWithE164:(NSString*)e164
+                        reply:(void (^)(NSError* error, NSString* name))reply;
 
 // 5. DELETE VERIFIED NUMBER
 - (void)deleteVerifiedE164:(NSString*)e164
@@ -204,23 +204,23 @@
 - (void)extendNumberE164:(NSString*)e164 forMonths:(NSUInteger)months reply:(void (^)(NSError* error))reply;
 
 // 12. GET LIST OF NUMBERS
-- (void)retrieveNumberE164List:(void (^)(NSError* error, NSArray* e164s))reply;
+- (void)retrieveNumbersList:(void (^)(NSError* error, NSArray* e164s))reply;
 
 // 13. GET NUMBER INFO
-- (void)retrieveNumberE164:(NSString*)e164
-                     reply:(void (^)(NSError*  error,
-                                     NSString* name,
-                                     NSString* numberType,
-                                     NSString* areaCode,
-                                     NSString* areaName,
-                                     NSString* stateCode,
-                                     NSString* stateName,
-                                     NSString* isoCountryCode,
-                                     NSDate*   purchaseDate,
-                                     NSDate*   renewalDate,
-                                     BOOL      autoRenew,
-                                     float     monthFee,
-                                     NSString* addressId))reply;
+- (void)retrieveNumberWithE164:(NSString*)e164
+                         reply:(void (^)(NSError*  error,
+                                         NSString* name,
+                                         NSString* numberType,
+                                         NSString* areaCode,
+                                         NSString* areaName,
+                                         NSString* stateCode,
+                                         NSString* stateName,
+                                         NSString* isoCountryCode,
+                                         NSDate*   purchaseDate,
+                                         NSDate*   renewalDate,
+                                         BOOL      autoRenew,
+                                         float     monthFee,
+                                         NSString* addressId))reply;
 
 // 14. BUY CREDIT
 - (void)purchaseCreditForReceipt:(NSString*)receipt
@@ -321,25 +321,25 @@
 - (void)cancelAllRetrieveWebAccount;
 
 // 2A.
-- (void)cancelAllRetrieveVerificationCode;
+- (void)cancelAllRetrievePhoneVerificationCode;
 
 // 2B.
-- (void)cancelAllRequestVerificationCall;
+- (void)cancelAllRequestPhoneVerificationCall;
 
 // 2C.
-- (void)cancelAllRetrieveVerificationStatus;
+- (void)cancelAllRetrievePhoneVerificationStatus;
 
 // 2D.
-- (void)cancelAllStopVerification;
+- (void)cancelAllStopPhoneVerification;
 
 // 2E.
-- (void)cancelAllUpdateVerifiedE164:(NSString*)e164;
+- (void)cancelAllUpdatePhoneVerificationForE164:(NSString*)e164;
 
 // 3.
-- (void)cancelAllRetrieveVerifiedE164List;
+- (void)cancelAllRetrievePhonesList;
 
 // 4.
-- (void)cancelAllRetrieveVerifiedE164:(NSString*)e164;
+- (void)cancelAllRetrievePhoneWithE164:(NSString*)e164;
 
 // 5.
 - (void)cancelAllDeleteVerifiedE164:(NSString*)e164;
@@ -384,16 +384,16 @@
 - (void)cancelAllPurchaseNumber;
 
 // 11B.
-- (void)cancelAllUpdateNumberE164:(NSString*)e164;
+- (void)cancelAllUpdateNumberWithE164:(NSString*)e164;
 
 // 11C.
-- (void)cancelAllExtendNumberE164:(NSString*)e164;
+- (void)cancelAllExtendNumberWithE164:(NSString*)e164;
 
 // 12.
-- (void)cancelAllRetrieveNumberE164List;
+- (void)cancelAllRetrieveNumbersList;
 
 // 13.
-- (void)cancelAllRetrieveNumberE164:(NSString*)e164;
+- (void)cancelAllRetrieveNumberWithE164:(NSString*)e164;
 
 // 14.
 - (void)cancelAllPurchaseCredit;
