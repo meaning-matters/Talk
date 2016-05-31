@@ -60,6 +60,14 @@
                                                        @"[].");
             break;
         }
+        case WebStatusFailRequestInvalid:
+        {
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailRequestInvalid", nil, [NSBundle mainBundle],
+                                                       @"Server could not process request.",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+        }
         case WebStatusFailServerIternal:
         {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailServerIternal", nil, [NSBundle mainBundle],
@@ -204,6 +212,14 @@
                                                        @"[].");
             break;
         }
+        case WebStatusFailNoInternet:
+        {
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailNoInternet", nil, [NSBundle mainBundle],
+                                                       @"The Internet connection appears to be offline.",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+        }
         case WebStatusFailNoAccount:
         {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailNoAccount", nil, [NSBundle mainBundle],
@@ -212,10 +228,18 @@
                                                        @"[].");
             break;
         }
+        case WebStatusFailOther:
+        {
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailOther", nil, [NSBundle mainBundle],
+                                                       @"Something went wrong.",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+        }
         case WebStatusFailUnspecified:
         {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailUnspecified", nil, [NSBundle mainBundle],
-                                                       @"An unspecified issue.",
+                                                       @"Error received from server.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;

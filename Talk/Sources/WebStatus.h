@@ -11,28 +11,31 @@
 typedef enum
 {
     WebStatusOk                        =      0,
-    WebStatusFailServerIternal         = 911001,
-    WebStatusFailServiceUnavailable    = 911002,
-    WebStatusFailReceiptInvalid        = 911003,
-    WebStatusFailStatesNonexistent     = 911004,
-    WebStatusFailCreditInsufficient    = 911005,
-    WebStatusFailDestinationInUse      = 911006,
-    WebStatusFailPhoneInUse            = 911007,
-    WebStatusFailPhoneUnknown          = 911008,
-    WebStatusFailE164Disallowed        = 911009,  // Trying to verify a Voxbone DID (of any account).
-    WebStatusFailCallbackAlreadyActive = 911010,
-    WebStatusFailCallbackUnknown       = 911011,
-    WebStatusFailE164IndentityUnknown  = 911012,  // Callback: When caller ID is unknown on server.
-    WebStatusFailE164CallbackUnknown   = 911013,  // Callback: When called back number is unknown.
-    WebStatusFailE164BothUnknown       = 911014,  // Callback: When both called ID and called back number unknown.
-    WebStatusFailAddressInUse          = 911015,
-    WebStatusFailAddressUnknown        = 911016,
-    WebStatusFailStockExhausted        = 911017,
-    WebStatusFailAudioInUse            = 911018,
-    WebStatusFailNoAccount             = 911051,  // Indirect: not sent by server.
-    WebStatusFailUnspecified           = 911052,  // Indirect: not sent by server.
-    WebStatusFailInvalidResponse       = 911053,  // Indirect: not sent by server.
-    WebStatusFailNoServer              = 911054,  // No API server could be retrieved with DNS-SRV.
+    WebStatusFailRequestInvalid        = 911001,
+    WebStatusFailServerIternal         = 911002,
+    WebStatusFailServiceUnavailable    = 911003,
+    WebStatusFailReceiptInvalid        = 911004,
+    WebStatusFailStatesNonexistent     = 911005,
+    WebStatusFailCreditInsufficient    = 911006,
+    WebStatusFailDestinationInUse      = 911007,
+    WebStatusFailPhoneInUse            = 911008,
+    WebStatusFailPhoneUnknown          = 911009,
+    WebStatusFailE164Disallowed        = 911010,  // Trying to verify a Voxbone DID (of any account).
+    WebStatusFailCallbackAlreadyActive = 911011,
+    WebStatusFailCallbackUnknown       = 911012,
+    WebStatusFailE164IndentityUnknown  = 911013,  // Callback: When caller ID is unknown on server.
+    WebStatusFailE164CallbackUnknown   = 911014,  // Callback: When called back number is unknown.
+    WebStatusFailE164BothUnknown       = 911015,  // Callback: When both called ID and called back number unknown.
+    WebStatusFailAddressInUse          = 911016,
+    WebStatusFailAddressUnknown        = 911017,
+    WebStatusFailStockExhausted        = 911018,
+    WebStatusFailAudioInUse            = 911019,
+    WebStatusFailNoInternet            = 911051,  // Indirect: not sent by server, from NSURLErrorNotConnectedToInternet.
+    WebStatusFailNoAccount             = 911052,  // Indirect: not sent by server.
+    WebStatusFailOther                 = 911053,  // Indirect: not sent by server, for example a 404.
+    WebStatusFailUnspecified           = 911054,  // Indirect: not sent by server, when FAIL_... is missing or is unknown.
+    WebStatusFailInvalidResponse       = 911055,  // Indirect: not sent by server, when server response is malformed.
+    WebStatusFailNoServer              = 911056,  // No API server could be retrieved with DNS-SRV.
     WebStatusFailUnknown               = 911099,  // Extreme unlikely situation where AFNetworking gives failure with error == nil.
 } WebStatusCode;
 

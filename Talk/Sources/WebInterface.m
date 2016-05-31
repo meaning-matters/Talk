@@ -724,13 +724,19 @@ static void processDnsReply(DNSServiceRef       sdRef,
 {
     if (error != nil)
     {
-        if (error.code != NSURLErrorCancelled)
+        if (error.code == NSURLErrorCancelled)
         {
-            reply(error, nil);
+            // Ignore cancellation.
+        }
+        else if (error.code == NSURLErrorNotConnectedToInternet)
+        {
+            reply([Common errorWithCode:WebStatusFailNoInternet
+                            description:[WebStatus localizedStringForStatus:WebStatusFailNoInternet]], nil);
         }
         else
         {
-            // Ignore cancellation.
+            reply([Common errorWithCode:WebStatusFailOther
+                            description:[WebStatus localizedStringForStatus:WebStatusFailOther]], nil);
         }
     }
     else

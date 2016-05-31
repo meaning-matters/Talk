@@ -85,7 +85,7 @@
                                                         @"Alert message telling ....\n"
                                                         @"[iOS alert message size]");
         }
-        else if (error.code == NSURLErrorNotConnectedToInternet)
+        else if (error.code == WebStatusFailNoInternet)
         {
             title   = NSLocalizedStringWithDefaultValue(@"Phone DeleteFailedInternetTitle", nil,
                                                         [NSBundle mainBundle], @"Recording Not Deleted",

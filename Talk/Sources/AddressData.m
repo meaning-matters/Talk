@@ -101,7 +101,7 @@
                                                             @"reference it have expired and are no longer yours.",
                                                             @"[iOS alert message size]");
             }
-            else if (error.code == NSURLErrorNotConnectedToInternet)
+            else if (error.code == WebStatusFailNoInternet)
             {
                 title   = NSLocalizedStringWithDefaultValue(@"Address DeleteFailedInternetTitle", nil,
                                                             [NSBundle mainBundle], @"Address Not Deleted",
