@@ -137,10 +137,12 @@ typedef enum
         {
             title = NSLocalizedStringWithDefaultValue(@"Number:DestinationDefault SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"With 'Default' all devices associated with this number "
-                                                      @"will ring when an incoming call is received.",
+                                                      @"With '%@' you won't receive calls to this Number, and people "
+                                                      @"calling will hear a tone or message indicating that this "
+                                                      @"Number is not in service.",
                                                       @"Explanation about which phone will be called.\n"
-                                                      @"[* lines]");
+                                                      @"[* lines], parameter is 'none'");
+            title = [NSString stringWithFormat:title, [Strings noneString]];
             break;
         }
         case TableSectionSubscription:
@@ -428,7 +430,7 @@ typedef enum
                                                                   [NSBundle mainBundle], @"Destination",
                                                                   @"....");
     cell.textLabel.textColor  = [UIColor blackColor];
-    cell.detailTextLabel.text = (number.destination == nil) ? [Strings defaultString] : number.destination.name;
+    cell.detailTextLabel.text = (number.destination == nil) ? [Strings noneString] : number.destination.name;
     cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
     cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
 }

@@ -224,10 +224,10 @@ typedef NS_ENUM(NSUInteger, TableSections)
         case TableSectionNumbers:
         {
             title = NSLocalizedStringWithDefaultValue(@"Numbers Number List Footer", nil, [NSBundle mainBundle],
-                                                      @"List of your purchased Numbers anywhere in the world. "
-                                                      @"You can forward calls on a Number to one of your Phones "
-                                                      @"(using a Destination). When making calls, you can use a Number "
-                                                      @"as Caller ID.",
+                                                      @"List of your purchased Numbers, allowing you to be reachable in "
+                                                      @"thousands of cities in over 50 countries. You can forward calls "
+                                                      @"at a Number to one of your Phones (using a Destination). "
+                                                      @"And, when making calls, you can use a Number as Caller ID.",
                                                       @"\n"
                                                       @"[1/4 line larger font].");
             break;

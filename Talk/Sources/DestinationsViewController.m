@@ -98,7 +98,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString* title;
+    NSString* title = nil;
 
     switch ([Common nthBitSet:section inValue:self.sections])
     {
@@ -136,9 +136,9 @@ typedef NS_ENUM(NSUInteger, TableSections)
         case TableSectionDestinations:
         {
             title = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Footer", nil, [NSBundle mainBundle],
-                                                      @"List of Destinations that detemine where you "
-                                                      @"receive calls to your purchased Numbers. You can assign a "
-                                                      @"Destination to each of your Numbers.\n\n"
+                                                      @"List of Destinations where you can receive calls to your "
+                                                      @"purchased Numbers. To receive calls, you must assign a "
+                                                      @"Destination to your Number.\n\n"
                                                       @"(Currently a Destination simply forwards calls to one of "
                                                       @"your Phones. You can expect more capabilities in coming app "
                                                       @"versions.)",

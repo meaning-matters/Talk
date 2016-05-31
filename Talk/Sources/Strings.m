@@ -463,11 +463,11 @@
 }
 
 
-+ (NSString*)defaultString
++ (NSString*)noneString
 {
-    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Default", nil, [NSBundle mainBundle],
-                                             @"Default",
-                                             @"Standard label for a default value/selection/number/....\n"
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings None", nil, [NSBundle mainBundle],
+                                             @"None",
+                                             @"Standard label for nothing selected/filled-in/...\n"
                                              @"[No size contraint].");
 }
 

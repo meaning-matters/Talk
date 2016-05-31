@@ -164,7 +164,7 @@ typedef enum
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString* title;
+    NSString* title = nil;
 
     switch ((TableSections)[Common nthBitSet:section inValue:self.sections])
     {
@@ -216,7 +216,7 @@ typedef enum
             {
                 title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Phones SectionFooterB", nil, [NSBundle mainBundle],
                                                           @"The selected Phone will be used when dialling a number, or "
-                                                          @"calling a contact you did not assign an ID.",
+                                                          @"when calling a contact you did not assign a Caller ID.",
                                                           @"...\n"
                                                           @"[* lines]");
             }
@@ -227,7 +227,7 @@ typedef enum
             if (self.contactId != nil)
             {
                 title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Numbers SectionFooterA", nil, [NSBundle mainBundle],
-                                                          @"The selected Number will be used as caller ID for all "
+                                                          @"The selected Number will be used as Caller ID for all "
                                                           @"your calls to this contact.",
                                                           @"...\n"
                                                           @"[* lines]");
@@ -236,7 +236,7 @@ typedef enum
             {
                 title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Numbers SectionFooterB", nil, [NSBundle mainBundle],
                                                           @"The selected Number will be used when dialling a number, or "
-                                                          @"calling a contact you did not assign an ID.",
+                                                          @"when calling a contact you did not assign a Caller ID.",
                                                           @"...\n"
                                                           @"[* lines]");
             }

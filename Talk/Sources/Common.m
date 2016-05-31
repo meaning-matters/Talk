@@ -1525,7 +1525,7 @@ static Common* sharedCommon;
     NSString* title   = NSLocalizedStringWithDefaultValue(@"Common ...", nil, [NSBundle mainBundle],
                                                           @"Default Caller ID", @"...");
     NSString* message = NSLocalizedStringWithDefaultValue(@"Phone ...", nil, [NSBundle mainBundle],
-                                                          @"This caller ID will be used when you did not select "
+                                                          @"This Caller ID will be used when you did not select "
                                                           @"one for the contact you're calling, or "
                                                           @"when you call using the Keypad.",
                                                           @"...");

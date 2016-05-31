@@ -484,9 +484,10 @@ typedef enum
     {
         case TableSectionPhone:
         {
+            PhoneData*            phone = self.isNew ? self.phone : [self.destination.phones anyObject];
             PhonesViewController* viewController;
             viewController = [[PhonesViewController alloc] initWithManagedObjectContext:self.managedObjectContext
-                                                                          selectedPhone:[self.destination.phones anyObject]
+                                                                          selectedPhone:phone
                                                                              completion:^(PhoneData* selectedPhone)
             {
                 self.phone = selectedPhone;
@@ -498,7 +499,11 @@ typedef enum
                 [self save];
             }];
 
-            viewController.headerTitle = @"";
+            viewController.headerTitle = NSLocalizedStringWithDefaultValue(@"DestinationView Phones Footer Title", nil,
+                                                                           [NSBundle mainBundle],
+                                                                           @"Select Phone to receive calls",
+                                                                           @"Title of an table row\n"
+                                                                           @"[1/3 line small font].");
             viewController.footerTitle = @"";
 
             [self.navigationController pushViewController:viewController animated:YES];

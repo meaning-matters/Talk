@@ -47,10 +47,13 @@
                                                                          withSortKeys:@[@"name"]
                                                                  managedObjectContext:nil];
 
-    UIBarButtonItem* item;
-    item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
+    if ([self tableView:self.tableView numberOfRowsInSection:0] > 0)
+    {
+        UIBarButtonItem* item;
+        item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
                                                          target:self action:@selector(deleteAction)];
-    self.navigationItem.rightBarButtonItem = item;
+        self.navigationItem.rightBarButtonItem = item;
+    }
 }
 
 
@@ -94,6 +97,52 @@
     }
 
     return cell;
+}
+
+
+- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSString* title = nil;
+
+    if ([self tableView:tableView numberOfRowsInSection:section] > 0)
+    {
+        title = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Title", nil, [NSBundle mainBundle],
+                                                  @"Select where calls must go",
+                                                  @"\n"
+                                                  @"[1/4 line larger font].");
+    }
+
+    return title;
+}
+
+
+- (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
+{
+    NSString* title = nil;
+
+    if ([self tableView:tableView numberOfRowsInSection:section] > 0)
+    {
+        title = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Footer A", nil, [NSBundle mainBundle],
+                                                  @"List of Destinations where you can receive calls to your "
+                                                  @"purchased Numbers. To receive calls, you must assign a "
+                                                  @"Destination to this Number.\n\n"
+                                                  @"Tap the delete button if you don't want to receive calls "
+                                                  @"at this Number.",
+                                                  @"\n"
+                                                  @"[1/4 line larger font].");
+    }
+    else
+    {
+        title = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Footer B", nil, [NSBundle mainBundle],
+                                                  @"List of Destinations where you can receive calls to your "
+                                                  @"purchased Numbers. To receive calls, you must assign a "
+                                                  @"Destination to this Number.\n\n"
+                                                  @"You can create them from the Destinations tab.",
+                                                  @"\n"
+                                                  @"[1/4 line larger font].");
+    }
+
+    return title;
 }
 
 

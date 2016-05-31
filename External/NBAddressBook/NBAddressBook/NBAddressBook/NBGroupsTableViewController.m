@@ -133,7 +133,7 @@
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    //Skip the all-button
+    // Skip the all-button
     if (section > 0)
     {
         return [[groupsDatasource objectAtIndex:section-1] groupName];

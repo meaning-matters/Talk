@@ -171,7 +171,7 @@ typedef enum
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString* title;
+    NSString* title = nil;
 
     switch ([Common nthBitSet:section inValue:self.sections])
     {

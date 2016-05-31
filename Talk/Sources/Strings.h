@@ -111,7 +111,7 @@
 
 + (NSString*)areaString;
 
-+ (NSString*)defaultString;
++ (NSString*)noneString;
 
 + (NSString*)synchronizeWithServerString;
 

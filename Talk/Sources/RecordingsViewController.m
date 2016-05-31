@@ -118,6 +118,8 @@
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
+    NSString* title = nil;
+
     if ([[self.fetchedRecordingsController sections] count] > 0)
     {
         id<NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedRecordingsController sections] objectAtIndex:section];
@@ -126,25 +128,19 @@
         {
             if (self.headerTitle == nil)
             {
-                return NSLocalizedStringWithDefaultValue(@"Recordings ...", nil, [NSBundle mainBundle],
-                                                         @"Your Voice Recordings",
-                                                         @"\n"
-                                                         @"[1/4 line larger font].");
+                title = NSLocalizedStringWithDefaultValue(@"Recordings ...", nil, [NSBundle mainBundle],
+                                                          @"Your Voice Recordings",
+                                                          @"\n"
+                                                          @"[1/4 line larger font].");
             }
             else
             {
-                return self.headerTitle;
+                title = self.headerTitle;
             }
         }
-        else
-        {
-            return nil;
-        }
     }
-    else
-    {
-        return nil;
-    }
+
+    return title;
 }
 
 

@@ -330,9 +330,9 @@
 
         message = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BuyText", nil,
                                                     [NSBundle mainBundle],
-                                                    @"Thanks for becoming a NumberBay user!\n\n"
-                                                    @"Please send us a message from the Help tab, "
-                                                    @"when there's anything you want to ask or talk about.",
+                                                    @"You're now a NumberBay insider!\n\n"
+                                                    @"When there's anything you want to chat about, "
+                                                    @"reach us from the Help tab.",
                                                     @"Welcome text for a new user.");
     }
     else
@@ -344,9 +344,9 @@
 
         message = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BuyText", nil,
                                                     [NSBundle mainBundle],
-                                                    @"Nice to see you again at NumberBay!\n\n"
-                                                    @"Remember to send us a message from the Help tab, "
-                                                    @"when there's anything you want to ask or talk about.",
+                                                    @"Always great to see you again!\n\n"
+                                                    @"Remember, when there's anything you want to chat about, "
+                                                    @"reach us from the Help tab.",
                                                     @"Welcome text for a new user.");
     }
 

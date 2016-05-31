@@ -223,6 +223,8 @@
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
+    NSString* title = nil;
+
     if ([[self.fetchedAddressesController sections] count] > 0)
     {
         id<NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedAddressesController sections] objectAtIndex:section];
@@ -231,27 +233,21 @@
         {
             if (self.predicate == nil)
             {
-                return NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
-                                                         @"Your Registered Addresses",
-                                                         @"\n"
-                                                         @"[1/4 line larger font].");
+                title = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
+                                                          @"Your Registered Addresses",
+                                                          @"\n"
+                                                          @"[1/4 line larger font].");
             }
             else
             {
-                return NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
-                                                         @"Select Address",
-                                                         @"[1/4 line larger font].");
+                title = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
+                                                          @"Select Address",
+                                                          @"[1/4 line larger font].");
             }
         }
-        else
-        {
-            return nil;
-        }
     }
-    else
-    {
-        return nil;
-    }
+
+    return title;
 }
 
 

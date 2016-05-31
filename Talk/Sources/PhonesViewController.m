@@ -153,31 +153,27 @@
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
+    NSString* title = nil;
+
     if ([[self.fetchedPhonesController sections] count] > 0)
     {
         if ([self tableView:tableView numberOfRowsInSection:section] > 0)
         {
             if (self.headerTitle == nil)
             {
-                return NSLocalizedStringWithDefaultValue(@"Phones ...", nil, [NSBundle mainBundle],
-                                                         @"The Phones you use",
-                                                         @"\n"
-                                                         @"[1/4 line larger font].");
+                title = NSLocalizedStringWithDefaultValue(@"Phones ...", nil, [NSBundle mainBundle],
+                                                          @"The Phones you use",
+                                                          @"\n"
+                                                          @"[1/4 line larger font].");
             }
             else
             {
-                return self.headerTitle;
+                title = self.headerTitle;
             }
         }
-        else
-        {
-            return nil;
-        }
     }
-    else
-    {
-        return nil;
-    }
+
+    return title;
 }
 
 
@@ -304,10 +300,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     cell.detailTextLabel.text = [phoneNumber internationalFormat];
     cell.imageView.image      = [UIImage imageNamed:[phoneNumber isoCountryCode]];
     
-    if (self.selectedPhone == nil)
-    {
-        [self addUseButtonsWithPhone:phone toCell:cell];
-    }
+    [self addUseButtonsWithPhone:phone toCell:cell];
 
     if (self.completion == nil)
     {
