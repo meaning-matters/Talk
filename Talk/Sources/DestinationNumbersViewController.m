@@ -117,9 +117,9 @@
     NumberData* number = [self.fetchedNumbersController objectAtIndexPath:indexPath];
     NSString*   uuid   = [self.destination.numbers containsObject:number] ? @"" : self.destination.uuid;
 
-    [[WebClient sharedClient] setIvrOfE164:number.e164
-                                      uuid:uuid
-                                     reply:^(NSError* error)
+    [[WebClient sharedClient] setDestinationOfE164:number.e164
+                                              uuid:uuid
+                                             reply:^(NSError* error)
     {
         if (error == nil)
         {

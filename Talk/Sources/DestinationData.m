@@ -57,7 +57,7 @@
     }
     else
     {
-        [[WebClient sharedClient] deleteIvrForUuid:self.uuid reply:^(NSError* error)
+        [[WebClient sharedClient] deleteDestinationForUuid:self.uuid reply:^(NSError* error)
         {
             if (error == nil)
             {
@@ -134,9 +134,9 @@
     action[@"call"][@"e164s"][0]     = e164;
     action[@"call"][@"showCalledId"] = showCalledId ? @"true" : @"false";
 
-    [[WebClient sharedClient] createIvrWithName:self.name
-                                         action:action
-                                          reply:^(NSError* error, NSString* uuid)
+    [[WebClient sharedClient] createDestinationWithName:self.name
+                                                 action:action
+                                                  reply:^(NSError* error, NSString* uuid)
     {
         if (error == nil)
         {

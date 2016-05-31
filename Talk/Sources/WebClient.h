@@ -233,36 +233,36 @@
 - (void)retrieveCallRateForE164:(NSString*)e164
                           reply:(void (^)(NSError* error, float ratePerMinute))reply;
 
-// 19A. CREATE IVR
-- (void)createIvrWithName:(NSString*)name
-                   action:(NSDictionary*)action
-                    reply:(void (^)(NSError* error, NSString* uuid))reply;
+// 19A. CREATE DESTINATION
+- (void)createDestinationWithName:(NSString*)name
+                           action:(NSDictionary*)action
+                            reply:(void (^)(NSError* error, NSString* uuid))reply;
 
-// 19B. UPDATE IVR
-- (void)updateIvrForUuid:(NSString*)uuid
-                    name:(NSString*)name
-                  action:(NSDictionary*)action
-                   reply:(void (^)(NSError* error))reply;
+// 19B. UPDATE DESTINATION
+- (void)updateDestinationForUuid:(NSString*)uuid
+                            name:(NSString*)name
+                          action:(NSDictionary*)action
+                           reply:(void (^)(NSError* error))reply;
 
-// 20. DELETE IVR
-- (void)deleteIvrForUuid:(NSString*)uuid
-                   reply:(void (^)(NSError* error))reply;
+// 20. DELETE DESTINATION
+- (void)deleteDestinationForUuid:(NSString*)uuid
+                           reply:(void (^)(NSError* error))reply;
 
-// 21. GET LIST OF IVRS
-- (void)retrieveIvrList:(void (^)(NSError* error, NSArray* uuids))reply;
+// 21. GET LIST OF DESTINATIONS
+- (void)retrieveDestinationsList:(void (^)(NSError* error, NSArray* uuids))reply;
 
-// 22. DOWNLOAD IVR
-- (void)retrieveIvrForUuid:(NSString*)uuid
-                     reply:(void (^)(NSError* error, NSString* name, NSDictionary* action))reply;
+// 22. DOWNLOAD DESTINATION
+- (void)retrieveDestinationForUuid:(NSString*)uuid
+                             reply:(void (^)(NSError* error, NSString* name, NSDictionary* action))reply;
 
-// 23. SET/CLEAR IVR FOR A NUMBER
-- (void)setIvrOfE164:(NSString*)e164
-                uuid:(NSString*)uuid
-               reply:(void (^)(NSError* error))reply;
+// 23. SET/CLEAR DESTINATION FOR A NUMBER
+- (void)setDestinationOfE164:(NSString*)e164
+                        uuid:(NSString*)uuid
+                       reply:(void (^)(NSError* error))reply;
 
-// 24. RETRIEVE IVR FOR A NUMBER
-- (void)retrieveIvrOfE164:(NSString*)e164
-                    reply:(void (^)(NSError* error, NSString* uuid))reply;
+// 24. RETRIEVE DESTINATION FOR A NUMBER
+- (void)retrieveDestinationOfE164:(NSString*)e164
+                            reply:(void (^)(NSError* error, NSString* uuid))reply;
 
 // 25. UPDATE AUDIO
 - (void)updateAudioForUuid:(NSString*)uuid
@@ -405,19 +405,19 @@
 - (void)cancelAllRetrieveCallRateForE164:(NSString*)e164;
 
 // 19.
-- (void)cancelAllCreateIvrForUuid:(NSString*)uuid;
+- (void)cancelAllCreateDestinationForUuid:(NSString*)uuid;
 
 // 20.
-- (void)cancelAllDeleteIvrForUuid:(NSString*)uuid;
+- (void)cancelAllDeleteDestinationForUuid:(NSString*)uuid;
 
 // 21.
-- (void)cancelAllRetrieveIvrList;
+- (void)cancelAllRetrieveDestinationsList;
 
 // 22.
-- (void)cancelAllRetrieveIvrForUuid:(NSString*)uuid;
+- (void)cancelAllRetrieveDestinationForUuid:(NSString*)uuid;
 
 // 23.
-- (void)cancelAllSetIvrOfE164:(NSString*)e164;
+- (void)cancelAllSetDestinationOfE164:(NSString*)e164;
 
 // 25.
 - (void)cancellAllUpdateAudioForUuid:(NSString*)uuid;

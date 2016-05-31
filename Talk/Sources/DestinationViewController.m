@@ -237,10 +237,10 @@ typedef enum
         return;
     }
 
-    [[WebClient sharedClient] updateIvrForUuid:self.destination.uuid
-                                          name:self.name
-                                        action:self.action
-                                         reply:^(NSError* error)
+    [[WebClient sharedClient] updateDestinationForUuid:self.destination.uuid
+                                                  name:self.name
+                                                action:self.action
+                                                 reply:^(NSError* error)
     {
         if (error == nil)
         {

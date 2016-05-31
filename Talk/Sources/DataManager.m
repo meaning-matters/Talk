@@ -429,7 +429,7 @@
                                     {
                                         if (error == nil)
                                         {
-                                            [self synchronizeIvrs:^(NSError* error)
+                                            [self synchronizeNumberDestinations:^(NSError* error)
                                             {
                                                 if (error == nil)
                                                 {
@@ -740,11 +740,11 @@
 
 - (void)synchronizeDestinations:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] retrieveIvrList:^(NSError* error, NSArray* list)
+    [[WebClient sharedClient] retrieveDestinationsList:^(NSError* error, NSArray* list)
     {
         if (error == nil)
         {
-            // Delete IVRs that are no longer on the server.
+            // Delete Destinations that are no longer on the server.
             NSFetchRequest* request     = [NSFetchRequest fetchRequestWithEntityName:@"Destination"];
             [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (uuid IN %@)) OR (uuid == nil)", list]];
             NSArray*        deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
@@ -772,8 +772,8 @@
 
             for (NSString* uuid in list)
             {
-                [[WebClient sharedClient] retrieveIvrForUuid:uuid
-                                                       reply:^(NSError* error, NSString* name, NSDictionary* action)
+                [[WebClient sharedClient] retrieveDestinationForUuid:uuid
+                                                               reply:^(NSError* error, NSString* name, NSDictionary* action)
                 {
                     if (error == nil)
                     {
@@ -912,7 +912,7 @@
 }
 
 
-- (void)synchronizeIvrs:(void (^)(NSError* error))completion
+- (void)synchronizeNumberDestinations:(void (^)(NSError* error))completion
 {
     NSError*        error   = nil;
     NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
@@ -935,7 +935,7 @@
 
     for (NumberData* number in array)
     {
-        [[WebClient sharedClient] retrieveIvrOfE164:number.e164 reply:^(NSError* error, NSString* uuid)
+        [[WebClient sharedClient] retrieveDestinationOfE164:number.e164 reply:^(NSError* error, NSString* uuid)
         {
             if (error == nil)
             {

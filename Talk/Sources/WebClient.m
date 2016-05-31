@@ -146,9 +146,9 @@
     if ([object isKindOfClass:[NSMutableDictionary class]])
     {
         //### When iterating "for (NSString* key in object)" got app crash.
-        //### It occurred only with some IVR JSON; very weird.
+        //### It occurred only with some Destination JSON; very weird.
         //### http://stackoverflow.com/q/14457369/1971013
-        //### Let's see what happens here when we have longer IVRs.
+        //### Let's see what happens here when we have longer Destinations.
         for (NSString* key in [object allKeys])
         {
             if ([key isEqualToString:@"e164s"])
@@ -1077,8 +1077,8 @@
 // ...
 
 
-// 19A. CREATE IVR
-- (void)createIvrWithName:(NSString*)name
+// 19A. CREATE DESTINATION
+- (void)createDestinationWithName:(NSString*)name
                    action:(NSDictionary*)action
                     reply:(void (^)(NSError* error, NSString* uuid))reply
 {
@@ -1088,7 +1088,7 @@
     NSDictionary* parameters = @{@"name"   : name,
                                  @"action" : [self stripE164InAction:action]};
 
-    [self postPath:[NSString stringWithFormat:@"/users/%@/ivr", username]
+    [self postPath:[NSString stringWithFormat:@"/users/%@/destinations", username]
         parameters:parameters
              reply:^(NSError* error, id content)
     {
@@ -1104,8 +1104,8 @@
 }
 
 
-// 19B. CREATE OR UPDATE IVR
-- (void)updateIvrForUuid:(NSString*)uuid
+// 19B. CREATE OR UPDATE DESTINATION
+- (void)updateDestinationForUuid:(NSString*)uuid
                     name:(NSString*)name
                   action:(NSDictionary*)action
                    reply:(void (^)(NSError* error))reply
@@ -1116,7 +1116,7 @@
     NSDictionary* parameters = @{@"name"   : name,
                                  @"action" : [self stripE164InAction:action]};
 
-    [self putPath:[NSString stringWithFormat:@"/users/%@/ivr/%@", username, uuid]
+    [self putPath:[NSString stringWithFormat:@"/users/%@/destinations/%@", username, uuid]
        parameters:parameters
             reply:^(NSError* error, id content)
     {
@@ -1125,15 +1125,15 @@
 }
 
 
-// 20. DELETE IVR
-- (void)deleteIvrForUuid:(NSString*)uuid
+// 20. DELETE DESTINATION
+- (void)deleteDestinationForUuid:(NSString*)uuid
                    reply:(void (^)(NSError* error))reply
 {
     AnalysticsTrace(@"API_20");
 
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self deletePath:[NSString stringWithFormat:@"/users/%@/ivr/%@", username, uuid]
+    [self deletePath:[NSString stringWithFormat:@"/users/%@/destinations/%@", username, uuid]
           parameters:nil
                reply:^(NSError* error, id content)
     {
@@ -1142,28 +1142,28 @@
 }
 
 
-// 21. GET LIST OF IVRS
-- (void)retrieveIvrList:(void (^)(NSError* error, NSArray* uuids))reply
+// 21. GET LIST OF DESTINATIONS
+- (void)retrieveDestinationsList:(void (^)(NSError* error, NSArray* uuids))reply
 {
     AnalysticsTrace(@"API_21");
 
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/ivr", username]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/destinations", username]
        parameters:nil
             reply:reply];
 }
 
 
-// 22. DOWNLOAD IVR
-- (void)retrieveIvrForUuid:(NSString*)uuid
+// 22. DOWNLOAD DESTINATION
+- (void)retrieveDestinationForUuid:(NSString*)uuid
                      reply:(void (^)(NSError* error, NSString* name, NSDictionary* action))reply
 {
     AnalysticsTrace(@"API_22");
 
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/ivr/%@", username, uuid]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/destinations/%@", username, uuid]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -1181,8 +1181,8 @@
 }
 
 
-// 23. SET/CLEAR IVR FOR A NUMBER
-- (void)setIvrOfE164:(NSString*)e164
+// 23. SET/CLEAR DESTINATION FOR A NUMBER
+- (void)setDestinationOfE164:(NSString*)e164
                 uuid:(NSString*)uuid
                reply:(void (^)(NSError* error))reply
 {
@@ -1192,7 +1192,7 @@
     NSString*     number     = [e164 substringFromIndex:1];
     NSDictionary* parameters = @{@"uuid" : uuid};
 
-    [self putPath:[NSString stringWithFormat:@"/users/%@/numbers/%@/ivr", username, number]
+    [self putPath:[NSString stringWithFormat:@"/users/%@/numbers/%@/destination", username, number]
        parameters:parameters
             reply:^(NSError* error, id content)
     {
@@ -1201,8 +1201,8 @@
 }
 
 
-// 24. RETRIEVE IVR FOR A NUMBER
-- (void)retrieveIvrOfE164:(NSString*)e164
+// 24. RETRIEVE DESTINATION FOR A NUMBER
+- (void)retrieveDestinationOfE164:(NSString*)e164
                     reply:(void (^)(NSError* error, NSString* uuid))reply
 {
     AnalysticsTrace(@"API_24");
@@ -1210,7 +1210,7 @@
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/numbers/%@/ivr", username, number]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/numbers/%@/destination", username, number]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -1795,57 +1795,57 @@
 
 
 // 19.
-- (void)cancelAllCreateIvrForUuid:(NSString*)uuid
+- (void)cancelAllCreateDestinationForUuid:(NSString*)uuid
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
-                                                    path:[NSString stringWithFormat:@"/users/%@/ivr/%@",
+                                                    path:[NSString stringWithFormat:@"/users/%@/destinations/%@",
                                                           username, uuid]];
 }
 
 
 // 20.
-- (void)cancelAllDeleteIvrForUuid:(NSString*)uuid
+- (void)cancelAllDeleteDestinationForUuid:(NSString*)uuid
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
-                                                    path:[NSString stringWithFormat:@"/users/%@/ivr/%@",
+                                                    path:[NSString stringWithFormat:@"/users/%@/destinations/%@",
                                                           username, uuid]];
 }
 
 
 // 21.
-- (void)cancelAllRetrieveIvrList
+- (void)cancelAllRetrieveDestinationsList
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
-                                                    path:[NSString stringWithFormat:@"/users/%@/ivr",
+                                                    path:[NSString stringWithFormat:@"/users/%@/destinations",
                                                           username]];
 }
 
 
 // 22.
-- (void)cancelAllRetrieveIvrForUuid:(NSString*)uuid
+- (void)cancelAllRetrieveDestinationForUuid:(NSString*)uuid
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
-                                                    path:[NSString stringWithFormat:@"/users/%@/ivr/%@",
+                                                    path:[NSString stringWithFormat:@"/users/%@/destinations/%@",
                                                           username, uuid]];
 }
 
 
 // 23.
-- (void)cancelAllSetIvrOfE164:(NSString*)e164
+- (void)cancelAllSetDestinationOfE164:(NSString*)e164
 {
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
-                                                    path:[NSString stringWithFormat:@"/users/%@/numbers/%@/ivr",
+                                                    path:[NSString stringWithFormat:@"/users/%@/numbers/%@/destination",
                                                           username, number]];
 }
 
