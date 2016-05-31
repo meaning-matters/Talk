@@ -64,7 +64,7 @@
                 [self.managedObjectContext deleteObject:self];
                 completion ? completion(YES) : 0;
             }
-            else if (error.code == WebStatusFailIvrInUse)
+            else if (error.code == WebStatusFailDestinationInUse)
             {
                 NSString* title;
                 NSString* message;

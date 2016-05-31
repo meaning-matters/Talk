@@ -10,28 +10,25 @@
 
 typedef enum
 {
-    WebStatusOk,
-    WebStatusFailInvalidRequest        = 911001,
-    WebStatusFailServerIternal         = 911002,
-    WebStatusFailServiceUnavailable    = 911003,
-    WebStatusFailInvalidReceipt        = 911004,
-    WebStatusFailNoStatesForCountry    = 911005,
-    WebStatusFailInvalidInfo           = 911006,
-    WebStatusFailDataTooLarge          = 911007,
-    WebStatusFailInsufficientCredit    = 911008,
-    WebStatusFailIvrInUse              = 911009,
-    WebStatusFailVerfiedNumberInUse    = 911010,
-    WebStatusFailDisallowedNumber      = 911011,  // Trying to verify a Voxbone DID (of any account).
-    WebStatusFailCallbackAlreadyActive = 911012,
-    WebStatusFailNoCallbackFound       = 911013,
-    WebStatusFailNoCredit              = 911014,
-    WebStatusFailUnknownCallerId       = 911015,  // Callback: When caller ID is unknown on server.
-    WebStatusFailUnknownVerifiedNumber = 911016,  // Callback: When called back number is unknown.
-    WebStatusFailUnknownBothE164       = 911017,  // Callback: When both called ID and called back number unknown.
-    WebStatusFailAddressInUse          = 911018,
-    WebStatusFailAddressUnknown        = 911019,
-    WebStatusFailNoNumbersInStock      = 911020,
-    WebStatusFailAudioInUse            = 911021,
+    WebStatusOk                        =      0,
+    WebStatusFailServerIternal         = 911001,
+    WebStatusFailServiceUnavailable    = 911002,
+    WebStatusFailReceiptInvalid        = 911003,
+    WebStatusFailStatesNonexistent     = 911004,
+    WebStatusFailCreditInsufficient    = 911005,
+    WebStatusFailDestinationInUse      = 911006,
+    WebStatusFailPhoneInUse            = 911007,
+    WebStatusFailPhoneUnknown          = 911008,
+    WebStatusFailE164Disallowed        = 911009,  // Trying to verify a Voxbone DID (of any account).
+    WebStatusFailCallbackAlreadyActive = 911010,
+    WebStatusFailCallbackUnknown       = 911011,
+    WebStatusFailE164IndentityUnknown  = 911012,  // Callback: When caller ID is unknown on server.
+    WebStatusFailE164CallbackUnknown   = 911013,  // Callback: When called back number is unknown.
+    WebStatusFailE164BothUnknown       = 911014,  // Callback: When both called ID and called back number unknown.
+    WebStatusFailAddressInUse          = 911015,
+    WebStatusFailAddressUnknown        = 911016,
+    WebStatusFailStockExhausted        = 911017,
+    WebStatusFailAudioInUse            = 911018,
     WebStatusFailNoAccount             = 911051,  // Indirect: not sent by server.
     WebStatusFailUnspecified           = 911052,  // Indirect: not sent by server.
     WebStatusFailInvalidResponse       = 911053,  // Indirect: not sent by server.

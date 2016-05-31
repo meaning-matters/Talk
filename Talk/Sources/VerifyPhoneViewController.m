@@ -148,9 +148,8 @@
         {
             [[WebClient sharedClient] retrieveVerifiedE164:phoneNumber.e164Format reply:^(NSError *error, NSString *name)
             {
-                if (error.code == WebStatusFailInvalidRequest)
+                if (error.code == WebStatusFailPhoneUnknown)
                 {
-                    // The server generates this error when the number is unknown (should be changed to HTTP 404 later).
                     completion(phoneNumber);
                     
                     return;
@@ -253,7 +252,7 @@
                                                                 [NSBundle mainBundle], @"Couldn't Get Code",
                                                                 @"Something went wrong.\n"
                                                                 @"[iOS alert title size].");
-                    if (error.code == WebStatusFailDisallowedNumber)
+                    if (error.code == WebStatusFailE164Disallowed)
                     {
                         message = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyCodeErrorMessage", nil,
                                                                     [NSBundle mainBundle],
