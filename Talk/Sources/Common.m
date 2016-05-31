@@ -1480,7 +1480,6 @@ static Common* sharedCommon;
     CGFloat y        = 25.0f;
     CGFloat fontSize = cell.detailTextLabel.font.pointSize;
 
-
     // Assumes there are at most 2 buttons.
     if (position == 0)
     {

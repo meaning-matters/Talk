@@ -8,6 +8,7 @@
 //
 //### Want to remove CoreData? http://www.gravitywell.co.uk/blog/post/how-to-quickly-add-core-data-to-an-app-in-xcode-4
 
+#import <objc/runtime.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "AnalyticsTransmitter.h"
 #import "HockeySDK.h"
@@ -50,9 +51,20 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
 @implementation AppDelegate
 
+NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
+{
+    return UIContentSizeCategoryExtraLarge;  // UIContentSizeCategoryLarge is iOS' default.
+}
+
+
 - (void)setUp
 {
    // [self denmark];
+
+    // The app can look horrible after changing iOS Settings > General > Accessibility > Large Text.
+    // We override this accessibility setting here to show slightly larger text always.
+    Method originalMethod = class_getInstanceMethod([UIApplication class], @selector(preferredContentSizeCategory));
+    method_setImplementation(originalMethod, (IMP)swizzled_preferredContentSizeCategory);
 
     static dispatch_once_t onceToken;
     
