@@ -207,7 +207,7 @@ typedef enum
             if (self.contactId != nil)
             {
                 title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Phones SectionFooterA", nil, [NSBundle mainBundle],
-                                                          @"The selected Phone will be used as caller ID for all "
+                                                          @"The selected Phone will be used as Caller ID for all "
                                                           @"your calls to this contact.",
                                                           @"...\n"
                                                           @"[* lines]");

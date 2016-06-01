@@ -217,7 +217,11 @@ typedef enum
 
     [self.destination createForE164:self.phone.e164 name:self.name showCalledId:self.showCalledId completion:^(NSError* error)
     {
-        if (error != nil)
+        if (error == nil)
+        {
+            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+        }
+        else
         {
             [self showSaveError:error];
         }
