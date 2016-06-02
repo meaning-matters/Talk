@@ -253,6 +253,11 @@
 
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
+    if (self.showFootnotes == NO)
+    {
+        return nil;
+    }
+
     if (self.predicate == nil)
     {
         return NSLocalizedStringWithDefaultValue(@"Addresses List Title", nil, [NSBundle mainBundle],

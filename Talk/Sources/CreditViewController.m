@@ -92,6 +92,8 @@ typedef enum
     {
         [self updateBuyCell];
     }];
+
+    [self setupFootnotesHandlingOnTableView:self.tableView];
 }
 
 
@@ -203,6 +205,11 @@ typedef enum
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
     NSString* title;
+
+    if (self.showFootnotes == NO)
+    {
+        return nil;
+    }
 
     switch ([Common nthBitSet:section inValue:self.sections])
     {

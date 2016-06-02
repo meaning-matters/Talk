@@ -20,6 +20,7 @@
 #import "DataManager.h"
 #import "AddressData.h"
 #import "AddressStatus.h"
+#import "Settings.h"
 
 
 // Update reloadSections calls when adding/removing sections.
@@ -191,6 +192,8 @@ typedef enum
 
     UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumberBuyCell"];
     self.buyCellHeight    = cell.bounds.size.height;
+
+    [self setupFootnotesHandlingOnTableView:self.tableView];
 }
 
 
@@ -736,6 +739,11 @@ typedef enum
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
     NSString* title = nil;
+
+    if (self.showFootnotes == NO)
+    {
+        return nil;
+    }
 
     switch ([Common nthBitSet:section inValue:sections])
     {

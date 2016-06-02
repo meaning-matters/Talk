@@ -179,6 +179,11 @@
 
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
+    if (self.showFootnotes == NO)
+    {
+        return nil;
+    }
+
     if (self.footerTitle == nil)
     {
         return NSLocalizedStringWithDefaultValue(@"Phone Phones List Title", nil, [NSBundle mainBundle],

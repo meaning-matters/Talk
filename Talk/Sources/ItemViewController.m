@@ -45,6 +45,8 @@
     gestureRecognizer.cancelsTouchesInView = NO;
     gestureRecognizer.delegate             = self;
     [self.tableView addGestureRecognizer:gestureRecognizer];
+
+    [self setupFootnotesHandlingOnTableView:self.tableView];
 }
 
 

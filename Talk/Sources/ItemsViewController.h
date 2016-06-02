@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
 
+
 - (void)refresh:(id)sender;
 
 // To be overriden by subclass.

@@ -146,6 +146,11 @@
 
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
+    if (self.showFootnotes == NO)
+    {
+        return nil;
+    }
+
     if (self.footerTitle == nil)
     {
         return NSLocalizedStringWithDefaultValue(@"Recordings List Title", nil, [NSBundle mainBundle],

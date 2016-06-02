@@ -15,6 +15,7 @@
 #import "DataManager.h"
 #import "WebClient.h"
 #import "BlockActionSheet.h"
+#import "Settings.h"
 
 
 //### TODO save recording to RecordingData.audio instead of on disk!!!
@@ -340,6 +341,11 @@ typedef enum
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
     NSString*   title = nil;
+
+    if (self.showFootnotes == NO)
+    {
+        return nil;
+    }
 
     switch ([Common nthBitSet:section inValue:sections])
     {

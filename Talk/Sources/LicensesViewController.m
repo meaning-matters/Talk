@@ -9,6 +9,8 @@
 #import "LicensesViewController.h"
 #import "HtmlViewController.h"
 #import "Common.h"
+#import "Settings.h"
+#import "UIViewController+Common.h"
 
 
 @interface LicensesViewController ()
@@ -56,6 +58,8 @@
                                                                target:self
                                                                action:@selector(cancel)];
     self.navigationItem.leftBarButtonItem = buttonItem;
+
+    [self setupFootnotesHandlingOnTableView:self.tableView];
 }
 
 
@@ -92,6 +96,11 @@
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
     NSString*   title = nil;
+
+    if (self.showFootnotes == NO)
+    {
+        return nil;
+    }
 
     title = NSLocalizedStringWithDefaultValue(@"Licenses SectionFooter", nil,
                                               [NSBundle mainBundle],

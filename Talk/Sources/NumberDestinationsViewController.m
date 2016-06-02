@@ -7,11 +7,13 @@
 //
 
 #import "NumberDestinationsViewController.h"
+#import "UIViewController+Common.h"
 #import "DataManager.h"
 #import "Strings.h"
 #import "DestinationData.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
+#import "Settings.h"
 
 
 @interface NumberDestinationsViewController ()
@@ -54,6 +56,8 @@
                                                          target:self action:@selector(deleteAction)];
         self.navigationItem.rightBarButtonItem = item;
     }
+
+    [self setupFootnotesHandlingOnTableView:self.tableView];
 }
 
 
@@ -119,6 +123,11 @@
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
     NSString* title = nil;
+
+    if (self.showFootnotes == NO)
+    {
+        return nil;
+    }
 
     if ([self tableView:tableView numberOfRowsInSection:section] > 0)
     {

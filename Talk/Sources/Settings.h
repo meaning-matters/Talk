@@ -43,6 +43,7 @@
 @property (nonatomic, assign) NumberTypeMask numberTypeMask;        // Selected numberType in NumberBuyView.
 @property (nonatomic, assign) CountryRegion  countryRegion;         // Selected region in CallRatesView.
 @property (nonatomic, assign) NSInteger      sortSegment;           // Selected Numbers/Phones sort segmented control index.
+@property (nonatomic, assign) BOOL           showFootnotes;         // If footer titles under tables sections must be shown.
 @property (nonatomic, assign) NSInteger      destinationsSelection; // Selected segment/table in DestinationsView.
 
 @property (nonatomic, strong) NSString*      storeCurrencyCode;     // Backup until Store products are received.

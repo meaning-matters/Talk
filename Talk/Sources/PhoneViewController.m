@@ -355,6 +355,11 @@ typedef enum
 {
     NSString* title = nil;
 
+    if (self.showFootnotes == NO)
+    {
+        return nil;
+    }
+
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionName:

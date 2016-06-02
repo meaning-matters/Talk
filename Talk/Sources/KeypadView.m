@@ -161,7 +161,7 @@
 
 - (IBAction)keyEraseLongPressAction:(id)sender
 {
-    UIGestureRecognizer*    recognizer = sender;
+    UIGestureRecognizer* recognizer = sender;
 
     switch ([recognizer state])
     {

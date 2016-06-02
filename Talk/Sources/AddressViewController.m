@@ -1098,7 +1098,12 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
     NSString* title = nil;
-    
+
+    if (self.showFootnotes == NO)
+    {
+        return nil;
+    }
+
     switch ([Common nthBitSet:section inValue:self.sections])
     {
         case TableSectionName:

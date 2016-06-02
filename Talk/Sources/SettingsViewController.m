@@ -109,6 +109,8 @@ typedef enum
                forKeyPath:@"homeIsoCountryCode"
                   options:NSKeyValueObservingOptionNew
                   context:nil];
+
+    [self setupFootnotesHandlingOnTableView:self.tableView];
 }
 
 
@@ -215,6 +217,11 @@ typedef enum
 {
     NSString* title = nil;
 
+    if (self.showFootnotes == NO)
+    {
+        return nil;
+    }
+
     switch ([Common nthBitSet:section inValue:sections])
     {
         case TableSectionCallback:
@@ -249,7 +256,9 @@ typedef enum
         {
             title = NSLocalizedStringWithDefaultValue(@"Settings:Options SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"Choose to sort lists of Phones and Numbers by country or name.",
+                                                      @"Choose to sort lists of Phones and Numbers by country or name.\n\n"
+                                                      @"If app footnotes are hidden, you can still show "
+                                                      @"them for a few seconds by holding the light-grey screen areas.",
                                                       @"Explanation what the Home Country setting is doing\n"
                                                       @"[* lines]");
             break;
@@ -294,7 +303,7 @@ typedef enum
         }
         case TableSectionOptions:
         {
-            numberOfRows = 1;
+            numberOfRows = 2;
             break;
         }
         case TableSectionAccountData:
@@ -709,38 +718,71 @@ typedef enum
     UITableViewCell*    cell;
     UISegmentedControl* segmentedControl;
 
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"SortOrderCell"];
-    if (cell == nil)
+    if (indexPath.row == 0)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SortOrderCell"];
-        NSString* byCountries = NSLocalizedStringWithDefaultValue(@"Numbers SortByCountries", nil,
-                                                                  [NSBundle mainBundle], @"Country",
-                                                                  @"\n"
-                                                                  @"[1/4 line larger font].");
-        NSString* byNames     = NSLocalizedStringWithDefaultValue(@"Numbers SortByName", nil,
-                                                                  [NSBundle mainBundle], @"Name",
-                                                                  @"\n"
-                                                                  @"[1/4 line larger font].");
-        segmentedControl = [[UISegmentedControl alloc] initWithItems:@[byCountries, byNames]];
-        segmentedControl.selectedSegmentIndex = [Settings sharedSettings].sortSegment;
-        [segmentedControl addTarget:self
-                             action:@selector(sortOrderChangedAction:)
-                   forControlEvents:UIControlEventValueChanged];
-        
-        cell.accessoryView = segmentedControl;
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"SortOrderCell"];
+        if (cell == nil)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SortOrderCell"];
+            NSString* byCountries = NSLocalizedStringWithDefaultValue(@"Numbers SortByCountries", nil,
+                                                                      [NSBundle mainBundle], @"Country",
+                                                                      @"\n"
+                                                                      @"[1/4 line larger font].");
+            NSString* byNames     = NSLocalizedStringWithDefaultValue(@"Numbers SortByName", nil,
+                                                                      [NSBundle mainBundle], @"Name",
+                                                                      @"\n"
+                                                                      @"[1/4 line larger font].");
+            segmentedControl = [[UISegmentedControl alloc] initWithItems:@[byCountries, byNames]];
+            segmentedControl.selectedSegmentIndex = [Settings sharedSettings].sortSegment;
+            [segmentedControl addTarget:self
+                                 action:@selector(sortOrderChangedAction:)
+                       forControlEvents:UIControlEventValueChanged];
+
+            cell.accessoryView = segmentedControl;
+        }
+        else
+        {
+            segmentedControl = (UISegmentedControl*)cell.accessoryView;
+        }
+
+        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:Sort CellText", nil,
+                                                                [NSBundle mainBundle], @"Sort By",
+                                                                @"Title of switch if people called see my number\n"
+                                                                @"[2/3 line - abbreviated: 'Show Caller ID', use "
+                                                                @"exact same term as in iOS].");
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     else
     {
-        segmentedControl = (UISegmentedControl*)cell.accessoryView;
+        UISwitch* switchView;
+
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
+        if (cell == nil)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SwitchCell"];
+            switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+            switchView.onTintColor = [Skinning onTintColor];
+            cell.accessoryView = switchView;
+        }
+        else
+        {
+            switchView = (UISwitch*)cell.accessoryView;
+        }
+
+        cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:ShowFootnotes CellText", nil,
+                                                                [NSBundle mainBundle], @"Show Footnotes",
+                                                                @"Title of switch if people see ...\n"
+                                                                @"[2/3 line - abbreviated: 'Show Caller ID', use "
+                                                                @"exact same term as in iOS].");
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        switchView.on = settings.showFootnotes;
+
+        [switchView removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+        [switchView addTarget:self
+                       action:@selector(showFootnotesSwitchAction:)
+             forControlEvents:UIControlEventValueChanged];
     }
-    
-    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:Sort CellText", nil,
-                                                            [NSBundle mainBundle], @"Sort By",
-                                                            @"Title of switch if people called see my number\n"
-                                                            @"[2/3 line - abbreviated: 'Show Caller ID', use "
-                                                            @"exact same term as in iOS].");
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+
     return cell;
 }
 
@@ -814,6 +856,12 @@ typedef enum
     [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
     [self.tableView endUpdates];
+}
+
+
+- (void)showFootnotesSwitchAction:(id)sender
+{
+    settings.showFootnotes = ((UISwitch*)sender).on;
 }
 
 

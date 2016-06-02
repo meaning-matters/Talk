@@ -96,6 +96,8 @@ typedef enum
                                 forKeyPath:@"sortSegment"
                                    options:NSKeyValueObservingOptionNew
                                    context:nil];
+
+    [self setupFootnotesHandlingOnTableView:self.tableView];
 }
 
 
@@ -194,6 +196,11 @@ typedef enum
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
     NSString* title;
+
+    if (self.showFootnotes == NO)
+    {
+        return nil;
+    }
 
     switch ((TableSections)[Common nthBitSet:section inValue:self.sections])
     {

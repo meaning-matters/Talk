@@ -38,6 +38,8 @@
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings synchronizeWithServerString]];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refreshControl;
+
+    [self setupFootnotesHandlingOnTableView:self.tableView];
 }
 
 

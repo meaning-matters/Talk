@@ -103,9 +103,7 @@
 
     modalViewController = [[UINavigationController alloc] initWithRootViewController:termsViewController];
     modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentViewController:modalViewController
-                       animated:YES
-                     completion:nil];
+    [self presentViewController:modalViewController animated:YES completion:nil];
 }
 
 
@@ -144,9 +142,7 @@
 
     modalViewController = [[UINavigationController alloc] initWithRootViewController:thanksViewController];
     modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentViewController:modalViewController
-                       animated:YES
-                     completion:nil];
+    [self presentViewController:modalViewController animated:YES completion:nil];
 }
 
 
@@ -159,9 +155,7 @@
 
     modalViewController = [[UINavigationController alloc] initWithRootViewController:licensesViewController];
     modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentViewController:modalViewController
-                       animated:YES
-                     completion:nil];
+    [self presentViewController:modalViewController animated:YES completion:nil];
 }
 
 

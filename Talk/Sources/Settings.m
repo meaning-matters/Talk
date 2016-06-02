@@ -32,6 +32,7 @@ NSString* const CallbackE164Key           = @"CallbackE164";
 NSString* const NumberTypeMaskKey         = @"NumberTypeMask";
 NSString* const CountryRegionKey          = @"CountryRegion";
 NSString* const SortSegmentKey            = @"SortSegment";
+NSString* const ShowFootnotesKey          = @"ShowFootnotes";
 NSString* const DestinationsSelectionKey  = @"DestinationsSelection";
 NSString* const StoreCurrencyCodeKey      = @"StoreCurrencyCode";
 NSString* const StoreCountryCodeKey       = @"StoreCountryCode";
@@ -140,6 +141,7 @@ static NSUserDefaults* userDefaults;
         [dictionary setObject:@(NumberTypeGeographicMask)                        forKey:NumberTypeMaskKey];
         [dictionary setObject:@(CountryRegionEurope)                             forKey:CountryRegionKey];
         [dictionary setObject:@(0)                                               forKey:SortSegmentKey];
+        [dictionary setObject:@(YES)                                             forKey:ShowFootnotesKey];
         [dictionary setObject:@(0)                                               forKey:DestinationsSelectionKey];
         [dictionary setObject:[locale objectForKey:NSLocaleCurrencyCode]         forKey:StoreCurrencyCodeKey];
         [dictionary setObject:[locale objectForKey:NSLocaleCountryCode]          forKey:StoreCountryCodeKey];
@@ -335,6 +337,18 @@ static NSUserDefaults* userDefaults;
 - (void)setSortSegment:(NSInteger)sortSegment
 {
     [userDefaults setInteger:sortSegment forKey:SortSegmentKey];
+}
+
+
+- (BOOL)showFootnotes
+{
+    return [userDefaults boolForKey:ShowFootnotesKey];
+}
+
+
+- (void)setShowFootnotes:(BOOL)showFootnotes
+{
+    [userDefaults setBool:showFootnotes forKey:ShowFootnotesKey];
 }
 
 

@@ -9,6 +9,8 @@
 
 #import <objc/runtime.h>
 #import "UIViewController+Common.h"
+#import "Settings.h"
+#import "NSTimer+Blocks.h"
 
 
 @implementation UIViewController (Common)
@@ -56,25 +58,19 @@
 
 - (void)setActivityIndicator:(UIActivityIndicatorView*)activityIndicator
 {
-    objc_setAssociatedObject(self,
-                             @selector(activityIndicator),
-                             activityIndicator,
-                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(activityIndicator), activityIndicator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 
 - (UIImageView*)imageView
 {
-    return  objc_getAssociatedObject(self, @selector(imageView));
+    return objc_getAssociatedObject(self, @selector(imageView));
 }
 
 
 - (void)setImageView:(UIImageView*)imageView
 {
-    objc_setAssociatedObject(self,
-                             @selector(imageView),
-                             imageView,
-                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(imageView), imageView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 
@@ -86,10 +82,7 @@
 
 - (void)setHasCenteredActivityIndicator:(BOOL)hasCenteredActivityIndicator
 {
-    objc_setAssociatedObject(self,
-                             @selector(hasCenteredActivityIndicator),
-                             @(hasCenteredActivityIndicator),
-                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(hasCenteredActivityIndicator), @(hasCenteredActivityIndicator), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 
@@ -101,10 +94,7 @@
 
 - (void)setIsLoading:(BOOL)isLoading
 {
-    objc_setAssociatedObject(self,
-                             @selector(isLoading),
-                             @(isLoading),
-                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(isLoading), @(isLoading), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
     if (isLoading == YES && self.activityIndicator == nil)
     {
@@ -144,6 +134,54 @@
 }
 
 
+- (BOOL)showFootnotes
+{
+    return [objc_getAssociatedObject(self, @selector(showFootnotes)) boolValue];
+}
+
+
+- (void)setShowFootnotes:(BOOL)showFootnotes
+{
+    objc_setAssociatedObject(self, @selector(showFootnotes), @(showFootnotes), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+
+- (BOOL)settingsShowFootnotes
+{
+    return [objc_getAssociatedObject(self, @selector(settingsShowFootnotes)) boolValue];
+}
+
+
+- (void)setSettingsShowFootnotes:(BOOL)settingsShowFootnotes
+{
+    objc_setAssociatedObject(self, @selector(settingsShowFootnotes), @(settingsShowFootnotes), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+
+- (UITableView*)localTableView
+{
+    return objc_getAssociatedObject(self, @selector(localTableView));
+}
+
+
+- (void)setLocalTableView:(UITableView*)localTableView
+{
+    objc_setAssociatedObject(self, @selector(localTableView), localTableView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+
+- (id<NSObject>)defaultsObserver
+{
+    return objc_getAssociatedObject(self, @selector(defaultsObserver));
+}
+
+
+- (void)setDefaultsObserver:(id<NSObject>)defaultsObserver
+{
+    objc_setAssociatedObject(self, @selector(defaultsObserver), defaultsObserver, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+
 #pragma mark - View Related
 
 - (void)viewWillLayoutSubviewsSwizzled
@@ -165,6 +203,106 @@
 
         self.hasCenteredActivityIndicator = YES;
     }
+}
+
+
+- (void)updateAllSectionsOfTableView:(UITableView*)tableView
+{
+    NSRange     range    = NSMakeRange(0, [tableView numberOfSections]);
+    NSIndexSet* indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
+
+    [tableView beginUpdates];
+    [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+    [tableView endUpdates];
+}
+
+
+#pragma mark - Footnotes Stuff
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer shouldReceiveTouch:(UITouch*)touch
+{
+    NSIndexPath* indexPath = [self.localTableView indexPathForRowAtPoint:[touch locationInView:self.localTableView]];
+
+    if (indexPath != nil)
+    {
+        // When tapping on a section header we do get an indexPath strange enough (except for section 0, even more
+        // stange).  When user taps on section header we do however want to show footnotes, so we filter this case.
+        // Turns out the the touched view is the header's contentView, so that's what we check.
+        UIView* headerContentView = [self.localTableView headerViewForSection:indexPath.section].contentView;
+        if (headerContentView != nil && headerContentView == touch.view)
+        {
+            return YES;
+        }
+        else
+        {
+            return NO;
+        }
+    }
+    else
+    {
+        return YES;
+    }
+}
+
+
+- (void)longPressAction:(UILongPressGestureRecognizer*)sender
+{
+    if ([Settings sharedSettings].showFootnotes == NO)
+    {
+        if (sender.state == UIGestureRecognizerStateBegan)
+        {
+            self.showFootnotes = ![objc_getAssociatedObject(self, @selector(showFootnotes)) boolValue];
+
+            [self updateAllSectionsOfTableView:self.localTableView];
+        }
+
+        if (sender.state == UIGestureRecognizerStateEnded)
+        {
+            __weak typeof(self) weakSelf = self;
+            [NSTimer scheduledTimerWithTimeInterval:3 repeats:NO block:^
+            {
+                weakSelf.showFootnotes = ![objc_getAssociatedObject(weakSelf, @selector(showFootnotes)) boolValue];
+
+                [weakSelf updateAllSectionsOfTableView:weakSelf.localTableView];
+            }];
+        }
+    }
+}
+
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self.defaultsObserver];
+    self.defaultsObserver = nil;
+}
+
+
+- (void)setupFootnotesHandlingOnTableView:(UITableView*)tableView
+{
+    self.localTableView        = tableView;
+    self.showFootnotes         = [Settings sharedSettings].showFootnotes;
+    self.settingsShowFootnotes = [Settings sharedSettings].showFootnotes;
+
+    UILongPressGestureRecognizer* recognizer;
+    recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                               action:@selector(longPressAction:)];
+    [self.localTableView addGestureRecognizer:recognizer];
+    recognizer.delegate = self;
+
+    __weak typeof(self) weakSelf = self;
+    self.defaultsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
+                                                                              object:nil
+                                                                               queue:[NSOperationQueue mainQueue]
+                                                                          usingBlock:^(NSNotification* note)
+    {
+        if ([Settings sharedSettings].showFootnotes != weakSelf.settingsShowFootnotes)
+        {
+            weakSelf.showFootnotes         = [Settings sharedSettings].showFootnotes;   // Reset local preference.
+            weakSelf.settingsShowFootnotes = [Settings sharedSettings].showFootnotes;
+
+            [weakSelf updateAllSectionsOfTableView:weakSelf.localTableView];
+        }
+    }];
 }
 
 @end
