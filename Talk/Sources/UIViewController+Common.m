@@ -251,7 +251,7 @@
     {
         if (sender.state == UIGestureRecognizerStateBegan)
         {
-            self.showFootnotes = ![objc_getAssociatedObject(self, @selector(showFootnotes)) boolValue];
+            self.showFootnotes = YES;
 
             [self updateAllSectionsOfTableView:self.localTableView];
         }
@@ -261,7 +261,7 @@
             __weak typeof(self) weakSelf = self;
             [NSTimer scheduledTimerWithTimeInterval:3 repeats:NO block:^
             {
-                weakSelf.showFootnotes = ![objc_getAssociatedObject(weakSelf, @selector(showFootnotes)) boolValue];
+                weakSelf.showFootnotes = [Settings sharedSettings].showFootnotes;
 
                 [weakSelf updateAllSectionsOfTableView:weakSelf.localTableView];
             }];
