@@ -122,6 +122,8 @@ static const NSInteger CommonUseButtonTag     =  123;
 
 + (void)showGetStartedViewController;
 
++ (void)showGetStartedViewControllerWithAlert;
+
 + (void)dispatchAfterInterval:(NSTimeInterval)interval onMain:(void (^)(void))block;
 
 // Resolves an issue with NSIndexPath's isEqual: http://stackoverflow.com/a/18920573/1971013

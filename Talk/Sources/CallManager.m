@@ -64,7 +64,7 @@
     else
     {
         result = NO;
-        [Common showGetStartedViewController];
+        [Common showGetStartedViewControllerWithAlert];
     }
 
     return result;

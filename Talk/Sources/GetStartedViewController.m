@@ -185,7 +185,6 @@
 
     NSString* title;
     NSString* message;
-    NSString* button;
 
     title   = NSLocalizedStringWithDefaultValue(@"GetStarted CancelTitle", nil,
                                                 [NSBundle mainBundle], @"Have A Look",
@@ -200,12 +199,6 @@
                                                 @"Alert message: ...\n"
                                                 @"[iOS alert message size]");
 
-    button  = NSLocalizedStringWithDefaultValue(@"GetStarted LookButton", nil,
-                                                [NSBundle mainBundle],
-                                                @"Look",
-                                                @" ...\n"
-                                                @"[iOS ...]");
-
     [BlockAlertView showAlertViewWithTitle:title
                                    message:message
                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
@@ -218,7 +211,7 @@
         }
     }
                          cancelButtonTitle:[Strings cancelString]
-                         otherButtonTitles:button, nil];
+                         otherButtonTitles:[Strings lookString], nil];
 }
 
 

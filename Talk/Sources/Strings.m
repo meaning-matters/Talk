@@ -507,4 +507,21 @@
                                              @"[Button size].");
 }
 
+
++ (NSString*)lookString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Look/Explore", nil, [NSBundle mainBundle],
+                                             @"Look",
+                                             @"Action to a look around in the app\n"
+                                             @"[Button size].");
+}
+
++ (NSString*)startString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Start", nil, [NSBundle mainBundle],
+                                             @"Start",
+                                             @"Action to start using the app\n"
+                                             @"[Button size].");
+}
+
 @end

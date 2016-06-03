@@ -13,11 +13,11 @@
 
 @interface BlockAlertView : UIAlertView <UIAlertViewDelegate>
 
-+ (UIAlertView*)showAlertViewWithTitle:(NSString*)title
-                               message:(NSString*)message
-                            completion:(void (^)(BOOL cancelled, NSInteger buttonIndex))completion
-                     cancelButtonTitle:(NSString*)cancelButtonTitle
-                     otherButtonTitles:(NSString*)otherButtonTitles, ...;
++ (BlockAlertView*)showAlertViewWithTitle:(NSString*)title
+                                  message:(NSString*)message
+                               completion:(void (^)(BOOL cancelled, NSInteger buttonIndex))completion
+                        cancelButtonTitle:(NSString*)cancelButtonTitle
+                        otherButtonTitles:(NSString*)otherButtonTitles, ...;
 
 + (BlockAlertView*)showPhoneNumberAlertViewWithTitle:(NSString*)title
                                              message:(NSString*)message

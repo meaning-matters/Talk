@@ -1032,8 +1032,35 @@ static Common* sharedCommon;
 
     navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [[self topViewController] presentViewController:navigationController
-                                                           animated:YES
-                                                         completion:nil];
+                                           animated:YES
+                                         completion:nil];
+}
+
+
++ (void)showGetStartedViewControllerWithAlert
+{
+    NSString* title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                          @"Having A Look",
+                                                          @".\n"
+                                                          @"[iOS alert title size].");
+    NSString* message = NSLocalizedStringWithDefaultValue(@"....", nil, [NSBundle mainBundle],
+                                                          @"You can do this once you've become a NumberBay insider.\n\n"
+                                                          @"Do you want to continue having a look, or are you ready "
+                                                          @"to get started?",
+                                                          @".....\n"
+                                                          @"[iOS alert message size]");
+
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        if (cancelled == NO)
+        {
+            [self showGetStartedViewController];
+        }
+    }
+                         cancelButtonTitle:[Strings lookString]
+                         otherButtonTitles:[Strings startString], nil];
 }
 
 

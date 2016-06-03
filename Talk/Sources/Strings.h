@@ -121,4 +121,8 @@
 
 + (NSString*)iOsSettingsString; // Name of the iOS Settings app.
 
++ (NSString*)lookString;
+
++ (NSString*)startString;
+
 @end

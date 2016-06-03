@@ -157,7 +157,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
     }
     else
     {
-        [Common showGetStartedViewController];
+        [Common showGetStartedViewControllerWithAlert];
     }
 }
 
@@ -231,8 +231,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
             title = NSLocalizedStringWithDefaultValue(@"Numbers Number List Footer", nil, [NSBundle mainBundle],
                                                       @"List of your purchased Numbers, allowing you to be reachable in "
                                                       @"thousands of cities in over 50 countries.\n\n"
-                                                      @"You can forward the calls received at a Number to one of "
-                                                      @"your Phones (using a Destination). And, when making calls, "
+                                                      @"You can forward the calls received on a Number to one of "
+                                                      @"your Phones (using a Destination). Also, when making calls, "
                                                       @"you can use a Number as your Caller ID.",
                                                       @"\n"
                                                       @"[1/4 line larger font].");

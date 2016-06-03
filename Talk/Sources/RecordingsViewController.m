@@ -271,7 +271,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     }
     else
     {
-        [Common showGetStartedViewController];
+        [Common showGetStartedViewControllerWithAlert];
     }
 }
 
