@@ -53,7 +53,7 @@
 {
     [super viewDidLoad];
 
-    UIBarButtonItem*    buttonItem;
+    UIBarButtonItem* buttonItem;
     buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                target:self
                                                                action:@selector(cancel)];
