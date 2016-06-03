@@ -1198,9 +1198,11 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             case TableSectionDetails:
             {
                 salutationsViewController = [[AddressSalutationsViewController alloc] initWithSalutation:self.salutation
-                                                                                                 completion:^
+                                                                                              completion:^
                 {
                     self.address.salutation = self.salutation.string;
+                    UITextField* textField = [cell viewWithTag:CommonTextFieldCellTag];
+                    textField.text = self.salutation.localizedString;
                 }];
 
                 salutationsViewController.title = cell.textLabel.text;
