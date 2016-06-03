@@ -193,8 +193,9 @@
 
     message = NSLocalizedStringWithDefaultValue(@"GetStarted CancelMessage", nil,
                                                 [NSBundle mainBundle],
-                                                @"Without credit you can have a look at the app, but can't make calls.\n\n"
-                                                @"You'll return here when trying to call, do a few other things, "
+                                                @"Before becoming a NumberBay insider, you're welcome to have a "
+                                                @"look around the app.\n\n"
+                                                @"You can return here by trying to call, do a few other things, "
                                                 @"or by tapping Get Started on the Settings tab.",
                                                 @"Alert message: ...\n"
                                                 @"[iOS alert message size]");
