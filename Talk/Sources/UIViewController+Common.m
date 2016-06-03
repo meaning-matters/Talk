@@ -44,6 +44,11 @@
         {
             method_exchangeImplementations(originalMethod, swizzledMethod);
         }
+
+        // Since a `dealloc` in a category messes things up, we need to swizzle it too.
+        originalMethod = class_getInstanceMethod([self class], NSSelectorFromString(@"dealloc"));
+        swizzledMethod = class_getInstanceMethod([self class], @selector(localDealloc));
+        method_exchangeImplementations(originalMethod, swizzledMethod);
     });
 }
 
@@ -270,10 +275,13 @@
 }
 
 
-- (void)dealloc
+- (void)localDealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self.defaultsObserver];
     self.defaultsObserver = nil;
+
+    // Because this method is part of a swizzling, this now call the original `dealloc`.
+    [self localDealloc];
 }
 
 
