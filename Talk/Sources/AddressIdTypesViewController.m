@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) NSIndexPath* selectedIndexPath;
 @property (nonatomic, strong) IdType*      idType;
+@property (nonatomic, strong) NSArray*     idTypes;
 @property (nonatomic, copy) void (^completion)(void);
 
 @end
@@ -20,11 +21,12 @@
 
 @implementation AddressIdTypesViewController
 
-- (instancetype)initWithIdType:(IdType*)idType completion:(void (^)(void))completion;
+- (instancetype)initWithIdType:(IdType*)idType idTypes:(NSArray*)idTypes completion:(void (^)(void))completion;
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
         _idType     = idType;
+        _idTypes    = idTypes;
         _completion = [completion copy];
     }
 
@@ -42,7 +44,7 @@
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 4;
+    return self.idTypes.count;
 }
 
 
@@ -57,33 +59,9 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     }
 
-    switch (indexPath.row)
-    {
-        case 0:
-        {
-            selected = (self.idType.value == IdTypeValueDni);
-            cell.textLabel.text = [IdType localizedStringForValue:IdTypeValueDni];
-            break;
-        }
-        case 1:
-        {
-            selected = (self.idType.value == IdTypeValueNif);
-            cell.textLabel.text = [IdType localizedStringForValue:IdTypeValueNif];
-            break;
-        }
-        case 2:
-        {
-            selected = (self.idType.value == IdTypeValueNie);
-            cell.textLabel.text = [IdType localizedStringForValue:IdTypeValueNie];
-            break;
-        }
-        case 3:
-        {
-            selected = (self.idType.value == IdTypeValuePassport);
-            cell.textLabel.text = [IdType localizedStringForValue:IdTypeValuePassport];
-            break;
-        }
-    }
+    IdTypeValue value = [IdType valueForString:self.idTypes[indexPath.row]];
+    selected = (self.idType.value == value);
+    cell.textLabel.text = [IdType localizedStringForValue:value];
 
     self.selectedIndexPath = selected ? indexPath : self.selectedIndexPath;
     cell.accessoryType     = selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
@@ -96,29 +74,7 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    switch (indexPath.row)
-    {
-        case 0:
-        {
-            self.idType.value = IdTypeValueDni;
-            break;
-        }
-        case 1:
-        {
-            self.idType.value = IdTypeValueNif;
-            break;
-        }
-        case 2:
-        {
-            self.idType.value = IdTypeValueNie;
-            break;
-        }
-        case 3:
-        {
-            self.idType.value = IdTypeValuePassport;
-            break;
-        }
-    }
+    self.idType.value = [IdType valueForString:self.idTypes[indexPath.row]];
 
     UITableViewCell* cell;
 

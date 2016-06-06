@@ -12,6 +12,6 @@
 
 @interface AddressIdTypesViewController : UITableViewController
 
-- (instancetype)initWithIdType:(IdType*)idType completion:(void (^)(void))completion;
+- (instancetype)initWithIdType:(IdType*)idType idTypes:(NSArray*)idTypes completion:(void (^)(void))completion;
 
 @end

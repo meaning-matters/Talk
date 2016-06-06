@@ -89,6 +89,26 @@
 }
 
 
+- (NSString*)typeString
+{
+    switch (self.value)
+    {
+        case SalutationValueMs:
+        {
+            return @"person";
+        }
+        case SalutationValueMr:
+        {
+            return @"person";
+        }
+        case SalutationValueCompany:
+        {
+            return @"company";
+        }
+    }
+}
+
+
 + (NSString*)localizedStringForValue:(SalutationValue)value
 {
     switch (value)

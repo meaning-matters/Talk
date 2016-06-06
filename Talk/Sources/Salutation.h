@@ -23,6 +23,7 @@ typedef NS_ENUM(NSUInteger, SalutationValue)
 @property (nonatomic, readonly) NSString*     localizedString;
 @property (nonatomic, readonly) BOOL          isPerson;
 @property (nonatomic, readonly) BOOL          isCompany;
+@property (nonatomic, readonly) NSString*     typeString;   // Either "person" or "company".
 
 - (instancetype)initWithString:(NSString*)string;
 
