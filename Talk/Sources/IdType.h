@@ -15,7 +15,7 @@ typedef NS_ENUM(NSUInteger, IdTypeValue)
     IdTypeValueNif                  = 2, // Número de Identificación Fiscal: SP.
     IdTypeValueNie                  = 3, // Número de Identificación de Extranjero: SP.
     IdTypeValuePassport             = 4, // Passport number: SP, ZA.
-    IdTypeValueFiscalIdCode         = 5, // Fiscal ID code: SP company.
+    IdTypeValueFiscalIdCode         = 5, // Fiscal ID code or CIF: SP company.
     IdTypeValueNationalIdCard       = 6, // ID card: ZA.
     IdTypeValueBusinessRegistration = 7, // Business registration: ZA company.
 };

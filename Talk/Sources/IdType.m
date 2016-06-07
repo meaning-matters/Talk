@@ -199,7 +199,7 @@
         {
             return NSLocalizedStringWithDefaultValue(@"Spanish DNI number rule", nil, [NSBundle mainBundle],
                                                      @"Starting with 8 digits and ending with 1 letter except "
-                                                     @"I, O or U; without any other character or space.",
+                                                     @"I, O or U.\n\nDon't add use other character or space.",
                                                      @".\n"
                                                      @"....");
         }
@@ -207,7 +207,7 @@
         {
             return NSLocalizedStringWithDefaultValue(@"Spanish NIF number rule", nil, [NSBundle mainBundle],
                                                      @"Starting with 8 digits and ending with 1 letter except "
-                                                     @"I, O or U; without any other character or space.",
+                                                     @"I, O or U.\n\nDon't use any other character or space.",
                                                      @".\n"
                                                      @"....");
         }
@@ -215,7 +215,8 @@
         {
             return NSLocalizedStringWithDefaultValue(@"Spanish NIE number rule", nil, [NSBundle mainBundle],
                                                      @"Starting with X, Y or Z, followed by 7 digits, and ending with "
-                                                     @"1 letter except I, O or U; without any other character or space.",
+                                                     @"1 letter except I, O or U.\n\nDon't use any other character "
+                                                     @"or space.",
                                                      @".\n"
                                                      @"....");
         }
@@ -231,7 +232,7 @@
         {
             return NSLocalizedStringWithDefaultValue(@"Spanish company fiscal ID code rule", nil, [NSBundle mainBundle],
                                                      @"Starting with A, B, C, D, E, F, G, H, J, N, P, Q, "
-                                                     @"R, S, U, V or W and ending with 8 digits; without any "
+                                                     @"R, S, U, V or W and ending with 8 digits.\n\nDon't use any "
                                                      @"other character or space.",
                                                      @".\n"
                                                      @"....");
