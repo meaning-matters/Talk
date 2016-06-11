@@ -8,7 +8,6 @@
 
 #import "IdType.h"
 
-
 @implementation IdType
 
 - (instancetype)initWithString:(NSString*)string
@@ -55,13 +54,13 @@
         {
             return @"NIE";
         }
+        case IdTypeValueFiscalIdCode:
+        {
+            return @"FISCAL_ID_CODE";
+        }
         case IdTypeValuePassport:
         {
             return @"PASSPORT";
-        }
-        case IdTypeValueFiscalIdCode:
-        {
-            return @"CIF";
         }
         case IdTypeValueNationalIdCard:
         {
@@ -72,6 +71,12 @@
             return @"BUSINESS_REGISTRATION";
         }
     }
+}
+
+
+- (void)setString:(NSString *)string
+{
+    _value = [IdType valueForString:string];
 }
 
 
@@ -111,14 +116,14 @@
         value = IdTypeValueNie;
     }
 
+    if ([string isEqualToString:@"FISCAL_ID_CODE"])
+    {
+        value = IdTypeValueFiscalIdCode;
+    }
+
     if ([string isEqualToString:@"PASSPORT"])
     {
         value = IdTypeValuePassport;
-    }
-
-    if ([string isEqualToString:@"CIF"])
-    {
-        value = IdTypeValueFiscalIdCode;
     }
 
     if ([string isEqualToString:@"NATIONAL_ID_CARD"])
@@ -155,16 +160,18 @@
         {
             return @"NIE";
         }
+        case IdTypeValueFiscalIdCode:
+        {
+            return NSLocalizedStringWithDefaultValue(@"Company Fiscal ID Code", nil, [NSBundle mainBundle],
+                                                     @"Fiscal ID (NIF/CIF)",
+                                                     @"...");
+        }
         case IdTypeValuePassport:
         {
             return NSLocalizedStringWithDefaultValue(@"ID Type Passport", nil, [NSBundle mainBundle],
                                                      @"Passport",
                                                      @"International travel document.\n"
                                                      @"[One line].");
-        }
-        case IdTypeValueFiscalIdCode:
-        {
-            return @"CIF";
         }
         case IdTypeValueNationalIdCard:
         {
@@ -199,7 +206,7 @@
         {
             return NSLocalizedStringWithDefaultValue(@"Spanish DNI number rule", nil, [NSBundle mainBundle],
                                                      @"Starting with 8 digits and ending with 1 letter except "
-                                                     @"I, O or U.\n\nDon't add use other character or space.",
+                                                     @"I, O or U.\n\nNo other characters or space.",
                                                      @".\n"
                                                      @"....");
         }
@@ -207,7 +214,7 @@
         {
             return NSLocalizedStringWithDefaultValue(@"Spanish NIF number rule", nil, [NSBundle mainBundle],
                                                      @"Starting with 8 digits and ending with 1 letter except "
-                                                     @"I, O or U.\n\nDon't use any other character or space.",
+                                                     @"I, O or U.\n\nNo other characters or space.",
                                                      @".\n"
                                                      @"....");
         }
@@ -215,25 +222,24 @@
         {
             return NSLocalizedStringWithDefaultValue(@"Spanish NIE number rule", nil, [NSBundle mainBundle],
                                                      @"Starting with X, Y or Z, followed by 7 digits, and ending with "
-                                                     @"1 letter except I, O or U.\n\nDon't use any other character "
-                                                     @"or space.",
+                                                     @"1 letter except I, O or U.\n\nNo other characters or space.",
+                                                     @".\n"
+                                                     @"....");
+        }
+        case IdTypeValueFiscalIdCode:
+        {
+            return NSLocalizedStringWithDefaultValue(@"Spanish other company fiscal ID code rule", nil, [NSBundle mainBundle],
+                                                     @"Starting with 0 or 1 letter, followed by 7 or 8 digits, "
+                                                     @"and ending with 0 or 1 letter.\n\n"
+                                                     @"No other characters or space.",
                                                      @".\n"
                                                      @"....");
         }
         case IdTypeValuePassport:
         {
             return NSLocalizedStringWithDefaultValue(@"Passport number rule", nil, [NSBundle mainBundle],
-                                                     @"Between 7 and 9 digits and letters; "
-                                                     @"without any other character or space.",
-                                                     @".\n"
-                                                     @"....");
-        }
-        case IdTypeValueFiscalIdCode:
-        {
-            return NSLocalizedStringWithDefaultValue(@"Spanish company fiscal ID code rule", nil, [NSBundle mainBundle],
-                                                     @"Starting with A, B, C, D, E, F, G, H, J, N, P, Q, "
-                                                     @"R, S, U, V or W and ending with 8 digits.\n\nDon't use any "
-                                                     @"other character or space.",
+                                                     @"Between 7 and 9 digits and letters.\n\n"
+                                                     @"No other characters or space.",
                                                      @".\n"
                                                      @"....");
         }
@@ -266,41 +272,19 @@
 
     switch (self.value)
     {
-        case IdTypeValueNone:
-        {
-            regex = @"\\S+";
-        }
-        case IdTypeValueDni:
-        {
-            regex = @"[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKET]{1}";
-        }
-        case IdTypeValueNif:
-        {
-            regex = @"[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKET]{1}";
-        }
-        case IdTypeValueNie:
-        {
-            regex = @"[XYZ]{1}[0-9]{7}[TRWAGMYFPDXBNJZSQVHLCKET]{1}";
-        }
-        case IdTypeValuePassport:
-        {
-            regex = @"[A-Z0-9]{7,9}";
-        }
-        case IdTypeValueFiscalIdCode:
-        {
-            regex = @"[ABCDEFGHJNPQRSUVW]{1}[0-9]{8}";
-        }
-        case IdTypeValueNationalIdCard:
-        {
-            regex = @".{7,20}";
-        }
-        case IdTypeValueBusinessRegistration:
-        {
-            regex = @".{7,20}";
-        }
+        case IdTypeValueNone:                 regex = @"\\S+";                                          break;
+        case IdTypeValueDni:                  regex = @"[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKET]{1}";         break;
+        case IdTypeValueNif:                  regex = @"[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKET]{1}";         break;
+        case IdTypeValueNie:                  regex = @"[XYZ]{1}[0-9]{7}[TRWAGMYFPDXBNJZSQVHLCKET]{1}"; break;
+        case IdTypeValueFiscalIdCode:         regex = @"[A-Z]{0,1}[0-9]{7,8}[A-Z]{0,1}";                break;
+        case IdTypeValuePassport:             regex = @"[A-Z0-9]{7,9}";                                 break;
+        case IdTypeValueNationalIdCard:       regex = @".{7,20}";                                       break;
+        case IdTypeValueBusinessRegistration: regex = @".{7,20}";                                       break;
     }
 
-    return [[NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex] evaluateWithObject:idString];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
+
+    return [predicate evaluateWithObject:idString];
 }
 
 @end

@@ -35,6 +35,7 @@
 @dynamic proofImage;
 @dynamic idType;
 @dynamic idNumber;
+@dynamic nationality;
 @dynamic fiscalIdCode;
 @dynamic streetCode;
 @dynamic municipalityCode;

@@ -11,11 +11,11 @@
 typedef NS_ENUM(NSUInteger, IdTypeValue)
 {
     IdTypeValueNone                 = 0, // No ID type present.
-    IdTypeValueDni                  = 1, // Documento Nacional de Identidad: SP.
-    IdTypeValueNif                  = 2, // Número de Identificación Fiscal: SP.
-    IdTypeValueNie                  = 3, // Número de Identificación de Extranjero: SP.
-    IdTypeValuePassport             = 4, // Passport number: SP, ZA.
-    IdTypeValueFiscalIdCode         = 5, // Fiscal ID code or CIF: SP company.
+    IdTypeValueDni                  = 1, // Documento Nacional de Identidad: ES.
+    IdTypeValueNif                  = 2, // Número de Identificación Fiscal: ES.
+    IdTypeValueNie                  = 3, // Número de Identificación de Extranjero: ES.
+    IdTypeValueFiscalIdCode         = 4, // General fiscal ID: ES company. (Handled differently in AddressViewController.)
+    IdTypeValuePassport             = 5, // Passport number: ES, ZA.
     IdTypeValueNationalIdCard       = 6, // ID card: ZA.
     IdTypeValueBusinessRegistration = 7, // Business registration: ZA company.
 };
@@ -24,7 +24,7 @@ typedef NS_ENUM(NSUInteger, IdTypeValue)
 @interface IdType : NSObject
 
 @property (nonatomic, assign) IdTypeValue value;
-@property (nonatomic, readonly) NSString* string;
+@property (nonatomic, assign) NSString*   string;
 @property (nonatomic, readonly) NSString* localizedString;
 @property (nonatomic, readonly) NSString* localizedRule;
 

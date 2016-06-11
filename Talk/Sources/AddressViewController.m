@@ -229,12 +229,12 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                        @"numberTypes" : @[ @"MOBILE" ],
                        @"person" :
                        @{
-                           @"idTypes" : @[ @"DNI", @"NIF", @"NIE", @"PASSPORT" ],
+                           @"idTypes" : @[ @"DNI", @"NIE", @"PASSPORT", @"NIF",  ],
                            @"fields"  : @[ @"nationality", @"idType", @"idNumber" ]
                        },
                        @"company" :
                        @{
-                           @"idTypes" : @[ @"CIF" ],
+                           @"idTypes" : @[ ],
                            @"fields"  : @[ @"nationality", @"fiscalIdCode" ]
                        }
                    },
@@ -304,9 +304,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         }
         case TableRowExtraFieldsFiscalIdCode:
         {
-            title = NSLocalizedStringWithDefaultValue(@"Address Company Fiscal ID Code", nil, [NSBundle mainBundle],
-                                                      @"Fiscal ID Code",
-                                                      @"...");
+            title = [IdType localizedStringForValue:IdTypeValueFiscalIdCode];
             break;
         }
         case TableRowExtraFieldsStreetCode:
@@ -728,41 +726,36 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 - (BOOL)areExtraFieldsComplete
 {
     BOOL complete;
+    BOOL valid;
 
     if (self.isNew == YES)
     {
-        if (self.salutation.isPerson)
-        {
-            complete = !((self.rowsExtraFields & TableRowExtraFieldsNationality) &&
-                         ([self.address.nationality stringByRemovingWhiteSpace].length == 0)) &&
-                       !((self.rowsExtraFields & TableRowExtraFieldsIdType) &&
-                         ([self.address.idType stringByRemovingWhiteSpace].length == 0)) &&
-                       !((self.rowsExtraFields & TableRowExtraFieldsIdNumber) &&
-                         ([self.address.idNumber stringByRemovingWhiteSpace].length == 0)) &&
-                       !((self.rowsExtraFields & TableRowExtraFieldsStreetCode) &&
-                         ([self.address.streetCode stringByRemovingWhiteSpace].length == 0)) &&
-                       !((self.rowsExtraFields & TableRowExtraFieldsMunicipalityCode) &&
-                         ([self.address.municipalityCode stringByRemovingWhiteSpace].length == 0));
-        }
+        complete = !((self.rowsExtraFields & TableRowExtraFieldsNationality) &&
+                     ([self.address.nationality stringByRemovingWhiteSpace].length == 0)) &&
+                   !((self.rowsExtraFields & TableRowExtraFieldsIdType) &&
+                     ([self.address.idType stringByRemovingWhiteSpace].length == 0)) &&
+                   !((self.rowsExtraFields & TableRowExtraFieldsIdNumber) &&
+                     ([self.address.idNumber stringByRemovingWhiteSpace].length == 0)) &&
+                   !((self.rowsExtraFields & TableRowExtraFieldsFiscalIdCode) &&
+                     ([self.address.fiscalIdCode stringByRemovingWhiteSpace].length == 0)) &&
+                   !((self.rowsExtraFields & TableRowExtraFieldsStreetCode) &&
+                     ([self.address.streetCode stringByRemovingWhiteSpace].length == 0)) &&
+                   !((self.rowsExtraFields & TableRowExtraFieldsMunicipalityCode) &&
+                     ([self.address.municipalityCode stringByRemovingWhiteSpace].length == 0));
 
-        if (self.salutation.isCompany)
-        {
-            complete = !((self.rowsExtraFields & TableRowExtraFieldsNationality) &&
-                         ([self.address.nationality stringByRemovingWhiteSpace].length == 0)) &&
-                       !((self.rowsExtraFields & TableRowExtraFieldsFiscalIdCode) &&
-                         ([self.address.fiscalIdCode stringByRemovingWhiteSpace].length == 0)) &&
-                       !((self.rowsExtraFields & TableRowExtraFieldsStreetCode) &&
-                         ([self.address.streetCode stringByRemovingWhiteSpace].length == 0)) &&
-                       !((self.rowsExtraFields & TableRowExtraFieldsMunicipalityCode) &&
-                         ([self.address.municipalityCode stringByRemovingWhiteSpace].length == 0));
-        }
+        IdType* idType = [[IdType alloc] initWithValue:IdTypeValueFiscalIdCode];
+        valid    = !((self.rowsExtraFields & TableRowExtraFieldsIdNumber) &&
+                     ![self.idType isValidWithIdString:self.address.idNumber]) &&
+                   !((self.rowsExtraFields & TableRowExtraFieldsFiscalIdCode) &&
+                     ![idType isValidWithIdString:self.address.fiscalIdCode]);
     }
     else
     {
         complete = YES;
+        valid    = YES;
     }
 
-    return complete;
+    return complete && valid;
 }
 
 
@@ -875,8 +868,21 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (void)refreshExtraFieldsSection
 {
-    self.idType.value     = IdTypeValueNone;
-    self.address.idNumber = nil;
+    NSArray* idTypes = self.extraFieldsInfo[self.salutation.typeString][@"idTypes"];
+
+    if (idTypes.count == 1)
+    {
+        self.idType.string  = idTypes[0];
+        self.address.idType = idTypes[0];
+    }
+    else
+    {
+        self.idType.value   = IdTypeValueNone;
+        self.address.idType = nil;
+    }
+
+    self.address.idNumber     = nil;
+    self.address.fiscalIdCode = nil;
 
     [Common reloadSections:TableSectionExtraFields allSections:self.sections tableView:self.tableView];
 }
@@ -1167,8 +1173,15 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
             break;
         }
+        case TableSectionExtraFields:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                      @"A red color indicates that the text you entered is not "
+                                                      @"complete/valid yet.",
+                                                      @".....");
+        }
     }
-    
+
     return title;
 }
 
@@ -1316,7 +1329,14 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                     }
                     case TableRowExtraFieldsIdType:
                     {
-                        [self showIdTypesViewControllerWithCell:cell];
+                        if ([self.extraFieldsInfo[self.salutation.typeString][@"idTypes"] count] == 1)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            [self showIdTypesViewControllerWithCell:cell];
+                        }
                         break;
                     }
                 }
@@ -1689,7 +1709,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         {
             textField.userInteractionEnabled = NO;
 
-            if (self.isNew)
+            if (self.isNew && [self.extraFieldsInfo[self.salutation.typeString][@"idTypes"] count] > 1)
             {
                 cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -1853,28 +1873,39 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             }
             else
             {
-                NSString* title;
-                NSString* message;
-
-                title   = NSLocalizedStringWithDefaultValue(@"Address ShowFieldRuleTitle", nil, [NSBundle mainBundle],
-                                                            @"ID Number Format",
-                                                            @"...");
-                message = NSLocalizedStringWithDefaultValue(@"Address ShowFieldRuleMessage", nil, [NSBundle mainBundle],
-                                                            @"%@",
-                                                            @"....\n"
-                                                            @"[iOS alert message size]");
-                message = [NSString stringWithFormat:message, self.idType.localizedRule];
-
-                [BlockAlertView showAlertViewWithTitle:title
-                                               message:message
-                                            completion:nil
-                                     cancelButtonTitle:[Strings closeString]
-                                     otherButtonTitles:nil];
+                [self showIdNumberRule:self.idType.localizedRule];
             }
+        }
+        else if (textField == self.fiscalIdCodeTextField)
+        {
+            IdType* idType = [[IdType alloc] initWithValue:IdTypeValueFiscalIdCode];
+            [self showIdNumberRule:idType.localizedRule];
         }
 
         return YES;
     }
+}
+
+
+- (void)showIdNumberRule:(NSString*)localizedRule
+{
+    NSString* title;
+    NSString* message;
+
+    title   = NSLocalizedStringWithDefaultValue(@"Address ShowFieldRuleTitle", nil, [NSBundle mainBundle],
+                                                @"ID Number Format",
+                                                @"...");
+    message = NSLocalizedStringWithDefaultValue(@"Address ShowFieldRuleMessage", nil, [NSBundle mainBundle],
+                                                @"%@",
+                                                @"....\n"
+                                                @"[iOS alert message size]");
+    message = [NSString stringWithFormat:message, localizedRule];
+
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:nil
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
 }
 
 
@@ -2184,6 +2215,37 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (void)update
 {
+    if (self.rowsExtraFields & TableRowExtraFieldsIdNumber)
+    {
+        if ([self.idType isValidWithIdString:self.address.idNumber])
+        {
+            self.idNumberTextField.textColor = [Skinning tintColor];
+        }
+        else
+        {
+            self.idNumberTextField.textColor = [Skinning deleteTintColor];
+        }
+    }
+
+    if (self.rowsExtraFields & TableRowExtraFieldsFiscalIdCode)
+    {
+        IdType* idType = [[IdType alloc] initWithValue:IdTypeValueFiscalIdCode];
+
+        if ([idType isValidWithIdString:self.address.fiscalIdCode])
+        {
+            self.fiscalIdCodeTextField.textColor = [Skinning tintColor];
+        }
+        else
+        {
+            self.fiscalIdCodeTextField.textColor = [Skinning deleteTintColor];
+        }
+    }
+
+    if (self.rowsExtraFields & TableRowExtraFieldsMunicipalityCode)
+    {
+        
+    }
+
     [self updateRightBarButtonItem];
 }
 

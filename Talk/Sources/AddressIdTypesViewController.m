@@ -74,7 +74,7 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    self.idType.value = [IdType valueForString:self.idTypes[indexPath.row]];
+    self.idType.string = self.idTypes[indexPath.row];
 
     UITableViewCell* cell;
 

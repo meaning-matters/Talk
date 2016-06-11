@@ -582,7 +582,7 @@ typedef enum
                                                     @"....\n"
                                                     @"[iOS alert title size].");
         message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                    @"Please complete the information for all required fields.",
+                                                    @"Please complete all required fields.",
                                                     @"....\n"
                                                     @"[iOS alert message size]");
     }
