@@ -9,19 +9,6 @@
 #import "SearchTableViewController.h"
 #import "Skinning.h"
 
-To search the contents of a string or verify the presence of a string within a string using locale-sensitive comparison algorithms, use the rangeOfString:options:range:locale: method, passing the current locale as the locale parameter. The constants you can combine and pass as the options parameter are:
-
-NSCaseInsensitiveSearch
-Case-insensitive search. For example, ‘B’ is the same as ‘b’.
-NSDiacriticInsensitiveSearch
-Ignores diacritic marks. For example, ‘ö’ is equal to ‘o’.
-NSBackwardsSearch
-Search backwards. (The default is forwards.)
-NSAnchoredSearch
-Search at the starting point.
-For example, if you are searching for user text in a string, pass the NSCaseInsensitiveSearch and NSDiacriticInsensitiveSearch constants as the options parameter to the rangeOfString:options:range:locale: method. Typically, searching text is a case and diacritic insensitive operation, but sorting text is case and diacritic sensitive.
-
-
 
 @interface SearchTableViewController ()
 
@@ -120,7 +107,7 @@ For example, if you are searching for user text in a string, pass the NSCaseInse
         for (id object in self.indexedObjectsDictionary[nameIndex])
         {
             NSString* name = [self nameForObject:object];
-            NSRange range = [name rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch];
+            NSRange range = [name rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch]; //### With NSAnchoredSearch only searches at begin of words.
             if (range.location != NSNotFound)
             {
                 [self.filteredObjectsArray addObject:object];

@@ -747,7 +747,10 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         valid    = !((self.rowsExtraFields & TableRowExtraFieldsIdNumber) &&
                      ![self.idType isValidWithIdString:self.address.idNumber]) &&
                    !((self.rowsExtraFields & TableRowExtraFieldsFiscalIdCode) &&
-                     ![idType isValidWithIdString:self.address.fiscalIdCode]);
+                     ![idType isValidWithIdString:self.address.fiscalIdCode]) &&
+                   !((self.rowsExtraFields & TableRowExtraFieldsStreetCode) &&
+                     ![self isValidStreetCode:self.address.streetCode]);
+
     }
     else
     {
@@ -756,6 +759,14 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     }
 
     return complete && valid;
+}
+
+
+- (BOOL)isValidStreetCode:(NSString*)streetCode
+{
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[0-9]{1,4}"];
+
+    return [predicate evaluateWithObject:streetCode];
 }
 
 
@@ -1908,6 +1919,10 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             IdType* idType = [[IdType alloc] initWithValue:IdTypeValueFiscalIdCode];
             [self showIdNumberRule:idType.localizedRule];
         }
+        else if (textField == self.streetCodeTextField)
+        {
+            [self showStreetCodeRule];
+        }
 
         return YES;
     }
@@ -1927,6 +1942,28 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                 @"....\n"
                                                 @"[iOS alert message size]");
     message = [NSString stringWithFormat:message, localizedRule];
+
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:nil
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
+}
+
+
+- (void)showStreetCodeRule
+{
+    NSString* title;
+    NSString* message;
+
+    title   = NSLocalizedStringWithDefaultValue(@"Address ShowFieldRuleTitle", nil, [NSBundle mainBundle],
+                                                @"Street Code Format",
+                                                @"...");
+    message = NSLocalizedStringWithDefaultValue(@"Address ShowFieldRuleMessage", nil, [NSBundle mainBundle],
+                                                @"The 1 to 4 digits street code of the entered address.\n\n"
+                                                @"(This is a Denmark specific code; it's not the building number.)",
+                                                @"....\n"
+                                                @"[iOS alert message size]");
 
     [BlockAlertView showAlertViewWithTitle:title
                                    message:message
@@ -2270,7 +2307,14 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
     if (self.rowsExtraFields & TableRowExtraFieldsMunicipalityCode)
     {
-        
+        if ([self isValidStreetCode:self.address.streetCode])
+        {
+            self.streetCodeTextField.textColor = [Skinning tintColor];
+        }
+        else
+        {
+            self.streetCodeTextField.textColor = [Skinning deleteTintColor];
+        }
     }
 
     [self updateRightBarButtonItem];
