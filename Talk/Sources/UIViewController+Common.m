@@ -118,6 +118,7 @@
 
         [self.activityIndicator startAnimating];
         [self.view addSubview:self.activityIndicator];
+        self.view.userInteractionEnabled = NO;
     }
     else if (self.isLoading == NO && self.activityIndicator != nil)
     {
@@ -127,6 +128,7 @@
 
         [self.imageView removeFromSuperview];
         self.imageView = nil;
+        self.view.userInteractionEnabled = YES;
     }
 
     [self didSetIsLoading];
