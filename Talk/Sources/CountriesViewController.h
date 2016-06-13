@@ -11,7 +11,7 @@
 #import "SearchTableViewController.h"
 
 
-@interface CountriesViewController : SearchTableViewController <UITableViewDelegate>
+@interface CountriesViewController : SearchTableViewController
 
 @property (nonatomic, assign) BOOL isModal;    // Set this to YES when shown as modal (and not from Settings).
 

@@ -436,9 +436,11 @@
 		4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3F5175668CA0006542F /* LogoFacebook.png */; };
 		4864B3F7175668CA0006542F /* LogoFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3F5175668CA0006542F /* LogoFacebook.png */; };
 		4864B3F917566E950006542F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4864B3F817566E950006542F /* MessageUI.framework */; };
+		4864CAE61D0C765E009B3D9C /* DenmarkMunicipalities.json in Resources */ = {isa = PBXBuildFile; fileRef = 4864CAE51D0C765E009B3D9C /* DenmarkMunicipalities.json */; };
+		4864CAEE1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4864CAED1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m */; };
 		4865A9DF1792C8B70028785F /* NumberBuyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberBuyCell.m */; };
 		4865A9E01792C8B70028785F /* NumberBuyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberBuyCell.m */; };
-		486B95261CDE80F2004CFD8A /* DenmarkCitiesArray.json in Resources */ = {isa = PBXBuildFile; fileRef = 486B95251CDE80F2004CFD8A /* DenmarkCitiesArray.json */; };
+		486B95261CDE80F2004CFD8A /* DenmarkCityPostcodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 486B95251CDE80F2004CFD8A /* DenmarkCityPostcodes.json */; };
 		486D4A2318F06BC8004699C9 /* CallRatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 486D4A2218F06BC8004699C9 /* CallRatesViewController.m */; };
 		4877EDBC17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */; };
 		4877EDBD17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */; };
@@ -1130,12 +1132,15 @@
 		485F6A381637270100D61365 /* ZW@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ZW@2x.png"; sourceTree = "<group>"; };
 		4864B3F5175668CA0006542F /* LogoFacebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LogoFacebook.png; sourceTree = "<group>"; };
 		4864B3F817566E950006542F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		4864CAE51D0C765E009B3D9C /* DenmarkMunicipalities.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DenmarkMunicipalities.json; path = Resources/DenmarkMunicipalities.json; sourceTree = "<group>"; };
+		4864CAEC1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressMunicipalitiesViewController.h; sourceTree = "<group>"; };
+		4864CAED1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressMunicipalitiesViewController.m; sourceTree = "<group>"; };
 		4865A9DD1792C8B70028785F /* NumberBuyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberBuyCell.h; sourceTree = "<group>"; };
 		4865A9DE1792C8B70028785F /* NumberBuyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberBuyCell.m; sourceTree = "<group>"; };
 		486B95171CDE413A004CFD8A /* Muni-StrCode-Str.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Muni-StrCode-Str.json"; path = "Resources/Muni-StrCode-Str.json"; sourceTree = "<group>"; };
 		486B951E1CDE44E4004CFD8A /* Muni-Post-City.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Muni-Post-City.json"; path = "Resources/Muni-Post-City.json"; sourceTree = "<group>"; };
 		486B951F1CDE44E4004CFD8A /* StrCode-Post-City.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "StrCode-Post-City.json"; path = "Resources/StrCode-Post-City.json"; sourceTree = "<group>"; };
-		486B95251CDE80F2004CFD8A /* DenmarkCitiesArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DenmarkCitiesArray.json; path = Resources/DenmarkCitiesArray.json; sourceTree = "<group>"; };
+		486B95251CDE80F2004CFD8A /* DenmarkCityPostcodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DenmarkCityPostcodes.json; path = Resources/DenmarkCityPostcodes.json; sourceTree = "<group>"; };
 		486D4A2118F06BC8004699C9 /* CallRatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallRatesViewController.h; sourceTree = "<group>"; };
 		486D4A2218F06BC8004699C9 /* CallRatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallRatesViewController.m; sourceTree = "<group>"; };
 		4877EDBA17AD27700013B18F /* PhoneNumberTextFieldDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumberTextFieldDelegate.h; sourceTree = "<group>"; };
@@ -2467,6 +2472,8 @@
 				48C431A0189EDFB40008FE01 /* VerifyPhoneViewController.m */,
 				4823C0CB1CBA7F3800030FC7 /* WebViewController.h */,
 				4823C0CC1CBA7F3800030FC7 /* WebViewController.m */,
+				4864CAEC1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.h */,
+				4864CAED1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -2490,7 +2497,8 @@
 				483B078E1908017900E8C42D /* Terms.json */,
 				48B9386D187B647F00132535 /* Thanks.html */,
 				4837AF6318D89E8600D3AEBC /* GetStarted.json */,
-				486B95251CDE80F2004CFD8A /* DenmarkCitiesArray.json */,
+				486B95251CDE80F2004CFD8A /* DenmarkCityPostcodes.json */,
+				4864CAE51D0C765E009B3D9C /* DenmarkMunicipalities.json */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2721,7 +2729,7 @@
 				485F6A6A1637270100D61365 /* BI@2x.png in Resources */,
 				485F6A6C1637270100D61365 /* BJ@2x.png in Resources */,
 				4800379A1CA7CD050083D24B /* Favorites@2x.png in Resources */,
-				486B95261CDE80F2004CFD8A /* DenmarkCitiesArray.json in Resources */,
+				486B95261CDE80F2004CFD8A /* DenmarkCityPostcodes.json in Resources */,
 				485F6A6E1637270100D61365 /* BL@2x.png in Resources */,
 				4837AF6418D89E8600D3AEBC /* GetStarted.json in Resources */,
 				485F6A701637270100D61365 /* BM@2x.png in Resources */,
@@ -2776,6 +2784,7 @@
 				4842DA001AADFB53008F35C9 /* noPictureImage.png in Resources */,
 				485F6AC41637270100D61365 /* FI@2x.png in Resources */,
 				485F6AC61637270100D61365 /* FJ@2x.png in Resources */,
+				4864CAE61D0C765E009B3D9C /* DenmarkMunicipalities.json in Resources */,
 				485F6AC81637270100D61365 /* FK@2x.png in Resources */,
 				485F6ACA1637270100D61365 /* FM@2x.png in Resources */,
 				485F6ACC1637270100D61365 /* FO@2x.png in Resources */,
@@ -3158,6 +3167,7 @@
 				48AF4581164A45A100DFE3D8 /* Settings.m in Sources */,
 				48AD95DF164AE582006178E6 /* Skinning.m in Sources */,
 				488268D9164BCF8600EA58AE /* NetworkStatus.m in Sources */,
+				4864CAEE1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m in Sources */,
 				48B8134E1AADF9460019AF77 /* NBContactStructureManager.m in Sources */,
 				4814D56C19E9660200958E33 /* AFURLConnectionOperation.m in Sources */,
 				48D3F01E164F9284002041A9 /* CountryNames.m in Sources */,

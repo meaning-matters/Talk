@@ -13,6 +13,7 @@
 #import "AddressPostcodesViewController.h"
 #import "AddressCitiesViewController.h"
 #import "AddressSalutationsViewController.h"
+#import "AddressMunicipalitiesViewController.h"
 #import "ProofImageViewController.h"
 #import "CountriesViewController.h"
 #import "Strings.h"
@@ -316,9 +317,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         }
         case TableRowExtraFieldsMunicipalityCode:
         {
-            title = NSLocalizedStringWithDefaultValue(@"Address Denmark Municipality Code", nil, [NSBundle mainBundle],
-                                                      @"Municipality Code",
-                                                      @"...");
+            title = [Strings municipalityCodeString];
             break;
         }
     }
@@ -367,8 +366,9 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 {
     [super viewWillAppear:animated];
 
-    self.postcodeTextField.text = self.address.postcode;
-    self.cityTextField.text     = self.address.city;
+    self.postcodeTextField.text         = self.address.postcode;
+    self.cityTextField.text             = self.address.city;
+    self.municipalityCodeTextField.text = self.address.municipalityCode;
 
     self.companyNameTextField.placeholder  = [self placeHolderForTextField:self.companyNameTextField];
     self.firstNameTextField.placeholder    = [self placeHolderForTextField:self.firstNameTextField];
@@ -925,7 +925,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 {
     if ([self.address.isoCountryCode isEqualToString:@"DK"])
     {
-        NSData* data     = [Common dataForResource:@"DenmarkCitiesArray" ofType:@"json"];
+        NSData* data     = [Common dataForResource:@"DenmarkCityPostcodes" ofType:@"json"];
         self.citiesArray = [Common objectWithJsonData:data];
 
         if (self.address.postcode != nil)
@@ -1188,12 +1188,13 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    AddressSalutationsViewController* salutationsViewController;
-    AddressPostcodesViewController*   postcodesViewController;
-    AddressCitiesViewController*      citiesViewController;
-    CountriesViewController*          countriesViewController;
-    NSString*                         isoCountryCode;
-    UITableViewCell*                  cell;
+    AddressSalutationsViewController*    salutationsViewController;
+    AddressPostcodesViewController*      postcodesViewController;
+    AddressCitiesViewController*         citiesViewController;
+    AddressMunicipalitiesViewController* municipalitiesViewController;
+    CountriesViewController*             countriesViewController;
+    NSString*                            isoCountryCode;
+    UITableViewCell*                     cell;
     void (^completion)(BOOL cancelled, NSString* isoCountryCode);
 
     cell = [self.tableView cellForRowAtIndexPath:indexPath];
@@ -1305,7 +1306,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             }
             case TableSectionExtraFields:
             {
-                switch ([Common nthBitSet:indexPath.row inValue:self.rowsAddress])
+                switch ([Common nthBitSet:indexPath.row inValue:self.rowsExtraFields])
                 {
                     case TableRowExtraFieldsNationality:
                     {
@@ -1337,6 +1338,17 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                         {
                             [self showIdTypesViewControllerWithCell:cell];
                         }
+                        break;
+                    }
+                    case TableRowExtraFieldsMunicipalityCode:
+                    {
+                        NSData* data                 = [Common dataForResource:@"DenmarkMunicipalities" ofType:@"json"];
+                        NSArray* municipalitiesArray = [Common objectWithJsonData:data];
+
+                        municipalitiesViewController = [[AddressMunicipalitiesViewController alloc] initWithMunicipalitiesArray:municipalitiesArray
+                                                                                                                        address:self.address];
+                        [self.navigationController pushViewController:municipalitiesViewController animated:YES];
+
                         break;
                     }
                 }
@@ -1770,14 +1782,29 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         }
         case TableRowExtraFieldsMunicipalityCode:
         {
-            self.municipalityCodeTextField = textField;
-            cell.accessoryType             = UITableViewCellAccessoryNone;
-            cell.selectionStyle            = UITableViewCellSelectionStyleNone;
+            textField.userInteractionEnabled = NO;
 
-            textField.text                   = [self stringByStrippingNonBreakingSpaces:self.address.municipalityCode];
-            textField.keyboardType           = UIKeyboardTypeNumbersAndPunctuation;
-            textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-            objc_setAssociatedObject(textField, @"TextFieldKey", @"municipalityCode", OBJC_ASSOCIATION_RETAIN);
+            if (self.isNew)
+            {
+                cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            }
+            else
+            {
+                cell.accessoryType  = UITableViewCellAccessoryNone;
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+
+            self.municipalityCodeTextField = textField;
+            if (self.address.municipalityCode == nil)
+            {
+                self.municipalityCodeTextField.text = nil;
+            }
+            else
+            {
+                self.municipalityCodeTextField.text = self.address.municipalityCode;
+            }
+
             break;
         }
     }

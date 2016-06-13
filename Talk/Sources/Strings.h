@@ -125,4 +125,6 @@
 
 + (NSString*)startString;
 
++ (NSString*)municipalityCodeString;
+
 @end

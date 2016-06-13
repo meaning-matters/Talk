@@ -1,0 +1,394 @@
+[
+    {
+        "code" : "101",
+        "name" : "Copenhagen"
+    },
+    {
+        "code" : "751",
+        "name" : "Aarhus"
+    },
+    {
+        "code" : "851",
+        "name" : "Aalborg"
+    },
+    {
+        "code" : "461",
+        "name" : "Odense"
+    },
+    {
+        "code" : "561",
+        "name" : "Esbjerg"
+    },
+    {
+        "code" : "630",
+        "name" : "Vejle"
+    },
+    {
+        "code" : "147",
+        "name" : "Frederiksberg"
+    },
+    {
+        "code" : "730",
+        "name" : "Randers"
+    },
+    {
+        "code" : "791",
+        "name" : "Viborg"
+    },
+    {
+        "code" : "621",
+        "name" : "Kolding"
+    },
+    {
+        "code" : "740",
+        "name" : "Silkeborg"
+    },
+    {
+        "code" : "657",
+        "name" : "Herning"
+    },
+    {
+        "code" : "615",
+        "name" : "Horsens"
+    },
+    {
+        "code" : "265",
+        "name" : "Roskilde"
+    },
+    {
+        "code" : "370",
+        "name" : "Næstved"
+    },
+    {
+        "code" : "330",
+        "name" : "Slagelse"
+    },
+    {
+        "code" : "540",
+        "name" : "Sønderborg"
+    },
+    {
+        "code" : "157",
+        "name" : "Gentofte"
+    },
+    {
+        "code" : "316",
+        "name" : "Holbæk"
+    },
+    {
+        "code" : "860",
+        "name" : "Hjørring"
+    },
+    {
+        "code" : "159",
+        "name" : "Gladsaxe"
+    },
+    {
+        "code" : "376",
+        "name" : "Guldborgsund"
+    },
+    {
+        "code" : "217",
+        "name" : "Helsingør"
+    },
+    {
+        "code" : "813",
+        "name" : "Frederikshavn"
+    },
+    {
+        "code" : "580",
+        "name" : "Aabenraa"
+    },
+    {
+        "code" : "479",
+        "name" : "Svendborg"
+    },
+    {
+        "code" : "746",
+        "name" : "Skanderborg"
+    },
+    {
+        "code" : "760",
+        "name" : "Ringkøbing-Skjern"
+    },
+    {
+        "code" : "259",
+        "name" : "Køge"
+    },
+    {
+        "code" : "661",
+        "name" : "Holstebro"
+    },
+    {
+        "code" : "510",
+        "name" : "Haderslev"
+    },
+    {
+        "code" : "230",
+        "name" : "Rudersdal"
+    },
+    {
+        "code" : "173",
+        "name" : "Lyngby-Taarbæk"
+    },
+    {
+        "code" : "430",
+        "name" : "Faaborg-Midtfyn"
+    },
+    {
+        "code" : "167",
+        "name" : "Hvidovre"
+    },
+    {
+        "code" : "573",
+        "name" : "Varde"
+    },
+    {
+        "code" : "607",
+        "name" : "Fredericia"
+    },
+    {
+        "code" : "326",
+        "name" : "Kalundborg"
+    },
+    {
+        "code" : "219",
+        "name" : "Hillerød"
+    },
+    {
+        "code" : "169",
+        "name" : "Høje-Taastrup"
+    },
+    {
+        "code" : "151",
+        "name" : "Ballerup"
+    },
+    {
+        "code" : "253",
+        "name" : "Greve"
+    },
+    {
+        "code" : "779",
+        "name" : "Skive"
+    },
+    {
+        "code" : "710",
+        "name" : "Favrskov"
+    },
+    {
+        "code" : "766",
+        "name" : "Hedensted"
+    },
+    {
+        "code" : "390",
+        "name" : "Vordingborg"
+    },
+    {
+        "code" : "360",
+        "name" : "Lolland"
+    },
+    {
+        "code" : "787",
+        "name" : "Thisted"
+    },
+    {
+        "code" : "250",
+        "name" : "Frederikssund"
+    },
+    {
+        "code" : "575",
+        "name" : "Vejen"
+    },
+    {
+        "code" : "846",
+        "name" : "Mariagerfjord"
+    },
+    {
+        "code" : "240",
+        "name" : "Egedal"
+    },
+    {
+        "code" : "706",
+        "name" : "Syddjurs"
+    },
+    {
+        "code" : "420",
+        "name" : "Assens"
+    },
+    {
+        "code" : "400",
+        "name" : "Bornholm"
+    },
+    {
+        "code" : "185",
+        "name" : "Tårnby"
+    },
+    {
+        "code" : "756",
+        "name" : "Ikast-Brande"
+    },
+    {
+        "code" : "270",
+        "name" : "Gribskov"
+    },
+    {
+        "code" : "210",
+        "name" : "Fredensborg"
+    },
+    {
+        "code" : "550",
+        "name" : "Tønder"
+    },
+    {
+        "code" : "849",
+        "name" : "Jammerbugt"
+    },
+    {
+        "code" : "190",
+        "name" : "Furesø"
+    },
+    {
+        "code" : "707",
+        "name" : "Norddjurs"
+    },
+    {
+        "code" : "410",
+        "name" : "Middelfart"
+    },
+    {
+        "code" : "820",
+        "name" : "Vesthimmerland"
+    },
+    {
+        "code" : "175",
+        "name" : "Rødovre"
+    },
+    {
+        "code" : "810",
+        "name" : "Brønderslev"
+    },
+    {
+        "code" : "320",
+        "name" : "Faxe"
+    },
+    {
+        "code" : "153",
+        "name" : "Brøndby"
+    },
+    {
+        "code" : "329",
+        "name" : "Ringsted"
+    },
+    {
+        "code" : "306",
+        "name" : "Odsherred"
+    },
+    {
+        "code" : "450",
+        "name" : "Nyborg"
+    },
+    {
+        "code" : "260",
+        "name" : "Halsnæs"
+    },
+    {
+        "code" : "340",
+        "name" : "Sorø"
+    },
+    {
+        "code" : "480",
+        "name" : "Nordfyn"
+    },
+    {
+        "code" : "840",
+        "name" : "Rebild"
+    },
+    {
+        "code" : "165",
+        "name" : "Albertslund"
+    },
+    {
+        "code" : "350",
+        "name" : "Lejre"
+    },
+    {
+        "code" : "163",
+        "name" : "Herlev"
+    },
+    {
+        "code" : "530",
+        "name" : "Billund"
+    },
+    {
+        "code" : "223",
+        "name" : "Hørsholm"
+    },
+    {
+        "code" : "201",
+        "name" : "Allerød"
+    },
+    {
+        "code" : "440",
+        "name" : "Kerteminde"
+    },
+    {
+        "code" : "671",
+        "name" : "Struer"
+    },
+    {
+        "code" : "336",
+        "name" : "Stevns"
+    },
+    {
+        "code" : "727",
+        "name" : "Odder"
+    },
+    {
+        "code" : "161",
+        "name" : "Glostrup"
+    },
+    {
+        "code" : "773",
+        "name" : "Morsø"
+    },
+    {
+        "code" : "665",
+        "name" : "Lemvig"
+    },
+    {
+        "code" : "269",
+        "name" : "Solrød"
+    },
+    {
+        "code" : "183",
+        "name" : "Ishøj"
+    },
+    {
+        "code" : "187",
+        "name" : "Vallensbæk"
+    },
+    {
+        "code" : "155",
+        "name" : "Dragør"
+    },
+    {
+        "code" : "482",
+        "name" : "Langeland"
+    },
+    {
+        "code" : "492",
+        "name" : "Ærø"
+    },
+    {
+        "code" : "741",
+        "name" : "Samsø"
+    },
+    {
+        "code" : "563",
+        "name" : "Fanø"
+    },
+    {
+        "code" : "825",
+        "name" : "Læsø"
+    }
+]

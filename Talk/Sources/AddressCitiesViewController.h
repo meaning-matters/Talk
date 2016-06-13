@@ -14,6 +14,6 @@
 
 @interface AddressCitiesViewController : SearchTableViewController <UITableViewDelegate>
 
-- (instancetype)initWithCitiesArray:(NSArray*)citiesArray address:(AddressData *)address;
+- (instancetype)initWithCitiesArray:(NSArray*)citiesArray address:(AddressData*)address;
 
 @end

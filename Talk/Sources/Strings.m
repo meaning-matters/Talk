@@ -515,11 +515,20 @@
                                              @"[Button size].");
 }
 
+
 + (NSString*)startString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Start", nil, [NSBundle mainBundle],
                                              @"Start",
                                              @"Action to start using the app\n"
+                                             @"[Button size].");
+}
+
++ (NSString*)municipalityCodeString;
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Municipality Code", nil, [NSBundle mainBundle],
+                                             @"Municipality Code",
+                                             @"Term for code given to Denmark Municipality\n"
                                              @"[Button size].");
 }
 

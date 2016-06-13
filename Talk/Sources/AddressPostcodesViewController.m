@@ -28,8 +28,8 @@
 {
     if (self = [super init])
     {
-        self.title = NSLocalizedStringWithDefaultValue(@"NumbersAreaZips ScreenTitle", nil,
-                                                       [NSBundle mainBundle], @"Postcodes",
+        self.title = NSLocalizedStringWithDefaultValue(@"NumbersAreaZips ScreenTitle", nil, [NSBundle mainBundle],
+                                                       @"Postcodes",
                                                        @"Title of app screen with list of postal codes\n"
                                                        @"[1 line larger font].");
         
