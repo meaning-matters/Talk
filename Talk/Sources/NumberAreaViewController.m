@@ -866,61 +866,6 @@ typedef enum
             [self.navigationController pushViewController:viewController animated:YES];
             break;
         }
-        case TableSectionBuy:
-        {
-            if (([self isAddressRequired] && self.address != nil) || ![self isAddressRequired])
-            {
-                NSLog(@"//#### Do the work earlier done in BuyNumberViewController.");
-            }
-            else
-            {
-                NSString*   title;
-                NSString*   message;
-
-                title   = NSLocalizedStringWithDefaultValue(@"NumberArea AddressRequiredTitle", nil,
-                                                            [NSBundle mainBundle], @"Address Required",
-                                                            @"Alert title telling that user did not fill in all information.\n"
-                                                            @"[iOS alert title size].");
-                if (/*requireProof//#####*/YES)
-                {
-                    message = NSLocalizedStringWithDefaultValue(@"NumberArea AddressWithProofRequiredMessage", nil,
-                                                                [NSBundle mainBundle],
-                                                                @"A contact address with verification image are "
-                                                                @"required for this type of Number in this area."
-                                                                @"\n\nGo and add or select an address.",
-                                                                @"Alert message telling that user did not fill in all information.\n"
-                                                                @"[iOS alert message size]");
-                }
-                else
-                {
-                    message = NSLocalizedStringWithDefaultValue(@"NumberArea IncompleteAlertMessage", nil,
-                                                                [NSBundle mainBundle],
-                                                                @"A contact address is required for this Number."
-                                                                @"\n\nGo and add or select an address.",
-                                                                @"Alert message telling that user did not fill in all information.\n"
-                                                                @"[iOS alert message size]");
-                }
-                
-                [BlockAlertView showAlertViewWithTitle:title
-                                               message:message
-                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
-                {
-                    if (cancelled)
-                    {
-                        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                    }
-                    else
-                    {
-                        NSIndexPath* indexPath = [NSIndexPath indexPathForItem:1 inSection:TableSectionAddress];
-                        [self tableView:tableView didSelectRowAtIndexPath:indexPath];
-                    }
-                }
-                                     cancelButtonTitle:[Strings closeString]
-                                     otherButtonTitles:[Strings goString], nil];
-            }
-            
-            break;
-        }
     }
 }
 
@@ -934,7 +879,7 @@ typedef enum
         case TableSectionArea:    cell = [self areaCellForRowAtIndexPath:indexPath];    break;
         case TableSectionName:    cell = [self nameCellForRowAtIndexPath:indexPath];    break;
         case TableSectionAddress: cell = [self addressCellForRowAtIndexPath:indexPath]; break;
-        case TableSectionBuy:     cell = [self actionCellForRowAtIndexPath:indexPath];  break;
+        case TableSectionBuy:     cell = [self buyCellForRowAtIndexPath:indexPath];     break;
     }
 
     return cell;
@@ -1090,7 +1035,7 @@ typedef enum
 }
 
 
-- (UITableViewCell*)actionCellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)buyCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     self.buyCell = [self.tableView dequeueReusableCellWithIdentifier:@"NumberBuyCell" forIndexPath:indexPath];
     self.buyCell.delegate = self;

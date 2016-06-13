@@ -30,6 +30,7 @@
 #import "AddressUpdatesHandler.h"
 #import "AddressStatus.h"
 #import "IdType.h"
+#import "NumberData.h"
 
 typedef NS_ENUM(NSUInteger, TableSections)
 {
@@ -38,6 +39,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
     TableSectionDetails      = 1UL << 2, // Salutation, company, first, last.
     TableSectionAddress      = 1UL << 3, // Street, number, city, postcode.
     TableSectionExtraFields  = 1UL << 4, // Extra for few countries.  Assumed last section in updateExtraFieldsSection.
+    TableSectionNumbers      = 1UL << 5, //
 };
 
 typedef NS_ENUM(NSUInteger, TableRowsDetails)
@@ -1048,7 +1050,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         self.rowsExtraFields |= (self.address.streetCode       != nil) ? TableRowExtraFieldsStreetCode       : 0;
         self.rowsExtraFields |= (self.address.municipalityCode != nil) ? TableRowExtraFieldsMunicipalityCode : 0;
 
-        self.sections |= (self.rowsExtraFields != 0) ? TableSectionExtraFields : 0;
+        self.sections |= (self.rowsExtraFields != 0)      ? TableSectionExtraFields : 0;
+        self.sections |= (self.address.numbers.count > 0) ? TableSectionNumbers     : 0;
     }
 
     [self initializeIndexPaths];
@@ -1068,8 +1071,9 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         case TableSectionDetails:      numberOfRows = [Common bitsSetCount:self.rowsDetails];     break;
         case TableSectionAddress:      numberOfRows = [Common bitsSetCount:self.rowsAddress];     break;
         case TableSectionExtraFields:  numberOfRows = [Common bitsSetCount:self.rowsExtraFields]; break;
+        case TableSectionNumbers:      numberOfRows = self.address.numbers.count;                 break;
     }
-    
+
     return numberOfRows;
 }
 
@@ -1141,6 +1145,14 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             title = NSLocalizedStringWithDefaultValue(@"Address:ExtraFields SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Additional Information",
                                                       @"Name and company of someone.");
+            break;
+        }
+        case TableSectionNumbers:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                      @"Used For Numbers",
+                                                      @"Table header above numbers\n"
+                                                      @"[1 line larger font].");
             break;
         }
     }
@@ -1399,6 +1411,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         case TableSectionDetails:      cell = [self detailsCellForRowAtIndexPath:indexPath];     break;
         case TableSectionAddress:      cell = [self addressCellForRowAtIndexPath:indexPath];     break;
         case TableSectionExtraFields:  cell = [self extraFieldsCellForRowAtIndexPath:indexPath]; break;
+        case TableSectionNumbers:      cell = [self numbersCellForRowAtIndexPath:indexPath];     break;
     }
     
     return cell;
@@ -1842,6 +1855,28 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     
     [self updateTextField:textField onCell:cell];
     
+    return cell;
+}
+
+
+- (UITableViewCell*)numbersCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell*  cell;
+    NSSortDescriptor* sortDescriptor  = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    NSArray*          sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    NSArray*          numbersArray    = [self.address.numbers sortedArrayUsingDescriptors:sortDescriptors];
+    NumberData*       number          = numbersArray[indexPath.row];
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumbersCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"NumbersCell"];
+    }
+
+    cell.textLabel.text = number.name;
+    cell.accessoryType  = UITableViewCellAccessoryNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
     return cell;
 }
 
