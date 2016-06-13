@@ -1017,24 +1017,39 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
     // We need to determine the existence of the ExtraFields section dynamically, based on
     // the country of the address (which the user may have to select from a list).
-    if (self.extraFieldsInfo != nil)
+    if (self.isNew)
     {
-        NSString* numberTypeMaskString = [NumberType stringForNumberTypeMask:self.numberTypeMask];
-        if ([self.extraFieldsInfo[@"numberTypes"] containsObject:numberTypeMaskString] &&
-            [self.address.isoCountryCode isEqualToString:self.numberIsoCountryCode])
+        if (self.extraFieldsInfo != nil)
         {
-            self.sections |= TableSectionExtraFields;
+            NSString* numberTypeMaskString = [NumberType stringForNumberTypeMask:self.numberTypeMask];
+            if ([self.extraFieldsInfo[@"numberTypes"] containsObject:numberTypeMaskString] &&
+                [self.address.isoCountryCode isEqualToString:self.numberIsoCountryCode])
+            {
+                self.sections |= TableSectionExtraFields;
+            }
         }
-    }
 
-    NSArray* fields = self.extraFieldsInfo[self.salutation.typeString][@"fields"];
-    self.rowsExtraFields = 0;
-    self.rowsExtraFields |= [fields containsObject:@"nationality"]      ? TableRowExtraFieldsNationality      : 0;
-    self.rowsExtraFields |= [fields containsObject:@"idType"]           ? TableRowExtraFieldsIdType           : 0;
-    self.rowsExtraFields |= [fields containsObject:@"idNumber"]         ? TableRowExtraFieldsIdNumber         : 0;
-    self.rowsExtraFields |= [fields containsObject:@"fiscalIdCode"]     ? TableRowExtraFieldsFiscalIdCode     : 0;
-    self.rowsExtraFields |= [fields containsObject:@"streetCode"]       ? TableRowExtraFieldsStreetCode       : 0;
-    self.rowsExtraFields |= [fields containsObject:@"municipalityCode"] ? TableRowExtraFieldsMunicipalityCode : 0;
+        NSArray* fields = self.extraFieldsInfo[self.salutation.typeString][@"fields"];
+        self.rowsExtraFields = 0;
+        self.rowsExtraFields |= [fields containsObject:@"nationality"]      ? TableRowExtraFieldsNationality      : 0;
+        self.rowsExtraFields |= [fields containsObject:@"idType"]           ? TableRowExtraFieldsIdType           : 0;
+        self.rowsExtraFields |= [fields containsObject:@"idNumber"]         ? TableRowExtraFieldsIdNumber         : 0;
+        self.rowsExtraFields |= [fields containsObject:@"fiscalIdCode"]     ? TableRowExtraFieldsFiscalIdCode     : 0;
+        self.rowsExtraFields |= [fields containsObject:@"streetCode"]       ? TableRowExtraFieldsStreetCode       : 0;
+        self.rowsExtraFields |= [fields containsObject:@"municipalityCode"] ? TableRowExtraFieldsMunicipalityCode : 0;
+    }
+    else
+    {
+        self.rowsExtraFields = 0;
+        self.rowsExtraFields |= (self.address.nationality      != nil) ? TableRowExtraFieldsNationality      : 0;
+        self.rowsExtraFields |= (self.address.idType           != nil) ? TableRowExtraFieldsIdType           : 0;
+        self.rowsExtraFields |= (self.address.idNumber         != nil) ? TableRowExtraFieldsIdNumber         : 0;
+        self.rowsExtraFields |= (self.address.fiscalIdCode     != nil) ? TableRowExtraFieldsFiscalIdCode     : 0;
+        self.rowsExtraFields |= (self.address.streetCode       != nil) ? TableRowExtraFieldsStreetCode       : 0;
+        self.rowsExtraFields |= (self.address.municipalityCode != nil) ? TableRowExtraFieldsMunicipalityCode : 0;
+
+        self.sections |= (self.rowsExtraFields != 0) ? TableSectionExtraFields : 0;
+    }
 
     [self initializeIndexPaths];
 
@@ -1186,10 +1201,13 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         }
         case TableSectionExtraFields:
         {
-            title = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                      @"A red color indicates that the text you entered is not "
-                                                      @"complete/valid yet.",
-                                                      @".....");
+            if (self.isNew)
+            {
+                title = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                          @"A red color indicates that the text you entered is not "
+                                                          @"complete/valid yet.",
+                                                          @".....");
+            }
         }
     }
 
