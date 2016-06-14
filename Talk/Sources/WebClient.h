@@ -192,7 +192,7 @@
                          areaId:(NSString*)areaId
                       addressId:(NSString*)addressId
                       autoRenew:(BOOL)autoRenew
-                          reply:(void (^)(NSError* error, NSString* e164))reply;
+                          reply:(void (^)(NSError* error, NSString* e164, NSDate* purchaseDate, NSDate* renewalDate))reply;
 
 // 11B. UPDATE NUMBER'S NAME
 - (void)updateNumberE164:(NSString*)e164

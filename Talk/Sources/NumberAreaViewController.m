@@ -21,6 +21,7 @@
 #import "AddressData.h"
 #import "AddressStatus.h"
 #import "Settings.h"
+#import "NumberData.h"
 
 
 // Update reloadSections calls when adding/removing sections.
@@ -343,6 +344,31 @@ typedef enum
 }
 
 
+- (void)saveNumberE164:(NSString*)e164 purchaseDate:(NSDate*)purchaseDate renewalDate:(NSDate*)renewalDate
+{
+    NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
+    NumberData*             number;
+
+    number = [NSEntityDescription insertNewObjectForEntityForName:@"Number"
+                                           inManagedObjectContext:managedObjectContext];
+
+    number.name           = name;
+    number.e164           = e164;
+    number.numberType     = [NumberType stringForNumberTypeMask:numberTypeMask];
+    number.areaCode       = areaCode;
+    number.areaName       = self.areaName;
+    number.isoCountryCode = numberIsoCountryCode;
+    number.address        = self.address;
+    number.autoRenew      = @(YES);
+    number.stateName      = state[@"stateName"];
+    number.stateCode      = state[@"stateCode"];
+    number.purchaseDate   = purchaseDate;
+    number.renewalDate    = renewalDate;
+
+    [[DataManager sharedManager] saveManagedObjectContext:managedObjectContext];
+}
+
+
 #pragma mark - Buy Cell Delegate
 
 - (void)buyNumberAction
@@ -410,11 +436,14 @@ typedef enum
                                                    areaId:self->area[@"areaId"]
                                                 addressId:self.address.addressId
                                                 autoRenew:YES
-                                                    reply:^(NSError* error, NSString *e164)
+                                                    reply:^(NSError*  error,
+                                                            NSString* e164,
+                                                            NSDate*   purchaseDate,
+                                                            NSDate*   renewalDate)
         {
             if (error == nil)
             {
-                [[AppDelegate appDelegate].numbersViewController refresh:nil];
+                [self saveNumberE164:e164 purchaseDate:purchaseDate renewalDate:renewalDate];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
             else

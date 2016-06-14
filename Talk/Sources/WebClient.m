@@ -838,7 +838,7 @@
                          areaId:(NSString*)areaId
                       addressId:(NSString*)addressId
                       autoRenew:(BOOL)autoRenew
-                          reply:(void (^)(NSError* error, NSString* e164))reply
+                          reply:(void (^)(NSError* error, NSString* e164, NSDate* purchaseDate, NSDate* renewalDate))reply
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
     NSMutableDictionary* parameters = [@{@"durationMonths" : @(months),
@@ -855,11 +855,16 @@
     {
         if (error == nil)
         {
-            reply(nil, [@"+" stringByAppendingString:content[@"e164"]]);
+            reply(nil,
+                  [@"+" stringByAppendingString:content[@"e164"]],
+                  [NSDate date],
+                  [NSDate date]);
+//                  [self dateWithString:content[@"purchaseDateTime"]],
+  //                [self dateWithString:content[@"renewalDateTime"]]);
         }
         else
         {
-            reply(error, nil);
+            reply(error, nil, nil, nil);
         }
     }];
 }
