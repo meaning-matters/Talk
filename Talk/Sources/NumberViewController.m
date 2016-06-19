@@ -19,6 +19,7 @@
 #import "Skinning.h"
 #import "DataManager.h"
 #import "Settings.h"
+#import "AddressData.h"
 
 
 typedef enum
@@ -28,17 +29,17 @@ typedef enum
     TableSectionDestination  = 1UL << 2,
     TableSectionUsage        = 1UL << 3,
     TableSectionSubscription = 1UL << 4,
-    TableSectionArea         = 1UL << 5,    // The optional state will be placed in a row here.
-    TableSectionAddress      = 1UL << 6,
+    TableSectionAddress      = 1UL << 5,
+    TableSectionArea         = 1UL << 6,    // The optional state will be placed in a row here.
 } TableSections;
 
 typedef enum
 {
-    AreaRowType                = 1UL << 0,
-    AreaRowAreaCode            = 1UL << 1,
-    AreaRowAreaName            = 1UL << 2,
-    AreaRowStateName           = 1UL << 3,
-    AreaRowCountry             = 1UL << 4,
+    AreaRowType              = 1UL << 0,
+    AreaRowAreaCode          = 1UL << 1,
+    AreaRowAreaName          = 1UL << 2,
+    AreaRowStateName         = 1UL << 3,
+    AreaRowCountry           = 1UL << 4,
 } AreaRows;
 
 
@@ -48,6 +49,8 @@ typedef enum
     
     TableSections sections;
     AreaRows      areaRows;
+    BOOL          isLoadingAddress;
+    NSPredicate*  addressesPredicate;
 }
 
 @end
@@ -73,12 +76,9 @@ typedef enum
         sections |= TableSectionE164;
         sections |= TableSectionDestination;
         sections |= TableSectionUsage;
-        
-        sections |= TableSectionArea;
         sections |= TableSectionSubscription;
-
-        // Optional sections.
-        sections |= (number.address != nil) ? TableSectionAddress : 0;
+        sections |= TableSectionAddress;
+        sections |= TableSectionArea;
 
         // Area Rows
         areaRows |= AreaRowType;
@@ -91,6 +91,14 @@ typedef enum
     }
 
     return self;
+}
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    [self loadAddressesPredicate];
 }
 
 
@@ -109,16 +117,16 @@ typedef enum
                                                       @"....");
             break;
         }
-        case TableSectionArea:
-        {
-            title = [Strings detailsString];
-            break;
-        }
         case TableSectionAddress:
         {
             title = NSLocalizedStringWithDefaultValue(@"Number:Name SectionHeader", nil,
                                                       [NSBundle mainBundle], @"Contact Address",
                                                       @"....");
+            break;
+        }
+        case TableSectionArea:
+        {
+            title = [Strings detailsString];
             break;
         }
     }
@@ -154,11 +162,22 @@ typedef enum
         {
             title = NSLocalizedStringWithDefaultValue(@"Number:Subscription SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"IMPORTANT: If you don't extend this subscription in time, "
+                                                      @"IMPORTANT: If you don't extend manually in time, or don't "
+                                                      @"leave enough Credit for automatic renewal, "
                                                       @"your Number can't be used anymore after it expires. Once "
                                                       @"expired a Number can not be reactivated.",
                                                       @"Explanation how/when the subscription, for "
                                                       @"using a phone number, will expire\n"
+                                                      @"[* lines]");
+            break;
+        }
+        case TableSectionAddress:
+        {
+            //### Write more when it's a required Address, saying the Number is used 'illegally'.
+            title = NSLocalizedStringWithDefaultValue(@"Number:Address SectionFooter", nil, [NSBundle mainBundle],
+                                                      @"Create a new Address when you move, assign it to "
+                                                      @"the Numbers that use it, and then delete the old Address.",
+                                                      @"\n"
                                                       @"[* lines]");
             break;
         }
@@ -185,8 +204,8 @@ typedef enum
         case TableSectionDestination:  numberOfRows = 1;                              break;
         case TableSectionUsage:        numberOfRows = 1;                              break;
         case TableSectionSubscription: numberOfRows = 3;                              break;  // Second row leads to buying extention.
-        case TableSectionArea:         numberOfRows = [Common bitsSetCount:areaRows]; break;
         case TableSectionAddress:      numberOfRows = 1;                              break;
+        case TableSectionArea:         numberOfRows = [Common bitsSetCount:areaRows]; break;
     }
 
     return numberOfRows;
@@ -231,13 +250,50 @@ typedef enum
         {
             break;
         }
-        case TableSectionArea:
-        {
-            break;
-        }
         case TableSectionAddress:
         {
-            //###
+            NSManagedObjectContext*  managedObjectContext = [DataManager sharedManager].managedObjectContext;
+            AddressesViewController* viewController;
+            NumberTypeMask           numberTypeMask  = [NumberType numberTypeMaskForString:number.numberType];
+            AddressTypeMask          addressTypeMask = [AddressType addressTypeMaskForString:number.addressType];
+
+            viewController = [[AddressesViewController alloc] initWithManagedObjectContext:managedObjectContext
+                                                                           selectedAddress:number.address
+                                                                            isoCountryCode:number.isoCountryCode
+                                                                                  areaCode:number.areaCode
+                                                                                numberType:numberTypeMask
+                                                                               addressType:addressTypeMask
+                                                                                proofTypes:number.proofTypes
+                                                                                 predicate:addressesPredicate
+                                                                                completion:^(AddressData *selectedAddress)
+            {
+                if (selectedAddress != number.address)
+                {
+                    [[WebClient sharedClient] updateNumberE164:number.e164
+                                                      withName:self.name
+                                                     autoRenew:number.autoRenew
+                                                     addressId:selectedAddress.addressId
+                                                         reply:^(NSError* error)
+                    {
+                        if (error == nil)
+                        {
+                            number.address = selectedAddress;
+                            [self reloadAddressCell];
+                        }
+                        else
+                        {
+                            //### Need to do something here and/or in showAddressIdSaveError???
+                            [self showAddressIdSaveError:error];
+                        }
+                    }];
+                }
+            }];
+
+            [self.navigationController pushViewController:viewController animated:YES];
+            break;
+        }
+        case TableSectionArea:
+        {
             break;
         }
     }
@@ -271,10 +327,16 @@ typedef enum
         case TableSectionUsage:
         {
             identifier = @"UsageCell";
+            break;
         }
         case TableSectionSubscription:
         {
             identifier = @[@"Value1Cell", @"DisclosureCell", @"RenewCell"][indexPath.row];
+            break;
+        }
+        case TableSectionAddress:
+        {
+            identifier = @"AddressCell";
             break;
         }
         case TableSectionArea:
@@ -287,11 +349,6 @@ typedef enum
             {
                 identifier = @"Value1Cell";
             }
-            break;
-        }
-        case TableSectionAddress:
-        {
-            identifier = @"AddressCell";
             break;
         }
     }
@@ -310,6 +367,11 @@ typedef enum
             [switchView addTarget:self
                            action:@selector(autoRenewSwitchAction:)
                  forControlEvents:UIControlEventValueChanged];
+        }
+
+        if ([identifier isEqualToString:@"AddressCell"])
+        {
+            cell.textLabel.text = [Strings addressString];
         }
     }
 
@@ -346,17 +408,27 @@ typedef enum
             [self updateSubscriptionCell:cell atIndexPath:indexPath];
             break;
         }
+        case TableSectionAddress:
+        {
+            [self updateAddressCell:cell atIndexPath:indexPath];
+            break;
+        }
         case TableSectionArea:
         {
             [self updateAreaCell:cell atIndexPath:indexPath];
             break;
         }
-        case TableSectionAddress:
-        {
-            //###[self updateContactAddressCell:cell atIndexPath:indexPath];
-            break;
-        }
     }
+}
+
+
+#pragma mark - Helpers
+
+- (BOOL)isAddressRequired
+{
+    AddressTypeMask addressTypeMask = [AddressType addressTypeMaskForString:number.addressType];
+
+    return (addressTypeMask != AddressTypeNoneMask);
 }
 
 
@@ -367,6 +439,7 @@ typedef enum
     [[WebClient sharedClient] updateNumberE164:number.e164
                                       withName:number.name
                                      autoRenew:switchView.isOn
+                                     addressId:number.address.addressId
                                          reply:^(NSError* error)
     {
         if (error == nil)
@@ -552,6 +625,98 @@ typedef enum
 }
 
 
+- (void)updateAddressCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
+{
+    cell.detailTextLabel.textColor = number.address ? [Skinning valueColor] : [Skinning placeholderColor];
+
+    if (isLoadingAddress)
+    {
+        UIActivityIndicatorView* spinner;
+        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [spinner startAnimating];
+
+        cell.accessoryView          = spinner;
+    }
+    else
+    {
+        cell.accessoryView          = nil;
+    }
+
+    NSString* placeholder = [self isAddressRequired] ? [Strings requiredString] : [Strings optionalString];
+    cell.detailTextLabel.text   = number.address ? number.address.name : placeholder;
+
+    cell.accessoryType          = (addressesPredicate != nil) ? UITableViewCellAccessoryDisclosureIndicator
+                                                              : UITableViewCellAccessoryNone;
+    cell.userInteractionEnabled = (addressesPredicate != nil);
+}
+
+
+- (void)loadAddressesPredicate
+{
+    addressesPredicate = nil;
+    isLoadingAddress   = YES;
+    [self reloadAddressCell];
+
+    AddressTypeMask addressTypeMask = [AddressType addressTypeMaskForString:number.addressType];
+    NumberTypeMask  numberTypeMask  = [NumberType numberTypeMaskForString:number.numberType];
+    [AddressesViewController loadAddressesPredicateWithAddressType:addressTypeMask
+                                                    isoCountryCode:number.isoCountryCode
+                                                          areaCode:number.areaCode
+                                                        numberType:numberTypeMask
+                                                      areAvailable:YES
+                                                        completion:^(NSPredicate *predicate, NSError *error)
+    {
+        isLoadingAddress = NO;
+        if (error == nil)
+        {
+            addressesPredicate = predicate;
+            [self reloadAddressCell];
+        }
+        else
+        {
+            [self showError:error];
+        }
+    }];
+}
+
+
+- (void)reloadAddressCell
+{
+    NSArray* indexPaths = @[[NSIndexPath indexPathForItem:0
+                                                inSection:[Common nOfBit:TableSectionAddress inValue:sections]]];
+
+    [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+
+- (void)showError:(NSError*)error
+{
+    NSString* title;
+    NSString* message;
+
+    title   = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertTitle", nil,
+                                                [NSBundle mainBundle], @"Loading Failed",
+                                                @"Alert title telling that loading addresses over internet failed.\n"
+                                                @"[iOS alert title size].");
+    message = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertMessage", nil,
+                                                [NSBundle mainBundle],
+                                                @"Loading the list of valid (alternative) addresses for this "
+                                                @"Number failed: %@\n\n"
+                                                @"Please try again later if you want to change the Address.",
+                                                @"Alert message telling that loading areas over internet failed.\n"
+                                                @"[iOS alert message size!]");
+    message = [NSString stringWithFormat:message, error.localizedDescription];
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        [self reloadAddressCell];
+    }
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
+}
+
+
 #pragma mark - Baseclass Override
 
 - (void)save
@@ -564,6 +729,7 @@ typedef enum
     [[WebClient sharedClient] updateNumberE164:number.e164
                                       withName:self.name
                                      autoRenew:number.autoRenew
+                                     addressId:number.address.addressId
                                          reply:^(NSError* error)
     {
         if (error == nil)
@@ -628,14 +794,41 @@ typedef enum
     [BlockAlertView showAlertViewWithTitle:title
                                    message:message
                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
-    {
-        NSInteger        section    = [Common nOfBit:TableSectionSubscription inValue:sections];
-        NSIndexPath*     indexPath  = [NSIndexPath indexPathForItem:2 inSection:section];
-        UITableViewCell* cell       = [self.tableView cellForRowAtIndexPath:indexPath];
-        UISwitch*        switchView = (UISwitch*)cell.accessoryView;
+     {
+         NSInteger        section    = [Common nOfBit:TableSectionSubscription inValue:sections];
+         NSIndexPath*     indexPath  = [NSIndexPath indexPathForItem:2 inSection:section];
+         UITableViewCell* cell       = [self.tableView cellForRowAtIndexPath:indexPath];
+         UISwitch*        switchView = (UISwitch*)cell.accessoryView;
 
-        [switchView setOn:number.autoRenew animated:YES];
-    }
+         [switchView setOn:number.autoRenew animated:YES];
+     }
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
+}
+
+
+- (void)showAddressIdSaveError:(NSError*)error
+{
+    NSString* title;
+    NSString* message;
+
+    title   = NSLocalizedStringWithDefaultValue(@"Number AutoRenewUpdateFailedTitle", nil,
+                                                [NSBundle mainBundle], @"Address Not Updated",
+                                                @"Alert title telling that a setting was not saved.\n"
+                                                @"[iOS alert title size].");
+    message = NSLocalizedStringWithDefaultValue(@"Number AutoRenewUpdateFailedMessage", nil,
+                                                [NSBundle mainBundle],
+                                                @"Saving the Address selection failed: %@\n\n"
+                                                @"Please try again later.",
+                                                @"Alert message telling that a setting must be supplied\n"
+                                                @"[iOS alert message size]");
+    message = [NSString stringWithFormat:message, error.localizedDescription];
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+     {
+         //### Do something here???
+     }
                          cancelButtonTitle:[Strings closeString]
                          otherButtonTitles:nil];
 }

@@ -12,6 +12,7 @@
 #import "Call.h"
 #import "WebStatus.h"
 #import "AddressStatus.h"
+#import "AddressType.h"
 
 
 @interface WebClient : NSObject
@@ -198,6 +199,7 @@
 - (void)updateNumberE164:(NSString*)e164
                 withName:(NSString*)name
                autoRenew:(BOOL)autoRenew
+               addressId:(NSString*)addressId
                    reply:(void (^)(NSError* error))reply;
 
 // 11C. EXTEND NUMBER
@@ -208,19 +210,21 @@
 
 // 13. GET NUMBER INFO
 - (void)retrieveNumberWithE164:(NSString*)e164
-                         reply:(void (^)(NSError*  error,
-                                         NSString* name,
-                                         NSString* numberType,
-                                         NSString* areaCode,
-                                         NSString* areaName,
-                                         NSString* stateCode,
-                                         NSString* stateName,
-                                         NSString* isoCountryCode,
-                                         NSDate*   purchaseDate,
-                                         NSDate*   renewalDate,
-                                         BOOL      autoRenew,
-                                         float     monthFee,
-                                         NSString* addressId))reply;
+                         reply:(void (^)(NSError*        error,
+                                         NSString*       name,
+                                         NSString*       numberType,
+                                         NSString*       areaCode,
+                                         NSString*       areaName,
+                                         NSString*       stateCode,
+                                         NSString*       stateName,
+                                         NSString*       isoCountryCode,
+                                         NSDate*         purchaseDate,
+                                         NSDate*         renewalDate,
+                                         BOOL            autoRenew,
+                                         float           monthFee,
+                                         NSString*       addressId,
+                                         AddressTypeMask addressType,
+                                         NSDictionary*   proofTypes))reply;
 
 // 14. BUY CREDIT
 - (void)purchaseCreditForReceipt:(NSString*)receipt

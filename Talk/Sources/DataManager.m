@@ -344,6 +344,18 @@
 }
 
 
+- (AddressData*)lookupAddressWithId:(NSString*)addressId
+{
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"addressId == %@", addressId];
+    NSArray*     addresses = [self fetchEntitiesWithName:@"Address"
+                                                sortKeys:@[@"name"]
+                                               predicate:predicate
+                                    managedObjectContext:nil];
+
+    return [addresses firstObject];
+}
+
+
 #pragma mark - Helpers
 
 - (void)handleError:(NSError*)error
@@ -657,19 +669,21 @@
             for (NSString* e164 in e164s)
             {
                 [[WebClient sharedClient] retrieveNumberWithE164:e164
-                                                           reply:^(NSError*  error,
-                                                                   NSString* name,
-                                                                   NSString* numberType,
-                                                                   NSString* areaCode,
-                                                                   NSString* areaName,
-                                                                   NSString* stateCode,
-                                                                   NSString* stateName,
-                                                                   NSString* isoCountryCode,
-                                                                   NSDate*   purchaseDate,
-                                                                   NSDate*   renewalDate,
-                                                                   BOOL      autoRenew,
-                                                                   float     monthFee,
-                                                                   NSString* addressId)
+                                                           reply:^(NSError*        error,
+                                                                   NSString*       name,
+                                                                   NSString*       numberType,
+                                                                   NSString*       areaCode,
+                                                                   NSString*       areaName,
+                                                                   NSString*       stateCode,
+                                                                   NSString*       stateName,
+                                                                   NSString*       isoCountryCode,
+                                                                   NSDate*         purchaseDate,
+                                                                   NSDate*         renewalDate,
+                                                                   BOOL            autoRenew,
+                                                                   float           monthFee,
+                                                                   NSString*       addressId,
+                                                                   AddressTypeMask addressTypeMask,
+                                                                   NSDictionary*   proofTypes)
                 {
                     if (error == nil)
                     {
@@ -704,6 +718,9 @@
                         number.autoRenew      = autoRenew;
                         number.stateCode      = stateCode;
                         number.stateName      = stateName;
+                        number.address        = [self lookupAddressWithId:addressId];
+                        number.addressType    = [AddressType stringForAddressTypeMask:AddressTypeNoneMask];
+                        number.proofTypes     = proofTypes;
                         //### missing are addressId and monthFee
 
                         // For non-geograpic numbers, areaName is <null>.

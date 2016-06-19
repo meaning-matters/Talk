@@ -18,6 +18,7 @@
 
 // Mandatory.
 @property (nonatomic, retain) NSString*        numberType;
+@property (nonatomic, retain) NSString*        addressType;
 @property (nonatomic, retain) NSString*        areaCode;
 @property (nonatomic, retain) NSString*        areaName;
 @property (nonatomic, retain) NSString*        isoCountryCode;
@@ -28,6 +29,7 @@
 // Optional.
 @property (nonatomic, retain) NSString*        stateName;
 @property (nonatomic, retain) NSString*        stateCode;
+@property (nonatomic, retain) NSDictionary*    proofTypes;
 
 // Relationships.
 @property (nonatomic, retain) DestinationData* destination;

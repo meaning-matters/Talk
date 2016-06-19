@@ -98,7 +98,7 @@ typedef enum
 
         self.setupFee        = [area[@"setupFee"] floatValue];
         self.monthFee        = [area[@"monthFee"] floatValue];
-        self.areaName        = area[@"areaName"];
+        self.areaName        = (area[@"areaName"] != [NSNull null]) ? area[@"areaName"] : nil;
 
         // Mandatory sections.
         sections |= TableSectionArea;
@@ -254,6 +254,7 @@ typedef enum
                                                     isoCountryCode:numberIsoCountryCode
                                                           areaCode:areaCode
                                                         numberType:numberTypeMask
+                                                      areAvailable:NO
                                                         completion:^(NSPredicate *predicate, NSError *error)
     {
         self.isLoadingAddress = NO;
@@ -286,7 +287,7 @@ typedef enum
 
     title   = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertTitle", nil,
                                                 [NSBundle mainBundle], @"Loading Failed",
-                                                @"Alert title telling that loading countries over internet failed.\n"
+                                                @"Alert title telling that loading addresses over internet failed.\n"
                                                 @"[iOS alert title size].");
     message = NSLocalizedStringWithDefaultValue(@"NumberArea LoadFailAlertMessage", nil,
                                                 [NSBundle mainBundle],
@@ -362,6 +363,7 @@ typedef enum
     number.autoRenew      = @(YES);
     number.stateName      = state[@"stateName"];
     number.stateCode      = state[@"stateCode"];
+    number.proofTypes     = area[@"proofTypes"];
     number.purchaseDate   = purchaseDate;
     number.renewalDate    = renewalDate;
 
@@ -1038,7 +1040,7 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"AddressCell"];
     }
     
-    cell.textLabel.text            = NSLocalizedString(@"Address", @"Address cell title");
+    cell.textLabel.text            = [Strings addressString];
     cell.detailTextLabel.textColor = self.address ? [Skinning valueColor] : [Skinning placeholderColor];
     cell.accessoryType             = UITableViewCellAccessoryDisclosureIndicator;
 

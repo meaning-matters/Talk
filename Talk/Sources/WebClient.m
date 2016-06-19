@@ -857,10 +857,8 @@
         {
             reply(nil,
                   [@"+" stringByAppendingString:content[@"e164"]],
-                  [NSDate date],
-                  [NSDate date]);
-//                  [self dateWithString:content[@"purchaseDateTime"]],
-  //                [self dateWithString:content[@"renewalDateTime"]]);
+                  [self dateWithString:content[@"purchaseDateTime"]],
+                  [self dateWithString:content[@"renewalDateTime"]]);
         }
         else
         {
@@ -874,12 +872,16 @@
 - (void)updateNumberE164:(NSString*)e164
                 withName:(NSString*)name
                autoRenew:(BOOL)autoRenew
+               addressId:(NSString*)addressId
                    reply:(void (^)(NSError* error))reply;
 {
-    NSString*     username   = [Settings sharedSettings].webUsername;
-    NSString*     number     = [e164 substringFromIndex:1];
-    NSDictionary* parameters = @{@"name"      : name,
-                                 @"autoRenew" : @(autoRenew)};
+    NSString*            username   = [Settings sharedSettings].webUsername;
+    NSString*            number     = [e164 substringFromIndex:1];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+
+    parameters[@"autoRenew"]                          = @(autoRenew);
+    (name.length      > 0) ? parameters[@"name"]      = name      : 0;
+    (addressId.length > 0) ? parameters[@"addressId"] = addressId : 0;
 
     [self postPath:[NSString stringWithFormat:@"/users/%@/numbers/%@", username, number]
         parameters:parameters
@@ -933,19 +935,21 @@
 
 // 13. GET NUMBER INFO
 - (void)retrieveNumberWithE164:(NSString*)e164
-                         reply:(void (^)(NSError*  error,
-                                         NSString* name,
-                                         NSString* numberType,
-                                         NSString* areaCode,
-                                         NSString* areaName,
-                                         NSString* stateCode,
-                                         NSString* stateName,
-                                         NSString* isoCountryCode,
-                                         NSDate*   purchaseDate,
-                                         NSDate*   renewalDate,
-                                         BOOL      autoRenew,
-                                         float     monthFee,
-                                         NSString* addressId))reply
+                         reply:(void (^)(NSError*        error,
+                                         NSString*       name,
+                                         NSString*       numberType,
+                                         NSString*       areaCode,
+                                         NSString*       areaName,
+                                         NSString*       stateCode,
+                                         NSString*       stateName,
+                                         NSString*       isoCountryCode,
+                                         NSDate*         purchaseDate,
+                                         NSDate*         renewalDate,
+                                         BOOL            autoRenew,
+                                         float           monthFee,
+                                         NSString*       addressId,
+                                         AddressTypeMask addressType,
+                                         NSDictionary*   proofTypes))reply
 {
     NSString*     username     = [Settings sharedSettings].webUsername;
     NSString*     number       = [e164 substringFromIndex:1];
@@ -971,11 +975,13 @@
                   [self dateWithString:content[@"renewalDateTime"]],
                   [content[@"autoRenew"] boolValue],
                   [content[@"monthFee"] floatValue],
-                  content[@"addressId"]);
+                  content[@"addressId"],
+                  [AddressType addressTypeMaskForString:content[@"addressType"]],
+                  content[@"proofTypes"]);
         }
         else
         {
-            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, 0.0f, nil);
+            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, 0.0f, nil, AddressTypeNoneMask, nil);
         }
     }];
 }

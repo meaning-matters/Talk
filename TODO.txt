@@ -172,3 +172,12 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Add feature: Find contact IDs for anonymous Recents numbers. See not used findContactsForAnonymousItems.  App crashed when trying something in this direction; similar crash as documented in one of the NBAddress modules (where I thought that synchonize would help)
 
 * IdType.m Check entered data using regex's.
+
+* Make whole app English: http://stackoverflow.com/q/1669645/1971013, avoid iOS language errors.
+
+* Remove DK's exception allCities "All Cities", no longer exists.
+
+* New Address view has larger font for Proof Image's "Required" (UILabel?) than for Name's "Required" and all others (UITextField)
+
+* New Address: Proof Image cell is not deselected after tapping -> it stays grey.
+

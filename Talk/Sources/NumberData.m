@@ -12,6 +12,7 @@
 @implementation NumberData
 
 @dynamic numberType;
+@dynamic addressType;
 @dynamic areaCode;
 @dynamic areaName;
 @dynamic isoCountryCode;
@@ -21,6 +22,7 @@
 
 @dynamic stateName;
 @dynamic stateCode;
+@dynamic proofTypes;
 
 @dynamic destination;
 @dynamic address;

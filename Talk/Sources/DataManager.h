@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @class CallableData;
+@class AddressData;
 
 
 @interface DataManager : NSObject
@@ -41,5 +42,7 @@
 - (void)synchronizeWithServer:(void (^)(NSError* error))completion;
 
 - (CallableData*)lookupCallableForE164:(NSString*)e164;
+
+- (AddressData*)lookupAddressWithId:(NSString*)addressId;
 
 @end

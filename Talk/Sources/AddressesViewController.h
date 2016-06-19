@@ -32,6 +32,7 @@
                                isoCountryCode:(NSString*)isoCountryCode
                                      areaCode:(NSString*)areaCode
                                    numberType:(NumberTypeMask)numberTypeMask
+                                 areAvailable:(BOOL)areAvailable // Only addresses that are ready to be used.
                                    completion:(void (^)(NSPredicate* predicate, NSError* error))completion;
 
 @end

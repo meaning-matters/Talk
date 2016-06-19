@@ -241,4 +241,10 @@
     return [messages copy];
 }
 
+
++ (BOOL)isAvailableAddressStatusMask:(AddressStatusMask)mask
+{
+    return ((mask & AddressStatusNotVerifiedMask) > 0) || ((mask & AddressStatusVerifiedMask) > 0);
+}
+
 @end

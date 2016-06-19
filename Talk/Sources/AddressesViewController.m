@@ -176,6 +176,7 @@
                                isoCountryCode:(NSString*)isoCountryCode
                                      areaCode:(NSString*)areaCode
                                    numberType:(NumberTypeMask)numberTypeMask
+                                 areAvailable:(BOOL)areAvailable
                                    completion:(void (^)(NSPredicate* predicate, NSError* error))completion
 {
     switch (addressTypeMask)
@@ -191,6 +192,23 @@
                                                       numberType:numberTypeMask
                                                            reply:^(NSError *error, NSArray *addressIds)
     {
+        if (areAvailable)
+        {
+            NSMutableArray* availableAddressIds = [NSMutableArray array];
+
+            for (NSString* addressId in addressIds)
+            {
+                AddressData* address = [[DataManager sharedManager] lookupAddressWithId:addressId];
+
+                if ([AddressStatus isAvailableAddressStatusMask:address.addressStatus])
+                {
+                    [availableAddressIds addObject:addressId];
+                }
+            }
+
+            addressIds = availableAddressIds;
+        }
+
         NSPredicate* predicate = (error == nil) ? [NSPredicate predicateWithFormat:@"addressId IN %@", addressIds] : nil;
 
         completion ? completion(predicate, error) : 0;
@@ -319,7 +337,7 @@
             }
         }
 
-        NSString* numberType = [[NumberType stringForNumberTypeMask:self.numberTypeMask] lowercaseString];
+        NSString* numberType = [[NumberType localizedStringForNumberTypeMask:self.numberTypeMask] lowercaseString];
         title = [title stringByAppendingFormat:@" %@", text];
         title = [NSString stringWithFormat:title, numberType];
         title = [title stringByAppendingString:@"\n\n"];
@@ -519,6 +537,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                                                                 isoCountryCode:self.isoCountryCode
                                                                       areaCode:self.areaCode
                                                                     numberType:self.numberTypeMask
+                                                                  areAvailable:NO
                                                                     completion:^(NSPredicate *predicate, NSError *error)
                 {
                     self.isLoading = NO;

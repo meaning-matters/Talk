@@ -1104,10 +1104,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             {
                 switch (self.addressTypeMask)
                 {
-                    case AddressTypeNoneMask:
-                    {
-                        title = nil;
-                    }
                     case AddressTypeLocalMask:
                     {
                         title = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal SectionHeader", nil,
@@ -1122,6 +1118,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                                   @"Address of someone.");
                         break;
                     }
+                    case AddressTypeNoneMask:
                     case AddressTypeWorldwideMask:
                     {
                         title = NSLocalizedStringWithDefaultValue(@"Address:AddressWorldwide SectionHeader", nil,
