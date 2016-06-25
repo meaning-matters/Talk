@@ -387,7 +387,8 @@
     call.contactName    = [[AppDelegate appDelegate] contactNameForId:contactId];
 
     callbackViewController = [[CallbackViewController alloc] initWithCall:call];
-    callbackViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    callbackViewController.modalTransitionStyle   = UIModalTransitionStyleCrossDissolve;
+    callbackViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;  // Prevents tabbar becoming black.
     [AppDelegate.appDelegate.tabBarController presentViewController:callbackViewController
                                                            animated:YES
                                                          completion:nil];
