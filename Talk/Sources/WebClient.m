@@ -1358,7 +1358,7 @@
     NSDictionary* parameters = @{@"callbackE164" : [callbackE164 substringFromIndex:1],
                                  @"callthruE164" : [callthruE164 substringFromIndex:1],
                                  @"identityE164" : [identityE164 substringFromIndex:1],
-                                 @"privacy"      : privacy ? @"true" : @"false"};
+                                 @"privacy"      : privacy ? @YES : @NO};
     
     [self postPath:[NSString stringWithFormat:@"/users/%@/callback", username]
         parameters:parameters

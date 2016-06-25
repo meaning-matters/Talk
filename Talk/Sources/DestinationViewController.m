@@ -545,7 +545,7 @@ typedef enum
 
 - (void)showCalledIdSwitchAction:(UISwitch*)switchView
 {
-    self.action[@"call"][@"showCalledId"] = switchView.on ? @"true" : @"false";
+    self.action[@"call"][@"showCalledId"] = switchView.on ? @YES : @NO;
 
     if (self.isNew == YES)
     {

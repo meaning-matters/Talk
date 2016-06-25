@@ -132,7 +132,7 @@
 
     self.name = name;
     action[@"call"][@"e164s"][0]     = e164;
-    action[@"call"][@"showCalledId"] = showCalledId ? @"true" : @"false";
+    action[@"call"][@"showCalledId"] = showCalledId ? @YES : @NO;
 
     [[WebClient sharedClient] createDestinationWithName:self.name
                                                  action:action

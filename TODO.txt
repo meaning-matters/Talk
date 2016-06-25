@@ -181,3 +181,9 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 
 * New Address: Proof Image cell is not deselected after tapping -> it stays grey.
 
+* Adding MBE London from Recents did not update the name in Recents list. Then after restarting app (and seeing the contact in Phone app), the recent still does not show MBE. But does show up as MBE on keypad. May need to rescan unknown Recents at app startup and Contacts update notification.
+
+* Make Keypad past filtering more relaxed. I tried to paste a number copied from Phone app which had New Zealand in the text -> did not work, really annoying. Just strip of all non number characters including A-Z ...
+
+
+
