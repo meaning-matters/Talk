@@ -216,6 +216,13 @@
 }
 
 
+
++ (void)cancelLoadingAddressPredicate
+{
+    [[WebClient sharedClient] cancelAllRetrieveAddresses];
+}
+
+
 #pragma mark - Table View Delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView

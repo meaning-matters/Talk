@@ -102,6 +102,15 @@ typedef enum
 }
 
 
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    [AddressesViewController cancelLoadingAddressPredicate];
+}
+
+
 #pragma mark - Table View Delegates
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
