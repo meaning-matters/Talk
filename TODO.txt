@@ -187,4 +187,7 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 
 * HK National has "---" as area code, better not show this. It also does not show area code on Number details.
 
+* Move the many "Please try again later." to generic code. Also see if NSError's localizedRecoverySuggestion can be used.
+  Also after managed to get iOS error messages in English always (see Dentsply app perhaps), some app error messages can be
+  eliminated.
 

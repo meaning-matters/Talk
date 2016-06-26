@@ -87,14 +87,13 @@
                 return;
             }
             
-            NSString* title;
+            NSString* title = NSLocalizedStringWithDefaultValue(@"Address InUseTitle", nil,
+                                                                [NSBundle mainBundle], @"Address Not Deleted",
+                                                                @"Alert title telling that something could not be deleted.\n"
+                                                                @"[iOS alert title size].");
             NSString* message;
             if (error.code == WebStatusFailAddressInUse)
             {
-                title   = NSLocalizedStringWithDefaultValue(@"Address InUseTitle", nil,
-                                                            [NSBundle mainBundle], @"Address Not Deleted",
-                                                            @"Alert title telling that something could not be deleted.\n"
-                                                            @"[iOS alert title size].");
                 message = NSLocalizedStringWithDefaultValue(@"Destination InUseMessage", nil,
                                                             [NSBundle mainBundle],
                                                             @"Deleting this Address failed: %@\n\n"
@@ -104,26 +103,28 @@
             }
             else if (error.code == WebStatusFailNoInternet)
             {
-                title   = NSLocalizedStringWithDefaultValue(@"Address DeleteFailedInternetTitle", nil,
-                                                            [NSBundle mainBundle], @"Address Not Deleted",
-                                                            @"Alert title telling that something could not be deleted.\n"
-                                                            @"[iOS alert title size].");
                 message = NSLocalizedStringWithDefaultValue(@"Address DeleteFailedMessage", nil,
                                                             [NSBundle mainBundle],
-                                                            @"Deleting this Address from your account failed: %@\n\n"
+                                                            @"Deleting this Address failed: %@\n\n"
                                                             @"Please try again later.",
+                                                            @"....\n"
+                                                            @"[iOS alert message size]");
+            }
+            else if (error.code == WebStatusFailSecureInternet ||
+                     error.code == WebStatusFailInternetLogin)
+            {
+                message = NSLocalizedStringWithDefaultValue(@"Address DeleteFailedMessage", nil,
+                                                            [NSBundle mainBundle],
+                                                            @"Deleting this Address: %@\n\n"
+                                                            @"Please check the Internet connection.",
                                                             @"....\n"
                                                             @"[iOS alert message size]");
             }
             else
             {
-                title   = NSLocalizedStringWithDefaultValue(@"Address DeleteFailedTitle", nil,
-                                                            [NSBundle mainBundle], @"Address Not Deleted",
-                                                            @"Alert title telling that something could not be deleted.\n"
-                                                            @"[iOS alert title size].");
                 message = NSLocalizedStringWithDefaultValue(@"Address DeleteFailedMessage", nil,
                                                             [NSBundle mainBundle],
-                                                            @"Deleting this Address from your account failed: %@\n\n"
+                                                            @"Deleting this Address failed: %@\n\n"
                                                             @"Synchronize with the server, and try again.",
                                                             @"....\n"
                                                             @"[iOS alert message size]");

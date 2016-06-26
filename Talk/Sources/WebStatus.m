@@ -220,6 +220,22 @@
                                                        @"[].");
             break;
         }
+        case WebStatusFailSecureInternet:
+        {
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailSecureInternet", nil, [NSBundle mainBundle],
+                                                       @"A secure Internet connection apears to be unavailable.",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+        }
+        case WebStatusFailInternetLogin:
+        {
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailInternetLogin", nil, [NSBundle mainBundle],
+                                                       @"The Internet connection appears to require you to login.",
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+        }
         case WebStatusFailNoAccount:
         {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailNoAccount", nil, [NSBundle mainBundle],

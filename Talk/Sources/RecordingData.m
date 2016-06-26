@@ -70,15 +70,14 @@
             return;
         }
 
-        NSString* title;
+        NSString* title = NSLocalizedStringWithDefaultValue(@"Recording DeleteFailedInternetTitle", nil,
+                                                            [NSBundle mainBundle], @"Recording Not Deleted",
+                                                            @"Alert title telling that something could not be deleted.\n"
+                                                            @"[iOS alert title size].");
         NSString* message;
         if (error.code == WebStatusFailAudioInUse)
         {
-            title   = NSLocalizedStringWithDefaultValue(@"Recording InUseTitle", nil,
-                                                        [NSBundle mainBundle], @"Recording Not Deleted",
-                                                        @"Alert title telling that something could not be deleted.\n"
-                                                        @"[iOS alert title size].");
-            message = NSLocalizedStringWithDefaultValue(@"Destination InUseMessage", nil,
+            message = NSLocalizedStringWithDefaultValue(@"Recording InUseMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"Deleting this Recording failed: %@\n\n"
                                                         @"Choose another Recording for each Destination that uses this one.",
@@ -87,24 +86,26 @@
         }
         else if (error.code == WebStatusFailNoInternet)
         {
-            title   = NSLocalizedStringWithDefaultValue(@"Phone DeleteFailedInternetTitle", nil,
-                                                        [NSBundle mainBundle], @"Recording Not Deleted",
-                                                        @"Alert title telling that something could not be deleted.\n"
-                                                        @"[iOS alert title size].");
-            message = NSLocalizedStringWithDefaultValue(@"Phone DeleteFailedMessage", nil,
+            message = NSLocalizedStringWithDefaultValue(@"Recording DeleteFailedMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"Deleting this Recording failed: %@\n\n"
                                                         @"Please try again later.",
                                                         @"....\n"
                                                         @"[iOS alert message size]");
         }
+        else if (error.code == WebStatusFailSecureInternet ||
+                 error.code == WebStatusFailInternetLogin)
+        {
+            message = NSLocalizedStringWithDefaultValue(@"Recording DeleteFailedMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Deleting this Recording failed: %@\n\n"
+                                                        @"Please check the Internet connection.",
+                                                        @"....\n"
+                                                        @"[iOS alert message size]");
+        }
         else
         {
-            title   = NSLocalizedStringWithDefaultValue(@"Phone DeleteFailedTitle", nil,
-                                                        [NSBundle mainBundle], @"Recording Not Deleted",
-                                                        @"Alert title telling that something could not be deleted.\n"
-                                                        @"[iOS alert title size].");
-            message = NSLocalizedStringWithDefaultValue(@"Phone DeleteFailedMessage", nil,
+            message = NSLocalizedStringWithDefaultValue(@"Recording DeleteFailedMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"Deleting this Recording failed: %@\n\n"
                                                         @"Synchronize with the server, and try again.",

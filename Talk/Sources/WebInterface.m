@@ -580,7 +580,16 @@ static void processDnsReply(DNSServiceRef       sdRef,
                                                                           failure:^(AFHTTPRequestOperation* operation,
                                                                                     NSError*                error)
             {
-                if (error.code == NSURLErrorNotConnectedToInternet)
+                if (error.code == NSURLErrorNotConnectedToInternet          ||
+                    error.code == NSURLErrorSecureConnectionFailed          ||
+                    error.code == NSURLErrorServerCertificateHasBadDate     ||
+                    error.code == NSURLErrorServerCertificateUntrusted      ||
+                    error.code == NSURLErrorServerCertificateHasUnknownRoot ||
+                    error.code == NSURLErrorServerCertificateNotYetValid    ||
+                    error.code == NSURLErrorClientCertificateRejected       ||
+                    error.code == NSURLErrorClientCertificateRequired       ||
+                    error.code == NSURLErrorUserCancelledAuthentication     ||
+                    error.code == NSURLErrorUserAuthenticationRequired)
                 {
                     failure ? failure(operation, error) : 0;
                 }
@@ -732,6 +741,23 @@ static void processDnsReply(DNSServiceRef       sdRef,
         {
             reply([Common errorWithCode:WebStatusFailNoInternet
                             description:[WebStatus localizedStringForStatus:WebStatusFailNoInternet]], nil);
+        }
+        else if (error.code == NSURLErrorSecureConnectionFailed          ||
+                 error.code == NSURLErrorServerCertificateHasBadDate     ||
+                 error.code == NSURLErrorServerCertificateUntrusted      ||
+                 error.code == NSURLErrorServerCertificateHasUnknownRoot ||
+                 error.code == NSURLErrorServerCertificateNotYetValid    ||
+                 error.code == NSURLErrorClientCertificateRejected       ||
+                 error.code == NSURLErrorClientCertificateRequired)
+        {
+            reply([Common errorWithCode:WebStatusFailSecureInternet
+                            description:[WebStatus localizedStringForStatus:WebStatusFailSecureInternet]], nil);
+        }
+        else if (error.code == NSURLErrorUserCancelledAuthentication     ||
+                 error.code == NSURLErrorUserAuthenticationRequired)
+        {
+            reply([Common errorWithCode:WebStatusFailInternetLogin
+                            description:[WebStatus localizedStringForStatus:WebStatusFailInternetLogin]], nil);
         }
         else
         {

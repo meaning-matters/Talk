@@ -169,14 +169,13 @@
             return;
         }
 
-        NSString* title;
+        NSString* title = NSLocalizedStringWithDefaultValue(@"Phone DeleteFailedTitle", nil,
+                                                            [NSBundle mainBundle], @"Phone Not Deleted",
+                                                            @"Alert title telling that something could not be deleted.\n"
+                                                            @"[iOS alert title size].");
         NSString* message;
         if (error.code == WebStatusFailPhoneInUse)
         {
-            title   = NSLocalizedStringWithDefaultValue(@"Phone InUseTitle", nil,
-                                                        [NSBundle mainBundle], @"Phone Not Deleted",
-                                                        @"Alert title telling that something could not be deleted.\n"
-                                                        @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"Destination InUseMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"Deleting this Phone failed: %@\n\n"
@@ -186,26 +185,28 @@
         }
         else if (error.code == WebStatusFailNoInternet)
         {
-            title   = NSLocalizedStringWithDefaultValue(@"Phone DeleteFailedInternetTitle", nil,
-                                                        [NSBundle mainBundle], @"Phone Not Deleted",
-                                                        @"Alert title telling that something could not be deleted.\n"
-                                                        @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"Phone DeleteFailedMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"Deleting this Phone from your account failed: %@\n\n"
+                                                        @"Deleting this Phone failed: %@\n\n"
                                                         @"Please try again later.",
+                                                        @"....\n"
+                                                        @"[iOS alert message size]");
+        }
+        else if (error.code == WebStatusFailSecureInternet ||
+                 error.code == WebStatusFailInternetLogin)
+        {
+            message = NSLocalizedStringWithDefaultValue(@"Phone DeleteFailedMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Deleting this Phone failed: %@\n\n"
+                                                        @"Please check the Internet connection.",
                                                         @"....\n"
                                                         @"[iOS alert message size]");
         }
         else
         {
-            title   = NSLocalizedStringWithDefaultValue(@"Phone DeleteFailedTitle", nil,
-                                                        [NSBundle mainBundle], @"Phone Not Deleted",
-                                                        @"Alert title telling that something could not be deleted.\n"
-                                                        @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"Phone DeleteFailedMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"Deleting this Phone from your account failed: %@\n\n"
+                                                        @"Deleting this Phone failed: %@\n\n"
                                                         @"Synchronize with the server, and try again.",
                                                         @"....\n"
                                                         @"[iOS alert message size]");
