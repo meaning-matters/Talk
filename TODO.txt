@@ -185,5 +185,6 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 
 * Make Keypad past filtering more relaxed. I tried to paste a number copied from Phone app which had New Zealand in the text -> did not work, really annoying. Just strip of all non number characters including A-Z ...
 
+* HK National has "---" as area code, better not show this. It also does not show area code on Number details.
 
 
