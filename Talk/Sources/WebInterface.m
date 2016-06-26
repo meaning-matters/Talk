@@ -581,6 +581,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
                                                                                     NSError*                error)
             {
                 if (error.code == NSURLErrorNotConnectedToInternet          ||
+                    error.code == NSURLErrorCannotFindHost                  ||
                     error.code == NSURLErrorSecureConnectionFailed          ||
                     error.code == NSURLErrorServerCertificateHasBadDate     ||
                     error.code == NSURLErrorServerCertificateUntrusted      ||
@@ -752,6 +753,11 @@ static void processDnsReply(DNSServiceRef       sdRef,
         {
             reply([Common errorWithCode:WebStatusFailSecureInternet
                             description:[WebStatus localizedStringForStatus:WebStatusFailSecureInternet]], nil);
+        }
+        else if (error.code == NSURLErrorCannotFindHost)
+        {
+            reply([Common errorWithCode:WebStatusFailInternetLogin
+                            description:[WebStatus localizedStringForStatus:WebStatusFailProblemInternet]], nil);
         }
         else if (error.code == NSURLErrorUserCancelledAuthentication     ||
                  error.code == NSURLErrorUserAuthenticationRequired)

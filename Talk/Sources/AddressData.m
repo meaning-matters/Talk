@@ -110,7 +110,8 @@
                                                             @"....\n"
                                                             @"[iOS alert message size]");
             }
-            else if (error.code == WebStatusFailSecureInternet ||
+            else if (error.code == WebStatusFailSecureInternet  ||
+                     error.code == WebStatusFailProblemInternet ||
                      error.code == WebStatusFailInternetLogin)
             {
                 message = NSLocalizedStringWithDefaultValue(@"Address DeleteFailedMessage", nil,
