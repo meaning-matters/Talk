@@ -719,7 +719,7 @@
                         number.stateCode      = stateCode;
                         number.stateName      = stateName;
                         number.address        = [self lookupAddressWithId:addressId];
-                        number.addressType    = [AddressType stringForAddressTypeMask:AddressTypeNoneMask];
+                        number.addressType    = [AddressType stringForAddressTypeMask:AddressTypeWorldwideMask];
                         number.proofTypes     = proofTypes;
                         //### missing are addressId and monthFee
 

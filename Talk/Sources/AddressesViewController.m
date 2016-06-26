@@ -181,7 +181,6 @@
 {
     switch (addressTypeMask)
     {
-        case AddressTypeNoneMask:      isoCountryCode = nil; areaCode = nil; numberTypeMask = 0; break;
         case AddressTypeWorldwideMask: isoCountryCode = nil; areaCode = nil; numberTypeMask = 0; break;
         case AddressTypeNationalMask:                        areaCode = nil;                     break;
         case AddressTypeLocalMask:                                           numberTypeMask = 0; break;
@@ -296,31 +295,13 @@
         NSString* title;
         NSString* text;
 
-        if ([self isAddressRequired])
-        {
-            title = NSLocalizedStringWithDefaultValue(@"Addresses List ...", nil, [NSBundle mainBundle],
-                                                      @"For %@ Numbers in this country, supplying "
-                                                      @"a name plus address is legally required.",
-                                                      @"....");
-        }
-        else
-        {
-            title = NSLocalizedStringWithDefaultValue(@"Addresses List ...", nil, [NSBundle mainBundle],
-                                                      @"For %@ Numbers in this country, supplying "
-                                                      @"a name plus address is optional.",
-                                                      @"....");
-        }
+        title = NSLocalizedStringWithDefaultValue(@"Addresses List ...", nil, [NSBundle mainBundle],
+                                                  @"For %@ Numbers in this country, supplying "
+                                                  @"a name plus address is legally required.",
+                                                  @"....");
 
         switch (self.addressTypeMask)
         {
-            case AddressTypeNoneMask:
-            {
-                // Address is optional.
-                text  = NSLocalizedStringWithDefaultValue(@"Addresses List TitleWorldwide", nil, [NSBundle mainBundle],
-                                                          @"The address can be anywhere in the world.",
-                                                          @"....");
-                break;
-            }
             case AddressTypeWorldwideMask:
             {
                 text  = NSLocalizedStringWithDefaultValue(@"Addresses List TitleWorldwide", nil, [NSBundle mainBundle],
@@ -612,12 +593,6 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
 
 #pragma mark - Helpers
-
-- (BOOL)isAddressRequired
-{
-    return (self.addressTypeMask != AddressTypeNoneMask);
-}
-
 
 - (NSString*)detailTextForAddress:(AddressData*)address
 {

@@ -15,10 +15,6 @@
 {
     switch (mask)
     {
-        case AddressTypeNoneMask:
-        {
-            return @"NONE";
-        }
         case AddressTypeWorldwideMask:
         {
             return @"WORLDWIDE";
@@ -46,7 +42,8 @@
     
     if ([string isEqualToString:@"NONE"])
     {
-        mask = AddressTypeNoneMask;
+        mask = AddressTypeWorldwideMask;
+        NSLog(@"//### Remove NONE once server no longer sends it.");
     }
     else if ([string isEqualToString:@"WORLDWIDE"])
     {

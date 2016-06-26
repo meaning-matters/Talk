@@ -981,7 +981,7 @@
         }
         else
         {
-            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, 0.0f, nil, AddressTypeNoneMask, nil);
+            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, 0.0f, nil, AddressTypeWorldwideMask, nil);
         }
     }];
 }

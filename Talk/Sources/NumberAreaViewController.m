@@ -210,12 +210,6 @@ typedef enum
 
 #pragma mark - Helper Methods
 
-- (BOOL)isAddressRequired
-{
-    return (addressTypeMask != AddressTypeNoneMask);
-}
-
-
 - (void)hideKeyboard:(UIGestureRecognizer*)gestureRecognizer
 {
     if (name.length > 0)
@@ -608,18 +602,29 @@ typedef enum
     NSString* title = nil;
     NSString* message;
 
-    if (name.length == 0 || (addressTypeMask != AddressTypeNoneMask && self.address == nil))
+    if (name.length == 0)
     {
         title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                    @"Information Missing",
+                                                    @"Name Is Missing",
                                                     @"....\n"
                                                     @"[iOS alert title size].");
         message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                    @"Please complete all required fields.",
+                                                    @"Please enter a short descriptive name for this Number.",
                                                     @"....\n"
                                                     @"[iOS alert message size]");
     }
-    else if (addressTypeMask != AddressTypeNoneMask)
+    else if (self.address == nil)
+    {
+        title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                    @"Address Is Missing",
+                                                    @"....\n"
+                                                    @"[iOS alert title size].");
+        message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                    @"Please add your address.",
+                                                    @"....\n"
+                                                    @"[iOS alert message size]");
+    }
+    else
     {
         if (area[@"proofTypes"] == nil)
         {
@@ -791,22 +796,11 @@ typedef enum
         }
         case TableSectionAddress:
         {
-            if ([self isAddressRequired])
-            {
-                title = NSLocalizedStringWithDefaultValue(@"NumberArea:Address SectionFooter", nil,
-                                                          [NSBundle mainBundle],
-                                                          @"A contact name and address "
-                                                          @"are legally required.",
-                                                          @"Explaining that information must be supplied by user.");
-            }
-            else
-            {
-                title = NSLocalizedStringWithDefaultValue(@"NumberArea:Address SectionFooter", nil,
-                                                          [NSBundle mainBundle],
-                                                          @"A contact name and address "
-                                                          @"are optional, and could be asked later.",
-                                                          @"Explaining that information must be supplied by user.");
-            }
+            title = NSLocalizedStringWithDefaultValue(@"NumberArea:Address SectionFooter", nil,
+                                                      [NSBundle mainBundle],
+                                                      @"A contact name and address "
+                                                      @"are legally required.",
+                                                      @"Explaining that information must be supplied by user.");
             break;
         }
         case TableSectionBuy:
@@ -1060,8 +1054,7 @@ typedef enum
     {
         cell.accessoryView          = nil;
         cell.userInteractionEnabled = YES;
-        NSString* placeholder = [self isAddressRequired] ? [Strings requiredString] : [Strings optionalString];
-        cell.detailTextLabel.text   = self.address ? self.address.name : placeholder;
+        cell.detailTextLabel.text   = self.address ? self.address.name : [Strings requiredString];
     }
 
     return cell;

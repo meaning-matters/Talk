@@ -431,16 +431,6 @@ typedef enum
 }
 
 
-#pragma mark - Helpers
-
-- (BOOL)isAddressRequired
-{
-    AddressTypeMask addressTypeMask = [AddressType addressTypeMaskForString:number.addressType];
-
-    return (addressTypeMask != AddressTypeNoneMask);
-}
-
-
 #pragma mark - Actions
 
 - (void)autoRenewSwitchAction:(UISwitch*)switchView
@@ -651,9 +641,7 @@ typedef enum
         cell.accessoryView          = nil;
     }
 
-    NSString* placeholder = [self isAddressRequired] ? [Strings requiredString] : [Strings optionalString];
-    cell.detailTextLabel.text   = number.address ? number.address.name : placeholder;
-
+    cell.detailTextLabel.text   = number.address ? number.address.name : [Strings requiredString];
     cell.accessoryType          = (addressesPredicate != nil) ? UITableViewCellAccessoryDisclosureIndicator
                                                               : UITableViewCellAccessoryNone;
     cell.userInteractionEnabled = (addressesPredicate != nil);

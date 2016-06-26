@@ -10,10 +10,9 @@
 
 typedef NS_ENUM(NSUInteger, AddressTypeMask)
 {
-    AddressTypeNoneMask      = 1UL << 0,
-    AddressTypeWorldwideMask = 1UL << 1,
-    AddressTypeNationalMask  = 1UL << 2,
-    AddressTypeLocalMask     = 1UL << 3,
+    AddressTypeWorldwideMask = 1UL << 0,
+    AddressTypeNationalMask  = 1UL << 1,
+    AddressTypeLocalMask     = 1UL << 2,
 };
 
 
