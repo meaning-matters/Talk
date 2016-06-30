@@ -19,4 +19,8 @@
                                  title:(NSString*)title
                             completion:(void (^)(BOOL cancelled, NSString* isoCountryCode))completion;
 
+- (instancetype)initWithIsoCountryCode:(NSString*)isoCountryCode
+                excludedIsoCountryCode:(NSString*)excludedIsoCountryCode // Not allowed for EXTRANATIONAL address type.
+                                 title:(NSString*)title
+                            completion:(void (^)(BOOL cancelled, NSString* isoCountryCode))completion;
 @end

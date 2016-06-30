@@ -10,6 +10,8 @@
 #import "CountryNames.h"
 #import "NSObject+Blocks.h"
 #import "Strings.h"
+#import "Common.h"
+#import "BlockAlertView.h"
 
 
 @interface CountriesViewController ()
@@ -18,6 +20,7 @@
 }
 
 @property (nonatomic, strong) NSString* isoCountryCode;
+@property (nonatomic, strong) NSString* excludedIsoCountryCode;
 @property (nonatomic, copy) void (^completion)(BOOL cancelled, NSString* isoCountryCode);
 
 @end
@@ -27,18 +30,31 @@
 
 - (instancetype)initWithIsoCountryCode:(NSString*)isoCountryCode
                                  title:(NSString*)title
-                            completion:(void (^)(BOOL cancelled, NSString* isoCountryCode))completion;
+                            completion:(void (^)(BOOL cancelled, NSString* isoCountryCode))completion
+{
+    return [self initWithIsoCountryCode:isoCountryCode
+                 excludedIsoCountryCode:nil
+                                  title:title
+                             completion:completion];
+}
+
+
+- (instancetype)initWithIsoCountryCode:(NSString*)isoCountryCode
+                excludedIsoCountryCode:(NSString*)excludedIsoCountryCode   // Not allowed for EXTRANATIONAL address type.
+                                 title:(NSString*)title
+                            completion:(void (^)(BOOL cancelled, NSString* isoCountryCode))completion
 {
     if (self = [super init])
     {
-        self.tableView.dataSource = self;
-        self.tableView.delegate   = self;
+        self.tableView.dataSource   = self;
+        self.tableView.delegate     = self;
 
-        self.title                = title;
+        self.title                  = title;
 
-        self.objectsArray         = [[CountryNames sharedNames].namesDictionary allValues];
-        self.isoCountryCode       = isoCountryCode;
-        self.completion           = completion;
+        self.objectsArray           = [[CountryNames sharedNames].namesDictionary allValues];
+        self.isoCountryCode         = isoCountryCode;
+        self.excludedIsoCountryCode = excludedIsoCountryCode;
+        self.completion             = completion;
     }
 
     return self;
@@ -90,26 +106,52 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    NSString*        name = [self nameOnTableView:tableView atIndexPath:indexPath];
+    UITableViewCell* cell           = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSString*        name           = [self nameOnTableView:tableView atIndexPath:indexPath];
+    NSString*        isoCountryCode = [[CountryNames sharedNames] isoCountryCodeForName:name];
 
-    selectedCell.accessoryType = UITableViewCellAccessoryNone;
-    cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    selectedCell = cell;
-
-    if (self.isModal == YES)
+    if ([isoCountryCode isEqualToString:self.excludedIsoCountryCode])
     {
-        // Shown as modal.
-        [self dismissViewControllerAnimated:YES completion:^
+        NSString* title;
+        NSString* message;
+
+        title   = NSLocalizedStringWithDefaultValue(@"Countries ...", nil, [NSBundle mainBundle],
+                                                    @"Country Not Allowed",
+                                                    @"...");
+        message = NSLocalizedStringWithDefaultValue(@"Countries ...", nil, [NSBundle mainBundle],
+                                                    @"Legal requirements dictate that the address "
+                                                    @"must be outside the Number's country.",
+                                                    @"....\n"
+                                                    @"[iOS alert message size]");
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
         {
-            self.completion ? self.completion(NO, [[CountryNames sharedNames] isoCountryCodeForName:name]) : 0;
-        }];
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        }
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
     }
     else
     {
-        self.completion ? self.completion(NO, [[CountryNames sharedNames] isoCountryCodeForName:name]) : 0;
+        selectedCell.accessoryType = UITableViewCellAccessoryNone;
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        selectedCell = cell;
 
-        [self.navigationController popViewControllerAnimated:YES];
+        if (self.isModal == YES)
+        {
+            // Shown as modal.
+            [self dismissViewControllerAnimated:YES completion:^
+            {
+                self.completion ? self.completion(NO, isoCountryCode) : 0;
+            }];
+        }
+        else
+        {
+            self.completion ? self.completion(NO, isoCountryCode) : 0;
+
+            [self.navigationController popViewControllerAnimated:YES];
+        }
     }
 }
 
@@ -127,7 +169,6 @@
     }
 
     cell.imageView.image = [UIImage imageNamed:isoCountryCode];
-    cell.textLabel.text = name;
 
     if ([isoCountryCode isEqualToString:self.isoCountryCode])
     {
@@ -137,6 +178,15 @@
     else
     {
         cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+
+    if ([isoCountryCode isEqualToString:self.excludedIsoCountryCode])
+    {
+        cell.textLabel.attributedText = [Common strikethroughAttributedString:name];
+    }
+    else
+    {
+        cell.textLabel.text = name;
     }
 
     return cell;

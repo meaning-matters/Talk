@@ -1336,8 +1336,11 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                 }
                             }
                         };
-                        
+
+                        NSString* excluded = (self.addressTypeMask == AddressTypeExtranational) ? self.numberIsoCountryCode : nil;
+
                         countriesViewController = [[CountriesViewController alloc] initWithIsoCountryCode:isoCountryCode
+                                                                                   excludedIsoCountryCode:excluded
                                                                                                     title:[Strings countryString]
                                                                                                completion:completion];
                         [self.navigationController pushViewController:countriesViewController animated:YES];

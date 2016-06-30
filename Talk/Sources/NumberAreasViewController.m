@@ -367,7 +367,7 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
             message = NSLocalizedStringWithDefaultValue(@"NumberAreas ...", nil,
                                                         [NSBundle mainBundle],
                                                         @"Legal requirements dictate that %@ Numbers in this country "
-                                                        @"can not be purchased by residents nor local companies.",
+                                                        @"can not be purchased by residents nor by local companies.",
                                                         @"....\n"
                                                         @"[iOS alert message size!]");\
             message = [NSString stringWithFormat:message, [NumberType localizedStringForNumberTypeMask:numberTypeMask]];
