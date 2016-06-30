@@ -1019,6 +1019,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
     // We need to determine the existence of the ExtraFields section dynamically, based on
     // the country of the address (which the user may have to select from a list).
+    self.rowsExtraFields = 0;
     if (self.isNew)
     {
         if (self.extraFieldsInfo != nil)
@@ -1028,21 +1029,19 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                 [self.address.isoCountryCode isEqualToString:self.numberIsoCountryCode])
             {
                 self.sections |= TableSectionExtraFields;
+
+                NSArray* fields = self.extraFieldsInfo[self.salutation.typeString][@"fields"];
+                self.rowsExtraFields |= [fields containsObject:@"nationality"]      ? TableRowExtraFieldsNationality      : 0;
+                self.rowsExtraFields |= [fields containsObject:@"idType"]           ? TableRowExtraFieldsIdType           : 0;
+                self.rowsExtraFields |= [fields containsObject:@"idNumber"]         ? TableRowExtraFieldsIdNumber         : 0;
+                self.rowsExtraFields |= [fields containsObject:@"fiscalIdCode"]     ? TableRowExtraFieldsFiscalIdCode     : 0;
+                self.rowsExtraFields |= [fields containsObject:@"streetCode"]       ? TableRowExtraFieldsStreetCode       : 0;
+                self.rowsExtraFields |= [fields containsObject:@"municipalityCode"] ? TableRowExtraFieldsMunicipalityCode : 0;
             }
         }
-
-        NSArray* fields = self.extraFieldsInfo[self.salutation.typeString][@"fields"];
-        self.rowsExtraFields = 0;
-        self.rowsExtraFields |= [fields containsObject:@"nationality"]      ? TableRowExtraFieldsNationality      : 0;
-        self.rowsExtraFields |= [fields containsObject:@"idType"]           ? TableRowExtraFieldsIdType           : 0;
-        self.rowsExtraFields |= [fields containsObject:@"idNumber"]         ? TableRowExtraFieldsIdNumber         : 0;
-        self.rowsExtraFields |= [fields containsObject:@"fiscalIdCode"]     ? TableRowExtraFieldsFiscalIdCode     : 0;
-        self.rowsExtraFields |= [fields containsObject:@"streetCode"]       ? TableRowExtraFieldsStreetCode       : 0;
-        self.rowsExtraFields |= [fields containsObject:@"municipalityCode"] ? TableRowExtraFieldsMunicipalityCode : 0;
     }
     else
     {
-        self.rowsExtraFields = 0;
         self.rowsExtraFields |= (self.address.nationality      != nil) ? TableRowExtraFieldsNationality      : 0;
         self.rowsExtraFields |= (self.address.idType           != nil) ? TableRowExtraFieldsIdType           : 0;
         self.rowsExtraFields |= (self.address.idNumber         != nil) ? TableRowExtraFieldsIdNumber         : 0;
@@ -1128,7 +1127,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                     case AddressTypeExtranational:
                     {
                         title = NSLocalizedStringWithDefaultValue(@"Address:AddressNational SectionHeader", nil,
-                                                                  [NSBundle mainBundle], @"Outside Contact Address",
+                                                                  [NSBundle mainBundle], @"Outside County Contact Address",
                                                                   @"Address of someone.");
                         break;
                     }

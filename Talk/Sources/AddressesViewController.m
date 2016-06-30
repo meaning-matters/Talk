@@ -287,8 +287,7 @@
     if (self.predicate == nil)
     {
         return NSLocalizedStringWithDefaultValue(@"Addresses List Title", nil, [NSBundle mainBundle],
-                                                 @"In some countries an address is required for "
-                                                 @"using (certain types of) Numbers.",
+                                                 @"Supplying an address is legally required for using Numbers.",
                                                  @"\n"
                                                  @"[ ].");
     }
