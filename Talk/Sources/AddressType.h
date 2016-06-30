@@ -7,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Salutation.h"
 
 typedef NS_ENUM(NSUInteger, AddressTypeMask)
 {
     AddressTypeWorldwideMask = 1UL << 0,
     AddressTypeNationalMask  = 1UL << 1,
     AddressTypeLocalMask     = 1UL << 2,
+    AddressTypeExtranational = 1UL << 3,
 };
 
 

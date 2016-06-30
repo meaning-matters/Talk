@@ -31,6 +31,16 @@
 @property (nonatomic, retain) NSString*        stateCode;
 @property (nonatomic, retain) NSDictionary*    proofTypes;
 
+@property (nonatomic, assign) float_t          fixedRate;
+@property (nonatomic, assign) float_t          fixedSetup;
+@property (nonatomic, assign) float_t          mobileRate;
+@property (nonatomic, assign) float_t          mobileSetup;
+@property (nonatomic, assign) float_t          payphoneRate;
+@property (nonatomic, assign) float_t          payphoneSetup;
+
+@property (nonatomic, assign) float_t          monthFee;
+@property (nonatomic, assign) float_t          renewFee;
+
 // Relationships.
 @property (nonatomic, retain) DestinationData* destination;
 @property (nonatomic, retain) AddressData*     address;

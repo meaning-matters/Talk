@@ -184,11 +184,13 @@
         case AddressTypeWorldwideMask: isoCountryCode = nil; areaCode = nil; numberTypeMask = 0; break;
         case AddressTypeNationalMask:                        areaCode = nil;                     break;
         case AddressTypeLocalMask:                                           numberTypeMask = 0; break;
+        case AddressTypeExtranational:                       areaCode = nil; numberTypeMask = 0; break;
     }
 
     [[WebClient sharedClient] retrieveAddressesForIsoCountryCode:isoCountryCode
                                                         areaCode:areaCode
                                                       numberType:numberTypeMask
+                                                 isExtranational:(addressTypeMask == AddressTypeExtranational)
                                                            reply:^(NSError *error, NSArray *addressIds)
     {
         if (areAvailable)
@@ -320,6 +322,13 @@
             {
                 text  = NSLocalizedStringWithDefaultValue(@"Addresses List TitleLocal", nil, [NSBundle mainBundle],
                                                           @"The address must be in the same area.",
+                                                          @"....");
+                break;
+            }
+            case AddressTypeExtranational:
+            {
+                text  = NSLocalizedStringWithDefaultValue(@"Addresses List TitleExtranational", nil, [NSBundle mainBundle],
+                                                          @"The address must be outside of the Number's country.",
                                                           @"....");
                 break;
             }

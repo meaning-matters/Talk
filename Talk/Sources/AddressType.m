@@ -27,6 +27,10 @@
         {
             return @"LOCAL";
         }
+        case AddressTypeExtranational:
+        {
+            return @"EXTRANATIONAL";
+        }
         default:
         {
             NBLog(@"Invalid AddressTypeMask.");
@@ -56,6 +60,10 @@
     else if ([string isEqualToString:@"LOCAL"])
     {
         mask = AddressTypeLocalMask;
+    }
+    else if ([string isEqualToString:@"EXTRANATIONAL"])
+    {
+        mask = AddressTypeExtranational;
     }
     else
     {

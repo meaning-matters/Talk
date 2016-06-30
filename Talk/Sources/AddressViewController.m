@@ -1104,10 +1104,10 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             {
                 switch (self.addressTypeMask)
                 {
-                    case AddressTypeLocalMask:
+                    case AddressTypeWorldwideMask:
                     {
-                        title = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal SectionHeader", nil,
-                                                                  [NSBundle mainBundle], @"Local Contact Address",
+                        title = NSLocalizedStringWithDefaultValue(@"Address:AddressWorldwide SectionHeader", nil,
+                                                                  [NSBundle mainBundle], @"Worldwide Contact Address",
                                                                   @"Address of someone.");
                         break;
                     }
@@ -1118,10 +1118,17 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                                   @"Address of someone.");
                         break;
                     }
-                    case AddressTypeWorldwideMask:
+                    case AddressTypeLocalMask:
                     {
-                        title = NSLocalizedStringWithDefaultValue(@"Address:AddressWorldwide SectionHeader", nil,
-                                                                  [NSBundle mainBundle], @"Worldwide Contact Address",
+                        title = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal SectionHeader", nil,
+                                                                  [NSBundle mainBundle], @"Local Contact Address",
+                                                                  @"Address of someone.");
+                        break;
+                    }
+                    case AddressTypeExtranational:
+                    {
+                        title = NSLocalizedStringWithDefaultValue(@"Address:AddressNational SectionHeader", nil,
+                                                                  [NSBundle mainBundle], @"Outside Contact Address",
                                                                   @"Address of someone.");
                         break;
                     }

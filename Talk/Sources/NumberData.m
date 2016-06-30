@@ -24,6 +24,16 @@
 @dynamic stateCode;
 @dynamic proofTypes;
 
+@dynamic fixedRate;
+@dynamic fixedSetup;
+@dynamic mobileRate;
+@dynamic mobileSetup;
+@dynamic payphoneRate;
+@dynamic payphoneSetup;
+
+@dynamic monthFee;
+@dynamic renewFee;
+
 @dynamic destination;
 @dynamic address;
 

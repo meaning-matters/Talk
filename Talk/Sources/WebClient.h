@@ -119,6 +119,7 @@
 - (void)retrieveAddressesForIsoCountryCode:(NSString*)isoCountryCode        // Optional (i.e. can be nil).
                                   areaCode:(NSString*)areaCode              // Optional (i.e. can be nil).
                                 numberType:(NumberTypeMask)numberTypeMask   // Mandatory.
+                           isExtranational:(BOOL)isExtranational
                                      reply:(void (^)(NSError* error, NSArray* addressIds))reply;
 
 // 10B. GET REGULATION ADDRESS
@@ -218,13 +219,20 @@
                                          NSString*       stateCode,
                                          NSString*       stateName,
                                          NSString*       isoCountryCode,
+                                         NSString*       addressId,
+                                         AddressTypeMask addressType,
+                                         NSDictionary*   proofTypes,
                                          NSDate*         purchaseDate,
                                          NSDate*         renewalDate,
                                          BOOL            autoRenew,
+                                         float           fixedRate,
+                                         float           fixedSetup,
+                                         float           mobileRate,
+                                         float           mobileSetup,
+                                         float           payphoneRate,
+                                         float           payphoneSetup,
                                          float           monthFee,
-                                         NSString*       addressId,
-                                         AddressTypeMask addressType,
-                                         NSDictionary*   proofTypes))reply;
+                                         float           renewFee))reply;
 
 // 14. BUY CREDIT
 - (void)purchaseCreditForReceipt:(NSString*)receipt

@@ -620,6 +620,7 @@
 - (void)retrieveAddressesForIsoCountryCode:(NSString*)isoCountryCode
                                   areaCode:(NSString*)areaCode
                                 numberType:(NumberTypeMask)numberTypeMask
+                           isExtranational:(BOOL)isExtranational
                                      reply:(void (^)(NSError* error, NSArray* addressIds))reply
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
@@ -629,6 +630,7 @@
     (isoCountryCode.length > 0) ? parameters[@"isoCountryCode"] = isoCountryCode : 0;
     (areaCode.length       > 0) ? parameters[@"areaCode"]       = areaCode       : 0;
     (numberTypeMask        > 0) ? parameters[@"numberType"]     = numberType     : 0;
+    (isExtranational    == YES) ? parameters[@"extranational"]  = @(YES)         : 0;
 
     [self getPath:[NSString stringWithFormat:@"/users/%@/addresses", username]
        parameters:parameters
@@ -943,13 +945,20 @@
                                          NSString*       stateCode,
                                          NSString*       stateName,
                                          NSString*       isoCountryCode,
+                                         NSString*       addressId,
+                                         AddressTypeMask addressType,
+                                         NSDictionary*   proofTypes,
                                          NSDate*         purchaseDate,
                                          NSDate*         renewalDate,
                                          BOOL            autoRenew,
+                                         float           fixedRate,
+                                         float           fixedSetup,
+                                         float           mobileRate,
+                                         float           mobileSetup,
+                                         float           payphoneRate,
+                                         float           payphoneSetup,
                                          float           monthFee,
-                                         NSString*       addressId,
-                                         AddressTypeMask addressType,
-                                         NSDictionary*   proofTypes))reply
+                                         float           renewFee))reply
 {
     NSString*     username     = [Settings sharedSettings].webUsername;
     NSString*     number       = [e164 substringFromIndex:1];
@@ -971,17 +980,25 @@
                   content[@"stateCode"],
                   content[@"stateName"],
                   content[@"isoCountryCode"],
+                  content[@"addressId"],
+                  [AddressType addressTypeMaskForString:content[@"addressType"]],
+                  content[@"proofTypes"],
                   [self dateWithString:content[@"purchaseDateTime"]],
                   [self dateWithString:content[@"renewalDateTime"]],
                   [content[@"autoRenew"] boolValue],
+                  [content[@"fixedRate"] floatValue],
+                  [content[@"fixedSetup"] floatValue],
+                  [content[@"mobileRate"] floatValue],
+                  [content[@"mobileSetup"] floatValue],
+                  [content[@"payphoneRate"] floatValue],
+                  [content[@"payphoneSetup"] floatValue],
                   [content[@"monthFee"] floatValue],
-                  content[@"addressId"],
-                  [AddressType addressTypeMaskForString:content[@"addressType"]],
-                  content[@"proofTypes"]);
+                  [content[@"renewFee"] floatValue]);
         }
         else
         {
-            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, 0.0f, nil, AddressTypeWorldwideMask, nil);
+            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, AddressTypeWorldwideMask, nil, nil, nil, NO,
+                  0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         }
     }];
 }

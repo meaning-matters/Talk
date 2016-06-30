@@ -506,6 +506,7 @@
     [[WebClient sharedClient] retrieveAddressesForIsoCountryCode:nil
                                                         areaCode:nil
                                                       numberType:0
+                                                 isExtranational:NO
                                                            reply:^(NSError *error, NSArray *addressIds)
     {
         if (error == nil)
@@ -677,13 +678,20 @@
                                                                    NSString*       stateCode,
                                                                    NSString*       stateName,
                                                                    NSString*       isoCountryCode,
+                                                                   NSString*       addressId,
+                                                                   AddressTypeMask addressType,
+                                                                   NSDictionary*   proofTypes,
                                                                    NSDate*         purchaseDate,
                                                                    NSDate*         renewalDate,
                                                                    BOOL            autoRenew,
+                                                                   float           fixedRate,
+                                                                   float           fixedSetup,
+                                                                   float           mobileRate,
+                                                                   float           mobileSetup,
+                                                                   float           payphoneRate,
+                                                                   float           payphoneSetup,
                                                                    float           monthFee,
-                                                                   NSString*       addressId,
-                                                                   AddressTypeMask addressTypeMask,
-                                                                   NSDictionary*   proofTypes)
+                                                                   float           renewFee)
                 {
                     if (error == nil)
                     {
@@ -713,15 +721,20 @@
                         number.stateCode      = stateCode;
                         number.stateName      = stateName;
                         number.isoCountryCode = isoCountryCode;
+                        number.address        = [self lookupAddressWithId:addressId]; // May return nil.
+                        number.addressType    = [AddressType stringForAddressTypeMask:AddressTypeWorldwideMask];
+                        number.proofTypes     = proofTypes;
                         number.purchaseDate   = purchaseDate;
                         number.renewalDate    = renewalDate;
                         number.autoRenew      = autoRenew;
-                        number.stateCode      = stateCode;
-                        number.stateName      = stateName;
-                        number.address        = [self lookupAddressWithId:addressId];
-                        number.addressType    = [AddressType stringForAddressTypeMask:AddressTypeWorldwideMask];
-                        number.proofTypes     = proofTypes;
-                        //### missing are addressId and monthFee
+                        number.fixedRate      = fixedRate;
+                        number.fixedSetup     = fixedSetup;
+                        number.mobileRate     = mobileRate;
+                        number.mobileSetup    = mobileSetup;
+                        number.payphoneRate   = payphoneRate;
+                        number.payphoneSetup  = payphoneSetup;
+                        number.monthFee       = monthFee;
+                        number.renewFee       = renewFee;
 
                         // For non-geograpic numbers, areaName is <null>.
                         if ([areaName isEqual:[NSNull null]] || areaName.length == 0)

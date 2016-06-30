@@ -70,6 +70,8 @@
 #import "Common.h"
 #import "NumberAreaViewController.h"
 #import "Settings.h"
+#import "AddressType.h"
+#import "DataManager.h"
 
 typedef NS_ENUM(NSUInteger, AreaFormat)
 {
@@ -194,8 +196,11 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
 {
     if ([(NSArray*)content count] > 0)
     {
-        // Determine format.
         NSDictionary* area = [content firstObject];
+
+        [self checkAreaForExtranationalAddress:area];
+
+        // Determine format.
         switch (numberTypeMask)
         {
             case NumberTypeGeographicMask:
@@ -335,6 +340,44 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
 - (void)cancel
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (void)checkAreaForExtranationalAddress:(NSDictionary*)area
+{
+    AddressTypeMask addressType = [AddressType addressTypeMaskForString:area[@"addressType"]];
+    if (addressType == AddressTypeExtranational)
+    {
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"isoCountryCode != %@", isoCountryCode];
+
+        NSArray* addresses = [[DataManager sharedManager] fetchEntitiesWithName:@"Address"
+                                                                       sortKeys:nil
+                                                                      predicate:predicate
+                                                           managedObjectContext:nil];
+
+        if (addresses.count == 0)
+        {
+            NSString* title;
+            NSString* message;
+
+            title   = NSLocalizedStringWithDefaultValue(@"NumberAreas ...", nil, [NSBundle mainBundle],
+                                                        @"Only For Foreigners",
+                                                        @"....\n"
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"NumberAreas ...", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Legal requirements dictate that %@ Numbers in this country "
+                                                        @"can not be purchased by residents nor local companies.",
+                                                        @"....\n"
+                                                        @"[iOS alert message size!]");\
+            message = [NSString stringWithFormat:message, [NumberType localizedStringForNumberTypeMask:numberTypeMask]];
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:nil
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+        }
+    }
 }
 
 

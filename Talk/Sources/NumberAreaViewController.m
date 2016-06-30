@@ -354,14 +354,21 @@ typedef enum
     number.numberType     = [NumberType stringForNumberTypeMask:numberTypeMask];
     number.areaCode       = areaCode;
     number.areaName       = self.areaName;
+    number.stateCode      = state[@"stateCode"];
+    number.stateName      = state[@"stateName"];
     number.isoCountryCode = numberIsoCountryCode;
     number.address        = self.address;
-    number.autoRenew      = @(YES);
-    number.stateName      = state[@"stateName"];
-    number.stateCode      = state[@"stateCode"];
+    number.addressType    = area[@"addressType"];
     number.proofTypes     = area[@"proofTypes"];
     number.purchaseDate   = purchaseDate;
     number.renewalDate    = renewalDate;
+    number.autoRenew      = @(YES);
+    number.fixedRate      = [area[@"fixedRate"] floatValue];
+    number.fixedSetup     = [area[@"fixedSetup"] floatValue];
+    number.mobileRate     = [area[@"mobileRate"] floatValue];
+    number.mobileSetup    = [area[@"mobileSetup"] floatValue];
+    number.payphoneRate   = [area[@"payphoneRate"] floatValue];
+    number.payphoneSetup  = [area[@"payphoneSetup"] floatValue];
 
     [[DataManager sharedManager] saveManagedObjectContext:managedObjectContext];
 }
