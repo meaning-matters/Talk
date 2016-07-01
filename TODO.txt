@@ -193,3 +193,9 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 
 * Pass city through AddressesViewController to AddressViewController, to allow filling it in for LOCAL addresses.
 
+* Add postcode checking using https://gist.github.com/matthewbednarski/4d15c7f50258b82e2d7e (saved as Postcodes.json in project) or other sources.
+
+
+
+
+
