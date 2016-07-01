@@ -1749,7 +1749,7 @@
 
 
 // 11B.
-- (void)cancelAllUpdateNumberE164:(NSString*)e164;
+- (void)cancelAllUpdateNumberWithE164:(NSString*)e164;
 {
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
@@ -1761,7 +1761,7 @@
 
 
 // 11C.
-- (void)cancelAllExtendNumberE164:(NSString*)e164;
+- (void)cancelAllExtendNumberWithE164:(NSString*)e164;
 {
     NSString* username = [Settings sharedSettings].webUsername;
     NSString* number   = [e164 substringFromIndex:1];
