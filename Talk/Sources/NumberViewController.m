@@ -205,9 +205,9 @@ typedef enum
         case TableSectionCharges:
         {
             title = NSLocalizedStringWithDefaultValue(@"Number:Charges SectionFooter", nil, [NSBundle mainBundle],
-                                                      @"When someone calls you on this Number the above additional "
-                                                      @"charges apply, depending on the type of phone used. "
-                                                      @"These incoming call charges will be taken from your Credit.\n\n"
+                                                      @"When someone calls you at this Number, the above additional "
+                                                      @"charges apply, depending on the type of phone used.\n\n"
+                                                      @"These charges will be taken from your Credit. "
                                                       @"The setup fee is taken once for each call, followed by a price "
                                                       @"per minute.",
                                                       @"....");
