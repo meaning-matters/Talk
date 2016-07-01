@@ -358,7 +358,7 @@ typedef enum
         }
         case TableSectionDestination:
         {
-            identifier = @"DisclosureCell";
+            identifier = @"DestinationCell";
             break;
         }
         case TableSectionUsage:
@@ -539,10 +539,11 @@ typedef enum
     cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number Destination", nil,
                                                                   [NSBundle mainBundle], @"Destination",
                                                                   @"....");
-    cell.textLabel.textColor  = [UIColor blackColor];
-    cell.detailTextLabel.text = (number.destination == nil) ? [Strings noneString] : number.destination.name;
-    cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
-    cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.textColor       = [UIColor blackColor];
+    cell.detailTextLabel.text      = (number.destination == nil) ? [Strings noneString]       : number.destination.name;
+    cell.detailTextLabel.textColor = (number.destination == nil) ? [Skinning deleteTintColor] : [Skinning valueColor];
+    cell.selectionStyle            = UITableViewCellSelectionStyleDefault;
+    cell.accessoryType             = UITableViewCellAccessoryDisclosureIndicator;
 }
 
 
