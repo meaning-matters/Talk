@@ -524,11 +524,65 @@
                                              @"[Button size].");
 }
 
-+ (NSString*)municipalityCodeString;
+
++ (NSString*)municipalityCodeString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Municipality Code", nil, [NSBundle mainBundle],
                                              @"Municipality Code",
                                              @"Term for code given to Denmark Municipality\n"
+                                             @"[Button size].");
+}
+
++ (NSString*)fixedRateString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings FixedRate", nil, [NSBundle mainBundle],
+                                             @"Fixed Per Minute",
+                                             @"Per minute price calling fixed line telephone\n"
+                                             @"[Button size].");
+}
+
+
++ (NSString*)fixedSetupString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings FixedSetup", nil, [NSBundle mainBundle],
+                                             @"Fixed Setup Fee",
+                                             @"Setup fee calling fixed line telephone\n"
+                                             @"[Button size].");
+}
+
+
++ (NSString*)mobileRateString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings MobileRate", nil, [NSBundle mainBundle],
+                                             @"Mobile Per Minute",
+                                             @"Per minute price calling mobile telephone\n"
+                                             @"[Button size].");
+}
+
+
++ (NSString*)mobileSetupString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings MobileSetup", nil, [NSBundle mainBundle],
+                                             @"Mobile Setup Fee",
+                                             @"Setup fee calling mobile telephone number\n"
+                                             @"[Button size].");
+}
+
+
++ (NSString*)payphoneRateString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings PayphoneRate", nil, [NSBundle mainBundle],
+                                             @"Payphone Per Minute",
+                                             @"Per minute price calling payphone telephone\n"
+                                             @"[Button size].");
+}
+
+
++ (NSString*)payphoneSetupString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings PayphoneSetup", nil, [NSBundle mainBundle],
+                                             @"Payphone Setup Fee",
+                                             @"Setup fee calling payphone telephone\n"
                                              @"[Button size].");
 }
 

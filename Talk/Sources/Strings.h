@@ -127,4 +127,16 @@
 
 + (NSString*)municipalityCodeString;
 
++ (NSString*)fixedRateString;
+
++ (NSString*)fixedSetupString;
+
++ (NSString*)mobileRateString;
+
++ (NSString*)mobileSetupString;
+
++ (NSString*)payphoneRateString;
+
++ (NSString*)payphoneSetupString;
+
 @end

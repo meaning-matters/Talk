@@ -20,6 +20,7 @@
 #import "DataManager.h"
 #import "Settings.h"
 #import "AddressData.h"
+#import "PurchaseManager.h"
 
 
 typedef enum
@@ -31,6 +32,7 @@ typedef enum
     TableSectionSubscription = 1UL << 4,
     TableSectionAddress      = 1UL << 5,
     TableSectionArea         = 1UL << 6,    // The optional state will be placed in a row here.
+    TableSectionCharges      = 1UL << 7,
 } TableSections;
 
 typedef enum
@@ -80,6 +82,9 @@ typedef enum
         sections |= TableSectionAddress;
         sections |= TableSectionArea;
 
+        // Optional section.
+        sections |= (number.payphoneRate > 0) ? TableSectionCharges : 0;
+
         // Area Rows
         areaRows |= AreaRowType;
         areaRows |= AreaRowAreaCode;
@@ -121,21 +126,28 @@ typedef enum
     {
         case TableSectionSubscription:
         {
-            title = NSLocalizedStringWithDefaultValue(@"Number:Subscription SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Subscription",
+            title = NSLocalizedStringWithDefaultValue(@"Number:Subscription SectionHeader", nil, [NSBundle mainBundle],
+                                                      @"Subscription",
                                                       @"....");
             break;
         }
         case TableSectionAddress:
         {
-            title = NSLocalizedStringWithDefaultValue(@"Number:Name SectionHeader", nil,
-                                                      [NSBundle mainBundle], @"Contact Address",
+            title = NSLocalizedStringWithDefaultValue(@"Number:Name SectionHeader", nil, [NSBundle mainBundle],
+                                                      @"Contact Address",
                                                       @"....");
             break;
         }
         case TableSectionArea:
         {
             title = [Strings detailsString];
+            break;
+        }
+        case TableSectionCharges:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Number:Charges SectionHeader", nil, [NSBundle mainBundle],
+                                                      @"Incoming Call Charges",
+                                                      @"....");
             break;
         }
     }
@@ -190,6 +202,17 @@ typedef enum
                                                       @"[* lines]");
             break;
         }
+        case TableSectionCharges:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Number:Charges SectionFooter", nil, [NSBundle mainBundle],
+                                                      @"When someone calls you on this Number the above additional "
+                                                      @"charges apply, depending on the type of phone used. "
+                                                      @"These incoming call charges will be taken from your Credit.\n\n"
+                                                      @"The setup fee is taken once for each call, followed by a price "
+                                                      @"per minute.",
+                                                      @"....");
+            break;
+        }
     }
 
     return title;
@@ -215,6 +238,7 @@ typedef enum
         case TableSectionSubscription: numberOfRows = 3;                              break;  // Second row leads to buying extention.
         case TableSectionAddress:      numberOfRows = 1;                              break;
         case TableSectionArea:         numberOfRows = [Common bitsSetCount:areaRows]; break;
+        case TableSectionCharges:      numberOfRows = 6;                              break;
     }
 
     return numberOfRows;
@@ -305,6 +329,10 @@ typedef enum
         {
             break;
         }
+        case TableSectionCharges:
+        {
+            break;
+        }
     }
 }
 
@@ -360,6 +388,11 @@ typedef enum
             }
             break;
         }
+        case TableSectionCharges:
+        {
+            identifier = @"ChargeCell";
+            break;
+        }
     }
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
@@ -376,11 +409,6 @@ typedef enum
             [switchView addTarget:self
                            action:@selector(autoRenewSwitchAction:)
                  forControlEvents:UIControlEventValueChanged];
-        }
-
-        if ([identifier isEqualToString:@"AddressCell"])
-        {
-            cell.textLabel.text = [Strings addressString];
         }
     }
 
@@ -425,6 +453,11 @@ typedef enum
         case TableSectionArea:
         {
             [self updateAreaCell:cell atIndexPath:indexPath];
+            break;
+        }
+        case TableSectionCharges:
+        {
+            [self updateChargeCell:cell atIndexPath:indexPath];
             break;
         }
     }
@@ -641,12 +674,37 @@ typedef enum
         cell.accessoryView          = nil;
     }
 
+    cell.textLabel.text         = [Strings addressString];
     cell.detailTextLabel.text   = number.address ? number.address.name : [Strings requiredString];
     cell.accessoryType          = (addressesPredicate != nil) ? UITableViewCellAccessoryDisclosureIndicator
                                                               : UITableViewCellAccessoryNone;
-    cell.userInteractionEnabled = (addressesPredicate != nil);
+    cell.userInteractionEnabled = (addressesPredicate != nil); // Must be set last, otherwise setting colors does not work.
 }
 
+
+- (void)updateChargeCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
+{
+    cell.accessoryView             = nil;
+    cell.detailTextLabel.textColor = [Skinning valueColor];
+
+    float charge;
+
+    switch (indexPath.row)
+    {
+        case 0: cell.textLabel.text = [Strings fixedSetupString];    charge = number.fixedSetup;    break;
+        case 1: cell.textLabel.text = [Strings fixedRateString];     charge = number.fixedRate;     break;
+        case 2: cell.textLabel.text = [Strings mobileSetupString];   charge = number.mobileSetup;   break;
+        case 3: cell.textLabel.text = [Strings mobileRateString];    charge = number.mobileRate;    break;
+        case 4: cell.textLabel.text = [Strings payphoneSetupString]; charge = number.payphoneSetup; break;
+        case 5: cell.textLabel.text = [Strings payphoneRateString];  charge = number.payphoneRate;  break;
+    }
+
+    cell.detailTextLabel.text   = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:charge];
+    cell.userInteractionEnabled = NO; // Must be set last, otherwise setting colors does not work.
+}
+
+
+#pragma mark - Helpers
 
 - (void)loadAddressesPredicate
 {
