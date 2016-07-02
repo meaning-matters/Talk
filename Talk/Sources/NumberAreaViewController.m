@@ -9,6 +9,7 @@
 #import <objc/runtime.h>
 #import "NumberAreaViewController.h"
 #import "AddressesViewController.h"
+#import "IncomingChargesViewController.h"
 #import "Strings.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
@@ -30,7 +31,8 @@ typedef enum
     TableSectionArea    = 1UL << 0, // Type, area code, area name, state, country.
     TableSectionName    = 1UL << 1, // Name given by user.
     TableSectionAddress = 1UL << 2,
-    TableSectionBuy     = 1UL << 3, // Buy.
+    TableSectionCharges = 1UL << 3,
+    TableSectionBuy     = 1UL << 4, // Buy.
 } TableSections;
 
 typedef enum
@@ -105,6 +107,9 @@ typedef enum
         sections |= TableSectionName;
         sections |= TableSectionAddress;
         sections |= TableSectionBuy;
+
+        // Optional section.
+        sections |= [IncomingChargesViewController hasIncomingChargesWithArea:area] ? TableSectionCharges : 0;
 
         // Always there Area section rows.
         areaRows |= AreaRowType;
@@ -810,6 +815,14 @@ typedef enum
                                                       @"Explaining that information must be supplied by user.");
             break;
         }
+        case TableSectionCharges:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"NumberArea:Charges SectionFooter", nil, [NSBundle mainBundle],
+                                                      @"When someone calls you at this Number, additional "
+                                                      @"charges apply.",
+                                                      @"....");
+            break;
+        }
         case TableSectionBuy:
         {
             if (self.setupFee == 0.0f)
@@ -858,6 +871,11 @@ typedef enum
             numberOfRows = 1;
             break;
         }
+        case TableSectionCharges:
+        {
+            numberOfRows = 1;
+            break;
+        }
         case TableSectionBuy:
         {
             numberOfRows = 1;
@@ -871,7 +889,10 @@ typedef enum
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    if ([self.tableView cellForRowAtIndexPath:indexPath].selectionStyle == UITableViewCellSelectionStyleNone)
+    UITableViewCell* cell;
+
+    cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    if (cell.selectionStyle == UITableViewCellSelectionStyleNone)
     {
         return;
     }
@@ -900,6 +921,15 @@ typedef enum
             [self.navigationController pushViewController:viewController animated:YES];
             break;
         }
+        case TableSectionCharges:
+        {
+            IncomingChargesViewController* chargesViewController;
+
+            chargesViewController       = [[IncomingChargesViewController alloc] initWithArea:area];
+            chargesViewController.title = cell.textLabel.text;
+            [self.navigationController pushViewController:chargesViewController animated:YES];
+            break;
+        }
     }
 }
 
@@ -913,6 +943,7 @@ typedef enum
         case TableSectionArea:    cell = [self areaCellForRowAtIndexPath:indexPath];    break;
         case TableSectionName:    cell = [self nameCellForRowAtIndexPath:indexPath];    break;
         case TableSectionAddress: cell = [self addressCellForRowAtIndexPath:indexPath]; break;
+        case TableSectionCharges: cell = [self chargesCellForRowAtIndexPath:indexPath]; break;
         case TableSectionBuy:     cell = [self buyCellForRowAtIndexPath:indexPath];     break;
     }
 
@@ -929,6 +960,7 @@ typedef enum
         case TableSectionArea:    height = [super tableView:tableView heightForRowAtIndexPath:indexPath]; break;
         case TableSectionName:    height = [super tableView:tableView heightForRowAtIndexPath:indexPath]; break;
         case TableSectionAddress: height = [super tableView:tableView heightForRowAtIndexPath:indexPath]; break;
+        case TableSectionCharges: height = [super tableView:tableView heightForRowAtIndexPath:indexPath]; break;
         case TableSectionBuy:     height = self.buyCellHeight;                                            break;
     }
 
@@ -1063,6 +1095,24 @@ typedef enum
         cell.userInteractionEnabled = YES;
         cell.detailTextLabel.text   = self.address ? self.address.name : [Strings requiredString];
     }
+
+    return cell;
+}
+
+
+- (UITableViewCell*)chargesCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell* cell;
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"ChargesCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"ChargesCell"];
+    }
+
+    cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.text       = [Strings incomingChargesString];
+    cell.detailTextLabel.text = @"";
 
     return cell;
 }

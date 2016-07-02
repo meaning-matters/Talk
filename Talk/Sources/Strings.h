@@ -127,6 +127,8 @@
 
 + (NSString*)municipalityCodeString;
 
++ (NSString*)incomingChargesString;
+
 + (NSString*)fixedRateString;
 
 + (NSString*)fixedSetupString;

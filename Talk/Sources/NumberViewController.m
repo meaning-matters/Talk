@@ -8,6 +8,7 @@
 
 #import "NumberViewController.h"
 #import "NumberDestinationsViewController.h"
+#import "IncomingChargesViewController.h"
 #import "Common.h"
 #import "PhoneNumber.h"
 #import "CountryNames.h"
@@ -21,7 +22,6 @@
 #import "Settings.h"
 #import "AddressData.h"
 #import "PurchaseManager.h"
-#import "IncomingChargesViewController.h"
 
 
 typedef enum
@@ -672,22 +672,18 @@ typedef enum
         cell.accessoryView          = nil;
     }
 
-    cell.textLabel.text         = [Strings addressString];
-    cell.detailTextLabel.text   = number.address ? number.address.name : [Strings requiredString];
-    cell.accessoryType          = (addressesPredicate != nil) ? UITableViewCellAccessoryDisclosureIndicator
-                                                              : UITableViewCellAccessoryNone;
+    cell.textLabel.text       = [Strings addressString];
+    cell.detailTextLabel.text = number.address ? number.address.name : [Strings requiredString];
+    cell.accessoryType        = (addressesPredicate != nil) ? UITableViewCellAccessoryDisclosureIndicator
+                                                            : UITableViewCellAccessoryNone;
     cell.userInteractionEnabled = (addressesPredicate != nil); // Must be set last, otherwise setting colors does not work.
 }
 
 
 - (void)updateChargeCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
-    cell.accessoryType             = UITableViewCellAccessoryDisclosureIndicator;
-    cell.detailTextLabel.textColor = [Skinning valueColor];
-
-    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:Charges", nil, [NSBundle mainBundle],
-                                                            @"Incoming Call Charges",
-                                                            @"....");
+    cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.text       = [Strings incomingChargesString];
     cell.detailTextLabel.text = @"";
 }
 

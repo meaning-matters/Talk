@@ -533,12 +533,22 @@
                                              @"[Button size].");
 }
 
+
++ (NSString*)incomingChargesString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings IncomingCharges", nil, [NSBundle mainBundle],
+                                             @"Incoming Call Charges",
+                                             @"...\n"
+                                             @"....");
+}
+
+
 + (NSString*)fixedRateString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings FixedRate", nil, [NSBundle mainBundle],
                                              @"Fixed Per Minute",
                                              @"Per minute price calling fixed line telephone\n"
-                                             @"[Button size].");
+                                             @"....");
 }
 
 
