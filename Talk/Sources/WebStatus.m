@@ -7,6 +7,8 @@
 //
 
 #import "WebStatus.h"
+#import "NetworkStatus.h"
+#import "Strings.h"
 
 
 @implementation WebStatus
@@ -49,7 +51,7 @@
 + (NSString*)localizedStringForStatus:(WebStatusCode)code
 {
     NSString* string;
-    
+
     switch (code)
     {
         case WebStatusOk:
@@ -238,10 +240,22 @@
         }
         case WebStatusFailInternetLogin:
         {
+            NSString* networkText;
+
+            if ([NetworkStatus sharedStatus].reachableStatus == NetworkStatusReachableWifi)
+            {
+                networkText = [Strings wifiString];
+            }
+            else
+            {
+                networkText = [Strings internetString];
+            }
+            
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailInternetLogin", nil, [NSBundle mainBundle],
-                                                       @"The Internet connection appears to require you to login.",
+                                                       @"The %@ connection appears to require you to login. ",
                                                        @"Status text.\n"
                                                        @"[].");
+            string = [NSString stringWithFormat:string, networkText];
             break;
         }
         case WebStatusFailNoAccount:

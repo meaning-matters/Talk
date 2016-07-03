@@ -743,7 +743,7 @@
                         }
                         else
                         {
-                            number.areaName = [areaName capitalizedString];
+                            number.areaName = [Common capitalizedString:areaName];
                         }
                     }
                     else

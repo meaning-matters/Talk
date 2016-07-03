@@ -141,4 +141,8 @@
 
 + (NSString*)payphoneSetupString;
 
++ (NSString*)wifiString;
+
++ (NSString*)internetString;
+
 @end

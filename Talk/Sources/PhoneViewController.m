@@ -403,7 +403,7 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"NumberCell"];
     }
 
-    cell.textLabel.text  = [Strings numberString];
+    cell.textLabel.text  = [Common capitalizedString:[phoneNumber typeString]];
     cell.imageView.image = nil;
     if (isNew)
     {

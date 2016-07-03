@@ -523,11 +523,12 @@ typedef enum
 
 - (void)updateNumberCell:(UITableViewCell*)cell
 {
-    NumberLabel* numberLabel = [Common addNumberLabelToCell:cell];
+    NumberLabel*   numberLabel    = [Common addNumberLabelToCell:cell];
+    NumberTypeMask numberTypeMask = [NumberType numberTypeMaskForString:number.numberType];
 
-    numberLabel.text         = [[PhoneNumber alloc] initWithNumber:number.e164].internationalFormat;
-    [Common addCountryImageToCell:cell isoCountryCode:number.isoCountryCode];
-    cell.selectionStyle      = UITableViewCellSelectionStyleNone;
+    numberLabel.text    = [[PhoneNumber alloc] initWithNumber:number.e164].internationalFormat;
+    cell.textLabel.text = [NumberType localizedStringForNumberTypeMask:numberTypeMask];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
 

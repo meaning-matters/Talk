@@ -358,7 +358,7 @@ typedef enum
     number.e164           = e164;
     number.numberType     = [NumberType stringForNumberTypeMask:numberTypeMask];
     number.areaCode       = areaCode;
-    number.areaName       = self.areaName;
+    number.areaName       = [Common capitalizedString:self.areaName];
     number.stateCode      = state[@"stateCode"];
     number.stateName      = state[@"stateName"];
     number.isoCountryCode = numberIsoCountryCode;

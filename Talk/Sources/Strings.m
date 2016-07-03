@@ -596,4 +596,22 @@
                                              @"[Button size].");
 }
 
+
++ (NSString*)wifiString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Wi-Fi", nil, [NSBundle mainBundle],
+                                             @"Wi-Fi",
+                                             @"Official/Correct term for Wi-Fi\n"
+                                             @"[...");
+}
+
+
++ (NSString*)internetString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Internet", nil, [NSBundle mainBundle],
+                                             @"Internet",
+                                             @"Official iOS term (including capitalization) for Internet\n"
+                                             @"[...");
+}
+
 @end
