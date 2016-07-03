@@ -632,7 +632,7 @@ typedef enum
                                                     @"....\n"
                                                     @"[iOS alert title size].");
         message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                    @"Please add your address.",
+                                                    @"Please add your address or select an address you added earlier.",
                                                     @"....\n"
                                                     @"[iOS alert message size]");
     }
