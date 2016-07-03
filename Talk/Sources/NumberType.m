@@ -100,9 +100,9 @@
     {
         case NumberTypeGeographicMask:
         {
-            return NSLocalizedStringWithDefaultValue(@"NumberType:Strings Geographic", nil,
-                                                     [NSBundle mainBundle], @"Geographic",
-                                                     @"Standard term for geographic phone number (in a certain city)\n"
+            return NSLocalizedStringWithDefaultValue(@"NumberType:Strings Local", nil,
+                                                     [NSBundle mainBundle], @"Local",
+                                                     @"Standard term for local phone number (in a certain city)\n"
                                                      @"[iOS standard size].");
         }
         case NumberTypeNationalMask:
@@ -157,9 +157,9 @@
     {
         case NumberTypeGeographicMask:
         {
-            return NSLocalizedStringWithDefaultValue(@"NumberType:StringsAbbreviated Geographic", nil,
-                                                     [NSBundle mainBundle], @"Geo",
-                                                     @"Standard term for geographic phone number (in a certain city)\n"
+            return NSLocalizedStringWithDefaultValue(@"NumberType:StringsAbbreviated Local", nil,
+                                                     [NSBundle mainBundle], @"Loc",
+                                                     @"Standard term for local phone number (in a certain city)\n"
                                                      @"[iOS standard size].");
         }
         case NumberTypeNationalMask:
