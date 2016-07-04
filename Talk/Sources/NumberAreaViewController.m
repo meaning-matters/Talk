@@ -39,11 +39,10 @@ typedef enum
 
 typedef enum
 {
-    AreaRowType     = 1UL << 0,
-    AreaRowAreaCode = 1UL << 1,
-    AreaRowAreaName = 1UL << 2,
-    AreaRowState    = 1UL << 3,
-    AreaRowCountry  = 1UL << 4,
+    AreaRowAreaCode = 1UL << 0,
+    AreaRowAreaName = 1UL << 1,
+    AreaRowState    = 1UL << 2,
+    AreaRowCountry  = 1UL << 3,
 } AreaRows;
 
 
@@ -116,11 +115,10 @@ typedef enum
         sections |= [IncomingChargesViewController hasIncomingChargesWithArea:area] ? TableSectionCharges : 0;
 
         // Always there Area section rows.
-        areaRows |= AreaRowType;
+        areaRows |= AreaRowAreaCode;
         areaRows |= AreaRowCountry;
         
         // Conditionally there Area section rows.
-        areaRows |= (areaCode != nil)                            ? AreaRowAreaCode : 0;
         areaRows |= (numberTypeMask == NumberTypeGeographicMask) ? AreaRowAreaName : 0;
         areaRows |= (numberTypeMask == NumberTypeSpecialMask)    ? AreaRowAreaName : 0;
         areaRows |= (state != nil)                               ? AreaRowState    : 0;
@@ -996,19 +994,12 @@ typedef enum
 
     switch ([Common nthBitSet:indexPath.row inValue:areaRows])
     {
-        case AreaRowType:
-        {
-            cell.textLabel.text       = [Strings typeString];
-            cell.detailTextLabel.text = [NumberType localizedStringForNumberTypeMask:numberTypeMask];
-            cell.imageView.image      = nil;
-            break;
-        }
         case AreaRowAreaCode:
         {
-            cell.textLabel.text       = [Strings areaCodeString];
+            cell.textLabel.text       = [NumberType localizedStringForNumberTypeMask:numberTypeMask];
             cell.detailTextLabel.text = [NSString stringWithFormat:@"+%@ %@",
                                                                    [Common callingCodeForCountry:numberIsoCountryCode],
-                                                                   areaCode];
+                                                                   areaCode ? areaCode : @"---"];
             cell.imageView.image      = nil;
             break;
         }
