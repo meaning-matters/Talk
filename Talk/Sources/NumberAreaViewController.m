@@ -10,6 +10,7 @@
 #import "NumberAreaViewController.h"
 #import "AddressesViewController.h"
 #import "IncomingChargesViewController.h"
+#import "NumberTermsViewController.h"
 #import "Strings.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
@@ -32,7 +33,8 @@ typedef enum
     TableSectionName    = 1UL << 1, // Name given by user.
     TableSectionAddress = 1UL << 2,
     TableSectionCharges = 1UL << 3,
-    TableSectionBuy     = 1UL << 4, // Buy.
+    TableSectionTerms   = 1UL << 4,
+    TableSectionBuy     = 1UL << 5, // Buy.
 } TableSections;
 
 typedef enum
@@ -55,14 +57,15 @@ typedef enum
     NSDictionary*   area;
     NumberTypeMask  numberTypeMask;
 
+    BOOL            agreedToTerms;
 
-    NSArray*       citiesArray;
-    NSString*      name;
-    BOOL           isChecked;
-    TableSections  sections;
-    AreaRows       areaRows;
+    NSArray*        citiesArray;
+    NSString*       name;
+    BOOL            isChecked;
+    TableSections   sections;
+    AreaRows        areaRows;
 
-    NSIndexPath*   actionIndexPath;
+    NSIndexPath*    actionIndexPath;
 }
 
 @property (nonatomic, strong) NSIndexPath*             nameIndexPath;
@@ -106,6 +109,7 @@ typedef enum
         sections |= TableSectionArea;
         sections |= TableSectionName;
         sections |= TableSectionAddress;
+        sections |= TableSectionTerms;
         sections |= TableSectionBuy;
 
         // Optional section.
@@ -636,6 +640,17 @@ typedef enum
                                                     @"....\n"
                                                     @"[iOS alert message size]");
     }
+    else if (agreedToTerms == NO)
+    {
+        title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                    @"Not Agreed To Terms",
+                                                    @"....\n"
+                                                    @"[iOS alert title size].");
+        message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                    @"Please explicitly agree to each of the terms for using a Number.",
+                                                    @"....\n"
+                                                    @"[iOS alert message size]");
+    }
     else
     {
         if (area[@"proofTypes"] == nil)
@@ -856,31 +871,12 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionArea:
-        {
-            numberOfRows = [Common bitsSetCount:areaRows];
-            break;
-        }
-        case TableSectionName:
-        {
-            numberOfRows = 1;
-            break;
-        }
-        case TableSectionAddress:
-        {
-            numberOfRows = 1;
-            break;
-        }
-        case TableSectionCharges:
-        {
-            numberOfRows = 1;
-            break;
-        }
-        case TableSectionBuy:
-        {
-            numberOfRows = 1;
-            break;
-        }
+        case TableSectionArea:    numberOfRows = [Common bitsSetCount:areaRows]; break;
+        case TableSectionName:    numberOfRows = 1;                              break;
+        case TableSectionAddress: numberOfRows = 1;                              break;
+        case TableSectionCharges: numberOfRows = 1;                              break;
+        case TableSectionTerms:   numberOfRows = 1;                              break;
+        case TableSectionBuy:     numberOfRows = 1;                              break;
     }
 
     return numberOfRows;
@@ -889,9 +885,8 @@ typedef enum
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell* cell;
+    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
 
-    cell = [self.tableView cellForRowAtIndexPath:indexPath];
     if (cell.selectionStyle == UITableViewCellSelectionStyleNone)
     {
         return;
@@ -921,6 +916,22 @@ typedef enum
             [self.navigationController pushViewController:viewController animated:YES];
             break;
         }
+        case TableSectionTerms:
+        {
+            NumberTermsViewController* viewController;
+            viewController = [[NumberTermsViewController alloc] initWithAgreed:agreedToTerms agreedCompletion:^
+            {
+                agreedToTerms = YES;
+
+                UITableViewCell* cell     = [self.tableView cellForRowAtIndexPath:indexPath];
+                cell.detailTextLabel.text = nil;
+                cell.accessoryType        = UITableViewCellAccessoryCheckmark;
+            }];
+
+            viewController.title = cell.textLabel.text;
+            [self.navigationController pushViewController:viewController animated:YES];
+            break;
+        }
         case TableSectionCharges:
         {
             IncomingChargesViewController* chargesViewController;
@@ -944,6 +955,7 @@ typedef enum
         case TableSectionName:    cell = [self nameCellForRowAtIndexPath:indexPath];    break;
         case TableSectionAddress: cell = [self addressCellForRowAtIndexPath:indexPath]; break;
         case TableSectionCharges: cell = [self chargesCellForRowAtIndexPath:indexPath]; break;
+        case TableSectionTerms:   cell = [self termsCellForRowAtIndexPath:indexPath];   break;
         case TableSectionBuy:     cell = [self buyCellForRowAtIndexPath:indexPath];     break;
     }
 
@@ -961,6 +973,7 @@ typedef enum
         case TableSectionName:    height = [super tableView:tableView heightForRowAtIndexPath:indexPath]; break;
         case TableSectionAddress: height = [super tableView:tableView heightForRowAtIndexPath:indexPath]; break;
         case TableSectionCharges: height = [super tableView:tableView heightForRowAtIndexPath:indexPath]; break;
+        case TableSectionTerms:   height = [super tableView:tableView heightForRowAtIndexPath:indexPath]; break;
         case TableSectionBuy:     height = self.buyCellHeight;                                            break;
     }
 
@@ -1113,6 +1126,34 @@ typedef enum
     cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text       = [Strings incomingChargesString];
     cell.detailTextLabel.text = @"";
+
+    return cell;
+}
+
+
+- (UITableViewCell*)termsCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell* cell;
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"TermsCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"TermsCell"];
+    }
+
+    cell.textLabel.text            = @"Agree To Terms";
+    cell.detailTextLabel.textColor = [Skinning placeholderColor];
+
+    if (agreedToTerms)
+    {
+        cell.detailTextLabel.text = nil;
+        cell.accessoryType        = UITableViewCellAccessoryCheckmark;
+    }
+    else
+    {
+        cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+        cell.detailTextLabel.text = [Strings requiredString];
+    }
 
     return cell;
 }

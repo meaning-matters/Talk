@@ -656,6 +656,7 @@
 		48F1B7E217E63819003A3933 /* NumberDestinationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F1B7E017E63819003A3933 /* NumberDestinationsViewController.m */; };
 		48F3CE8F1D26A6D3000925EE /* Postcodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 48F3CE8E1D26A6D2000925EE /* Postcodes.json */; };
 		48F3CE991D27B070000925EE /* IncomingChargesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F3CE981D27B070000925EE /* IncomingChargesViewController.m */; };
+		48F3CEA01D295D04000925EE /* NumberTermsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F3CE9F1D295D04000925EE /* NumberTermsViewController.m */; };
 		48F47BBF18BE9C01006A6436 /* ItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F47BBE18BE9C01006A6436 /* ItemViewController.m */; };
 		48F5D2ED16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
 		48F5D2EE16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
@@ -1422,6 +1423,8 @@
 		48F3CE8E1D26A6D2000925EE /* Postcodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Postcodes.json; sourceTree = "<group>"; };
 		48F3CE971D27B070000925EE /* IncomingChargesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IncomingChargesViewController.h; sourceTree = "<group>"; };
 		48F3CE981D27B070000925EE /* IncomingChargesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IncomingChargesViewController.m; sourceTree = "<group>"; };
+		48F3CE9E1D295D04000925EE /* NumberTermsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberTermsViewController.h; sourceTree = "<group>"; };
+		48F3CE9F1D295D04000925EE /* NumberTermsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberTermsViewController.m; sourceTree = "<group>"; };
 		48F47BBD18BE9C01006A6436 /* ItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemViewController.h; sourceTree = "<group>"; };
 		48F47BBE18BE9C01006A6436 /* ItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemViewController.m; sourceTree = "<group>"; };
 		48F5D2EB16B9A380001576E1 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
@@ -2460,6 +2463,8 @@
 				488AD1E916E799C3004D3A2A /* NumberStatesViewController.m */,
 				48AF44E81649479100DFE3D8 /* NumbersViewController.h */,
 				48AF44E91649479100DFE3D8 /* NumbersViewController.m */,
+				48F3CE9E1D295D04000925EE /* NumberTermsViewController.h */,
+				48F3CE9F1D295D04000925EE /* NumberTermsViewController.m */,
 				48BC7F3A1702FDD1006671B5 /* NumberViewController.h */,
 				48BC7F3B1702FDD1006671B5 /* NumberViewController.m */,
 				48793367185C6A5800C08C8C /* PhonesViewController.h */,
@@ -3224,6 +3229,7 @@
 				488AD1EA16E799C3004D3A2A /* NumberStatesViewController.m in Sources */,
 				488AD1F116E80A60004D3A2A /* NSObject+Blocks.m in Sources */,
 				48CB0AFF19DB2E1B00F95369 /* WebInterface.m in Sources */,
+				48F3CEA01D295D04000925EE /* NumberTermsViewController.m in Sources */,
 				4896D90016EBE613008A2354 /* NumberAreasViewController.m in Sources */,
 				48200D1C16EC89BA0069677E /* NumberType.m in Sources */,
 				4822B42A1C92EB7C004BD2F5 /* TabBadgeView.m in Sources */,
