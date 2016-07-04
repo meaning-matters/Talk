@@ -13,12 +13,6 @@
 //          areaName = "ABREU E LIMA"
 //          city     = "ABREU E LIMA"
 //
-//          Denmark (exception)
-//          areaCode = 89
-//          areaId   = 20503
-//          areaName = "ALL CITIES"
-//          city     = "ALL CITIES"
-//
 //      NATIONAL:
 //          Belgium (normal)
 //          areaCode = 78;
@@ -76,7 +70,6 @@
 typedef NS_ENUM(NSUInteger, AreaFormat)
 {
     AreaFormatGeographic,
-    AreaFormatGeographicException,
     AreaFormatNational,
     AreaFormatNationalException,
     AreaFormatTollFree,
@@ -205,14 +198,7 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
         {
             case NumberTypeGeographicMask:
             {
-                if ([area[@"areaName"] caseInsensitiveCompare:@"All cities"] == NSOrderedSame)
-                {
-                    areaFormat = AreaFormatGeographicException;
-                }
-                else
-                {
-                    areaFormat = AreaFormatGeographic;
-                }
+                areaFormat = AreaFormatGeographic;
                 break;
             }
             case NumberTypeNationalMask:
@@ -386,16 +372,10 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
 - (NSString*)nameForObject:(id)object
 {
     NSString* name;
-    NSString* allCitiesName = NSLocalizedStringWithDefaultValue(@"NumberAreas:Table AllCities", nil, [NSBundle mainBundle],
-                                                                @"All cities",
-                                                                @"Indicates that something applies to all "
-                                                                @"cities of a country.\n"
-                                                                @"[1 line larger font].");
 
     switch (areaFormat)
     {
         case AreaFormatGeographic:          name = [Common capitalizedString:object[@"areaName"]]; break;
-        case AreaFormatGeographicException: name = allCitiesName;                                  break;
         case AreaFormatNational:            name = object[@"areaCode"];                            break;
         case AreaFormatNationalException:   name = @"-";                                           break;
         case AreaFormatTollFree:            name = object[@"areaCode"];                            break;
@@ -475,7 +455,6 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
     switch (areaFormat)
     {
         case AreaFormatGeographic:          code = area[@"areaCode"]; name = [self nameForObject:area]; break;
-        case AreaFormatGeographicException: code = area[@"areaCode"]; name = [self nameForObject:area]; break;
         case AreaFormatNational:            code = area[@"areaCode"]; name = type;                      break;
         case AreaFormatNationalException:   code = @"---";            name = type;                      break;
         case AreaFormatTollFree:            code = area[@"areaCode"]; name = type;                      break;

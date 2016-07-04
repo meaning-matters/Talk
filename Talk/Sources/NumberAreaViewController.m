@@ -120,12 +120,10 @@ typedef enum
         areaRows |= AreaRowCountry;
         
         // Conditionally there Area section rows.
-        BOOL allCities = (area[@"areaName"] != [NSNull null] &&
-                          [self.areaName caseInsensitiveCompare:@"all cities"] == NSOrderedSame);
-        areaRows |= (areaCode != nil)                                          ? AreaRowAreaCode : 0;
-        areaRows |= (numberTypeMask == NumberTypeGeographicMask && !allCities) ? AreaRowAreaName : 0;
-        areaRows |= (numberTypeMask == NumberTypeSpecialMask)                  ? AreaRowAreaName : 0;
-        areaRows |= (state != nil)                                             ? AreaRowState    : 0;
+        areaRows |= (areaCode != nil)                            ? AreaRowAreaCode : 0;
+        areaRows |= (numberTypeMask == NumberTypeGeographicMask) ? AreaRowAreaName : 0;
+        areaRows |= (numberTypeMask == NumberTypeSpecialMask)    ? AreaRowAreaName : 0;
+        areaRows |= (state != nil)                               ? AreaRowState    : 0;
 
         // Default naming.
         NSString* city;
