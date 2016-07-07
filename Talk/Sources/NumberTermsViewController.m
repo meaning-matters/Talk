@@ -47,7 +47,8 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
+    [self setupFootnotesHandlingOnTableView:self.tableView];
 }
 
 
@@ -127,6 +128,11 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
     NSString* title = nil;
+
+    if (self.showFootnotes == NO)
+    {
+        return nil;
+    }
 
     switch ([Common nthBitSet:section inValue:self.sections])
     {
