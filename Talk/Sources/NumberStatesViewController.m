@@ -148,7 +148,7 @@
 {
     NSDictionary* state = [self objectOnTableView:tableView atIndexPath:indexPath];
 
-    if ([state[@"geographics"] intValue] == 0)
+    if ([state[@"areaCount"] intValue] == 0)
     {
         NSString* title;
         NSString* message;
@@ -198,7 +198,7 @@
 
     cell.imageView.image      = [UIImage imageNamed:isoCountryCode];
     cell.detailTextLabel.text = [@"+" stringByAppendingString:[Common callingCodeForCountry:isoCountryCode]];
-    if ([state[@"geographics"] intValue] > 0)
+    if ([state[@"areaCount"] intValue] > 0)
     {
         cell.textLabel.text = name;
     }

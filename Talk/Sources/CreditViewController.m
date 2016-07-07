@@ -218,7 +218,7 @@ typedef enum
             title = NSLocalizedStringWithDefaultValue(@"CreditAmount:... TableFooterNumbers", nil, [NSBundle mainBundle],
                                                       @"Credit is used for outgoing calls, for forwarding "
                                                       @"calls received on your Numbers, and for incoming "
-                                                      @"call charges on your toll-free and special Numbers.",
+                                                      @"call charges on your toll-free, shared-cost, and special Numbers.",
                                                       @"[Multiple lines]");
             break;
         }

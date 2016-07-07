@@ -193,3 +193,13 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 
 * Add postcode checking using https://gist.github.com/matthewbednarski/4d15c7f50258b82e2d7e (saved as Postcodes.json in project) or other sources.
 
+* SP Mobile ID number does not stay red when invalid when scrolling table view (i.e. refreshing cells).
+
+* It would make sense to always ask for the extra fields also when address is not used for the same country as the
+  Number. This would ensure that that address is immediately usable in case of buying a Number in that country (which is the most common case anyway).
+
+* Don't show spinner on Credit when just showing page.
+
+* Implement permanent badge when Credit si low.
+
+* Contact don't seem to be loaded the first time a dialer nunber -> contact search is done.
