@@ -207,3 +207,5 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Touch to show footnotes does not work on Numbers Terms VC when touching between table groups. On other VCs it's fine.
 
 * When an Address is selected for NumberArea, it's address cell is refreshed/flashed when returning from AddressVC.
+
+* Jump to Get Started after Reset All.

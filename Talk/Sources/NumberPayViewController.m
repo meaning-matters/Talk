@@ -34,7 +34,6 @@
 @property (nonatomic, strong) AddressData*   address;
 @property (nonatomic, strong) NumberPayCell* payCell;
 @property (nonatomic, assign) CGFloat        payCellHeight;
-@property (nonatomic, assign) BOOL           isBuying;
 @property (nonatomic, assign) int            payMonths;
 
 @end
@@ -320,7 +319,7 @@
 
 - (void)payNumberForMonths:(int)months
 {
-    self.isBuying = YES;
+    self.payMonths = months;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     [self updatePayCell];
     void (^payNumberBlock)(void) = ^
@@ -372,7 +371,7 @@
     // Check if there's enough credit.
     [[WebClient sharedClient] retrieveCreditWithReply:^(NSError* error, float credit)
     {
-        float totalFee = self.oneTimeFee + self.monthFee;
+        float totalFee = self.oneTimeFee + (self.monthFee * self.payMonths);
         if (error == nil)
         {
             if (totalFee < credit)
@@ -441,9 +440,9 @@
                                     [BlockAlertView showAlertViewWithTitle:title
                                                                    message:message
                                                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
-                                     {
-                                         [self dismissViewControllerAnimated:YES completion:nil];
-                                     }
+                                    {
+                                        [self dismissViewControllerAnimated:YES completion:nil];
+                                    }
                                                          cancelButtonTitle:[Strings closeString]
                                                          otherButtonTitles:nil];
                                 }
@@ -451,7 +450,7 @@
                         }
                         else
                         {
-                            self.isBuying = NO;
+                            self.payMonths = 0;
                             self.navigationItem.rightBarButtonItem.enabled = YES;
                             [self updatePayCell];
                         }
