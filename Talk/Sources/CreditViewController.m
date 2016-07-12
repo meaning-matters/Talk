@@ -445,6 +445,8 @@ typedef enum
 }
 
 
+#pragma mark - Helpers
+
 - (int)amountForN:(int)n
 {
     int amount;

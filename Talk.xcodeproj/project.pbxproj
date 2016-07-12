@@ -30,7 +30,7 @@
 		480B4FFF1BED4AC20098F3A4 /* WD@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 480B4FFE1BED4AC20098F3A4 /* WD@2x.png */; };
 		480BEF9518D59ECA00C882E0 /* GetStartedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 480BEF9418D59ECA00C882E0 /* GetStartedView.xib */; };
 		480BEF9618D73EF900C882E0 /* GetStartedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480BEF8D18D59E7400C882E0 /* GetStartedViewController.m */; };
-		480CE121193C4D100020F255 /* NumberBuyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 480CE120193C4D100020F255 /* NumberBuyCell.xib */; };
+		480CE121193C4D100020F255 /* NumberPayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 480CE120193C4D100020F255 /* NumberPayCell.xib */; };
 		480CE124194DA0100020F255 /* CallerIdData.m in Sources */ = {isa = PBXBuildFile; fileRef = 480CE123194DA0100020F255 /* CallerIdData.m */; };
 		480CE127194DBEC40020F255 /* CallerIdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480CE126194DBEC40020F255 /* CallerIdViewController.m */; };
 		480E524A18C5103C0054A791 /* libHockeySDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 480E524518C50F280054A791 /* libHockeySDK.a */; };
@@ -433,13 +433,14 @@
 		485F6C261637270100D61365 /* ZA@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F6A341637270100D61365 /* ZA@2x.png */; };
 		485F6C281637270100D61365 /* ZM@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F6A361637270100D61365 /* ZM@2x.png */; };
 		485F6C2A1637270100D61365 /* ZW@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F6A381637270100D61365 /* ZW@2x.png */; };
+		486334781D329E3F002D0A4B /* NumberPayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4888E17B1D30FEB000B1B307 /* NumberPayViewController.m */; };
 		4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3F5175668CA0006542F /* LogoFacebook.png */; };
 		4864B3F7175668CA0006542F /* LogoFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3F5175668CA0006542F /* LogoFacebook.png */; };
 		4864B3F917566E950006542F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4864B3F817566E950006542F /* MessageUI.framework */; };
 		4864CAE61D0C765E009B3D9C /* DenmarkMunicipalities.json in Resources */ = {isa = PBXBuildFile; fileRef = 4864CAE51D0C765E009B3D9C /* DenmarkMunicipalities.json */; };
 		4864CAEE1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4864CAED1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m */; };
-		4865A9DF1792C8B70028785F /* NumberBuyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberBuyCell.m */; };
-		4865A9E01792C8B70028785F /* NumberBuyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberBuyCell.m */; };
+		4865A9DF1792C8B70028785F /* NumberPayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberPayCell.m */; };
+		4865A9E01792C8B70028785F /* NumberPayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberPayCell.m */; };
 		486B95261CDE80F2004CFD8A /* DenmarkCityPostcodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 486B95251CDE80F2004CFD8A /* DenmarkCityPostcodes.json */; };
 		486D4A2318F06BC8004699C9 /* CallRatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 486D4A2218F06BC8004699C9 /* CallRatesViewController.m */; };
 		4877EDBC17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */; };
@@ -717,7 +718,7 @@
 		480BEF8C18D59E7400C882E0 /* GetStartedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetStartedViewController.h; sourceTree = "<group>"; };
 		480BEF8D18D59E7400C882E0 /* GetStartedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetStartedViewController.m; sourceTree = "<group>"; };
 		480BEF9418D59ECA00C882E0 /* GetStartedView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GetStartedView.xib; sourceTree = "<group>"; };
-		480CE120193C4D100020F255 /* NumberBuyCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberBuyCell.xib; sourceTree = "<group>"; };
+		480CE120193C4D100020F255 /* NumberPayCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberPayCell.xib; sourceTree = "<group>"; };
 		480CE122194DA0100020F255 /* CallerIdData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallerIdData.h; sourceTree = "<group>"; };
 		480CE123194DA0100020F255 /* CallerIdData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallerIdData.m; sourceTree = "<group>"; };
 		480CE125194DBEC40020F255 /* CallerIdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallerIdViewController.h; sourceTree = "<group>"; };
@@ -1138,8 +1139,8 @@
 		4864CAE51D0C765E009B3D9C /* DenmarkMunicipalities.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DenmarkMunicipalities.json; path = Resources/DenmarkMunicipalities.json; sourceTree = "<group>"; };
 		4864CAEC1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressMunicipalitiesViewController.h; sourceTree = "<group>"; };
 		4864CAED1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressMunicipalitiesViewController.m; sourceTree = "<group>"; };
-		4865A9DD1792C8B70028785F /* NumberBuyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberBuyCell.h; sourceTree = "<group>"; };
-		4865A9DE1792C8B70028785F /* NumberBuyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberBuyCell.m; sourceTree = "<group>"; };
+		4865A9DD1792C8B70028785F /* NumberPayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberPayCell.h; sourceTree = "<group>"; };
+		4865A9DE1792C8B70028785F /* NumberPayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberPayCell.m; sourceTree = "<group>"; };
 		486B95171CDE413A004CFD8A /* Muni-StrCode-Str.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Muni-StrCode-Str.json"; path = "Resources/Muni-StrCode-Str.json"; sourceTree = "<group>"; };
 		486B951E1CDE44E4004CFD8A /* Muni-Post-City.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Muni-Post-City.json"; path = "Resources/Muni-Post-City.json"; sourceTree = "<group>"; };
 		486B951F1CDE44E4004CFD8A /* StrCode-Post-City.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "StrCode-Post-City.json"; path = "Resources/StrCode-Post-City.json"; sourceTree = "<group>"; };
@@ -1174,6 +1175,8 @@
 		4888D517166D1AEE00572566 /* Flip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Flip@2x.png"; sourceTree = "<group>"; };
 		4888D519166D1AEE00572566 /* HangupPhone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HangupPhone@2x.png"; sourceTree = "<group>"; };
 		4888D524166D200E00572566 /* HangupPhoneSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HangupPhoneSmall@2x.png"; sourceTree = "<group>"; };
+		4888E17A1D30FEB000B1B307 /* NumberPayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberPayViewController.h; sourceTree = "<group>"; };
+		4888E17B1D30FEB000B1B307 /* NumberPayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberPayViewController.m; sourceTree = "<group>"; };
 		488AD1E816E799C3004D3A2A /* NumberStatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberStatesViewController.h; sourceTree = "<group>"; };
 		488AD1E916E799C3004D3A2A /* NumberStatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberStatesViewController.m; sourceTree = "<group>"; };
 		488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberStatesView.xib; sourceTree = "<group>"; };
@@ -1930,8 +1933,8 @@
 				485ECBE51652B9BE00364F08 /* KeypadButton.m */,
 				485ECBE016525D3600364F08 /* KeypadView.h */,
 				485ECBE116525D3600364F08 /* KeypadView.m */,
-				4865A9DD1792C8B70028785F /* NumberBuyCell.h */,
-				4865A9DE1792C8B70028785F /* NumberBuyCell.m */,
+				4865A9DD1792C8B70028785F /* NumberPayCell.h */,
+				4865A9DE1792C8B70028785F /* NumberPayCell.m */,
 				48367A45172552D2001A02AF /* RecordingControlsCell.h */,
 				48367A46172552D2001A02AF /* RecordingControlsCell.m */,
 				4849436B17529DE100E1D5C4 /* ShareButton.h */,
@@ -2379,7 +2382,7 @@
 				480BEF9418D59ECA00C882E0 /* GetStartedView.xib */,
 				48AF450D164948DC00DFE3D8 /* GroupsView.xib */,
 				485E38A217B7E1960089F0F1 /* HtmlView.xib */,
-				480CE120193C4D100020F255 /* NumberBuyCell.xib */,
+				480CE120193C4D100020F255 /* NumberPayCell.xib */,
 				488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */,
 				483679FA17246977001A02AF /* RecordingControlsCell.xib */,
 				48A26DDD18BA904100736CCB /* SearchTableView.xib */,
@@ -2487,6 +2490,8 @@
 				48C431A0189EDFB40008FE01 /* VerifyPhoneViewController.m */,
 				4823C0CB1CBA7F3800030FC7 /* WebViewController.h */,
 				4823C0CC1CBA7F3800030FC7 /* WebViewController.m */,
+				4888E17A1D30FEB000B1B307 /* NumberPayViewController.h */,
+				4888E17B1D30FEB000B1B307 /* NumberPayViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -3056,7 +3061,7 @@
 				4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */,
 				483B078F1908017900E8C42D /* Terms.json in Resources */,
 				485E38A317B7E1960089F0F1 /* HtmlView.xib in Resources */,
-				480CE121193C4D100020F255 /* NumberBuyCell.xib in Resources */,
+				480CE121193C4D100020F255 /* NumberPayCell.xib in Resources */,
 				48172C021C07017800927BC2 /* RatesTab@2x.png in Resources */,
 				4814EA3317CA98F4004B7A3C /* CreditBuyCell.xib in Resources */,
 				4814EA3A17CB18DB004B7A3C /* CreditAmountCell.xib in Resources */,
@@ -3224,6 +3229,7 @@
 				48B813411AADF91D0019AF77 /* NBGroup.m in Sources */,
 				4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */,
 				48FE4F591C8752C100CC0873 /* ImagePicker.m in Sources */,
+				486334781D329E3F002D0A4B /* NumberPayViewController.m in Sources */,
 				48F5D2ED16B9A380001576E1 /* Base64.m in Sources */,
 				48B5AAF216E6A58700BA4084 /* NumberCountriesViewController.m in Sources */,
 				488AD1EA16E799C3004D3A2A /* NumberStatesViewController.m in Sources */,
@@ -3286,7 +3292,7 @@
 				4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */,
 				484943AD1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
 				48ADE7D2185C67EC00E39DA2 /* PhoneData.m in Sources */,
-				4865A9DF1792C8B70028785F /* NumberBuyCell.m in Sources */,
+				4865A9DF1792C8B70028785F /* NumberPayCell.m in Sources */,
 				4837AF6A18D9B6EC00D3AEBC /* GetStartedRestoreViewController.m in Sources */,
 				4814D57219E9674E00958E33 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				48B8133A1AADF8F10019AF77 /* NBPeopleTableViewCell.m in Sources */,
@@ -3371,7 +3377,7 @@
 				484943301752263600E1D5C4 /* LicensesViewController.m in Sources */,
 				484943AE1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
 				48ADE7D3185C67EC00E39DA2 /* PhoneData.m in Sources */,
-				4865A9E01792C8B70028785F /* NumberBuyCell.m in Sources */,
+				4865A9E01792C8B70028785F /* NumberPayCell.m in Sources */,
 				4879336A185C6A5800C08C8C /* PhonesViewController.m in Sources */,
 				48251B9C187F4A8A00E69C3A /* SettingsViewController.m in Sources */,
 				4877EDBD17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */,

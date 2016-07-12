@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NumberPayCell" rowHeight="-119" id="6v2-a6-6AT" userLabel="Number Pay Cell" customClass="NumberPayCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="615"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6v2-a6-6AT" id="oCj-x2-EBl">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="614.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="gI2-I0-zdw" userLabel="Button 1">
+                        <rect key="frame" x="20" y="20" width="280" height="65"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                        <state key="normal" title="Button">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="payAction:" destination="6v2-a6-6AT" eventType="touchUpInside" id="0v4-1w-Zdg"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fqg-N3-gTc" userLabel="Button 2">
+                        <rect key="frame" x="20" y="105" width="280" height="65"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                        <state key="normal" title="Button">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="payAction:" destination="6v2-a6-6AT" eventType="touchUpInside" id="TgM-fe-mJm"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="crz-d2-pnQ" userLabel="Button 3">
+                        <rect key="frame" x="20" y="190" width="280" height="65"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                        <state key="normal" title="Button">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="payAction:" destination="6v2-a6-6AT" eventType="touchUpInside" id="TIt-bV-f8I"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Ng7-ww-7SZ" userLabel="Button 4">
+                        <rect key="frame" x="20" y="275" width="280" height="65"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                        <state key="normal" title="Button">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="payAction:" destination="6v2-a6-6AT" eventType="touchUpInside" id="pdu-is-TLw"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="xOB-uQ-ii0" userLabel="Button 6">
+                        <rect key="frame" x="20" y="360" width="280" height="65"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                        <state key="normal" title="Button">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="payAction:" destination="6v2-a6-6AT" eventType="touchUpInside" id="pB7-7l-mkX"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="NN8-u9-bCY" userLabel="Button 9">
+                        <rect key="frame" x="20" y="445" width="280" height="65"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                        <state key="normal" title="Button">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="payAction:" destination="6v2-a6-6AT" eventType="touchUpInside" id="mwQ-lu-jtZ"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Vdb-2w-iOw" userLabel="Button 12">
+                        <rect key="frame" x="20" y="530" width="280" height="65"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                        <state key="normal" title="Button">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="payAction:" destination="6v2-a6-6AT" eventType="touchUpInside" id="dNL-GJ-HLE"/>
+                        </connections>
+                    </button>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="whiteLarge" id="lzZ-bF-33w" userLabel="Indicator 1">
+                        <rect key="frame" x="142.5" y="35" width="37" height="37"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </activityIndicatorView>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="whiteLarge" id="Gyk-rR-Pbc" userLabel="Indicator 2">
+                        <rect key="frame" x="142.5" y="120" width="37" height="37"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </activityIndicatorView>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="whiteLarge" id="z4y-13-Xzx" userLabel="Indicator 3">
+                        <rect key="frame" x="142.5" y="205" width="37" height="37"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </activityIndicatorView>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="whiteLarge" id="6ZO-Mf-Afy" userLabel="Indicator 4">
+                        <rect key="frame" x="142.5" y="290" width="37" height="37"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </activityIndicatorView>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="whiteLarge" id="S3r-Rc-KNa" userLabel="Indicator 6">
+                        <rect key="frame" x="142.5" y="375" width="37" height="37"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </activityIndicatorView>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="whiteLarge" id="d0D-dG-Ifj" userLabel="Indicator 9">
+                        <rect key="frame" x="142.5" y="460" width="37" height="37"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </activityIndicatorView>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="whiteLarge" id="ZtQ-vw-HcX" userLabel="Indicator 12">
+                        <rect key="frame" x="142.5" y="545" width="37" height="37"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </activityIndicatorView>
+                </subviews>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="activityIndicator1" destination="lzZ-bF-33w" id="cUs-mv-izZ"/>
+                <outlet property="activityIndicator12" destination="ZtQ-vw-HcX" id="jPe-nU-ONr"/>
+                <outlet property="activityIndicator2" destination="Gyk-rR-Pbc" id="Ypk-8r-FFG"/>
+                <outlet property="activityIndicator3" destination="z4y-13-Xzx" id="upU-pU-ig6"/>
+                <outlet property="activityIndicator4" destination="6ZO-Mf-Afy" id="1ne-Q9-eSG"/>
+                <outlet property="activityIndicator6" destination="S3r-Rc-KNa" id="G2T-Dv-0fF"/>
+                <outlet property="activityIndicator9" destination="d0D-dG-Ifj" id="Hih-D9-mNs"/>
+                <outlet property="button1" destination="gI2-I0-zdw" id="ct6-CN-z6I"/>
+                <outlet property="button12" destination="Vdb-2w-iOw" id="AUc-E7-wOa"/>
+                <outlet property="button2" destination="fqg-N3-gTc" id="Cg9-Yr-hgc"/>
+                <outlet property="button3" destination="crz-d2-pnQ" id="3kr-3v-0wW"/>
+                <outlet property="button4" destination="Ng7-ww-7SZ" id="xv6-ck-itR"/>
+                <outlet property="button6" destination="xOB-uQ-ii0" id="62p-Fw-6AE"/>
+                <outlet property="button9" destination="NN8-u9-bCY" id="avy-2o-9iq"/>
+            </connections>
+            <point key="canvasLocation" x="310" y="438.5"/>
+        </tableViewCell>
+    </objects>
+</document>
