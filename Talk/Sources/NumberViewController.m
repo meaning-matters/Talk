@@ -9,6 +9,7 @@
 #import "NumberViewController.h"
 #import "NumberDestinationsViewController.h"
 #import "IncomingChargesViewController.h"
+#import "NumberExtendViewController.h"
 #import "Common.h"
 #import "PhoneNumber.h"
 #import "CountryNames.h"
@@ -226,7 +227,7 @@ typedef enum
         case TableSectionE164:         numberOfRows = 1;                              break;
         case TableSectionDestination:  numberOfRows = 1;                              break;
         case TableSectionUsage:        numberOfRows = 1;                              break;
-        case TableSectionSubscription: numberOfRows = 3;                              break;  // Second row leads to buying extention.
+        case TableSectionSubscription: numberOfRows = 2;                              break;  //### No Auto Renew for now.
         case TableSectionAddress:      numberOfRows = 1;                              break;
         case TableSectionArea:         numberOfRows = [Common bitsSetCount:areaRows]; break;
         case TableSectionCharges:      numberOfRows = 1;                              break;
@@ -275,6 +276,11 @@ typedef enum
         }
         case TableSectionSubscription:
         {
+            NumberExtendViewController* extendViewController;
+
+            extendViewController = [[NumberExtendViewController alloc] initWithNumber:number];
+            extendViewController.title = cell.textLabel.text;
+            [self.navigationController pushViewController:extendViewController animated:YES];
             break;
         }
         case TableSectionAddress:

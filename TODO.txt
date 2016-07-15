@@ -209,3 +209,5 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * When an Address is selected for NumberArea, it's address cell is refreshed/flashed when returning from AddressVC.
 
 * Jump to Get Started after Reset All.
+
+* Check all viewDidLoad's (if they can be called multiple times) because they can be called multiple times in case view was unloaded for memory pressure.

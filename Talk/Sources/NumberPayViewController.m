@@ -32,6 +32,7 @@
 @property (nonatomic, strong) NSDictionary*  state;
 @property (nonatomic, strong) NSString*      areaId;
 @property (nonatomic, strong) AddressData*   address;
+@property (nonatomic, assign) BOOL           autoRenew; //### NO for now.
 @property (nonatomic, strong) NumberPayCell* payCell;
 @property (nonatomic, assign) CGFloat        payCellHeight;
 @property (nonatomic, assign) int            payMonths;
@@ -68,6 +69,7 @@
         _state          = state;
         _areaId         = areaId;
         _address        = address;
+        _autoRenew      = NO; //### NO for now.
     }
 
     return self;
@@ -303,7 +305,7 @@
     number.proofTypes     = self.area[@"proofTypes"];
     number.purchaseDate   = purchaseDate;
     number.renewalDate    = renewalDate;
-    number.autoRenew      = @(YES);
+    number.autoRenew      = @(self.autoRenew);
     number.fixedRate      = [self.area[@"fixedRate"] floatValue];
     number.fixedSetup     = [self.area[@"fixedSetup"] floatValue];
     number.mobileRate     = [self.area[@"mobileRate"] floatValue];
@@ -329,7 +331,7 @@
                                            isoCountryCode:self.isoCountryCode
                                                    areaId:self.areaId
                                                 addressId:self.address.addressId
-                                                autoRenew:YES
+                                                autoRenew:self.autoRenew
                                                     reply:^(NSError*  error,
                                                             NSString* e164,
                                                             NSDate*   purchaseDate,
