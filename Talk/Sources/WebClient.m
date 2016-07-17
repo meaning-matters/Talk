@@ -840,7 +840,12 @@
                          areaId:(NSString*)areaId
                       addressId:(NSString*)addressId
                       autoRenew:(BOOL)autoRenew
-                          reply:(void (^)(NSError* error, NSString* e164, NSDate* purchaseDate, NSDate* renewalDate))reply
+                          reply:(void (^)(NSError*  error,
+                                          NSString* e164,
+                                          NSDate*   purchaseDate,
+                                          NSDate*   expiryDate,
+                                          float     monthFee,
+                                          float     renewFee))reply
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
     NSMutableDictionary* parameters = [@{@"durationMonths" : @(months),
@@ -860,11 +865,13 @@
             reply(nil,
                   [@"+" stringByAppendingString:content[@"e164"]],
                   [self dateWithString:content[@"purchaseDateTime"]],
-                  [self dateWithString:content[@"renewalDateTime"]]);
+                  [self dateWithString:content[@"expiryDateTime"]],
+                  [content[@"monthFee"] floatValue],
+                  [content[@"renewFee"] floatValue]);
         }
         else
         {
-            reply(error, nil, nil, nil);
+            reply(error, nil, nil, nil, 0.0f, 0.0f);
         }
     }];
 }
@@ -895,7 +902,11 @@
 
 
 // 11C. EXTEND NUMBER
-- (void)extendNumberE164:(NSString*)e164 forMonths:(NSUInteger)months reply:(void (^)(NSError* error))reply
+- (void)extendNumberE164:(NSString*)e164 forMonths:(NSUInteger)months
+                   reply:(void (^)(NSError* error,
+                                   float    monthFee,
+                                   float    renewFee,
+                                   NSDate*  expiryDate))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSString*     number     = [e164 substringFromIndex:1];
@@ -905,7 +916,10 @@
         parameters:parameters
              reply:^(NSError* error, id content)
     {
-        reply(error);
+        reply(error,
+              [content[@"monthFee"] floatValue],
+              [content[@"renewFee"] floatValue],
+              [self dateWithString:content[@"expiryDateTime"]]);
     }];
 }
 
@@ -949,7 +963,7 @@
                                          AddressTypeMask addressType,
                                          NSDictionary*   proofTypes,
                                          NSDate*         purchaseDate,
-                                         NSDate*         renewalDate,
+                                         NSDate*         expiryDate,
                                          BOOL            autoRenew,
                                          float           fixedRate,
                                          float           fixedSetup,
@@ -984,7 +998,7 @@
                   [AddressType addressTypeMaskForString:content[@"addressType"]],
                   content[@"proofTypes"],
                   [self dateWithString:content[@"purchaseDateTime"]],
-                  [self dateWithString:content[@"renewalDateTime"]],
+                  [self dateWithString:content[@"expiryDateTime"]],
                   [content[@"autoRenew"] boolValue],
                   [content[@"fixedRate"] floatValue],
                   [content[@"fixedSetup"] floatValue],

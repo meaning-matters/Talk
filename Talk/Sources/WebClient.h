@@ -194,8 +194,12 @@
                          areaId:(NSString*)areaId
                       addressId:(NSString*)addressId
                       autoRenew:(BOOL)autoRenew
-                          reply:(void (^)(NSError* error, NSString* e164, NSDate* purchaseDate, NSDate* renewalDate))reply;
-
+                          reply:(void (^)(NSError*  error,
+                                          NSString* e164,
+                                          NSDate*   purchaseDate,
+                                          NSDate*   expiryDate,
+                                          float     monthFee,
+                                          float     renewFee))reply;
 // 11B. UPDATE NUMBER'S NAME
 - (void)updateNumberE164:(NSString*)e164
                 withName:(NSString*)name
@@ -204,8 +208,11 @@
                    reply:(void (^)(NSError* error))reply;
 
 // 11C. EXTEND NUMBER
-- (void)extendNumberE164:(NSString*)e164 forMonths:(NSUInteger)months reply:(void (^)(NSError* error))reply;
-
+- (void)extendNumberE164:(NSString*)e164 forMonths:(NSUInteger)months
+                   reply:(void (^)(NSError* error,
+                                   float    monthFee,
+                                   float    renewFee,
+                                   NSDate*  expiryDate))reply;
 // 12. GET LIST OF NUMBERS
 - (void)retrieveNumbersList:(void (^)(NSError* error, NSArray* e164s))reply;
 
@@ -223,7 +230,7 @@
                                          AddressTypeMask addressType,
                                          NSDictionary*   proofTypes,
                                          NSDate*         purchaseDate,
-                                         NSDate*         renewalDate,
+                                         NSDate*         expiryDate,
                                          BOOL            autoRenew,
                                          float           fixedRate,
                                          float           fixedSetup,

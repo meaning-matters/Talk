@@ -12,6 +12,6 @@
 
 @interface NumberExtendViewController : UITableViewController
 
-- (instancetype)initWithNumber:(NumberData*)number;
+- (instancetype)initWithNumber:(NumberData*)number completion:(void (^)(void))completion;
 
 @end

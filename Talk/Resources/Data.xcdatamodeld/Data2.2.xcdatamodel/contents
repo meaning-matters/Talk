@@ -48,6 +48,7 @@
         <attribute name="areaCode" attributeType="String" syncable="YES"/>
         <attribute name="areaName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="autoRenew" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="expiryDate" attributeType="Date" syncable="YES"/>
         <attribute name="fixedRate" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="fixedSetup" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="isoCountryCode" attributeType="String" minValueString="2" maxValueString="2" syncable="YES"/>
@@ -59,7 +60,6 @@
         <attribute name="payphoneSetup" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="proofTypes" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="purchaseDate" attributeType="Date" syncable="YES"/>
-        <attribute name="renewalDate" attributeType="Date" syncable="YES"/>
         <attribute name="renewFee" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="stateCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="stateName" optional="YES" attributeType="String" syncable="YES"/>

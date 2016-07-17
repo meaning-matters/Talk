@@ -17,7 +17,7 @@
 @dynamic areaName;
 @dynamic isoCountryCode;
 @dynamic purchaseDate;
-@dynamic renewalDate;
+@dynamic expiryDate;
 @dynamic autoRenew;
 
 @dynamic stateName;

@@ -284,7 +284,11 @@
 }
 
 
-- (void)saveNumberE164:(NSString*)e164 purchaseDate:(NSDate*)purchaseDate renewalDate:(NSDate*)renewalDate
+- (void)saveNumberE164:(NSString*)e164
+          purchaseDate:(NSDate*)purchaseDate
+            expiryDate:(NSDate*)expiryDate
+              monthFee:(float)monthFee
+              renewFee:(float)renewFee
 {
     NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
     NumberData*             number;
@@ -304,8 +308,10 @@
     number.addressType    = self.area[@"addressType"];
     number.proofTypes     = self.area[@"proofTypes"];
     number.purchaseDate   = purchaseDate;
-    number.renewalDate    = renewalDate;
-    number.autoRenew      = @(self.autoRenew);
+    number.expiryDate     = expiryDate;
+    number.monthFee       = monthFee;
+    number.renewFee       = renewFee;
+    number.autoRenew      = self.autoRenew;
     number.fixedRate      = [self.area[@"fixedRate"] floatValue];
     number.fixedSetup     = [self.area[@"fixedSetup"] floatValue];
     number.mobileRate     = [self.area[@"mobileRate"] floatValue];
@@ -335,11 +341,18 @@
                                                     reply:^(NSError*  error,
                                                             NSString* e164,
                                                             NSDate*   purchaseDate,
-                                                            NSDate*   renewalDate)
+                                                            NSDate*   expiryDate,
+                                                            float     monthFee,
+                                                            float     renewFee)
          {
              if (error == nil)
              {
-                 [self saveNumberE164:e164 purchaseDate:purchaseDate renewalDate:renewalDate];
+                 [self saveNumberE164:e164
+                         purchaseDate:purchaseDate
+                           expiryDate:expiryDate
+                             monthFee:monthFee
+                             renewFee:renewFee];
+
                  [self dismissViewControllerAnimated:YES completion:nil];
              }
              else

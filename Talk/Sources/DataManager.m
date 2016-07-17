@@ -682,7 +682,7 @@
                                                                    AddressTypeMask addressType,
                                                                    NSDictionary*   proofTypes,
                                                                    NSDate*         purchaseDate,
-                                                                   NSDate*         renewalDate,
+                                                                   NSDate*         expiryDate,
                                                                    BOOL            autoRenew,
                                                                    float           fixedRate,
                                                                    float           fixedSetup,
@@ -725,7 +725,7 @@
                         number.addressType    = [AddressType stringForAddressTypeMask:AddressTypeWorldwideMask];
                         number.proofTypes     = proofTypes;
                         number.purchaseDate   = purchaseDate;
-                        number.renewalDate    = renewalDate;
+                        number.expiryDate     = expiryDate;
                         number.autoRenew      = autoRenew;
                         number.fixedRate      = fixedRate;
                         number.fixedSetup     = fixedSetup;

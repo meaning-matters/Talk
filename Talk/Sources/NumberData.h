@@ -23,7 +23,7 @@
 @property (nonatomic, retain) NSString*        areaName;
 @property (nonatomic, retain) NSString*        isoCountryCode;
 @property (nonatomic, retain) NSDate*          purchaseDate;
-@property (nonatomic, retain) NSDate*          renewalDate;
+@property (nonatomic, retain) NSDate*          expiryDate;
 @property (nonatomic, assign) BOOL             autoRenew;
 
 // Optional.

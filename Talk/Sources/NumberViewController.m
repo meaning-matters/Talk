@@ -31,7 +31,7 @@ typedef enum
     TableSectionE164         = 1UL << 1,
     TableSectionDestination  = 1UL << 2,
     TableSectionUsage        = 1UL << 3,
-    TableSectionSubscription = 1UL << 4,
+    TableSectionPeriod       = 1UL << 4,
     TableSectionAddress      = 1UL << 5,
     TableSectionArea         = 1UL << 6,    // The optional state will be placed in a row here.
     TableSectionCharges      = 1UL << 7,
@@ -55,6 +55,7 @@ typedef enum
     AreaRows      areaRows;
     BOOL          isLoadingAddress;
     NSPredicate*  addressesPredicate;
+    NSIndexPath*  expiryIndexPath;
 }
 
 @end
@@ -80,7 +81,7 @@ typedef enum
         sections |= TableSectionE164;
         sections |= TableSectionDestination;
         sections |= TableSectionUsage;
-        sections |= TableSectionSubscription;
+        sections |= TableSectionPeriod;
         sections |= TableSectionAddress;
         sections |= TableSectionArea;
 
@@ -126,10 +127,10 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionSubscription:
+        case TableSectionPeriod:
         {
-            title = NSLocalizedStringWithDefaultValue(@"Number:Subscription SectionHeader", nil, [NSBundle mainBundle],
-                                                      @"Subscription",
+            title = NSLocalizedStringWithDefaultValue(@"Number:Period SectionHeader", nil, [NSBundle mainBundle],
+                                                      @"Usage Period",
                                                       @"....");
             break;
         }
@@ -174,14 +175,13 @@ typedef enum
             title = [NSString stringWithFormat:title, [Strings noneString]];
             break;
         }
-        case TableSectionSubscription:
+        case TableSectionPeriod:
         {
-            title = NSLocalizedStringWithDefaultValue(@"Number:Subscription SectionFooter", nil,
+            title = NSLocalizedStringWithDefaultValue(@"Number:Period SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"IMPORTANT: If you don't extend manually in time, or don't "
-                                                      @"leave enough Credit for automatic renewal, "
-                                                      @"your Number can't be used anymore after it expires. Once "
-                                                      @"expired a Number can not be reactivated.",
+                                                      @"IMPORTANT: If you don't renew in time, your Number "
+                                                      @"can not be used anymore after it expires. Once "
+                                                      @"expired, a Number can not be reactivated.",
                                                       @"Explanation how/when the subscription, for "
                                                       @"using a phone number, will expire\n"
                                                       @"[* lines]");
@@ -227,7 +227,7 @@ typedef enum
         case TableSectionE164:         numberOfRows = 1;                              break;
         case TableSectionDestination:  numberOfRows = 1;                              break;
         case TableSectionUsage:        numberOfRows = 1;                              break;
-        case TableSectionSubscription: numberOfRows = 2;                              break;  //### No Auto Renew for now.
+        case TableSectionPeriod:       numberOfRows = 3;                              break;  //### No Auto Renew for now.
         case TableSectionAddress:      numberOfRows = 1;                              break;
         case TableSectionArea:         numberOfRows = [Common bitsSetCount:areaRows]; break;
         case TableSectionCharges:      numberOfRows = 1;                              break;
@@ -274,11 +274,17 @@ typedef enum
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
         }
-        case TableSectionSubscription:
+        case TableSectionPeriod:
         {
             NumberExtendViewController* extendViewController;
 
-            extendViewController = [[NumberExtendViewController alloc] initWithNumber:number];
+            extendViewController = [[NumberExtendViewController alloc] initWithNumber:number
+                                                                           completion:^
+            {
+                UITableViewCell* expiryCell = [self.tableView cellForRowAtIndexPath:expiryIndexPath];
+                [self tableView:self.tableView willDisplayCell:expiryCell forRowAtIndexPath:expiryIndexPath];
+            }];
+
             extendViewController.title = cell.textLabel.text;
             [self.navigationController pushViewController:extendViewController animated:YES];
             break;
@@ -350,9 +356,6 @@ typedef enum
         case TableSectionName:
         {
             return [self nameCellForRowAtIndexPath:indexPath];
-            // identifier         = @"TextFieldCell";
-            // self.nameIndexPath = indexPath;
-            break;
         }
         case TableSectionE164:
         {
@@ -369,9 +372,9 @@ typedef enum
             identifier = @"UsageCell";
             break;
         }
-        case TableSectionSubscription:
+        case TableSectionPeriod:
         {
-            identifier = @[@"Value1Cell", @"DisclosureCell", @"RenewCell"][indexPath.row];
+            identifier = @[@"Value1Cell", @"Value1Cell", @"DisclosureCell", @"RenewCell"][indexPath.row];
             break;
         }
         case TableSectionAddress:
@@ -443,9 +446,9 @@ typedef enum
             [self updateUsageCell:cell];
             break;
         }
-        case TableSectionSubscription:
+        case TableSectionPeriod:
         {
-            [self updateSubscriptionCell:cell atIndexPath:indexPath];
+            [self updatePeriodCell:cell atIndexPath:indexPath];
             break;
         }
         case TableSectionAddress:
@@ -484,7 +487,7 @@ typedef enum
 
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
 
-            NSIndexSet* indexSet = [NSIndexSet indexSetWithIndex:[Common nOfBit:TableSectionSubscription
+            NSIndexSet* indexSet = [NSIndexSet indexSetWithIndex:[Common nOfBit:TableSectionPeriod
                                                                         inValue:sections]];
             [self.tableView beginUpdates];
             [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
@@ -566,7 +569,7 @@ typedef enum
 }
 
 
-- (void)updateSubscriptionCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
+- (void)updatePeriodCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
     NSString*        dateFormat    = [NSDateFormatter dateFormatFromTemplate:@"E MMM d yyyy"
                                                                      options:0
@@ -579,7 +582,7 @@ typedef enum
     {
         case 0:
         {
-            cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionPurchaseDate Label", nil,
+            cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number:PeriodPurchaseDate Label", nil,
                                                                           [NSBundle mainBundle], @"Purchase",
                                                                           @"....");
             cell.detailTextLabel.text = [dateFormatter stringFromDate:number.purchaseDate];
@@ -588,29 +591,29 @@ typedef enum
         }
         case 1:
         {
-            if (number.autoRenew)
-            {
-                cell.textLabel.text   = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionRenewalDate Label", nil,
-                                                                          [NSBundle mainBundle], @"Renewal",
-                                                                          @"....");
-            }
-            else
-            {
-                cell.textLabel.text   = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionRenewalDate Label", nil,
+            cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number:PeriodRenewalDate Label", nil,
                                                                           [NSBundle mainBundle], @"Expiry",
                                                                           @"....");
-            }
+            cell.detailTextLabel.text = [dateFormatter stringFromDate:number.expiryDate];
+            cell.selectionStyle       = UITableViewCellSelectionStyleNone;
 
-            cell.detailTextLabel.text = [dateFormatter stringFromDate:number.renewalDate];
-            cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
-            cell.selectionStyle       = UITableViewCellSelectionStyleDefault;
+            expiryIndexPath = indexPath;
             break;
         }
         case 2:
         {
-            cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number:SubscriptionRenewalChoice Label", nil,
-                                                                          [NSBundle mainBundle], @"Renew Automatically",
-                                                                          @"....");
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:PeriodRenewal Label", nil,
+                                                                    [NSBundle mainBundle], @"Buy Renewal",
+                                                                    @"....");
+            cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            break;
+        }
+        case 3:
+        {
+            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:PeriodRenewalChoice Label", nil,
+                                                                    [NSBundle mainBundle], @"Renew Automatically",
+                                                                    @"....");
             UISwitch* switchView = (UISwitch*)cell.accessoryView;
             switchView.on = number.autoRenew;
             break;
@@ -841,7 +844,7 @@ typedef enum
                                    message:message
                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
      {
-         NSInteger        section    = [Common nOfBit:TableSectionSubscription inValue:sections];
+         NSInteger        section    = [Common nOfBit:TableSectionPeriod inValue:sections];
          NSIndexPath*     indexPath  = [NSIndexPath indexPathForItem:2 inSection:section];
          UITableViewCell* cell       = [self.tableView cellForRowAtIndexPath:indexPath];
          UISwitch*        switchView = (UISwitch*)cell.accessoryView;
