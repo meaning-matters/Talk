@@ -136,7 +136,7 @@
     else
     {
         title = NSLocalizedStringWithDefaultValue(@"NumberPay:... TableFooter", nil, [NSBundle mainBundle],
-                                                  @"The fee(s) will be taken from your Credit. If your Credit "
+                                                  @"The fees will be taken from your Credit. If your Credit "
                                                   @"is too low, you'll be asked to buy more.",
                                                   @"[Multiple lines]");
 
@@ -266,7 +266,7 @@
             }
         }
 
-        NSString* title = [NSString stringWithFormat:@"%@\n%@", monthsTitle, oneTimeTitle];
+        NSString* title = [NSString stringWithFormat:@"%@\n+ %@", monthsTitle, oneTimeTitle];
 
         [Common styleButton:button];
         [button setTitle:title forState:UIControlStateNormal];
@@ -401,12 +401,14 @@
                     NSString* productIdentifier;
                     NSString* extraString;
                     NSString* creditString;
+                    NSString* totalString;
                     NSString* title;
                     NSString* message;
 
                     productIdentifier = [[PurchaseManager sharedManager] productIdentifierForCreditAmount:extraCreditAmount];
                     extraString       = [[PurchaseManager sharedManager] localizedPriceForProductIdentifier:productIdentifier];
                     creditString      = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
+                    totalString       = [[PurchaseManager sharedManager] localizedFormattedPrice:totalFee];
 
                     title   = NSLocalizedStringWithDefaultValue(@"BuyNumber NeedExtraCreditTitle", nil,
                                                                 [NSBundle mainBundle], @"Extra Credit Needed",
@@ -414,11 +416,11 @@
                                                                 @"[iOS alert title size].");
                     message = NSLocalizedStringWithDefaultValue(@"BuyNumber NeedExtraCreditMessage", nil,
                                                                 [NSBundle mainBundle],
-                                                                @"The price is more than your current "
+                                                                @"The total price of %@ is more than your current "
                                                                 @"credit: %@.\n\nYou can buy %@ extra credit now.",
                                                                 @"Alert message: buying extra credit id needed.\n"
                                                                 @"[iOS alert message size]");
-                    message = [NSString stringWithFormat:message, creditString, extraString];
+                    message = [NSString stringWithFormat:message, totalString, creditString, extraString];
                     [BlockAlertView showAlertViewWithTitle:title
                                                    message:message
                                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
