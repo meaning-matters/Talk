@@ -2,74 +2,37 @@
 //  NumberPayViewController.m
 //  Talk
 //
-//  Created by Cornelis van der Bent on 09/07/16.
+//  Created by Cornelis van der Bent on 18/07/16.
 //  Copyright © 2016 NumberBay Ltd. All rights reserved.
 //
 
 #import "NumberPayViewController.h"
-#import "NumberPayCell.h"
 #import "UIViewController+Common.h"
 #import "PurchaseManager.h"
+#import "WebClient.h"
+#import "BlockAlertView.h"
 #import "Common.h"
 #import "Strings.h"
-#import "BlockAlertView.h"
-#import "WebClient.h"
-#import "NumberData.h"
-#import "DataManager.h"
 
 
 @interface NumberPayViewController () <NumberPayCellDelegate>
 
 @property (nonatomic, assign) float          monthFee;
 @property (nonatomic, assign) float          oneTimeFee;
-@property (nonatomic, assign) float          isExtension;
-@property (nonatomic, strong) NSString*      name;
-@property (nonatomic, assign) NumberTypeMask numberTypeMask;
-@property (nonatomic, strong) NSString*      isoCountryCode;
-@property (nonatomic, strong) NSDictionary*  area;
-@property (nonatomic, strong) NSString*      areaCode;
-@property (nonatomic, strong) NSString*      areaName;
-@property (nonatomic, strong) NSDictionary*  state;
-@property (nonatomic, strong) NSString*      areaId;
-@property (nonatomic, strong) AddressData*   address;
-@property (nonatomic, assign) BOOL           autoRenew; //### NO for now.
 @property (nonatomic, strong) NumberPayCell* payCell;
 @property (nonatomic, assign) CGFloat        payCellHeight;
-@property (nonatomic, assign) int            payMonths;
 
 @end
 
 
 @implementation NumberPayViewController
 
-- (instancetype)initWithMonthFee:(float)monthFee
-                      oneTimeFee:(float)oneTimeFee
-                     isExtension:(BOOL)isExtension
-                            name:(NSString*)name
-                  numberTypeMask:(NumberTypeMask)numberTypeMask
-                  isoCountryCode:(NSString*)isoCountryCode
-                            area:(NSDictionary*)area
-                        areaCode:(NSString*)areaCode
-                        areaName:(NSString*)areaName
-                           state:(NSDictionary*)state
-                         areadId:(NSString*)areaId
-                         address:(AddressData*)address
+- (instancetype)initWithMonthFee:(float)monthFee oneTimeFee:(float)oneTimeFee
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
-        _monthFee       = monthFee;
-        _oneTimeFee     = oneTimeFee;
-        _isExtension    = isExtension;
-        _name           = name;
-        _numberTypeMask = numberTypeMask;
-        _isoCountryCode = isoCountryCode;
-        _area           = area;
-        _areaCode       = areaCode;
-        _areaName       = areaName;
-        _state          = state;
-        _areaId         = areaId;
-        _address        = address;
-        _autoRenew      = NO; //### NO for now.
+        _monthFee   = monthFee;
+        _oneTimeFee = oneTimeFee;
     }
 
     return self;
@@ -79,12 +42,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    UIBarButtonItem* barButtonItem;
-    barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                  target:self
-                                                                  action:@selector(cancelAction)];
-    self.navigationItem.rightBarButtonItem = barButtonItem;
 
     [self.tableView registerNib:[UINib nibWithNibName:@"NumberPayCell" bundle:nil]
          forCellReuseIdentifier:@"NumberPayCell"];
@@ -96,21 +53,34 @@
 }
 
 
+- (NSString*)oneTimeTitle
+{
+    // Dummy, must be overriden by superclass.
+    return @"%@";
+}
+
+
+- (void)payNumber
+{
+    // Dummy, must be overriden by superclass.
+}
+
+
+- (void)leaveViewController
+{
+    // Dummy, must be overriden by superclass; either pop or dismiss.
+}
+
+
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 1;
 }
 
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 1;
-}
-
-
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NumberPayCell" forIndexPath:indexPath];
 
@@ -126,22 +96,17 @@
 {
     NSString* title;
 
-    if (self.oneTimeFee == 0.0f)
+    if (self.showFootnotes == NO)
     {
-        title = NSLocalizedStringWithDefaultValue(@"NumberPay:... NooneTimeFeeTableFooter", nil, [NSBundle mainBundle],
-                                                  @"The fee will be taken from your Credit. If your Credit "
-                                                  @"is too low, you'll be asked to buy more.",
-                                                  @"[Multiple lines]");
+        return nil;
     }
-    else
-    {
-        title = NSLocalizedStringWithDefaultValue(@"NumberPay:... TableFooter", nil, [NSBundle mainBundle],
+
+    title = NSLocalizedStringWithDefaultValue(@"NumberPay:... TableFooter", nil, [NSBundle mainBundle],
                                                   @"The fees will be taken from your Credit. If your Credit "
                                                   @"is too low, you'll be asked to buy more.",
                                                   @"[Multiple lines]");
 
-        title = [NSString stringWithFormat:title, [self stringForFee:self.oneTimeFee]];
-    }
+    title = [NSString stringWithFormat:title, [self stringForFee:self.oneTimeFee]];
 
     return title;
 }
@@ -153,15 +118,13 @@
 }
 
 
-#pragma mark - Actions
+#pragma mark - Helpers
 
-- (void)cancelAction
+- (NSString*)stringForFee:(float)fee
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    return [[PurchaseManager sharedManager] localizedFormattedPrice:fee];
 }
 
-
-#pragma mark - Helpers
 
 - (int)monthsForN:(int)n
 {
@@ -230,8 +193,8 @@
         if (months == 1)
         {
             monthsTitle = NSLocalizedStringWithDefaultValue(@"NumberPay OneMonthFee", nil, [NSBundle mainBundle],
-                                                            @"%@ for 1 month",
-                                                            @"£2.34 for 1 month");
+                                                            @"%@ for %d month",
+                                                            @"£2.34 for %d month");
         }
         else
         {
@@ -240,31 +203,8 @@
                                                             @"£2.34 for 4 months");
         }
 
-        monthsTitle = [NSString stringWithFormat:monthsTitle, [self stringForFee:(months * self.monthFee)], months];
-
-        if (self.isExtension)
-        {
-            oneTimeTitle = NSLocalizedStringWithDefaultValue(@"NumberPay ...", nil, [NSBundle mainBundle],
-                                                             @"%@ extend fee",
-                                                             @"£2.34 extend fee");
-            oneTimeTitle = [NSString stringWithFormat:oneTimeTitle, [self stringForFee:self.oneTimeFee]];
-        }
-        else
-        {
-            if (self.oneTimeFee > 0.0f)
-            {
-                oneTimeTitle = NSLocalizedStringWithDefaultValue(@"NumberPay ...", nil, [NSBundle mainBundle],
-                                                                 @"%@ setup fee",
-                                                                 @"£2.34 setup fee");
-                oneTimeTitle = [NSString stringWithFormat:oneTimeTitle, [self stringForFee:self.oneTimeFee]];
-            }
-            else
-            {
-                oneTimeTitle = NSLocalizedStringWithDefaultValue(@"NumberPay ...", nil, [NSBundle mainBundle],
-                                                                 @"(no setup fee)",
-                                                                 @"");
-            }
-        }
+        monthsTitle  = [NSString stringWithFormat:monthsTitle, [self stringForFee:(months * self.monthFee)], months];
+        oneTimeTitle = [NSString stringWithFormat:[self oneTimeTitle], [self stringForFee:self.oneTimeFee]];
 
         NSString* title = [NSString stringWithFormat:@"%@\n+ %@", monthsTitle, oneTimeTitle];
 
@@ -278,120 +218,27 @@
 }
 
 
-- (NSString*)stringForFee:(float)fee
-{
-    return [[PurchaseManager sharedManager] localizedFormattedPrice:fee];
-}
-
-
-- (void)saveNumberE164:(NSString*)e164
-          purchaseDate:(NSDate*)purchaseDate
-            expiryDate:(NSDate*)expiryDate
-              monthFee:(float)monthFee
-              renewFee:(float)renewFee
-{
-    NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
-    NumberData*             number;
-
-    number = [NSEntityDescription insertNewObjectForEntityForName:@"Number"
-                                           inManagedObjectContext:managedObjectContext];
-
-    number.name           = self.name;
-    number.e164           = e164;
-    number.numberType     = [NumberType stringForNumberTypeMask:self.numberTypeMask];
-    number.areaCode       = self.areaCode;
-    number.areaName       = [Common capitalizedString:self.areaName];
-    number.stateCode      = self.state[@"stateCode"];
-    number.stateName      = self.state[@"stateName"];
-    number.isoCountryCode = self.isoCountryCode;
-    number.address        = self.address;
-    number.addressType    = self.area[@"addressType"];
-    number.proofTypes     = self.area[@"proofTypes"];
-    number.purchaseDate   = purchaseDate;
-    number.expiryDate     = expiryDate;
-    number.monthFee       = monthFee;
-    number.renewFee       = renewFee;
-    number.autoRenew      = self.autoRenew;
-    number.fixedRate      = [self.area[@"fixedRate"] floatValue];
-    number.fixedSetup     = [self.area[@"fixedSetup"] floatValue];
-    number.mobileRate     = [self.area[@"mobileRate"] floatValue];
-    number.mobileSetup    = [self.area[@"mobileSetup"] floatValue];
-    number.payphoneRate   = [self.area[@"payphoneRate"] floatValue];
-    number.payphoneSetup  = [self.area[@"payphoneSetup"] floatValue];
-
-    [[DataManager sharedManager] saveManagedObjectContext:managedObjectContext];
-}
-
-
 #pragma mark - Number Pay Cell Delegate
 
 - (void)payNumberForMonths:(int)months
 {
     self.payMonths = months;
-    self.navigationItem.rightBarButtonItem.enabled = NO;
     [self updatePayCell];
-    void (^payNumberBlock)(void) = ^
-    {
-        [[WebClient sharedClient] purchaseNumberForMonths:months
-                                                     name:self.name
-                                           isoCountryCode:self.isoCountryCode
-                                                   areaId:self.areaId
-                                                addressId:self.address.addressId
-                                                autoRenew:self.autoRenew
-                                                    reply:^(NSError*  error,
-                                                            NSString* e164,
-                                                            NSDate*   purchaseDate,
-                                                            NSDate*   expiryDate,
-                                                            float     monthFee,
-                                                            float     renewFee)
-         {
-             if (error == nil)
-             {
-                 [self saveNumberE164:e164
-                         purchaseDate:purchaseDate
-                           expiryDate:expiryDate
-                             monthFee:monthFee
-                             renewFee:renewFee];
 
-                 [self dismissViewControllerAnimated:YES completion:nil];
-             }
-             else
-             {
-                 NSString* title;
-                 NSString* message;
-
-                 title   = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyNumberTitle", nil,
-                                                             [NSBundle mainBundle], @"Buying Number Failed",
-                                                             @"Alert title: A phone number could not be bought.\n"
-                                                             @"[iOS alert title size].");
-                 message = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyNumberMessage", nil,
-                                                             [NSBundle mainBundle],
-                                                             @"Something went wrong while buying your number: %@\n\n"
-                                                             @"Please try again later.",
-                                                             @"Message telling that buying a phone number failed\n"
-                                                             @"[iOS alert message size]");
-                 message = [NSString stringWithFormat:message, [error localizedDescription]];
-                 [BlockAlertView showAlertViewWithTitle:title
-                                                message:message
-                                             completion:^(BOOL cancelled, NSInteger buttonIndex)
-                  {
-                      [self dismissViewControllerAnimated:YES completion:nil];
-                  }
-                                      cancelButtonTitle:[Strings closeString]
-                                      otherButtonTitles:nil];
-             }
-         }];
-    };
+    self.navigationItem.rightBarButtonItem.enabled = NO;
 
     // Check if there's enough credit.
     [[WebClient sharedClient] retrieveCreditWithReply:^(NSError* error, float credit)
     {
-        float totalFee = self.oneTimeFee + (self.monthFee * self.payMonths);
+        float totalFee         = self.oneTimeFee + (self.monthFee * self.payMonths);
+        NSString* creditString = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
+        NSString* totalString  = [[PurchaseManager sharedManager] localizedFormattedPrice:totalFee];
+
         if (error == nil)
         {
             if (totalFee < credit)
             {
-                payNumberBlock();
+                [self payNumber];
             }
             else
             {
@@ -400,24 +247,20 @@
                 {
                     NSString* productIdentifier;
                     NSString* extraString;
-                    NSString* creditString;
-                    NSString* totalString;
                     NSString* title;
                     NSString* message;
 
                     productIdentifier = [[PurchaseManager sharedManager] productIdentifierForCreditAmount:extraCreditAmount];
                     extraString       = [[PurchaseManager sharedManager] localizedPriceForProductIdentifier:productIdentifier];
-                    creditString      = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
-                    totalString       = [[PurchaseManager sharedManager] localizedFormattedPrice:totalFee];
 
-                    title   = NSLocalizedStringWithDefaultValue(@"BuyNumber NeedExtraCreditTitle", nil,
+                    title   = NSLocalizedStringWithDefaultValue(@"PayNumber NeedExtraCreditTitle", nil,
                                                                 [NSBundle mainBundle], @"Extra Credit Needed",
                                                                 @"Alert title: extra credit must be bought.\n"
                                                                 @"[iOS alert title size].");
-                    message = NSLocalizedStringWithDefaultValue(@"BuyNumber NeedExtraCreditMessage", nil,
+                    message = NSLocalizedStringWithDefaultValue(@"PayNumber NeedExtraCreditMessage", nil,
                                                                 [NSBundle mainBundle],
                                                                 @"The total price of %@ is more than your current "
-                                                                @"credit: %@.\n\nYou can buy %@ extra credit now.",
+                                                                @"Credit: %@.\n\nYou can buy %@ extra Credit now.",
                                                                 @"Alert message: buying extra credit id needed.\n"
                                                                 @"[iOS alert message size]");
                     message = [NSString stringWithFormat:message, totalString, creditString, extraString];
@@ -428,28 +271,28 @@
                         if (cancelled == NO)
                         {
                             [[PurchaseManager sharedManager] buyCreditAmount:extraCreditAmount
-                                                                   completion:^(BOOL success, id object)
+                                                                  completion:^(BOOL success, id object)
                             {
                                 if (success == YES)
                                 {
-                                    payNumberBlock();
+                                    [self payNumber];
                                 }
                                 else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
                                 {
-                                    [self dismissViewControllerAnimated:YES completion:nil];
+                                    [self leaveViewController];
                                 }
                                 else if (object != nil)
                                 {
                                     NSString* title;
                                     NSString* message;
 
-                                    title   = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyCreditTitle", nil,
+                                    title   = NSLocalizedStringWithDefaultValue(@"PayNumber FailedBuyCreditTitle", nil,
                                                                                 [NSBundle mainBundle], @"Buying Credit Failed",
                                                                                 @"Alert title: Credit could not be bought.\n"
                                                                                 @"[iOS alert title size].");
-                                    message = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedBuyCreditMessage", nil,
+                                    message = NSLocalizedStringWithDefaultValue(@"PayNumber FailedBuyCreditMessage", nil,
                                                                                 [NSBundle mainBundle],
-                                                                                @"Something went wrong while buying credit: "
+                                                                                @"Something went wrong while buying Credit: "
                                                                                 @"%@\n\nPlease try again later.",
                                                                                 @"Message telling that buying credit failed\n"
                                                                                 @"[iOS alert message size]");
@@ -458,7 +301,7 @@
                                                                    message:message
                                                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
                                     {
-                                        [self dismissViewControllerAnimated:YES completion:nil];
+                                        [self leaveViewController];
                                     }
                                                          cancelButtonTitle:[Strings closeString]
                                                          otherButtonTitles:nil];
@@ -477,7 +320,30 @@
                 }
                 else
                 {
-                    NBLog(@"//### Apparently there's no sufficiently high credit product.");
+                    // There's no sufficiently high credit product.
+                    NSString* title;
+                    NSString* message;
+
+                    title   = NSLocalizedStringWithDefaultValue(@"PayNumber ...Title", nil,
+                                                                [NSBundle mainBundle], @"Not Enough Credit",
+                                                                @"....\n"
+                                                                @"[iOS alert title size].");
+                    message = NSLocalizedStringWithDefaultValue(@"PayNumber ...Message", nil,
+                                                                [NSBundle mainBundle],
+                                                                @"Your Credit of %@ is not sufficient to cover the "
+                                                                @"total price: %@.\n\n"
+                                                                @"Please buy sufficient Credit and try again.",
+                                                                @"...\n"
+                                                                @"[iOS alert message size]");
+                    message = [NSString stringWithFormat:message, creditString, totalString];
+                    [BlockAlertView showAlertViewWithTitle:title
+                                                   message:message
+                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+                     {
+                         [self leaveViewController];
+                     }
+                                         cancelButtonTitle:[Strings closeString]
+                                         otherButtonTitles:nil];
                 }
             }
         }
@@ -486,23 +352,23 @@
             NSString* title;
             NSString* message;
 
-            title   = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedGetCreditTitle", nil,
+            title   = NSLocalizedStringWithDefaultValue(@"PayNumber FailedGetCreditTitle", nil,
                                                         [NSBundle mainBundle], @"Credit Unknown",
                                                         @"Alert title: Reading the user's credit failed.\n"
                                                         @"[iOS alert title size].");
-            message = NSLocalizedStringWithDefaultValue(@"BuyNumber FailedGetCreditMessage", nil,
+            message = NSLocalizedStringWithDefaultValue(@"PayNumber FailedGetCreditMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"Could not get your up-to-date credit, from our "
-                                                        @"internet server. (Credit is needed for the "
-                                                        @"setup fee.)\n\nPlease try again later.",
-                                                        @"Message telling that buying a phone number failed\n"
+                                                        @"Could not get your up-to-date Credit: %@.\n\n"
+                                                        @"Please try again later.",
+                                                        @"Message telling that paying a phone number failed\n"
                                                         @"[iOS alert message size]");
+            message = [NSString stringWithFormat:message, error.localizedDescription];
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
-             {
-                 [self dismissViewControllerAnimated:YES completion:nil];
-             }
+            {
+                [self leaveViewController];
+            }
                                  cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
         }

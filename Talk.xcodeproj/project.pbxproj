@@ -433,7 +433,7 @@
 		485F6C261637270100D61365 /* ZA@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F6A341637270100D61365 /* ZA@2x.png */; };
 		485F6C281637270100D61365 /* ZM@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F6A361637270100D61365 /* ZM@2x.png */; };
 		485F6C2A1637270100D61365 /* ZW@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F6A381637270100D61365 /* ZW@2x.png */; };
-		486334781D329E3F002D0A4B /* NumberPayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4888E17B1D30FEB000B1B307 /* NumberPayViewController.m */; };
+		486334781D329E3F002D0A4B /* NumberBuyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4888E17B1D30FEB000B1B307 /* NumberBuyViewController.m */; };
 		4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3F5175668CA0006542F /* LogoFacebook.png */; };
 		4864B3F7175668CA0006542F /* LogoFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3F5175668CA0006542F /* LogoFacebook.png */; };
 		4864B3F917566E950006542F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4864B3F817566E950006542F /* MessageUI.framework */; };
@@ -480,6 +480,7 @@
 		488D7759178078CC00099470 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488D7758178078CC00099470 /* QuartzCore.framework */; };
 		488FBBE21700852F000ECC71 /* NumberData.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBE11700852F000ECC71 /* NumberData.m */; };
 		488FBBE31700852F000ECC71 /* NumberData.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBE11700852F000ECC71 /* NumberData.m */; };
+		48931FF51D3CB0FF00A93456 /* NumberPayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48931FF41D3CB0FF00A93456 /* NumberPayViewController.m */; };
 		489387FB17039158005CC795 /* DestinationData.m in Sources */ = {isa = PBXBuildFile; fileRef = 489387FA17039158005CC795 /* DestinationData.m */; };
 		489387FC17039158005CC795 /* DestinationData.m in Sources */ = {isa = PBXBuildFile; fileRef = 489387FA17039158005CC795 /* DestinationData.m */; };
 		489387FF17039165005CC795 /* RecordingData.m in Sources */ = {isa = PBXBuildFile; fileRef = 489387FE17039165005CC795 /* RecordingData.m */; };
@@ -1178,8 +1179,8 @@
 		4888D517166D1AEE00572566 /* Flip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Flip@2x.png"; sourceTree = "<group>"; };
 		4888D519166D1AEE00572566 /* HangupPhone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HangupPhone@2x.png"; sourceTree = "<group>"; };
 		4888D524166D200E00572566 /* HangupPhoneSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HangupPhoneSmall@2x.png"; sourceTree = "<group>"; };
-		4888E17A1D30FEB000B1B307 /* NumberPayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberPayViewController.h; sourceTree = "<group>"; };
-		4888E17B1D30FEB000B1B307 /* NumberPayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberPayViewController.m; sourceTree = "<group>"; };
+		4888E17A1D30FEB000B1B307 /* NumberBuyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberBuyViewController.h; sourceTree = "<group>"; };
+		4888E17B1D30FEB000B1B307 /* NumberBuyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberBuyViewController.m; sourceTree = "<group>"; };
 		488AD1E816E799C3004D3A2A /* NumberStatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberStatesViewController.h; sourceTree = "<group>"; };
 		488AD1E916E799C3004D3A2A /* NumberStatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberStatesViewController.m; sourceTree = "<group>"; };
 		488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberStatesView.xib; sourceTree = "<group>"; };
@@ -1193,6 +1194,8 @@
 		488FBBD917007CC6000ECC71 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DataManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		488FBBE01700852F000ECC71 /* NumberData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberData.h; sourceTree = "<group>"; };
 		488FBBE11700852F000ECC71 /* NumberData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberData.m; sourceTree = "<group>"; };
+		48931FF31D3CB0FF00A93456 /* NumberPayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberPayViewController.h; sourceTree = "<group>"; };
+		48931FF41D3CB0FF00A93456 /* NumberPayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberPayViewController.m; sourceTree = "<group>"; };
 		489387F917039158005CC795 /* DestinationData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationData.h; sourceTree = "<group>"; };
 		489387FA17039158005CC795 /* DestinationData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationData.m; sourceTree = "<group>"; };
 		489387FD17039165005CC795 /* RecordingData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingData.h; sourceTree = "<group>"; };
@@ -2461,14 +2464,16 @@
 				4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */,
 				4830462216EE269D000F9B05 /* NumberAreaViewController.h */,
 				4830462316EE269D000F9B05 /* NumberAreaViewController.m */,
+				48931FF31D3CB0FF00A93456 /* NumberPayViewController.h */,
+				48931FF41D3CB0FF00A93456 /* NumberPayViewController.m */,
 				48B5AAF016E6A58400BA4084 /* NumberCountriesViewController.h */,
 				48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */,
 				48F1B7DF17E63819003A3933 /* NumberDestinationsViewController.h */,
 				48F1B7E017E63819003A3933 /* NumberDestinationsViewController.m */,
 				4872DA7A1D360AC4009F4194 /* NumberExtendViewController.h */,
 				4872DA7B1D360AC4009F4194 /* NumberExtendViewController.m */,
-				4888E17A1D30FEB000B1B307 /* NumberPayViewController.h */,
-				4888E17B1D30FEB000B1B307 /* NumberPayViewController.m */,
+				4888E17A1D30FEB000B1B307 /* NumberBuyViewController.h */,
+				4888E17B1D30FEB000B1B307 /* NumberBuyViewController.m */,
 				488AD1E816E799C3004D3A2A /* NumberStatesViewController.h */,
 				488AD1E916E799C3004D3A2A /* NumberStatesViewController.m */,
 				48AF44E81649479100DFE3D8 /* NumbersViewController.h */,
@@ -3234,7 +3239,7 @@
 				48B813411AADF91D0019AF77 /* NBGroup.m in Sources */,
 				4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */,
 				48FE4F591C8752C100CC0873 /* ImagePicker.m in Sources */,
-				486334781D329E3F002D0A4B /* NumberPayViewController.m in Sources */,
+				486334781D329E3F002D0A4B /* NumberBuyViewController.m in Sources */,
 				48F5D2ED16B9A380001576E1 /* Base64.m in Sources */,
 				48B5AAF216E6A58700BA4084 /* NumberCountriesViewController.m in Sources */,
 				488AD1EA16E799C3004D3A2A /* NumberStatesViewController.m in Sources */,
@@ -3266,6 +3271,7 @@
 				4837AF6D18D9B89A00D3AEBC /* GetStartedStartViewController.m in Sources */,
 				48F157501CA3412C00A5CB4C /* CountryRegions.m in Sources */,
 				48F14EDE1BF9C62200541EEC /* AddressesViewController.m in Sources */,
+				48931FF51D3CB0FF00A93456 /* NumberPayViewController.m in Sources */,
 				48F3CE991D27B070000925EE /* IncomingChargesViewController.m in Sources */,
 				48B8136D1AADF9B20019AF77 /* NBPersonCellInfo.m in Sources */,
 				48ADD0F71706791A001515EB /* UIView+AnimateHidden.m in Sources */,

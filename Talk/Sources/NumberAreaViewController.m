@@ -11,7 +11,7 @@
 #import "AddressesViewController.h"
 #import "IncomingChargesViewController.h"
 #import "NumberTermsViewController.h"
-#import "NumberPayViewController.h"
+#import "NumberBuyViewController.h"
 #import "Strings.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
@@ -603,11 +603,10 @@ typedef enum
         {
             if ([self canBuy])
             {
-                NumberPayViewController* payViewController;
+                NumberBuyViewController* payViewController;
 
-                payViewController = [[NumberPayViewController alloc] initWithMonthFee:self.monthFee
-                                                                           oneTimeFee:self.setupFee
-                                                                          isExtension:NO
+                payViewController = [[NumberBuyViewController alloc] initWithMonthFee:self.monthFee
+                                                                             setupFee:self.setupFee
                                                                                  name:name
                                                                        numberTypeMask:numberTypeMask
                                                                        isoCountryCode:numberIsoCountryCode

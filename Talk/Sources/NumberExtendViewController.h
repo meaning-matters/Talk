@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NumberPayViewController.h"
 #import "NumberData.h"
 
 
-@interface NumberExtendViewController : UITableViewController
+@interface NumberExtendViewController : NumberPayViewController
 
 - (instancetype)initWithNumber:(NumberData*)number completion:(void (^)(void))completion;
 
