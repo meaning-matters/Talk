@@ -74,7 +74,7 @@
                                       forControlEvents:UIControlEventValueChanged];
             self.navigationItem.titleView = self.numberTypeSegmentedControl;
 
-            NSInteger   index = [NumberType numberTypeMaskToIndex:[Settings sharedSettings].numberTypeMask];
+            NSInteger index = [NumberType numberTypeMaskToIndex:[Settings sharedSettings].numberTypeMask];
             [self.numberTypeSegmentedControl setSelectedSegmentIndex:index];
 
             // Combine numberTypes per country.

@@ -537,10 +537,18 @@
 }
 
 
-// 6. GET LIST OF ALL AVAILABLE NUMBER COUNTRIES
+// 6A. GET LIST OF ALL AVAILABLE NUMBER COUNTRIES
 - (void)retrieveNumberCountries:(void (^)(NSError* error, NSArray* countries))reply
 {
     [self getPath:@"/numbers/countries" parameters:nil reply:reply];
+}
+
+
+// 6B. GET NUMBER COUNTRY INFO
+- (void)retrieveNumberCountryWithIsoCountryCode:(NSString*)isoCountryCode
+                                          reply:(void (^)(NSError* error, NSArray* countryInfo))reply
+{
+    [self getPath:[NSString stringWithFormat:@"/numbers/countries/%@", isoCountryCode] parameters:nil reply:reply];
 }
 
 
@@ -1635,11 +1643,19 @@
 }
 
 
-// 6.
+// 6A.
 - (void)cancelAllRetrieveNumberCountries
 {
     [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:@"/numbers/countries"];
+}
+
+
+// 6B.
+- (void)cancelAllRetrieveNumberCountryWithIsoCountryCode:(NSString*)isoCountryCode
+{
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+                                                    path:[NSString stringWithFormat:@"/numbers/countries/%@", isoCountryCode]];
 }
 
 

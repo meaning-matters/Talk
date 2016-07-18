@@ -86,8 +86,12 @@
 - (void)deleteVerifiedE164:(NSString*)e164
                      reply:(void (^)(NSError*))reply;
 
-// 6. GET LIST OF ALL AVAILABLE NUMBER COUNTRIES
+// 6A. GET LIST OF ALL AVAILABLE NUMBER COUNTRIES
 - (void)retrieveNumberCountries:(void (^)(NSError* error, NSArray* countries))reply;
+
+// 6B. GET NUMBER COUNTRY INFO
+- (void)retrieveNumberCountryWithIsoCountryCode:(NSString*)isoCountryCode
+                                          reply:(void (^)(NSError* error, NSArray* countryInfo))reply;
 
 // 7. GET LIST OF ALL AVAILABLE NUMBER STATES
 - (void)retrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode
@@ -363,8 +367,11 @@
 // 5.
 - (void)cancelAllDeleteVerifiedE164:(NSString*)e164;
 
-// 6.
+// 6A.
 - (void)cancelAllRetrieveNumberCountries;
+
+// 6B.
+- (void)cancelAllRetrieveNumberCountryWithIsoCountryCode:(NSString*)isoCountryCode;
 
 // 7.
 - (void)cancelAllRetrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode;

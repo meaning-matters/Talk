@@ -16,6 +16,7 @@
 #import "Salutation.h"
 #import "CellDotView.h"
 #import "AddressUpdatesHandler.h"
+#import "BlockAlertView.h"
 
 
 @interface AddressesViewController ()
@@ -449,12 +450,40 @@
     }
     else
     {
-        if (address != self.selectedAddress)
+        if ([AddressStatus isAvailableAddressStatusMask:address.addressStatus])
         {
-            self.completion(address);
-        }
+            if (address != self.selectedAddress)
+            {
+                self.completion(address);
+            }
         
-        [self.navigationController popViewControllerAnimated:YES];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else
+        {
+            NSString* title;
+            NSString* message;
+
+            title   = NSLocalizedStringWithDefaultValue(@"...", nil,
+                                                        [NSBundle mainBundle], @"Address Not Verified",
+                                                        @"....\n"
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"...", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"This Address is being verified by us. Once verified, "
+                                                        @"you can use it for this Number.\n\nVerification may take "
+                                                        @"a few days.",
+                                                        @"....\n"
+                                                        @"[iOS alert message size]");
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+            {
+                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            }
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+        }
     }
 }
 
@@ -577,11 +606,19 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
   onResultsController:(NSFetchedResultsController*)controller
           atIndexPath:(NSIndexPath*)indexPath
 {
-    AddressData* address      = [controller objectAtIndexPath:indexPath];
-    cell.textLabel.text       = address.name;
-    cell.detailTextLabel.text = [self detailTextForAddress:address];
-    cell.imageView.image      = [UIImage imageNamed:address.isoCountryCode];
-    
+    AddressData* address = [controller objectAtIndexPath:indexPath];
+    cell.imageView.image = [UIImage imageNamed:address.isoCountryCode];
+    if ([AddressStatus isAvailableAddressStatusMask:address.addressStatus] || !self.isFiltered)
+    {
+        cell.textLabel.text       = address.name;
+        cell.detailTextLabel.text = [self detailTextForAddress:address];
+    }
+    else
+    {
+        cell.textLabel.attributedText       = [Common strikethroughAttributedString:address.name];
+        cell.detailTextLabel.attributedText = [Common strikethroughAttributedString:[self detailTextForAddress:address]];
+    }
+
     if (self.completion == nil)
     {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
