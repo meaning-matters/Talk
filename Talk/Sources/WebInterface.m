@@ -500,14 +500,16 @@ static void processDnsReply(DNSServiceRef       sdRef,
                         
                         if ((self.weighter % self.weightSum) < weighter)
                         {
+                            self.selectedServer = server;
                             break;
                         }
                     }
+
+                    // Make sure there's always a server selected after the loop finishes.
+                    self.selectedServer = server;
                 }
                 
                 self.weighter += self.weighterIncrement;
-                
-                self.selectedServer = server;
             }
             else
             {
