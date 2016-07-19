@@ -211,3 +211,5 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Jump to Get Started after Reset All.
 
 * Check all viewDidLoad's (if they can be called multiple times) because they can be called multiple times in case view was unloaded for memory pressure.
+
+* Make sure that rejected Addresses are not showing up in filtered list and that they are marked (red?) in the main list (strikethrough is already used in the filtered list to indicate waiting for verification).
