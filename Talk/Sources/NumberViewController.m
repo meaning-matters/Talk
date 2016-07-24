@@ -55,10 +55,11 @@ typedef enum
     TableSections sections;
     AreaRows      areaRows;
     BOOL          isLoadingAddress;
-    NSPredicate*  addressesPredicate;
     NSIndexPath*  expiryIndexPath;
     id            reachabilityObserver;
 }
+
+@property (nonatomic, strong) NSPredicate* addressesPredicate;
 
 @end
 
@@ -110,14 +111,15 @@ typedef enum
 
     [self loadAddressesPredicate];
 
+    __weak typeof(self) weakSelf = self;
     reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusReachableNotification
                                                                              object:nil
                                                                               queue:[NSOperationQueue mainQueue]
                                                                          usingBlock:^(NSNotification* note)
     {
-        if (addressesPredicate == nil && [note.userInfo[@"status"] boolValue])
+        if (weakSelf.addressesPredicate == nil && [note.userInfo[@"status"] boolValue])
         {
-            [self loadAddressesPredicate];
+            [weakSelf loadAddressesPredicate];
         }
     }];
 }
@@ -315,7 +317,7 @@ typedef enum
                                                                                 numberType:numberTypeMask
                                                                                addressType:addressTypeMask
                                                                                 proofTypes:number.proofTypes
-                                                                                 predicate:addressesPredicate
+                                                                                 predicate:self.addressesPredicate
                                                                                 completion:^(AddressData *selectedAddress)
             {
                 if (selectedAddress != number.address)
@@ -696,9 +698,9 @@ typedef enum
 
     cell.textLabel.text       = [Strings addressString];
     cell.detailTextLabel.text = number.address ? number.address.name : [Strings requiredString];
-    cell.accessoryType        = (addressesPredicate != nil) ? UITableViewCellAccessoryDisclosureIndicator
-                                                            : UITableViewCellAccessoryNone;
-    cell.userInteractionEnabled = (addressesPredicate != nil); // Must be set last, otherwise setting colors does not work.
+    cell.accessoryType        = (self.addressesPredicate != nil) ? UITableViewCellAccessoryDisclosureIndicator
+                                                                 : UITableViewCellAccessoryNone;
+    cell.userInteractionEnabled = (self.addressesPredicate != nil); // Must be set last, otherwise setting colors does not work.
 }
 
 
@@ -714,8 +716,8 @@ typedef enum
 
 - (void)loadAddressesPredicate
 {
-    addressesPredicate = nil;
-    isLoadingAddress   = YES;
+    self.addressesPredicate = nil;
+    isLoadingAddress        = YES;
     [self reloadAddressCell];
 
     AddressTypeMask addressTypeMask = [AddressType addressTypeMaskForString:number.addressType];
@@ -730,7 +732,7 @@ typedef enum
         isLoadingAddress = NO;
         if (error == nil)
         {
-            addressesPredicate = predicate;
+            self.addressesPredicate = predicate;
             [self reloadAddressCell];
         }
         else
