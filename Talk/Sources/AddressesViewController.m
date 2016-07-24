@@ -88,7 +88,10 @@
                                                                            queue:[NSOperationQueue mainQueue]
                                                                       usingBlock:^(NSNotification* note)
         {
+            NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
             [weakSelf.tableView reloadData];
+            [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            [[self.tableView cellForRowAtIndexPath:selectedIndexPath] layoutIfNeeded];
         }];
     }
     

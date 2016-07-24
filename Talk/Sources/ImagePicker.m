@@ -18,7 +18,7 @@
 @interface ImagePicker () <UINavigationControllerDelegate,
                            UIImagePickerControllerDelegate>
 
-@property (nonatomic, strong) UIViewController* presentingViewController;
+@property (nonatomic, weak) UIViewController* presentingViewController;
 @property (nonatomic, copy) void (^completion)(NSData* imageData);
 
 @end

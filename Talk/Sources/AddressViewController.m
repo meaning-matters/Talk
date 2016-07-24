@@ -368,13 +368,13 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 {
     [super viewWillAppear:animated];
 
-    self.postcodeTextField.text         = self.address.postcode;
-    self.cityTextField.text             = self.address.city;
-    self.municipalityCodeTextField.text = self.address.municipalityCode;
+    self.postcodeTextField.text           = self.address.postcode;
+    self.cityTextField.text               = self.address.city;
+    self.municipalityCodeTextField.text   = self.address.municipalityCode;
 
-    self.companyNameTextField.placeholder  = [self placeHolderForTextField:self.companyNameTextField];
-    self.firstNameTextField.placeholder    = [self placeHolderForTextField:self.firstNameTextField];
-    self.lastNameTextField.placeholder     = [self placeHolderForTextField:self.lastNameTextField];
+    self.companyNameTextField.placeholder = [self placeHolderForTextField:self.companyNameTextField];
+    self.firstNameTextField.placeholder   = [self placeHolderForTextField:self.firstNameTextField];
+    self.lastNameTextField.placeholder    = [self placeHolderForTextField:self.lastNameTextField];
 
     [self updateRightBarButtonItem];
 }
@@ -481,10 +481,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 }
 
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)dealloc
 {
-    [super viewWillDisappear:animated];
-    
     [[WebClient sharedClient] cancelAllRetrieveAreaInfoForIsoCountryCode:self.numberIsoCountryCode
                                                                 areaCode:self.areaCode];
 }
@@ -523,18 +521,21 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 - (void)loadData
 {
     self.isLoading = YES;
+    __weak typeof(self) weakSelf = self;
     [[WebClient sharedClient] retrieveNumberAreaInfoForIsoCountryCode:self.numberIsoCountryCode
                                                              areaCode:self.areaCode
                                                                 reply:^(NSError* error, id content)
     {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+
         if (error == nil)
         {
-            self.citiesArray = [NSArray arrayWithArray:content];
-            self.address.postcode = @"";     // Resets what user may have typed while loading (on slow internet).
-            self.address.city     = @"";     // Resets what user may have typed while loading (on slow internet).
+            strongSelf.citiesArray = [NSArray arrayWithArray:content];
+            strongSelf.address.postcode = @"";     // Resets what user may have typed while loading (on slow internet).
+            strongSelf.address.city     = @"";     // Resets what user may have typed while loading (on slow internet).
             
-            [self.tableView reloadData];
-            self.isLoading = NO;    // Placed here, after processing results, to let reload of search results work.
+            [strongSelf.tableView reloadData];
+            strongSelf.isLoading = NO;    // Placed here, after processing results, to let reload of search results work.
         }
         else if (error.code == WebStatusFailServiceUnavailable)
         {
@@ -579,7 +580,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
             {
-                [self dismissViewControllerAnimated:YES completion:nil];
+                [strongSelf dismissViewControllerAnimated:YES completion:nil];
             }
                                  cancelButtonTitle:[Strings cancelString]
                                  otherButtonTitles:nil];
@@ -1253,11 +1254,19 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             {
                 if (self.isNew && self.address.hasProof == NO)
                 {
+                    __weak typeof(self) weakSelf = self;
                     [self.imagePicker pickImageWithCompletion:^(NSData* imageData)
                     {
-                        self.address.proofImage = imageData;
-                        self.address.hasProof   = YES;
-                        [Common reloadSections:TableSectionVerification allSections:self.sections tableView:self.tableView];
+                        __strong typeof(weakSelf) strongSelf = weakSelf;
+
+                        if (imageData != nil)
+                        {
+                            strongSelf.address.proofImage = imageData;
+                            strongSelf.address.hasProof   = YES;
+                            [Common reloadSections:TableSectionVerification
+                                       allSections:strongSelf.sections
+                                         tableView:strongSelf.tableView];
+                        }
                     }];
                 }
                 else
