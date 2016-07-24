@@ -23,6 +23,7 @@
 #import "Settings.h"
 #import "AddressData.h"
 #import "PurchaseManager.h"
+#import "NetworkStatus.h"
 
 
 typedef enum
@@ -56,6 +57,7 @@ typedef enum
     BOOL          isLoadingAddress;
     NSPredicate*  addressesPredicate;
     NSIndexPath*  expiryIndexPath;
+    id            reachabilityObserver;
 }
 
 @end
@@ -107,15 +109,25 @@ typedef enum
     [super viewDidLoad];
 
     [self loadAddressesPredicate];
+
+    reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusReachableNotification
+                                                                             object:nil
+                                                                              queue:[NSOperationQueue mainQueue]
+                                                                         usingBlock:^(NSNotification* note)
+    {
+        if (addressesPredicate == nil && [note.userInfo[@"status"] boolValue])
+        {
+            [self loadAddressesPredicate];
+        }
+    }];
 }
 
 
-
-- (void)viewWillDisappear:(BOOL)animated
+- (void)dealloc
 {
-    [super viewWillDisappear:animated];
-
     [AddressesViewController cancelLoadingAddressPredicate];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
 }
 
 
