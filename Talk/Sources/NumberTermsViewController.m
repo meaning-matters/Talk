@@ -24,7 +24,7 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
 
 @property (nonatomic, copy) void (^completion)(void);
 @property (nonatomic, assign) NumberTerms agreedTerms;
-@property (nonatomic, assign) NumberTerms sections;
+@property (nonatomic, assign) NumberTerms rows;
 
 @end
 
@@ -36,8 +36,8 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
         _completion  = [completion copy];
-        _sections    = NumberTermPersonal | NumberTermSerious | NumberTermNoTelemarketing | NumberTermNoUnlawful | NumberTermAddressUpdate;
-        _agreedTerms = agreed ? _sections : 0;
+        _rows        = NumberTermPersonal | NumberTermSerious | NumberTermNoTelemarketing | NumberTermNoUnlawful | NumberTermAddressUpdate;
+        _agreedTerms = agreed ? _rows : 0;
     }
 
     return self;
@@ -49,71 +49,112 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
     [super viewDidLoad];
 
     [self setupFootnotesHandlingOnTableView:self.tableView];
+
+    if (!self.agreedTerms)
+    {
+        // Shown as modal.
+        UIBarButtonItem* barButtonItem;
+        barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                      target:self
+                                                                      action:@selector(agreeAllAction)];
+        self.navigationItem.rightBarButtonItem = barButtonItem;
+    }
+}
+
+
+- (void)agreeAllAction
+{
+    self.agreedTerms = self.rows;
+
+    [self.tableView reloadData];
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.333 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    {
+        self.completion();
+
+        [self.navigationController popViewControllerAnimated:YES];
+    });
 }
 
 
 #pragma mark - Table View Data Source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
-{
-    return [Common bitsSetCount:self.sections];
-}
-
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return [Common bitsSetCount:self.rows];
 }
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell* cell;
+    UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DefaultCell"];
+        cell.detailTextLabel.numberOfLines = 0;
+        cell.detailTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
     }
 
     BOOL selected;
-    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
+    switch ([Common nthBitSet:indexPath.row inValue:self.rows])
     {
         case NumberTermPersonal:
         {
             selected = (self.agreedTerms & NumberTermPersonal);
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                                    @"Person-to-person Only",
-                                                                    @"...");
+            cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
+                                                                          @"Personal Use Only",
+                                                                          @"...");
+            cell.detailTextLabel.text = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
+                                                                          @"Only regular voice calls. It's not "
+                                                                          @"allowed to buy a number for someone else.",
+                                                                          @"...");
             break;
         }
         case NumberTermSerious:
         {
             selected = (self.agreedTerms & NumberTermSerious);
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                                    @"Serious Use Only",
-                                                                    @"...");
+            cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
+                                                                          @"Respectful Use Only",
+                                                                          @"...");
+            cell.detailTextLabel.text = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
+                                                                          @"Don't use a Number for pranks, "
+                                                                          @"bullying people, or anything abusive.",
+                                                                          @"...");
             break;
         }
         case NumberTermNoTelemarketing:
         {
             selected = (self.agreedTerms & NumberTermNoTelemarketing);
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                                    @"No Telemarketing",
-                                                                    @"...");
+            cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
+                                                                          @"No Telemarketing",
+                                                                          @"...");
+            cell.detailTextLabel.text = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
+                                                                          @"It's not allowed to use a Number for "
+                                                                          @"telemarketing, call centers, or simular.",
+                                                                          @"...");
             break;
         }
         case NumberTermNoUnlawful:
         {
             selected = (self.agreedTerms & NumberTermNoUnlawful);
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                                    @"No Unlawful Use",
-                                                                    @"...");
+            cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
+                                                                          @"No Unlawful Use",
+                                                                          @"...");
+            cell.detailTextLabel.text = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
+                                                                          @"It's forbidden to use a Number for any "
+                                                                          @"unlawful purpose whatsoever.",
+                                                                          @"...");
             break;
         }
         case NumberTermAddressUpdate:
         {
             selected = (self.agreedTerms & NumberTermAddressUpdate);
-            cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                                    @"Keep Address Up-to-date",
-                                                                    @"...");
+            cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
+                                                                          @"Keep Information Up-to-date",
+                                                                          @"...");
+            cell.detailTextLabel.text = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
+                                                                          @"When you move or get a new ID, update your "
+                                                                          @"information within 2 weeks.",
+                                                                          @"...");
             break;
         }
     }
@@ -125,64 +166,12 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
 }
 
 
-- (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
+- (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    NSString* title = nil;
-
-    if (self.showFootnotes == NO)
-    {
-        return nil;
-    }
-
-    switch ([Common nthBitSet:section inValue:self.sections])
-    {
-        case NumberTermPersonal:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                      @"Numbers may not be used for any computer controlled "
-                                                      @"telephony services, including calling card services. ",
-                                                      @"...");
-            break;
-        }
-        case NumberTermSerious:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                      @"Number should only be used for serious ...",
-                                                      @"...");
-            break;
-        }
-        case NumberTermNoTelemarketing:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                      @"It's not allowed to use Numbers for telemarketing, "
-                                                      @"call centers, or simular applications that involve "
-                                                      @"reaching large numbers of people.",
-                                                      @"...");
-            break;
-        }
-        case NumberTermNoUnlawful:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                      @"It's forbidden to use a Number for any unlawful purpose "
-                                                      @"whatsoever, including but not limited to the transmission "
-                                                      @"of information or the offering of any service which is "
-                                                      @"contrary to any applicable law or regulation, abusive, "
-                                                      @"harmful, threatening, defamatory, pornographic or which "
-                                                      @"could be considered offensive in any other way.",
-                                                      @"...");
-            break;
-        }
-        case NumberTermAddressUpdate:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                      @"When you move, you'll make sure to submit your new address "
-                                                      @"used for this Number within 1 week.",
-                                                      @"...");
-            break;
-        }
-    }
-
-    return title;
+    return @"The above is a reminder of important rules from the Terms and Conditions, "
+           @"which you agreed to when becoming a NumberBay insider. They can be found "
+           @"from the About tab.\n\n"
+           @"We'll have to suspend the account of anyone breaking any of the rules.";
 }
 
 
@@ -196,37 +185,20 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
 
     cell.tintColor = [Skinning tintColor];
 
-    self.agreedTerms |= (1UL << indexPath.section);
+    self.agreedTerms |= (1UL << indexPath.row);
 
-    if (self.agreedTerms == self.sections)
+    if (self.agreedTerms == self.rows)
     {
-        NSString* title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                              @"Agreeing To Terms",
-                                                              @"....\n"
-                                                              @"[iOS alert title size].");
-        NSString* message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                              @"Thanks for agreeing to these terms. "
-                                                              @"Please be reminded that the full Terms and Conditions "
-                                                              @"text can be found from the About tab.\n\n"
-                                                              @"Do you understand that we'll have to suspend your "
-                                                              @"account when breaking any of these rules?",
-                                                              @"....\n"
-                                                              @"[iOS alert message size]");
+        self.completion();
 
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-        {
-            if (buttonIndex == 1)
-            {
-                self.completion();
-            }
-
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-                             cancelButtonTitle:[Strings cancelString]
-                             otherButtonTitles:[Strings yesString], nil];
+        [self.navigationController popViewControllerAnimated:YES];
     }
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 68.0;
 }
 
 @end

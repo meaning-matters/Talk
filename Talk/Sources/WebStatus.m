@@ -252,7 +252,7 @@
             }
             
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailInternetLogin", nil, [NSBundle mainBundle],
-                                                       @"The %@ connection appears to require you to login. ",
+                                                       @"The %@ connection seems to require you to login.",
                                                        @"Status text.\n"
                                                        @"[].");
             string = [NSString stringWithFormat:string, networkText];

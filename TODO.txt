@@ -215,3 +215,5 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Make sure that rejected Addresses are not showing up in filtered list and that they are marked (red?) in the main list (strikethrough is already used in the filtered list to indicate waiting for verification).
 
 * Replace viewDidDisappear with dealloc's in VC's that use this to cancel webAPI loads.
+
+* Something seems to take too long when trying to make a call when credit is very low 0.05 for example.
