@@ -271,9 +271,17 @@
             else
             {
                 title = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
-                                                          @"Select Address",
+                                                          @"Select %@ Address",
                                                           @"[1/4 line larger font].");
+                title = [NSString stringWithFormat:title, [AddressType localizedStringForAddressTypeMask:self.addressTypeMask]];
             }
+        }
+        else if (self.predicate != nil)
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
+                                                      @"Create %@ Address",
+                                                      @"[1/4 line larger font].");
+            title = [NSString stringWithFormat:title, [AddressType localizedStringForAddressTypeMask:self.addressTypeMask]];
         }
     }
 
@@ -291,7 +299,7 @@
     if (self.predicate == nil)
     {
         return NSLocalizedStringWithDefaultValue(@"Addresses List Title", nil, [NSBundle mainBundle],
-                                                 @"Supplying an address is legally required for using Numbers.",
+                                                 @"Supplying an Address is legally required for using Numbers.",
                                                  @"\n"
                                                  @"[ ].");
     }
@@ -506,14 +514,6 @@
     [self configureCell:cell onResultsController:self.fetchedAddressesController atIndexPath:indexPath];
     
     return cell;
-}
-
-
-- (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    AddressData* address = [self.fetchedAddressesController objectAtIndexPath:indexPath];
-
-    return address.numbers.count == 0;
 }
 
 

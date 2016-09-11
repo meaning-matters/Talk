@@ -22,6 +22,8 @@ typedef NS_ENUM(NSUInteger, AddressTypeMask)
 
 + (NSString*)stringForAddressTypeMask:(AddressTypeMask)mask;
 
++ (NSString*)localizedStringForAddressTypeMask:(AddressTypeMask)mask;
+
 + (AddressTypeMask)addressTypeMaskForString:(NSString*)string;
 
 @end

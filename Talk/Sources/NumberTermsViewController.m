@@ -84,6 +84,7 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
     return [Common bitsSetCount:self.rows];
 }
 
+
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];

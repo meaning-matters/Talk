@@ -40,6 +40,44 @@
 }
 
 
++ (NSString*)localizedStringForAddressTypeMask:(AddressTypeMask)mask
+{
+    switch (mask)
+    {
+        case AddressTypeWorldwideMask:
+        {
+            return NSLocalizedStringWithDefaultValue(@"AddressType Worldwide", nil, [NSBundle mainBundle],
+                                                     @"Worldwide",
+                                                     @"Terms used for an address that can be anywhere in the world");
+        }
+        case AddressTypeNationalMask:
+        {
+            return NSLocalizedStringWithDefaultValue(@"AddressType National", nil, [NSBundle mainBundle],
+                                                     @"National",
+                                                     @"Terms used for an address that has to be in a certain country");
+        }
+        case AddressTypeLocalMask:
+        {
+            return NSLocalizedStringWithDefaultValue(@"AddressType Local", nil, [NSBundle mainBundle],
+                                                     @"Local",
+                                                     @"Terms used for an address that has to be in a certain city");
+        }
+        case AddressTypeExtranational:
+        {
+            return NSLocalizedStringWithDefaultValue(@"AddressType Extranational", nil, [NSBundle mainBundle],
+                                                     @"Extranational",
+                                                     @"Terms used for an address has to be outside a certain country"
+                                                     @"(not so good, but shorter, alternative is 'Outside')");
+        }
+        default:
+        {
+            NBLog(@"Invalid AddressTypeMask.");
+            return @"";
+        }
+    }
+}
+
+
 + (AddressTypeMask)addressTypeMaskForString:(NSString*)string
 {
     AddressTypeMask mask;

@@ -2298,7 +2298,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                     @"Can't Delete Address",
                                                     @"...\n"
                                                     @"[1/3 line small font].");
-        title   = NSLocalizedStringWithDefaultValue(@"AddressView CantDeleteMessage", nil, [NSBundle mainBundle],
+        message = NSLocalizedStringWithDefaultValue(@"AddressView CantDeleteMessage", nil, [NSBundle mainBundle],
                                                     @"This Address can't be deleted because it's used by one or more Numbers.",
                                                     @"...\n"
                                                     @"[1/3 line small font].");
