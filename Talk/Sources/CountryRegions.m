@@ -130,7 +130,7 @@
         case CountryRegionAmericas:
         {
             abbreviation = NSLocalizedStringWithDefaultValue(@"CountryRegions AmericasAbbreviated", nil, [NSBundle mainBundle],
-                                                             @"Americ",
+                                                             @"Ameri",
                                                              @"Few character abbreviation of world region");
             break;
         }

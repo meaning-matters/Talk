@@ -16,6 +16,8 @@
 #import "Strings.h"
 #import "Common.h"
 #import "Skinning.h"
+#import "BadgeHandler.h"
+#import "AppDelegate.h"
 
 
 // Update reloadSections calls when adding/removing sections.
@@ -32,7 +34,7 @@ typedef enum
 @property (nonatomic, assign) float          amountCellHeight;
 @property (nonatomic, assign) float          buyCellHeight;
 @property (nonatomic, assign) BOOL           isLoadingCredit;
-@property (nonatomic, assign) BOOL           loadingcreditFailed;
+@property (nonatomic, assign) BOOL           loadingCreditFailed;
 @property (nonatomic, assign) BOOL           mustShowLoadingError;
 @property (nonatomic, strong) NSIndexPath*   amountIndexPath;
 @property (nonatomic, strong) CreditBuyCell* buyCell;
@@ -91,6 +93,12 @@ typedef enum
                                                   usingBlock:^(NSNotification* note)
     {
         [self updateBuyCell];
+        
+        [[AppDelegate appDelegate] checkCreditWithCompletion:^(BOOL success)
+        {
+            self.loadingCreditFailed = !success;
+            [self updateAmountCell:(CreditAmountCell*)[self.tableView cellForRowAtIndexPath:self.amountIndexPath]];
+        }];
     }];
 
     [self setupFootnotesHandlingOnTableView:self.tableView];
@@ -312,7 +320,7 @@ typedef enum
         if (error == nil)
         {
             [Settings sharedSettings].credit = credit;
-            self.loadingcreditFailed = NO;
+            self.loadingCreditFailed = NO;
         }
         else
         {
@@ -347,7 +355,7 @@ typedef enum
                 isShowingLoadingError = YES;
             }
 
-            self.loadingcreditFailed = YES;
+            self.loadingCreditFailed = YES;
         }
 
         self.isLoadingCredit = NO;
@@ -408,6 +416,11 @@ typedef enum
     {
         if (success == YES)
         {
+            // In AppDelegate it's defined that a credit less than half amount 1 gets a low level warning.
+            // Because the smallest amount bought here is 1, we can be sure it's okay to remove the warning,
+            // if that existed at all.
+            [[BadgeHandler sharedHandler] setBadgeCount:0 forViewController:self];
+
             [self updateAmountCell:(CreditAmountCell*)[self.tableView cellForRowAtIndexPath:self.amountIndexPath]];
         }
         else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
@@ -506,20 +519,24 @@ typedef enum
 
 - (void)updateAmountCell:(CreditAmountCell*)cell
 {
-    float     credit = [Settings sharedSettings].credit;
-    NSString* amount = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
+    float     credit      = [Settings sharedSettings].credit;
+    NSString* amount      = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
+    UIColor*  amountColor;
+
+    amountColor = [self isCreditLow] ? [Skinning deleteTintColor]
+                                     : (self.loadingCreditFailed ? [Skinning valueColor] : [Skinning tintColor]);
 
     cell.amountLabel.text      = amount;
     cell.amountLabel.alpha     = self.isLoadingCredit ? 0.5 : 1.0;
-    cell.amountLabel.textColor = self.loadingcreditFailed ? [Skinning deleteTintColor] : [Skinning tintColor];
-    cell.amountLabel.highlightedTextColor = cell.amountLabel.textColor;
+    cell.amountLabel.textColor = amountColor;
+    cell.amountLabel.highlightedTextColor = amountColor;
 
     cell.noteLabel.text        = NSLocalizedStringWithDefaultValue(@"BuyCredit ...", nil, [NSBundle mainBundle],
                                                                    @"not up-to-date",
                                                                    @"Alert title: Credit could not be bought.\n"
                                                                    @"[iOS alert title size].");
-    cell.noteLabel.alpha       = self.loadingcreditFailed ? 1.0f : 0.0f;
-    cell.noteLabel.textColor   = [Skinning deleteTintColor];
+    cell.noteLabel.alpha       = self.loadingCreditFailed ? 1.0f : 0.0f;
+    cell.noteLabel.textColor   = [Skinning placeholderColor];
 
     if (self.isLoadingCredit == YES)
     {
@@ -552,6 +569,12 @@ typedef enum
         button.userInteractionEnabled = (self.buyAmount == 0);
         (amount == self.buyAmount) ? [indicator startAnimating] : [indicator stopAnimating];
     }
+}
+
+
+- (BOOL)isCreditLow
+{
+    return ([[BadgeHandler sharedHandler] badgeCountForViewController:self] != 0);
 }
 
 @end

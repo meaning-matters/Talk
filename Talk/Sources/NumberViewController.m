@@ -557,9 +557,9 @@ typedef enum
 
 - (void)updateDestinationCell:(UITableViewCell*)cell
 {
-    cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number Destination", nil,
-                                                                  [NSBundle mainBundle], @"Destination",
-                                                                  @"....");
+    cell.textLabel.text            = NSLocalizedStringWithDefaultValue(@"Number Destination", nil, [NSBundle mainBundle],
+                                                                       @"Destination",
+                                                                       @"....");
     cell.textLabel.textColor       = [UIColor blackColor];
     cell.detailTextLabel.text      = (number.destination == nil) ? [Strings noneString]       : number.destination.name;
     cell.detailTextLabel.textColor = (number.destination == nil) ? [Skinning deleteTintColor] : [Skinning valueColor];

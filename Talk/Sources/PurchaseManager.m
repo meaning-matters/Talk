@@ -810,6 +810,15 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
 }
 
 
+- (float)priceForCreditAmount:(int)amount
+{
+    NSString*  identifier = [self productIdentifierForCreditAmount:amount];
+    SKProduct* product    = [self productForProductIdentifier:identifier];
+
+    return [product.price floatValue];
+}
+
+
 - (void)restoreAccount:(void (^)(BOOL success, id object))completion
 {
     AnalysticsTrace(@"restoreAccount");

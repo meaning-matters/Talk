@@ -17,6 +17,8 @@
 
 - (void)setBadgeCount:(NSUInteger)count forViewController:(UIViewController*)viewController;
 
+- (NSUInteger)badgeCountForViewController:(UIViewController*)viewController;
+
 - (void)hideBadges;
 
 - (void)showBadges;

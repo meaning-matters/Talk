@@ -113,6 +113,12 @@
 }
 
 
+- (NSUInteger)badgeCountForViewController:(UIViewController*)viewController
+{
+    return [[self.viewControllerCounts objectForKey:viewController] integerValue];
+}
+
+
 - (void)update
 {
     [self updateMoreBadgeCount];

@@ -152,8 +152,8 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 
-    // Tell iOS we would like to get a background fetch daily.
-    [application setMinimumBackgroundFetchInterval:(3600 * 24)];
+    // Tell iOS we would like to get a background fetch.
+    [application setMinimumBackgroundFetchInterval:(1 * 3600)];
 
 /*#####
     UILocalNotification *notification = [[UILocalNotification alloc] init];
@@ -161,6 +161,12 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     [notification setAlertBody:@"Hello world"];
     [notification setFireDate:[NSDate dateWithTimeIntervalSinceNow:10]];
     [application setScheduledLocalNotifications:[NSArray arrayWithObject:notification]];
+ 
+    // From StackOverflow:
+    UIApplication* objApp = [UIApplication sharedApplication];
+    NSArray*    oldNotifications = [objApp scheduledLocalNotifications];
+    if ([oldNotifications count] > 0)
+        [objApp cancelAllLocalNotifications];
 */
 
     return YES;
@@ -222,7 +228,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 {
     AnalysticsTrace(@"applicationDidBecomeActive");
 
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [self checkCreditWithCompletion:nil];
 }
 
 
@@ -296,12 +302,17 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 - (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-    [[WebClient sharedClient] retrieveCreditWithReply:^(NSError* error, float credit)
+    if ([Settings sharedSettings].haveAccount == NO)
     {
-        if (error == nil)
-        {
-            [Settings sharedSettings].credit = credit;
+        completionHandler(UIBackgroundFetchResultNoData);
 
+        return;
+    }
+
+    [self checkCreditWithCompletion:^(BOOL success)
+    {
+        if (success)
+        {
             [[DataManager sharedManager] synchronizeAll:^(NSError *error)
             {
                 completionHandler((error == nil) ? UIBackgroundFetchResultNewData : UIBackgroundFetchResultFailed);
@@ -310,6 +321,33 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
         else
         {
             completionHandler(UIBackgroundFetchResultFailed);
+        }
+    }];
+}
+
+
+- (void)checkCreditWithCompletion:(void (^)(BOOL success))completion
+{
+    [[WebClient sharedClient] retrieveCreditWithReply:^(NSError* error, float credit)
+    {
+        if (error == nil)
+        {
+            [Settings sharedSettings].credit = credit;
+
+            [[PurchaseManager sharedManager] loadProducts:^(BOOL success)
+            {
+                if (success)
+                {
+                    NSUInteger count = (credit < [[PurchaseManager sharedManager] priceForCreditAmount:1] / 2.0f) ? 1 : 0;
+                    [[BadgeHandler sharedHandler] setBadgeCount:count forViewController:self.creditViewController];
+                }
+
+                completion ? completion(success) : 0;
+            }];
+        }
+        else
+        {
+            completion ? completion(NO) : 0;
         }
     }];
 }
