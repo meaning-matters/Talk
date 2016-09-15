@@ -264,6 +264,19 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
     {
         return ((SKProduct*)self.products[0]).priceLocale;
     }
+    else if ([Settings sharedSettings].storeCurrencyCode.length > 0 &&
+             [Settings sharedSettings].storeCountryCode.length > 0)
+    {
+        // This covers the case when products have not been loaded yet.
+        // Occurs when starting app without internet for example. Current
+        // locale is a good guess, but sometimes people have an account in
+        // another currency.
+        NSDictionary* components = @{ NSLocaleCurrencyCode: [Settings sharedSettings].storeCurrencyCode,
+                                      NSLocaleCountryCode:  [Settings sharedSettings].storeCountryCode };
+        NSString*     identifier = [NSLocale localeIdentifierFromComponents:components];
+
+        return [[NSLocale alloc] initWithLocaleIdentifier:identifier];
+    }
     else
     {
         return [NSLocale currentLocale];
