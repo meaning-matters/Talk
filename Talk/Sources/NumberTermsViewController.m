@@ -52,12 +52,19 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
 
     if (!self.agreedTerms)
     {
-        // Shown as modal.
-        UIBarButtonItem* barButtonItem;
-        barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                      target:self
-                                                                      action:@selector(agreeAllAction)];
-        self.navigationItem.rightBarButtonItem = barButtonItem;
+        UIButton* button         = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
+        UIImage*  normalImage    = [Common maskedImageNamed:@"Checkmark" color:[Skinning tintColor]];
+        UIImage*  highlightImage = [Common maskedImageNamed:@"Checkmark" color:[Skinning placeholderColor]];
+
+        [button setImage:normalImage    forState:UIControlStateNormal];
+        [button setImage:highlightImage forState:UIControlStateHighlighted];
+
+        button.imageEdgeInsets       = UIEdgeInsetsMake(10, 20, 10, 0);
+        button.imageView.contentMode = UIViewContentModeScaleAspectFit;
+
+        [button addTarget:self action:@selector(agreeAllAction) forControlEvents:UIControlEventAllEvents];
+
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     }
 }
 
@@ -106,7 +113,7 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
                                                                           @"...");
             cell.detailTextLabel.text = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
                                                                           @"Only regular voice calls. It's not "
-                                                                          @"allowed to buy a number for someone else.",
+                                                                          @"allowed to buy a Number for someone else.",
                                                                           @"...");
             break;
         }
@@ -126,7 +133,7 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
         {
             selected = (self.agreedTerms & NumberTermNoTelemarketing);
             cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                                          @"No Telemarketing",
+                                                                          @"Small Scale Use Only",
                                                                           @"...");
             cell.detailTextLabel.text = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
                                                                           @"It's not allowed to use a Number for "
@@ -199,7 +206,7 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 68.0;
+    return 75.0;
 }
 
 @end
