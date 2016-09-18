@@ -133,7 +133,7 @@ static const NSInteger CommonUseButtonTag     =  123;
 
 + (UIImage*)maskedImageNamed:(NSString*)name color:(UIColor*)color;
 
-+ (UIImage *)gradientImageNamed:(NSString*)name startColor:(UIColor*)startColor endColor:(UIColor*)endColor;
++ (UIImage*)gradientImageNamed:(NSString*)name startColor:(UIColor*)startColor endColor:(UIColor*)endColor;
 
 + (void)addCountryImageToCell:(UITableViewCell*)cell isoCountryCode:(NSString*)isoCountryCode;
 
