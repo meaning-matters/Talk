@@ -147,6 +147,8 @@
 		4837BB66165F726400E46C36 /* BlockAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB65165F726300E46C36 /* BlockAlertView.m */; };
 		4837BB67165F726400E46C36 /* BlockAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB65165F726300E46C36 /* BlockAlertView.m */; };
 		483B078F1908017900E8C42D /* Terms.json in Resources */ = {isa = PBXBuildFile; fileRef = 483B078E1908017900E8C42D /* Terms.json */; };
+		483F23AF1D8F1969009AFA98 /* Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483F23AE1D8F1969009AFA98 /* Checkmark@2x.png */; };
+		483F23B81D8F2AD7009AFA98 /* Checkmark@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483F23B71D8F2AD7009AFA98 /* Checkmark@3x.png */; };
 		4842D9EA1AADFB00008F35C9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4842D9EC1AADFB00008F35C9 /* Localizable.strings */; };
 		4842D9F91AADFB53008F35C9 /* deleteButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 4842D9ED1AADFB53008F35C9 /* deleteButton.png */; };
 		4842D9FA1AADFB53008F35C9 /* editPhotoBottomBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 4842D9EE1AADFB53008F35C9 /* editPhotoBottomBar.png */; };
@@ -842,6 +844,8 @@
 		4837BB64165F726300E46C36 /* BlockAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockAlertView.h; sourceTree = "<group>"; };
 		4837BB65165F726300E46C36 /* BlockAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockAlertView.m; sourceTree = "<group>"; };
 		483B078E1908017900E8C42D /* Terms.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Terms.json; path = Resources/Terms.json; sourceTree = "<group>"; };
+		483F23AE1D8F1969009AFA98 /* Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Checkmark@2x.png"; sourceTree = "<group>"; };
+		483F23B71D8F2AD7009AFA98 /* Checkmark@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Checkmark@3x.png"; sourceTree = "<group>"; };
 		4842D9EB1AADFB00008F35C9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4842D9ED1AADFB53008F35C9 /* deleteButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = deleteButton.png; path = External/NBAddressBook/NBAddressBook/NBAddressBook/deleteButton.png; sourceTree = SOURCE_ROOT; };
 		4842D9EE1AADFB53008F35C9 /* editPhotoBottomBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = editPhotoBottomBar.png; path = External/NBAddressBook/NBAddressBook/NBAddressBook/editPhotoBottomBar.png; sourceTree = SOURCE_ROOT; };
@@ -1829,6 +1833,8 @@
 		483679ED1722F2CF001A02AF /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				483F23AE1D8F1969009AFA98 /* Checkmark@2x.png */,
+				483F23B71D8F2AD7009AFA98 /* Checkmark@3x.png */,
 				483679FE17247B2B001A02AF /* CueForwardBlack@2x.png */,
 				48367A0017247B2B001A02AF /* CueForwardWhite@2x.png */,
 				48367A0217247B2B001A02AF /* CuePauseBlack@2x.png */,
@@ -2829,6 +2835,7 @@
 				485F6AE01637270100D61365 /* GL@2x.png in Resources */,
 				48B813371AADF8E30019AF77 /* NBPeopleListView.xib in Resources */,
 				485F6AE21637270100D61365 /* GM@2x.png in Resources */,
+				483F23AF1D8F1969009AFA98 /* Checkmark@2x.png in Resources */,
 				485F6AE41637270100D61365 /* GN@2x.png in Resources */,
 				485F6AE61637270100D61365 /* GP@2x.png in Resources */,
 				485F6AE81637270100D61365 /* GQ@2x.png in Resources */,
@@ -3005,6 +3012,7 @@
 				485F6C0E1637270100D61365 /* UZ@2x.png in Resources */,
 				485F6C101637270100D61365 /* VA@2x.png in Resources */,
 				485F6C121637270100D61365 /* VC@2x.png in Resources */,
+				483F23B81D8F2AD7009AFA98 /* Checkmark@3x.png in Resources */,
 				485F6C141637270100D61365 /* VE@2x.png in Resources */,
 				485F6C161637270100D61365 /* VG@2x.png in Resources */,
 				485F6C181637270100D61365 /* VI@2x.png in Resources */,
