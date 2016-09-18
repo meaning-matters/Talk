@@ -5,6 +5,8 @@
 //  Created by Cornelis van der Bent on 13/03/16.
 //  Copyright © 2016 NumberBay Ltd. All rights reserved.
 //
+//  Address updates are stored in Settings in order to remember which updates
+//  have been seen by the user.
 
 #import "AddressUpdatesHandler.h"
 #import "AppDelegate.h"

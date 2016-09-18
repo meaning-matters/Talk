@@ -179,7 +179,7 @@
 {
     NSCalendar*       calendar    = [NSCalendar currentCalendar];
     NSDateComponents* components  = [NSDateComponents new];
-    components.weekOfYear         = -1;
+    components.weekOfYear         = -1; //### Does this work first week of the year?
     NSDate*           weekAgoDate = [calendar dateByAddingComponents:components toDate:[NSDate date] options:0];
 
     // Clear all the old objects
