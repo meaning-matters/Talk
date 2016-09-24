@@ -23,6 +23,8 @@
 
 - (void)cancelAction;
 
+- (UIViewController*)backViewController;
+
 // Must be overriden by subclass.
 - (void)save;
 

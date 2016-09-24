@@ -145,4 +145,6 @@
 
 + (NSString*)internetString;
 
++ (NSString*)noDestinationWarning;
+
 @end

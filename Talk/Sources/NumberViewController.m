@@ -10,6 +10,7 @@
 #import "NumberDestinationsViewController.h"
 #import "IncomingChargesViewController.h"
 #import "NumberExtendViewController.h"
+#import "NumbersViewController.h"
 #import "Common.h"
 #import "PhoneNumber.h"
 #import "CountryNames.h"
@@ -122,6 +123,15 @@ typedef enum
             [weakSelf loadAddressesPredicate];
         }
     }];
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    NumbersViewController* numbersViewController = (NumbersViewController*)[self backViewController];
+    [numbersViewController updateBadgeValue];
 }
 
 
@@ -281,11 +291,39 @@ typedef enum
         }
         case TableSectionUsage:
         {
-            [Settings sharedSettings].callerIdE164 = number.e164;
+            if (number.destination == nil)
+            {
+                NSString* title;
+                NSString* message;
 
-            UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                title   = NSLocalizedStringWithDefaultValue(@"Number NoDestinationTitle", nil,
+                                                            [NSBundle mainBundle], @"Destination Not Selected",
+                                                            @"....\n"
+                                                            @"[iOS alert title size].");
+                message = NSLocalizedStringWithDefaultValue(@"Number NoDestinationMessage", nil,
+                                                            [NSBundle mainBundle],
+                                                            @"Before you can use this Number as caller ID, you "
+                                                            @"must first select a Destination for incoming calls.\n\n%@",
+                                                            @"...\n"
+                                                            @"[iOS alert message size]");
+                message = [NSString stringWithFormat:message, [Strings noDestinationWarning]];
+                [BlockAlertView showAlertViewWithTitle:title
+                                               message:message
+                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                {
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                }
+                                     cancelButtonTitle:[Strings closeString]
+                                     otherButtonTitles:nil];
+            }
+            else
+            {
+                [Settings sharedSettings].callerIdE164 = number.e164;
+
+                UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            }
             break;
         }
         case TableSectionPeriod:

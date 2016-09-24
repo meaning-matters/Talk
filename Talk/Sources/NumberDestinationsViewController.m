@@ -222,7 +222,33 @@
 
 - (void)deleteAction
 {
-    [self setDestination:nil atIndexPath:nil];
+    if ([[Settings sharedSettings].callerIdE164 isEqualToString:number.e164])
+    {
+        NSString* title;
+        NSString* message;
+
+        title   = NSLocalizedStringWithDefaultValue(@"Number UsedAsDefaultIdTitle", nil,
+                                                    [NSBundle mainBundle], @"Used As Default Caller ID",
+                                                    @"....\n"
+                                                    @"[iOS alert title size].");
+        message = NSLocalizedStringWithDefaultValue(@"Number UsedAsDefaultIdMessage", nil,
+                                                    [NSBundle mainBundle],
+                                                    @"Before you can disconnect this number by clearing its "
+                                                    @"Destination, you must first select one of your other "
+                                                    @"Numbers or Phones as default caller ID.\n\n%@",
+                                                    @"...\n"
+                                                    @"[iOS alert message size]");
+        message = [NSString stringWithFormat:message, [Strings noDestinationWarning]];
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+    }
+    else
+    {
+        [self setDestination:nil atIndexPath:nil];
+    }
 }
 
 @end

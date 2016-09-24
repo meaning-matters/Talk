@@ -614,4 +614,14 @@
                                              @"[...");
 }
 
+
++ (NSString*)noDestinationWarning
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings NoDestinationWarning", nil, [NSBundle mainBundle],
+                                             @"Otherwise people you call will see this Number, but "
+                                             @"can't reach you because it's disconnected.",
+                                             @"...\n"
+                                             @"[...");
+}
+
 @end
