@@ -155,7 +155,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     // Tell iOS we would like to get a background fetch.
     [application setMinimumBackgroundFetchInterval:(1 * 3600)];
 
-    [self refreshNumberExpityBadges];
+    [self refreshNumberExpiryBadges];
 /*#####
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     notification.repeatInterval = NSCalendarUnitDay;
@@ -174,7 +174,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 }
 
 
-- (void)refreshNumberExpityBadges
+- (void)refreshNumberExpiryBadges
 {
     NSPredicate* oneDayPredicate   = [[NSPredicate alloc] init]; //### Expiry in less than a day.
     NSArray*     oneDayNumbers     = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
