@@ -341,18 +341,16 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
         }
     }
 
-    int position = 0;
-    
-    if (isCallerId)
-    {
-        UIButton* button = [Common addUseButtonWithText:callerIdText toCell:cell atPosition:position++];
-        [button addTarget:[Common class] action:@selector(showCallerIdAlert) forControlEvents:UIControlEventTouchUpInside];
-    }
-
     if (isCallback)
     {
-        UIButton* button = [Common addUseButtonWithText:callbackText toCell:cell atPosition:position++];
+        UIButton* button = [Common addUseButtonWithText:callbackText toCell:cell atPosition:0];
         [button addTarget:[Common class] action:@selector(showCallbackAlert) forControlEvents:UIControlEventTouchUpInside];
+    }
+
+    if (isCallerId)
+    {
+        UIButton* button = [Common addUseButtonWithText:callerIdText toCell:cell atPosition:1];
+        [button addTarget:[Common class] action:@selector(showCallerIdAlert) forControlEvents:UIControlEventTouchUpInside];
     }
 }
 

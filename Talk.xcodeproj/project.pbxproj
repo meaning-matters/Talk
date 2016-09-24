@@ -179,6 +179,7 @@
 		484D937117131E97006FA875 /* AddressPostcodesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936F17131E97006FA875 /* AddressPostcodesViewController.m */; };
 		484F7C3B164C15770059A5A6 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3A164C15770059A5A6 /* CoreTelephony.framework */; };
 		484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */; };
+		4856E5E91D96D796001F141F /* BadgeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4856E5E81D96D796001F141F /* BadgeCell.m */; };
 		485A608918D768880055C176 /* GetStartedLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 485A608818D768880055C176 /* GetStartedLogo.png */; };
 		485A609018D771F60055C176 /* GetStarted1.png in Resources */ = {isa = PBXBuildFile; fileRef = 485A608F18D771F60055C176 /* GetStarted1.png */; };
 		485A609218D7AEC50055C176 /* GetStarted2.png in Resources */ = {isa = PBXBuildFile; fileRef = 485A609118D7AEC50055C176 /* GetStarted2.png */; };
@@ -885,6 +886,8 @@
 		484D936F17131E97006FA875 /* AddressPostcodesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressPostcodesViewController.m; sourceTree = "<group>"; };
 		484F7C3A164C15770059A5A6 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		4856E5E71D96D796001F141F /* BadgeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeCell.h; sourceTree = "<group>"; };
+		4856E5E81D96D796001F141F /* BadgeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeCell.m; sourceTree = "<group>"; };
 		485A608818D768880055C176 /* GetStartedLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStartedLogo.png; sourceTree = "<group>"; };
 		485A608F18D771F60055C176 /* GetStarted1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted1.png; sourceTree = "<group>"; };
 		485A609118D7AEC50055C176 /* GetStarted2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted2.png; sourceTree = "<group>"; };
@@ -1953,6 +1956,8 @@
 				4849436C17529DE100E1D5C4 /* ShareButton.m */,
 				4822B4281C92EB7C004BD2F5 /* TabBadgeView.h */,
 				4822B4291C92EB7C004BD2F5 /* TabBadgeView.m */,
+				4856E5E71D96D796001F141F /* BadgeCell.h */,
+				4856E5E81D96D796001F141F /* BadgeCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -3319,6 +3324,7 @@
 				4822B4321C9615FB004BD2F5 /* AddressUpdatesHandler.m in Sources */,
 				4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */,
 				484943AD1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
+				4856E5E91D96D796001F141F /* BadgeCell.m in Sources */,
 				48ADE7D2185C67EC00E39DA2 /* PhoneData.m in Sources */,
 				4865A9DF1792C8B70028785F /* NumberPayCell.m in Sources */,
 				4837AF6A18D9B6EC00D3AEBC /* GetStartedRestoreViewController.m in Sources */,

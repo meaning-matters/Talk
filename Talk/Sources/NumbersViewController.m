@@ -22,6 +22,7 @@
 #import "BadgeHandler.h"
 #import "AddressUpdatesHandler.h"
 #import "CellBadgeView.h"
+#import "BadgeCell.h"
 
 typedef NS_ENUM(NSUInteger, TableSections)
 {
@@ -82,7 +83,13 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (void)updateBadgeValue
 {
-    NSUInteger count = [[AddressUpdatesHandler sharedHandler] addressUpdatesCount];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"destination == nil"];
+    NSArray*     unconnectedNumbers = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
+                                                                                sortKeys:nil
+                                                                               predicate:predicate
+                                                                    managedObjectContext:nil];
+
+    NSUInteger count = [[AddressUpdatesHandler sharedHandler] addressUpdatesCount] + unconnectedNumbers.count;
     [[BadgeHandler sharedHandler] setBadgeCount:count forViewController:self];
 }
 
@@ -279,7 +286,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
             cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
             if (cell == nil)
             {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DefaultCell"];
+                cell = [[BadgeCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DefaultCell"];
             }
 
             break;
@@ -330,7 +337,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 }
 
 
-- (void)configureCell:(UITableViewCell*)cell
+- (void)configureCell:(BadgeCell*)cell
   onResultsController:(NSFetchedResultsController*)controller
           atIndexPath:(NSIndexPath*)indexPath
 {
@@ -343,6 +350,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
         cell.detailTextLabel.text = [phoneNumber internationalFormat];
         cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
 
+        cell.badgeCount = (number.destination == nil) ? 1 : 0;
+
         [self addUseButtonWithNumber:number toCell:cell];
     }
 }
@@ -350,7 +359,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 #pragma mark - Helpers
 
-- (void)addUseButtonWithNumber:(NumberData*)number toCell:(UITableViewCell*)cell
+- (void)addUseButtonWithNumber:(NumberData*)number toCell:(BadgeCell*)cell
 {
     BOOL      isCallerId   = [number.e164 isEqualToString:[Settings sharedSettings].callerIdE164];
     NSString* callerIdText = NSLocalizedStringWithDefaultValue(@"Numbers ...", nil, [NSBundle mainBundle],
@@ -366,7 +375,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
     if (isCallerId)
     {
-        UIButton* button = [Common addUseButtonWithText:callerIdText toCell:cell atPosition:0];
+        UIButton* button   = [Common addUseButtonWithText:callerIdText toCell:cell atPosition:1];
         [button addTarget:[Common class] action:@selector(showCallerIdAlert) forControlEvents:UIControlEventTouchUpInside];
     }
 }

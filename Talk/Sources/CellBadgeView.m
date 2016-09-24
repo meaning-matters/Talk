@@ -61,7 +61,8 @@ const NSInteger CellBadgeTag     = 777;
     if (badgeView == nil)
     {
         badgeView = [[CellBadgeView alloc] init];
-        badgeView.frame = CGRectMake(CellBadgeXOffset, (cell.contentView.frame.size.height - CellBadgeHeight) / 2.0f, CellBadgeWidth, CellBadgeHeight);
+        badgeView.frame = CGRectMake(CellBadgeXOffset, (cell.contentView.frame.size.height - CellBadgeHeight) / 2.0f,
+                                     CellBadgeWidth, CellBadgeHeight);
         [cell.contentView addSubview:badgeView];
     }
 
