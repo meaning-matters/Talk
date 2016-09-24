@@ -39,7 +39,10 @@ static NSString* defaultIsoCountryCode = @"";
 
 + (NSString*)stripNumber:(NSString*)number
 {
-    NSCharacterSet* stripSet = [NSCharacterSet characterSetWithCharactersInString:@"()-. \u00a0\t\n\r"];
+    // The Unicode characters stripped here are two characters ofted added by WhatsApp:
+    // 'left-to-right embedding', 'pop-directional-formatting', and the 'no-break space'
+    // this app uses during editing of textfields.
+    NSCharacterSet* stripSet = [NSCharacterSet characterSetWithCharactersInString:@"()-. \u202a\u202c\u00a0\t\n\r"];
 
     return [[number componentsSeparatedByCharactersInSet:stripSet] componentsJoinedByString:@""];
 }
