@@ -2672,6 +2672,14 @@
 				TargetAttributes = {
 					48884A6F1615CE920005AA79 = {
 						DevelopmentTeam = K68747FJ6J;
+						SystemCapabilities = {
+							com.apple.DataProtection = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};

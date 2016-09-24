@@ -265,6 +265,12 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 }
 
 
+#pragma mark - Remote Notifications
+// Some old methods are used below.  We don't support Remote Notification's Background Mode
+// yet; this new feature allows the app to be brought from suspended to background, see:
+// http://samwize.com/2015/08/07/how-to-handle-remote-notification-with-background-mode-enabled/
+// This option can be set Talk.xcodeproj > target Talk > Capabilities > Background Modes.
+
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)token
 {
     AnalysticsTrace(@"didRegisterForRemoteNotificationsWithDeviceToken");
@@ -325,6 +331,8 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 }
 
 
+#pragma mark - Background Fetch
+
 - (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     if ([Settings sharedSettings].haveAccount == NO)
@@ -350,6 +358,8 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     }];
 }
 
+
+#pragma mark - Helpers
 
 - (void)checkCreditWithCompletion:(void (^)(BOOL success))completion
 {
@@ -414,6 +424,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
+
 
 #pragma mark - General & TabBar Delegate & More Navigation Delegate
 
