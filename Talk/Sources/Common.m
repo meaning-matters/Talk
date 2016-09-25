@@ -1606,7 +1606,7 @@ static Common* sharedCommon;
     {
         message = NSLocalizedStringWithDefaultValue(@"Number CantBeDisconnectedMessageD", nil, [NSBundle mainBundle],
                                                     @"Before you can clear this Number's Destination, first select "
-                                                    @"anther Number or Phone as caller ID for the contact "
+                                                    @"another Number or Phone as caller ID for the contact "
                                                     @"that uses this Number.\n\n%@",
                                                     @"...\n"
                                                     @"[iOS alert message size]");
