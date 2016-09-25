@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "AppDelegate.h"
 
+@class NumberData;
 
 // http://stackoverflow.com/questions/3172794/scope-bar-for-uitableview-like-app-store
 #define UndocumentedSearchScopeBarSegmentedControlStyle 7
@@ -171,5 +172,9 @@ static const NSInteger CommonUseButtonTag     =  123;
 + (void)showCallbackAlert;
 
 + (void)showCallerIdAlert;
+
++ (void)checkDisconnectionOfNumber:(NumberData*)number completion:(void (^)(BOOL canDisconnect))completion;
+
++ (void)checkCallerIdUsageOfNumber:(NumberData *)number completion:(void (^)(BOOL canUse))completion;
 
 @end

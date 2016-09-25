@@ -291,39 +291,21 @@ typedef enum
         }
         case TableSectionUsage:
         {
-            if (number.destination == nil)
+            [Common checkCallerIdUsageOfNumber:number completion:^(BOOL canUse)
             {
-                NSString* title;
-                NSString* message;
+                if (canUse)
+                {
+                    [Settings sharedSettings].callerIdE164 = number.e164;
 
-                title   = NSLocalizedStringWithDefaultValue(@"Number NoDestinationTitle", nil,
-                                                            [NSBundle mainBundle], @"Destination Not Selected",
-                                                            @"....\n"
-                                                            @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"Number NoDestinationMessage", nil,
-                                                            [NSBundle mainBundle],
-                                                            @"Before you can use this Number as caller ID, you "
-                                                            @"must first select a Destination for incoming calls.\n\n%@",
-                                                            @"...\n"
-                                                            @"[iOS alert message size]");
-                message = [NSString stringWithFormat:message, [Strings noDestinationWarning]];
-                [BlockAlertView showAlertViewWithTitle:title
-                                               message:message
-                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                }
+                else
                 {
                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                 }
-                                     cancelButtonTitle:[Strings closeString]
-                                     otherButtonTitles:nil];
-            }
-            else
-            {
-                [Settings sharedSettings].callerIdE164 = number.e164;
-
-                UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-                cell.accessoryType = UITableViewCellAccessoryCheckmark;
-                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-            }
+            }];
             break;
         }
         case TableSectionPeriod:

@@ -14,6 +14,7 @@
 #import "WebClient.h"
 #import "BlockAlertView.h"
 #import "Settings.h"
+#import "Common.h"
 
 
 @interface NumberDestinationsViewController ()
@@ -49,7 +50,7 @@
                                                                          withSortKeys:@[@"name"]
                                                                  managedObjectContext:nil];
 
-    if ([self tableView:self.tableView numberOfRowsInSection:0] > 0)
+    if (number.destination != nil)
     {
         UIBarButtonItem* item;
         item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
@@ -222,33 +223,13 @@
 
 - (void)deleteAction
 {
-    if ([[Settings sharedSettings].callerIdE164 isEqualToString:number.e164])
+    [Common checkDisconnectionOfNumber:number completion:^(BOOL canDisconnect)
     {
-        NSString* title;
-        NSString* message;
-
-        title   = NSLocalizedStringWithDefaultValue(@"Number UsedAsDefaultIdTitle", nil,
-                                                    [NSBundle mainBundle], @"Used As Default Caller ID",
-                                                    @"....\n"
-                                                    @"[iOS alert title size].");
-        message = NSLocalizedStringWithDefaultValue(@"Number UsedAsDefaultIdMessage", nil,
-                                                    [NSBundle mainBundle],
-                                                    @"Before you can disconnect this number by clearing its "
-                                                    @"Destination, you must first select one of your other "
-                                                    @"Numbers or Phones as default caller ID.\n\n%@",
-                                                    @"...\n"
-                                                    @"[iOS alert message size]");
-        message = [NSString stringWithFormat:message, [Strings noDestinationWarning]];
-        [BlockAlertView showAlertViewWithTitle:title
-                                       message:message
-                                    completion:nil
-                             cancelButtonTitle:[Strings closeString]
-                             otherButtonTitles:nil];
-    }
-    else
-    {
-        [self setDestination:nil atIndexPath:nil];
-    }
+        if (canDisconnect)
+        {
+            [self setDestination:nil atIndexPath:nil];
+        }
+    }];
 }
 
 @end

@@ -20,6 +20,7 @@
 #import "GetStartedViewController.h"
 #import "WebClient.h"
 #import "PurchaseManager.h"
+#import "NumberData.h"
 
 
 @interface Common ()
@@ -1560,6 +1561,124 @@ static Common* sharedCommon;
                                 completion:nil
                          cancelButtonTitle:[Strings closeString]
                          otherButtonTitles:nil];
+}
+
+
++ (void)checkDisconnectionOfNumber:(NumberData*)number completion:(void (^)(BOOL canDisconnect))completion
+{
+    NSString* message = nil;
+
+    if ([[Settings sharedSettings].callerIdE164 isEqualToString:number.e164] && number.callerIds.count == 0)
+    {
+        message = NSLocalizedStringWithDefaultValue(@"Number CantBeDisconnectedMessageA", nil, [NSBundle mainBundle],
+                                                    @"Before you can clear this number's Destination, first select "
+                                                    @"another Number or Phone as default caller ID.\n\n%@",
+                                                    @"...\n"
+                                                    @"[iOS alert message size]");
+        message = [NSString stringWithFormat:message, [Strings noDestinationWarning]];
+    }
+
+    if ([[Settings sharedSettings].callerIdE164 isEqualToString:number.e164] && number.callerIds.count == 1)
+    {
+        message = NSLocalizedStringWithDefaultValue(@"Number CantBeDisconnectedMessageB", nil, [NSBundle mainBundle],
+                                                    @"Before you can clear this Number's Destination, first select "
+                                                    @"another Number or Phone as default caller ID, and "
+                                                    @"select another caller ID for the contact that uses this "
+                                                    @"Number.\n\n%@",
+                                                    @"...\n"
+                                                    @"[iOS alert message size]");
+        message = [NSString stringWithFormat:message, [Strings noDestinationWarning]];
+    }
+
+    if ([[Settings sharedSettings].callerIdE164 isEqualToString:number.e164] && number.callerIds.count > 1)
+    {
+        message = NSLocalizedStringWithDefaultValue(@"Number CantBeDisconnectedMessageC", nil, [NSBundle mainBundle],
+                                                    @"Before you can clear this Number's Destination, first select "
+                                                    @"another Number or Phone as default caller ID, and "
+                                                    @"select another caller ID for the %d contacts that use this "
+                                                    @"Number.\n\n%@",
+                                                    @"...\n"
+                                                    @"[iOS alert message size]");
+        message = [NSString stringWithFormat:message, number.callerIds.count, [Strings noDestinationWarning]];
+    }
+    
+    if (![[Settings sharedSettings].callerIdE164 isEqualToString:number.e164] && number.callerIds.count == 1)
+    {
+        message = NSLocalizedStringWithDefaultValue(@"Number CantBeDisconnectedMessageD", nil, [NSBundle mainBundle],
+                                                    @"Before you can clear this Number's Destination, first select "
+                                                    @"anther Number or Phone as caller ID for the contact "
+                                                    @"that uses this Number.\n\n%@",
+                                                    @"...\n"
+                                                    @"[iOS alert message size]");
+        message = [NSString stringWithFormat:message, [Strings noDestinationWarning]];
+    }
+
+    if (![[Settings sharedSettings].callerIdE164 isEqualToString:number.e164] && number.callerIds.count > 1)
+    {
+        message = NSLocalizedStringWithDefaultValue(@"Number CantBeDisconnectedMessageE", nil, [NSBundle mainBundle],
+                                                    @"Before you can clear this Number's Destination, first select "
+                                                    @"another Number or Phone as caller ID for the %d contacts "
+                                                    @"that use this Number.\n\n%@",
+                                                    @"...\n"
+                                                    @"[iOS alert message size]");
+        message = [NSString stringWithFormat:message, number.callerIds.count, [Strings noDestinationWarning]];
+    }
+    
+
+    if (message != nil)
+    {
+        NSString* title;
+
+        title   = NSLocalizedStringWithDefaultValue(@"Number UsedAsDefaultIdTitle", nil, [NSBundle mainBundle],
+                                                    @"Can't Disconnect Number",
+                                                    @"....\n"
+                                                    @"[iOS alert title size].");
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            completion ? completion(NO) : 0;
+        }
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+    }
+    else
+    {
+        completion ? completion(YES) : 0;
+    }
+}
+
+
++ (void)checkCallerIdUsageOfNumber:(NumberData *)number completion:(void (^)(BOOL canUse))completion
+{
+    if (number.destination == nil)
+    {
+        NSString* title;
+        NSString* message;
+
+        title   = NSLocalizedStringWithDefaultValue(@"Number NoDestinationTitle", nil, [NSBundle mainBundle],
+                                                    @"Number Is Disconnected",
+                                                    @"....\n"
+                                                    @"[iOS alert title size].");
+        message = NSLocalizedStringWithDefaultValue(@"Number NoDestinationMessage", nil, [NSBundle mainBundle],
+                                                    @"Before you can use this Number as caller ID, you "
+                                                    @"must first select a Destination for incoming calls.\n\n%@",
+                                                    @"...\n"
+                                                    @"[iOS alert message size]");
+        message = [NSString stringWithFormat:message, [Strings noDestinationWarning]];
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            completion ? completion(NO) : 0;
+        }
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+    }
+    else
+    {
+        completion ? completion(YES) : 0;
+    }
 }
 
 @end

@@ -344,15 +344,36 @@ typedef enum
         case TableSectionPhones:
         {
             self.selectedCallable = [self.phones objectAtIndex:indexPath.row];
+
+            [self selectCallerId];
+            [self.navigationController popViewControllerAnimated:YES];
             break;
         }
         case TableSectionNumbers:
         {
-            self.selectedCallable = [self.numbers objectAtIndex:indexPath.row];
+            [Common checkCallerIdUsageOfNumber:[self.numbers objectAtIndex:indexPath.row]
+                                    completion:^(BOOL canUse)
+            {
+                if (canUse)
+                {
+                    self.selectedCallable = [self.numbers objectAtIndex:indexPath.row];
+
+                    [self selectCallerId];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                else
+                {
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                }
+            }];
             break;
         }
     }
+}
 
+
+- (void)selectCallerId
+{
     if (self.contactId != nil)
     {
         if (self.callerId == nil)
@@ -361,19 +382,12 @@ typedef enum
                                                           inManagedObjectContext:self.managedObjectContext];
             self.callerId.contactId = self.contactId;
         }
-        
+
         self.callerId.callable = self.selectedCallable;
-        
+
         [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
     }
-    else
-    {
-        
-    }
-
-    [self.navigationController popViewControllerAnimated:YES];
 }
-
 
 #pragma Helpers
 
