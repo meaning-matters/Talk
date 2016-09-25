@@ -615,10 +615,19 @@
 }
 
 
-+ (NSString*)noDestinationWarning
++ (NSString*)noDestinationWarningString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings NoDestinationWarning", nil, [NSBundle mainBundle],
                                              @"Otherwise people you call will see this Number, but they can't reach you.",
+                                             @"...\n"
+                                             @"[...");
+}
+
+
++ (NSString*)numberDisconnectedToneOrMessageString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings NumberDisconnected", nil, [NSBundle mainBundle],
+                                             @"a tone or message indicating that this Number is not in service",
                                              @"...\n"
                                              @"[...");
 }

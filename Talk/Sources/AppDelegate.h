@@ -61,6 +61,6 @@ extern NSString* const AppDelegateRemoteNotification;
 
 - (NSString*)contactNameForId:(NSString*)contactId;
 
-- (void)checkCreditWithCompletion:(void (^)(BOOL success))completion;
+- (void)checkCreditWithCompletion:(void (^)(BOOL success, NSError* error))completion;
 
 @end

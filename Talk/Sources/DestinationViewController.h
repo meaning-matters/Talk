@@ -21,4 +21,6 @@
 - (instancetype)initWithDestination:(DestinationData*)destination
                managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
+- (instancetype)initWithCompletion:(void (^)(DestinationData* destination))completion;
+
 @end

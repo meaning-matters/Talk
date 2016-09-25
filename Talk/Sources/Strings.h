@@ -145,6 +145,8 @@
 
 + (NSString*)internetString;
 
-+ (NSString*)noDestinationWarning;
++ (NSString*)noDestinationWarningString;
+
++ (NSString*)numberDisconnectedToneOrMessageString;
 
 @end

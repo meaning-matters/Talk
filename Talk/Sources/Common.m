@@ -1575,7 +1575,7 @@ static Common* sharedCommon;
                                                     @"another Number or Phone as default caller ID.\n\n%@",
                                                     @"...\n"
                                                     @"[iOS alert message size]");
-        message = [NSString stringWithFormat:message, [Strings noDestinationWarning]];
+        message = [NSString stringWithFormat:message, [Strings noDestinationWarningString]];
     }
 
     if ([[Settings sharedSettings].callerIdE164 isEqualToString:number.e164] && number.callerIds.count == 1)
@@ -1587,7 +1587,7 @@ static Common* sharedCommon;
                                                     @"Number.\n\n%@",
                                                     @"...\n"
                                                     @"[iOS alert message size]");
-        message = [NSString stringWithFormat:message, [Strings noDestinationWarning]];
+        message = [NSString stringWithFormat:message, [Strings noDestinationWarningString]];
     }
 
     if ([[Settings sharedSettings].callerIdE164 isEqualToString:number.e164] && number.callerIds.count > 1)
@@ -1599,7 +1599,7 @@ static Common* sharedCommon;
                                                     @"Number.\n\n%@",
                                                     @"...\n"
                                                     @"[iOS alert message size]");
-        message = [NSString stringWithFormat:message, number.callerIds.count, [Strings noDestinationWarning]];
+        message = [NSString stringWithFormat:message, number.callerIds.count, [Strings noDestinationWarningString]];
     }
     
     if (![[Settings sharedSettings].callerIdE164 isEqualToString:number.e164] && number.callerIds.count == 1)
@@ -1610,7 +1610,7 @@ static Common* sharedCommon;
                                                     @"that uses this Number.\n\n%@",
                                                     @"...\n"
                                                     @"[iOS alert message size]");
-        message = [NSString stringWithFormat:message, [Strings noDestinationWarning]];
+        message = [NSString stringWithFormat:message, [Strings noDestinationWarningString]];
     }
 
     if (![[Settings sharedSettings].callerIdE164 isEqualToString:number.e164] && number.callerIds.count > 1)
@@ -1621,7 +1621,7 @@ static Common* sharedCommon;
                                                     @"that use this Number.\n\n%@",
                                                     @"...\n"
                                                     @"[iOS alert message size]");
-        message = [NSString stringWithFormat:message, number.callerIds.count, [Strings noDestinationWarning]];
+        message = [NSString stringWithFormat:message, number.callerIds.count, [Strings noDestinationWarningString]];
     }
     
 
@@ -1665,7 +1665,7 @@ static Common* sharedCommon;
                                                     @"must first select a Destination for incoming calls.\n\n%@",
                                                     @"...\n"
                                                     @"[iOS alert message size]");
-        message = [NSString stringWithFormat:message, [Strings noDestinationWarning]];
+        message = [NSString stringWithFormat:message, [Strings noDestinationWarningString]];
         [BlockAlertView showAlertViewWithTitle:title
                                        message:message
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
@@ -1679,6 +1679,33 @@ static Common* sharedCommon;
     {
         completion ? completion(YES) : 0;
     }
+}
+
+
++ (void)showSetDestinationError:(NSError*)error completion:(void (^)(void))completion
+{
+    NSString* title;
+    NSString* message;
+
+    title   = NSLocalizedStringWithDefaultValue(@"NumberDestinations SetDestinationFailedTitle", nil,
+                                                [NSBundle mainBundle], @"Setting Destination Failed",
+                                                @"Alert title: ....\n"
+                                                @"[iOS alert title size].");
+    message = NSLocalizedStringWithDefaultValue(@"BuyCredit SetDestinationFailedMessage", nil,
+                                                [NSBundle mainBundle],
+                                                @"Something went wrong while setting the Destination: "
+                                                @"%@\n\nPlease try again later.",
+                                                @"Message telling that ... failed\n"
+                                                @"[iOS alert message size]");
+    message = [NSString stringWithFormat:message, error.localizedDescription];
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+     {
+         completion ? completion() : 0;
+     }
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
 }
 
 @end

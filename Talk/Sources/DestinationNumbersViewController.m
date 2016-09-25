@@ -133,28 +133,10 @@
         }
         else
         {
-            NSString* title;
-            NSString* message;
-
-            title   = NSLocalizedStringWithDefaultValue(@"NumberDestinations SetDestinationFailedTitle", nil,
-                                                        [NSBundle mainBundle], @"Setting Destination Failed",
-                                                        @"Alert title: ....\n"
-                                                        @"[iOS alert title size].");
-            message = NSLocalizedStringWithDefaultValue(@"BuyCredit SetDestinationFailedMessage", nil,
-                                                        [NSBundle mainBundle],
-                                                        @"Something went wrong while setting the Destination: "
-                                                        @"%@\n\nPlease try again later.",
-                                                        @"Message telling that ... failed\n"
-                                                        @"[iOS alert message size]");
-            message = [NSString stringWithFormat:message, error.localizedDescription];
-            [BlockAlertView showAlertViewWithTitle:title
-                                           message:message
-                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+            [Common showSetDestinationError:error completion:^
             {
                 [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            }
-                                 cancelButtonTitle:[Strings closeString]
-                                 otherButtonTitles:nil];
+            }];
         }
     }];
 }

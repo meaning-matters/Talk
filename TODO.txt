@@ -219,3 +219,5 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Something seems to take too long when trying to make a call when credit is very low 0.05 for example.
 
 * Check recents deletion: components.weekOfYear/month = -1; //### Does this work first week of the year?
+
+* Common's topViewController is not used everywhere, but AppDelegate.appDelegate.tabBarController instead. Check this.

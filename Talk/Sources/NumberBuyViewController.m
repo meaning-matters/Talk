@@ -7,6 +7,8 @@
 //
 
 #import "NumberBuyViewController.h"
+#import "NumberDestinationsViewController.h"
+#import "DestinationViewController.h"
 #import "PurchaseManager.h"
 #import "Common.h"
 #import "Strings.h"
@@ -103,13 +105,60 @@
     {
         if (error == nil)
         {
-            [self saveNumberE164:e164
-                    purchaseDate:purchaseDate
-                      expiryDate:expiryDate
-                        monthFee:monthFee
-                        renewFee:renewFee];
+            NumberData* number = [self saveNumberE164:e164
+                                         purchaseDate:purchaseDate
+                                           expiryDate:expiryDate
+                                             monthFee:monthFee
+                                             renewFee:renewFee];
 
-            [self leaveViewController];
+            [self dismissViewControllerAnimated:YES completion:^
+            {
+                UINavigationController* navigationController;
+
+                if ([[DataManager sharedManager] fetchEntitiesWithName:@"Destination"
+                                                              sortKeys:nil
+                                                             predicate:nil
+                                                  managedObjectContext:nil].count == 0)
+                {
+                    DestinationViewController* viewController;
+                    viewController = [[DestinationViewController alloc] initWithCompletion:^(DestinationData* destination)
+                    {
+                        if (destination != nil)
+                        {
+                            [[WebClient sharedClient] setDestinationOfE164:number.e164
+                                                                      uuid:(destination == nil) ? @"" : destination.uuid
+                                                                     reply:^(NSError* error)
+                            {
+                                if (error == nil)
+                                {
+                                    number.destination = destination;
+                                    [[DataManager sharedManager] saveManagedObjectContext:nil];
+                                }
+                                else
+                                {
+                                    [Common showSetDestinationError:error completion:^
+                                    {
+
+                                    }];
+                                }
+                            }];
+                        }
+                    }];
+
+                    navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+                    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+                }
+                else
+                {
+                    NumberDestinationsViewController* viewController;
+                    viewController = [[NumberDestinationsViewController alloc] initWithNumber:number];
+
+                    navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+                    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+                }
+
+                [[Common topViewController] presentViewController:navigationController animated:YES completion:nil];
+            }];
         }
         else
         {
@@ -156,11 +205,11 @@
 
 #pragma mark - Helpers
 
-- (void)saveNumberE164:(NSString*)e164
-          purchaseDate:(NSDate*)purchaseDate
-            expiryDate:(NSDate*)expiryDate
-              monthFee:(float)monthFee
-              renewFee:(float)renewFee
+- (NumberData*)saveNumberE164:(NSString*)e164
+                 purchaseDate:(NSDate*)purchaseDate
+                   expiryDate:(NSDate*)expiryDate
+                     monthFee:(float)monthFee
+                     renewFee:(float)renewFee
 {
     NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
     NumberData*             number;
@@ -192,6 +241,8 @@
     number.payphoneSetup  = [self.area[@"payphoneSetup"] floatValue];
 
     [[DataManager sharedManager] saveManagedObjectContext:managedObjectContext];
+
+    return number;
 }
 
 @end

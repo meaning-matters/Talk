@@ -49,7 +49,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
         self.managedObjectContext = managedObjectContext;
 
         self.sections |= TableSectionDestinations;
-        //self.sections |= TableSectionRecordings;
+        //### self.sections |= TableSectionRecordings;
     }
 
     return self;

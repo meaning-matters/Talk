@@ -192,11 +192,10 @@ typedef enum
             title = NSLocalizedStringWithDefaultValue(@"Number:DestinationDefault SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"With '%@' you won't receive calls to this Number, and people "
-                                                      @"calling will hear a tone or message indicating that this "
-                                                      @"Number is not in service.",
+                                                      @"calling will hear %@.",
                                                       @"Explanation about which phone will be called.\n"
                                                       @"[* lines], parameter is 'none'");
-            title = [NSString stringWithFormat:title, [Strings noneString]];
+            title = [NSString stringWithFormat:title, [Strings noneString], [Strings numberDisconnectedToneOrMessageString]];
             break;
         }
         case TableSectionPeriod:

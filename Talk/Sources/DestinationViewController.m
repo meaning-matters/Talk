@@ -40,6 +40,7 @@ typedef enum
 @property (nonatomic, strong) PhoneData*    phone;
 @property (nonatomic, strong) NSMutableDictionary* action;
 @property (nonatomic, strong) NSArray*      numbersArray;
+@property (nonatomic, copy) void (^completion)(DestinationData* destination);
 
 @property (nonatomic, assign) BOOL showCalledId;
 
@@ -51,12 +52,27 @@ typedef enum
 - (instancetype)initWithDestination:(DestinationData*)destination
                managedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
+    return [self initWithDestination:destination managedObjectContext:managedObjectContext completion:nil];
+}
+
+
+- (instancetype)initWithCompletion:(void (^)(DestinationData* destination))completion
+{
+    return [self initWithDestination:nil managedObjectContext:nil completion:completion];
+}
+
+
+- (instancetype)initWithDestination:(DestinationData*)destination
+               managedObjectContext:(NSManagedObjectContext*)managedObjectContext
+                         completion:(void (^)(DestinationData* destination))completion
+{
     if (self = [super initWithManagedObjectContext:managedObjectContext])
     {
         self.name        = destination.name;
         self.phone       = [destination.phones anyObject];
 
         self.destination = destination;
+        self.completion  = completion;
         self.isNew       = (destination == nil);
         self.title       = self.isNew ? [Strings newDestinationString] : [Strings destinationString];
 
@@ -84,7 +100,7 @@ typedef enum
             self.showCalledId = [self.action[@"call"][@"showCalledId"] boolValue];
         }
     }
-
+    
     return self;
 }
 
@@ -153,6 +169,15 @@ typedef enum
 
 #pragma mark - Actions
 
+- (void)cancelAction
+{
+    self.completion ? self.completion(nil) : 0;
+    self.completion = nil;
+
+    [super cancelAction];
+}
+
+
 - (void)deleteAction
 {
     if (self.destination.numbers.count == 0)
@@ -220,6 +245,9 @@ typedef enum
         if (error == nil)
         {
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+
+            self.completion ? self.completion(self.destination) : 0;
+            self.completion = nil;
         }
         else
         {
@@ -280,6 +308,9 @@ typedef enum
                                    message:[NSString stringWithFormat:message, [error localizedDescription]]
                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
     {
+        self.completion ? self.completion(nil) : 0;
+        self.completion = nil;
+
         if (self.isNew == NO)
         {
             NSInteger        section    = [Common nOfBit:TableSectionStatements inValue:self.sections];

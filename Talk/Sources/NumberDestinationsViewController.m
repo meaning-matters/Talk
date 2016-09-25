@@ -50,12 +50,20 @@
                                                                          withSortKeys:@[@"name"]
                                                                  managedObjectContext:nil];
 
-    if (number.destination != nil)
+    UIBarButtonItem* item;
+    item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
+                                                         target:self
+                                                         action:@selector(deleteAction)];
+    item.enabled = (number.destination != nil);
+    self.navigationItem.rightBarButtonItem = item;
+
+    if (self.navigationController.viewControllers.count == 1)
     {
         UIBarButtonItem* item;
-        item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
-                                                         target:self action:@selector(deleteAction)];
-        self.navigationItem.rightBarButtonItem = item;
+        item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                             target:self
+                                                             action:@selector(dismissAction)];
+        self.navigationItem.leftBarButtonItem = item;
     }
 
     [self setupFootnotesHandlingOnTableView:self.tableView];
@@ -123,36 +131,50 @@
 
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
-    NSString* title = nil;
+    NSString* titleTop    = nil;
+    NSString* titleBottom = nil;
 
     if (self.showFootnotes == NO)
     {
         return nil;
     }
 
-    if ([self tableView:tableView numberOfRowsInSection:section] > 0)
+    titleTop = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Footer A", nil, [NSBundle mainBundle],
+                                                 @"List of Destinations to receive calls to this Number.",
+                                                 @"\n"
+                                                 @"[1/4 line larger font].");
+
+    if ([self tableView:tableView numberOfRowsInSection:section] == 0)
     {
-        title = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Footer A", nil, [NSBundle mainBundle],
-                                                  @"List of Destinations where you can receive calls to your "
-                                                  @"purchased Numbers. To receive calls, you must assign a "
-                                                  @"Destination to this Number.\n\n"
-                                                  @"Tap the delete button if you don't want to receive calls "
-                                                  @"at this Number.",
-                                                  @"\n"
-                                                  @"[1/4 line larger font].");
+        titleBottom = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Footer A", nil, [NSBundle mainBundle],
+                                                        @"You can create them from the Destinations tab.",
+                                                        @"\n"
+                                                        @"[1/4 line larger font].");
     }
     else
     {
-        title = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Footer B", nil, [NSBundle mainBundle],
-                                                  @"List of Destinations where you can receive calls to your "
-                                                  @"purchased Numbers. To receive calls, you must assign a "
-                                                  @"Destination to this Number.\n\n"
-                                                  @"You can create them from the Destinations tab.",
-                                                  @"\n"
-                                                  @"[1/4 line larger font].");
+        if (number.destination != nil)
+        {
+            titleBottom = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Footer A", nil, [NSBundle mainBundle],
+                                                            @"Tap the delete button to disconnect this Number; you will "
+                                                            @"then stop receiving calls, and people calling will hear %@.",
+                                                            @"\n"
+                                                            @"[1/4 line larger font].");
+            titleBottom = [NSString stringWithFormat:titleBottom, [Strings numberDisconnectedToneOrMessageString]];
+        }
+        else
+        {
+            titleBottom = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Footer B", nil, [NSBundle mainBundle],
+                                                            @"No Destination is selected, which means that this Number "
+                                                            @"is disconnected. You won't receive calls, and people "
+                                                            @"calling will hear %@.",
+                                                            @"\n"
+                                                            @"[1/4 line larger font].");
+            titleBottom = [NSString stringWithFormat:titleBottom, [Strings numberDisconnectedToneOrMessageString]];
+        }
     }
 
-    return title;
+    return [NSString stringWithFormat:@"%@\n\n%@", titleTop, titleBottom];
 }
 
 
@@ -160,8 +182,6 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
     DestinationData* selectedDestination = [fetchedResultsController objectAtIndexPath:indexPath];
     [self setDestination:selectedDestination atIndexPath:indexPath];
 }
@@ -179,6 +199,8 @@
         {
             if (error == nil)
             {
+                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+
                 number.destination = destination;
                 [[DataManager sharedManager] saveManagedObjectContext:nil];
 
@@ -187,32 +209,21 @@
 
                 [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
 
-                [self.navigationController popViewControllerAnimated:YES];
+                if (self.navigationController.viewControllers.count == 1)
+                {
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }
+                else
+                {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
             }
             else
             {
-                NSString* title;
-                NSString* message;
-
-                title   = NSLocalizedStringWithDefaultValue(@"NumberDestinations SetDestinationFailedTitle", nil,
-                                                            [NSBundle mainBundle], @"Setting Destination Failed",
-                                                            @"Alert title: ....\n"
-                                                            @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"BuyCredit SetDestinationFailedMessage", nil,
-                                                            [NSBundle mainBundle],
-                                                            @"Something went wrong while setting the Destination: "
-                                                            @"%@\n\nPlease try again later.",
-                                                            @"Message telling that ... failed\n"
-                                                            @"[iOS alert message size]");
-                message = [NSString stringWithFormat:message, error.localizedDescription];
-                [BlockAlertView showAlertViewWithTitle:title
-                                               message:message
-                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                [Common showSetDestinationError:error completion:^
                 {
                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                }
-                                     cancelButtonTitle:[Strings closeString]
-                                     otherButtonTitles:nil];
+                }];
             }
         }];
     }
@@ -230,6 +241,12 @@
             [self setDestination:nil atIndexPath:nil];
         }
     }];
+}
+
+
+- (void)dismissAction
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

@@ -177,4 +177,6 @@ static const NSInteger CommonUseButtonTag     =  123;
 
 + (void)checkCallerIdUsageOfNumber:(NumberData *)number completion:(void (^)(BOOL canUse))completion;
 
++ (void)showSetDestinationError:(NSError*)error completion:(void (^)(void))completion;
+
 @end

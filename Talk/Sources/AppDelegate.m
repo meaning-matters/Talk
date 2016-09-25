@@ -342,7 +342,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
         return;
     }
 
-    [self checkCreditWithCompletion:^(BOOL success)
+    [self checkCreditWithCompletion:^(BOOL success, NSError* error)
     {
         if (success)
         {
@@ -361,7 +361,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 #pragma mark - Helpers
 
-- (void)checkCreditWithCompletion:(void (^)(BOOL success))completion
+- (void)checkCreditWithCompletion:(void (^)(BOOL success, NSError* error))completion
 {
     [[WebClient sharedClient] retrieveCreditWithReply:^(NSError* error, float credit)
     {
@@ -377,12 +377,12 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                     [[BadgeHandler sharedHandler] setBadgeCount:count forViewController:self.creditViewController];
                 }
 
-                completion ? completion(success) : 0;
+                completion ? completion(success, error) : 0;
             }];
         }
         else
         {
-            completion ? completion(NO) : 0;
+            completion ? completion(NO, error) : 0;
         }
     }];
 }

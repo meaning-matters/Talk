@@ -239,6 +239,7 @@
             if (totalFee < credit)
             {
                 [self payNumber];
+                [[AppDelegate appDelegate] checkCreditWithCompletion:nil];
             }
             else
             {
@@ -262,7 +263,7 @@
                                                                 @"The total price of %@ is more than your current "
                                                                 @"Credit: %@.\n\nYou can buy the sufficient standard "
                                                                 @"amount of %@ extra Credit now, or cancel to first "
-                                                                @"increase your credit from the Credit tab.",
+                                                                @"increase your Credit from the Credit tab.",
                                                                 @"Alert message: buying extra credit id needed.\n"
                                                                 @"[iOS alert message size]");
                     message = [NSString stringWithFormat:message, totalString, creditString, extraString];
@@ -278,6 +279,7 @@
                                 if (success == YES)
                                 {
                                     [self payNumber];
+                                    [[AppDelegate appDelegate] checkCreditWithCompletion:nil];
                                 }
                                 else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
                                 {
