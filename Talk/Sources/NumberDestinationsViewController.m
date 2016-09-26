@@ -204,6 +204,8 @@
                 number.destination = destination;
                 [[DataManager sharedManager] saveManagedObjectContext:nil];
 
+                [[AppDelegate appDelegate] updateNumbersBadgeValue];
+
                 selectedCell.accessoryType = UITableViewCellAccessoryNone;
                 cell.accessoryType         = UITableViewCellAccessoryCheckmark;
 
@@ -239,6 +241,8 @@
         if (canDisconnect)
         {
             [self setDestination:nil atIndexPath:nil];
+
+            [[AppDelegate appDelegate] updateNumbersBadgeValue];
         }
     }];
 }

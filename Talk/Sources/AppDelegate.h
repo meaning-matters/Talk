@@ -63,4 +63,6 @@ extern NSString* const AppDelegateRemoteNotification;
 
 - (void)checkCreditWithCompletion:(void (^)(BOOL success, NSError* error))completion;
 
+- (void)updateNumbersBadgeValue;
+
 @end

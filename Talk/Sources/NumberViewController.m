@@ -126,15 +126,6 @@ typedef enum
 }
 
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    NumbersViewController* numbersViewController = (NumbersViewController*)[self backViewController];
-    [numbersViewController updateBadgeValue];
-}
-
-
 - (void)dealloc
 {
     [AddressesViewController cancelLoadingAddressPredicate];

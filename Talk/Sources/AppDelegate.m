@@ -198,6 +198,19 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 }
 
 
+- (void)updateNumbersBadgeValue
+{
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"destination == nil"];
+    NSArray*     unconnectedNumbers = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
+                                                                                sortKeys:nil
+                                                                               predicate:predicate
+                                                                    managedObjectContext:nil];
+
+    NSUInteger count = [[AddressUpdatesHandler sharedHandler] addressUpdatesCount] + unconnectedNumbers.count;
+    [[BadgeHandler sharedHandler] setBadgeCount:count forViewController:self.numbersViewController];
+}
+
+
 - (void)application:(UIApplication*)application didRegisterUserNotificationSettings:(UIUserNotificationSettings*)notificationSettings
 {
     AnalysticsTrace(@"didRegisterUserNotificationSettings");

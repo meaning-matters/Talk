@@ -130,6 +130,8 @@
                                   withRowAnimation:UITableViewRowAnimationFade];
 
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+            [[AppDelegate appDelegate] updateNumbersBadgeValue];
         }
         else
         {

@@ -61,7 +61,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
                                                                                     queue:[NSOperationQueue mainQueue]
                                                                                usingBlock:^(NSNotification* note)
         {
-            [weakSelf updateBadgeValue];
+            [[AppDelegate appDelegate] updateNumbersBadgeValue];
             [Common reloadSections:TableSectionAddresses allSections:weakSelf.sections tableView:weakSelf.tableView];
         }];
 
@@ -81,19 +81,6 @@ typedef NS_ENUM(NSUInteger, TableSections)
 }
 
 
-- (void)updateBadgeValue
-{
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"destination == nil"];
-    NSArray*     unconnectedNumbers = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
-                                                                                sortKeys:nil
-                                                                               predicate:predicate
-                                                                    managedObjectContext:nil];
-
-    NSUInteger count = [[AddressUpdatesHandler sharedHandler] addressUpdatesCount] + unconnectedNumbers.count;
-    [[BadgeHandler sharedHandler] setBadgeCount:count forViewController:self];
-}
-
-
 - (void)dealloc
 {
     [[Settings sharedSettings] removeObserver:self forKeyPath:@"sortSegment" context:nil];
@@ -108,7 +95,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
     self.clearsSelectionOnViewWillAppear = YES;
 
-    [self updateBadgeValue];
+    [[AppDelegate appDelegate] updateNumbersBadgeValue];
 
     self.fetchedNumbersController = [[DataManager sharedManager] fetchResultsForEntityName:@"Number"
                                                                               withSortKeys:[Common sortKeys]
