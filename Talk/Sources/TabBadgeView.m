@@ -54,9 +54,12 @@ const CGFloat BadgeWidthMaximum = 40.0f;
 
     self.label.text = [NSString stringWithFormat:@"%d", (int)count];
 
-    CGRect frame = self.frame;
+    CGFloat right = self.frame.origin.x + self.frame.size.width;
+    CGRect  frame = self.frame;
+
     frame.size.width = MAX(MIN(BadgeWidthMaximum, self.label.intrinsicContentSize.width + 10), BadgeHeight);
-    frame.origin.x  -= frame.size.width - BadgeHeight;
+    frame.origin.x   = right - frame.size.width;
+
     self.frame       = frame;
     self.label.frame = self.bounds;
 

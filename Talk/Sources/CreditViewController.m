@@ -360,54 +360,6 @@ typedef enum
         self.isLoadingCredit = NO;
         [self updateAmountCell:(CreditAmountCell*)[self.tableView cellForRowAtIndexPath:self.amountIndexPath]];
     }];
-/*
-    [[WebClient sharedClient] retrieveCreditWithReply:^(NSError* error, float credit)
-    {
-        if (error == nil)
-        {
-            [Settings sharedSettings].credit = credit;
-            self.loadingCreditFailed = NO;
-        }
-        else
-        {
-            if (isShowingLoadingError == NO && self.mustShowLoadingError == YES)
-            {
-                NSString* title;
-                NSString* message;
-                NSString* string;
-
-                title   = NSLocalizedStringWithDefaultValue(@"BuyCredit FailedLoadCreditTitle", nil,
-                                                            [NSBundle mainBundle], @"Loading Credit Failed",
-                                                            @"Alert title: Credit could not be loaded.\n"
-                                                            @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"BuyCredit FailedBuyCreditMessage", nil,
-                                                            [NSBundle mainBundle],
-                                                            @"Something went wrong while loading your credit: "
-                                                            @"%@\n\nPlease try again later.",
-                                                            @"Message telling that buying credit failed\n"
-                                                            @"[iOS alert message size]");
-                string  = error.localizedDescription;
-                message = [NSString stringWithFormat:message, string];
-                [BlockAlertView showAlertViewWithTitle:title
-                                               message:message
-                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
-                {
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                    isShowingLoadingError = NO;
-                }
-                                     cancelButtonTitle:[Strings closeString]
-                                     otherButtonTitles:nil];
-
-                isShowingLoadingError = YES;
-            }
-
-            self.loadingCreditFailed = YES;
-        }
-
-        self.isLoadingCredit = NO;
-        [self updateAmountCell:(CreditAmountCell*)[self.tableView cellForRowAtIndexPath:self.amountIndexPath]];
-    }];
- */
 }
 
 
