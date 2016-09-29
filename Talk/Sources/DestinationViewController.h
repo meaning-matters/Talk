@@ -21,6 +21,7 @@
 - (instancetype)initWithDestination:(DestinationData*)destination
                managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
+// It returns the Destination on the main MOC so it can be used to assign to a Number.
 - (instancetype)initWithCompletion:(void (^)(DestinationData* destination))completion;
 
 @end

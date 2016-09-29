@@ -58,7 +58,9 @@ typedef enum
 
 - (instancetype)initWithCompletion:(void (^)(DestinationData* destination))completion
 {
-    return [self initWithDestination:nil managedObjectContext:nil completion:completion];
+    return [self initWithDestination:nil
+                managedObjectContext:[DataManager sharedManager].managedObjectContext
+                          completion:completion];
 }
 
 
@@ -244,7 +246,13 @@ typedef enum
     {
         if (error == nil)
         {
+            // This saves the object on the child MOC (created during init) which
+            // propagates to the main MOC.
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+
+            // Now get the saved object from parent/main MOC.
+            NSManagedObjectContext* mainContext = [DataManager sharedManager].managedObjectContext;
+            self.destination = [mainContext existingObjectWithID:self.destination.objectID error:nil];
 
             self.completion ? self.completion(self.destination) : 0;
             self.completion = nil;

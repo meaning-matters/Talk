@@ -110,6 +110,13 @@ typedef NS_ENUM(NSUInteger, TableSections)
                                                           @"\n"
                                                           @"[1/4 line larger font].");
             }
+            else
+            {
+                title = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Title", nil, [NSBundle mainBundle],
+                                                          @"Create Incoming Calls Destination",
+                                                          @"\n"
+                                                          @"[1/4 line larger font].");
+            }
             break;
         }
         case TableSectionRecordings:
