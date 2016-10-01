@@ -1662,7 +1662,7 @@ static Common* sharedCommon;
                                                     @"[iOS alert title size].");
         message = NSLocalizedStringWithDefaultValue(@"Number NoDestinationMessage", nil, [NSBundle mainBundle],
                                                     @"Before you can use this Number as caller ID, you "
-                                                    @"must first select a Destination for incoming calls.\n\n%@",
+                                                    @"must first select a Destination for its incoming calls.\n\n%@",
                                                     @"...\n"
                                                     @"[iOS alert message size]");
         message = [NSString stringWithFormat:message, [Strings noDestinationWarningString]];

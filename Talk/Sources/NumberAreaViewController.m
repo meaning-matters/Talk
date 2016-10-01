@@ -131,12 +131,12 @@ typedef enum
             }
             case NumberTypeNationalMask:
             {
-                name = [NSString stringWithFormat:@"%@ (paid)", countryName];
+                name = [NSString stringWithFormat:@"%@ (nat)", countryName];
                 break;
             }
             case NumberTypeMobileMask:
             {
-                name = [NSString stringWithFormat:@"%@ (mobile)", countryName];
+                name = [NSString stringWithFormat:@"%@ (mob)", countryName];
                 break;
             }
             case NumberTypeTollFreeMask:
@@ -146,12 +146,12 @@ typedef enum
             }
             case NumberTypeSharedCostMask:
             {
-                name = [NSString stringWithFormat:@"%@ (shared)", countryName];
+                name = [NSString stringWithFormat:@"%@ (share)", countryName];
                 break;
             }
             case NumberTypeSpecialMask:
             {
-                name = [NSString stringWithFormat:@"%@ (special)", countryName];
+                name = [NSString stringWithFormat:@"%@ (spec)", countryName];
                 break;
             }
             case NumberTypeInternationalMask:
