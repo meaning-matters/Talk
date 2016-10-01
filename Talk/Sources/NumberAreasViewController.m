@@ -474,9 +474,9 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
         button.frame = CGRectMake(0, 0, 40, 40);
 
         UIColor* highlightColor = [UIColor colorWithRed:0.83 green:0.87 blue:0.98 alpha:1.0];
-        [button setImage:[Common maskedImageNamed:@"PriceTag" color:[Skinning tintColor]]
+        [button setImage:[Common maskedImageNamed:@"DollarCents" color:[Skinning tintColor]]
                 forState:UIControlStateNormal];
-        [button setImage:[Common maskedImageNamed:@"PriceTag" color:highlightColor]
+        [button setImage:[Common maskedImageNamed:@"DollarCents" color:highlightColor]
                 forState:UIControlStateHighlighted];
 
         [button addTarget:self action:@selector(priceTagAction) forControlEvents:UIControlEventTouchUpInside];
@@ -503,7 +503,7 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
                                                 @"[iOS alert title size].");
     message = NSLocalizedStringWithDefaultValue(@"NumberAreas CallChargesMessage", nil, [NSBundle mainBundle],
                                                 @"When someone calls you at such a Number, additional charges apply."
-                                                @"\n\nThe exact amounts per minute can be found from the next screen.",
+                                                @"\n\nThe exact amounts per minute can be found from the next page.",
                                                 @"....\n"
                                                 @"[iOS alert message size!]");
     [BlockAlertView showAlertViewWithTitle:title

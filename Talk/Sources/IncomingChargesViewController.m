@@ -10,6 +10,7 @@
 #import "NumberData.h"
 #import "Skinning.h"
 #import "Strings.h"
+#import "Common.h"
 #import "PurchaseManager.h"
 
 
@@ -128,6 +129,11 @@
         case 3: cell.textLabel.text = [Strings mobileRateString];    charge = self.mobileRate;    break;
         case 4: cell.textLabel.text = [Strings payphoneSetupString]; charge = self.payphoneSetup; break;
         case 5: cell.textLabel.text = [Strings payphoneRateString];  charge = self.payphoneRate;  break;
+    }
+
+    if (charge == 0.0)
+    {
+        cell.textLabel.attributedText = [Common strikethroughAttributedString:cell.textLabel.text];
     }
 
     cell.detailTextLabel.text   = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:charge];

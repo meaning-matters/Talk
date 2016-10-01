@@ -494,7 +494,8 @@
 		4896D90016EBE613008A2354 /* NumberAreasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */; };
 		4896D90116EBE613008A2354 /* NumberAreasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */; };
 		489765C41BCC4F4800D77FD7 /* WebStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 489765C31BCC4F4800D77FD7 /* WebStatus.m */; };
-		4898EC431D9FF35F0010479D /* PriceTag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4898EC421D9FF35F0010479D /* PriceTag@2x.png */; };
+		4898EC4B1DA021490010479D /* DollarCents@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4898EC491DA021490010479D /* DollarCents@2x.png */; };
+		4898EC4C1DA021490010479D /* DollarCents@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4898EC4A1DA021490010479D /* DollarCents@3x.png */; };
 		48995E0B18739F46001395C2 /* Phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0918739F46001395C2 /* Phone.png */; };
 		48995E0C18739F46001395C2 /* Phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0918739F46001395C2 /* Phone.png */; };
 		48995E0D18739F46001395C2 /* Phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0A18739F46001395C2 /* Phone@2x.png */; };
@@ -1215,7 +1216,8 @@
 		4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreasViewController.m; sourceTree = "<group>"; };
 		489765C21BCC4F4800D77FD7 /* WebStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebStatus.h; sourceTree = "<group>"; };
 		489765C31BCC4F4800D77FD7 /* WebStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebStatus.m; sourceTree = "<group>"; };
-		4898EC421D9FF35F0010479D /* PriceTag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PriceTag@2x.png"; sourceTree = "<group>"; };
+		4898EC491DA021490010479D /* DollarCents@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DollarCents@2x.png"; sourceTree = "<group>"; };
+		4898EC4A1DA021490010479D /* DollarCents@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DollarCents@3x.png"; sourceTree = "<group>"; };
 		48995E0918739F46001395C2 /* Phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Phone.png; sourceTree = "<group>"; };
 		48995E0A18739F46001395C2 /* Phone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Phone@2x.png"; sourceTree = "<group>"; };
 		48995E0F18742206001395C2 /* AppledocSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AppledocSettings.plist; sourceTree = "<group>"; };
@@ -1853,11 +1855,12 @@
 				48367A1017247B2D001A02AF /* CueReverseWhite@2x.png */,
 				48367A1217247B2D001A02AF /* CueStopBlack@2x.png */,
 				48367A1417247B2D001A02AF /* CueStopWhite@2x.png */,
+				4898EC491DA021490010479D /* DollarCents@2x.png */,
+				4898EC4A1DA021490010479D /* DollarCents@3x.png */,
 				483679EE1722F2CF001A02AF /* List.png */,
 				483679EF1722F2CF001A02AF /* List@2x.png */,
 				48995E0918739F46001395C2 /* Phone.png */,
 				48995E0A18739F46001395C2 /* Phone@2x.png */,
-				4898EC421D9FF35F0010479D /* PriceTag@2x.png */,
 				480037A01CA840210083D24B /* TableLoading@2x.png */,
 				48CB2C4217E6539000E19C3D /* Target.png */,
 				48CB2C4317E6539000E19C3D /* Target@2x.png */,
@@ -2960,6 +2963,7 @@
 				485F6B9C1637270100D61365 /* PK@2x.png in Resources */,
 				4837AF8718E24BF100D3AEBC /* Icon-76.png in Resources */,
 				480BEF9518D59ECA00C882E0 /* GetStartedView.xib in Resources */,
+				4898EC4B1DA021490010479D /* DollarCents@2x.png in Resources */,
 				485F6B9E1637270100D61365 /* PL@2x.png in Resources */,
 				48995E1018742206001395C2 /* AppledocSettings.plist in Resources */,
 				485F6BA01637270100D61365 /* PM@2x.png in Resources */,
@@ -2972,6 +2976,7 @@
 				485F6BAE1637270100D61365 /* QA@2x.png in Resources */,
 				485F6BB01637270100D61365 /* RE@2x.png in Resources */,
 				485F6BB21637270100D61365 /* RO@2x.png in Resources */,
+				4898EC4C1DA021490010479D /* DollarCents@3x.png in Resources */,
 				485F6BB41637270100D61365 /* RS@2x.png in Resources */,
 				485F6BB61637270100D61365 /* RU@2x.png in Resources */,
 				485F6BB81637270100D61365 /* RW@2x.png in Resources */,
@@ -3065,7 +3070,6 @@
 				48A26DDE18BA904100736CCB /* SearchTableView.xib in Resources */,
 				4888D51C166D1AEE00572566 /* Flip@2x.png in Resources */,
 				4888D520166D1AEE00572566 /* HangupPhone@2x.png in Resources */,
-				4898EC431D9FF35F0010479D /* PriceTag@2x.png in Resources */,
 				4888D527166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */,
 				488AD1ED16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
 				48A261C016FDE26100007638 /* CallStateView.xib in Resources */,
