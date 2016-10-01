@@ -109,11 +109,11 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
         {
             selected = (self.agreedTerms & NumberTermPersonal);
             cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                                          @"Personal Use Only",
+                                                                          @"Use Personally",
                                                                           @"...");
             cell.detailTextLabel.text = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                                          @"Only regular voice calls. It's not "
-                                                                          @"allowed to buy a Number for someone else.",
+                                                                          @"Not for automated systems. Also, don't "
+                                                                          @"buy a Number for a third party.",
                                                                           @"...");
             break;
         }
@@ -121,11 +121,11 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
         {
             selected = (self.agreedTerms & NumberTermSerious);
             cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                                          @"Respectful Use Only",
+                                                                          @"Use Respectfully",
                                                                           @"...");
             cell.detailTextLabel.text = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                                          @"Don't use a Number for pranks, "
-                                                                          @"bullying people, or anything abusive.",
+                                                                          @"Don't use a Number for pranks, bullying "
+                                                                          @"people, or anything malicious.",
                                                                           @"...");
             break;
         }
@@ -133,11 +133,11 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
         {
             selected = (self.agreedTerms & NumberTermNoTelemarketing);
             cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                                          @"Small Scale Use Only",
+                                                                          @"Normal Scale",
                                                                           @"...");
             cell.detailTextLabel.text = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                                          @"It's not allowed to use a Number for "
-                                                                          @"telemarketing, call centers, or simular.",
+                                                                          @"Large scale use for telemarketing, call "
+                                                                          @"centres, or simular, is not allowed.",
                                                                           @"...");
             break;
         }
@@ -145,7 +145,7 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
         {
             selected = (self.agreedTerms & NumberTermNoUnlawful);
             cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                                          @"No Unlawful Use",
+                                                                          @"Use Lawfully",
                                                                           @"...");
             cell.detailTextLabel.text = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
                                                                           @"It's forbidden to use a Number for any "
@@ -157,7 +157,7 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
         {
             selected = (self.agreedTerms & NumberTermAddressUpdate);
             cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                                                          @"Keep Information Up-to-date",
+                                                                          @"Update Information",
                                                                           @"...");
             cell.detailTextLabel.text = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
                                                                           @"When you move or get a new ID, update your "
@@ -174,12 +174,22 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
 }
 
 
+- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
+                                             @"How To Use A Number",
+                                             @"...");
+}
+
+
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    return @"The above is a reminder of important rules from the Terms and Conditions, "
-           @"which you agreed to when becoming a NumberBay insider. They can be found "
-           @"from the About tab.\n\n"
-           @"We'll have to suspend the account of anyone breaking any of the rules.";
+    return NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
+                                             @"The above is a reminder of important rules from the Terms and Conditions, "
+                                             @"which you agreed to when becoming a NumberBay insider. They can be found "
+                                             @"from the About tab.\n\nWe'll have to suspend the account of anyone "
+                                             @"breaking any of the rules.",
+                                             @"...");
 }
 
 
