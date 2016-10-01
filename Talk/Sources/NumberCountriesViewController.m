@@ -65,9 +65,7 @@
             NSArray* items = @[[NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeGeographicMask],
                                [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeNationalMask],
                                [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeMobileMask],
-                               [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeTollFreeMask],
-                               [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeSharedCostMask],
-                               [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeSpecialMask]];
+                               [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeTollFreeMask]];
             self.numberTypeSegmentedControl = [[UISegmentedControl alloc] initWithItems:items];
             [self.numberTypeSegmentedControl addTarget:self
                                                 action:@selector(numberTypeChangedAction:)

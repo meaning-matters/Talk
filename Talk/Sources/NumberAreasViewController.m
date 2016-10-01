@@ -56,13 +56,14 @@
 //
 
 #import "NumberAreasViewController.h"
+#import "NumberAreaViewController.h"
+#import "IncomingChargesViewController.h"
 #import "NumberType.h"
 #import "WebClient.h"
 #import "CountryNames.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
 #import "Common.h"
-#import "NumberAreaViewController.h"
 #import "Settings.h"
 #import "AddressType.h"
 #import "DataManager.h"
@@ -74,8 +75,6 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
     AreaFormatNationalException,
     AreaFormatTollFree,
     AreaFormatMobile,
-    AreaFormatSharedCost,
-    AreaFormatSpecial,
     AreaFormatInternational,
 };
 
@@ -221,16 +220,6 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
             case NumberTypeTollFreeMask:
             {
                 areaFormat = AreaFormatTollFree;
-                break;
-            }
-            case NumberTypeSharedCostMask:
-            {
-                areaFormat = AreaFormatSharedCost;
-                break;
-            }
-            case NumberTypeSpecialMask:
-            {
-                areaFormat = AreaFormatSpecial;
                 break;
             }
             case NumberTypeInternationalMask:
@@ -380,8 +369,6 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
         case AreaFormatNationalException:   name = @"-";                                           break;
         case AreaFormatTollFree:            name = object[@"areaCode"];                            break;
         case AreaFormatMobile:              name = object[@"areaCode"];                            break;
-        case AreaFormatSharedCost:          name = object[@"areaCode"];                            break;
-        case AreaFormatSpecial:             name = [Common capitalizedString:object[@"areaName"]]; break;
         case AreaFormatInternational:       name = @"-";                                           break;
     }
 
@@ -459,8 +446,6 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
         case AreaFormatNationalException:   code = @"---";            name = type;                      break;
         case AreaFormatTollFree:            code = area[@"areaCode"]; name = type;                      break;
         case AreaFormatMobile:              code = area[@"areaCode"]; name = type;                      break;
-        case AreaFormatSharedCost:          code = area[@"areaCode"]; name = type;                      break;
-        case AreaFormatSpecial:             code = area[@"areaCode"]; name = [self nameForObject:area]; break;
         case AreaFormatInternational:       code = @"---";            name = type;                      break;
     }
 
@@ -483,7 +468,49 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
         cell.textLabel.attributedText = [Common strikethroughAttributedString:name];
     }
 
+    if ([IncomingChargesViewController hasIncomingChargesWithArea:area])
+    {
+        UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.frame = CGRectMake(0, 0, 40, 40);
+
+        UIColor* highlightColor = [UIColor colorWithRed:0.83 green:0.87 blue:0.98 alpha:1.0];
+        [button setImage:[Common maskedImageNamed:@"PriceTag" color:[Skinning tintColor]]
+                forState:UIControlStateNormal];
+        [button setImage:[Common maskedImageNamed:@"PriceTag" color:highlightColor]
+                forState:UIControlStateHighlighted];
+
+        [button addTarget:self action:@selector(priceTagAction) forControlEvents:UIControlEventTouchUpInside];
+
+        cell.accessoryView = button;
+    }
+    else
+    {
+        cell.accessoryView = nil;
+    }
+
     return cell;
+}
+
+
+- (void)priceTagAction
+{
+    NSString* title;
+    NSString* message;
+
+    title   = NSLocalizedStringWithDefaultValue(@"NumberAreas CallChargesTitle", nil, [NSBundle mainBundle],
+                                                @"Incoming Call Charges",
+                                                @"....\n"
+                                                @"[iOS alert title size].");
+    message = NSLocalizedStringWithDefaultValue(@"NumberAreas CallChargesMessage", nil, [NSBundle mainBundle],
+                                                @"When someone calls you at such a Number, additional charges apply."
+                                                @"\n\nThe exact amounts per minute can be found from the next screen.",
+                                                @"....\n"
+                                                @"[iOS alert message size!]");
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:nil
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
 }
 
 @end

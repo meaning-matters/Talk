@@ -115,7 +115,6 @@ typedef enum
         
         // Conditionally there Area section rows.
         areaRows |= (numberTypeMask == NumberTypeGeographicMask) ? AreaRowAreaName : 0;
-        areaRows |= (numberTypeMask == NumberTypeSpecialMask)    ? AreaRowAreaName : 0;
         areaRows |= (state != nil)                               ? AreaRowState    : 0;
 
         // Default naming.
@@ -142,16 +141,6 @@ typedef enum
             case NumberTypeTollFreeMask:
             {
                 name = [NSString stringWithFormat:@"%@ (free)", countryName];
-                break;
-            }
-            case NumberTypeSharedCostMask:
-            {
-                name = [NSString stringWithFormat:@"%@ (share)", countryName];
-                break;
-            }
-            case NumberTypeSpecialMask:
-            {
-                name = [NSString stringWithFormat:@"%@ (spec)", countryName];
                 break;
             }
             case NumberTypeInternationalMask:
