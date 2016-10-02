@@ -26,7 +26,7 @@
  * the codes can be found here:
  * http://www.iso.org/iso/english_country_names_and_code_elements
  *
- * @author Nikolaos Trogkanis
+ * Credits to Nikolaos Trogkanis for original implementation.
  */
 
 goog.provide('i18n.phonenumbers.Error');
@@ -173,6 +173,22 @@ i18n.phonenumbers.PhoneNumberUtil.MOBILE_TOKEN_MAPPINGS_ = {
   52: '1',
   54: '9'
 };
+
+
+/**
+ * Set of country calling codes that have geographically assigned mobile
+ * numbers. This may not be complete; we add calling codes case by case, as we
+ * find geographical mobile numbers or hear from user reports.
+ *
+ * @const
+ * @type {!Array.<number>}
+ * @private
+ */
+i18n.phonenumbers.PhoneNumberUtil.GEO_MOBILE_COUNTRIES_ = [
+  52,  // Mexico
+  54,  // Argentina
+  55  // Brazil
+];
 
 
 /**
@@ -1371,10 +1387,13 @@ i18n.phonenumbers.PhoneNumberUtil.prototype.isNumberGeographical =
     function(phoneNumber) {
   /** @type {i18n.phonenumbers.PhoneNumberType} */
   var numberType = this.getNumberType(phoneNumber);
-  // TODO: Include mobile phone numbers from countries like Indonesia, which
-  // has some mobile numbers that are geographical.
+
   return numberType == i18n.phonenumbers.PhoneNumberType.FIXED_LINE ||
-      numberType == i18n.phonenumbers.PhoneNumberType.FIXED_LINE_OR_MOBILE;
+      numberType == i18n.phonenumbers.PhoneNumberType.FIXED_LINE_OR_MOBILE ||
+      (goog.array.contains(
+          i18n.phonenumbers.PhoneNumberUtil.GEO_MOBILE_COUNTRIES_,
+          phoneNumber.getCountryCodeOrDefault()) &&
+       numberType == i18n.phonenumbers.PhoneNumberType.MOBILE);
 };
 
 
@@ -1663,7 +1682,11 @@ i18n.phonenumbers.PhoneNumberUtil.prototype.
         number, fallbackCarrierCode) {
   return this.formatNationalNumberWithCarrierCode(
       number,
-      number.hasPreferredDomesticCarrierCode() ?
+      // Historically, we set this to an empty string when parsing with raw
+      // input if none was found in the input string. However, this doesn't
+      // result in a number we can dial. For this reason, we treat the empty
+      // string the same as if it isn't set at all.
+      number.getPreferredDomesticCarrierCodeOrDefault().length > 0 ?
           number.getPreferredDomesticCarrierCodeOrDefault() :
           fallbackCarrierCode);
 };
@@ -1718,7 +1741,12 @@ i18n.phonenumbers.PhoneNumberUtil.prototype.formatNumberForMobileDialing =
           i18n.phonenumbers.PhoneNumberUtil
               .COLOMBIA_MOBILE_TO_FIXED_LINE_PREFIX_);
     } else if (regionCode == 'BR' && isFixedLineOrMobile) {
-      formattedNumber = numberNoExt.hasPreferredDomesticCarrierCode() ?
+      formattedNumber =
+          // Historically, we set this to an empty string when parsing with raw
+          // input if none was found in the input string. However, this doesn't
+          // result in a number we can dial. For this reason, we treat the empty
+          // string the same as if it isn't set at all.
+          numberNoExt.getPreferredDomesticCarrierCodeOrDefault().length > 0 ?
           this.formatNationalNumberWithPreferredCarrierCode(numberNoExt, '') :
           // Brazilian fixed line and mobile numbers need to be dialed with a
           // carrier code when called within Brazil. Without that, most of the
@@ -1744,8 +1772,9 @@ i18n.phonenumbers.PhoneNumberUtil.prototype.formatNumberForMobileDialing =
       /** @type {i18n.phonenumbers.PhoneMetadata} */
       var regionMetadata = this.getMetadataForRegion(regionCallingFrom);
       if (this.canBeInternationallyDialled(numberNoExt) &&
-          !this.isShorterThanPossibleNormalNumber_(
-              regionMetadata, this.getNationalSignificantNumber(numberNoExt))) {
+          this.testNumberLength_(this.getNationalSignificantNumber(numberNoExt),
+              regionMetadata.getGeneralDesc()) !=
+          i18n.phonenumbers.PhoneNumberUtil.ValidationResult.TOO_SHORT) {
         formattedNumber = this.format(
             numberNoExt, i18n.phonenumbers.PhoneNumberFormat.INTERNATIONAL);
       } else {
@@ -2751,11 +2780,17 @@ i18n.phonenumbers.PhoneNumberUtil.prototype.
  */
 i18n.phonenumbers.PhoneNumberUtil.prototype.isNumberMatchingDesc_ =
     function(nationalNumber, numberDesc) {
-
+  // Check if any possible number lengths are present; if so, we use them to
+  // avoid checking the validation pattern if they don't match. If they are
+  // absent, this means they match the general description, which we have
+  // already checked before a specific number type.
+  var actualLength = nationalNumber.length;
+  if (numberDesc.possibleLengthCount() > 0 &&
+      numberDesc.possibleLengthArray().indexOf(actualLength) == -1) {
+    return false;
+  }
   return i18n.phonenumbers.PhoneNumberUtil.matchesEntirely_(
-      numberDesc.getPossibleNumberPatternOrDefault(), nationalNumber) &&
-      i18n.phonenumbers.PhoneNumberUtil.matchesEntirely_(
-          numberDesc.getNationalNumberPatternOrDefault(), nationalNumber);
+      numberDesc.getNationalNumberPatternOrDefault(), nationalNumber);
 };
 
 
@@ -3094,41 +3129,40 @@ i18n.phonenumbers.PhoneNumberUtil.prototype.isPossibleNumber =
  * in between these possible lengths is entered, such as of length 8, this will
  * return TOO_LONG.
  *
- * @param {string} numberPattern
  * @param {string} number
+ * @param {i18n.phonenumbers.PhoneNumberDesc} phoneNumberDesc
  * @return {i18n.phonenumbers.PhoneNumberUtil.ValidationResult}
  * @private
  */
-i18n.phonenumbers.PhoneNumberUtil.prototype.testNumberLengthAgainstPattern_ =
-    function(numberPattern, number) {
-  if (i18n.phonenumbers.PhoneNumberUtil.matchesEntirely_(numberPattern,
-                                                         number)) {
+i18n.phonenumbers.PhoneNumberUtil.prototype.testNumberLength_ =
+    function(number, phoneNumberDesc) {
+  var possibleLengths = phoneNumberDesc.possibleLengthArray();
+  var localLengths = phoneNumberDesc.possibleLengthLocalOnlyArray();
+  var actualLength = number.length;
+  if (localLengths.indexOf(actualLength) > -1) {
     return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.IS_POSSIBLE;
   }
-  if (number.search(numberPattern) == 0) {
-    return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.TOO_LONG;
-  } else {
+  // There should always be "possibleLengths" set for every element. This will
+  // be a build-time check once ShortNumberMetadata.xml is migrated to contain
+  // this information as well.
+  var minimumLength = possibleLengths[0];
+  if (minimumLength == actualLength) {
+    return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.IS_POSSIBLE;
+  } else if (minimumLength > actualLength) {
     return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.TOO_SHORT;
+  } else if (possibleLengths[possibleLengths.length - 1] < actualLength) {
+    return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.TOO_LONG;
   }
-};
-
-
-/**
- * Helper method to check whether a number is too short to be a regular length
- * phone number in a region.
- *
- * @param {i18n.phonenumbers.PhoneMetadata} regionMetadata
- * @param {string} number
- * @return {boolean}
- * @private
- */
-i18n.phonenumbers.PhoneNumberUtil.prototype.isShorterThanPossibleNormalNumber_ =
-    function(regionMetadata, number) {
-  /** @type {string} */
-  var possibleNumberPattern =
-      regionMetadata.getGeneralDesc().getPossibleNumberPatternOrDefault();
-  return this.testNumberLengthAgainstPattern_(possibleNumberPattern, number) ==
-      i18n.phonenumbers.PhoneNumberUtil.ValidationResult.TOO_SHORT;
+  // Note that actually the number is not too long if possible_lengths does not
+  // contain the length: we know it is less than the highest possible number
+  // length, and higher than the lowest possible number length. However, we
+  // don't currently have an enum to express this, so we return TOO_LONG in the
+  // short-term.
+  // We could skip the first element; we've already checked it; but we prefer to
+  // check one value rather than create an extra object in this case.
+  return (possibleLengths.indexOf(actualLength) > -1) ?
+      i18n.phonenumbers.PhoneNumberUtil.ValidationResult.IS_POSSIBLE :
+      i18n.phonenumbers.PhoneNumberUtil.ValidationResult.TOO_LONG;
 };
 
 
@@ -3179,11 +3213,7 @@ i18n.phonenumbers.PhoneNumberUtil.prototype.isPossibleNumberWithReason =
   /** @type {i18n.phonenumbers.PhoneMetadata} */
   var metadata =
       this.getMetadataForRegionOrCallingCode_(countryCode, regionCode);
-  /** @type {string} */
-  var possibleNumberPattern =
-      metadata.getGeneralDesc().getPossibleNumberPatternOrDefault();
-  return this.testNumberLengthAgainstPattern_(possibleNumberPattern,
-                                              nationalNumber);
+  return this.testNumberLength_(nationalNumber, metadata.getGeneralDesc());
 };
 
 
@@ -3397,9 +3427,6 @@ i18n.phonenumbers.PhoneNumberUtil.prototype.maybeExtractCountryCode =
           potentialNationalNumber, defaultRegionMetadata, null);
       /** @type {string} */
       var potentialNationalNumberStr = potentialNationalNumber.toString();
-      /** @type {string} */
-      var possibleNumberPattern =
-          generalDesc.getPossibleNumberPatternOrDefault();
       // If the number was not valid before but is valid now, or if it was too
       // long before, we consider the number with the country calling code
       // stripped to be a better result and keep that instead.
@@ -3407,8 +3434,7 @@ i18n.phonenumbers.PhoneNumberUtil.prototype.maybeExtractCountryCode =
               validNumberPattern, fullNumber.toString()) &&
           i18n.phonenumbers.PhoneNumberUtil.matchesEntirely_(
               validNumberPattern, potentialNationalNumberStr)) ||
-          this.testNumberLengthAgainstPattern_(possibleNumberPattern,
-                                               fullNumber.toString()) ==
+          this.testNumberLength_(fullNumber.toString(), generalDesc) ==
               i18n.phonenumbers.PhoneNumberUtil.ValidationResult.TOO_LONG) {
         nationalNumber.append(potentialNationalNumberStr);
         if (keepRawInput) {
@@ -3663,11 +3689,20 @@ i18n.phonenumbers.PhoneNumberUtil.prototype.checkRegionForParsing_ = function(
 
 
 /**
- * Parses a string and returns it in proto buffer format. This method will throw
- * a {@link i18n.phonenumbers.Error} if the number is not considered to be a
- * possible number. Note that validation of whether the number is actually a
- * valid number for a particular region is not performed. This can be done
- * separately with {@link #isValidNumber}.
+ * Parses a string and returns it as a phone number in proto buffer format. The
+ * method is quite lenient and looks for a number in the input text (raw input)
+ * and does not check whether the string is definitely only a phone number. To
+ * do this, it ignores punctuation and white-space, as well as any text before
+ * the number (e.g. a leading “Tel: ”) and trims the non-number bits.  It will
+ * accept a number in any format (E164, national, international etc), assuming
+ * it can be interpreted with the defaultRegion supplied. It also attempts to
+ * convert any alpha characters into digits if it thinks this is a vanity number
+ * of the type "1800 MICROSOFT".
+ *
+ * This method will throw a {@link i18n.phonenumbers.Error} if the number is not
+ * considered to be a possible number. Note that validation of whether the
+ * number is actually a valid number for a particular region is not performed.
+ * This can be done separately with {@link #isValidNumber}.
  *
  * @param {?string} numberToParse number that we are attempting to parse. This
  *     can contain formatting such as +, ( and -, as well as a phone number
@@ -3681,8 +3716,9 @@ i18n.phonenumbers.PhoneNumberUtil.prototype.checkRegionForParsing_ = function(
  * @return {i18n.phonenumbers.PhoneNumber} a phone number proto buffer filled
  *     with the parsed number.
  * @throws {i18n.phonenumbers.Error} if the string is not considered to be a
- *     viable phone number or if no default region was supplied and the number
- *     is not in international format (does not start with +).
+ *     viable phone number (e.g. too few or too many digits) or if no default
+ *     region was supplied and the number is not in international format (does
+ *     not start with +).
  */
 i18n.phonenumbers.PhoneNumberUtil.prototype.parse = function(numberToParse,
                                                              defaultRegion) {
@@ -3870,10 +3906,15 @@ i18n.phonenumbers.PhoneNumberUtil.prototype.parseHelper_ =
         new goog.string.StringBuffer(normalizedNationalNumber.toString());
     this.maybeStripNationalPrefixAndCarrierCode(
         potentialNationalNumber, regionMetadata, carrierCode);
-    if (!this.isShorterThanPossibleNormalNumber_(
-            regionMetadata, potentialNationalNumber.toString())) {
+    // We require that the NSN remaining after stripping the national prefix and
+    // carrier code be long enough to be a possible length for the region.
+    // Otherwise, we don't do the stripping, since the original number could be
+    // a valid short number.
+    if (this.testNumberLength_(potentialNationalNumber.toString(),
+            regionMetadata.getGeneralDesc()) !=
+        i18n.phonenumbers.PhoneNumberUtil.ValidationResult.TOO_SHORT) {
       normalizedNationalNumber = potentialNationalNumber;
-      if (keepRawInput) {
+      if (keepRawInput && carrierCode.toString().length > 0) {
         phoneNumber.setPreferredDomesticCarrierCode(carrierCode.toString());
       }
     }
