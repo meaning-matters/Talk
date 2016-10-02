@@ -29,19 +29,19 @@
 
 typedef enum
 {
-    TableSectionInfo         = 1UL << 0,
-    TableSectionDestination  = 1UL << 1,
-    TableSectionUsage        = 1UL << 2,
-    TableSectionPeriod       = 1UL << 3,
-    TableSectionAddress      = 1UL << 4,
-    TableSectionCharges      = 1UL << 5,
+    TableSectionName         = 1UL << 0,
+    TableSectionInfo         = 1UL << 1,
+    TableSectionDestination  = 1UL << 2,
+    TableSectionUsage        = 1UL << 3,
+    TableSectionPeriod       = 1UL << 4,
+    TableSectionAddress      = 1UL << 5,
+    TableSectionCharges      = 1UL << 6,
 } TableSections;
 
 typedef enum
 {
-    InfoRowName              = 1UL << 0,
-    InfoRowE164              = 1UL << 1,
-    InfoRowArea              = 1UL << 2,
+    InfoRowE164              = 1UL << 0,
+    InfoRowArea              = 1UL << 1,
 } InfoRows;
 
 
@@ -77,6 +77,7 @@ typedef enum
                                                        @"[1 line larger font].");
 
         // Mandatory sections.
+        sections |= TableSectionName;
         sections |= TableSectionInfo;
         sections |= TableSectionDestination;
         sections |= TableSectionUsage;
@@ -87,11 +88,10 @@ typedef enum
         sections |= [IncomingChargesViewController hasIncomingChargesWithNumber:number] ? TableSectionCharges : 0;
 
         // Info Rows
-        infoRows |= InfoRowName;
         infoRows |= InfoRowE164;
         infoRows |= InfoRowArea;
 
-        NSInteger section  = [Common nOfBit:TableSectionInfo inValue:sections];
+        NSInteger section  = [Common nOfBit:TableSectionName inValue:sections];
         self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
     }
 
@@ -214,6 +214,7 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
+        case TableSectionName:         numberOfRows = 1;                              break;
         case TableSectionInfo:         numberOfRows = [Common bitsSetCount:infoRows]; break;
         case TableSectionDestination:  numberOfRows = 1;                              break;
         case TableSectionUsage:        numberOfRows = 1;                              break;
@@ -340,11 +341,14 @@ typedef enum
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
+        case TableSectionName:
+        {
+            return [self nameCellForRowAtIndexPath:indexPath];
+        }
         case TableSectionInfo:
         {
             switch ([Common nthBitSet:indexPath.row inValue:infoRows])
             {
-                case InfoRowName: return [self nameCellForRowAtIndexPath:indexPath];
                 case InfoRowE164: identifier = @"E164Cell"; break;
                 case InfoRowArea: identifier = @"AreaCell"; break;
             }
