@@ -117,6 +117,10 @@
                                                      @"Standard term for international phone number\n"
                                                      @"[iOS standard size].");
         }
+        default:
+        {
+            return @"---";
+        }
     }
 }
 

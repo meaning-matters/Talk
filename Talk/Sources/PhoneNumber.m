@@ -416,6 +416,7 @@ static NSString* defaultIsoCountryCode = @"";
     }
 }
 
+
 // Patch bad NL mobile number formatting (+31 6 12345678 ==> +31 6 12 34 56 78).
 - (NSString*)patchNlFormat:(NSString*)number
 {

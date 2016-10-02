@@ -119,15 +119,6 @@
 }
 
 
-+ (NSString*)detailsString
-{
-    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Details", nil, [NSBundle mainBundle],
-                                             @"Details",
-                                             @"Standard string to label detailed information\n"
-                                             @"[iOS standard size].");
-}
-
-
 + (NSString*)numberString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Number", nil, [NSBundle mainBundle],

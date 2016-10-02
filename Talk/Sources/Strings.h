@@ -35,8 +35,6 @@
 
 + (NSString*)optionalString;
 
-+ (NSString*)detailsString;
-
 + (NSString*)newNumberString;
 
 + (NSString*)numberString;

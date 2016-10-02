@@ -29,24 +29,20 @@
 
 typedef enum
 {
-    TableSectionName         = 1UL << 0,
-    TableSectionE164         = 1UL << 1,
-    TableSectionDestination  = 1UL << 2,
-    TableSectionUsage        = 1UL << 3,
-    TableSectionPeriod       = 1UL << 4,
-    TableSectionAddress      = 1UL << 5,
-    TableSectionArea         = 1UL << 6,    // The optional state will be placed in a row here.
-    TableSectionCharges      = 1UL << 7,
+    TableSectionInfo         = 1UL << 0,
+    TableSectionDestination  = 1UL << 1,
+    TableSectionUsage        = 1UL << 2,
+    TableSectionPeriod       = 1UL << 3,
+    TableSectionAddress      = 1UL << 4,
+    TableSectionCharges      = 1UL << 5,
 } TableSections;
 
 typedef enum
 {
-    AreaRowType              = 1UL << 0,
-    AreaRowAreaCode          = 1UL << 1,
-    AreaRowAreaName          = 1UL << 2,
-    AreaRowStateName         = 1UL << 3,
-    AreaRowCountry           = 1UL << 4,
-} AreaRows;
+    InfoRowName              = 1UL << 0,
+    InfoRowE164              = 1UL << 1,
+    InfoRowArea              = 1UL << 2,
+} InfoRows;
 
 
 @interface NumberViewController ()
@@ -54,7 +50,7 @@ typedef enum
     NumberData*   number;
     
     TableSections sections;
-    AreaRows      areaRows;
+    InfoRows      infoRows;
     BOOL          isLoadingAddress;
     NSIndexPath*  expiryIndexPath;
     id            reachabilityObserver;
@@ -81,25 +77,22 @@ typedef enum
                                                        @"[1 line larger font].");
 
         // Mandatory sections.
-        sections |= TableSectionName;
-        sections |= TableSectionE164;
+        sections |= TableSectionInfo;
         sections |= TableSectionDestination;
         sections |= TableSectionUsage;
         sections |= TableSectionPeriod;
         sections |= TableSectionAddress;
-        sections |= TableSectionArea;
 
         // Optional section.
         sections |= [IncomingChargesViewController hasIncomingChargesWithNumber:number] ? TableSectionCharges : 0;
 
-        // Area Rows
-        areaRows |= AreaRowType;
-        areaRows |= AreaRowAreaCode;
-        areaRows |= (number.areaName  != nil) ? AreaRowAreaName  : 0;
-        areaRows |= (number.stateName != nil) ? AreaRowStateName : 0;
-        areaRows |= AreaRowCountry;
+        // Info Rows
+        infoRows |= InfoRowName;
+        infoRows |= InfoRowE164;
+        infoRows |= InfoRowArea;
 
-        self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:[Common nOfBit:TableSectionName inValue:sections]];
+        NSInteger section  = [Common nOfBit:TableSectionInfo inValue:sections];
+        self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
     }
 
     return self;
@@ -154,11 +147,6 @@ typedef enum
             title = NSLocalizedStringWithDefaultValue(@"Number:Name SectionHeader", nil, [NSBundle mainBundle],
                                                       @"Contact Address",
                                                       @"....");
-            break;
-        }
-        case TableSectionArea:
-        {
-            title = [Strings detailsString];
             break;
         }
     }
@@ -226,13 +214,11 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionName:         numberOfRows = 1;                              break;
-        case TableSectionE164:         numberOfRows = 1;                              break;
+        case TableSectionInfo:         numberOfRows = [Common bitsSetCount:infoRows]; break;
         case TableSectionDestination:  numberOfRows = 1;                              break;
         case TableSectionUsage:        numberOfRows = 1;                              break;
         case TableSectionPeriod:       numberOfRows = 3;                              break;  //### No Auto Renew for now.
         case TableSectionAddress:      numberOfRows = 1;                              break;
-        case TableSectionArea:         numberOfRows = [Common bitsSetCount:areaRows]; break;
         case TableSectionCharges:      numberOfRows = 1;                              break;
     }
 
@@ -254,14 +240,6 @@ typedef enum
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
-        case TableSectionName:
-        {
-            break;
-        }
-        case TableSectionE164:
-        {
-            break;
-        }
         case TableSectionDestination:
         {
             destinationsViewController = [[NumberDestinationsViewController alloc] initWithNumber:number];
@@ -344,10 +322,6 @@ typedef enum
             [self.navigationController pushViewController:viewController animated:YES];
             break;
         }
-        case TableSectionArea:
-        {
-            break;
-        }
         case TableSectionCharges:
         {
             chargesViewController       = [[IncomingChargesViewController alloc] initWithNumber:number];
@@ -366,13 +340,14 @@ typedef enum
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
-        case TableSectionName:
+        case TableSectionInfo:
         {
-            return [self nameCellForRowAtIndexPath:indexPath];
-        }
-        case TableSectionE164:
-        {
-            identifier = @"NumberCell";
+            switch ([Common nthBitSet:indexPath.row inValue:infoRows])
+            {
+                case InfoRowName: return [self nameCellForRowAtIndexPath:indexPath];
+                case InfoRowE164: identifier = @"E164Cell"; break;
+                case InfoRowArea: identifier = @"AreaCell"; break;
+            }
             break;
         }
         case TableSectionDestination:
@@ -393,18 +368,6 @@ typedef enum
         case TableSectionAddress:
         {
             identifier = @"AddressCell";
-            break;
-        }
-        case TableSectionArea:
-        {
-            if ([Common nthBitSet:indexPath.row inValue:areaRows] == AreaRowCountry)
-            {
-                identifier = @"CountryCell";
-            }
-            else
-            {
-                identifier = @"Value1Cell";
-            }
             break;
         }
         case TableSectionCharges:
@@ -439,14 +402,13 @@ typedef enum
 {
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
-        case TableSectionName:
+        case TableSectionInfo:
         {
-            //###[self updateNameCell:cell atIndexPath:indexPath];
-            break;
-        }
-        case TableSectionE164:
-        {
-            [self updateNumberCell:cell];
+            switch ([Common nthBitSet:indexPath.row inValue:infoRows])
+            {
+                case InfoRowE164: [self updateInfoE164Cell:cell]; break;
+                case InfoRowArea: [self updateInfoAreaCell:cell]; break;
+            }
             break;
         }
         case TableSectionDestination:
@@ -467,11 +429,6 @@ typedef enum
         case TableSectionAddress:
         {
             [self updateAddressCell:cell atIndexPath:indexPath];
-            break;
-        }
-        case TableSectionArea:
-        {
-            [self updateAreaCell:cell atIndexPath:indexPath];
             break;
         }
         case TableSectionCharges:
@@ -517,7 +474,7 @@ typedef enum
 
 #pragma mark - Cell Methods
 
-- (void)updateNameCell:(UITableViewCell*)cell
+- (void)updateInfoNameCell:(UITableViewCell*)cell
 {
     UITextField* textField;
 
@@ -543,25 +500,61 @@ typedef enum
 }
 
 
-- (void)updateNumberCell:(UITableViewCell*)cell
+- (void)updateInfoE164Cell:(UITableViewCell*)cell
 {
     NumberLabel*   numberLabel    = [Common addNumberLabelToCell:cell];
     NumberTypeMask numberTypeMask = [NumberType numberTypeMaskForString:number.numberType];
 
-    numberLabel.text    = [[PhoneNumber alloc] initWithNumber:number.e164].internationalFormat;
-    cell.textLabel.text = [NumberType localizedStringForNumberTypeMask:numberTypeMask];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    PhoneNumber*               phoneNumber      = [[PhoneNumber alloc] initWithNumber:number.e164];
+    NSString*                  string           = phoneNumber.internationalFormat;
+    NSMutableAttributedString* attributedString = [[NSMutableAttributedString alloc] initWithString:string];
+
+    UIFont*           font       = numberLabel.font;
+    UIFontDescriptor* descriptor = [[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
+    UIFont*           boldFont   = [UIFont fontWithDescriptor:descriptor size:font.pointSize];
+
+    NSRange range;
+    if (number.areaCode.length > 0)
+    {
+        range = NSMakeRange(0, 1 + phoneNumber.callCountryCode.length + 1 + number.areaCode.length);
+    }
+    else
+    {
+        range = NSMakeRange(0, 1 + phoneNumber.callCountryCode.length);
+    }
+    
+    [attributedString addAttribute:NSFontAttributeName value:boldFont range:range];
+
+    numberLabel.attributedText = attributedString;
+    cell.textLabel.text        = [NumberType localizedStringForNumberTypeMask:numberTypeMask];
+    cell.selectionStyle        = UITableViewCellSelectionStyleNone;
+}
+
+
+- (void)updateInfoAreaCell:(UITableViewCell*)cell
+{
+    cell.imageView.image      = [UIImage imageNamed:number.isoCountryCode];
+    cell.detailTextLabel.text = [self areaName];
+    cell.selectionStyle       = UITableViewCellSelectionStyleNone;
 }
 
 
 - (void)updateDestinationCell:(UITableViewCell*)cell
 {
-    cell.textLabel.text            = NSLocalizedStringWithDefaultValue(@"Number Destination", nil, [NSBundle mainBundle],
-                                                                       @"Destination",
-                                                                       @"....");
+    if (number.destination == nil)
+    {
+        cell.textLabel.attributedText  = [Common strikethroughAttributedString:[Strings destinationString]];
+        cell.detailTextLabel.text      = [Strings noneString];
+        cell.detailTextLabel.textColor = [Skinning deleteTintColor];
+    }
+    else
+    {
+        cell.textLabel.text            = [Strings destinationString];
+        cell.detailTextLabel.text      = number.destination.name;
+        cell.detailTextLabel.textColor = [Skinning valueColor];
+    }
+
     cell.textLabel.textColor       = [UIColor blackColor];
-    cell.detailTextLabel.text      = (number.destination == nil) ? [Strings noneString]       : number.destination.name;
-    cell.detailTextLabel.textColor = (number.destination == nil) ? [Skinning deleteTintColor] : [Skinning valueColor];
     cell.selectionStyle            = UITableViewCellSelectionStyleDefault;
     cell.accessoryType             = UITableViewCellAccessoryDisclosureIndicator;
 }
@@ -635,49 +628,6 @@ typedef enum
 }
 
 
-- (void)updateAreaCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
-{
-    NumberTypeMask numberTypeMask;
-    switch ([Common nthBitSet:indexPath.row inValue:areaRows])
-    {
-        case AreaRowType:
-        {
-            cell.textLabel.text       = [Strings typeString];
-            numberTypeMask            = [NumberType numberTypeMaskForString:number.numberType];
-            cell.detailTextLabel.text = [NumberType localizedStringForNumberTypeMask:numberTypeMask];
-            break;
-        }
-        case AreaRowAreaCode:
-        {
-            cell.textLabel.text       = [Strings areaCodeString];
-            cell.detailTextLabel.text = number.areaCode;
-            break;
-        }
-        case AreaRowAreaName:
-        {
-            cell.textLabel.text       = [Strings areaString];
-            cell.detailTextLabel.text = number.areaName;
-            break;
-        }
-        case AreaRowStateName:
-        {
-            cell.textLabel.text       = [Strings stateString];
-            cell.detailTextLabel.text = number.stateName;
-            break;
-        }
-        case AreaRowCountry:
-        {
-            cell.textLabel.text       = [Strings countryString];
-            cell.detailTextLabel.text = [[CountryNames sharedNames] nameForIsoCountryCode:number.isoCountryCode];
-            break;
-        }
-    }
-
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.accessoryType  = UITableViewCellAccessoryNone;
-}
-
-
 - (void)updateAddressCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
     cell.detailTextLabel.textColor = number.address ? [Skinning valueColor] : [Skinning placeholderColor];
@@ -688,17 +638,17 @@ typedef enum
         spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [spinner startAnimating];
 
-        cell.accessoryView          = spinner;
+        cell.accessoryView = spinner;
     }
     else
     {
-        cell.accessoryView          = nil;
+        cell.accessoryView = nil;
     }
 
-    cell.textLabel.text       = [Strings addressString];
-    cell.detailTextLabel.text = number.address ? number.address.name : [Strings requiredString];
-    cell.accessoryType        = (self.addressesPredicate != nil) ? UITableViewCellAccessoryDisclosureIndicator
-                                                                 : UITableViewCellAccessoryNone;
+    cell.textLabel.text         = [Strings addressString];
+    cell.detailTextLabel.text   = number.address ? number.address.name : [Strings requiredString];
+    cell.accessoryType          = (self.addressesPredicate != nil) ? UITableViewCellAccessoryDisclosureIndicator
+                                                                   : UITableViewCellAccessoryNone;
     cell.userInteractionEnabled = (self.addressesPredicate != nil); // Must be set last, otherwise setting colors does not work.
 }
 
@@ -779,6 +729,26 @@ typedef enum
 }
 
 
+- (NSString*)areaName
+{
+    if (number.areaName.length > 0)
+    {
+        if (number.stateCode.length > 0)
+        {
+            return [NSString stringWithFormat:@"%@  %@", number.areaName, number.stateCode];
+        }
+        else
+        {
+            return number.areaName;
+        }
+    }
+    else
+    {
+        return [[CountryNames sharedNames] nameForIsoCountryCode:number.isoCountryCode];
+    }
+}
+
+
 #pragma mark - Baseclass Override
 
 - (void)save
@@ -830,7 +800,7 @@ typedef enum
                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
     {
         self.name = number.name;
-        [self updateNameCell:[self.tableView cellForRowAtIndexPath:self.nameIndexPath]];
+        [self updateInfoNameCell:[self.tableView cellForRowAtIndexPath:self.nameIndexPath]];
      }
                          cancelButtonTitle:[Strings closeString]
                          otherButtonTitles:nil];
