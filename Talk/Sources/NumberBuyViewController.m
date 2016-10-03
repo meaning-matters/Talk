@@ -105,6 +105,8 @@
     {
         if (error == nil)
         {
+            [[AppDelegate appDelegate] checkCreditWithCompletion:nil];
+
             NumberData* number = [self saveNumberE164:e164
                                          purchaseDate:purchaseDate
                                            expiryDate:expiryDate
@@ -136,10 +138,7 @@
                                 }
                                 else
                                 {
-                                    [Common showSetDestinationError:error completion:^
-                                    {
-
-                                    }];
+                                    [Common showSetDestinationError:error completion:nil];
                                 }
                             }];
                         }
