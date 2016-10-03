@@ -229,6 +229,11 @@
             }
         }];
     }
+    else
+    {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 
