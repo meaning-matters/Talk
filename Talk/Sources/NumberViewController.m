@@ -547,12 +547,14 @@ typedef enum
 {
     if (number.destination == nil)
     {
+        cell.textLabel.text            = nil;
         cell.textLabel.attributedText  = [Common strikethroughAttributedString:[Strings destinationString]];
         cell.detailTextLabel.text      = [Strings noneString];
         cell.detailTextLabel.textColor = [Skinning deleteTintColor];
     }
     else
     {
+        cell.textLabel.attributedText  = nil;
         cell.textLabel.text            = [Strings destinationString];
         cell.detailTextLabel.text      = number.destination.name;
         cell.detailTextLabel.textColor = [Skinning valueColor];
