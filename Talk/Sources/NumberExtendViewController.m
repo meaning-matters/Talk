@@ -66,7 +66,10 @@
 
             self.completion ? self.completion() : 0;
 
-            [self leaveViewController];
+            [[AppDelegate appDelegate] checkCreditWithCompletion:^(BOOL success, NSError *error)
+            {
+                [self leaveViewController];
+            }];
         }
         else
         {
