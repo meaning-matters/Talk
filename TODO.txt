@@ -221,3 +221,5 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Check recents deletion: components.weekOfYear/month = -1; //### Does this work first week of the year?
 
 * Common's topViewController is not used everywhere, but AppDelegate.appDelegate.tabBarController instead. Check this.
+
+* Add geocoding http://dialcode.org/Europe/Netherlands/ with Voxbone queries and possibly with LibPhoneNumber's geocoding support.

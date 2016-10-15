@@ -155,20 +155,23 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     // Tell iOS we would like to get a background fetch.
     [application setMinimumBackgroundFetchInterval:(1 * 3600)];
 
+    // Refresh badges and local notifications
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
     [self refreshNumberExpiryBadges];
+
 /*#####
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     notification.repeatInterval = NSCalendarUnitDay;
     [notification setAlertBody:@"Hello world"];
     [notification setFireDate:[NSDate dateWithTimeIntervalSinceNow:10]];
     [application setScheduledLocalNotifications:[NSArray arrayWithObject:notification]];
- 
+
     // From StackOverflow:
     UIApplication* objApp = [UIApplication sharedApplication];
     NSArray*    oldNotifications = [objApp scheduledLocalNotifications];
+
     if ([oldNotifications count] > 0)
-        [objApp cancelAllLocalNotifications];
-*/
+ */
 
     return YES;
 }
@@ -193,8 +196,6 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                                                                           sortKeys:nil
                                                                          predicate:nil
                                                               managedObjectContext:nil];
-
-
 }
 
 
