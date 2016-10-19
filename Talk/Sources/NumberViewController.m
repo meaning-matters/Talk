@@ -25,6 +25,7 @@
 #import "AddressData.h"
 #import "PurchaseManager.h"
 #import "NetworkStatus.h"
+#import "AppDelegate.h"
 
 
 typedef enum
@@ -275,6 +276,8 @@ typedef enum
             {
                 UITableViewCell* expiryCell = [self.tableView cellForRowAtIndexPath:expiryIndexPath];
                 [self tableView:self.tableView willDisplayCell:expiryCell forRowAtIndexPath:expiryIndexPath];
+
+                [[AppDelegate appDelegate] updateNumbersBadgeValue];
             }];
 
             extendViewController.title = cell.textLabel.text;
