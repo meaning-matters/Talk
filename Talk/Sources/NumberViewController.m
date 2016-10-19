@@ -590,6 +590,7 @@ typedef enum
     [dateFormatter setDateFormat:dateFormat];
     [dateFormatter setLocale:[NSLocale currentLocale]];
 
+    cell.detailTextLabel.textColor = [Skinning valueColor]; // Make sure this is the default.
     switch (indexPath.row)
     {
         case 0:
@@ -608,6 +609,11 @@ typedef enum
                                                                           @"....");
             cell.detailTextLabel.text = [dateFormatter stringFromDate:number.expiryDate];
             cell.selectionStyle       = UITableViewCellSelectionStyleNone;
+
+            if ([number daysToSoonExpiry] > 0)
+            {
+                cell.detailTextLabel.textColor = [Skinning deleteTintColor];    // Overrides the default color.
+            }
 
             expiryIndexPath = indexPath;
             break;

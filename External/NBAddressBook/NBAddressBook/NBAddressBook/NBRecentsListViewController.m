@@ -125,13 +125,13 @@
                                                   action:@selector(clearAllPressed)];
     
     //Create the action sheet
-    clearActionSheet = [[UIActionSheet alloc]initWithTitle:nil
-                                                  delegate:self
-                                         cancelButtonTitle:NSLocalizedString(@"NCT_CANCEL", @"")
-                                    destructiveButtonTitle:nil
-                                         otherButtonTitles:NSLocalizedString(@"CNT_CLEAR_WEEK",  @""),
-                                                           NSLocalizedString(@"CNT_CLEAR_MONTH", @""),
-                                                           NSLocalizedString(@"CNT_CLEAR_ALL",   @""), nil];
+    clearActionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                   delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"NCT_CANCEL", @"")
+                                     destructiveButtonTitle:nil
+                                          otherButtonTitles:NSLocalizedString(@"CNT_CLEAR_WEEK",  @""),
+                                                            NSLocalizedString(@"CNT_CLEAR_MONTH", @""),
+                                                            NSLocalizedString(@"CNT_CLEAR_ALL",   @""), nil];
 
     [clearActionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
 
@@ -179,7 +179,7 @@
 {
     NSCalendar*       calendar    = [NSCalendar currentCalendar];
     NSDateComponents* components  = [NSDateComponents new];
-    components.weekOfYear         = -1; //### Does this work first week of the year?
+    components.weekOfYear         = -1; // This also works for first week of the year.
     NSDate*           weekAgoDate = [calendar dateByAddingComponents:components toDate:[NSDate date] options:0];
 
     // Clear all the old objects
@@ -201,7 +201,7 @@
 {
     NSCalendar*       calendar    = [NSCalendar currentCalendar];
     NSDateComponents* components  = [NSDateComponents new];
-    components.month              = -1;
+    components.month              = -1; // This also works for first month of the year.
     NSDate*          monthAgoDate = [calendar dateByAddingComponents:components toDate:[NSDate date] options:0];
 
     // Clear all the old objects

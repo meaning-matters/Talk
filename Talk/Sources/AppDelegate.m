@@ -157,7 +157,6 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
     // Refresh badges and local notifications
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
-    [self refreshNumberExpiryBadges];
 
 /*#####
     UILocalNotification *notification = [[UILocalNotification alloc] init];
@@ -177,37 +176,26 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 }
 
 
-- (void)refreshNumberExpiryBadges
-{
-    NSPredicate* oneDayPredicate   = [[NSPredicate alloc] init]; //### Expiry in less than a day.
-    NSArray*     oneDayNumbers     = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
-                                                                          sortKeys:nil
-                                                                         predicate:nil
-                                                              managedObjectContext:nil];
-
-    NSPredicate* threeDayPredicate = [[NSPredicate alloc] init]; //### Expiry in less than a day.
-    NSArray*     threeDayNumbers   = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
-                                                                          sortKeys:nil
-                                                                         predicate:nil
-                                                              managedObjectContext:nil];
-
-    NSPredicate* sevenDayPredicate = [[NSPredicate alloc] init]; //### Expiry in less than a day.
-    NSArray*     sevenDayNumbers   = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
-                                                                          sortKeys:nil
-                                                                         predicate:nil
-                                                              managedObjectContext:nil];
-}
-
-
 - (void)updateNumbersBadgeValue
 {
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"destination == nil"];
-    NSArray*     unconnectedNumbers = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
-                                                                                sortKeys:nil
-                                                                               predicate:predicate
-                                                                    managedObjectContext:nil];
+    NSPredicate* unconnectedPredicate    = [NSPredicate predicateWithFormat:@"destination == nil"];
+    NSArray*     unconnectedNumbers      = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
+                                                                                     sortKeys:nil
+                                                                                    predicate:unconnectedPredicate
+                                                                         managedObjectContext:nil];
 
-    NSUInteger count = [[AddressUpdatesHandler sharedHandler] addressUpdatesCount] + unconnectedNumbers.count;
+    NSCalendar*       calendar           = [NSCalendar currentCalendar];
+    NSDateComponents* components         = [NSDateComponents new];  // Below adding to `day` also works around New Year.
+    components.day                       = 7;
+    NSDate*           sevenDaysDate      = [calendar dateByAddingComponents:components toDate:[NSDate date] options:0];
+    NSPredicate*      sevenDaysPredicate = [NSPredicate predicateWithFormat:@"expiryDate < %@", sevenDaysDate];
+    NSArray*          sevenDaysNumbers   = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
+                                                                                     sortKeys:nil
+                                                                                    predicate:sevenDaysPredicate
+                                                                         managedObjectContext:nil];
+
+    NSUInteger count = [[AddressUpdatesHandler sharedHandler] addressUpdatesCount] +
+                       unconnectedNumbers.count + sevenDaysNumbers.count;
     [[BadgeHandler sharedHandler] setBadgeCount:count forViewController:self.numbersViewController];
 }
 

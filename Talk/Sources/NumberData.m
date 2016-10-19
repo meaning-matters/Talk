@@ -37,4 +37,35 @@
 @dynamic destination;
 @dynamic address;
 
+
+- (NSInteger)daysToSoonExpiry
+{
+    NSCalendar*       calendar   = [NSCalendar currentCalendar];
+    NSDateComponents* components = [NSDateComponents new];  // Below adding to `day` also works around New Year.
+    NSDate*           daysDate;
+
+    components.day = 1;
+    daysDate       = [calendar dateByAddingComponents:components toDate:[NSDate date] options:0];
+    if ([self.expiryDate compare:daysDate] == NSOrderedAscending)
+    {
+        return 1;
+    }
+
+    components.day = 3;
+    daysDate       = [calendar dateByAddingComponents:components toDate:[NSDate date] options:0];
+    if ([self.expiryDate compare:daysDate] == NSOrderedAscending)
+    {
+        return 3;
+    }
+
+    components.day = 7;
+    daysDate       = [calendar dateByAddingComponents:components toDate:[NSDate date] options:0];
+    if ([self.expiryDate compare:daysDate] == NSOrderedAscending)
+    {
+        return 7;
+    }
+
+    return 0;
+}
+
 @end

@@ -337,7 +337,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
         cell.detailTextLabel.text = [phoneNumber internationalFormat];
         cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
 
-        cell.badgeCount = (number.destination == nil) ? 1 : 0;
+        cell.badgeCount  = (number.destination == nil)     ? 1 : 0;
+        cell.badgeCount += ([number daysToSoonExpiry] > 0) ? 1 : 0;
 
         [self addUseButtonWithNumber:number toCell:cell];
     }
