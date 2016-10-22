@@ -45,7 +45,7 @@
 @property (nonatomic, retain) DestinationData* destination;
 @property (nonatomic, retain) AddressData*     address;
 
-// Returns 1, 3, 7, or 0 when does not expire soon.
-- (NSInteger)daysToSoonExpiry;
+// Returns 7, 3, or 1 when expiry is within 7, 3, or 1 days repectively, or return 0 when expiry is longer than 7 days away.
+- (NSInteger)expiryLevelDays;
 
 @end

@@ -156,6 +156,50 @@ typedef NS_ENUM(NSUInteger, TableSections)
 }
 
 
+#pragma mark - Public API
+
+- (void)presentNumber:(NumberData*)number
+{
+    void (^showBlock)(void) = ^
+    {
+        // Show the Number.
+        UIViewController* viewController = [[NumberViewController alloc] initWithNumber:number
+                                                                   managedObjectContext:self.managedObjectContext];
+        [self.navigationController pushViewController:viewController animated:YES];
+    };
+
+    void (^popBlock)(void) = ^
+    {
+        // Pop display of other (or possibly the same, but we ignore that for now) Number.
+        if (self.navigationController.viewControllers.count > 1)
+        {
+            [self.navigationController popToViewController:self animated:YES];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.333 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+            {
+                showBlock();
+            });
+        }
+        else
+        {
+            showBlock();
+        }
+    };
+    
+    // Dismiss Number buying or any other modal (e.g. adding Phone).
+    if (self.presentedViewController != nil)
+    {
+        [self dismissViewControllerAnimated:self.presentedViewController completion:^
+        {
+            popBlock();
+        }];
+    }
+    else
+    {
+        popBlock();
+    }
+}
+
+
 #pragma mark - Table View Delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
@@ -337,8 +381,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
         cell.detailTextLabel.text = [phoneNumber internationalFormat];
         cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
 
-        cell.badgeCount  = (number.destination == nil)     ? 1 : 0;
-        cell.badgeCount += ([number daysToSoonExpiry] > 0) ? 1 : 0;
+        cell.badgeCount  = (number.destination == nil)    ? 1 : 0;
+        cell.badgeCount += ([number expiryLevelDays] > 0) ? 1 : 0;
 
         [self addUseButtonWithNumber:number toCell:cell];
     }

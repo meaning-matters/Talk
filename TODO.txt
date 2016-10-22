@@ -223,3 +223,5 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Common's topViewController is not used everywhere, but AppDelegate.appDelegate.tabBarController instead. Check this.
 
 * Add geocoding http://dialcode.org/Europe/Netherlands/ with Voxbone queries and possibly with LibPhoneNumber's geocoding support.
+
+* Limit number of times updateNumbersBadgeValue is called during background fetch. It's called for every Address at the moment.'

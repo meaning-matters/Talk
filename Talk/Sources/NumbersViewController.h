@@ -10,7 +10,11 @@
 #import <UIKit/UIKit.h>
 #import "ItemsViewController.h"
 
+@class NumberData;
+
 
 @interface NumbersViewController : ItemsViewController
+
+- (void)presentNumber:(NumberData*)number;
 
 @end

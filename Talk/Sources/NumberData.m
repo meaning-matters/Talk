@@ -38,7 +38,7 @@
 @dynamic address;
 
 
-- (NSInteger)daysToSoonExpiry
+- (NSInteger)expiryLevelDays
 {
     NSCalendar*       calendar   = [NSCalendar currentCalendar];
     NSDateComponents* components = [NSDateComponents new];  // Below adding to `day` also works around New Year.

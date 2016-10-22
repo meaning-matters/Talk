@@ -35,15 +35,17 @@
 #import "BadgeHandler.h"
 #import "AddressUpdatesHandler.h"
 #import "WebViewController.h"
+#import "NumberData.h"
 
 NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification";
 
 
 @interface AppDelegate ()
 {
-    UIImageView*   defaultFadeImage;
-    BOOL           hasFadedDefaultImage;
-    AVAudioPlayer* welcomePlayer;
+    UIImageView*     defaultFadeImage;
+    BOOL             hasFadedDefaultImage;
+    AVAudioPlayer*   welcomePlayer;
+    UIBarButtonItem* tabBarCustomizeDoneItem;
 }
 
 @end
@@ -133,7 +135,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                                            UIUserNotificationTypeSound |
                                            UIUserNotificationTypeAlert;
     UIUserNotificationSettings* settings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
-    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    [application registerUserNotificationSettings:settings];
 
     if ([UIApplication sharedApplication].protectedDataAvailable)
     {
@@ -155,24 +157,16 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     // Tell iOS we would like to get a background fetch.
     [application setMinimumBackgroundFetchInterval:(1 * 3600)];
 
-    // Refresh badges and local notifications
-    [[UIApplication sharedApplication] cancelAllLocalNotifications];
-
-/*#####
-    UILocalNotification *notification = [[UILocalNotification alloc] init];
-    notification.repeatInterval = NSCalendarUnitDay;
-    [notification setAlertBody:@"Hello world"];
-    [notification setFireDate:[NSDate dateWithTimeIntervalSinceNow:10]];
-    [application setScheduledLocalNotifications:[NSArray arrayWithObject:notification]];
-
-    // From StackOverflow:
-    UIApplication* objApp = [UIApplication sharedApplication];
-    NSArray*    oldNotifications = [objApp scheduledLocalNotifications];
-
-    if ([oldNotifications count] > 0)
- */
+    [self refreshLocalNotifications];
 
     return YES;
+}
+
+
+- (void)refreshLocalNotifications
+{
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    [self scheduleNumberNotifications];
 }
 
 
@@ -197,6 +191,90 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     NSUInteger count = [[AddressUpdatesHandler sharedHandler] addressUpdatesCount] +
                        unconnectedNumbers.count + sevenDaysNumbers.count;
     [[BadgeHandler sharedHandler] setBadgeCount:count forViewController:self.numbersViewController];
+}
+
+
+- (void)scheduleNumberNotifications
+{
+    NSMutableArray* notifications = [NSMutableArray array];
+    NSArray*        numbers       = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
+                                                                              sortKeys:nil
+                                                                             predicate:nil
+                                                                  managedObjectContext:nil];
+    // If past the 7, 3, and 1 day(s), the corresponding notification has fired and the user has seen it or was
+    // in the app during that seeing the red badge.
+    //
+    // The is a microscopic chance the notification's date falls right in between the fraction of a second between
+    // `cancelAllLocalNotifications` and adding them again here. We just ignore that to keep things simple.
+    for (NumberData* number in numbers)
+    {
+        switch ([number expiryLevelDays])
+        {
+            case 0:
+                // It's more than 7 days until expiry, so add all notifications.
+                [self addNumberNotification:number expiryDays:7 notifications:notifications];
+                [self addNumberNotification:number expiryDays:3 notifications:notifications];
+                [self addNumberNotification:number expiryDays:1 notifications:notifications];
+                break;
+
+            case 7:
+                // We're between 7 and 3 days until expiry, so we don't add the 7 days notification again.
+                [self addNumberNotification:number expiryDays:3 notifications:notifications];
+                [self addNumberNotification:number expiryDays:1 notifications:notifications];
+                break;
+
+            case 3:
+                // We're between 3 and 1 days until expiry, so we don't add the 3 days notification again.
+                [self addNumberNotification:number expiryDays:1 notifications:notifications];
+                break;
+
+            case 1:
+                // We're past 1 day until expiry, so we don't add the 1 day notification again.
+                break;
+        }
+    }
+
+    [[UIApplication sharedApplication] setScheduledLocalNotifications:notifications];
+}
+
+
+- (void)addNumberNotification:(NumberData*)number
+                   expiryDays:(NSInteger)expiryDays
+                notifications:(NSMutableArray*)notifications
+{
+    NSCalendar*       calendar   = [NSCalendar currentCalendar];
+    NSDateComponents* components = [NSDateComponents new];  // Below adding to `day` also works around New Year.
+    NSDate*           beforeExpiryDate;
+
+    components.day   = -expiryDays;
+    beforeExpiryDate = [calendar dateByAddingComponents:components toDate:number.expiryDate options:0];
+
+    UILocalNotification* notification = [[UILocalNotification alloc] init];
+    notification.alertBody   = [self expiryAlertBodyForNumber:number expiryDays:expiryDays];
+    notification.alertAction = NSLocalizedString(@"Extend", @"");
+    notification.hasAction   = YES;
+    notification.soundName   = UILocalNotificationDefaultSoundName;
+    notification.userInfo    = @{ @"e164" : number.e164 };
+    notification.fireDate    = beforeExpiryDate;
+
+    [notifications addObject:notification];
+}
+
+
+- (NSString*)expiryAlertBodyForNumber:(NumberData*)number expiryDays:(NSInteger)expiryDays
+{
+    NSString* format = NSLocalizedString(@"Your Number \"%@\" will expire %@. Extend and let people reach you.", @"");
+    NSString* when;
+
+    switch (expiryDays)
+    {
+        case 7:  when = NSLocalizedString(@"in 7 days",   @""); break;
+        case 3:  when = NSLocalizedString(@"in 3 days",   @""); break;
+        case 1:  when = NSLocalizedString(@"in 24 hours", @""); break;
+        default: when = NSLocalizedString(@"soon",        @""); break;   // Not used, just in case.
+    }
+
+    return [NSString stringWithFormat:format, number.name, when];
 }
 
 
@@ -311,10 +389,29 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
     if (notification.userInfo != nil)
     {
-        NSString*   source = notification.userInfo[@"source"];
+        NSString* source = notification.userInfo[@"source"];
         if (source != nil && [source isEqualToString:@"databaseError"])
         {
             [self restore];
+        }
+
+        NSString* e164  = notification.userInfo[@"e164"];
+        if (e164 != nil)
+        {
+            // Jump to Number screen.
+            NSPredicate*predicate = [NSPredicate predicateWithFormat:@"e164 == %@", e164];
+            NumberData* number    = [[[DataManager sharedManager] fetchEntitiesWithName:@"Number"
+                                                                               sortKeys:nil
+                                                                              predicate:predicate
+                                                                   managedObjectContext:nil] lastObject];
+            if (number != nil)
+            {
+                // Cancel editing of More tab.
+                [self doneCustomizingTabBarViewController];
+
+                self.tabBarController.selectedViewController = self.numbersViewController.navigationController;
+                [self.numbersViewController presentNumber:number];
+            }
         }
     }
 }
@@ -350,6 +447,12 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
         {
             [[DataManager sharedManager] synchronizeAll:^(NSError *error)
             {
+                if (error == nil)
+                {
+                    [self updateNumbersBadgeValue];
+                    [self refreshLocalNotifications];
+                }
+
                 completionHandler((error == nil) ? UIBackgroundFetchResultNewData : UIBackgroundFetchResultFailed);
             }];
         }
@@ -517,7 +620,8 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
         UINavigationBar* navigationBar = (UINavigationBar*)[customizeView subviews][1];
         if ([navigationBar isKindOfClass:[UINavigationBar class]])
         {
-            navigationBar.topItem.leftBarButtonItem.tintColor = [Skinning tintColor];
+            navigationBar.topItem.rightBarButtonItem.tintColor = [Skinning tintColor];
+            tabBarCustomizeDoneItem = navigationBar.topItem.rightBarButtonItem;
         }
     }
 }
@@ -527,6 +631,8 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                  changed:(BOOL)changed
 {
     AnalysticsTrace(@"willEndCustomizingViewControllers");
+
+    tabBarCustomizeDoneItem = nil;
 
     [[BadgeHandler sharedHandler] showBadges];
 
@@ -541,6 +647,15 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
         [Settings sharedSettings].tabBarClassNames = classNames;
     }
+}
+
+
+- (void)doneCustomizingTabBarViewController
+{
+    [[UIApplication sharedApplication] sendAction:tabBarCustomizeDoneItem.action
+                                               to:tabBarCustomizeDoneItem.target
+                                             from:nil
+                                         forEvent:nil];
 }
 
 

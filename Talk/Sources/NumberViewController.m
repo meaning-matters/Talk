@@ -278,6 +278,7 @@ typedef enum
                 [self tableView:self.tableView willDisplayCell:expiryCell forRowAtIndexPath:expiryIndexPath];
 
                 [[AppDelegate appDelegate] updateNumbersBadgeValue];
+                [[AppDelegate appDelegate] refreshLocalNotifications];
             }];
 
             extendViewController.title = cell.textLabel.text;
@@ -613,7 +614,7 @@ typedef enum
             cell.detailTextLabel.text = [dateFormatter stringFromDate:number.expiryDate];
             cell.selectionStyle       = UITableViewCellSelectionStyleNone;
 
-            if ([number daysToSoonExpiry] > 0)
+            if ([number expiryLevelDays] > 0)
             {
                 cell.detailTextLabel.textColor = [Skinning deleteTintColor];    // Overrides the default color.
             }
