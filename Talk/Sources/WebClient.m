@@ -51,6 +51,7 @@
 - (NSDate*)dateWithString:(NSString*)string // Used to convert Number date to NSDate.
 {
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"]; // The server supplies GMT dates.
     [formatter setDateFormat:@"yyyy-M-d H:m:s"];
 
     return [formatter dateFromString:string];
