@@ -201,6 +201,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                                                                               sortKeys:nil
                                                                              predicate:nil
                                                                   managedObjectContext:nil];
+    
     // If past the 7, 3, and 1 day(s), the corresponding notification has fired and the user has seen it or was
     // in the app during that seeing the red badge.
     //
@@ -395,10 +396,19 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
             [self restore];
         }
 
+        void (^showNumberBlock)(NumberData* number) = ^(NumberData* number)
+        {
+            // Cancel editing of More tab.
+            [self doneCustomizingTabBarViewController];
+
+            // Jump to Number screen.
+            self.tabBarController.selectedViewController = self.numbersViewController.navigationController;
+            [self.numbersViewController presentNumber:number];
+        };
+
         NSString* e164  = notification.userInfo[@"e164"];
         if (e164 != nil)
         {
-            // Jump to Number screen.
             NSPredicate*predicate = [NSPredicate predicateWithFormat:@"e164 == %@", e164];
             NumberData* number    = [[[DataManager sharedManager] fetchEntitiesWithName:@"Number"
                                                                                sortKeys:nil
@@ -406,11 +416,24 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                                                                    managedObjectContext:nil] lastObject];
             if (number != nil)
             {
-                // Cancel editing of More tab.
-                [self doneCustomizingTabBarViewController];
-
-                self.tabBarController.selectedViewController = self.numbersViewController.navigationController;
-                [self.numbersViewController presentNumber:number];
+                if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
+                {
+                    [BlockAlertView showAlertViewWithTitle:NSLocalizedString(@"Extend Your Number", @"")
+                                                   message:notification.alertBody
+                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+                    {
+                        if (buttonIndex == 1)
+                        {
+                            showNumberBlock(number);
+                        }
+                    }
+                                         cancelButtonTitle:[Strings cancelString]
+                                         otherButtonTitles:notification.alertAction, nil];
+                }
+                else
+                {
+                    showNumberBlock(number);
+                }
             }
         }
     }
