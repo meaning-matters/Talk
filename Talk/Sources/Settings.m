@@ -23,6 +23,7 @@ NSString* const ErrorDomainKey            = @"ErrorDomain";
 NSString* const HomeIsoCountryCodeKey     = @"HomeIsoCountryCode";
 NSString* const UseSimIsoCountryCodeKey   = @"UseSimIsoCountryCode";
 NSString* const LastDialedNumberKey       = @"LastDialedNumber";
+NSString* const RecentsCheckDateKey       = @"RecentsCheckDate";
 NSString* const WebUsernameKey            = @"WebUsername";            // Used as keychain 'username'.
 NSString* const WebPasswordKey            = @"WebPassword";            // Used as keychain 'username'.
 NSString* const DeviceTokenReplacementKey = @"DeviceTokenReplacement";
@@ -135,6 +136,7 @@ static NSUserDefaults* userDefaults;
         }
 
         [dictionary setObject:@""                                                forKey:LastDialedNumberKey];
+        [dictionary setObject:[NSDate date]                                      forKey:RecentsCheckDateKey];
         [dictionary setObject:@(YES)                                             forKey:ShowCallerIdKey];
         [dictionary setObject:@""                                                forKey:CallerIdE164Key];
         [dictionary setObject:@""                                                forKey:CallbackE164Key];
@@ -225,6 +227,18 @@ static NSUserDefaults* userDefaults;
 - (void)setLastDialedNumber:(NSString*)lastDialedNumber
 {
     [userDefaults setObject:lastDialedNumber forKey:LastDialedNumberKey];
+}
+
+
+- (NSDate*)recentsCheckDate
+{
+    return [userDefaults objectForKey:RecentsCheckDateKey];
+}
+
+
+- (void)setRecentsCheckDate:(NSDate*)recentsCheckDate
+{
+    [userDefaults setObject:recentsCheckDate forKey:RecentsCheckDateKey];
 }
 
 

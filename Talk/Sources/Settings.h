@@ -30,7 +30,9 @@
 @property (nonatomic, strong) NSString*      homeIsoCountryCode;    // ISO country code selected by user.
 @property (nonatomic, assign) BOOL           useSimIsoCountryCode;  // Use ISO country code from SIM card.
 
-@property (nonatomic, strong) NSString*      lastDialedNumber;
+@property (nonatomic, strong) NSString*      lastDialedNumber;      // Most recent number called from keypad.
+
+@property (nonatomic, strong) NSDate*        recentsCheckDate;      // Date of last time recents were checked on server.
 
 @property (nonatomic, strong) NSString*      webUsername;
 @property (nonatomic, strong) NSString*      webPassword;

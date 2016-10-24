@@ -21,15 +21,15 @@
 @interface NBRecentsListViewController : UITableViewController <UIActionSheetDelegate, NBAddUnknownContactDelegate, NSFetchedResultsControllerDelegate>
 {
     //The navigation bar buttons
-    UIBarButtonItem * editButton;
-    UIBarButtonItem * doneButton;
-    UIBarButtonItem * clearButton;
+    UIBarButtonItem* editButton;
+    UIBarButtonItem* doneButton;
+    UIBarButtonItem* clearButton;
     
     //The action sheet to clear the contacts
-    UIActionSheet * clearActionSheet;
+    UIActionSheet* clearActionSheet;
     
     //The recent contacts-datasource with grouping (date-sorted array with arrays (1..*) of recent entries)
-    NSMutableArray * dataSource;
+    NSMutableArray* dataSource;
     
     //Flag to indicate we're displaying missed calls only
     BOOL missedCallsOnly;

@@ -198,7 +198,7 @@
 
     // Make sure that all objects appear in registeredObjects.
     [self fetchEntitiesWithName:@"Phone"  sortKeys:nil predicate:nil managedObjectContext:nil];
-    [self fetchEntitiesWithName:@"Recent" sortKeys:nil predicate:nil managedObjectContext:nil];
+    [self fetchEntitiesWithName:@"CallRecord" sortKeys:nil predicate:nil managedObjectContext:nil];
 
     for (NSManagedObject* object in [self.managedObjectContext registeredObjects])
     {

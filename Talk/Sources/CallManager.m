@@ -249,7 +249,7 @@
 - (void)addCallToRecents:(Call*)call
 {
     NSManagedObjectContext* context = [DataManager sharedManager].managedObjectContext;
-    NBRecentContactEntry*   recent  = [NSEntityDescription insertNewObjectForEntityForName:@"Recent"
+    NBRecentContactEntry*   recent  = [NSEntityDescription insertNewObjectForEntityForName:@"CallRecord"
                                                                     inManagedObjectContext:context];
     recent.number    = call.phoneNumber.number;
     recent.date      = call.beginDate;
@@ -282,29 +282,29 @@
                                                              int       callthruDuration,
                                                              float     callbackCost,
                                                              float     callthruCost)
-     {
-         if (error == nil)
-         {
-             PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:recent.number];
-             Call*        call        = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
+    {
+        if (error == nil)
+        {
+            PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:recent.number];
+            Call*        call        = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
 
-             call.state            = state;
-             call.leg              = leg;
-             call.callbackDuration = callbackDuration;
-             call.callthruDuration = callthruDuration;
-             call.callbackCost     = callbackCost;
-             call.callthruCost     = callthruCost;
+            call.state            = state;
+            call.leg              = leg;
+            call.callbackDuration = callbackDuration;
+            call.callthruDuration = callthruDuration;
+            call.callbackCost     = callbackCost;
+            call.callthruCost     = callthruCost;
 
-             recent.uuid = (state == CallStateEnded) ? nil : recent.uuid;
-             [[CallManager sharedManager] updateRecent:recent withCall:call];
+            recent.uuid = (state == CallStateEnded) ? nil : recent.uuid;
+            [[CallManager sharedManager] updateRecent:recent withCall:call];
 
-             completion(YES, state == CallStateEnded);
-         }
-         else
-         {
-             completion(NO, NO);
-         }
-     }];
+            completion(YES, state == CallStateEnded);
+        }
+        else
+        {
+            completion(NO, NO);
+        }
+    }];
 }
 
 

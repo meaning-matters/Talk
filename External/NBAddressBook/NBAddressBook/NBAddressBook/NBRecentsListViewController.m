@@ -13,6 +13,8 @@
 #import "PhoneNumber.h"
 #ifndef NB_STANDALONE
 #import "DataManager.h"
+#import "WebClient.h"
+#import "Settings.h"
 #endif
 
 @interface NBRecentsListViewController ()
@@ -148,6 +150,12 @@
                                              selector:@selector(reload)
                                                  name:UIApplicationWillEnterForegroundNotification
                                                object:nil];
+
+    UIRefreshControl* refreshControl = [[UIRefreshControl alloc] init];
+    NSString* title = NSLocalizedString(@"Check for incoming calls", @"");
+    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:title];
+    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -155,7 +163,38 @@
     [super viewWillAppear:animated];
     
     [self reload];
+
+    //### Workaround: http://stackoverflow.com/a/19126113/1971013
+    //### And it also fixes my own issue: http://stackoverflow.com/a/22626388/1971013
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        [self.refreshControl beginRefreshing];
+        [self.refreshControl endRefreshing];
+    });
 }
+
+
+- (void)refresh:(id)sender
+{
+    NSDate* date = [Settings sharedSettings].recentsCheckDate;
+    [[WebClient sharedClient] retrieveInboundCallRecordsFromDate:date reply:^(NSError *error, NSArray *records)
+    {
+        [Settings sharedSettings].recentsCheckDate = [NSDate date];
+
+        [self.tableView beginUpdates];
+        [self processInboundCallRecords: records];
+        [self.tableView endUpdates];
+
+        [sender endRefreshing];
+    }];
+}
+
+
+- (void)processInboundCallRecords:(NSArray*)records
+{
+
+}
+
 
 #pragma mark - Replacing an unknown contact with a known one
 - (void)replaceViewController:(UIViewController*)viewController
@@ -379,6 +418,7 @@
         NBRecentCallCell * missedCallCell = (NBRecentCallCell *)[self.tableView cellForRowAtIndexPath:indexPath];
         [missedCallCell shiftLabels:YES];
     }
+
     [UIView commitAnimations];
     
     //Set the buttons accordingly
@@ -682,7 +722,7 @@
     if (firstEntry.contactID == nil)
     {
         //Load as unknown person
-        recentUnknownViewController = [[NBRecentUnknownContactViewController alloc]init];
+        recentUnknownViewController = [[NBRecentUnknownContactViewController alloc] init];
         [recentUnknownViewController setAddUnknownContactDelegate:self];
 
         //Set the person
@@ -769,7 +809,7 @@
         //If we want to see missed calls only
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
         [request setSortDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO]]];
-        [request setEntity:[NSEntityDescription entityForName:@"Recent" inManagedObjectContext:managedObjectContext]];
+        [request setEntity:[NSEntityDescription entityForName:@"CallRecord" inManagedObjectContext:managedObjectContext]];
         
         //Create the instance
         fetchedResultsController = [[NSFetchedResultsController alloc]

@@ -48,13 +48,29 @@
 
 #pragma mark - Helpers
 
-- (NSDate*)dateWithString:(NSString*)string // Used to convert Number date to NSDate.
+/**
+ Converts a date string (e.g. "2016-03-15 10:32:43") in GMT timezone (what server uses) to an `NSDate` object.
+ */
+- (NSDate*)dateWithString:(NSString*)string
 {
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
-    formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"]; // The server supplies GMT dates.
+    formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
     [formatter setDateFormat:@"yyyy-M-d H:m:s"];
 
     return [formatter dateFromString:string];
+}
+
+
+/**
+ Converts an `NSDate` object to a date string (e.g. "2016-03-15 10:32:43") in GMT timezone (what server uses).
+ */
+- (NSString*)stringWithDate:(NSDate*)date
+{
+    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+    [formatter setDateFormat:@"yyyy-M-d H:m:s"];
+
+    return [formatter stringFromDate:date];
 }
 
 
@@ -1121,7 +1137,32 @@
 
 
 // 17. GET CDRS
-// ...
+- (void)retrieveInboundCallRecordsFromDate:(NSDate*)date
+                                     reply:(void (^)(NSError* error, NSArray* records))reply
+{
+    NSString* username       = [Settings sharedSettings].webUsername;
+    NSString* currencyCode   = [Settings sharedSettings].storeCurrencyCode;
+    NSString* countryCode    = [Settings sharedSettings].storeCountryCode;
+    NSString* fromDateString = [self stringWithDate:date];
+
+    fromDateString = [fromDateString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    fromDateString = [fromDateString stringByReplacingOccurrencesOfString:@":" withString:@"%3A"];
+
+    [self getPath:[NSString stringWithFormat:@"/users/%@/cdrs?inbound=%@&fromDateTime=%@&currencyCode=%@&countryCode=%@",
+                   username, @"true", fromDateString, currencyCode, countryCode]
+       parameters:nil
+            reply:^(NSError* error, id content)
+    {
+        if (error == nil)
+        {
+            reply(nil, content);
+        }
+        else
+        {
+            reply(error, nil);
+        }
+    }];
+}
 
 
 // 18. GET VOICEMAIL STATUS
