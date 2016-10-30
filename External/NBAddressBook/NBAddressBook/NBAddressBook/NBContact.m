@@ -7,11 +7,9 @@
 //
 
 #import "NBContact.h"
-#ifndef NB_STANDALONE
 #import "DataManager.h"
 #import "CallManager.h"
 #import "Settings.h"
-#endif
 
 @implementation NBContact
 
@@ -133,9 +131,7 @@
     if ([listRepresentation length] == 0)
     {
         NSString* propertyString = [NBContact getAvailableProperty:kABPersonPhoneProperty from:contactRef];
-#ifndef NB_STANDALONE
         propertyString = [[NBAddressBookManager sharedManager].delegate formatNumber:propertyString];
-#endif
         if (propertyString != nil)
         {
             [listRepresentation appendString:propertyString];
@@ -533,12 +529,10 @@
         if (property == nil)
         {
             property = [self getAvailableProperty:kABPersonPhoneProperty from:contactRef];
-#ifndef NB_STANDALONE
             if (mustFormatNumber)
             {
                 property = [[NBAddressBookManager sharedManager].delegate formatNumber:property];
             }
-#endif
         }
     }
 
@@ -571,14 +565,13 @@
 
 
 #pragma mark - Single point of handling calls
+
 + (void)makePhoneCall:(NSString*)phoneNumber
         withContactID:(NSString*)contactID
 {
-#ifndef NB_STANDALONE
     [[CallManager sharedManager] callPhoneNumber:[[PhoneNumber alloc] initWithNumber:phoneNumber]
                                        contactId:contactID
                                       completion:nil];
-#endif
 }
 
 @end

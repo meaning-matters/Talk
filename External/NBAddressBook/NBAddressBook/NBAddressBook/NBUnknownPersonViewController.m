@@ -31,9 +31,7 @@
     
     //Load in the number
     number = [NBContact getAvailableProperty:kABPersonPhoneProperty from:self.contact.contactRef];
-#ifndef NB_STANDALONE
     number = [[NBAddressBookManager sharedManager].delegate formatNumber:number];
-#endif
 
     //Reset the name based on loaded-in properties
     [self setNameLabel];

@@ -367,9 +367,7 @@
 {
     //Add a new entry in the number-field
     NSString * number = [NBContact getAvailableProperty:kABPersonPhoneProperty from:person.contactRef];
-#ifndef NB_STANDALONE
     number = [[NBAddressBookManager sharedManager].delegate formatNumber:number];
-#endif
     if ([number length] > 0)
     {
         NSMutableArray * section = [tableStructure objectAtIndex:CC_NUMBER];

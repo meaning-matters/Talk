@@ -10,16 +10,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import "NBContact.h"
-
-#ifdef NB_STANDALONE
-typedef enum
-{
-    CallDirectionIncoming = 0,
-    CallDirectionOutgoing = 1,
-} CallDirection;
-#else
 #import "Call.h"    // Has its own/identical definition of CallDirection.
-#endif
 
 typedef enum
 {

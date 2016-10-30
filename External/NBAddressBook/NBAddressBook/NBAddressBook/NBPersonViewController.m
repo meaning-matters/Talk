@@ -733,9 +733,7 @@
             if (indexPath.section == CC_NUMBER)
             {
                 NSString * number = cellInfo.textValue;
-#ifndef NB_STANDALONE
                 number = [[NBAddressBookManager sharedManager].delegate formatNumber:cellInfo.textValue];
-#endif
                 [textField setText:number];
                 
                 if ([[NBAddressBookManager sharedManager].delegate isValidNumber:cellInfo.textValue])

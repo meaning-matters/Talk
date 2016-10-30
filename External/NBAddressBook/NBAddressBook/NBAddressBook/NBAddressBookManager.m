@@ -8,9 +8,7 @@
 
 #import <AddressBookUI/AddressBookUI.h>
 #import "NBAddressBookManager.h"
-#ifndef NB_STANDALONE
 #import "Common.h"
-#endif
 
 
 @interface NBAddressBookManager () <ABUnknownPersonViewControllerDelegate>
@@ -66,12 +64,10 @@
             {
                 [[NSNotificationCenter defaultCenter] postNotificationName:NF_RELOAD_CONTACTS object:nil];
 
-#ifndef NB_STANDALONE
                 if (granted)
                 {
                     [Common addCompanyToAddressBook:addressBook];
                 }
-#endif
             });
         });
     }

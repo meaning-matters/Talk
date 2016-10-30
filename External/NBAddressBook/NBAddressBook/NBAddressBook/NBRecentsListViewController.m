@@ -11,11 +11,9 @@
 #import "Strings.h"
 #import "AppDelegate.h"
 #import "PhoneNumber.h"
-#ifndef NB_STANDALONE
 #import "DataManager.h"
 #import "WebClient.h"
 #import "Settings.h"
-#endif
 
 @interface NBRecentsListViewController ()
 {
@@ -36,12 +34,10 @@
 
 @implementation NBRecentsListViewController
 
-#ifndef NB_STANDALONE
 - (instancetype)init
 {
     return [self initWithManagedObjectContext:[DataManager sharedManager].managedObjectContext];
 }
-#endif
 
 #pragma mark - Initialization
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContextParam
@@ -105,19 +101,14 @@
 {
     [super viewDidLoad];
 
-#if NB_STANDALONE
     //Set the segmented control
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"CNT_ALL", @""), NSLocalizedString(@"CNT_MISSED", @"")]];
     [segmentedControl setSelectedSegmentIndex:0];
     [segmentedControl setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
-    [segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
     segmentedControl.frame = CGRectMake(0, 0, 150, 30);
     [segmentedControl addTarget:self action:@selector(segmentedControlSwitched:) forControlEvents:UIControlEventValueChanged];
     self.navigationItem.titleView = segmentedControl;
-#else
-    self.navigationItem.title = NSLocalizedString(@"CNT_RECENTS", @"");
-#endif
-    
+
     //Set the modify-button
     editButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(modifyListPressed)];
     doneButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
@@ -481,14 +472,12 @@
         [cell setNumberLabel:numberLabel];
         [cell addSubview:numberLabel];
 
-#ifdef NB_STANDALONE
         // Add an outgoing-call imageview
         UIImageView * outgoingImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"outgoingCall"]];
         [outgoingImageView setFrame:CGRectMake(0, 0, 10, 10)];
         [outgoingImageView setHidden:YES];
         [cell setOutgoingCallImageView:outgoingImageView];
         [cell addSubview:outgoingImageView];
-#endif
 
         // Add a number type label
         UILabel* typeLabel = [[UILabel alloc]initWithFrame:CGRectMake(POSITION_NUMBER_LABEL,
@@ -546,9 +535,7 @@
     else
     {
         NSString* number = latestEntry.number;
-#ifndef NB_STANDALONE
         number = [[NBAddressBookManager sharedManager].delegate formatNumber:latestEntry.number];
-#endif
         [numberLabel setText:number];
         [numberType setText:NSLocalizedString(@"LBL_UNKNOWN", @"")];
     }
@@ -579,7 +566,6 @@
         [numberLabel setAttributedText:attributedName];
     }
 
-#ifdef NB_STANDALONE
     //Set the outgoing call icon
     UIImageView * outgoingImageView = cell.outgoingCallImageView;
     if ([latestEntry.direction intValue] == CallDirectionOutgoing)
@@ -600,7 +586,6 @@
     {
         [outgoingImageView setHidden:YES];
     }
-#endif
 
     // Set the time and (yesterday/day name in case of less than a week ago/date)
     NSString*         dayOrDate;
@@ -658,11 +643,7 @@
     [cell.detailTextLabel setAttributedText:attributedText];
     [cell.detailTextLabel setTextAlignment:NSTextAlignmentRight];
     [cell.detailTextLabel setNumberOfLines:2];
-#ifdef NB_STANDALONE
-    [cell.detailTextLabel setTextColor:[UIColor colorWithRed:36/255.0f green:112/255.0f blue:216/255.0f alpha:1.0f]];
-#else
     [cell.detailTextLabel setTextColor:[[NBAddressBookManager sharedManager].delegate tintColor]];
-#endif
     [cell setAccessoryType:UITableViewCellAccessoryDetailButton];
     
     return cell;
@@ -756,12 +737,7 @@
         [recentUnknownViewController setAllowsAddingToAddressBook:YES];
         [recentUnknownViewController setAllowsSendingMessage:NO];
         
-        //Allow for actions
-#ifdef NB_STANDALONE
-        [recentUnknownViewController setAllowsActions:YES];
-#else
         [recentUnknownViewController setAllowsActions:NO];
-#endif
 
         //Set the entry to base the calls on
         [recentUnknownViewController setRecentEntryArray:entryArray];
@@ -775,12 +751,7 @@
         recentViewController = [[NBRecentContactViewController alloc]init];
         [recentViewController setDisplayedPerson:[self getContactForID:firstEntry.contactID]];
         
-        //By default, allow actions
-#ifdef NB_STANDALONE
-        [recentViewController setAllowsActions:YES];
-#else
         [recentViewController setAllowsActions:NO];
-#endif
 
         //Set the entry to base the calls on
         [recentViewController setRecentEntryArray:entryArray];
@@ -881,9 +852,7 @@
                 {
                     //indicate we found an entry
                     NSString* number = (__bridge NSString *)(ABMultiValueCopyValueAtIndex(datasource, i));
-#ifndef NB_STANDALONE
                     number = [[NBAddressBookManager sharedManager].delegate formatNumber:number];
-#endif
                     [recentContactEntry setNumber:number];
                     numberFound = YES;
                     break;

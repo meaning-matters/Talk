@@ -72,10 +72,7 @@
     [self.tableHeader addSubview:self.myNumberLabel];
     [self.tableView setTableHeaderView:self.tableHeader];
 
-    //Create the groups-and add button
-#ifdef NB_STANDALONE
-    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"GRP_TITLE", @"") style:UIBarButtonItemStylePlain target:self action:@selector(groupsPressed)]];
-#endif
+    // Create add button
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)]];
     
     //The contacts datasource
@@ -199,17 +196,6 @@
     //Position the no=contacts
     noContactsLabel.center = CGPointMake( self.view.bounds.size.width / 2, (self.view.bounds.size.height / 2) - 53);
 }
-
-#pragma mark - Bar button selectors
-- (void)groupsPressed
-{
-    //Programatically add a navigation controller with root controller that shows the groups
-    NBGroupsTableViewController * groupsTableViewController = [[NBGroupsTableViewController alloc]initWithStyle:UITableViewStyleGrouped];
-    [groupsTableViewController setGroupsDatasource:groupsManager.userGroups];
-    UINavigationController * groupsNavController = [[UINavigationController alloc]initWithRootViewController:groupsTableViewController];
-    [self presentViewController:groupsNavController animated:YES completion:nil];
-}
-
 
 #pragma mark - Adding Contact
 
@@ -417,13 +403,7 @@
         
         //Load the person view controller
         [personViewController setDisplayedPerson:selectedContactRef];
-        
-        //By default, allow editing and actions
-#ifdef NB_STANDALONE
-        [personViewController setAllowsActions:YES];
-#else
         [personViewController setAllowsActions:NO];
-#endif
 
 #warning - Set the cell action-delegate
         [personViewController setPersonViewDelegate:nil];
