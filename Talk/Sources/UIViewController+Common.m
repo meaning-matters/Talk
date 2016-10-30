@@ -266,7 +266,7 @@
         if (sender.state == UIGestureRecognizerStateEnded)
         {
             __weak typeof(self) weakSelf = self;
-            [NSTimer scheduledTimerWithTimeInterval:3 repeats:NO block:^
+            [NSTimer scheduledTimerWithTimeInterval:3 repeats:NO block:^(NSTimer * _Nonnull timer)
             {
                 weakSelf.showFootnotes = [Settings sharedSettings].showFootnotes;
 

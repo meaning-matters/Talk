@@ -677,7 +677,7 @@ typedef enum
         }
     }
 
-    sliderTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 repeats:YES block:^
+    sliderTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 repeats:YES block:^(NSTimer * _Nonnull timer)
     {
         [self updateSlider];
     }];
@@ -737,7 +737,7 @@ typedef enum
 
     isPausedRecording = NO;
 
-    meteringTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 repeats:YES block:^
+    meteringTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 repeats:YES block:^(NSTimer * _Nonnull timer)
     {
         [self updateMeter];
     }];
@@ -856,7 +856,7 @@ typedef enum
         return;
     }
 
-    meteringTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 repeats:YES block:^
+    meteringTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 repeats:YES block:^(NSTimer * _Nonnull timer)
     {
         [self updateMeter];
     }];
