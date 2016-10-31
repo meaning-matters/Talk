@@ -1064,13 +1064,13 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 }
 
 
-- (void)updateRecent:(NBRecentContactEntry*)recent completion:(void (^)(BOOL success, BOOL ended))completion
+- (void)updateRecent:(CallRecordData*)recent completion:(void (^)(BOOL success, BOOL ended))completion
 {
     [[CallManager sharedManager] updateRecent:recent completion:completion];
 }
 
 
-- (BOOL)matchRecent:(NBRecentContactEntry*)recent withNumber:(NSString*)number
+- (BOOL)matchRecent:(CallRecordData*)recent withNumber:(NSString*)number
 {
     // No numbers that are invalid will end up in Recents (because earlier there will be
     // a alert). So we'll always have a E164 form available, and also the ISO country code.

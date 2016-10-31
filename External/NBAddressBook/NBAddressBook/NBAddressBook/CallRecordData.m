@@ -1,14 +1,14 @@
 //
-//  NBRecentContactEntry.m
+//  CallRecordData.m
 //  NBAddressBook
 //
 //  Created by Jasper Siebelink on 7/20/13.
 //  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
 //
 
-#import "NBRecentContactEntry.h"
+#import "CallRecordData.h"
 
-@implementation NBRecentContactEntry
+@implementation CallRecordData
 
 @dynamic contactID;
 @dynamic number;

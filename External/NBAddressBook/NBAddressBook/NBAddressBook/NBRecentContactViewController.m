@@ -30,7 +30,7 @@
     // If the last call received was missed, mark as such
     incomingCalls = [NSMutableArray array];
     outgoingCalls = [NSMutableArray array];
-    for (NBRecentContactEntry* entry in recentEntryArray)
+    for (CallRecordData* entry in recentEntryArray)
     {
         switch ([entry.direction intValue])
         {
@@ -57,7 +57,7 @@
     //If the last call received was missed, mark as such
     incomingCalls = [NSMutableArray array];
     outgoingCalls = [NSMutableArray array];
-    for (NBRecentContactEntry * entry in recentEntryArray)
+    for (CallRecordData * entry in recentEntryArray)
     {
         switch ([entry.direction intValue])
         {
@@ -99,7 +99,7 @@
     if (section == CC_NAME && !self.tableView.isEditing)
     {
         //Build up the non-interactive missed calls-view
-        NBRecentContactEntry* firstEntry = [recentEntryArray objectAtIndex:0];
+        CallRecordData* firstEntry = [recentEntryArray objectAtIndex:0];
         CGFloat               height     = [self tableView:tableView heightForFooterInSection:section];
         UIView * footerView = [[UIView alloc]initWithFrame:CGRectMake(
                                                                       0,
@@ -135,7 +135,7 @@
     if (indexPath.section == CC_NUMBER )
     {
         NBDetailLineSeparatedCell * cell = (NBDetailLineSeparatedCell*)[super tableView:tableView cellForRowAtIndexPath:indexPath];
-        NBRecentContactEntry * entry = [recentEntryArray objectAtIndex:0];
+        CallRecordData * entry = [recentEntryArray objectAtIndex:0];
         
         //If this was the called number
         if ([entry.number isEqualToString:cell.cellTextfield.text])

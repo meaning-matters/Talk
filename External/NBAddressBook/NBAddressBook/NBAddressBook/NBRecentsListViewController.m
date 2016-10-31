@@ -77,7 +77,7 @@
 {
     for (NSArray* entryRowArray in dataSource)
     {
-        NBRecentContactEntry* entry = entryRowArray[0];
+        CallRecordData* entry = entryRowArray[0];
         if (entry.contactID == nil)
         {
             PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:entry.e164];
@@ -86,7 +86,7 @@
             {
                 if (contactIds.count == 1)
                 {
-                    for (NBRecentContactEntry* entry in entryRowArray)
+                    for (CallRecordData* entry in entryRowArray)
                     {
                         entry.contactID = contactIds[0];
                     }
@@ -215,7 +215,7 @@
     // Clear all the old objects
     missedCallsOnly = NO;
     [self performFetch];
-    for (NBRecentContactEntry* entry in [fetchedResultsController fetchedObjects])
+    for (CallRecordData* entry in [fetchedResultsController fetchedObjects])
     {
         if ([entry.date compare:weekAgoDate] == NSOrderedAscending)
         {
@@ -237,7 +237,7 @@
     // Clear all the old objects
     missedCallsOnly = NO;
     [self performFetch];
-    for (NBRecentContactEntry* entry in [fetchedResultsController fetchedObjects])
+    for (CallRecordData* entry in [fetchedResultsController fetchedObjects])
     {
         if ([entry.date compare:monthAgoDate] == NSOrderedAscending)
         {
@@ -253,7 +253,7 @@
     // Clear all the old objects
     missedCallsOnly = NO;
     [self performFetch];
-    for (NBRecentContactEntry* entry in [fetchedResultsController fetchedObjects])
+    for (CallRecordData* entry in [fetchedResultsController fetchedObjects])
     {
         [managedObjectContext deleteObject:entry];
     }
@@ -337,9 +337,9 @@
         
         //Group the recent contacts into a datasource
         [dataSource removeAllObjects];
-        NBRecentContactEntry* lastEntry;
+        CallRecordData* lastEntry;
         NSMutableArray* entryArray;
-        for (NBRecentContactEntry* entry in allRecentContacts)
+        for (CallRecordData* entry in allRecentContacts)
         {
             //If we don't have a last entry or it doesn't match the record or number, create a new entry
             BOOL entryAdded = NO;
@@ -495,7 +495,7 @@
     UILabel* numberLabel = cell.numberLabel;
     UILabel* numberType  = cell.numberTypeLabel;
 
-    NBRecentContactEntry* latestEntry = [entryRowArray objectAtIndex:0];
+    CallRecordData* latestEntry = [entryRowArray objectAtIndex:0];
     ABRecordRef           contact;
     if (latestEntry.contactID != nil)
     {
@@ -503,7 +503,7 @@
         if (contact == nil)
         {
             // Contact appears to be gone, clear it.
-            for (NBRecentContactEntry* entry in entryRowArray)
+            for (CallRecordData* entry in entryRowArray)
             {
                 entry.contactID = nil;
             }
@@ -668,7 +668,7 @@
         [dataSource removeObject:entryArray];
         
         //Remove the object from coredata
-        for (NBRecentContactEntry* entry in entryArray)
+        for (CallRecordData* entry in entryArray)
         {
             [self.fetchedResultsController.managedObjectContext deleteObject:entry];
         }
@@ -688,7 +688,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSArray*              entryArray = [dataSource objectAtIndex:indexPath.row];
-    NBRecentContactEntry* firstEntry = [entryArray objectAtIndex:0];
+    CallRecordData* firstEntry = [entryArray objectAtIndex:0];
 
     [NBContact makePhoneCall:firstEntry.number withContactID:firstEntry.contactID];
 
@@ -699,7 +699,7 @@
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     NSArray * entryArray = [dataSource objectAtIndex:indexPath.row];
-    NBRecentContactEntry * firstEntry = [entryArray objectAtIndex:0];
+    CallRecordData * firstEntry = [entryArray objectAtIndex:0];
     if (firstEntry.contactID == nil)
     {
         //Load as unknown person
@@ -833,7 +833,7 @@
     for (int i = 0; i < 20; i++)
     {
         //Create random entries
-        NBRecentContactEntry * recentContactEntry = [NSEntityDescription insertNewObjectForEntityForName:@"RecentCall" inManagedObjectContext:managedObjectContext];
+        CallRecordData * recentContactEntry = [NSEntityDescription insertNewObjectForEntityForName:@"RecentCall" inManagedObjectContext:managedObjectContext];
         
         //Determine if this contact is known or not
         BOOL unknownContact = (arc4random()%2) == 1;

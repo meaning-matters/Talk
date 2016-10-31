@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14D136" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="15G1108" minimumToolsVersion="Xcode 4.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.1">
+    <entity name="CallRecordData" syncable="YES">
+        <attribute name="callbackCost" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="callbackDuration" optional="YES" attributeType="Integer 32" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="contactID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="direction" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="e164" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="outgoingCost" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="outgoingDuration" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="timeZone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Forwarding" representedClassName="ForwardingData" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="statements" optional="YES" attributeType="String" syncable="YES"/>
@@ -7,20 +21,6 @@
         <relationship name="numbers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Number" inverseName="forwarding" inverseEntity="Number" syncable="YES"/>
         <relationship name="phones" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Phone" inverseName="forwardings" inverseEntity="Phone" syncable="YES"/>
         <relationship name="recordings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Recording" inverseName="forwardings" inverseEntity="Recording" syncable="YES"/>
-    </entity>
-    <entity name="NBRecentContactEntry" syncable="YES">
-        <attribute name="callbackCost" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="callbackDuration" optional="YES" attributeType="Integer 32" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="contactID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="direction" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="e164" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="outgoingCost" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="outgoingDuration" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="timeZone" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Number" representedClassName="NumberData" syncable="YES">
         <attribute name="addressCountry" optional="YES" attributeType="String" syncable="YES"/>
@@ -35,10 +35,10 @@
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="numberCountry" attributeType="String" minValueString="2" maxValueString="2" syncable="YES"/>
         <attribute name="numberType" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="proofAccepted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="proofAccepted" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="proofImage" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="purchaseDate" attributeType="Date" syncable="YES"/>
-        <attribute name="renewalDate" attributeType="Date" syncable="YES"/>
+        <attribute name="purchaseDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="renewalDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="salutation" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="stateCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="stateName" optional="YES" attributeType="String" syncable="YES"/>
@@ -58,10 +58,10 @@
         <relationship name="forwardings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Forwarding" inverseName="recordings" inverseEntity="Forwarding" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Forwarding" positionX="268" positionY="-55" width="128" height="133"/>
-        <element name="NBRecentContactEntry" positionX="520" positionY="-513" width="128" height="223"/>
-        <element name="Number" positionX="43" positionY="-270" width="128" height="373"/>
-        <element name="Phone" positionX="252" positionY="-241" width="128" height="88"/>
-        <element name="Recording" positionX="484" positionY="14" width="128" height="103"/>
+        <element name="Forwarding" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="CallRecordData" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Number" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Phone" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Recording" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

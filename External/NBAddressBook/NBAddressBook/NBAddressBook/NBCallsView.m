@@ -12,7 +12,7 @@
 @implementation NBCallsView
 
 - (instancetype)initWithFrame:(CGRect)frame
-                  recentEntry:(NBRecentContactEntry*)recentEntry
+                  recentEntry:(CallRecordData*)recentEntry
                 incomingCalls:(NSMutableArray*)incomingCalls
                 outgoingCalls:(NSMutableArray*)outgoingCalls
                       editing:(BOOL)editing
@@ -85,7 +85,7 @@
     [self addSubview:callsLabel];
     
     // Create a line for each of the entries
-    for (NBRecentContactEntry* recent in calls)
+    for (CallRecordData* recent in calls)
     {
         // Swich down the label
         yStart += HEIGHT_CALL_ENTRY;

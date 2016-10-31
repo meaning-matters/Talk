@@ -1,5 +1,5 @@
 //
-//  NBRecentContactEntry.h
+//  CallRecordData.h
 //  NBAddressBook
 //
 //  Created by Jasper Siebelink on 7/20/13.
@@ -24,7 +24,7 @@ typedef enum
 } CallStatus;
 
 
-@interface NBRecentContactEntry : NSManagedObject
+@interface CallRecordData : NSManagedObject
 
 // The number that was dailed
 @property (nonatomic) NSString* number;
@@ -54,7 +54,7 @@ typedef enum
 // The callback UUID
 @property (nonatomic) NSString* uuid;
 
-// Te calls cost.
+// The calls cost.
 @property (nonatomic) NSNumber* callbackCost;
 @property (nonatomic) NSNumber* callthruCost;
 

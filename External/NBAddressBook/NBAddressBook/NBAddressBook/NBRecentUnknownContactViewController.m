@@ -45,7 +45,7 @@
     // If the last call received was missed, mark as such
     incomingCalls = [NSMutableArray array];
     outgoingCalls = [NSMutableArray array];
-    for (NBRecentContactEntry* entry in recentEntryArray)
+    for (CallRecordData* entry in recentEntryArray)
     {
         switch ([entry.direction intValue])
         {
@@ -72,7 +72,7 @@
     [super newPersonViewController:newPersonViewController didCompleteWithNewPerson:contactRef];
     
     //Store this info in CoreData
-    NBRecentContactEntry * firstEntry = [recentEntryArray objectAtIndex:0];
+    CallRecordData * firstEntry = [recentEntryArray objectAtIndex:0];
     [firstEntry setContactID:[NSString stringWithFormat:@"%d", ABRecordGetRecordID(contactRef)]];
 #if NB_STANDALONE
     [((NBAppDelegate*)[[UIApplication sharedApplication] delegate]) saveContext];
@@ -113,7 +113,7 @@
     if (section == CC_FILLER && !self.tableView.isEditing )
     {
         //Build up the non-interactive missed calls-view
-        NBRecentContactEntry* firstEntry = [recentEntryArray objectAtIndex:0];
+        CallRecordData* firstEntry = [recentEntryArray objectAtIndex:0];
         CGFloat               height     = [self tableView:tableView heightForFooterInSection:section];
         UIView * footerView = [[UIView alloc]initWithFrame:CGRectMake(
                                                                       0,

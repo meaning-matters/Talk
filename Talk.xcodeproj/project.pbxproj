@@ -566,7 +566,7 @@
 		48B32A011725B65000F49182 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48B32A001725B65000F49182 /* CoreAudio.framework */; };
 		48B5AAF216E6A58700BA4084 /* NumberCountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */; };
 		48B5AAF316E6A58700BA4084 /* NumberCountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */; };
-		48B8131C1AADF7390019AF77 /* NBRecentContactEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B8131B1AADF7390019AF77 /* NBRecentContactEntry.m */; };
+		48B8131C1AADF7390019AF77 /* CallRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B8131B1AADF7390019AF77 /* CallRecordData.m */; };
 		48B8131F1AADF7530019AF77 /* NBCallsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B8131E1AADF7530019AF77 /* NBCallsView.m */; };
 		48B813231AADF79F0019AF77 /* NBRecentContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B813221AADF79F0019AF77 /* NBRecentContactViewController.m */; };
 		48B813261AADF7AE0019AF77 /* NBRecentUnknownContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B813251AADF7AE0019AF77 /* NBRecentUnknownContactViewController.m */; };
@@ -1305,8 +1305,8 @@
 		48B5AAF016E6A58400BA4084 /* NumberCountriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberCountriesViewController.h; sourceTree = "<group>"; };
 		48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberCountriesViewController.m; sourceTree = "<group>"; };
 		48B813141AADF6970019AF77 /* NBAddressBook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NBAddressBook.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBAddressBook.h; sourceTree = SOURCE_ROOT; };
-		48B8131A1AADF7390019AF77 /* NBRecentContactEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBRecentContactEntry.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBRecentContactEntry.h; sourceTree = SOURCE_ROOT; };
-		48B8131B1AADF7390019AF77 /* NBRecentContactEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBRecentContactEntry.m; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBRecentContactEntry.m; sourceTree = SOURCE_ROOT; };
+		48B8131A1AADF7390019AF77 /* CallRecordData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CallRecordData.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/CallRecordData.h; sourceTree = SOURCE_ROOT; };
+		48B8131B1AADF7390019AF77 /* CallRecordData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CallRecordData.m; path = External/NBAddressBook/NBAddressBook/NBAddressBook/CallRecordData.m; sourceTree = SOURCE_ROOT; };
 		48B8131D1AADF7530019AF77 /* NBCallsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBCallsView.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBCallsView.h; sourceTree = SOURCE_ROOT; };
 		48B8131E1AADF7530019AF77 /* NBCallsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBCallsView.m; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBCallsView.m; sourceTree = SOURCE_ROOT; };
 		48B813201AADF7830019AF77 /* NBAddUnknownContactDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NBAddUnknownContactDelegate.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBAddUnknownContactDelegate.h; sourceTree = SOURCE_ROOT; };
@@ -1581,8 +1581,8 @@
 		4805791617A51362006923BD /* Recent */ = {
 			isa = PBXGroup;
 			children = (
-				48B8131A1AADF7390019AF77 /* NBRecentContactEntry.h */,
-				48B8131B1AADF7390019AF77 /* NBRecentContactEntry.m */,
+				48B8131A1AADF7390019AF77 /* CallRecordData.h */,
+				48B8131B1AADF7390019AF77 /* CallRecordData.m */,
 			);
 			name = Recent;
 			sourceTree = "<group>";
@@ -3254,7 +3254,7 @@
 				48B813811AADFA290019AF77 /* NBUnknownPersonViewController.m in Sources */,
 				482881591C5F5E4C00210DF1 /* Salutation.m in Sources */,
 				48B813571AADF9590019AF77 /* NBDetailLineSeparatedCell.m in Sources */,
-				48B8131C1AADF7390019AF77 /* NBRecentContactEntry.m in Sources */,
+				48B8131C1AADF7390019AF77 /* CallRecordData.m in Sources */,
 				48021B341C3A693200C40B58 /* UIViewController+Common.m in Sources */,
 				482608EE166A4707007F0844 /* NSTimer+Blocks.m in Sources */,
 				4888D1FA166E865400B55B22 /* Call.m in Sources */,

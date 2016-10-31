@@ -11,7 +11,7 @@
 #import <AddressBook/AddressBook.h>
 #import "NSString+Common.h"
 
-@class NBRecentContactEntry;
+@class CallRecordData;
 @class CallableData;
 
 
@@ -31,9 +31,9 @@
 
 - (NSString*)localizedFormattedPrice2ExtraDigits:(float)price;
 
-- (void)updateRecent:(NBRecentContactEntry*)recent completion:(void (^)(BOOL success, BOOL ended))completion;
+- (void)updateRecent:(CallRecordData*)recent completion:(void (^)(BOOL success, BOOL ended))completion;
 
-- (BOOL)matchRecent:(NBRecentContactEntry*)recent withNumber:(NSString*)number;
+- (BOOL)matchRecent:(CallRecordData*)recent withNumber:(NSString*)number;
 
 - (NSString*)callerIdNameForContactId:(NSString*)contactId;
 

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "PhoneNumber.h"
 #import "Call.h"
-#import "NBRecentContactEntry.h"
+#import "CallRecordData.h"
 
 
 @interface CallManager : NSObject
@@ -27,8 +27,8 @@
 
 - (BOOL)callMobilePhoneNumber:(PhoneNumber*)phoneNumber;
 
-- (void)updateRecent:(NBRecentContactEntry*)recent withCall:(Call*)call;
+- (void)updateRecent:(CallRecordData*)recent withCall:(Call*)call;
 
-- (void)updateRecent:(NBRecentContactEntry*)recent completion:(void (^)(BOOL success, BOOL ended))completion;
+- (void)updateRecent:(CallRecordData*)recent completion:(void (^)(BOOL success, BOOL ended))completion;
 
 @end

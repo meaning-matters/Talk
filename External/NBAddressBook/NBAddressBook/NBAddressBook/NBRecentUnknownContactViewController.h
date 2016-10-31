@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "NBUnknownPersonViewController.h"
-#import "NBRecentContactEntry.h"
+#import "CallRecordData.h"
 #import "NBRecentContactViewController.h"
 #import "NBAddressBookManager.h"
 #import <AddressBook/AddressBook.h>

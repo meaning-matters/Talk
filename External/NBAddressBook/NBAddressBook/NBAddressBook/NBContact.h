@@ -13,7 +13,7 @@
 #import "NBPersonCellInfo.h"
 #import "NBPersonCellAddressInfo.h"
 #import "NBAddressBookManager.h"
-#import "NBRecentContactEntry.h"
+#import "CallRecordData.h"
 
 
 @interface NBContact : NSObject

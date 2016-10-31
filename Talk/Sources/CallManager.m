@@ -249,7 +249,7 @@
 - (void)addCallToRecents:(Call*)call
 {
     NSManagedObjectContext* context = [DataManager sharedManager].managedObjectContext;
-    NBRecentContactEntry*   recent  = [NSEntityDescription insertNewObjectForEntityForName:@"CallRecord"
+    CallRecordData*         recent  = [NSEntityDescription insertNewObjectForEntityForName:@"CallRecord"
                                                                     inManagedObjectContext:context];
     recent.number    = call.phoneNumber.number;
     recent.date      = call.beginDate;
@@ -267,7 +267,7 @@
 }
 
 
-- (void)updateRecent:(NBRecentContactEntry*)recent completion:(void (^)(BOOL success, BOOL ended))completion
+- (void)updateRecent:(CallRecordData*)recent completion:(void (^)(BOOL success, BOOL ended))completion
 {
     if (recent == nil || recent.uuid.length == 0)
     {
@@ -308,7 +308,7 @@
 }
 
 
-- (void)updateRecent:(NBRecentContactEntry*)recent withCall:(Call*)call
+- (void)updateRecent:(CallRecordData*)recent withCall:(Call*)call
 {
     switch (call.state)
     {
