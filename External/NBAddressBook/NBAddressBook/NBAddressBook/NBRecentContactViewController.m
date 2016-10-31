@@ -11,11 +11,11 @@
 @interface NBRecentContactViewController ()
 {
     //The recent entry the calls displayed are based on
-    NSArray * recentEntryArray;
+    NSArray*        recents;
 
     //The outgoing and incoming calls
-    NSMutableArray * incomingCalls;
-    NSMutableArray * outgoingCalls;
+    NSMutableArray* incomingCalls;
+    NSMutableArray* outgoingCalls;
 }
 
 @end
@@ -23,25 +23,25 @@
 
 @implementation NBRecentContactViewController
 
-- (void)setRecentEntryArray:(NSArray*)theEntryArray
+- (void)setRecents:(NSArray*)theRecents
 {
-    recentEntryArray = theEntryArray;
+    recents = theRecents;
 
     // If the last call received was missed, mark as such
     incomingCalls = [NSMutableArray array];
     outgoingCalls = [NSMutableArray array];
-    for (CallRecordData* entry in recentEntryArray)
+    for (CallRecordData* recent in recents)
     {
-        switch ([entry.direction intValue])
+        switch ([recent.direction intValue])
         {
             case CallDirectionIncoming:
             {
-                [incomingCalls addObject:entry];
+                [incomingCalls addObject:recent];
                 break;
             }
             case CallDirectionOutgoing:
             {
-                [outgoingCalls addObject:entry];
+                [outgoingCalls addObject:recent];
                 break;
             }
         }
@@ -49,7 +49,7 @@
 }
 
 /*
-- (void)setRecentEntryArray:(NSArray*)entryArrayParam
+- (void)setRecents:(NSArray*)recents
 {
     //Remember the entry
     recentEntryArray = entryArrayParam;
@@ -57,7 +57,7 @@
     //If the last call received was missed, mark as such
     incomingCalls = [NSMutableArray array];
     outgoingCalls = [NSMutableArray array];
-    for (CallRecordData * entry in recentEntryArray)
+    for (CallRecordData * recent in recentEntryArray)
     {
         switch ([entry.direction intValue])
         {
@@ -99,22 +99,20 @@
     if (section == CC_NAME && !self.tableView.isEditing)
     {
         //Build up the non-interactive missed calls-view
-        CallRecordData* firstEntry = [recentEntryArray objectAtIndex:0];
-        CGFloat               height     = [self tableView:tableView heightForFooterInSection:section];
-        UIView * footerView = [[UIView alloc]initWithFrame:CGRectMake(
-                                                                      0,
-                                                                      0,
-                                                                      self.view.frame.size.width,
-                                                                      height)];
-        NBCallsView*          callsView  = [[NBCallsView alloc]initWithFrame:CGRectMake(
-                                                                                        0,
-                                                                                        0,
-                                                                                        self.view.frame.size.width,
-                                                                                        height - (PADDING_CALLS_VIEW*0.77f))
-                                                                 recentEntry:firstEntry
-                                                               incomingCalls:incomingCalls
-                                                               outgoingCalls:outgoingCalls
-                                                                     editing:NO];
+        CallRecordData* firstRecent = [recents objectAtIndex:0];
+        CGFloat         height      = [self tableView:tableView heightForFooterInSection:section];
+        UIView*         footerView  = [[UIView alloc]initWithFrame:CGRectMake(0,
+                                                                              0,
+                                                                              self.view.frame.size.width,
+                                                                              height)];
+        NBCallsView*     callsView  = [[NBCallsView alloc] initWithFrame:CGRectMake(0,
+                                                                                    0,
+                                                                                    self.view.frame.size.width,
+                                                                                    height - (PADDING_CALLS_VIEW * 0.77f))
+                                                                  recent:firstRecent
+                                                           incomingCalls:incomingCalls
+                                                           outgoingCalls:outgoingCalls
+                                                                 editing:NO];
         [callsView setBackgroundColor:[UIColor clearColor]];
         
         callsView.center = footerView.center;
@@ -134,14 +132,14 @@
 {
     if (indexPath.section == CC_NUMBER )
     {
-        NBDetailLineSeparatedCell * cell = (NBDetailLineSeparatedCell*)[super tableView:tableView cellForRowAtIndexPath:indexPath];
-        CallRecordData * entry = [recentEntryArray objectAtIndex:0];
+        NBDetailLineSeparatedCell* cell = (NBDetailLineSeparatedCell*)[super tableView:tableView cellForRowAtIndexPath:indexPath];
+        CallRecordData* recent          = [recents objectAtIndex:0];
         
         //If this was the called number
-        if ([entry.number isEqualToString:cell.cellTextfield.text])
+        if ([recent.number isEqualToString:cell.cellTextfield.text])
         {
             //If the call was missed, color it dark red
-            if ([entry.status intValue] == CallStatusMissed)
+            if ([recent.status intValue] == CallStatusMissed)
             {
                 [cell.cellTextfield setTextColor:FONT_COLOR_MISSED];                
             }

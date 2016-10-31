@@ -75,20 +75,20 @@
 //### Not used.
 - (void)findContactsForAnonymousItems
 {
-    for (NSArray* entryRowArray in dataSource)
+    for (NSArray* recents in dataSource)
     {
-        CallRecordData* entry = entryRowArray[0];
-        if (entry.contactID == nil)
+        CallRecordData* recent = recents[0];
+        if (recent.contactID == nil)
         {
-            PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:entry.e164];
+            PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:recent.e164];
             [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
                                                      completion:^(NSArray* contactIds)
             {
                 if (contactIds.count == 1)
                 {
-                    for (CallRecordData* entry in entryRowArray)
+                    for (CallRecordData* entry in recents)
                     {
-                        entry.contactID = contactIds[0];
+                        recent.contactID = contactIds[0];
                     }
                 }
             }];
@@ -685,12 +685,12 @@
 
 #pragma mark - Table View Delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSArray*              entryArray = [dataSource objectAtIndex:indexPath.row];
-    CallRecordData* firstEntry = [entryArray objectAtIndex:0];
+    NSArray*        recents     = [dataSource objectAtIndex:indexPath.row];
+    CallRecordData* firstRecent = [recents objectAtIndex:0];
 
-    [NBContact makePhoneCall:firstEntry.number withContactID:firstEntry.contactID];
+    [NBContact makePhoneCall:firstRecent.number withContactID:firstRecent.contactID];
 
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];    
 }
@@ -698,9 +698,9 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray * entryArray = [dataSource objectAtIndex:indexPath.row];
-    CallRecordData * firstEntry = [entryArray objectAtIndex:0];
-    if (firstEntry.contactID == nil)
+    NSArray*        recents     = [dataSource objectAtIndex:indexPath.row];
+    CallRecordData* firstRecent = [recents objectAtIndex:0];
+    if (firstRecent.contactID == nil)
     {
         //Load as unknown person
         recentUnknownViewController = [[NBRecentUnknownContactViewController alloc] init];
@@ -719,7 +719,7 @@
         
         //Set a number
         ABMutableMultiValueRef numberMulti = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-        ABMultiValueAddValueAndLabel(numberMulti, (__bridge CFTypeRef)firstEntry.number, kABOtherLabel, NULL);
+        ABMultiValueAddValueAndLabel(numberMulti, (__bridge CFTypeRef)firstRecent.number, kABOtherLabel, NULL);
         ABRecordSetValue(contactRef, kABPersonPhoneProperty, numberMulti, nil);
         
         //Set an email
@@ -740,7 +740,7 @@
         [recentUnknownViewController setAllowsActions:NO];
 
         //Set the entry to base the calls on
-        [recentUnknownViewController setRecentEntryArray:entryArray];
+        [recentUnknownViewController setRecents:recents];
 
         //Display the view
         [self.navigationController pushViewController:recentUnknownViewController animated:YES];
@@ -749,12 +749,12 @@
     {
         //Load as a contact
         recentViewController = [[NBRecentContactViewController alloc]init];
-        [recentViewController setDisplayedPerson:[self getContactForID:firstEntry.contactID]];
+        [recentViewController setDisplayedPerson:[self getContactForID:firstRecent.contactID]];
         
         [recentViewController setAllowsActions:NO];
 
         //Set the entry to base the calls on
-        [recentViewController setRecentEntryArray:entryArray];
+        [recentViewController setRecents:recents];
 
 #warning - Set the cell action-delegate
         [recentViewController setPersonViewDelegate:nil];

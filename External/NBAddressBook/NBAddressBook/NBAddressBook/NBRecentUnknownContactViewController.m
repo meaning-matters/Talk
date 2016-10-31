@@ -12,7 +12,7 @@
 @interface NBRecentUnknownContactViewController ()
 {
     //The recent entry the calls displayed are based on
-    NSArray*        recentEntryArray;
+    NSArray*        recents;
 
     //The outgoing and incoming calls
     NSMutableArray* outgoingCalls;
@@ -38,14 +38,14 @@
 }
 
 
-- (void)setRecentEntryArray:(NSArray*)theEntryArray
+- (void)setRecents:(NSArray*)theRecents
 {
-    recentEntryArray = theEntryArray;
+    recents = theRecents;
 
     // If the last call received was missed, mark as such
     incomingCalls = [NSMutableArray array];
     outgoingCalls = [NSMutableArray array];
-    for (CallRecordData* entry in recentEntryArray)
+    for (CallRecordData* entry in recents)
     {
         switch ([entry.direction intValue])
         {
@@ -72,8 +72,8 @@
     [super newPersonViewController:newPersonViewController didCompleteWithNewPerson:contactRef];
     
     //Store this info in CoreData
-    CallRecordData * firstEntry = [recentEntryArray objectAtIndex:0];
-    [firstEntry setContactID:[NSString stringWithFormat:@"%d", ABRecordGetRecordID(contactRef)]];
+    CallRecordData* firstRecent = [recents objectAtIndex:0];
+    [firstRecent setContactID:[NSString stringWithFormat:@"%d", ABRecordGetRecordID(contactRef)]];
 #if NB_STANDALONE
     [((NBAppDelegate*)[[UIApplication sharedApplication] delegate]) saveContext];
 #else
@@ -83,7 +83,7 @@
     //Set a new viewcontroller
     NBRecentContactViewController * personViewController = [[NBRecentContactViewController alloc]init];
     [personViewController setDisplayedPerson:contactRef];
-    [personViewController setRecentEntryArray:recentEntryArray];
+    [personViewController setRecents:recents];
 
     id<NBAddUnknownContactDelegate> contactDelegate = self.addUnknownContactDelegate;
     [self setAddUnknownContactDelegate:nil];
@@ -113,19 +113,17 @@
     if (section == CC_FILLER && !self.tableView.isEditing )
     {
         //Build up the non-interactive missed calls-view
-        CallRecordData* firstEntry = [recentEntryArray objectAtIndex:0];
-        CGFloat               height     = [self tableView:tableView heightForFooterInSection:section];
-        UIView * footerView = [[UIView alloc]initWithFrame:CGRectMake(
-                                                                      0,
-                                                                      0,
-                                                                      self.view.frame.size.width,
-                                                                      height)];
-        NBCallsView*          callsView  = [[NBCallsView alloc]initWithFrame:CGRectMake(
-                                                                                        0,
+        CallRecordData* firstRecent = [recents objectAtIndex:0];
+        CGFloat         height      = [self tableView:tableView heightForFooterInSection:section];
+        UIView *        footerView  = [[UIView alloc]initWithFrame:CGRectMake(0,
+                                                                              0,
+                                                                              self.view.frame.size.width,
+                                                                              height)];
+        NBCallsView*          callsView  = [[NBCallsView alloc]initWithFrame:CGRectMake(0,
                                                                                         0,
                                                                                         self.view.frame.size.width,
                                                                                         height - (PADDING_CALLS_VIEW*0.77f) )
-                                                                 recentEntry:firstEntry
+                                                                      recent:firstRecent
                                                                incomingCalls:incomingCalls
                                                                outgoingCalls:outgoingCalls
                                                                      editing:NO];

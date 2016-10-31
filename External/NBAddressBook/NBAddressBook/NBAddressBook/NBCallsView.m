@@ -12,7 +12,7 @@
 @implementation NBCallsView
 
 - (instancetype)initWithFrame:(CGRect)frame
-                  recentEntry:(CallRecordData*)recentEntry
+                       recent:(CallRecordData*)recent
                 incomingCalls:(NSMutableArray*)incomingCalls
                 outgoingCalls:(NSMutableArray*)outgoingCalls
                       editing:(BOOL)editing
@@ -40,7 +40,7 @@
         //Show the date topright
         UILabel* dateLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.frame.size.width / 2, 5 + yShift, 150, 20)];
         [dateLabel setBackgroundColor:[UIColor clearColor]];
-        [dateLabel setText:[NSString formatToShortDate:recentEntry.date]];
+        [dateLabel setText:[NSString formatToShortDate:recent.date]];
         [dateLabel setFont:[UIFont boldSystemFontOfSize:15]];
         [dateLabel setTextAlignment:NSTextAlignmentRight];
         [self addSubview:dateLabel];

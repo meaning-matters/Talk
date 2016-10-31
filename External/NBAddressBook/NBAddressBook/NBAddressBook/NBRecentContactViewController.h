@@ -14,6 +14,6 @@
 {
 }
 
-- (void)setRecentEntryArray:(NSArray*)entryArray;
+- (void)setRecents:(NSArray*)recents;
 
 @end

@@ -19,7 +19,7 @@
 @interface NBCallsView : UIView
 
 - (instancetype)initWithFrame:(CGRect)frame
-                  recentEntry:(CallRecordData*)recentEntry
+                       recent:(CallRecordData*)recent
                 incomingCalls:(NSMutableArray*)incomingCalls
                 outgoingCalls:(NSMutableArray*)outgoingCalls
                       editing:(BOOL)editing;
