@@ -435,9 +435,20 @@
             {
                 if (showCallerId == NO && identity.length == 0)
                 {
-                    identity = [Settings sharedSettings].callbackE164;
+                    if ([Settings sharedSettings].callbackE164.length > 0)
+                    {
+                        identity = [Settings sharedSettings].callbackE164;
+                    }
+                    else
+                    {
+                        // When we get here an alert telling the Callback is not selected is already being shown by
+                        // `checkIdentityForContactId`. We get here typically only after a Reset when Callback number
+                        // was not selected yet.
+                        completion ? completion(nil) : 0;
+                        return;
+                    }
                 }
-                    
+
                 call = [self callPhoneNumber:phoneNumber fromIdentity:identity showCallerId:showCallerId contactId:contactId];
                 
                 completion ? completion(call) : 0;
