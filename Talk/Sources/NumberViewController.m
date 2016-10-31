@@ -614,7 +614,7 @@ typedef enum
             cell.detailTextLabel.text = [dateFormatter stringFromDate:number.expiryDate];
             cell.selectionStyle       = UITableViewCellSelectionStyleNone;
 
-            if ([number expiryLevelDays] > 0)
+            if ([number expiryDays] > 0)
             {
                 cell.detailTextLabel.textColor = [Skinning deleteTintColor];    // Overrides the default color.
             }

@@ -117,10 +117,7 @@
             {
                 UINavigationController* navigationController;
 
-                if ([[DataManager sharedManager] fetchEntitiesWithName:@"Destination"
-                                                              sortKeys:nil
-                                                             predicate:nil
-                                                  managedObjectContext:nil].count == 0)
+                if ([[DataManager sharedManager] fetchEntitiesWithName:@"Destination"].count == 0)
                 {
                     DestinationViewController* viewController;
                     viewController = [[DestinationViewController alloc] initWithCompletion:^(DestinationData* destination)
@@ -216,28 +213,29 @@
     number = [NSEntityDescription insertNewObjectForEntityForName:@"Number"
                                            inManagedObjectContext:managedObjectContext];
 
-    number.name           = self.name;
-    number.e164           = e164;
-    number.numberType     = [NumberType stringForNumberTypeMask:self.numberTypeMask];
-    number.areaCode       = self.areaCode;
-    number.areaName       = [Common capitalizedString:self.areaName];
-    number.stateCode      = self.state[@"stateCode"];
-    number.stateName      = self.state[@"stateName"];
-    number.isoCountryCode = self.isoCountryCode;
-    number.address        = self.address;
-    number.addressType    = self.area[@"addressType"];
-    number.proofTypes     = self.area[@"proofTypes"];
-    number.purchaseDate   = purchaseDate;
-    number.expiryDate     = expiryDate;
-    number.monthFee       = monthFee;
-    number.renewFee       = renewFee;
-    number.autoRenew      = self.autoRenew;
-    number.fixedRate      = [self.area[@"fixedRate"] floatValue];
-    number.fixedSetup     = [self.area[@"fixedSetup"] floatValue];
-    number.mobileRate     = [self.area[@"mobileRate"] floatValue];
-    number.mobileSetup    = [self.area[@"mobileSetup"] floatValue];
-    number.payphoneRate   = [self.area[@"payphoneRate"] floatValue];
-    number.payphoneSetup  = [self.area[@"payphoneSetup"] floatValue];
+    number.name               = self.name;
+    number.e164               = e164;
+    number.numberType         = [NumberType stringForNumberTypeMask:self.numberTypeMask];
+    number.areaCode           = self.areaCode;
+    number.areaName           = [Common capitalizedString:self.areaName];
+    number.stateCode          = self.state[@"stateCode"];
+    number.stateName          = self.state[@"stateName"];
+    number.isoCountryCode     = self.isoCountryCode;
+    number.address            = self.address;
+    number.addressType        = self.area[@"addressType"];
+    number.proofTypes         = self.area[@"proofTypes"];
+    number.purchaseDate       = purchaseDate;
+    number.expiryDate         = expiryDate;
+    number.notifiedExpiryDays = 0;  // Indicated not notified yet.
+    number.monthFee           = monthFee;
+    number.renewFee           = renewFee;
+    number.autoRenew          = self.autoRenew;
+    number.fixedRate          = [self.area[@"fixedRate"] floatValue];
+    number.fixedSetup         = [self.area[@"fixedSetup"] floatValue];
+    number.mobileRate         = [self.area[@"mobileRate"] floatValue];
+    number.mobileSetup        = [self.area[@"mobileSetup"] floatValue];
+    number.payphoneRate       = [self.area[@"payphoneRate"] floatValue];
+    number.payphoneSetup      = [self.area[@"payphoneSetup"] floatValue];
 
     [[DataManager sharedManager] saveManagedObjectContext:managedObjectContext];
 

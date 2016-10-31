@@ -56,10 +56,7 @@ NSString* const AddressUpdatesNotification = @"AddressUpdatesNotification";
 - (void)processAddressUpdatesNotificationDictionary:(NSDictionary*)dictionary
 {
     NSMutableDictionary* addressUpdates = [NSMutableDictionary dictionary];
-    NSArray*             addresses      = [[DataManager sharedManager] fetchEntitiesWithName:@"Address"
-                                                                                    sortKeys:nil
-                                                                                   predicate:nil
-                                                                        managedObjectContext:nil];
+    NSArray*             addresses      = [[DataManager sharedManager] fetchEntitiesWithName:@"Address"];
     NSArray*             addressIds     = [addresses valueForKey:@"addressId"];
 
     // Convert to binaray representation.

@@ -147,4 +147,8 @@
 
 + (NSString*)numberDisconnectedToneOrMessageString;
 
++ (NSString*)extendNumberAlertTitleString;
+
++ (NSString*)extendString;
+
 @end

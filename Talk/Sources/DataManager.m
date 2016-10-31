@@ -197,8 +197,8 @@
     [self.managedObjectContext lock];
 
     // Make sure that all objects appear in registeredObjects.
-    [self fetchEntitiesWithName:@"Phone"  sortKeys:nil predicate:nil managedObjectContext:nil];
-    [self fetchEntitiesWithName:@"CallRecord" sortKeys:nil predicate:nil managedObjectContext:nil];
+    [self fetchEntitiesWithName:@"Phone"];
+    [self fetchEntitiesWithName:@"CallRecord"];
 
     for (NSManagedObject* object in [self.managedObjectContext registeredObjects])
     {
@@ -236,6 +236,12 @@
     }
 
     return objects;
+}
+
+
+- (NSArray*)fetchEntitiesWithName:(NSString*)entityName
+{
+    return [self fetchEntitiesWithName:entityName sortKeys:nil predicate:nil managedObjectContext:nil];
 }
 
 
@@ -705,6 +711,7 @@
                             {
                                 number = [NSEntityDescription insertNewObjectForEntityForName:@"Number"
                                                                        inManagedObjectContext:self.managedObjectContext];
+                                number.notifiedExpiryDays = 0;  // Not notified yet.
                             }
                         }
                         else

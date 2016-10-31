@@ -25,6 +25,8 @@
 
 - (void)removeAll;
 
+- (NSArray*)fetchEntitiesWithName:(NSString*)entityName;
+
 - (NSArray*)fetchEntitiesWithName:(NSString*)entityName
                          sortKeys:(NSArray*)sortKeys
                         predicate:(NSPredicate*)predicate

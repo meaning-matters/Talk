@@ -166,7 +166,7 @@
             {
                 self.statusLabel.text    = NSLocalizedStringWithDefaultValue(@"Callback NoCreditStatusText", nil,
                                                                              [NSBundle mainBundle],
-                                                                             @"no credit",
+                                                                             @"not enough credit",
                                                                              @"Call status text\n"
                                                                              @"[1 line]");
                 callStateView.label.text = NSLocalizedStringWithDefaultValue(@"Callback NoCreditMessage", nil,

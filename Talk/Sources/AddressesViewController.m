@@ -350,10 +350,7 @@
         title = [NSString stringWithFormat:title, numberType];
         title = [title stringByAppendingString:@"\n\n"];
 
-        NSArray* addresses    = [[DataManager sharedManager] fetchEntitiesWithName:@"Address"
-                                                                          sortKeys:nil
-                                                                         predicate:nil
-                                                              managedObjectContext:self.managedObjectContext];
+        NSArray* addresses    = [[DataManager sharedManager] fetchEntitiesWithName:@"Address"];
         NSUInteger totalCount = addresses.count;
         NSUInteger matchCount = [self tableView:self.tableView numberOfRowsInSection:0];
 

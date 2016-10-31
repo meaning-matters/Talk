@@ -58,9 +58,10 @@
     {
         if (error == nil)
         {
-            self.number.monthFee   = monthFee;
-            self.number.renewFee   = renewFee;
-            self.number.expiryDate = expiryDate;
+            self.number.monthFee           = monthFee;
+            self.number.renewFee           = renewFee;
+            self.number.expiryDate         = expiryDate;
+            self.number.notifiedExpiryDays = 0;
 
             [[DataManager sharedManager] saveManagedObjectContext:nil];
 

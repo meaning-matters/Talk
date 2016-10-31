@@ -623,4 +623,16 @@
                                              @"[...");
 }
 
+
++ (NSString*)extendNumberAlertTitleString
+{
+    return NSLocalizedString(@"Extend Your Number", @"");
+}
+
+
++ (NSString*)extendString
+{
+    return NSLocalizedString(@"Extend", @"");
+}
+
 @end

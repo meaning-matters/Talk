@@ -18,6 +18,7 @@
 @dynamic isoCountryCode;
 @dynamic purchaseDate;
 @dynamic expiryDate;
+@dynamic notifiedExpiryDays;
 @dynamic autoRenew;
 
 @dynamic stateName;
@@ -38,7 +39,7 @@
 @dynamic address;
 
 
-- (NSInteger)expiryLevelDays
+- (NSInteger)expiryDays
 {
     NSCalendar*       calendar   = [NSCalendar currentCalendar];
     NSDateComponents* components = [NSDateComponents new];  // Below adding to `day` also works around New Year.

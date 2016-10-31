@@ -165,8 +165,66 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 - (void)refreshLocalNotifications
 {
+    // This removes already fired notifications from notification center, which may result in the user not
+    // seeing them. To make sure they get seen, we show an alert if the Number's `notifiedExpiryDays` is higher
+    // than the current `expiryDays` level; this is done by `showMissedNotifications`.
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
+
     [self scheduleNumberNotifications];
+}
+
+
+- (void)showMissedNotifications
+{
+    NSAssert([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive,
+             @"showMissedNotifications may only be called when app is active and can show alerts");
+
+    NSArray* numbers = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"];
+    for (NumberData* number in numbers)
+    {
+        if ((number.notifiedExpiryDays == 0 && [number expiryDays] > 0) ||
+            (number.notifiedExpiryDays > [number expiryDays]))
+        {
+            number.notifiedExpiryDays = [number expiryDays];
+
+            [self showExpiryAlertForNumber:number];
+        }
+    }
+}
+
+
+- (void)showExpiryAlertForNumber:(NumberData*)number
+{
+    NSTimeInterval expiryInterval = [number.expiryDate timeIntervalSinceDate:[NSDate date]];
+
+    if (expiryInterval > 0)
+    {
+        int expiryHours = floor(expiryInterval / (60 * 60));
+
+        [BlockAlertView showAlertViewWithTitle:[Strings extendNumberAlertTitleString]
+                                       message:[self expiryAlertBodyForNumber:number expiryHours:expiryHours]
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            if (buttonIndex == 1)
+            {
+                [self showNumber:number];
+            }
+        }
+                             cancelButtonTitle:[Strings cancelString]
+                             otherButtonTitles:[Strings extendString], nil];
+    }
+    else
+    {
+        NSString* message = NSLocalizedString(@"Your Number \"%@\" has expired and can't be extended any longer. "
+                                              @"People calling will hear %@.\n\nWhere appropriate, please inform "
+                                              @"those that used this Number to reach you.", @"");
+        message = [NSString stringWithFormat:message, number.name, [Strings numberDisconnectedToneOrMessageString]];
+        [BlockAlertView showAlertViewWithTitle:NSLocalizedString(@"Number Has Expired", @"")
+                                       message:message
+                                    completion:nil
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+    }
 }
 
 
@@ -196,12 +254,8 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 - (void)scheduleNumberNotifications
 {
-    NSMutableArray* notifications = [NSMutableArray array];
-    NSArray*        numbers       = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
-                                                                              sortKeys:nil
-                                                                             predicate:nil
-                                                                  managedObjectContext:nil];
-    
+    NSArray* numbers = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"];
+
     // If past the 7, 3, and 1 day(s), the corresponding notification has fired and the user has seen it or was
     // in the app during that seeing the red badge.
     //
@@ -209,24 +263,24 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     // `cancelAllLocalNotifications` and adding them again here. We just ignore that to keep things simple.
     for (NumberData* number in numbers)
     {
-        switch ([number expiryLevelDays])
+        switch ([number expiryDays])
         {
             case 0:
                 // It's more than 7 days until expiry, so add all notifications.
-                [self addNumberNotification:number expiryDays:7 notifications:notifications];
-                [self addNumberNotification:number expiryDays:3 notifications:notifications];
-                [self addNumberNotification:number expiryDays:1 notifications:notifications];
+                [self addNumberNotification:number expiryDays:7];
+                [self addNumberNotification:number expiryDays:3];
+                [self addNumberNotification:number expiryDays:1];
                 break;
 
             case 7:
                 // We're between 7 and 3 days until expiry, so we don't add the 7 days notification again.
-                [self addNumberNotification:number expiryDays:3 notifications:notifications];
-                [self addNumberNotification:number expiryDays:1 notifications:notifications];
+                [self addNumberNotification:number expiryDays:3];
+                [self addNumberNotification:number expiryDays:1];
                 break;
 
             case 3:
                 // We're between 3 and 1 days until expiry, so we don't add the 3 days notification again.
-                [self addNumberNotification:number expiryDays:1 notifications:notifications];
+                [self addNumberNotification:number expiryDays:1];
                 break;
 
             case 1:
@@ -234,14 +288,11 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                 break;
         }
     }
-
-    [[UIApplication sharedApplication] setScheduledLocalNotifications:notifications];
 }
 
 
 - (void)addNumberNotification:(NumberData*)number
                    expiryDays:(NSInteger)expiryDays
-                notifications:(NSMutableArray*)notifications
 {
     NSCalendar*       calendar   = [NSCalendar currentCalendar];
     NSDateComponents* components = [NSDateComponents new];  // Below adding to `day` also works around New Year.
@@ -251,28 +302,42 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     beforeExpiryDate = [calendar dateByAddingComponents:components toDate:number.expiryDate options:0];
 
     UILocalNotification* notification = [[UILocalNotification alloc] init];
-    notification.alertBody   = [self expiryAlertBodyForNumber:number expiryDays:expiryDays];
-    notification.alertAction = NSLocalizedString(@"Extend", @"");
+    notification.alertBody   = [self expiryAlertBodyForNumber:number expiryHours:expiryDays * 24];
+    notification.alertAction = [Strings extendString];
     notification.hasAction   = YES;
     notification.soundName   = UILocalNotificationDefaultSoundName;
-    notification.userInfo    = @{ @"e164" : number.e164 };
+    notification.userInfo    = @{ @"source" : @"numberExpiry", @"e164" : number.e164, @"expiryDays" : @(expiryDays) };
     notification.fireDate    = beforeExpiryDate;
 
-    [notifications addObject:notification];
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
 }
 
 
-- (NSString*)expiryAlertBodyForNumber:(NumberData*)number expiryDays:(NSInteger)expiryDays
+// Make sure that `expiryHours` is positive!
+- (NSString*)expiryAlertBodyForNumber:(NumberData*)number expiryHours:(NSInteger)expiryHours
 {
     NSString* format = NSLocalizedString(@"Your Number \"%@\" will expire %@. Extend and let people reach you.", @"");
     NSString* when;
 
-    switch (expiryDays)
+    if (expiryHours >= 48)
     {
-        case 7:  when = NSLocalizedString(@"in 7 days",   @""); break;
-        case 3:  when = NSLocalizedString(@"in 3 days",   @""); break;
-        case 1:  when = NSLocalizedString(@"in 24 hours", @""); break;
-        default: when = NSLocalizedString(@"soon",        @""); break;   // Not used, just in case.
+        when = [NSString stringWithFormat:NSLocalizedString(@"in %d days", @""), expiryHours / 24];
+    }
+    else if (expiryHours >= 24)
+    {
+        when = [NSString stringWithFormat:NSLocalizedString(@"in 1 day", @"")];
+    }
+    else if (expiryHours >= 2)
+    {
+        when = [NSString stringWithFormat:NSLocalizedString(@"in %d hours", @""), expiryHours];
+    }
+    else if (expiryHours >= 1)
+    {
+        when = [NSString stringWithFormat:NSLocalizedString(@"in 1 hour", @"")];
+    }
+    else
+    {
+        when = [NSString stringWithFormat:NSLocalizedString(@"within minutes", @"")];
     }
 
     return [NSString stringWithFormat:format, number.name, when];
@@ -287,7 +352,8 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 }
 
 
-- (void)application:(UIApplication*)application handleActionWithIdentifier:(NSString*)identifier forRemoteNotification:(NSDictionary*)userInfo completionHandler:(void(^)())completionHandler
+- (void)application:(UIApplication*)application handleActionWithIdentifier:(NSString*)identifier
+    forRemoteNotification:(NSDictionary*)userInfo completionHandler:(void(^)())completionHandler
 {
     AnalysticsTrace(@"handleActionWithIdentifier");
     
@@ -330,10 +396,15 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 }
 
 
+// Called after `didReceiveLocalNotification` or `didFinishLaunchingWithOptions`. It's important that
+// `showMissedNotifications` is called after local notifications are handled because they both (may) result in an Number
+// expiry alert. (Well, actually it does not matter much because both update Number's `notifiedExpiryDays` so double
+// alerts can't occur. But it's good to be aware what's happening where/when.)
 - (void)applicationDidBecomeActive:(UIApplication*)application
 {
     AnalysticsTrace(@"applicationDidBecomeActive");
 
+    [self showMissedNotifications];
     [self checkCreditWithCompletion:nil];
 }
 
@@ -391,52 +462,66 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     if (notification.userInfo != nil)
     {
         NSString* source = notification.userInfo[@"source"];
-        if (source != nil && [source isEqualToString:@"databaseError"])
+        if (source == nil)
+        {
+            return;
+        }
+
+        if ([source isEqualToString:@"databaseError"])
         {
             [self restore];
         }
 
-        void (^showNumberBlock)(NumberData* number) = ^(NumberData* number)
+        if ([source isEqualToString:@"numberExpiry"])
         {
-            // Cancel editing of More tab.
-            [self doneCustomizingTabBarViewController];
-
-            // Jump to Number screen.
-            self.tabBarController.selectedViewController = self.numbersViewController.navigationController;
-            [self.numbersViewController presentNumber:number];
-        };
-
-        NSString* e164  = notification.userInfo[@"e164"];
-        if (e164 != nil)
-        {
-            NSPredicate*predicate = [NSPredicate predicateWithFormat:@"e164 == %@", e164];
-            NumberData* number    = [[[DataManager sharedManager] fetchEntitiesWithName:@"Number"
-                                                                               sortKeys:nil
-                                                                              predicate:predicate
-                                                                   managedObjectContext:nil] lastObject];
-            if (number != nil)
+            NSString* e164 = notification.userInfo[@"e164"];
+            if (e164 != nil)
             {
-                if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
+                NSPredicate* predicate = [NSPredicate predicateWithFormat:@"e164 == %@", e164];
+                NumberData*  number    = [[[DataManager sharedManager] fetchEntitiesWithName:@"Number"
+                                                                                    sortKeys:nil
+                                                                                   predicate:predicate
+                                                                        managedObjectContext:nil] lastObject];
+                if (number != nil)
                 {
-                    [BlockAlertView showAlertViewWithTitle:NSLocalizedString(@"Extend Your Number", @"")
-                                                   message:notification.alertBody
-                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+                    number.notifiedExpiryDays = [notification.userInfo[@"expiryDays"] intValue];
+                    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
                     {
-                        if (buttonIndex == 1)
+                        // We get here when the local notification fired while the app was in foreground.
+                        NSTimeInterval expiryInterval = [number.expiryDate timeIntervalSinceDate:[NSDate date]];
+                        int            expiryHours    = floor(expiryInterval / (60 * 60));
+                        [BlockAlertView showAlertViewWithTitle:[Strings extendNumberAlertTitleString]
+                                                       message:[self expiryAlertBodyForNumber:number expiryHours:expiryHours]
+                                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
                         {
-                            showNumberBlock(number);
+                            if (buttonIndex == 1)
+                            {
+                                [self showNumber:number];
+                            }
                         }
+                                             cancelButtonTitle:[Strings cancelString]
+                                             otherButtonTitles:notification.alertAction, nil];
                     }
-                                         cancelButtonTitle:[Strings cancelString]
-                                         otherButtonTitles:notification.alertAction, nil];
-                }
-                else
-                {
-                    showNumberBlock(number);
+                    else
+                    {
+                        // We get here when the local notification was tapped outside the app.
+                        [self showNumber:number];
+                    }
                 }
             }
         }
     }
+}
+
+
+- (void)showNumber:(NumberData*)number
+{
+    // Cancel editing of More tab.
+    [self doneCustomizingTabBarViewController];
+
+    // Jump to Number screen.
+    self.tabBarController.selectedViewController = self.numbersViewController.navigationController;
+    [self.numbersViewController presentNumber:number];
 }
 
 
@@ -1190,7 +1275,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
             }
             else
             {
-                city = @{@"city" : item[@"city"],
+                city = @{@"city"      : item[@"city"],
                          @"postcodes" : [NSMutableArray new]};
                 [citiesArray addObject:city];
             }

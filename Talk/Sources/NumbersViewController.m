@@ -382,7 +382,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
         cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
 
         cell.badgeCount  = (number.destination == nil)    ? 1 : 0;
-        cell.badgeCount += ([number expiryLevelDays] > 0) ? 1 : 0;
+        cell.badgeCount += ([number expiryDays] > 0) ? 1 : 0;
 
         [self addUseButtonWithNumber:number toCell:cell];
     }
