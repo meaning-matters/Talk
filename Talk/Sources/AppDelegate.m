@@ -182,12 +182,22 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     NSArray* numbers = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"];
     for (NumberData* number in numbers)
     {
-        if ((number.notifiedExpiryDays == INT16_MAX && [number isExpiryCritical]) || // Not notified about this expiry.
-            (number.notifiedExpiryDays > [number expiryDays]))
+        if (number.notifiedExpiryDays > [number expiryDays])
         {
             number.notifiedExpiryDays = [number expiryDays];
 
-            [number showExpiryAlert];
+            if ([number hasExpired])
+            {
+                [self.numbersViewController hideNumber:number];
+            }
+
+            [number showExpiryAlertWithCompletion:^
+            {
+                if ([number hasExpired])
+                {
+                    [[DataManager sharedManager].managedObjectContext deleteObject:number];
+                }
+            }];
         }
     }
 }

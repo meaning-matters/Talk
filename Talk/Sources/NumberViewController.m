@@ -230,6 +230,13 @@ typedef enum
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
+    if ([number hasExpired])
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+
+        return;
+    }
+
     NumberDestinationsViewController* destinationsViewController;
     IncomingChargesViewController*    chargesViewController;
     UITableViewCell*                  cell;

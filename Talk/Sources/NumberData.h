@@ -55,7 +55,7 @@
 // Returns YES when expiryDate has passed.
 - (BOOL)hasExpired;
 
-- (void)showExpiryAlert;
+- (void)showExpiryAlertWithCompletion:(void (^)(void))completion;
 
 - (NSString*)alertTextForExpiryHours:(NSInteger)expiryHours;
 

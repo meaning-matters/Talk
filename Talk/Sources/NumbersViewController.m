@@ -37,6 +37,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 @property (nonatomic, assign) TableSections               sections;
 @property (nonatomic, weak) id<NSObject>                  addressesObserver;
 @property (nonatomic, weak) id<NSObject>                  defaultsObserver;
+@property (nonatomic, strong) NumberData*                 shownNumber;
 
 @end
 
@@ -113,6 +114,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
 {
     [super viewWillAppear:animated];
 
+    self.shownNumber = nil;
+
     NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
     if (selectedIndexPath != nil)
     {
@@ -166,6 +169,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
         UIViewController* viewController = [[NumberViewController alloc] initWithNumber:number
                                                                    managedObjectContext:self.managedObjectContext];
         [self.navigationController pushViewController:viewController animated:YES];
+        self.shownNumber = number;
     };
 
     void (^popBlock)(void) = ^
@@ -196,6 +200,15 @@ typedef NS_ENUM(NSUInteger, TableSections)
     else
     {
         popBlock();
+    }
+}
+
+
+- (void)hideNumber:(NumberData*)number
+{
+    if (number == self.shownNumber)
+    {
+        [self.navigationController popToViewController:self animated:YES];
     }
 }
 
@@ -293,6 +306,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
             NumberData* number = [self.fetchedNumbersController objectAtIndexPath:indexPath];
             viewController     = [[NumberViewController alloc] initWithNumber:number
                                                          managedObjectContext:self.managedObjectContext];
+            self.shownNumber   = number;
             break;
         }
         case TableSectionAddresses:

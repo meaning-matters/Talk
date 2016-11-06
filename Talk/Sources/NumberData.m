@@ -148,7 +148,7 @@
 }
 
 
-- (void)showExpiryAlert
+- (void)showExpiryAlertWithCompletion:(void (^)(void))completion
 {
     NSTimeInterval expiryInterval = [self.expiryDate timeIntervalSinceDate:[NSDate date]];
 
@@ -160,6 +160,7 @@
                                        message:[self alertTextForExpiryHours:expiryHours]
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
         {
+            completion ? completion() : nil;
             if (buttonIndex == 1)
             {
                 [[AppDelegate appDelegate] showNumber:self];
@@ -176,7 +177,10 @@
         message = [NSString stringWithFormat:message, self.name, [Strings numberDisconnectedToneOrMessageString]];
         [BlockAlertView showAlertViewWithTitle:NSLocalizedString(@"Number Has Expired", @"")
                                        message:message
-                                    completion:nil
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            completion ? completion() : nil;
+        }
                              cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
     }

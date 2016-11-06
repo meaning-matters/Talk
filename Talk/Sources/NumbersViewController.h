@@ -17,4 +17,6 @@
 
 - (void)presentNumber:(NumberData*)number;
 
+- (void)hideNumber:(NumberData*)number;
+
 @end

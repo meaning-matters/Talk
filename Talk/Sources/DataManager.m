@@ -652,15 +652,19 @@
     {
         if (error == nil)
         {
-            // Delete Numbers that are no longer on the server.
+            // Delete Numbers that are no longer on the server, except expired Numbers to allow
+            // an alert to appear; these will be deleted when the user sees the alert.
             NSFetchRequest*  request     = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
             [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (e164 IN %@)) OR (e164 == nil)", e164s]];
             NSArray*         deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
             if (error == nil)
             {
-                for (NSManagedObject* object in deleteArray)
+                for (NumberData* number in deleteArray)
                 {
-                    [self.managedObjectContext deleteObject:object];
+                    if (![number hasExpired])
+                    {
+                        [self.managedObjectContext deleteObject:number];
+                    }
                 }
             }
             else
