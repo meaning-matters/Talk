@@ -564,9 +564,9 @@ typedef enum
         cell.detailTextLabel.textColor = [Skinning valueColor];
     }
 
-    cell.textLabel.textColor       = [UIColor blackColor];
-    cell.selectionStyle            = UITableViewCellSelectionStyleDefault;
-    cell.accessoryType             = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.textColor = [UIColor blackColor];
+    cell.selectionStyle      = UITableViewCellSelectionStyleDefault;
+    cell.accessoryType       = UITableViewCellAccessoryDisclosureIndicator;
 }
 
 
@@ -587,13 +587,6 @@ typedef enum
 
 - (void)updatePeriodCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
-    NSString*        dateFormat    = [NSDateFormatter dateFormatFromTemplate:@"E MMM d yyyy"
-                                                                     options:0
-                                                                      locale:[NSLocale currentLocale]];
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:dateFormat];
-    [dateFormatter setLocale:[NSLocale currentLocale]];
-
     cell.detailTextLabel.textColor = [Skinning valueColor]; // Make sure this is the default.
     switch (indexPath.row)
     {
@@ -602,7 +595,7 @@ typedef enum
             cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number:PeriodPurchaseDate Label", nil,
                                                                           [NSBundle mainBundle], @"Purchase",
                                                                           @"....");
-            cell.detailTextLabel.text = [dateFormatter stringFromDate:number.purchaseDate];
+            cell.detailTextLabel.text = [number purchaseDateString];
             cell.selectionStyle       = UITableViewCellSelectionStyleNone;
             break;
         }
@@ -611,10 +604,10 @@ typedef enum
             cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number:PeriodRenewalDate Label", nil,
                                                                           [NSBundle mainBundle], @"Expiry",
                                                                           @"....");
-            cell.detailTextLabel.text = [dateFormatter stringFromDate:number.expiryDate];
+            cell.detailTextLabel.text = [number expiryDateString];
             cell.selectionStyle       = UITableViewCellSelectionStyleNone;
 
-            if ([number expiryDays] > 0)
+            if ([number isExpiryCritical])
             {
                 cell.detailTextLabel.textColor = [Skinning deleteTintColor];    // Overrides the default color.
             }
@@ -625,7 +618,7 @@ typedef enum
         case 2:
         {
             cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Number:PeriodRenewal Label", nil,
-                                                                    [NSBundle mainBundle], @"Buy Renewal",
+                                                                    [NSBundle mainBundle], @"Buy Extension",
                                                                     @"....");
             cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;

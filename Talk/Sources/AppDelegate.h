@@ -65,6 +65,8 @@ extern NSString* const AppDelegateRemoteNotification;
 
 - (void)updateNumbersBadgeValue;
 
+- (void)showNumber:(NumberData*)number;
+
 - (void)refreshLocalNotifications;
 
 @end

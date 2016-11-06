@@ -42,6 +42,7 @@
 
 
 #pragma mark - Date formatting
+
 + (NSString*)formatToShortDate:(NSDate*)date
 {
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
@@ -66,6 +67,19 @@
     [dateFormat setDateFormat:@"HH:mm"];
 
     return [dateFormat stringFromDate:date];    
+}
+
+
+- (NSString*)capitalizedFirstLetter
+{
+    if (self.length <= 1)
+    {
+         return self.capitalizedString;
+    }
+    else
+    {
+        return [NSString stringWithFormat:@"%@%@", [[self substringToIndex:1] uppercaseString], [self substringFromIndex:1]];
+    }
 }
 
 @end

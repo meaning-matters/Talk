@@ -24,7 +24,7 @@
 @property (nonatomic, retain) NSString*        isoCountryCode;
 @property (nonatomic, retain) NSDate*          purchaseDate;
 @property (nonatomic, retain) NSDate*          expiryDate;
-@property (nonatomic, assign) int16_t          notifiedExpiryDays;  // Can be 7, 3, 1, or 0 for not notified yet.
+@property (nonatomic, assign) int16_t          notifiedExpiryDays;  // Can be INT16_MAX, 7, 3, 1, or 0 (expired).
 @property (nonatomic, assign) BOOL             autoRenew;
 
 // Optional.
@@ -47,6 +47,20 @@
 @property (nonatomic, retain) AddressData*     address;
 
 // Returns 7, 3, or 1 when expiry is within 7, 3, or 1 days repectively, or return 0 when expiry is longer than 7 days away.
-- (NSInteger)expiryDays;
+- (int16_t)expiryDays;
+
+// Returns YES when expiry is within 7 days; includes expired state.
+- (BOOL)isExpiryCritical;
+
+// Returns YES when expiryDate has passed.
+- (BOOL)hasExpired;
+
+- (void)showExpiryAlert;
+
+- (NSString*)alertTextForExpiryHours:(NSInteger)expiryHours;
+
+- (NSString*)purchaseDateString;
+
+- (NSString*)expiryDateString;
 
 @end

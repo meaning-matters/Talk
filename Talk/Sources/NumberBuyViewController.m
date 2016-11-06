@@ -226,7 +226,7 @@
     number.proofTypes         = self.area[@"proofTypes"];
     number.purchaseDate       = purchaseDate;
     number.expiryDate         = expiryDate;
-    number.notifiedExpiryDays = 0;  // Indicated not notified yet.
+    number.notifiedExpiryDays = INT16_MAX;  // Indicated not notified yet.
     number.monthFee           = monthFee;
     number.renewFee           = renewFee;
     number.autoRenew          = self.autoRenew;

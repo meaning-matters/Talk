@@ -21,4 +21,6 @@
 
 + (NSString*)formatToTime:(NSDate*)date;
 
+- (NSString*)capitalizedFirstLetter;
+
 @end

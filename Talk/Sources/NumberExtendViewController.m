@@ -61,7 +61,7 @@
             self.number.monthFee           = monthFee;
             self.number.renewFee           = renewFee;
             self.number.expiryDate         = expiryDate;
-            self.number.notifiedExpiryDays = 0;
+            self.number.notifiedExpiryDays = INT16_MAX;
 
             [[DataManager sharedManager] saveManagedObjectContext:nil];
 

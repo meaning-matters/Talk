@@ -182,48 +182,13 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     NSArray* numbers = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"];
     for (NumberData* number in numbers)
     {
-        if ((number.notifiedExpiryDays == 0 && [number expiryDays] > 0) ||
+        if ((number.notifiedExpiryDays == INT16_MAX && [number isExpiryCritical]) || // Not notified about this expiry.
             (number.notifiedExpiryDays > [number expiryDays]))
         {
             number.notifiedExpiryDays = [number expiryDays];
 
-            [self showExpiryAlertForNumber:number];
+            [number showExpiryAlert];
         }
-    }
-}
-
-
-- (void)showExpiryAlertForNumber:(NumberData*)number
-{
-    NSTimeInterval expiryInterval = [number.expiryDate timeIntervalSinceDate:[NSDate date]];
-
-    if (expiryInterval > 0)
-    {
-        int expiryHours = floor(expiryInterval / (60 * 60));
-
-        [BlockAlertView showAlertViewWithTitle:[Strings extendNumberAlertTitleString]
-                                       message:[self expiryAlertBodyForNumber:number expiryHours:expiryHours]
-                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-        {
-            if (buttonIndex == 1)
-            {
-                [self showNumber:number];
-            }
-        }
-                             cancelButtonTitle:[Strings cancelString]
-                             otherButtonTitles:[Strings extendString], nil];
-    }
-    else
-    {
-        NSString* message = NSLocalizedString(@"Your Number \"%@\" has expired and can't be extended any longer. "
-                                              @"People calling will hear %@.\n\nWhere appropriate, please inform "
-                                              @"those that used this Number to reach you.", @"");
-        message = [NSString stringWithFormat:message, number.name, [Strings numberDisconnectedToneOrMessageString]];
-        [BlockAlertView showAlertViewWithTitle:NSLocalizedString(@"Number Has Expired", @"")
-                                       message:message
-                                    completion:nil
-                             cancelButtonTitle:[Strings closeString]
-                             otherButtonTitles:nil];
     }
 }
 
@@ -265,7 +230,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     {
         switch ([number expiryDays])
         {
-            case 0:
+            case INT16_MAX:
                 // It's more than 7 days until expiry, so add all notifications.
                 [self addNumberNotification:number expiryDays:7];
                 [self addNumberNotification:number expiryDays:3];
@@ -302,7 +267,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     beforeExpiryDate = [calendar dateByAddingComponents:components toDate:number.expiryDate options:0];
 
     UILocalNotification* notification = [[UILocalNotification alloc] init];
-    notification.alertBody   = [self expiryAlertBodyForNumber:number expiryHours:expiryDays * 24];
+    notification.alertBody   = [number alertTextForExpiryHours:expiryDays * 24];
     notification.alertAction = [Strings extendString];
     notification.hasAction   = YES;
     notification.soundName   = UILocalNotificationDefaultSoundName;
@@ -310,37 +275,6 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     notification.fireDate    = beforeExpiryDate;
 
     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-}
-
-
-// Make sure that `expiryHours` is positive!
-- (NSString*)expiryAlertBodyForNumber:(NumberData*)number expiryHours:(NSInteger)expiryHours
-{
-    NSString* format = NSLocalizedString(@"Your Number \"%@\" will expire %@. Extend and let people reach you.", @"");
-    NSString* when;
-
-    if (expiryHours >= 48)
-    {
-        when = [NSString stringWithFormat:NSLocalizedString(@"in %d days", @""), expiryHours / 24];
-    }
-    else if (expiryHours >= 24)
-    {
-        when = [NSString stringWithFormat:NSLocalizedString(@"in 1 day", @"")];
-    }
-    else if (expiryHours >= 2)
-    {
-        when = [NSString stringWithFormat:NSLocalizedString(@"in %d hours", @""), expiryHours];
-    }
-    else if (expiryHours >= 1)
-    {
-        when = [NSString stringWithFormat:NSLocalizedString(@"in 1 hour", @"")];
-    }
-    else
-    {
-        when = [NSString stringWithFormat:NSLocalizedString(@"within minutes", @"")];
-    }
-
-    return [NSString stringWithFormat:format, number.name, when];
 }
 
 
@@ -489,9 +423,9 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                     {
                         // We get here when the local notification fired while the app was in foreground.
                         NSTimeInterval expiryInterval = [number.expiryDate timeIntervalSinceDate:[NSDate date]];
-                        int            expiryHours    = floor(expiryInterval / (60 * 60));
+                        NSInteger      expiryHours    = floor(expiryInterval / (60 * 60));
                         [BlockAlertView showAlertViewWithTitle:[Strings extendNumberAlertTitleString]
-                                                       message:[self expiryAlertBodyForNumber:number expiryHours:expiryHours]
+                                                       message:[number alertTextForExpiryHours:expiryHours]
                                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
                         {
                             if (buttonIndex == 1)
