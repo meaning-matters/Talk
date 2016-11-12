@@ -11,8 +11,6 @@
 
 @interface NSTimer (Blocks)
 
-+ (NSTimer*)scheduledTimerWithTimeInterval:(NSTimeInterval)seconds repeats:(BOOL)repeats block:(void (^)())block;
-
-+ (NSTimer*)timerWithTimeInterval:(NSTimeInterval)seconds repeats:(BOOL)repeats block:(void (^)())block;
++ (NSTimer*)scheduledTimerWithInterval:(NSTimeInterval)seconds repeats:(BOOL)repeats block:(void (^)())block;
 
 @end

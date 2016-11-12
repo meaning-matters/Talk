@@ -225,7 +225,7 @@
                 [self.codeActivityIndicator stopAnimating];
                 if (error == nil)
                 {
-                    self.codeTimer = [NSTimer scheduledTimerWithTimeInterval:0.7 repeats:YES block:^(NSTimer * _Nonnull timer)
+                    self.codeTimer = [NSTimer scheduledTimerWithInterval:0.7 repeats:YES block:^(void)
                     {
                         self.codeDigitsShown++;
                         self.codeLabel.text = [code substringToIndex:self.codeDigitsShown];

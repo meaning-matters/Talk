@@ -225,3 +225,5 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Add geocoding http://dialcode.org/Europe/Netherlands/ with Voxbone queries and possibly with LibPhoneNumber's geocoding support.
 
 * Limit number of times updateNumbersBadgeValue is called during background fetch. It's called for every Address at the moment.'
+
+* After moving to iOS 10, delete NSTimer+Block module because iOS 10 has a block'ed method now.

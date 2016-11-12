@@ -12,25 +12,16 @@
 
 @implementation NSTimer (Blocks)
 
-+ (NSTimer *)scheduledTimerWithTimeInterval:(NSTimeInterval)seconds repeats:(BOOL)repeats block:(void (^)())block
+// iOS 10 added a method like this with a block. This caused a crash, to temporary fix I renamed our method
+// from the iOS 10 `schedulesTimerWithTimeInterval` to `scheduledTimerWithInterval`. After we move to iOS 10, this
+// module can be deleted alltogether.
++ (NSTimer*)scheduledTimerWithInterval:(NSTimeInterval)seconds repeats:(BOOL)repeats block:(void (^)())block
 {
     NSTimer* timer = [self scheduledTimerWithTimeInterval:seconds
                                                    target:self
                                                  selector:@selector(executeBlock:)
                                                  userInfo:[block copy]
                                                   repeats:repeats];
-    
-    return timer;
-}
-
-
-+ (NSTimer *)timerWithTimeInterval:(NSTimeInterval)seconds repeats:(BOOL)repeats block:(void (^)())block
-{
-    NSTimer* timer = [self timerWithTimeInterval:seconds
-                                          target:self
-                                        selector:@selector(executeBlock:)
-                                        userInfo:[block copy]
-                                         repeats:repeats];
     
     return timer;
 }
