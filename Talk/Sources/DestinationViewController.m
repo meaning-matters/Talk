@@ -534,9 +534,11 @@ typedef enum
         {
             PhoneData*            phone = self.isNew ? self.phone : [self.destination.phones anyObject];
             PhonesViewController* viewController;
+
             viewController = [[PhonesViewController alloc] initWithManagedObjectContext:self.managedObjectContext
                                                                           selectedPhone:phone
-                                                                             completion:^(PhoneData* selectedPhone)
+                                                                           hasAddButton:NO
+                                                                             completion:^(PhoneData *selectedPhone)
             {
                 self.phone = selectedPhone;
                 self.action[@"call"][@"e164s"][0] = self.phone.e164;

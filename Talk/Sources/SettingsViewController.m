@@ -359,6 +359,7 @@ typedef enum
             
             phonesViewController = [[PhonesViewController alloc] initWithManagedObjectContext:managedObjectContext
                                                                                 selectedPhone:(PhoneData*)callable
+                                                                                 hasAddButton:NO
                                                                                    completion:^(PhoneData* selectedPhone)
             {
                 settings.callbackE164 = selectedPhone.e164;

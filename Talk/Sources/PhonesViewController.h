@@ -21,6 +21,7 @@
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
                                selectedPhone:(PhoneData*)selectedPhone
+                                hasAddButton:(BOOL)hasAddButton
                                   completion:(void (^)(PhoneData* selectedPhone))completion;
 
 @end

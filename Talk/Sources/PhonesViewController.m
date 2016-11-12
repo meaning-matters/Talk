@@ -24,6 +24,7 @@
 @property (nonatomic, strong) PhoneData*                  selectedPhone;
 @property (nonatomic, copy) void (^completion)(PhoneData* selectedPhone);
 @property (nonatomic, strong) id<NSObject>                defaultsObserver;
+@property (nonatomic, assign) BOOL                        hasAddButton;
 
 @end
 
@@ -34,12 +35,14 @@
 {
     return [self initWithManagedObjectContext:[DataManager sharedManager].managedObjectContext
                                 selectedPhone:nil
+                                 hasAddButton:YES
                                    completion:nil];
 }
 
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
                                selectedPhone:(PhoneData*)selectedPhone
+                                hasAddButton:(BOOL)hasAddButton
                                   completion:(void (^)(PhoneData* selectedPhone))completion
 {
     if (self = [super init])
@@ -49,6 +52,7 @@
 
         self.managedObjectContext = managedObjectContext;
         self.selectedPhone        = selectedPhone;
+        self.hasAddButton         = hasAddButton;
         self.completion           = completion;
 
         __weak typeof(self) weakSelf = self;
@@ -80,8 +84,7 @@
 {
     [super viewDidLoad];
 
-    // Don't show add button
-    if (self.selectedPhone != nil)
+    if (self.hasAddButton == NO)
     {
         self.navigationItem.rightBarButtonItem = nil;
     }
@@ -215,7 +218,7 @@
     {
         if (phone != self.selectedPhone)
         {
-            self.completion(phone);
+            self.completion ? self.completion(phone) : 0;
         }
 
         [self.navigationController popViewControllerAnimated:YES];
