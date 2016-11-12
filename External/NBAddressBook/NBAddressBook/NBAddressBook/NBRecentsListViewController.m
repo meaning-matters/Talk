@@ -80,7 +80,7 @@
         CallRecordData* recent = recents[0];
         if (recent.contactID == nil)
         {
-            PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:recent.e164];
+            PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:recent.fromE164];
             [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
                                                      completion:^(NSArray* contactIds)
             {
@@ -349,7 +349,7 @@
                 //the same unknown number,
                 //or are a missed call same as the last entry
                 if (( [lastEntry.contactID isEqualToString:entry.contactID] ||
-                    ( lastEntry.contactID == nil && entry.contactID == nil && [lastEntry.number isEqualToString:entry.number])) &&
+                    ( lastEntry.contactID == nil && entry.contactID == nil && [lastEntry.dialedNumber isEqualToString:entry.dialedNumber])) &&
                     ( ( [lastEntry.status intValue] == CallStatusMissed && [entry.status intValue] == CallStatusMissed) ||
                     ( [lastEntry.status intValue] != CallStatusMissed && [entry.status intValue] != CallStatusMissed)))
                 {
@@ -534,8 +534,8 @@
     }
     else
     {
-        NSString* number = latestEntry.number;
-        number = [[NBAddressBookManager sharedManager].delegate formatNumber:latestEntry.number];
+        NSString* number = latestEntry.dialedNumber;
+        number = [[NBAddressBookManager sharedManager].delegate formatNumber:latestEntry.dialedNumber];
         [numberLabel setText:number];
         [numberType setText:NSLocalizedString(@"LBL_UNKNOWN", @"")];
     }
@@ -690,7 +690,7 @@
     NSArray*        recents     = [dataSource objectAtIndex:indexPath.row];
     CallRecordData* firstRecent = [recents objectAtIndex:0];
 
-    [NBContact makePhoneCall:firstRecent.number withContactID:firstRecent.contactID];
+    [NBContact makePhoneCall:firstRecent.dialedNumber withContactID:firstRecent.contactID];
 
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];    
 }
@@ -719,7 +719,7 @@
         
         //Set a number
         ABMutableMultiValueRef numberMulti = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-        ABMultiValueAddValueAndLabel(numberMulti, (__bridge CFTypeRef)firstRecent.number, kABOtherLabel, NULL);
+        ABMultiValueAddValueAndLabel(numberMulti, (__bridge CFTypeRef)firstRecent.dialedNumber, kABOtherLabel, NULL);
         ABRecordSetValue(contactRef, kABPersonPhoneProperty, numberMulti, nil);
         
         //Set an email

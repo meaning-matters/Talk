@@ -251,12 +251,12 @@
     NSManagedObjectContext* context = [DataManager sharedManager].managedObjectContext;
     CallRecordData*         recent  = [NSEntityDescription insertNewObjectForEntityForName:@"CallRecord"
                                                                     inManagedObjectContext:context];
-    recent.number    = call.phoneNumber.number;
-    recent.date      = call.beginDate;
-    recent.timeZone  = [[NSTimeZone defaultTimeZone] abbreviation];
-    recent.contactID = call.contactId;
-    recent.direction = [NSNumber numberWithInt:CallDirectionOutgoing];
-    recent.uuid      = call.uuid;
+    recent.dialedNumber = call.phoneNumber.number;
+    recent.date         = call.beginDate;
+    recent.timeZone     = [[NSTimeZone defaultTimeZone] abbreviation];
+    recent.contactID    = call.contactId;
+    recent.direction    = [NSNumber numberWithInt:CallDirectionOutgoing];
+    recent.uuid         = call.uuid;
 
     //### It's hacky that we have two updates; needs cleanup.
     [self updateRecent:recent withCall:call];
@@ -285,7 +285,7 @@
     {
         if (error == nil)
         {
-            PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:recent.number];
+            PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:recent.dialedNumber];
             Call*        call        = [[Call alloc] initWithPhoneNumber:phoneNumber direction:CallDirectionOutgoing];
 
             call.state            = state;
@@ -362,11 +362,11 @@
         }
     }
 
-    recent.callbackDuration = @(call.callbackDuration);
-    recent.callthruDuration = @(call.callthruDuration);
-    recent.callbackCost     = @(call.callbackCost);
-    recent.callthruCost     = @(call.callthruCost);
-    recent.e164             = [call.phoneNumber e164Format];
+    recent.fromDuration = @(call.callbackDuration);
+    recent.toDuration   = @(call.callthruDuration);
+    recent.fromCost     = @(call.callbackCost);
+    recent.toCost       = @(call.callthruCost);
+    recent.toE164       = [call.phoneNumber e164Format];
 
     [[DataManager sharedManager].managedObjectContext save:nil];
 }

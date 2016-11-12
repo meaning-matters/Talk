@@ -101,7 +101,7 @@
 
         timeString = [NSString formatToTime:recent.date];
 
-        int duration = [recent.callthruDuration intValue];
+        int duration = [recent.toDuration intValue];
         switch ([recent.status intValue])
         {
             case CallStatusMissed:    statusString = NSLocalizedString(@"RCD_MISSED",    @"");  break;
@@ -114,7 +114,7 @@
         }
 
         NBAddressBookManager* manager = [NBAddressBookManager sharedManager];
-        float cost = [recent.callbackCost floatValue] + [recent.callthruCost floatValue];
+        float cost = [recent.fromCost floatValue] + [recent.toCost floatValue];
         if (cost != 0)
         {
             costString = [manager.delegate localizedFormattedPrice2ExtraDigits:cost];
@@ -147,22 +147,22 @@
                     {
                         [statusIndicator stopAnimating];
 
-                        if ([recent.callbackCost floatValue] == 0)
+                        if ([recent.fromCost floatValue] == 0)
                         {
                             statusLabel.text = NSLocalizedString(@"RCD_CANCELLED", @""); // Best guess.
                         }
-                        else if ([recent.callthruCost floatValue] == 0)
+                        else if ([recent.toCost floatValue] == 0)
                         {
                             statusLabel.text = NSLocalizedString(@"RCD_CALLBACK",  @"");
 
-                            float cost       = [recent.callbackCost floatValue];
+                            float cost       = [recent.fromCost floatValue];
                             costLabel.text   = [manager.delegate localizedFormattedPrice2ExtraDigits:cost];
                         }
                         else
                         {
-                            statusLabel.text = [self durationStringForDuration:[recent.callthruDuration intValue]];
+                            statusLabel.text = [self durationStringForDuration:[recent.toDuration intValue]];
 
-                            float cost       = [recent.callbackCost floatValue] + [recent.callthruCost floatValue];
+                            float cost       = [recent.fromCost floatValue] + [recent.toCost floatValue];
                             costLabel.text   = [manager.delegate localizedFormattedPrice2ExtraDigits:cost];
                         }
                     }

@@ -11,16 +11,17 @@
 @implementation CallRecordData
 
 @dynamic contactID;
-@dynamic number;
-@dynamic callbackDuration;
-@dynamic callthruDuration;
+@dynamic dialedNumber;
+@dynamic fromDuration;
+@dynamic toDuration;
 @dynamic direction;
 @dynamic date;
 @dynamic timeZone;
 @dynamic status;
-@dynamic e164;
+@dynamic fromE164;
+@dynamic toE164;
 @dynamic uuid;
-@dynamic callbackCost;
-@dynamic callthruCost;
+@dynamic fromCost;
+@dynamic toCost;
 
 @end

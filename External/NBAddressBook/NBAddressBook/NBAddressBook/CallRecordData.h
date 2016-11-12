@@ -27,14 +27,14 @@ typedef enum
 @interface CallRecordData : NSManagedObject
 
 // The number that was dailed
-@property (nonatomic) NSString* number;
+@property (nonatomic) NSString* dialedNumber;
 
 // The contact (optional)
 @property (nonatomic) NSString* contactID;
 
 // Duration of the call.
-@property (nonatomic) NSNumber* callbackDuration;
-@property (nonatomic) NSNumber* callthruDuration;
+@property (nonatomic) NSNumber* fromDuration;
+@property (nonatomic) NSNumber* toDuration;
 
 // Wether this was an incoming or outgoing call
 @property (nonatomic) NSNumber* direction;
@@ -48,14 +48,15 @@ typedef enum
 // The status of the call
 @property (nonatomic) NSNumber* status;
 
-// The international number
-@property (nonatomic) NSString* e164;
+// The international numbers
+@property (nonatomic) NSString* fromE164;
+@property (nonatomic) NSString* toE164;
 
 // The callback UUID
 @property (nonatomic) NSString* uuid;
 
 // The calls cost.
-@property (nonatomic) NSNumber* callbackCost;
-@property (nonatomic) NSNumber* callthruCost;
+@property (nonatomic) NSNumber* fromCost;
+@property (nonatomic) NSNumber* toCost;
 
 @end

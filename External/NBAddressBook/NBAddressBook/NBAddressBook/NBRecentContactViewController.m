@@ -127,7 +127,7 @@
 }
 
 
-//Method overloaded to color the cell of the number that was called
+// Method overloaded to color the cell of the number that was called
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     if (indexPath.section == CC_NUMBER )
@@ -135,15 +135,15 @@
         NBDetailLineSeparatedCell* cell = (NBDetailLineSeparatedCell*)[super tableView:tableView cellForRowAtIndexPath:indexPath];
         CallRecordData* recent          = [recents objectAtIndex:0];
         
-        //If this was the called number
-        if ([recent.number isEqualToString:cell.cellTextfield.text])
+        // If this was the called number
+        if ([recent.dialedNumber isEqualToString:cell.cellTextfield.text])
         {
-            //If the call was missed, color it dark red
+            // If the call was missed, color it dark red
             if ([recent.status intValue] == CallStatusMissed)
             {
                 [cell.cellTextfield setTextColor:FONT_COLOR_MISSED];                
             }
-            //If the call was received/made, color it blue
+            // If the call was received/made, color it blue
             else
             {
                 [cell.cellTextfield setTextColor:FONT_COLOR_MERGED];

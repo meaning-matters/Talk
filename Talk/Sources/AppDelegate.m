@@ -1017,16 +1017,16 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 - (BOOL)matchRecent:(CallRecordData*)recent withNumber:(NSString*)number
 {
     // No numbers that are invalid will end up in Recents (because earlier there will be
-    // a alert). So we'll always have a E164 form available, and also the ISO country code.
+    // an alert). So we'll always have a E164 form available, and also the ISO country code.
     // We assume here that Home Country won't be changed, and that all local number (the ones
     // that will use latestEntry's ISO to get their E164 format), will be of the same country
     // as the Recent number.  If Home Country was wrongly set when a local number is added to
     // Recent, then following calls won't match this one.  (I was tired when writing this ;-)
-    PhoneNumber* recentPhoneNumber = [[PhoneNumber alloc] initWithNumber:recent.e164];
+    PhoneNumber* recentPhoneNumber = [[PhoneNumber alloc] initWithNumber:recent.toE164];
     PhoneNumber* phoneNumber       = [[PhoneNumber alloc] initWithNumber:number
                                                           isoCountryCode:recentPhoneNumber.isoCountryCode];
 
-    if ([[PhoneNumber stripNumber:number] isEqualToString:recent.number] ||
+    if ([[PhoneNumber stripNumber:number] isEqualToString:recent.dialedNumber] ||
         [recentPhoneNumber.e164Format     isEqualToString:phoneNumber.e164Format])
     {
         return YES;
