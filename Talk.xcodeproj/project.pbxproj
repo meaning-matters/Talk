@@ -767,6 +767,7 @@
 		4817A6101CB7EA9D00F14EED /* DestinationNumbersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationNumbersViewController.h; sourceTree = "<group>"; };
 		4817A6111CB7EA9D00F14EED /* DestinationNumbersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationNumbersViewController.m; sourceTree = "<group>"; };
 		4818DB601CAB0D380044AFE6 /* CountryRegions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryRegions.json; path = Resources/CountryRegions.json; sourceTree = "<group>"; };
+		4819CF6E1DDCE15A0097DCB5 /* NumberBay.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NumberBay.entitlements; sourceTree = "<group>"; };
 		481DFBA91C70CAC1009191B0 /* RecordingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingsViewController.h; sourceTree = "<group>"; };
 		481DFBAA1C70CAC1009191B0 /* RecordingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordingsViewController.m; sourceTree = "<group>"; };
 		48200D1A16EC89BA0069677E /* NumberType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberType.h; sourceTree = "<group>"; };
@@ -2297,6 +2298,7 @@
 		48884A7A1615CE920005AA79 /* Talk */ = {
 			isa = PBXGroup;
 			children = (
+				4819CF6E1DDCE15A0097DCB5 /* NumberBay.entitlements */,
 				483ECFE817A4F54D0032B8FF /* NBAddressBook */,
 				48DD7284169F548600CD7080 /* External */,
 				48338F9E16170CA80033F4C1 /* Sources */,
@@ -3560,6 +3562,7 @@
 				ATS_DISABLE = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CODE_SIGN_ENTITLEMENTS = Talk/NumberBay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
@@ -3599,6 +3602,7 @@
 				ATS_DISABLE = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CODE_SIGN_ENTITLEMENTS = Talk/NumberBay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
@@ -3724,6 +3728,7 @@
 				ATS_DISABLE = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CODE_SIGN_ENTITLEMENTS = Talk/NumberBay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
