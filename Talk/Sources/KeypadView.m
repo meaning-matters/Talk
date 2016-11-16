@@ -175,6 +175,7 @@
             break;
         }
         case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateCancelled:
         {
             [eraseTimer invalidate];
             eraseTimer = nil;
