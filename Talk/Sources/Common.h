@@ -179,4 +179,14 @@ static const NSInteger CommonUseButtonTag     =  123;
 
 + (void)showSetDestinationError:(NSError*)error completion:(void (^)(void))completion;
 
+/**
+ Converts a date string (e.g. "2016-03-15 10:32:43") in GMT timezone (what server uses) to an `NSDate` object.
+ */
++ (NSDate*)dateWithString:(NSString*)string;
+
+/**
+ Converts an `NSDate` object to a date string (e.g. "2016-03-15 10:32:43") in GMT timezone (what server uses).
+ */
++ (NSString*)stringWithDate:(NSDate*)date;
+
 @end

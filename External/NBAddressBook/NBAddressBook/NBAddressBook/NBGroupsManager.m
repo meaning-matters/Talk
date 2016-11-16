@@ -82,7 +82,7 @@
      The recommended way to keep a long-term reference to a particular record is to store the first and last name, or a hash of the first and last name, in addition to the identifier. When you look up a record by ID, compare the record’s name to your stored name. If they don’t match, use the stored name to find the record, and store the new ID for the record.
      */
     NSDictionary* userInfo = notification.userInfo;
-    NSString*     contactID = ([userInfo objectForKey:NF_KEY_CONTACT_ID]);
+    NSString*     contactId = ([userInfo objectForKey:NF_KEY_CONTACT_ID]);
     NSString*     groupName = [userInfo objectForKey:NF_KEY_GROUPNAME];
     BOOL groupsMutated = NO;
     
@@ -91,10 +91,10 @@
     {
         if ([group.groupName isEqualToString:groupName])
         {
-            if (![group.memberContacts containsObject:contactID])
+            if (![group.memberContacts containsObject:contactId])
             {
                 groupsMutated = YES;
-                [group.memberContacts addObject:contactID];
+                [group.memberContacts addObject:contactId];
             }
             break;
         }
@@ -110,14 +110,14 @@
 
 - (void)userDeleted:(NSNotification*)notification
 {
-    NSString* contactID = notification.object;
+    NSString* contactId = notification.object;
     BOOL groupsMutated = NO;
     for (NBGroup* group in self.userGroups)
     {
-        if ([group.memberContacts containsObject:contactID])
+        if ([group.memberContacts containsObject:contactId])
         {
             groupsMutated = YES;
-            [group.memberContacts removeObject:contactID];
+            [group.memberContacts removeObject:contactId];
         }
     }
     

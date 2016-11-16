@@ -1708,4 +1708,24 @@ static Common* sharedCommon;
                          otherButtonTitles:nil];
 }
 
+
++ (NSDate*)dateWithString:(NSString*)string
+{
+    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+    [formatter setDateFormat:@"yyyy-M-d H:m:s"];
+
+    return [formatter dateFromString:string];
+}
+
+
++ (NSString*)stringWithDate:(NSDate*)date
+{
+    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+    [formatter setDateFormat:@"yyyy-M-d H:m:s"];
+
+    return [formatter stringFromDate:date];
+}
+
 @end

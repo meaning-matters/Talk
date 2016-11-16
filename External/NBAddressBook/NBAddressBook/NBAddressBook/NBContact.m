@@ -567,10 +567,10 @@
 #pragma mark - Single point of handling calls
 
 + (void)makePhoneCall:(NSString*)phoneNumber
-        withContactID:(NSString*)contactID
+        withContactID:(NSString*)contactId
 {
     [[CallManager sharedManager] callPhoneNumber:[[PhoneNumber alloc] initWithNumber:phoneNumber]
-                                       contactId:contactID
+                                       contactId:contactId
                                       completion:nil];
 }
 

@@ -14,6 +14,7 @@
 #import "DataManager.h"
 #import "WebClient.h"
 #import "Settings.h"
+#import "Common.h"
 
 @interface NBRecentsListViewController ()
 {
@@ -78,7 +79,7 @@
     for (NSArray* recents in dataSource)
     {
         CallRecordData* recent = recents[0];
-        if (recent.contactID == nil)
+        if (recent.contactId == nil)
         {
             PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:recent.fromE164];
             [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
@@ -88,7 +89,7 @@
                 {
                     for (CallRecordData* entry in recents)
                     {
-                        recent.contactID = contactIds[0];
+                        recent.contactId = contactIds[0];
                     }
                 }
             }];
@@ -168,12 +169,16 @@
 - (void)refresh:(id)sender
 {
     NSDate* date = [Settings sharedSettings].recentsCheckDate;
-    [[WebClient sharedClient] retrieveInboundCallRecordsFromDate:date reply:^(NSError *error, NSArray *records)
+
+    //###
+    date = [[NSDate date] dateByAddingTimeInterval:-3600];
+
+    [[WebClient sharedClient] retrieveInboundCallRecordsFromDate:date reply:^(NSError *error, NSArray* records)
     {
         [Settings sharedSettings].recentsCheckDate = [NSDate date];
 
         [self.tableView beginUpdates];
-        [self processInboundCallRecords: records];
+        [self processInboundCallRecords:records];
         [self.tableView endUpdates];
 
         [sender endRefreshing];
@@ -181,13 +186,364 @@
 }
 
 
+/**
+ A call record represent one leg of a call and has the following fields:
+     - billable_duration: From this and the `cost` the rate per minute can be calculated. This is "<null>" for cancelled
+                          calls.
+
+     - cost:              The costs in the user's currency (that's supplied with the API call).
+
+     - duration:          Time this leg was active.
+
+     - fromE164           E164 of the originating party (caller)
+ 
+     - toE164             E164 of the destinating party (callee)
+ 
+     - hangupReason       Condition by which this leg was ended, one of (in order of frequency; a occurrence count
+                          from OCT 2016 is added):
+                              NORMAL_CLEARING        12851
+                              <null>                  2268 // Probably old NumberBay system.
+                              ORIGINATOR_CANCEL       1395
+                              USER_BUSY                458
+                              UNALLOCATED_NUMBER       356
+                              NO_USER_RESPONSE         287
+                              CALL_REJECTED            138
+                              NORMAL_UNSPECIFIED       132
+                              NORMAL_TEMPORARY_FAILURE 116
+                              INVALID_NUMBER_FORMAT    113
+                              RECOVERY_ON_TIMER_EXPIRE  97
+                              NONE                      54
+                              ALLOTTED_TIMEOUT          44
+                              NO_ROUTE_DESTINATION      40
+                              NO_ANSWER                 38
+                              UNKNOWN                   34
+                              DESTINATION_OUT_OF_ORDER  23
+                              INCOMPATIBLE_DESTINATION  15
+                              MANDATORY_IE_MISSING      13
+                              NETWORK_OUT_OF_ORDER      12
+                              MEDIA_TIMEOUT             12
+                              INTERWORKING               6
+                              EXCHANGE_ROUTING_ERROR     6
+                              SERVICE_UNAVAILABLE        5
+                              SERVICE_NOT_IMPLEMENTED    5
+                              LOSE_RACE                  5
+                              NORMAL_CIRCUIT_CONGESTION  3
+
+    - startDateTime:      The start date & time in GMT.
+
+    - type:               Indication of the type of leg. Possible values (in order of frequency; a occurrence count from
+                          OCT 2016 is added) are:
+                              <null>     16615  // Old NumberBay system and early stages of new system.
+                              callback     564  // From-leg of a callback/outgoing call.
+                              inbound      446  // From-leg of an incoming call (originating externally).
+                              callthru     399  // To-leg of a callback/outgoing call.
+                              ivr          269  // To-leg of an incoming call (towards a Phone).
+                              verification 108  // Phone verification To call.
+                              subscriber    68  // ??
+                              outbound      57  // ??
+                              textback       6  // SMS call.
+
+     - uuid:              The UUID of this call.
+ 
+ The records are ordered by creation date, with the newest records on top (i.e. at lower indices). Matching legs (having
+ the same UUID) can normally be found next to eachother. Only on a busy system where multiple calls are initiated around
+ the same time, both legs can be a little further apart.
+ */
 - (void)processInboundCallRecords:(NSArray*)records
+{
+    NSDate*       firstDate = nil;
+    CallDirection direction;
+    NSString*     uuid;
+
+    if (records.count)
+    {
+       // [[NSUserDefaults standardUserDefaults] setObject:records forKey:@"CallRecords"];
+       // [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+
+    for (int index = (int)(records.count - 1); index >= 0; index--)
+    {
+        NSDictionary* record = records[index];
+
+        if (firstDate == nil)
+        {
+            // We're expecting 'callback', 'inbound' or ' verification'.
+            if ([self isCallbackRecord:record] || [self isInboundRecord:record] || [self isVerificationRecord:record])
+            {
+                firstDate = [Common dateWithString:record[@"startDateTime"]];
+                uuid      = record[@"uuid"];
+
+                if ([self isVerificationRecord:record])
+                {
+                    //TODO: Add as new Recent
+                }
+                else
+                {
+                    NSInteger secondIndex = [self secondCallRecordIndexWithFirst:index callRecords:records];
+                    if (secondIndex != NSNotFound)
+                    {
+                        [self addFromRecord:record toRecord:records[secondIndex]];
+
+                        firstDate = nil;
+
+                        // If records are adjacent.
+                        if ((index - secondIndex) == 1)
+                        {
+                            index--;
+                        }
+                    }
+                    else
+                    {
+                        [self addFromRecord:record];
+
+                        firstDate = nil;
+                    }
+                }
+            }
+            else
+            {
+                // Discard this record. Could be index 0 record (in which case we just missed loading the first leg
+                // record), or a second leg (non-adjacent to its first) we found earlier (when on a busy system with
+                // many calls).
+                NBLog(@"Discarding CDR leg record.");
+            }
+        }
+    }
+}
+
+
+- (NSInteger)secondCallRecordIndexWithFirst:(NSInteger)firstIndex callRecords:(NSArray*)records
+{
+    NSDictionary* firstRecord = records[firstIndex];
+
+    for (NSInteger secondIndex = (firstIndex - 1); secondIndex >= 0; secondIndex--)
+    {
+        NSDictionary* secondRecord = records[secondIndex];
+
+        if ([firstRecord[@"uuid"] isEqualToString:secondRecord[@"uuid"]])
+        {
+            return secondIndex;
+        }
+    }
+
+    return NSNotFound;
+}
+
+
+- (BOOL)isCallbackRecord:(NSDictionary*)record
+{
+    return [record[@"type"] isEqualToString:@"callback"];
+}
+
+
+- (BOOL)isInboundRecord:(NSDictionary*)record
+{
+    return [record[@"type"] isEqualToString:@"inbound"];
+}
+
+
+- (BOOL)isCallthruRecord:(NSDictionary*)record
+{
+    return [record[@"type"] isEqualToString:@"callthur"];
+}
+
+
+- (BOOL)isIvrRecord:(NSDictionary*)record
+{
+    return [record[@"type"] isEqualToString:@"ivr"];
+}
+
+
+- (BOOL)isVerificationRecord:(NSDictionary*)record
+{
+    return [record[@"type"] isEqualToString:@"verification"];
+}
+
+
+- (void)addVerificationRecord:(NSDictionary*)record
 {
 
 }
 
 
+- (void)addFromRecord:(NSDictionary*)fromRecord
+{
+    NSManagedObjectContext* context = [DataManager sharedManager].managedObjectContext;
+    CallRecordData*         recent  = [NSEntityDescription insertNewObjectForEntityForName:@"CallRecord"
+                                                                    inManagedObjectContext:context];
+
+    PhoneNumber* dialedPhoneNumber;
+    if ([self isCallbackRecord:fromRecord])
+    {
+        // Cancelled outbound call (callback).
+        recent.direction    = @(CallDirectionOutgoing);
+        dialedPhoneNumber   = [[PhoneNumber alloc] initWithNumber:[self addE164Plus:fromRecord[@"toE164"]]]; // The NB number, the called number is lost.
+        recent.date         = [Common dateWithString:fromRecord[@"startDateTime"]]; // When we started calling.
+        recent.callerIdE164 = nil;
+
+        recent.fromE164 = [self addE164Plus:fromRecord[@"fromE164"]];
+        recent.toE164   = [self addE164Plus:fromRecord[@"toE164"]];
+        recent.fromCost = fromRecord[@"cost"];
+        recent.toCost   = @(0.0);
+
+        if ([fromRecord[@"hangupReason"] isEqualToString:@"NORMAL_CLEARING"])
+        {
+            recent.status = @(CallStatusCancelled);
+        }
+        else
+        {
+            //#### TODO: Elaborate with actual status string values.
+            recent.status = @(CallStatusFailed);
+        }
+    }
+    else if ([self isInboundRecord:fromRecord])
+    {
+
+    }
+    else
+    {
+        NBLog(@"Unexpected CDR leg record: %@", fromRecord[@"type"]);
+    }
+
+    recent.timeZone     = [[NSTimeZone defaultTimeZone] abbreviation];
+    recent.uuid         = fromRecord[@"uuid"];
+
+    recent.fromDuration = fromRecord[@"duration"];
+    recent.toDuration   = @(0);
+    recent.billableFromDuration = fromRecord[@"billableDuration"];
+    recent.billableToDuration   = @(0.0);
+
+    recent.dialedNumber = [dialedPhoneNumber internationalFormat];
+}
+
+
+- (void)addFromRecord:(NSDictionary*)fromRecord toRecord:(NSDictionary*)toRecord
+{
+    NSManagedObjectContext* context = [DataManager sharedManager].managedObjectContext;
+    CallRecordData*         recent  = [NSEntityDescription insertNewObjectForEntityForName:@"CallRecord"
+                                                                    inManagedObjectContext:context];
+
+    /*
+     INBOUND FROM:
+     billableDuration = 0;
+     cost = 0;
+     duration = 38;
+     fromE164 = 443301223030;
+     hangupReason = "NORMAL_CLEARING";
+     startDateTime = "2016-11-09 14:28:19";
+     toE164 = 442038083855;
+     type = inbound;
+     uuid = "c2a35c12-a688-11e6-982d-1b853daeb411";
+
+     INBOUND TO:
+     billableDuration = 0;
+     cost = 0;
+     duration = 38;
+     fromE164 = 442038083855;
+     hangupReason = "NO_USER_RESPONSE";
+     startDateTime = "2016-11-09 14:28:19";
+     toE164 = 34630535344;
+     type = ivr;
+     uuid = "c2a35c12-a688-11e6-982d-1b853daeb411";
+     
+     ==========
+
+     OUTBOUND FROM:
+     billableDuration = 17;
+     cost = "0.02235067964002524";
+     duration = 27;
+     fromE164 = 442038083855;
+     hangupReason = "NORMAL_CLEARING";
+     startDateTime = "2016-11-14 16:36:35";
+     toE164 = 34630535344;
+     type = callback;
+     uuid = "81bb6c72-aa88-11e6-bb44-8ddf088a4149";
+
+     OUTBOUND TO:
+     billableDuration = 5;
+     cost = "0.001861347425062485";
+     duration = 13;
+     fromE164 = 34630535344;
+     hangupReason = "NORMAL_CLEARING";
+     startDateTime = "2016-11-14 16:36:48";
+     toE164 = 3215666666;
+     type = callthur;
+     uuid = "81bb6c72-aa88-11e6-bb44-8ddf088a4149";
+     */
+
+    PhoneNumber* dialedPhoneNumber;
+    if ([self isCallbackRecord:fromRecord])
+    {
+        // Outbound call (callback).
+        recent.direction    = @(CallDirectionOutgoing);
+        dialedPhoneNumber   = [[PhoneNumber alloc] initWithNumber:[self addE164Plus:toRecord[@"toE164"]]];
+        recent.date         = [Common dateWithString:fromRecord[@"startDateTime"]]; // When we started calling.
+        recent.callerIdE164 = [self addE164Plus:toRecord[@"fromE164"]];
+
+        recent.fromE164 = [self addE164Plus:fromRecord[@"toE164"]];
+        recent.toE164   = [self addE164Plus:toRecord[@"toE164"]];
+        recent.fromCost = fromRecord[@"cost"];
+        recent.toCost   = toRecord[@"cost"];
+
+        if ([toRecord[@"hangupReason"] isEqualToString:@"NORMAL_CLEARING"])
+        {
+            recent.status = @(CallStatusSuccess);
+        }
+        else
+        {
+            //#### TODO: Elaborate with actual status string values.
+            recent.status = @(CallStatusFailed);
+        }
+    }
+    else
+    {
+        // Inbound call (Voxbone).
+        recent.direction    = @(CallDirectionIncoming);
+        dialedPhoneNumber   = [[PhoneNumber alloc] initWithNumber:[self addE164Plus:fromRecord[@"fromE164"]]];
+        recent.date         = [Common dateWithString:toRecord[@"startDateTime"]];   // When our Phone was called.
+        recent.callerIdE164 = [self addE164Plus:fromRecord[@"fromE164"]];  // Depends on Setting: either NumberBay main number, or caller number.
+
+        recent.fromE164 = [self addE164Plus:fromRecord[@"fromE164"]];
+        recent.toE164   = [self addE164Plus:toRecord[@"toE164"]];
+        recent.fromCost = fromRecord[@"cost"];
+        recent.toCost   = toRecord[@"cost"];
+
+        if ([toRecord[@"hangupReason"] isEqualToString:@"NORMAL_CLEARING"])
+        {
+            recent.status = @(CallStatusSuccess);
+        }
+        else
+        {
+            //#### TODO: Elaborate with actual status string values.
+            recent.status = @(CallStatusMissed);
+        }
+    }
+
+    recent.timeZone     = [[NSTimeZone defaultTimeZone] abbreviation];
+    recent.uuid         = fromRecord[@"uuid"];
+
+    recent.fromDuration = fromRecord[@"duration"];
+    recent.toDuration   = toRecord[@"duration"];
+    recent.billableFromDuration = fromRecord[@"billableDuration"];
+    recent.billableToDuration   = toRecord[@"billableDuration"];
+
+    recent.dialedNumber = [dialedPhoneNumber internationalFormat];
+    [[AppDelegate appDelegate] findContactsHavingNumber:[dialedPhoneNumber nationalDigits]
+                                             completion:^(NSArray* contactIds)
+    {
+        recent.contactId = [contactIds firstObject];
+    }];
+}
+
+
+- (NSString*)addE164Plus:(NSString*)e164WithoutPlus
+{
+    return [@"+" stringByAppendingString:e164WithoutPlus];
+}
+
+
 #pragma mark - Replacing an unknown contact with a known one
+
 - (void)replaceViewController:(UIViewController*)viewController
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void)
@@ -197,7 +553,9 @@
     });
 }
 
+
 #pragma mark - Clear all recents
+
 - (void)clearAllPressed
 {
     //Present the actionsheet
@@ -348,8 +706,8 @@
                 //If we have the same contact,
                 //the same unknown number,
                 //or are a missed call same as the last entry
-                if (( [lastEntry.contactID isEqualToString:entry.contactID] ||
-                    ( lastEntry.contactID == nil && entry.contactID == nil && [lastEntry.dialedNumber isEqualToString:entry.dialedNumber])) &&
+                if (( [lastEntry.contactId isEqualToString:entry.contactId] ||
+                    ( lastEntry.contactId == nil && entry.contactId == nil && [lastEntry.dialedNumber isEqualToString:entry.dialedNumber])) &&
                     ( ( [lastEntry.status intValue] == CallStatusMissed && [entry.status intValue] == CallStatusMissed) ||
                     ( [lastEntry.status intValue] != CallStatusMissed && [entry.status intValue] != CallStatusMissed)))
                 {
@@ -445,11 +803,14 @@
     [self.tableView setEditing:NO animated:YES];
 }
 
+
 #pragma mark - Tableview datasource methods
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [dataSource count];
 }
+
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
@@ -497,20 +858,20 @@
 
     CallRecordData* latestEntry = [entryRowArray objectAtIndex:0];
     ABRecordRef           contact;
-    if (latestEntry.contactID != nil)
+    if (latestEntry.contactId != nil)
     {
-        contact = [self getContactForID:latestEntry.contactID];
+        contact = [self getContactForID:latestEntry.contactId];
         if (contact == nil)
         {
             // Contact appears to be gone, clear it.
             for (CallRecordData* entry in entryRowArray)
             {
-                entry.contactID = nil;
+                entry.contactId = nil;
             }
         }
     }
 
-    if (latestEntry.contactID != nil)
+    if (latestEntry.contactId != nil)
     {
         // Set the name
         NSString* representation = [[NBContact getListRepresentation:contact] string];
@@ -690,7 +1051,7 @@
     NSArray*        recents     = [dataSource objectAtIndex:indexPath.row];
     CallRecordData* firstRecent = [recents objectAtIndex:0];
 
-    [NBContact makePhoneCall:firstRecent.dialedNumber withContactID:firstRecent.contactID];
+    [NBContact makePhoneCall:firstRecent.dialedNumber withContactID:firstRecent.contactId];
 
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];    
 }
@@ -700,7 +1061,7 @@
 {
     NSArray*        recents     = [dataSource objectAtIndex:indexPath.row];
     CallRecordData* firstRecent = [recents objectAtIndex:0];
-    if (firstRecent.contactID == nil)
+    if (firstRecent.contactId == nil)
     {
         //Load as unknown person
         recentUnknownViewController = [[NBRecentUnknownContactViewController alloc] init];
@@ -749,7 +1110,7 @@
     {
         //Load as a contact
         recentViewController = [[NBRecentContactViewController alloc]init];
-        [recentViewController setDisplayedPerson:[self getContactForID:firstRecent.contactID]];
+        [recentViewController setDisplayedPerson:[self getContactForID:firstRecent.contactId]];
         
         [recentViewController setAllowsActions:NO];
 
@@ -765,9 +1126,9 @@
 }
 
 #pragma mark - Quick contact lookup
-- (ABRecordRef)getContactForID:(NSString*)contactID
+- (ABRecordRef)getContactForID:(NSString*)contactId
 {
-    ABRecordID recordID = [contactID intValue];
+    ABRecordID recordID = [contactId intValue];
     return ABAddressBookGetPersonWithRecordID([[NBAddressBookManager sharedManager] getAddressBook], recordID);
 }
 

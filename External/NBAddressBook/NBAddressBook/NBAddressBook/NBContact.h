@@ -49,6 +49,6 @@
 
 //Call support
 + (void)makePhoneCall:(NSString*)phoneNumber
-        withContactID:(NSString*)contactID;
+        withContactID:(NSString*)contactId;
 
 @end

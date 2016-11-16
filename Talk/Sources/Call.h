@@ -29,8 +29,9 @@ typedef enum
 
 typedef enum
 {
-    CallDirectionIncoming,
-    CallDirectionOutgoing,
+    CallDirectionIncoming,      // Call received on a Number, forwarded to user using ivr.
+    CallDirectionOutgoing,      // Callback call.
+    CallDirectionVerification,  // Phone verification call.
 } CallDirection;
 
 
@@ -55,7 +56,7 @@ typedef enum
 @property (nonatomic, strong, readonly) PhoneNumber*    phoneNumber;
 @property (nonatomic, strong) NSString*                 calledNumber;       // Actual outgoing number (not number chosen/entered).
 @property (nonatomic, strong) NSString*                 identityNumber;     // Number form/on which call is made/received.
-@property (nonatomic, assign) BOOL                      showCallerId;
+@property (nonatomic, assign) BOOL                      showCallerId;       // Also called 'privacy'.
 @property (nonatomic, strong) NSString*                 contactName;
 @property (nonatomic, strong) NSString*                 contactId;          // The ABRecordID (which is int32_t) as string.
 @property (nonatomic, strong, readonly) NSDate*         beginDate;

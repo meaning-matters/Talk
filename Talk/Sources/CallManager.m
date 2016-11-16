@@ -254,9 +254,10 @@
     recent.dialedNumber = call.phoneNumber.number;
     recent.date         = call.beginDate;
     recent.timeZone     = [[NSTimeZone defaultTimeZone] abbreviation];
-    recent.contactID    = call.contactId;
+    recent.contactId    = call.contactId;
     recent.direction    = [NSNumber numberWithInt:CallDirectionOutgoing];
     recent.uuid         = call.uuid;
+    recent.privacy      = @(!call.showCallerId);
 
     //### It's hacky that we have two updates; needs cleanup.
     [self updateRecent:recent withCall:call];
