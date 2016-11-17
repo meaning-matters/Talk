@@ -208,6 +208,7 @@
   [super viewDidLoad];
   
   self.title = BITHockeyLocalizedString(@"HockeyFeedbackComposeTitle");
+  self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.26f green:0.41f blue:1.00f alpha:1.00f]; // NumberBay blue.;
   self.view.backgroundColor = [UIColor whiteColor];
   
   // Do any additional setup after loading the view.

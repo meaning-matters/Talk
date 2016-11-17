@@ -151,15 +151,9 @@
     //    self.view.backgroundColor = DEFAULT_BACKGROUNDCOLOR_OS7;
   }
   
-  if ([UIRefreshControl class]) {
-    self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(reloadList) forControlEvents:UIControlEventValueChanged];
-  } else {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                                                           target:self
-                                                                                           action:@selector(reloadList)];
-  }
 }
+
+
 
 - (void)startLoadingIndicator {
   if ([UIRefreshControl class]) {
@@ -172,6 +166,12 @@
 - (void)stopLoadingIndicator {
   if ([UIRefreshControl class]) {
     [self.refreshControl endRefreshing];
+
+    dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
+    dispatch_after(when, dispatch_get_main_queue(), ^(void)
+    {
+      [self updateRefreshDate];
+    });
   } else {
     self.navigationItem.rightBarButtonItem.enabled = YES;
   }
@@ -188,6 +188,14 @@
   [self startLoadingIndicator];
   
   [self.manager updateMessagesList];
+}
+
+- (void)updateRefreshDate
+{
+  NSString* title = [NSString stringWithFormat:BITHockeyLocalizedString(@"HockeyFeedbackListLastUpdated"),
+                     [self.manager lastCheck] ? [self.lastUpdateDateFormatter stringFromDate:[self.manager lastCheck]]
+                                              : BITHockeyLocalizedString(@"HockeyFeedbackListNeverUpdated")];
+  self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:title];
 }
 
 - (void)updateList {
@@ -211,6 +219,21 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+
+  if (self.refreshControl == nil)
+  {
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self updateRefreshDate];
+    [self.refreshControl addTarget:self action:@selector(reloadList) forControlEvents:UIControlEventValueChanged];
+
+    //### Workaround: http://stackoverflow.com/a/19126113/1971013
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+      [self.refreshControl beginRefreshing];
+      [self.refreshControl endRefreshing];
+    });
+  }
+
   if (self.userDataComposeFlow) {
     self.userDataComposeFlow = NO;
   }
@@ -556,7 +579,7 @@
     if (!cell) {
       cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
       
-      cell.textLabel.font = [UIFont systemFontOfSize:14];
+      cell.textLabel.font = [UIFont systemFontOfSize:18];
       cell.textLabel.numberOfLines = 0;
       cell.accessoryType = UITableViewCellAccessoryNone;
       
@@ -571,10 +594,10 @@
     NSString *titleString = nil;
     SEL actionSelector = nil;
     
-    UIColor *titleColor = BIT_RGBCOLOR(35, 111, 251);
-    if ([self.view respondsToSelector:@selector(tintColor)]){
-      titleColor = self.view.tintColor;
-    }
+    UIColor *titleColor = [UIColor colorWithRed:0.26f green:0.41f blue:1.00f alpha:1.00f]; // NumberBay blue.
+    //if ([self.view respondsToSelector:@selector(tintColor)]){
+    //  titleColor = self.view.tintColor;
+    //}
     
     UIButton *button = nil;
     if ([self.manager isPreiOS7Environment]) {
@@ -586,7 +609,7 @@
       [button setBackgroundImage:stretchableHighlightedButton forState:UIControlStateHighlighted];
       
       [[button titleLabel] setShadowOffset:CGSizeMake(0, 1)];
-      [[button titleLabel] setFont:[UIFont boldSystemFontOfSize:14.0]];
+      [[button titleLabel] setFont:[UIFont boldSystemFontOfSize:18.0]];
       
       [button setTitleColor:BUTTON_TEXTCOLOR forState:UIControlStateNormal];
       [button setTitleShadowColor:BUTTON_TEXTCOLOR_SHADOW forState:UIControlStateNormal];
@@ -630,7 +653,7 @@
       }
       
       titleString = BITHockeyLocalizedString(@"HockeyFeedbackListButtonDeleteAllMessages");
-      titleColor = BIT_RGBCOLOR(251, 35, 35);
+      titleColor = [UIColor colorWithRed:0.988f green:0.082f blue:0.275f alpha:1.0f];  // NumberBay delete tint.
       actionSelector = @selector(deleteAllMessagesAction:);
     }
     
@@ -816,6 +839,7 @@
       [self setUserDataAction:self];
     } else if (indexPath.section == _deleteButtonSection) {
       [self deleteAllMessagesAction:self];
+      [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
   }
 }
