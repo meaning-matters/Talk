@@ -52,6 +52,8 @@
 
         //Listen for reloads
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doLoad) name:NF_RELOAD_CONTACTS object:nil];
+
+        [self findContactsForAnonymousItems];
     }
 
     return self;
@@ -68,12 +70,12 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^
     {
+        [self findContactsForAnonymousItems];
         [self.tableView reloadData];
     });
 }
 
 
-//### Not used.
 - (void)findContactsForAnonymousItems
 {
     for (NSArray* recents in dataSource)
@@ -85,13 +87,7 @@
             [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
                                                      completion:^(NSArray* contactIds)
             {
-                if (contactIds.count == 1)
-                {
-                    for (CallRecordData* entry in recents)
-                    {
-                        recent.contactId = contactIds[0];
-                    }
-                }
+                recent.contactId = [contactIds firstObject];
             }];
         }
     }
@@ -171,14 +167,14 @@
     NSDate* date = [Settings sharedSettings].recentsCheckDate;
 
     //###
-    date = [[NSDate date] dateByAddingTimeInterval:-3600];
+    date = [[NSDate date] dateByAddingTimeInterval:-15000];
 
     [[WebClient sharedClient] retrieveInboundCallRecordsFromDate:date reply:^(NSError *error, NSArray* records)
     {
         [Settings sharedSettings].recentsCheckDate = [NSDate date];
 
         [self.tableView beginUpdates];
-        [self processInboundCallRecords:records];
+        [self processCallRecords:records];
         [self.tableView endUpdates];
 
         [sender endRefreshing];
@@ -249,17 +245,11 @@
  the same UUID) can normally be found next to eachother. Only on a busy system where multiple calls are initiated around
  the same time, both legs can be a little further apart.
  */
-- (void)processInboundCallRecords:(NSArray*)records
+- (void)processCallRecords:(NSArray*)records
 {
     NSDate*       firstDate = nil;
     CallDirection direction;
     NSString*     uuid;
-
-    if (records.count)
-    {
-       // [[NSUserDefaults standardUserDefaults] setObject:records forKey:@"CallRecords"];
-       // [[NSUserDefaults standardUserDefaults] synchronize];
-    }
 
     for (int index = (int)(records.count - 1); index >= 0; index--)
     {
@@ -282,7 +272,7 @@
                     NSInteger secondIndex = [self secondCallRecordIndexWithFirst:index callRecords:records];
                     if (secondIndex != NSNotFound)
                     {
-                        [self addFromRecord:record toRecord:records[secondIndex]];
+                        [self addRecentWithFromRecord:record toRecord:records[secondIndex]];
 
                         firstDate = nil;
 
@@ -294,7 +284,7 @@
                     }
                     else
                     {
-                        [self addFromRecord:record];
+                        [self addRecentWithFromRecord:record];
 
                         firstDate = nil;
                     }
@@ -366,7 +356,7 @@
 }
 
 
-- (void)addFromRecord:(NSDictionary*)fromRecord
+- (void)addRecentWithFromRecord:(NSDictionary*)fromRecord
 {
     NSManagedObjectContext* context = [DataManager sharedManager].managedObjectContext;
     CallRecordData*         recent  = [NSEntityDescription insertNewObjectForEntityForName:@"CallRecord"
@@ -417,7 +407,7 @@
 }
 
 
-- (void)addFromRecord:(NSDictionary*)fromRecord toRecord:(NSDictionary*)toRecord
+- (void)addRecentWithFromRecord:(NSDictionary*)fromRecord toRecord:(NSDictionary*)toRecord
 {
     NSManagedObjectContext* context = [DataManager sharedManager].managedObjectContext;
     CallRecordData*         recent  = [NSEntityDescription insertNewObjectForEntityForName:@"CallRecord"
@@ -501,10 +491,10 @@
         recent.direction    = @(CallDirectionIncoming);
         dialedPhoneNumber   = [[PhoneNumber alloc] initWithNumber:[self addE164Plus:fromRecord[@"fromE164"]]];
         recent.date         = [Common dateWithString:toRecord[@"startDateTime"]];   // When our Phone was called.
-        recent.callerIdE164 = [self addE164Plus:fromRecord[@"fromE164"]];  // Depends on Setting: either NumberBay main number, or caller number.
+        recent.callerIdE164 = [self addE164Plus:fromRecord[@"fromE164"]];
 
-        recent.fromE164 = [self addE164Plus:fromRecord[@"fromE164"]];
-        recent.toE164   = [self addE164Plus:toRecord[@"toE164"]];
+        recent.fromE164 = [self addE164Plus:fromRecord[@"fromE164"]];  // Depends on Setting: either NumberBay main number, or caller number.
+        recent.toE164   = [self addE164Plus:fromRecord[@"toE164"]];
         recent.fromCost = fromRecord[@"cost"];
         recent.toCost   = toRecord[@"cost"];
 
@@ -532,13 +522,22 @@
                                              completion:^(NSArray* contactIds)
     {
         recent.contactId = [contactIds firstObject];
+
+        [self.tableView reloadData];
     }];
 }
 
 
 - (NSString*)addE164Plus:(NSString*)e164WithoutPlus
 {
-    return [@"+" stringByAppendingString:e164WithoutPlus];
+    if (e164WithoutPlus.length == 0 || [e164WithoutPlus isEqualToString:@"anonymous"])
+    {
+        return nil;
+    }
+    else
+    {
+        return [@"+" stringByAppendingString:e164WithoutPlus];
+    }
 }
 
 
@@ -720,7 +719,7 @@
                 }
             }
             
-            //If we haven't added the entry to the last group, add it now
+            // If we haven't added the entry to the last group, add it now
             if (!entryAdded)
             {
                 entryArray = [NSMutableArray array];
@@ -732,13 +731,13 @@
             lastEntry = entry;
         }
         
-        //If we have more than one contact, show the edit button
+        // If we have more than one contact, show the edit button
         if ([allRecentContacts count] > 0 && !self.tableView.editing)
         {
             [self.navigationItem setRightBarButtonItem:editButton];
         }
         
-        //Animate in/out the rows
+        // Animate in/out the rows
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
@@ -761,7 +760,7 @@
     //Shift all the labels in view
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:ANIMATION_SPEED];
-    NSArray * visiblePaths = [self.tableView indexPathsForVisibleRows];
+    NSArray* visiblePaths = [self.tableView indexPathsForVisibleRows];
     for (NSIndexPath *indexPath in visiblePaths)
     {
         NBRecentCallCell * missedCallCell = (NBRecentCallCell *)[self.tableView cellForRowAtIndexPath:indexPath];
@@ -820,7 +819,7 @@
     NBRecentCallCell* cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
     {
-        cell = [[NBRecentCallCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        cell = [[NBRecentCallCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
         
         //Add a number label
@@ -834,7 +833,7 @@
         [cell addSubview:numberLabel];
 
         // Add an outgoing-call imageview
-        UIImageView * outgoingImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"outgoingCall"]];
+        UIImageView* outgoingImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"outgoingCall"]];
         [outgoingImageView setFrame:CGRectMake(0, 0, 10, 10)];
         [outgoingImageView setHidden:YES];
         [cell setOutgoingCallImageView:outgoingImageView];
@@ -857,7 +856,7 @@
     UILabel* numberType  = cell.numberTypeLabel;
 
     CallRecordData* latestEntry = [entryRowArray objectAtIndex:0];
-    ABRecordRef           contact;
+    ABRecordRef     contact;
     if (latestEntry.contactId != nil)
     {
         contact = [self getContactForID:latestEntry.contactId];
@@ -910,7 +909,7 @@
         [numberLabel setTextColor:[UIColor blackColor]];
     }
     
-    //Set the amount of calls made (incoming + outgoing)
+    // Set the amount of calls made (incoming + outgoing)
     if ([entryRowArray count] > 1)
     {
         //Set the last part as greyed out regular

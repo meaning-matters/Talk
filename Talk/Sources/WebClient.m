@@ -1114,12 +1114,6 @@
 - (void)retrieveInboundCallRecordsFromDate:(NSDate*)date
                                      reply:(void (^)(NSError* error, NSArray* records))reply
 {
-    /*
-    NSLog(@"##################### TEMP ####");
-    reply(nil, [[NSUserDefaults standardUserDefaults] objectForKey:@"CallRecords"]);
-
-    return;
-*/
     NSString* username       = [Settings sharedSettings].webUsername;
     NSString* currencyCode   = [Settings sharedSettings].storeCurrencyCode;
     NSString* countryCode    = [Settings sharedSettings].storeCountryCode;
@@ -1128,10 +1122,8 @@
     fromDateString = [fromDateString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     fromDateString = [fromDateString stringByReplacingOccurrencesOfString:@":" withString:@"%3A"];
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/cdrs?fromDateTime=%@&currencyCode=%@&countryCode=%@",
-                   username, fromDateString, currencyCode, countryCode] // << All
-    //[self getPath:[NSString stringWithFormat:@"/users/%@/cdrs?inbound=%@&fromDateTime=%@&currencyCode=%@&countryCode=%@",
-    //               username, @"true", fromDateString, currencyCode, countryCode] // << Inbound only
+    [self getPath:[NSString stringWithFormat:@"/users/%@/cdrs?inbound=%@&fromDateTime=%@&currencyCode=%@&countryCode=%@",
+                   username, @"true", fromDateString, currencyCode, countryCode]
        parameters:nil
             reply:^(NSError* error, id content)
     {
