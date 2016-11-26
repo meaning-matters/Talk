@@ -270,7 +270,7 @@
 
 - (void)updateRecent:(CallRecordData*)recent completion:(void (^)(BOOL success, BOOL ended))completion
 {
-    if (recent == nil || recent.uuid.length == 0)
+    if (recent == nil || recent.uuid.length == 0 || [recent.direction intValue] == CallDirectionIncoming)
     {
         return;
     }

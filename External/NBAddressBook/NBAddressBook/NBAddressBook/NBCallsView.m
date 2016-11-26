@@ -124,7 +124,7 @@
             costString = @"";
         }
 
-        if (recent.uuid == nil)
+        if (recent.uuid == nil || [recent.direction intValue] == CallDirectionIncoming)
         {
             // Call is ready and data is up to date.
             timeLabel.text   = timeString;
@@ -135,7 +135,7 @@
         {
             timeLabel.text   = timeString;
 
-            UIActivityIndicatorView* statusIndicator = [self createActivityIndicatorAtX:75  y:yStart];
+            UIActivityIndicatorView* statusIndicator = [self createActivityIndicatorAtX:75 y:yStart];
             statusLabel.text = @"";
             costLabel.text   = @"";
 

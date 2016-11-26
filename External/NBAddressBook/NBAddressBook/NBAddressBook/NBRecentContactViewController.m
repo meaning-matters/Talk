@@ -141,12 +141,12 @@
             // If the call was missed, color it dark red
             if ([recent.status intValue] == CallStatusMissed)
             {
-                [cell.cellTextfield setTextColor:FONT_COLOR_MISSED];                
+                [cell.cellTextfield setTextColor:[[NBAddressBookManager sharedManager].delegate deleteTintColor]];
             }
             // If the call was received/made, color it blue
             else
             {
-                [cell.cellTextfield setTextColor:FONT_COLOR_MERGED];
+                [cell.cellTextfield setTextColor:[[NBAddressBookManager sharedManager].delegate tintColor]];
             }
         }
         return cell;

@@ -920,11 +920,11 @@
     
     if ([latestEntry.status intValue] == CallStatusMissed)
     {
-        [numberLabel setTextColor:[UIColor colorWithRed:187/255.0f green:25/255.0f blue:25/255.0f alpha:1.0f]];
+        numberLabel.textColor = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
     }
     else
     {
-        [numberLabel setTextColor:[UIColor blackColor]];
+        numberLabel.textColor = [UIColor blackColor];
     }
     
     // Set the amount of calls made (incoming + outgoing)
@@ -1127,7 +1127,7 @@
     else
     {
         //Load as a contact
-        recentViewController = [[NBRecentContactViewController alloc]init];
+        recentViewController = [[NBRecentContactViewController alloc] init];
         [recentViewController setDisplayedPerson:[self getContactForID:firstRecent.contactId]];
         
         [recentViewController setAllowsActions:NO];

@@ -33,8 +33,6 @@
 #define FONT_NOTES              [UIFont boldSystemFontOfSize:15]
 #define FONT_COLOR_MY_NUMBER    [UIColor colorWithRed: 91/255.0f green:108/255.0f blue:132/255.0f alpha:1.0f]
 #define FONT_COLOR_LABEL        [Skinning tintColor]
-#define FONT_COLOR_MERGED       [UIColor colorWithRed: 40/255.0f green:108/255.0f blue:214/255.0f alpha:1.0f]
-#define FONT_COLOR_MISSED       [UIColor colorWithRed:140/255.0f green: 16/255.0f blue:  5/255.0f alpha:1.0f]
 #define FONT_COLOR_LIGHT_GREY   [UIColor colorWithRed:204/255.0f green:204/255.0f blue:204/255.0f alpha:1.0f]
 
 #define PERSON_BACKGROUND_COLOR [UIColor colorWithRed:191/255.0f green:191/255.0f blue:196/255.0f alpha:1.0f]

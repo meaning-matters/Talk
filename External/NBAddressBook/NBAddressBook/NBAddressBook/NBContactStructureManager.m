@@ -362,7 +362,9 @@
     }
 }
 
+
 #pragma mark - Setting the phone number to merge with
+
 - (void)fillWithContactToMergeWith:(NBContact*)person
 {
     //Add a new entry in the number-field

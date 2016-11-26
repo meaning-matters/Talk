@@ -689,7 +689,7 @@
             //If the value was merged
             if (cellInfo.isMergedField)
             {
-                [textField setTextColor:FONT_COLOR_MERGED];
+                [textField setTextColor:[[NBAddressBookManager sharedManager].delegate tintColor]];
             }
             
             //Set the section type
@@ -779,7 +779,7 @@
             //If the value was merged
             if (cellInfo.isMergedField)
             {
-                [textField setTextColor:FONT_COLOR_MERGED];
+                [textField setTextColor:[[NBAddressBookManager sharedManager].delegate tintColor]];
             }
             
             //Remember the textfield and cell
@@ -821,7 +821,7 @@
             //If the value was merged
             if (cellInfo.isMergedField)
             {
-                [textField setTextColor:FONT_COLOR_MERGED];
+                [textField setTextColor:[[NBAddressBookManager sharedManager].delegate tintColor]];
             }
             
             //Remember the textfield and cell
@@ -910,7 +910,7 @@
             //If the value was merged
             if (cellInfo.isMergedField)
             {
-                [textView setTextColor:FONT_COLOR_MERGED];
+                [textView setTextColor:[[NBAddressBookManager sharedManager].delegate tintColor]];
             }
             
             //Remember the textview and cell
@@ -953,7 +953,7 @@
             //If the value was merged
             if (cellInfo.isMergedField)
             {
-                [textField setTextColor:FONT_COLOR_MERGED];
+                [textField setTextColor:[[NBAddressBookManager sharedManager].delegate tintColor]];
             }
             
             //Remember the textfield and cell
@@ -1066,7 +1066,7 @@
             //If the value was merged
             if (cellInfo.isMergedField)
             {
-                [textField setTextColor:FONT_COLOR_MERGED];
+                [textField setTextColor:[[NBAddressBookManager sharedManager].delegate tintColor]];
             }
             
             //Give the cell an accessory type
