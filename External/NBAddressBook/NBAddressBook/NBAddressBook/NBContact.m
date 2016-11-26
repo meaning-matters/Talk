@@ -161,11 +161,20 @@
 
 
 #pragma mark - Image support
+
+- (UIImage*)getFullImage
+{
+    return [UIImage imageWithData:(__bridge NSData *)ABPersonCopyImageData(self.contactRef)];
+}
+
 - (UIImage*)getImage:(BOOL)original
 {
     if (original)
     {
-        return [UIImage imageWithData:(__bridge NSData *)ABPersonCopyImageData(self.contactRef)];
+        NSData *imageData = (__bridge NSData*)ABPersonCopyImageDataWithFormat(self.contactRef, kABPersonImageFormatThumbnail);
+        UIImage *image = [UIImage imageWithData:imageData];
+
+        return image;
     }
     else
     {

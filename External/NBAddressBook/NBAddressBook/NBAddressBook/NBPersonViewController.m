@@ -115,7 +115,7 @@
     [self.tableView addSubview:portraitButton];
     
     //Position the portraitview behind the button
-    portraitImageView.center = CGPointMake( portraitButton.center.x, portraitButton.center.y + 1);
+    portraitImageView.center = CGPointMake(portraitButton.center.x, portraitButton.center.y + 1);
     
     //Add a label in the back for adding pictures
     addLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, portraitButton.frame.size.width, portraitButton.frame.size.height)];
@@ -326,6 +326,7 @@
 
 
 #pragma mark - Switch between view modes (only used in view-mode)
+
 - (void)setPortrait:(BOOL)enable
 {
     if (enable)

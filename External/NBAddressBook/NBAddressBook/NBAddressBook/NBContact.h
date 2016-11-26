@@ -31,7 +31,8 @@
 - (instancetype)initWithContact:(ABRecordRef)contact;
 
 //Image management
-- (UIImage*)getImage:(BOOL)original;
+- (UIImage*)getFullImage;            // Gets the full uncropped image.
+- (UIImage*)getImage:(BOOL)original; // Gets the cropped thumbnail.
 - (void)setImage:(UIImage*)image;
 
 //Company check
