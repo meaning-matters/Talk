@@ -48,6 +48,29 @@ static NSString* defaultIsoCountryCode = @"";
 }
 
 
++ (BOOL)number:(NSString*)numberA isEqualToNumber:(NSString*)numberB
+{
+    PhoneNumber* phoneNumberA = [[PhoneNumber alloc] initWithNumber:numberA];
+    PhoneNumber* phoneNumberB = [[PhoneNumber alloc] initWithNumber:numberB];
+
+    switch ((phoneNumberB.isPossible << 1) | (phoneNumberA.isPossible << 0))
+    {
+        case 0: // Both not possible.
+            return [phoneNumberA.number hasSuffix:phoneNumberB.number] ||
+                   [phoneNumberB.number hasSuffix:phoneNumberA.number];
+
+        case 1: // Only A possible.
+            return [phoneNumberB.number hasSuffix:phoneNumberA.nationalDigits];
+
+        case 2: // Only B possible.
+            return [phoneNumberA.number hasSuffix:phoneNumberB.nationalDigits];
+
+        case 3: // Both possible.
+            return [phoneNumberA.e164Format isEqualToString:phoneNumberB.e164Format];
+    }
+}
+
+
 - (void)setNumber:(NSString*)number
 {
     _number = [PhoneNumber stripNumber:number];

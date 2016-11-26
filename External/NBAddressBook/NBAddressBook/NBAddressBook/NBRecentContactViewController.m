@@ -136,7 +136,8 @@
         CallRecordData* recent          = [recents objectAtIndex:0];
         
         // If this was the called number
-        if ([recent.dialedNumber isEqualToString:cell.cellTextfield.text])
+        
+        if ([PhoneNumber number:recent.dialedNumber isEqualToNumber:cell.cellTextfield.text])
         {
             // If the call was missed, color it dark red
             if ([recent.status intValue] == CallStatusMissed)
@@ -149,6 +150,7 @@
                 [cell.cellTextfield setTextColor:[[NBAddressBookManager sharedManager].delegate tintColor]];
             }
         }
+        
         return cell;
     }
     else

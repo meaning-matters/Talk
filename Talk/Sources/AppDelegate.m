@@ -1022,7 +1022,10 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     // that will use latestEntry's ISO to get their E164 format), will be of the same country
     // as the Recent number.  If Home Country was wrongly set when a local number is added to
     // Recent, then following calls won't match this one.  (I was tired when writing this ;-)
-    PhoneNumber* recentPhoneNumber = [[PhoneNumber alloc] initWithNumber:recent.toE164];
+    //
+    // EDIT: Actually, currently we do allow calling invalid numbers (to make sure we don't block
+    //       the user due to a mistake in LibPhoneNumber.
+    PhoneNumber* recentPhoneNumber = [[PhoneNumber alloc] initWithNumber:recent.dialedNumber];
     PhoneNumber* phoneNumber       = [[PhoneNumber alloc] initWithNumber:number
                                                           isoCountryCode:recentPhoneNumber.isoCountryCode];
 

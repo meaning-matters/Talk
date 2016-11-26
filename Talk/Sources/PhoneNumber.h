@@ -44,6 +44,8 @@ typedef enum
 
 + (NSString*)stripNumber:(NSString*)number;
 
++ (BOOL)number:(NSString*)numberA isEqualToNumber:(NSString*)numberB;
+
 - (instancetype)init;
 
 - (instancetype)initWithNumber:(NSString*)number;
