@@ -101,7 +101,7 @@
         //Build up the non-interactive missed calls-view
         CallRecordData* firstRecent = [recents objectAtIndex:0];
         CGFloat         height      = [self tableView:tableView heightForFooterInSection:section];
-        UIView*         footerView  = [[UIView alloc]initWithFrame:CGRectMake(0,
+        UIView*         footerView  = [[UIView alloc] initWithFrame:CGRectMake(0,
                                                                               0,
                                                                               self.view.frame.size.width,
                                                                               height)];

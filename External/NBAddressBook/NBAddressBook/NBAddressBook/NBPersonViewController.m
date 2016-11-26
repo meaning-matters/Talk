@@ -29,9 +29,9 @@
     
     //Create the contact, with actual addressbook if it is not unknown/new
     if (displayedPerson != nil )
-        self.contact = [[NBContact alloc]initWithContact:displayedPerson];
+        self.contact = [[NBContact alloc] initWithContact:displayedPerson];
     else
-        self.contact = [[NBContact alloc]init];
+        self.contact = [[NBContact alloc] init];
     
     //Set the screen title
     self.navigationItem.title = NSLocalizedString(@"NCT_INFO", @"");
@@ -42,14 +42,14 @@
     //Set the bar frame and take both the navigation controller and tabbar into consideration
     CGRect appFrame = self.view.bounds;
     self.view.frame = CGRectMake( 0, 0, appFrame.size.width, appFrame.size.height);
-    self.tableView = [[UITableView alloc]initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     [self.tableView setFrame:self.view.frame];
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
     [self.view addSubview:self.tableView];
     
     //Set footer button text layout and text
-    UIView * footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 80)];
+    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 80)];
     
     //If we allow for actions
     if (allowsActions)
@@ -102,7 +102,7 @@
     portraitBackground  = [UIImage imageNamed:@"portraitBackground"];
     
     //Create the portrait edge for non-editing
-    portraitImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 68, 68)];
+    portraitImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 68, 68)];
     [portraitImageView setImage:portraitBackground];
     [self.tableView addSubview:portraitImageView];
     
@@ -118,7 +118,7 @@
     portraitImageView.center = CGPointMake( portraitButton.center.x, portraitButton.center.y + 1);
     
     //Add a label in the back for adding pictures
-    addLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, portraitButton.frame.size.width, portraitButton.frame.size.height)];
+    addLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, portraitButton.frame.size.width, portraitButton.frame.size.height)];
     [addLabel setCenter:portraitButton.center];
     [addLabel setText:NSLocalizedString(@"NCT_ADD_PICTURE", @"")];
     [addLabel setTextAlignment:NSTextAlignmentCenter];
@@ -129,13 +129,13 @@
     [self.tableView addSubview:addLabel];
     
     //Add the edit-label in case a protrait already exists
-    editLabelView = [[UIView alloc]initWithFrame:CGRectMake(
+    editLabelView = [[UIView alloc] initWithFrame:CGRectMake(
                                                             portraitButton.frame.origin.x,
                                                             portraitButton.frame.origin.y + (portraitButton.frame.size.height * 0.75f),
                                                             portraitButton.frame.size.width,
                                                             portraitButton.frame.size.height/4)];
     [editLabelView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5f]];
-    UILabel * editLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, editLabelView.frame.size.width, editLabelView.frame.size.height)];
+    UILabel * editLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, editLabelView.frame.size.width, editLabelView.frame.size.height)];
     [editLabel setTextAlignment:NSTextAlignmentCenter];
     [editLabel setText:NSLocalizedString(@"NCT_EDIT_PICTURE", @"")];
     [editLabel setTextColor:[UIColor whiteColor]];
@@ -145,7 +145,7 @@
     [self.tableView addSubview:editLabelView];
 
     //Create a name label with 70 default height (but can be changed by more name data)
-    nameLabel = [[UILabel alloc]initWithFrame:CGRectMake( 85, 15, 220, SIZE_NAME_LABEL_MEASURE)];
+    nameLabel = [[UILabel alloc] initWithFrame:CGRectMake( 85, 15, 220, SIZE_NAME_LABEL_MEASURE)];
     [nameLabel setNumberOfLines:0];
     [self.tableView addSubview:nameLabel];
     
@@ -668,7 +668,7 @@
     {
         case CC_NAME:
         {
-            NBNameTableViewCell * cell = [[NBNameTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            NBNameTableViewCell * cell = [[NBNameTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             [cell registerForKeyboardDismiss];
             
             //Create a textfield for the cell
@@ -708,14 +708,14 @@
         case CC_RELATED_CONTACTS:
         case CC_SOCIAL:
         {
-            __block NBDetailLineSeparatedCell *cell = [[NBDetailLineSeparatedCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            __block NBDetailLineSeparatedCell *cell = [[NBDetailLineSeparatedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             [cell registerForKeyboardDismiss];
             
             //Set the section type
             [cell setSection:indexPath.section];
             
             //Build up the title label
-            UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 10.5, 75, cell.contentView.bounds.size.height/2)];
+            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(0, 10.5, 75, cell.contentView.bounds.size.height/2)];
             [label setTextAlignment:NSTextAlignmentRight];
             [label setTextColor:FONT_COLOR_LABEL];
             [label setFont:FONT_LABEL];
@@ -725,7 +725,7 @@
             [cell.contentView addSubview:label];
 
             //Make the input textfield
-            UITextField * textField = [[UITextField alloc]initWithFrame:CGRectMake(85, 0, SIZE_TEXTVIEW_WIDTH, cell.frame.size.height)];
+            UITextField * textField = [[UITextField alloc] initWithFrame:CGRectMake(85, 0, SIZE_TEXTVIEW_WIDTH, cell.frame.size.height)];
             [textField setBackgroundColor:[UIColor clearColor]];
             [textField setClearButtonMode:(indexPath.section != CC_RELATED_CONTACTS ? UITextFieldViewModeWhileEditing : UITextFieldViewModeNever)];
             [textField setFont:[UIFont boldSystemFontOfSize:14]];
@@ -790,12 +790,12 @@
         }
         case CC_IM:
         {
-            NBPersonIMCell * cell = [[NBPersonIMCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            NBPersonIMCell * cell = [[NBPersonIMCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             cell.accessoryType = UITableViewCellAccessoryNone;
             [cell registerForKeyboardDismiss];
             
             //Build up the title label
-            UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 10.5, 75, cell.contentView.bounds.size.height/2)];
+            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(0, 10.5, 75, cell.contentView.bounds.size.height/2)];
             [label setTextAlignment:NSTextAlignmentRight];
             [label setTextColor:FONT_COLOR_LABEL];
             [label setFont:FONT_LABEL];
@@ -807,7 +807,7 @@
             [cell setSection:indexPath.section];
 
             //Make the input textfield
-            UITextField * textField = [[UITextField alloc]initWithFrame:CGRectMake(85, 0, SIZE_TEXTVIEW_WIDTH, cell.frame.size.height)];
+            UITextField * textField = [[UITextField alloc] initWithFrame:CGRectMake(85, 0, SIZE_TEXTVIEW_WIDTH, cell.frame.size.height)];
             [textField setBackgroundColor:[UIColor clearColor]];
             [textField setClearButtonMode:UITextFieldViewModeWhileEditing];
             [textField setFont:[UIFont boldSystemFontOfSize:14]];
@@ -834,11 +834,11 @@
         case CC_BIRTHDAY:
         {
             //Create the cell and label for date
-            NBDateCell * dateCell = [[NBDateCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            NBDateCell * dateCell = [[NBDateCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             [dateCell registerForKeyboardDismiss];
             
             //Build up the title label
-            UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 10.5, 75, dateCell.contentView.bounds.size.height/2)];
+            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(0, 10.5, 75, dateCell.contentView.bounds.size.height/2)];
             [label setTextAlignment:NSTextAlignmentRight];
             [label setTextColor:FONT_COLOR_LABEL];
             [label setFont:FONT_LABEL];
@@ -851,7 +851,7 @@
             [dateCell setSection:indexPath.section];
             
             //Create a textfield for the date
-            UITextField * textField = [[UITextField alloc]initWithFrame:CGRectMake(85, 0, SIZE_TEXTVIEW_WIDTH, dateCell.frame.size.height)];
+            UITextField * textField = [[UITextField alloc] initWithFrame:CGRectMake(85, 0, SIZE_TEXTVIEW_WIDTH, dateCell.frame.size.height)];
             [textField setBackgroundColor:[UIColor clearColor]];
             [textField setFont:[UIFont boldSystemFontOfSize:14]];
             [textField setPlaceholder:cellInfo.textfieldPlaceHolder];
@@ -874,11 +874,11 @@
         case CC_NOTES:
         {
             //Create the cell and textview
-            NBNotesCell * notesCell = [[NBNotesCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            NBNotesCell * notesCell = [[NBNotesCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             [notesCell registerForKeyboardDismiss];
             
             //Build up the title label
-            UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 10.5, 75, notesCell.contentView.bounds.size.height/2)];
+            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(0, 10.5, 75, notesCell.contentView.bounds.size.height/2)];
             [label setTextAlignment:NSTextAlignmentRight];
             [label setTextColor:FONT_COLOR_LABEL];
             [label setFont:[UIFont boldSystemFontOfSize:13]];
@@ -896,7 +896,7 @@
                 notesHeight = SIZE_CELL_HEIGHT*1.2f;
 
             //Make the input textfield
-            UITextView * textView = [[UITextView alloc]initWithFrame:CGRectMake(90, 4,
+            UITextView * textView = [[UITextView alloc] initWithFrame:CGRectMake(90, 4,
                                                                                 SIZE_TEXTVIEW_WIDTH, notesHeight)];
             [textView setBackgroundColor:[UIColor clearColor]];
             [textView setScrollEnabled:NO];
@@ -927,7 +927,7 @@
             [cell registerForKeyboardDismiss];
             
             //Build up the title label
-            UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 10.5, 75, cell.contentView.bounds.size.height/2)];
+            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(0, 10.5, 75, cell.contentView.bounds.size.height/2)];
             [label setTextAlignment:NSTextAlignmentRight];
             [label setTextColor:FONT_COLOR_LABEL];
             [label setFont:FONT_LABEL];
@@ -939,7 +939,7 @@
             [cell setSection:indexPath.section];
             
             //Make the input textfield
-            UITextField * textField = [[UITextField alloc]initWithFrame:CGRectMake(85, 0, SIZE_TEXTVIEW_WIDTH, cell.frame.size.height)];
+            UITextField * textField = [[UITextField alloc] initWithFrame:CGRectMake(85, 0, SIZE_TEXTVIEW_WIDTH, cell.frame.size.height)];
             [textField setBackgroundColor:[UIColor clearColor]];
             [textField setClearButtonMode:UITextFieldViewModeWhileEditing];
             [textField setFont:[UIFont boldSystemFontOfSize:14]];
@@ -982,7 +982,7 @@
     
         if (cell == nil)
         {
-            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
             cellInfo.tableViewCell = cell;
             [cell setHidden:YES];
         }
@@ -1033,11 +1033,11 @@
         UILabel * label;
         if (cell == nil)
         {
-            cell = [[NBPersonFieldTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            cell = [[NBPersonFieldTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             [cell registerForKeyboardDismiss];
             
             //Build up the title label
-            label = [[UILabel alloc]initWithFrame:CGRectMake(0, 10.5, 75, cell.contentView.bounds.size.height/2)];
+            label = [[UILabel alloc] initWithFrame:CGRectMake(0, 10.5, 75, cell.contentView.bounds.size.height/2)];
             [label setTextAlignment:NSTextAlignmentRight];
             [label setTextColor:FONT_COLOR_LABEL];
             [label setFont:FONT_LABEL];
@@ -1050,7 +1050,7 @@
             [cell setSection:indexPath.section];
             
             //Make the input textfield
-            UITextField * textField = [[UITextField alloc]initWithFrame:CGRectMake(
+            UITextField * textField = [[UITextField alloc] initWithFrame:CGRectMake(
                                                                                    85,
                                                                                    0,
                                                                                    SIZE_TEXTVIEW_WIDTH,
@@ -1089,7 +1089,7 @@
         NBAddressCell * addressCell =  [cellInfo getAddressCell];
         if (addressCell == nil)
         {
-            addressCell = [[NBAddressCell alloc]initWithStyle:UITableViewCellStyleDefault];
+            addressCell = [[NBAddressCell alloc] initWithStyle:UITableViewCellStyleDefault];
 
             //Register for dismissal
             [addressCell registerForKeyboardDismiss];
@@ -1111,7 +1111,7 @@
             else
             {                
                 //Set the label
-                UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 10.5, 75, addressCell.contentView.bounds.size.height/2)];
+                UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(0, 10.5, 75, addressCell.contentView.bounds.size.height/2)];
                 [label setTextAlignment:NSTextAlignmentRight];
                 [label setTextColor:FONT_COLOR_LABEL];
 //                [label setHighlightedTextColor:[UIColor whiteColor]];
@@ -1625,9 +1625,9 @@
         indexPathForRelatedPerson = indexPath;
         
         //Display all contacts and allow the user to select an entry
-        NBPeopleListViewController * listViewController = [[NBPeopleListViewController alloc]init];
+        NBPeopleListViewController * listViewController = [[NBPeopleListViewController alloc] init];
         [listViewController setRelatedPersonDelegate:self];
-        NBPeoplePickerNavigationController * navViewController = [[NBPeoplePickerNavigationController alloc]initWithRootViewController:listViewController];
+        NBPeoplePickerNavigationController * navViewController = [[NBPeoplePickerNavigationController alloc] initWithRootViewController:listViewController];
         [self presentViewController:navViewController animated:YES completion:nil];
         
         //Indicate we merely are selecting a name
@@ -1660,7 +1660,7 @@
     [[[cellInfo getPersonFieldTableCell] cellTextfield] setText:selectedName];
     
     //If this is the last cell, insert one below    
-    NBPersonCellInfo* newCellInfo = [[NBPersonCellInfo alloc]initWithPlaceholder:NSLocalizedString(@"PH_NAME", @"") andLabel:NSLocalizedString([personStructureManager findNextLabelInArray:RELATED_ARRAY usingSource:sectionArray], @"")];
+    NBPersonCellInfo* newCellInfo = [[NBPersonCellInfo alloc] initWithPlaceholder:NSLocalizedString(@"PH_NAME", @"") andLabel:NSLocalizedString([personStructureManager findNextLabelInArray:RELATED_ARRAY usingSource:sectionArray], @"")];
     [sectionArray addObject:newCellInfo];
 }
 
@@ -1671,9 +1671,9 @@
     changingLabel = YES;
     
     //Allow the user to add a new name-field
-    NBValueListTableViewController * valueListController = [[NBValueListTableViewController alloc]initWithStyle:UITableViewStyleGrouped];
+    NBValueListTableViewController * valueListController = [[NBValueListTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
     [valueListController setStructureManager:personStructureManager];
-    UINavigationController * navController = [[UINavigationController alloc]initWithRootViewController:valueListController];
+    UINavigationController * navController = [[UINavigationController alloc] initWithRootViewController:valueListController];
     [self presentViewController:navController animated:YES completion:nil];
 }
 

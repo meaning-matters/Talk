@@ -66,24 +66,24 @@
     //Create the table header and label
     self.tableHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, SIZE_CELL_HEIGHT)];
     [self.tableHeader setBackgroundColor:[UIColor colorWithRed:226.0f/255.0f green:231.0f/255.0f blue:237.0f/255.0f alpha:1.0f]];
-    self.myNumberLabel = [[UILabel alloc]initWithFrame:CGRectMake(12, 0, self.tableHeader.frame.size.width, self.tableHeader.frame.size.height)];
+    self.myNumberLabel = [[UILabel alloc] initWithFrame:CGRectMake(12, 0, self.tableHeader.frame.size.width, self.tableHeader.frame.size.height)];
     [self.myNumberLabel setFont:[UIFont systemFontOfSize:17]];
     [self.myNumberLabel setBackgroundColor:[UIColor clearColor]];
     [self.tableHeader addSubview:self.myNumberLabel];
     [self.tableView setTableHeaderView:self.tableHeader];
 
     // Create add button
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)]];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)]];
     
     //The contacts datasource
     contactsDatasource = [NSMutableArray arrayWithCapacity:[SECTION_TITLES count]];
     
     //The groups in the system
-    groupsManager = [[NBGroupsManager alloc]init];
+    groupsManager = [[NBGroupsManager alloc] init];
     
     //Create a footer view showing the number of contacts
-    UIView * footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, SIZE_CELL_HEIGHT)];
-    numContactsLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, SIZE_CELL_HEIGHT)];
+    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, SIZE_CELL_HEIGHT)];
+    numContactsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, SIZE_CELL_HEIGHT)];
     [numContactsLabel setTextAlignment:NSTextAlignmentCenter];
     [numContactsLabel setBackgroundColor:[UIColor clearColor]];
     [numContactsLabel setTextColor:FONT_COLOR_LIGHT_GREY];
@@ -92,7 +92,7 @@
     [self.tableView setTableFooterView:footerView];
     
     //Add the no-contacts label (in the rare case there are no contacts.
-    noContactsLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 0, 280, 150)];
+    noContactsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 280, 150)];
     [noContactsLabel setTextAlignment:NSTextAlignmentCenter];
     [noContactsLabel setBackgroundColor:[UIColor clearColor]];
     [noContactsLabel setTextColor:FONT_COLOR_LIGHT_GREY];

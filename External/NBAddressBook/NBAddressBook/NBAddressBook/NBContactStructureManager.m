@@ -45,57 +45,57 @@
             case CC_FILLER:
             {
                 //This is merely to push down the cells for the label; an empty filler
-                [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:nil andLabel:nil]];
+                [sectionArray addObject:[[NBPersonCellInfo alloc] initWithPlaceholder:nil andLabel:nil]];
                 break;
             }
             case CC_NAME:
             {
                 //Has a total of 11 fields
-                [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonPrefixProperty) andLabel:nil]];
-                [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonFirstNameProperty) andLabel:nil]];
-                [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonFirstNamePhoneticProperty) andLabel:nil]];
-                [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonMiddleNameProperty) andLabel:nil]];
-                [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonLastNameProperty) andLabel:nil]];
-                [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonLastNamePhoneticProperty) andLabel:nil]];
-                [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonSuffixProperty) andLabel:nil]];
-                [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonNicknameProperty) andLabel:nil]];
-                [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonJobTitleProperty) andLabel:nil]];
-                [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonDepartmentProperty) andLabel:nil]];
-                [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonOrganizationProperty) andLabel:nil]];
+                [sectionArray addObject:[[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonPrefixProperty) andLabel:nil]];
+                [sectionArray addObject:[[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonFirstNameProperty) andLabel:nil]];
+                [sectionArray addObject:[[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonFirstNamePhoneticProperty) andLabel:nil]];
+                [sectionArray addObject:[[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonMiddleNameProperty) andLabel:nil]];
+                [sectionArray addObject:[[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonLastNameProperty) andLabel:nil]];
+                [sectionArray addObject:[[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonLastNamePhoneticProperty) andLabel:nil]];
+                [sectionArray addObject:[[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonSuffixProperty) andLabel:nil]];
+                [sectionArray addObject:[[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonNicknameProperty) andLabel:nil]];
+                [sectionArray addObject:[[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonJobTitleProperty) andLabel:nil]];
+                [sectionArray addObject:[[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonDepartmentProperty) andLabel:nil]];
+                [sectionArray addObject:[[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString*)ABPersonCopyLocalizedPropertyName(kABPersonOrganizationProperty) andLabel:nil]];
                 break;
             }
             case CC_NUMBER:
             {
                 //Only show a new-phonenumber cell
-                [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonPhoneProperty)) andLabel:[[NSString alloc]initWithString:(__bridge NSString*)ABAddressBookCopyLocalizedLabel((__bridge CFStringRef)[NUMBER_ARRAY objectAtIndex:0])]]];
+                [sectionArray addObject:[[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonPhoneProperty)) andLabel:[[NSString alloc] initWithString:(__bridge NSString*)ABAddressBookCopyLocalizedLabel((__bridge CFStringRef)[NUMBER_ARRAY objectAtIndex:0])]]];
                 break;
             }
             case CC_EMAIL:
             {
-                [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonEmailProperty)) andLabel:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel((__bridge CFStringRef)([HWO_ARRAY objectAtIndex:0])))]];
+                [sectionArray addObject:[[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonEmailProperty)) andLabel:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel((__bridge CFStringRef)([HWO_ARRAY objectAtIndex:0])))]];
                 break;
             }
             case CC_RINGTONE:
             {
                 //The ringtone cell
-                NBPersonCellInfo * ringInfo = [[NBPersonCellInfo alloc]initWithPlaceholder:nil andLabel:NSLocalizedString(@"RT_RINGTONE_LABEL", @"")];
+                NBPersonCellInfo * ringInfo = [[NBPersonCellInfo alloc] initWithPlaceholder:nil andLabel:NSLocalizedString(@"RT_RINGTONE_LABEL", @"")];
                 [ringInfo setTextValue:NSLocalizedString(@"RT_DEFAULT", @"")];
                 [sectionArray addObject:ringInfo];
                 
                 //The vibration cell
-                NBPersonCellInfo * vibrationInfo = [[NBPersonCellInfo alloc]initWithPlaceholder:nil andLabel:NSLocalizedString(@"RT_VIBRATION_LABEL", @"")];
+                NBPersonCellInfo * vibrationInfo = [[NBPersonCellInfo alloc] initWithPlaceholder:nil andLabel:NSLocalizedString(@"RT_VIBRATION_LABEL", @"")];
                 [vibrationInfo setTextValue:NSLocalizedString(@"RT_DEFAULT", @"")];
                 [sectionArray addObject:vibrationInfo];
                 break;
             }
             case CC_HOMEPAGE:
             {
-                [sectionArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonURLProperty)) andLabel:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel((__bridge CFStringRef)([WEB_ARRAY objectAtIndex:0])))]];
+                [sectionArray addObject:[[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonURLProperty)) andLabel:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel((__bridge CFStringRef)([WEB_ARRAY objectAtIndex:0])))]];
                 break;
             }
             case CC_ADDRESS:
             {
-                NBPersonCellAddressInfo * addressInfo = [[NBPersonCellAddressInfo alloc]initWithPlaceholder:nil andLabel:NSLocalizedString(@"CL_NEW_ADDRESS", @"")];
+                NBPersonCellAddressInfo * addressInfo = [[NBPersonCellAddressInfo alloc] initWithPlaceholder:nil andLabel:NSLocalizedString(@"CL_NEW_ADDRESS", @"")];
                 [addressInfo setIsAddButton:YES];
                 [sectionArray addObject:addressInfo];
                 break;
@@ -210,7 +210,7 @@
         {
             //Insert a date cell
             NSMutableArray * sectionArray = [self.tableStructure objectAtIndex:CC_BIRTHDAY];
-            NBPersonCellInfo * cellInfo = [[NBPersonCellInfo alloc]initWithPlaceholder:nil andLabel:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonBirthdayProperty))];
+            NBPersonCellInfo * cellInfo = [[NBPersonCellInfo alloc] initWithPlaceholder:nil andLabel:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonBirthdayProperty))];
             [cellInfo setDateValue:dateBirthday];
             [sectionArray addObject:cellInfo];
         }
@@ -233,7 +233,7 @@
             }
             if (numDates > 0)
             {
-                [targetDatesArray addObject:[[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonDateProperty)) andLabel:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel(kABOtherLabel))]];
+                [targetDatesArray addObject:[[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonDateProperty)) andLabel:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel(kABOtherLabel))]];
             }
         }
 
@@ -243,7 +243,7 @@
         if ([relatedArray count] > 0)
         {
             //If we have info, enter a new-cell
-            NBPersonCellInfo * cellInfo = [[NBPersonCellInfo alloc]initWithPlaceholder:NSLocalizedString(@"PH_NAME", @"") andLabel:NSLocalizedString([self findNextLabelInArray:RELATED_ARRAY usingSource:relatedArray], @"")];
+            NBPersonCellInfo * cellInfo = [[NBPersonCellInfo alloc] initWithPlaceholder:NSLocalizedString(@"PH_NAME", @"") andLabel:NSLocalizedString([self findNextLabelInArray:RELATED_ARRAY usingSource:relatedArray], @"")];
             [relatedArray addObject:cellInfo];
         }
         
@@ -252,7 +252,7 @@
         if (notes != nil)
         {
             NSMutableArray * sectionArray = [self.tableStructure objectAtIndex:CC_NOTES];
-            NBPersonCellInfo * cellInfo = [[NBPersonCellInfo alloc]initWithPlaceholder:nil andLabel:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonNoteProperty))];
+            NBPersonCellInfo * cellInfo = [[NBPersonCellInfo alloc] initWithPlaceholder:nil andLabel:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonNoteProperty))];
             [cellInfo setTextValue:notes];
             [sectionArray addObject:cellInfo];
         }
@@ -297,7 +297,7 @@
         }
         if (numIMs > 0)
         {
-            NBPersonCellInfo * newCellInfo = [[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel(kABPersonInstantMessageUsernameKey)) andLabel:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel(kABHomeLabel))];
+            NBPersonCellInfo * newCellInfo = [[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel(kABPersonInstantMessageUsernameKey)) andLabel:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel(kABHomeLabel))];
             [newCellInfo setIMType:(__bridge NSString*)ABAddressBookCopyLocalizedLabel((__bridge CFStringRef)[IM_ARRAY objectAtIndex:0])];
             [IMArray addObject:newCellInfo];
         }
@@ -317,7 +317,7 @@
         }
         if (numSocial > 0)
         {
-            NBPersonCellInfo * newSocialCellinfo = [[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel(kABPersonInstantMessageUsernameKey)) andLabel:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel(kABHomeLabel))];
+            NBPersonCellInfo * newSocialCellinfo = [[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel(kABPersonInstantMessageUsernameKey)) andLabel:(__bridge NSString *)(ABAddressBookCopyLocalizedLabel(kABHomeLabel))];
             [socialArray addObject:newSocialCellinfo];
         }
         
@@ -374,7 +374,7 @@
     {
         NSMutableArray * section = [tableStructure objectAtIndex:CC_NUMBER];
         NSString * firstAvailableLabel = [self findNextLabelInArray:NUMBER_ARRAY usingSource:section];
-        NBPersonCellInfo * mergedInfo = [[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonPhoneProperty)) andLabel:NSLocalizedString(firstAvailableLabel, @"")];
+        NBPersonCellInfo * mergedInfo = [[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonPhoneProperty)) andLabel:NSLocalizedString(firstAvailableLabel, @"")];
         [mergedInfo setTextValue:number];
         [mergedInfo setIsMergedField:YES];
         [section insertObject:mergedInfo atIndex:[section count] - 1];
@@ -386,7 +386,7 @@
     {
         NSMutableArray * section = [tableStructure objectAtIndex:CC_EMAIL];
         NSString * firstAvailableLabel = [self findNextLabelInArray:HWO_ARRAY usingSource:section];
-        NBPersonCellInfo * mergedInfo = [[NBPersonCellInfo alloc]initWithPlaceholder:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonPhoneProperty)) andLabel:NSLocalizedString(firstAvailableLabel, @"")];
+        NBPersonCellInfo * mergedInfo = [[NBPersonCellInfo alloc] initWithPlaceholder:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonPhoneProperty)) andLabel:NSLocalizedString(firstAvailableLabel, @"")];
         [mergedInfo setTextValue:email];
         [mergedInfo setIsMergedField:YES];
         [section insertObject:mergedInfo atIndex:[section count] - 1];
@@ -665,7 +665,7 @@
     NSMutableArray * section = [tableStructure objectAtIndex:textfield.tag];
     NBPersonCellInfo * lastCellInfo = [section lastObject];
     
-    NBPersonCellInfo * newCellInfo = [[NBPersonCellInfo alloc]init];
+    NBPersonCellInfo * newCellInfo = [[NBPersonCellInfo alloc] init];
     if ([lastCellInfo getDetailCell].cellTextfield == textfield)
     {
         NSString * placeHolder;

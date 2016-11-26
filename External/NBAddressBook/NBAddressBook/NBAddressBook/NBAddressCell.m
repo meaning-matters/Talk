@@ -22,15 +22,15 @@
 {
     if (self = [super initWithStyle:style reuseIdentifier:nil])
     {
-        streetTextfields = [[NSMutableArray alloc]init];
-        separators = [[NSMutableArray alloc]init];
-        applicableFields = [[NSMutableArray alloc]init];
+        streetTextfields = [[NSMutableArray alloc] init];
+        separators = [[NSMutableArray alloc] init];
+        applicableFields = [[NSMutableArray alloc] init];
         
         //The start-position for horizontal lines
         horiLineStartPosition = self.contentView.bounds.size.width/4;
         
         //The representationlabel
-        self.representationLabel = [[UILabel alloc]initWithFrame:CGRectMake(LEFT_X_POS_TEXTFIELD, 12, WIDTH_TEXTFIELD, HEIGHT_MEASURE_SIZE)];
+        self.representationLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_X_POS_TEXTFIELD, 12, WIDTH_TEXTFIELD, HEIGHT_MEASURE_SIZE)];
         [self.representationLabel setFont:FONT_ADDRESS];
 //        [self.representationLabel setHighlightedTextColor:[UIColor whiteColor]];
         [self.representationLabel setBackgroundColor:[UIColor clearColor]];
@@ -72,7 +72,7 @@
                               SIZE_CELL_HEIGHT);
     
     //Build up the field
-    UITextField * textField = [[UITextField alloc]initWithFrame:frame];
+    UITextField * textField = [[UITextField alloc] initWithFrame:frame];
     [textField setClearButtonMode:UITextFieldViewModeNever];
     switch (textfieldType) {
         case TT_STREET:

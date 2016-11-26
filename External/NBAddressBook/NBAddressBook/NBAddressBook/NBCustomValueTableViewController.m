@@ -18,8 +18,8 @@
     [super viewDidLoad];
     
     //Set the bar buttons
-    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)]];
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(savePressed)]];
+    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)]];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(savePressed)]];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -46,10 +46,10 @@
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         
         //Also add the textfield
-        self.textField = [[UITextField alloc]initWithFrame:CGRectMake(20, 12, cell.frame.size.width - 20, 25)];
+        self.textField = [[UITextField alloc] initWithFrame:CGRectMake(20, 12, cell.frame.size.width - 20, 25)];
         self.textField.delegate = self;
         [self.textField setPlaceholder:@"Enter value"];
         [cell addSubview:self.textField];

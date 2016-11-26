@@ -112,8 +112,8 @@
     self.navigationItem.titleView = segmentedControl;
 
     //Set the modify-button
-    editButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(modifyListPressed)];
-    doneButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
+    editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(modifyListPressed)];
+    doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
     clearButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"CNT_CLEAR", @"")
                                                    style:UIBarButtonItemStylePlain
                                                   target:self
@@ -841,7 +841,7 @@
         [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
         
         //Add a number label
-        UILabel * numberLabel = [[UILabel alloc]initWithFrame:CGRectMake(POSITION_NUMBER_LABEL,
+        UILabel * numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(POSITION_NUMBER_LABEL,
                                                                          4,
                                                                          SIZE_NUMBER_LABEL,
                                                                          20)];
@@ -851,14 +851,14 @@
         [cell addSubview:numberLabel];
 
         // Add an outgoing-call imageview
-        UIImageView* outgoingImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"outgoingCall"]];
+        UIImageView* outgoingImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"outgoingCall"]];
         [outgoingImageView setFrame:CGRectMake(0, 0, 10, 10)];
         [outgoingImageView setHidden:YES];
         [cell setOutgoingCallImageView:outgoingImageView];
         [cell addSubview:outgoingImageView];
 
         // Add a number type label
-        UILabel* typeLabel = [[UILabel alloc]initWithFrame:CGRectMake(POSITION_NUMBER_LABEL,
+        UILabel* typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(POSITION_NUMBER_LABEL,
                                                                       22,
                                                                       SIZE_NUMBER_LABEL,
                                                                       20)];

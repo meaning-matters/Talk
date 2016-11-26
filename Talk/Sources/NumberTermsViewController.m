@@ -52,7 +52,7 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
 
     if (!self.agreedTerms)
     {
-        UIButton* button         = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
+        UIButton* button         = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
         UIImage*  normalImage    = [Common maskedImageNamed:@"Checkmark" color:[Skinning tintColor]];
         UIImage*  highlightImage = [Common maskedImageNamed:@"Checkmark" color:[Skinning placeholderColor]];
 

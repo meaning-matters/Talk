@@ -70,9 +70,9 @@
         //If we have have a message, add it below the personRepresentation
         if ([message length] > 0)
         {
-            NSMutableAttributedString * messageString = [[NSMutableAttributedString alloc]initWithString:message];
+            NSMutableAttributedString * messageString = [[NSMutableAttributedString alloc] initWithString:message];
             [messageString setAttributes:regularAttributes range:NSMakeRange(0, [message length])];
-            [personRepresentation appendAttributedString:[[NSAttributedString alloc]initWithString:@"\n"]];
+            [personRepresentation appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
             [personRepresentation appendAttributedString:messageString];
         }
 
@@ -136,7 +136,7 @@
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell * cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    UITableViewCell * cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     [[cell textLabel] setTextAlignment:NSTextAlignmentCenter];
     [[cell textLabel] setTextColor:FONT_COLOR_LABEL];
     [[cell textLabel] setFont:[UIFont boldSystemFontOfSize:13]];

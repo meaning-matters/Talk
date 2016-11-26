@@ -53,7 +53,7 @@
             NSDictionary* groupProperties = [groupsProperties objectForKey:groupName];
             
             //Create the easy to manage object
-            NBGroup* group = [[NBGroup alloc]init];
+            NBGroup* group = [[NBGroup alloc] init];
             [group setGroupSelected:[[groupProperties objectForKey:PROP_GROUP_SELECTED] intValue]];
             [group setGroupName:groupName];
             [group setMemberContacts:[groupProperties objectForKey:PROP_GROUP_CONTACTS]];

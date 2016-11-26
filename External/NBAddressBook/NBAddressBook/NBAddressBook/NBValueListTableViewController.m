@@ -40,7 +40,7 @@ static NSIndexPath* targetLabel;
     [super viewDidLoad];
     
     //Set the screen title
-    UIBarButtonItem * cancelButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
+    UIBarButtonItem * cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
     [self.navigationItem setLeftBarButtonItem:cancelButton];
     
     //Determine what to load the list with
@@ -396,8 +396,8 @@ static NSIndexPath* targetLabel;
     //If we selected to add a new custom value
     else
     {
-        NBCustomValueTableViewController * customViewController = [[NBCustomValueTableViewController alloc]initWithStyle:UITableViewStyleGrouped];
-        UINavigationController * navController = [[UINavigationController alloc]initWithRootViewController:customViewController];
+        NBCustomValueTableViewController * customViewController = [[NBCustomValueTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        UINavigationController * navController = [[UINavigationController alloc] initWithRootViewController:customViewController];
         [self presentViewController:navController animated:YES completion:nil];
     }
 }

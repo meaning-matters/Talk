@@ -38,7 +38,7 @@
         [self addSubview:secondTopSeparator];
         
         //Show the date topright
-        UILabel* dateLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.frame.size.width / 2, 5 + yShift, 150, 20)];
+        UILabel* dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width / 2, 5 + yShift, 150, 20)];
         [dateLabel setBackgroundColor:[UIColor clearColor]];
         [dateLabel setText:[NSString formatToShortDate:recent.date]];
         [dateLabel setFont:[UIFont boldSystemFontOfSize:15]];
@@ -77,7 +77,7 @@
 - (int)drawCalls:(NSMutableArray*)calls startingAt:(int)yStart areIncomingCalls:(BOOL)areIncomingCalls
 {
     // Create the label
-    UILabel* callsLabel = [[UILabel alloc]initWithFrame:CGRectMake(CALLS_AREA_INSET, yStart, 150, 20)];
+    UILabel* callsLabel = [[UILabel alloc] initWithFrame:CGRectMake(CALLS_AREA_INSET, yStart, 150, 20)];
     [callsLabel setBackgroundColor:[UIColor clearColor]];
     [callsLabel setText:areIncomingCalls ? NSLocalizedString(@"RCD_INCOMING_CALLS", @"") : NSLocalizedString(@"RCD_OUTGOING_CALLS", @"")];
     [callsLabel setFont:[UIFont boldSystemFontOfSize:15]];
@@ -228,7 +228,7 @@
 
 - (UILabel*)createLabelAtX:(CGFloat)x y:(CGFloat)y width:(CGFloat)width alignment:(NSTextAlignment)alignment
 {
-    UILabel* label        = [[UILabel alloc]initWithFrame:CGRectMake(CALLS_AREA_INSET + x, y, width, 20)];
+    UILabel* label        = [[UILabel alloc] initWithFrame:CGRectMake(CALLS_AREA_INSET + x, y, width, 20)];
 
     label.backgroundColor = [UIColor clearColor];
     label.font            = [UIFont systemFontOfSize:15];

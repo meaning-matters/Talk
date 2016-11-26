@@ -81,7 +81,7 @@
 #endif
 
     //Set a new viewcontroller
-    NBRecentContactViewController * personViewController = [[NBRecentContactViewController alloc]init];
+    NBRecentContactViewController * personViewController = [[NBRecentContactViewController alloc] init];
     [personViewController setDisplayedPerson:contactRef];
     [personViewController setRecents:recents];
 
@@ -115,11 +115,11 @@
         //Build up the non-interactive missed calls-view
         CallRecordData* firstRecent = [recents objectAtIndex:0];
         CGFloat         height      = [self tableView:tableView heightForFooterInSection:section];
-        UIView *        footerView  = [[UIView alloc]initWithFrame:CGRectMake(0,
+        UIView *        footerView  = [[UIView alloc] initWithFrame:CGRectMake(0,
                                                                               0,
                                                                               self.view.frame.size.width,
                                                                               height)];
-        NBCallsView*          callsView  = [[NBCallsView alloc]initWithFrame:CGRectMake(0,
+        NBCallsView*          callsView  = [[NBCallsView alloc] initWithFrame:CGRectMake(0,
                                                                                         0,
                                                                                         self.view.frame.size.width,
                                                                                         height - (PADDING_CALLS_VIEW*0.77f) )
