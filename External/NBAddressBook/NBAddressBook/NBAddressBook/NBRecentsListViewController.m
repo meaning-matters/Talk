@@ -28,6 +28,9 @@
     NSPredicate*                          missedCallsOnlyPredicate;
     
     NSDate*                               reloadDate;
+
+    //The recent contacts-datasource with grouping (date-sorted array with arrays (1..*) of recent entries)
+    NSMutableArray* dataSource;
 }
 
 @end
@@ -35,12 +38,14 @@
 
 @implementation NBRecentsListViewController
 
+#pragma mark - Initialization
+
 - (instancetype)init
 {
     return [self initWithManagedObjectContext:[DataManager sharedManager].managedObjectContext];
 }
 
-#pragma mark - Initialization
+
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContextParam
 {
     if (self = [super init])
@@ -146,11 +151,12 @@
     self.refreshControl = refreshControl;
 }
 
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [self reload];
+    [self reloadForce:NO];
 
     //### Workaround: http://stackoverflow.com/a/19126113/1971013
     //### And it also fixes my own issue: http://stackoverflow.com/a/22626388/1971013
@@ -167,16 +173,13 @@
     NSDate* date = [Settings sharedSettings].recentsCheckDate;
 
     //###
-    date = [[NSDate date] dateByAddingTimeInterval:-15000];
+    date = [[NSDate date] dateByAddingTimeInterval:-(3600 * 64)];
 
     [[WebClient sharedClient] retrieveInboundCallRecordsFromDate:date reply:^(NSError *error, NSArray* records)
     {
         [Settings sharedSettings].recentsCheckDate = [NSDate date];
 
-        [self.tableView beginUpdates];
         [self processCallRecords:records];
-        [self.tableView endUpdates];
-
         [sender endRefreshing];
     }];
 }
@@ -521,9 +524,12 @@
     [[AppDelegate appDelegate] findContactsHavingNumber:[dialedPhoneNumber nationalDigits]
                                              completion:^(NSArray* contactIds)
     {
-        recent.contactId = [contactIds firstObject];
+        if (contactIds.count > 0)
+        {
+            recent.contactId = [contactIds firstObject];
 
-        [self.tableView reloadData];
+            [self reloadForce:YES];
+        }
     }];
 }
 
@@ -618,6 +624,7 @@
     [managedObjectContext save:nil];
 }
 
+
 #pragma mark - Action sheet delegate
 
 - (void)willPresentActionSheet:(UIActionSheet*)actionSheet
@@ -648,13 +655,13 @@
         case 0:
         {
             [self clearOneWeekRecents];
-            [self reload];
+            [self reloadForce:NO];
             break;
         }
         case 1:
         {
             [self clearOneMonthRecents];
-            [self reload];
+            [self reloadForce:NO];
             break;
         }
         case 2:
@@ -680,37 +687,43 @@
 
 - (void)reload
 {
+    [self reloadForce:NO];
+}
+
+
+- (void)reloadForce:(BOOL)force
+{
     // Only perform a full reload if more calls were made or when it's the next day.
     NSCalendar* calendar          = [NSCalendar currentCalendar];
     NSArray*    allRecentContacts = [self.fetchedResultsController fetchedObjects];
     
-    if (numRecentCalls == 0 || [allRecentContacts count] != numRecentCalls ||
+    if (force || numRecentCalls == 0 || [allRecentContacts count] != numRecentCalls ||
         ![calendar isDate:[NSDate date] inSameDayAsDate:reloadDate])
     {
         reloadDate = [NSDate date];
         
-        //Performance improvement
+        // Performance improvement
         numRecentCalls = (int)[allRecentContacts count];
         
-        //Group the recent contacts into a datasource
+        // Group the recent contacts into a datasource
         [dataSource removeAllObjects];
         CallRecordData* lastEntry;
         NSMutableArray* entryArray;
         for (CallRecordData* entry in allRecentContacts)
         {
-            //If we don't have a last entry or it doesn't match the record or number, create a new entry
+            // If we don't have a last entry or it doesn't match the record or number, create a new entry
             BOOL entryAdded = NO;
             if (lastEntry != nil)
             {
-                //If we have the same contact,
-                //the same unknown number,
-                //or are a missed call same as the last entry
+                // If we have the same contact,
+                // the same unknown number,
+                // or are a missed call same as the last entry
                 if (( [lastEntry.contactId isEqualToString:entry.contactId] ||
                     ( lastEntry.contactId == nil && entry.contactId == nil && [lastEntry.dialedNumber isEqualToString:entry.dialedNumber])) &&
                     ( ( [lastEntry.status intValue] == CallStatusMissed && [entry.status intValue] == CallStatusMissed) ||
                     ( [lastEntry.status intValue] != CallStatusMissed && [entry.status intValue] != CallStatusMissed)))
                 {
-                    //If the last entry's day is equal to this day
+                    // If the last entry's day is equal to this day
                     if ([calendar isDate:lastEntry.date inSameDayAsDate:entry.date])
                     {
                         [entryArray addObject:entry];
@@ -744,6 +757,7 @@
 
 
 #pragma mark - Segmented control change
+
 - (void)segmentedControlSwitched:(UISegmentedControl*)control
 {
     //End editing
@@ -754,7 +768,9 @@
     [self performFetch];
 }
 
+
 #pragma mark - Modifying the table
+
 - (void)modifyListPressed
 {
     //Shift all the labels in view
@@ -775,6 +791,7 @@
     [self.tableView setEditing:YES animated:YES];
 }
 
+
 - (void)donePressed
 {
     //Restore all the labels in view
@@ -787,6 +804,7 @@
         [missedCallCell halfLabelFrames:NO];
         [missedCallCell shiftLabels:NO];
     }
+
     [UIView commitAnimations];
     
     [self.navigationItem setLeftBarButtonItem:nil];
@@ -1019,6 +1037,7 @@
 
 
 // Override to support editing the table view.
+
 - (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
@@ -1124,14 +1143,18 @@
     }
 }
 
+
 #pragma mark - Quick contact lookup
+
 - (ABRecordRef)getContactForID:(NSString*)contactId
 {
     ABRecordID recordID = [contactId intValue];
     return ABAddressBookGetPersonWithRecordID([[NBAddressBookManager sharedManager] getAddressBook], recordID);
 }
 
+
 #pragma mark - NSFetchedResultsController
+
 - (NSFetchedResultsController*)fetchedResultsController
 {
     //If we don't have the fetched controller yet, create it
@@ -1154,8 +1177,10 @@
     //Optionally set the predicate
     NSFetchRequest * fetchRequest = fetchedResultsController.fetchRequest;
     [fetchRequest setPredicate:missedCallsOnly ? missedCallsOnlyPredicate : nil];
+
     return fetchedResultsController;
 }
+
 
 - (void)performFetch
 {
@@ -1168,16 +1193,18 @@
     }
     else
     {
-        [self reload];
+        [self reloadForce:NO];
     }
 }
+
 
 #pragma mark - NSFetchedResultsControllerDelegate
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    [self reload];
+    [self reloadForce:NO];
 }
+
 
 /*#pragma mark - DEBUG - Insert test-data into recent-called data structure
 - (void)insertTestData

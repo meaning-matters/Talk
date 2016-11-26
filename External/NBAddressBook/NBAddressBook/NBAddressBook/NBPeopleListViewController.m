@@ -118,7 +118,12 @@
 {
     dispatch_async(searchQueue, ^
     {
-        [self loadContacts];
+        // Added to prevent clashes -> crashes with loading and findContactsHavingNumber by different threads.
+        @synchronized (self)
+        {
+            [self loadContacts];
+        }
+
         dispatch_async(dispatch_get_main_queue(), ^
         {
             [self.tableView reloadData];
@@ -197,6 +202,7 @@
     noContactsLabel.center = CGPointMake( self.view.bounds.size.width / 2, (self.view.bounds.size.height / 2) - 53);
 }
 
+
 #pragma mark - Adding Contact
 
 - (void)addPressed
@@ -250,6 +256,7 @@
 
 
 #pragma mark - Loading contacts
+
 - (void)loadContacts
 {
     //Get a list of all contacts that are in the selected groups
@@ -736,7 +743,9 @@
     [self.searchDisplayController setActive:NO animated:YES];
 }
 
+
 #pragma mark - Cancel button
+
 - (void)cancelPressed
 {
     [self dismissViewControllerAnimated:YES completion:nil];

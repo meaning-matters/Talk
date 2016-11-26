@@ -27,10 +27,7 @@
     
     //The action sheet to clear the contacts
     UIActionSheet* clearActionSheet;
-    
-    //The recent contacts-datasource with grouping (date-sorted array with arrays (1..*) of recent entries)
-    NSMutableArray* dataSource;
-    
+        
     //Flag to indicate we're displaying missed calls only
     BOOL missedCallsOnly;
     
