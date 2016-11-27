@@ -15,6 +15,7 @@
 #import "WebClient.h"
 #import "Settings.h"
 #import "Common.h"
+#import "BadgeHandler.h"
 
 @interface NBRecentsListViewController ()
 {
@@ -165,6 +166,12 @@
         [self.refreshControl beginRefreshing];
         [self.refreshControl endRefreshing];
     });
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [[BadgeHandler sharedHandler] setBadgeCount:0 forViewController:self];
 }
 
 
@@ -496,6 +503,8 @@
         {
             //#### TODO: Elaborate with actual status string values.
             recent.status = @(CallStatusFailed);
+
+            [[BadgeHandler sharedHandler] badgeCountForViewController:self];
         }
     }
     else
@@ -519,6 +528,9 @@
         {
             //#### TODO: Elaborate with actual status string values.
             recent.status = @(CallStatusMissed);
+
+            NSUInteger badgeCount = [[BadgeHandler sharedHandler] badgeCountForViewController:self];
+            [[BadgeHandler sharedHandler] setBadgeCount:(badgeCount + 1) forViewController:self];
         }
     }
 
