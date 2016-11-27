@@ -40,4 +40,7 @@
 
 - (instancetype)init;
 
+// Gets missed call from server.
+- (void)refresh:(id)sender;
+
 @end

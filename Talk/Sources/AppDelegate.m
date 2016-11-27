@@ -159,6 +159,20 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
     [self refreshLocalNotifications];
 
+    [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusReachableNotification
+                                                                 object:nil
+                                                                  queue:[NSOperationQueue mainQueue]
+                                                             usingBlock:^(NSNotification* notification)
+    {
+        NetworkStatusReachable reachable = [notification.userInfo[@"status"] intValue];
+
+        if (reachable == NetworkStatusReachableWifi || reachable == NetworkStatusReachableCellular)
+        {
+            [self checkCreditWithCompletion:nil];
+            [self.nBRecentsListViewController refresh:nil];
+        }
+    }];
+
     return YES;
 }
 
@@ -350,6 +364,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
     [self showMissedNotifications];
     [self checkCreditWithCompletion:nil];
+    [self.nBRecentsListViewController refresh:nil];
 }
 
 
@@ -492,6 +507,8 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
         return;
     }
+
+    [self.nBRecentsListViewController refresh:nil];
 
     [self checkCreditWithCompletion:^(BOOL success, NSError* error)
     {

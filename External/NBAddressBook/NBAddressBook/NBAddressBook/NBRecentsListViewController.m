@@ -16,6 +16,7 @@
 #import "Settings.h"
 #import "Common.h"
 #import "BadgeHandler.h"
+#import "BlockAlertView.h"
 
 @interface NBRecentsListViewController ()
 {
@@ -179,15 +180,28 @@
 {
     NSDate* date = [Settings sharedSettings].recentsCheckDate;
 
-    //###
-    date = [[NSDate date] dateByAddingTimeInterval:-(3600 * 90)];
-
     [[WebClient sharedClient] retrieveInboundCallRecordsFromDate:date reply:^(NSError *error, NSArray* records)
     {
-        [Settings sharedSettings].recentsCheckDate = [NSDate date];
+        if (error == nil)
+        {
+            [Settings sharedSettings].recentsCheckDate = [NSDate date];
 
-        [self processCallRecords:records];
-        [sender endRefreshing];
+            [self processCallRecords:records];
+
+            [sender endRefreshing];
+        }
+        else if (sender != nil)
+        {
+            NSString* message = NSLocalizedString(@"Checking for new incoming calls failed: %@", @"");
+            [BlockAlertView showAlertViewWithTitle:NSLocalizedString(@"Check Failed", @"")
+                                           message:[NSString stringWithFormat:message, [error localizedDescription]]
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+             {
+                 [sender endRefreshing];
+             }
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+        }
     }];
 }
 
