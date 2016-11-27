@@ -227,3 +227,6 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Limit number of times updateNumbersBadgeValue is called during background fetch. It's called for every Address at the moment.'
 
 * After moving to iOS 10, delete NSTimer+Block module because iOS 10 has a block'ed method now.
+
+* Lene's iPhone on FRIST install showed "Welcome back!" / "Nice to see you again at NumberBay!" and then does not start add Phone process. Well actually: seems correct because Lene's phone already there. The start process is unclear when you choose Start and then purchase.
+

@@ -27,6 +27,7 @@
 //The Recents list screen
 "CNT_RECENTS"       = "Recents";
 "LBL_UNKNOWN"       = "unknown";
+"LBL_NO_CALLER_ID"  = "No Caller ID";
 "CNT_CLEAR"         = "Clear";
 "CNT_CLEAR_ALL"     = "Clear All";
 "CNT_CLEAR_WEEK"    = "Clear Older Than a Week";

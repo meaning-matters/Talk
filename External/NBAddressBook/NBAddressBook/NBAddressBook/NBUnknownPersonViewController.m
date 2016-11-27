@@ -23,40 +23,41 @@
 {
     [super viewDidLoad];
     
-    //Load in a name
+    // Load in a name
     personRepresentation = [NBContact getListRepresentation:self.contact.contactRef];
     
-    //Load in the email
+    // Load in the email
     emailAddress = [NBContact getAvailableProperty:kABPersonEmailProperty from:self.contact.contactRef];
     
-    //Load in the number
+    // Load in the number
     number = [NBContact getAvailableProperty:kABPersonPhoneProperty from:self.contact.contactRef];
     number = [[NBAddressBookManager sharedManager].delegate formatNumber:number];
 
-    //Reset the name based on loaded-in properties
+    // Reset the name based on loaded-in properties
     [self setNameLabel];
     
-    //Hide the right bar button
+    // Hide the right bar button
     [self.navigationItem setRightBarButtonItem:nil];
 }
 
 #pragma mark - Set name label
+
 - (void)setNameLabel
 {
     if ([emailAddress length] > 0 || [number length] > 0)
     {
         //Measure variables
-        UIFont *boldFont = [UIFont boldSystemFontOfSize:18];  //Font for bold name part
-        UIFont *regularFont = [UIFont systemFontOfSize:14];   //Font for regular name part
-        int totalLabelHeight = 0;
+        UIFont* boldFont         = [UIFont boldSystemFontOfSize:18];  //Font for bold name part
+        UIFont* regularFont      = [UIFont systemFontOfSize:14];   //Font for regular name part
+        int     totalLabelHeight = 0;
         
         //Build up the final string to set
-        NSDictionary * boldAttributes       = [NSDictionary dictionaryWithObjectsAndKeys:
-                                               boldFont, NSFontAttributeName,
-                                               [UIColor blackColor], NSForegroundColorAttributeName, nil];
-        NSDictionary * regularAttributes    = [NSDictionary dictionaryWithObjectsAndKeys:
-                                               regularFont, NSFontAttributeName,
-                                               [UIColor colorWithRed:76/255.0f green:86/255.0f blue:108/255.0f alpha:1.0f], NSForegroundColorAttributeName,nil];
+        NSDictionary* boldAttributes       = [NSDictionary dictionaryWithObjectsAndKeys:
+                                              boldFont, NSFontAttributeName,
+                                              [UIColor blackColor], NSForegroundColorAttributeName, nil];
+        NSDictionary* regularAttributes    = [NSDictionary dictionaryWithObjectsAndKeys:
+                                              regularFont, NSFontAttributeName,
+                                              [UIColor colorWithRed:76/255.0f green:86/255.0f blue:108/255.0f alpha:1.0f], NSForegroundColorAttributeName,nil];
         
         //If we don't have a representation yet, use the number
         if ([personRepresentation length] == 0)

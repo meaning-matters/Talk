@@ -21,7 +21,7 @@
 {
 }
 
-@property (nonatomic) id<NBAddUnknownContactDelegate>addUnknownContactDelegate;
+@property (nonatomic) id<NBAddUnknownContactDelegate> addUnknownContactDelegate;
 
 //The array of recent entries
 - (void)setRecents:(NSArray*)recents;

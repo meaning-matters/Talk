@@ -74,24 +74,14 @@
     CGFloat keyboardOverlap;
 }
 
-//Date picker for birthday and other anniversaries
-@property (nonatomic) UIDatePicker *datePicker;
 
-//The title table-view
-@property (nonatomic) UITableView *tableView;
-
-//The contact to show info for
-@property (nonatomic) ABRecordRef displayedPerson;
-@property (nonatomic) NBContact * contact;
-
-//Contact to merge with (phone number only)
-@property (nonatomic) NBContact * contactToMergeWith;
-
-//The person view controller delegate
-@property (nonatomic) id<NBPersonViewControllerDelegate> personViewDelegate;
-
-//Wether the buttons at the bottom of the page are used
-@property (nonatomic) BOOL allowsActions;
+@property (nonatomic) UIDatePicker*                      datePicker;         // Date picker for birthday and other anniversaries
+@property (nonatomic) UITableView*                       tableView;          // The title table-view
+@property (nonatomic) ABRecordRef                        displayedPerson;    // The contact to show info for
+@property (nonatomic) NBContact*                         contact;
+@property (nonatomic) NBContact*                         contactToMergeWith; // Contact to merge with (phone number only)
+@property (nonatomic) id<NBPersonViewControllerDelegate> personViewDelegate; // The person view controller delegate
+@property (nonatomic) BOOL                               allowsActions;      // Wether the buttons at the bottom of the page are used
 
 - (void)firstFooterButtonPressed;
 - (void)secondFooterButtonPressed;

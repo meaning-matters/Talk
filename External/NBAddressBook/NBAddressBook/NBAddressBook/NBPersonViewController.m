@@ -144,15 +144,15 @@
     [editLabelView addSubview:editLabel];
     [self.tableView addSubview:editLabelView];
 
-    //Create a name label with 70 default height (but can be changed by more name data)
+    // Create a name label with 70 default height (but can be changed by more name data)
     nameLabel = [[UILabel alloc] initWithFrame:CGRectMake( 85, 15, 220, SIZE_NAME_LABEL_MEASURE)];
     [nameLabel setNumberOfLines:0];
     [self.tableView addSubview:nameLabel];
     
-    //Reset the table structure
+    // Reset the table structure
     personStructureManager = [[NBContactStructureManager alloc] init];
     
-    //Fill the person-properties into the model
+    // Fill the person-properties into the model
     if (contact.contactRef != nil)
     {
         [personStructureManager fillWithContact:contact];
@@ -160,10 +160,10 @@
         [self setNameLabel];
     }
 
-    //If we're merging, start in edit-mode, else start in viewing-mode
+    // If we're merging, start in edit-mode, else start in viewing-mode
     [self enableEditMode:NO];
 
-    //Listen for reloads
+    // Listen for reloads
     [self listenForChanges:YES];
     
     [self.view setBackgroundColor:PERSON_BACKGROUND_COLOR];

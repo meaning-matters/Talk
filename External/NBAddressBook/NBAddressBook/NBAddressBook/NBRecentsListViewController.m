@@ -173,7 +173,7 @@
     NSDate* date = [Settings sharedSettings].recentsCheckDate;
 
     //###
-    date = [[NSDate date] dateByAddingTimeInterval:-(3600 * 64)];
+    date = [[NSDate date] dateByAddingTimeInterval:-(3600 * 90)];
 
     [[WebClient sharedClient] retrieveInboundCallRecordsFromDate:date reply:^(NSError *error, NSArray* records)
     {
@@ -910,6 +910,11 @@
             }
         }
     }
+    else if (latestEntry.dialedNumber == nil)
+    {
+        [numberLabel setText:NSLocalizedString(@"LBL_NO_CALLER_ID", @"")];
+        [numberType setText:NSLocalizedString(@"LBL_UNKNOWN", @"")];
+    }
     else
     {
         NSString* number = latestEntry.dialedNumber;
@@ -1030,7 +1035,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell*)aCell forRowAtIndexPath:(NSIndexPath*)indexPath
 {        
-    //Set the approriate cell spacing and frame for the labels
+    // Set the approriate cell spacing and frame for the labels
     NBRecentCallCell* cell = (NBRecentCallCell*)aCell;
     [cell shiftLabels:self.navigationItem.rightBarButtonItem == doneButton];
 }
@@ -1042,11 +1047,11 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        //Remove the row form the local model
+        // Remove the row form the local model
         NSArray* entryArray  = [dataSource objectAtIndex:indexPath.row];
         [dataSource removeObject:entryArray];
         
-        //Remove the object from coredata
+        // Remove the object from coredata
         for (CallRecordData* entry in entryArray)
         {
             [self.fetchedResultsController.managedObjectContext deleteObject:entry];
@@ -1081,24 +1086,31 @@
     CallRecordData* firstRecent = [recents objectAtIndex:0];
     if (firstRecent.contactId == nil)
     {
-        //Load as unknown person
+        // Load as unknown person
         recentUnknownViewController = [[NBRecentUnknownContactViewController alloc] init];
         [recentUnknownViewController setAddUnknownContactDelegate:self];
 
-        //Set the person
+        // Set the person
         ABRecordRef contactRef = ABPersonCreate();
         
 #warning - Name, number and e-mail properties of the unknown contact
-        //Set a name
+        // Set a name
         //ABRecordSetValue(contactRef, kABPersonFirstNameProperty, (__bridge CFTypeRef)@"FirstName", NULL);
         //ABRecordSetValue(contactRef, kABPersonLastNameProperty, (__bridge CFTypeRef)@"LastName", NULL);
         
-        //Set a message
+        // Set a message
         //[personViewController setMessage:@"Message"];
         
-        //Set a number
+        // Set a number
         ABMutableMultiValueRef numberMulti = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-        ABMultiValueAddValueAndLabel(numberMulti, (__bridge CFTypeRef)firstRecent.dialedNumber, kABOtherLabel, NULL);
+        if (firstRecent.dialedNumber == nil)
+        {
+            ABMultiValueAddValueAndLabel(numberMulti, (__bridge CFTypeRef)@"anonymous", kABOtherLabel, NULL);
+        }
+        else
+        {
+            ABMultiValueAddValueAndLabel(numberMulti, (__bridge CFTypeRef)firstRecent.dialedNumber, kABOtherLabel, NULL);
+        }
         ABRecordSetValue(contactRef, kABPersonPhoneProperty, numberMulti, nil);
         
         //Set an email

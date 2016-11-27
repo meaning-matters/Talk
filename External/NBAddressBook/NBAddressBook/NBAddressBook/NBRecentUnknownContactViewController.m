@@ -27,11 +27,12 @@
 @synthesize addUnknownContactDelegate;
 
 #pragma mark - Initialization
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    //Clear the footer
+
+    // Clear the footer
     [self.tableView setTableFooterView:nil];
 
     self.navigationItem.rightBarButtonItem = nil;
@@ -42,9 +43,10 @@
 {
     recents = theRecents;
 
-    // If the last call received was missed, mark as such
+    // If the last call received was missed, mark as such.
     incomingCalls = [NSMutableArray array];
     outgoingCalls = [NSMutableArray array];
+
     for (CallRecordData* entry in recents)
     {
         switch ([entry.direction intValue])
@@ -91,14 +93,16 @@
 }
 */
 
+
 #pragma mark - Tableview overloading - Received/made calls-section
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+
+- (CGFloat)tableView:(UITableView*)tableView heightForFooterInSection:(NSInteger)section
 {
-    //Only show the recent calls when not editing
+    // Only show the recent calls when not editing
     if (section == CC_FILLER && !self.tableView.isEditing )
     {
-        CGFloat incomingHeight = [incomingCalls count] > 0 ?  ( [incomingCalls count] * HEIGHT_CALL_ENTRY) + HEIGHT_CALL_INFO_HEADER : 0;
-        CGFloat outgoingHeight = [outgoingCalls count] > 0 ?  ( [outgoingCalls count] * HEIGHT_CALL_ENTRY) + HEIGHT_CALL_INFO_HEADER : 0;
+        CGFloat incomingHeight = [incomingCalls count] > 0 ? ( [incomingCalls count] * HEIGHT_CALL_ENTRY) + HEIGHT_CALL_INFO_HEADER : 0;
+        CGFloat outgoingHeight = [outgoingCalls count] > 0 ? ( [outgoingCalls count] * HEIGHT_CALL_ENTRY) + HEIGHT_CALL_INFO_HEADER : 0;
 
         return incomingHeight + outgoingHeight + PADDING_CALLS_VIEW;
     }
@@ -108,25 +112,26 @@
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+
+- (UIView*)tableView:(UITableView*)tableView viewForFooterInSection:(NSInteger)section
 {
     if (section == CC_FILLER && !self.tableView.isEditing )
     {
-        //Build up the non-interactive missed calls-view
+        // Build up the non-interactive missed calls-view
         CallRecordData* firstRecent = [recents objectAtIndex:0];
         CGFloat         height      = [self tableView:tableView heightForFooterInSection:section];
-        UIView *        footerView  = [[UIView alloc] initWithFrame:CGRectMake(0,
-                                                                              0,
-                                                                              self.view.frame.size.width,
-                                                                              height)];
-        NBCallsView*          callsView  = [[NBCallsView alloc] initWithFrame:CGRectMake(0,
-                                                                                        0,
-                                                                                        self.view.frame.size.width,
-                                                                                        height - (PADDING_CALLS_VIEW*0.77f) )
-                                                                      recent:firstRecent
-                                                               incomingCalls:incomingCalls
-                                                               outgoingCalls:outgoingCalls
-                                                                     editing:NO];
+        UIView*         footerView  = [[UIView alloc] initWithFrame:CGRectMake(0,
+                                                                               0,
+                                                                               self.view.frame.size.width,
+                                                                               height)];
+        NBCallsView*    callsView  = [[NBCallsView alloc] initWithFrame:CGRectMake(0,
+                                                                                   0,
+                                                                                   self.view.frame.size.width,
+                                                                                   height - (PADDING_CALLS_VIEW * 0.77f) )
+                                                                 recent:firstRecent
+                                                          incomingCalls:incomingCalls
+                                                          outgoingCalls:outgoingCalls
+                                                                editing:NO];
         [callsView setBackgroundColor:[UIColor clearColor]];
         
         callsView.center = CGPointMake(footerView.center.x, footerView.center.y  );
@@ -139,4 +144,5 @@
         return nil;
     }
 }
+
 @end

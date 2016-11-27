@@ -21,13 +21,14 @@
     {
         self.contactRef = contactParam;
     }
+
     return self;
 }
 
 #pragma mark - Name management
 + (NSString*)getStringProperty:(ABPropertyID)property forContact:(ABRecordRef)contactRef
 {
-    NSString * result = (__bridge NSString *)(ABRecordCopyValue(contactRef, property));
+    NSString* result = (__bridge NSString *)(ABRecordCopyValue(contactRef, property));
     if ([result isKindOfClass:[NSString class]])
     {
         return result;
@@ -104,8 +105,8 @@
             [listRepresentation appendFormat:@"%@ ", propertyString];
         }
     }
-    
-    //If no name part is available, show Company Bold
+
+    // If no name part is available, show Company Bold
     if ([listRepresentation length] == 0)
     {
         NSString * propertyString = [NBContact getStringProperty:kABPersonOrganizationProperty forContact:contactRef];
@@ -116,7 +117,7 @@
         }
     }
     
-    //If no company, show email bold
+    // If no company, show email bold
     if ([listRepresentation length] == 0)
     {
         NSString * propertyString = [NBContact getAvailableProperty:kABPersonEmailProperty from:contactRef];
@@ -127,19 +128,27 @@
         }
     }
     
-    //If no email, show number bold
+    // If no email, show number bold
     if ([listRepresentation length] == 0)
     {
         NSString* propertyString = [NBContact getAvailableProperty:kABPersonPhoneProperty from:contactRef];
-        propertyString = [[NBAddressBookManager sharedManager].delegate formatNumber:propertyString];
+        if ([propertyString isEqualToString:@"anonymous"])
+        {
+            propertyString = NSLocalizedString(@"LBL_NO_CALLER_ID", @"");
+        }
+        else
+        {
+            propertyString = [[NBAddressBookManager sharedManager].delegate formatNumber:propertyString];
+        }
+
         if (propertyString != nil)
         {
             [listRepresentation appendString:propertyString];
             boldRange = NSMakeRange(0, [listRepresentation length]);
         }
     }
-    
-    //Else, show 'no name'
+
+    // Else, show 'no name'
     if ([listRepresentation length] == 0)
     {
         regularAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont italicSystemFontOfSize:20], NSFontAttributeName, nil];
