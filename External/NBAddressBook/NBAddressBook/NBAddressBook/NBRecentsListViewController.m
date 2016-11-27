@@ -364,6 +364,7 @@
     NSManagedObjectContext* context = [DataManager sharedManager].managedObjectContext;
     CallRecordData*         recent  = [NSEntityDescription insertNewObjectForEntityForName:@"CallRecord"
                                                                     inManagedObjectContext:context];
+    recent.isUpToDate = @(YES);
 
     PhoneNumber* dialedPhoneNumber;
     if ([self isCallbackRecord:fromRecord])

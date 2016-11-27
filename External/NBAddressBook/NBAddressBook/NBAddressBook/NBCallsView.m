@@ -124,7 +124,7 @@
             costString = @"";
         }
 
-        if (recent.uuid == nil || [recent.direction intValue] == CallDirectionIncoming)
+        if ([recent.isUpToDate boolValue] || [recent.direction intValue] == CallDirectionIncoming)
         {
             // Call is ready and data is up to date.
             timeLabel.text   = timeString;

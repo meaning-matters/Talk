@@ -270,8 +270,9 @@
 
 - (void)updateRecent:(CallRecordData*)recent completion:(void (^)(BOOL success, BOOL ended))completion
 {
-    if (recent == nil || recent.uuid.length == 0 || [recent.direction intValue] == CallDirectionIncoming)
+    if (recent == nil || [recent.isUpToDate boolValue] || [recent.direction intValue] == CallDirectionIncoming)
     {
+        completion ? completion(YES, YES) : nil;
         return;
     }
 
@@ -296,7 +297,7 @@
             call.callbackCost     = callbackCost;
             call.callthruCost     = callthruCost;
 
-            recent.uuid = (state == CallStateEnded) ? nil : recent.uuid;
+            recent.isUpToDate = (state == CallStateEnded) ? @(YES) : @(NO);
             [[CallManager sharedManager] updateRecent:recent withCall:call];
 
             completion(YES, state == CallStateEnded);

@@ -27,6 +27,7 @@
 @dynamic uuid;
 @dynamic fromCost;
 @dynamic toCost;
+@dynamic isUpToDate;
 
 
 /*

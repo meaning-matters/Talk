@@ -48,7 +48,7 @@ typedef enum
 @property (nonatomic) NSNumber* billableFromDuration;
 @property (nonatomic) NSNumber* billableToDuration;
 
-// Wether this was an incoming, outgoing or verification call.
+// Whether this was an incoming, outgoing or verification call.
 @property (nonatomic) NSNumber* direction;
 
 // The date for these calls.
@@ -64,11 +64,13 @@ typedef enum
 @property (nonatomic) NSString* fromE164;
 @property (nonatomic) NSString* toE164;
 
-// The callback UUID.
+// The call UUID.
 @property (nonatomic) NSString* uuid;
 
 // The calls cost.
 @property (nonatomic) NSNumber* fromCost;
 @property (nonatomic) NSNumber* toCost;
+
+@property (nonatomic) NSNumber* isUpToDate;
 
 @end
