@@ -28,6 +28,9 @@
     
     // The navigationcontroller pushed
     UINavigationController*    navController;
+
+    //The recent entry the calls displayed are based on. Moved here from NBRecentUnknownContactViewController as hack 
+    NSArray*                   recents;
 }
 
 //A text message shown below the alternate name

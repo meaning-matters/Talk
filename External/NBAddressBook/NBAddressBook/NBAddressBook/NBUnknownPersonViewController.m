@@ -118,11 +118,25 @@
         }
         case UP_CONTACT:
         {
-            return ([number length] > 0) ? (allowsSendingMessage ? 2 : 1) : 0;
+            if (recents.count > 0 && [recents[0] dialedNumber] == nil)
+            {
+                return 0;
+            }
+            else
+            {
+                return ([number length] > 0) ? (allowsSendingMessage ? 2 : 1) : 0;
+            }
         }
         case UP_ADD:
         {
-            return 1;
+            if (recents.count > 0 && [recents[0] dialedNumber] == nil)
+            {
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
         }
         case UP_SHARE:
         {

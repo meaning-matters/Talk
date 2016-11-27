@@ -11,9 +11,6 @@
 
 @interface NBRecentUnknownContactViewController ()
 {
-    //The recent entry the calls displayed are based on
-    NSArray*        recents;
-
     //The outgoing and incoming calls
     NSMutableArray* outgoingCalls;
     NSMutableArray* incomingCalls;
