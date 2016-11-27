@@ -250,13 +250,23 @@
  */
 - (void)processCallRecords:(NSArray*)records
 {
-    NSDate*       firstDate = nil;
-    CallDirection direction;
-    NSString*     uuid;
+    NSDate*   firstDate = nil;
+    NSString* uuid;
 
     for (int index = (int)(records.count - 1); index >= 0; index--)
     {
         NSDictionary* record = records[index];
+
+        // Skip the calls that we already have.
+        uuid = record[@"uuid"];
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
+        if ([[DataManager sharedManager] fetchEntitiesWithName:@"CallRecord"
+                                                  sortKeys:nil
+                                                 predicate:predicate
+                                      managedObjectContext:nil].count != 0)
+        {
+            continue;
+        }
 
         if (firstDate == nil)
         {
@@ -264,7 +274,6 @@
             if ([self isCallbackRecord:record] || [self isInboundRecord:record] || [self isVerificationRecord:record])
             {
                 firstDate = [Common dateWithString:record[@"startDateTime"]];
-                uuid      = record[@"uuid"];
 
                 if ([self isVerificationRecord:record])
                 {
