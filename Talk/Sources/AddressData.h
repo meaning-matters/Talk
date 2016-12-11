@@ -31,7 +31,8 @@
 @property (nonatomic, retain) NSString* postcode;
 @property (nonatomic, retain) NSString* isoCountryCode;
 @property (nonatomic, assign) BOOL      hasProof;         // Indicates there's an image available on server.
-@property (nonatomic, retain) NSData*   proofImage;
+@property (nonatomic, retain) NSData*   addressProof;     // Image data.
+@property (nonatomic, retain) NSData*   identityProof;    // Image data.
 @property (nonatomic, retain) NSString* idType;
 @property (nonatomic, retain) NSString* idNumber;
 @property (nonatomic, retain) NSString* nationality;     // ISO country code of nationality.
@@ -47,9 +48,9 @@
 
 - (void)deleteWithCompletion:(void (^)(BOOL succeeded))completion;
 
-- (void)loadProofImageWithCompletion:(void (^)(BOOL succeeded))completion;
+- (void)loadProofImagesWithCompletion:(void (^)(BOOL succeeded))completion;
 
-- (void)cancelLoadProofImage;
+- (void)cancelLoadProofImages;
 
 @end
 

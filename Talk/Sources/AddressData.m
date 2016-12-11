@@ -32,7 +32,8 @@
 @dynamic postcode;
 @dynamic isoCountryCode;
 @dynamic hasProof;
-@dynamic proofImage;
+@dynamic addressProof;
+@dynamic identityProof;
 @dynamic idType;
 @dynamic idNumber;
 @dynamic nationality;
@@ -145,14 +146,17 @@
 }
 
 
-- (void)loadProofImageWithCompletion:(void (^)(BOOL succeeded))completion
+- (void)loadProofImagesWithCompletion:(void (^)(BOOL succeeded))completion
 {
-    [[WebClient sharedClient] retrieveImageForAddressId:self.addressId
-                                                  reply:^(NSError* error, NSData* proofImage)
+    [[WebClient sharedClient] retrieveProofImagesForAddressId:self.addressId
+                                                        reply:^(NSError* error,
+                                                                NSData*  addressProof,
+                                                                NSData*  identityProof)
     {
         if (error == nil)
         {
-            self.proofImage = proofImage;
+            self.addressProof  = addressProof;
+            self.identityProof = identityProof;
             completion ? completion(YES) : 0;
         }
         else
@@ -163,9 +167,9 @@
 }
 
 
-- (void)cancelLoadProofImage
+- (void)cancelLoadProofImages
 {
-    [[WebClient sharedClient] cancelAllRetrieveImageForAddressId:self.addressId];
+    [[WebClient sharedClient] cancelAllRetrieveProofImagesForAddressId:self.addressId];
 }
 
 @end

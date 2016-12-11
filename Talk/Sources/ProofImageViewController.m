@@ -34,21 +34,21 @@
         self.address   = address;
         self.imageView = [[UIImageView alloc] init];
 
-        if (self.address.proofImage != nil)
+        if (self.address.addressProof != nil)
         {
-            self.imageView.image = [UIImage imageWithData:self.address.proofImage];
+            self.imageView.image = [UIImage imageWithData:self.address.addressProof];
         }
         else
         {
             self.isLoading = YES;
 
             __weak typeof(self) weakSelf = self;
-            [self.address loadProofImageWithCompletion:^(BOOL succeeded)
+            [self.address loadProofImagesWithCompletion:^(BOOL succeeded)
             {
                 __strong typeof(weakSelf) strongSelf = weakSelf;
                 strongSelf.isLoading = NO;
 
-                strongSelf.imageView.image = [UIImage imageWithData:strongSelf.address.proofImage];
+                strongSelf.imageView.image = [UIImage imageWithData:strongSelf.address.addressProof];
             }];
         }
     }
@@ -61,7 +61,7 @@
 {
     if (self.isLoading)
     {
-        [self.address cancelLoadProofImage];
+        [self.address cancelLoadProofImages];
 
         self.isLoading = NO;
     }
@@ -112,10 +112,10 @@
         {
             if (imageData != nil)
             {
-                self.imageView.image    = [UIImage imageWithData:imageData];
+                self.imageView.image      = [UIImage imageWithData:imageData];
 
-                self.address.proofImage = imageData;
-                self.address.hasProof   = YES;
+                self.address.addressProof = imageData;
+                self.address.hasProof     = YES;
             }
         }];
     }

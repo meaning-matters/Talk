@@ -2,6 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="15G1108" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="2.2">
     <entity name="Address" representedClassName="AddressData" syncable="YES">
         <attribute name="addressId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="addressProof" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="addressStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="buildingLetter" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="buildingNumber" optional="YES" attributeType="String" syncable="YES"/>
@@ -11,6 +12,7 @@
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fiscalIdCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="hasProof" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="identityProof" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="idNumber" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="idType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isoCountryCode" optional="YES" attributeType="String" syncable="YES"/>
@@ -19,7 +21,6 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nationality" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="postcode" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="proofImage" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="rejectionReasons" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="salutation" attributeType="String" syncable="YES"/>
         <attribute name="street" optional="YES" attributeType="String" syncable="YES"/>
@@ -97,7 +98,7 @@
         <relationship name="destinations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Destination" inverseName="recordings" inverseEntity="Destination" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Address" positionX="295" positionY="-345" width="128" height="405"/>
+        <element name="Address" positionX="295" positionY="-345" width="128" height="418"/>
         <element name="Callable" positionX="117" positionY="-468" width="128" height="88"/>
         <element name="CallerId" positionX="313" positionY="-451" width="128" height="73"/>
         <element name="CallRecord" positionX="486" positionY="-342" width="128" height="315"/>

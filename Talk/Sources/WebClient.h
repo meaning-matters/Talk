@@ -165,7 +165,8 @@
                                   city:(NSString*)city
                               postcode:(NSString*)postcode
                         isoCountryCode:(NSString*)isoCountryCode
-                            proofImage:(NSData*)proofImage
+                          addressProof:(NSData*)addressProof
+                         identityProof:(NSData*)identityProof
                                 idType:(NSString*)idType
                               idNumber:(NSString*)idNumber
                           fiscalIdCode:(NSString*)fiscalIdCode
@@ -180,13 +181,15 @@
 - (void)deleteAddressWithId:(NSString*)addressId
                       reply:(void (^)(NSError* error))reply;
 
-// 10E. GET ADDRESS PROOF IMAGE
-- (void)retrieveImageForAddressId:(NSString*)addressId
-                            reply:(void (^)(NSError* error, NSData* proofImage))reply;
+// 10E. GET ADDRESS PROOF IMAGES
+- (void)retrieveProofImagesForAddressId:(NSString*)addressId
+                                  reply:(void (^)(NSError* error, NSData* addressProof, NSData* identityProof))reply;
 
-// 10F. UPDATE ADDRESS PROOF IMAGE
-- (void)updateImageForAddressId:(NSString*)addressId
-                          reply:(void (^)(NSError* error))reply;
+// 10F. UPDATE ADDRESS PROOF IMAGE(S)
+- (void)updateProofImagesForAddressId:(NSString*)addressId
+                         addressProof:(NSData*)addressProof
+                        identityProof:(NSData*)identityProof
+                                reply:(void (^)(NSError* error))reply;
 
 // 10G. UPDATE ADDRESS' NAME
 - (void)updateAddressWithId:(NSString*)addressId withName:(NSString*)name reply:(void (^)(NSError* error))reply;
@@ -405,10 +408,10 @@
 - (void)cancelAllDeleteAddressWithId:(NSString*)addressId;
 
 // 10E.
-- (void)cancelAllRetrieveImageForAddressId:(NSString*)addressId;
+- (void)cancelAllRetrieveProofImagesForAddressId:(NSString*)addressId;
 
 // 10F.
-- (void)cancelAllUpdateImageForAddressId:(NSString*)addressId;
+- (void)cancelAllUpdateProofImagesForAddressId:(NSString*)addressId;
 
 // 11A.
 - (void)cancelAllPurchaseNumber;

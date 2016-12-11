@@ -714,7 +714,8 @@
                                   city:(NSString*)city
                               postcode:(NSString*)postcode
                         isoCountryCode:(NSString*)isoCountryCode
-                            proofImage:(NSData*)proofImage
+                          addressProof:(NSData*)addressProof
+                         identityProof:(NSData*)identityProof
                                 idType:(NSString*)idType
                               idNumber:(NSString*)idNumber
                           fiscalIdCode:(NSString*)fiscalIdCode
@@ -729,24 +730,25 @@
     NSString*            numberType = [NumberType stringForNumberTypeMask:numberTypeMask];
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     
-    (name.length               > 0) ? parameters[@"name"]               = name                       : 0;
-    (salutation.length         > 0) ? parameters[@"salutation"]         = salutation                 : 0;
-    (firstName.length          > 0) ? parameters[@"firstName"]          = firstName                  : 0;
-    (lastName.length           > 0) ? parameters[@"lastName"]           = lastName                   : 0;
-    (companyName.length        > 0) ? parameters[@"companyName"]        = companyName                : 0;
-    (companyDescription.length > 0) ? parameters[@"companyDescription"] = companyDescription         : 0;
-    (street.length             > 0) ? parameters[@"street"]             = street                     : 0;
-    (buildingNumber.length     > 0) ? parameters[@"buildingNumber"]     = buildingNumber             : 0;
-    (buildingLetter.length     > 0) ? parameters[@"buildingLetter"]     = buildingLetter             : 0;
-    (city.length               > 0) ? parameters[@"city"]               = city                       : 0;
-    (postcode.length           > 0) ? parameters[@"postcode"]           = postcode                   : 0;
-    (isoCountryCode.length     > 0) ? parameters[@"isoCountryCode"]     = isoCountryCode             : 0;
-    (proofImage.length         > 0) ? parameters[@"proofImage"]         = [Base64 encode:proofImage] : 0;
-    (idType.length             > 0) ? parameters[@"idType"]             = idType                     : 0;
-    (idNumber.length           > 0) ? parameters[@"idNumber"]           = idNumber                   : 0;
-    (fiscalIdCode.length       > 0) ? parameters[@"fiscalIdCode"]       = fiscalIdCode               : 0;
-    (streetCode.length         > 0) ? parameters[@"streetCode"]         = streetCode                 : 0;
-    (municipalityCode.length   > 0) ? parameters[@"municipalityCode"]   = municipalityCode           : 0;
+    (name.length               > 0) ? parameters[@"name"]               = name                          : 0;
+    (salutation.length         > 0) ? parameters[@"salutation"]         = salutation                    : 0;
+    (firstName.length          > 0) ? parameters[@"firstName"]          = firstName                     : 0;
+    (lastName.length           > 0) ? parameters[@"lastName"]           = lastName                      : 0;
+    (companyName.length        > 0) ? parameters[@"companyName"]        = companyName                   : 0;
+    (companyDescription.length > 0) ? parameters[@"companyDescription"] = companyDescription            : 0;
+    (street.length             > 0) ? parameters[@"street"]             = street                        : 0;
+    (buildingNumber.length     > 0) ? parameters[@"buildingNumber"]     = buildingNumber                : 0;
+    (buildingLetter.length     > 0) ? parameters[@"buildingLetter"]     = buildingLetter                : 0;
+    (city.length               > 0) ? parameters[@"city"]               = city                          : 0;
+    (postcode.length           > 0) ? parameters[@"postcode"]           = postcode                      : 0;
+    (isoCountryCode.length     > 0) ? parameters[@"isoCountryCode"]     = isoCountryCode                : 0;
+    (addressProof.length       > 0) ? parameters[@"addressProof"]       = [Base64 encode:addressProof]  : 0;
+    (identityProof.length      > 0) ? parameters[@"identityProof"]      = [Base64 encode:identityProof] : 0;
+    (idType.length             > 0) ? parameters[@"idType"]             = idType                        : 0;
+    (idNumber.length           > 0) ? parameters[@"idNumber"]           = idNumber                      : 0;
+    (fiscalIdCode.length       > 0) ? parameters[@"fiscalIdCode"]       = fiscalIdCode                  : 0;
+    (streetCode.length         > 0) ? parameters[@"streetCode"]         = streetCode                    : 0;
+    (municipalityCode.length   > 0) ? parameters[@"municipalityCode"]   = municipalityCode              : 0;
                             
     [self postPath:[NSString stringWithFormat:@"/users/%@/addresses?isoCountryCode=%@&numberType=%@",
                                               username, numberIsoCountryCode, numberType]
@@ -780,36 +782,42 @@
 }
 
 
-// 10E. GET ADDRESS PROOF IMAGE
-- (void)retrieveImageForAddressId:(NSString*)addressId
-                            reply:(void (^)(NSError* error, NSData* proofImage))reply
+// 10E. GET ADDRESS PROOF IMAGES
+- (void)retrieveProofImagesForAddressId:(NSString*)addressId
+                                  reply:(void (^)(NSError* error, NSData* addressProof, NSData* identityProof))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/addresses/%@/image", username, addressId]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/addresses/%@/images", username, addressId]
        parameters:nil
             reply:^(NSError *error, id content)
     {
         if (error == nil)
         {
-            reply(nil, [Base64 decode:content[@"proofImage"]]);
+            reply(nil, [Base64 decode:content[@"addressProof"]], [Base64 decode:content[@"identityProof"]]);
         }
         else
         {
-            reply(error, nil);
+            reply(error, nil, nil);
         }
     }];
 }
 
 
-// 10F. UPDATE ADDRESS PROOF IMAGE
-- (void)updateImageForAddressId:(NSString*)addressId
-                          reply:(void (^)(NSError* error))reply
+// 10F. UPDATE ADDRESS PROOF IMAGE(s)
+- (void)updateProofImagesForAddressId:(NSString*)addressId
+                         addressProof:(NSData*)addressProof
+                        identityProof:(NSData*)identityProof
+                                reply:(void (^)(NSError* error))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
-    
-    [self putPath:[NSString stringWithFormat:@"/users/%@/addresses/%@/image", username, addressId]
-       parameters:nil
+
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    (addressProof.length  > 0) ? parameters[@"addressProof"]  = [Base64 encode:addressProof]  : 0;
+    (identityProof.length > 0) ? parameters[@"identityProof"] = [Base64 encode:identityProof] : 0;
+
+    [self putPath:[NSString stringWithFormat:@"/users/%@/addresses/%@/images", username, addressId]
+       parameters:parameters
             reply:^(NSError *error, id content)
     {
         reply(error);
@@ -1014,16 +1022,6 @@
                   0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         }
     }];
-}
-
-
-// 13B. GET NUMBER PROOF IMAGE
-- (void)retrieveNumberImageE164:(NSString*)e164
-{
-    //###
-    //    [Base64 decode:content[@"info"][@"proofImage"]],
-    //[content[@"info"][@"proofAccepted"] boolValue]);
-
 }
 
 
@@ -1762,23 +1760,23 @@
 
 
 // 10E.
-- (void)cancelAllRetrieveImageForAddressId:(NSString*)addressId
+- (void)cancelAllRetrieveProofImagesForAddressId:(NSString*)addressId
 {
     NSString* username = [Settings sharedSettings].webUsername;
     
     [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
-                                                    path:[NSString stringWithFormat:@"/users/%@/addresses/%@/image",
+                                                    path:[NSString stringWithFormat:@"/users/%@/addresses/%@/images",
                                                           username, addressId]];
 }
 
 
 // 10F.
-- (void)cancelAllUpdateImageForAddressId:(NSString*)addressId
+- (void)cancelAllUpdateProofImagesForAddressId:(NSString*)addressId
 {
     NSString* username = [Settings sharedSettings].webUsername;
     
     [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
-                                                    path:[NSString stringWithFormat:@"/users/%@/addresses/%@/image",
+                                                    path:[NSString stringWithFormat:@"/users/%@/addresses/%@/images",
                                                           username, addressId]];
 }
 

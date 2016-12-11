@@ -1261,8 +1261,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
                         if (imageData != nil)
                         {
-                            strongSelf.address.proofImage = imageData;
-                            strongSelf.address.hasProof   = YES;
+                            strongSelf.address.addressProof = imageData;
+                            strongSelf.address.hasProof     = YES;
                             [Common reloadSections:TableSectionVerification
                                        allSections:strongSelf.sections
                                          tableView:strongSelf.tableView];
@@ -2187,7 +2187,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                         city:self.address.city
                                                     postcode:self.address.postcode
                                               isoCountryCode:self.address.isoCountryCode
-                                                  proofImage:self.address.proofImage
+                                                addressProof:self.address.addressProof
+                                               identityProof:self.address.identityProof
                                                       idType:self.address.idType
                                                     idNumber:self.address.idNumber
                                                 fiscalIdCode:self.address.fiscalIdCode
