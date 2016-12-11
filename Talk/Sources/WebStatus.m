@@ -161,7 +161,7 @@
         case WebStatusFailE164IndentityUnknown:
         {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailE164IndentityUnknown", nil, [NSBundle mainBundle],
-                                                       @"The Caller ID you selected is unknown.",
+                                                       @"The Caller ID you selected is unknown.",  // Shown on call screen
                                                        @"Status text.\n"
                                                        @"[].");
             break;
@@ -169,7 +169,7 @@
         case WebStatusFailE164CallbackUnknown:
         {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailE164CallbackUnknown", nil, [NSBundle mainBundle],
-                                                       @"The Phone you selected to be called back is unknown.",
+                                                       @"The Phone you selected is unknown.",      // Shown on call screen
                                                        @"Status text.\n"
                                                        @"[].");
             break;
@@ -177,7 +177,7 @@
         case WebStatusFailE164BothUnknown:
         {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailE164BothUnknown", nil, [NSBundle mainBundle],
-                                                       @"Both the Caller ID and the Phone to be called back are unknown.",
+                                                       @"The selected Phone and Caller ID are unknown.",// Shown on call screen
                                                        @"Status text.\n"
                                                        @"[].");
             break;

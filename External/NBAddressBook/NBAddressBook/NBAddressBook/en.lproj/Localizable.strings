@@ -84,7 +84,6 @@
 // Caller ID related
 "CI_CALLER_ID"      = "Caller ID";
 "CI_USES_DEFAULT"   = "Default: %@";
-"CI_IS_NOT_SHOWN"   = "Hidden";
 
 //Social/IM labels
 "SS_ADD_OTHER"      = "Add Custom Service";

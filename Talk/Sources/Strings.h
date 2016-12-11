@@ -151,4 +151,6 @@
 
 + (NSString*)extendString;
 
++ (NSString*)hiddenString;
+
 @end

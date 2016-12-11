@@ -7,6 +7,7 @@
 //
 
 #import "NBContactStructureManager.h"
+#import "Strings.h"
 
 @implementation NBContactStructureManager
 
@@ -270,7 +271,7 @@
             }
             else
             {
-                placeholder = NSLocalizedString(@"CI_IS_NOT_SHOWN", @"");
+                placeholder = [Strings hiddenString];
             }
             
             NBPersonCellInfo* personCellInfo = [[NBPersonCellInfo alloc] initWithPlaceholder:placeholder

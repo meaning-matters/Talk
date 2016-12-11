@@ -16,6 +16,8 @@
 
 #define CFReleaseSafe(x)                                { if ((x) != NULL) CFRelease(x); }
 
+#define RADIANS(degrees)                                (((degrees) * M_PI) / 180.0)
+
 static const NSInteger CommonTextFieldCellTag = 1111;
 static const NSInteger CommonUseButtonTag     =  123;
 

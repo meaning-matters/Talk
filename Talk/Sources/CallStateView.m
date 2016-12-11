@@ -2,8 +2,8 @@
 //  CallStateView.m
 //  Talk
 //
-//  Created by Cornelis van der Bent on 23/03/13.
-//  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
+//  Created by Cornelis van der Bent on 30/11/16.
+//  Copyright © 2016 NumberBay Ltd. All rights reserved.
 //
 
 #import "CallStateView.h"
@@ -30,17 +30,15 @@
 
 - (void)setUp
 {
-    [[NSBundle mainBundle] loadNibNamed:@"CallStateView" owner:self options:nil];
-    CGRect frame = self.frame;
+    // Assumes that the XIB has the exact same name as the subview class.
+    [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil];
+
+    CGRect frame    = self.frame;
     self.view.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
+
     [self addSubview:self.view];
 
     self.backgroundColor = [UIColor clearColor];
-}
-
-
-- (void)dealloc
-{
 }
 
 
@@ -55,10 +53,10 @@
 {
     //// General Declarations
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextRef    context    = UIGraphicsGetCurrentContext();
 
     //// Color Declarations
-    UIColor* centerNormalGradientTop = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.8];
+    UIColor* centerNormalGradientTop    = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.8];
     UIColor* centerNormalGradientBottom = [UIColor colorWithRed: 0.079 green: 0.079 blue: 0.079 alpha: 0.8];
 
     //// Gradient Declarations
@@ -71,7 +69,6 @@
     //// Frames
     CGRect frame = CGRectMake(0, 0, 296, 247);
 
-
     //// Center Drawing
     CGRect centerRect = CGRectMake(CGRectGetMinX(frame) + 12, CGRectGetMinY(frame) + 12, 272, 223);
     UIBezierPath* centerPath = [UIBezierPath bezierPathWithRoundedRect: centerRect cornerRadius: 5];
@@ -82,8 +79,7 @@
                                 CGPointMake(CGRectGetMidX(centerRect), CGRectGetMaxY(centerRect)),
                                 0);
     CGContextRestoreGState(context);
-    
-    
+
     //// Cleanup
     CGGradientRelease(keyNormalGradient);
     CGColorSpaceRelease(colorSpace);

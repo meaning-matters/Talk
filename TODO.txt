@@ -230,3 +230,13 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 
 * Lene's iPhone on FRIST install showed "Welcome back!" / "Nice to see you again at NumberBay!" and then does not start add Phone process. Well actually: seems correct because Lene's phone already there. The start process is unclear when you choose Start and then purchase.
 
+* API requestion Addresses UUIDs seems to have `?` at end users/<...>/addresses?  While Phones does not have this `?`
+
+* When calling just a country code "+353" for example, there's a <null>
+
+* Recents may still get status of callbacks with null UUID.
+
+* Recents: Show Number on Recent info. Help to determine why a call was missed.
+
+* BUG: When on slow internet, e.g. Edge (via Developer iOS settings), and calling a contact from the keypad before the price was not retrieved yet, the keypad shows "(null) - 0.020", on return to the keypad when cancelling the call for example.  Apparently the answer comes after this keypad label was wiped, but the country and phone type were no longer available (because they were wiped).
+

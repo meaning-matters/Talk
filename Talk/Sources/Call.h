@@ -13,7 +13,8 @@
 
 typedef enum
 {
-    CallStateNone,
+    CallStateNone,          // When server sent an unknown state.
+    CallStateRequesting,    // App-only state indicating that call request is being sent.
     CallStateCalling,
     CallStateRinging,
     CallStateConnecting,
@@ -74,7 +75,5 @@ typedef enum
 
 
 - (instancetype)initWithPhoneNumber:(PhoneNumber*)phoneNumber direction:(CallDirection)direction;
-
-- (NSString*)stateString;
 
 @end

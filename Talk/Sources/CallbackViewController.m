@@ -9,7 +9,7 @@
 #import "CallbackViewController.h"
 #import "Common.h"
 #import "CallManager.h"
-#import "CallStateView.h"
+#import "GraphicCallStateView.h"
 #import "NSTimer+Blocks.h"
 #import "NSObject+Blocks.h"
 #import "BlockAlertView.h"
@@ -22,26 +22,30 @@
 
 @interface CallbackViewController ()
 {
-    CallStateView*   callStateView;
-    NSTimer*         durationTimer;
-    int              duration;
-    NSMutableArray*  notificationObservers;
-    BOOL             callbackPending;
-    NSString*        uuid;              // Needed to give endAction an independent copy from call's uuid.
+    GraphicCallStateView* graphicStateView;
+    NSTimer*              durationTimer;
+    int                   duration;
+    NSMutableArray*       notificationObservers;
+    BOOL                  callbackPending;
+    NSString*             uuid;              // Needed to give endAction an independent copy from call's uuid.
 }
 
-@property (nonatomic, strong) Call* call;
+@property (nonatomic, strong) Call*         call;
+@property (nonatomic, strong) PhoneData*    phone;
+@property (nonatomic, strong) CallableData* callerId;
 
 @end
 
 
 @implementation CallbackViewController
 
-- (instancetype)initWithCall:(Call*)call
+- (instancetype)initWithCall:(Call*)call phone:(PhoneData*)phone callerId:(CallableData*)callerId
 {
     if (self = [super init])
     {
-        self.call = call;
+        self.call     = call;
+        self.phone    = phone;
+        self.callerId = callerId;
 
         notificationObservers = [NSMutableArray array];
         [self addNotificationObservers];
@@ -55,9 +59,32 @@
 {
     [super viewDidLoad];
 
+    CGRect frame = CGRectMake(0, 0, self.centerRootView.frame.size.width, self.centerRootView.frame.size.height);
+    graphicStateView = [[GraphicCallStateView alloc] initWithFrame:frame];
+    graphicStateView.callingContact = (self.call.contactId != nil);
+
+    [self.centerRootView addSubview:graphicStateView];
+
     self.infoLabel.text   = [self.call.phoneNumber infoString];
     self.calleeLabel.text = self.call.contactId ? self.call.contactName : [self.call.phoneNumber asYouTypeFormat];
-    self.statusLabel.text = [self.call stateString];
+
+    self.statusLabel.text               = [self statusString];
+    graphicStateView.phoneLabel.text    = [NSString stringWithFormat:@"%@: %@", [Strings phoneString],
+                                                                                self.phone.name];
+    if (self.call.showCallerId)
+    {
+        graphicStateView.callerIdLabel.text = [NSString stringWithFormat:@"%@: %@", [Strings callerIdString],
+                                                                                    self.callerId.name];
+    }
+    else
+    {
+        NSString* string = [NSString stringWithFormat:@"%@: %@", [Strings callerIdString], [Strings hiddenString]];
+        graphicStateView.callerIdLabel.attributedText = [self attributedString:string
+                                                                     withColor:[Skinning valueColor]
+                                                                     substring:[Strings hiddenString]];
+    }
+
+    graphicStateView.stateLabel.text    = [self stateString];
 
     [Common getCostForCallbackE164:[Settings sharedSettings].callbackE164
                       callthruE164:self.call.phoneNumber.e164Format
@@ -87,15 +114,10 @@
                 self.infoLabel.text = [NSString stringWithFormat:@"%@ - %@", infoString, costString];
                 break;
             }
-         }
+        }
     }];
 
     [self.calleeLabel setFont:[Common phoneFontOfSize:38]];
-
-    CGRect frame = CGRectMake(0, 0, self.centerRootView.frame.size.width, self.centerRootView.frame.size.height);
-    callStateView = [[CallStateView alloc] initWithFrame:frame];
-
-    [self.centerRootView addSubview:callStateView];
 
     [self startCallback];
 }
@@ -109,17 +131,27 @@
 }
 
 
+#pragma mark - Helper
+
+- (NSAttributedString*)attributedString:(NSString*)string withColor:(UIColor*)color substring:(NSString*)substring
+{
+    NSMutableAttributedString* attributedString = [[NSMutableAttributedString alloc] initWithString:string];
+    NSRange range                               = [string rangeOfString:substring];
+    [attributedString addAttribute:NSForegroundColorAttributeName value:color range:range];
+
+    return attributedString;
+}
+
+
+#pragma mark - Logic
+
 - (void)startCallback
 {
-    self.statusLabel.text    = NSLocalizedStringWithDefaultValue(@"Callback RequestingText", nil, [NSBundle mainBundle],
-                                                                 @"requesting...",
-                                                                 @"Text ...\n"
-                                                                 @"[N lines]");
-    callStateView.label.text = NSLocalizedStringWithDefaultValue(@"Callback StartMessage", nil, [NSBundle mainBundle],
-                                                                 @"A request to call you back is being sent to our "
-                                                                 @"server via internet.\n\nPlease wait.",
-                                                                 @"Alert message: ...\n"
-                                                                 @"[N lines]");
+    [graphicStateView startRequest];
+    self.call.state = CallStateRequesting;
+
+    self.statusLabel.text            = [self statusString];
+    graphicStateView.stateLabel.text = [self stateString];
 
     PhoneNumber* callbackPhoneNumber = [[PhoneNumber alloc] initWithNumber:[Settings sharedSettings].callbackE164];
     PhoneNumber* callerIdPhoneNumber = [[PhoneNumber alloc] initWithNumber:self.call.identityNumber];
@@ -140,19 +172,14 @@
     {
         if (error == nil)
         {
-            self.call.state       = CallStateCalling;
-            self.call.uuid        = theUuid;
-            uuid                  = theUuid;
-            self.statusLabel.text = [self.call stateString];
+            self.call.state = CallStateCalling;
+            self.call.uuid  = theUuid;
+            uuid            = theUuid;
 
-            callStateView.label.text = NSLocalizedStringWithDefaultValue(@"Callback ProgressMessage", nil,
-                                                                         [NSBundle mainBundle],
-                                                                         @"Your number is being called.\n\nAfter you "
-                                                                         @"answer, the person you're trying to reach "
-                                                                         @"will be called automatically.\n\n"
-                                                                         @"Then, wait until you're connected.",
-                                                                         @"Alert message: ...\n"
-                                                                         @"[N lines]");
+            self.statusLabel.text            = [self statusString];
+            graphicStateView.stateLabel.text = [self stateString];
+
+            [graphicStateView startCallback];
 
             [self checkCallbackState];
         }
@@ -160,49 +187,27 @@
         {
             callbackPending = NO;
 
+            [graphicStateView stopRequest];
+
             self.call.state = CallStateFailed;
 
             if (error.code == WebStatusFailCreditInsufficient)
             {
-                self.statusLabel.text    = NSLocalizedStringWithDefaultValue(@"Callback NoCreditStatusText", nil,
-                                                                             [NSBundle mainBundle],
-                                                                             @"not enough credit",
-                                                                             @"Call status text\n"
-                                                                             @"[1 line]");
-                callStateView.label.text = NSLocalizedStringWithDefaultValue(@"Callback NoCreditMessage", nil,
-                                                                             [NSBundle mainBundle],
-                                                                             @"The callback failed because you've run "
-                                                                             @"out of credit.\n\nBuy more on the "
-                                                                             @"Credit tab.",
-                                                                             @"Alert message\n"
-                                                                             @"[N lines]");
+                graphicStateView.stateLabel.text = NSLocalizedString(@"not enough credit", @"");
+                self.statusLabel.text            = [self statusString];
             }
             else if (error.code == WebStatusFailE164IndentityUnknown ||
                      error.code == WebStatusFailE164CallbackUnknown  ||
                      error.code == WebStatusFailE164BothUnknown)
             {
-                self.statusLabel.text = [self.call stateString];
-
-                NSString* format = NSLocalizedStringWithDefaultValue(@"Callback UnknownNumberMessage", nil,
-                                                                     [NSBundle mainBundle],
-                                                                     @"Starting callback failed: %@\n\n"
-                                                                     @"Please synchronize your account data (via Settings).",
-                                                                     @"Alert message: ...\n"
-                                                                     @"[N lines]");
-                callStateView.label.text = [NSString stringWithFormat:format, error.localizedDescription];
+                self.statusLabel.text            = [self statusString];
+                graphicStateView.stateLabel.text = error.localizedDescription;
             }
             else
             {
-                self.statusLabel.text = [self.call stateString];
+                self.statusLabel.text            = [self statusString];
+                graphicStateView.stateLabel.text = error.localizedDescription;
 
-                NSString* format = NSLocalizedStringWithDefaultValue(@"Callback RequestFailedMessage", nil,
-                                                                     [NSBundle mainBundle],
-                                                                     @"Sending the callback request failed: %@\n\n"
-                                                                     @"You can end this callback, or retry.",
-                                                                     @"Alert message: ...\n"
-                                                                     @"[N lines]");
-                callStateView.label.text = [NSString stringWithFormat:format, error.localizedDescription];
-                
                 [self showRetry];
             }
         }
@@ -245,30 +250,29 @@
             self.call.callthruDuration = callthruDuration;
             self.call.callbackCost     = callbackCost;
             self.call.callthruCost     = callthruCost;
-            self.statusLabel.text      = [self.call stateString];
 
-            NSString* text = nil;
-            BOOL      checkState;
+            self.statusLabel.text            = [self statusString];
+            graphicStateView.stateLabel.text = [self stateString];
+
+            BOOL checkState;
             switch (state)
             {
                 case CallStateCalling:
-                {
-                    callbackPending = YES;
-                    checkState      = YES;
-                    if (leg == CallLegCallthru)
-                    {
-                        text = NSLocalizedStringWithDefaultValue(@"Callback CallingMessage", nil, [NSBundle mainBundle],
-                                                                 @"Now, the person you're trying to reach is being "
-                                                                 @"called.\n\nWhen answered, you'll be connected ",
-                                                                 @"Alert message: ...\n"
-                                                                 @"[N lines]");
-                    }
-                    break;
-                }
                 case CallStateRinging:
                 {
                     callbackPending = YES;
                     checkState      = YES;
+
+                    if (leg == CallLegCallback)
+                    {
+                        [graphicStateView startCallback];
+                    }
+
+                    if (leg == CallLegCallthru)
+                    {
+                        [graphicStateView connectCallback];
+                        [graphicStateView startCallthru];
+                    }
                     break;
                 }
                 case CallStateConnected:
@@ -277,35 +281,23 @@
                     checkState      = YES;
                     if (leg == CallLegCallback)
                     {
-                        text = NSLocalizedStringWithDefaultValue(@"Callback CallbackConnectedMessage", nil, [NSBundle mainBundle],
-                                                                 @"Your phone answered the callback call.\n\n"
-                                                                 @"If this is not you, the person you're trying to"
-                                                                 @"reach is probably going to be connected to your "
-                                                                 @"callback number's voicemail.",
-                                                                 @"Alert message: ...\n"
-                                                                 @"[N lines]");
+                        [graphicStateView connectCallback];
                     }
 
                     if (leg == CallLegCallthru)
                     {
-                        text = NSLocalizedStringWithDefaultValue(@"Callback CallthruConnectedMessage", nil, [NSBundle mainBundle],
-                                                                 @"The person you were trying to reach answered.\n\n"
-                                                                 @"If you're not in the call, the person you're trying to"
-                                                                 @"reach is probably connected to your callback number's "
-                                                                 @"voicemail.",
-                                                                 @"Alert message: ...\n"
-                                                                 @"[N lines]");
+                        [graphicStateView connectCallback];
+                        [graphicStateView connectCallthru];
                     }
                     break;
                 }
                 case CallStateEnded:
                 {
+                    [graphicStateView stopCallback];
+                    [graphicStateView stopCallthru];
+
                     if (callbackPending == YES)
                     {
-                        text = NSLocalizedStringWithDefaultValue(@"Callback EndedMessage", nil, [NSBundle mainBundle],
-                                                                 @"The call has ended.",
-                                                                 @"Alert message: ...\n"
-                                                                 @"[N lines]");
                         dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
                         dispatch_after(when, dispatch_get_main_queue(), ^
                         {
@@ -322,11 +314,6 @@
                     checkState = YES;
                     break;
                 }
-            }
-
-            if (text != nil)
-            {
-                callStateView.label.text = text;
             }
 
             if (checkState == YES)
@@ -445,20 +432,15 @@
         }
 
         if (status          == NetworkStatusMobileCallDisconnected &&
-            previousStatus  == NetworkStatusMobileCallIncoming &&
+            previousStatus  == NetworkStatusMobileCallIncoming     &&
             didBecomeActive == YES)
         {
             // Decline detected.
-            self.statusLabel.text      = NSLocalizedStringWithDefaultValue(@"Callback DeclinedText", nil, [NSBundle mainBundle],
-                                                                           @"declined",
-                                                                           @"Text ...\n"
-                                                                           @"[N lines]");
-            callStateView.label.text = NSLocalizedStringWithDefaultValue(@"Callback DeclinedMessage", nil, [NSBundle mainBundle],
-                                                                           @"You declined an incoming call.\n\n"
-                                                                           @"If you declined the callback, please end. "
-                                                                           @"If you declined another call, you can retry.",
-                                                                           @"Alert message: ...\n"
-                                                                           @"[N lines]");
+            self.statusLabel.text            = NSLocalizedString(@"declined", @"");
+            graphicStateView.stateLabel.text = NSLocalizedString(@"You declined an incoming call. "
+                                                                 @"If you declined the callback, please end. "
+                                                                 @"If you declined another call, you can retry.",
+                                                                 @"");
 
             [[WebClient sharedClient] cancelAllInitiateCallback];
             if (self.call.uuid != nil)
@@ -480,6 +462,7 @@
                     else if (callbackPending == YES)
                     {
                         NSString* format;
+                        //##### TODO: This text is too long.
                         format = NSLocalizedStringWithDefaultValue(@"Callback StopFailedMessage", nil, [NSBundle mainBundle],
                                                                    @"You declined an incoming call. This resulted in an "
                                                                    @"automatic attempt to stop the callback. But "
@@ -488,7 +471,7 @@
                                                                    @"your voicemail.",
                                                                    @"Alert message: ...\n"
                                                                    @"[N lines]");
-                        callStateView.label.text = [NSString stringWithFormat:format, error.localizedDescription];
+                        graphicStateView.stateLabel.text = [NSString stringWithFormat:format, error.localizedDescription];
 
                         // Don't show Retry here, because something failed; may otherwise cause multiple Callbacks.
                     }
@@ -535,6 +518,130 @@
     }
 
     [notificationObservers removeAllObjects];   // Without this, dealloc will not be called.
+}
+
+
+#pragma mark - Status Strings
+
+// Shown below the animation in center/call-state view; the state of call progress.
+- (NSString*)stateString
+{
+    switch (self.call.state)
+    {
+        case CallStateNone:
+        {
+            return @"";
+        }
+        case CallStateRequesting:
+        {
+            return NSLocalizedString(@"requesting call...", @"");
+        }
+        case CallStateCalling:
+        case CallStateRinging:
+        case CallStateConnecting:
+        {
+            switch (self.call.leg)
+            {
+                case CallLegNone:     return NSLocalizedString(@"calling...", @"iOS string for phone call in progress");
+                case CallLegCallback: return NSLocalizedString(@"calling your Phone...", @"");
+                case CallLegCallthru: return NSLocalizedString(@"calling the other", @"");
+            }
+        }
+        case CallStateConnected:
+        {
+            switch (self.call.leg)
+            {
+                case CallLegNone:     return NSLocalizedString(@"connected", @"");
+                case CallLegCallback: return NSLocalizedString(@"your Phone answered\n(end if you're not connected, could be your voicemail)", @"");
+                case CallLegCallthru: return NSLocalizedString(@"you're connected\nenjoy the call", @"");
+            }
+            break;
+        }
+        case CallStateEnding:
+        case CallStateEnded:
+        case CallStateCancelled:
+        case CallStateBusy:
+        case CallStateDeclined:
+        {
+            return @"";
+        }
+        case CallStateFailed:
+        {
+            return NSLocalizedString(@"failed #####ADD REASON", @"");
+        }
+    }
+}
+
+
+// Shown at top bar; the overal status of the call.
+- (NSString*)statusString
+{
+    switch (self.call.state)
+    {
+        case CallStateNone:
+        {
+            return @"";
+        }
+        case CallStateRequesting:
+        case CallStateCalling:
+        case CallStateRinging:
+        case CallStateConnecting:
+        {
+            return [self inProgressString];
+        }
+        case CallStateConnected:
+        {
+            switch (self.call.leg)
+            {
+                case CallLegNone:     return [self inProgressString];
+                case CallLegCallback: return [self inProgressString];
+                case CallLegCallthru: return [self durationStringWithSeconds:self.call.callthruDuration];
+            }
+        }
+        case CallStateEnding:
+        {
+            return NSLocalizedString(@"ending...", @"");
+        }
+        case CallStateEnded:
+        {
+            return NSLocalizedString(@"ended", @"");
+        }
+        case CallStateCancelled:
+        {
+            return NSLocalizedString(@"cancelled", @"");
+        }
+        case CallStateBusy:
+        {
+            return NSLocalizedString(@"busy", @"");
+        }
+        case CallStateDeclined:
+        {
+            return NSLocalizedString(@"declined", @"");
+        }
+        case CallStateFailed:
+        {
+            return NSLocalizedString(@"failed", @"");
+        }
+    }
+}
+
+
+- (NSString*)durationStringWithSeconds:(int)seconds
+{
+    if (seconds < 3600)
+    {
+        return [NSString stringWithFormat:@"%02d:%02d", (seconds % 3600) / 60, seconds % 60];
+    }
+    else
+    {
+        return [NSString stringWithFormat:@"%d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60, seconds % 60];
+    }
+}
+
+
+- (NSString*)inProgressString
+{
+    return NSLocalizedString(@"call in progress...", @"");
 }
 
 @end

@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @class CallableData;
+@class PhoneData;
 @class AddressData;
 
 
@@ -44,6 +45,8 @@
 - (void)synchronizeWithServer:(void (^)(NSError* error))completion;
 
 - (CallableData*)lookupCallableForE164:(NSString*)e164;
+
+- (PhoneData*)lookupPhoneForE164:(NSString*)e164;
 
 - (AddressData*)lookupAddressWithId:(NSString*)addressId;
 

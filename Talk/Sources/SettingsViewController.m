@@ -594,9 +594,7 @@ typedef enum
             }
             else
             {
-                NSDictionary*       attributes = @{NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)};
-                NSAttributedString* nameString = [[NSAttributedString alloc] initWithString:callable.name attributes:attributes];
-                cell.detailTextLabel.attributedText = nameString;
+                cell.detailTextLabel.attributedText = [Common strikethroughAttributedString:callable.name];
             }
         }
         else

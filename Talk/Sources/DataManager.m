@@ -346,11 +346,23 @@
 - (CallableData*)lookupCallableForE164:(NSString*)e164
 {
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"e164 == %@", e164];
-    NSArray*     phones    = [self fetchEntitiesWithName:@"Callable"
+    NSArray*     callables = [self fetchEntitiesWithName:@"Callable"
                                                 sortKeys:@[@"name"]
                                                predicate:predicate
                                     managedObjectContext:nil];
     
+    return [callables firstObject];
+}
+
+
+- (PhoneData*)lookupPhoneForE164:(NSString*)e164
+{
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"e164 == %@", e164];
+    NSArray*     phones    = [self fetchEntitiesWithName:@"Phone"
+                                                sortKeys:@[@"name"]
+                                               predicate:predicate
+                                    managedObjectContext:nil];
+
     return [phones firstObject];
 }
 

@@ -10,10 +10,12 @@
 #import <UIKit/UIKit.h>
 #import "CallBaseViewController.h"
 #import "Call.h"
+#import "PhoneData.h"
+#import "CallerIdData.h"
 
 
 @interface CallbackViewController : CallBaseViewController
 
-- (instancetype)initWithCall:(Call*)call;
+- (instancetype)initWithCall:(Call*)call phone:(PhoneData*)phone callerId:(CallableData*)callerId;
 
 @end

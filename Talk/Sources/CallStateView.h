@@ -2,17 +2,14 @@
 //  CallStateView.h
 //  Talk
 //
-//  Created by Cornelis van der Bent on 23/03/13.
-//  Copyright (c) 2013 NumberBay Ltd. All rights reserved.
+//  Created by Cornelis van der Bent on 30/11/16.
+//  Copyright © 2016 NumberBay Ltd. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-
 
 @interface CallStateView : UIView
 
 @property (nonatomic, strong) IBOutlet UIView* view;
-@property (nonatomic, weak) IBOutlet UILabel*  label;
 
 @end

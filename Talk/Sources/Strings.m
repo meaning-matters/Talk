@@ -635,4 +635,10 @@
     return NSLocalizedString(@"Extend", @"");
 }
 
+
++ (NSString*)hiddenString
+{
+    return NSLocalizedString(@"Hidden", @"Indicate that Caller ID is blocked.");
+}
+
 @end

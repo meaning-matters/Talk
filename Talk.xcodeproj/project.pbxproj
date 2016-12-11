@@ -433,6 +433,10 @@
 		485F6C261637270100D61365 /* ZA@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F6A341637270100D61365 /* ZA@2x.png */; };
 		485F6C281637270100D61365 /* ZM@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F6A361637270100D61365 /* ZM@2x.png */; };
 		485F6C2A1637270100D61365 /* ZW@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F6A381637270100D61365 /* ZW@2x.png */; };
+		485F93CE1DEF5CF4006E31ED /* GraphicCallStateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 485F93CD1DEF5CF4006E31ED /* GraphicCallStateView.m */; };
+		485F93D21DEF6787006E31ED /* CallStateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 485F93D11DEF6787006E31ED /* CallStateView.m */; };
+		485F93D41DEF6D3B006E31ED /* GraphicCallStateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485F93D31DEF6D3B006E31ED /* GraphicCallStateView.xib */; };
+		485F93D81DEF7C31006E31ED /* LogoIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F93D71DEF7C31006E31ED /* LogoIcon@2x.png */; };
 		486334781D329E3F002D0A4B /* NumberBuyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4888E17B1D30FEB000B1B307 /* NumberBuyViewController.m */; };
 		4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3F5175668CA0006542F /* LogoFacebook.png */; };
 		4864B3F7175668CA0006542F /* LogoFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3F5175668CA0006542F /* LogoFacebook.png */; };
@@ -442,6 +446,7 @@
 		4865A9DF1792C8B70028785F /* NumberPayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberPayCell.m */; };
 		4865A9E01792C8B70028785F /* NumberPayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberPayCell.m */; };
 		486B95261CDE80F2004CFD8A /* DenmarkCityPostcodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 486B95251CDE80F2004CFD8A /* DenmarkCityPostcodes.json */; };
+		486CEF971DEDFCFD00D1E088 /* SignalDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 486CEF961DEDFCFD00D1E088 /* SignalDotView.m */; };
 		486D4A2318F06BC8004699C9 /* CallRatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 486D4A2218F06BC8004699C9 /* CallRatesViewController.m */; };
 		4872DA7C1D360AC4009F4194 /* NumberExtendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4872DA7B1D360AC4009F4194 /* NumberExtendViewController.m */; };
 		4877EDBC17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */; };
@@ -506,10 +511,6 @@
 		48A0CE71180740F300B8A9F8 /* Welcome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 48A0CE6F180740F300B8A9F8 /* Welcome.mp3 */; };
 		48A0CE781809BE3100B8A9F8 /* CallBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE771809BE3100B8A9F8 /* CallBaseViewController.m */; };
 		48A0CE791809BE3100B8A9F8 /* CallBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE771809BE3100B8A9F8 /* CallBaseViewController.m */; };
-		48A261C016FDE26100007638 /* CallStateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A261BF16FDE26100007638 /* CallStateView.xib */; };
-		48A261C116FDE26100007638 /* CallStateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A261BF16FDE26100007638 /* CallStateView.xib */; };
-		48A261C416FDE32400007638 /* CallStateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A261C316FDE32400007638 /* CallStateView.m */; };
-		48A261C516FDE32400007638 /* CallStateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A261C316FDE32400007638 /* CallStateView.m */; };
 		48A26DDC18BA7FB200736CCB /* SearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A26DDB18BA7FB200736CCB /* SearchTableViewController.m */; };
 		48A26DDE18BA904100736CCB /* SearchTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A26DDD18BA904100736CCB /* SearchTableView.xib */; };
 		48A26DE618BE279F00736CCB /* ItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A26DE518BE279F00736CCB /* ItemsViewController.m */; };
@@ -630,13 +631,15 @@
 		48CB2C4617E6539000E19C3D /* Target@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4317E6539000E19C3D /* Target@2x.png */; };
 		48CB2C4717E6539000E19C3D /* Target@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4317E6539000E19C3D /* Target@2x.png */; };
 		48CB2C4C17E6DB7700E19C3D /* NBPeopleListTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4917E6DB7700E19C3D /* NBPeopleListTab@2x.png */; };
-		48CB2C4D17E6DB7700E19C3D /* NBPeopleListTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4917E6DB7700E19C3D /* NBPeopleListTab@2x.png */; };
+		48CBE0941DEF833D00B1D4FC /* NBPeopleListTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CBE0931DEF833D00B1D4FC /* NBPeopleListTab.png */; };
+		48CBE0961DEF834C00B1D4FC /* KeypadTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CBE0951DEF834C00B1D4FC /* KeypadTab.png */; };
 		48D0A6E61654D65200FA2D98 /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E51654D65200FA2D98 /* SipConfig.cfg */; };
 		48D0A6E71654D65200FA2D98 /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E51654D65200FA2D98 /* SipConfig.cfg */; };
 		48D0A6EA1654D66200FA2D98 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E81654D66200FA2D98 /* InfoPlist.strings */; };
 		48D0A6EB1654D66200FA2D98 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E81654D66200FA2D98 /* InfoPlist.strings */; };
 		48D0A6F41654D6D700FA2D98 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 48D0A6F31654D6D700FA2D98 /* main.mm */; };
 		48D0A6F51654D6D700FA2D98 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 48D0A6F31654D6D700FA2D98 /* main.mm */; };
+		48D21D021DF0A8A900F0A3D4 /* CloudFilled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D21D011DF0A8A900F0A3D4 /* CloudFilled@2x.png */; };
 		48D3F01E164F9284002041A9 /* CountryNames.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F01D164F9284002041A9 /* CountryNames.m */; };
 		48D3F01F164F9284002041A9 /* CountryNames.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D3F01D164F9284002041A9 /* CountryNames.m */; };
 		48D4FADD1924247A00949894 /* NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D4FADC1924247A00949894 /* NavigationController.m */; };
@@ -680,6 +683,7 @@
 		48FD99DD161856120061191B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99DC161856120061191B /* CFNetwork.framework */; };
 		48FD99E71618CC370061191B /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FD99E61618CC370061191B /* Common.m */; };
 		48FD99E81618CC370061191B /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FD99E61618CC370061191B /* Common.m */; };
+		48FDF65D1DF9FE4900A2A7F6 /* UIView+LayerProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FDF65C1DF9FE4900A2A7F6 /* UIView+LayerProperties.m */; };
 		48FE4F591C8752C100CC0873 /* ImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FE4F581C8752C100CC0873 /* ImagePicker.m */; };
 /* End PBXBuildFile section */
 
@@ -1168,6 +1172,12 @@
 		485F6A341637270100D61365 /* ZA@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ZA@2x.png"; sourceTree = "<group>"; };
 		485F6A361637270100D61365 /* ZM@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ZM@2x.png"; sourceTree = "<group>"; };
 		485F6A381637270100D61365 /* ZW@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ZW@2x.png"; sourceTree = "<group>"; };
+		485F93CC1DEF5CF4006E31ED /* GraphicCallStateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphicCallStateView.h; sourceTree = "<group>"; };
+		485F93CD1DEF5CF4006E31ED /* GraphicCallStateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraphicCallStateView.m; sourceTree = "<group>"; };
+		485F93D01DEF6787006E31ED /* CallStateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallStateView.h; sourceTree = "<group>"; };
+		485F93D11DEF6787006E31ED /* CallStateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallStateView.m; sourceTree = "<group>"; };
+		485F93D31DEF6D3B006E31ED /* GraphicCallStateView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GraphicCallStateView.xib; sourceTree = "<group>"; };
+		485F93D71DEF7C31006E31ED /* LogoIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LogoIcon@2x.png"; sourceTree = "<group>"; };
 		4864B3F5175668CA0006542F /* LogoFacebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LogoFacebook.png; sourceTree = "<group>"; };
 		4864B3F817566E950006542F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		4864CAE51D0C765E009B3D9C /* DenmarkMunicipalities.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DenmarkMunicipalities.json; path = Resources/DenmarkMunicipalities.json; sourceTree = "<group>"; };
@@ -1179,6 +1189,8 @@
 		486B951E1CDE44E4004CFD8A /* Muni-Post-City.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Muni-Post-City.json"; path = "Resources/Muni-Post-City.json"; sourceTree = "<group>"; };
 		486B951F1CDE44E4004CFD8A /* StrCode-Post-City.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "StrCode-Post-City.json"; path = "Resources/StrCode-Post-City.json"; sourceTree = "<group>"; };
 		486B95251CDE80F2004CFD8A /* DenmarkCityPostcodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DenmarkCityPostcodes.json; path = Resources/DenmarkCityPostcodes.json; sourceTree = "<group>"; };
+		486CEF951DEDFCFD00D1E088 /* SignalDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalDotView.h; sourceTree = "<group>"; };
+		486CEF961DEDFCFD00D1E088 /* SignalDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignalDotView.m; sourceTree = "<group>"; };
 		486D4A2118F06BC8004699C9 /* CallRatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallRatesViewController.h; sourceTree = "<group>"; };
 		486D4A2218F06BC8004699C9 /* CallRatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallRatesViewController.m; sourceTree = "<group>"; };
 		4872DA7A1D360AC4009F4194 /* NumberExtendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberExtendViewController.h; sourceTree = "<group>"; };
@@ -1254,9 +1266,6 @@
 		48A0CE761809BE3100B8A9F8 /* CallBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallBaseViewController.h; sourceTree = "<group>"; };
 		48A0CE771809BE3100B8A9F8 /* CallBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallBaseViewController.m; sourceTree = "<group>"; };
 		48A0CEBE1811430A00B8A9F8 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CrashReporter.framework; path = "External/HockeySDK-iOS-3.0.0/Vendor/CrashReporter.framework"; sourceTree = "<group>"; };
-		48A261BF16FDE26100007638 /* CallStateView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallStateView.xib; sourceTree = "<group>"; };
-		48A261C216FDE32400007638 /* CallStateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallStateView.h; sourceTree = "<group>"; };
-		48A261C316FDE32400007638 /* CallStateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallStateView.m; sourceTree = "<group>"; };
 		48A261EA16FE4F9700007638 /* libg7221codec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libg7221codec-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libg7221codec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48A261EB16FE4F9700007638 /* libgsmcodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgsmcodec-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libgsmcodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
 		48A261EC16FE4F9700007638 /* libilbccodec-arm-apple-darwin9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libilbccodec-arm-apple-darwin9.a"; path = "External/pjproject-2.1.0/install/lib/libilbccodec-arm-apple-darwin9.a"; sourceTree = "<group>"; };
@@ -1424,9 +1433,12 @@
 		48CB2C4217E6539000E19C3D /* Target.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Target.png; path = Talk/Images/Other/Target.png; sourceTree = SOURCE_ROOT; };
 		48CB2C4317E6539000E19C3D /* Target@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Target@2x.png"; path = "Talk/Images/Other/Target@2x.png"; sourceTree = SOURCE_ROOT; };
 		48CB2C4917E6DB7700E19C3D /* NBPeopleListTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NBPeopleListTab@2x.png"; sourceTree = "<group>"; };
+		48CBE0931DEF833D00B1D4FC /* NBPeopleListTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NBPeopleListTab.png; sourceTree = "<group>"; };
+		48CBE0951DEF834C00B1D4FC /* KeypadTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KeypadTab.png; sourceTree = "<group>"; };
 		48D0A6E51654D65200FA2D98 /* SipConfig.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SipConfig.cfg; path = Resources/SipConfig.cfg; sourceTree = "<group>"; };
 		48D0A6E91654D66200FA2D98 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		48D0A6F31654D6D700FA2D98 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		48D21D011DF0A8A900F0A3D4 /* CloudFilled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CloudFilled@2x.png"; sourceTree = "<group>"; };
 		48D3F01C164F9284002041A9 /* CountryNames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryNames.h; sourceTree = "<group>"; };
 		48D3F01D164F9284002041A9 /* CountryNames.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryNames.m; sourceTree = "<group>"; };
 		48D4FADB1924247A00949894 /* NavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationController.h; sourceTree = "<group>"; };
@@ -1491,6 +1503,8 @@
 		48FD99DC161856120061191B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		48FD99E51618CC370061191B /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		48FD99E61618CC370061191B /* Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Common.m; sourceTree = "<group>"; };
+		48FDF65B1DF9FE4900A2A7F6 /* UIView+LayerProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+LayerProperties.h"; sourceTree = "<group>"; };
+		48FDF65C1DF9FE4900A2A7F6 /* UIView+LayerProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LayerProperties.m"; sourceTree = "<group>"; };
 		48FE4F571C8752C100CC0873 /* ImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePicker.h; sourceTree = "<group>"; };
 		48FE4F581C8752C100CC0873 /* ImagePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePicker.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1747,6 +1761,8 @@
 				482A6396165F903900325B3F /* Strings.m */,
 				48ADD0F517067919001515EB /* UIView+AnimateHidden.h */,
 				48ADD0F61706791A001515EB /* UIView+AnimateHidden.m */,
+				48FDF65B1DF9FE4900A2A7F6 /* UIView+LayerProperties.h */,
+				48FDF65C1DF9FE4900A2A7F6 /* UIView+LayerProperties.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -1808,6 +1824,8 @@
 		48338FA816170CBA0033F4C1 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				48D21D011DF0A8A900F0A3D4 /* CloudFilled@2x.png */,
+				485F93D71DEF7C31006E31ED /* LogoIcon@2x.png */,
 				485A608718D768880055C176 /* GetStarted */,
 				4846D8A81743F47000C40713 /* Logo@2x.png */,
 				4864B3F5175668CA0006542F /* LogoFacebook.png */,
@@ -1827,12 +1845,14 @@
 				48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */,
 				480E7A2D1BFDCA7800F655E8 /* AddressesTab@2x.png */,
 				48CB2C4917E6DB7700E19C3D /* NBPeopleListTab@2x.png */,
+				48CBE0931DEF833D00B1D4FC /* NBPeopleListTab.png */,
 				48AF451C1649788A00DFE3D8 /* CreditTab@2x.png */,
 				48AF45201649788A00DFE3D8 /* DestinationsTab@2x.png */,
 				480037991CA7CD050083D24B /* Favorites@2x.png */,
 				48AF45221649788A00DFE3D8 /* GroupsTab@2x.png */,
 				48AF45241649788A00DFE3D8 /* HelpsTab@2x.png */,
 				48AF451E1649788A00DFE3D8 /* KeypadTab@2x.png */,
+				48CBE0951DEF834C00B1D4FC /* KeypadTab.png */,
 				48AF45261649788A00DFE3D8 /* NumbersTab@2x.png */,
 				48B93877187E1E0E00132535 /* PhonesTab@2x.png */,
 				48172C011C07017800927BC2 /* RatesTab@2x.png */,
@@ -1962,10 +1982,9 @@
 		485ECBDF16525D1600364F08 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				485F93CF1DEF6768006E31ED /* Callstate */,
 				4823019A1C897E7000ECD32E /* CellBadgeView.h */,
 				4823019B1C897E7000ECD32E /* CellBadgeView.m */,
-				48A261C216FDE32400007638 /* CallStateView.h */,
-				48A261C316FDE32400007638 /* CallStateView.m */,
 				4814EA3C17CB1923004B7A3C /* CreditAmountCell.h */,
 				4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */,
 				4814EA3517CA993F004B7A3C /* CreditBuyCell.h */,
@@ -2242,6 +2261,19 @@
 			path = Flags;
 			sourceTree = "<group>";
 		};
+		485F93CF1DEF6768006E31ED /* Callstate */ = {
+			isa = PBXGroup;
+			children = (
+				485F93D01DEF6787006E31ED /* CallStateView.h */,
+				485F93D11DEF6787006E31ED /* CallStateView.m */,
+				485F93CC1DEF5CF4006E31ED /* GraphicCallStateView.h */,
+				485F93CD1DEF5CF4006E31ED /* GraphicCallStateView.m */,
+				486CEF951DEDFCFD00D1E088 /* SignalDotView.h */,
+				486CEF961DEDFCFD00D1E088 /* SignalDotView.m */,
+			);
+			name = Callstate;
+			sourceTree = "<group>";
+		};
 		488268D1164BCF6300EA58AE /* Networking */ = {
 			isa = PBXGroup;
 			children = (
@@ -2423,7 +2455,6 @@
 			children = (
 				48AF45161649494400DFE3D8 /* AboutView.xib */,
 				48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */,
-				48A261BF16FDE26100007638 /* CallStateView.xib */,
 				4814EA3917CB18DB004B7A3C /* CreditAmountCell.xib */,
 				4814EA3217CA98F4004B7A3C /* CreditBuyCell.xib */,
 				48C9A2261BF7C9EC00966F80 /* KeypadMainView.xib */,
@@ -2440,6 +2471,7 @@
 				484943AF1753C44D00E1D5C4 /* ThanksView.xib */,
 				48C431A3189EE0310008FE01 /* VerifyPhoneView.xib */,
 				4823C0C41CBA7F0E00030FC7 /* WebView.xib */,
+				485F93D31DEF6D3B006E31ED /* GraphicCallStateView.xib */,
 			);
 			path = XIBs;
 			sourceTree = "<group>";
@@ -2872,6 +2904,7 @@
 				485F6AA21637270100D61365 /* CW@2x.png in Resources */,
 				485F6AA41637270100D61365 /* CX@2x.png in Resources */,
 				485F6AA61637270100D61365 /* CY@2x.png in Resources */,
+				48D21D021DF0A8A900F0A3D4 /* CloudFilled@2x.png in Resources */,
 				485F6AA81637270100D61365 /* CZ@2x.png in Resources */,
 				485F6AAA1637270100D61365 /* DE@2x.png in Resources */,
 				485F6AAC1637270100D61365 /* DJ@2x.png in Resources */,
@@ -2886,6 +2919,7 @@
 				4842D9FA1AADFB53008F35C9 /* editPhotoBottomBar.png in Resources */,
 				485F6ABE1637270100D61365 /* ER@2x.png in Resources */,
 				48F3CE8F1D26A6D3000925EE /* Postcodes.json in Resources */,
+				48CBE0941DEF833D00B1D4FC /* NBPeopleListTab.png in Resources */,
 				485F6AC01637270100D61365 /* ES@2x.png in Resources */,
 				485F6AC21637270100D61365 /* ET@2x.png in Resources */,
 				4842DA001AADFB53008F35C9 /* noPictureImage.png in Resources */,
@@ -2974,6 +3008,7 @@
 				485F6B541637270100D61365 /* MG@2x.png in Resources */,
 				480B4FFA1BED1A890098F3A4 /* CountryCallingCodes.json in Resources */,
 				485F6B561637270100D61365 /* MH@2x.png in Resources */,
+				485F93D41DEF6D3B006E31ED /* GraphicCallStateView.xib in Resources */,
 				485F6B581637270100D61365 /* MK@2x.png in Resources */,
 				485F6B5A1637270100D61365 /* ML@2x.png in Resources */,
 				485F6B5C1637270100D61365 /* MM@2x.png in Resources */,
@@ -3061,6 +3096,7 @@
 				485F6BE61637270100D61365 /* TD@2x.png in Resources */,
 				4842D9EA1AADFB00008F35C9 /* Localizable.strings in Resources */,
 				4842D9FD1AADFB53008F35C9 /* editPhotoRightButton.png in Resources */,
+				48CBE0961DEF834C00B1D4FC /* KeypadTab.png in Resources */,
 				485F6BEA1637270100D61365 /* TG@2x.png in Resources */,
 				485F6BEC1637270100D61365 /* TH@2x.png in Resources */,
 				485F6BEE1637270100D61365 /* TJ@2x.png in Resources */,
@@ -3096,6 +3132,7 @@
 				485F6C201637270100D61365 /* WS@2x.png in Resources */,
 				485F6C221637270100D61365 /* YE@2x.png in Resources */,
 				485F6C241637270100D61365 /* YT@2x.png in Resources */,
+				485F93D81DEF7C31006E31ED /* LogoIcon@2x.png in Resources */,
 				485F6C261637270100D61365 /* ZA@2x.png in Resources */,
 				4837AF6218D872D500D3AEBC /* GetStarted3.png in Resources */,
 				485F6C281637270100D61365 /* ZM@2x.png in Resources */,
@@ -3125,7 +3162,6 @@
 				4888D520166D1AEE00572566 /* HangupPhone@2x.png in Resources */,
 				4888D527166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */,
 				488AD1ED16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
-				48A261C016FDE26100007638 /* CallStateView.xib in Resources */,
 				48ADD0F31706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
 				483679F21722F2CF001A02AF /* List.png in Resources */,
 				4842D9F91AADFB53008F35C9 /* deleteButton.png in Resources */,
@@ -3182,13 +3218,11 @@
 				48D0A6E71654D65200FA2D98 /* SipConfig.cfg in Resources */,
 				48D0A6EB1654D66200FA2D98 /* InfoPlist.strings in Resources */,
 				48EDD2101667652A007B89DA /* ColorCurves.png in Resources */,
-				48CB2C4D17E6DB7700E19C3D /* NBPeopleListTab@2x.png in Resources */,
 				48B93873187B647F00132535 /* Licenses.json in Resources */,
 				4888D51D166D1AEE00572566 /* Flip@2x.png in Resources */,
 				4888D521166D1AEE00572566 /* HangupPhone@2x.png in Resources */,
 				4888D528166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */,
 				488AD1EE16E799F4004D3A2A /* NumberStatesView.xib in Resources */,
-				48A261C116FDE26100007638 /* CallStateView.xib in Resources */,
 				48ADD0F41706551F001515EB /* RetryPhoneSmall@2x.png in Resources */,
 				48995E0C18739F46001395C2 /* Phone.png in Resources */,
 				483679F31722F2CF001A02AF /* List.png in Resources */,
@@ -3328,16 +3362,17 @@
 				488AD1EA16E799C3004D3A2A /* NumberStatesViewController.m in Sources */,
 				488AD1F116E80A60004D3A2A /* NSObject+Blocks.m in Sources */,
 				48CB0AFF19DB2E1B00F95369 /* WebInterface.m in Sources */,
+				485F93CE1DEF5CF4006E31ED /* GraphicCallStateView.m in Sources */,
 				48F3CEA01D295D04000925EE /* NumberTermsViewController.m in Sources */,
 				4896D90016EBE613008A2354 /* NumberAreasViewController.m in Sources */,
 				48200D1C16EC89BA0069677E /* NumberType.m in Sources */,
+				48FDF65D1DF9FE4900A2A7F6 /* UIView+LayerProperties.m in Sources */,
 				4822B42A1C92EB7C004BD2F5 /* TabBadgeView.m in Sources */,
 				48FC30C51C2221360032387E /* ProofType.m in Sources */,
 				48232B721BFC8E5D006D667E /* AddressData.m in Sources */,
 				4830462416EE269D000F9B05 /* NumberAreaViewController.m in Sources */,
 				48F14EE61BF9C63A00541EEC /* AddressViewController.m in Sources */,
 				4823C0CD1CBA7F3800030FC7 /* WebViewController.m in Sources */,
-				48A261C416FDE32400007638 /* CallStateView.m in Sources */,
 				48B813491AADF9380019AF77 /* NBContact.m in Sources */,
 				48FC54321C89EDA3007658FE /* CellDotView.m in Sources */,
 				48B813351AADF8DE0019AF77 /* NBPeopleListViewController.m in Sources */,
@@ -3375,6 +3410,7 @@
 				48CA503D172C5EB400CB1B7B /* DestinationViewController.m in Sources */,
 				481DFBAB1C70CAC1009191B0 /* RecordingsViewController.m in Sources */,
 				48CA5042172FC6C800CB1B7B /* DestinationSequenceViewController.m in Sources */,
+				485F93D21DEF6787006E31ED /* CallStateView.m in Sources */,
 				48B0C3F9174989F500DAB3BD /* Keychain.m in Sources */,
 				48A0CE781809BE3100B8A9F8 /* CallBaseViewController.m in Sources */,
 				4837AF7618D9DAF000D3AEBC /* GetStartedActionViewController.m in Sources */,
@@ -3400,6 +3436,7 @@
 				48793369185C6A5800C08C8C /* PhonesViewController.m in Sources */,
 				48251B9B187F4A8A00E69C3A /* SettingsViewController.m in Sources */,
 				48A26DE618BE279F00736CCB /* ItemsViewController.m in Sources */,
+				486CEF971DEDFCFD00D1E088 /* SignalDotView.m in Sources */,
 				4814D56D19E9660200958E33 /* AFURLRequestSerialization.m in Sources */,
 				48B8136F1AADF9B20019AF77 /* NBPersonIMCell.m in Sources */,
 				48B813231AADF79F0019AF77 /* NBRecentContactViewController.m in Sources */,
@@ -3455,7 +3492,6 @@
 				4896D90116EBE613008A2354 /* NumberAreasViewController.m in Sources */,
 				48200D1D16EC89BA0069677E /* NumberType.m in Sources */,
 				4830462516EE269D000F9B05 /* NumberAreaViewController.m in Sources */,
-				48A261C516FDE32400007638 /* CallStateView.m in Sources */,
 				488FBBE31700852F000ECC71 /* NumberData.m in Sources */,
 				48BC7F3D1702FDD1006671B5 /* NumberViewController.m in Sources */,
 				489387FC17039158005CC795 /* DestinationData.m in Sources */,

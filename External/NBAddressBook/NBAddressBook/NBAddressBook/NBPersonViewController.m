@@ -12,6 +12,7 @@
 #import "NBPeoplePickerNavigationController.h"
 #import "NBRecentContactViewController.h"
 #import "CallableData.h"
+#import "Strings.h"
 
 
 @interface NBPersonViewController () <UITextFieldDelegate>
@@ -1593,7 +1594,7 @@
                     }
                     else
                     {
-                        cell.cellTextfield.placeholder = NSLocalizedString(@"CI_IS_NOT_SHOWN", @"");
+                        cell.cellTextfield.placeholder = [Strings hiddenString];
                     }
 
                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
