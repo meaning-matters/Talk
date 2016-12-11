@@ -219,7 +219,7 @@
  
      - toE164             E164 of the destinating party (callee)
  
-     - hangupReason       Condition by which this leg was ended, one of (in order of frequency; a occurrence count
+     - hangupCause       Condition by which this leg was ended, one of (in order of frequency; a occurrence count
                           from OCT 2016 is added):
                               NORMAL_CLEARING        12851
                               <null>                  2268 // Probably old NumberBay system.
@@ -410,7 +410,7 @@
         recent.fromCost = fromRecord[@"cost"];
         recent.toCost   = @(0.0);
 
-        if ([fromRecord[@"hangupReason"] isEqualToString:@"NORMAL_CLEARING"])
+        if ([fromRecord[@"hangupCause"] isEqualToString:@"NORMAL_CLEARING"])
         {
             recent.status = @(CallStatusCancelled);
         }
@@ -453,7 +453,7 @@
      cost = 0;
      duration = 38;
      fromE164 = 443301223030;
-     hangupReason = "NORMAL_CLEARING";
+     hangupCause = "NORMAL_CLEARING";
      startDateTime = "2016-11-09 14:28:19";
      toE164 = 442038083855;
      type = inbound;
@@ -464,7 +464,7 @@
      cost = 0;
      duration = 38;
      fromE164 = 442038083855;
-     hangupReason = "NO_USER_RESPONSE";
+     hangupCause = "NO_USER_RESPONSE";
      startDateTime = "2016-11-09 14:28:19";
      toE164 = 34630535344;
      type = ivr;
@@ -477,7 +477,7 @@
      cost = "0.02235067964002524";
      duration = 27;
      fromE164 = 442038083855;
-     hangupReason = "NORMAL_CLEARING";
+     hangupCause = "NORMAL_CLEARING";
      startDateTime = "2016-11-14 16:36:35";
      toE164 = 34630535344;
      type = callback;
@@ -488,7 +488,7 @@
      cost = "0.001861347425062485";
      duration = 13;
      fromE164 = 34630535344;
-     hangupReason = "NORMAL_CLEARING";
+     hangupCause = "NORMAL_CLEARING";
      startDateTime = "2016-11-14 16:36:48";
      toE164 = 3215666666;
      type = callthur;
@@ -509,7 +509,7 @@
         recent.fromCost = fromRecord[@"cost"];
         recent.toCost   = toRecord[@"cost"];
 
-        if ([toRecord[@"hangupReason"] isEqualToString:@"NORMAL_CLEARING"])
+        if ([toRecord[@"hangupCause"] isEqualToString:@"NORMAL_CLEARING"])
         {
             recent.status = @(CallStatusSuccess);
         }
@@ -534,7 +534,7 @@
         recent.fromCost = fromRecord[@"cost"];
         recent.toCost   = toRecord[@"cost"];
 
-        if ([toRecord[@"hangupReason"] isEqualToString:@"NORMAL_CLEARING"])
+        if ([toRecord[@"hangupCause"] isEqualToString:@"NORMAL_CLEARING"])
         {
             recent.status = @(CallStatusSuccess);
         }
