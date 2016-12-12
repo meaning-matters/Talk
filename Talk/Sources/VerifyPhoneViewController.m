@@ -71,8 +71,8 @@
                                                                   @"A. Enter your phone number,\n"
                                                                   @"B. Remember the code,\n"
                                                                   @"C. Request call & enter code.\n"
-                                                                  @"The small cost for "
-                                                                  @"this call is taken from your credit.",
+                                                                  @"This verification call requires some "
+                                                                  @"of your Credit.",
                                                                   @"...");
 
     [self.numberButton setTitle:NSLocalizedStringWithDefaultValue(@"Provisioning:Verify EnterNumberTitle", nil,
@@ -135,7 +135,8 @@
                                                 @"[iOS alert title size].");
     message = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyCancelMessage", nil,
                                                 [NSBundle mainBundle],
-                                                @"Enter the number of a phone you own, or are responsible for.",
+                                                @"Enter the number of a phone you own, or are explicitly allowed to "
+                                                @"use by its owner.",
                                                 @"Message explaining about the phone number they need to enter.\n"
                                                 @"[iOS alert message size]");
     [BlockAlertView showPhoneNumberAlertViewWithTitle:title

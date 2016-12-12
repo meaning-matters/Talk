@@ -240,3 +240,4 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 
 * BUG: When on slow internet, e.g. Edge (via Developer iOS settings), and calling a contact from the keypad before the price was not retrieved yet, the keypad shows "(null) - 0.020", on return to the keypad when cancelling the call for example.  Apparently the answer comes after this keypad label was wiped, but the country and phone type were no longer available (because they were wiped).
 
+* Call rates popup says "Plus the callback to your mobile number in BE". Must mention 'Phone' -> "Plus callback to the Phone (BE mobile) you selected: £0.05"

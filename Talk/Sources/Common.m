@@ -1537,7 +1537,7 @@ static Common* sharedCommon;
     NSString* title   = NSLocalizedStringWithDefaultValue(@"Common ...", nil, [NSBundle mainBundle],
                                                           @"Callback Phone", @"...");
     NSString* message = NSLocalizedStringWithDefaultValue(@"Phone ...", nil, [NSBundle mainBundle],
-                                                          @"When making a call, you're first being called back on this phone.",
+                                                          @"When making a call, you're first being called back on this Phone.",
                                                           @"...");
     [BlockAlertView showAlertViewWithTitle:title
                                    message:message
