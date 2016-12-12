@@ -77,6 +77,11 @@
     {
         completion ? completion() : 0;
     }
+    else if (phoneNumber.number.length == 0)
+    {
+        // Trying to call back incoming call from Recents while there's no Caller ID.
+        return;
+    }
     else
     {
         NSString* title;
