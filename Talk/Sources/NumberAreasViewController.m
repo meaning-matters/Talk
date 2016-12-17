@@ -67,6 +67,7 @@
 #import "Settings.h"
 #import "AddressType.h"
 #import "DataManager.h"
+#import "PurchaseManager.h"
 
 typedef NS_ENUM(NSUInteger, AreaFormat)
 {
@@ -431,22 +432,36 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
     NSString*        code;
     NSString*        name;
     NSString*        type = [NumberType localizedStringForNumberTypeMask:numberTypeMask];
+    UILabel*         priceLabel;
+    const NSInteger  priceLabelTag = 5678;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DefaultCell"];
         cell.accessoryType = UITableViewCellAccessoryNone;
+
+        priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(82, 25, 224, 17)];
+        priceLabel.textAlignment = NSTextAlignmentRight;
+        priceLabel.font          = cell.detailTextLabel.font;
+        priceLabel.textColor     = [Skinning placeholderColor];
+        priceLabel.tag           = priceLabelTag;
+
+        [cell.contentView addSubview:priceLabel];
+    }
+    else
+    {
+        priceLabel = (UILabel*)[cell viewWithTag:priceLabelTag];
     }
 
     switch (areaFormat)
     {
-        case AreaFormatGeographic:          code = area[@"areaCode"]; name = [self nameForObject:area]; break;
-        case AreaFormatNational:            code = area[@"areaCode"]; name = type;                      break;
-        case AreaFormatNationalException:   code = @"---";            name = type;                      break;
-        case AreaFormatTollFree:            code = area[@"areaCode"]; name = type;                      break;
-        case AreaFormatMobile:              code = area[@"areaCode"]; name = type;                      break;
-        case AreaFormatInternational:       code = @"---";            name = type;                      break;
+        case AreaFormatGeographic:        code = area[@"areaCode"]; name = [self nameForObject:area]; break;
+        case AreaFormatNational:          code = area[@"areaCode"]; name = type;                      break;
+        case AreaFormatNationalException: code = @"---";            name = type;                      break;
+        case AreaFormatTollFree:          code = area[@"areaCode"]; name = type;                      break;
+        case AreaFormatMobile:            code = area[@"areaCode"]; name = type;                      break;
+        case AreaFormatInternational:     code = @"---";            name = type;                      break;
     }
 
     // Strip away area code that was only added to the names to allow searching for it.
@@ -459,6 +474,11 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
 
     cell.imageView.image      = [UIImage imageNamed:isoCountryCode];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"+%@ %@", [Common callingCodeForCountry:isoCountryCode], code];
+
+    float monthPrice = [area[@"monthFee"] floatValue];
+    NSString* monthPriceString = [[PurchaseManager sharedManager] localizedFormattedPrice:monthPrice];
+    priceLabel.text = [NSString stringWithFormat:@"%@ / %@", monthPriceString, [Strings monthString]];
+
     if ([area[@"stock"] intValue] > 0)
     {
         cell.textLabel.text = name;

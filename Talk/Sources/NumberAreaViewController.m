@@ -821,7 +821,7 @@ typedef enum
                                                             @"Select Period & Buy",
                                                             @"....\n"
                                                             @"[1 line larger font].");
-;
+
     cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
