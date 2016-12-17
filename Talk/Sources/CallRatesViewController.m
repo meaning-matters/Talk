@@ -344,7 +344,7 @@
     CountryRegion region     = [Settings sharedSettings].countryRegion;
     NSString*     regionName = [[CountryRegions sharedRegions] localizedStringForRegion:region];
     NSString*     format     = NSLocalizedStringWithDefaultValue(@"NumberCountries Placeholder", nil, [NSBundle mainBundle],
-                                                                 @"Search Per Minute Rates In %@",
+                                                                 @"Search Rates In %@",
                                                                  @"...");
 
     return [NSString stringWithFormat:format, regionName];
