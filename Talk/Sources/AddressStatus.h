@@ -11,11 +11,12 @@
 typedef NS_ENUM(NSUInteger, AddressStatusMask)
 {
     AddressStatusUnknown                   = 0,
-    AddressStatusNotVerifiedMask           = 1UL << 0,  // Default status for Numbers without Address requirement.
-    AddressStatusVerificationRequestedMask = 1UL << 1,
-    AddressStatusVerifiedMask              = 1UL << 2,
-    AddressStatusRejectedMask              = 1UL << 3,
-    AddressStatusDisabledMask              = 1UL << 4,
+    AddressStatusStagedMask                = 1UL << 0,
+    AddressStatusNotVerifiedMask           = 1UL << 1,  // Default status for Numbers without Address requirement.
+    AddressStatusVerificationRequestedMask = 1UL << 2,
+    AddressStatusVerifiedMask              = 1UL << 3,
+    AddressStatusRejectedMask              = 1UL << 4,
+    AddressStatusDisabledMask              = 1UL << 5,
 };
 
 typedef NS_ENUM(NSUInteger, RejectionReasonMask)

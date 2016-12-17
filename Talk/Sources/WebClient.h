@@ -192,7 +192,25 @@
                                 reply:(void (^)(NSError* error))reply;
 
 // 10G. UPDATE ADDRESS' NAME
-- (void)updateAddressWithId:(NSString*)addressId withName:(NSString*)name reply:(void (^)(NSError* error))reply;
+- (void)updateAddressWithId:(NSString*)addressId
+                       name:(NSString*)name
+                 salutation:(NSString*)salutation
+                  firstName:(NSString*)firstName
+                   lastName:(NSString*)lastName
+                companyName:(NSString*)companyName
+         companyDescription:(NSString*)companyDescription
+                     street:(NSString*)street
+             buildingNumber:(NSString*)buildingNumber
+             buildingLetter:(NSString*)buildingLetter
+                       city:(NSString*)city
+                   postcode:(NSString*)postcode
+             isoCountryCode:(NSString*)isoCountryCode
+                     idType:(NSString*)idType
+                   idNumber:(NSString*)idNumber
+               fiscalIdCode:(NSString*)fiscalIdCode
+                 streetCode:(NSString*)streetCode
+           municipalityCode:(NSString*)municipalityCode
+                      reply:(void (^)(NSError* error))reply;
 
 // 11A. PURCHASE NUMBER
 - (void)purchaseNumberForMonths:(NSUInteger)months

@@ -826,11 +826,47 @@
 
 
 // 10G. UPDATE ADDRESS' NAME
-- (void)updateAddressWithId:(NSString*)addressId withName:(NSString*)name reply:(void (^)(NSError* error))reply
+- (void)updateAddressWithId:(NSString*)addressId
+                       name:(NSString*)name
+                 salutation:(NSString*)salutation
+                  firstName:(NSString*)firstName
+                   lastName:(NSString*)lastName
+                companyName:(NSString*)companyName
+         companyDescription:(NSString*)companyDescription
+                     street:(NSString*)street
+             buildingNumber:(NSString*)buildingNumber
+             buildingLetter:(NSString*)buildingLetter
+                       city:(NSString*)city
+                   postcode:(NSString*)postcode
+             isoCountryCode:(NSString*)isoCountryCode
+                     idType:(NSString*)idType
+                   idNumber:(NSString*)idNumber
+               fiscalIdCode:(NSString*)fiscalIdCode
+                 streetCode:(NSString*)streetCode
+           municipalityCode:(NSString*)municipalityCode
+                      reply:(void (^)(NSError* error))reply;
 {
-    NSString*     username   = [Settings sharedSettings].webUsername;
-    NSDictionary* parameters = @{@"name" : name};
-    
+    NSString*            username   = [Settings sharedSettings].webUsername;
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+
+    (name.length               > 0) ? parameters[@"name"]               = name                          : 0;
+    (salutation.length         > 0) ? parameters[@"salutation"]         = salutation                    : 0;
+    (firstName.length          > 0) ? parameters[@"firstName"]          = firstName                     : 0;
+    (lastName.length           > 0) ? parameters[@"lastName"]           = lastName                      : 0;
+    (companyName.length        > 0) ? parameters[@"companyName"]        = companyName                   : 0;
+    (companyDescription.length > 0) ? parameters[@"companyDescription"] = companyDescription            : 0;
+    (street.length             > 0) ? parameters[@"street"]             = street                        : 0;
+    (buildingNumber.length     > 0) ? parameters[@"buildingNumber"]     = buildingNumber                : 0;
+    (buildingLetter.length     > 0) ? parameters[@"buildingLetter"]     = buildingLetter                : 0;
+    (city.length               > 0) ? parameters[@"city"]               = city                          : 0;
+    (postcode.length           > 0) ? parameters[@"postcode"]           = postcode                      : 0;
+    (isoCountryCode.length     > 0) ? parameters[@"isoCountryCode"]     = isoCountryCode                : 0;
+    (idType.length             > 0) ? parameters[@"idType"]             = idType                        : 0;
+    (idNumber.length           > 0) ? parameters[@"idNumber"]           = idNumber                      : 0;
+    (fiscalIdCode.length       > 0) ? parameters[@"fiscalIdCode"]       = fiscalIdCode                  : 0;
+    (streetCode.length         > 0) ? parameters[@"streetCode"]         = streetCode                    : 0;
+    (municipalityCode.length   > 0) ? parameters[@"municipalityCode"]   = municipalityCode              : 0;
+
     [self putPath:[NSString stringWithFormat:@"/users/%@/addresses/%@", username, addressId]
        parameters:parameters
             reply:^(NSError* error, id content)

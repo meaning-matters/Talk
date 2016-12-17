@@ -80,6 +80,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 @property (nonatomic, assign) TableRowsAddress            rowsAddress;
 @property (nonatomic, assign) BOOL                        isNew;
 @property (nonatomic, assign) BOOL                        isDeleting;
+@property (nonatomic, assign) BOOL                        isUpdatable;
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedAddressesController;
 @property (nonatomic, strong) NSString*                   numberIsoCountryCode;
@@ -147,6 +148,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     if (self = [super initWithManagedObjectContext:managedObjectContext])
     {
         self.isNew                = (address == nil);
+        self.isUpdatable          = (address != nil && address.addressStatus == AddressStatusStagedMask);
         self.address              = address;
         self.name                 = address.name;
         self.title                = self.isNew ? [Strings newAddressString] : [Strings addressString];
@@ -190,7 +192,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         self.idType = [[IdType alloc] initWithString:self.address.idType];
 
         self.rowsDetails |= TableRowDetailsSalutation;
-        if (self.isNew == YES)
+        if (self.isNew == YES || self.isUpdatable)
         {
             self.rowsDetails |= TableRowDetailsCompany;
             self.rowsDetails |= TableRowDetailsFirstName;
@@ -208,7 +210,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         self.rowsAddress |= TableRowAddressCity;
         self.rowsAddress |= TableRowAddressPostcode;
         self.rowsAddress |= TableRowAddressCountry;
-        if (self.isNew == YES)
+        if (self.isNew == YES || self.isUpdatable)
         {
             self.rowsAddress |= TableRowAddressBuildingLetter;
         }
@@ -347,6 +349,18 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                                    action:@selector(cancelAction)];
         self.navigationItem.rightBarButtonItem = buttonItem;
     }
+    else if (self.isUpdatable)
+    {
+        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                                   target:self
+                                                                   action:@selector(saveAction)];
+        self.navigationItem.leftBarButtonItem = buttonItem;
+
+        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                   target:self
+                                                                   action:@selector(cancelAction)];
+        self.navigationItem.rightBarButtonItem = buttonItem;
+    }
     else
     {
         buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
@@ -357,7 +371,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     
     [self updateSaveBarButtonItem];
     
-    if (self.isNew)
+    if (self.isNew && self.isUpdatable)
     {
         [self loadData];
     }
@@ -402,9 +416,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         switch (mask)
         {
             case AddressStatusUnknown:
-            {
-                break;
-            }
+            case AddressStatusStagedMask:
             case AddressStatusNotVerifiedMask:
             {
                 // Ignore.
@@ -500,7 +512,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 {
     BOOL complete;
     
-    if (self.isNew == YES)
+    if (self.isNew == YES || self.isUpdatable)
     {
         complete = [self isAddressComplete];
 
@@ -600,7 +612,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     unsigned emptyMask  = 0;
     unsigned currentBit = 0;
 
-    if (self.isNew == YES)
+    if (self.isNew == YES || self.isUpdatable)
     {
         emptyMask |= ([self.name                   stringByRemovingWhiteSpace].length == 0) << 0;
         emptyMask |= ([self.address.companyName    stringByRemovingWhiteSpace].length == 0) << 1;
@@ -690,7 +702,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 {
     BOOL complete;
     
-    if (self.isNew == YES)
+    if (self.isNew == YES || self.isUpdatable)
     {
         if (self.salutation.isPerson)
         {
@@ -731,7 +743,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     BOOL complete;
     BOOL valid;
 
-    if (self.isNew == YES)
+    if (self.isNew == YES || self.isUpdatable)
     {
         complete = !((self.rowsExtraFields & TableRowExtraFieldsNationality) &&
                      ([self.address.nationality stringByRemovingWhiteSpace].length == 0)) &&
@@ -777,10 +789,10 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 {
     self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     
-    if (self.isNew)
+    if (self.isNew || self.isUpdatable)
     {
-        NSInteger detailsSection     = [Common nOfBit:TableSectionDetails     inValue:self.sections];
-        NSInteger addressSection     = [Common nOfBit:TableSectionAddress     inValue:self.sections];
+        NSInteger detailsSection       = [Common nOfBit:TableSectionDetails inValue:self.sections];
+        NSInteger addressSection       = [Common nOfBit:TableSectionAddress inValue:self.sections];
 
         self.companyNameIndexPath      = [self indexPathForRowMask:TableRowDetailsCompany        inSection:detailsSection];
         self.firstNameIndexPath        = [self indexPathForRowMask:TableRowDetailsFirstName      inSection:detailsSection];
@@ -1016,12 +1028,12 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     self.sections |= TableSectionAddress;
 
     // Optional sections.
-    self.sections |= ((self.isNew && self.proofType != nil) || self.address.hasProof) ? TableSectionVerification : 0;
+    self.sections |= (((self.isNew || self.isUpdatable) && self.proofType != nil) || self.address.hasProof) ? TableSectionVerification : 0;
 
     // We need to determine the existence of the ExtraFields section dynamically, based on
     // the country of the address (which the user may have to select from a list).
     self.rowsExtraFields = 0;
-    if (self.isNew)
+    if (self.isNew || self.isUpdatable)
     {
         if (self.extraFieldsInfo != nil)
         {
@@ -1100,7 +1112,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         }
         case TableSectionAddress:
         {
-            if (self.isNew)
+            if (self.isNew || self.isUpdatable)
             {
                 switch (self.addressTypeMask)
                 {
@@ -1216,7 +1228,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         }
         case TableSectionExtraFields:
         {
-            if (self.isNew)
+            if (self.isNew || self.isUpdatable)
             {
                 title = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
                                                           @"A red color indicates that the text you entered is not "
@@ -1252,7 +1264,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         {
             case TableSectionVerification:
             {
-                if (self.isNew && self.address.hasProof == NO)
+                if ((self.isNew || self.isUpdatable) && self.address.hasProof == NO)
                 {
                     __weak typeof(self) weakSelf = self;
                     [self.imagePicker pickImageWithCompletion:^(NSData* imageData)
@@ -1459,7 +1471,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
     cell.textLabel.text            = NSLocalizedString(@"Proof Image", @"Proof cell title");
     cell.detailTextLabel.textColor = [Skinning placeholderColor];
-    if (self.isNew && self.address.hasProof == NO)
+    if ((self.isNew || self.isUpdatable) && self.address.hasProof == NO)
     {
         cell.detailTextLabel.text = [Strings requiredString];
         cell.accessoryType        = UITableViewCellAccessoryNone;
@@ -1493,16 +1505,16 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         textField = (UITextField*)[cell viewWithTag:CommonTextFieldCellTag];
     }
     
-    textField.userInteractionEnabled = self.isNew;
+    textField.userInteractionEnabled = (self.isNew || self.isUpdatable);
     switch ([Common nthBitSet:indexPath.row inValue:self.rowsDetails])
     {
         case TableRowDetailsSalutation:
         {
             self.salutationTextField = textField;
-            cell.accessoryType       = self.isNew ? UITableViewCellAccessoryDisclosureIndicator
-                                                  : UITableViewCellAccessoryNone;
-            cell.selectionStyle      = self.isNew ? UITableViewCellSelectionStyleBlue
-                                                  : UITableViewCellSelectionStyleNone;
+            cell.accessoryType       = (self.isNew || self.isUpdatable) ? UITableViewCellAccessoryDisclosureIndicator
+                                                                        : UITableViewCellAccessoryNone;
+            cell.selectionStyle      = (self.isNew || self.isUpdatable) ? UITableViewCellSelectionStyleBlue
+                                                                        : UITableViewCellSelectionStyleNone;
             cell.textLabel.text      = [Strings salutationString];
             
             textField.text = self.salutation.localizedString;
@@ -1593,7 +1605,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     cell.accessoryType  = UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-    textField.userInteractionEnabled = self.isNew;
+    textField.userInteractionEnabled = (self.isNew || self.isUpdatable);
     switch ([Common nthBitSet:indexPath.row inValue:self.rowsAddress])
     {
         case TableRowAddressStreet:
@@ -1639,10 +1651,10 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                 {
                     textField.placeholder = [Strings requiredString];
                     textField.text        = nil;
-                    cell.accessoryType    = self.isNew ? UITableViewCellAccessoryDisclosureIndicator
-                                                       : UITableViewCellAccessoryNone;
-                    cell.selectionStyle   = self.isNew ? UITableViewCellSelectionStyleDefault
-                                                       : UITableViewCellSelectionStyleNone;
+                    cell.accessoryType    = (self.isNew || self.isUpdatable) ? UITableViewCellAccessoryDisclosureIndicator
+                                                                             : UITableViewCellAccessoryNone;
+                    cell.selectionStyle   = (self.isNew || self.isUpdatable) ? UITableViewCellSelectionStyleDefault
+                                                                             : UITableViewCellSelectionStyleNone;
                     textField.text        = nil;
                 }
                 
@@ -1669,10 +1681,10 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                 if (singlePostcode == NO)
                 {
                     textField.placeholder = [Strings requiredString];
-                    cell.accessoryType    = self.isNew ? UITableViewCellAccessoryDisclosureIndicator
-                                                       : UITableViewCellAccessoryNone;
-                    cell.selectionStyle   = self.isNew ? UITableViewCellSelectionStyleDefault
-                                                       : UITableViewCellSelectionStyleNone;
+                    cell.accessoryType    = (self.isNew || self.isUpdatable) ? UITableViewCellAccessoryDisclosureIndicator
+                                                                             : UITableViewCellAccessoryNone;
+                    cell.selectionStyle   = (self.isNew || self.isUpdatable) ? UITableViewCellSelectionStyleDefault
+                                                                             : UITableViewCellSelectionStyleNone;
                     textField.text        = nil;
                 }
                 
@@ -1691,7 +1703,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             
             if (self.addressTypeMask == AddressTypeLocalMask    ||
                 self.addressTypeMask == AddressTypeNationalMask ||
-                !self.isNew)
+                (!self.isNew && !self.isUpdatable))
             {
                 cell.accessoryType  = UITableViewCellAccessoryNone;
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -1742,7 +1754,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         textField = (UITextField*)[cell viewWithTag:CommonTextFieldCellTag];
     }
 
-    textField.userInteractionEnabled = self.isNew;
+    textField.userInteractionEnabled = (self.isNew || self.isUpdatable);
     textField.placeholder            = [Strings requiredString];
     switch ([Common nthBitSet:indexPath.row inValue:self.rowsExtraFields])
     {
@@ -1750,7 +1762,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         {
             textField.userInteractionEnabled = NO;
 
-            if (self.isNew)
+            if (self.isNew || self.isUpdatable)
             {
                 cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -1777,7 +1789,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         {
             textField.userInteractionEnabled = NO;
 
-            if (self.isNew && [self.extraFieldsInfo[self.salutation.typeString][@"idTypes"] count] > 1)
+            if ((self.isNew || self.isUpdatable) && [self.extraFieldsInfo[self.salutation.typeString][@"idTypes"] count] > 1)
             {
                 cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -1840,7 +1852,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         {
             textField.userInteractionEnabled = NO;
 
-            if (self.isNew)
+            if (self.isNew || self.isUpdatable)
             {
                 cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -1931,7 +1943,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     else
     {
         [super textFieldShouldBeginEditing:textField];
-        if (self.isNew)
+        if (self.isNew || self.isUpdatable)
         {
             textField.enablesReturnKeyAutomatically = NO;
         }
@@ -2074,7 +2086,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-    if (self.isNew == NO)
+    if (self.isNew == NO && self.isUpdatable == NO)
     {
         return [super textFieldShouldReturn:textField];
     }
@@ -2224,26 +2236,44 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (void)saveAction
 {
-    if (self.isNew == NO && [self.address.name isEqualToString:self.name] == YES)
+    if (self.isNew == NO && self.isUpdatable == NO && [self.address.name isEqualToString:self.name] == YES)
     {
         return;
     }
     
-    if (self.isNew == YES)
+    if (self.isNew == YES || self.isUpdatable == YES)
     {
         self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     
-    [[WebClient sharedClient] updateAddressWithId:self.address.addressId withName:self.name reply:^(NSError *error)
+    [[WebClient sharedClient] updateAddressWithId:self.address.addressId
+                                             name:self.address.name
+                                       salutation:self.address.salutation
+                                        firstName:self.address.firstName
+                                         lastName:self.address.lastName
+                                      companyName:self.address.companyName
+                               companyDescription:self.address.companyDescription
+                                           street:self.address.street
+                                   buildingNumber:self.address.buildingNumber
+                                   buildingLetter:self.address.buildingLetter
+                                             city:self.address.city
+                                         postcode:self.address.postcode
+                                   isoCountryCode:self.address.isoCountryCode
+                                           idType:self.address.idType
+                                         idNumber:self.address.idNumber
+                                     fiscalIdCode:self.address.fiscalIdCode
+                                       streetCode:self.address.streetCode
+                                 municipalityCode:self.address.municipalityCode
+                                            reply:^(NSError *error)
     {
         if (error == nil)
         {
             self.address.name = self.name;
-            
+
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
             
             [self.view endEditing:YES];
-            if (self.isNew == YES)
+            if (self.isNew == YES || self.isUpdatable == YES)
             {
                 [self dismissViewControllerAnimated:YES completion:nil];
             }

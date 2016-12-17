@@ -14,6 +14,10 @@
 {
     AddressStatusMask mask;
 
+    if ([string isEqualToString:@"STAGED"])
+    {
+        mask = AddressStatusStagedMask;
+    }
     if ([string isEqualToString:@"NOT_VERIFIED"])
     {
         mask = AddressStatusNotVerifiedMask;
