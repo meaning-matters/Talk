@@ -1019,9 +1019,9 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 }
 
 
-- (NSString*)localizedFormattedPrice2ExtraDigits:(float)price
+- (NSString*)localizedFormattedPrice1ExtraDigit:(float)price
 {
-    return [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:price];
+    return [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:price];
 }
 
 

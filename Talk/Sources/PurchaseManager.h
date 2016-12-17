@@ -31,7 +31,7 @@ extern NSString* const PurchaseManagerProductsLoadedNotification;
 
 - (NSString*)localizedFormattedPrice:(float)price;
 
-- (NSString*)localizedFormattedPrice2ExtraDigits:(float)price;
+- (NSString*)localizedFormattedPrice1ExtraDigit:(float)price;
 
 - (NSString*)localizedPriceForProductIdentifier:(NSString*)identifier;
 

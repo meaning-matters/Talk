@@ -29,7 +29,7 @@
 
 - (void)saveContext;
 
-- (NSString*)localizedFormattedPrice2ExtraDigits:(float)price;
+- (NSString*)localizedFormattedPrice1ExtraDigit:(float)price;
 
 - (void)updateRecent:(CallRecordData*)recent completion:(void (^)(BOOL success, BOOL ended))completion;
 

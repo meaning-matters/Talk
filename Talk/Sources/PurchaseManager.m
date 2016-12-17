@@ -747,7 +747,7 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
 }
 
 
-- (NSString*)localizedFormattedPrice2ExtraDigits:(float)price
+- (NSString*)localizedFormattedPrice1ExtraDigit:(float)price
 {
     NSString* formattedString;
     NSLocale* priceLocale = [self priceLocale];
@@ -761,7 +761,7 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
         [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
         [numberFormatter setLocale:priceLocale];
 
-        NSUInteger fractionDigits = numberFormatter.maximumFractionDigits + 2;
+        NSUInteger fractionDigits = numberFormatter.maximumFractionDigits + 1;
         [numberFormatter setMaximumFractionDigits:fractionDigits];
         [numberFormatter setMinimumFractionDigits:fractionDigits];
 

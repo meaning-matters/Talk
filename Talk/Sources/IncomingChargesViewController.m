@@ -136,7 +136,7 @@
         cell.textLabel.attributedText = [Common strikethroughAttributedString:cell.textLabel.text];
     }
 
-    cell.detailTextLabel.text   = [[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:charge];
+    cell.detailTextLabel.text   = [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:charge];
     cell.userInteractionEnabled = NO; // Must be set last, otherwise setting colors does not work.
 
     return cell;

@@ -1284,7 +1284,7 @@ static Common* sharedCommon;
                 if (error == nil)
                 {
                     totalCost += ratePerMinute;
-                    completion([[PurchaseManager sharedManager] localizedFormattedPrice2ExtraDigits:totalCost]);
+                    completion([[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:totalCost]);
                 }
                 else
                 {

@@ -117,7 +117,7 @@
         float cost = [recent.fromCost floatValue] + [recent.toCost floatValue];
         if (cost != 0)
         {
-            costString = [manager.delegate localizedFormattedPrice2ExtraDigits:cost];
+            costString = [manager.delegate localizedFormattedPrice1ExtraDigit:cost];
         }
         else
         {
@@ -156,14 +156,14 @@
                             statusLabel.text = NSLocalizedString(@"RCD_CALLBACK",  @"");
 
                             float cost       = [recent.fromCost floatValue];
-                            costLabel.text   = [manager.delegate localizedFormattedPrice2ExtraDigits:cost];
+                            costLabel.text   = [manager.delegate localizedFormattedPrice1ExtraDigit:cost];
                         }
                         else
                         {
                             statusLabel.text = [self durationStringForDuration:[recent.toDuration intValue]];
 
                             float cost       = [recent.fromCost floatValue] + [recent.toCost floatValue];
-                            costLabel.text   = [manager.delegate localizedFormattedPrice2ExtraDigits:cost];
+                            costLabel.text   = [manager.delegate localizedFormattedPrice1ExtraDigit:cost];
                         }
                     }
                 }
