@@ -477,7 +477,7 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
 
     float     monthPrice       = [area[@"monthFee"] floatValue];
     NSString* monthPriceString = [[PurchaseManager sharedManager] localizedFormattedPrice:monthPrice];
-    priceLabel.text = [NSString stringWithFormat:@"%@ / %@", monthPriceString, [Strings monthString]];
+    priceLabel.text = [NSString stringWithFormat:@"%@/%@", monthPriceString, [Strings monthString]];
 
     if ([area[@"stock"] intValue] > 0)
     {

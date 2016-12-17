@@ -825,7 +825,7 @@ typedef enum
 
     float     monthPrice       = [area[@"monthFee"] floatValue];
     NSString* monthPriceString = [[PurchaseManager sharedManager] localizedFormattedPrice:monthPrice];
-    cell.detailTextLabel.text      = [NSString stringWithFormat:@"%@ / %@", monthPriceString, [Strings monthString]];
+    cell.detailTextLabel.text      = [NSString stringWithFormat:@"%@/%@", monthPriceString, [Strings monthString]];
     cell.detailTextLabel.textColor = [Skinning priceColor];
 
     cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;

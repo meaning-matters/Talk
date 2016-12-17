@@ -106,6 +106,11 @@
     NSString*     callbackPriceString = [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:self.callbackPrice];
     NSString*     fixedPriceString    = [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:fixedPrice];
     NSString*     mobilePriceString   = [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:mobilePrice];
+    NSString*     perMinuteString     = [NSString stringWithFormat:@"/%@", [Strings shortMinuteString]];
+
+    callbackPriceString = [callbackPriceString stringByAppendingString:perMinuteString];
+    fixedPriceString    = [fixedPriceString    stringByAppendingString:perMinuteString];
+    mobilePriceString   = [mobilePriceString   stringByAppendingString:perMinuteString];
 
     NSString* title;
     NSString* message;
@@ -160,6 +165,10 @@
     float         mobilePrice         = self.callbackPrice + outgoingMobilePrice;
     NSString*     fixedPriceString    = [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:fixedPrice];
     NSString*     mobilePriceString   = [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:mobilePrice];
+    NSString*     perMinuteString     = [NSString stringWithFormat:@"/%@", [Strings shortMinuteString]];
+
+    fixedPriceString  = [fixedPriceString  stringByAppendingString:perMinuteString];
+    mobilePriceString = [mobilePriceString stringByAppendingString:perMinuteString];
 
     cell.detailTextLabel.text = [NSString stringWithFormat:format, fixedPriceString, mobilePriceString];
     cell.accessoryType        = UITableViewCellAccessoryNone;
@@ -335,7 +344,7 @@
     CountryRegion region     = [Settings sharedSettings].countryRegion;
     NSString*     regionName = [[CountryRegions sharedRegions] localizedStringForRegion:region];
     NSString*     format     = NSLocalizedStringWithDefaultValue(@"NumberCountries Placeholder", nil, [NSBundle mainBundle],
-                                                                 @"Search Rates In %@",
+                                                                 @"Search Per Minute Rates In %@",
                                                                  @"...");
 
     return [NSString stringWithFormat:format, regionName];

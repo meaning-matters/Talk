@@ -1271,8 +1271,7 @@ static Common* sharedCommon;
 {
     __block float totalCost = 0.0f;
 
-    [[WebClient sharedClient] retrieveCallRateForE164:callbackE164
-                                                reply:^(NSError *error, float ratePerMinute)
+    [[WebClient sharedClient] retrieveCallRateForE164:callbackE164 reply:^(NSError *error, float ratePerMinute)
     {
         if (error == nil)
         {
@@ -1284,7 +1283,8 @@ static Common* sharedCommon;
                 if (error == nil)
                 {
                     totalCost += ratePerMinute;
-                    completion([[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:totalCost]);
+                    NSString* costString = [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:totalCost];
+                    completion([costString stringByAppendingFormat:@"/%@", [Strings shortMinuteString]]);
                 }
                 else
                 {

@@ -291,6 +291,15 @@
 }
 
 
++ (NSString*)shortMinuteString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Minute abbreviated", nil, [NSBundle mainBundle],
+                                             @"m",
+                                             @"Shortest possible abbreviation of 'minute'\n"
+                                             @"[No size contraint].");
+}
+
+
 + (NSString*)callString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Call", nil, [NSBundle mainBundle],

@@ -73,6 +73,8 @@
 
 + (NSString*)monthsString;
 
++ (NSString*)shortMinuteString;
+
 + (NSString*)callString;
 
 + (NSString*)companyString;
