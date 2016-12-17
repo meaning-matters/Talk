@@ -92,6 +92,12 @@
 }
 
 
+- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return NSLocalizedString(@"Buy With Your Credit", @"");
+}
+
+
 - (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
     NSString* title;
@@ -238,8 +244,29 @@
         {
             if (totalFee < credit)
             {
-                [self payNumber];
-                [[AppDelegate appDelegate] checkCreditWithCompletion:nil];
+                NSString* title;
+                NSString* message;
+
+                title   = NSLocalizedString(@"Buy With Your Credit", @"");
+                message = NSLocalizedString(@"You have enough Credit to make this purchase.", @"");
+                [BlockAlertView showAlertViewWithTitle:title
+                                               message:message
+                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                {
+                    if (cancelled == NO)
+                    {
+                        [self payNumber];
+                        [[AppDelegate appDelegate] checkCreditWithCompletion:nil];
+                    }
+                    else
+                    {
+                        self.payMonths = 0;
+                        self.navigationItem.rightBarButtonItem.enabled = YES;
+                        [self updatePayCell];
+                    }
+                }
+                                     cancelButtonTitle:[Strings cancelString]
+                                     otherButtonTitles:[Strings buyString], nil];
             }
             else
             {
@@ -264,7 +291,7 @@
                                                                 @"Credit: %@.\n\nYou can buy the sufficient standard "
                                                                 @"amount of %@ extra Credit now, or cancel to first "
                                                                 @"increase your Credit from the Credit tab.",
-                                                                @"Alert message: buying extra credit id needed.\n"
+                                                                @"Alert message: buying extra credit is needed.\n"
                                                                 @"[iOS alert message size]");
                     message = [NSString stringWithFormat:message, totalString, creditString, extraString];
                     [BlockAlertView showAlertViewWithTitle:title
