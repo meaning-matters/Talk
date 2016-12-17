@@ -26,7 +26,7 @@
 
 + (UIColor*)valueColor;         // Color for texts at right side of cells when having a value (idem.).
 
-+ (UIColor*)contactRateColor;   // Color of call rate shown on Contact detail.
++ (UIColor*)priceColor;         // Color of call rate shown on Contact detail, or Number price per month.
 
 + (UIColor*)tabBadgeColor;
 

@@ -444,7 +444,7 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
         priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(82, 25, 224, 17)];
         priceLabel.textAlignment = NSTextAlignmentRight;
         priceLabel.font          = cell.detailTextLabel.font;
-        priceLabel.textColor     = [Skinning placeholderColor];
+        priceLabel.textColor     = [Skinning priceColor];
         priceLabel.tag           = priceLabelTag;
 
         [cell.contentView addSubview:priceLabel];
@@ -475,7 +475,7 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
     cell.imageView.image      = [UIImage imageNamed:isoCountryCode];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"+%@ %@", [Common callingCodeForCountry:isoCountryCode], code];
 
-    float monthPrice = [area[@"monthFee"] floatValue];
+    float     monthPrice       = [area[@"monthFee"] floatValue];
     NSString* monthPriceString = [[PurchaseManager sharedManager] localizedFormattedPrice:monthPrice];
     priceLabel.text = [NSString stringWithFormat:@"%@ / %@", monthPriceString, [Strings monthString]];
 

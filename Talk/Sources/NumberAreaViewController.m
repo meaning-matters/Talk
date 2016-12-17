@@ -23,6 +23,7 @@
 #import "AddressData.h"
 #import "AddressStatus.h"
 #import "Settings.h"
+#import "PurchaseManager.h"
 
 
 // Update reloadSections calls when adding/removing sections.
@@ -818,9 +819,14 @@ typedef enum
     }
 
     cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea BuyTitle", nil, [NSBundle mainBundle],
-                                                            @"Select Period & Buy",
+                                                            @"Select Period",
                                                             @"....\n"
                                                             @"[1 line larger font].");
+
+    float     monthPrice       = [area[@"monthFee"] floatValue];
+    NSString* monthPriceString = [[PurchaseManager sharedManager] localizedFormattedPrice:monthPrice];
+    cell.detailTextLabel.text      = [NSString stringWithFormat:@"%@ / %@", monthPriceString, [Strings monthString]];
+    cell.detailTextLabel.textColor = [Skinning priceColor];
 
     cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
 

@@ -67,7 +67,7 @@
 }
 
 
-+ (UIColor*)contactRateColor
++ (UIColor*)priceColor
 {
     return [UIColor colorWithRed:0.78f green:0.78f blue:0.80f alpha:1.00f];
 }
