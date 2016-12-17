@@ -244,11 +244,9 @@
         {
             if (totalFee < credit)
             {
-                NSString* title;
-                NSString* message;
-
-                title   = NSLocalizedString(@"Buy With Your Credit", @"");
-                message = NSLocalizedString(@"You have enough Credit to make this purchase.", @"");
+                NSString* title   = NSLocalizedString(@"Buy With Your Credit", @"");
+                NSString* message  = NSLocalizedString(@"You have enough Credit to make this purchase.", @"");
+                
                 [BlockAlertView showAlertViewWithTitle:title
                                                message:message
                                             completion:^(BOOL cancelled, NSInteger buttonIndex)

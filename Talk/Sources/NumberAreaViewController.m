@@ -818,7 +818,7 @@ typedef enum
     }
 
     cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"NumberArea BuyTitle", nil, [NSBundle mainBundle],
-                                                            @"Select Period",
+                                                            @"Select Period & Buy",
                                                             @"....\n"
                                                             @"[1 line larger font].");
 ;
