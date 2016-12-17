@@ -1255,6 +1255,7 @@ static Common* sharedCommon;
     textField.textAlignment             = NSTextAlignmentRight;
     textField.textColor                 = [Skinning tintColor];
     textField.returnKeyType             = UIReturnKeyDone;
+    textField.font                      = [textField.font fontWithSize:19.0f];  // Equal to native textLabel's font.
 
     textField.delegate                  = delegate;
 
