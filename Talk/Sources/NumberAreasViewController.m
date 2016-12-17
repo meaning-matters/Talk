@@ -490,18 +490,24 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
 
     if ([IncomingChargesViewController hasIncomingChargesWithArea:area])
     {
-        UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = CGRectMake(0, 0, 40, 40);
+        if (cell.accessoryView == nil)
+        {
+            UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+            button.frame = CGRectMake(0, 0, 44, 44);
 
-        UIColor* highlightColor = [UIColor colorWithRed:0.83 green:0.87 blue:0.98 alpha:1.0];
-        [button setImage:[Common maskedImageNamed:@"DollarCents" color:[Skinning tintColor]]
-                forState:UIControlStateNormal];
-        [button setImage:[Common maskedImageNamed:@"DollarCents" color:highlightColor]
-                forState:UIControlStateHighlighted];
+            // Shift image a little upwards to prevent overlapping `priceLabel`.
+            [button setImageEdgeInsets:UIEdgeInsetsMake(-1, (44 - 30) / 2, (44 - 30) + 1, (44 - 30) / 2)];
 
-        [button addTarget:self action:@selector(priceTagAction) forControlEvents:UIControlEventTouchUpInside];
+            UIColor* highlightColor = [UIColor colorWithRed:0.83 green:0.87 blue:0.98 alpha:1.0];
+            [button setImage:[Common maskedImageNamed:@"DollarCents" color:[Skinning tintColor]]
+                    forState:UIControlStateNormal];
+            [button setImage:[Common maskedImageNamed:@"DollarCents" color:highlightColor]
+                    forState:UIControlStateHighlighted];
 
-        cell.accessoryView = button;
+            [button addTarget:self action:@selector(priceTagAction) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell.accessoryView = button;
+        }
     }
     else
     {
