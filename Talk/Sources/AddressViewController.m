@@ -337,14 +337,14 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     UIBarButtonItem* buttonItem;
     if (self.isNew)
     {
-        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                   target:self
-                                                                   action:@selector(cancelAction)];
-        self.navigationItem.leftBarButtonItem = buttonItem;
-
         buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
                                                                    target:self
                                                                    action:@selector(createAction)];
+        self.navigationItem.leftBarButtonItem = buttonItem;
+
+        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                   target:self
+                                                                   action:@selector(cancelAction)];
         self.navigationItem.rightBarButtonItem = buttonItem;
     }
     else
