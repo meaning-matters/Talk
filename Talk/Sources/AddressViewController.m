@@ -355,7 +355,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         self.navigationItem.rightBarButtonItem = buttonItem;
     }
     
-    [self updateRightBarButtonItem];
+    [self updateSaveBarButtonItem];
     
     if (self.isNew)
     {
@@ -376,7 +376,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     self.firstNameTextField.placeholder   = [self placeHolderForTextField:self.firstNameTextField];
     self.lastNameTextField.placeholder    = [self placeHolderForTextField:self.lastNameTextField];
 
-    [self updateRightBarButtonItem];
+    [self updateSaveBarButtonItem];
 }
 
 
@@ -496,7 +496,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 }
 
 
-- (void)updateRightBarButtonItem
+- (void)updateSaveBarButtonItem
 {
     BOOL complete;
     
@@ -514,7 +514,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         complete = [self.name stringByRemovingWhiteSpace].length > 0;
     }
     
-    self.navigationItem.rightBarButtonItem.enabled = complete;
+    self.navigationItem.leftBarButtonItem.enabled = complete;
 }
 
 
@@ -2385,7 +2385,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         }
     }
 
-    [self updateRightBarButtonItem];
+    [self updateSaveBarButtonItem];
 }
 
 @end
