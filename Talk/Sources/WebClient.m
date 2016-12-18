@@ -920,7 +920,7 @@
 }
 
 
-// 11B. UPDATE NUMBER'S NAME
+// 11B. UPDATE NUMBER ATTRIBUTES
 - (void)updateNumberE164:(NSString*)e164
                 withName:(NSString*)name
                autoRenew:(BOOL)autoRenew

@@ -349,18 +349,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                                    action:@selector(cancelAction)];
         self.navigationItem.rightBarButtonItem = buttonItem;
     }
-    else if (self.isUpdatable)
-    {
-        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                                   target:self
-                                                                   action:@selector(saveAction)];
-        self.navigationItem.leftBarButtonItem = buttonItem;
-
-        buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                   target:self
-                                                                   action:@selector(cancelAction)];
-        self.navigationItem.rightBarButtonItem = buttonItem;
-    }
     else
     {
         buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
@@ -371,7 +359,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     
     [self updateSaveBarButtonItem];
     
-    if (self.isNew && self.isUpdatable)
+    if (self.isNew || self.isUpdatable)
     {
         [self loadData];
     }
@@ -765,7 +753,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                      ![idType isValidWithIdString:self.address.fiscalIdCode]) &&
                    !((self.rowsExtraFields & TableRowExtraFieldsStreetCode) &&
                      ![self isValidStreetCode:self.address.streetCode]);
-
     }
     else
     {
