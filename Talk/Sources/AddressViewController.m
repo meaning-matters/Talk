@@ -359,7 +359,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     
     [self updateSaveBarButtonItem];
     
-    if (self.isNew || self.isUpdatable)
+    if (self.isNew /*### || self.isUpdatable*/) //### Loading requires number information. Results in nulls in URL if isUpdatable.
     {
         [self loadData];
     }
@@ -535,7 +535,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             strongSelf.address.city     = @"";     // Resets what user may have typed while loading (on slow internet).
             
             [strongSelf.tableView reloadData];
-            strongSelf.isLoading = NO;    // Placed here, after processing results, to let reload of search results work.
         }
         else if (error.code == WebStatusFailServiceUnavailable)
         {
@@ -585,6 +584,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                  cancelButtonTitle:[Strings cancelString]
                                  otherButtonTitles:nil];
         }
+
+        strongSelf.isLoading = NO;    // Placed here, after processing results, to let reload of search results work.
     }];
 }
 
@@ -1015,7 +1016,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     self.sections |= TableSectionAddress;
 
     // Optional sections.
-    self.sections |= (((self.isNew || self.isUpdatable) && self.proofType != nil) || self.address.hasProof) ? TableSectionVerification : 0;
+    self.sections |= ((self.proofType != nil) || self.address.hasProof) ? TableSectionVerification : 0;
 
     // We need to determine the existence of the ExtraFields section dynamically, based on
     // the country of the address (which the user may have to select from a list).
