@@ -629,6 +629,10 @@ typedef enum
                                                                     @"....");
             cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+
+            NSString* monthPriceString = [[PurchaseManager sharedManager] localizedFormattedPrice:number.monthFee];
+            cell.detailTextLabel.text      = [NSString stringWithFormat:@"%@/%@", monthPriceString, [Strings monthString]];
+            cell.detailTextLabel.textColor = [Skinning priceColor];
             break;
         }
         case 3:
