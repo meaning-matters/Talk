@@ -189,6 +189,18 @@
 }
 
 
+- (NSIndexPath*)footNoteIndexPath
+{
+    return objc_getAssociatedObject(self, @selector(footNoteIndexPath));
+}
+
+
+- (void)setFootNoteIndexPath:(NSIndexPath*)footNoteIndexPath
+{
+    objc_setAssociatedObject(self, @selector(footNoteIndexPath), footNoteIndexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+
 #pragma mark - View Related
 
 - (void)viewWillLayoutSubviewsSwizzled
@@ -213,40 +225,43 @@
 }
 
 
-- (void)updateAllSectionsOfTableView:(UITableView*)tableView
-{
-    NSRange     range    = NSMakeRange(0, [tableView numberOfSections]);
-    NSIndexSet* indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
-
-    [tableView beginUpdates];
-    [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-    [tableView endUpdates];
-}
-
-
 #pragma mark - Footnotes Stuff
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer shouldReceiveTouch:(UITouch*)touch
 {
-    NSIndexPath* indexPath = [self.localTableView indexPathForRowAtPoint:[touch locationInView:self.localTableView]];
+    self.footNoteIndexPath = [self.localTableView indexPathForRowAtPoint:[touch locationInView:self.localTableView]];
 
-    if (indexPath != nil)
+    if (self.footNoteIndexPath != nil)
     {
         // When tapping on a section header we do get an indexPath strange enough (except for section 0, even more
         // stange).  When user taps on section header we do however want to show footnotes, so we filter this case.
         // Turns out the the touched view is the header's contentView, so that's what we check.
-        UIView* headerContentView = [self.localTableView headerViewForSection:indexPath.section].contentView;
+        UIView* headerContentView = [self.localTableView headerViewForSection:self.footNoteIndexPath.section].contentView;
         if (headerContentView != nil && headerContentView == touch.view)
         {
             return YES;
         }
         else
         {
+            // Prevent table from scrolling to a certain position in `updateAllSectionsOfTableView`.
+            self.footNoteIndexPath = nil;
+
             return NO;
         }
     }
     else
     {
+        // Find cell below or above touched point.
+        CGPoint point = [touch locationInView:self.localTableView];
+        point.y += 44;
+        self.footNoteIndexPath = [self.localTableView indexPathForRowAtPoint:point];
+        if (self.footNoteIndexPath == nil)
+        {
+            CGPoint point = [touch locationInView:self.localTableView];
+            point.y -= 44;
+            self.footNoteIndexPath = [self.localTableView indexPathForRowAtPoint:point];
+        }
+
         return YES;
     }
 }
@@ -266,7 +281,7 @@
         if (sender.state == UIGestureRecognizerStateEnded)
         {
             __weak typeof(self) weakSelf = self;
-            [NSTimer scheduledTimerWithInterval:3 repeats:NO block:^(void)
+            [NSTimer scheduledTimerWithInterval:10 repeats:NO block:^(void)
             {
                 weakSelf.showFootnotes = [Settings sharedSettings].showFootnotes;
 
@@ -313,6 +328,24 @@
             [weakSelf updateAllSectionsOfTableView:weakSelf.localTableView];
         }
     }];
+}
+
+
+- (void)updateAllSectionsOfTableView:(UITableView*)tableView
+{
+    NSRange     range    = NSMakeRange(0, [tableView numberOfSections]);
+    NSIndexSet* indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
+
+    [tableView beginUpdates];
+    [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+    [tableView endUpdates];
+
+    if (self.footNoteIndexPath != nil)
+    {
+        [tableView scrollToRowAtIndexPath:self.footNoteIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+
+    self.footNoteIndexPath = nil;
 }
 
 @end

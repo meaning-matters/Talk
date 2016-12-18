@@ -23,8 +23,7 @@
 @property (nonatomic, assign) BOOL                     settingsShowFootnotes;
 @property (nonatomic, strong) UITableView*             localTableView;
 @property (nonatomic, strong) id<NSObject>             defaultsObserver;
-
-- (void)updateAllSectionsOfTableView:(UITableView*)tableView;
+@property (nonatomic, strong) NSIndexPath*             footNoteIndexPath;   // Long pressed index path.
 
 - (void)setupFootnotesHandlingOnTableView:(UITableView*)tableView;
 
