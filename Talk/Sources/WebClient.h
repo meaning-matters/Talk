@@ -167,6 +167,7 @@
                         isoCountryCode:(NSString*)isoCountryCode
                           addressProof:(NSData*)addressProof
                          identityProof:(NSData*)identityProof
+                           nationality:(NSString*)nationality   // Also an ISO-2 cpountry code.
                                 idType:(NSString*)idType
                               idNumber:(NSString*)idNumber
                           fiscalIdCode:(NSString*)fiscalIdCode

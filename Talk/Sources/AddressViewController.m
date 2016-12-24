@@ -404,15 +404,19 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         switch (mask)
         {
             case AddressStatusUnknown:
+            {
+                break;
+            }
             case AddressStatusStagedMask:
+            {
+                break;
+            }
             case AddressStatusNotVerifiedMask:
             {
-                // Ignore.
                 break;
             }
             case AddressStatusVerificationRequestedMask:
             {
-                // Ignore.
                 break;
             }
             case AddressStatusVerifiedMask:
@@ -2189,6 +2193,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                               isoCountryCode:self.address.isoCountryCode
                                                 addressProof:self.address.addressProof
                                                identityProof:self.address.identityProof
+                                                 nationality:self.address.nationality
                                                       idType:self.address.idType
                                                     idNumber:self.address.idNumber
                                                 fiscalIdCode:self.address.fiscalIdCode

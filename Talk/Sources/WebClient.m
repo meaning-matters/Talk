@@ -716,6 +716,7 @@
                         isoCountryCode:(NSString*)isoCountryCode
                           addressProof:(NSData*)addressProof
                          identityProof:(NSData*)identityProof
+                           nationality:(NSString*)nationality   // Also an ISO-2 cpountry code.
                                 idType:(NSString*)idType
                               idNumber:(NSString*)idNumber
                           fiscalIdCode:(NSString*)fiscalIdCode
@@ -744,6 +745,7 @@
     (isoCountryCode.length     > 0) ? parameters[@"isoCountryCode"]     = isoCountryCode                : 0;
     (addressProof.length       > 0) ? parameters[@"addressProof"]       = [Base64 encode:addressProof]  : 0;
     (identityProof.length      > 0) ? parameters[@"identityProof"]      = [Base64 encode:identityProof] : 0;
+    (nationality.length        > 0) ? parameters[@"nationality"]        = nationality                   : 0;
     (idType.length             > 0) ? parameters[@"idType"]             = idType                        : 0;
     (idNumber.length           > 0) ? parameters[@"idNumber"]           = idNumber                      : 0;
     (fiscalIdCode.length       > 0) ? parameters[@"fiscalIdCode"]       = fiscalIdCode                  : 0;

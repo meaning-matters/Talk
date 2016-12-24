@@ -12,7 +12,7 @@ typedef NS_ENUM(NSUInteger, AddressStatusMask)
 {
     AddressStatusUnknown                   = 0,
     AddressStatusStagedMask                = 1UL << 0,
-    AddressStatusNotVerifiedMask           = 1UL << 1,  // Default status for Numbers without Address requirement.
+    AddressStatusNotVerifiedMask           = 1UL << 1,  // Default status for Numbers without Voxbone Address requirement.
     AddressStatusVerificationRequestedMask = 1UL << 2,
     AddressStatusVerifiedMask              = 1UL << 3,
     AddressStatusRejectedMask              = 1UL << 4,
