@@ -234,7 +234,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                        @"numberTypes" : @[ @"MOBILE" ],
                        @"person" :
                        @{
-                           @"idTypes" : @[ @"DNI", @"NIE", @"PASSPORT", @"NIF",  ],
+                           @"idTypes" : @[ @"DNI", @"NIE", @"PASSPORT", @"NIF", ],
                            @"fields"  : @[ @"nationality", @"idType", @"idNumber" ]
                        },
                        @"company" :
@@ -264,6 +264,20 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                        @{
                            @"idTypes" : @[ @"PASSPORT", @"NATIONAL_ID_CARD" ],
                            @"fields"  : @[ @"nationality", @"idType", @"idNumber", @"idProof" ]
+                       },
+                       @"company" :
+                       @{
+                           @"idTypes" : @[ @"BUSINESS_REGISTRATION" ],
+                           @"fields"  : @[ @"nationality", @"idType", @"idNumber", @"idProof" ]
+                       }
+                   },
+                   @"AT" :
+                   @{
+                       @"numberTypes" : @[ @"MOBILE"],
+                       @"person" :
+                       @{
+                           @"idTypes" : @[ @"PASSPORT", @"NATIONAL_ID_CARD" ],
+                           @"fields"  : @[ @"nationality", @"idType", @"idNumber", @"idProof", @"issuingAuthority", @"dateOfBirth" ]
                        },
                        @"company" :
                        @{
