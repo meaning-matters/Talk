@@ -265,12 +265,12 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             @"alwaysRequired" : @(NO),
             @"person" :
             @{
-                @"idTypes" : @[ @"PASSPORT", @"NATIONAL_ID_CARD" ],
+                @"idTypes" : @[ @"PASSPORT", @"ZA_NATIONAL_ID_CARD" ],
                 @"fields"  : @[ @"nationality", @"idType", @"idNumber", @"idProof" ]
             },
             @"company" :
             @{
-                @"idTypes" : @[ @"BUSINESS_REGISTRATION" ],
+                @"idTypes" : @[ @"ZA_BUSINESS_REGISTRATION" ],
                 @"fields"  : @[ @"nationality", @"idType", @"idNumber", @"idProof" ]
             }
         },

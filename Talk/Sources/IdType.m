@@ -70,6 +70,14 @@
         {
             return @"BUSINESS_REGISTRATION";
         }
+        case IdTypeValueZANationalIdCard:
+        {
+            return @"ZA_NATIONAL_ID_CARD";
+        }
+        case IdTypeValueZABusinessRegistration:
+        {
+            return @"ZA_BUSINESS_REGISTRATION";
+        }
     }
 }
 
@@ -136,6 +144,16 @@
         value = IdTypeValueBusinessRegistration;
     }
 
+    if ([string isEqualToString:@"ZA_NATIONAL_ID_CARD"])
+    {
+        value = IdTypeValueZANationalIdCard;
+    }
+
+    if ([string isEqualToString:@"ZA_BUSINESS_REGISTRATION"])
+    {
+        value = IdTypeValueZABusinessRegistration;
+    }
+
     return value;
 }
 
@@ -174,6 +192,7 @@
                                                      @"[One line].");
         }
         case IdTypeValueNationalIdCard:
+        case IdTypeValueZANationalIdCard:
         {
             return NSLocalizedStringWithDefaultValue(@"ID Type ...", nil, [NSBundle mainBundle],
                                                      @"National ID Card",
@@ -181,6 +200,7 @@
                                                      @"[One line].");
         }
         case IdTypeValueBusinessRegistration:
+        case IdTypeValueZABusinessRegistration:
         {
             return NSLocalizedStringWithDefaultValue(@"ID Type ...", nil, [NSBundle mainBundle],
                                                      @"Business Registration",
@@ -246,12 +266,26 @@
         case IdTypeValueNationalIdCard:
         {
             return NSLocalizedStringWithDefaultValue(@"ID Card number rule", nil, [NSBundle mainBundle],
+                                                     @"Between 7 and 20 characters.",
+                                                     @".\n"
+                                                     @"....");
+        }
+        case IdTypeValueBusinessRegistration:
+        {
+            return NSLocalizedStringWithDefaultValue(@"Business number rule", nil, [NSBundle mainBundle],
+                                                     @"Between 7 and 20 characters.",
+                                                     @".\n"
+                                                     @"....");
+        }
+        case IdTypeValueZANationalIdCard:
+        {
+            return NSLocalizedStringWithDefaultValue(@"ID Card number rule", nil, [NSBundle mainBundle],
                                                      @"Preferably the 13-digit (0-9) South African identification "
                                                      @"number, or otherwise between 7 and 20 characters.",
                                                      @".\n"
                                                      @"....");
         }
-        case IdTypeValueBusinessRegistration:
+        case IdTypeValueZABusinessRegistration:
         {
             return NSLocalizedStringWithDefaultValue(@"South Aftican business number rule", nil, [NSBundle mainBundle],
                                                      @"Preferably the 12-digit South African company registration "
@@ -272,14 +306,16 @@
 
     switch (self.value)
     {
-        case IdTypeValueNone:                 regex = @"\\S+";                                          break;
-        case IdTypeValueDni:                  regex = @"[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKET]{1}";         break;
-        case IdTypeValueNif:                  regex = @"[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKET]{1}";         break;
-        case IdTypeValueNie:                  regex = @"[XYZ]{1}[0-9]{7}[TRWAGMYFPDXBNJZSQVHLCKET]{1}"; break;
-        case IdTypeValueFiscalIdCode:         regex = @"[A-Z]{0,1}[0-9]{7,8}[A-Z]{0,1}";                break;
-        case IdTypeValuePassport:             regex = @"[A-Z0-9]{7,9}";                                 break;
-        case IdTypeValueNationalIdCard:       regex = @".{7,20}";                                       break;
-        case IdTypeValueBusinessRegistration: regex = @".{7,20}";                                       break;
+        case IdTypeValueNone:                   regex = @"\\S+";                                          break;
+        case IdTypeValueDni:                    regex = @"[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKET]{1}";         break;
+        case IdTypeValueNif:                    regex = @"[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKET]{1}";         break;
+        case IdTypeValueNie:                    regex = @"[XYZ]{1}[0-9]{7}[TRWAGMYFPDXBNJZSQVHLCKET]{1}"; break;
+        case IdTypeValueFiscalIdCode:           regex = @"[A-Z]{0,1}[0-9]{7,8}[A-Z]{0,1}";                break;
+        case IdTypeValuePassport:               regex = @"[A-Z0-9]{7,9}";                                 break;
+        case IdTypeValueNationalIdCard:         regex = @".{7,20}";                                       break;
+        case IdTypeValueBusinessRegistration:   regex = @".{7,20}";                                       break;
+        case IdTypeValueZANationalIdCard:       regex = @".{7,20}";                                       break;
+        case IdTypeValueZABusinessRegistration: regex = @".{7,20}";                                       break;
     }
 
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
