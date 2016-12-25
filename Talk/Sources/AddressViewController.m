@@ -226,66 +226,78 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (NSDictionary*)extraFieldsInfo
 {
-    if ([self.address.isoCountryCode isEqualToString:self.numberIsoCountryCode])
+    // "alwaysRequired" indicates if this is also required when the address in another country as the Number.
+    NSDictionary* info =
+    @{
+        @"ES" :
+        @{
+            @"numberTypes"    : @[ @"MOBILE" ],
+            @"alwaysRequired" : @(YES), // Redundantly enforced by addressType == NATIONAL.
+            @"person" :
+            @{
+                @"idTypes" : @[ @"DNI", @"NIE", @"PASSPORT", @"NIF", ],
+                @"fields"  : @[ @"nationality", @"idType", @"idNumber" ]
+            },
+            @"company" :
+            @{
+                @"idTypes" : @[ ],
+                @"fields"  : @[ @"nationality", @"fiscalIdCode" ]
+            }
+        },
+        @"DK" :
+        @{
+            @"numberTypes"    : @[ @"GEOGRAPHIC", @"NATIONAL", @"MOBILE", @"TOLL_FREE", @"SHARED_COST", @"SPECIAL"],
+            @"alwaysRequired" : @(NO),
+            @"person" :
+            @{
+                @"idTypes" : @[ ],
+                @"fields"  : @[ @"streetCode", @"municipalityCode" ]
+            },
+            @"company" :
+            @{
+                @"idTypes" : @[ ],
+                @"fields"  : @[ @"streetCode", @"municipalityCode" ]
+            }
+        },
+        @"ZA" :
+        @{
+            @"numberTypes"    : @[ @"GEOGRAPHIC", @"NATIONAL", @"MOBILE", @"TOLL_FREE", @"SHARED_COST", @"SPECIAL"],
+            @"alwaysRequired" : @(NO),
+            @"person" :
+            @{
+                @"idTypes" : @[ @"PASSPORT", @"NATIONAL_ID_CARD" ],
+                @"fields"  : @[ @"nationality", @"idType", @"idNumber", @"idProof" ]
+            },
+            @"company" :
+            @{
+                @"idTypes" : @[ @"BUSINESS_REGISTRATION" ],
+                @"fields"  : @[ @"nationality", @"idType", @"idNumber", @"idProof" ]
+            }
+        },
+        @"AT" :
+        @{
+            @"numberTypes"    : @[ @"MOBILE"],
+            @"alwaysRequired" : @(YES),
+            @"person" :
+            @{
+                @"idTypes" : @[ @"PASSPORT", @"NATIONAL_ID_CARD" ],
+                @"fields"  : @[ @"nationality", @"idType", @"idNumber", @"idProof", @"issuingAuthority", @"dateOfBirth" ]
+            },
+            @"company" :
+            @{
+                @"idTypes" : @[ @"BUSINESS_REGISTRATION" ],
+                @"fields"  : @[ @"nationality", @"idType", @"idNumber", @"idProof" ]
+            }
+        }
+    };
+
+    if ([info[self.numberIsoCountryCode][@"alwaysRequired"] boolValue] == YES)
     {
-        return @{
-                   @"ES" :
-                   @{
-                       @"numberTypes" : @[ @"MOBILE" ],
-                       @"person" :
-                       @{
-                           @"idTypes" : @[ @"DNI", @"NIE", @"PASSPORT", @"NIF", ],
-                           @"fields"  : @[ @"nationality", @"idType", @"idNumber" ]
-                       },
-                       @"company" :
-                       @{
-                           @"idTypes" : @[ ],
-                           @"fields"  : @[ @"nationality", @"fiscalIdCode" ]
-                       }
-                   },
-                   @"DK" :
-                   @{
-                       @"numberTypes" : @[ @"GEOGRAPHIC", @"NATIONAL", @"MOBILE", @"TOLL_FREE", @"SHARED_COST", @"SPECIAL"],
-                       @"person" :
-                       @{
-                           @"idTypes" : @[ ],
-                           @"fields"  : @[ @"streetCode", @"municipalityCode" ]
-                       },
-                       @"company" :
-                       @{
-                           @"idTypes" : @[ ],
-                           @"fields"  : @[ @"streetCode", @"municipalityCode" ]
-                       }
-                   },
-                   @"ZA" :
-                   @{
-                       @"numberTypes" : @[ @"GEOGRAPHIC", @"NATIONAL", @"MOBILE", @"TOLL_FREE", @"SHARED_COST", @"SPECIAL"],
-                       @"person" :
-                       @{
-                           @"idTypes" : @[ @"PASSPORT", @"NATIONAL_ID_CARD" ],
-                           @"fields"  : @[ @"nationality", @"idType", @"idNumber", @"idProof" ]
-                       },
-                       @"company" :
-                       @{
-                           @"idTypes" : @[ @"BUSINESS_REGISTRATION" ],
-                           @"fields"  : @[ @"nationality", @"idType", @"idNumber", @"idProof" ]
-                       }
-                   },
-                   @"AT" :
-                   @{
-                       @"numberTypes" : @[ @"MOBILE"],
-                       @"person" :
-                       @{
-                           @"idTypes" : @[ @"PASSPORT", @"NATIONAL_ID_CARD" ],
-                           @"fields"  : @[ @"nationality", @"idType", @"idNumber", @"idProof", @"issuingAuthority", @"dateOfBirth" ]
-                       },
-                       @"company" :
-                       @{
-                           @"idTypes" : @[ @"BUSINESS_REGISTRATION" ],
-                           @"fields"  : @[ @"nationality", @"idType", @"idNumber", @"idProof" ]
-                       }
-                   }
-               }[self.address.isoCountryCode];
+        return info[self.numberIsoCountryCode];
+    }
+    else if ([self.address.isoCountryCode isEqualToString:self.numberIsoCountryCode])
+    {
+        return info[self.address.isoCountryCode];
     }
     else
     {
@@ -1044,8 +1056,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         if (self.extraFieldsInfo != nil)
         {
             NSString* numberTypeMaskString = [NumberType stringForNumberTypeMask:self.numberTypeMask];
-            if ([self.extraFieldsInfo[@"numberTypes"] containsObject:numberTypeMaskString] &&
-                [self.address.isoCountryCode isEqualToString:self.numberIsoCountryCode])
+            if ([self.extraFieldsInfo[@"numberTypes"] containsObject:numberTypeMaskString])
             {
                 self.sections |= TableSectionExtraFields;
 
