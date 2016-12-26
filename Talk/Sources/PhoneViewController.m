@@ -76,6 +76,9 @@ typedef enum
         {
             self.managedObjectContext = managedObjectContext;
         }
+
+        NSInteger section  = [Common nOfBit:TableSectionName inValue:sections];
+        self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
     }
 
     return self;

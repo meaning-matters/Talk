@@ -805,8 +805,9 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (void)initializeIndexPaths
 {
-    self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    
+    NSInteger section  = [Common nOfBit:TableSectionName inValue:self.sections];
+    self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+
     if (self.isNew || self.isUpdatable)
     {
         NSInteger detailsSection       = [Common nOfBit:TableSectionDetails inValue:self.sections];
@@ -1051,7 +1052,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     // We need to determine the existence of the ExtraFields section dynamically, based on
     // the country of the address (which the user may have to select from a list).
     self.rowsExtraFields = 0;
-    if (self.isNew || self.isUpdatable)
+    if (self.isNew)
     {
         if (self.extraFieldsInfo != nil)
         {
@@ -2103,7 +2104,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-    if (self.isNew == NO && self.isUpdatable == NO)
+    if (self.isNew == NO || self.isUpdatable == YES)
     {
         return [super textFieldShouldReturn:textField];
     }
@@ -2254,12 +2255,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (void)saveAction
 {
-    if (self.isNew == NO && self.isUpdatable == NO && [self.address.name isEqualToString:self.name] == YES)
-    {
-        return;
-    }
-    
-    if (self.isNew == YES || self.isUpdatable == YES)
+    if (self.isUpdatable == YES)
     {
         self.navigationItem.rightBarButtonItem.enabled = NO;
     }
@@ -2298,7 +2294,9 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         }
         else
         {
+            [self.address.managedObjectContext refreshObject:self.address mergeChanges:NO];
             self.name = self.address.name;
+            [self update];
             [self showSaveError:error];
         }
     }];
@@ -2376,7 +2374,10 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                 @"[iOS alert message size]");
     [BlockAlertView showAlertViewWithTitle:title
                                    message:[NSString stringWithFormat:message, [error localizedDescription]]
-                                completion:nil
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        [Common reloadSections:self.sections allSections:self.sections tableView:self.tableView];
+    }
                          cancelButtonTitle:[Strings closeString]
                          otherButtonTitles:nil];
 }
@@ -2386,7 +2387,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (void)save
 {
-    if (self.isNew == NO && self.isDeleting == NO)
+    if (self.isNew == NO && self.isDeleting == NO && (self.address.changedValues.count > 0 ||
+                                                      [self.address.name isEqualToString:self.name] == NO))
     {
         [self saveAction];
     }

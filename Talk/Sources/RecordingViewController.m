@@ -98,6 +98,9 @@ typedef enum
         {
             [self pauseButtonAction:nil];
         }];
+
+        NSInteger section  = [Common nOfBit:TableSectionName inValue:sections];
+        self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
     }
 
     return self;

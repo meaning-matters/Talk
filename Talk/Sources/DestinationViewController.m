@@ -101,8 +101,11 @@ typedef enum
             self.action       = [Common mutableObjectWithJsonString:self.destination.action];
             self.showCalledId = [self.action[@"call"][@"showCalledId"] boolValue];
         }
+
+        NSInteger section  = [Common nOfBit:TableSectionName inValue:self.sections];
+        self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
     }
-    
+
     return self;
 }
 

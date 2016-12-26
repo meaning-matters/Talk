@@ -26,7 +26,7 @@
 @property (nonatomic, weak) IBOutlet UIButton*       continueButton; // Continue recording.
 @property (nonatomic, weak) IBOutlet UIButton*       forwardButton;
 
-@property (nonatomic, strong) RecordingData*                recording;
+@property (nonatomic, strong) RecordingData*         recording;
 
 
 - (instancetype)initWithRecording:(RecordingData*)recording

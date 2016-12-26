@@ -16,6 +16,7 @@
 @interface ItemViewController ()
 
 @property (nonatomic, assign) BOOL hasCorrectedInsets;
+@property (nonatomic, assign) BOOL isKeyboardShown;
 
 @end
 
@@ -27,9 +28,17 @@
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
         self.managedObjectContext = managedObjectContext;
+
+        [self addKeyboardObservers];
     }
 
     return self;
+}
+
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -59,6 +68,34 @@
     {
         [self.tableView reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
+}
+
+
+#pragma mark - Keyboard State
+
+- (void)addKeyboardObservers
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidShow:)
+                                                 name:UIKeyboardDidShowNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidHide:)
+                                                 name:UIKeyboardDidHideNotification
+                                               object:nil];
+}
+
+
+- (void)keyboardDidShow:(NSNotification*)notification
+{
+    self.isKeyboardShown = YES;
+}
+
+
+- (void)keyboardDidHide:(NSNotification*)notification
+{
+    self.isKeyboardShown = NO;
 }
 
 
@@ -149,7 +186,8 @@
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer shouldReceiveTouch:(UITouch*)touch
 {
-    if ([touch.view isKindOfClass:[UITextField class]] || [touch.view isKindOfClass:[UIButton class]])
+    if (([touch.view isKindOfClass:[UITextField class]] && touch.view.isUserInteractionEnabled) ||
+        [touch.view isKindOfClass:[UIButton class]])
     {
         return NO;
     }
@@ -171,9 +209,12 @@
         self.hasCorrectedInsets = NO;
     }
 
-    [self update];
-    [self save];
-    [[self.tableView superview] endEditing:YES];
+    if (self.isKeyboardShown)
+    {
+        [self update];
+        [self save];
+        [[self.tableView superview] endEditing:YES];
+    }
 }
 
 
@@ -218,7 +259,11 @@
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
     [self update];
-    [self save];
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    {
+        [self save];
+    });
 
     [textField resignFirstResponder];
 
