@@ -750,7 +750,7 @@
                         number.stateName      = stateName;
                         number.isoCountryCode = isoCountryCode;
                         number.address        = [self lookupAddressWithId:addressId]; // May return nil.
-                        number.addressType    = [AddressType stringForAddressTypeMask:AddressTypeWorldwideMask];
+                        number.addressType    = [AddressType stringForAddressTypeMask:addressType];
                         number.proofTypes     = proofTypes;
                         number.purchaseDate   = purchaseDate;
                         number.expiryDate     = expiryDate;
