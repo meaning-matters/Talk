@@ -235,7 +235,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             @"alwaysRequired" : @(YES), // Redundantly enforced by addressType == NATIONAL.
             @"person" :
             @{
-                @"idTypes" : @[ @"DNI", @"NIE", @"PASSPORT", @"NIF", ],
+                @"idTypes" : @[ @"DNI", @"NIE", @"PASSPORT", @"NIF" ],
                 @"fields"  : @[ @"nationality", @"idType", @"idNumber" ]
             },
             @"company" :
@@ -246,7 +246,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         },
         @"DK" :
         @{
-            @"numberTypes"    : @[ @"GEOGRAPHIC", @"NATIONAL", @"MOBILE", @"TOLL_FREE", @"SHARED_COST", @"SPECIAL"],
+            @"numberTypes"    : @[ @"GEOGRAPHIC", @"NATIONAL", @"MOBILE", @"TOLL_FREE", @"SHARED_COST", @"SPECIAL" ],
             @"alwaysRequired" : @(NO),
             @"person" :
             @{
@@ -261,7 +261,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         },
         @"ZA" :
         @{
-            @"numberTypes"    : @[ @"GEOGRAPHIC", @"NATIONAL", @"MOBILE", @"TOLL_FREE", @"SHARED_COST", @"SPECIAL"],
+            @"numberTypes"    : @[ @"GEOGRAPHIC", @"NATIONAL", @"MOBILE", @"TOLL_FREE", @"SHARED_COST", @"SPECIAL" ],
             @"alwaysRequired" : @(NO),
             @"person" :
             @{
@@ -276,7 +276,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         },
         @"AT" :
         @{
-            @"numberTypes"    : @[ @"MOBILE"],
+            @"numberTypes"    : @[ @"MOBILE" ],
             @"alwaysRequired" : @(YES),
             @"person" :
             @{
