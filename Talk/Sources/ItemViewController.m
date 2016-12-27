@@ -42,6 +42,18 @@
 }
 
 
+- (NSString*)name
+{
+    return [self.item respondsToSelector:@selector(name)] ? [self.item name] : nil;
+}
+
+
+- (void)setName:(NSString*)name
+{
+    [self.item respondsToSelector:@selector(name)] ? [self.item setName:name] : 0;
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

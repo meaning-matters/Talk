@@ -50,22 +50,6 @@
 
         sharedInstance->storeUrl = [Common documentUrl:@"Data.sqlite"];
 
-        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillTerminateNotification
-                                                          object:nil
-                                                           queue:[NSOperationQueue mainQueue]
-                                                      usingBlock:^(NSNotification* note)
-        {
-            [sharedInstance saveManagedObjectContext:nil];
-        }];
-
-        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification
-                                                          object:nil
-                                                           queue:[NSOperationQueue mainQueue]
-                                                      usingBlock:^(NSNotification* note)
-        {
-            [sharedInstance saveManagedObjectContext:nil];
-        }];
-
         [[NSNotificationCenter defaultCenter] addObserverForName:AppDelegateRemoteNotification
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]

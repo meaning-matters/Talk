@@ -69,8 +69,7 @@ typedef enum
 {
     if (self = [super initWithManagedObjectContext:managedObjectContext])
     {
-        number    = theNumber;
-        self.name = number.name;
+        number = theNumber;
 
         self.title = NSLocalizedStringWithDefaultValue(@"Number:NumberDetails ScreenTitle", nil,
                                                        [NSBundle mainBundle], @"Number",
@@ -94,6 +93,8 @@ typedef enum
 
         NSInteger section  = [Common nOfBit:TableSectionName inValue:sections];
         self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+
+        self.item = theNumber;
     }
 
     return self;
@@ -312,7 +313,7 @@ typedef enum
                 if (selectedAddress != number.address)
                 {
                     [[WebClient sharedClient] updateNumberE164:number.e164
-                                                      withName:self.name
+                                                      withName:number.name
                                                      autoRenew:number.autoRenew
                                                      addressId:selectedAddress.addressId
                                                          reply:^(NSError* error)
@@ -467,7 +468,6 @@ typedef enum
     {
         if (error == nil)
         {
-            number.name      = self.name;
             number.autoRenew = switchView.isOn;
 
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
@@ -480,7 +480,7 @@ typedef enum
         }
         else
         {
-            self.name = number.name;
+            [number.managedObjectContext refreshObject:number mergeChanges:NO];
             [self showAutoRenewSaveError:error];
         }
     }];
@@ -502,13 +502,13 @@ typedef enum
     }
 
     textField.placeholder            = [Strings requiredString];
-    textField.text                   = self.name;
+    textField.text                   = number.name;
     textField.userInteractionEnabled = YES;
 
     cell.selectionStyle              = UITableViewCellSelectionStyleNone;
     cell.textLabel.text              = [Strings nameString];
 
-    if (self.name.length == 0)
+    if (number.name.length == 0)
     {
         [textField becomeFirstResponder];
     }
@@ -773,26 +773,24 @@ typedef enum
 
 - (void)save
 {
-    if ([self.name isEqualToString:number.name] == YES)
+    if (number.changedValues.count == 0)
     {
         return;
     }
 
     [[WebClient sharedClient] updateNumberE164:number.e164
-                                      withName:self.name
+                                      withName:number.name
                                      autoRenew:number.autoRenew
                                      addressId:number.address.addressId
                                          reply:^(NSError* error)
     {
         if (error == nil)
         {
-            number.name = self.name;
-
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
         }
         else
         {
-            self.name = number.name;
+            [number.managedObjectContext refreshObject:number mergeChanges:NO];
             [self showNameSaveError:error];
         }
     }];
@@ -819,7 +817,7 @@ typedef enum
                                    message:message
                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
     {
-        self.name = number.name;
+        [number.managedObjectContext refreshObject:number mergeChanges:NO];
         [self updateInfoNameCell:[self.tableView cellForRowAtIndexPath:self.nameIndexPath]];
      }
                          cancelButtonTitle:[Strings closeString]

@@ -72,7 +72,6 @@ typedef enum
                                                        @"Title of app screen with details of an audio recording\n"
                                                        @"[1 line larger font].");
 
-        self.name                 = recording.name;
         self.recording            = recording;
         self.managedObjectContext = managedObjectContext;
         isNew                     = (recording == nil);
@@ -101,6 +100,8 @@ typedef enum
 
         NSInteger section  = [Common nOfBit:TableSectionName inValue:sections];
         self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+
+        self.item = self.recording;
     }
 
     return self;
@@ -141,6 +142,8 @@ typedef enum
 
         self.recording = [NSEntityDescription insertNewObjectForEntityForName:@"Recording"
                                                        inManagedObjectContext:self.managedObjectContext];
+
+        self.item = self.recording;
     }
     else
     {
@@ -416,12 +419,11 @@ typedef enum
 
 - (void)createAction
 {
-    self.recording.name = self.name;
     self.navigationItem.rightBarButtonItem.enabled = NO;
 
     NSData* data = [NSData dataWithContentsOfURL:self.temporaryUrl];
     [[WebClient sharedClient] createAudioWithData:data
-                                             name:self.name
+                                             name:self.recording.name
                                             reply:^(NSError *error, NSString *uuid)
     {
         if (error == nil)
@@ -453,7 +455,7 @@ typedef enum
 {
     NSData* data = nil;
 
-    if ([self.name isEqualToString:self.recording.name] == YES || self.hasRecorded == NO)
+    if (self.hasRecorded == NO || self.recording.changedValues.count == 0)
     {
         // Nothing has changed.
         return;
@@ -467,13 +469,11 @@ typedef enum
 
     [[WebClient sharedClient] updateAudioForUuid:self.recording.uuid
                                             data:data
-                                            name:self.name
+                                            name:self.recording.name
                                            reply:^(NSError *error)
     {
         if (error == nil)
         {
-            self.recording.name = self.name;
-
             NSString* path = [Common audioPathForFileName:[NSString stringWithFormat:@"%@.m4a", self.recording.uuid]];
             [Common moveFileFromPath:[self.temporaryUrl absoluteString] toPath:path];
 
@@ -481,7 +481,7 @@ typedef enum
         }
         else
         {
-            self.name = self.recording.name;
+            [self.recording.managedObjectContext refreshObject:self.recording mergeChanges:NO];
             [self showSaveError:error];
         }
     }];
@@ -547,8 +547,6 @@ typedef enum
 
 - (void)saveAction_
 {
-    self.recording.name = self.name;
-
     //### Send to server (look at DestinationViewController's saveAction.
 
     [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
@@ -839,7 +837,7 @@ typedef enum
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
 {
-    self.name = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    self.recording.name = [textField.text stringByReplacingCharactersInRange:range withString:string];
 
     [self updateRightBarButtonItem];
 
@@ -1072,7 +1070,8 @@ typedef enum
 {
     BOOL hasRecording = ([audioRecorder.url checkResourceIsReachableAndReturnError:nil] == YES);
 
-    self.navigationItem.rightBarButtonItem.enabled = (self.name.length > 0) && ((hasRecording && !isPausedRecording) || !isNew);
+    self.navigationItem.rightBarButtonItem.enabled = (self.recording.name.length > 0) &&
+                                                     ((hasRecording && !isPausedRecording) || !isNew);
 }
 
 

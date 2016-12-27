@@ -340,7 +340,11 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 - (void)applicationDidEnterBackground:(UIApplication*)application
 {
     AnalysticsTrace(@"applicationDidEnterBackground");
-    
+
+    // Generate viewWillDisappear and viewDidDisappear to top view controller.
+    [self.window.rootViewController beginAppearanceTransition:NO animated:NO];
+    [self.window.rootViewController endAppearanceTransition];
+
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
@@ -349,7 +353,11 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 - (void)applicationWillEnterForeground:(UIApplication*)application
 {
     AnalysticsTrace(@"applicationWillEnterForeground");
-    
+
+    // Generate viewWillAppear and viewDidAppear to top view controller.
+    [self.window.rootViewController beginAppearanceTransition:YES animated:NO];
+    [self.window.rootViewController endAppearanceTransition];
+
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
@@ -371,7 +379,11 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 - (void)applicationWillTerminate:(UIApplication*)application
 {
     AnalysticsTrace(@"applicationWillTerminate");
-    
+
+    // Generate viewWillDisappear and viewDidDisappear to top view controller.
+    [self.window.rootViewController beginAppearanceTransition:NO animated:NO];
+    [self.window.rootViewController endAppearanceTransition];
+
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 

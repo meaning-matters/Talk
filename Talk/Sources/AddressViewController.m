@@ -150,7 +150,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         self.isNew                = (address == nil);
         self.isUpdatable          = (address != nil && address.addressStatus == AddressStatusStagedMask);
         self.address              = address;
-        self.name                 = address.name;
         self.title                = self.isNew ? [Strings newAddressString] : [Strings addressString];
 
         self.numberIsoCountryCode = isoCountryCode;
@@ -177,6 +176,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         {
             self.managedObjectContext = managedObjectContext;
         }
+
+        self.item = self.address;
 
         self.salutation = [[Salutation alloc] initWithString:self.address.salutation];
         if (proofTypes != nil)
@@ -541,7 +542,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     }
     else
     {
-        complete = [self.name stringByRemovingWhiteSpace].length > 0;
+        complete = [self.address.name stringByRemovingWhiteSpace].length > 0;
     }
     
     self.navigationItem.leftBarButtonItem.enabled = complete;
@@ -633,7 +634,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
     if (self.isNew == YES || self.isUpdatable)
     {
-        emptyMask |= ([self.name                   stringByRemovingWhiteSpace].length == 0) << 0;
+        emptyMask |= ([self.address.name           stringByRemovingWhiteSpace].length == 0) << 0;
         emptyMask |= ([self.address.companyName    stringByRemovingWhiteSpace].length == 0) << 1;
         emptyMask |= ([self.address.firstName      stringByRemovingWhiteSpace].length == 0) << 2;
         emptyMask |= ([self.address.lastName       stringByRemovingWhiteSpace].length == 0) << 3;
@@ -657,7 +658,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     }
     else
     {
-        emptyMask |= ([self.name stringByRemovingWhiteSpace].length == 0) << 0;
+        emptyMask |= ([self.address.name stringByRemovingWhiteSpace].length == 0) << 0;
     }
 
     if (emptyMask != 0)
@@ -725,7 +726,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     {
         if (self.salutation.isPerson)
         {
-            complete = [self.name                   stringByRemovingWhiteSpace].length > 0 &&
+            complete = [self.address.name           stringByRemovingWhiteSpace].length > 0 &&
                        [self.address.firstName      stringByRemovingWhiteSpace].length > 0 &&
                        [self.address.lastName       stringByRemovingWhiteSpace].length > 0 &&
                        [self.address.street         stringByRemovingWhiteSpace].length > 0 &&
@@ -738,7 +739,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
         if (self.salutation.isCompany)
         {
-            complete = [self.name                   stringByRemovingWhiteSpace].length > 0 &&
+            complete = [self.address.name           stringByRemovingWhiteSpace].length > 0 &&
                        [self.address.companyName    stringByRemovingWhiteSpace].length > 0 &&
                        [self.address.street         stringByRemovingWhiteSpace].length > 0 &&
                        [self.address.buildingNumber stringByRemovingWhiteSpace].length > 0 &&
@@ -750,7 +751,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     }
     else
     {
-        complete = ([self.name stringByRemovingWhiteSpace].length > 0);
+        complete = ([self.address.name stringByRemovingWhiteSpace].length > 0);
     }
     
     return complete;
@@ -2089,7 +2090,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     
     if ([key isEqualToString:@"name"])
     {
-        self.name = @"";
+        self.address.name = @"";
     }
     else
     {
@@ -2155,7 +2156,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     NSString* text = [textField.text stringByReplacingOccurrencesOfString:@"\u00a0" withString:@" "];
     if ([key isEqualToString:@"name"])
     {
-        self.name = text;
+        self.address.name = text;
     }
     else
     {
@@ -2199,8 +2200,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (void)createAction
 {
-    self.address.name = self.name;
-    
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
     [[WebClient sharedClient] createAddressForIsoCountryCode:self.numberIsoCountryCode
@@ -2282,8 +2281,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     {
         if (error == nil)
         {
-            self.address.name = self.name;
-
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
             
             [self.view endEditing:YES];
@@ -2295,7 +2292,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         else
         {
             [self.address.managedObjectContext refreshObject:self.address mergeChanges:NO];
-            self.name = self.address.name;
             [self update];
             [self showSaveError:error];
         }
@@ -2387,8 +2383,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (void)save
 {
-    if (self.isNew == NO && self.isDeleting == NO && (self.address.changedValues.count > 0 ||
-                                                      [self.address.name isEqualToString:self.name] == NO))
+    if (self.isNew == NO && self.isDeleting == NO && self.address.changedValues.count > 0)
     {
         [self saveAction];
     }

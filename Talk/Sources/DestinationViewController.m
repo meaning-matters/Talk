@@ -70,7 +70,6 @@ typedef enum
 {
     if (self = [super initWithManagedObjectContext:managedObjectContext])
     {
-        self.name        = destination.name;
         self.phone       = [destination.phones anyObject];
 
         self.destination = destination;
@@ -101,6 +100,8 @@ typedef enum
             self.action       = [Common mutableObjectWithJsonString:self.destination.action];
             self.showCalledId = [self.action[@"call"][@"showCalledId"] boolValue];
         }
+
+        self.item = self.destination;
 
         NSInteger section  = [Common nOfBit:TableSectionName inValue:self.sections];
         self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
@@ -245,7 +246,10 @@ typedef enum
 {
     self.navigationItem.rightBarButtonItem.enabled = NO;
 
-    [self.destination createForE164:self.phone.e164 name:self.name showCalledId:self.showCalledId completion:^(NSError* error)
+    [self.destination createForE164:self.phone.e164
+                               name:self.destination.name
+                       showCalledId:self.showCalledId
+                         completion:^(NSError* error)
     {
         if (error == nil)
         {
@@ -273,7 +277,7 @@ typedef enum
 
 - (void)saveAction
 {
-    if ([self.name isEqualToString:self.destination.name] == YES &&
+    if (self.destination.changedValues.count == 0 &&
         [Common object:self.action isEqualToJsonString:self.destination.action] == YES)
     {
         // Nothing has changed.
@@ -281,21 +285,20 @@ typedef enum
     }
 
     [[WebClient sharedClient] updateDestinationForUuid:self.destination.uuid
-                                                  name:self.name
+                                                  name:self.destination.name
                                                 action:self.action
                                                  reply:^(NSError* error)
     {
         if (error == nil)
         {
             self.showCalledId       = [self.action[@"call"][@"showCalledId"] boolValue];
-            self.destination.name   = self.name;
             self.destination.action = [Common jsonStringWithObject:self.action];
             
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
         }
         else
         {
-            self.name = self.destination.name;
+            [self.destination.managedObjectContext refreshObject:self.destination mergeChanges:NO];
             [self showSaveError:error];
         }
     }];
@@ -609,7 +612,7 @@ typedef enum
     if (self.isNew == YES)
     {
         PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:self.phone.e164];
-        BOOL         valid       = [self.name stringByRemovingWhiteSpace].length > 0 &&
+        BOOL         valid       = [self.destination.name stringByRemovingWhiteSpace].length > 0 &&
                                    ((phoneNumber.isValid && [Settings sharedSettings].homeIsoCountryCode.length > 0) ||
                                     phoneNumber.isInternational);
 

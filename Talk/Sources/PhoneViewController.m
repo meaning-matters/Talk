@@ -56,7 +56,6 @@ typedef enum
         self.phone                = phone;
         self.title                = isNew ? [Strings newPhoneString] : [Strings phoneString];
         
-        self.name                 = phone.name;
         phoneNumber               = [[PhoneNumber alloc] initWithNumber:self.phone.e164];
 
         namesArray                = [NSMutableArray array];
@@ -76,6 +75,8 @@ typedef enum
         {
             self.managedObjectContext = managedObjectContext;
         }
+
+        self.item = self.phone;
 
         NSInteger section  = [Common nOfBit:TableSectionName inValue:sections];
         self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
@@ -191,7 +192,7 @@ typedef enum
 
 - (void)saveAction
 {
-    if (isNew == NO && [self.phone.name isEqualToString:self.name] == YES)
+    if (isNew == NO && self.phone.changedValues.count == 0)
     {
         return;
     }
@@ -201,16 +202,18 @@ typedef enum
         self.navigationItem.leftBarButtonItem.enabled = NO;
     }
 
-    [[WebClient sharedClient] updatePhoneVerificationForE164:[phoneNumber e164Format] name:self.name reply:^(NSError *error)
+    [[WebClient sharedClient] updatePhoneVerificationForE164:[phoneNumber e164Format]
+                                                        name:self.phone.name
+                                                       reply:^(NSError *error)
     {
         if (error == nil)
         {
-            self.phone.name = self.name;
             self.phone.e164 = [phoneNumber e164Format];
 
             if (isNew)
             {
-                [self createDefaultDestinationWithCompletion:^(NSError *error)
+                DestinationData* destination = nil;
+                destination = [self createDefaultDestinationWithCompletion:^(NSError *error)
                 {
                     if (error == nil)
                     {
@@ -224,7 +227,8 @@ typedef enum
                     }
                     else
                     {
-                        self.name = self.phone.name;
+                        [destination.managedObjectContext deleteObject:destination];
+                        [self.phone.managedObjectContext refreshObject:self.phone mergeChanges:NO];
                         [self showSaveError:error];
                     }
                 }];
@@ -232,20 +236,22 @@ typedef enum
         }
         else
         {
-            self.name = self.phone.name;
+            [self.phone.managedObjectContext refreshObject:self.phone mergeChanges:NO];
             [self showSaveError:error];
         }
     }];
 }
 
 
-- (void)createDefaultDestinationWithCompletion:(void (^)(NSError* error))completion
+- (DestinationData*)createDefaultDestinationWithCompletion:(void (^)(NSError* error))completion
 {
     DestinationData* destination = [NSEntityDescription insertNewObjectForEntityForName:@"Destination"
                                                                  inManagedObjectContext:self.managedObjectContext];
 
-    NSString* name = [NSString stringWithFormat:@"\u2794 %@", self.name];
+    NSString* name = [NSString stringWithFormat:@"\u2794 %@", self.phone.name];
     [destination createForE164:[phoneNumber e164Format] name:name showCalledId:false completion:completion];
+
+    return destination;
 }
 
 
@@ -576,7 +582,7 @@ typedef enum
 {
     if (isNew == YES)
     {
-        self.navigationItem.leftBarButtonItem.enabled = ([self.name stringByRemovingWhiteSpace].length > 0) &&
+        self.navigationItem.leftBarButtonItem.enabled = ([self.phone.name stringByRemovingWhiteSpace].length > 0) &&
                                                         [phoneNumber isValid];
     }
 }
