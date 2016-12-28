@@ -422,10 +422,13 @@ typedef enum
     self.navigationItem.rightBarButtonItem.enabled = NO;
 
     NSData* data = [NSData dataWithContentsOfURL:self.temporaryUrl];
+    self.isLoading = YES;
     [[WebClient sharedClient] createAudioWithData:data
                                              name:self.recording.name
                                             reply:^(NSError *error, NSString *uuid)
     {
+        self.isLoading = NO;
+
         if (error == nil)
         {
             self.recording.uuid = uuid;
@@ -469,11 +472,14 @@ typedef enum
         data           = [NSData dataWithContentsOfFile:path];
     }
 
+    self.isLoading = YES;
     [[WebClient sharedClient] updateAudioForUuid:self.recording.uuid
                                             data:data
                                             name:self.recording.name
                                            reply:^(NSError *error)
     {
+        self.isLoading = NO;
+
         if (error == nil)
         {
             NSString* path = [Common audioPathForFileName:[NSString stringWithFormat:@"%@.m4a", self.recording.uuid]];

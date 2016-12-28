@@ -202,10 +202,13 @@ typedef enum
         self.navigationItem.leftBarButtonItem.enabled = NO;
     }
 
+    self.isLoading = YES;
     [[WebClient sharedClient] updatePhoneVerificationForE164:[phoneNumber e164Format]
                                                         name:self.phone.name
                                                        reply:^(NSError *error)
     {
+        self.isLoading = NO;
+
         if (error == nil)
         {
             self.phone.e164 = [phoneNumber e164Format];
@@ -213,24 +216,27 @@ typedef enum
             if (isNew)
             {
                 DestinationData* destination = nil;
+                self.isLoading = YES;
                 destination = [self createDefaultDestinationWithCompletion:^(NSError *error)
                 {
+                    self.isLoading = NO;
+
                     if (error == nil)
                     {
                         [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
 
                         [self.view endEditing:YES];
-                        if (isNew == YES)
-                        {
-                            [self dismissViewControllerAnimated:YES completion:nil];
-                        }
+                        [self dismissViewControllerAnimated:YES completion:nil];
                     }
                     else
                     {
-                        [destination.managedObjectContext deleteObject:destination];
                         [self showSaveError:error];
                     }
                 }];
+            }
+            else
+            {
+                [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
             }
         }
         else

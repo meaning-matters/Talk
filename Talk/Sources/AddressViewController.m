@@ -2201,7 +2201,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 - (void)createAction
 {
     self.navigationItem.rightBarButtonItem.enabled = NO;
-    
+
+    self.isLoading = YES;
     [[WebClient sharedClient] createAddressForIsoCountryCode:self.numberIsoCountryCode
                                                   numberType:self.numberTypeMask
                                                         name:self.address.name
@@ -2229,13 +2230,14 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                                NSString* addressStatus,
                                                                NSArray*  missingFields)
     {
+        self.isLoading = NO;
+
         if (error == nil)
         {
             self.address.addressId     = addressId;
             self.address.addressStatus = [AddressStatus addressStatusMaskForString:addressStatus];
 
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-            [[DataManager sharedManager] saveManagedObjectContext:nil];
 
             self.createCompletion ? self.createCompletion(self.address) : 0;
         }
@@ -2260,7 +2262,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     {
         self.navigationItem.rightBarButtonItem.enabled = NO;
     }
-    
+
+    self.isLoading = YES;
     [[WebClient sharedClient] updateAddressWithId:self.address.addressId
                                              name:self.address.name
                                        salutation:self.address.salutation
@@ -2281,10 +2284,12 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                  municipalityCode:self.address.municipalityCode
                                             reply:^(NSError *error)
     {
+        self.isLoading = NO;
+
         if (error == nil)
         {
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-            
+
             [self.view endEditing:YES];
             if (self.isNew == YES || self.isUpdatable == YES)
             {

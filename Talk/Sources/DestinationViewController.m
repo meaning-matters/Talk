@@ -284,11 +284,14 @@ typedef enum
         return;
     }
 
+    self.isLoading = YES;
     [[WebClient sharedClient] updateDestinationForUuid:self.destination.uuid
                                                   name:self.destination.name
                                                 action:self.action
                                                  reply:^(NSError* error)
     {
+        self.isLoading = NO;
+
         if (error == nil)
         {
             self.showCalledId       = [self.action[@"call"][@"showCalledId"] boolValue];

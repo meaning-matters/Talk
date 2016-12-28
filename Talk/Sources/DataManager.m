@@ -172,6 +172,12 @@
         {
             [self handleError:error];
         }
+
+        // Recursively save children up until parent.
+        if (managedObjectContext != self.managedObjectContext)
+        {
+            [self saveManagedObjectContext:managedObjectContext.parentContext];
+        }
     }
 }
 

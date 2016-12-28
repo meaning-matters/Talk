@@ -119,16 +119,20 @@
         [self.activityIndicator startAnimating];
         [self.view addSubview:self.activityIndicator];
         self.view.userInteractionEnabled = NO;
+        self.navigationItem.leftBarButtonItem.enabled = NO;
+        self.navigationController.view.userInteractionEnabled = NO;
     }
     else if (self.isLoading == NO && self.activityIndicator != nil)
     {
         [self.activityIndicator stopAnimating];
         [self.activityIndicator removeFromSuperview];
         self.activityIndicator = nil;
+        self.hasCenteredActivityIndicator = NO;
 
         [self.imageView removeFromSuperview];
         self.imageView = nil;
         self.view.userInteractionEnabled = YES;
+        self.navigationController.view.userInteractionEnabled = YES;
     }
 
     [self didSetIsLoading];

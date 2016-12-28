@@ -84,6 +84,22 @@
 }
 
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    if ([self isMovingFromParentViewController])
+    {
+        // This view controller being popped.
+        [((NSManagedObject*)self.item).managedObjectContext refreshObject:self.item mergeChanges:NO];
+    }
+    else
+    {
+        // New view controller being pushed.
+    }
+}
+
+
 #pragma mark - Keyboard State
 
 - (void)addKeyboardObservers

@@ -320,12 +320,14 @@ typedef enum
             {
                 if (selectedAddress != number.address)
                 {
+                    self.isLoading = YES;
                     [[WebClient sharedClient] updateNumberE164:number.e164
                                                       withName:number.name
                                                      autoRenew:number.autoRenew
                                                      addressId:selectedAddress.addressId
                                                          reply:^(NSError* error)
                     {
+                        self.isLoading = NO;
                         if (error == nil)
                         {
                             number.address = selectedAddress;
@@ -475,12 +477,14 @@ typedef enum
 
 - (void)autoRenewSwitchAction:(UISwitch*)switchView
 {
+    self.isLoading = YES;
     [[WebClient sharedClient] updateNumberE164:number.e164
                                       withName:number.name
                                      autoRenew:switchView.isOn
                                      addressId:number.address.addressId
                                          reply:^(NSError* error)
     {
+        self.isLoading = NO;
         if (error == nil)
         {
             number.autoRenew = switchView.isOn;
@@ -775,12 +779,15 @@ typedef enum
         return;
     }
 
+    self.isLoading = YES;
     [[WebClient sharedClient] updateNumberE164:number.e164
                                       withName:number.name
                                      autoRenew:number.autoRenew
                                      addressId:number.address.addressId
                                          reply:^(NSError* error)
     {
+        self.isLoading = NO;
+
         if (error == nil)
         {
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
