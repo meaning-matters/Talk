@@ -1497,7 +1497,7 @@ static Common* sharedCommon;
     }
 
     [tableView beginUpdates];
-    [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+    [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
     [tableView endUpdates];
 }
 

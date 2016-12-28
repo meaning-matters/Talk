@@ -30,19 +30,19 @@
 
 typedef enum
 {
-    TableSectionName         = 1UL << 0,
-    TableSectionInfo         = 1UL << 1,
-    TableSectionDestination  = 1UL << 2,
-    TableSectionUsage        = 1UL << 3,
-    TableSectionPeriod       = 1UL << 4,
-    TableSectionAddress      = 1UL << 5,
-    TableSectionCharges      = 1UL << 6,
+    TableSectionName        = 1UL << 0,
+    TableSectionInfo        = 1UL << 1,
+    TableSectionDestination = 1UL << 2,
+    TableSectionUsage       = 1UL << 3,
+    TableSectionPeriod      = 1UL << 4,
+    TableSectionAddress     = 1UL << 5,
+    TableSectionCharges     = 1UL << 6,
 } TableSections;
 
 typedef enum
 {
-    InfoRowE164              = 1UL << 0,
-    InfoRowArea              = 1UL << 1,
+    InfoRowE164 = 1UL << 0,
+    InfoRowArea = 1UL << 1,
 } InfoRows;
 
 
@@ -118,6 +118,14 @@ typedef enum
             [weakSelf loadAddressesPredicate];
         }
     }];
+}
+
+
+- (void)viewWillDisppear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    [self.tableView endEditing:YES];
 }
 
 
@@ -216,13 +224,13 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionName:         numberOfRows = 1;                              break;
-        case TableSectionInfo:         numberOfRows = [Common bitsSetCount:infoRows]; break;
-        case TableSectionDestination:  numberOfRows = 1;                              break;
-        case TableSectionUsage:        numberOfRows = 1;                              break;
-        case TableSectionPeriod:       numberOfRows = 3;                              break;  //### No Auto Renew for now.
-        case TableSectionAddress:      numberOfRows = 1;                              break;
-        case TableSectionCharges:      numberOfRows = 1;                              break;
+        case TableSectionName:        numberOfRows = 1;                              break;
+        case TableSectionInfo:        numberOfRows = [Common bitsSetCount:infoRows]; break;
+        case TableSectionDestination: numberOfRows = 1;                              break;
+        case TableSectionUsage:       numberOfRows = 1;                              break;
+        case TableSectionPeriod:      numberOfRows = 3;                              break;  //### No Auto Renew for now.
+        case TableSectionAddress:     numberOfRows = 1;                              break;
+        case TableSectionCharges:     numberOfRows = 1;                              break;
     }
 
     return numberOfRows;
@@ -325,8 +333,15 @@ typedef enum
                         }
                         else
                         {
-                            //### Need to do something here and/or in showAddressIdSaveError???
-                            [self showAddressIdSaveError:error];
+                            NSString* title = NSLocalizedStringWithDefaultValue(@"Number AutoRenewUpdateFailedTitle", nil,
+                                                                                [NSBundle mainBundle], @"Address Not Updated",
+                                                                                @"Alert title telling that a setting was not saved.\n"
+                                                                                @"[iOS alert title size].");
+
+                            [self showSaveError:error title:title itemName:[Strings numberString] completion:^
+                            {
+                                //### Need to do something here???
+                            }];
                         }
                     }];
                 }
@@ -472,48 +487,30 @@ typedef enum
 
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
 
-            NSIndexSet* indexSet = [NSIndexSet indexSetWithIndex:[Common nOfBit:TableSectionPeriod
-                                                                        inValue:sections]];
-            [self.tableView beginUpdates];
-            [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
-            [self.tableView endUpdates];
+            [Common reloadSections:TableSectionPeriod allSections:sections tableView:self.tableView];
         }
         else
         {
-            [number.managedObjectContext refreshObject:number mergeChanges:NO];
-            [self showAutoRenewSaveError:error];
+            NSString* title = NSLocalizedStringWithDefaultValue(@"Number AutoRenewUpdateFailedTitle", nil,
+                                                                [NSBundle mainBundle], @"Auto Renew Not Updated",
+                                                                @"Alert title telling that a setting was not saved.\n"
+                                                                @"[iOS alert title size].");
+
+            [self showSaveError:error title:title itemName:[Strings numberString] completion:^
+            {
+                NSInteger        section    = [Common nOfBit:TableSectionPeriod inValue:sections];
+                NSIndexPath*     indexPath  = [NSIndexPath indexPathForItem:2 inSection:section];
+                UITableViewCell* cell       = [self.tableView cellForRowAtIndexPath:indexPath];
+                UISwitch*        switchView = (UISwitch*)cell.accessoryView;
+
+                [switchView setOn:number.autoRenew animated:YES];
+            }];
         }
     }];
 }
 
 
 #pragma mark - Cell Methods
-
-- (void)updateInfoNameCell:(UITableViewCell*)cell
-{
-    UITextField* textField;
-
-    textField = (UITextField*)[cell viewWithTag:CommonTextFieldCellTag];
-    if (textField == nil)
-    {
-        textField = [Common addTextFieldToCell:cell delegate:self];
-        textField.tag = CommonTextFieldCellTag;
-        textField.enablesReturnKeyAutomatically = YES;
-    }
-
-    textField.placeholder            = [Strings requiredString];
-    textField.text                   = number.name;
-    textField.userInteractionEnabled = YES;
-
-    cell.selectionStyle              = UITableViewCellSelectionStyleNone;
-    cell.textLabel.text              = [Strings nameString];
-
-    if (number.name.length == 0)
-    {
-        [textField becomeFirstResponder];
-    }
-}
-
 
 - (void)updateInfoE164Cell:(UITableViewCell*)cell
 {
@@ -790,97 +787,13 @@ typedef enum
         }
         else
         {
-            [number.managedObjectContext refreshObject:number mergeChanges:NO];
-            [self showNameSaveError:error];
+            [self showSaveError:error title:nil itemName:[Strings numberString] completion:^
+            {
+                [number.managedObjectContext refreshObject:number mergeChanges:NO];
+                [Common reloadSections:sections allSections:sections tableView:self.tableView];
+            }];
         }
     }];
-}
-
-
-- (void)showNameSaveError:(NSError*)error
-{
-    NSString* title;
-    NSString* message;
-    
-    title   = NSLocalizedStringWithDefaultValue(@"Number NameUpdateFailedTitle", nil,
-                                                [NSBundle mainBundle], @"Name Not Updated",
-                                                @"Alert title telling that a name was not saved.\n"
-                                                @"[iOS alert title size].");
-    message = NSLocalizedStringWithDefaultValue(@"Number NameUpdateFailedMessage", nil,
-                                                [NSBundle mainBundle],
-                                                @"Saving the name failed: %@\n\n"
-                                                @"Please try again later.",
-                                                @"Alert message telling that a name must be supplied\n"
-                                                @"[iOS alert message size]");
-    message = [NSString stringWithFormat:message, error.localizedDescription];
-    [BlockAlertView showAlertViewWithTitle:title
-                                   message:message
-                                completion:^(BOOL cancelled, NSInteger buttonIndex)
-    {
-        [number.managedObjectContext refreshObject:number mergeChanges:NO];
-        [self updateInfoNameCell:[self.tableView cellForRowAtIndexPath:self.nameIndexPath]];
-     }
-                         cancelButtonTitle:[Strings closeString]
-                         otherButtonTitles:nil];
-}
-
-
-- (void)showAutoRenewSaveError:(NSError*)error
-{
-    NSString* title;
-    NSString* message;
-
-    title   = NSLocalizedStringWithDefaultValue(@"Number AutoRenewUpdateFailedTitle", nil,
-                                                [NSBundle mainBundle], @"Auto Renew Not Updated",
-                                                @"Alert title telling that a setting was not saved.\n"
-                                                @"[iOS alert title size].");
-    message = NSLocalizedStringWithDefaultValue(@"Number AutoRenewUpdateFailedMessage", nil,
-                                                [NSBundle mainBundle],
-                                                @"Saving the auto renew setting failed: %@\n\n"
-                                                @"Please try again later.",
-                                                @"Alert message telling that a setting must be supplied\n"
-                                                @"[iOS alert message size]");
-    message = [NSString stringWithFormat:message, error.localizedDescription];
-    [BlockAlertView showAlertViewWithTitle:title
-                                   message:message
-                                completion:^(BOOL cancelled, NSInteger buttonIndex)
-     {
-         NSInteger        section    = [Common nOfBit:TableSectionPeriod inValue:sections];
-         NSIndexPath*     indexPath  = [NSIndexPath indexPathForItem:2 inSection:section];
-         UITableViewCell* cell       = [self.tableView cellForRowAtIndexPath:indexPath];
-         UISwitch*        switchView = (UISwitch*)cell.accessoryView;
-
-         [switchView setOn:number.autoRenew animated:YES];
-     }
-                         cancelButtonTitle:[Strings closeString]
-                         otherButtonTitles:nil];
-}
-
-
-- (void)showAddressIdSaveError:(NSError*)error
-{
-    NSString* title;
-    NSString* message;
-
-    title   = NSLocalizedStringWithDefaultValue(@"Number AutoRenewUpdateFailedTitle", nil,
-                                                [NSBundle mainBundle], @"Address Not Updated",
-                                                @"Alert title telling that a setting was not saved.\n"
-                                                @"[iOS alert title size].");
-    message = NSLocalizedStringWithDefaultValue(@"Number AutoRenewUpdateFailedMessage", nil,
-                                                [NSBundle mainBundle],
-                                                @"Saving the Address selection failed: %@\n\n"
-                                                @"Please try again later.",
-                                                @"Alert message telling that a setting must be supplied\n"
-                                                @"[iOS alert message size]");
-    message = [NSString stringWithFormat:message, error.localizedDescription];
-    [BlockAlertView showAlertViewWithTitle:title
-                                   message:message
-                                completion:^(BOOL cancelled, NSInteger buttonIndex)
-     {
-         //### Do something here???
-     }
-                         cancelButtonTitle:[Strings closeString]
-                         otherButtonTitles:nil];
 }
 
 @end

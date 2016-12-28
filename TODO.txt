@@ -247,3 +247,5 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * App is sometimes without internet or in background. It then still generates Loading Products failed alerts. App should not generated alerts when in background.
 
 * AppDelegate saveContext is no longer used, only in commented out contacts code.
+
+* Check if main MananagedObjectContext is saved and not just the child, when creating objects. Perhaps put back saving in App Delegate (that was removed December 27 2016).

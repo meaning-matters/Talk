@@ -10,6 +10,7 @@
 #import "DataManager.h"
 #import "Common.h"
 #import "Strings.h"
+#import "BlockAlertView.h"
 
 #warning Check if the hard-coded inset values (265, 216, ...) are working on iPhone 6+ and for all keyboard configurations.
 
@@ -134,6 +135,37 @@
     {
         return [self.navigationController.viewControllers objectAtIndex:numberOfViewControllers - 2];
     }
+}
+
+
+- (void)showSaveError:(NSError*)error
+                title:(NSString*)title
+             itemName:(NSString*)itemName
+           completion:(void (^)(void))completion
+{
+    NSString* message;
+
+    if (title == nil)
+    {
+        title = NSLocalizedStringWithDefaultValue(@"SaveErrorTitle", nil, [NSBundle mainBundle],
+                                                  @"%@ Not Saved",
+                                                  @"....\n"
+                                                  @"[iOS alert title size].");
+        title = [NSString stringWithFormat:title, itemName];
+    }
+    message = NSLocalizedStringWithDefaultValue(@"SaveErroMessage", nil, [NSBundle mainBundle],
+                                                @"Saving this %@ failed: %@\n\nPlease try again later.",
+                                                @"...\n"
+                                                @"[iOS alert message size]");
+
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:[NSString stringWithFormat:message, itemName, [error localizedDescription]]
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        completion ? completion() : 0;
+    }
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
 }
 
 

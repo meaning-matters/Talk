@@ -433,16 +433,18 @@ typedef enum
             NSString* path = [Common audioPathForFileName:[NSString stringWithFormat:@"%@.m4a", uuid]];
             [Common moveFileFromPath:[self.temporaryUrl path] toPath:path];
 
-
-            NSURL*    url  = [NSURL URLWithString:path];
+            NSURL* url  = [NSURL URLWithString:path];
             audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-
 
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
         }
         else
         {
-            [self showSaveError:error];
+            [self showSaveError:error title:nil itemName:[Strings recordingString] completion:^
+            {
+                //### Need to delete instead?
+                [self.recording.managedObjectContext refreshObject:self.recording mergeChanges:NO];
+            }];
         }
     }];
 
@@ -482,7 +484,10 @@ typedef enum
         else
         {
             [self.recording.managedObjectContext refreshObject:self.recording mergeChanges:NO];
-            [self showSaveError:error];
+            [self showSaveError:error title:nil itemName:[Strings recordingString] completion:^
+            {
+                [Common reloadSections:TableSectionName allSections:sections tableView:self.tableView];
+            }];
         }
     }];
 }
@@ -553,27 +558,6 @@ typedef enum
 
     tappedSave = YES; // Prevents removal of file in viewWillDisappear.
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-
-- (void)showSaveError:(NSError*)error
-{
-    NSString* title;
-    NSString* message;
-
-    title   = NSLocalizedStringWithDefaultValue(@"Recording SaveErrorTitle", nil, [NSBundle mainBundle],
-                                                @"Failed To Save",
-                                                @"....\n"
-                                                @"[iOS alert title size].");
-    message = NSLocalizedStringWithDefaultValue(@"Recording SaveErroMessage", nil, [NSBundle mainBundle],
-                                                @"Failed to save this Recording: %@",
-                                                @"...\n"
-                                                @"[iOS alert message size]");
-    [BlockAlertView showAlertViewWithTitle:title
-                                   message:[NSString stringWithFormat:message, [error localizedDescription]]
-                                completion:nil
-                         cancelButtonTitle:[Strings closeString]
-                         otherButtonTitles:nil];
 }
 
 

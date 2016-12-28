@@ -211,20 +211,15 @@
 
                 [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
 
-                if (self.navigationController.viewControllers.count == 1)
-                {
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                }
-                else
-                {
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
+                [self closeViewController];
             }
             else
             {
                 [Common showSetDestinationError:error completion:^
                 {
                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+                    [self closeViewController];
                 }];
             }
         }];
@@ -232,6 +227,19 @@
     else
     {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+
+- (void)closeViewController
+{
+    if (self.navigationController.viewControllers.count == 1)
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else
+    {
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

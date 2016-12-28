@@ -228,7 +228,6 @@ typedef enum
                     else
                     {
                         [destination.managedObjectContext deleteObject:destination];
-                        [self.phone.managedObjectContext refreshObject:self.phone mergeChanges:NO];
                         [self showSaveError:error];
                     }
                 }];
@@ -236,7 +235,6 @@ typedef enum
         }
         else
         {
-            [self.phone.managedObjectContext refreshObject:self.phone mergeChanges:NO];
             [self showSaveError:error];
         }
     }];
@@ -257,20 +255,9 @@ typedef enum
 
 - (void)showSaveError:(NSError*)error
 {
-    NSString* title;
-    NSString* message;
+    [self.phone.managedObjectContext refreshObject:self.phone mergeChanges:NO];
 
-    title   = NSLocalizedStringWithDefaultValue(@"Phone SaveErrorTitle", nil, [NSBundle mainBundle],
-                                                @"Failed To Save",
-                                                @"....\n"
-                                                @"[iOS alert title size].");
-    message = NSLocalizedStringWithDefaultValue(@"Phone SaveErroMessage", nil, [NSBundle mainBundle],
-                                                @"Failed to save this Phone: %@",
-                                                @"...\n"
-                                                @"[iOS alert message size]");
-    [BlockAlertView showAlertViewWithTitle:title
-                                   message:[NSString stringWithFormat:message, [error localizedDescription]]
-                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    [self showSaveError:error title:nil itemName:[Strings phoneString] completion:^
     {
         [self.view endEditing:YES];
         
@@ -280,11 +267,9 @@ typedef enum
         }
         else
         {
-            [self.tableView reloadRowsAtIndexPaths:@[self.nameIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [Common reloadSections:TableSectionName allSections:sections tableView:self.tableView];
         }
-    }
-                         cancelButtonTitle:[Strings cancelString]
-                         otherButtonTitles:nil];
+    }];
 }
 
 

@@ -2229,24 +2229,26 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                                NSString* addressStatus,
                                                                NSArray*  missingFields)
     {
-         if (error == nil)
-         {
-             self.address.addressId     = addressId;
-             self.address.addressStatus = [AddressStatus addressStatusMaskForString:addressStatus];
+        if (error == nil)
+        {
+            self.address.addressId     = addressId;
+            self.address.addressStatus = [AddressStatus addressStatusMaskForString:addressStatus];
 
-             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-             [[DataManager sharedManager] saveManagedObjectContext:nil];
+            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+            [[DataManager sharedManager] saveManagedObjectContext:nil];
 
-             self.createCompletion ? self.createCompletion(self.address) : 0;
-         }
-         else
-         {
-             [self showSaveError:error];
+            self.createCompletion ? self.createCompletion(self.address) : 0;
+        }
+        else
+        {
+            NSString* title = NSLocalizedString(@"%@ Not Created", @"");
+            title = [NSString stringWithFormat:title, [Strings addressString]];
+            [self showSaveError:error title:title itemName:[Strings addressString] completion:nil];
 
-             self.createCompletion ? self.createCompletion(nil) : 0;
-         }
-     }];
-    
+            self.createCompletion ? self.createCompletion(nil) : 0;
+        }
+    }];
+
     [self.view endEditing:YES];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -2292,8 +2294,11 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         else
         {
             [self.address.managedObjectContext refreshObject:self.address mergeChanges:NO];
-            [self update];
-            [self showSaveError:error];
+            [self showSaveError:error title:nil itemName:[Strings addressString] completion:^
+            {
+                [Common reloadSections:self.sections allSections:self.sections tableView:self.tableView];
+                [self update];
+            }];
         }
     }];
 }
@@ -2352,30 +2357,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                              cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
     }
-}
-
-
-- (void)showSaveError:(NSError*)error
-{
-    NSString* title;
-    NSString* message;
-    
-    title   = NSLocalizedStringWithDefaultValue(@"Destination SaveErrorTitle", nil, [NSBundle mainBundle],
-                                                @"Failed To Save",
-                                                @"....\n"
-                                                @"[iOS alert title size].");
-    message = NSLocalizedStringWithDefaultValue(@"Destination SaveErroMessage", nil, [NSBundle mainBundle],
-                                                @"Failed to save this Destination: %@",
-                                                @"...\n"
-                                                @"[iOS alert message size]");
-    [BlockAlertView showAlertViewWithTitle:title
-                                   message:[NSString stringWithFormat:message, [error localizedDescription]]
-                                completion:^(BOOL cancelled, NSInteger buttonIndex)
-    {
-        [Common reloadSections:self.sections allSections:self.sections tableView:self.tableView];
-    }
-                         cancelButtonTitle:[Strings closeString]
-                         otherButtonTitles:nil];
 }
 
 

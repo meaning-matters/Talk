@@ -25,6 +25,11 @@
 
 - (UIViewController*)backViewController;
 
+- (void)showSaveError:(NSError*)error
+                title:(NSString*)title
+             itemName:(NSString*)itemName
+           completion:(void (^)(void))completion;
+
 // Must be overriden by subclass.
 - (void)save;
 

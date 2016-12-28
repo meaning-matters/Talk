@@ -299,6 +299,8 @@ typedef enum
         else
         {
             [self.destination.managedObjectContext refreshObject:self.destination mergeChanges:NO];
+            self.phone = self.isNew ? self.phone : [self.destination.phones anyObject];
+
             [self showSaveError:error];
         }
     }];
@@ -307,26 +309,15 @@ typedef enum
 
 - (void)showSaveError:(NSError*)error
 {
-    NSString* title;
-    NSString* message;
-
-    title   = NSLocalizedStringWithDefaultValue(@"Destination SaveErrorTitle", nil, [NSBundle mainBundle],
-                                                @"Failed To Save",
-                                                @"....\n"
-                                                @"[iOS alert title size].");
-    message = NSLocalizedStringWithDefaultValue(@"Destination SaveErroMessage", nil, [NSBundle mainBundle],
-                                                @"Failed to save this Destination: %@",
-                                                @"...\n"
-                                                @"[iOS alert message size]");
-    [BlockAlertView showAlertViewWithTitle:title
-                                   message:[NSString stringWithFormat:message, [error localizedDescription]]
-                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    [self showSaveError:error title:nil itemName:[Strings destinationString] completion:^
     {
         self.completion ? self.completion(nil) : 0;
         self.completion = nil;
 
         if (self.isNew == NO)
         {
+            [Common reloadSections:self.sections allSections:self.sections tableView:self.tableView];
+
             NSInteger        section    = [Common nOfBit:TableSectionStatements inValue:self.sections];
             NSIndexPath*     indexPath  = [NSIndexPath indexPathForItem:0 inSection:section];
             UITableViewCell* cell       = [self.tableView cellForRowAtIndexPath:indexPath];
@@ -334,9 +325,7 @@ typedef enum
 
             [switchView setOn:self.showCalledId animated:YES];
         }
-    }
-                         cancelButtonTitle:[Strings closeString]
-                         otherButtonTitles:nil];
+    }];
 }
 
 
