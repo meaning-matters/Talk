@@ -519,6 +519,7 @@ typedef enum
                  {
                      if (succeeded)
                      {
+                         [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
                          [self.navigationController popViewControllerAnimated:YES];
                      }
                      else

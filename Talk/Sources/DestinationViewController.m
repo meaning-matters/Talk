@@ -200,11 +200,11 @@ typedef enum
             {
                 self.isDeleting = YES;
 
-                [self.destination removePhones:self.destination.phones];
                 [self.destination deleteWithCompletion:^(BOOL succeeded)
                 {
                     if (succeeded)
                     {
+                        [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
                         [self.navigationController popViewControllerAnimated:YES];
                     }
                     else
