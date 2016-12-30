@@ -49,12 +49,12 @@
 
 - (void)payNumber
 {
-    [[WebClient sharedClient] extendNumberE164:self.number.e164
-                                     forMonths:self.payMonths
-                                         reply:^(NSError* error,
-                                                 float    monthFee,
-                                                 float    renewFee,
-                                                 NSDate*  expiryDate)
+    [[WebClient sharedClient] extendNumberWithUuid:self.number.uuid
+                                         forMonths:self.payMonths
+                                             reply:^(NSError* error,
+                                                     float    monthFee,
+                                                     float    renewFee,
+                                                     NSDate*  expiryDate)
     {
         if (error == nil)
         {

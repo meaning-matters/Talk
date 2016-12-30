@@ -193,9 +193,9 @@
     {
         UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];    // Get here because indexPath is overwritten.
 
-        [[WebClient sharedClient] setDestinationOfE164:number.e164
-                                                  uuid:(destination == nil) ? @"" : destination.uuid
-                                                 reply:^(NSError* error)
+        [[WebClient sharedClient] setDestinationOfNumberWithUuid:number.uuid
+                                                 destinationUuid:(destination == nil) ? @"" : destination.uuid
+                                                           reply:^(NSError* error)
         {
             if (error == nil)
             {

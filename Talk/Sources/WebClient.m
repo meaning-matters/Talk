@@ -886,6 +886,7 @@
                       addressId:(NSString*)addressId
                       autoRenew:(BOOL)autoRenew
                           reply:(void (^)(NSError*  error,
+                                          NSString* uuid,
                                           NSString* e164,
                                           NSDate*   purchaseDate,
                                           NSDate*   expiryDate,
@@ -908,7 +909,8 @@
         if (error == nil)
         {
             reply(nil,
-                  [@"+" stringByAppendingString:content[@"e164"]],
+                  content[@"uuid"],
+                  content[@"e164"] ? [@"+" stringByAppendingString:content[@"e164"]] : nil,
                   [Common dateWithString:content[@"purchaseDateTime"]],
                   [Common dateWithString:content[@"expiryDateTime"]],
                   [content[@"monthFee"] floatValue],
@@ -916,28 +918,27 @@
         }
         else
         {
-            reply(error, nil, nil, nil, 0.0f, 0.0f);
+            reply(error, nil, nil, nil, nil, 0.0f, 0.0f);
         }
     }];
 }
 
 
 // 11B. UPDATE NUMBER ATTRIBUTES
-- (void)updateNumberE164:(NSString*)e164
-                withName:(NSString*)name
-               autoRenew:(BOOL)autoRenew
-               addressId:(NSString*)addressId
-                   reply:(void (^)(NSError* error))reply;
+- (void)updateNumberWithUuid:(NSString*)uuid
+                        name:(NSString*)name
+                   autoRenew:(BOOL)autoRenew
+                   addressId:(NSString*)addressId
+                       reply:(void (^)(NSError* error))reply;
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
-    NSString*            number     = [e164 substringFromIndex:1];
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
 
     parameters[@"autoRenew"]                          = @(autoRenew);
     (name.length      > 0) ? parameters[@"name"]      = name      : 0;
     (addressId.length > 0) ? parameters[@"addressId"] = addressId : 0;
 
-    [self postPath:[NSString stringWithFormat:@"/users/%@/numbers/%@", username, number]
+    [self postPath:[NSString stringWithFormat:@"/users/%@/numbers/%@", username, uuid]
         parameters:parameters
              reply:^(NSError* error, id content)
     {
@@ -947,17 +948,16 @@
 
 
 // 11C. EXTEND NUMBER
-- (void)extendNumberE164:(NSString*)e164 forMonths:(NSUInteger)months
-                   reply:(void (^)(NSError* error,
-                                   float    monthFee,
-                                   float    renewFee,
-                                   NSDate*  expiryDate))reply
+- (void)extendNumberWithUuid:(NSString*)uuid forMonths:(NSUInteger)months
+                       reply:(void (^)(NSError* error,
+                                       float    monthFee,
+                                       float    renewFee,
+                                       NSDate*  expiryDate))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
-    NSString*     number     = [e164 substringFromIndex:1];
     NSDictionary* parameters = @{@"durationMonths" : @(months)};
 
-    [self postPath:[NSString stringWithFormat:@"/users/%@/numbers/%@", username, number]
+    [self postPath:[NSString stringWithFormat:@"/users/%@/numbers/%@", username, uuid]
         parameters:parameters
              reply:^(NSError* error, id content)
     {
@@ -970,7 +970,7 @@
 
 
 // 12. GET LIST OF NUMBERS
-- (void)retrieveNumbersList:(void (^)(NSError* error, NSArray* e164s))reply
+- (void)retrieveNumbersList:(void (^)(NSError* error, NSArray* uuids))reply
 {
     [self getPath:[NSString stringWithFormat:@"/users/%@/numbers", [Settings sharedSettings].webUsername]
        parameters:nil
@@ -978,13 +978,7 @@
     {
         if (error == nil)
         {
-            NSMutableArray* e164s = [NSMutableArray array];
-            for (NSString* e164x in content)
-            {
-                [e164s addObject:[@"+" stringByAppendingString:e164x]];
-            }
-
-            reply(nil, e164s);
+            reply(nil, content);
         }
         else
         {
@@ -995,8 +989,9 @@
 
 
 // 13. GET NUMBER INFO
-- (void)retrieveNumberWithE164:(NSString*)e164
+- (void)retrieveNumberWithUuid:(NSString*)uuid
                          reply:(void (^)(NSError*        error,
+                                         NSString*       e164,
                                          NSString*       name,
                                          NSString*       numberType,
                                          NSString*       areaCode,
@@ -1020,18 +1015,18 @@
                                          float           renewFee))reply
 {
     NSString*     username     = [Settings sharedSettings].webUsername;
-    NSString*     number       = [e164 substringFromIndex:1];
     NSString*     currencyCode = [Settings sharedSettings].storeCurrencyCode;
     NSString*     countryCode  = [Settings sharedSettings].storeCountryCode;
     NSDictionary* parameters   = @{@"currencyCode" : currencyCode, @"countryCode" : countryCode};
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/numbers/%@", username, number]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/numbers/%@", username, uuid]
        parameters:parameters
             reply:^(NSError *error, id content)
     {
         if (error == nil)
         {
             reply(nil,
+                  content[@"e164"] ? [@"+" stringByAppendingString:content[@"e164"]] : nil,
                   content[@"name"],
                   content[@"numberType"],
                   content[@"areaCode"],
@@ -1056,7 +1051,7 @@
         }
         else
         {
-            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, AddressTypeWorldwideMask, nil, nil, nil, NO,
+            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, AddressTypeWorldwideMask, nil, nil, nil, NO,
                   0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         }
     }];
@@ -1259,7 +1254,7 @@
 
 // 22. DOWNLOAD DESTINATION
 - (void)retrieveDestinationForUuid:(NSString*)uuid
-                     reply:(void (^)(NSError* error, NSString* name, NSDictionary* action))reply
+                             reply:(void (^)(NSError* error, NSString* name, NSDictionary* action))reply
 {
     AnalysticsTrace(@"API_22");
 
@@ -1284,17 +1279,16 @@
 
 
 // 23. SET/CLEAR DESTINATION FOR A NUMBER
-- (void)setDestinationOfE164:(NSString*)e164
-                uuid:(NSString*)uuid
-               reply:(void (^)(NSError* error))reply
+- (void)setDestinationOfNumberWithUuid:(NSString*)numberUuid
+                       destinationUuid:(NSString*)destinationUuid
+                                 reply:(void (^)(NSError* error))reply
 {
     AnalysticsTrace(@"API_23");
 
     NSString*     username   = [Settings sharedSettings].webUsername;
-    NSString*     number     = [e164 substringFromIndex:1];
-    NSDictionary* parameters = @{@"uuid" : uuid};
+    NSDictionary* parameters = @{@"uuid" : destinationUuid};
 
-    [self putPath:[NSString stringWithFormat:@"/users/%@/numbers/%@/destination", username, number]
+    [self putPath:[NSString stringWithFormat:@"/users/%@/numbers/%@/destination", username, numberUuid]
        parameters:parameters
             reply:^(NSError* error, id content)
     {
@@ -1304,15 +1298,14 @@
 
 
 // 24. RETRIEVE DESTINATION FOR A NUMBER
-- (void)retrieveDestinationOfE164:(NSString*)e164
-                    reply:(void (^)(NSError* error, NSString* uuid))reply
+- (void)retrieveDestinationOfNumberWithUuid:(NSString*)numberUuid
+                                      reply:(void (^)(NSError* error, NSString* destinationUuid))reply
 {
     AnalysticsTrace(@"API_24");
 
     NSString* username = [Settings sharedSettings].webUsername;
-    NSString* number   = [e164 substringFromIndex:1];
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/numbers/%@/destination", username, number]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/numbers/%@/destination", username, numberUuid]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -1831,26 +1824,24 @@
 
 
 // 11B.
-- (void)cancelAllUpdateNumberWithE164:(NSString*)e164;
+- (void)cancelAllUpdateNumberWithUuid:(NSString*)uuid;
 {
     NSString* username = [Settings sharedSettings].webUsername;
-    NSString* number   = [e164 substringFromIndex:1];
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
                                                     path:[NSString stringWithFormat:@"/users/%@/numbers/%@",
-                                                          username, number]];
+                                                          username, uuid]];
 }
 
 
 // 11C.
-- (void)cancelAllExtendNumberWithE164:(NSString*)e164;
+- (void)cancelAllExtendNumberWithUuid:(NSString*)uuid;
 {
     NSString* username = [Settings sharedSettings].webUsername;
-    NSString* number   = [e164 substringFromIndex:1];
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
                                                     path:[NSString stringWithFormat:@"/users/%@/numbers/%@",
-                                                          username, number]];
+                                                          username, uuid]];
 }
 
 
@@ -1864,14 +1855,13 @@
 
 
 // 13.
-- (void)cancelAllRetrieveNumberWithE164:(NSString*)e164
+- (void)cancelAllRetrieveNumberWithUuid:(NSString*)uuid
 {
     NSString* username = [Settings sharedSettings].webUsername;
-    NSString* number   = [e164 substringFromIndex:1];
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/users/%@/numbers/%@",
-                                                          username, number]];
+                                                          username, uuid]];
 }
 
 
@@ -1949,14 +1939,13 @@
 
 
 // 23.
-- (void)cancelAllSetDestinationOfE164:(NSString*)e164
+- (void)cancelAllSetDestinationOfNumberWithUuid:(NSString*)uuid
 {
     NSString* username = [Settings sharedSettings].webUsername;
-    NSString* number   = [e164 substringFromIndex:1];
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
                                                     path:[NSString stringWithFormat:@"/users/%@/numbers/%@/destination",
-                                                          username, number]];
+                                                          username, uuid]];
 }
 
 

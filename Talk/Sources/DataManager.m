@@ -650,14 +650,14 @@
 
 - (void)synchronizeNumbers:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] retrieveNumbersList:^(NSError* error, NSArray* e164s)
+    [[WebClient sharedClient] retrieveNumbersList:^(NSError* error, NSArray* uuids)
     {
         if (error == nil)
         {
             // Delete Numbers that are no longer on the server, except expired Numbers to allow
             // an alert to appear; these will be deleted when the user sees the alert.
             NSFetchRequest*  request     = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
-            [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (e164 IN %@)) OR (e164 == nil)", e164s]];
+            [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (uuid IN %@)) OR (uuid == nil)", uuids]];
             NSArray*         deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
             if (error == nil)
             {
@@ -676,7 +676,7 @@
                 return;
             }
 
-            __block NSUInteger count = e164s.count;
+            __block NSUInteger count = uuids.count;
             if (count == 0)
             {
                 completion ? completion(nil) : 0;
@@ -684,10 +684,11 @@
                 return;
             }
 
-            for (NSString* e164 in e164s)
+            for (NSString* uuid in uuids)
             {
-                [[WebClient sharedClient] retrieveNumberWithE164:e164
+                [[WebClient sharedClient] retrieveNumberWithUuid:uuid
                                                            reply:^(NSError*        error,
+                                                                   NSString*       e164,
                                                                    NSString*       name,
                                                                    NSString*       numberType,
                                                                    NSString*       areaCode,
@@ -713,7 +714,7 @@
                     if (error == nil)
                     {
                         NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
-                        [request setPredicate:[NSPredicate predicateWithFormat:@"e164 == %@", e164]];
+                        [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
 
                         NumberData* number = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
                         if (error == nil)
@@ -732,6 +733,7 @@
                             return;
                         }
 
+                        number.uuid           = uuid;
                         number.name           = name;
                         number.e164           = e164;
                         number.numberType     = numberType;
@@ -983,11 +985,12 @@
 
     for (NumberData* number in array)
     {
-        [[WebClient sharedClient] retrieveDestinationOfE164:number.e164 reply:^(NSError* error, NSString* uuid)
+        [[WebClient sharedClient] retrieveDestinationOfNumberWithUuid:number.uuid
+                                                                reply:^(NSError* error, NSString* destinationUuid)
         {
             if (error == nil)
             {
-                if (uuid == nil)
+                if (destinationUuid == nil)
                 {
                     number.destination = nil;
                 }
@@ -995,7 +998,7 @@
                 {
                     // Lookup the destination.
                     NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Destination"];
-                    [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
+                    [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", destinationUuid]];
 
                     DestinationData* destination = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
                     if (error == nil)

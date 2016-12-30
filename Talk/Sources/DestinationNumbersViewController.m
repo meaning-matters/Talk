@@ -114,16 +114,16 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NumberData* number = [self.fetchedNumbersController objectAtIndexPath:indexPath];
-    NSString*   uuid   = [self.destination.numbers containsObject:number] ? @"" : self.destination.uuid;
+    NumberData* number          = [self.fetchedNumbersController objectAtIndexPath:indexPath];
+    NSString*   destinationUuid = [self.destination.numbers containsObject:number] ? @"" : self.destination.uuid;
 
-    [[WebClient sharedClient] setDestinationOfE164:number.e164
-                                              uuid:uuid
-                                             reply:^(NSError* error)
+    [[WebClient sharedClient] setDestinationOfNumberWithUuid:number.uuid
+                                             destinationUuid:destinationUuid
+                                                       reply:^(NSError* error)
     {
         if (error == nil)
         {
-            number.destination = (uuid.length == 0) ? nil : self.destination;
+            number.destination = (destinationUuid.length == 0) ? nil : self.destination;
             [[DataManager sharedManager] saveManagedObjectContext:nil];
 
             [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]

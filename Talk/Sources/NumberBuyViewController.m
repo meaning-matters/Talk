@@ -97,6 +97,7 @@
                                             addressId:self.address.addressId
                                             autoRenew:self.autoRenew
                                                 reply:^(NSError*  error,
+                                                        NSString* uuid,
                                                         NSString* e164,
                                                         NSDate*   purchaseDate,
                                                         NSDate*   expiryDate,
@@ -107,11 +108,12 @@
         {
             [[AppDelegate appDelegate] checkCreditWithCompletion:nil];
 
-            NumberData* number = [self saveNumberE164:e164
-                                         purchaseDate:purchaseDate
-                                           expiryDate:expiryDate
-                                             monthFee:monthFee
-                                             renewFee:renewFee];
+            NumberData* number = [self saveNumberWithUuid:uuid
+                                                     e164:e164
+                                             purchaseDate:purchaseDate
+                                               expiryDate:expiryDate
+                                                 monthFee:monthFee
+                                                 renewFee:renewFee];
 
             [self dismissViewControllerAnimated:YES completion:^
             {
@@ -124,9 +126,10 @@
                     {
                         if (destination != nil)
                         {
-                            [[WebClient sharedClient] setDestinationOfE164:number.e164
-                                                                      uuid:(destination == nil) ? @"" : destination.uuid
-                                                                     reply:^(NSError* error)
+                            NSString* destinationUuid = (destination == nil) ? @"" : destination.uuid;
+                            [[WebClient sharedClient] setDestinationOfNumberWithUuid:number.uuid
+                                                                     destinationUuid:destinationUuid
+                                                                               reply:^(NSError* error)
                             {
                                 if (error == nil)
                                 {
@@ -201,11 +204,12 @@
 
 #pragma mark - Helpers
 
-- (NumberData*)saveNumberE164:(NSString*)e164
-                 purchaseDate:(NSDate*)purchaseDate
-                   expiryDate:(NSDate*)expiryDate
-                     monthFee:(float)monthFee
-                     renewFee:(float)renewFee
+- (NumberData*)saveNumberWithUuid:(NSString*)uuid
+                             e164:(NSString*)e164
+                     purchaseDate:(NSDate*)purchaseDate
+                       expiryDate:(NSDate*)expiryDate
+                         monthFee:(float)monthFee
+                         renewFee:(float)renewFee
 {
     NSManagedObjectContext* managedObjectContext = [DataManager sharedManager].managedObjectContext;
     NumberData*             number;
@@ -213,6 +217,7 @@
     number = [NSEntityDescription insertNewObjectForEntityForName:@"Number"
                                            inManagedObjectContext:managedObjectContext];
 
+    number.uuid               = uuid;
     number.name               = self.name;
     number.e164               = e164;
     number.numberType         = [NumberType stringForNumberTypeMask:self.numberTypeMask];

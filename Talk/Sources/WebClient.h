@@ -221,30 +221,34 @@
                       addressId:(NSString*)addressId
                       autoRenew:(BOOL)autoRenew
                           reply:(void (^)(NSError*  error,
+                                          NSString* uuid,
                                           NSString* e164,
                                           NSDate*   purchaseDate,
                                           NSDate*   expiryDate,
                                           float     monthFee,
                                           float     renewFee))reply;
+
 // 11B. UPDATE NUMBER ATTRIBUTES
-- (void)updateNumberE164:(NSString*)e164
-                withName:(NSString*)name
-               autoRenew:(BOOL)autoRenew
-               addressId:(NSString*)addressId
-                   reply:(void (^)(NSError* error))reply;
+- (void)updateNumberWithUuid:(NSString*)uuid
+                        name:(NSString*)name
+                   autoRenew:(BOOL)autoRenew
+                   addressId:(NSString*)addressId
+                       reply:(void (^)(NSError* error))reply;
 
 // 11C. EXTEND NUMBER
-- (void)extendNumberE164:(NSString*)e164 forMonths:(NSUInteger)months
-                   reply:(void (^)(NSError* error,
-                                   float    monthFee,
-                                   float    renewFee,
-                                   NSDate*  expiryDate))reply;
+- (void)extendNumberWithUuid:(NSString*)uuid forMonths:(NSUInteger)months
+                       reply:(void (^)(NSError* error,
+                                       float    monthFee,
+                                       float    renewFee,
+                                       NSDate*  expiryDate))reply;
+
 // 12. GET LIST OF NUMBERS
-- (void)retrieveNumbersList:(void (^)(NSError* error, NSArray* e164s))reply;
+- (void)retrieveNumbersList:(void (^)(NSError* error, NSArray* uuids))reply;
 
 // 13. GET NUMBER INFO
-- (void)retrieveNumberWithE164:(NSString*)e164
+- (void)retrieveNumberWithUuid:(NSString*)uuid
                          reply:(void (^)(NSError*        error,
+                                         NSString*       e164,
                                          NSString*       name,
                                          NSString*       numberType,
                                          NSString*       areaCode,
@@ -305,13 +309,13 @@
                              reply:(void (^)(NSError* error, NSString* name, NSDictionary* action))reply;
 
 // 23. SET/CLEAR DESTINATION FOR A NUMBER
-- (void)setDestinationOfE164:(NSString*)e164
-                        uuid:(NSString*)uuid
-                       reply:(void (^)(NSError* error))reply;
+- (void)setDestinationOfNumberWithUuid:(NSString*)numberUuid
+                       destinationUuid:(NSString*)destinationUuid
+                                 reply:(void (^)(NSError* error))reply;
 
 // 24. RETRIEVE DESTINATION FOR A NUMBER
-- (void)retrieveDestinationOfE164:(NSString*)e164
-                            reply:(void (^)(NSError* error, NSString* uuid))reply;
+- (void)retrieveDestinationOfNumberWithUuid:(NSString*)numberUuid
+                                      reply:(void (^)(NSError* error, NSString* destinationUuid))reply;
 
 // 25. UPDATE AUDIO
 - (void)updateAudioForUuid:(NSString*)uuid
@@ -436,16 +440,16 @@
 - (void)cancelAllPurchaseNumber;
 
 // 11B.
-- (void)cancelAllUpdateNumberWithE164:(NSString*)e164;
+- (void)cancelAllUpdateNumberWithUuid:(NSString*)uuid;
 
 // 11C.
-- (void)cancelAllExtendNumberWithE164:(NSString*)e164;
+- (void)cancelAllExtendNumberWithUuid:(NSString*)uuid;
 
 // 12.
 - (void)cancelAllRetrieveNumbersList;
 
 // 13.
-- (void)cancelAllRetrieveNumberWithE164:(NSString*)e164;
+- (void)cancelAllRetrieveNumberWithUuid:(NSString*)uuid;
 
 // 14.
 - (void)cancelAllPurchaseCredit;
@@ -469,7 +473,7 @@
 - (void)cancelAllRetrieveDestinationForUuid:(NSString*)uuid;
 
 // 23.
-- (void)cancelAllSetDestinationOfE164:(NSString*)e164;
+- (void)cancelAllSetDestinationOfNumberWithUuid:(NSString*)uuid;
 
 // 25.
 - (void)cancellAllUpdateAudioForUuid:(NSString*)uuid;

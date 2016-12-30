@@ -28,7 +28,7 @@
         <relationship name="numbers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Number" inverseName="address" inverseEntity="Number" syncable="YES"/>
     </entity>
     <entity name="Callable" representedClassName="CallableData" isAbstract="YES" syncable="YES">
-        <attribute name="e164" attributeType="String" syncable="YES"/>
+        <attribute name="e164" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="callerIds" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CallerId" inverseName="callable" inverseEntity="CallerId" syncable="YES"/>
