@@ -30,6 +30,7 @@
     <entity name="Callable" representedClassName="CallableData" isAbstract="YES" syncable="YES">
         <attribute name="e164" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="callerIds" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CallerId" inverseName="callable" inverseEntity="CallerId" syncable="YES"/>
     </entity>
     <entity name="CallerId" representedClassName="CallerIdData" syncable="YES">
@@ -99,7 +100,7 @@
     </entity>
     <elements>
         <element name="Address" positionX="295" positionY="-345" width="128" height="418"/>
-        <element name="Callable" positionX="117" positionY="-468" width="128" height="88"/>
+        <element name="Callable" positionX="117" positionY="-468" width="128" height="103"/>
         <element name="CallerId" positionX="313" positionY="-451" width="128" height="73"/>
         <element name="CallRecord" positionX="486" positionY="-342" width="128" height="315"/>
         <element name="Destination" positionX="72" positionY="297" width="128" height="135"/>

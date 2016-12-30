@@ -14,6 +14,7 @@
 
 @interface CallableData : NSManagedObject
 
+@property (nonatomic, retain) NSString* uuid;
 @property (nonatomic, retain) NSString* e164;
 @property (nonatomic, retain) NSString* name;
 @property (nonatomic, retain) NSSet*    callerIds;

@@ -12,6 +12,7 @@
 
 @implementation CallableData
 
+@dynamic uuid;
 @dynamic e164;
 @dynamic name;
 @dynamic callerIds;
