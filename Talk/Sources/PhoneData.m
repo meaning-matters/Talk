@@ -159,7 +159,7 @@
 
 - (void)performDeleteWithCompletion:(void (^)(BOOL succeeded))completion
 {
-    [[WebClient sharedClient] deleteVerifiedE164:self.e164 reply:^(NSError* error)
+    [[WebClient sharedClient] deletePhoneWithUuid:self.uuid reply:^(NSError* error)
     {
         if (error == nil)
         {

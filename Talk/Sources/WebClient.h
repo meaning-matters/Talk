@@ -59,32 +59,32 @@
 
 // 2A. DO NUMBER VERIFICATION
 - (void)retrievePhoneVerificationCodeForE164:(NSString*)e164
-                                       reply:(void (^)(NSError* error, NSString* code))reply;
+                                       reply:(void (^)(NSError*  error,
+                                                       NSString* uuid,
+                                                       BOOL      verified,
+                                                       NSString* code))reply;
 
 // 2B. DO NUMBER VERIFICATION
-- (void)requestPhoneVerificationCallForE164:(NSString*)e164
-                                 reply:(void (^)(NSError* error))reply;
+- (void)requestPhoneVerificationCallForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply;
 
 // 2C. DO NUMBER VERIFICATION
-- (void)retrievePhoneVerificationStatusForE164:(NSString*)e164
-                                    reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply;
+- (void)retrievePhoneVerificationStatusForUuid:(NSString*)uuid
+                                         reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply;
 
 // 2D. STOP VERIFICATION
-- (void)stopPhoneVerificationForE164:(NSString*)e164 reply:(void (^)(NSError* error))reply;
+- (void)stopPhoneVerificationForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply;
 
 // 2E. UPDATE VERIFIED NUMBER
-- (void)updatePhoneVerificationForE164:(NSString*)e164 name:(NSString*)name reply:(void (^)(NSError* error))reply;
+- (void)updatePhoneVerificationForUuid:(NSString*)uuid name:(NSString*)name reply:(void (^)(NSError* error))reply;
 
 // 3. GET VERIFIED NUMBER LIST
-- (void)retrievePhonesList:(void (^)(NSError* error, NSArray* e164s))reply;
+- (void)retrievePhonesList:(void (^)(NSError* error, NSArray* uuids))reply;
 
 // 4. GET VERIFIED NUMBER INFO
-- (void)retrievePhoneWithE164:(NSString*)e164
-                        reply:(void (^)(NSError* error, NSString* name))reply;
+- (void)retrievePhoneWithUuid:(NSString*)uuid reply:(void (^)(NSError* error, NSString* e164, NSString* name))reply;
 
 // 5. DELETE VERIFIED NUMBER
-- (void)deleteVerifiedE164:(NSString*)e164
-                     reply:(void (^)(NSError*))reply;
+- (void)deletePhoneWithUuid:(NSString*)uuid reply:(void (^)(NSError*))reply;
 
 // 6A. GET LIST OF ALL AVAILABLE NUMBER COUNTRIES
 - (void)retrieveNumberCountries:(void (^)(NSError* error, NSArray* countries))reply;
@@ -116,8 +116,7 @@
                                           reply:(void (^)(NSError* error, NSArray* areaInfo))reply;
 
 // 10. CHECK IF PURCHASE INFO IS VALID
-- (void)checkPurchaseInfo:(NSDictionary*)info
-                    reply:(void (^)(NSError* error, BOOL isValid))reply;
+- (void)checkPurchaseInfo:(NSDictionary*)info reply:(void (^)(NSError* error, BOOL isValid))reply;
 
 // 10A. GET LIST OF REGULATION ADDRESSES
 - (void)retrieveAddressesForIsoCountryCode:(NSString*)isoCountryCode        // Optional (i.e. can be nil).
@@ -272,19 +271,16 @@
                                          float           renewFee))reply;
 
 // 14. BUY CREDIT
-- (void)purchaseCreditForReceipt:(NSString*)receipt
-                           reply:(void (^)(NSError* error, float credit))reply;
+- (void)purchaseCreditForReceipt:(NSString*)receipt reply:(void (^)(NSError* error, float credit))reply;
 
 // 15. GET CURRENT CREDIT
 - (void)retrieveCreditWithReply:(void (^)(NSError* error, float credit))reply;
 
 // 16. GET CALL RATE (PER MINUTE)
-- (void)retrieveCallRateForE164:(NSString*)e164
-                          reply:(void (^)(NSError* error, float ratePerMinute))reply;
+- (void)retrieveCallRateForE164:(NSString*)e164 reply:(void (^)(NSError* error, float ratePerMinute))reply;
 
 // 17. GET CDRS
-- (void)retrieveInboundCallRecordsFromDate:(NSDate*)date
-                                     reply:(void (^)(NSError* error, NSArray* records))reply;
+- (void)retrieveInboundCallRecordsFromDate:(NSDate*)date reply:(void (^)(NSError* error, NSArray* records))reply;
 
 // 19A. CREATE DESTINATION
 - (void)createDestinationWithName:(NSString*)name
@@ -298,8 +294,7 @@
                            reply:(void (^)(NSError* error))reply;
 
 // 20. DELETE DESTINATION
-- (void)deleteDestinationForUuid:(NSString*)uuid
-                           reply:(void (^)(NSError* error))reply;
+- (void)deleteDestinationForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply;
 
 // 21. GET LIST OF DESTINATIONS
 - (void)retrieveDestinationsList:(void (^)(NSError* error, NSArray* uuids))reply;
@@ -324,22 +319,16 @@
                      reply:(void (^)(NSError* error))reply;
 
 // 26. DOWNLOAD AUDIO
-- (void)retrieveAudioForUuid:(NSString*)uuid
-                       reply:(void (^)(NSError*  error,
-                                       NSString* name,
-                                       NSData*   data))reply;
+- (void)retrieveAudioForUuid:(NSString*)uuid reply:(void (^)(NSError* error, NSString* name, NSData* data))reply;
 
 // 27. DELETE AUDIO
-- (void)deleteAudioForUuid:(NSString*)uuid
-                     reply:(void (^)(NSError*  error))reply;
+- (void)deleteAudioForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply;
 
 // 28. GET LIST OF AUDIO UUID'S
 - (void)retrieveAudioList:(void (^)(NSError* error, NSArray* uuids))reply;
 
 // 29. CREATE AUDIO
-- (void)createAudioWithData:(NSData*)data
-                       name:(NSString*)name
-                      reply:(void (^)(NSError* error, NSString* uuid))reply;
+- (void)createAudioWithData:(NSData*)data name:(NSString*)name reply:(void (^)(NSError* error, NSString* uuid))reply;
 
 // 32. INITIATE CALLBACK
 - (void)initiateCallbackForCallbackE164:(NSString*)callbackE164
@@ -349,8 +338,7 @@
                                   reply:(void (^)(NSError* error, NSString* uuid))reply;
 
 // 33. STOP CALLBACK
-- (void)stopCallbackForUuid:(NSString*)uuid
-                      reply:(void (^)(NSError* error))reply;
+- (void)stopCallbackForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply;
 
 // 34. GET CALLBACK STATE
 - (void)retrieveCallbackStateForUuid:(NSString*)uuid
@@ -377,25 +365,25 @@
 - (void)cancelAllRetrievePhoneVerificationCode;
 
 // 2B.
-- (void)cancelAllRequestPhoneVerificationCall;
+- (void)cancelAllRequestPhoneVerificationCallForUuid:(NSString*)uuid;
 
 // 2C.
-- (void)cancelAllRetrievePhoneVerificationStatus;
+- (void)cancelAllRetrievePhoneVerificationStatusForUuid:(NSString*)uuid;
 
 // 2D.
-- (void)cancelAllStopPhoneVerification;
+- (void)cancelAllStopPhoneVerificationForUuid:(NSString*)uuid;
 
 // 2E.
-- (void)cancelAllUpdatePhoneVerificationForE164:(NSString*)e164;
+- (void)cancelAllUpdatePhoneVerificationForUuid:(NSString*)uuid;
 
 // 3.
 - (void)cancelAllRetrievePhonesList;
 
 // 4.
-- (void)cancelAllRetrievePhoneWithE164:(NSString*)e164;
+- (void)cancelAllRetrievePhoneWithUuid:(NSString*)uuid;
 
 // 5.
-- (void)cancelAllDeleteVerifiedE164:(NSString*)e164;
+- (void)cancelAllDeletePhoneWithUuid:(NSString*)uuid;
 
 // 6A.
 - (void)cancelAllRetrieveNumberCountries;

@@ -29,7 +29,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>2.0.74</string>
+	<string>2.0.76</string>
 	<key>LSRequiresIPhoneOS</key>
 	<false/>
 	<key>NSAppTransportSecurity</key>
@@ -92,6 +92,6 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Used to capture proof of address or ID, when you buy a Number.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>Used to make phone calls.</string>
+	<string>Used to make calls and see who called. Contacts are not uploaded to our server!</string>
 </dict>
 </plist>

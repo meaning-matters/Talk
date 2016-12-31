@@ -357,7 +357,10 @@
 
 // 2A. GET PHONE VERIFICATION CODE
 - (void)retrievePhoneVerificationCodeForE164:(NSString*)e164
-                                       reply:(void (^)(NSError* error, NSString* code))reply
+                                       reply:(void (^)(NSError*  error,
+                                                       NSString* uuid,
+                                                       BOOL      verified,
+                                                       NSString* code))reply
 {
     AnalysticsTrace(@"API_2A");
 
@@ -370,26 +373,24 @@
     {
         if (error == nil)
         {
-            reply(nil, content[@"code"]);
+            reply(nil, content[@"uuid"], [content[@"verified"] boolValue], content[@"code"]);
         }
         else
         {
-            reply(error, nil);
+            reply(error, nil, NO, nil);
         }
     }];
 }
 
 
 // 2B. REQUEST PHONE VERIFICATION CALL
-- (void)requestPhoneVerificationCallForE164:(NSString*)e164
-                                      reply:(void (^)(NSError* error))reply
+- (void)requestPhoneVerificationCallForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply
 {
     AnalysticsTrace(@"API_2B");
 
     NSString* username = [Settings sharedSettings].webUsername;
-    NSString* e164x    = [e164 substringFromIndex:1];
 
-    [self putPath:[NSString stringWithFormat:@"/users/%@/phones/%@/verification", username, e164x]
+    [self putPath:[NSString stringWithFormat:@"/users/%@/phones/%@/verification", username, uuid]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -399,15 +400,14 @@
 
 
 // 2C. CHECK PHONE VERIFICATION STATUS
-- (void)retrievePhoneVerificationStatusForE164:(NSString*)e164
+- (void)retrievePhoneVerificationStatusForUuid:(NSString*)uuid
                                          reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply
 {
     AnalysticsTrace(@"API_2C");
 
     NSString* username = [Settings sharedSettings].webUsername;
-    NSString* e164x    = [e164 substringFromIndex:1];
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/phones/%@/verification", username, e164x]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/phones/%@/verification", username, uuid]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -424,14 +424,13 @@
 
 
 // 2D. STOP VERIFICATION
-- (void)stopPhoneVerificationForE164:(NSString*)e164 reply:(void (^)(NSError* error))reply
+- (void)stopPhoneVerificationForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply
 {
     AnalysticsTrace(@"API_2D");
 
     NSString* username = [Settings sharedSettings].webUsername;
-    NSString* e164x    = [e164 substringFromIndex:1];
 
-    [self deletePath:[NSString stringWithFormat:@"/users/%@/phones/%@/verification", username, e164x]
+    [self deletePath:[NSString stringWithFormat:@"/users/%@/phones/%@/verification", username, uuid]
           parameters:nil
                reply:^(NSError* error, id content)
     {
@@ -441,15 +440,14 @@
 
 
 // 2E. UPDATE VERIFIED NUMBER
-- (void)updatePhoneVerificationForE164:(NSString*)e164 name:(NSString*)name reply:(void (^)(NSError* error))reply
+- (void)updatePhoneVerificationForUuid:(NSString*)uuid name:(NSString*)name reply:(void (^)(NSError* error))reply
 {
     AnalysticsTrace(@"API_2E");
     
     NSString*     username   = [Settings sharedSettings].webUsername;
-    NSString*     e164x      = [e164 substringFromIndex:1];
     NSDictionary* parameters = @{@"name" : name};
 
-    [self putPath:[NSString stringWithFormat:@"/users/%@/phones/%@", username, e164x]
+    [self putPath:[NSString stringWithFormat:@"/users/%@/phones/%@", username, uuid]
        parameters:parameters
             reply:^(NSError* error, id content)
     {
@@ -459,7 +457,7 @@
 
 
 // 3. GET VERIFIED NUMBER LIST
-- (void)retrievePhonesList:(void (^)(NSError* error, NSArray* e164s))reply;
+- (void)retrievePhonesList:(void (^)(NSError* error, NSArray* uuids))reply;
 {
     AnalysticsTrace(@"API_3");
 
@@ -469,13 +467,7 @@
     {
         if (error == nil)
         {
-            NSMutableArray* e164s = [NSMutableArray array];
-            for (NSString* e164x in content)
-            {
-                [e164s addObject:[@"+" stringByAppendingString:e164x]];
-            }
-            
-            reply(nil, e164s);
+            reply(nil, content);
         }
         else
         {
@@ -486,40 +478,37 @@
 
 
 // 4. GET VERIFIED NUMBER INFO
-- (void)retrievePhoneWithE164:(NSString*)e164
-                       reply:(void (^)(NSError* error, NSString* name))reply;
+- (void)retrievePhoneWithUuid:(NSString*)uuid reply:(void (^)(NSError* error, NSString* e164, NSString* name))reply
 {
     AnalysticsTrace(@"API_3");
 
     NSString* username = [Settings sharedSettings].webUsername;
-    NSString* e164x    = [e164 substringFromIndex:1];
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/phones/%@", username, e164x]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/phones/%@", username, uuid]
        parameters:nil
             reply:^(NSError* error, id content)
     {
         if (error == nil)
         {
-            reply(nil, content[@"name"]);
+            NSString* e164 = content[@"e164"] ? [@"+" stringByAppendingString:content[@"e164"]] : nil;
+            reply(nil, e164, content[@"name"]);
         }
         else
         {
-            reply(error, nil);
+            reply(error, nil, nil);
         }
     }];
 }
 
 
 // 5. DELETE VERIFIED NUMBER
-- (void)deleteVerifiedE164:(NSString*)e164
-                     reply:(void (^)(NSError*))reply;
+- (void)deletePhoneWithUuid:(NSString*)uuid reply:(void (^)(NSError*))reply;
 {
     AnalysticsTrace(@"API_5");
     
     NSString* username = [Settings sharedSettings].webUsername;
-    NSString* e164x    = [e164 substringFromIndex:1];
 
-    [self deletePath:[NSString stringWithFormat:@"/users/%@/phones/%@", username, e164x]
+    [self deletePath:[NSString stringWithFormat:@"/users/%@/phones/%@", username, uuid]
           parameters:nil
                reply:^(NSError *error, id content)
     {
@@ -596,8 +585,7 @@
 
 
 // 10. CHECK IF PURCHASE INFO IS VALID
-- (void)checkPurchaseInfo:(NSDictionary*)info
-                    reply:(void (^)(NSError* error, BOOL isValid))reply;
+- (void)checkPurchaseInfo:(NSDictionary*)info reply:(void (^)(NSError* error, BOOL isValid))reply;
 {
     [self postPath:@"/numbers/check"
         parameters:info
@@ -770,8 +758,7 @@
 
 
 // 10D. DELETE REGULATION ADDRESS
-- (void)deleteAddressWithId:(NSString*)addressId
-                      reply:(void (^)(NSError* error))reply
+- (void)deleteAddressWithId:(NSString*)addressId reply:(void (^)(NSError* error))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
@@ -1059,8 +1046,7 @@
 
 
 // 14. BUY CREDIT
-- (void)purchaseCreditForReceipt:(NSString*)receipt
-                           reply:(void (^)(NSError* error, float credit))reply
+- (void)purchaseCreditForReceipt:(NSString*)receipt reply:(void (^)(NSError* error, float credit))reply
 {
     AnalysticsTrace(@"API_14");
     
@@ -1113,8 +1099,7 @@
 
 
 // 16. GET CALL RATE (PER MINUTE)
-- (void)retrieveCallRateForE164:(NSString*)e164
-                          reply:(void (^)(NSError* error, float ratePerMinute))reply
+- (void)retrieveCallRateForE164:(NSString*)e164 reply:(void (^)(NSError* error, float ratePerMinute))reply
 {
     AnalysticsTrace(@"API_16");
     
@@ -1142,8 +1127,7 @@
 
 
 // 17. GET CDRS
-- (void)retrieveInboundCallRecordsFromDate:(NSDate*)date
-                                     reply:(void (^)(NSError* error, NSArray* records))reply
+- (void)retrieveInboundCallRecordsFromDate:(NSDate*)date reply:(void (^)(NSError* error, NSArray* records))reply
 {
     NSString* username       = [Settings sharedSettings].webUsername;
     NSString* currencyCode   = [Settings sharedSettings].storeCurrencyCode;
@@ -1223,8 +1207,7 @@
 
 
 // 20. DELETE DESTINATION
-- (void)deleteDestinationForUuid:(NSString*)uuid
-                   reply:(void (^)(NSError* error))reply
+- (void)deleteDestinationForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply
 {
     AnalysticsTrace(@"API_20");
 
@@ -1345,10 +1328,7 @@
 
 
 // 26. DOWNLOAD AUDIO
-- (void)retrieveAudioForUuid:(NSString*)uuid
-                       reply:(void (^)(NSError*  error,
-                                       NSString* name,
-                                       NSData*   data))reply
+- (void)retrieveAudioForUuid:(NSString*)uuid reply:(void (^)(NSError* error, NSString* name, NSData* data))reply
 {
     AnalysticsTrace(@"API_26");
 
@@ -1373,8 +1353,7 @@
 
 
 // 27. DELETE AUDIO
-- (void)deleteAudioForUuid:(NSString*)uuid
-                     reply:(void (^)(NSError*  error))reply
+- (void)deleteAudioForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply
 {
     AnalysticsTrace(@"API_27");
 
@@ -1403,9 +1382,7 @@
 
 
 // 29. CREATE AUDIO
-- (void)createAudioWithData:(NSData*)data
-                       name:(NSString*)name
-                      reply:(void (^)(NSError* error, NSString* uuid))reply
+- (void)createAudioWithData:(NSData*)data name:(NSString*)name reply:(void (^)(NSError* error, NSString* uuid))reply
 {
     AnalysticsTrace(@"API_29");
 
@@ -1461,8 +1438,7 @@
 
 
 // 33. STOP CALLBACK
-- (void)stopCallbackForUuid:(NSString*)uuid
-                      reply:(void (^)(NSError* error))reply
+- (void)stopCallbackForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply
 {
     AnalysticsTrace(@"API_33");
     
@@ -1603,53 +1579,52 @@
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
-                                                    path:[NSString stringWithFormat:@"/users/%@/verification",
+                                                    path:[NSString stringWithFormat:@"/users/%@/phones",
                                                           username]];
 }
 
 
 // 2B.
-- (void)cancelAllRequestPhoneVerificationCall
+- (void)cancelAllRequestPhoneVerificationCallForUuid:(NSString*)uuid
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
-                                                    path:[NSString stringWithFormat:@"/users/%@/verification",
-                                                          username]];
+                                                    path:[NSString stringWithFormat:@"/users/%@/phones/%@/verification",
+                                                          username, uuid]];
 }
 
 
 // 2C.
-- (void)cancelAllRetrievePhoneVerificationStatus
+- (void)cancelAllRetrievePhoneVerificationStatusForUuid:(NSString*)uuid
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
-                                                    path:[NSString stringWithFormat:@"/users/%@/verification",
-                                                          username]];
+                                                    path:[NSString stringWithFormat:@"/users/%@/phones/%@/verification",
+                                                          username, uuid]];
 }
 
 
 // 2D.
-- (void)cancelAllStopPhoneVerification
+- (void)cancelAllStopPhoneVerificationForUuid:(NSString*)uuid
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
-                                                    path:[NSString stringWithFormat:@"/users/%@/verification",
-                                                          username]];
+                                                    path:[NSString stringWithFormat:@"/users/%@/phones/%@/verification",
+                                                          username, uuid]];
 }
 
 
 // 2E.
-- (void)cancelAllUpdatePhoneVerificationForE164:(NSString*)e164
+- (void)cancelAllUpdatePhoneVerificationForUuid:(NSString*)uuid
 {
     NSString* username = [Settings sharedSettings].webUsername;
-    NSString* number   = [e164 substringFromIndex:1];
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
-                                                    path:[NSString stringWithFormat:@"/users/%@/verification/numbers/%@",
-                                                          username, number]];
+    [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
+                                                    path:[NSString stringWithFormat:@"/users/%@/phones/%@",
+                                                          username, uuid]];
 }
 
 
@@ -1659,32 +1634,30 @@
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
-                                                    path:[NSString stringWithFormat:@"/users/%@/verification/numbers",
+                                                    path:[NSString stringWithFormat:@"/users/%@/phones",
                                                           username]];
 }
 
 
 // 4.
-- (void)cancelAllRetrievePhoneWithE164:(NSString*)e164
+- (void)cancelAllRetrievePhoneWithUuid:(NSString*)uuid
 {
     NSString* username = [Settings sharedSettings].webUsername;
-    NSString* number   = [e164 substringFromIndex:1];
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
-                                                    path:[NSString stringWithFormat:@"/users/%@/verification/numbers/%@",
-                                                          username, number]];
+                                                    path:[NSString stringWithFormat:@"/users/%@/phones/%@",
+                                                          username, uuid]];
 }
 
 
 // 5.
-- (void)cancelAllDeleteVerifiedE164:(NSString*)e164
+- (void)cancelAllDeletePhoneWithUuid:(NSString*)uuid
 {
     NSString* username = [Settings sharedSettings].webUsername;
-    NSString* number   = [e164 substringFromIndex:1];
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
-                                                    path:[NSString stringWithFormat:@"/users/%@/verification/numbers/%@",
-                                                          username, number]];
+                                                    path:[NSString stringWithFormat:@"/users/%@/phones/%@",
+                                                          username, uuid]];
 }
 
 

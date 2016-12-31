@@ -37,10 +37,10 @@ typedef enum
     BOOL          isNew;
     BOOL          isDeleting;
 
-    PhoneNumber*  phoneNumber;
-
     NSArray*      namesArray;
 }
+
+@property (nonatomic, strong) PhoneNumber* phoneNumber;
 
 @end
 
@@ -56,7 +56,7 @@ typedef enum
         self.phone                = phone;
         self.title                = isNew ? [Strings newPhoneString] : [Strings phoneString];
         
-        phoneNumber               = [[PhoneNumber alloc] initWithNumber:self.phone.e164];
+        self.phoneNumber          = [[PhoneNumber alloc] initWithNumber:self.phone.e164];
 
         namesArray                = [NSMutableArray array];
 
@@ -204,7 +204,7 @@ typedef enum
     }
 
     self.isLoading = YES;
-    [[WebClient sharedClient] updatePhoneVerificationForE164:[phoneNumber e164Format]
+    [[WebClient sharedClient] updatePhoneVerificationForUuid:self.phone.uuid
                                                         name:self.phone.name
                                                        reply:^(NSError *error)
     {
@@ -212,7 +212,7 @@ typedef enum
 
         if (error == nil)
         {
-            self.phone.e164 = [phoneNumber e164Format];
+            self.phone.e164 = [self.phoneNumber e164Format];
 
             if (isNew)
             {
@@ -254,7 +254,7 @@ typedef enum
                                                                  inManagedObjectContext:self.managedObjectContext];
 
     NSString* name = [NSString stringWithFormat:@"\u2794 %@", self.phone.name];
-    [destination createForE164:[phoneNumber e164Format] name:name showCalledId:false completion:completion];
+    [destination createForE164:[self.phoneNumber e164Format] name:name showCalledId:false completion:completion];
 
     return destination;
 }
@@ -404,7 +404,7 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"NumberCell"];
     }
 
-    cell.textLabel.text  = [Common capitalizedString:[phoneNumber typeString]];
+    cell.textLabel.text  = [Common capitalizedString:[self.phoneNumber typeString]];
     cell.imageView.image = nil;
     if (isNew)
     {
@@ -416,7 +416,7 @@ typedef enum
     else
     {
         NumberLabel* numberLabel = [Common addNumberLabelToCell:cell];
-        numberLabel.text         = [phoneNumber internationalFormat];
+        numberLabel.text         = [self.phoneNumber internationalFormat];
         cell.selectionStyle      = UITableViewCellSelectionStyleNone;
         cell.accessoryType       = UITableViewCellAccessoryNone;
     }
@@ -513,14 +513,16 @@ typedef enum
             if (isNew == YES)
             {
                 VerifyPhoneViewController* viewController;
-                viewController = [[VerifyPhoneViewController alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber)
+                viewController = [[VerifyPhoneViewController alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber,
+                                                                                         NSString*    uuid)
                 {
-                    phoneNumber           = verifiedPhoneNumber;
+                    self.phoneNumber      = verifiedPhoneNumber;
+                    self.phone.uuid       = uuid;
                     UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
 
                     if (verifiedPhoneNumber != nil)
                     {
-                        cell.detailTextLabel.text      = [phoneNumber internationalFormat];
+                        cell.detailTextLabel.text      = [self.phoneNumber internationalFormat];
                         cell.detailTextLabel.textColor = [UIColor blackColor];
                     }
                     else
@@ -575,7 +577,7 @@ typedef enum
     if (isNew == YES)
     {
         self.navigationItem.leftBarButtonItem.enabled = ([self.phone.name stringByRemovingWhiteSpace].length > 0) &&
-                                                        [phoneNumber isValid];
+                                                        [self.phoneNumber isValid];
     }
 }
 

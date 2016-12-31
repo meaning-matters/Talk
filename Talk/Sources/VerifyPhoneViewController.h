@@ -14,6 +14,6 @@
 
 @interface VerifyPhoneViewController : UIViewController
 
-- (instancetype)initWithCompletion:(void (^)(PhoneNumber* verifiedPhoneNumber))completion;
+- (instancetype)initWithCompletion:(void (^)(PhoneNumber* verifiedPhoneNumber, NSString* uuid))completion;
 
 @end

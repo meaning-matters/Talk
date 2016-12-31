@@ -166,7 +166,8 @@
                 AnalysticsTrace(@"restoreUserData_no_phones");
 
                 VerifyPhoneViewController* viewController;
-                viewController = [[VerifyPhoneViewController alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber)
+                viewController = [[VerifyPhoneViewController alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber,
+                                                                                         NSString*    uuid)
                 {
                     if (verifiedPhoneNumber != nil)
                     {
@@ -174,7 +175,8 @@
 
                         [self setBusy:YES];
                         [self savePhoneNumber:verifiedPhoneNumber
-                                     withName:[UIDevice currentDevice].name
+                                     withUuid:uuid
+                                         name:[UIDevice currentDevice].name
                                    completion:^(NSError* error)
                         {
                             [self setBusy:NO];
@@ -221,11 +223,12 @@
 }
 
 
-- (void)savePhoneNumber:(PhoneNumber*)phoneNumber withName:(NSString*)name completion:(void (^)(NSError* error))completion
+- (void)savePhoneNumber:(PhoneNumber*)phoneNumber
+               withUuid:(NSString*)uuid
+                   name:(NSString*)name
+             completion:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] updatePhoneVerificationForE164:[phoneNumber e164Format]
-                                                        name:name
-                                                       reply:^(NSError* error)
+    [[WebClient sharedClient] updatePhoneVerificationForUuid:uuid name:name reply:^(NSError* error)
     {
         if (error == nil)
         {
@@ -237,6 +240,7 @@
             context    = [DataManager sharedManager].managedObjectContext;
             phone      = [NSEntityDescription insertNewObjectForEntityForName:@"Phone"
                                                        inManagedObjectContext:context];
+            phone.uuid = uuid;
             phone.name = name;
             phone.e164 = [phoneNumber e164Format];
 

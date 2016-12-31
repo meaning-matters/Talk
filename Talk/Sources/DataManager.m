@@ -1034,13 +1034,13 @@
 
 - (void)synchronizePhones:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] retrievePhonesList:^(NSError* error, NSArray* e164s)
+    [[WebClient sharedClient] retrievePhonesList:^(NSError* error, NSArray* uuids)
     {
         if (error == nil)
         {
             // Delete Phones that are no longer on the server.
             NSFetchRequest*  request     = [NSFetchRequest fetchRequestWithEntityName:@"Phone"];
-            [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (e164 IN %@)) OR (e164 == nil)", e164s]];
+            [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (uuid IN %@)) OR (uuid == nil)", uuids]];
             NSArray*         deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
             if (error == nil)
             {
@@ -1057,7 +1057,7 @@
                 return;
             }
 
-            __block NSUInteger count = e164s.count;
+            __block NSUInteger count = uuids.count;
             if (count == 0)
             {
                 completion ? completion(nil) : 0;
@@ -1065,22 +1065,14 @@
                 return;
             }
 
-            for (NSString* e164 in e164s)
+            for (NSString* uuid in uuids)
             {
-                if ((NSObject*)e164s == [NSNull null])
-                {
-                    NBLog(@"Invalid E164.");
-                    count--;
-
-                    continue;
-                }
-
-                [[WebClient sharedClient] retrievePhoneWithE164:e164 reply:^(NSError* error, NSString* name)
+                [[WebClient sharedClient] retrievePhoneWithUuid:uuid reply:^(NSError* error, NSString* e164, NSString* name)
                 {
                     if (error == nil)
                     {
                         NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Phone"];
-                        [request setPredicate:[NSPredicate predicateWithFormat:@"e164 == %@", e164]];
+                        [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
 
                         PhoneData* phone;
                         phone = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
@@ -1099,6 +1091,7 @@
                             return;
                         }
 
+                        phone.uuid = uuid;
                         phone.e164 = e164;
                         phone.name = name;
                     }

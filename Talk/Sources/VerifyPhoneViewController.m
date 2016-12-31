@@ -33,8 +33,9 @@
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView* codeActivityIndicator;
 
 @property (nonatomic, strong) PhoneNumber* phoneNumber;
+@property (nonatomic, strong) NSString*    uuid;
 @property (nonatomic, strong) NSString*    numberButtonTitle;
-@property (nonatomic, copy)   void       (^completion)(PhoneNumber* phoneNumber);
+@property (nonatomic, copy)   void       (^completion)(PhoneNumber* phoneNumber, NSString* uuid);
 @property (nonatomic, assign) BOOL         isCancelled;
 @property (nonatomic, assign) int          step;
 @property (nonatomic, strong) NSTimer*     codeTimer;
@@ -45,7 +46,7 @@
 
 @implementation VerifyPhoneViewController
 
-- (instancetype)initWithCompletion:(void (^)(PhoneNumber* verifiedPhoneNumber))completion
+- (instancetype)initWithCompletion:(void (^)(PhoneNumber* verifiedPhoneNumber, NSString* uuid))completion
 {
     if (self = [super initWithNibName:@"VerifyPhoneView" bundle:nil])
     {
@@ -107,17 +108,15 @@
         [self.codeTimer invalidate];
         self.codeTimer = nil;
 
-        WebClient* webClient = [WebClient sharedClient];
-
-        [webClient cancelAllRetrievePhoneVerificationCode];
-        [webClient cancelAllRetrievePhoneVerificationStatus];
-        [webClient cancelAllRequestPhoneVerificationCall];
+        [[WebClient sharedClient] cancelAllRetrievePhoneVerificationCode];
+        [[WebClient sharedClient] cancelAllRetrievePhoneVerificationStatusForUuid:self.uuid];
+        [[WebClient sharedClient] cancelAllRequestPhoneVerificationCallForUuid:self.uuid];
         if ([self.phoneNumber isValid] == YES)
         {
-            [webClient stopPhoneVerificationForE164:[self.phoneNumber e164Format] reply:nil];
+            [[WebClient sharedClient] stopPhoneVerificationForUuid:self.uuid reply:nil];
         }
 
-        self.completion(nil);
+        self.completion(nil, nil);
     }
 }
 
@@ -147,15 +146,19 @@
     {
         if (cancelled == NO)
         {
-            [[WebClient sharedClient] retrievePhoneWithE164:phoneNumber.e164Format reply:^(NSError *error, NSString *name)
+            [[WebClient sharedClient] retrievePhoneVerificationCodeForE164:[phoneNumber e164Format]
+                                                                     reply:^(NSError*  error,
+                                                                             NSString* uuid,    // This UUID ignored.
+                                                                             BOOL      verified,
+                                                                             NSString* code)
             {
-                if (error.code == WebStatusFailPhoneUnknown)
+                if (error == nil && verified == NO)
                 {
                     completion(phoneNumber);
                     
                     return;
                 }
-                else if (error == nil)
+                else if (error == nil && verified == YES)
                 {
                     title   = NSLocalizedStringWithDefaultValue(@"VerifyPhone KnownTitle", nil, [NSBundle mainBundle],
                                                                 @"Already Verified", @"...");
@@ -212,9 +215,11 @@
             self.codeTimer = nil;
             
             [self.codeActivityIndicator startAnimating];
-            WebClient* webClient = [WebClient sharedClient];
-            [webClient retrievePhoneVerificationCodeForE164:[phoneNumber e164Format]
-                                                      reply:^(NSError* error, NSString* code)
+            [[WebClient sharedClient] retrievePhoneVerificationCodeForE164:[phoneNumber e164Format]
+                                                                     reply:^(NSError*  error,
+                                                                             NSString* uuid,
+                                                                             BOOL      verified,
+                                                                             NSString* code)
             {
                 if (self.isCancelled)
                 {
@@ -226,6 +231,7 @@
                 [self.codeActivityIndicator stopAnimating];
                 if (error == nil)
                 {
+                    self.uuid = uuid;
                     self.codeTimer = [NSTimer scheduledTimerWithInterval:0.7 repeats:YES block:^(void)
                     {
                         self.codeDigitsShown++;
@@ -276,7 +282,7 @@
                                                    message:message
                                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
                     {
-                        self.completion(nil);
+                        self.completion(nil, nil);
                         self.completion = nil;
 
                         // Without this delay, a keyboard appears briefly after popping.
@@ -323,12 +329,10 @@
 
 - (IBAction)callAction:(id)sender
 {
-    WebClient* webClient = [WebClient sharedClient];
-
     [self setStep:4];
 
     // Initiate call.
-    [webClient requestPhoneVerificationCallForE164:[self.phoneNumber e164Format] reply:^(NSError* error)
+    [[WebClient sharedClient] requestPhoneVerificationCallForUuid:self.uuid reply:^(NSError* error)
     {
         if (self.isCancelled)
         {
@@ -363,7 +367,7 @@
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
             {
-                self.completion(nil);
+                self.completion(nil, nil);
                 self.completion = nil;
                 [self.navigationController popViewControllerAnimated:YES];
             }
@@ -436,8 +440,6 @@
 
 - (void)checkVerifyStatusWithRepeatCount:(int)count
 {
-    WebClient* webClient = [WebClient sharedClient];
-
     if (--count == 0)
     {
         [self showNumberNotVerifiedAlert];
@@ -445,8 +447,8 @@
         return;
     }
 
-    [webClient retrievePhoneVerificationStatusForE164:[self.phoneNumber e164Format]
-                                           reply:^(NSError* error, BOOL calling, BOOL verified)
+    [[WebClient sharedClient] retrievePhoneVerificationStatusForUuid:self.uuid
+                                                               reply:^(NSError* error, BOOL calling, BOOL verified)
     {
         if (self.isCancelled)
         {
@@ -457,7 +459,7 @@
         {
             if (verified == YES)
             {
-                self.completion(self.phoneNumber);
+                self.completion(self.phoneNumber, self.uuid);
                 self.completion = nil;
                 [self.navigationController popViewControllerAnimated:YES];
             }
@@ -492,7 +494,7 @@
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
             {
-                self.completion(nil);
+                self.completion(nil, nil);
                 self.completion = nil;
                 [self.navigationController popViewControllerAnimated:YES];
             }
