@@ -435,15 +435,6 @@
 }
 
 
-+ (NSString*)typeString
-{
-    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings PhoneNumberType", nil, [NSBundle mainBundle],
-                                             @"Type",
-                                             @"Standard label for the type of phone number (e.g. geographic, toll-free).\n"
-                                             @"[No size contraint].");
-}
-
-
 + (NSString*)areaCodeString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings PhoneNumberAreaCode", nil, [NSBundle mainBundle],

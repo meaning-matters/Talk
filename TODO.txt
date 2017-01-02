@@ -249,3 +249,6 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * AppDelegate saveContext is no longer used, only in commented out contacts code.
 
 * Check if main MananagedObjectContext is saved and not just the child, when creating objects. Perhaps put back saving in App Delegate (that was removed December 27 2016).
+
+* Perhaps use PhoneNumber isPossible instead of isValid. Especially imporant when adding Phone, don't want to block people based on state of LibPhoneNumber.
+

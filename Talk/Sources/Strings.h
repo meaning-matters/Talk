@@ -105,8 +105,6 @@
 
 + (NSString*)callerIdString;
 
-+ (NSString*)typeString;
-
 + (NSString*)areaCodeString;
 
 + (NSString*)areaString;

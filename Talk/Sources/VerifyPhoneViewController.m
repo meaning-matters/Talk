@@ -108,12 +108,15 @@
         [self.codeTimer invalidate];
         self.codeTimer = nil;
 
-        [[WebClient sharedClient] cancelAllRetrievePhoneVerificationCode];
-        [[WebClient sharedClient] cancelAllRetrievePhoneVerificationStatusForUuid:self.uuid];
-        [[WebClient sharedClient] cancelAllRequestPhoneVerificationCallForUuid:self.uuid];
-        if ([self.phoneNumber isValid] == YES)
+        if (self.uuid != nil)
         {
-            [[WebClient sharedClient] stopPhoneVerificationForUuid:self.uuid reply:nil];
+            [[WebClient sharedClient] cancelAllRetrievePhoneVerificationCode];
+            [[WebClient sharedClient] cancelAllRetrievePhoneVerificationStatusForUuid:self.uuid];
+            [[WebClient sharedClient] cancelAllRequestPhoneVerificationCallForUuid:self.uuid];
+            if ([self.phoneNumber isValid] == YES)
+            {
+                [[WebClient sharedClient] stopPhoneVerificationForUuid:self.uuid reply:nil];
+            }
         }
 
         self.completion(nil, nil);
@@ -134,8 +137,8 @@
                                                 @"[iOS alert title size].");
     message = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyCancelMessage", nil,
                                                 [NSBundle mainBundle],
-                                                @"Enter the number of a phone you own, or are explicitly allowed to "
-                                                @"use by its owner.",
+                                                @"Enter the number of a fixed-line or mobile phone you own, or are "
+                                                @"explicitly allowed to use by its owner.",
                                                 @"Message explaining about the phone number they need to enter.\n"
                                                 @"[iOS alert message size]");
     [BlockAlertView showPhoneNumberAlertViewWithTitle:title
@@ -144,8 +147,9 @@
                                            completion:^(BOOL         cancelled,
                                                         PhoneNumber* phoneNumber)
     {
-        if (cancelled == NO)
+        if (cancelled == NO && phoneNumber.number.length > 0)
         {
+            // Check if this Phone already exists on the user's account.
             [[WebClient sharedClient] retrievePhoneVerificationCodeForE164:[phoneNumber e164Format]
                                                                      reply:^(NSError*  error,
                                                                              NSString* uuid,    // This UUID ignored.
@@ -154,8 +158,13 @@
             {
                 if (error == nil && verified == NO)
                 {
-                    completion(phoneNumber);
-                    
+                    // Without delay a 'ghost' keyboard may appear briefly: http://stackoverflow.com/q/32095734/1971013
+                    // In this case if the completion shows another alert (e.g. Not Supported Number).
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                    {
+                        completion(phoneNumber);
+                    });
+
                     return;
                 }
                 else if (error == nil && verified == YES)
@@ -206,7 +215,10 @@
         [self setStep:1];
         self.phoneNumber = phoneNumber;
 
-        if ([phoneNumber isValid])
+        if ([phoneNumber isValid] &&
+            (phoneNumber.type == PhoneNumberTypeMobile            ||
+             phoneNumber.type == PhoneNumberTypeFixedLine         ||
+             phoneNumber.type == PhoneNumberTypeFixedLineOrMobile))
         {
             [self.numberButton setTitle:[phoneNumber internationalFormat] forState:UIControlStateNormal];
 
@@ -298,6 +310,29 @@
                 }
             }];
         }
+        else if ([phoneNumber isValid])
+        {
+            NSString* title;
+            NSString* message;
+
+            title   = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyInvalidTitle", nil,
+                                                        [NSBundle mainBundle], @"Not Supported Number",
+                                                        @"Phone number is not correct.\n"
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyInvalidMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"The number you entered is not of a fixed-line or mobile "
+                                                        @"phone.\n\nPlease get in touch at Help > Contact Us.",
+                                                        @"Alert message that entered phone number is invalid.\n"
+                                                        @"[iOS alert message size]");
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:nil
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+
+            [self.numberButton setTitle:self.numberButtonTitle forState:UIControlStateNormal];
+        }
         else
         {
             NSString* title;
@@ -309,7 +344,7 @@
                                                         @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyInvalidMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"The phone number you entered is invalid, "
+                                                        @"The number you entered is invalid, "
                                                         @"please correct.",
                                                         @"Alert message that entered phone number is invalid.\n"
                                                         @"[iOS alert message size]");
