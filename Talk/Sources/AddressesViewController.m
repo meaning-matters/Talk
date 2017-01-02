@@ -186,7 +186,7 @@
     switch (addressTypeMask)
     {
         case AddressTypeWorldwideMask: isoCountryCode = nil; areaCode = nil; numberTypeMask = 0; break;
-        case AddressTypeNationalMask:                        areaCode = nil;                     break;
+        case AddressTypeNationalMask:                        areaCode = nil; numberTypeMask = 0; break;
         case AddressTypeLocalMask:                                           numberTypeMask = 0; break;
         case AddressTypeExtranational:                       areaCode = nil; numberTypeMask = 0; break;
     }
