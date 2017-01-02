@@ -384,7 +384,7 @@
 + (NSString*)postcodeString
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Postcode", nil, [NSBundle mainBundle],
-                                             @"Postode",
+                                             @"Postcode",
                                              @"Standard label for postcode.\n"
                                              @"[One line].");
 }

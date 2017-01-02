@@ -79,7 +79,7 @@
         case CountryRegionAmericas:
         {
             regionName = NSLocalizedStringWithDefaultValue(@"CountryRegions Americas", nil, [NSBundle mainBundle],
-                                                           @"Americas",
+                                                           @"the Americas",
                                                            @"World region name");
             break;
         }

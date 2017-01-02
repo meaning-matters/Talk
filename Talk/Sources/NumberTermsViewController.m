@@ -137,7 +137,7 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
                                                                           @"...");
             cell.detailTextLabel.text = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
                                                                           @"Large scale use for telemarketing, call "
-                                                                          @"centres, or simular, is not allowed.",
+                                                                          @"centres, or similar, is not allowed.",
                                                                           @"...");
             break;
         }
@@ -187,7 +187,7 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
     return NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
                                              @"The above is a reminder of important rules from the Terms and Conditions, "
                                              @"which you agreed to when becoming a NumberBay insider. They can be found "
-                                             @"from the About tab.\n\nWe'll have to suspend the account of anyone "
+                                             @"via the About tab.\n\nWe'll have to suspend the account of anyone "
                                              @"breaking any of the rules.",
                                              @"...");
 }

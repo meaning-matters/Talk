@@ -116,7 +116,7 @@
     NSString* message;
 
     title   = NSLocalizedStringWithDefaultValue(@"CallRates InfoAlertTitle", nil, [NSBundle mainBundle],
-                                                @"Prices Per Minute To %@",
+                                                @"Prices Per Minute to %@",
                                                 @"....\n"
                                                 @"[iOS alert message size]");
     message = NSLocalizedStringWithDefaultValue(@"CallRates InfoAlertMessage", nil, [NSBundle mainBundle],
@@ -344,7 +344,7 @@
     CountryRegion region     = [Settings sharedSettings].countryRegion;
     NSString*     regionName = [[CountryRegions sharedRegions] localizedStringForRegion:region];
     NSString*     format     = NSLocalizedStringWithDefaultValue(@"NumberCountries Placeholder", nil, [NSBundle mainBundle],
-                                                                 @"Search Rates In %@",
+                                                                 @"Search Rates in %@",
                                                                  @"...");
 
     return [NSString stringWithFormat:format, regionName];
