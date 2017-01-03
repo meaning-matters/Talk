@@ -16,6 +16,7 @@
 #import "PhoneNumber.h"
 #import "Skinning.h"
 #import "BlockAlertView.h"
+#import "DestinationData.h"
 
 
 @interface PhonesViewController ()
@@ -254,6 +255,12 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
         {
             if (succeeded)
             {
+                DestinationData* destination = [[DataManager sharedManager] lookupDestinationWithName:phone.name];
+                [destination deleteWithCompletion:^(BOOL succeeded)
+                {
+                    // TODO: Ignore for now. Similar case in PhoneViewController.
+                }];
+
                 [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
             }
             else

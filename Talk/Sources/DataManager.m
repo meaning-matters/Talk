@@ -369,6 +369,18 @@
 }
 
 
+- (DestinationData*)lookupDestinationWithName:(NSString*)name
+{
+    NSPredicate* predicate    = [NSPredicate predicateWithFormat:@"name == %@", name];
+    NSArray*     destinations = [self fetchEntitiesWithName:@"Destination"
+                                                sortKeys:@[@"name"]
+                                               predicate:predicate
+                                    managedObjectContext:nil];
+
+    return [destinations firstObject];
+}
+
+
 #pragma mark - Helpers
 
 - (void)handleError:(NSError*)error

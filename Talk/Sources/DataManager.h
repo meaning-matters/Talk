@@ -12,6 +12,7 @@
 @class CallableData;
 @class PhoneData;
 @class AddressData;
+@class DestinationData;
 
 
 @interface DataManager : NSObject
@@ -49,5 +50,7 @@
 - (PhoneData*)lookupPhoneForE164:(NSString*)e164;
 
 - (AddressData*)lookupAddressWithId:(NSString*)addressId;
+
+- (DestinationData*)lookupDestinationWithName:(NSString*)name;
 
 @end

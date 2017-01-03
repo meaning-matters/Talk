@@ -159,6 +159,12 @@ typedef enum
                 {
                     if (succeeded)
                     {
+                        DestinationData* destination = [[DataManager sharedManager] lookupDestinationWithName:self.phone.name];
+                        [destination deleteWithCompletion:^(BOOL succeeded)
+                        {
+                            // TODO: Ignore for now. Similar case in PhonesViewController.
+                        }];
+
                         [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
                         [self.navigationController popViewControllerAnimated:YES];
                     }
