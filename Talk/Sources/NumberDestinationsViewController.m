@@ -34,7 +34,7 @@
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
-        self.title = [Strings destinationsString];
+        self.title = [Strings destinationString];
 
         number = theNumber;
     }
@@ -136,7 +136,7 @@
     if ([self tableView:tableView numberOfRowsInSection:section] > 0)
     {
         title = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Title", nil, [NSBundle mainBundle],
-                                                  @"Select where calls must go",
+                                                  @"Select Phone to forward calls",
                                                   @"\n"
                                                   @"[1/4 line larger font].");
     }
