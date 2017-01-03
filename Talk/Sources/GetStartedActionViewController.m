@@ -382,12 +382,12 @@
                                    message:message
                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
     {
+        [[AppDelegate appDelegate] playWelcome];
+
         [self dismissViewControllerAnimated:YES completion:nil];
     }
-                         cancelButtonTitle:[Strings closeString]
+                         cancelButtonTitle:[Strings okString]
                          otherButtonTitles:nil];
-
-    [[AppDelegate appDelegate] playWelcome];
 }
 
 @end
