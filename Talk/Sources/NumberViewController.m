@@ -26,6 +26,7 @@
 #import "PurchaseManager.h"
 #import "NetworkStatus.h"
 #import "AppDelegate.h"
+#import "PhoneData.h"
 
 
 typedef enum
@@ -568,7 +569,22 @@ typedef enum
     {
         cell.textLabel.attributedText  = nil;
         cell.textLabel.text            = [Strings destinationString];
-        cell.detailTextLabel.text      = number.destination.name;
+        if ([number.destination.name hasPrefix:@"+"])
+        {
+            PhoneData* phone = [[DataManager sharedManager] lookupPhoneForE164:number.destination.name];
+            if (phone != nil)
+            {
+                cell.detailTextLabel.text = phone.name;
+            }
+            else
+            {
+                // TODO:
+            }
+        }
+        else
+        {
+            // TODO:
+        }
         cell.detailTextLabel.textColor = [Skinning valueColor];
     }
 

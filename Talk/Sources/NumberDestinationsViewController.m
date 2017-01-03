@@ -15,6 +15,7 @@
 #import "BlockAlertView.h"
 #import "Settings.h"
 #import "Common.h"
+#import "PhoneData.h"
 
 
 @interface NumberDestinationsViewController ()
@@ -82,6 +83,8 @@
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [[fetchedResultsController sections] objectAtIndex:section];
 
+    // TODO: Check if there are Phones for each Destination and if not correct.
+
     return [sectionInfo numberOfObjects];
 }
 
@@ -97,7 +100,20 @@
     }
 
     DestinationData* destination = [fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text  = destination.name;
+    PhoneData*       phone;
+    if ([destination.name hasPrefix:@"+"])
+    {
+        phone = [[DataManager sharedManager] lookupPhoneForE164:destination.name];
+    }
+
+    if (phone != nil)
+    {
+        cell.textLabel.text  = phone.name;
+    }
+    else
+    {
+        // TODO:
+    }
 
     if (number.destination == destination)
     {
