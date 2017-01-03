@@ -266,13 +266,18 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
         PhoneData*       phone       = [self.fetchedPhonesController objectAtIndexPath:indexPath];
         DestinationData* destination = [[DataManager sharedManager] lookupDestinationWithName:phone.e164];
-        if (destination != nil)
+        if (destination != nil && [phone cantDeleteMessage] == nil)
         {
             [destination deleteWithCompletion:^(BOOL succeeded)
             {
-                // TODO: Ignoring `succeeded` for now. Similar case in PhoneViewController.
-
-                deletePhone(phone);
+                if (succeeded)
+                {
+                    deletePhone(phone);
+                }
+                else
+                {
+                    [self.tableView setEditing:NO animated:YES];
+                }
             }];
         }
         else

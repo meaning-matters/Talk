@@ -172,13 +172,18 @@ typedef enum
                 };
 
                 DestinationData* destination = [[DataManager sharedManager] lookupDestinationWithName:self.phone.e164];
-                if (destination != nil)
+                if (destination != nil && [self.phone cantDeleteMessage] == nil)
                 {
                     [destination deleteWithCompletion:^(BOOL succeeded)
                     {
-                        // TODO: Ignoring `succeeded` for now. Similar case in PhonesViewController.
-
-                        deletePhone(self.phone);
+                        if (succeeded)
+                        {
+                            deletePhone(self.phone);
+                        }
+                        else
+                        {
+                            isDeleting = NO;
+                        }
                     }];
                 }
                 else
