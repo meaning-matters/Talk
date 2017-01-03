@@ -177,8 +177,13 @@
                 self.phoneNumberCompletion ? self.phoneNumberCompletion(cancelled, phoneNumber) : 0;
             }] == YES)
         {
-            // Number already has ISO country code; call completion now.
-            self.phoneNumberCompletion ? self.phoneNumberCompletion(NO, self.phoneNumberTextFieldDelegate.phoneNumber) : 0;
+            // We delay to allow the keyboard to disappear, avoiding ghost keyboards to appear briefly after closing
+            // an alert created from the completion (http://stackoverflow.com/q/32095734/1971013)
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.333 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+            {
+                // Number already has ISO country code; call completion now.
+                self.phoneNumberCompletion ? self.phoneNumberCompletion(NO, self.phoneNumberTextFieldDelegate.phoneNumber) : 0;
+            });
         }
         else
         {

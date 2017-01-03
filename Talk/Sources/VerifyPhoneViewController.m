@@ -158,12 +158,7 @@
             {
                 if (error == nil && verified == NO)
                 {
-                    // Without delay a 'ghost' keyboard may appear briefly: http://stackoverflow.com/q/32095734/1971013
-                    // In this case if the completion shows another alert (e.g. Not Supported Number).
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                    {
-                        completion(phoneNumber);
-                    });
+                    completion(phoneNumber);
 
                     return;
                 }
@@ -190,11 +185,7 @@
                                                message:message
                                             completion:^(BOOL cancelled, NSInteger buttonIndex)
                 {
-                    // Without delay a 'ghost' keyboard may appear briefly: http://stackoverflow.com/q/32095734/1971013
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                    {
-                        [self.navigationController popViewControllerAnimated:YES];
-                    });
+                    [self.navigationController popViewControllerAnimated:YES];
                 }
                                      cancelButtonTitle:[Strings cancelString]
                                      otherButtonTitles:nil];
