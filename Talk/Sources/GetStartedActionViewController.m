@@ -19,6 +19,7 @@
 #import "Strings.h"
 #import "Skinning.h"
 #import "HtmlViewController.h"
+#import "DestinationData.h"
 
 
 @interface GetStartedActionViewController ()
@@ -232,21 +233,31 @@
     {
         if (error == nil)
         {
-            AnalysticsTrace(@"savePhoneNumber_OK");
+            [self createDefaultDestinationWithE164:[phoneNumber e164Format] completion:^(NSError *error)
+            {
+                if (error == nil)
+                {
+                    PhoneData*              phone;
+                    NSManagedObjectContext* context;
 
-            PhoneData*              phone;
-            NSManagedObjectContext* context;
+                    context    = [DataManager sharedManager].managedObjectContext;
+                    phone      = [NSEntityDescription insertNewObjectForEntityForName:@"Phone"
+                                                               inManagedObjectContext:context];
+                    phone.uuid = uuid;
+                    phone.name = name;
+                    phone.e164 = [phoneNumber e164Format];
 
-            context    = [DataManager sharedManager].managedObjectContext;
-            phone      = [NSEntityDescription insertNewObjectForEntityForName:@"Phone"
-                                                       inManagedObjectContext:context];
-            phone.uuid = uuid;
-            phone.name = name;
-            phone.e164 = [phoneNumber e164Format];
+                    [[DataManager sharedManager] saveManagedObjectContext:nil];
+                    
+                    completion(nil);
+                }
+                else
+                {
+                    AnalysticsTrace(@"saveDestination_ERROR");
 
-            [[DataManager sharedManager] saveManagedObjectContext:nil];
-
-            completion(nil);
+                    completion(error);
+                }
+            }];
         }
         else
         {
@@ -255,6 +266,19 @@
             completion(error);
         }
     }];
+}
+
+
+- (DestinationData*)createDefaultDestinationWithE164:(NSString*)e164 completion:(void (^)(NSError* error))completion
+{
+    NSManagedObjectContext* context     = [DataManager sharedManager].managedObjectContext;
+    DestinationData*        destination = [NSEntityDescription insertNewObjectForEntityForName:@"Destination"
+                                                                        inManagedObjectContext:context];
+
+    NSString* name = [NSString stringWithFormat:@"%@", e164];
+    [destination createForE164:e164 name:name showCalledId:false completion:completion];
+
+    return destination;
 }
 
 
