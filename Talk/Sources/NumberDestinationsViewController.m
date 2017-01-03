@@ -100,20 +100,7 @@
     }
 
     DestinationData* destination = [fetchedResultsController objectAtIndexPath:indexPath];
-    PhoneData*       phone;
-    if ([destination.name hasPrefix:@"+"])
-    {
-        phone = [[DataManager sharedManager] lookupPhoneForE164:destination.name];
-    }
-
-    if (phone != nil)
-    {
-        cell.textLabel.text  = phone.name;
-    }
-    else
-    {
-        // TODO:
-    }
+    cell.textLabel.text = [destination defaultName];
 
     if (number.destination == destination)
     {

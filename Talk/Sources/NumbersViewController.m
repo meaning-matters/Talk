@@ -26,8 +26,9 @@
 
 typedef NS_ENUM(NSUInteger, TableSections)
 {
-    TableSectionNumbers   = 1UL << 0,
-    TableSectionAddresses = 1UL << 1,
+    TableSectionNumbers      = 1UL << 0,
+    TableSectionAddresses    = 1UL << 1,
+    TableSectionDestinations = 1UL << 2,
 };
 
 
@@ -55,6 +56,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
         
         self.sections |= TableSectionNumbers;
         self.sections |= TableSectionAddresses;
+        self.sections |= TableSectionDestinations;
 
         __weak typeof(self) weakSelf = self;
         self.addressesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AddressUpdatesNotification
@@ -217,7 +219,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return self.fetchedNumbersController.sections.count + 1;
+    return self.fetchedNumbersController.sections.count + 2;
 }
 
 
@@ -227,8 +229,9 @@ typedef NS_ENUM(NSUInteger, TableSections)
     
     switch ([Common nthBitSet:section inValue:self.sections])
     {
-        case TableSectionNumbers:   numberOfRows = [self.fetchedNumbersController.sections[section] numberOfObjects]; break;
-        case TableSectionAddresses: numberOfRows = 1;                                                                 break;
+        case TableSectionNumbers:      numberOfRows = [self.fetchedNumbersController.sections[section] numberOfObjects]; break;
+        case TableSectionAddresses:    numberOfRows = 1;                                                                 break;
+        case TableSectionDestinations: numberOfRows = 1;                                                                 break;
     }
     
     return numberOfRows;
@@ -256,6 +259,14 @@ typedef NS_ENUM(NSUInteger, TableSections)
         {
             title = NSLocalizedStringWithDefaultValue(@"Numbers Addresses Title", nil, [NSBundle mainBundle],
                                                       @"Your Registered Addresses",
+                                                      @"\n"
+                                                      @"[1/4 line larger font].");
+            break;
+        }
+        case TableSectionDestinations:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Numbers Destinations Title", nil, [NSBundle mainBundle],
+                                                      @"Where Incoming Calls Go",
                                                       @"\n"
                                                       @"[1/4 line larger font].");
             break;
@@ -314,6 +325,11 @@ typedef NS_ENUM(NSUInteger, TableSections)
             viewController = [[AddressesViewController alloc] init];
             break;
         }
+        case TableSectionDestinations:
+        {
+            viewController = [[DestinationsViewController alloc] init];
+            break;
+        }
     }
 
     [self.navigationController pushViewController:viewController animated:YES];
@@ -351,6 +367,20 @@ typedef NS_ENUM(NSUInteger, TableSections)
             [Common setImageNamed:@"AddressesTab" ofCell:cell];
             break;
         }
+        case TableSectionDestinations:
+        {
+            cell = [self.tableView dequeueReusableCellWithIdentifier:@"DestinationsCell"];
+            if (cell == nil)
+            {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"DestinationsCell"];
+            }
+
+            cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+            cell.textLabel.text = [Strings destinationsString];
+
+            [Common setImageNamed:@"DestinationsTab" ofCell:cell];
+            break;
+        }
      }
 
     return cell;
@@ -367,6 +397,10 @@ typedef NS_ENUM(NSUInteger, TableSections)
             break;
         }
         case TableSectionAddresses:
+        {
+            break;
+        }
+        case TableSectionDestinations:
         {
             break;
         }

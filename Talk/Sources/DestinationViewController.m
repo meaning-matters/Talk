@@ -141,11 +141,13 @@ typedef enum
     }
     else
     {
+        /*
         UIBarButtonItem* buttonItem;
         buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
                                                                    target:self
                                                                    action:@selector(deleteAction)];
         self.navigationItem.rightBarButtonItem = buttonItem;
+        */
     }
 
     [self updateSaveButtonItem];
@@ -338,7 +340,7 @@ typedef enum
 {
     self.sections  = 0;
     self.sections |= TableSectionName;
-    self.sections |= TableSectionPhone;
+    //self.sections |= TableSectionPhone;
     self.sections |= TableSectionStatements;
     self.sections |= self.isNew ? 0 : TableSectionNumbers;
     self.sections |= (self.destination.recordings.count > 0) ? TableSectionRecordings : 0;
@@ -414,6 +416,27 @@ typedef enum
         case TableSectionNumbers:    cell = [self numbersCellForRowAtIndexPath:indexPath];    break;
         case TableSectionRecordings: cell = [self recordingsCellForRowAtIndexPath:indexPath]; break;
     }
+
+    return cell;
+}
+
+
+// Overrides ItemViewController's method that allows editing.
+- (UITableViewCell*)nameCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell* cell;
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"NameCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"NameCell"];
+    }
+
+    cell.textLabel.text = [Strings nameString];
+
+    cell.detailTextLabel.text = [self.destination defaultName];
+
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     return cell;
 }

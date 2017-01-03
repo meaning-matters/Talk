@@ -14,6 +14,7 @@
 #import "Settings.h"
 #import "DestinationData.h"
 #import "Strings.h"
+#import "PhoneData.h"
 
 
 typedef NS_ENUM(NSUInteger, TableSections)
@@ -64,6 +65,9 @@ typedef NS_ENUM(NSUInteger, TableSections)
                                                                               withSortKeys:@[@"name"]
                                                                       managedObjectContext:self.managedObjectContext];
     self.fetchedDestinationsController.delegate = self;
+
+    // Hide ItemsViewController + button.
+    self.navigationItem.rightBarButtonItem = nil;
 }
 
 
@@ -212,7 +216,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
     }
 
     DestinationData* destination = [self.fetchedDestinationsController objectAtIndexPath:indexPath];
-    cell.textLabel.text          = destination.name;
+    cell.textLabel.text          = [destination defaultName];
     cell.accessoryType           = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
@@ -317,7 +321,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     DestinationData* destination;
 
     destination = [controller objectAtIndexPath:indexPath];
-    cell.textLabel.text = destination.name;
+    cell.textLabel.text = [destination defaultName];
 }
 
 @end
