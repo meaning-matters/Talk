@@ -16,6 +16,7 @@
 #import "PhoneNumber.h"
 #import "Skinning.h"
 #import "BlockAlertView.h"
+#import "DestinationData.h"
 
 
 @interface PhonesViewController ()
@@ -248,19 +249,41 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        PhoneData* phone = [self.fetchedPhonesController objectAtIndexPath:indexPath];
-
-        [phone deleteWithCompletion:^(BOOL succeeded)
+        void (^deletePhone)(PhoneData* phone) = ^(PhoneData* phone)
         {
-            if (succeeded)
+            [phone deleteWithCompletion:^(BOOL succeeded)
             {
-                [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-            }
-            else
+                if (succeeded)
+                {
+                    [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+                }
+                else
+                {
+                    [self.tableView setEditing:NO animated:YES];
+                }
+            }];
+        };
+
+        PhoneData*       phone       = [self.fetchedPhonesController objectAtIndexPath:indexPath];
+        DestinationData* destination = [[DataManager sharedManager] lookupDestinationWithName:phone.e164];
+        if (destination != nil && [phone cantDeleteMessage] == nil)
+        {
+            [destination deleteWithCompletion:^(BOOL succeeded)
             {
-                [self.tableView setEditing:NO animated:YES];
-            }
-        }];
+                if (succeeded)
+                {
+                    deletePhone(phone);
+                }
+                else
+                {
+                    [self.tableView setEditing:NO animated:YES];
+                }
+            }];
+        }
+        else
+        {
+            deletePhone(phone);
+        }
     }
 }
 

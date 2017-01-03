@@ -154,19 +154,42 @@ typedef enum
             if (destruct == YES)
             {
                 isDeleting = YES;
-                
-                [self.phone deleteWithCompletion:^(BOOL succeeded)
+
+                void (^deletePhone)(PhoneData* phone) = ^(PhoneData* phone)
                 {
-                    if (succeeded)
+                    [self.phone deleteWithCompletion:^(BOOL succeeded)
                     {
-                        [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-                        [self.navigationController popViewControllerAnimated:YES];
-                    }
-                    else
+                        if (succeeded)
+                        {
+                            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+                            [self.navigationController popViewControllerAnimated:YES];
+                        }
+                        else
+                        {
+                            isDeleting = NO;
+                        }
+                    }];
+                };
+
+                DestinationData* destination = [[DataManager sharedManager] lookupDestinationWithName:self.phone.e164];
+                if (destination != nil && [self.phone cantDeleteMessage] == nil)
+                {
+                    [destination deleteWithCompletion:^(BOOL succeeded)
                     {
-                        isDeleting = NO;
-                    }
-                }];
+                        if (succeeded)
+                        {
+                            deletePhone(self.phone);
+                        }
+                        else
+                        {
+                            isDeleting = NO;
+                        }
+                    }];
+                }
+                else
+                {
+                    deletePhone(self.phone);
+                }
             }
         }
                                  cancelButtonTitle:[Strings cancelString]
@@ -253,8 +276,8 @@ typedef enum
     DestinationData* destination = [NSEntityDescription insertNewObjectForEntityForName:@"Destination"
                                                                  inManagedObjectContext:self.managedObjectContext];
 
-    NSString* name = [NSString stringWithFormat:@"\u2794 %@", self.phone.name];
-    [destination createForE164:[self.phoneNumber e164Format] name:name showCalledId:false completion:completion];
+    NSString* name = [NSString stringWithFormat:@"%@", self.phone.e164];
+    [destination createForE164:self.phone.e164 name:name showCalledId:false completion:completion];
 
     return destination;
 }
@@ -298,7 +321,7 @@ typedef enum
     sections |= TableSectionName;
     sections |= TableSectionE164;
     sections |= (isNew == NO)                       ? TableSectionUsage        : 0;
-    sections |= (self.phone.destinations.count > 0) ? TableSectionDestinations : 0;
+    //sections |= (self.phone.destinations.count > 0) ? TableSectionDestinations : 0;
     sections |= (namesArray.count > 0) ?              TableSectionCallerIds    : 0;
 
     return [Common bitsSetCount:sections];

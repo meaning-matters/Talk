@@ -15,6 +15,7 @@
 #import "BlockAlertView.h"
 #import "Settings.h"
 #import "Common.h"
+#import "PhoneData.h"
 
 
 @interface NumberDestinationsViewController ()
@@ -33,7 +34,7 @@
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
-        self.title = [Strings destinationsString];
+        self.title = [Strings destinationString];
 
         number = theNumber;
     }
@@ -82,6 +83,8 @@
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [[fetchedResultsController sections] objectAtIndex:section];
 
+    // TODO: Check if there are Phones for each Destination and if not correct.
+
     return [sectionInfo numberOfObjects];
 }
 
@@ -97,7 +100,7 @@
     }
 
     DestinationData* destination = [fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text  = destination.name;
+    cell.textLabel.text = [destination defaultName];
 
     if (number.destination == destination)
     {
@@ -120,7 +123,7 @@
     if ([self tableView:tableView numberOfRowsInSection:section] > 0)
     {
         title = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Title", nil, [NSBundle mainBundle],
-                                                  @"Select where calls must go",
+                                                  @"Select Phone to forward calls",
                                                   @"\n"
                                                   @"[1/4 line larger font].");
     }

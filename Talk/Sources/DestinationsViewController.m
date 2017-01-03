@@ -14,6 +14,7 @@
 #import "Settings.h"
 #import "DestinationData.h"
 #import "Strings.h"
+#import "PhoneData.h"
 
 
 typedef NS_ENUM(NSUInteger, TableSections)
@@ -64,6 +65,9 @@ typedef NS_ENUM(NSUInteger, TableSections)
                                                                               withSortKeys:@[@"name"]
                                                                       managedObjectContext:self.managedObjectContext];
     self.fetchedDestinationsController.delegate = self;
+
+    // Hide ItemsViewController + button.
+    self.navigationItem.rightBarButtonItem = nil;
 }
 
 
@@ -212,7 +216,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
     }
 
     DestinationData* destination = [self.fetchedDestinationsController objectAtIndexPath:indexPath];
-    cell.textLabel.text          = destination.name;
+    cell.textLabel.text          = [destination defaultName];
     cell.accessoryType           = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
@@ -250,6 +254,14 @@ typedef NS_ENUM(NSUInteger, TableSections)
             break;
         }
     }
+}
+
+
+// We currently don't allow deleting the Phone based default Destinations. Remove this method to enable editing again.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the specified item to be editable.
+    return NO;
 }
 
 
@@ -317,7 +329,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     DestinationData* destination;
 
     destination = [controller objectAtIndexPath:indexPath];
-    cell.textLabel.text = destination.name;
+    cell.textLabel.text = [destination defaultName];
 }
 
 @end

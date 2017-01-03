@@ -14,6 +14,7 @@
 #import "BlockAlertView.h"
 #import "Common.h"
 #import "DataManager.h"
+#import "PhoneData.h"
 
 
 @implementation DestinationData
@@ -146,6 +147,27 @@
 
         completion ? completion(error) : 0;
     }];
+}
+
+
+- (NSString*)defaultName
+{
+    if ([self.name hasPrefix:@"+"])
+    {
+        PhoneData* phone = [[DataManager sharedManager] lookupPhoneForE164:self.name];
+        if (phone != nil)
+        {
+            return phone.name;
+        }
+        else
+        {
+            return @"---";
+        }
+    }
+    else
+    {
+        return self.name;
+    }
 }
 
 

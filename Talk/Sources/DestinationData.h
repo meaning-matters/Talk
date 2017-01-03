@@ -28,6 +28,9 @@
          showCalledId:(BOOL)showCalledId
            completion:(void (^)(NSError* error))completion;
 
+// Temporary to support default Destinations.
+- (NSString*)defaultName;
+
 @end
 
 

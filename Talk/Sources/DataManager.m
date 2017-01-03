@@ -369,6 +369,18 @@
 }
 
 
+- (DestinationData*)lookupDestinationWithName:(NSString*)name
+{
+    NSPredicate* predicate    = [NSPredicate predicateWithFormat:@"name == %@", name];
+    NSArray*     destinations = [self fetchEntitiesWithName:@"Destination"
+                                                sortKeys:@[@"name"]
+                                               predicate:predicate
+                                    managedObjectContext:nil];
+
+    return [destinations firstObject];
+}
+
+
 #pragma mark - Helpers
 
 - (void)handleError:(NSError*)error
@@ -461,6 +473,8 @@
                                                     [self.managedObjectContext save:&error];
                                                     if (error == nil)
                                                     {
+                                                        [self updateDefaultDestinations];
+
                                                         completion ? completion(nil) : 0;
                                                     }
                                                     else
@@ -1153,6 +1167,34 @@
     if ([phone.e164 isEqualToString:[Settings sharedSettings].callerIdE164])
     {
         [Settings sharedSettings].callerIdE164 = nil;
+    }
+}
+
+
+// We ignore errors in this method with the idea that if server access fails this time, it will succeed at some point
+// in a next synchronisation.
+- (void)updateDefaultDestinations
+{
+    // Delete default Destinations that no longer have a matching Phone.
+    for (DestinationData* destination in [self fetchEntitiesWithName:@"Destination"])
+    {
+        if ([destination.name hasPrefix:@"+"] && [self lookupPhoneForE164:destination.name] == nil)
+        {
+            [destination deleteWithCompletion:nil];
+        }
+    }
+
+    // Make sure all Phones have a default Destination.
+    for (PhoneData* phone in [self fetchEntitiesWithName:@"Phone"])
+    {
+        if ([self lookupDestinationWithName:phone.e164] == nil)
+        {
+            DestinationData* destination = [NSEntityDescription insertNewObjectForEntityForName:@"Destination"
+                                                                         inManagedObjectContext:self.managedObjectContext];
+
+            NSString* name = [NSString stringWithFormat:@"%@", phone.e164];
+            [destination createForE164:phone.e164 name:name showCalledId:false completion:nil];
+        }
     }
 }
 
