@@ -257,6 +257,14 @@ typedef NS_ENUM(NSUInteger, TableSections)
 }
 
 
+// We currently don't allow deleting the Phone based default Destinations. Remove this method to enable editing again.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the specified item to be editable.
+    return NO;
+}
+
+
 - (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
 forRowAtIndexPath:(NSIndexPath*)indexPath
 {

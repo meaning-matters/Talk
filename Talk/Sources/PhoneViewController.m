@@ -154,25 +154,37 @@ typedef enum
             if (destruct == YES)
             {
                 isDeleting = YES;
-                
-                [self.phone deleteWithCompletion:^(BOOL succeeded)
-                {
-                    if (succeeded)
-                    {
-                        DestinationData* destination = [[DataManager sharedManager] lookupDestinationWithName:self.phone.name];
-                        [destination deleteWithCompletion:^(BOOL succeeded)
-                        {
-                            // TODO: Ignore for now. Similar case in PhonesViewController.
-                        }];
 
-                        [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-                        [self.navigationController popViewControllerAnimated:YES];
-                    }
-                    else
+                void (^deletePhone)(PhoneData* phone) = ^(PhoneData* phone)
+                {
+                    [self.phone deleteWithCompletion:^(BOOL succeeded)
                     {
-                        isDeleting = NO;
-                    }
-                }];
+                        if (succeeded)
+                        {
+                            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+                            [self.navigationController popViewControllerAnimated:YES];
+                        }
+                        else
+                        {
+                            isDeleting = NO;
+                        }
+                    }];
+                };
+
+                DestinationData* destination = [[DataManager sharedManager] lookupDestinationWithName:self.phone.e164];
+                if (destination != nil)
+                {
+                    [destination deleteWithCompletion:^(BOOL succeeded)
+                    {
+                        // TODO: Ignoring `succeeded` for now. Similar case in PhonesViewController.
+
+                        deletePhone(self.phone);
+                    }];
+                }
+                else
+                {
+                    deletePhone(self.phone);
+                }
             }
         }
                                  cancelButtonTitle:[Strings cancelString]

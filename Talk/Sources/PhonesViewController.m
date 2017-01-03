@@ -249,25 +249,36 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        PhoneData* phone = [self.fetchedPhonesController objectAtIndexPath:indexPath];
-
-        [phone deleteWithCompletion:^(BOOL succeeded)
+        void (^deletePhone)(PhoneData* phone) = ^(PhoneData* phone)
         {
-            if (succeeded)
+            [phone deleteWithCompletion:^(BOOL succeeded)
             {
-                DestinationData* destination = [[DataManager sharedManager] lookupDestinationWithName:phone.name];
-                [destination deleteWithCompletion:^(BOOL succeeded)
+                if (succeeded)
                 {
-                    // TODO: Ignore for now. Similar case in PhoneViewController.
-                }];
+                    [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+                }
+                else
+                {
+                    [self.tableView setEditing:NO animated:YES];
+                }
+            }];
+        };
 
-                [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-            }
-            else
+        PhoneData*       phone       = [self.fetchedPhonesController objectAtIndexPath:indexPath];
+        DestinationData* destination = [[DataManager sharedManager] lookupDestinationWithName:phone.e164];
+        if (destination != nil)
+        {
+            [destination deleteWithCompletion:^(BOOL succeeded)
             {
-                [self.tableView setEditing:NO animated:YES];
-            }
-        }];
+                // TODO: Ignoring `succeeded` for now. Similar case in PhoneViewController.
+
+                deletePhone(phone);
+            }];
+        }
+        else
+        {
+            deletePhone(phone);
+        }
     }
 }
 
