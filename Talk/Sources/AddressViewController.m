@@ -34,12 +34,13 @@
 
 typedef NS_ENUM(NSUInteger, TableSections)
 {
-    TableSectionName         = 1UL << 0, // Name given by user.
-    TableSectionVerification = 1UL << 1, // Proof images.
-    TableSectionDetails      = 1UL << 2, // Salutation, company, first, last.
-    TableSectionAddress      = 1UL << 3, // Street, number, city, postcode.
-    TableSectionExtraFields  = 1UL << 4, // Extra for few countries.  Assumed last section in updateExtraFieldsSection.
-    TableSectionNumbers      = 1UL << 5, //
+    TableSectionName        = 1UL << 0, // Name given by user.
+    TableSectionStatus      = 1UL << 1, // The verification status.
+    TableSectionProof       = 1UL << 2, // Proof images.
+    TableSectionDetails     = 1UL << 3, // Salutation, company, first, last.
+    TableSectionAddress     = 1UL << 4, // Street, number, city, postcode.
+    TableSectionExtraFields = 1UL << 5, // Extra for few countries.  Assumed last section in updateExtraFieldsSection.
+    TableSectionNumbers     = 1UL << 6, // Optional list of Numbers for which this Address is used currently.
 };
 
 typedef NS_ENUM(NSUInteger, TableRowsDetails)
@@ -148,7 +149,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     if (self = [super initWithManagedObjectContext:managedObjectContext])
     {
         self.isNew                = (address == nil);
-        self.isUpdatable          = (address != nil && address.addressStatus == AddressStatusStagedMask);
+        self.isUpdatable          = (address != nil && isoCountryCode != nil && address.addressStatus == AddressStatusStagedMask);
         self.address              = address;
         self.title                = self.isNew ? [Strings newAddressString] : [Strings addressString];
 
@@ -1044,11 +1045,12 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
     // Mandatory sections.
     self.sections |= TableSectionName;
+    self.sections |= TableSectionStatus;
     self.sections |= TableSectionDetails;
     self.sections |= TableSectionAddress;
 
     // Optional sections.
-    self.sections |= ((self.proofType != nil) || self.address.hasProof) ? TableSectionVerification : 0;
+    self.sections |= ((self.proofType != nil) || self.address.hasProof) ? TableSectionProof : 0;
 
     // We need to determine the existence of the ExtraFields section dynamically, based on
     // the country of the address (which the user may have to select from a list).
@@ -1097,12 +1099,13 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     
     switch ([Common nthBitSet:section inValue:self.sections])
     {
-        case TableSectionName:         numberOfRows = 1;                                          break;
-        case TableSectionVerification: numberOfRows = 1;                                          break;
-        case TableSectionDetails:      numberOfRows = [Common bitsSetCount:self.rowsDetails];     break;
-        case TableSectionAddress:      numberOfRows = [Common bitsSetCount:self.rowsAddress];     break;
-        case TableSectionExtraFields:  numberOfRows = [Common bitsSetCount:self.rowsExtraFields]; break;
-        case TableSectionNumbers:      numberOfRows = self.address.numbers.count;                 break;
+        case TableSectionName:        numberOfRows = 1;                                          break;
+        case TableSectionStatus:      numberOfRows = 1;                                          break;
+        case TableSectionProof:       numberOfRows = 1;                                          break;
+        case TableSectionDetails:     numberOfRows = [Common bitsSetCount:self.rowsDetails];     break;
+        case TableSectionAddress:     numberOfRows = [Common bitsSetCount:self.rowsAddress];     break;
+        case TableSectionExtraFields: numberOfRows = [Common bitsSetCount:self.rowsExtraFields]; break;
+        case TableSectionNumbers:     numberOfRows = self.address.numbers.count;                 break;
     }
 
     return numberOfRows;
@@ -1215,7 +1218,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
             break;
         }
-        case TableSectionVerification:
+        case TableSectionProof:
         {
             if (self.proofType != nil && self.address.hasProof == NO)
             {
@@ -1281,7 +1284,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     {
         switch ([Common nthBitSet:indexPath.section inValue:self.sections])
         {
-            case TableSectionVerification:
+            case TableSectionProof:
             {
                 if ((self.isNew || self.isUpdatable) && self.address.hasProof == NO)
                 {
@@ -1294,7 +1297,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                         {
                             strongSelf.address.addressProof = imageData;
                             strongSelf.address.hasProof     = YES;
-                            [Common reloadSections:TableSectionVerification
+                            [Common reloadSections:TableSectionProof
                                        allSections:strongSelf.sections
                                          tableView:strongSelf.tableView];
                         }
@@ -1451,12 +1454,13 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     
     switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
-        case TableSectionName:         cell = [self nameCellForRowAtIndexPath:indexPath];        break;
-        case TableSectionVerification: cell = [self proofCellForRowAtIndexPath:indexPath];       break;
-        case TableSectionDetails:      cell = [self detailsCellForRowAtIndexPath:indexPath];     break;
-        case TableSectionAddress:      cell = [self addressCellForRowAtIndexPath:indexPath];     break;
-        case TableSectionExtraFields:  cell = [self extraFieldsCellForRowAtIndexPath:indexPath]; break;
-        case TableSectionNumbers:      cell = [self numbersCellForRowAtIndexPath:indexPath];     break;
+        case TableSectionName:        cell = [self nameCellForRowAtIndexPath:indexPath];        break;
+        case TableSectionStatus:      cell = [self statusCellForRowAtIndexPath:indexPath];      break;
+        case TableSectionProof:       cell = [self proofCellForRowAtIndexPath:indexPath];       break;
+        case TableSectionDetails:     cell = [self detailsCellForRowAtIndexPath:indexPath];     break;
+        case TableSectionAddress:     cell = [self addressCellForRowAtIndexPath:indexPath];     break;
+        case TableSectionExtraFields: cell = [self extraFieldsCellForRowAtIndexPath:indexPath]; break;
+        case TableSectionNumbers:     cell = [self numbersCellForRowAtIndexPath:indexPath];     break;
     }
     
     return cell;
@@ -1473,6 +1477,26 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     objc_setAssociatedObject(textField, @"TextFieldKey", @"name", OBJC_ASSOCIATION_RETAIN);
 
     [self updateTextField:textField onCell:cell];
+
+    return cell;
+}
+
+
+- (UITableViewCell*)statusCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell* cell;
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"StatusCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"StatusCell"];
+
+        cell.accessoryType  = UITableViewCellAccessoryNone;
+        cell.textLabel.text = NSLocalizedString(@"Status", @"");
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+
+    cell.detailTextLabel.text = [AddressStatus localizedStringForAddressStatusMask:self.address.addressStatus];
 
     return cell;
 }

@@ -332,7 +332,8 @@ typedef enum
         if (area[@"proofTypes"] == nil)
         {
             // No proof is required.
-            if (self.address.addressStatus != AddressStatusNotVerifiedMask)
+            if (self.address.addressStatus != AddressStatusStagedMask &&
+                self.address.addressStatus != AddressStatusNotVerifiedMask)
             {
                 title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
                                                             @"Unexpected Address Status",
@@ -360,6 +361,10 @@ typedef enum
                                                                 @"but it's state is unknown at the moment.",
                                                                 @"....\n"
                                                                 @"[iOS alert message size]");
+                    break;
+                }
+                case AddressStatusStagedMask:
+                {
                     break;
                 }
                 case AddressStatusNotVerifiedMask:

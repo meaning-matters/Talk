@@ -246,9 +246,26 @@
 }
 
 
++ (NSString*)localizedStringForAddressStatusMask:(AddressStatusMask)mask
+{
+    switch (mask)
+    {
+        case AddressStatusUnknown:                   return NSLocalizedString(@"Unknown",               @"");
+        case AddressStatusStagedMask:
+        case AddressStatusVerificationRequestedMask: return NSLocalizedString(@"Awaiting Verification", @"");
+        case AddressStatusNotVerifiedMask:;
+        case AddressStatusVerifiedMask:              return NSLocalizedString(@"Verified",              @"");
+        case AddressStatusRejectedMask:              return NSLocalizedString(@"Rejected",              @"");
+        case AddressStatusDisabledMask:              return NSLocalizedString(@"Disabled",              @"");
+    }
+}
+
+
 + (BOOL)isAvailableAddressStatusMask:(AddressStatusMask)mask
 {
-    return ((mask & AddressStatusNotVerifiedMask) > 0) || ((mask & AddressStatusVerifiedMask) > 0);
+    return ((mask & AddressStatusStagedMask)      > 0) ||   // Not yet verified by NumberBay yet.
+           ((mask & AddressStatusNotVerifiedMask) > 0) ||   // Verified by NumberBay and not needing Voxbone check.
+           ((mask & AddressStatusVerifiedMask)    > 0);     // Verified by both NumberBay and Voxbone.
 }
 
 @end
