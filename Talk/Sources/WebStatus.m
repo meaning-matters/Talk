@@ -22,6 +22,7 @@
     {
         statuses = @{@"OK"                           : @(WebStatusOk),
                      @"FAIL_SERVER_INTERNAL"         : @(WebStatusFailServerIternal),
+                     @"FAIL_REQUEST_INVALID"         : @(WebStatusFailRequestInvalid),
                      @"FAIL_SERVICE_UNAVAILABLE"     : @(WebStatusFailServiceUnavailable),
                      @"FAIL_RECEIPT_INVALID"         : @(WebStatusFailReceiptInvalid),
                      @"FAIL_STATES_NONEXISTENT"      : @(WebStatusFailStatesNonexistent),
