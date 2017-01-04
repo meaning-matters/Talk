@@ -290,14 +290,28 @@ typedef NS_ENUM(NSUInteger, TableSections)
     {
         case TableSectionNumbers:
         {
-            title = NSLocalizedStringWithDefaultValue(@"Numbers Number List Footer", nil, [NSBundle mainBundle],
-                                                      @"List of your purchased Numbers, allowing you to be reachable in "
-                                                      @"thousands of cities and many countries.\n\n"
-                                                      @"You can forward the calls received on a Number to one of "
-                                                      @"your Phones (using a Destination). Also, when making calls, "
-                                                      @"you can use a Number as your Caller ID.",
-                                                      @"\n"
-                                                      @"[1/4 line larger font].");
+            if ([self tableView:tableView numberOfRowsInSection:section] == 0)
+            {
+                title = NSLocalizedStringWithDefaultValue(@"Numbers Number List Footer", nil, [NSBundle mainBundle],
+                                                          @"Tap + to buy a Number and become reachable in thousands of "
+                                                          @"cities and many countries.\n\n"
+                                                          @"You can forward the calls received on a Number to one of "
+                                                          @"your Phones (using a Destination). Also, when making calls, "
+                                                          @"you can use a Number as your Caller ID.",
+                                                          @"\n"
+                                                          @"[1/4 line larger font].");
+            }
+            else
+            {
+                title = NSLocalizedStringWithDefaultValue(@"Numbers Number List Footer", nil, [NSBundle mainBundle],
+                                                          @"List of your purchased Numbers, allowing you to be reachable "
+                                                          @"in thousands of cities and many countries.\n\n"
+                                                          @"You can forward the calls received on a Number to one of "
+                                                          @"your Phones (using a Destination). Also, when making calls, "
+                                                          @"you can use a Number as your Caller ID.",
+                                                          @"\n"
+                                                          @"[1/4 line larger font].");
+            }
             break;
         }
     }
