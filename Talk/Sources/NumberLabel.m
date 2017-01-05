@@ -38,6 +38,8 @@
                                              selector:@selector(didHideEditMenu)
                                                  name:UIMenuControllerDidHideMenuNotification
                                                object:nil];
+
+    self.font = [self.font fontWithSize:19.0f];
 }
 
 
@@ -57,7 +59,7 @@
     }
     else if (self.hasPaste && action == @selector(paste:))
     {
-        UIPasteboard*   pasteboard = [UIPasteboard generalPasteboard];
+        UIPasteboard* pasteboard = [UIPasteboard generalPasteboard];
 
         if (pasteboard.string == nil)
         {
@@ -65,8 +67,8 @@
         }
         else
         {
-            NSCharacterSet *stringSet = [NSCharacterSet characterSetWithCharactersInString:pasteboard.string];
-            NSCharacterSet *allowedSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789+#*()-. \u00a0\t\n\r"];
+            NSCharacterSet* stringSet  = [NSCharacterSet characterSetWithCharactersInString:pasteboard.string];
+            NSCharacterSet* allowedSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789+#*()-. \u00a0\t\n\r"];
 
             return [allowedSet isSupersetOfSet:stringSet];
         }

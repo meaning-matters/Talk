@@ -641,4 +641,10 @@
     return NSLocalizedString(@"Hidden", @"Indicate that Caller ID is blocked.");
 }
 
+
++ (NSString*)pendingString
+{
+    return NSLocalizedString(@"Pending", @"Indicate that something is waiting to happen.");
+}
+
 @end

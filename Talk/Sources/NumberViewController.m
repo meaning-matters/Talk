@@ -81,11 +81,11 @@ typedef enum
         sections |= TableSectionName;
         sections |= TableSectionInfo;
         sections |= TableSectionDestination;
-        sections |= TableSectionUsage;
-        sections |= TableSectionPeriod;
         sections |= TableSectionAddress;
 
         // Optional section.
+        sections |= [number isPending] ? 0 : TableSectionUsage;
+        sections |= [number isPending] ? 0 : TableSectionPeriod;
         sections |= [IncomingChargesViewController hasIncomingChargesWithNumber:number] ? TableSectionCharges : 0;
 
         // Info Rows
@@ -522,29 +522,37 @@ typedef enum
     NumberLabel*   numberLabel    = [Common addNumberLabelToCell:cell];
     NumberTypeMask numberTypeMask = [NumberType numberTypeMaskForString:number.numberType];
 
-    PhoneNumber*               phoneNumber      = [[PhoneNumber alloc] initWithNumber:number.e164];
-    NSString*                  string           = phoneNumber.internationalFormat;
-    NSMutableAttributedString* attributedString = [[NSMutableAttributedString alloc] initWithString:string];
-
-    UIFont*           font       = numberLabel.font;
-    UIFontDescriptor* descriptor = [[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
-    UIFont*           boldFont   = [UIFont fontWithDescriptor:descriptor size:font.pointSize];
-
-    NSRange range;
-    if (number.areaCode.length > 0)
+    if ([number isPending])
     {
-        range = NSMakeRange(0, 1 + phoneNumber.callCountryCode.length + 1 + number.areaCode.length);
+        numberLabel.text = [Strings pendingString];
     }
     else
     {
-        range = NSMakeRange(0, 1 + phoneNumber.callCountryCode.length);
-    }
-    
-    [attributedString addAttribute:NSFontAttributeName value:boldFont range:range];
+        PhoneNumber*               phoneNumber      = [[PhoneNumber alloc] initWithNumber:number.e164];
+        NSString*                  string           = phoneNumber.internationalFormat;
+        NSMutableAttributedString* attributedString = [[NSMutableAttributedString alloc] initWithString:string];
 
-    numberLabel.attributedText = attributedString;
-    cell.textLabel.text        = [NumberType localizedStringForNumberTypeMask:numberTypeMask];
-    cell.selectionStyle        = UITableViewCellSelectionStyleNone;
+        UIFont*           font       = numberLabel.font;
+        UIFontDescriptor* descriptor = [[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
+        UIFont*           boldFont   = [UIFont fontWithDescriptor:descriptor size:font.pointSize];
+
+        NSRange range;
+        if (number.areaCode.length > 0)
+        {
+            range = NSMakeRange(0, 1 + phoneNumber.callCountryCode.length + 1 + number.areaCode.length);
+        }
+        else
+        {
+            range = NSMakeRange(0, 1 + phoneNumber.callCountryCode.length);
+        }
+
+        [attributedString addAttribute:NSFontAttributeName value:boldFont range:range];
+        
+        numberLabel.attributedText = attributedString;
+    }
+
+    cell.textLabel.text = [NumberType localizedStringForNumberTypeMask:numberTypeMask];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
 

@@ -46,6 +46,8 @@
 @property (nonatomic, retain) DestinationData* destination;
 @property (nonatomic, retain) AddressData*     address;
 
+- (BOOL)isPending;
+
 // Returns 7, 3, or 1 when expiry is within 7, 3, or 1 days repectively, or return 0 when expiry is longer than 7 days away.
 - (int16_t)expiryDays;
 

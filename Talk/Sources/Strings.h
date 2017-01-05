@@ -153,4 +153,6 @@
 
 + (NSString*)hiddenString;
 
++ (NSString*)pendingString;
+
 @end

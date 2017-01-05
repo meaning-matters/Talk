@@ -252,6 +252,12 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     // `cancelAllLocalNotifications` and adding them again here. We just ignore that to keep things simple.
     for (NumberData* number in numbers)
     {
+        // Skip pending Numbers.
+        if ([number isPending])
+        {
+            continue;
+        }
+
         switch ([number expiryDays])
         {
             case INT16_MAX:

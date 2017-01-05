@@ -438,10 +438,17 @@ typedef NS_ENUM(NSUInteger, TableSections)
     {
         NumberData* number        = [self.fetchedNumbersController objectAtIndexPath:indexPath];
         cell.imageView.image      = [UIImage imageNamed:number.isoCountryCode];
-        cell.textLabel.text       = number.name;
-        PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:number.e164];
-        cell.detailTextLabel.text = [phoneNumber internationalFormat];
         cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+        cell.textLabel.text       = number.name;
+        if ([number isPending])
+        {
+            cell.detailTextLabel.text = [Strings pendingString];
+        }
+        else
+        {
+            PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:number.e164];
+            cell.detailTextLabel.text = [phoneNumber internationalFormat];
+        }
 
         cell.badgeCount  = (number.destination == nil) ? 1 : 0;
         cell.badgeCount += [number isExpiryCritical]   ? 1 : 0;

@@ -43,6 +43,12 @@
 @dynamic address;
 
 
+- (BOOL)isPending
+{
+    return (self.e164 == nil || self.purchaseDate == nil || self.expiryDate == nil);
+}
+
+
 - (int16_t)expiryDays
 {
     NSCalendar*       calendar   = [NSCalendar currentCalendar];
